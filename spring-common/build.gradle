@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'java-library'
+}
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+dependencies {
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    api 'org.apache.commons:commons-lang3'
+}
+
+test {
+    useJUnitPlatform()
+}

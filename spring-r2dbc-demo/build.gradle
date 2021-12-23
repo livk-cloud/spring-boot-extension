@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+jar {
+    manifest.attributes provider: 'gradle'
+}
+
+dependencies {
+    api project(':spring-common')
+    api 'org.springframework.boot:spring-boot-starter-webflux'
+    api 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    api 'io.r2dbc:r2dbc-postgresql'
+}
+
+test {
+    useJUnitPlatform()
+}

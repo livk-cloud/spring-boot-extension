@@ -1,0 +1,11 @@
+server:
+  port: 9663
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@
+  r2dbc:
+    url: r2dbc:postgres://livk.com:5432/spring_livk
+    username: postgres
+    password: 123456
