@@ -23,7 +23,7 @@ public class QuartzScheduler implements Job {
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) {
 		before();
-		JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+		var jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
 		log.info("{}", jobDataMap.get("user"));
 		after();
 	}
