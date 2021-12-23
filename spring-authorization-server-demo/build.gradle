@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+jar {
+    manifest.attributes provider: 'gradle'
+}
+
+dependencies {
+    api project(':spring-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api "com.baomidou:mybatis-plus-boot-starter"
+    api "mysql:mysql-connector-java"
+    api "org.springframework.security:spring-security-oauth2-authorization-server"
+}
+
+test {
+    useJUnitPlatform()
+}

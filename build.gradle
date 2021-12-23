@@ -15,6 +15,8 @@ buildscript {
     ext {
         set('springBootVersion', '2.6.1')
         set('pagehelperVersion', '1.4.1')
+        set('oauth2AuthorizationVersion', '0.2.1')
+        set('mpVersion', "3.4.3.4")
     }
 
     repositories {
@@ -48,6 +50,8 @@ subprojects {
         }
         dependencies {
             dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
+            dependency "com.baomidou:mybatis-plus-boot-starter:${mpVersion}"
+            dependency "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}"
         }
     }
 
