@@ -61,7 +61,7 @@ public class AuthorizationServerConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate,
                                                                  PasswordEncoder passwordEncoder) {
-        RegisteredClient registeredClient = RegisteredClient
+        var registeredClient = RegisteredClient
                 .withId("livk-client-id")
                 .clientId("livk-client")
                 .clientSecret(passwordEncoder.encode("secret"))
