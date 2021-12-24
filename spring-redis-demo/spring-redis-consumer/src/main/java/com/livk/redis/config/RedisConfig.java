@@ -40,7 +40,7 @@ public class RedisConfig {
     @Bean
     public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(ReactiveRedisConnectionFactory connectionFactory) {
         var container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        var serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        var serializer = new Jackson2JsonRedisSerializer<>(LivkMessage.class);
         var mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         serializer.setObjectMapper(mapper);
