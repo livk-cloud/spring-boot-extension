@@ -13,7 +13,7 @@ sourceCompatibility = 17
 
 buildscript {
     ext {
-        set('springBootVersion', '2.6.1')
+        set('springBootVersion', '3.0.0-SNAPSHOT')
         set('pagehelperVersion', '1.4.1')
         set('oauth2AuthorizationVersion', '0.2.1')
         set('mpVersion', "3.4.3.4")
