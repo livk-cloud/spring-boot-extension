@@ -1,0 +1,15 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+      table-prefix: BATCH_
+    job:
+      enabled: false
+      names: parentjob
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://livk.com:3306/batch_config
+    username: root
+    password: 123456
+    hikari:
+      schema: classpath:/org/springframework/batch/core/schema-mysql.sql

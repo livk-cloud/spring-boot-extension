@@ -26,4 +26,5 @@ findProject(':spring-redis-demo:spring-redis-consumer')?.name = 'spring-redis-co
 include 'spring-redis-demo:spring-redis-provider'
 findProject(':spring-redis-demo:spring-redis-provider')?.name = 'spring-redis-provider'
 include 'spring-authorization-server-demo'
+include 'spring-batch-demo'
 

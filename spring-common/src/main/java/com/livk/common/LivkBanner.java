@@ -7,7 +7,6 @@ import org.springframework.boot.SpringBootVersion;
 import org.springframework.core.env.Environment;
 
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
@@ -22,8 +21,6 @@ import java.util.function.Function;
  * @date 2021/8/30
  */
 public class LivkBanner implements Banner {
-
-    private static final String HTTP_PREFIX = "IP Address: http";
 
     private LivkBanner() {
     }
@@ -50,8 +47,6 @@ public class LivkBanner implements Banner {
         format.accept("Current time: " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
         format.accept("Current JDK Version: " + System.getProperty("java.version"));
         format.accept("Operating System: " + System.getProperty("os.name"));
-        var port = environment.getProperty("server.port", "8080");
-        format.accept(String.format(HTTP_PREFIX.concat("://%s:%s"), InetAddress.getLocalHost().getHostAddress(), port));
         out.flush();
     }
 
