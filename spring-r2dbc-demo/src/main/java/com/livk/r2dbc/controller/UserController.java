@@ -1,7 +1,6 @@
 package com.livk.r2dbc.controller;
 
 import com.livk.r2dbc.domain.User;
-import com.livk.r2dbc.repository.UserRepository;
 import com.livk.r2dbc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import reactor.core.publisher.Mono;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @GetMapping
     public HttpEntity<Flux<User>> users() {
