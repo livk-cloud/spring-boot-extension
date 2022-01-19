@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.livk.excel.mapper.InfoMapper">
+    <insert id="insertBatch">
+        insert into `info` (`phone`)
+            value
+        <foreach collection="list"  separator="," item="item">
+            (#{item.phone})
+        </foreach>
+    </insert>
+</mapper>

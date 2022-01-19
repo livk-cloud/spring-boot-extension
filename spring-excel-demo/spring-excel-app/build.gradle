@@ -14,13 +14,12 @@ jar {
 }
 
 dependencies {
+    api project(':spring-excel-demo:excel-spring-boot-starter')
     api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-webflux'
-    api 'org.springframework.boot:spring-boot-starter-batch'
-    api 'org.springframework.boot:spring-boot-starter-validation'
-    api 'com.baomidou:mybatis-plus-boot-starter'
+    api 'com.google.guava:guava'
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
     api 'mysql:mysql-connector-java'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 test {

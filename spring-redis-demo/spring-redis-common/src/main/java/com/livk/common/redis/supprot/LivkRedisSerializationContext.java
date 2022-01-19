@@ -16,14 +16,14 @@ import reactor.util.annotation.NonNull;
  * @author livk
  * @date 2021/12/23
  */
-public class LivkRedisSerializationContext implements RedisSerializationContext<String, Object> {
+public record LivkRedisSerializationContext<T>(
+        Jackson2JsonRedisSerializer<T> serializer) implements RedisSerializationContext<String, T> {
 
-    private final Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-
-    public LivkRedisSerializationContext(){
+    public LivkRedisSerializationContext(Jackson2JsonRedisSerializer<T> serializer) {
+        this.serializer = serializer;
         var mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.setObjectMapper(mapper);
+        this.serializer.setObjectMapper(mapper);
     }
 
     @NonNull
@@ -34,7 +34,7 @@ public class LivkRedisSerializationContext implements RedisSerializationContext<
 
     @NonNull
     @Override
-    public SerializationPair<Object> getValueSerializationPair() {
+    public SerializationPair<T> getValueSerializationPair() {
         return RedisSerializationContext.SerializationPair.fromSerializer(serializer);
     }
 
@@ -48,7 +48,7 @@ public class LivkRedisSerializationContext implements RedisSerializationContext<
     @NonNull
     @SuppressWarnings("unchecked")
     @Override
-    public SerializationPair<Object> getHashValueSerializationPair() {
+    public SerializationPair<T> getHashValueSerializationPair() {
         return RedisSerializationContext.SerializationPair.fromSerializer(serializer);
     }
 

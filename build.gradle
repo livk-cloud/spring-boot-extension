@@ -9,14 +9,19 @@ apply plugin: 'java'
 apply plugin: 'java-library'
 group = 'com.livk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 17
+sourceCompatibility = JavaVersion.VERSION_17
 
 buildscript {
+
     ext {
         set('springBootVersion', '3.0.0-SNAPSHOT')
         set('pagehelperVersion', '1.4.1')
         set('oauth2AuthorizationVersion', '0.2.1')
-        set('mpVersion', "3.4.3.4")
+        set('mpVersion', "3.5.0")
+        set('springMybatisVersion','2.2.1')
+        set('guavaVersion','31.0.1-jre')
+        set('easyExcelVersion', '3.0.5')
+        set('burningwaveVersion','12.41.2')
     }
 
     repositories {
@@ -26,6 +31,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
+
 }
 
 allprojects {
@@ -51,6 +57,10 @@ subprojects {
             dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
             dependency "com.baomidou:mybatis-plus-boot-starter:${mpVersion}"
             dependency "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}"
+            dependency "com.google.guava:guava:${guavaVersion}"
+            dependency "com.alibaba:easyexcel:${easyExcelVersion}"
+            dependency "org.burningwave:core:${burningwaveVersion}"
+            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}"
         }
     }
 

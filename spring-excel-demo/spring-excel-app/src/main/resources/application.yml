@@ -1,0 +1,16 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://livk.com:3306/kris_security
+    username: root
+    password: 123456
+server:
+  port: 6677
+
+mybatis:
+  mapper-locations: classpath:/mapper/**.xml
+

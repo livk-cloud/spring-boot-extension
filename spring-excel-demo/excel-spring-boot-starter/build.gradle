@@ -9,9 +9,9 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    compileOnly 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter'
-    api 'org.apache.commons:commons-lang3'
+    api 'com.alibaba:easyexcel'
+    api 'org.burningwave:core'
+    api 'org.springframework.boot:spring-boot-starter-web'
 }
 
 test {

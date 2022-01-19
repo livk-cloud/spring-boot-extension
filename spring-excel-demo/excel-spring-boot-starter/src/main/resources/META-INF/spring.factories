@@ -1,0 +1,4 @@
+org.springframework.context.ApplicationContextInitializer=\
+  com.livk.excel.config.CglibApplicationContextInitializer
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.livk.excel.config.WebMvcConfig

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
  * <p>
@@ -24,7 +25,7 @@ public class QuartzController {
 	private final LivkQuartzScheduler livkQuartzScheduler;
 
 	@PostMapping("testTask")
-	public void testTask() throws SchedulerException {
+	public Mono<Void> testTask() throws SchedulerException {
 		var jobDetail = JobBuilder.newJob(QuartzScheduler.class)
 				.withIdentity("job1", "group1")
 				.build();
@@ -33,16 +34,19 @@ public class QuartzController {
 		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job1", "group1")
 				.withSchedule(cronScheduleBuilder).build();
 		scheduler.scheduleJob(jobDetail, cronTrigger);
+		return Mono.empty();
 	}
 
 	@PostMapping("livkTask")
-	public void livkTask() throws SchedulerException {
-		var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job2", "group2").build();
+	public Mono<Void> livkTask() throws SchedulerException {
+		var jobDetail = JobBuilder.newJob(QuartzScheduler.class)
+				.withIdentity("job2", "group2").build();
 		jobDetail.getJobDataMap().put("user", "tom2");
 		var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
 		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job2", "group2")
 				.withSchedule(cronScheduleBuilder).build();
 		livkQuartzScheduler.scheduleJob(jobDetail, cronTrigger);
+		return Mono.empty();
 	}
 
 }
