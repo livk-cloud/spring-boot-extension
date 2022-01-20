@@ -2,7 +2,6 @@ package com.livk.redis.controller;
 
 import com.livk.common.redis.domain.LivkMessage;
 import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
-import com.livk.common.redis.supprot.LivkRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class MessageController {
                            @RequestParam("msg") String msg,
                            @RequestBody Map<String, Object> data) {
         return livkReactiveRedisTemplate
-                .convertAndSend(LivkMessage.CHANNEL, new LivkMessage().setId(id).setMsg(msg).setData(data))
+                .convertAndSend(LivkMessage.CHANNEL, LivkMessage.of().setId(id).setMsg(msg).setData(data))
                 .flatMap(n -> Mono.empty());
     }
 }

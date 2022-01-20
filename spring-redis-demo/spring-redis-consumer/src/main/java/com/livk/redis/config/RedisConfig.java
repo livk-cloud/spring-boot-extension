@@ -39,10 +39,10 @@ public class RedisConfig {
         var mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         serializer.setObjectMapper(mapper);
-        var receive = container.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
-                RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
-                RedisSerializationContext.SerializationPair.fromSerializer(serializer));
-        receive.map(ReactiveSubscription.Message::getMessage)
+        container.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
+                        RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer))
+                .map(ReactiveSubscription.Message::getMessage)
                 .subscribe(obj -> log.info("message:{}", obj));
         return container;
     }

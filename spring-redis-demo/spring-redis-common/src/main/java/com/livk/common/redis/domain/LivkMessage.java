@@ -30,4 +30,8 @@ public class LivkMessage {
     private String msg;
 
     private Object data;
+
+    public static LivkMessage of(){
+        return new LivkMessage();
+    }
 }
