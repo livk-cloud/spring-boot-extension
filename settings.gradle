@@ -32,4 +32,5 @@ include 'spring-excel-demo:excel-spring-boot-starter'
 findProject(':spring-excel-demo:excel-spring-boot-starter')?.name = 'excel-spring-boot-starter'
 include 'spring-excel-demo:spring-excel-app'
 findProject(':spring-excel-demo:spring-excel-app')?.name = 'spring-excel-app'
+include 'spring-mail-demo'
 

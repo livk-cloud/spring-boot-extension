@@ -14,7 +14,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 buildscript {
 
     ext {
-        set('springBootVersion', '3.0.0-SNAPSHOT')
+        set('springBootVersion', '3.0.0-M1')
         set('pagehelperVersion', '1.4.1')
         set('oauth2AuthorizationVersion', '0.2.1')
         set('mpVersion', "3.5.0")

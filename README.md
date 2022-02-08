@@ -8,7 +8,7 @@ JDK:17
 > JDK9提出的禁止反射java.*包下，JDK17正式实行<br>
 
 Gradle: 7.3.3
-> [Gradle踩坑记录](./ready.md)<br>
+> [Gradle踩坑记录](./gradle.md)<br>
 
 ### SpringBoot:3.0.0-SNAPSHOT
 
