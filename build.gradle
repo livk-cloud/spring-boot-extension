@@ -18,6 +18,7 @@ buildscript {
         set('pagehelperVersion', '1.4.1')
         set('oauth2AuthorizationVersion', '0.2.1')
         set('mpVersion', "3.5.0")
+        set('mybatisVersion','3.5.9')
         set('springMybatisVersion','2.2.1')
         set('guavaVersion','31.0.1-jre')
         set('easyExcelVersion', '3.0.5')
@@ -54,13 +55,14 @@ subprojects {
             mavenBom "org.springframework.boot:spring-boot-dependencies:3.0.0-SNAPSHOT"
         }
         dependencies {
-            dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
+            dependency "com.gihub.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
             dependency "com.baomidou:mybatis-plus-boot-starter:${mpVersion}"
             dependency "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}"
             dependency "com.google.guava:guava:${guavaVersion}"
             dependency "com.alibaba:easyexcel:${easyExcelVersion}"
             dependency "org.burningwave:core:${burningwaveVersion}"
             dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}"
+            dependency "org.mybatis:mybatis:${mybatisVersion}"
         }
     }
 
