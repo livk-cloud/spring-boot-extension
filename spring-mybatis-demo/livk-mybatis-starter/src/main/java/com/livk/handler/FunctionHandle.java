@@ -1,7 +1,5 @@
 package com.livk.handler;
 
-import java.util.function.Supplier;
-
 /**
  * <p>
  * FunctionHandle
@@ -10,5 +8,6 @@ import java.util.function.Supplier;
  * @author livk
  * @date 2022/1/29
  */
-public interface FunctionHandle<T> extends Supplier<T> {
+public interface FunctionHandle<T> {
+    T handler();
 }

@@ -52,10 +52,10 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:3.0.0-SNAPSHOT"
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
         }
         dependencies {
-            dependency "com.gihub.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
+            dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
             dependency "com.baomidou:mybatis-plus-boot-starter:${mpVersion}"
             dependency "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}"
             dependency "com.google.guava:guava:${guavaVersion}"

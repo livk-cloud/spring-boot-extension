@@ -27,7 +27,6 @@ import java.lang.reflect.Field;
                 args = {MappedStatement.class, Object.class}
         )
 })
-//@SuppressWarnings("all")
 public class SqlInterceptor implements Interceptor {
 
     @Override
@@ -69,6 +68,6 @@ public class SqlInterceptor implements Interceptor {
 
     private void set(Field field, Object parameter, FunctionHandle<?> value) throws IllegalAccessException {
         field.setAccessible(true);
-        field.set(parameter, value.get());
+        field.set(parameter, value.handler());
     }
 }
