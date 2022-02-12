@@ -23,6 +23,7 @@ buildscript {
         set('guavaVersion','31.0.1-jre')
         set('easyExcelVersion', '3.0.5')
         set('burningwaveVersion','12.41.2')
+        set('burningwaveVersion','12.41.2')
     }
 
     repositories {
@@ -63,6 +64,7 @@ subprojects {
             dependency "org.burningwave:core:${burningwaveVersion}"
             dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}"
             dependency "org.mybatis:mybatis:${mybatisVersion}"
+            dependency "org.burningwave:core:${burningwaveVersion}"
         }
     }
 

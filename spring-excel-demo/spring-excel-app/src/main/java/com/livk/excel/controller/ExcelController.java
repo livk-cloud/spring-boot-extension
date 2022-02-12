@@ -25,7 +25,7 @@ public class ExcelController {
 
     @GetMapping("excel")
     public ModelAndView download() {
-        List<ExportMember> list = new ArrayList<ExportMember>();
+        List<ExportMember> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             ExportMember exportMemberVo = new ExportMember();
             exportMemberVo.setName("Kent" + i);

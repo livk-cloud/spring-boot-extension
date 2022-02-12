@@ -18,6 +18,7 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter'
     compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter'
     api 'org.apache.commons:commons-lang3'
+    api 'org.burningwave:core'
 }
 
 test {
