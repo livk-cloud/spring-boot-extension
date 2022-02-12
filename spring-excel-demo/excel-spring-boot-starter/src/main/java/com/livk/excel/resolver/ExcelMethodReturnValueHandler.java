@@ -5,7 +5,6 @@ import com.livk.excel.annotation.ExcelReturn;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -43,7 +42,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
             String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString).orElse("application/vnd.ms-excel");
             response.setContentType(contentType);
             response.setCharacterEncoding("utf-8");
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + excelReturn.suffix());
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + excelReturn.suffix().getName());
             EasyExcel.write(outputStream, excelReturn.dataClass())
                     .sheet()
                     .doWrite((List<?>) returnValue);
