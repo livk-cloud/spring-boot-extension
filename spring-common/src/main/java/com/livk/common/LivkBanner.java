@@ -57,11 +57,11 @@ public class LivkBanner implements Banner {
     private record Format(int n, PrintStream out, char ch) implements Function<String, String>, Consumer<String> {
         @Override
         public String apply(String str) {
-            int length = str.length();
+            var length = str.length();
             if (length >= n) {
                 return str;
             }
-            int index = (n - length) >> 1;
+            var index = (n - length) >> 1;
             str = StringUtils.leftPad(str, length + index, ch);
             return StringUtils.rightPad(str, n, ch);
         }

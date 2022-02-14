@@ -61,7 +61,7 @@ public class BatchConfig {
 
     @Bean
     public ItemProcessor<User, User> processor() {
-        CsvItemProcessor processor = new CsvItemProcessor();
+        var processor = new CsvItemProcessor();
         processor.setValidator(csvBeanValidator());
         return processor;
     }

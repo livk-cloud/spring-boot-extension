@@ -1,8 +1,6 @@
 package com.livk.mail.controller;
 
 import freemarker.template.Configuration;
-import freemarker.template.Template;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -35,22 +35,23 @@ public class MailController {
     @PostMapping("send")
     public HttpEntity<Boolean> send() throws Exception {
         // 定义个数据根节点
-        Map<String, Object> root = new HashMap<>();
+        var root = new HashMap<String, Object>();
         // 往里面塞第一层节点
         root.put("UserName", "Livk-Cloud");
 
-        String[] temp = new String[]{"dog", "cat", "tiger"};
-        List<String> pets = new ArrayList<>();
+        var temp = new String[]{"dog", "cat", "tiger"};
+        var pets = new ArrayList<String>();
         Collections.addAll(pets, temp);
         // 往里面塞个List对象
         root.put("pets", pets);
 
-        Template template = configuration.getTemplate("hello.ftl");
-        String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
+        var template = configuration.getTemplate("hello.ftl");
+        var text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
 
-        MimeMessage mimeMessage = sender.createMimeMessage();
+
+        var mimeMessage = sender.createMimeMessage();
         mimeMessage.setHeader("Importance", "High");
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        var helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         helper.setFrom("1375632510@qq.com", "I am Livk");
         helper.setTo("1375632510@qq.com");
         helper.setSubject("This is subject 主题");

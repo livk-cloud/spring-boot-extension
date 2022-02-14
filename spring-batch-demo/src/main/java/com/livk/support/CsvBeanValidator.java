@@ -1,7 +1,6 @@
 package com.livk.support;
 
 import jakarta.validation.Validation;
-import jakarta.validation.ValidatorFactory;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
 
@@ -16,8 +15,7 @@ import org.springframework.batch.item.validator.Validator;
 public class CsvBeanValidator<T> implements Validator<T> {
 
     public CsvBeanValidator(){
-        ValidatorFactory validatorFactory =
-                Validation.buildDefaultValidatorFactory();
+        var validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.usingContext().getValidator();
     }
 

@@ -100,7 +100,7 @@ public class WebSocketServer {
      * @param message
      */
     public static void sendWholeAsyncMessage(String message) {
-        for (WebSocketServer item : websocketSet) {
+        for (var item : websocketSet) {
             try {
                 item.session.getAsyncRemote().sendText(message);
             } catch (Exception e) {
@@ -115,7 +115,7 @@ public class WebSocketServer {
      */
     public static void sendInfo(@PathParam("sid") String sid, String message) throws IOException {
         log.error("推送消息到窗口" + sid + "，推送内容:" + message);
-        for (WebSocketServer item : websocketSet) {
+        for (var item : websocketSet) {
             try {
                 //这里可以设定只推送给这个sid的，为null则全部推送
                 if (sid == null) {

@@ -22,10 +22,10 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
     @Override
     public boolean checkOrigin(String originHeaderValue) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        var servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Assert.notNull(servletRequestAttributes, "servletRequestAttributes not be null!");
-        HttpServletRequest request = servletRequestAttributes.getRequest();
-        String token = request.getHeader(AUTHORIZATION);
+        var request = servletRequestAttributes.getRequest();
+        var token = request.getHeader(AUTHORIZATION);
         if ("livk123".equals(token)) {
             return super.checkOrigin(originHeaderValue);
         } else {

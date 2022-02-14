@@ -1,6 +1,5 @@
 package com.livk.socket.config;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
@@ -15,11 +14,6 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  */
 @Configuration
 public class WebSocketConfig {
-
-    @PostConstruct
-    public void init() {
-        System.out.println(WebSocketConfig.class);
-    }
 
     @Bean
     public ServerEndpointExporter serverEndpointExporter() {
