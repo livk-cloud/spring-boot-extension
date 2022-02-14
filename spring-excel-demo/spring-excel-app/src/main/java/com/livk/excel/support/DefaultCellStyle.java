@@ -3,7 +3,6 @@ package com.livk.excel.support;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
@@ -18,8 +17,8 @@ public class DefaultCellStyle implements AbstractCellStyle {
     @Override
     public CellStyle setCellStyle(Workbook workbook) {
         // create style for header cells
-        CellStyle cellStyle = workbook.createCellStyle();
-        Font font = workbook.createFont();
+        var cellStyle = workbook.createCellStyle();
+        var font = workbook.createFont();
         font.setFontName("Arial");
         cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLUE.getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);

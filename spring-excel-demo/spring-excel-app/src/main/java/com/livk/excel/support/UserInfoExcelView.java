@@ -2,10 +2,8 @@ package com.livk.excel.support;
 
 import com.livk.excel.entity.ExcelInfo;
 import com.livk.excel.entity.ExportMember;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +22,7 @@ public class UserInfoExcelView extends ExcelView<ExportMember> {
 
     @Override
     protected void setRow(Sheet sheet, Map<String, Object> model) {
-        Row header = sheet.createRow(0);
+        var header = sheet.createRow(0);
         header.createCell(0).setCellValue("姓名");
         header.getCell(0).setCellStyle(super.cellStyle);
         header.createCell(1).setCellValue("性别");
@@ -36,10 +34,10 @@ public class UserInfoExcelView extends ExcelView<ExportMember> {
         header.createCell(4).setCellValue("银行卡号");
         header.getCell(4).setCellStyle(super.cellStyle);
 
-        List<ExportMember> list = excelInfo.getData();
-        int rowCount = 1;
+        var list = excelInfo.getData();
+        var rowCount = 1;
         for (ExportMember user : list) {
-            Row userRow = sheet.createRow(rowCount++);
+            var userRow = sheet.createRow(rowCount++);
             userRow.createCell(0).setCellValue(user.getName());
             userRow.createCell(1).setCellValue(user.getGender());
             userRow.createCell(2).setCellValue(user.getPhone());

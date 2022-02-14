@@ -10,13 +10,12 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,7 +35,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (!Arrays.asList(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
+        if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
             throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter is not Collection ");
         }
         var importExcel = parameter.getMethodAnnotation(ExcelImport.class);
@@ -52,7 +51,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
     private InputStream getInputStream(HttpServletRequest request, String fileName) {
         try {
             if (request instanceof MultipartRequest) {
-                MultipartFile file = ((MultipartRequest) request).getFile(fileName);
+                var file = ((MultipartRequest) request).getFile(fileName);
                 assert file != null;
                 return file.getInputStream();
             } else {
