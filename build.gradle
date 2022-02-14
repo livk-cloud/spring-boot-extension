@@ -23,6 +23,7 @@ buildscript {
         set('guavaVersion','31.0.1-jre')
         set('easyExcelVersion', '3.0.5')
         set('burningwaveVersion','12.45.1')
+        set('javaWebSocketVersion','1.5.2')
     }
 
     repositories {
@@ -64,11 +65,13 @@ subprojects {
             dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}"
             dependency "org.mybatis:mybatis:${mybatisVersion}"
             dependency "org.burningwave:core:${burningwaveVersion}"
+            dependency "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}"
         }
     }
 
     dependencies {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.projectlombok:lombok'
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
     }

@@ -36,4 +36,5 @@ include 'spring-mail-demo'
 include 'spring-mybatis-demo'
 include 'spring-mybatis-demo:livk-mybatis-starter'
 findProject(':spring-mybatis-demo:livk-mybatis-starter')?.name = 'livk-mybatis-starter'
+include 'spring-websocket-demo'
 
