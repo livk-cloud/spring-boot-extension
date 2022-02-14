@@ -1,8 +1,4 @@
 spring:
-  application:
-    name: ${app.version}
-  config:
-    import: 'file:./gradle.properties'
   servlet:
     multipart:
       max-file-size: 100MB

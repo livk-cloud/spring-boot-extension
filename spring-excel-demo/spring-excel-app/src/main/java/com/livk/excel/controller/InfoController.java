@@ -35,8 +35,8 @@ public class InfoController {
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
-    @ExcelReturn(dataClass = Info.class, fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, fileName = "file")
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(fileName = "file")
     @PostMapping("uploadAndDownload")
     public List<Info> uploadAndDownload(@ExcelData List<Info> dataExcels) {
         return dataExcels;

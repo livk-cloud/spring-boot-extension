@@ -1,5 +1,6 @@
 package com.livk.excel.listener;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 
@@ -34,5 +35,8 @@ public interface ExcelReadListener<T> extends ReadListener<T> {
      * @param targetClass 数据类型
      * @return this
      */
-    ExcelReadListener<T> parse(InputStream inputStream, Class<?> targetClass);
+    default ExcelReadListener<T> parse(InputStream inputStream, Class<?> targetClass){
+        EasyExcel.read(inputStream, targetClass, this).sheet().doRead();
+        return this;
+    }
 }

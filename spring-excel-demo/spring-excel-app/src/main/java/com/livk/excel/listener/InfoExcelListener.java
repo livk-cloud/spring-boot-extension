@@ -30,10 +30,4 @@ public class InfoExcelListener implements ExcelReadListener<Info> {
     public Collection<Info> getCollectionData() {
         return dataExcels;
     }
-
-    @Override
-    public ExcelReadListener<Info> parse(InputStream inputStream, Class<?> targetClass) {
-        EasyExcel.read(inputStream, targetClass, this).sheet().doRead();
-        return this;
-    }
 }

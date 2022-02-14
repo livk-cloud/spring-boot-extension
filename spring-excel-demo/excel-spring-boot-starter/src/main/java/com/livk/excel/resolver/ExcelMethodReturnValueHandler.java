@@ -5,6 +5,7 @@ import com.livk.excel.annotation.ExcelReturn;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -13,7 +14,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * <p>
@@ -36,16 +37,17 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
-        if (returnValue instanceof List) {
+        if (returnValue instanceof Collection) {
             ServletOutputStream outputStream = response.getOutputStream();
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(0).resolve();
             String fileName = excelReturn.fileName();
             String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString).orElse("application/vnd.ms-excel");
             response.setContentType(contentType);
             response.setCharacterEncoding("utf-8");
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + excelReturn.suffix().getName());
-            EasyExcel.write(outputStream, excelReturn.dataClass())
+            EasyExcel.write(outputStream, excelModelClass)
                     .sheet()
-                    .doWrite((List<?>) returnValue);
+                    .doWrite((Collection<?>) returnValue);
             outputStream.close();
         }
     }

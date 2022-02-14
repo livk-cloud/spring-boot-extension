@@ -1,5 +1,6 @@
 package com.livk.excel.annotation;
 
+import com.livk.excel.listener.DefaultExcelReadListener;
 import com.livk.excel.listener.ExcelReadListener;
 
 import java.lang.annotation.ElementType;
@@ -19,7 +20,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelImport {
 
-    Class<? extends ExcelReadListener<?>> parse();
+    Class<? extends ExcelReadListener<?>> parse() default DefaultExcelReadListener.class;
 
     String fileName();
 }
