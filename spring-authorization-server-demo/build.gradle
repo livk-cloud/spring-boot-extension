@@ -15,7 +15,7 @@ jar {
 
 dependencies {
     api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    api 'org.springframework.boot:spring-boot-starter-web'
     api "com.baomidou:mybatis-plus-boot-starter"
     api "mysql:mysql-connector-java"
     api "org.springframework.security:spring-security-oauth2-authorization-server"
