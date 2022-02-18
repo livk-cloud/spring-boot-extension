@@ -54,6 +54,6 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
-        return true;
+        return returnValue instanceof Collection && returnType.hasMethodAnnotation(ExcelReturn.class);
     }
 }

@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class LivkMessage {
+public class LivkMessage<T> {
 
     public static final String CHANNEL = "livk-topic";
 
@@ -29,9 +29,9 @@ public class LivkMessage {
      */
     private String msg;
 
-    private Object data;
+    private T data;
 
-    public static LivkMessage of(){
-        return new LivkMessage();
+    public static <T> LivkMessage<T> of(){
+        return new LivkMessage<>();
     }
 }
