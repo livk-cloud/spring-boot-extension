@@ -41,15 +41,15 @@ public record LivkRedisSerializationContext<T>(
     @NonNull
     @SuppressWarnings("unchecked")
     @Override
-    public SerializationPair<String> getHashKeySerializationPair() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
+    public <HK> SerializationPair<HK> getHashKeySerializationPair() {
+        return (SerializationPair<HK>) RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
     }
 
     @NonNull
     @SuppressWarnings("unchecked")
     @Override
-    public SerializationPair<T> getHashValueSerializationPair() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(serializer);
+    public <HV> SerializationPair<HV> getHashValueSerializationPair() {
+        return (SerializationPair<HV>) RedisSerializationContext.SerializationPair.fromSerializer(serializer);
     }
 
     @NonNull
