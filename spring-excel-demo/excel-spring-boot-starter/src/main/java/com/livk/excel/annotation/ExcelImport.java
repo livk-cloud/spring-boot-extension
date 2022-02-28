@@ -23,4 +23,6 @@ public @interface ExcelImport {
     Class<? extends ExcelReadListener<?>> parse() default DefaultExcelReadListener.class;
 
     String fileName();
+
+    String paramName();
 }

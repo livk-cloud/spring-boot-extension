@@ -1,6 +1,5 @@
 package com.livk.excel.resolver;
 
-import com.livk.excel.annotation.ExcelData;
 import com.livk.excel.annotation.ExcelImport;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
@@ -30,7 +29,8 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasMethodAnnotation(ExcelImport.class) && parameter.hasParameterAnnotation(ExcelData.class);
+        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+        return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
         if (Objects.nonNull(importExcel)) {
             var listener = BeanUtils.instantiateClass(importExcel.parse());
             var request = webRequest.getNativeRequest(HttpServletRequest.class);
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).getGeneric(0).resolve();
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             return listener.parse(getInputStream(request, importExcel.fileName()), excelModelClass).getCollectionData();
         }
         return null;

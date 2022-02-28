@@ -22,7 +22,7 @@ buildscript {
         set('springMybatisVersion','2.2.2')
         set('guavaVersion','31.0.1-jre')
         set('easyExcelVersion', '3.0.5')
-        set('burningwaveVersion','12.45.1')
+        set('burningwaveVersion','12.45.2')
         set('javaWebSocketVersion','1.5.2')
     }
 

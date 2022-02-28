@@ -25,6 +25,9 @@ import java.util.Collection;
  * @date 2022/2/11
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+
+    public static final String UTF8 = "UTF-8";
+
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
         return returnType.hasMethodAnnotation(ExcelReturn.class);
@@ -39,12 +42,12 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
             ServletOutputStream outputStream = response.getOutputStream();
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(0).resolve();
-            String fileName = excelReturn.fileName();
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
+            String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
             String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString).orElse("application/vnd.ms-excel");
             response.setContentType(contentType);
-            response.setCharacterEncoding("utf-8");
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName + excelReturn.suffix().getName());
+            response.setCharacterEncoding(UTF8);
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
             EasyExcel.write(outputStream, excelModelClass)
                     .sheet()
                     .doWrite((Collection<?>) returnValue);

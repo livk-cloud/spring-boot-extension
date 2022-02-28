@@ -1,6 +1,5 @@
 package com.livk.excel.controller;
 
-import com.livk.excel.annotation.ExcelData;
 import com.livk.excel.annotation.ExcelImport;
 import com.livk.excel.annotation.ExcelReturn;
 import com.livk.excel.entity.Info;
@@ -28,17 +27,17 @@ public class InfoController {
 
     private final InfoService infoService;
 
-    @ExcelImport(parse = InfoExcelListener.class, fileName = "file")
+    @ExcelImport(parse = InfoExcelListener.class, fileName = "file", paramName = "dataExcels")
     @PostMapping("upload")
-    public HttpEntity<Boolean> upload(@ExcelData List<Info> dataExcels) {
+    public HttpEntity<Boolean> upload( List<Info> dataExcels) {
         infoService.insertBatch(dataExcels);
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
     @ExcelReturn(fileName = "outFile")
-    @ExcelImport(fileName = "file")
+    @ExcelImport(fileName = "file", paramName = "dataExcels")
     @PostMapping("uploadAndDownload")
-    public List<Info> uploadAndDownload(@ExcelData List<Info> dataExcels) {
+    public List<Info> uploadAndDownload(List<Info> dataExcels) {
         return dataExcels;
     }
 }
