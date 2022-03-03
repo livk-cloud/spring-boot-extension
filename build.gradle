@@ -7,23 +7,26 @@
  */
 apply plugin: 'java'
 apply plugin: 'java-library'
+apply from: "$rootDir/depend.gradle"
+
 group = 'com.livk'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+def managementMavenBom = project.ext.mavenBom
+def managementDependency = project.ext.dependency
+def implementationDependency = project.ext.implementation
+def annotationProcessorDependency = project.ext.annotationProcessor
+def testImplementationDependency = project.ext.testImplementation
+def compileOnlyDependency = project.ext.compileOnly
+def testCompileOnlyDependency = project.ext.testCompileOnly
+def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
 buildscript {
 
     ext {
         set('springBootVersion', '3.0.0-M1')
-        set('pagehelperVersion', '1.4.1')
-        set('oauth2AuthorizationVersion', '0.2.2')
-        set('mpVersion', "3.5.1")
-        set('mybatisVersion','3.5.9')
-        set('springMybatisVersion','2.2.2')
-        set('guavaVersion','31.0.1-jre')
-        set('easyExcelVersion', '3.0.5')
-        set('burningwaveVersion','12.45.2')
-        set('javaWebSocketVersion','1.5.2')
     }
 
     repositories {
@@ -54,27 +57,20 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            managementMavenBom.each(v -> mavenBom v)
         }
         dependencies {
-            dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
-            dependency "com.baomidou:mybatis-plus-boot-starter:${mpVersion}"
-            dependency "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}"
-            dependency "com.google.guava:guava:${guavaVersion}"
-            dependency "com.alibaba:easyexcel:${easyExcelVersion}"
-            dependency "org.burningwave:core:${burningwaveVersion}"
-            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}"
-            dependency "org.mybatis:mybatis:${mybatisVersion}"
-            dependency "org.burningwave:core:${burningwaveVersion}"
-            dependency "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}"
+            managementDependency.each(v -> dependency v)
         }
     }
 
     dependencies {
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'org.projectlombok:lombok'
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+        implementationDependency.each { v -> implementation v }
+        annotationProcessorDependency.each { v -> annotationProcessor v }
+        testImplementationDependency.each { v -> testImplementation v }
+        compileOnlyDependency.each { v -> compileOnly v }
+        testCompileOnlyDependency.each { v -> testCompileOnly v }
+        testAnnotationProcessorDependency.each { v -> testAnnotationProcessor v }
     }
 }
 

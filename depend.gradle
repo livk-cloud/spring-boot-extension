@@ -1,0 +1,44 @@
+apply from: "$rootDir/config.gradle"
+ext {
+    implementation = [
+
+    ]
+
+    annotationProcessor = [
+            'org.projectlombok:lombok'
+    ]
+
+    testImplementation = [
+            'org.springframework.boot:spring-boot-starter-test',
+            'org.projectlombok:lombok'
+    ]
+
+    compileOnly = [
+            'org.projectlombok:lombok'
+    ]
+
+    testCompileOnly = [
+
+    ]
+
+    testAnnotationProcessor = [
+
+    ]
+
+    mavenBom = [
+            "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    ]
+
+    dependency = [
+            "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}",
+            "com.baomidou:mybatis-plus-boot-starter:${mpVersion}",
+            "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}",
+            "com.google.guava:guava:${guavaVersion}",
+            "com.alibaba:easyexcel:${easyExcelVersion}",
+            "org.burningwave:core:${burningwaveVersion}",
+            "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}",
+            "org.mybatis:mybatis:${mybatisVersion}",
+            "org.burningwave:core:${burningwaveVersion}",
+            "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}"
+    ]
+}

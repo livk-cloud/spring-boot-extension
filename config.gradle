@@ -1,0 +1,12 @@
+ext {
+    set('springBootVersion', '3.0.0-M1')
+    set('pagehelperVersion', '1.4.1')
+    set('oauth2AuthorizationVersion', '0.2.2')
+    set('mpVersion', "3.5.1")
+    set('mybatisVersion','3.5.9')
+    set('springMybatisVersion','2.2.2')
+    set('guavaVersion','31.0.1-jre')
+    set('easyExcelVersion', '3.0.5')
+    set('burningwaveVersion','12.45.2')
+    set('javaWebSocketVersion','1.5.2')
+}

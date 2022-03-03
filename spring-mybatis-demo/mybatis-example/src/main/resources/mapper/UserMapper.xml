@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.livk.example.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.livk.example.entity.User">
+        <!--@mbg.generated-->
+        <!--@Table `user`-->
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="version" property="version"/>
+        <result column="insert_time" property="insertTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, username, version, insert_time, update_time
+    </sql>
+
+    <update id="UpdateByPrimaryKey" parameterType="com.livk.example.entity.User">
+        UPDATE `user`
+        <set>
+            <if test="username != null and username != ''">
+                `username` = #{username},
+            </if>
+            <if test="version != null">
+                `version` = #{version},
+            </if>
+            <if test="insertTime != null">
+                `insert_time` = #{insertTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

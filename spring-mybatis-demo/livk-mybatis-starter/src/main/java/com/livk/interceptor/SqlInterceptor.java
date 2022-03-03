@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 
 /**
  * <p>
- * SqlInterceptor
+ * 目前不支持MP的更新操作
  * </p>
  *
  * @author livk
