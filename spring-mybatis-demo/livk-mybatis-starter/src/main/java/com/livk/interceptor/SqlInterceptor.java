@@ -11,6 +11,7 @@ import org.apache.ibatis.plugin.*;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,25 +35,20 @@ public class SqlInterceptor implements Interceptor {
         var mappedStatement = (MappedStatement) invocation.getArgs()[0];
         var sqlCommandType = mappedStatement.getSqlCommandType();
         var parameter = invocation.getArgs()[1];
-
-        var declaredFields = parameter.getClass().getDeclaredFields();
-        if (parameter.getClass().getSuperclass() != null) {
-            var superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
-            declaredFields = ArrayUtils.addAll(declaredFields, superFiled);
-        }
-        if (SqlCommandType.INSERT.equals(sqlCommandType) ||
-            SqlCommandType.UPDATE.equals(sqlCommandType)) {
+        Field[] declaredFields = getDeclaredFields(parameter);
+        if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
             for (var field : declaredFields) {
-                var sqlFunction = field.getAnnotation(SqlFunction.class);
-                if (sqlFunction != null) {
+                if (field.isAnnotationPresent(SqlFunction.class)) {
+                    var sqlFunction = field.getAnnotation(SqlFunction.class);
                     if (SqlCommandType.INSERT.equals(sqlCommandType)) {
-                        if (sqlFunction.fill().equals(SqlFill.INSERT) ||
-                            sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-                            this.set(field, parameter, BeanUtils.instantiateClass(sqlFunction.supplier()));
+                        if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE) ||
+                            sqlFunction.fill().equals(SqlFill.INSERT)) {
+                            this.setField(field, parameter, BeanUtils.instantiateClass(sqlFunction.supplier()));
                         }
                     } else {
-                        if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-                            this.set(field, parameter, BeanUtils.instantiateClass(sqlFunction.supplier()));
+                        if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE) ||
+                            sqlFunction.fill().equals(SqlFill.UPDATE)) {
+                            this.setField(field, parameter, BeanUtils.instantiateClass(sqlFunction.supplier()));
                         }
                     }
                 }
@@ -64,6 +60,36 @@ public class SqlInterceptor implements Interceptor {
     @Override
     public Object plugin(Object target) {
         return Plugin.wrap(target, this);
+    }
+
+    private Field[] getDeclaredFields(Object parameter) {
+        Field[] declaredFields;
+        if (parameter instanceof Map) {
+            //MP
+            @SuppressWarnings("unchecked")
+            Map<String, Object> paramsMap = (Map<String, Object>) parameter;
+            declaredFields = paramsMap.values()
+                    .stream()
+                    .map(p -> p.getClass().getDeclaredFields())
+                    .reduce(ArrayUtils::addAll).orElse(new Field[]{});
+        } else {
+            declaredFields = parameter.getClass().getDeclaredFields();
+        }
+        if (parameter.getClass().getSuperclass() != null) {
+            var superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
+            declaredFields = ArrayUtils.addAll(declaredFields, superFiled);
+        }
+        return declaredFields;
+    }
+
+    private void setField(Field field, Object parameter, FunctionHandle<?> value) throws IllegalAccessException {
+        if (parameter instanceof Map paramsMap) {
+            for (final Object params : paramsMap.values()) {
+                set(field, params, value);
+            }
+        } else {
+            set(field, parameter, value);
+        }
     }
 
     private void set(Field field, Object parameter, FunctionHandle<?> value) throws IllegalAccessException {
