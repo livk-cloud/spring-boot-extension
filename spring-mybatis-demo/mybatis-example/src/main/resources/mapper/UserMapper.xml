@@ -15,7 +15,7 @@
         id, username, version, insert_time, update_time
     </sql>
 
-    <update id="UpdateByPrimaryKey" parameterType="com.livk.example.entity.User">
+    <update id="updateById" parameterType="com.livk.example.entity.User">
         UPDATE `user`
         <set>
             <if test="username != null and username != ''">
@@ -33,4 +33,58 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List">
+        </include>
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.livk.example.entity.User">
+        INSERT INTO `user`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">
+                `username`,
+            </if>
+            <if test="version != null">
+                `version`,
+            </if>
+            <if test="insertTime != null">
+                `insert_time`,
+            </if>
+            <if test="updateTime != null">
+                `update_time`
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">
+                #{username},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="insertTime != null">
+                #{insertTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        DELETE
+        FROM user
+        WHERE id = #{id}
+    </delete>
+
+<!--    <select id="list" resultMap="BaseResultMap">-->
+<!--        SELECT-->
+<!--        <include refid="Base_Column_List">-->
+<!--        </include>-->
+<!--        FROM user-->
+<!--    </select>-->
 </mapper>

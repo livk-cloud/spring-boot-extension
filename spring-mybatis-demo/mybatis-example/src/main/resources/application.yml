@@ -6,6 +6,7 @@ spring:
     password: 123456
 server:
   port: 6677
-mybatis-plus:
+mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml

@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_17
+
+jar {
+    manifest.attributes provider: 'gradle'
+}
+
+dependencies {
+    api project(':spring-mybatis-demo:livk-mybatis-starter')
+    api project(':spring-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    api 'mysql:mysql-connector-java'
+    api 'com.github.pagehelper:pagehelper-spring-boot-starter'
+}
+
+test {
+    useJUnitPlatform()
+}
