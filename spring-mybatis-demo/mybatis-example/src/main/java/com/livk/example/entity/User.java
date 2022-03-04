@@ -7,12 +7,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.livk.annotation.SqlFunction;
 import com.livk.enums.SqlFill;
 import com.livk.example.handler.VersionFunction;
-import com.livk.handler.DateFaction;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -22,9 +21,10 @@ import java.util.Date;
  * @author livk
  * @date 2022/3/3
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName(value = "`user`")
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -34,14 +34,6 @@ public class User implements Serializable {
     @SqlFunction(fill = SqlFill.INSERT, supplier = VersionFunction.class)
     @TableField(value = "version")
     private Integer version;
-
-    @SqlFunction(fill = SqlFill.INSERT, supplier = DateFaction.class)
-    @TableField(value = "insert_time")
-    private Date insertTime;
-
-    @SqlFunction(fill = SqlFill.INSERT_UPDATE, supplier = DateFaction.class)
-    @TableField(value = "update_time")
-    private Date updateTime;
 
     @Serial
     private static final long serialVersionUID = 1L;

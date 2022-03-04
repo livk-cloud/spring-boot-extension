@@ -2,10 +2,7 @@ package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 /**
@@ -19,9 +16,8 @@ import java.util.stream.Stream;
 @UtilityClass
 public class StreamUtils {
     @SuppressWarnings("unchecked")
-    public <T> T[] concat(T[] start, T[] end, Class<T> clazz) {
-        return Stream.concat(Stream.of(start), Stream.of(end))
-                .toArray(value -> (T[]) Array.newInstance(clazz, value));
+    public <T> T[] concat(T[] start, T[] end) {
+        return (T[]) Stream.concat(Stream.of(start), Stream.of(end)).toArray();
     }
 
     public <T> Stream<T> concat(Collection<T> start, Collection<T> end) {
