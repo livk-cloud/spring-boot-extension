@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Hateoas {
 
 	public static void main(String[] args) {
-		LivkSpring.runServlet(Hateoas.class, args);
+		LivkSpring.run(Hateoas.class, args);
 	}
 
 }

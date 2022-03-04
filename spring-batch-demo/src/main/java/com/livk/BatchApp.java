@@ -14,6 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BatchApp {
     public static void main(String[] args) {
-        LivkSpring.runReactive(BatchApp.class, args);
+        LivkSpring.run(BatchApp.class, args);
     }
 }

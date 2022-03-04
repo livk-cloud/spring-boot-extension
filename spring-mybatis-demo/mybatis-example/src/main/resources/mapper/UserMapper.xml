@@ -81,10 +81,10 @@
         WHERE id = #{id}
     </delete>
 
-<!--    <select id="list" resultMap="BaseResultMap">-->
-<!--        SELECT-->
-<!--        <include refid="Base_Column_List">-->
-<!--        </include>-->
-<!--        FROM user-->
-<!--    </select>-->
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List">
+        </include>
+        FROM user
+    </select>
 </mapper>

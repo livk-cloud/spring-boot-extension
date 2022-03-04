@@ -25,7 +25,7 @@ public class App {
 
 	public static void main(String[] args) {
 		System.setProperty("server.port", "9099");
-		LivkSpring.runServlet(App.class, args);
+		LivkSpring.run(App.class, args);
 	}
 
 }
