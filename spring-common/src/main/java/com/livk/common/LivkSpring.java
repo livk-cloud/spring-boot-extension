@@ -16,14 +16,9 @@ public class LivkSpring {
     }
 
     public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
-        return LivkSpring.run(targetClass, args, WebApplicationType.SERVLET);
-    }
-
-    private static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args, WebApplicationType webApplicationType) {
         if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {
             throw new AnnotationConfigurationException("must use @SpringBootApplication in start class");
         }
-        Assert.notNull(webApplicationType, "run web app type not null!");
         return new SpringApplicationBuilder(targetClass)
                 .banner(LivkBanner.create())
                 .bannerMode(Banner.Mode.CONSOLE)
