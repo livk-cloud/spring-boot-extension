@@ -10,7 +10,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     api project(':spring-excel-demo:excel-common')
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 test {

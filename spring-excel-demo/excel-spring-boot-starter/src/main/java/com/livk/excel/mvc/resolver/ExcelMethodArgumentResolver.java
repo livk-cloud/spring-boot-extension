@@ -1,4 +1,4 @@
-package com.livk.excel.resolver;
+package com.livk.excel.mvc.resolver;
 
 import com.livk.excel.annotation.ExcelImport;
 import jakarta.servlet.http.HttpServletRequest;

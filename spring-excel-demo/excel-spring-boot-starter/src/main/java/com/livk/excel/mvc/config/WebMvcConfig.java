@@ -1,7 +1,7 @@
-package com.livk.excel.config;
+package com.livk.excel.mvc.config;
 
-import com.livk.excel.resolver.ExcelMethodArgumentResolver;
-import com.livk.excel.resolver.ExcelMethodReturnValueHandler;
+import com.livk.excel.mvc.resolver.ExcelMethodArgumentResolver;
+import com.livk.excel.mvc.resolver.ExcelMethodReturnValueHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author livk
  * @date 2022/1/17
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
