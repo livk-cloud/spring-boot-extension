@@ -33,7 +33,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public HttpEntity<?> save(@RequestBody Users users) throws Throwable {
+    public HttpEntity<?> save(@RequestBody Users users) {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
         return ResponseEntity.ok(userService.save(users));
     }

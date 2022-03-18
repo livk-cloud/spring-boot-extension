@@ -27,7 +27,6 @@ public class LuaStock {
 
     public String buy(Integer num) {
         RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("good.lua"), Long.class);
-//        Long result = livkRedisTemplate.execute(redisScript, new StringRedisSerializer(), new GenericToStringSerializer<>(Long.class), List.of("stock"), num.toString());
         Long result = livkRedisTemplate.execute(redisScript, List.of("stock"), num);
         Assert.notNull(result, "RedisScript Result is Null!");
         if (0 == result) {

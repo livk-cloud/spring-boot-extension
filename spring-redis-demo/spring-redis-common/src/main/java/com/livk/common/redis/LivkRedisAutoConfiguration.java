@@ -3,7 +3,6 @@ package com.livk.common.redis;
 import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
 import com.livk.common.redis.supprot.LivkRedisTemplate;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

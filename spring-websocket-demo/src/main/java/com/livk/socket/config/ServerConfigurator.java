@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
-    public final static String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "Authorization";
 
     @Override
     public boolean checkOrigin(String originHeaderValue) {

@@ -14,6 +14,7 @@ import java.io.Serializable;
  */
 @Data
 public class BaseEntity<T> implements Serializable {
+
     protected T createTime;
 
     protected T updateTime;

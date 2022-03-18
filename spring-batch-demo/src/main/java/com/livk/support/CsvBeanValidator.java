@@ -24,7 +24,7 @@ public class CsvBeanValidator<T> implements Validator<T> {
     @Override
     public void validate(T value) throws ValidationException {
         var constraintViolations = validator.validate(value);
-        if (constraintViolations.size() > 0) {
+        if (!constraintViolations.isEmpty()) {
             var message = new StringBuilder();
             constraintViolations.forEach(constraintViolation ->
                     message.append(constraintViolation.getMessage()).append("\n"));

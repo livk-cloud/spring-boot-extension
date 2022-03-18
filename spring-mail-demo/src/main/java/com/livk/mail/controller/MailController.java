@@ -1,6 +1,8 @@
 package com.livk.mail.controller;
 
 import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +36,7 @@ public class MailController {
     private final JavaMailSender sender;
 
     @PostMapping("send")
-    public HttpEntity<Boolean> send() throws Exception {
+    public HttpEntity<Boolean> send() throws IOException, TemplateException, MessagingException {
         // 定义个数据根节点
         var root = new HashMap<String, Object>();
         // 往里面塞第一层节点
