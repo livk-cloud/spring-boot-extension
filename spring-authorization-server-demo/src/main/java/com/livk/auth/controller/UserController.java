@@ -1,6 +1,5 @@
 package com.livk.auth.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.livk.auth.domain.Users;
 import com.livk.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -33,7 +30,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public HttpEntity<?> save(@RequestBody Users users) {
+    public HttpEntity<Boolean> save(@RequestBody Users users) {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
         return ResponseEntity.ok(userService.save(users));
     }
