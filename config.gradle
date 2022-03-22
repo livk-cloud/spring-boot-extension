@@ -1,5 +1,4 @@
 ext {
-    set('springBootVersion', '3.0.0-SNAPSHOT')
     set('pagehelperVersion', '1.4.1')
     set('oauth2AuthorizationVersion', '0.2.2')
     set('mpVersion', "3.5.1")
