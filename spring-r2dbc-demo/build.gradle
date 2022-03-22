@@ -17,7 +17,7 @@ dependencies {
     api project(':spring-common')
     api 'org.springframework.boot:spring-boot-starter-webflux'
     api 'org.springframework.boot:spring-boot-starter-data-r2dbc'
-    api 'io.r2dbc:r2dbc-postgresql'
+    api 'io.r2dbc:r2dbc-postgresql:0.8.12.RELEASE'
 }
 
 test {
