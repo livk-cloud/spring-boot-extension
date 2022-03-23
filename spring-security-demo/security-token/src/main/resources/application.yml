@@ -1,0 +1,4 @@
+
+permitAll.url: /hello,/login,/logout
+server:
+  port: 9876
