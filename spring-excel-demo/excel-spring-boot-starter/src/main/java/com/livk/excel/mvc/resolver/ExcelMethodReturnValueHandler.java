@@ -1,6 +1,8 @@
 package com.livk.excel.mvc.resolver;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.excel.annotation.ExcelReturn;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,6 +17,8 @@ import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandl
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -43,20 +47,38 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         if (returnValue instanceof Collection) {
             ServletOutputStream outputStream = response.getOutputStream();
             Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
-            String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
-            String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString).orElse("application/vnd.ms-excel");
-            response.setContentType(contentType);
-            response.setCharacterEncoding(UTF8);
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+            this.set(excelReturn, response);
             EasyExcel.write(outputStream, excelModelClass)
                     .sheet()
                     .doWrite((Collection<?>) returnValue);
             outputStream.close();
         }
+        if (returnValue instanceof Map) {
+            ServletOutputStream outputStream = response.getOutputStream();
+            @SuppressWarnings("unchecked")
+            Map<String, List<?>> result = (Map<String, List<?>>) returnValue;
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
+            this.set(excelReturn, response);
+            ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build();
+            for (Map.Entry<String, List<?>> entry : result.entrySet()) {
+                WriteSheet sheet = EasyExcel.writerSheet(entry.getKey()).build();
+                writer.write(entry.getValue(), sheet);
+            }
+            writer.finish();
+            outputStream.close();
+        }
+    }
+
+    private void set(ExcelReturn excelReturn, HttpServletResponse response) {
+        String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
+        String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString).orElse("application/vnd.ms-excel");
+        response.setContentType(contentType);
+        response.setCharacterEncoding(UTF8);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
     }
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
-        return returnValue instanceof Collection && returnType.hasMethodAnnotation(ExcelReturn.class);
+        return returnType.hasMethodAnnotation(ExcelReturn.class);
     }
 }
