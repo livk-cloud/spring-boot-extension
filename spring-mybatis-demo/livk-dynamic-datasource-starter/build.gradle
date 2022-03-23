@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'java-library'
+}
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_17
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
+dependencies {
+    api project(':spring-common')
+    api 'org.springframework:spring-jdbc'
+    api 'org.springframework.boot:spring-boot-starter-aop'
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+}
+
+test {
+    useJUnitPlatform()
+}

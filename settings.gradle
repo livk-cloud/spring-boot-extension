@@ -27,4 +27,6 @@ include 'spring-mybatis-demo:mybatis-example'
 include 'spring-redis-demo:spring-redis-lua'
 include 'spring-excel-demo:excel-reactor-boot-starter'
 include 'spring-excel-demo:excel-common'
+include 'spring-mybatis-demo:livk-dynamic-datasource-starter'
+findProject(':spring-mybatis-demo:livk-dynamic-datasource-starter')?.name = 'livk-dynamic-datasource-starter'
 
