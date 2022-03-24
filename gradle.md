@@ -86,7 +86,6 @@ runtimeOnly 'mysql:mysql-connector-java'
 > allprojects与subprojects(多个博客推荐共同使用) <br>
 > 每一个配置，例如插件、描述等之间空格一行
 > 依赖导入、需要引用set的变量使用双引号"cn.hutool:hutool-all:${hutoolVersion}",不需要的话，双引号单引号都可使用
-> 导入其他模块使用implementation project(':taas-common:taas-common-log')，除开implementation其他都是固定的，项目参考settings.gradle
 
 > 主要使用插件 <br>
 > java-library引用api <br>
@@ -148,8 +147,6 @@ allprojects {
     }
 }
 ```
-
-> 运行项目先把taas-common-pom添加到gradle，先运行taas-common-gradle、再导入依赖
 > gradle与idea的兼容性有点小问题，很多爆红的，但是可以运行
 
 > [idea使用gradle有bug](https://blog.csdn.net/Icannotdebug/article/details/83081745) <br>
