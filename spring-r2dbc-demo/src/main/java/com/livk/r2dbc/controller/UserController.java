@@ -4,9 +4,11 @@ import com.livk.r2dbc.domain.User;
 import com.livk.r2dbc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +31,12 @@ public class UserController {
     @GetMapping
     public HttpEntity<Flux<User>> users() {
         return ResponseEntity.ok(userService.list());
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> userList() {
+        return RouterFunctions.route()
+                .GET("/stream/user", request -> ServerResponse.ok().body(userService.list(), User.class)).build();
     }
 
     @GetMapping("/{id}")

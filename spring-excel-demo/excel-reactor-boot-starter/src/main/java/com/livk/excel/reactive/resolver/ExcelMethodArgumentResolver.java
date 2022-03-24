@@ -1,6 +1,7 @@
 package com.livk.excel.reactive.resolver;
 
 import com.livk.excel.annotation.ExcelImport;
+import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -29,12 +30,13 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+        var excelImport = parameter.getMethodAnnotation(ExcelImport.class);
         return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
     }
 
+    @NonNull
     @Override
-    public Mono<Object> resolveArgument(final MethodParameter parameter, final BindingContext bindingContext, final ServerWebExchange exchange) {
+    public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
         if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
             throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter is not Collection ");
         }
@@ -42,17 +44,17 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
         if (Objects.nonNull(importExcel)) {
             var listener = BeanUtils.instantiateClass(importExcel.parse());
             var request = exchange.getRequest();
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+            var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             return Mono.just(listener.parse(getInputStream(request, importExcel.fileName()), excelModelClass).getCollectionData());
         }
-        return null;
+        return Mono.just(BeanUtils.instantiateClass(parameter.getParameterType()));
     }
 
 
     private InputStream getInputStream(ServerHttpRequest request, String fileName) {
         try {
-            if (request instanceof MultipartRequest) {
-                var file = ((MultipartRequest) request).getFile(fileName);
+            if (request instanceof MultipartRequest multipartRequest) {
+                var file = multipartRequest.getFile(fileName);
                 assert file != null;
                 return file.getInputStream();
             } else {
