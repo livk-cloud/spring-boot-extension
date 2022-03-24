@@ -22,7 +22,7 @@ ext {
     ]
 
     testAnnotationProcessor = [
-
+            'org.projectlombok:lombok'
     ]
 
     mavenBom = [
