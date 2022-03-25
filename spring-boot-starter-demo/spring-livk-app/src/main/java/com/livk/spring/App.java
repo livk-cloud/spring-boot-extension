@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author livk
  */
 @EnableLivk
-@SpringBootApplication(scanBasePackages = "com.livk")
+@SpringBootApplication
 public class App {
 
 	public static void main(String[] args) {

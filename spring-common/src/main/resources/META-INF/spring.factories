@@ -1,5 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.livk.common.SpringContextHolder,\
-    com.livk.controller.SystemController
 org.springframework.context.ApplicationContextInitializer=\
   com.livk.common.CglibApplicationContextInitializer
