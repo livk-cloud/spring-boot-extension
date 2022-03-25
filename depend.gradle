@@ -38,6 +38,7 @@ ext {
             "org.burningwave:core:${burningwaveVersion}",
             "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}",
             "org.mybatis:mybatis:${mybatisVersion}",
-            "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}"
+            "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}",
+            "com.github.jsqlparser:jsqlparser:${jsqlparserVersion}"
     ]
 }

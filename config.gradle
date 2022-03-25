@@ -10,4 +10,5 @@ ext {
     set('easyExcelVersion', '3.0.5')
     set('burningwaveVersion', '12.47.0')
     set('javaWebSocketVersion', '1.5.2')
+    set('jsqlparserVersion', '4.3')
 }
