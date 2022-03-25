@@ -8,6 +8,8 @@ import com.livk.starter01.LivkDemo;
 import com.livk.starter01.LivkTestDemo;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
@@ -23,28 +25,33 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 public class App {
 
-	public static void main(String[] args) {
-		System.setProperty("server.port", "9099");
-		LivkSpring.run(App.class, args);
-	}
+    public static void main(String[] args) {
+        System.setProperty("server.port", "9099");
+         LivkSpring.run(App.class, args);
+    }
 
 }
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 class LivkTest {
 
-	private final LivkDemo livkDemo;
+    @Value("${username.spring.github}")
+    public String username;
 
-	private final LivkTestDemo livkTestDemo;
+    private final LivkDemo livkDemo;
 
-	private final AnnoTest annoTest;
+    private final LivkTestDemo livkTestDemo;
 
-	@PostConstruct
-	public void show() {
-		livkDemo.show();
-		livkTestDemo.show();
-		annoTest.show();
-	}
+    private final AnnoTest annoTest;
+
+    @PostConstruct
+    public void show() {
+        livkDemo.show();
+        livkTestDemo.show();
+        annoTest.show();
+        log.info(username);
+    }
 
 }

@@ -2,7 +2,7 @@ ext {
 //    set('springBootVersion', '3.0.0-SNAPSHOT')
     set('springBootVersion', '3.0.0-M2')
     set('pagehelperVersion', '1.4.1')
-    set('oauth2AuthorizationVersion', '0.2.2')
+    set('oauth2AuthorizationVersion', '0.2.3')
     set('mpVersion', "3.5.1")
     set('mybatisVersion', '3.5.9')
     set('springMybatisVersion', '2.2.2')

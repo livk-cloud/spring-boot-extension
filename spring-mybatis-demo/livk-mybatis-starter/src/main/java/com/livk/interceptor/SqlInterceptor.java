@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
                 args = {MappedStatement.class, Object.class}
         )
 })
-public class SqlInterceptor implements Interceptor {
+public class SqlInterceptor implements AbstractInterceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -50,11 +50,6 @@ public class SqlInterceptor implements Interceptor {
             }
         }
         return invocation.proceed();
-    }
-
-    @Override
-    public Object plugin(Object target) {
-        return Plugin.wrap(target, this);
     }
 
     private Field[] getFields(Object parameter) {

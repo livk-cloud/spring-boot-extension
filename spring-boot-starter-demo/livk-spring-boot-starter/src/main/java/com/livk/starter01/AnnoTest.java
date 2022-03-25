@@ -1,5 +1,7 @@
 package com.livk.starter01;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * AnnoTest
@@ -8,11 +10,12 @@ package com.livk.starter01;
  * @author livk
  * @date 2021/10/18
  */
+@Slf4j
 @LivkComponent
 public class AnnoTest {
 
 	public void show() {
-		System.out.println(1);
+		log.info("1");
 	}
 
 }
