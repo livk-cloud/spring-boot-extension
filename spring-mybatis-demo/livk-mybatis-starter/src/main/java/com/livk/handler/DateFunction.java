@@ -10,7 +10,7 @@ import java.util.Date;
  * @author livk
  * @date 2022/2/9
  */
-public class DateFaction implements FunctionHandle<Date> {
+public class DateFunction implements FunctionHandle<Date> {
 
     @Override
     public Date handler() {

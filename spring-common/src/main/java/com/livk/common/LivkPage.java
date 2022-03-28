@@ -47,7 +47,6 @@ public class LivkPage<T> implements Serializable {
         this.pageNum = page.getPageNum();
         this.pageSize = page.getPageSize();
         this.total = page.getTotal();
-
     }
 
 
