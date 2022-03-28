@@ -42,7 +42,7 @@ public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public static String of(FieldFunction<User> function) {
+    public static <T> String of(FieldFunction<T> function) {
         return function.getFieldName();
     }
 }
