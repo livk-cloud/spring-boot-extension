@@ -19,7 +19,7 @@ def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 buildscript {
 
     ext {
-        set('springBootVersion', '3.0.0-M2')
+        set('springBootVersion', '3.0.0-SNAPSHOT')
     }
 
     repositories {
