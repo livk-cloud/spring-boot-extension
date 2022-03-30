@@ -32,4 +32,6 @@ findProject(':spring-mybatis-demo:livk-dynamic-datasource-starter')?.name = 'liv
 include 'spring-security-demo'
 include 'spring-security-demo:security-token'
 findProject(':spring-security-demo:security-token')?.name = 'security-token'
+include 'spring-redis-demo:spring-redis-caffeine'
+findProject(':spring-redis-demo:spring-redis-caffeine')?.name = 'spring-redis-caffeine'
 
