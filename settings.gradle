@@ -31,4 +31,4 @@ include 'spring-mybatis-demo:livk-dynamic-datasource-starter'
 include 'spring-security-demo'
 include 'spring-security-demo:security-token'
 include 'spring-redis-demo:spring-redis-caffeine'
-
+include 'spring-redis-demo:spring-redisson'

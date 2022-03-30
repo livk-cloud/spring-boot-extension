@@ -14,9 +14,9 @@ jar {
 }
 
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-webflux'
-    api 'org.springframework.boot:spring-boot-starter-quartz'
+    api project(':spring-redis-demo:spring-redis-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.redisson:redisson-spring-boot-starter'
 }
 
 test {

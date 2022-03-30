@@ -1,0 +1,4 @@
+spring:
+  redis:
+    host: livk.com
+    password: 123456
