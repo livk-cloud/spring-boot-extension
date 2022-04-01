@@ -1,8 +1,8 @@
 package com.livk.common.redis.supprot;
 
+import com.livk.common.redis.util.SerializerUtils;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
  */
 public class LivkReactiveRedisTemplate extends ReactiveRedisTemplate<String, Object> {
     public LivkReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory) {
-        this(connectionFactory, new LivkRedisSerializationContext<>(new Jackson2JsonRedisSerializer<>(Object.class)));
+        this(connectionFactory, new LivkRedisSerializationContext<>(SerializerUtils.getSerializer(Object.class)));
     }
 
     public LivkReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory, RedisSerializationContext<String, Object> serializationContext) {

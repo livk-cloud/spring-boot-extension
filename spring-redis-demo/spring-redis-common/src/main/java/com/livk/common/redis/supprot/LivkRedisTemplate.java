@@ -1,12 +1,9 @@
 package com.livk.common.redis.supprot;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.livk.common.redis.util.SerializerUtils;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
  * <p>
@@ -19,13 +16,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class LivkRedisTemplate extends RedisTemplate<String, Object> {
 
     public LivkRedisTemplate() {
-        var serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        var mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.setObjectMapper(mapper);
-        var stringRedisSerializer = new StringRedisSerializer();
-        this.setKeySerializer(stringRedisSerializer);
-        this.setHashKeySerializer(stringRedisSerializer);
+        var serializer = SerializerUtils.getSerializer(Object.class);
+        this.setKeySerializer(RedisSerializer.string());
+        this.setHashKeySerializer(RedisSerializer.string());
         this.setValueSerializer(serializer);
         this.setHashValueSerializer(serializer);
     }

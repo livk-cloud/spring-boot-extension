@@ -1,9 +1,7 @@
 package com.livk.redis.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.common.redis.domain.LivkMessage;
+import com.livk.common.redis.util.SerializerUtils;
 import com.livk.redis.listener.KeyExpiredListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -16,7 +14,6 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.ReactiveRedisMessageListenerContainer;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -38,10 +35,7 @@ public class RedisConfig {
     @Bean
     public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(ReactiveRedisConnectionFactory connectionFactory) {
         var container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        var serializer = new Jackson2JsonRedisSerializer<>(LivkMessage.class);
-        var mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.setObjectMapper(mapper);
+        var serializer = SerializerUtils.getSerializer(LivkMessage.class);
         container.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
                         RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
                         RedisSerializationContext.SerializationPair.fromSerializer(serializer))

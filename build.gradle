@@ -17,10 +17,7 @@ def testCompileOnlyDependency = project.ext.testCompileOnly
 def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
 buildscript {
-
-    ext {
-        set('springBootVersion', '3.0.0-SNAPSHOT')
-    }
+    apply from: "$rootDir/config.gradle"
 
     repositories {
         mavenLocal()
