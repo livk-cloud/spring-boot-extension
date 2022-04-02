@@ -1,17 +1,7 @@
-plugins {
-    id 'java'
-    id 'idea'
-    id 'java-library'
-}
+apply plugin: 'java-library'
 
 group = 'com.livk'
 version = '0.0.1-SNAPSHOT'
-
-idea {
-    module {
-        inheritOutputDirs = true
-    }
-}
 
 dependencies {
     api project(':spring-common')
