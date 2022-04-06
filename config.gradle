@@ -11,4 +11,5 @@ ext {
     set('javaWebSocketVersion', '1.5.2')
     set('jsqlparserVersion', '4.3')
     set('redissonVersion','3.17.0')
+    set('zookeeperVersion','3.8.0')
 }

@@ -40,6 +40,7 @@ ext {
             "org.mybatis:mybatis:${mybatisVersion}",
             "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}",
             "com.github.jsqlparser:jsqlparser:${jsqlparserVersion}",
-            "org.redisson:redisson-spring-boot-starter:${redissonVersion}"
+            "org.redisson:redisson-spring-boot-starter:${redissonVersion}",
+            "org.apache.zookeeper:zookeeper:${zookeeperVersion}"
     ]
 }
