@@ -4,7 +4,6 @@ import com.livk.common.redis.domain.LivkMessage;
 import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -37,11 +36,10 @@ public class MessageController {
 
     @PostMapping("/redis/stream")
     public Mono<Void> stream() {
-        ObjectRecord<String, String> record = StreamRecords.newRecord()
-                .ofObject("livk-object")
-                .withStreamKey("livk-streamKey");
         return livkReactiveRedisTemplate.opsForStream()
-                .add(record)
+                .add(StreamRecords.newRecord()
+                        .ofObject("livk-object")
+                        .withStreamKey("livk-streamKey"))
                 .flatMap(n -> Mono.empty());
     }
 }
