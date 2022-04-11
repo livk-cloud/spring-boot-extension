@@ -5,10 +5,6 @@ group = 'com.livk'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
-jar {
-    manifest.attributes provider: 'gradle'
-}
-
 dependencies {
     api project(':spring-common')
     api 'org.springframework.boot:spring-boot-starter-web'

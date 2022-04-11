@@ -12,4 +12,5 @@ ext {
     set('jsqlparserVersion', '4.3')
     set('redissonVersion','3.17.0')
     set('zookeeperVersion','3.8.0')
+    set('jjwtApiVersion','0.11.2')
 }

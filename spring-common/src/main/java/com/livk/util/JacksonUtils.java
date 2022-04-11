@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,19 @@ public class JacksonUtils {
         }
         return BeanUtils.instantiateClass(clazz);
     }
+
+    public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
+        if (inputStream == null || clazz == null) {
+            return null;
+        }
+        try {
+            return MAPPER.readValue(inputStream, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return BeanUtils.instantiateClass(clazz);
+    }
+
 
     /**
      * 序列化

@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    api project(':spring-common')
+    api 'io.jsonwebtoken:jjwt-api'
+    compileOnly 'org.springframework:spring-core'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+test {
+    useJUnitPlatform()
+}

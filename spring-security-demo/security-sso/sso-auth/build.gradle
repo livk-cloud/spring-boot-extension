@@ -1,0 +1,19 @@
+apply plugin: 'java-library'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.livk'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    api project(':spring-security-demo:security-sso:sso-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.springframework.boot:spring-boot-starter-security'
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    api 'mysql:mysql-connector-java'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}
+
+test {
+    useJUnitPlatform()
+}

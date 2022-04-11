@@ -6,7 +6,7 @@ import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import java.util.TreeMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ import java.util.TreeMap;
 @UtilityClass
 public class SpelUtils {
 
-    public String parse(String spel, TreeMap<String, Object> map) {
+    public String parse(String spel, Map<String, ?> map) {
         spel = String.format("#{%s}", spel);
         SpelExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();

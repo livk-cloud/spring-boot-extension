@@ -41,6 +41,9 @@ ext {
             "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}",
             "com.github.jsqlparser:jsqlparser:${jsqlparserVersion}",
             "org.redisson:redisson-spring-boot-starter:${redissonVersion}",
-            "org.apache.zookeeper:zookeeper:${zookeeperVersion}"
+            "org.apache.zookeeper:zookeeper:${zookeeperVersion}",
+            "io.jsonwebtoken:jjwt-api:${jjwtApiVersion}",
+            "io.jsonwebtoken:jjwt-impl:${jjwtApiVersion}",
+            "io.jsonwebtoken:jjwt-jackson:${jjwtApiVersion}",
     ]
 }
