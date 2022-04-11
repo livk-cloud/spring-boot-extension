@@ -85,7 +85,7 @@ runtimeOnly 'mysql:mysql-connector-java'
 > subprojects 子项目插件统一导入、需要排除的依赖、需要配置的依赖 <br>
 > allprojects与subprojects(多个博客推荐共同使用) <br>
 > 每一个配置，例如插件、描述等之间空格一行
-> 依赖导入、需要引用set的变量使用双引号"cn.hutool:hutool-all:${hutoolVersion}",不需要的话，双引号单引号都可使用
+> 依赖导入、需要引用set的变量使用双引号"org.xx:xxx:${xxxxVersion}",不需要的话，双引号单引号都可使用
 
 > 主要使用插件 <br>
 > java-library引用api <br>
@@ -93,31 +93,13 @@ runtimeOnly 'mysql:mysql-connector-java'
 > org.springframework.boot 标注这是一个springboot项目 <br>
 > maven-publish上传jar包
 
-> gradle配置文件(init.gradle 放在gradle的文件夹 这个地方也放一份最好C:\Users\13756\.gradle)
-
 ```groovy
 allprojects {
     repositories {
         mavenLocal()
-        //指向本地mvn仓库就行了
-        maven { url 'D:\\apache-maven-3.8.4\\maven-repo' }
         maven { url 'https://repo.spring.io/libs-snapshot/' }
         maven {
             url 'https://maven.aliyun.com/repository/public'
-        }
-        maven {
-            credentials {
-                username '611369b2cd146a5e9cab2d4b'
-                password 'eNOdk2aqNibu'
-            }
-            url 'https://packages.aliyun.com/maven/repository/2094601-release-5y5nnY/'
-        }
-        maven {
-            credentials {
-                username '611369b2cd146a5e9cab2d4b'
-                password 'eNOdk2aqNibu'
-            }
-            url 'https://packages.aliyun.com/maven/repository/2094601-snapshot-Umu8zh/'
         }
         maven {
             url "https://maven.aliyun.com/repository/public"
@@ -143,7 +125,6 @@ allprojects {
         maven {
             url "https://maven.aliyun.com/repository/apache-snapshots"
         }
-        mavenCentral()
     }
 }
 ```
