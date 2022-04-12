@@ -1,9 +1,5 @@
 apply plugin: 'java-library'
 
-group = 'com.livk'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     api 'org.springframework.boot:spring-boot-starter'
     api 'com.fasterxml.jackson.core:jackson-databind'

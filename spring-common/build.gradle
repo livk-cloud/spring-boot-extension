@@ -1,10 +1,5 @@
 apply plugin: 'java-library'
 
-group = 'com.livk'
-version = '0.0.1-SNAPSHOT'
-
-
-
 dependencies {
     compileOnly 'org.springframework:spring-webmvc'
     compileOnly 'org.springframework.boot:spring-boot-starter'

@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
  * <p>
@@ -46,8 +48,8 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilter(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties))
-                .addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties))
+                .addFilterBefore(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new TokenVerifyFilter(properties), BasicAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

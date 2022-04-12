@@ -1,10 +1,6 @@
 apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
 
-group = 'com.livk'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     api project(':spring-excel-demo:excel-spring-boot-starter')
     api 'com.google.guava:guava'

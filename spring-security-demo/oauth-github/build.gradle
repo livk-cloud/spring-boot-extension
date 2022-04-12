@@ -2,9 +2,10 @@ apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    api project(':spring-redis-demo:spring-redis-common')
+    api project(':spring-common')
     api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.redisson:redisson-spring-boot-starter'
+    api 'org.springframework.boot:spring-boot-starter-security'
+    api 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 test {

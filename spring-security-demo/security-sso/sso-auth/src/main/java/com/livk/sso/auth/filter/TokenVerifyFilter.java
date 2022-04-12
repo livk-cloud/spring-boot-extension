@@ -9,10 +9,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,15 +26,10 @@ import java.util.Map;
  * @author livk
  * @date 2022/4/11
  */
-public class TokenVerifyFilter extends BasicAuthenticationFilter {
+@RequiredArgsConstructor
+public class TokenVerifyFilter extends OncePerRequestFilter {
 
     private final RsaKeyProperties properties;
-
-    public TokenVerifyFilter(AuthenticationManager authenticationManager,
-                             RsaKeyProperties properties) {
-        super(authenticationManager);
-        this.properties = properties;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {

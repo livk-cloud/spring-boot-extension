@@ -1,9 +1,4 @@
-plugins {
-    id 'java-library'
-}
-
-group 'com.livk'
-version '0.0.1-SNAPSHOT'
+apply plugin: 'java-library'
 
 dependencies {
     api project(':spring-common')

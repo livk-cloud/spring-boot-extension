@@ -9,13 +9,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,11 +30,18 @@ import java.util.Map;
  * @author livk
  * @date 2022/4/11
  */
-@RequiredArgsConstructor
-public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
+
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
     private final AuthenticationManager authenticationManager;
     private final RsaKeyProperties properties;
+
+    public TokenLoginFilter(AuthenticationManager authenticationManager, RsaKeyProperties properties) {
+        super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
+        this.authenticationManager = authenticationManager;
+        this.properties = properties;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
