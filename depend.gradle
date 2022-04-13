@@ -5,7 +5,8 @@ ext {
     ]
 
     annotationProcessor = [
-            'org.projectlombok:lombok'
+            'org.projectlombok:lombok',
+            'org.springframework.boot:spring-boot-configuration-processor'
     ]
 
     testImplementation = [
