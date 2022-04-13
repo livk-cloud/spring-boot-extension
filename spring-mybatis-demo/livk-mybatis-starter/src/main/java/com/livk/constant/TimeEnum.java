@@ -1,11 +1,11 @@
 package com.livk.constant;
 
-import com.livk.handler.*;
+import com.livk.handler.FunctionHandle;
+import com.livk.handler.NullFunction;
 import com.livk.handler.time.DateFunction;
 import com.livk.handler.time.LocalDateFunction;
 import com.livk.handler.time.LocalDateTimeFunction;
 import com.livk.handler.time.TimestampFunction;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -16,9 +16,8 @@ import lombok.RequiredArgsConstructor;
  * @author livk
  * @date 2022/3/28
  */
-@Getter
 @RequiredArgsConstructor
-public enum TimeEnum {
+public enum TimeEnum implements FunctionHandle<Object> {
     DEFAULT(new NullFunction()),
     DATE(new DateFunction()),
     LOCAL_DATE(new LocalDateFunction()),
@@ -27,7 +26,17 @@ public enum TimeEnum {
 
     private final FunctionHandle<?> function;
 
+    @Override
     public Object handler() {
         return function.handler();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T handler(Class<T> targetClass) {
+        Object value = handler();
+        if (targetClass.isInstance(value)) {
+            return (T) value;
+        }
+        throw new ClassCastException("this value can not to be class " + targetClass + ",this class is " + value.getClass());
     }
 }

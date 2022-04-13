@@ -1,9 +1,7 @@
 package com.livk.interceptor;
 
 import com.livk.annotation.SqlFunction;
-import com.livk.constant.TimeEnum;
 import com.livk.enums.SqlFill;
-import com.livk.handler.NullFunction;
 import com.livk.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
@@ -61,11 +59,7 @@ public class SqlInterceptor implements Interceptor {
     }
 
     private Object getValue(SqlFunction sqlFunction) {
-        if (!sqlFunction.time().equals(TimeEnum.DEFAULT)) {
-            return sqlFunction.time().handler();
-        } else if (!sqlFunction.supplier().equals(NullFunction.class)) {
-            return BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
-        }
-        return null;
+        Object value = sqlFunction.time().handler();
+        return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
     }
 }
