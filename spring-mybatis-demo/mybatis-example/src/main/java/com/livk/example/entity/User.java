@@ -3,7 +3,7 @@ package com.livk.example.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.livk.annotation.SqlFunction;
-import com.livk.constant.TimeEnum;
+import com.livk.constant.FunctionEnum;
 import com.livk.enums.SqlFill;
 import com.livk.example.handler.VersionFunction;
 import com.livk.function.FieldFunction;
@@ -32,11 +32,11 @@ public class User implements Serializable {
     private Integer version;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT, time = TimeEnum.DATE)
+    @SqlFunction(fill = SqlFill.INSERT, time = FunctionEnum.DATE)
     private Date insertTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = TimeEnum.DATE)
+    @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
     private Date updateTime;
 
     @Serial

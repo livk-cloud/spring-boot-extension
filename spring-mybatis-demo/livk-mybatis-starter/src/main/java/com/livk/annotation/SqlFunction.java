@@ -1,6 +1,6 @@
 package com.livk.annotation;
 
-import com.livk.constant.TimeEnum;
+import com.livk.constant.FunctionEnum;
 import com.livk.enums.SqlFill;
 import com.livk.handler.FunctionHandle;
 import com.livk.handler.NullFunction;
@@ -36,5 +36,5 @@ public @interface SqlFunction {
     /**
      * 优先级高于 {@link SqlFunction#supplier()}
      */
-    TimeEnum time() default TimeEnum.DEFAULT;
+    FunctionEnum time() default FunctionEnum.DEFAULT;
 }

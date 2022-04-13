@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * @date 2022/3/28
  */
 @RequiredArgsConstructor
-public enum TimeEnum implements FunctionHandle<Object> {
+public enum FunctionEnum implements FunctionHandle<Object> {
     DEFAULT(new NullFunction()),
     DATE(new DateFunction()),
     LOCAL_DATE(new LocalDateFunction()),
@@ -37,6 +37,6 @@ public enum TimeEnum implements FunctionHandle<Object> {
         if (targetClass.isInstance(value)) {
             return (T) value;
         }
-        throw new ClassCastException("this value can not to be class " + targetClass + ",this class is " + value.getClass());
+        throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
     }
 }
