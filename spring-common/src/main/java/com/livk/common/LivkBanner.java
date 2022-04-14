@@ -1,5 +1,6 @@
 package com.livk.common;
 
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.Banner;
@@ -20,10 +21,8 @@ import java.util.function.Function;
  * @author livk
  * @date 2021/8/30
  */
+@NoArgsConstructor(staticName = "create")
 public class LivkBanner implements Banner {
-
-    private LivkBanner() {
-    }
 
     private static final String[] banner = {"""
  ██       ██          ██         ██████   ██                       ██
@@ -43,15 +42,11 @@ public class LivkBanner implements Banner {
             out.println(line);
         }
         var format = Format.create(out, 70);
-        format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion()+" ");
-        format.accept(" Current time: " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now())+" ");
-        format.accept(" Current JDK Version: " + System.getProperty("java.version")+" ");
-        format.accept(" Operating System: " + System.getProperty("os.name")+" ");
+        format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
+        format.accept(" Current time: " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()) + " ");
+        format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
+        format.accept(" Operating System: " + System.getProperty("os.name") + " ");
         out.flush();
-    }
-
-    public static LivkBanner create() {
-        return new LivkBanner();
     }
 
     private record Format(int n, PrintStream out, char ch) implements Function<String, String>, Consumer<String> {

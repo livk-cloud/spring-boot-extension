@@ -1,5 +1,3 @@
-apply plugin: 'java-library'
-
 dependencies {
     api project(':spring-common')
     api 'io.jsonwebtoken:jjwt-api'

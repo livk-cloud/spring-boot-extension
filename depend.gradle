@@ -1,4 +1,3 @@
-apply from: "$rootDir/config.gradle"
 ext {
     implementation = [
 

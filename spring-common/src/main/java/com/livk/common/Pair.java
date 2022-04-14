@@ -1,10 +1,5 @@
 package com.livk.common;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -16,17 +11,10 @@ import java.io.Serializable;
  * @author livk
  * @date 2022/3/30
  */
-@Getter
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-public class Pair<K, V> implements Serializable, Cloneable {
+public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
 
     @Serial
     private static final long serialVersionUID = -2303547536834226401L;
-
-    private final K key;
-    private final V value;
 
     public static <K, V> Pair<K, V> of(K key, V value) {
         return new Pair<>(key, value);

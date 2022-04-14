@@ -1,4 +1,15 @@
-apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+    publications {
+        library(MavenPublication) {
+            artifact jar
+        }
+    }
+}
 
 dependencies {
     compileOnly 'org.springframework:spring-webmvc'

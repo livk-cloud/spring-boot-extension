@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'java-library'
 apply from: "$rootDir/depend.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -15,8 +14,6 @@ def testCompileOnlyDependency = project.ext.testCompileOnly
 def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
 buildscript {
-    apply from: "$rootDir/config.gradle"
-
     repositories {
         mavenLocal()
         maven { url 'https://repo.spring.io/milestone' }
@@ -26,13 +23,12 @@ buildscript {
         maven { url 'https://repo.spring.io/release' }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
     }
 
 }
 
 allprojects {
-
     repositories {
         mavenLocal()
         maven { url 'https://repo.spring.io/milestone' }
@@ -50,14 +46,15 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
 
     dependencyManagement {
         imports {
-            managementMavenBom.each(v -> mavenBom v)
+            managementMavenBom.each { v -> mavenBom v }
         }
         dependencies {
-            managementDependency.each(v -> dependency v)
+            managementDependency.each { v -> dependency v }
         }
     }
 
