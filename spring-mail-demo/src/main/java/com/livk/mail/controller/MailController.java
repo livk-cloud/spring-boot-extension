@@ -36,7 +36,7 @@ public class MailController {
     private final JavaMailSender sender;
 
     @PostMapping("send")
-    public HttpEntity<Boolean> send() throws IOException, TemplateException, MessagingException {
+    public HttpEntity<Void> send() throws IOException, TemplateException, MessagingException {
         // 定义个数据根节点
         var root = new HashMap<String, Object>();
         // 往里面塞第一层节点
@@ -60,6 +60,6 @@ public class MailController {
         helper.setSubject("This is subject 主题");
         helper.setText(text, true);
         sender.send(mimeMessage);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok().build();
     }
 }
