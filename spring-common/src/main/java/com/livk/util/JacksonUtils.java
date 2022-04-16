@@ -32,10 +32,10 @@ public class JacksonUtils {
     /**
      * json字符转Bean
      *
-     * @param json
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param json  json string
+     * @param clazz class
+     * @param <T>   type
+     * @return T
      */
     @SuppressWarnings("unchecked")
     public static <T> T toBean(String json, Class<T> clazz) {
@@ -48,7 +48,6 @@ public class JacksonUtils {
         try {
             return MAPPER.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            log.error("[Jackson反序列化失败 json<{}> clazz<{}>]", json, clazz);
             e.printStackTrace();
         }
         return BeanUtils.instantiateClass(clazz);
@@ -70,8 +69,8 @@ public class JacksonUtils {
     /**
      * 序列化
      *
-     * @param obj
-     * @return
+     * @param obj obj
+     * @return json
      */
     public static String toJsonStr(Object obj) {
         if (obj instanceof String) {
@@ -80,7 +79,6 @@ public class JacksonUtils {
         try {
             return MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error("[Jackson序列化失败 obj<{}>]", obj);
             e.printStackTrace();
         }
         return JSON_EMPTY;
@@ -102,7 +100,6 @@ public class JacksonUtils {
         try {
             return MAPPER.readValue(json, collectionType);
         } catch (JsonProcessingException e) {
-            log.error("[反序列化Json:<{}>-->List<Obj>:<{}>失败！]", json, clazz);
             e.printStackTrace();
         }
         return new ArrayList<>();
@@ -111,17 +108,17 @@ public class JacksonUtils {
     /**
      * json反序列化Map
      *
-     * @param json   json字符串
-     * @param kClass K Class
-     * @param vClass V Class
-     * @return Map
+     * @param json       json字符串
+     * @param keyClass   K Class
+     * @param valueClass V Class
+     * @return Map<K, V>
      */
-    public static <K, V> Map<K, V> toMap(String json, Class<K> kClass, Class<V> vClass) {
-        if (!StringUtils.hasText(json) || kClass == null || vClass == null) {
+    public static <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
+        if (!StringUtils.hasText(json) || keyClass == null || valueClass == null) {
             return Collections.emptyMap();
         }
         try {
-            var mapType = MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass);
+            var mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
             return MAPPER.readValue(json, mapType);
         } catch (IOException e) {
             e.printStackTrace();

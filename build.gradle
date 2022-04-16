@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'io.spring.nohttp'
 apply from: "$rootDir/depend.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -25,7 +26,21 @@ buildscript {
 
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.nohttp:nohttp-gradle:${nohttpVersion}"
     }
+}
+
+nohttp {
+    allowlistFile = project.file("src/nohttp/allowlist.lines")
+    //排除检查文件或者文件夹
+    source.exclude "**/bin/**"
+    source.exclude "**/build/**"
+    source.exclude "**/out/**"
+    source.exclude "**/target/**"
+}
+
+check {
+    dependsOn checkstyleNohttp
 }
 
 allprojects {

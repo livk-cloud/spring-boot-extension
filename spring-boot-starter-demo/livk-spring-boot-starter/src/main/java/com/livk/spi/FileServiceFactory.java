@@ -1,12 +1,7 @@
 package com.livk.spi;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -18,16 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Component
-public class FileServiceFactory implements InitializingBean {
-
-    private final Map<String, FileService> fileServiceMap = new ConcurrentHashMap<>();
+public class FileServiceFactory extends AbstractServiceLoad<FileService> {
 
     @Override
-    public void afterPropertiesSet() {
-        var serviceLoader = ServiceLoader.load(FileService.class);
-        for (FileService next : serviceLoader) {
-            fileServiceMap.put(next.getType(), next);
-        }
-        log.info("{}", fileServiceMap);
+    protected String getKey(FileService fileService) {
+        return fileService.getType();
     }
 }
