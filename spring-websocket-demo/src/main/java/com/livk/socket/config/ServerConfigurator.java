@@ -1,11 +1,12 @@
 package com.livk.socket.config;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.websocket.server.ServerEndpointConfig;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.websocket.server.ServerEndpointConfig;
 
 /**
  * <p>

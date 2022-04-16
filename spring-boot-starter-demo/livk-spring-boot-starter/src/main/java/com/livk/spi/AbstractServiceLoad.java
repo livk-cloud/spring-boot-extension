@@ -23,7 +23,6 @@ public abstract class AbstractServiceLoad<T> implements InitializingBean {
 
     protected Map<String, T> servicesMap;
 
-
     @SuppressWarnings("unchecked")
     private Class<T> getServiceClass(){
         return  (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractServiceLoad.class);

@@ -6,12 +6,13 @@ import com.livk.starter01.AnnoTest;
 import com.livk.starter01.EnableLivk;
 import com.livk.starter01.LivkDemo;
 import com.livk.starter01.LivkTestDemo;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 
 /**
