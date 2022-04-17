@@ -17,8 +17,9 @@ import javax.validation.Validation;
 public class CsvBeanValidator<T> implements Validator<T> {
 
     public CsvBeanValidator() {
-        var validatorFactory = Validation.buildDefaultValidatorFactory();
-        this.validator = validatorFactory.usingContext().getValidator();
+        try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
+            this.validator = validatorFactory.usingContext().getValidator();
+        }
     }
 
     private final javax.validation.Validator validator;
