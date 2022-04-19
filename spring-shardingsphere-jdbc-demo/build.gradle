@@ -1,0 +1,14 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    api project(':spring-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'com.baomidou:mybatis-plus-boot-starter'
+    api 'mysql:mysql-connector-java'
+    api 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    api 'org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter'
+}
+
+test {
+    useJUnitPlatform()
+}
