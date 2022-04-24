@@ -46,5 +46,6 @@ ext {
             "io.jsonwebtoken:jjwt-impl:${jjwtApiVersion}",
             "io.jsonwebtoken:jjwt-jackson:${jjwtApiVersion}",
             "org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:${shardingsphereVersion}",
+            "com.clickhouse:clickhouse-jdbc:${clickhouseJdbcVersion}",
     ]
 }
