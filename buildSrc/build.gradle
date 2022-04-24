@@ -1,28 +1,6 @@
 apply plugin: 'groovy'
-apply plugin: 'kotlin'
-apply plugin: 'java-gradle-plugin'
-
-buildscript {
-    repositories {
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
-    }
-}
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
     maven { url 'https://plugins.gradle.org/m2/' }
-}
-
-gradlePlugin {
-    plugins {
-        resourcesPlugin {
-            id = 'livk.kt.resources.plugin'
-            implementationClass = 'com.livk.kt.plugin.ResourcesPlugin'
-        }
-    }
 }
