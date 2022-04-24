@@ -21,6 +21,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://plugins.gradle.org/m2/' }
         maven { url 'https://repo.spring.io/release' }
+        maven { url 'https://repo.spring.io/libs-snapshot/' }
     }
 
     dependencies {
@@ -49,6 +50,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://plugins.gradle.org/m2/' }
         maven { url 'https://repo.spring.io/release' }
+        maven { url 'https://repo.spring.io/libs-snapshot/' }
     }
 
     tasks.withType(JavaCompile) {
@@ -59,6 +61,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'livk.resources.plugin'
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
 
