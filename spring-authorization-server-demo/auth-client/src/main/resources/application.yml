@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          livk-client-oidc:
+            provider: spring
+            client-id: livk-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: livk-client-oidc
+          livk-client-authorization-code:
+            provider: spring
+            client-id: livk-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: livk.read,livk.write
+            client-name: livk-client-authorization-code
+          livk-client-client-credentials:
+            provider: spring
+            client-id: livk-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: livk.read,livk.write
+            client-name: livk-client-client-credentials
+        provider:
+          spring:
+            issuer-uri: http://127.0.0.1:9000
+
+messages:
+  base-uri: http://127.0.0.1:8090/resource-livk

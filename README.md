@@ -4,5 +4,6 @@
 JDK:17
 Gradle: 7.4.2
 > [Gradle踩坑记录](./gradle.md)<br>
+> [Gradle Plugin](./buildSrc/README.md)<br>
 
 ### SpringBoot:3.0.0-M2

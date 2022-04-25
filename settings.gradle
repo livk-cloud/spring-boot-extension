@@ -1,5 +1,8 @@
 rootProject.name = 'Spring-Boot-Demo'
 include 'spring-authorization-server-demo'
+include 'spring-authorization-server-demo:auth-client'
+include 'spring-authorization-server-demo:auth-resource'
+include 'spring-authorization-server-demo:auth-server'
 include 'spring-batch-demo'
 include 'spring-boot-starter-demo'
 include 'spring-boot-starter-demo:livk-spring-boot-starter'
