@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.excel.annotation.ExcelReturn;
+import com.livk.excel.exception.ExcelExportException;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +17,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,34 +39,37 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     }
 
     @Override
-    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
+    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
         ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
-            ServletOutputStream outputStream = response.getOutputStream();
             Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
             this.setResponse(excelReturn, response);
-            EasyExcel.write(outputStream, excelModelClass)
-                    .sheet()
-                    .doWrite((Collection<?>) returnValue);
-            outputStream.close();
-        }
-        if (returnValue instanceof Map) {
-            ServletOutputStream outputStream = response.getOutputStream();
+            this.write(response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
+        } else if (returnValue instanceof Map) {
             @SuppressWarnings("unchecked")
-            Map<String, List<?>> result = (Map<String, List<?>>) returnValue;
+            Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
             Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
             this.setResponse(excelReturn, response);
+            this.write(response, excelModelClass, result);
+        } else {
+            throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+        }
+    }
+
+    public void write(HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
             ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build();
-            for (Map.Entry<String, List<?>> entry : result.entrySet()) {
+            for (Map.Entry<String, Collection<?>> entry : result.entrySet()) {
                 WriteSheet sheet = EasyExcel.writerSheet(entry.getKey()).build();
                 writer.write(entry.getValue(), sheet);
             }
             writer.finish();
-            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

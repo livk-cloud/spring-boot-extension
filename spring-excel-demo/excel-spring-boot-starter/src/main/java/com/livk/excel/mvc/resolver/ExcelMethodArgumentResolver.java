@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             return listener.parse(getInputStream(request, importExcel.fileName()), excelModelClass).getCollectionData();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private InputStream getInputStream(HttpServletRequest request, String fileName) {
