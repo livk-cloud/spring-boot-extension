@@ -30,5 +30,4 @@ hs_err_pid*
 .gradle
 
 # Ignore Gradle build output directory
-**/test
 **/build

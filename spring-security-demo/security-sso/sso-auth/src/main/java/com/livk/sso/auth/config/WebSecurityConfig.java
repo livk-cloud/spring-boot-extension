@@ -28,15 +28,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder,
-//                                                       UserService userService) throws Exception {
-//        return authenticationManagerBuilder.userDetailsService(userService)
-//                .passwordEncoder(passwordEncoder())
-//                .and().build();
-//    }
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    RsaKeyProperties properties,
@@ -50,6 +41,9 @@ public class WebSecurityConfig {
                 .and()
                 .addFilterBefore(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new TokenVerifyFilter(properties), BasicAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/oauth2/logout")
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
