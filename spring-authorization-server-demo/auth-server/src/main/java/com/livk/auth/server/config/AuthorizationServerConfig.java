@@ -86,6 +86,6 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings(@Value("${server.port:8080}") String port) {
-        return ProviderSettings.builder().issuer("http://127.0.0.1:".concat(port)).build();
+        return ProviderSettings.builder().issuer("http://localhost:".concat(port)).build();
     }
 }
