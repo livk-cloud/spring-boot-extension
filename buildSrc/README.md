@@ -35,13 +35,8 @@ implementation-class=全类名
 ```
 
 ```groovy
-import io.spring.javaformat.gradle.tasks.Format
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
-
 class ResourcesPlugin implements Plugin<Project> {
-
+    
     @Override
     void apply(Project project) {
         project.tasks

@@ -1,0 +1,10 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    api project(':spring-pulsar-demo:pulsar-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+}
+
+test {
+    useJUnitPlatform()
+}
