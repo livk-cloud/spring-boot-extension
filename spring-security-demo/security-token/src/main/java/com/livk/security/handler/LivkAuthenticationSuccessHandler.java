@@ -26,7 +26,7 @@ public class LivkAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("登录成功处理");
-        String token = UUID.randomUUID().toString();
+        var token = UUID.randomUUID().toString();
         AuthenticationContext.setTokenAndAuthentication(token, authentication);
         ResponseUtils.out(response, Map.of("code", 200, "data", token));
     }

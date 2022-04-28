@@ -28,8 +28,8 @@ public class LivkPreciseShardingAlgorithm implements StandardShardingAlgorithm<S
 
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
-        String value = shardingValue.getValue();
-        for (String targetName : availableTargetNames) {
+        var value = shardingValue.getValue();
+        for (var targetName : availableTargetNames) {
             if (targetName.endsWith(value)) {
                 return targetName;
             }

@@ -44,7 +44,7 @@ public class LivkStreamListener implements StreamListener<String, ObjectRecord<S
     @Override
     public void afterPropertiesSet() {
         if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk-streamKey"))) {
-            StreamInfo.XInfoGroups groups = livkRedisTemplate.opsForStream().groups("livk-group");
+            var groups = livkRedisTemplate.opsForStream().groups("livk-group");
             if (groups.isEmpty()) {
                 livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
             }
@@ -52,7 +52,7 @@ public class LivkStreamListener implements StreamListener<String, ObjectRecord<S
             livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
         }
 
-        StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, String>> options
+        var options
                 = StreamMessageListenerContainer.StreamMessageListenerContainerOptions
                 .builder()
                 .batchSize(10)

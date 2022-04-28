@@ -25,7 +25,7 @@ public class LivkLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("退出");
-        String token = request.getHeader("Authorization");
+        var token = request.getHeader("Authorization");
         AuthenticationContext.delete(token);
         ResponseUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
     }

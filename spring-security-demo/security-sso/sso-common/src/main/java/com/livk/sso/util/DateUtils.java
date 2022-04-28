@@ -60,7 +60,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * 日期 格式化
 	 */
 	public static String localDateTimeFormat(LocalDateTime localDateTime, String patten) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten);
+		var formatter = DateTimeFormatter.ofPattern(patten);
 		return localDateTimeFormat(localDateTime, formatter);
 	}
 
@@ -75,7 +75,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * 字符串转 LocalDateTime
 	 */
 	public static LocalDateTime parseLocalDateTimeFormat(String localDateTime, String pattern) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+		var dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
 		return parseLocalDateTimeFormat(localDateTime, dateTimeFormatter);
 	}
 

@@ -46,7 +46,7 @@ public class SqlUtils {
             e.printStackTrace();
         }
         if (statement instanceof Select select) {
-            PlainSelect plain = (PlainSelect) select.getSelectBody();
+            var plain = (PlainSelect) select.getSelectBody();
             return plain.getSelectItems()
                     .stream()
                     .map(Object::toString)

@@ -13,7 +13,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.Method;
 import java.util.TreeMap;
 
 /**
@@ -34,30 +33,30 @@ public class CacheAspect {
 
     @Around("@annotation(doubleCache)")
     public Object around(ProceedingJoinPoint point, DoubleCache doubleCache) throws Throwable {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
+        var signature = (MethodSignature) point.getSignature();
+        var method = signature.getMethod();
         if (doubleCache == null) {
             doubleCache = AnnotationUtils.findAnnotation(method, DoubleCache.class);
         }
         Assert.notNull(doubleCache, "doubleCache is null");
-        String[] paramNames = signature.getParameterNames();
-        TreeMap<String, Object> treeMap = new TreeMap<>();
-        for (int i = 0; i < paramNames.length; i++) {
+        var paramNames = signature.getParameterNames();
+        var treeMap = new TreeMap<String, Object>();
+        for (var i = 0; i < paramNames.length; i++) {
             treeMap.put(paramNames[i], point.getArgs()[i]);
         }
-        String spelResult = SpelUtils.parse(doubleCache.key(), treeMap);
-        String realKey = doubleCache.cacheName() + ":" + spelResult;
+        var spelResult = SpelUtils.parse(doubleCache.key(), treeMap);
+        var realKey = doubleCache.cacheName() + ":" + spelResult;
         switch (doubleCache.type()) {
             case FULL -> {
                 return adapter.readAndPut(realKey, point, doubleCache.timeOut());
             }
             case PUT -> {
-                Object proceed = point.proceed();
+                var proceed = point.proceed();
                 adapter.put(realKey, proceed, doubleCache.timeOut());
                 return proceed;
             }
             case DELETE -> {
-                Object proceed = point.proceed();
+                var proceed = point.proceed();
                 adapter.delete(realKey);
                 return proceed;
             }

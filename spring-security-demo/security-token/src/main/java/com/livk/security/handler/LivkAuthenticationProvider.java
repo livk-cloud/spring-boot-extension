@@ -7,14 +7,10 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 /**
  * <p>
@@ -34,10 +30,10 @@ public class LivkAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = (String) authentication.getCredentials();
+        var username = authentication.getName();
+        var password = (String) authentication.getCredentials();
         log.info("password:{}", password);
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        var user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User does not exist");
         }
@@ -45,7 +41,7 @@ public class LivkAuthenticationProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new DisabledException("wrong password");
         }
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+        var authorities = user.getAuthorities();
         return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
     }
 

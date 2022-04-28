@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -46,11 +45,11 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            User user = JacksonUtils.toBean(request.getInputStream(), User.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+            var user = JacksonUtils.toBean(request.getInputStream(), User.class);
+            var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
             return authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {
-            Map<String, ? extends Serializable> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
+            var map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
             ResponseUtils.out(response, map);
             throw new UsernameNotFoundException("用户名或者密码错误");
         }
@@ -59,12 +58,12 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     @SuppressWarnings("unchecked")
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        User user = new User()
+        var user = new User()
                 .setUsername(authResult.getName())
                 .setRoles((List<Role>) authResult.getAuthorities());
-        String token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
+        var token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
         response.addHeader("Authorization", "Bearer ".concat(token));
-        Map<String, ? extends Serializable> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
+        var map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
         ResponseUtils.out(response, map);
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.data.redis.core.*;
 public class RedisUtils {
 
     public Cursor<Object> scan(RedisTemplate<String, ?> redisTemplate, String pattern, int limit) {
-        ScanOptions options = ScanOptions.scanOptions().match(pattern).count(limit).build();
+        var options = ScanOptions.scanOptions().match(pattern).count(limit).build();
         return redisTemplate.executeWithStickyConnection(connection ->
                 new ConvertingCursor<>(connection.scan(options), redisTemplate.getKeySerializer()::deserialize));
     }

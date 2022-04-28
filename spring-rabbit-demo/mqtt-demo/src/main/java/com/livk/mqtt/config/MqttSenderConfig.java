@@ -36,7 +36,7 @@ public class MqttSenderConfig {
     @ServiceActivator(inputChannel = CHANNEL_NAME_OUT)
     public MessageHandler mqttOutbound(MqttPahoClientFactory mqttPahoClientFactory,
                                        MqttProperties mqttProperties) {
-        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(
+        var messageHandler = new MqttPahoMessageHandler(
                 mqttProperties.getSender().getClientId(),
                 mqttPahoClientFactory);
         messageHandler.setAsync(true);

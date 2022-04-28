@@ -133,8 +133,8 @@ public class ZookeeperUtils {
      */
     public String getData(String path, Watcher watcher) {
         try {
-            Stat stat = new Stat();
-            byte[] bytes = zooKeeper.getData(path, watcher, stat);
+            var stat = new Stat();
+            var bytes = zooKeeper.getData(path, watcher, stat);
             return new String(bytes);
         } catch (Exception e) {
             e.printStackTrace();

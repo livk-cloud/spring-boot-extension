@@ -41,7 +41,7 @@ public class SqlInterceptor implements Interceptor {
             for (var field : declaredFields) {
                 if (field.isAnnotationPresent(SqlFunction.class)) {
                     var sqlFunction = field.getAnnotation(SqlFunction.class);
-                    Object value = getValue(sqlFunction);
+                    var value = getValue(sqlFunction);
                     if (value == null) {
                         continue;
                     }
@@ -59,7 +59,7 @@ public class SqlInterceptor implements Interceptor {
     }
 
     private Object getValue(SqlFunction sqlFunction) {
-        Object value = sqlFunction.time().handler();
+        var value = sqlFunction.time().handler();
         return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
     }
 }

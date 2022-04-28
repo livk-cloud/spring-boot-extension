@@ -35,9 +35,9 @@ public class RSAUtils {
     }
 
     public PublicKey getPublicKey(String filename) {
-        byte[] bytes = readFile(filename);
+        var bytes = readFile(filename);
         bytes = Base64.getDecoder().decode(bytes);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);
+        var spec = new X509EncodedKeySpec(bytes);
         try {
             return factory.generatePublic(spec);
         } catch (InvalidKeySpecException e) {
@@ -47,9 +47,9 @@ public class RSAUtils {
     }
 
     public PrivateKey getPrivateKey(String filename) {
-        byte[] bytes = readFile(filename);
+        var bytes = readFile(filename);
         bytes = Base64.getDecoder().decode(bytes);
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
+        var spec = new PKCS8EncodedKeySpec(bytes);
         try {
             return factory.generatePrivate(spec);
         } catch (InvalidKeySpecException e) {
@@ -60,15 +60,15 @@ public class RSAUtils {
 
     public void generateKey(String publicKeyFilename, String privateKeyFilename, String secret, int keySize) {
         try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            SecureRandom secureRandom = new SecureRandom(secret.getBytes());
+            var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            var secureRandom = new SecureRandom(secret.getBytes());
             keyPairGenerator.initialize(Math.max(keySize, DEFAULT_SIZE), secureRandom);
-            KeyPair keyPair = keyPairGenerator.genKeyPair();
-            byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+            var keyPair = keyPairGenerator.genKeyPair();
+            var publicKeyBytes = keyPair.getPublic().getEncoded();
             publicKeyBytes = Base64.getEncoder().encode(publicKeyBytes);
             writeFile(publicKeyFilename, publicKeyBytes);
 
-            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+            var privateKeyBytes = keyPair.getPrivate().getEncoded();
             privateKeyBytes = Base64.getEncoder().encode(privateKeyBytes);
             writeFile(privateKeyFilename, privateKeyBytes);
         } catch (NoSuchAlgorithmException e) {
@@ -77,7 +77,7 @@ public class RSAUtils {
     }
 
     private void writeFile(String destPath, byte[] bytes) {
-        File file = new File(destPath);
+        var file = new File(destPath);
         if (!file.exists()) {
             try {
                 if (file.createNewFile()) {

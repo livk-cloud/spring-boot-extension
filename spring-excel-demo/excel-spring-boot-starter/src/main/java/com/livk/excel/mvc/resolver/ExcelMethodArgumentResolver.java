@@ -30,7 +30,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+        var excelImport = parameter.getMethodAnnotation(ExcelImport.class);
         return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
     }
 
@@ -43,7 +43,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
         if (Objects.nonNull(importExcel)) {
             var listener = BeanUtils.instantiateClass(importExcel.parse());
             var request = webRequest.getNativeRequest(HttpServletRequest.class);
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+            var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             return listener.parse(getInputStream(request, importExcel.fileName()), excelModelClass).getCollectionData();
         }
         return Collections.emptyList();

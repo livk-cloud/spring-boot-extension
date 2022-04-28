@@ -6,7 +6,6 @@ import com.livk.amqp.config.HeadersConfig;
 import com.livk.amqp.config.TopicConfig;
 import com.livk.amqp.entity.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -56,15 +55,15 @@ public class AnnoConsumer {
 
     @RabbitListener(queuesToDeclare = @Queue(HeadersConfig.HEADERS_EXCHANGE_QUEUE_A))
     public void consumerHeadersA(org.springframework.amqp.core.Message message) throws Exception {
-        MessageProperties messageProperties = message.getMessageProperties();
-        String contentType = messageProperties.getContentType();
+        var messageProperties = message.getMessageProperties();
+        var contentType = messageProperties.getContentType();
         log.info("headers A anno consumer msg:{}", new String(message.getBody(), contentType));
     }
 
     @RabbitListener(queuesToDeclare = @Queue(HeadersConfig.HEADERS_EXCHANGE_QUEUE_B))
     public void consumerHeadersB(org.springframework.amqp.core.Message message) throws Exception {
-        MessageProperties messageProperties = message.getMessageProperties();
-        String contentType = messageProperties.getContentType();
+        var messageProperties = message.getMessageProperties();
+        var contentType = messageProperties.getContentType();
         log.info("headers B anno consumer msg:{}", new String(message.getBody(), contentType));
     }
 }
