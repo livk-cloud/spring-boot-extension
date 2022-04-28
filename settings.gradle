@@ -1,53 +1,16 @@
 rootProject.name = 'Spring-Boot-Demo'
-include 'spring-authorization-server-demo'
-include 'spring-authorization-server-demo:auth-client'
-include 'spring-authorization-server-demo:auth-resource'
-include 'spring-authorization-server-demo:auth-server'
-include 'spring-batch-demo'
-include 'spring-boot-starter-demo'
-include 'spring-boot-starter-demo:livk-spring-boot-starter'
-include 'spring-boot-starter-demo:spring-livk-app'
-include 'spring-clickhouse-demo'
-include 'spring-common'
-include 'spring-excel-demo'
-include 'spring-excel-demo:excel-common'
-include 'spring-excel-demo:excel-spring-boot-starter'
-include 'spring-excel-demo:spring-excel-app'
-include 'spring-hateoas-demo'
-include 'spring-kafka-demo'
-include 'spring-kafka-demo:kafka-common'
-include 'spring-mail-demo'
-include 'spring-mybatis-demo'
-include 'spring-mybatis-demo:livk-dynamic-datasource-starter'
-include 'spring-mybatis-demo:livk-mybatis-starter'
-include 'spring-mybatis-demo:mybatis-example'
-include 'spring-pulsar-demo'
-include 'spring-pulsar-demo:pulsar-common'
-include 'spring-pulsar-demo:pulsar-consumer'
-include 'spring-pulsar-demo:pulsar-producer'
-include 'spring-quartz-demo'
-include 'spring-r2dbc-demo'
-include 'spring-rabbit-demo'
-include 'spring-rabbit-demo:mqtt-demo'
-include 'spring-rabbit-demo:rabbit-common'
-include 'spring-rabbit-demo:rabbit-consumer'
-include 'spring-rabbit-demo:rabbit-provider'
-include 'spring-redis-demo'
-include 'spring-redis-demo:spring-redis-caffeine'
-include 'spring-redis-demo:spring-redis-common'
-include 'spring-redis-demo:spring-redis-consumer'
-include 'spring-redis-demo:spring-redis-lua'
-include 'spring-redis-demo:spring-redis-provider'
-include 'spring-redis-demo:spring-redisson'
-include 'spring-security-demo'
-include 'spring-security-demo:oauth-github'
-include 'spring-security-demo:security-sso'
-include 'spring-security-demo:security-sso:sso-auth'
-include 'spring-security-demo:security-sso:sso-common'
-include 'spring-security-demo:security-sso:sso-resources'
-include 'spring-security-demo:security-token'
-include 'spring-shardingsphere-jdbc-demo'
-include 'spring-websocket-demo'
-include 'spring-zookeeper-demo'
-include 'spring-zookeeper-demo:zookeeper-example'
-include 'spring-zookeeper-demo:zookeeper-lock'
+
+def buildFiles = fileTree(rootDir) {
+    def excludes = gradle.startParameter.projectProperties.get('excludeProjects')?.split(',')
+    include '**/*.gradle'
+    exclude 'build', '**/gradle', 'settings.gradle', 'buildSrc', '/build.gradle', '.', 'out'
+    if (excludes) {
+        exclude excludes
+    }
+}
+
+buildFiles.forEach { buildFile ->
+    def buildFilePath = buildFile.parentFile.absolutePath
+    def projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
+    include projectPath
+}
