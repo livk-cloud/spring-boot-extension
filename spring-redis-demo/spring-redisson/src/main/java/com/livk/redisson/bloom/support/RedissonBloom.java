@@ -1,6 +1,5 @@
 package com.livk.redisson.bloom.support;
 
-
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
@@ -20,20 +19,22 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class RedissonBloom {
 
-    private final RedissonClient redissonClient;
-    private RBloomFilter<String> filter;
+	private final RedissonClient redissonClient;
 
-    @PostConstruct
-    public void init() {
-        this.filter = redissonClient.getBloomFilter("redisson:bloom:filter");
-        this.filter.tryInit(Integer.MAX_VALUE / 10, 0.003);
-    }
+	private RBloomFilter<String> filter;
 
-    public void addKey(String data) {
-        filter.add(data);
-    }
+	@PostConstruct
+	public void init() {
+		this.filter = redissonClient.getBloomFilter("redisson:bloom:filter");
+		this.filter.tryInit(Integer.MAX_VALUE / 10, 0.003);
+	}
 
-    public boolean hasKey(String data) {
-        return filter.contains(data);
-    }
+	public void addKey(String data) {
+		filter.add(data);
+	}
+
+	public boolean hasKey(String data) {
+		return filter.contains(data);
+	}
+
 }

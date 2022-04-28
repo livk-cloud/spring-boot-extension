@@ -23,26 +23,28 @@ import java.util.Date;
  */
 @Data
 public class User implements Serializable {
-    private Integer id;
 
-    private String username;
+	private Integer id;
 
-    @JsonIgnore
-    @SqlFunction(fill = SqlFill.INSERT, supplier = VersionFunction.class)
-    private Integer version;
+	private String username;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT, time = FunctionEnum.DATE)
-    private Date insertTime;
+	@JsonIgnore
+	@SqlFunction(fill = SqlFill.INSERT, supplier = VersionFunction.class)
+	private Integer version;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
-    private Date updateTime;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@SqlFunction(fill = SqlFill.INSERT, time = FunctionEnum.DATE)
+	private Date insertTime;
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
+	private Date updateTime;
 
-    public static <T> String of(FieldFunction<T> function) {
-        return function.getFieldName();
-    }
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	public static <T> String of(FieldFunction<T> function) {
+		return function.getFieldName();
+	}
+
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-
 /**
  * <p>
  * App
@@ -26,10 +25,10 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class App {
 
-    public static void main(String[] args) {
-        System.setProperty("server.port", "9099");
-         LivkSpring.run(App.class, args);
-    }
+	public static void main(String[] args) {
+		System.setProperty("server.port", "9099");
+		LivkSpring.run(App.class, args);
+	}
 
 }
 
@@ -38,21 +37,21 @@ public class App {
 @RequiredArgsConstructor
 class LivkTest {
 
-    @Value("${username.spring.github}")
-    public String username;
+	@Value("${username.spring.github}")
+	public String username;
 
-    private final LivkDemo livkDemo;
+	private final LivkDemo livkDemo;
 
-    private final LivkTestDemo livkTestDemo;
+	private final LivkTestDemo livkTestDemo;
 
-    private final AnnoTest annoTest;
+	private final AnnoTest annoTest;
 
-    @PostConstruct
-    public void show() {
-        livkDemo.show();
-        livkTestDemo.show();
-        annoTest.show();
-        log.info(username);
-    }
+	@PostConstruct
+	public void show() {
+		livkDemo.show();
+		livkTestDemo.show();
+		annoTest.show();
+		log.info(username);
+	}
 
 }

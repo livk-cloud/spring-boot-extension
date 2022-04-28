@@ -15,7 +15,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class ProviderRedis {
-    public static void main(String[] args) {
-        LivkSpring.run(ProviderRedis.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(ProviderRedis.class, args);
+	}
+
 }

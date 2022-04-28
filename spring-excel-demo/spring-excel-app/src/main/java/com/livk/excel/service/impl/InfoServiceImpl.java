@@ -23,30 +23,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InfoServiceImpl implements InfoService {
 
-    private final SqlSessionFactory sqlSessionFactory;
+	private final SqlSessionFactory sqlSessionFactory;
 
-    @Override
-    public void insertBatch(List<Info> records) {
-        var sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        var infoMapper = sqlSession.getMapper(InfoMapper.class);
-        var partition = Lists.partition(records, 1000);
-        int i = 0;
-        for (final var infos : partition) {
-            try {
-                infoMapper.insertBatch(infos);
-            } catch (Exception e) {
-                e.printStackTrace();
-                sqlSession.rollback();
-                break;
-            }
-            i++;
-            if (i % 1000 == 0) {
-                sqlSession.commit();
-                sqlSession.clearCache();
-            }
-        }
-        sqlSession.commit();
-        sqlSession.clearCache();
-        sqlSession.close();
-    }
+	@Override
+	public void insertBatch(List<Info> records) {
+		var sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+		var infoMapper = sqlSession.getMapper(InfoMapper.class);
+		var partition = Lists.partition(records, 1000);
+		int i = 0;
+		for (final var infos : partition) {
+			try {
+				infoMapper.insertBatch(infos);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				sqlSession.rollback();
+				break;
+			}
+			i++;
+			if (i % 1000 == 0) {
+				sqlSession.commit();
+				sqlSession.clearCache();
+			}
+		}
+		sqlSession.commit();
+		sqlSession.clearCache();
+		sqlSession.close();
+	}
+
 }

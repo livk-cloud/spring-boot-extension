@@ -23,30 +23,21 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   RsaKeyProperties properties,
-                                                   AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        return http.csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/user/query").hasAnyRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .addFilterBefore(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new TokenVerifyFilter(properties), BasicAuthenticationFilter.class)
-                .logout()
-                .logoutUrl("/oauth2/logout")
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, RsaKeyProperties properties,
+			AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		return http.csrf().disable().authorizeRequests().antMatchers("/user/query").hasAnyRole("ADMIN").anyRequest()
+				.authenticated().and()
+				.addFilterBefore(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties),
+						UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(new TokenVerifyFilter(properties), BasicAuthenticationFilter.class).logout()
+				.logoutUrl("/oauth2/logout").and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
+	}
+
 }

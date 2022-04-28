@@ -25,8 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AuthClientApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(AuthClientApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(AuthClientApp.class, args);
+	}
 
 }

@@ -16,37 +16,39 @@ import reactor.util.annotation.NonNull;
 @RequiredArgsConstructor
 public class LivkRedisSerializationContext<T> implements RedisSerializationContext<String, T> {
 
-    private final RedisSerializer<T> serializer;
+	private final RedisSerializer<T> serializer;
 
-    @NonNull
-    @Override
-    public SerializationPair<String> getKeySerializationPair() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
-    }
+	@NonNull
+	@Override
+	public SerializationPair<String> getKeySerializationPair() {
+		return RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
+	}
 
-    @NonNull
-    @Override
-    public SerializationPair<T> getValueSerializationPair() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(serializer);
-    }
+	@NonNull
+	@Override
+	public SerializationPair<T> getValueSerializationPair() {
+		return RedisSerializationContext.SerializationPair.fromSerializer(serializer);
+	}
 
-    @NonNull
-    @SuppressWarnings("unchecked")
-    @Override
-    public <HK> SerializationPair<HK> getHashKeySerializationPair() {
-        return (SerializationPair<HK>) RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
-    }
+	@NonNull
+	@SuppressWarnings("unchecked")
+	@Override
+	public <HK> SerializationPair<HK> getHashKeySerializationPair() {
+		return (SerializationPair<HK>) RedisSerializationContext.SerializationPair
+				.fromSerializer(RedisSerializer.string());
+	}
 
-    @NonNull
-    @SuppressWarnings("unchecked")
-    @Override
-    public <HV> SerializationPair<HV> getHashValueSerializationPair() {
-        return (SerializationPair<HV>) RedisSerializationContext.SerializationPair.fromSerializer(serializer);
-    }
+	@NonNull
+	@SuppressWarnings("unchecked")
+	@Override
+	public <HV> SerializationPair<HV> getHashValueSerializationPair() {
+		return (SerializationPair<HV>) RedisSerializationContext.SerializationPair.fromSerializer(serializer);
+	}
 
-    @NonNull
-    @Override
-    public SerializationPair<String> getStringSerializationPair() {
-        return RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
-    }
+	@NonNull
+	@Override
+	public SerializationPair<String> getStringSerializationPair() {
+		return RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string());
+	}
+
 }

@@ -31,51 +31,53 @@ import java.util.Collection;
 @TableName(value = "users")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public class User implements Serializable, UserDetails {
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
 
-    @TableField(value = "username")
-    private String username;
+	@TableId(value = "id", type = IdType.AUTO)
+	private Long id;
 
-    @TableField(value = "`password`")
-    private String password;
+	@TableField(value = "username")
+	private String username;
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@TableField(value = "`password`")
+	private String password;
 
-    public static final String COL_ID = "id";
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    public static final String COL_USERNAME = "username";
+	public static final String COL_ID = "id";
 
-    public static final String COL_PASSWORD = "password";
+	public static final String COL_USERNAME = "username";
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ROLE_USER");
-    }
+	public static final String COL_PASSWORD = "password";
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.createAuthorityList("ROLE_USER");
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
 }

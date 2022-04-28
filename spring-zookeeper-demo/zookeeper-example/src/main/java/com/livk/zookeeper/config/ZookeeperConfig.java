@@ -21,8 +21,10 @@ import java.io.IOException;
 @EnableConfigurationProperties(ZookeeperProperties.class)
 public class ZookeeperConfig {
 
-    @Bean
-    public ZooKeeper zooKeeper(ZookeeperProperties properties) throws IOException {
-        return new ZooKeeper(properties.getAddress() + ":" + properties.getPort(), properties.getTimeout(), event -> log.info("status:{}", event.getState()));
-    }
+	@Bean
+	public ZooKeeper zooKeeper(ZookeeperProperties properties) throws IOException {
+		return new ZooKeeper(properties.getAddress() + ":" + properties.getPort(), properties.getTimeout(),
+				event -> log.info("status:{}", event.getState()));
+	}
+
 }

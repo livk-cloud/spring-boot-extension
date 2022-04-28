@@ -11,18 +11,20 @@ import java.io.InputStream;
  * @date 2022/3/18
  */
 public class MinioFileService implements FileService {
-    @Override
-    public void upload(final InputStream inputStream) {
 
-    }
+	@Override
+	public void upload(final InputStream inputStream) {
 
-    @Override
-    public byte[] download(final String filename) {
-        return new byte[0];
-    }
+	}
 
-    @Override
-    public String getType() {
-        return this.getClass().getTypeName();
-    }
+	@Override
+	public byte[] download(final String filename) {
+		return new byte[0];
+	}
+
+	@Override
+	public String getType() {
+		return this.getClass().getTypeName();
+	}
+
 }

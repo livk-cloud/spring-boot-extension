@@ -15,7 +15,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class PulsarProducerApp {
-    public static void main(String[] args) {
-        LivkSpring.run(PulsarProducerApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(PulsarProducerApp.class, args);
+	}
+
 }

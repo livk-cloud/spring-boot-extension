@@ -6,8 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- * EnableLivk{@link LivkDemo}
- * 将此注解标注在被Spring托管的类上，即可将LivkDemo.class注入Spring ioc
+ * EnableLivk{@link LivkDemo} 将此注解标注在被Spring托管的类上，即可将LivkDemo.class注入Spring ioc
  * </p>
  *
  * @author livk

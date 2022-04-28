@@ -9,16 +9,18 @@ package com.livk.caffeine.enums;
  * @date 2022/3/30
  */
 public enum CacheType {
-    /**
-     * 存取
-     */
-    FULL,
-    /**
-     * 只存
-     */
-    PUT,
-    /**
-     * 删除
-     */
-    DELETE
+
+	/**
+	 * 存取
+	 */
+	FULL,
+	/**
+	 * 只存
+	 */
+	PUT,
+	/**
+	 * 删除
+	 */
+	DELETE
+
 }

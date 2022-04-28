@@ -36,51 +36,42 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
  */
 @RestController
 public class AuthorizationController {
-    private final WebClient webClient;
-    private final String messagesBaseUri;
 
-    public AuthorizationController(WebClient webClient,
-                                   @Value("${messages.base-uri}") String messagesBaseUri) {
-        this.webClient = webClient;
-        this.messagesBaseUri = messagesBaseUri;
-    }
+	private final WebClient webClient;
 
-    @GetMapping(value = "/authorize", params = "grant_type=authorization_code")
-    public String[] authorizationCodeGrant(@RegisteredOAuth2AuthorizedClient("livk-client-authorization-code")
-                                           OAuth2AuthorizedClient authorizedClient) {
+	private final String messagesBaseUri;
 
-        return this.webClient
-                .get()
-                .uri(this.messagesBaseUri)
-                .attributes(oauth2AuthorizedClient(authorizedClient))
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
-    }
+	public AuthorizationController(WebClient webClient, @Value("${messages.base-uri}") String messagesBaseUri) {
+		this.webClient = webClient;
+		this.messagesBaseUri = messagesBaseUri;
+	}
 
-    // '/authorized' is the registered 'redirect_uri' for authorization_code
-    @GetMapping(value = "/authorized", params = OAuth2ParameterNames.ERROR)
-    public OAuth2Error authorizationFailed(HttpServletRequest request) {
-        var errorCode = request.getParameter(OAuth2ParameterNames.ERROR);
-        if (StringUtils.hasText(errorCode)) {
-            return new OAuth2Error(
-                    errorCode,
-                    request.getParameter(OAuth2ParameterNames.ERROR_DESCRIPTION),
-                    request.getParameter(OAuth2ParameterNames.ERROR_URI));
-        }
+	@GetMapping(value = "/authorize", params = "grant_type=authorization_code")
+	public String[] authorizationCodeGrant(
+			@RegisteredOAuth2AuthorizedClient("livk-client-authorization-code") OAuth2AuthorizedClient authorizedClient) {
 
-        return new OAuth2Error("Null");
-    }
+		return this.webClient.get().uri(this.messagesBaseUri).attributes(oauth2AuthorizedClient(authorizedClient))
+				.retrieve().bodyToMono(String[].class).block();
+	}
 
-    @GetMapping(value = "/authorize", params = "grant_type=client_credentials")
-    public String[] clientCredentialsGrant() {
+	// '/authorized' is the registered 'redirect_uri' for authorization_code
+	@GetMapping(value = "/authorized", params = OAuth2ParameterNames.ERROR)
+	public OAuth2Error authorizationFailed(HttpServletRequest request) {
+		var errorCode = request.getParameter(OAuth2ParameterNames.ERROR);
+		if (StringUtils.hasText(errorCode)) {
+			return new OAuth2Error(errorCode, request.getParameter(OAuth2ParameterNames.ERROR_DESCRIPTION),
+					request.getParameter(OAuth2ParameterNames.ERROR_URI));
+		}
 
-        return this.webClient
-                .get()
-                .uri(this.messagesBaseUri)
-                .attributes(clientRegistrationId("livk-client-client-credentials"))
-                .retrieve()
-                .bodyToMono(String[].class)
-                .block();
-    }
+		return new OAuth2Error("Null");
+	}
+
+	@GetMapping(value = "/authorize", params = "grant_type=client_credentials")
+	public String[] clientCredentialsGrant() {
+
+		return this.webClient.get().uri(this.messagesBaseUri)
+				.attributes(clientRegistrationId("livk-client-client-credentials")).retrieve()
+				.bodyToMono(String[].class).block();
+	}
+
 }

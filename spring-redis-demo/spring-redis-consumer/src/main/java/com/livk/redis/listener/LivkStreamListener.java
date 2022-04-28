@@ -28,52 +28,47 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LivkStreamListener implements StreamListener<String, ObjectRecord<String, String>>, InitializingBean, DisposableBean {
+public class LivkStreamListener
+		implements StreamListener<String, ObjectRecord<String, String>>, InitializingBean, DisposableBean {
 
-    private final LivkRedisTemplate livkRedisTemplate;
+	private final LivkRedisTemplate livkRedisTemplate;
 
-    private StreamMessageListenerContainer<String, ObjectRecord<String, String>> listenerContainer;
+	private StreamMessageListenerContainer<String, ObjectRecord<String, String>> listenerContainer;
 
-    @Override
-    public void onMessage(ObjectRecord<String, String> message) {
-        log.info("id:{}", message.getId().getSequence());
-        log.info("value:{}", message.getValue());
-        log.info("stream:{}", message.getStream());
-    }
+	@Override
+	public void onMessage(ObjectRecord<String, String> message) {
+		log.info("id:{}", message.getId().getSequence());
+		log.info("value:{}", message.getValue());
+		log.info("stream:{}", message.getStream());
+	}
 
-    @Override
-    public void afterPropertiesSet() {
-        if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk-streamKey"))) {
-            var groups = livkRedisTemplate.opsForStream().groups("livk-group");
-            if (groups.isEmpty()) {
-                livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
-            }
-        } else {
-            livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
-        }
+	@Override
+	public void afterPropertiesSet() {
+		if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk-streamKey"))) {
+			var groups = livkRedisTemplate.opsForStream().groups("livk-group");
+			if (groups.isEmpty()) {
+				livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
+			}
+		}
+		else {
+			livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
+		}
 
-        var options
-                = StreamMessageListenerContainer.StreamMessageListenerContainerOptions
-                .builder()
-                .batchSize(10)
-                .executor(new ThreadPoolExecutor(4, 10, 0,
-                        TimeUnit.SECONDS, new ArrayBlockingQueue<>(10)))
-                .errorHandler(t -> log.error("ERROR:{}", t.getMessage()))
-                .pollTimeout(Duration.ZERO)
-                .serializer(RedisSerializer.string())
-                .targetType(String.class)
-                .build();
-        this.listenerContainer
-                = StreamMessageListenerContainer.create(Objects.requireNonNull(livkRedisTemplate.getConnectionFactory()), options);
+		var options = StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder().batchSize(10)
+				.executor(new ThreadPoolExecutor(4, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10)))
+				.errorHandler(t -> log.error("ERROR:{}", t.getMessage())).pollTimeout(Duration.ZERO)
+				.serializer(RedisSerializer.string()).targetType(String.class).build();
+		this.listenerContainer = StreamMessageListenerContainer
+				.create(Objects.requireNonNull(livkRedisTemplate.getConnectionFactory()), options);
 
-        this.listenerContainer.receive(Consumer.from("livk-group", "livk"),
-                StreamOffset.create("livk-streamKey", ReadOffset.lastConsumed()),
-                this);
-        this.listenerContainer.start();
-    }
+		this.listenerContainer.receive(Consumer.from("livk-group", "livk"),
+				StreamOffset.create("livk-streamKey", ReadOffset.lastConsumed()), this);
+		this.listenerContainer.start();
+	}
 
-    @Override
-    public void destroy() {
-        this.listenerContainer.stop();
-    }
+	@Override
+	public void destroy() {
+		this.listenerContainer.stop();
+	}
+
 }

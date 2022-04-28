@@ -19,11 +19,12 @@ import java.security.PublicKey;
 @ConfigurationProperties(RsaKeyProperties.PREFIX)
 public class RsaKeyProperties {
 
-    public static final String PREFIX = "rsa.key";
+	public static final String PREFIX = "rsa.key";
 
-    private final PublicKey publicKey;
+	private final PublicKey publicKey;
 
-    public RsaKeyProperties(@Name("public-key") String publicKeyFile) {
-        publicKey = RSAUtils.getPublicKey(publicKeyFile);
-    }
+	public RsaKeyProperties(@Name("public-key") String publicKeyFile) {
+		publicKey = RSAUtils.getPublicKey(publicKeyFile);
+	}
+
 }

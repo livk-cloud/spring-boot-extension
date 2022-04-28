@@ -9,5 +9,7 @@ package com.livk.constant;
  * @date 2022/3/23
  */
 public interface DataSourceConstant {
-    String DEFAULT_DATASOURCE_NAME = "defaultDatasource";
+
+	String DEFAULT_DATASOURCE_NAME = "defaultDatasource";
+
 }

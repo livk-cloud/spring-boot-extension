@@ -16,11 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class UserMapperTest {
 
-    @Autowired
-    UserMapper userMapper;
+	@Autowired
+	UserMapper userMapper;
 
-    @Test
-    void testList() {
-        Assertions.assertNotNull(userMapper.list());
-    }
+	@Test
+	void testList() {
+		Assertions.assertNotNull(userMapper.list());
+	}
+
 }

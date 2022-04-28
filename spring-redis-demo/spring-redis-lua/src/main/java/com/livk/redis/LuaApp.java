@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class LuaApp {
-    public static void main(String[] args) {
-        LivkSpring.run(LuaApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(LuaApp.class, args);
+	}
+
 }

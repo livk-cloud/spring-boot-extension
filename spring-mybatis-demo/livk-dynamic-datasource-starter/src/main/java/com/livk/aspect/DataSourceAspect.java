@@ -21,23 +21,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceAspect {
 
-    @Around("@annotation(dataSource)||@within(dataSource)")
-    public Object execute(ProceedingJoinPoint joinPoint, DataSource dataSource) throws Throwable {
-        var signature = (MethodSignature) joinPoint.getSignature();
-        var method = signature.getMethod();
-        if (dataSource == null) {
-            var methodAnnotation = AnnotationUtils.findAnnotation(method, DataSource.class);
-            if (methodAnnotation != null) {
-                dataSource = methodAnnotation;
-            } else {
-                dataSource = AnnotationUtils.findAnnotation(joinPoint.getTarget().getClass(), DataSource.class);
-            }
-        }
-        if (dataSource != null) {
-            DataSourceContextHolder.switchDataSource(dataSource.value());
-        }
-        var proceed = joinPoint.proceed();
-        DataSourceContextHolder.clear();
-        return proceed;
-    }
+	@Around("@annotation(dataSource)||@within(dataSource)")
+	public Object execute(ProceedingJoinPoint joinPoint, DataSource dataSource) throws Throwable {
+		var signature = (MethodSignature) joinPoint.getSignature();
+		var method = signature.getMethod();
+		if (dataSource == null) {
+			var methodAnnotation = AnnotationUtils.findAnnotation(method, DataSource.class);
+			if (methodAnnotation != null) {
+				dataSource = methodAnnotation;
+			}
+			else {
+				dataSource = AnnotationUtils.findAnnotation(joinPoint.getTarget().getClass(), DataSource.class);
+			}
+		}
+		if (dataSource != null) {
+			DataSourceContextHolder.switchDataSource(dataSource.value());
+		}
+		var proceed = joinPoint.proceed();
+		DataSourceContextHolder.clear();
+		return proceed;
+	}
+
 }

@@ -12,22 +12,24 @@ import lombok.Data;
  */
 @Data
 public class ExportMember {
-    private String name;
 
-    private Integer gender;
+	private String name;
 
-    private String idCard;
+	private Integer gender;
 
-    private String bankNo;
+	private String idCard;
 
-    private String bankName;
+	private String bankNo;
 
-    private String phone;
+	private String bankName;
 
-    /**
-     * 性别处理
-     */
-    public String getGender() {
-        return gender == 0 ? "男" : "女";
-    }
+	private String phone;
+
+	/**
+	 * 性别处理
+	 */
+	public String getGender() {
+		return gender == 0 ? "男" : "女";
+	}
+
 }

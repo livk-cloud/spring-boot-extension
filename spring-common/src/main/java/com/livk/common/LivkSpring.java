@@ -12,16 +12,15 @@ import org.springframework.util.Assert;
 @Slf4j
 public class LivkSpring {
 
-    private LivkSpring() {
-    }
+	private LivkSpring() {
+	}
 
-    public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
-        if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {
-            throw new AnnotationConfigurationException("must use @SpringBootApplication in start class");
-        }
-        return new SpringApplicationBuilder(targetClass)
-                .banner(LivkBanner.create())
-                .bannerMode(Banner.Mode.CONSOLE)
-                .run(args);
-    }
+	public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
+		if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {
+			throw new AnnotationConfigurationException("must use @SpringBootApplication in start class");
+		}
+		return new SpringApplicationBuilder(targetClass).banner(LivkBanner.create()).bannerMode(Banner.Mode.CONSOLE)
+				.run(args);
+	}
+
 }

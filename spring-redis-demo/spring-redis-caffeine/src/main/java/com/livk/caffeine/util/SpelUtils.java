@@ -18,12 +18,13 @@ import java.util.Map;
 @UtilityClass
 public class SpelUtils {
 
-    public String parse(String spel, Map<String, ?> map) {
-        spel = String.format("#{%s}", spel);
-        var parser = new SpelExpressionParser();
-        var context = new StandardEvaluationContext();
-        map.forEach(context::setVariable);
-        var expression = parser.parseExpression(spel, new TemplateParserContext());
-        return expression.getValue(context, String.class);
-    }
+	public String parse(String spel, Map<String, ?> map) {
+		spel = String.format("#{%s}", spel);
+		var parser = new SpelExpressionParser();
+		var context = new StandardEvaluationContext();
+		map.forEach(context::setVariable);
+		var expression = parser.parseExpression(spel, new TemplateParserContext());
+		return expression.getValue(context, String.class);
+	}
+
 }

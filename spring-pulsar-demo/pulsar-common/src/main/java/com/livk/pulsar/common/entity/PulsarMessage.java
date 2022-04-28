@@ -15,11 +15,13 @@ import java.time.LocalDateTime;
  */
 @Data
 public class PulsarMessage<T> implements Serializable {
-    private String msgId;
 
-    private LocalDateTime sendTime;
+	private String msgId;
 
-    private String msg;
+	private LocalDateTime sendTime;
 
-    private T data;
+	private String msg;
+
+	private T data;
+
 }

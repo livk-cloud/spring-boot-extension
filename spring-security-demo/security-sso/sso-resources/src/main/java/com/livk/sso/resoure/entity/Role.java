@@ -15,13 +15,16 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 public class Role implements GrantedAuthority {
 
-    private Integer id;
-    private String roleName;
-    private String roleDescription;
+	private Integer id;
 
-    @JsonIgnore
-    @Override
-    public String getAuthority() {
-        return roleName;
-    }
+	private String roleName;
+
+	private String roleDescription;
+
+	@JsonIgnore
+	@Override
+	public String getAuthority() {
+		return roleName;
+	}
+
 }

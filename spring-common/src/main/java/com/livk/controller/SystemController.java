@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SystemController {
 
-    private final ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
 
-    @PostMapping("shutdown")
-    public void shutdown(){
-        System.exit(SpringApplication.exit(applicationContext));
-    }
+	@PostMapping("shutdown")
+	public void shutdown() {
+		System.exit(SpringApplication.exit(applicationContext));
+	}
+
 }

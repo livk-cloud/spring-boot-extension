@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class ShardingsphereApp {
-    public static void main(String[] args) {
-        LivkSpring.run(ShardingsphereApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(ShardingsphereApp.class, args);
+	}
+
 }

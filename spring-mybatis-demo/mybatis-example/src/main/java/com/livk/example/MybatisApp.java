@@ -17,7 +17,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableSqlPlugin
 @SpringBootApplication
 public class MybatisApp {
-    public static void main(String[] args) {
-        LivkSpring.run(MybatisApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(MybatisApp.class, args);
+	}
+
 }

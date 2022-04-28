@@ -13,5 +13,7 @@ import java.util.List;
  * @date 2022/1/12
  */
 public interface InfoService {
-    void insertBatch(List<Info> records);
+
+	void insertBatch(List<Info> records);
+
 }

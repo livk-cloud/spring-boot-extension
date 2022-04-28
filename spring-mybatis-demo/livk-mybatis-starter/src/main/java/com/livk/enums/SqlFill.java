@@ -9,6 +9,7 @@ package com.livk.enums;
  * @date 2022/1/29
  */
 public enum SqlFill {
-    INSERT,
-    INSERT_UPDATE;
+
+	INSERT, INSERT_UPDATE;
+
 }

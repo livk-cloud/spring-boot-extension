@@ -27,6 +27,7 @@ public class ResourceController {
 
 	@GetMapping("/resource-livk")
 	public String[] getMessages() {
-		return new String[] {"livk", "livk-spring", "livk-cloud"};
+		return new String[] { "livk", "livk-spring", "livk-cloud" };
 	}
+
 }

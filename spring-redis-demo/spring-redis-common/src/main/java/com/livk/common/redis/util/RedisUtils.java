@@ -14,10 +14,10 @@ import org.springframework.data.redis.core.*;
 @UtilityClass
 public class RedisUtils {
 
-    public Cursor<Object> scan(RedisTemplate<String, ?> redisTemplate, String pattern, int limit) {
-        var options = ScanOptions.scanOptions().match(pattern).count(limit).build();
-        return redisTemplate.executeWithStickyConnection(connection ->
-                new ConvertingCursor<>(connection.scan(options), redisTemplate.getKeySerializer()::deserialize));
-    }
+	public Cursor<Object> scan(RedisTemplate<String, ?> redisTemplate, String pattern, int limit) {
+		var options = ScanOptions.scanOptions().match(pattern).count(limit).build();
+		return redisTemplate.executeWithStickyConnection(connection -> new ConvertingCursor<>(connection.scan(options),
+				redisTemplate.getKeySerializer()::deserialize));
+	}
 
 }

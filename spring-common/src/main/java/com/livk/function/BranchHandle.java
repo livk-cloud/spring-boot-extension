@@ -13,12 +13,15 @@ import java.util.function.Predicate;
 @FunctionalInterface
 public interface BranchHandle {
 
-    void trueOrFalseHandle(Runnable trueHandle, Runnable falseHandle);
+	void trueOrFalseHandle(Runnable trueHandle, Runnable falseHandle);
 
-    static <T> BranchHandle isTrueOrFalse(Predicate<T> predicate) {
-        return (trueHandle, falseHandle) -> {
-            if (predicate.test(null)) trueHandle.run();
-            else falseHandle.run();
-        };
-    }
+	static <T> BranchHandle isTrueOrFalse(Predicate<T> predicate) {
+		return (trueHandle, falseHandle) -> {
+			if (predicate.test(null))
+				trueHandle.run();
+			else
+				falseHandle.run();
+		};
+	}
+
 }

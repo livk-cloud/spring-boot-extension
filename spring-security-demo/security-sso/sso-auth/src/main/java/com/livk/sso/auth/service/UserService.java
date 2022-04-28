@@ -11,4 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date 2022/4/11
  */
 public interface UserService extends UserDetailsService {
+
 }

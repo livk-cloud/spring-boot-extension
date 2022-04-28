@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 apply plugin: 'java'
 apply plugin: 'io.spring.nohttp'
 
@@ -17,6 +19,7 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath "io.spring.nohttp:nohttp-gradle:${nohttpVersion}"
+        classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:${springJavaFormatPluginVersion}")
     }
 }
 
@@ -52,8 +55,15 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
+    apply plugin: 'io.spring.javaformat'
     apply plugin: 'livk.resources.plugin'
     apply from: "$rootDir/gradle/dependency.gradle"
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
 }
 
 test {

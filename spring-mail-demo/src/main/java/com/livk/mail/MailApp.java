@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class MailApp {
-    public static void main(String[] args) {
-        LivkSpring.run(MailApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(MailApp.class, args);
+	}
+
 }

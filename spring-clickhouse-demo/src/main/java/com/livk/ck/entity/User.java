@@ -17,11 +17,12 @@ import java.util.Date;
 @Accessors(chain = true)
 public class User {
 
-    private Long id;
+	private Long id;
 
-    private String appId;
+	private String appId;
 
-    private String version;
+	private String version;
 
-    private Date regTime;
+	private Date regTime;
+
 }

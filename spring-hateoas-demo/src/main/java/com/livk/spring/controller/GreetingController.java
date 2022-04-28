@@ -20,13 +20,15 @@ import reactor.core.publisher.Mono;
 @RestController
 public class GreetingController {
 
-    private static final String TEMPLATE = "hello,%s!";
+	private static final String TEMPLATE = "hello,%s!";
 
-    @GetMapping("/greeting")
-    public Mono<HttpEntity<Greeting>> greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
-        var greeting = new Greeting(String.format(TEMPLATE, name));
-        greeting.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).greeting(name)).withSelfRel());
-        return Mono.just(ResponseEntity.ok(greeting));
-    }
+	@GetMapping("/greeting")
+	public Mono<HttpEntity<Greeting>> greeting(
+			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+		var greeting = new Greeting(String.format(TEMPLATE, name));
+		greeting.add(
+				WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).greeting(name)).withSelfRel());
+		return Mono.just(ResponseEntity.ok(greeting));
+	}
 
 }

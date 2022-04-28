@@ -34,9 +34,7 @@ public final class Jwks {
 		var keyPair = KeyGeneratorUtils.generateRsaKey();
 		var publicKey = (RSAPublicKey) keyPair.getPublic();
 		var privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		return new RSAKey.Builder(publicKey)
-				.privateKey(privateKey)
-				.keyID(UUID.randomUUID().toString())
-				.build();
+		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
 	}
+
 }

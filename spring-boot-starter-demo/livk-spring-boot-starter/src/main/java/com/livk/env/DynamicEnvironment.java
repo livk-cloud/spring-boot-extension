@@ -26,25 +26,28 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
-    private final Log log;
-    private final ConfigurableBootstrapContext context;
+	private final Log log;
 
-    private static final String source = "env.json";
+	private final ConfigurableBootstrapContext context;
 
-    @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        log.info("context:" + context);
-        MutablePropertySources propertySources = environment.getPropertySources();
-        try {
-            ClassPathResource resource = new ClassPathResource(source);
-            if (resource.exists()) {
-                InputStream inputStream = resource.getInputStream();
-                Properties properties = JacksonUtils.toProperties(inputStream);
-                PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
-                propertySources.addLast(livkSource);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	private static final String source = "env.json";
+
+	@Override
+	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+		log.info("context:" + context);
+		MutablePropertySources propertySources = environment.getPropertySources();
+		try {
+			ClassPathResource resource = new ClassPathResource(source);
+			if (resource.exists()) {
+				InputStream inputStream = resource.getInputStream();
+				Properties properties = JacksonUtils.toProperties(inputStream);
+				PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
+				propertySources.addLast(livkSource);
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

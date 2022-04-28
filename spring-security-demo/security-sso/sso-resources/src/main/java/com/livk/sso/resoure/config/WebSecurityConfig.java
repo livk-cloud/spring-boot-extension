@@ -21,27 +21,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, RsaKeyProperties properties,
+			AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		return http.csrf().disable().authorizeRequests().antMatchers("/user/query").hasAnyRole("ADMIN").anyRequest()
+				.authenticated().and()
+				.addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties))
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
+	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   RsaKeyProperties properties,
-                                                   AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        return http.csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/user/query").hasAnyRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties))
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .build();
-    }
 }

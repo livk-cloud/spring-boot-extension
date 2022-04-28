@@ -16,29 +16,31 @@ import java.util.Collection;
  */
 public class LivkPreciseShardingAlgorithm implements StandardShardingAlgorithm<String> {
 
-    @Override
-    public void init() {
+	@Override
+	public void init() {
 
-    }
+	}
 
-    @Override
-    public String getType() {
-        return "LIVK_PRECISE";
-    }
+	@Override
+	public String getType() {
+		return "LIVK_PRECISE";
+	}
 
-    @Override
-    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
-        var value = shardingValue.getValue();
-        for (var targetName : availableTargetNames) {
-            if (targetName.endsWith(value)) {
-                return targetName;
-            }
-        }
-        throw new IllegalArgumentException();
-    }
+	@Override
+	public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> shardingValue) {
+		var value = shardingValue.getValue();
+		for (var targetName : availableTargetNames) {
+			if (targetName.endsWith(value)) {
+				return targetName;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
 
-    @Override
-    public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<String> shardingValue) {
-        return availableTargetNames;
-    }
+	@Override
+	public Collection<String> doSharding(Collection<String> availableTargetNames,
+			RangeShardingValue<String> shardingValue) {
+		return availableTargetNames;
+	}
+
 }

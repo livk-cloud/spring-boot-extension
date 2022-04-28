@@ -14,15 +14,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(ZookeeperProperties.PREFIX)
 public class ZookeeperProperties {
-    public static final String PREFIX = "spring.zookeeper";
 
-    private String host = "localhost";
+	public static final String PREFIX = "spring.zookeeper";
 
-    private int port = 2181;
+	private String host = "localhost";
 
-    private int timeout = 4000;
+	private int port = 2181;
 
-    public String getAddress() {
-        return String.join(":", host, String.valueOf(port));
-    }
+	private int timeout = 4000;
+
+	public String getAddress() {
+		return String.join(":", host, String.valueOf(port));
+	}
+
 }

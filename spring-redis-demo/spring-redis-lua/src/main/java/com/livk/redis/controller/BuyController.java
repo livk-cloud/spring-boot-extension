@@ -24,27 +24,29 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class BuyController {
 
-    private final LuaStock luaStock;
-    private final LivkRedisTemplate livkRedisTemplate;
+	private final LuaStock luaStock;
 
-    @PostConstruct
-    public void init() {
-        if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk"))) {
-            livkRedisTemplate.delete("livk");
-        }
-        livkRedisTemplate.opsForValue().set("livk", 1);
-    }
+	private final LivkRedisTemplate livkRedisTemplate;
 
-    @PostMapping("buy")
-    public HttpEntity<String> buy() {
-        return ResponseEntity.ok(luaStock.buy(1));
-    }
+	@PostConstruct
+	public void init() {
+		if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk"))) {
+			livkRedisTemplate.delete("livk");
+		}
+		livkRedisTemplate.opsForValue().set("livk", 1);
+	}
 
-    @PostMapping("put")
-    public void put() {
-        var value = livkRedisTemplate.opsForValue();
-        if ((Integer) value.get("livk") > 0) {
-            value.decrement("livk");
-        }
-    }
+	@PostMapping("buy")
+	public HttpEntity<String> buy() {
+		return ResponseEntity.ok(luaStock.buy(1));
+	}
+
+	@PostMapping("put")
+	public void put() {
+		var value = livkRedisTemplate.opsForValue();
+		if ((Integer) value.get("livk") > 0) {
+			value.decrement("livk");
+		}
+	}
+
 }

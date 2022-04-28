@@ -26,37 +26,37 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping
-    public HttpEntity<Flux<User>> users() {
-        return ResponseEntity.ok(userService.list());
-    }
+	@GetMapping
+	public HttpEntity<Flux<User>> users() {
+		return ResponseEntity.ok(userService.list());
+	}
 
-    @Bean
-    public RouterFunction<ServerResponse> userList() {
-        return RouterFunctions.route()
-                .GET("/stream/user", request -> ServerResponse.ok().body(userService.list(), User.class)).build();
-    }
+	@Bean
+	public RouterFunction<ServerResponse> userList() {
+		return RouterFunctions.route()
+				.GET("/stream/user", request -> ServerResponse.ok().body(userService.list(), User.class)).build();
+	}
 
-    @GetMapping("/{id}")
-    public HttpEntity<Mono<User>> user(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getById(Mono.just(id)));
-    }
+	@GetMapping("/{id}")
+	public HttpEntity<Mono<User>> user(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(userService.getById(Mono.just(id)));
+	}
 
-    @PostMapping
-    public HttpEntity<Mono<Void>> save(@RequestBody Mono<User> userMono) {
-        return ResponseEntity.ok(userService.save(userMono));
-    }
+	@PostMapping
+	public HttpEntity<Mono<Void>> save(@RequestBody Mono<User> userMono) {
+		return ResponseEntity.ok(userService.save(userMono));
+	}
 
-    @PutMapping("/{id}")
-    public HttpEntity<Mono<Void>> update(@PathVariable("id") Long id,
-                                         @RequestBody Mono<User> userMono) {
-        return ResponseEntity.ok(userService.updateById(Mono.just(id), userMono));
-    }
+	@PutMapping("/{id}")
+	public HttpEntity<Mono<Void>> update(@PathVariable("id") Long id, @RequestBody Mono<User> userMono) {
+		return ResponseEntity.ok(userService.updateById(Mono.just(id), userMono));
+	}
 
-    @DeleteMapping("/{id}")
-    public HttpEntity<Mono<Void>> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.deleteById(Mono.just(id)));
-    }
+	@DeleteMapping("/{id}")
+	public HttpEntity<Mono<Void>> delete(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(userService.deleteById(Mono.just(id)));
+	}
+
 }

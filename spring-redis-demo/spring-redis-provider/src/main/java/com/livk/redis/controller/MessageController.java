@@ -23,23 +23,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final LivkReactiveRedisTemplate livkReactiveRedisTemplate;
+	private final LivkReactiveRedisTemplate livkReactiveRedisTemplate;
 
-    @PostMapping("/redis/{id}")
-    public Mono<Void> send(@PathVariable("id") Long id,
-                           @RequestParam("msg") String msg,
-                           @RequestBody Map<String, Object> data) {
-        return livkReactiveRedisTemplate
-                .convertAndSend(LivkMessage.CHANNEL, LivkMessage.of().setId(id).setMsg(msg).setData(data))
-                .flatMap(n -> Mono.empty());
-    }
+	@PostMapping("/redis/{id}")
+	public Mono<Void> send(@PathVariable("id") Long id, @RequestParam("msg") String msg,
+			@RequestBody Map<String, Object> data) {
+		return livkReactiveRedisTemplate
+				.convertAndSend(LivkMessage.CHANNEL, LivkMessage.of().setId(id).setMsg(msg).setData(data))
+				.flatMap(n -> Mono.empty());
+	}
 
-    @PostMapping("/redis/stream")
-    public Mono<Void> stream() {
-        return livkReactiveRedisTemplate.opsForStream()
-                .add(StreamRecords.newRecord()
-                        .ofObject("livk-object")
-                        .withStreamKey("livk-streamKey"))
-                .flatMap(n -> Mono.empty());
-    }
+	@PostMapping("/redis/stream")
+	public Mono<Void> stream() {
+		return livkReactiveRedisTemplate.opsForStream()
+				.add(StreamRecords.newRecord().ofObject("livk-object").withStreamKey("livk-streamKey"))
+				.flatMap(n -> Mono.empty());
+	}
+
 }

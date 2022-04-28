@@ -26,25 +26,22 @@ public class QuartzController {
 
 	@PostMapping("testTask")
 	public Mono<Void> testTask() throws SchedulerException {
-		var jobDetail = JobBuilder.newJob(QuartzScheduler.class)
-				.withIdentity("job1", "group1")
-				.build();
+		var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job1", "group1").build();
 		jobDetail.getJobDataMap().put("user", "tom1");
 		var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
-		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job1", "group1")
-				.withSchedule(cronScheduleBuilder).build();
+		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job1", "group1").withSchedule(cronScheduleBuilder)
+				.build();
 		scheduler.scheduleJob(jobDetail, cronTrigger);
 		return Mono.empty();
 	}
 
 	@PostMapping("livkTask")
 	public Mono<Void> livkTask() throws SchedulerException {
-		var jobDetail = JobBuilder.newJob(QuartzScheduler.class)
-				.withIdentity("job2", "group2").build();
+		var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job2", "group2").build();
 		jobDetail.getJobDataMap().put("user", "tom2");
 		var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
-		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job2", "group2")
-				.withSchedule(cronScheduleBuilder).build();
+		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job2", "group2").withSchedule(cronScheduleBuilder)
+				.build();
 		livkQuartzScheduler.scheduleJob(jobDetail, cronTrigger);
 		return Mono.empty();
 	}

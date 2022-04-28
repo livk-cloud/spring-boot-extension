@@ -13,8 +13,10 @@ import java.time.LocalDate;
  * @date 2022/3/28
  */
 public class LocalDateFunction implements FunctionHandle<LocalDate> {
-    @Override
-    public LocalDate handler() {
-        return LocalDate.now();
-    }
+
+	@Override
+	public LocalDate handler() {
+		return LocalDate.now();
+	}
+
 }

@@ -11,8 +11,10 @@ import com.livk.handler.FunctionHandle;
  * @date 2022/3/28
  */
 public class TimestampFunction implements FunctionHandle<Long> {
-    @Override
-    public Long handler() {
-        return System.currentTimeMillis();
-    }
+
+	@Override
+	public Long handler() {
+		return System.currentTimeMillis();
+	}
+
 }

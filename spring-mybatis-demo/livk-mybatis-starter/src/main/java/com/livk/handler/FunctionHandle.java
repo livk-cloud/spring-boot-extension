@@ -9,5 +9,7 @@ package com.livk.handler;
  * @date 2022/1/29
  */
 public interface FunctionHandle<T> {
-    T handler();
+
+	T handler();
+
 }

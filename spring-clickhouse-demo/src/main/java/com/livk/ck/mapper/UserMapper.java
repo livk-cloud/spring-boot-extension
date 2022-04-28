@@ -19,9 +19,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select id, app_id, version, reg_time from user")
-    List<User> list();
+	@Select("select id, app_id, version, reg_time from user")
+	List<User> list();
 
-    @Delete("alter table user delete where reg_time=#{regTime}")
-    int delete(@Param("regTime") String regTime);
+	@Delete("alter table user delete where reg_time=#{regTime}")
+	int delete(@Param("regTime") String regTime);
+
 }

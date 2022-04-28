@@ -11,9 +11,11 @@ import java.io.InputStream;
  * @date 2022/3/18
  */
 public interface FileService {
-    void upload(InputStream inputStream);
 
-    byte[] download(String filename);
+	void upload(InputStream inputStream);
 
-    String getType();
+	byte[] download(String filename);
+
+	String getType();
+
 }

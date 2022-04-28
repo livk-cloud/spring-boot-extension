@@ -14,9 +14,9 @@ import java.util.Date;
  */
 public class DateFunction implements FunctionHandle<Date> {
 
-    @Override
-    public Date handler() {
-        return new Date();
-    }
+	@Override
+	public Date handler() {
+		return new Date();
+	}
 
 }

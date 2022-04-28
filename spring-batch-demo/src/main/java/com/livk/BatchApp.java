@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class BatchApp {
-    public static void main(String[] args) {
-        LivkSpring.run(BatchApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(BatchApp.class, args);
+	}
+
 }

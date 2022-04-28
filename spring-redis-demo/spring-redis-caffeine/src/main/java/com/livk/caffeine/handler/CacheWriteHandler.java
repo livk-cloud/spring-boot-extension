@@ -9,7 +9,9 @@ package com.livk.caffeine.handler;
  * @date 2022/3/30
  */
 public interface CacheWriteHandler<T> {
-    void put(String key, T value, long timeout);
 
-    void delete(String key);
+	void put(String key, T value, long timeout);
+
+	void delete(String key);
+
 }

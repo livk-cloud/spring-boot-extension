@@ -20,27 +20,27 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 public class MqttSenderConfig {
 
-    public static final String CHANNEL_NAME_OUT = "mqttOutboundChannel";
-    /**
-     * MQTT信息通道（生产者）
-     */
-    @Bean(name = CHANNEL_NAME_OUT)
-    public MessageChannel mqttOutboundChannel() {
-        return new DirectChannel();
-    }
+	public static final String CHANNEL_NAME_OUT = "mqttOutboundChannel";
 
-    /**
-     * MQTT消息处理器（生产者）
-     */
-    @Bean
-    @ServiceActivator(inputChannel = CHANNEL_NAME_OUT)
-    public MessageHandler mqttOutbound(MqttPahoClientFactory mqttPahoClientFactory,
-                                       MqttProperties mqttProperties) {
-        var messageHandler = new MqttPahoMessageHandler(
-                mqttProperties.getSender().getClientId(),
-                mqttPahoClientFactory);
-        messageHandler.setAsync(true);
-        messageHandler.setDefaultTopic(mqttProperties.getSender().getDefaultTopic());
-        return messageHandler;
-    }
+	/**
+	 * MQTT信息通道（生产者）
+	 */
+	@Bean(name = CHANNEL_NAME_OUT)
+	public MessageChannel mqttOutboundChannel() {
+		return new DirectChannel();
+	}
+
+	/**
+	 * MQTT消息处理器（生产者）
+	 */
+	@Bean
+	@ServiceActivator(inputChannel = CHANNEL_NAME_OUT)
+	public MessageHandler mqttOutbound(MqttPahoClientFactory mqttPahoClientFactory, MqttProperties mqttProperties) {
+		var messageHandler = new MqttPahoMessageHandler(mqttProperties.getSender().getClientId(),
+				mqttPahoClientFactory);
+		messageHandler.setAsync(true);
+		messageHandler.setDefaultTopic(mqttProperties.getSender().getDefaultTopic());
+		return messageHandler;
+	}
+
 }

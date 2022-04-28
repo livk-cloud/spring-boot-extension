@@ -29,38 +29,39 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 public class CacheAspect {
 
-    private final CacheHandlerAdapter adapter;
+	private final CacheHandlerAdapter adapter;
 
-    @Around("@annotation(doubleCache)")
-    public Object around(ProceedingJoinPoint point, DoubleCache doubleCache) throws Throwable {
-        var signature = (MethodSignature) point.getSignature();
-        var method = signature.getMethod();
-        if (doubleCache == null) {
-            doubleCache = AnnotationUtils.findAnnotation(method, DoubleCache.class);
-        }
-        Assert.notNull(doubleCache, "doubleCache is null");
-        var paramNames = signature.getParameterNames();
-        var treeMap = new TreeMap<String, Object>();
-        for (var i = 0; i < paramNames.length; i++) {
-            treeMap.put(paramNames[i], point.getArgs()[i]);
-        }
-        var spelResult = SpelUtils.parse(doubleCache.key(), treeMap);
-        var realKey = doubleCache.cacheName() + ":" + spelResult;
-        switch (doubleCache.type()) {
-            case FULL -> {
-                return adapter.readAndPut(realKey, point, doubleCache.timeOut());
-            }
-            case PUT -> {
-                var proceed = point.proceed();
-                adapter.put(realKey, proceed, doubleCache.timeOut());
-                return proceed;
-            }
-            case DELETE -> {
-                var proceed = point.proceed();
-                adapter.delete(realKey);
-                return proceed;
-            }
-        }
-        return point.proceed();
-    }
+	@Around("@annotation(doubleCache)")
+	public Object around(ProceedingJoinPoint point, DoubleCache doubleCache) throws Throwable {
+		var signature = (MethodSignature) point.getSignature();
+		var method = signature.getMethod();
+		if (doubleCache == null) {
+			doubleCache = AnnotationUtils.findAnnotation(method, DoubleCache.class);
+		}
+		Assert.notNull(doubleCache, "doubleCache is null");
+		var paramNames = signature.getParameterNames();
+		var treeMap = new TreeMap<String, Object>();
+		for (var i = 0; i < paramNames.length; i++) {
+			treeMap.put(paramNames[i], point.getArgs()[i]);
+		}
+		var spelResult = SpelUtils.parse(doubleCache.key(), treeMap);
+		var realKey = doubleCache.cacheName() + ":" + spelResult;
+		switch (doubleCache.type()) {
+		case FULL -> {
+			return adapter.readAndPut(realKey, point, doubleCache.timeOut());
+		}
+		case PUT -> {
+			var proceed = point.proceed();
+			adapter.put(realKey, proceed, doubleCache.timeOut());
+			return proceed;
+		}
+		case DELETE -> {
+			var proceed = point.proceed();
+			adapter.delete(realKey);
+			return proceed;
+		}
+		}
+		return point.proceed();
+	}
+
 }

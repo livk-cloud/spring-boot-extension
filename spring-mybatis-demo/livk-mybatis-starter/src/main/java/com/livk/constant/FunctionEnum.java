@@ -18,25 +18,24 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum FunctionEnum implements FunctionHandle<Object> {
-    DEFAULT(new NullFunction()),
-    DATE(new DateFunction()),
-    LOCAL_DATE(new LocalDateFunction()),
-    LOCAL_DATE_TIME(new LocalDateTimeFunction()),
-    TIMESTAMP(new TimestampFunction());
 
-    private final FunctionHandle<?> function;
+	DEFAULT(new NullFunction()), DATE(new DateFunction()), LOCAL_DATE(new LocalDateFunction()), LOCAL_DATE_TIME(
+			new LocalDateTimeFunction()), TIMESTAMP(new TimestampFunction());
 
-    @Override
-    public Object handler() {
-        return function.handler();
-    }
+	private final FunctionHandle<?> function;
 
-    @SuppressWarnings("unchecked")
-    public <T> T handler(Class<T> targetClass) {
-        Object value = handler();
-        if (targetClass.isInstance(value)) {
-            return (T) value;
-        }
-        throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
-    }
+	@Override
+	public Object handler() {
+		return function.handler();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T handler(Class<T> targetClass) {
+		Object value = handler();
+		if (targetClass.isInstance(value)) {
+			return (T) value;
+		}
+		throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
+	}
+
 }

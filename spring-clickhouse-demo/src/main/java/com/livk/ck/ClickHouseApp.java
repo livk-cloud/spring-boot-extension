@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class ClickHouseApp {
-    public static void main(String[] args) {
-        LivkSpring.run(ClickHouseApp.class, args);
-    }
+
+	public static void main(String[] args) {
+		LivkSpring.run(ClickHouseApp.class, args);
+	}
+
 }

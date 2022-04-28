@@ -21,22 +21,25 @@ import java.util.Date;
 @Setter
 public class CsvItemProcessor implements ItemProcessor<User, User> {
 
-    private Validator<? super User> validator;
+	private Validator<? super User> validator;
 
-    @Override
-    public User process(User item) throws ValidationException {
-        try {
-            validator.validate(item);
-            if (item.getSex().equals("男")) {
-                item.setSex("1");
-            } else {
-                item.setSex("2");
-            }
-            item.setStatus(1);
-            item.setCreateTime(new Date());
-            return item;
-        } catch (ValidationException e) {
-            return null;
-        }
-    }
+	@Override
+	public User process(User item) throws ValidationException {
+		try {
+			validator.validate(item);
+			if (item.getSex().equals("男")) {
+				item.setSex("1");
+			}
+			else {
+				item.setSex("2");
+			}
+			item.setStatus(1);
+			item.setCreateTime(new Date());
+			return item;
+		}
+		catch (ValidationException e) {
+			return null;
+		}
+	}
+
 }
