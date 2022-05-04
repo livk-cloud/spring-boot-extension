@@ -16,13 +16,13 @@ import org.gradle.api.tasks.compile.JavaCompile
  */
 class ResourcesPlugin implements Plugin<Project> {
 
-    private static final List<String> COMPILER_ARGS;
+    private static final List<String> COMPILER_ARGS
 
     static {
-        COMPILER_ARGS = new ArrayList<>();
+        COMPILER_ARGS = new ArrayList<>()
         COMPILER_ARGS.addAll(Arrays.asList(
                 "-Xlint:-options", "-Xlint:rawtypes",
-                "-Xlint:deprecation", "-Xlint:unchecked",));
+                "-Xlint:deprecation", "-Xlint:unchecked",))
     }
 
     @Override

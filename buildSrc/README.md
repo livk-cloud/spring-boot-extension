@@ -37,7 +37,6 @@ implementation-class=全类名
 ```groovy
 class ResourcesPlugin implements Plugin<Project> {
     
-    @Override
     void apply(Project project) {
         project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
