@@ -4,6 +4,7 @@
 > [Spring整合ClickHouse](spring-clickhouse-demo)<br>
 > [spring整合Excel自定义注解实现导入和导出](spring-excel-demo)<br>
 > [spring整合hateoas实现restful风格返回](spring-hateoas-demo)<br>
+> [spring整合kafka](spring-kafka-demo)<br>
 > [spring发送Email](spring-mail-demo)<br>
 > [spring整合mybatis自定义拦截器](spring-mybatis-demo)<br>
 > [spring整合Pulsar](spring-pulsar-demo)<br>
