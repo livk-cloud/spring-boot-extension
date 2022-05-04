@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.RepresentationModel;
 
 /**
  * <p>
@@ -18,9 +17,9 @@ import org.springframework.hateoas.RepresentationModel;
 @EqualsAndHashCode(callSuper = false)
 @Getter
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
-public class Greeting extends RepresentationModel<Greeting> {
+public class Greeting extends AbstractEntity<Greeting> {
 
 	@JsonProperty("content")
-	private final String content;
+	private final String contents;
 
 }
