@@ -28,8 +28,9 @@ class ResourcesPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         def javaCompile = project.tasks
+                .withType(JavaCompile.class)
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
-                .dependsOn(Format.NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME) as JavaCompile
+        javaCompile.dependsOn(Format.NAME,JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
         javaCompile.options.compilerArgs = COMPILER_ARGS
         javaCompile.options.encoding = "UTF-8"
     }
