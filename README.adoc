@@ -1,1 +1,10 @@
+=  Spring-Boot-Demo
 
+这是一个关于springboot项目的各种示例. +
+JDK:17 +
+SpringBoot: 2.7.0-RC1 +
+Gradle: 7.4.2 +
+
+link:gradle.md[Gradle拆坑记录] +
+link:buildSrc/README.md[Gradle Plugin] +
+link:example.md[整合示例] +

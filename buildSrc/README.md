@@ -1,5 +1,5 @@
-> java(Kotlin)编写脚本使用 META-INF/gradle-plugins/{pluginName}.properties
-> build.gradle使用
+java(Kotlin)编写脚本使用META-INF/gradle-plugins/{pluginName}.properties
+build.gradle使用
 
 ```properties
 implementation-class=全类名
