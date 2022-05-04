@@ -128,10 +128,10 @@ allprojects {
     }
 }
 ```
+
 > gradle与idea的兼容性有点小问题，很多爆红的，但是可以运行
 
 > [idea使用gradle有bug](https://blog.csdn.net/Icannotdebug/article/details/83081745) <br>
-> 但是上面的方法解决不了(我试过，没解决) <br>
 > 方式一:调用gradle classes(提前编译好再运行项目) <br>
-> 方式二:修改idea gradle配置build and run using换成idea，
-> 这样编译输出的文件会变成out
+> 方式二:修改idea gradle配置build and run using换成idea，这样编译输出的文件会变成out<br>
+> 方式三:使用Gradle Plugin[示例](./buildSrc/src/main/groovy/com/livk/plugin/ResourcesPlugin.groovy)

@@ -47,6 +47,7 @@ ext {
             "io.jsonwebtoken:jjwt-jackson:${jjwtApiVersion}",
             "org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:${shardingsphereVersion}",
             "com.clickhouse:clickhouse-jdbc:${clickhouseJdbcVersion}",
-            "org.apache.pulsar:pulsar-client:${pulsarClientVersion}"
+            "org.apache.pulsar:pulsar-client:${pulsarClientVersion}",
+            "com.google.code.findbugs:annotations:${googleFindbugsVersion}"
     ]
 }

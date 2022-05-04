@@ -19,6 +19,7 @@ dependencies {
     compileOnly 'org.apache.tomcat.embed:tomcat-embed-core'
     api 'org.apache.commons:commons-lang3'
     api 'org.burningwave:core'
+    api 'com.google.code.findbugs:annotations'
 }
 
 test {

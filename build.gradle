@@ -45,11 +45,6 @@ allprojects {
         maven { url 'https://repo.spring.io/release' }
         maven { url 'https://repo.spring.io/libs-snapshot/' }
     }
-
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:none" << "-nowarn" << "-Xlint:unchecked"
-        options.encoding = "UTF-8"
-    }
 }
 
 subprojects {

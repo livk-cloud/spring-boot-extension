@@ -1,0 +1,10 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    api project(':spring-kafka-demo:kafka-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+}
+
+test {
+    useJUnitPlatform()
+}

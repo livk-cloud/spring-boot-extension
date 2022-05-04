@@ -45,7 +45,7 @@ public class LivkStreamListener
 	@Override
 	public void afterPropertiesSet() {
 		if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk-streamKey"))) {
-			var groups = livkRedisTemplate.opsForStream().groups("livk-group");
+			var groups = livkRedisTemplate.opsForStream().groups("livk-streamKey");
 			if (groups.isEmpty()) {
 				livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
 			}
