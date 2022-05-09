@@ -20,4 +20,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(WebClientConfig.class)
 public @interface EnableWebClient {
+
 }
