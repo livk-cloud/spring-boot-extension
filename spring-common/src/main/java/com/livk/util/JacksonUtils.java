@@ -10,10 +10,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The type Jackson util.
@@ -124,6 +121,20 @@ public class JacksonUtils {
 			e.printStackTrace();
 		}
 		return Collections.emptyMap();
+	}
+
+	public Properties toProperties(InputStream inputStream) {
+		if (inputStream == null) {
+			return new Properties();
+		}
+		try {
+			var mapType = MAPPER.getTypeFactory().constructType(Properties.class);
+			return MAPPER.readValue(inputStream, mapType);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new Properties();
 	}
 
 }
