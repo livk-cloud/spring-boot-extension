@@ -3,7 +3,9 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     api project(':spring-common')
     api 'org.springframework.boot:spring-boot-starter-webflux'
+    api 'org.springframework.boot:spring-boot-starter-jdbc'
     api 'org.springframework.boot:spring-boot-starter-quartz'
+    api 'mysql:mysql-connector-java'
 }
 
 test {

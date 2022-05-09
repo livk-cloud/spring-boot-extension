@@ -20,20 +20,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class QuartzController {
 
-	private final Scheduler scheduler;
-
 	private final LivkQuartzScheduler livkQuartzScheduler;
-
-	@PostMapping("testTask")
-	public Mono<Void> testTask() throws SchedulerException {
-		var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job1", "group1").build();
-		jobDetail.getJobDataMap().put("user", "tom1");
-		var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
-		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job1", "group1").withSchedule(cronScheduleBuilder)
-				.build();
-		scheduler.scheduleJob(jobDetail, cronTrigger);
-		return Mono.empty();
-	}
 
 	@PostMapping("livkTask")
 	public Mono<Void> livkTask() throws SchedulerException {

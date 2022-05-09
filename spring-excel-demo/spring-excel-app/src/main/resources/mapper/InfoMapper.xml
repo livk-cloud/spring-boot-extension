@@ -3,9 +3,9 @@
 <mapper namespace="com.livk.excel.mapper.InfoMapper">
     <insert id="insertBatch">
         insert into `info` (`phone`)
-            value
-        <foreach collection="list"  separator="," item="item">
-            (#{item.phone})
+        value
+        <foreach collection="list" separator="," item="item" open="(" close=")">
+            #{item.phone}
         </foreach>
     </insert>
 </mapper>

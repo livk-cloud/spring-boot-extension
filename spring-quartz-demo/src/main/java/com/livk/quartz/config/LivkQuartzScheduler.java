@@ -1,9 +1,11 @@
 package com.livk.quartz.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 /**
@@ -14,12 +16,14 @@ import java.util.Date;
  * @author livk
  * @date 2021/10/25
  */
-@Configuration
+@Slf4j
+@Component
 @RequiredArgsConstructor
 public class LivkQuartzScheduler {
 
 	private final Scheduler scheduler;
 
+	@PostConstruct
 	public void startJob() throws SchedulerException {
 		scheduler.start();
 	}
