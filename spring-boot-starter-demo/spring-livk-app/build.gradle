@@ -2,7 +2,8 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     api project(':spring-boot-starter-demo:livk-spring-boot-starter')
-    api 'org.springframework.boot:spring-boot-starter-web'
+    api project(':spring-boot-starter-demo:spring-filter')
+    api 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 test {
