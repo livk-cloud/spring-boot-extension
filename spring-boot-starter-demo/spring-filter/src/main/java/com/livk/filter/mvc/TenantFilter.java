@@ -24,12 +24,12 @@ import java.io.IOException;
 @WebFilter(filterName = "tenantFilter", urlPatterns = "/*")
 public class TenantFilter implements Filter {
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        TenantContext.setTenantId(((HttpServletRequest) request).getHeader(TenantContext.ATTRIBUTES));
-        chain.doFilter(request, response);
-        TenantContext.remove();
-    }
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		TenantContext.setTenantId(((HttpServletRequest) request).getHeader(TenantContext.ATTRIBUTES));
+		chain.doFilter(request, response);
+		TenantContext.remove();
+	}
 
 }
