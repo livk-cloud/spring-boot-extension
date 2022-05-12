@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -36,6 +38,12 @@ public class UserController {
 	@GetMapping
 	public HttpEntity<List<UserVO>> list() {
 		return ResponseEntity.ok(service.converter(USERS, UserVO.class).toList());
+	}
+
+	@GetMapping("/{id}")
+	public HttpEntity<UserVO> getById(@PathVariable Integer id) throws Throwable {
+		User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
+		return ResponseEntity.ok(service.converter(u, UserVO.class));
 	}
 
 }
