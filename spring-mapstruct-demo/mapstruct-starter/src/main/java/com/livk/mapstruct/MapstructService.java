@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -27,10 +28,10 @@ public class MapstructService {
 		Table<Class<?>, Class<?>, Converter> converterTable = factory.getConverterMap();
 		Class<?> sourceClass = source.getClass();
 		if (converterTable.contains(sourceClass, targetClass)) {
-			return (T) converterTable.get(sourceClass, targetClass).getTarget(source);
+			return (T) Objects.requireNonNull(converterTable.get(sourceClass, targetClass)).getTarget(source);
 		}
 		else if (converterTable.contains(targetClass, sourceClass)) {
-			return (T) converterTable.get(targetClass, sourceClass).getSource(source);
+			return (T) Objects.requireNonNull(converterTable.get(targetClass, sourceClass)).getSource(source);
 		}
 		return BeanUtils.instantiateClass(targetClass);
 	}
@@ -39,10 +40,12 @@ public class MapstructService {
 		Table<Class<?>, Class<?>, Converter> converterTable = factory.getConverterMap();
 		Class<?> sourceClass = sources.stream().distinct().findFirst().orElseThrow().getClass();
 		if (converterTable.contains(sourceClass, targetClass)) {
-			return (Stream<T>) converterTable.get(sourceClass, targetClass).streamTarget(sources);
+			return (Stream<T>) Objects.requireNonNull(converterTable.get(sourceClass, targetClass))
+					.streamTarget(sources);
 		}
 		else if (converterTable.contains(targetClass, sourceClass)) {
-			return (Stream<T>) converterTable.get(targetClass, sourceClass).streamSource(sources);
+			return (Stream<T>) Objects.requireNonNull(converterTable.get(targetClass, sourceClass))
+					.streamSource(sources);
 		}
 		return Stream.empty();
 	}
