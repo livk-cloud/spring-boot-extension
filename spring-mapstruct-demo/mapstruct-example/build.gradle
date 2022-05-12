@@ -1,0 +1,17 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    api project(':spring-mapstruct-demo:mapstruct-starter')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.mapstruct:mapstruct'
+    api 'org.projectlombok:lombok-mapstruct-binding'
+    annotationProcessor 'org.mapstruct:mapstruct-processor'
+}
+
+compileJava {
+    options.compilerArgs <<  "-Amapstruct.unmappedTargetPolicy=IGNORE"
+}
+
+test {
+    useJUnitPlatform()
+}

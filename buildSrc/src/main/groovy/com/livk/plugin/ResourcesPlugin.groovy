@@ -5,7 +5,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
-
 /**
  * <p>
  * ResourcesPlugin
@@ -20,8 +19,11 @@ class ResourcesPlugin implements Plugin<Project> {
 
     static {
         COMPILER_ARGS.addAll(Arrays.asList(
-                "-Xlint:-options", "-Xlint:rawtypes",
-                "-Xlint:deprecation", "-Xlint:unchecked",))
+                "-Xlint:-options",
+                "-Xlint:rawtypes",
+                "-Xlint:deprecation",
+                "-Xlint:unchecked",
+        ))
     }
 
     @Override
@@ -29,7 +31,7 @@ class ResourcesPlugin implements Plugin<Project> {
         def javaCompile = project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
                 .dependsOn(Format.NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME) as JavaCompile
-        javaCompile.options.compilerArgs = COMPILER_ARGS
+        javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
         javaCompile.options.encoding = "UTF-8"
     }
 }
