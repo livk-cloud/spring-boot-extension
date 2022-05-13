@@ -8,10 +8,6 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor'
 }
 
-compileJava {
-    options.compilerArgs <<  "-Amapstruct.unmappedTargetPolicy=IGNORE"
-}
-
 test {
     useJUnitPlatform()
 }
