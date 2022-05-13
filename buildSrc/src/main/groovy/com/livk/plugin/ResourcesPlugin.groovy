@@ -8,7 +8,13 @@ import org.gradle.api.tasks.compile.JavaCompile
 
 /**
  * <p>
- * ResourcesPlugin
+ * 给非SpringBoot项目添加Resources文件夹
+ * </p>
+ * <p>
+ *     添加编译检查参数
+ * </p>
+ * <p>
+ *     给含有mapstruct项目添加IGNORE属性
  * </p>
  *
  * @author livk
@@ -18,15 +24,14 @@ class ResourcesPlugin implements Plugin<Project> {
 
     private static final List<String> COMPILER_ARGS = new ArrayList<>()
     private static final String MAPSTRUCT_NAME = "mapstruct"
-    private static final String MAPSTRUCT_COMPILER_ARGS = "-Amapstruct.unmappedTargetPolicy=IGNORE";
+    private static final List<String> MAPSTRUCT_COMPILER_ARGS = new ArrayList<>()
 
     static {
-        COMPILER_ARGS.addAll(Arrays.asList(
-                "-Xlint:-options",
+        COMPILER_ARGS.addAll(Arrays.asList("-Xlint:-options",
                 "-Xlint:rawtypes",
                 "-Xlint:deprecation",
-                "-Xlint:unchecked",
-        ))
+                "-Xlint:unchecked",))
+        MAPSTRUCT_COMPILER_ARGS.addAll(Arrays.asList("-Amapstruct.unmappedTargetPolicy=IGNORE"))
     }
 
     @Override
@@ -36,15 +41,14 @@ class ResourcesPlugin implements Plugin<Project> {
                 .dependsOn(Format.NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME) as JavaCompile
         javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
         javaCompile.options.encoding = "UTF-8"
-        javaCompile.doFirst {
+        //在 Project 配置结束后调用
+        project.afterEvaluate {
             def dependencyName = new HashSet<>()
             project.configurations.forEach {
                 dependencyName.addAll(it.dependencies.name)
             }
             if (dependencyName.contains(MAPSTRUCT_NAME)) {
-                if (!javaCompile.options.compilerArgs.contains(MAPSTRUCT_COMPILER_ARGS)) {
-                    javaCompile.options.compilerArgs.add(MAPSTRUCT_COMPILER_ARGS)
-                }
+                javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
             }
         }
     }
