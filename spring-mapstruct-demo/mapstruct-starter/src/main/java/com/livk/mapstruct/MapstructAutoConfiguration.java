@@ -1,8 +1,9 @@
 package com.livk.mapstruct;
 
 import com.livk.mapstruct.commom.Converter;
-import com.livk.mapstruct.factory.AbstractFactory;
-import com.livk.mapstruct.factory.MapstructFactory;
+import com.livk.mapstruct.support.ConverterRepository;
+import com.livk.mapstruct.factory.MapstructFactoryRegister;
+import com.livk.mapstruct.support.MapstructService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -18,13 +19,14 @@ import org.springframework.context.annotation.Bean;
 public class MapstructAutoConfiguration {
 
 	@Bean
-	public MapstructFactory mapstructFactory() {
-		return new MapstructFactory();
+	public MapstructFactoryRegister mapstructFactoryRegister(
+			@SuppressWarnings("rawtypes") ConverterRepository<Converter> factory) {
+		return new MapstructFactoryRegister(factory);
 	}
 
 	@Bean
-	public MapstructService mapstructService(@SuppressWarnings("rawtypes") AbstractFactory<Converter> factory) {
-		return new MapstructService(factory);
+	public MapstructService mapstructService() {
+		return new MapstructService();
 	}
 
 }

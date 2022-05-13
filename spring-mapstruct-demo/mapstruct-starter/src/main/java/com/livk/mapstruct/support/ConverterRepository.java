@@ -1,7 +1,6 @@
-package com.livk.mapstruct.factory;
+package com.livk.mapstruct.support;
 
 import com.google.common.collect.Table;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * <p>
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @author livk
  * @date 2022/5/11
  */
-public interface AbstractFactory<T> extends BeanPostProcessor {
+public interface ConverterRepository<T> {
 
 	T getConverter(Class<?> sourceClass, Class<?> targetClass);
 

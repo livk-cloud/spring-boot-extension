@@ -2,7 +2,7 @@ package com.livk.example.controller;
 
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.mapstruct.MapstructService;
+import com.livk.mapstruct.support.MapstructService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * <p>
@@ -41,7 +40,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public HttpEntity<UserVO> getById(@PathVariable Integer id) throws Throwable {
+	public HttpEntity<UserVO> getById(@PathVariable Integer id) {
 		User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
 		return ResponseEntity.ok(service.converter(u, UserVO.class));
 	}
