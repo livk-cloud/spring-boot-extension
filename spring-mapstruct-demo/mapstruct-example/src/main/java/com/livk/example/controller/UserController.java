@@ -4,6 +4,7 @@ import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
 import com.livk.mapstruct.support.MapstructService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -27,7 +29,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+	//自定义双向转换
 	private final MapstructService service;
+
+	// spring单向转换
+	private final ConversionService conversionService;
 
 	public static final List<User> USERS = List.of(
 			new User().setId(1).setUsername("livk").setPassword("123456").setType(1).setCreateTime(new Date()),
@@ -35,14 +41,17 @@ public class UserController {
 			new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
 
 	@GetMapping
-	public HttpEntity<List<UserVO>> list() {
-		return ResponseEntity.ok(service.converter(USERS, UserVO.class).toList());
+	public HttpEntity<List<List<UserVO>>> list() {
+		List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
+				.filter(Objects::nonNull).toList();
+		return ResponseEntity.ok(List.of(userVOS, service.converter(USERS, UserVO.class).toList()));
 	}
 
 	@GetMapping("/{id}")
-	public HttpEntity<UserVO> getById(@PathVariable Integer id) {
+	public HttpEntity<List<UserVO>> getById(@PathVariable Integer id) {
 		User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
-		return ResponseEntity.ok(service.converter(u, UserVO.class));
+		UserVO userVOSpring = conversionService.convert(u, UserVO.class);
+		return ResponseEntity.ok(List.of(service.converter(u, UserVO.class), userVOSpring));
 	}
 
 }
