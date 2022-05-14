@@ -2,12 +2,10 @@ package com.livk.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationConfigurationException;
-import org.springframework.util.Assert;
 
 @Slf4j
 public class LivkSpring {

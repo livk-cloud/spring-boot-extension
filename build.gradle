@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 apply plugin: 'java'
 apply plugin: 'io.spring.nohttp'
 
@@ -80,12 +78,6 @@ configure(moduleProjects) {
     apply plugin: 'io.spring.javaformat'
     apply plugin: 'livk.resources.plugin'
     apply from: "$rootDir/gradle/dependency.gradle"
-
-    dependencyManagement {
-        imports {
-            mavenBom SpringBootPlugin.BOM_COORDINATES
-        }
-    }
 }
 
 test {
