@@ -1,5 +1,3 @@
-apply plugin: 'org.springframework.boot'
-
 dependencies {
     api project(':spring-security-demo:security-sso:sso-common')
     api 'org.springframework.boot:spring-boot-starter-web'

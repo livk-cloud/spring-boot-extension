@@ -6,6 +6,16 @@ apply plugin: 'io.spring.nohttp'
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
+ext {
+    moduleProjects = subprojects.findAll {
+        it.buildFile.exists()
+    }
+    commonModuleProjects = moduleProjects.findAll {
+        it.name.endsWith("-common") || it.name.endsWith("-starter")
+    }
+    springModuleProjects = moduleProjects - commonModuleProjects
+}
+
 buildscript {
     repositories {
         mavenLocal()
@@ -36,7 +46,16 @@ check {
     dependsOn checkstyleNohttp
 }
 
-allprojects {
+configure(commonModuleProjects) {
+    apply plugin: 'java-library'
+}
+
+configure(springModuleProjects) {
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+}
+
+configure(allprojects) {
     repositories {
         mavenLocal()
         maven { url 'https://repo.spring.io/milestone' }
@@ -45,11 +64,19 @@ allprojects {
         maven { url 'https://repo.spring.io/release' }
         maven { url 'https://repo.spring.io/libs-snapshot/' }
     }
+
+    task cleanBuildDir(type: Delete) {
+        allprojects.forEach {
+            if (!it.buildFile.exists()) {
+                delete "${projectDir}/build"
+                delete "${projectDir}/out"
+                delete "${projectDir}/bin"
+            }
+        }
+    }
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+configure(moduleProjects) {
     apply plugin: 'io.spring.javaformat'
     apply plugin: 'livk.resources.plugin'
     apply from: "$rootDir/gradle/dependency.gradle"

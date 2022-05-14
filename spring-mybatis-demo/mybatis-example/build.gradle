@@ -1,5 +1,3 @@
-apply plugin: 'org.springframework.boot'
-
 dependencies {
     api project(':spring-mybatis-demo:livk-mybatis-starter')
     api project(':spring-common')

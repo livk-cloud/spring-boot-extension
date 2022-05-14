@@ -1,5 +1,3 @@
-apply plugin: 'org.springframework.boot'
-
 dependencies {
     api project(':spring-excel-demo:excel-spring-boot-starter')
     api 'com.google.guava:guava'
