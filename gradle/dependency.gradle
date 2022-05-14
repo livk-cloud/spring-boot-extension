@@ -23,9 +23,3 @@ dependencies {
     testCompileOnlyDependency.each { v -> testCompileOnly v }
     testAnnotationProcessorDependency.each { v -> testAnnotationProcessor v }
 }
-
-subprojects.forEach {
-    if (it.buildFile.exists()) {
-        it.dependencies.add()
-    }
-}
