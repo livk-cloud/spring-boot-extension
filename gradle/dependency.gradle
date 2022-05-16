@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
 apply from: "$rootDir/gradle/depend.gradle"
 
 def managementMavenBom = project.ext.mavenBom
@@ -10,22 +11,20 @@ def compileOnlyDependency = project.ext.compileOnly
 def testCompileOnlyDependency = project.ext.testCompileOnly
 def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
-dependencies {
-    constraints {
-        managementDependency.each { v -> implementation v }
-        managementDependency.each { v -> annotationProcessor v }
+dependencyManagement {
+    imports {
+        managementMavenBom.each { v -> mavenBom v }
     }
-    managementMavenBom.each { v -> implementation(enforcedPlatform(v)) }
+    dependencies {
+        managementDependency.each { v -> dependency v }
+    }
+}
+
+dependencies {
     implementationDependency.each { v -> implementation v }
     annotationProcessorDependency.each { v -> annotationProcessor v }
     testImplementationDependency.each { v -> testImplementation v }
     compileOnlyDependency.each { v -> compileOnly v }
     testCompileOnlyDependency.each { v -> testCompileOnly v }
     testAnnotationProcessorDependency.each { v -> testAnnotationProcessor v }
-}
-
-subprojects.forEach {
-    if (it.buildFile.exists()) {
-        it.dependencies.add()
-    }
 }
