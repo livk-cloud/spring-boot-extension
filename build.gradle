@@ -1,34 +1,33 @@
-apply plugin: 'java'
-apply plugin: 'io.spring.nohttp'
+plugins {
+    id 'base'
+    id 'io.spring.nohttp' version("${nohttpVersion}")
+    id 'org.springframework.boot' version("${springBootVersion}") apply false
+}
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+repositories {
+    mavenLocal()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url 'https://plugins.gradle.org/m2/' }
+    maven { url 'https://repo.spring.io/release' }
+    maven { url 'https://repo.spring.io/libs-snapshot/' }
+    mavenCentral()
+    google()
+}
 
 ext {
+    //BOM项目
+    bom = project(":livk-boot-dependencies")
+    //含有build.gradle的项目(排除BOM)
     moduleProjects = subprojects.findAll {
         it.buildFile.exists()
-    }
+    } - bom
+    //普通项目
     commonModuleProjects = moduleProjects.findAll {
         it.name.endsWith("-common") || it.name.endsWith("-starter")
     }
+    //springboot项目
     springModuleProjects = moduleProjects - commonModuleProjects
-}
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://plugins.gradle.org/m2/' }
-        maven { url 'https://repo.spring.io/release' }
-        maven { url 'https://repo.spring.io/libs-snapshot/' }
-    }
-
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "io.spring.nohttp:nohttp-gradle:${nohttpVersion}"
-        classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:${springJavaFormatPluginVersion}")
-    }
 }
 
 nohttp {
@@ -38,10 +37,6 @@ nohttp {
     source.exclude "**/build/**"
     source.exclude "**/out/**"
     source.exclude "**/target/**"
-}
-
-check {
-    dependsOn checkstyleNohttp
 }
 
 configure(commonModuleProjects) {
@@ -61,6 +56,8 @@ configure(allprojects) {
         maven { url 'https://plugins.gradle.org/m2/' }
         maven { url 'https://repo.spring.io/release' }
         maven { url 'https://repo.spring.io/libs-snapshot/' }
+        mavenCentral()
+        google()
     }
 
     task cleanBuildDir(type: Delete) {
@@ -75,11 +72,19 @@ configure(allprojects) {
 }
 
 configure(moduleProjects) {
+    apply plugin: 'java-library'
     apply plugin: 'io.spring.javaformat'
     apply plugin: 'livk.resources.plugin'
     apply from: "$rootDir/gradle/dependency.gradle"
-}
 
-test {
-    useJUnitPlatform()
+    check {
+        dependsOn checkstyleNohttp
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+//    dependencies {
+//        implementation(platform(project(":dependencies")))
+//    }
 }
