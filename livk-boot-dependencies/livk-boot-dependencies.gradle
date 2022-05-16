@@ -1,0 +1,38 @@
+apply plugin: 'java-platform'
+apply plugin: 'maven-publish'
+plugins {
+    id "java-platform"
+    id 'maven-publish'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    constraints {
+        api "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion"
+        api "com.baomidou:mybatis-plus-boot-starter:$mpVersion"
+        api "org.springframework.security:spring-security-oauth2-authorization-server:$oauth2AuthorizationVersion"
+        api "com.google.guava:guava:$guavaVersion"
+        api "com.alibaba:easyexcel:$easyExcelVersion"
+        api "org.burningwave:core:$burningwaveVersion"
+        api "org.mybatis.spring.boot:mybatis-spring-boot-starter:$springMybatisVersion"
+        api "org.mybatis:mybatis:$mybatisVersion"
+        api "org.java-websocket:Java-WebSocket:$javaWebSocketVersion"
+        api "com.github.jsqlparser:jsqlparser:$jsqlparserVersion"
+        api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
+        api "org.apache.zookeeper:zookeeper:$zookeeperVersion"
+        api "io.jsonwebtoken:jjwt-api:$jjwtapiVersion"
+        api "io.jsonwebtoken:jjwt-impl:$jjwtapiVersion"
+        api "io.jsonwebtoken:jjwt-jackson:$jjwtapiVersion"
+        api "org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:$shardingsphereVersion"
+        api "com.clickhouse:clickhouse-jdbc:$clickhouseJdbcVersion"
+        api "org.apache.pulsar:pulsar-client:$pulsarClientVersion"
+        api "com.google.code.findbugs:annotations:$googleFindbugsVersion"
+        api "org.mapstruct:mapstruct:$mapstructVersion"
+        api "org.mapstruct:mapstruct-processor:$mapstructVersion"
+        api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
+    }
+}
