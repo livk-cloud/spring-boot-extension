@@ -1,4 +1,4 @@
-apply plugin: 'java'
+apply plugin: "java"
 apply from: "$rootDir/gradle/depend.gradle"
 
 def implementationDependency = project.ext.implementation

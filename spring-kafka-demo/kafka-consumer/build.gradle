@@ -1,6 +1,6 @@
 dependencies {
-    api project(':spring-kafka-demo:kafka-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
+    api project(":spring-kafka-demo:kafka-common")
+    api "org.springframework.boot:spring-boot-starter-web"
 }
 
 test {

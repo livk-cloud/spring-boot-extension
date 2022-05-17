@@ -1,8 +1,8 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework:spring-jdbc'
-    api 'org.springframework.boot:spring-boot-starter-aop'
-    compileOnly 'org.springframework.boot:spring-boot-starter'
+    api project(":spring-common")
+    api "org.springframework:spring-jdbc"
+    api "org.springframework.boot:spring-boot-starter-aop"
+    compileOnly "org.springframework.boot:spring-boot-starter"
 }
 
 test {

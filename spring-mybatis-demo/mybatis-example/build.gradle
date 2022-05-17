@@ -1,10 +1,9 @@
 dependencies {
-    api project(':spring-mybatis-demo:livk-mybatis-starter')
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
-    api 'mysql:mysql-connector-java'
-    api 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    api project(":spring-mybatis-demo:livk-mybatis-starter")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+    api "mysql:mysql-connector-java"
+    api "com.github.pagehelper:pagehelper-spring-boot-starter"
 }
 
 test {

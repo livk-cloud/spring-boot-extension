@@ -1,5 +1,5 @@
 plugins {
-    id 'java-platform'
+    id "java-platform"
 }
 
 javaPlatform {
@@ -7,7 +7,6 @@ javaPlatform {
 }
 
 dependencies {
-    api enforcedPlatform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
     constraints {
         api "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion"
         api "com.baomidou:mybatis-plus-boot-starter:$mpVersion"
@@ -29,6 +28,7 @@ dependencies {
         api "org.apache.pulsar:pulsar-client:$pulsarClientVersion"
         api "com.google.code.findbugs:annotations:$googleFindbugsVersion"
         api "org.mapstruct:mapstruct:$mapstructVersion"
+        api "org.mapstruct:mapstruct-processor:$mapstructVersion"
         api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
     }
 }

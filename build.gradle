@@ -1,11 +1,11 @@
 plugins {
-    id 'java-library'
-    id 'io.spring.nohttp' version("${nohttpVersion}")
-    id 'org.springframework.boot' version("${springBootVersion}") apply false
+    id "java-library"
+    id "io.spring.nohttp" version("${nohttpVersion}")
+    id "org.springframework.boot" version("${springBootVersion}") apply false
 }
-//
+
 ext {
-    bom = project(':livk-boot-dependencies')
+    bom = project(":livk-boot-dependencies")
     //含有build.gradle的项目(排除BOM)
     gradleModuleProjects = subprojects.findAll {
         it.buildFile.exists()
@@ -28,17 +28,17 @@ nohttp {
 }
 
 configure(springModuleProjects) {
-    apply plugin: 'org.springframework.boot'
+    apply plugin: "org.springframework.boot"
 }
 
 configure(allprojects) {
     repositories {
         mavenLocal()
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://plugins.gradle.org/m2/' }
-        maven { url 'https://repo.spring.io/release' }
-        maven { url 'https://repo.spring.io/libs-snapshot/' }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.spring.io/release" }
+        maven { url "https://repo.spring.io/libs-snapshot/" }
     }
 
     task cleanBuildDir(type: Delete) {
@@ -53,10 +53,22 @@ configure(allprojects) {
 }
 
 configure(gradleModuleProjects) {
-    apply plugin: 'java-library'
-    apply plugin: 'io.spring.javaformat'
-    apply plugin: 'livk.resources.plugin'
+    apply plugin: "java-library"
+    apply plugin: "io.spring.javaformat"
+    apply plugin: "livk.resources.plugin"
     apply from: "$rootDir/gradle/dependency.gradle"
+
+    configurations {
+        dependencyBom {
+            api.extendsFrom(dependencyBom)
+            implementation.extendsFrom(dependencyBom)
+            compileOnly.extendsFrom(dependencyBom)
+            annotationProcessor.extendsFrom(dependencyBom)
+            testImplementation.extendsFrom(dependencyBom)
+            testCompileOnly.extendsFrom(dependencyBom)
+            testAnnotationProcessor.extendsFrom(dependencyBom)
+        }
+    }
 
     check {
         dependsOn checkstyleNohttp
@@ -66,6 +78,11 @@ configure(gradleModuleProjects) {
     targetCompatibility = JavaVersion.VERSION_17
 
     dependencies {
-        api(platform(project(':livk-boot-dependencies')))
+        dependencyBom enforcedPlatform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        dependencyBom platform(project(":livk-boot-dependencies"))
+    }
+
+    configurations {
+
     }
 }

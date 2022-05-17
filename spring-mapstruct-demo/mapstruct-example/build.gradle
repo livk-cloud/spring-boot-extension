@@ -1,9 +1,9 @@
 dependencies {
-    api project(':spring-mapstruct-demo:mapstruct-starter')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.mapstruct:mapstruct'
-    api 'org.projectlombok:lombok-mapstruct-binding'
-    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    api project(":spring-mapstruct-demo:mapstruct-starter")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.mapstruct:mapstruct"
+    api "org.projectlombok:lombok-mapstruct-binding"
+    annotationProcessor "org.mapstruct:mapstruct-processor"
 }
 
 test {

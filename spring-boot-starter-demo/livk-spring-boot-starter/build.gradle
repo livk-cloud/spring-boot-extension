@@ -1,8 +1,8 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter'
-    api 'com.fasterxml.jackson.core:jackson-databind'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter"
+    api "com.fasterxml.jackson.core:jackson-databind"
+    api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 }
 
 test {

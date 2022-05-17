@@ -1,7 +1,7 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-amqp'
-    api 'org.springframework.amqp:spring-rabbit-stream'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter-amqp"
+    api "org.springframework.amqp:spring-rabbit-stream"
 }
 
 test {

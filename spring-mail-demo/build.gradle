@@ -1,8 +1,8 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.springframework.boot:spring-boot-starter-freemarker'
-    api 'org.springframework.boot:spring-boot-starter-mail'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-freemarker"
+    api "org.springframework.boot:spring-boot-starter-mail"
 }
 
 test {

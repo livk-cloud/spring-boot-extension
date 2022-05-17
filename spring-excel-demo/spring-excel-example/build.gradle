@@ -1,9 +1,9 @@
 dependencies {
-    api project(':spring-excel-demo:excel-spring-boot-starter')
-    api 'com.google.guava:guava'
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
-    api 'mysql:mysql-connector-java'
+    api project(":spring-excel-demo:excel-spring-boot-starter")
+    api "com.google.guava:guava"
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+    api "mysql:mysql-connector-java"
 }
 
 test {

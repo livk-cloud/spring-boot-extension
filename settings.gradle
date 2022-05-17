@@ -1,21 +1,21 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url 'https://plugins.gradle.org/m2/' }
-        maven { url 'https://repo.spring.io/release' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.spring.io/release" }
         maven { url "https://repo.spring.io/snapshot" }
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://repo.spring.io/libs-snapshot/' }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://repo.spring.io/libs-snapshot/" }
     }
 }
 
-rootProject.name = 'Spring-Boot-Demo'
+rootProject.name = "Spring-Boot-Demo"
 
 def buildFiles = fileTree(rootDir) {
-    def excludes = gradle.startParameter.projectProperties.get('excludeProjects')?.split(',')
-    include '**/*.gradle'
-    exclude 'build', '**/gradle', 'settings.gradle', 'buildSrc', '/build.gradle', '.', 'out'
+    def excludes = gradle.startParameter.projectProperties.get("excludeProjects")?.split(",")
+    include "**/*.gradle"
+    exclude "build", "**/gradle", "settings.gradle", "buildSrc", "/build.gradle", ".", "out"
     if (excludes) {
         exclude excludes
     }

@@ -1,7 +1,7 @@
 dependencies {
-    api project(':spring-redis-demo:redis-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.redisson:redisson-spring-boot-starter'
+    api project(":spring-redis-demo:redis-common")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.redisson:redisson-spring-boot-starter"
 }
 
 test {

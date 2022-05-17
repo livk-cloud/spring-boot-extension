@@ -1,8 +1,8 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.springframework.boot:spring-boot-starter-aop'
-    api 'org.springframework.retry:spring-retry'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-aop"
+    api "org.springframework.retry:spring-retry"
 }
 
 test {

@@ -1,7 +1,7 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.apache.pulsar:pulsar-client'
-    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api project(":spring-common")
+    api "org.apache.pulsar:pulsar-client"
+    api "org.springframework.boot:spring-boot-autoconfigure"
 }
 
 test {

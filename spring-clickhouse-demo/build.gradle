@@ -1,9 +1,9 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
-    api 'com.github.pagehelper:pagehelper-spring-boot-starter'
-    api 'com.clickhouse:clickhouse-jdbc'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+    api "com.github.pagehelper:pagehelper-spring-boot-starter"
+    api "com.clickhouse:clickhouse-jdbc"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 

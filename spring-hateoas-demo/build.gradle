@@ -1,7 +1,7 @@
 dependencies {
-    api project(':spring-common')
-    api 'org.springframework.boot:spring-boot-starter-webflux'
-    api 'org.springframework.boot:spring-boot-starter-hateoas'
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-starter-webflux"
+    api "org.springframework.boot:spring-boot-starter-hateoas"
 }
 
 test {

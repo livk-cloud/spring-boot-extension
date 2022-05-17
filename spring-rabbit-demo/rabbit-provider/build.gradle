@@ -1,6 +1,6 @@
 dependencies {
-    implementation project(':spring-rabbit-demo:rabbit-common')
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(":spring-rabbit-demo:rabbit-common")
+    implementation "org.springframework.boot:spring-boot-starter-web"
 }
 
 test {
