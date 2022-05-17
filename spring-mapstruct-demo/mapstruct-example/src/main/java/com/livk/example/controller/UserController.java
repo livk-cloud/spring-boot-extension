@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -41,17 +42,18 @@ public class UserController {
 			new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
 
 	@GetMapping
-	public HttpEntity<List<List<UserVO>>> list() {
+	public HttpEntity<Map<String, List<UserVO>>> list() {
 		List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
 				.filter(Objects::nonNull).toList();
-		return ResponseEntity.ok(List.of(userVOS, service.converter(USERS, UserVO.class).toList()));
+		return ResponseEntity
+				.ok(Map.of("spring", userVOS, "customize", service.converter(USERS, UserVO.class).toList()));
 	}
 
 	@GetMapping("/{id}")
-	public HttpEntity<List<UserVO>> getById(@PathVariable Integer id) {
+	public HttpEntity<Map<String, UserVO>> getById(@PathVariable Integer id) {
 		User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
 		UserVO userVOSpring = conversionService.convert(u, UserVO.class);
-		return ResponseEntity.ok(List.of(service.converter(u, UserVO.class), userVOSpring));
+		return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class), "spring", userVOSpring));
 	}
 
 }

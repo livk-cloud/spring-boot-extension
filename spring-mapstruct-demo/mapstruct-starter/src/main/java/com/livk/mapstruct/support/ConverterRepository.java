@@ -1,6 +1,7 @@
 package com.livk.mapstruct.support;
 
 import com.google.common.collect.Table;
+import com.livk.mapstruct.commom.Converter;
 
 /**
  * <p>
@@ -10,12 +11,13 @@ import com.google.common.collect.Table;
  * @author livk
  * @date 2022/5/11
  */
-public interface ConverterRepository<T> {
+@SuppressWarnings("rawtypes")
+public interface ConverterRepository {
 
-	T getConverter(Class<?> sourceClass, Class<?> targetClass);
+	Converter getConverter(Class<?> sourceClass, Class<?> targetClass);
 
-	Table<Class<?>, Class<?>, T> getConverterMap();
+	Table<Class<?>, Class<?>, Converter> getConverterMap();
 
-	void put(T t);
+	void put(Converter t);
 
 }

@@ -21,10 +21,13 @@ import java.util.stream.Stream;
  * @date 2022/5/11
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@RequiredArgsConstructor
-public class MapstructService implements ConverterRepository<Converter> {
+public class MapstructService {
 
-	private final Table<Class<?>, Class<?>, Converter> converterTable = HashBasedTable.create();
+	private final Table<Class<?>, Class<?>, Converter> converterTable;
+
+	public MapstructService(ConverterRepository repository) {
+		converterTable = repository.getConverterMap();
+	}
 
 	public <T> T converter(Object source, Class<T> targetClass) {
 		Class<?> sourceClass = source.getClass();
@@ -48,32 +51,6 @@ public class MapstructService implements ConverterRepository<Converter> {
 					.streamSource(sources);
 		}
 		return Stream.empty();
-	}
-
-	@Override
-	public synchronized void put(Converter converter) {
-		ResolvableType resolvableType = ResolvableType.forClass(converter.getClass());
-		Class<?> source = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(0).resolve();
-		Class<?> target = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(1).resolve();
-		Assert.notNull(source, "source not null");
-		Assert.notNull(target, "target not null");
-		converterTable.put(source, target, converter);
-	}
-
-	@Override
-	public Table<Class<?>, Class<?>, Converter> getConverterMap() {
-		return converterTable;
-	}
-
-	@Override
-	public Converter getConverter(Class<?> sourceClass, Class<?> targetClass) {
-		if (converterTable.contains(sourceClass, targetClass)) {
-			return converterTable.get(sourceClass, targetClass);
-		}
-		else if (converterTable.contains(targetClass, sourceClass)) {
-			return converterTable.get(targetClass, sourceClass);
-		}
-		return null;
 	}
 
 }

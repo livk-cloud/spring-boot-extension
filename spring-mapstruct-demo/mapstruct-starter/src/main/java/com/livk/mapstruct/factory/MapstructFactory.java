@@ -14,16 +14,16 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @author livk
  * @date 2022/5/11
  */
-@SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
 public class MapstructFactory implements BeanPostProcessor {
 
-	private final ConverterRepository<Converter> factory;
+	private final ConverterRepository factory;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (bean instanceof Converter converter) {
-			factory.put(converter);
+		if (bean instanceof Converter) {
+			factory.put((Converter) bean);
 		}
 		return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
 	}

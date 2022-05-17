@@ -25,11 +25,10 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @author livk
  * @date 2022/5/13
  */
-@SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
 public class MapstructFactoryRegister implements BeanFactoryPostProcessor {
 
-	private final ConverterRepository<Converter> factory;
+	private final ConverterRepository factory;
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
