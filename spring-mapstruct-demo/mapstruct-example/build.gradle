@@ -3,7 +3,7 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-web'
     api 'org.mapstruct:mapstruct'
     api 'org.projectlombok:lombok-mapstruct-binding'
-    annotationProcessor 'org.mapstruct:mapstruct-processor'
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 }
 
 test {

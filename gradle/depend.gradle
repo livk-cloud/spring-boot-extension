@@ -24,33 +24,4 @@ ext {
     testAnnotationProcessor = [
             "org.projectlombok:lombok:${lombokVersion}"
     ]
-
-    mavenBom = [
-            "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    ]
-
-    dependency = [
-            "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}",
-            "com.baomidou:mybatis-plus-boot-starter:${mpVersion}",
-            "org.springframework.security:spring-security-oauth2-authorization-server:${oauth2AuthorizationVersion}",
-            "com.google.guava:guava:${guavaVersion}",
-            "com.alibaba:easyexcel:${easyExcelVersion}",
-            "org.burningwave:core:${burningwaveVersion}",
-            "org.mybatis.spring.boot:mybatis-spring-boot-starter:${springMybatisVersion}",
-            "org.mybatis:mybatis:${mybatisVersion}",
-            "org.java-websocket:Java-WebSocket:${javaWebSocketVersion}",
-            "com.github.jsqlparser:jsqlparser:${jsqlparserVersion}",
-            "org.redisson:redisson-spring-boot-starter:${redissonVersion}",
-            "org.apache.zookeeper:zookeeper:${zookeeperVersion}",
-            "io.jsonwebtoken:jjwt-api:${jjwtApiVersion}",
-            "io.jsonwebtoken:jjwt-impl:${jjwtApiVersion}",
-            "io.jsonwebtoken:jjwt-jackson:${jjwtApiVersion}",
-            "org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:${shardingsphereVersion}",
-            "com.clickhouse:clickhouse-jdbc:${clickhouseJdbcVersion}",
-            "org.apache.pulsar:pulsar-client:${pulsarClientVersion}",
-            "com.google.code.findbugs:annotations:${googleFindbugsVersion}",
-            "org.mapstruct:mapstruct:${mapstructVersion}",
-            "org.mapstruct:mapstruct-processor:${mapstructVersion}",
-            "org.projectlombok:lombok-mapstruct-binding:${mapstructLombokVersion}",
-    ]
 }

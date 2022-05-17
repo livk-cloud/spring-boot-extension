@@ -1,8 +1,6 @@
 apply plugin: 'java-library'
 apply from: "$rootDir/gradle/depend.gradle"
 
-def managementMavenBom = project.ext.mavenBom
-def managementDependency = project.ext.dependency
 def implementationDependency = project.ext.implementation
 def annotationProcessorDependency = project.ext.annotationProcessor
 def testImplementationDependency = project.ext.testImplementation
@@ -13,10 +11,6 @@ def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
 
 dependencies {
-//    api(platform(project(':livk-boot-dependencies')))
-    managementDependency.each { v -> implementation v }
-    managementDependency.each { v -> annotationProcessor v }
-    managementMavenBom.each { v -> api(enforcedPlatform(v)) }
     implementationDependency.each { v -> implementation v }
     annotationProcessorDependency.each { v -> annotationProcessor v }
     testImplementationDependency.each { v -> testImplementation v }
