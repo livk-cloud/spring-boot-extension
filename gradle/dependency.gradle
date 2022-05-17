@@ -1,4 +1,5 @@
-apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
 apply from: "$rootDir/gradle/depend.gradle"
 
 def implementationDependency = project.ext.implementation
@@ -8,7 +9,14 @@ def compileOnlyDependency = project.ext.compileOnly
 def testCompileOnlyDependency = project.ext.testCompileOnly
 def testAnnotationProcessorDependency = project.ext.testAnnotationProcessor
 
-
+dependencyManagement {
+    imports {
+        managementMavenBom.each { v -> mavenBom v }
+    }
+    dependencies {
+        managementDependency.each { v -> dependency v }
+    }
+}
 
 dependencies {
     implementationDependency.each { v -> implementation v }
