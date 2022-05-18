@@ -2,8 +2,8 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id "java-library"
-    id "io.spring.nohttp" version("${nohttpVersion}")
-    id "org.springframework.boot" version("${springBootVersion}") apply false
+    id "io.spring.nohttp" version("$nohttpVersion")
+    id "org.springframework.boot" version("$springBootVersion") apply false
 }
 
 ext {
@@ -46,9 +46,9 @@ configure(allprojects) {
     task cleanBuildDir(type: Delete) {
         allprojects.forEach {
             if (!it.buildFile.exists()) {
-                delete "${projectDir}/build"
-                delete "${projectDir}/out"
-                delete "${projectDir}/bin"
+                delete "$projectDir/build"
+                delete "$projectDir/out"
+                delete "$projectDir/bin"
             }
         }
     }
@@ -82,9 +82,5 @@ configure(gradleModuleProjects) {
     dependencies {
         dependencyBom enforcedPlatform(SpringBootPlugin.BOM_COORDINATES)
         dependencyBom platform(project(":livk-boot-dependencies"))
-    }
-
-    configurations {
-
     }
 }
