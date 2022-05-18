@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id "java-library"
     id "io.spring.nohttp" version("${nohttpVersion}")
@@ -78,7 +80,7 @@ configure(gradleModuleProjects) {
     targetCompatibility = JavaVersion.VERSION_17
 
     dependencies {
-        dependencyBom enforcedPlatform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        dependencyBom enforcedPlatform(SpringBootPlugin.BOM_COORDINATES)
         dependencyBom platform(project(":livk-boot-dependencies"))
     }
 
