@@ -6,6 +6,30 @@ javaPlatform {
     allowDependencies()
 }
 
+ext {
+    pagehelperVersion = "1.4.2"
+    oauth2AuthorizationVersion = "0.2.3"
+    lombokVersion = "1.18.24"
+    mpVersion = "3.5.1"
+    mybatisVersion = "3.5.9"
+    springMybatisVersion = "2.2.2"
+    guavaVersion = "31.1-jre"
+    easyExcelVersion = "3.0.5"
+    burningwaveVersion = "12.48.0"
+    javaWebSocketVersion = "1.5.3"
+    jsqlparserVersion = "4.4"
+    redissonVersion = "3.17.1"
+    zookeeperVersion = "3.8.0"
+    jjwtApiVersion = "0.11.5"
+    shardingsphereVersion = "5.1.1"
+    clickhouseJdbcVersion = "0.3.2-patch8"
+    pulsarClientVersion = "2.10.0"
+    springJavaFormatPluginVersion = "0.0.27"
+    googleFindbugsVersion = "3.0.1"
+    mapstructVersion = "1.5.0.RC1"
+    mapstructLombokVersion = "0.2.0"
+}
+
 dependencies {
     constraints {
         api "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion"

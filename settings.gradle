@@ -25,4 +25,8 @@ buildFiles.forEach { buildFile ->
     def buildFilePath = buildFile.parentFile.absolutePath
     def projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
     include projectPath
+
+    def project = findProject(projectPath)
+    project.projectDir = buildFile.parentFile
+    project.buildFileName = buildFile.name
 }

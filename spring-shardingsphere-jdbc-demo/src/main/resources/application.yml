@@ -15,7 +15,7 @@ spring:
       sharding:
         tables:
           sys_log:
-            actual-data-nodes: db0.sys_log_$->{2021..2022}_$->{1..12}
+            actual-data-nodes: db0.sys_log_$->{2021}_$->{10..11}
             table-strategy:
               standard:
                 sharding-column: date
