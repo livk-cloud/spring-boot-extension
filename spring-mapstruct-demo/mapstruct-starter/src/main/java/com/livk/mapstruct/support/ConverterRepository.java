@@ -1,7 +1,9 @@
 package com.livk.mapstruct.support;
 
-import com.google.common.collect.Table;
+import com.livk.common.Pair;
 import com.livk.mapstruct.commom.Converter;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -14,9 +16,11 @@ import com.livk.mapstruct.commom.Converter;
 @SuppressWarnings("rawtypes")
 public interface ConverterRepository {
 
-	Converter getConverter(Class<?> sourceClass, Class<?> targetClass);
+	boolean contains(Class<?> sourceClass, Class<?> targetClass);
 
-	Table<Class<?>, Class<?>, Converter> getConverterMap();
+	Converter get(Class<?> sourceClass, Class<?> targetClass);
+
+	Map<Pair<Class<?>, Class<?>>, Converter> getConverterMap();
 
 	void put(Converter t);
 
