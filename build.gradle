@@ -50,8 +50,8 @@ configure(springModuleProjects) {
     springBoot {
         buildInfo {
             properties {
-                group = "${project.group}"
-                version = "${project.version}"
+                group = "$project.group"
+                version = "$project.version"
             }
         }
     }
