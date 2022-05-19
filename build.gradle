@@ -29,6 +29,21 @@ nohttp {
     source.exclude "**/target/**"
 }
 
+configure(commonModuleProjects){
+    apply plugin: "maven-publish"
+
+    publishing {
+        repositories {
+            mavenLocal()
+        }
+        publications {
+            library(MavenPublication) {
+                artifact jar
+            }
+        }
+    }
+}
+
 configure(springModuleProjects) {
     apply plugin: "org.springframework.boot"
 }
