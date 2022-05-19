@@ -46,6 +46,16 @@ configure(commonModuleProjects){
 
 configure(springModuleProjects) {
     apply plugin: "org.springframework.boot"
+
+    springBoot {
+        buildInfo {
+            properties {
+                group = "${project.group}"
+                version = "${project.version}"
+            }
+        }
+    }
+
 }
 
 configure(allprojects) {
