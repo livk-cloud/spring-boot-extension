@@ -1,0 +1,4 @@
+dependencies {
+    api project(":spring-http-demo:http-starter")
+    api "org.springframework.boot:spring-boot-starter-web"
+}
