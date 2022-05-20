@@ -19,6 +19,7 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
@@ -53,7 +54,8 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 	}
 
 	@Override
-	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
+			@NonNull BeanDefinitionRegistry registry) {
 		List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
 		Set<Class<?>> typesAnnotatedClass = findByAnnotationType(HttpExchange.class, packages.toArray(String[]::new));
 		for (Class<?> exchangeClass : typesAnnotatedClass) {
@@ -98,12 +100,12 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 	}
 
 	@Override
-	public void setResourceLoader(ResourceLoader resourceLoader) {
+	public void setResourceLoader(@NonNull ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
 	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
 
