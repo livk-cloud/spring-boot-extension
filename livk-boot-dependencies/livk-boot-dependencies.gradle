@@ -28,7 +28,6 @@ ext {
     googleFindbugsVersion = "3.0.1"
     mapstructVersion = "1.5.0.RC1"
     mapstructLombokVersion = "0.2.0"
-    reflectionsVersion = "0.10.2"
 }
 
 dependencies {
@@ -55,6 +54,5 @@ dependencies {
         api "org.mapstruct:mapstruct:$mapstructVersion"
         api "org.mapstruct:mapstruct-processor:$mapstructVersion"
         api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
-        api "org.reflections:reflections:$reflectionsVersion"
     }
 }

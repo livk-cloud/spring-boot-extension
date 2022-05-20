@@ -3,7 +3,6 @@ dependencies {
     compileOnly "org.springframework.boot:spring-boot-autoconfigure"
     api "org.springframework:spring-webflux"
     api "com.google.guava:guava"
-    api "org.reflections:reflections"
 }
 
 test {
