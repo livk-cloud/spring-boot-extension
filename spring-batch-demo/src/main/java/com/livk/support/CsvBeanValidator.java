@@ -1,9 +1,8 @@
 package com.livk.support;
 
+import jakarta.validation.Validation;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
-
-import javax.validation.Validation;
 
 /**
  * <p>
@@ -21,7 +20,7 @@ public class CsvBeanValidator<T> implements Validator<T> {
 		}
 	}
 
-	private final javax.validation.Validator validator;
+	private final jakarta.validation.Validator validator;
 
 	@Override
 	public void validate(T value) throws ValidationException {

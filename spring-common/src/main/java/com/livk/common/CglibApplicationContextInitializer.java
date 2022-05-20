@@ -1,6 +1,5 @@
 package com.livk.common;
 
-import org.burningwave.core.assembler.StaticComponentContainer;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +19,7 @@ public class CglibApplicationContextInitializer
 
 	@Override
 	public void initialize(@Nullable ConfigurableApplicationContext applicationContext) {
-		StaticComponentContainer.Modules.exportAllToAll();
+		// StaticComponentContainer.Modules.exportAllToAll();
 	}
 
 }

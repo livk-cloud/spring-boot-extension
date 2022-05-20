@@ -2,14 +2,13 @@ package com.livk.redis.controller;
 
 import com.livk.common.redis.supprot.LivkRedisTemplate;
 import com.livk.redis.support.LuaStock;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
 
 /**
  * <p>
