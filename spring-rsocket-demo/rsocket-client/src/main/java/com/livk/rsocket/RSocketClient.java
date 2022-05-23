@@ -1,0 +1,70 @@
+package com.livk.rsocket;
+
+import com.livk.rsocket.common.entity.Message;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.rsocket.RSocketRequester;
+import org.springframework.messaging.rsocket.RSocketStrategies;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+
+/**
+ * <p>
+ * RSocketClient
+ * </p>
+ *
+ * @author livk
+ * @date 2022/5/23
+ */
+@Slf4j
+@RestController
+public class RSocketClient {
+
+	private final RSocketRequester rsocketRequester;
+
+	public RSocketClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {
+		this.rsocketRequester = rsocketRequesterBuilder.rsocketStrategies(strategies).tcp("localhost", 7000);
+
+		// this.rsocketRequester.rsocket().onClose().doOnError(error ->
+		// log.warn("发生错误，链接关闭"))
+		// .doFinally(consumer -> log.info("链接关闭")).subscribe();
+	}
+
+	// @PreDestroy
+	// void shutdown() {
+	// rsocketRequester.rsocket().dispose();
+	// }
+
+	@GetMapping("request-response")
+	public Message requestResponse() {
+		Message message = this.rsocketRequester.route("request-response").data(new Message("客户端", "服务器"))
+				.retrieveMono(Message.class).block();
+		log.info("客户端request-response收到响应 {}", message);
+		return message;
+	}
+
+	@GetMapping("fire-and-forget")
+	public String fireAndForget() {
+		this.rsocketRequester.route("fire-and-forget").data(new Message("客户端", "服务器")).send().block();
+		return "fire and forget";
+	}
+
+	@GetMapping("stream")
+	public String stream() {
+		return "stream";
+	}
+
+	@GetMapping("channel")
+	public String channel() {
+		Mono<Duration> setting1 = Mono.just(Duration.ofSeconds(1));
+		Mono<Duration> setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));
+		Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
+		Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
+				.doOnNext(d -> log.info("客户端channel发送消息 {}", d.getSeconds()));
+		return "channel";
+	}
+
+}
