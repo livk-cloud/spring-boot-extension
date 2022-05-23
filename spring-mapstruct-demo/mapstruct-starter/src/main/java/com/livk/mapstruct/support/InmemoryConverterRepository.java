@@ -43,9 +43,9 @@ public class InmemoryConverterRepository implements ConverterRepository {
     public Map<Pair<Class<?>, Class<?>>, Converter> getConverterMap() {
         Map<Pair<Class<?>, Class<?>>, Converter> converterMap = new HashMap<>();
         Set<Class<?>> classes = converterTable.rowKeySet();
-        for (Class<?> aClass : classes) {
-            Map<Class<?>, Converter> row = converterTable.row(aClass);
-            row.forEach((k, v) -> converterMap.put(Pair.of(aClass, k), v));
+        for (Class<?> clazz : classes) {
+            Map<Class<?>, Converter> row = converterTable.row(clazz);
+            row.forEach((k, v) -> converterMap.put(Pair.of(clazz, k), v));
         }
         return converterMap;
     }
