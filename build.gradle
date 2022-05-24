@@ -2,7 +2,6 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id "java-library"
-    id "io.spring.nohttp" version("$nohttpVersion")
     id "org.springframework.boot" version("$springBootVersion") apply false
 }
 
@@ -18,15 +17,6 @@ ext {
     }
     //springboot项目
     springModuleProjects = gradleModuleProjects - commonModuleProjects
-}
-
-nohttp {
-    allowlistFile = project.file("src/nohttp/allowlist.lines")
-    //排除检查文件或者文件夹
-    source.exclude "**/bin/**"
-    source.exclude "**/build/**"
-    source.exclude "**/out/**"
-    source.exclude "**/target/**"
 }
 
 configure(commonModuleProjects){
@@ -95,10 +85,6 @@ configure(gradleModuleProjects) {
             testCompileOnly.extendsFrom(dependencyBom)
             testAnnotationProcessor.extendsFrom(dependencyBom)
         }
-    }
-
-    check {
-        dependsOn checkstyleNohttp
     }
 
     sourceCompatibility = JavaVersion.VERSION_17
