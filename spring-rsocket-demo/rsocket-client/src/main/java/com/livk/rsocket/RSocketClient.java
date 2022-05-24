@@ -1,6 +1,8 @@
 package com.livk.rsocket;
 
 import com.livk.rsocket.common.entity.Message;
+import io.rsocket.RSocket;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.messaging.rsocket.RSocketStrategies;
@@ -28,15 +30,20 @@ public class RSocketClient {
 	public RSocketClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {
 		this.rsocketRequester = rsocketRequesterBuilder.rsocketStrategies(strategies).tcp("localhost", 7000);
 
-		// this.rsocketRequester.rsocket().onClose().doOnError(error ->
-		// log.warn("发生错误，链接关闭"))
-		// .doFinally(consumer -> log.info("链接关闭")).subscribe();
+		RSocket rsocket = this.rsocketRequester.rsocket();
+		if (rsocket != null) {
+			rsocket.onClose().doOnError(error -> log.warn("发生错误，链接关闭")).doFinally(consumer -> log.info("链接关闭"))
+					.subscribe();
+		}
+		else {
+			log.info("rsocket is null");
+		}
 	}
 
-	// @PreDestroy
-	// void shutdown() {
-	// rsocketRequester.rsocket().dispose();
-	// }
+	@PreDestroy
+	void shutdown() {
+		rsocketRequester.rsocket().dispose();
+	}
 
 	@GetMapping("request-response")
 	public Message requestResponse() {

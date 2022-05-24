@@ -27,6 +27,7 @@ ext {
     googleFindbugsVersion = "3.0.1"
     mapstructVersion = "1.5.0.RC1"
     mapstructLombokVersion = "0.2.0"
+    r2dbcPostgresqlVersion = "0.8.12.RELEASE"
 }
 
 dependencies {
@@ -52,5 +53,6 @@ dependencies {
         api "org.mapstruct:mapstruct:$mapstructVersion"
         api "org.mapstruct:mapstruct-processor:$mapstructVersion"
         api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
+        api "io.r2dbc:r2dbc-postgresql:$r2dbcPostgresqlVersion"
     }
 }
