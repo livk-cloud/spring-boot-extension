@@ -1,4 +1,4 @@
-package com.livk.json.entity;
+package com.livk.json.support;
 
 import org.postgresql.util.PGobject;
 import org.springframework.util.StringUtils;
@@ -13,8 +13,7 @@ import java.sql.SQLException;
  * @author livk
  * @date 2022/5/26
  */
-public class PGJson extends PGobject {
-
+class PGJson extends PGobject {
     public static final String TYPE_NAME = "json";
 
     private PGJson(String json) throws SQLException {

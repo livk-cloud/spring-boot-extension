@@ -16,12 +16,11 @@ import lombok.Data;
 @TableName("\"user\"")
 public class User {
 
-	private Long id;
+    private Long id;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private JsonNode des;
-
+    private JsonNode des;
 }
