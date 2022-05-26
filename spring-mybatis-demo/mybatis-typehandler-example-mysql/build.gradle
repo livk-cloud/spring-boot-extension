@@ -2,7 +2,7 @@ dependencies {
     api project(":spring-mybatis-demo:livk-mybatis-starter")
     api "org.springframework.boot:spring-boot-starter-web"
     api "com.baomidou:mybatis-plus-boot-starter"
-    api "org.postgresql:postgresql"
+    api "mysql:mysql-connector-java"
     api "com.github.pagehelper:pagehelper-spring-boot-starter"
 }
 

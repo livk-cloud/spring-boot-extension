@@ -5,17 +5,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * <p>
- * TypeHandlerExampleApp
+ * PGSQLTypeHandlerExampleApp
  * </p>
  *
  * @author livk
  * @date 2022/5/26
  */
 @SpringBootApplication
-public class TypeHandlerExampleApp {
+public class PGSQLTypeHandlerExampleApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(TypeHandlerExampleApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(PGSQLTypeHandlerExampleApp.class, args);
+    }
 
 }
