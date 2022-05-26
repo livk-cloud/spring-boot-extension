@@ -91,7 +91,7 @@ configure(gradleModuleProjects) {
     targetCompatibility = JavaVersion.VERSION_17
 
     dependencies {
-        dependencyBom enforcedPlatform(SpringBootPlugin.BOM_COORDINATES)
+        dependencyBom platform(SpringBootPlugin.BOM_COORDINATES)
         dependencyBom platform(project(":livk-boot-dependencies"))
     }
 }

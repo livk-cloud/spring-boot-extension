@@ -8,10 +8,10 @@ javaPlatform {
 
 ext {
     pagehelperVersion = "1.4.2"
-    oauth2AuthorizationVersion = "0.2.3"
+    oauth2AuthorizationVersion = "0.3.0"
     lombokVersion = "1.18.24"
     mpVersion = "3.5.1"
-    mybatisVersion = "3.5.9"
+    mybatisVersion = "3.5.10"
     springMybatisVersion = "2.2.2"
     guavaVersion = "31.1-jre"
     easyExcelVersion = "3.1.0"
