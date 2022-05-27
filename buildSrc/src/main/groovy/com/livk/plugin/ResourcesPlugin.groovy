@@ -25,6 +25,8 @@ class ResourcesPlugin implements Plugin<Project> {
     private static final List<String> COMPILER_ARGS = new ArrayList<>()
     private static final String MAPSTRUCT_NAME = "mapstruct"
     private static final List<String> MAPSTRUCT_COMPILER_ARGS = new ArrayList<>()
+    private static final String UTF_8 = "UTF-8"
+    private static final String SPRING_BOOT_PLUGIN_ID = "org.springframework.boot"
 
     static {
         COMPILER_ARGS.addAll(Arrays.asList("-Xlint:-options",
@@ -40,11 +42,11 @@ class ResourcesPlugin implements Plugin<Project> {
             def javaCompile = project.tasks
                     .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
                     .dependsOn(Format.NAME) as JavaCompile
-            if (!project.plugins.hasPlugin("org.springframework.boot")) {
+            if (!project.plugins.hasPlugin(SPRING_BOOT_PLUGIN_ID)) {
                 javaCompile.dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
             }
             javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
-            javaCompile.options.encoding = "UTF-8"
+            javaCompile.options.encoding = UTF_8
             //在 Project 配置结束后调用
             project.afterEvaluate {
                 def dependencyName = new HashSet<>()
