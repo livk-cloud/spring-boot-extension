@@ -22,6 +22,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Info implements Serializable {
 
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * id
 	 */
@@ -30,8 +33,5 @@ public class Info implements Serializable {
 
 	@ExcelProperty(index = 0)
 	private String phone;
-
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 }

@@ -25,6 +25,10 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 
 	private static ApplicationContext applicationContext = null;
 
+	public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
 	@Override
 	public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
 		if (SpringContextHolder.applicationContext != null) {
@@ -34,20 +38,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 		synchronized (SpringContextHolder.class) {
 			SpringContextHolder.applicationContext = applicationContext;
 		}
-	}
-
-	@Override
-	public void destroy() {
-		if (log.isDebugEnabled()) {
-			log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
-		}
-		synchronized (SpringContextHolder.class) {
-			SpringContextHolder.applicationContext = null;
-		}
-	}
-
-	public static ApplicationContext getApplicationContext() {
-		return applicationContext;
 	}
 
 	/**
@@ -69,6 +59,16 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 
 	public static <T> T getBean(String name, Class<T> typeClass) {
 		return applicationContext.getBean(name, typeClass);
+	}
+
+	@Override
+	public void destroy() {
+		if (log.isDebugEnabled()) {
+			log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
+		}
+		synchronized (SpringContextHolder.class) {
+			SpringContextHolder.applicationContext = null;
+		}
 	}
 
 }

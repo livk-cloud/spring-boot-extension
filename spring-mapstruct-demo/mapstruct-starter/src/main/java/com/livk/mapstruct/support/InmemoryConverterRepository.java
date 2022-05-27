@@ -2,14 +2,11 @@ package com.livk.mapstruct.support;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.livk.common.Pair;
 import com.livk.mapstruct.commom.Converter;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -40,15 +37,13 @@ public class InmemoryConverterRepository implements ConverterRepository {
 		converterTable.put(source, target, converter);
 	}
 
+	/**
+	 * 加载时间比较晚，InitializingBean->@PostConstruct->加载
+	 * @return map
+	 */
 	@Override
-	public Map<Pair<Class<?>, Class<?>>, Converter> getConverterMap() {
-		Map<Pair<Class<?>, Class<?>>, Converter> converterMap = new HashMap<>();
-		Set<Class<?>> classes = converterTable.rowKeySet();
-		for (Class<?> clazz : classes) {
-			Map<Class<?>, Converter> row = converterTable.row(clazz);
-			row.forEach((k, v) -> converterMap.put(Pair.of(clazz, k), v));
-		}
-		return converterMap;
+	public Map<Class<?>, Map<Class<?>, Converter>> getConverterMap() {
+		return converterTable.rowMap();
 	}
 
 	@Override

@@ -25,13 +25,13 @@ public class Pair<K, V> implements Map.Entry<K, V> {
 
 	}
 
-	public void setKey(K key) {
-		this.key = key;
-	}
-
 	@Override
 	public K getKey() {
 		return key;
+	}
+
+	public void setKey(K key) {
+		this.key = key;
 	}
 
 	@Override

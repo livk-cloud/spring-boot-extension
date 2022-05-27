@@ -14,8 +14,6 @@ import java.util.function.Predicate;
 @FunctionalInterface
 public interface Present<T> {
 
-	void present(Consumer<T> action, Runnable emptyAction);
-
 	static <T> Present<T> handler(T t, Predicate<T> predicate) {
 		return (action, emptyAction) -> {
 			if (predicate.test(t))
@@ -24,5 +22,7 @@ public interface Present<T> {
 				emptyAction.run();
 		};
 	}
+
+	void present(Consumer<T> action, Runnable emptyAction);
 
 }

@@ -3,10 +3,8 @@ package com.livk.support;
 import com.livk.domain.User;
 import lombok.Setter;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Date;
 

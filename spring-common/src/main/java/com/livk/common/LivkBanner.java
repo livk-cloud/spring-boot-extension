@@ -51,6 +51,10 @@ public class LivkBanner implements Banner {
 	}
 
 	private record Format(int n, PrintStream out, char ch) implements Function<String, String>, Consumer<String> {
+		public static Format create(PrintStream out, int n) {
+			return new Format(n, out, '*');
+		}
+
 		@Override
 		public String apply(String str) {
 			var length = str.length();
@@ -65,10 +69,6 @@ public class LivkBanner implements Banner {
 		@Override
 		public void accept(String s) {
 			out.println(this.apply(s));
-		}
-
-		public static Format create(PrintStream out, int n) {
-			return new Format(n, out, '*');
 		}
 	}
 

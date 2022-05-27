@@ -1,6 +1,5 @@
 package com.livk.mapstruct.factory;
 
-import com.livk.mapstruct.commom.Converter;
 import com.livk.mapstruct.support.ConverterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;

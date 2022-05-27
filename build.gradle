@@ -19,7 +19,7 @@ ext {
     springModuleProjects = gradleModuleProjects - commonModuleProjects
 }
 
-configure(commonModuleProjects){
+configure(commonModuleProjects) {
     apply plugin: "maven-publish"
 
     publishing {

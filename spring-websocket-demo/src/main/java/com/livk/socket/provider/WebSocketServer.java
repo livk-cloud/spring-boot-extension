@@ -24,13 +24,49 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint(value = "/websocket/{sid}", configurator = ServerConfigurator.class)
 public class WebSocketServer {
 
-	private final AtomicInteger onlineCount = new AtomicInteger();
-
 	private static final CopyOnWriteArraySet<WebSocketServer> websocketSet = new CopyOnWriteArraySet<>();
+
+	private final AtomicInteger onlineCount = new AtomicInteger();
 
 	private Session session;
 
 	private String sid;
+
+	/**
+	 * 异步推送消息
+	 * @param message
+	 */
+	public static void sendWholeAsyncMessage(String message) {
+		for (var item : websocketSet) {
+			try {
+				item.session.getAsyncRemote().sendText(message);
+			}
+			catch (Exception e) {
+				log.error("websocket异步发送消息异常{0}", e);
+			}
+		}
+	}
+
+	/**
+	 * 群发自定义消息
+	 */
+	public static void sendInfo(@PathParam("sid") String sid, String message) throws IOException {
+		log.error("推送消息到窗口" + sid + "，推送内容:" + message);
+		for (var item : websocketSet) {
+			try {
+				// 这里可以设定只推送给这个sid的，为null则全部推送
+				if (sid == null) {
+					item.sendMessage(message);
+				}
+				else if (item.sid.equals(sid)) {
+					item.sendMessage(message);
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@OnOpen
 	public void onOpen(Session session, @PathParam(value = "sid") String sid) {
@@ -92,42 +128,6 @@ public class WebSocketServer {
 	 */
 	public void sendMessage(String message) throws IOException {
 		this.session.getBasicRemote().sendText(message);
-	}
-
-	/**
-	 * 异步推送消息
-	 * @param message
-	 */
-	public static void sendWholeAsyncMessage(String message) {
-		for (var item : websocketSet) {
-			try {
-				item.session.getAsyncRemote().sendText(message);
-			}
-			catch (Exception e) {
-				log.error("websocket异步发送消息异常{0}", e);
-			}
-		}
-	}
-
-	/**
-	 * 群发自定义消息
-	 */
-	public static void sendInfo(@PathParam("sid") String sid, String message) throws IOException {
-		log.error("推送消息到窗口" + sid + "，推送内容:" + message);
-		for (var item : websocketSet) {
-			try {
-				// 这里可以设定只推送给这个sid的，为null则全部推送
-				if (sid == null) {
-					item.sendMessage(message);
-				}
-				else if (item.sid.equals(sid)) {
-					item.sendMessage(message);
-				}
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private int getOnlineCount() {

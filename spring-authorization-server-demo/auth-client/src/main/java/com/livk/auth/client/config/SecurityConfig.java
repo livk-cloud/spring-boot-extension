@@ -36,17 +36,17 @@ public class SecurityConfig {
 	}
 
 	// @formatter:off
-	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests.anyRequest().authenticated()
-			)
-			.oauth2Login(oauth2Login ->
-				oauth2Login.loginPage("/oauth2/authorization/livk-client-oidc"))
-			.oauth2Client(withDefaults());
-		return http.build();
-	}
-	// @formatter:on
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests.anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2Login ->
+                        oauth2Login.loginPage("/oauth2/authorization/livk-client-oidc"))
+                .oauth2Client(withDefaults());
+        return http.build();
+    }
+    // @formatter:on
 
 }

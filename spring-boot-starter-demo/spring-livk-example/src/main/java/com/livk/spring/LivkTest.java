@@ -22,14 +22,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LivkTest {
 
-	@Value("${username.spring.github}")
-	public String username;
-
 	private final LivkDemo livkDemo;
 
 	private final LivkTestDemo livkTestDemo;
 
 	private final AnnoTest annoTest;
+
+	@Value("${username.spring.github}")
+	public String username;
 
 	@PostConstruct
 	public void show() {

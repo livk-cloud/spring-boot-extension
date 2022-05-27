@@ -24,6 +24,9 @@ import java.util.Date;
 @Data
 public class User implements Serializable {
 
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 
 	private String username;
@@ -39,9 +42,6 @@ public class User implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
 	private Date updateTime;
-
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	public static <T> String of(FieldFunction<T> function) {
 		return function.getFieldName();

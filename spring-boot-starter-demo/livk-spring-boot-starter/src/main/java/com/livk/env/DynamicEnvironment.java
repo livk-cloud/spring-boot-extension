@@ -26,11 +26,11 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
+	private static final String source = "env.json";
+
 	private final Log log;
 
 	private final ConfigurableBootstrapContext context;
-
-	private static final String source = "env.json";
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {

@@ -14,13 +14,6 @@ import java.util.function.Predicate;
 public interface ThrowException {
 
 	/**
-	 * Throw exception.
-	 * @param t the message
-	 * @throws Throwable the throwable
-	 */
-	void throwException(Throwable t) throws Throwable;
-
-	/**
 	 * Is true throw exception.
 	 * @param <T> the type parameter
 	 * @param predicate the b
@@ -32,5 +25,12 @@ public interface ThrowException {
 				throw t;
 		};
 	}
+
+	/**
+	 * Throw exception.
+	 * @param t the message
+	 * @throws Throwable the throwable
+	 */
+	void throwException(Throwable t) throws Throwable;
 
 }

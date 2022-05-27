@@ -19,12 +19,12 @@ import java.util.*;
 @UtilityClass
 public class JacksonUtils {
 
-	private static final ObjectMapper MAPPER = new ObjectMapper();
-
 	/**
 	 * The constant JSON_EMPTY.
 	 */
 	public static final String JSON_EMPTY = "{}";
+
+	private static final ObjectMapper MAPPER = new ObjectMapper();
 
 	/**
 	 * json字符转Bean

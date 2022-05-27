@@ -32,6 +32,15 @@ import java.util.Collection;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public class User implements Serializable, UserDetails {
 
+	public static final String COL_ID = "id";
+
+	public static final String COL_USERNAME = "username";
+
+	public static final String COL_PASSWORD = "password";
+
+	@Serial
+	private static final long serialVersionUID = 1L;
+
 	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
 
@@ -40,15 +49,6 @@ public class User implements Serializable, UserDetails {
 
 	@TableField(value = "`password`")
 	private String password;
-
-	@Serial
-	private static final long serialVersionUID = 1L;
-
-	public static final String COL_ID = "id";
-
-	public static final String COL_USERNAME = "username";
-
-	public static final String COL_PASSWORD = "password";
 
 	@JsonIgnore
 	@Override
