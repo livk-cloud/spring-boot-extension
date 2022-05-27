@@ -36,19 +36,24 @@ class ResourcesPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        def javaCompile = project.tasks
-                .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
-                .dependsOn(Format.NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME) as JavaCompile
-        javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
-        javaCompile.options.encoding = "UTF-8"
-        //在 Project 配置结束后调用
-        project.afterEvaluate {
-            def dependencyName = new HashSet<>()
-            project.configurations.forEach {
-                dependencyName.addAll(it.dependencies.name)
+        if (project.buildFile.exists()) {
+            def javaCompile = project.tasks
+                    .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
+                    .dependsOn(Format.NAME) as JavaCompile
+            if (!project.plugins.hasPlugin("org.springframework.boot")) {
+                javaCompile.dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
             }
-            if (dependencyName.contains(MAPSTRUCT_NAME)) {
-                javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
+            javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
+            javaCompile.options.encoding = "UTF-8"
+            //在 Project 配置结束后调用
+            project.afterEvaluate {
+                def dependencyName = new HashSet<>()
+                project.configurations.forEach {
+                    dependencyName.addAll(it.dependencies.name)
+                }
+                if (dependencyName.contains(MAPSTRUCT_NAME)) {
+                    javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
+                }
             }
         }
     }
