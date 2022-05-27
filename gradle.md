@@ -135,5 +135,4 @@ allprojects {
 > 方式一:调用gradle classes(提前编译好再运行项目) <br>
 > 方式二:修改idea gradle配置build and run using换成idea，这样编译输出的文件会变成out<br>
 > 方式三:使用Gradle Plugin[示例](./buildSrc/src/main/groovy/com/livk/plugin/ResourcesPlugin.groovy)<br>
->
-方式四：[idea官方人员建议使用java而不是java-library](https://youtrack.jetbrains.com/issue/IDEA-292741/Spring-Boot-Gradle-project-resources-from-dependency-module-are-#focus=Comments-27-6069566.0-0)
+> 方式四:[idea官方人员建议使用java而不是java-library](https://youtrack.jetbrains.com/issue/IDEA-292741/Spring-Boot-Gradle-project-resources-from-dependency-module-are-#focus=Comments-27-6069566.0-0)
