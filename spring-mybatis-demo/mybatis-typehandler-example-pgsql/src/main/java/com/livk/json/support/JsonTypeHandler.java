@@ -19,9 +19,10 @@ import java.sql.SQLException;
  * <p>
  * 使用{@code rs.getString()获取出来的类型是}{@link PGobject#getValue()}
  * </p>
- *  <p>
- *  设置进入的的值必须为{@link PGobject},并且不能为{@code null}
- *  </p>
+ * <p>
+ * 设置进入的的值必须为{@link PGobject},并且不能为{@code null}
+ * </p>
+ *
  * @author livk
  * @date 2022/5/26
  */
@@ -29,28 +30,28 @@ import java.sql.SQLException;
 @MappedTypes(JsonNode.class)
 public class JsonTypeHandler implements TypeHandler<JsonNode> {
 
-    @Override
-    public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
-        String json = parameter.toString();
-        ps.setObject(i, PGJson.of(json));
-    }
+	@Override
+	public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
+		String json = parameter.toString();
+		ps.setObject(i, PGJson.of(json));
+	}
 
-    @Override
-    public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
+		String json = rs.getString(columnName);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
-    @Override
-    public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
+		String json = rs.getString(columnIndex);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
-    @Override
-    public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
+		String json = cs.getString(columnIndex);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
 }

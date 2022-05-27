@@ -23,13 +23,13 @@ public class OtherSettingHandler implements ApplicationContextInitializer<Config
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		Environment environment = applicationContext.getEnvironment();
-		boolean MyBatisPlus = Boolean.parseBoolean(environment.getProperty(MP_BANNER))
-				&& Boolean.parseBoolean(System.getProperty(MP_BANNER));
-		System.setProperty(MP_BANNER, Boolean.toString(MyBatisPlus));
+		boolean MyBatisPlusBannerEnable = Boolean
+				.parseBoolean(System.getProperty(MP_BANNER, environment.getProperty(MP_BANNER)));
+		System.setProperty(MP_BANNER, Boolean.toString(MyBatisPlusBannerEnable));
 
-		boolean PageHelperBanner = Boolean.parseBoolean(environment.getProperty(PAGEHELPER_BANNER))
-				&& Boolean.parseBoolean(System.getProperty(PAGEHELPER_BANNER));
-		System.setProperty(PAGEHELPER_BANNER, Boolean.toString(PageHelperBanner));
+		boolean PageHelperBannerEnable = Boolean
+				.parseBoolean(System.getProperty(MP_BANNER, environment.getProperty(PAGEHELPER_BANNER)));
+		System.setProperty(PAGEHELPER_BANNER, Boolean.toString(PageHelperBannerEnable));
 	}
 
 }
