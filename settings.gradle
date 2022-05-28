@@ -12,16 +12,14 @@ pluginManagement {
 
 rootProject.name = "Spring-Boot-Demo"
 
-def buildFiles = fileTree(rootDir) {
+fileTree(rootDir) {
     def excludes = gradle.startParameter.projectProperties.get("excludeProjects")?.split(",")
     include "**/*.gradle"
     exclude "build", "**/gradle", "settings.gradle", "buildSrc", "/build.gradle", ".", "out"
     if (excludes) {
         exclude excludes
     }
-}
-
-buildFiles.forEach { buildFile ->
+}.forEach { buildFile ->
     def buildFilePath = buildFile.parentFile.absolutePath
     def projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
     include projectPath
@@ -29,4 +27,5 @@ buildFiles.forEach { buildFile ->
     def project = findProject(projectPath)
     project.projectDir = buildFile.parentFile
     project.buildFileName = buildFile.name
+    println buildFile.name
 }
