@@ -27,5 +27,4 @@ fileTree(rootDir) {
     def project = findProject(projectPath)
     project.projectDir = buildFile.parentFile
     project.buildFileName = buildFile.name
-    println buildFile.name
 }

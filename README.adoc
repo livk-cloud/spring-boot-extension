@@ -2,11 +2,12 @@
 
 这是一个关于springboot项目的各种示例. +
 JDK:17 +
-SpringBoot: 2.7.0-RC1(快照版) +
+SpringBoot: 3.0.0-M3(快照版) +
 Gradle: 7.4.2 +
 
-link:gradle.properties[项目版本信息] +
+link:gradle.properties[项目信息] +
 link:https://github.com/livk-cloud/Spring-Cloud-Demo[正式版移步Cloud Demo项目] +
 link:gradle.md[Gradle踩坑记录] +
 link:buildSrc/README.md[Gradle Plugin] +
 link:example.md[整合示例] +
+link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
