@@ -8,7 +8,6 @@ Gradle: 7.4.2 +
 
 link:gradle.properties[项目信息] +
 link:https://github.com/livk-cloud/Spring-Cloud-Demo[正式版移步Cloud Demo项目] +
-link:gradle.md[Gradle踩坑记录] +
 link:buildSrc/README.md[Gradle Plugin] +
 link:example.md[整合示例] +
 link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
