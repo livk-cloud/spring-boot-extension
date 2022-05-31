@@ -2,6 +2,7 @@ package com.livk.http.factory;
 
 import com.google.common.base.CaseFormat;
 import com.livk.http.annotation.BeanName;
+import com.livk.util.SpringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -12,23 +13,14 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
-import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.lang.NonNull;
-import org.springframework.util.Assert;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +49,8 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
 			@NonNull BeanDefinitionRegistry registry) {
 		List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
-		Set<Class<?>> typesAnnotatedClass = findByAnnotationType(HttpExchange.class, packages.toArray(String[]::new));
+		Set<Class<?>> typesAnnotatedClass = SpringUtils.findByAnnotationType(HttpExchange.class, resourceLoader,
+				packages.toArray(String[]::new));
 		for (Class<?> exchangeClass : typesAnnotatedClass) {
 			BeanName name = AnnotationUtils.getAnnotation(exchangeClass, BeanName.class);
 			String beanName = name != null ? name.value()
@@ -67,36 +60,7 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 	}
 
 	private <T> BeanDefinition getBeanDefinition(Class<T> exchangeClass) {
-		T proxyFactoryClient = proxyFactory.createClient(exchangeClass);
-		return new RootBeanDefinition(exchangeClass, () -> proxyFactoryClient);
-	}
-
-	private Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationClass, String... packages) {
-		Assert.notNull(annotationClass, "annotation not null");
-		Set<Class<?>> classSet = new HashSet<>();
-		if (packages == null || packages.length == 0) {
-			return classSet;
-		}
-		ResourcePatternResolver resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-		CachingMetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
-		try {
-			for (String packageStr : packages) {
-				packageStr = packageStr.replace(".", "/");
-				Resource[] resources = resolver.getResources("classpath*:" + packageStr + "/**/*.class");
-				for (Resource resource : resources) {
-					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-					String className = metadataReader.getClassMetadata().getClassName();
-					Class<?> clazz = Class.forName(className);
-					if (AnnotationUtils.findAnnotation(clazz, annotationClass) != null) {
-						classSet.add(clazz);
-					}
-				}
-			}
-		}
-		catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		return classSet;
+		return new RootBeanDefinition(exchangeClass, () -> proxyFactory.createClient(exchangeClass));
 	}
 
 	@Override

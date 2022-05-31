@@ -26,7 +26,6 @@ import java.sql.SQLException;
  * @author livk
  * @date 2022/5/26
  */
-@SuppressWarnings("unused")
 @MappedTypes(JsonNode.class)
 public class JsonTypeHandler implements TypeHandler<JsonNode> {
 

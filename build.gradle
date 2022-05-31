@@ -1,5 +1,8 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+import java.time.Instant
+import java.util.concurrent.TimeUnit
+
 plugins {
     id "java-library"
     id "org.springframework.boot" version("$springBootVersion") apply false
@@ -7,15 +10,12 @@ plugins {
 
 ext {
     bom = project(":livk-boot-dependencies")
-    //含有build.gradle的项目(排除BOM)
     gradleModuleProjects = subprojects.findAll {
         it.buildFile.exists()
     } - bom
-    //普通项目
     commonModuleProjects = gradleModuleProjects.findAll {
         it.name.endsWith("-common") || it.name.endsWith("-starter")
     }
-    //springboot项目
     springModuleProjects = gradleModuleProjects - commonModuleProjects
 }
 
@@ -42,6 +42,7 @@ configure(springModuleProjects) {
             properties {
                 group = "$project.group"
                 version = "$project.version"
+                time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))
             }
         }
     }
@@ -50,7 +51,6 @@ configure(springModuleProjects) {
 
 configure(allprojects) {
     repositories {
-        mavenLocal()
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://plugins.gradle.org/m2/" }

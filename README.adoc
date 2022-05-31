@@ -1,6 +1,7 @@
 =  Spring-Boot-Demo
 
 这是一个关于springboot项目的各种示例. +
+关于Gradle的各种使用方式以及示例 +
 JDK:17 +
 SpringBoot: 3.0.0-M3(快照版) +
 Gradle: 7.4.2 +

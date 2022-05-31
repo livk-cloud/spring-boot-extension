@@ -1,7 +1,8 @@
 dependencies {
-    api project(":spring-common")
+    api project(":spring-authorization-server-demo:server-common")
     api "org.springframework.boot:spring-boot-starter-web"
     api "org.springframework.boot:spring-boot-starter-security"
+    api "org.springframework.boot:spring-boot-starter-data-redis"
     api "com.baomidou:mybatis-plus-boot-starter"
     api "mysql:mysql-connector-java"
     api "org.springframework.security:spring-security-oauth2-authorization-server"
