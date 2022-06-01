@@ -72,8 +72,8 @@ configure(allprojects) {
 configure(gradleModuleProjects) {
     apply plugin: "java-library"
     apply plugin: "io.spring.javaformat"
-    apply plugin: "livk.resources.plugin"
-    apply plugin: "livk.dependency.plugin"
+    apply plugin: "com.livk.compile"
+    apply plugin: "com.livk.dependency"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
