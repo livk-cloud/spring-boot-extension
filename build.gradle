@@ -73,25 +73,23 @@ configure(gradleModuleProjects) {
     apply plugin: "java-library"
     apply plugin: "io.spring.javaformat"
     apply plugin: "livk.resources.plugin"
-    apply from: "$rootDir/gradle/dependency.gradle"
-
-    configurations {
-        dependencyBom {
-            api.extendsFrom(dependencyBom)
-            implementation.extendsFrom(dependencyBom)
-            compileOnly.extendsFrom(dependencyBom)
-            annotationProcessor.extendsFrom(dependencyBom)
-            testImplementation.extendsFrom(dependencyBom)
-            testCompileOnly.extendsFrom(dependencyBom)
-            testAnnotationProcessor.extendsFrom(dependencyBom)
-        }
-    }
+    apply plugin: "livk.dependency.plugin"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
     dependencies {
-        dependencyBom platform(SpringBootPlugin.BOM_COORDINATES)
-        dependencyBom platform(project(":livk-boot-dependencies"))
+        dependencyBom(platform(SpringBootPlugin.BOM_COORDINATES))
+        dependencyBom(platform(project(":livk-boot-dependencies")))
+
+        annotationProcessor "org.projectlombok:lombok"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+        compileOnly "org.projectlombok:lombok"
+
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+        testImplementation "org.projectlombok:lombok"
+
+        testAnnotationProcessor "org.projectlombok:lombok"
     }
 }

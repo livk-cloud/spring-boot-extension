@@ -20,7 +20,7 @@ import org.gradle.api.tasks.compile.JavaCompile
  * @author livk
  * @date 2022/4/24
  */
-class ResourcesPlugin implements Plugin<Project> {
+abstract class ResourcesPlugin implements Plugin<Project> {
 
     private static final List<String> COMPILER_ARGS = new ArrayList<>()
     private static final String MAPSTRUCT_NAME = "mapstruct"
