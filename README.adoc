@@ -6,8 +6,17 @@ JDK:17 +
 SpringBoot: 3.0.0-M3(快照版) +
 Gradle: 7.4.2 +
 
+提交触发code format(需要插件支持例如:Spring checkStyle):
+link:.git/hooks/pre-commit[shell] +
+[source,shell]
+
+----
+#!/bin/bash
+echo "will run code format"
+gradle format
+----
+
 link:gradle.properties[项目信息] +
 link:https://github.com/livk-cloud/Spring-Cloud-Demo[正式版移步Cloud Demo项目] +
-link:buildSrc/README.md[Gradle Plugin] +
 link:example.md[整合示例] +
 link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
