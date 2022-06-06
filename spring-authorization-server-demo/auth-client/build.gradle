@@ -1,10 +1,10 @@
 dependencies {
-    api project(":spring-common")
-    api "org.springframework:spring-webflux"
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.boot:spring-boot-starter-security"
-    api "org.springframework.boot:spring-boot-starter-oauth2-client"
-    api "io.projectreactor.netty:reactor-netty"
+    implementation project(":spring-common")
+    implementation "org.springframework:spring-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+    implementation "io.projectreactor.netty:reactor-netty"
 }
 
 test {

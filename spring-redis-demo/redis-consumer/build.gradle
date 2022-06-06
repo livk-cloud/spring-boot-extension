@@ -1,6 +1,6 @@
 dependencies {
-    api project(":spring-redis-demo:redis-common")
-    api "org.springframework.boot:spring-boot-starter-webflux"
+    implementation project(":spring-redis-demo:redis-common")
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
 }
 
 test {

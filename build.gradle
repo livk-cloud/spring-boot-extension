@@ -4,7 +4,7 @@ import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 plugins {
-    id "java-library"
+    id "java"
     id "org.springframework.boot" version("$springBootVersion") apply false
 }
 
@@ -21,6 +21,8 @@ ext {
 
 configure(commonModuleProjects) {
     apply plugin: "maven-publish"
+    apply plugin: "java-library"
+    apply plugin: "com.livk.resources"
 
     publishing {
         repositories {
@@ -70,9 +72,9 @@ configure(allprojects) {
 }
 
 configure(gradleModuleProjects) {
-    apply plugin: "java-library"
-    apply plugin: "io.spring.javaformat"
-    apply plugin: "com.livk.compile"
+    apply plugin: "java"
+    apply plugin: "com.livk.format"
+    apply plugin: "com.livk.compile.args"
     apply plugin: "com.livk.dependency"
 
     sourceCompatibility = JavaVersion.VERSION_17

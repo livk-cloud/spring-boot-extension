@@ -1,7 +1,7 @@
 dependencies {
-    api project(":spring-boot-starter-demo:livk-spring-boot-starter")
-    api project(":spring-boot-starter-demo:spring-filter-starter")
-    api "org.springframework.boot:spring-boot-starter-webflux"
+    implementation project(":spring-boot-starter-demo:livk-spring-boot-starter")
+    implementation project(":spring-boot-starter-demo:spring-filter-starter")
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
 }
 
 test {

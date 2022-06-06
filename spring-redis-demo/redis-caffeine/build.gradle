@@ -1,8 +1,8 @@
 dependencies {
-    api project(":spring-redis-demo:redis-common")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.boot:spring-boot-starter-aop"
-    api "com.github.ben-manes.caffeine:caffeine"
+    implementation project(":spring-redis-demo:redis-common")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+    implementation "com.github.ben-manes.caffeine:caffeine"
 }
 
 test {

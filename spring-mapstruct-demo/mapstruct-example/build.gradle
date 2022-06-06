@@ -1,8 +1,8 @@
 dependencies {
-    api project(":spring-mapstruct-demo:mapstruct-starter")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.mapstruct:mapstruct"
-    api "org.projectlombok:lombok-mapstruct-binding"
+    implementation project(":spring-mapstruct-demo:mapstruct-starter")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.mapstruct:mapstruct"
+    implementation "org.projectlombok:lombok-mapstruct-binding"
     annotationProcessor "org.mapstruct:mapstruct-processor"
 }
 

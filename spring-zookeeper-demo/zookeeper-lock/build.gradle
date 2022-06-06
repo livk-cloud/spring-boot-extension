@@ -1,8 +1,8 @@
 dependencies {
-    api project(":spring-common")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.boot:spring-boot-starter-integration"
-    api "org.springframework.integration:spring-integration-zookeeper"
+    implementation project(":spring-common")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-integration"
+    implementation "org.springframework.integration:spring-integration-zookeeper"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 

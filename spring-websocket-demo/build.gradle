@@ -1,8 +1,8 @@
 dependencies {
-    api project(":spring-common")
-    api "org.springframework.boot:spring-boot-starter-websocket"
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.java-websocket:Java-WebSocket"
+    implementation project(":spring-common")
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.java-websocket:Java-WebSocket"
 }
 
 test {

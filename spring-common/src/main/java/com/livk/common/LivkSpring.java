@@ -1,5 +1,7 @@
 package com.livk.common;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +10,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LivkSpring {
-
-	private LivkSpring() {
-	}
 
 	public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
 		if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {

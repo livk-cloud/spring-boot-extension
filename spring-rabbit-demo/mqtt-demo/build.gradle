@@ -1,8 +1,8 @@
 dependencies {
-    api project(":spring-rabbit-demo:rabbit-common")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "org.springframework.integration:spring-integration-stream"
-    api "org.springframework.integration:spring-integration-mqtt"
+    implementation project(":spring-rabbit-demo:rabbit-common")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.integration:spring-integration-stream"
+    implementation "org.springframework.integration:spring-integration-mqtt"
 }
 
 test {

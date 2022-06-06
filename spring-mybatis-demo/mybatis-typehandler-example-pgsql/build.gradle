@@ -1,9 +1,9 @@
 dependencies {
-    api project(":spring-mybatis-demo:livk-mybatis-starter")
-    api "org.springframework.boot:spring-boot-starter-web"
-    api "com.baomidou:mybatis-plus-boot-starter"
-    api "org.postgresql:postgresql"
-    api "com.github.pagehelper:pagehelper-spring-boot-starter"
+    implementation project(":spring-mybatis-demo:livk-mybatis-starter")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "com.baomidou:mybatis-plus-boot-starter"
+    implementation "org.postgresql:postgresql"
+    implementation "com.github.pagehelper:pagehelper-spring-boot-starter"
 }
 
 test {

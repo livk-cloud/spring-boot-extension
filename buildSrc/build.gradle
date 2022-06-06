@@ -11,13 +11,25 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        compilePlugin {
-            id = "com.livk.compile"
-            implementationClass = "com.livk.plugin.CompilePlugin"
+        compileArgsPlugin {
+            id = "com.livk.compile.args"
+            implementationClass = "com.livk.plugin.CompileArgsPlugin"
+            description = "Add compile parameters"
         }
         dependencyBomPlugin {
             id = "com.livk.dependency"
             implementationClass = "com.livk.plugin.DependencyBomPlugin"
+            description = "build dependency BOM"
+        }
+        formatPlugin {
+            id = "com.livk.format"
+            implementationClass = "com.livk.plugin.FormatPlugin"
+            description = "code format"
+        }
+        resourcesPlugin {
+            id = "com.livk.resources"
+            implementationClass = "com.livk.plugin.ResourcesPlugin"
+            description = "Add resource handling"
         }
     }
 }
