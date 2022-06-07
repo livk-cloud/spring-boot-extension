@@ -29,7 +29,7 @@ public class InfoController {
 
 	private final InfoService infoService;
 
-	@ExcelImport(parse = InfoExcelListener.class, fileName = "file", paramName = "dataExcels")
+	@ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
 	@PostMapping("upload")
 	public HttpEntity<Boolean> upload(List<Info> dataExcels) {
 		infoService.insertBatch(dataExcels);
@@ -37,7 +37,7 @@ public class InfoController {
 	}
 
 	@ExcelReturn(fileName = "outFile")
-	@ExcelImport(fileName = "file", paramName = "dataExcels")
+	@ExcelImport(paramName = "dataExcels")
 	@PostMapping("uploadAndDownload")
 	public Map<String, List<Info>> uploadAndDownload(List<Info> dataExcels) {
 		return dataExcels.stream()

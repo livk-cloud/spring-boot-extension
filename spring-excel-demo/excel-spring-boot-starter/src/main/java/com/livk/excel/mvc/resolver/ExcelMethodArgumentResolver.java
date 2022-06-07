@@ -1,5 +1,6 @@
 package com.livk.excel.mvc.resolver;
 
+import com.alibaba.excel.EasyExcel;
 import com.livk.excel.annotation.ExcelImport;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
@@ -46,7 +47,9 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 			var listener = BeanUtils.instantiateClass(importExcel.parse());
 			var request = webRequest.getNativeRequest(HttpServletRequest.class);
 			var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-			return listener.parse(getInputStream(request, importExcel.fileName()), excelModelClass).getCollectionData();
+			EasyExcel.read(getInputStream(request, importExcel.fileName()), excelModelClass, listener)
+					.ignoreEmptyRow(importExcel.ignoreEmptyRow()).sheet().doRead();
+			return listener.getCollectionData();
 		}
 		return Collections.emptyList();
 	}
