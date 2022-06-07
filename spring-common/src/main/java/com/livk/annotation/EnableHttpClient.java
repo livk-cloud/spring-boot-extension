@@ -20,4 +20,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(RestTemplateConfiguration.class)
 public @interface EnableHttpClient {
+
 }
