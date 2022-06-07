@@ -2,8 +2,8 @@ package com.livk.excel.mvc.resolver;
 
 import com.alibaba.excel.EasyExcel;
 import com.livk.excel.annotation.ExcelImport;
+import com.livk.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.web.bind.support.WebDataBinderFactory;

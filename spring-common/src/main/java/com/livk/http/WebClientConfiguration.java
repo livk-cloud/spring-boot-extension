@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @date 2022/5/9
  */
 @Configuration
-public class WebClientConfig {
+public class WebClientConfiguration {
 
 	/**
 	 * spring官方建议使用{@link WebClient} <a href=

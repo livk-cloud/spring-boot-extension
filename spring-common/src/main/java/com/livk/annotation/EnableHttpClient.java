@@ -1,6 +1,6 @@
 package com.livk.annotation;
 
-import com.livk.http.WebClientConfiguration;
+import com.livk.http.RestTemplateConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -10,15 +10,14 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * EnableWebClient
+ * EnableHttpClient
  * </p>
  *
  * @author livk
- * @date 2022/5/9
+ * @date 2022/6/7
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(WebClientConfiguration.class)
-public @interface EnableWebClient {
-
+@Import(RestTemplateConfiguration.class)
+public @interface EnableHttpClient {
 }

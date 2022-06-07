@@ -3,6 +3,7 @@ package com.livk.example.controller;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
 import com.livk.mapstruct.support.MapstructService;
+import com.livk.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpEntity;
@@ -43,7 +44,7 @@ public class UserController {
 
 	@GetMapping
 	public HttpEntity<Map<String, List<UserVO>>> list() {
-		List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
+		List<UserVO> userVOS = USERS.stream().map(user -> SpringUtils.converter(user, UserVO.class))
 				.filter(Objects::nonNull).toList();
 		return ResponseEntity
 				.ok(Map.of("spring", userVOS, "customize", service.converter(USERS, UserVO.class).toList()));

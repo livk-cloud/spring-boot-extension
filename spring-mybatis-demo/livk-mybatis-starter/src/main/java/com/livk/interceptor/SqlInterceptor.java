@@ -2,6 +2,7 @@ package com.livk.interceptor;
 
 import com.livk.annotation.SqlFunction;
 import com.livk.enums.SqlFill;
+import com.livk.util.BeanUtils;
 import com.livk.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
@@ -11,7 +12,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.springframework.beans.BeanUtils;
+
 
 /**
  * <p>
