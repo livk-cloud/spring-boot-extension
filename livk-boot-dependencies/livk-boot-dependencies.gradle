@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id "java-platform"
 }
@@ -31,6 +33,7 @@ ext {
 }
 
 dependencies {
+    api platform(SpringBootPlugin.BOM_COORDINATES)
     constraints {
         api "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion"
         api "com.baomidou:mybatis-plus-boot-starter:$mpVersion"
