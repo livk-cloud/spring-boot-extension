@@ -1,9 +1,0 @@
-dependencies {
-    annotationProcessor "org.projectlombok:lombok"
-
-    compileOnly "org.projectlombok:lombok"
-
-    testImplementation "org.projectlombok:lombok"
-
-    testAnnotationProcessor "org.projectlombok:lombok"
-}

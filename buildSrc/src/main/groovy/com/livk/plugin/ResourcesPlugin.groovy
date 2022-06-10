@@ -7,13 +7,7 @@ import org.gradle.api.plugins.JavaPlugin
 
 /**
  * <p>
- * 给非SpringBoot项目添加Resources文件夹
- * </p>
- * <p>
- *     添加编译检查参数
- * </p>
- * <p>
- *     给含有mapstruct项目添加IGNORE属性
+ *     资源copy
  * </p>
  *
  * @author livk

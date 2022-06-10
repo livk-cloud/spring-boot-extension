@@ -7,7 +7,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 /**
  * <p>
- * CompileArgsPlugin
+ * 添加编译参数
  * </p>
  *
  * @author livk
@@ -30,6 +30,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.plugins.apply(JavaPlugin.class)
         def javaCompile = project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME) as JavaCompile
         javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)

@@ -8,12 +8,8 @@ plugins {
 
 ext {
     bom = project(":livk-boot-dependencies")
-    gradleModuleProjects = subprojects.findAll {
-        it.buildFile.exists()
-    } - bom
-    commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-common") || it.name.endsWith("-starter")
-    }
+    gradleModuleProjects = subprojects.findAll { it.buildFile.exists() } - bom
+    commonModuleProjects = gradleModuleProjects.findAll { it.name.endsWith("-common") || it.name.endsWith("-starter") }
     springModuleProjects = gradleModuleProjects - commonModuleProjects
 }
 
@@ -66,20 +62,17 @@ configure(allprojects) {
 }
 
 configure(gradleModuleProjects) {
-    apply plugin: "java"
     apply plugin: "com.livk.format"
     apply plugin: "com.livk.compile.args"
     apply plugin: "com.livk.dependency"
-    apply from: "$rootDir/gradle/lombok.gradle"
+    apply plugin: "com.livk.lombok"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
     dependencies {
         dependencyBom platform(project(":livk-boot-dependencies"))
-
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
         testImplementation "org.springframework.boot:spring-boot-starter-test"
     }
 }

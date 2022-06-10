@@ -26,6 +26,11 @@ gradlePlugin {
             implementationClass = "com.livk.plugin.FormatPlugin"
             description = "code format"
         }
+        lombokPlugin {
+            id = "com.livk.lombok"
+            implementationClass = "com.livk.plugin.LombokPlugin"
+            description = "add dependency lombok"
+        }
         resourcesPlugin {
             id = "com.livk.resources"
             implementationClass = "com.livk.plugin.ResourcesPlugin"

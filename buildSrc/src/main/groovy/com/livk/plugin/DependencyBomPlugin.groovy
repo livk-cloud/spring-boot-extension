@@ -6,7 +6,7 @@ import org.gradle.api.plugins.JavaPlugin
 
 /**
  * <p>
- * DependencyBom
+ * 创建dependency效果的BOM引入器
  * </p>
  *
  * @author livk
@@ -18,6 +18,7 @@ abstract class DependencyBomPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.plugins.apply(JavaPlugin.class)
         def dependencyBom = project.configurations.create(DEPENDENCY_BOM)
         dependencyBom.visible = false
         dependencyBom.canBeResolved = false
