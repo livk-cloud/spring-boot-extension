@@ -2,7 +2,7 @@ package com.livk.example.converter;
 
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.mapstruct.commom.Converter;
+import com.livk.mapstruct.converter.Converter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -2,9 +2,9 @@ package com.livk.example.controller;
 
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.mapstruct.support.MapstructService;
-import com.livk.util.SpringUtils;
+import com.livk.mapstruct.converter.MapstructService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("user")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements InitializingBean {
 
 	public static final List<User> USERS = List.of(
 			new User().setId(1).setUsername("livk").setPassword("123456").setType(1).setCreateTime(new Date()),
@@ -42,9 +42,14 @@ public class UserController {
 	// spring单向转换
 	private final ConversionService conversionService;
 
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("init:" + service.getConverterRepository().getConverterMap());
+	}
+
 	@GetMapping
 	public HttpEntity<Map<String, List<UserVO>>> list() {
-		List<UserVO> userVOS = USERS.stream().map(user -> SpringUtils.converter(user, UserVO.class))
+		List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
 				.filter(Objects::nonNull).toList();
 		return ResponseEntity
 				.ok(Map.of("spring", userVOS, "customize", service.converter(USERS, UserVO.class).toList()));

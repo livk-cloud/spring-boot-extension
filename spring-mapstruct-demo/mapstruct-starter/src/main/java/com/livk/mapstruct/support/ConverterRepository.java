@@ -1,6 +1,6 @@
 package com.livk.mapstruct.support;
 
-import com.livk.mapstruct.commom.Converter;
+import com.livk.mapstruct.converter.Converter;
 
 import java.util.Map;
 
@@ -21,6 +21,8 @@ public interface ConverterRepository {
 
 	Map<Class<?>, Map<Class<?>, Converter>> getConverterMap();
 
-	void put(Converter t);
+	void put(Converter<?, ?> t);
+
+	void put(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 
 /**
@@ -22,7 +23,7 @@ public class CsvItemProcessor implements ItemProcessor<User, User> {
 	private Validator<? super User> validator;
 
 	@Override
-	public User process(User item) throws ValidationException {
+	public User process(@Nonnull User item) throws ValidationException {
 		try {
 			validator.validate(item);
 			if (item.getSex().equals("男")) {

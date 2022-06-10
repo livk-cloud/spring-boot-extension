@@ -1,7 +1,6 @@
 package com.livk.example;
 
 import com.livk.common.LivkSpring;
-import com.livk.mapstruct.annotation.EnableConverter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author livk
  * @date 2022/5/11
  */
-@EnableConverter
 @SpringBootApplication
 public class MapstructExampleApp {
 

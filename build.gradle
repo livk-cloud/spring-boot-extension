@@ -70,6 +70,7 @@ configure(gradleModuleProjects) {
     apply plugin: "com.livk.format"
     apply plugin: "com.livk.compile.args"
     apply plugin: "com.livk.dependency"
+    apply from: "$rootDir/gradle/lombok.gradle"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -77,14 +78,8 @@ configure(gradleModuleProjects) {
     dependencies {
         dependencyBom platform(project(":livk-boot-dependencies"))
 
-        annotationProcessor "org.projectlombok:lombok"
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-        compileOnly "org.projectlombok:lombok"
-
         testImplementation "org.springframework.boot:spring-boot-starter-test"
-        testImplementation "org.projectlombok:lombok"
-
-        testAnnotationProcessor "org.projectlombok:lombok"
     }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 import lombok.SneakyThrows;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -78,7 +79,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 		}
 
 		@Override
-		public void write(byte[] b) {
+		public void write(@Nonnull byte[] b) {
 			stream.write(b, 0, b.length);
 		}
 

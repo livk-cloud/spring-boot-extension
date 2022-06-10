@@ -4,6 +4,8 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.springframework.batch.item.validator.ValidationException;
 
+import javax.annotation.Nonnull;
+
 /**
  * <p>
  * CsvBeanValidator
@@ -23,7 +25,7 @@ public class CsvBeanValidator<T> implements org.springframework.batch.item.valid
 	}
 
 	@Override
-	public void validate(T value) throws ValidationException {
+	public void validate(@Nonnull T value) throws ValidationException {
 		var constraintViolations = validator.validate(value);
 		if (!constraintViolations.isEmpty()) {
 			var message = new StringBuilder();

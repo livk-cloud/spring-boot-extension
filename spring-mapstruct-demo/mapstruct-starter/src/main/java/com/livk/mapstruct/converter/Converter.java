@@ -1,4 +1,4 @@
-package com.livk.mapstruct.commom;
+package com.livk.mapstruct.converter;
 
 import java.util.Collection;
 import java.util.stream.Stream;

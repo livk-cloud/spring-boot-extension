@@ -1,10 +1,8 @@
 package com.livk.util;
 
-import com.livk.common.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -36,23 +34,6 @@ public class SpringUtils {
 	private static final SpelExpressionParser PARSER = new SpelExpressionParser();
 
 	private static final StandardEvaluationContext CONTEXT = new StandardEvaluationContext();
-
-	private static final ConversionService CONVERSION_SERVICE;
-
-	static {
-		CONVERSION_SERVICE = SpringContextHolder.getBean(ConversionService.class);
-	}
-
-	/**
-	 * 依赖于{@link org.springframework.core.convert.converter.Converter}
-	 * @param obj source
-	 * @param targetClass class
-	 * @param <T> T
-	 * @return T
-	 */
-	public <T> T converter(Object obj, Class<T> targetClass) {
-		return CONVERSION_SERVICE.convert(obj, targetClass);
-	}
 
 	/**
 	 * 获取被注解标注的class

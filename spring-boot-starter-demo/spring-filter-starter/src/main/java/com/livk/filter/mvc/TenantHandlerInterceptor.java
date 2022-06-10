@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Nonnull;
+
 /**
  * <p>
  * TenantHandlerInterceptor
@@ -16,15 +18,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class TenantHandlerInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+	public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler)
 			throws Exception {
 		TenantContext.setTenantId(request.getHeader(TenantContext.ATTRIBUTES));
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Exception ex) {
+	public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response,
+			@Nonnull Object handler, Exception ex) {
 		TenantContext.remove();
 	}
 
