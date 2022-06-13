@@ -10,6 +10,8 @@ import org.springframework.core.env.Environment;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -41,7 +43,9 @@ public class LivkBanner implements Banner {
 		for (var line : banner) {
 			out.println(line);
 		}
-		var format = Format.create(out, 70);
+		int max = Arrays.stream(banner[0].split("\n")).map(String::length).max(Comparator.naturalOrder()).orElse(0);
+		max = max % 2 == 0 ? max : max + 1;
+		var format = Format.create(out, max);
 		format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
 		format.accept(" Current time: " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now())
 				+ " ");

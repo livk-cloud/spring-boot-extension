@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
+
 /**
  * <p>
  * 添加编译参数
@@ -17,6 +18,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
 
     private static final List<String> COMPILER_ARGS = new ArrayList<>()
     private static final String MAPSTRUCT_NAME = "mapstruct"
+    private static final String MAPSTRUCT_PROCESSOR_NAME = "mapstruct-processor"
     private static final List<String> MAPSTRUCT_COMPILER_ARGS = new ArrayList<>()
     private static final String UTF_8 = "UTF-8"
 
@@ -41,7 +43,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
             project.configurations.forEach {
                 dependencyName.addAll(it.dependencies.name)
             }
-            if (dependencyName.contains(MAPSTRUCT_NAME)) {
+            if (dependencyName.contains(MAPSTRUCT_NAME) || dependencyName.contains(MAPSTRUCT_PROCESSOR_NAME)) {
                 javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
             }
         }
