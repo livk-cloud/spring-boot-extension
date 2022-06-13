@@ -12,7 +12,7 @@
 > [spring整合Pulsar](spring-pulsar-demo)<br>
 > [spring整合Quartz](spring-quartz-demo)<br>
 > [Spring整合R2DBC](spring-r2dbc-demo)<br>
-> [Spring整合兔子Rabbit](spring-rabbit-demo)<br>
+> [Spring整合Rabbit](spring-rabbit-demo)<br>
 > [Spring整合Redis](spring-redis-demo)<br>
 > [Spring整合Retry](spring-retry-demo)<br>
 > [Spring整合security](spring-security-demo)<br>

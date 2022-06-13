@@ -17,8 +17,8 @@ import org.gradle.api.plugins.JavaPlugin
 abstract class FormatPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
-        project.plugins.apply(JavaPlugin.class)
-        project.plugins.apply(SpringJavaFormatPlugin.class)
+        project.pluginManager.apply(JavaPlugin.class)
+        project.pluginManager.apply(SpringJavaFormatPlugin.class)
         project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
                 .dependsOn(Format.NAME)

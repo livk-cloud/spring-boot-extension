@@ -15,7 +15,6 @@ ext {
 
 configure(commonModuleProjects) {
     apply plugin: "maven-publish"
-    apply plugin: "java-library"
     apply plugin: "com.livk.resources"
 
     publishing {

@@ -32,7 +32,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.plugins.apply(JavaPlugin.class)
+        project.pluginManager.apply(JavaPlugin.class)
         def javaCompile = project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME) as JavaCompile
         javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
