@@ -1,12 +1,12 @@
 package com.livk.common;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -19,15 +19,11 @@ import org.springframework.stereotype.Component;
  * @date 2021/10/22
  */
 @Slf4j
-@Lazy(false)
 @Component
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 
+	@Getter
 	private static ApplicationContext applicationContext = null;
-
-	public static ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
 
 	@Override
 	public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
