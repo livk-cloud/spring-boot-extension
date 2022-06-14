@@ -1,6 +1,7 @@
 dependencies {
     implementation project(":spring-redis-demo:redis-common")
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-aop"
     implementation "org.redisson:redisson-spring-boot-starter"
 }
 

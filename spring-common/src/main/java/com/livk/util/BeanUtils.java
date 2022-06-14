@@ -1,10 +1,10 @@
 package com.livk.util;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -24,10 +24,25 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	 * @param <T> 类型
 	 * @return result
 	 */
-	@SneakyThrows
 	public <T> T copy(Object source, Class<T> targetClass) {
-		var t = instantiateClass(targetClass);
-		copyProperties(source, t);
+		return copy(source, () -> instantiateClass(targetClass));
+	}
+
+	/**
+	 * 基于BeanUtils的复制
+	 * @param source 目标源
+	 * @param supplier 供应商
+	 * @param <T> 类型
+	 * @return result
+	 */
+	public <T> T copy(Object source, Supplier<T> supplier) {
+		if (supplier == null) {
+			return null;
+		}
+		T t = supplier.get();
+		if (source != null) {
+			copyProperties(source, t);
+		}
 		return t;
 	}
 
