@@ -3,11 +3,11 @@ import java.util.concurrent.TimeUnit
 
 plugins {
     id "java"
-    id "org.springframework.boot" version("$springBootVersion") apply false
+    id "org.springframework.boot" version "$springBootVersion" apply false
 }
 
 ext {
-    bom = project(":livk-boot-dependencies")
+    bom = project ":livk-boot-dependencies"
     gradleModuleProjects = subprojects.findAll { it.buildFile.exists() } - bom
     commonModuleProjects = gradleModuleProjects.findAll { it.name.endsWith("-common") || it.name.endsWith("-starter") }
     springModuleProjects = gradleModuleProjects - commonModuleProjects
@@ -62,7 +62,7 @@ configure(allprojects) {
 
 configure(gradleModuleProjects) {
     apply plugin: "com.livk.format"
-    apply plugin: "com.livk.compile.args"
+    apply plugin: "com.livk.compile-args"
     apply plugin: "com.livk.dependency"
     apply plugin: "com.livk.lombok"
 

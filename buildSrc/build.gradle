@@ -12,7 +12,7 @@ dependencies {
 gradlePlugin {
     plugins {
         compileArgsPlugin {
-            id = "com.livk.compile.args"
+            id = "com.livk.compile-args"
             implementationClass = "com.livk.plugin.CompileArgsPlugin"
             description = "Add compile parameters"
         }
