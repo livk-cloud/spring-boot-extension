@@ -21,5 +21,6 @@ abstract class LombokPlugin implements Plugin<Project> {
         project.dependencies.add(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME, lombok)
         project.dependencies.add(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME, lombok)
         project.dependencies.add(JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME, lombok)
+        project.dependencies.add(JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_NAME, lombok)
     }
 }
