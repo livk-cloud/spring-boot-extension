@@ -17,10 +17,10 @@ import java.util.Date;
 @Builder
 public class Payload<T> {
 
-    private String id;
+	private String id;
 
-    private T userInfo;
+	private T userInfo;
 
-    private Date expiration;
+	private Date expiration;
 
 }

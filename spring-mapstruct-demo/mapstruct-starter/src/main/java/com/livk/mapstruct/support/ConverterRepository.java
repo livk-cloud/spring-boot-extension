@@ -15,14 +15,14 @@ import java.util.Map;
 @SuppressWarnings("rawtypes")
 public interface ConverterRepository {
 
-    boolean contains(Class<?> sourceClass, Class<?> targetClass);
+	boolean contains(Class<?> sourceClass, Class<?> targetClass);
 
-    Converter get(Class<?> sourceClass, Class<?> targetClass);
+	Converter get(Class<?> sourceClass, Class<?> targetClass);
 
-    Map<Class<?>, Map<Class<?>, Converter>> getConverterMap();
+	Map<Class<?>, Map<Class<?>, Converter>> getConverterMap();
 
-    void put(Converter<?, ?> t);
+	void put(Converter<?, ?> t);
 
-    void put(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter);
+	void put(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter);
 
 }

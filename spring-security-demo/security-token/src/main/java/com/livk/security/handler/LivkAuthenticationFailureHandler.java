@@ -23,13 +23,13 @@ import java.util.Map;
 @Slf4j
 public class LivkAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
-        log.error("异常：{}", exception.getMessage());
-        exception.printStackTrace();
-        ResponseUtils.out(response, Map.of("code", HttpStatus.BAD_REQUEST.value(), "msg",
-                "login failed, username or password is incorrect"));
-    }
+	@Override
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) throws IOException, ServletException {
+		log.error("异常：{}", exception.getMessage());
+		exception.printStackTrace();
+		ResponseUtils.out(response, Map.of("code", HttpStatus.BAD_REQUEST.value(), "msg",
+				"login failed, username or password is incorrect"));
+	}
 
 }

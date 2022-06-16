@@ -23,17 +23,17 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class QuartzController {
 
-    private final LivkQuartzScheduler livkQuartzScheduler;
+	private final LivkQuartzScheduler livkQuartzScheduler;
 
-    @PostMapping("livkTask")
-    public Mono<Void> livkTask() throws SchedulerException {
-        var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job2", "group2").build();
-        jobDetail.getJobDataMap().put("user", "tom2");
-        var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
-        var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job2", "group2").withSchedule(cronScheduleBuilder)
-                .build();
-        livkQuartzScheduler.scheduleJob(jobDetail, cronTrigger);
-        return Mono.empty();
-    }
+	@PostMapping("livkTask")
+	public Mono<Void> livkTask() throws SchedulerException {
+		var jobDetail = JobBuilder.newJob(QuartzScheduler.class).withIdentity("job2", "group2").build();
+		jobDetail.getJobDataMap().put("user", "tom2");
+		var cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ?");
+		var cronTrigger = TriggerBuilder.newTrigger().withIdentity("job2", "group2").withSchedule(cronScheduleBuilder)
+				.build();
+		livkQuartzScheduler.scheduleJob(jobDetail, cronTrigger);
+		return Mono.empty();
+	}
 
 }

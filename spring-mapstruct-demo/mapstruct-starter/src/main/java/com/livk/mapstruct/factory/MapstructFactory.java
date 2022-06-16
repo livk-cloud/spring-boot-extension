@@ -17,13 +17,13 @@ import org.springframework.beans.factory.ListableBeanFactory;
 @RequiredArgsConstructor
 public class MapstructFactory implements InitializingBean {
 
-    private final MapstructRegistry registry;
+	private final MapstructRegistry registry;
 
-    private final ListableBeanFactory beanFactory;
+	private final ListableBeanFactory beanFactory;
 
-    @Override
-    public void afterPropertiesSet() {
-        GenericMapstructService.addBeans(registry, beanFactory);
-    }
+	@Override
+	public void afterPropertiesSet() {
+		GenericMapstructService.addBeans(registry, beanFactory);
+	}
 
 }

@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MySQLTypeHandlerExampleApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(MySQLTypeHandlerExampleApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(MySQLTypeHandlerExampleApp.class, args);
+	}
 
 }

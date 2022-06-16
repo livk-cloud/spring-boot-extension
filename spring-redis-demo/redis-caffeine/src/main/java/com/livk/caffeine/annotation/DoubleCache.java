@@ -19,15 +19,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DoubleCache {
 
-    String cacheName();
+	String cacheName();
 
-    /**
-     * 支持SPEL表达式
-     */
-    String key();
+	/**
+	 * 支持SPEL表达式
+	 */
+	String key();
 
-    long timeOut() default 120;
+	long timeOut() default 120;
 
-    CacheType type() default CacheType.FULL;
+	CacheType type() default CacheType.FULL;
 
 }

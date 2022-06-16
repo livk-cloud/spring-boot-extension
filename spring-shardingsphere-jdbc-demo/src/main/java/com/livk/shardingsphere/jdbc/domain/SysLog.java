@@ -25,48 +25,48 @@ import java.io.Serializable;
 @TableName(value = "sys_log")
 public class SysLog implements Serializable {
 
-    public static final String COL_ID = "id";
+	public static final String COL_ID = "id";
 
-    public static final String COL_IP = "ip";
+	public static final String COL_IP = "ip";
 
-    public static final String COL_OS = "os";
+	public static final String COL_OS = "os";
 
-    public static final String COL_DATA = "data";
+	public static final String COL_DATA = "data";
 
-    public static final String COL_DATE = "date";
+	public static final String COL_DATE = "date";
 
-    public static final String COL_INSERT_TIME = "insert_time";
+	public static final String COL_INSERT_TIME = "insert_time";
 
-    public static final String COL_UPDATE_TIME = "update_time";
+	public static final String COL_UPDATE_TIME = "update_time";
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+	@TableId(value = "id", type = IdType.AUTO)
+	private Long id;
 
-    /**
-     * ip
-     */
-    @TableField(value = "ip")
-    private String ip;
+	/**
+	 * ip
+	 */
+	@TableField(value = "ip")
+	private String ip;
 
-    /**
-     * 操作系统
-     */
-    @TableField(value = "os")
-    private String os;
+	/**
+	 * 操作系统
+	 */
+	@TableField(value = "os")
+	private String os;
 
-    /**
-     * 数据
-     */
-    @TableField(value = "`data`")
-    private String data;
+	/**
+	 * 数据
+	 */
+	@TableField(value = "`data`")
+	private String data;
 
-    /**
-     * 分表键位
-     */
-    @TableField(value = "`date`")
-    private String date;
+	/**
+	 * 分表键位
+	 */
+	@TableField(value = "`date`")
+	private String date;
 
 }

@@ -17,17 +17,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfiguration {
 
-    /**
-     * spring官方建议使用{@link WebClient} <a href=
-     * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
-     *
-     * @return WebClient
-     */
-    @Bean
-    @ConditionalOnClass(WebClient.class)
-    @ConditionalOnMissingBean
-    public WebClient webClient() {
-        return WebClient.create();
-    }
+	/**
+	 * spring官方建议使用{@link WebClient} <a href=
+	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
+	 * @return WebClient
+	 */
+	@Bean
+	@ConditionalOnClass(WebClient.class)
+	@ConditionalOnMissingBean
+	public WebClient webClient() {
+		return WebClient.create();
+	}
 
 }

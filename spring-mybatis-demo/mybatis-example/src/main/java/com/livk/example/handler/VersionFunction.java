@@ -12,9 +12,9 @@ import com.livk.handler.FunctionHandle;
  */
 public class VersionFunction implements FunctionHandle<Integer> {
 
-    @Override
-    public Integer handler() {
-        return 0;
-    }
+	@Override
+	public Integer handler() {
+		return 0;
+	}
 
 }

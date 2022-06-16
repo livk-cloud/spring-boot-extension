@@ -27,34 +27,38 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class SqlUtils {
 
-    public List<String> parseTable(String sql) {
-        try {
-            var statement = CCJSqlParserUtil.parse(sql);
-            var namesFinder = new TablesNamesFinder();
-            return namesFinder.getTableList(statement);
-        } catch (JSQLParserException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
+	public List<String> parseTable(String sql) {
+		try {
+			var statement = CCJSqlParserUtil.parse(sql);
+			var namesFinder = new TablesNamesFinder();
+			return namesFinder.getTableList(statement);
+		}
+		catch (JSQLParserException e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
+	}
 
-    public List<String> getParams(String sql) {
-        Statement statement = null;
-        try {
-            statement = CCJSqlParserUtil.parse(new StringReader(sql));
-        } catch (JSQLParserException e) {
-            e.printStackTrace();
-        }
-        if (statement instanceof Select select) {
-            var plain = (PlainSelect) select.getSelectBody();
-            return plain.getSelectItems().stream().map(Object::toString).collect(Collectors.toList());
-        } else if (statement instanceof Update update) {
-            return update.getUpdateSets().get(0).getColumns().stream().map(Column::getColumnName)
-                    .collect(Collectors.toList());
-        } else if (statement instanceof Insert insert) {
-            return insert.getColumns().stream().map(Column::getColumnName).collect(Collectors.toList());
-        }
-        return Collections.emptyList();
-    }
+	public List<String> getParams(String sql) {
+		Statement statement = null;
+		try {
+			statement = CCJSqlParserUtil.parse(new StringReader(sql));
+		}
+		catch (JSQLParserException e) {
+			e.printStackTrace();
+		}
+		if (statement instanceof Select select) {
+			var plain = (PlainSelect) select.getSelectBody();
+			return plain.getSelectItems().stream().map(Object::toString).collect(Collectors.toList());
+		}
+		else if (statement instanceof Update update) {
+			return update.getUpdateSets().get(0).getColumns().stream().map(Column::getColumnName)
+					.collect(Collectors.toList());
+		}
+		else if (statement instanceof Insert insert) {
+			return insert.getColumns().stream().map(Column::getColumnName).collect(Collectors.toList());
+		}
+		return Collections.emptyList();
+	}
 
 }

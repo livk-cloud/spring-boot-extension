@@ -10,6 +10,6 @@ package com.livk.enums;
  */
 public enum SqlFill {
 
-    INSERT, INSERT_UPDATE
+	INSERT, INSERT_UPDATE
 
 }

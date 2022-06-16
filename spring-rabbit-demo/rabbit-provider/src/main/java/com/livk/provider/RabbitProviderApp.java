@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RabbitProviderApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(RabbitProviderApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(RabbitProviderApp.class, args);
+	}
 
 }

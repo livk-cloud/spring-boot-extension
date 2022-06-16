@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PulsarConsumerApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(PulsarConsumerApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(PulsarConsumerApp.class, args);
+	}
 
 }

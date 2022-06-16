@@ -18,14 +18,15 @@ import java.util.Map;
 @UtilityClass
 public class ResponseUtils {
 
-    public void out(HttpServletResponse response, Map<?, ?> data) {
-        response.setContentType("application/json;charset=utf-8");
-        try (var writer = response.getWriter()) {
-            writer.write(JacksonUtils.toJsonStr(data));
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public void out(HttpServletResponse response, Map<?, ?> data) {
+		response.setContentType("application/json;charset=utf-8");
+		try (var writer = response.getWriter()) {
+			writer.write(JacksonUtils.toJsonStr(data));
+			writer.flush();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

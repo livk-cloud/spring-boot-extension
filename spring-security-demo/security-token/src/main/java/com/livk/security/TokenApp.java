@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TokenApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(TokenApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(TokenApp.class, args);
+	}
 
 }

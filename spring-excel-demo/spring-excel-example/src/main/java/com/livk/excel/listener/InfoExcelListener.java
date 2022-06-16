@@ -17,16 +17,16 @@ import java.util.List;
  */
 public class InfoExcelListener implements ExcelReadListener<Info> {
 
-    private final List<Info> dataExcels = new ArrayList<>();
+	private final List<Info> dataExcels = new ArrayList<>();
 
-    @Override
-    public void invoke(Info info, AnalysisContext context) {
-        dataExcels.add(info);
-    }
+	@Override
+	public void invoke(Info info, AnalysisContext context) {
+		dataExcels.add(info);
+	}
 
-    @Override
-    public Collection<Info> getCollectionData() {
-        return dataExcels;
-    }
+	@Override
+	public Collection<Info> getCollectionData() {
+		return dataExcels;
+	}
 
 }

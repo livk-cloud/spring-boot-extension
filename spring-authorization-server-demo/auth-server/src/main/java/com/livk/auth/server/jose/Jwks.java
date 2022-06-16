@@ -27,14 +27,14 @@ import java.util.UUID;
  */
 public final class Jwks {
 
-    private Jwks() {
-    }
+	private Jwks() {
+	}
 
-    public static RSAKey generateRsa() {
-        var keyPair = KeyGeneratorUtils.generateRsaKey();
-        var publicKey = (RSAPublicKey) keyPair.getPublic();
-        var privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
-    }
+	public static RSAKey generateRsa() {
+		var keyPair = KeyGeneratorUtils.generateRsaKey();
+		var publicKey = (RSAPublicKey) keyPair.getPublic();
+		var privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+	}
 
 }

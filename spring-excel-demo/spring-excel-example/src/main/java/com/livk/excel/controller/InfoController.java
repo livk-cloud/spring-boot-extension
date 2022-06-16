@@ -27,21 +27,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InfoController {
 
-    private final InfoService infoService;
+	private final InfoService infoService;
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("upload")
-    public HttpEntity<Boolean> upload(List<Info> dataExcels) {
-        infoService.insertBatch(dataExcels);
-        return ResponseEntity.ok(Boolean.TRUE);
-    }
+	@ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+	@PostMapping("upload")
+	public HttpEntity<Boolean> upload(List<Info> dataExcels) {
+		infoService.insertBatch(dataExcels);
+		return ResponseEntity.ok(Boolean.TRUE);
+	}
 
-    @ExcelReturn(fileName = "outFile")
-    @ExcelImport(paramName = "dataExcels")
-    @PostMapping("uploadAndDownload")
-    public Map<String, List<Info>> uploadAndDownload(List<Info> dataExcels) {
-        return dataExcels.stream()
-                .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
-    }
+	@ExcelReturn(fileName = "outFile")
+	@ExcelImport(paramName = "dataExcels")
+	@PostMapping("uploadAndDownload")
+	public Map<String, List<Info>> uploadAndDownload(List<Info> dataExcels) {
+		return dataExcels.stream()
+				.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+	}
 
 }

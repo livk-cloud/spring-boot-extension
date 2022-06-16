@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MqttApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(MqttApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(MqttApp.class, args);
+	}
 
 }

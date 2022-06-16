@@ -19,13 +19,13 @@ import java.util.Map;
 @Configuration
 public class DynamicConfig {
 
-    @Bean
-    public DynamicDatasource dynamicDatasource(Map<String, DataSource> dataSourceMap) {
-        var map = new HashMap<Object, Object>(dataSourceMap);
-        var dynamicDatasource = new DynamicDatasource();
-        dynamicDatasource.setTargetDataSources(map);
-        dynamicDatasource.setDefaultTargetDataSource(dataSourceMap.get(DataSourceConstant.DEFAULT_DATASOURCE_NAME));
-        return dynamicDatasource;
-    }
+	@Bean
+	public DynamicDatasource dynamicDatasource(Map<String, DataSource> dataSourceMap) {
+		var map = new HashMap<Object, Object>(dataSourceMap);
+		var dynamicDatasource = new DynamicDatasource();
+		dynamicDatasource.setTargetDataSources(map);
+		dynamicDatasource.setDefaultTargetDataSource(dataSourceMap.get(DataSourceConstant.DEFAULT_DATASOURCE_NAME));
+		return dynamicDatasource;
+	}
 
 }

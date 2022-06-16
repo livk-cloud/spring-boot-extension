@@ -32,52 +32,52 @@ import java.util.Collection;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public class User implements Serializable, UserDetails {
 
-    public static final String COL_ID = "id";
+	public static final String COL_ID = "id";
 
-    public static final String COL_USERNAME = "username";
+	public static final String COL_USERNAME = "username";
 
-    public static final String COL_PASSWORD = "password";
+	public static final String COL_PASSWORD = "password";
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+	@TableId(value = "id", type = IdType.AUTO)
+	private Long id;
 
-    @TableField(value = "username")
-    private String username;
+	@TableField(value = "username")
+	private String username;
 
-    @TableField(value = "`password`")
-    private String password;
+	@TableField(value = "`password`")
+	private String password;
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ROLE_USER");
-    }
+	@JsonIgnore
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.createAuthorityList("ROLE_USER");
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@JsonIgnore
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
 }

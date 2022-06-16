@@ -16,7 +16,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 @HttpExchange("https://cn.bing.com/")
 public interface RemoteService {
 
-    @GetExchange()
-    String get();
+	@GetExchange()
+	String get();
 
 }

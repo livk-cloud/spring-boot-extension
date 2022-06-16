@@ -18,21 +18,21 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 public class FilterAutoConfiguration {
 
-    @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public FilterRegistrationBean<TenantFilter> filterRegistrationBean() {
-        FilterRegistrationBean<TenantFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new TenantFilter());
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setName("tenantFilter");
-        registrationBean.setOrder(1);
-        return registrationBean;
-    }
+	@Bean
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	public FilterRegistrationBean<TenantFilter> filterRegistrationBean() {
+		FilterRegistrationBean<TenantFilter> registrationBean = new FilterRegistrationBean<>();
+		registrationBean.setFilter(new TenantFilter());
+		registrationBean.addUrlPatterns("/*");
+		registrationBean.setName("tenantFilter");
+		registrationBean.setOrder(1);
+		return registrationBean;
+	}
 
-    @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public TenantWebFilter tenantWebFilter() {
-        return new TenantWebFilter();
-    }
+	@Bean
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	public TenantWebFilter tenantWebFilter() {
+		return new TenantWebFilter();
+	}
 
 }

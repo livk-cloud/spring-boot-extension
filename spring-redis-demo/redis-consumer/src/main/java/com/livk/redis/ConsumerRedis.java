@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConsumerRedis {
 
-    public static void main(String[] args) {
-        LivkSpring.run(ConsumerRedis.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(ConsumerRedis.class, args);
+	}
 
 }

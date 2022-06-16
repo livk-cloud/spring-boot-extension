@@ -15,9 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class App {
 
-    public static void main(String[] args) {
-        System.setProperty("server.port", "9099");
-        LivkSpring.run(App.class, args);
-    }
+	public static void main(String[] args) {
+		System.setProperty("server.port", "9099");
+		LivkSpring.run(App.class, args);
+	}
 
 }

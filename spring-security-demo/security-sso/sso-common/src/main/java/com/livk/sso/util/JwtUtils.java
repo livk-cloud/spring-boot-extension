@@ -26,40 +26,40 @@ import java.util.UUID;
 @UtilityClass
 public class JwtUtils {
 
-    private static final String JWT_KEY = "livk";
+	private static final String JWT_KEY = "livk";
 
-    public <T> String generateTokenExpireInMinutes(T userInfo, PrivateKey privateKey, long expire) {
-        return Jwts.builder().claim(JWT_KEY, JacksonUtils.toJsonStr(userInfo)).setId(createJTI())
-                .setExpiration(DateUtils.toDate(LocalDateTime.now().plusMinutes(expire)))
-                .signWith(privateKey, SignatureAlgorithm.RS256).compact();
-    }
+	public <T> String generateTokenExpireInMinutes(T userInfo, PrivateKey privateKey, long expire) {
+		return Jwts.builder().claim(JWT_KEY, JacksonUtils.toJsonStr(userInfo)).setId(createJTI())
+				.setExpiration(DateUtils.toDate(LocalDateTime.now().plusMinutes(expire)))
+				.signWith(privateKey, SignatureAlgorithm.RS256).compact();
+	}
 
-    public <T> String generateTokenExpireInSeconds(T userInfo, PrivateKey privateKey, long expire) {
-        return Jwts.builder().claim(JWT_KEY, JacksonUtils.toJsonStr(userInfo)).setId(createJTI())
-                .setExpiration(DateUtils.toDate(LocalDateTime.now().plusSeconds(expire)))
-                .signWith(privateKey, SignatureAlgorithm.RS256).compact();
-    }
+	public <T> String generateTokenExpireInSeconds(T userInfo, PrivateKey privateKey, long expire) {
+		return Jwts.builder().claim(JWT_KEY, JacksonUtils.toJsonStr(userInfo)).setId(createJTI())
+				.setExpiration(DateUtils.toDate(LocalDateTime.now().plusSeconds(expire)))
+				.signWith(privateKey, SignatureAlgorithm.RS256).compact();
+	}
 
-    private Jws<Claims> parserToken(String token, PublicKey publicKey) {
-        return Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(token);
-    }
+	private Jws<Claims> parserToken(String token, PublicKey publicKey) {
+		return Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(token);
+	}
 
-    public String createJTI() {
-        return new String(Base64.getEncoder().encode(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)));
-    }
+	public String createJTI() {
+		return new String(Base64.getEncoder().encode(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)));
+	}
 
-    public <T> Payload<T> getInfo(String token, PublicKey publicKey, Class<T> targetClass) {
-        var claimsJws = parserToken(token, publicKey);
-        var body = claimsJws.getBody();
-        return Payload.<T>builder().id(body.getId())
-                .userInfo(JacksonUtils.toBean(body.get(JWT_KEY).toString(), targetClass))
-                .expiration(body.getExpiration()).build();
-    }
+	public <T> Payload<T> getInfo(String token, PublicKey publicKey, Class<T> targetClass) {
+		var claimsJws = parserToken(token, publicKey);
+		var body = claimsJws.getBody();
+		return Payload.<T>builder().id(body.getId())
+				.userInfo(JacksonUtils.toBean(body.get(JWT_KEY).toString(), targetClass))
+				.expiration(body.getExpiration()).build();
+	}
 
-    public <T> Payload<T> getInfo(String token, PublicKey publicKey) {
-        var claimsJws = parserToken(token, publicKey);
-        var body = claimsJws.getBody();
-        return Payload.<T>builder().id(body.getId()).expiration(body.getExpiration()).build();
-    }
+	public <T> Payload<T> getInfo(String token, PublicKey publicKey) {
+		var claimsJws = parserToken(token, publicKey);
+		var body = claimsJws.getBody();
+		return Payload.<T>builder().id(body.getId()).expiration(body.getExpiration()).build();
+	}
 
 }

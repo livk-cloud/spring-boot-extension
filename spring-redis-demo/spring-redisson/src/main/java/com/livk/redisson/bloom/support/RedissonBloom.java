@@ -18,22 +18,22 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RedissonBloom {
 
-    private final RedissonClient redissonClient;
+	private final RedissonClient redissonClient;
 
-    private RBloomFilter<String> filter;
+	private RBloomFilter<String> filter;
 
-    @PostConstruct
-    public void init() {
-        this.filter = redissonClient.getBloomFilter("redisson:bloom:filter");
-        this.filter.tryInit(Integer.MAX_VALUE / 10, 0.003);
-    }
+	@PostConstruct
+	public void init() {
+		this.filter = redissonClient.getBloomFilter("redisson:bloom:filter");
+		this.filter.tryInit(Integer.MAX_VALUE / 10, 0.003);
+	}
 
-    public void addKey(String data) {
-        filter.add(data);
-    }
+	public void addKey(String data) {
+		filter.add(data);
+	}
 
-    public boolean hasKey(String data) {
-        return filter.contains(data);
-    }
+	public boolean hasKey(String data) {
+		return filter.contains(data);
+	}
 
 }

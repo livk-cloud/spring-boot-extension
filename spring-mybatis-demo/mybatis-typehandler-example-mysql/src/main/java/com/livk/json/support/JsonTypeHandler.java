@@ -23,28 +23,28 @@ import java.sql.SQLException;
 @MappedTypes(JsonNode.class)
 public class JsonTypeHandler implements TypeHandler<JsonNode> {
 
-    @Override
-    public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
-        String json = parameter.toString();
-        ps.setObject(i, json);
-    }
+	@Override
+	public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
+		String json = parameter.toString();
+		ps.setObject(i, json);
+	}
 
-    @Override
-    public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
+		String json = rs.getString(columnName);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
-    @Override
-    public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
+		String json = rs.getString(columnIndex);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
-    @Override
-    public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
-    }
+	@Override
+	public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
+		String json = cs.getString(columnIndex);
+		return JacksonUtils.toBean(json, JsonNode.class);
+	}
 
 }

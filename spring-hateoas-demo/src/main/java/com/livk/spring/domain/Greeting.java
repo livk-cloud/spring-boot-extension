@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
 public class Greeting extends AbstractEntity<Greeting> {
 
-    @JsonProperty("content")
-    private final String contents;
+	@JsonProperty("content")
+	private final String contents;
 
 }

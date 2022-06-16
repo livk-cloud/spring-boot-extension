@@ -10,9 +10,9 @@ package com.livk.handler;
  */
 public class NullFunction implements FunctionHandle<Object> {
 
-    @Override
-    public Object handler() {
-        return null;
-    }
+	@Override
+	public Object handler() {
+		return null;
+	}
 
 }

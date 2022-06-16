@@ -19,9 +19,9 @@ import javax.annotation.Nonnull;
 @Mapper(componentModel = "spring")
 public interface UserSpringConverter extends Converter<User, UserVO> {
 
-    @Mapping(target = "createTime", source = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @Mapping(target = "type", source = "type", numberFormat = "#")
-    @Override
-    UserVO convert(@Nonnull User user);
+	@Mapping(target = "createTime", source = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
+	@Mapping(target = "type", source = "type", numberFormat = "#")
+	@Override
+	UserVO convert(@Nonnull User user);
 
 }

@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RSocketServerApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(RSocketServerApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(RSocketServerApp.class, args);
+	}
 
 }

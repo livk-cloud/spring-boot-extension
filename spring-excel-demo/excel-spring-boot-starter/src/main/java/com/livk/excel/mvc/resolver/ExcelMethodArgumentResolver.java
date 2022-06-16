@@ -30,44 +30,46 @@ import java.util.Objects;
  */
 public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        var excelImport = parameter.getMethodAnnotation(ExcelImport.class);
-        return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
-    }
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		var excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+		return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
+	}
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  @Nonnull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
-            throw new IllegalArgumentException(
-                    "Excel upload request resolver error, @ExcelData parameter is not Collection ");
-        }
-        var importExcel = parameter.getMethodAnnotation(ExcelImport.class);
-        if (Objects.nonNull(importExcel)) {
-            var listener = BeanUtils.instantiateClass(importExcel.parse());
-            var request = webRequest.getNativeRequest(HttpServletRequest.class);
-            var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-            EasyExcel.read(getInputStream(request, importExcel.fileName()), excelModelClass, listener)
-                    .ignoreEmptyRow(importExcel.ignoreEmptyRow()).sheet().doRead();
-            return listener.getCollectionData();
-        }
-        return Collections.emptyList();
-    }
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+			@Nonnull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
+			throw new IllegalArgumentException(
+					"Excel upload request resolver error, @ExcelData parameter is not Collection ");
+		}
+		var importExcel = parameter.getMethodAnnotation(ExcelImport.class);
+		if (Objects.nonNull(importExcel)) {
+			var listener = BeanUtils.instantiateClass(importExcel.parse());
+			var request = webRequest.getNativeRequest(HttpServletRequest.class);
+			var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+			EasyExcel.read(getInputStream(request, importExcel.fileName()), excelModelClass, listener)
+					.ignoreEmptyRow(importExcel.ignoreEmptyRow()).sheet().doRead();
+			return listener.getCollectionData();
+		}
+		return Collections.emptyList();
+	}
 
-    private InputStream getInputStream(HttpServletRequest request, String fileName) {
-        try {
-            if (request instanceof MultipartRequest) {
-                var file = ((MultipartRequest) request).getFile(fileName);
-                assert file != null;
-                return file.getInputStream();
-            } else {
-                return request.getInputStream();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	private InputStream getInputStream(HttpServletRequest request, String fileName) {
+		try {
+			if (request instanceof MultipartRequest) {
+				var file = ((MultipartRequest) request).getFile(fileName);
+				assert file != null;
+				return file.getInputStream();
+			}
+			else {
+				return request.getInputStream();
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 }

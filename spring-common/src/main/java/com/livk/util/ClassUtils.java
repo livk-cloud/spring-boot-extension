@@ -18,17 +18,19 @@ import java.lang.reflect.TypeVariable;
 @UtilityClass
 public class ClassUtils extends org.springframework.util.ClassUtils {
 
-    @SneakyThrows
-    @SuppressWarnings("unchecked")
-    public <T> Class<T> toClass(Type type) {
-        if (type instanceof ParameterizedType parameterizedType) {
-            return (Class<T>) parameterizedType.getRawType();
-        } else if (type instanceof TypeVariable<?> typeVariable) {
-            String className = typeVariable.getGenericDeclaration().toString();
-            return (Class<T>) Class.forName(className);
-        } else {
-            return (Class<T>) type;
-        }
-    }
+	@SneakyThrows
+	@SuppressWarnings("unchecked")
+	public <T> Class<T> toClass(Type type) {
+		if (type instanceof ParameterizedType parameterizedType) {
+			return (Class<T>) parameterizedType.getRawType();
+		}
+		else if (type instanceof TypeVariable<?> typeVariable) {
+			String className = typeVariable.getGenericDeclaration().toString();
+			return (Class<T>) Class.forName(className);
+		}
+		else {
+			return (Class<T>) type;
+		}
+	}
 
 }

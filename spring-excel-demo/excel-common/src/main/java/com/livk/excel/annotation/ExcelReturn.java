@@ -20,18 +20,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelReturn {
 
-    String fileName();
+	String fileName();
 
-    Suffix suffix() default Suffix.XLS;
+	Suffix suffix() default Suffix.XLS;
 
-    @Getter
-    @RequiredArgsConstructor
-    enum Suffix {
+	@Getter
+	@RequiredArgsConstructor
+	enum Suffix {
 
-        XLS(".xls"), XLSM(".xlsm");
+		XLS(".xls"), XLSM(".xlsm");
 
-        private final String name;
+		private final String name;
 
-    }
+	}
 
 }

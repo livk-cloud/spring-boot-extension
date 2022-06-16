@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("hello")
-    public HttpEntity<String> hello() {
-        return ResponseEntity.ok("hello");
-    }
+	@GetMapping("hello")
+	public HttpEntity<String> hello() {
+		return ResponseEntity.ok("hello");
+	}
 
-    @GetMapping("index")
-    public HttpEntity<String> index() {
-        return ResponseEntity.ok("index");
-    }
+	@GetMapping("index")
+	public HttpEntity<String> index() {
+		return ResponseEntity.ok("index");
+	}
 
 }

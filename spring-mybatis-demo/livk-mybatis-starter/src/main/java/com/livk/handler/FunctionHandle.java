@@ -10,6 +10,6 @@ package com.livk.handler;
  */
 public interface FunctionHandle<T> {
 
-    T handler();
+	T handler();
 
 }

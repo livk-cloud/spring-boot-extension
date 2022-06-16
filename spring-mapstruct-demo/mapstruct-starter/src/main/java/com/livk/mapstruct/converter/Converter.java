@@ -13,12 +13,12 @@ import java.util.stream.Stream;
  */
 public interface Converter<S, T> {
 
-    S getSource(T t);
+	S getSource(T t);
 
-    T getTarget(S s);
+	T getTarget(S s);
 
-    Stream<S> streamSource(Collection<T> t);
+	Stream<S> streamSource(Collection<T> t);
 
-    Stream<T> streamTarget(Collection<S> s);
+	Stream<T> streamTarget(Collection<S> s);
 
 }

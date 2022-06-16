@@ -23,17 +23,17 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JobController {
 
-    private final JobLauncher jobLauncher;
+	private final JobLauncher jobLauncher;
 
-    private final Job job;
+	private final Job job;
 
-    @SneakyThrows
-    @GetMapping("doJob")
-    public Mono<Void> doJob() {
-        var builder = new JobParametersBuilder();
-        builder.addDate("jobDate", new Date());
-        jobLauncher.run(job, builder.toJobParameters());
-        return Mono.empty();
-    }
+	@SneakyThrows
+	@GetMapping("doJob")
+	public Mono<Void> doJob() {
+		var builder = new JobParametersBuilder();
+		builder.addDate("jobDate", new Date());
+		jobLauncher.run(job, builder.toJobParameters());
+		return Mono.empty();
+	}
 
 }

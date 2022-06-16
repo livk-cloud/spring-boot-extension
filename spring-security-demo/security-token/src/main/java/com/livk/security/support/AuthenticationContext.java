@@ -15,18 +15,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AuthenticationContext {
 
-    private static final Map<String, Authentication> AUTHENTICATION_MAP = new ConcurrentHashMap<>();
+	private static final Map<String, Authentication> AUTHENTICATION_MAP = new ConcurrentHashMap<>();
 
-    public static Authentication getAuthentication(String token) {
-        return AUTHENTICATION_MAP.get(token);
-    }
+	public static Authentication getAuthentication(String token) {
+		return AUTHENTICATION_MAP.get(token);
+	}
 
-    public static void setTokenAndAuthentication(String token, Authentication authentication) {
-        AUTHENTICATION_MAP.put(token, authentication);
-    }
+	public static void setTokenAndAuthentication(String token, Authentication authentication) {
+		AUTHENTICATION_MAP.put(token, authentication);
+	}
 
-    public static void delete(String token) {
-        AUTHENTICATION_MAP.remove(token);
-    }
+	public static void delete(String token) {
+		AUTHENTICATION_MAP.remove(token);
+	}
 
 }

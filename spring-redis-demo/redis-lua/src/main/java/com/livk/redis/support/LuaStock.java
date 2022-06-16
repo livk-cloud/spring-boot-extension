@@ -23,18 +23,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LuaStock {
 
-    private final LivkRedisTemplate livkRedisTemplate;
+	private final LivkRedisTemplate livkRedisTemplate;
 
-    public String buy(Integer num) {
-        var redisScript = RedisScript.of(new ClassPathResource("good.lua"), Long.class);
-        var result = livkRedisTemplate.execute(redisScript, List.of("stock"), num);
-        Assert.notNull(result, "RedisScript Result is Null!");
-        if (0 == result) {
-            return "没了";
-        } else if (2 == result) {
-            return "抢到了";
-        }
-        return "";
-    }
+	public String buy(Integer num) {
+		var redisScript = RedisScript.of(new ClassPathResource("good.lua"), Long.class);
+		var result = livkRedisTemplate.execute(redisScript, List.of("stock"), num);
+		Assert.notNull(result, "RedisScript Result is Null!");
+		if (0 == result) {
+			return "没了";
+		}
+		else if (2 == result) {
+			return "抢到了";
+		}
+		return "";
+	}
 
 }

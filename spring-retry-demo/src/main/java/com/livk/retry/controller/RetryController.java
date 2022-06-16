@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RetryController {
 
-    private final RemoteSupport remoteSupport;
+	private final RemoteSupport remoteSupport;
 
-    @GetMapping("/retry")
-    public HttpEntity<String> test() {
-        return ResponseEntity.ok(remoteSupport.call("fail"));
-    }
+	@GetMapping("/retry")
+	public HttpEntity<String> test() {
+		return ResponseEntity.ok(remoteSupport.call("fail"));
+	}
 
 }

@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PGSQLTypeHandlerExampleApp {
 
-    public static void main(String[] args) {
-        LivkSpring.run(PGSQLTypeHandlerExampleApp.class, args);
-    }
+	public static void main(String[] args) {
+		LivkSpring.run(PGSQLTypeHandlerExampleApp.class, args);
+	}
 
 }

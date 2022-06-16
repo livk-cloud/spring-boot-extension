@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Bean;
 @Slf4j
 public class LivkDemo {
 
-    @Bean
-    public LivkTestDemo livkTestDemo() {
-        return new LivkTestDemo();
-    }
+	@Bean
+	public LivkTestDemo livkTestDemo() {
+		return new LivkTestDemo();
+	}
 
-    public void show() {
-        log.info("this is my Spring Test Demo");
-    }
+	public void show() {
+		log.info("this is my Spring Test Demo");
+	}
 
 }

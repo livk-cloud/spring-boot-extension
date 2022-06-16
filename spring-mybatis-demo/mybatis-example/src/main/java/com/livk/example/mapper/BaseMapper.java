@@ -15,14 +15,14 @@ import java.util.List;
  */
 public interface BaseMapper<T> {
 
-    T selectById(@Param("id") Serializable id);
+	T selectById(@Param("id") Serializable id);
 
-    int updateById(T t);
+	int updateById(T t);
 
-    int insert(T t);
+	int insert(T t);
 
-    int deleteById(@Param("id") Serializable id);
+	int deleteById(@Param("id") Serializable id);
 
-    List<T> list();
+	List<T> list();
 
 }

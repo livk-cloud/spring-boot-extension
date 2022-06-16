@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
  * @date 2022/3/23
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface DataSource {
 
-    String value();
+	String value();
 
 }

@@ -25,30 +25,30 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LivkAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-    private final PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        var username = authentication.getName();
-        var password = (String) authentication.getCredentials();
-        log.info("password:{}", password);
-        var user = userDetailsService.loadUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User does not exist");
-        }
-        log.info("{}", user.getPassword());
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new DisabledException("wrong password");
-        }
-        var authorities = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
-    }
+	@Override
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		var username = authentication.getName();
+		var password = (String) authentication.getCredentials();
+		log.info("password:{}", password);
+		var user = userDetailsService.loadUserByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User does not exist");
+		}
+		log.info("{}", user.getPassword());
+		if (!passwordEncoder.matches(password, user.getPassword())) {
+			throw new DisabledException("wrong password");
+		}
+		var authorities = user.getAuthorities();
+		return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
+	}
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return true;
-    }
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return true;
+	}
 
 }

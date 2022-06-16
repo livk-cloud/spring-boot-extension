@@ -19,16 +19,16 @@ import org.springframework.kafka.core.KafkaAdmin;
 @AutoConfiguration(after = KafkaAutoConfiguration.class)
 public class KafkaConfiguration {
 
-    @Bean
-    public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
-        var admin = new KafkaAdmin(kafkaProperties.buildAdminProperties());
-        admin.setFatalIfBrokerNotAvailable(true);
-        return admin;
-    }
+	@Bean
+	public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
+		var admin = new KafkaAdmin(kafkaProperties.buildAdminProperties());
+		admin.setFatalIfBrokerNotAvailable(true);
+		return admin;
+	}
 
-    @Bean
-    public NewTopic myTopic() {
-        return new NewTopic(KafkaConstant.NEW_TOPIC, 1, (short) 1);
-    }
+	@Bean
+	public NewTopic myTopic() {
+		return new NewTopic(KafkaConstant.NEW_TOPIC, 1, (short) 1);
+	}
 
 }
