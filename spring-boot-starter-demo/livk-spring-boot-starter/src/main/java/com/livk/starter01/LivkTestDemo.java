@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LivkTestDemo {
 
-	public void show() {
-		log.info("this is my Spring Test Demo 1");
-	}
+    public void show() {
+        log.info("this is my Spring Test Demo 1");
+    }
 
 }

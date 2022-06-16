@@ -20,19 +20,19 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 public class MapstructAutoConfiguration {
 
-	@Bean
-	public MapstructFactory mapstructFactory(MapstructRegistry registry, ListableBeanFactory beanFactory) {
-		return new MapstructFactory(registry, beanFactory);
-	}
+    @Bean
+    public MapstructFactory mapstructFactory(MapstructRegistry registry, ListableBeanFactory beanFactory) {
+        return new MapstructFactory(registry, beanFactory);
+    }
 
-	@Bean
-	public GenericMapstructService genericMapstructService(ConverterRepository repository) {
-		return new GenericMapstructService(repository);
-	}
+    @Bean
+    public GenericMapstructService genericMapstructService(ConverterRepository repository) {
+        return new GenericMapstructService(repository);
+    }
 
-	@Bean
-	public ConverterRepository converterRepository() {
-		return new InmemoryConverterRepository();
-	}
+    @Bean
+    public ConverterRepository converterRepository() {
+        return new InmemoryConverterRepository();
+    }
 
 }

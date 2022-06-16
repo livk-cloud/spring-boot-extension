@@ -25,114 +25,111 @@ import java.util.NoSuchElementException;
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
 
-	private final HttpServletRequest request;
+    private final HttpServletRequest request;
 
-	private final String requestJson;
+    private final String requestJson;
 
-	private final String contentType;
+    private final String contentType;
 
-	public RequestWrapper(HttpServletRequest request, String json) {
-		this(request, json, null);
-	}
+    public RequestWrapper(HttpServletRequest request, String json) {
+        this(request, json, null);
+    }
 
-	public RequestWrapper(HttpServletRequest request, String json, String contentType) {
-		super(request);
-		this.request = request;
-		this.requestJson = json;
-		this.contentType = contentType;
-	}
+    public RequestWrapper(HttpServletRequest request, String json, String contentType) {
+        super(request);
+        this.request = request;
+        this.requestJson = json;
+        this.contentType = contentType;
+    }
 
-	@Override
-	public ServletInputStream getInputStream() throws UnsupportedEncodingException {
-		return new RequestServletInputStream(request, requestJson);
-	}
+    @Override
+    public ServletInputStream getInputStream() throws UnsupportedEncodingException {
+        return new RequestServletInputStream(request, requestJson);
+    }
 
-	@SneakyThrows
-	@Override
-	public int getContentLength() {
-		return requestJson.getBytes(request.getCharacterEncoding()).length;
-	}
+    @SneakyThrows
+    @Override
+    public int getContentLength() {
+        return requestJson.getBytes(request.getCharacterEncoding()).length;
+    }
 
-	@SneakyThrows
-	@Override
-	public long getContentLengthLong() {
-		return requestJson.getBytes(request.getCharacterEncoding()).length;
-	}
+    @SneakyThrows
+    @Override
+    public long getContentLengthLong() {
+        return requestJson.getBytes(request.getCharacterEncoding()).length;
+    }
 
-	@Override
-	public String getContentType() {
-		return StringUtils.hasText(contentType) ? contentType : request.getContentType();
-	}
+    @Override
+    public String getContentType() {
+        return StringUtils.hasText(contentType) ? contentType : request.getContentType();
+    }
 
-	@Override
-	public Enumeration<String> getHeaders(String name) {
-		if (ObjectUtils.allChecked(StringUtils::hasText, name, contentType) && name.equalsIgnoreCase("Content-Type")) {
-			return new HeaderEnumeration(contentType);
-		}
-		return super.getHeaders(name);
-	}
+    @Override
+    public Enumeration<String> getHeaders(String name) {
+        if (ObjectUtils.allChecked(StringUtils::hasText, name, contentType) && name.equalsIgnoreCase("Content-Type")) {
+            return new HeaderEnumeration(contentType);
+        }
+        return super.getHeaders(name);
+    }
 
-	private static class RequestServletInputStream extends ServletInputStream {
+    private static class RequestServletInputStream extends ServletInputStream {
 
-		private final InputStream in;
+        private final InputStream in;
 
-		public RequestServletInputStream(HttpServletRequest request, String json) throws UnsupportedEncodingException {
-			in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
-		}
+        public RequestServletInputStream(HttpServletRequest request, String json) throws UnsupportedEncodingException {
+            in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
+        }
 
-		@Override
-		public boolean isFinished() {
-			return false;
-		}
+        @Override
+        public boolean isFinished() {
+            return false;
+        }
 
-		@Override
-		public boolean isReady() {
-			return false;
-		}
+        @Override
+        public boolean isReady() {
+            return false;
+        }
 
-		@Override
-		public void setReadListener(ReadListener listener) {
-			try {
-				listener.onDataAvailable();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+        @Override
+        public void setReadListener(ReadListener listener) {
+            try {
+                listener.onDataAvailable();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-		@Override
-		public int read() throws IOException {
-			return in.read();
-		}
+        @Override
+        public int read() throws IOException {
+            return in.read();
+        }
 
-	}
+    }
 
-	private static class HeaderEnumeration implements Enumeration<String> {
+    private static class HeaderEnumeration implements Enumeration<String> {
 
-		private boolean hasMoreElements = false;
+        private final String contentType;
+        private boolean hasMoreElements = false;
 
-		private final String contentType;
+        public HeaderEnumeration(String contentType) {
+            this.contentType = contentType;
+        }
 
-		public HeaderEnumeration(String contentType) {
-			this.contentType = contentType;
-		}
+        @Override
+        public boolean hasMoreElements() {
+            return !hasMoreElements;
+        }
 
-		@Override
-		public boolean hasMoreElements() {
-			return !hasMoreElements;
-		}
+        @Override
+        public String nextElement() {
+            if (hasMoreElements) {
+                throw new NoSuchElementException();
+            } else {
+                hasMoreElements = true;
+                return contentType;
+            }
+        }
 
-		@Override
-		public String nextElement() {
-			if (hasMoreElements) {
-				throw new NoSuchElementException();
-			}
-			else {
-				hasMoreElements = true;
-				return contentType;
-			}
-		}
-
-	}
+    }
 
 }

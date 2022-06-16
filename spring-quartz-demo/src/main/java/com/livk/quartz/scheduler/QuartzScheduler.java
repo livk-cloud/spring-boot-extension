@@ -15,20 +15,20 @@ import org.quartz.JobExecutionContext;
 @Slf4j
 public class QuartzScheduler implements Job {
 
-	private void before() {
-		log.info("before");
-	}
+    private void before() {
+        log.info("before");
+    }
 
-	@Override
-	public void execute(JobExecutionContext jobExecutionContext) {
-		before();
-		var jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-		log.info("{}", jobDataMap.getString("user"));
-		after();
-	}
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) {
+        before();
+        var jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        log.info("{}", jobDataMap.getString("user"));
+        after();
+    }
 
-	private void after() {
-		log.info("after");
-	}
+    private void after() {
+        log.info("after");
+    }
 
 }

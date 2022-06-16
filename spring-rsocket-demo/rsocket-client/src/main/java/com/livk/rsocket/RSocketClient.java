@@ -25,53 +25,52 @@ import java.time.Duration;
 @RestController
 public class RSocketClient {
 
-	private final RSocketRequester rsocketRequester;
+    private final RSocketRequester rsocketRequester;
 
-	public RSocketClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {
-		this.rsocketRequester = rsocketRequesterBuilder.rsocketStrategies(strategies).tcp("localhost", 7000);
+    public RSocketClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {
+        this.rsocketRequester = rsocketRequesterBuilder.rsocketStrategies(strategies).tcp("localhost", 7000);
 
-		RSocket rsocket = this.rsocketRequester.rsocket();
-		if (rsocket != null) {
-			rsocket.onClose().doOnError(error -> log.warn("发生错误，链接关闭")).doFinally(consumer -> log.info("链接关闭"))
-					.subscribe();
-		}
-		else {
-			log.info("rsocket is null");
-		}
-	}
+        RSocket rsocket = this.rsocketRequester.rsocket();
+        if (rsocket != null) {
+            rsocket.onClose().doOnError(error -> log.warn("发生错误，链接关闭")).doFinally(consumer -> log.info("链接关闭"))
+                    .subscribe();
+        } else {
+            log.info("rsocket is null");
+        }
+    }
 
-	@PreDestroy
-	void shutdown() {
-		rsocketRequester.rsocket().dispose();
-	}
+    @PreDestroy
+    void shutdown() {
+        rsocketRequester.rsocket().dispose();
+    }
 
-	@GetMapping("request-response")
-	public Message requestResponse() {
-		Message message = this.rsocketRequester.route("request-response").data(new Message("客户端", "服务器"))
-				.retrieveMono(Message.class).block();
-		log.info("客户端request-response收到响应 {}", message);
-		return message;
-	}
+    @GetMapping("request-response")
+    public Message requestResponse() {
+        Message message = this.rsocketRequester.route("request-response").data(new Message("客户端", "服务器"))
+                .retrieveMono(Message.class).block();
+        log.info("客户端request-response收到响应 {}", message);
+        return message;
+    }
 
-	@GetMapping("fire-and-forget")
-	public String fireAndForget() {
-		this.rsocketRequester.route("fire-and-forget").data(new Message("客户端", "服务器")).send().block();
-		return "fire and forget";
-	}
+    @GetMapping("fire-and-forget")
+    public String fireAndForget() {
+        this.rsocketRequester.route("fire-and-forget").data(new Message("客户端", "服务器")).send().block();
+        return "fire and forget";
+    }
 
-	@GetMapping("stream")
-	public String stream() {
-		return "stream";
-	}
+    @GetMapping("stream")
+    public String stream() {
+        return "stream";
+    }
 
-	@GetMapping("channel")
-	public String channel() {
-		Mono<Duration> setting1 = Mono.just(Duration.ofSeconds(1));
-		Mono<Duration> setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));
-		Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
-		Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
-				.doOnNext(d -> log.info("客户端channel发送消息 {}", d.getSeconds()));
-		return "channel";
-	}
+    @GetMapping("channel")
+    public String channel() {
+        Mono<Duration> setting1 = Mono.just(Duration.ofSeconds(1));
+        Mono<Duration> setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));
+        Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
+        Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
+                .doOnNext(d -> log.info("客户端channel发送消息 {}", d.getSeconds()));
+        return "channel";
+    }
 
 }

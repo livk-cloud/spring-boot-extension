@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FilterController {
 
-	@GetMapping("tenant")
-	public HttpEntity<String> tenant(@RequestHeader(TenantContext.ATTRIBUTES) String tenant) {
-		log.info("tenant:{}", TenantContext.getTenantId());
-		return ResponseEntity.ok(tenant);
-	}
+    @GetMapping("tenant")
+    public HttpEntity<String> tenant(@RequestHeader(TenantContext.ATTRIBUTES) String tenant) {
+        log.info("tenant:{}", TenantContext.getTenantId());
+        return ResponseEntity.ok(tenant);
+    }
 
 }

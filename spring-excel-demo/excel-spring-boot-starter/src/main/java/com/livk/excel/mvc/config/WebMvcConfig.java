@@ -20,14 +20,14 @@ import java.util.List;
 @Configuration(proxyBeanMethods = false)
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-		resolvers.add(new ExcelMethodArgumentResolver());
-	}
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new ExcelMethodArgumentResolver());
+    }
 
-	@Override
-	public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-		handlers.add(new ExcelMethodReturnValueHandler());
-	}
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+        handlers.add(new ExcelMethodReturnValueHandler());
+    }
 
 }

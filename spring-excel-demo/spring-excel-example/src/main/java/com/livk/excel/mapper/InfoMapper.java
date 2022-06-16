@@ -16,6 +16,6 @@ import java.util.List;
 @Mapper
 public interface InfoMapper {
 
-	void insertBatch(List<Info> records);
+    void insertBatch(List<Info> records);
 
 }

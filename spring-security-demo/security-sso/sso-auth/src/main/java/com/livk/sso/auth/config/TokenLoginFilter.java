@@ -31,44 +31,43 @@ import java.util.Map;
  */
 public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
-			"POST");
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
+            "POST");
 
-	private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-	private final RsaKeyProperties properties;
+    private final RsaKeyProperties properties;
 
-	public TokenLoginFilter(AuthenticationManager authenticationManager, RsaKeyProperties properties) {
-		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
-		this.authenticationManager = authenticationManager;
-		this.properties = properties;
-	}
+    public TokenLoginFilter(AuthenticationManager authenticationManager, RsaKeyProperties properties) {
+        super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
+        this.authenticationManager = authenticationManager;
+        this.properties = properties;
+    }
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
-		try {
-			var user = JacksonUtils.toBean(request.getInputStream(), User.class);
-			var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
-					user.getAuthorities());
-			return authenticationManager.authenticate(authenticationToken);
-		}
-		catch (IOException e) {
-			var map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
-			ResponseUtils.out(response, map);
-			throw new UsernameNotFoundException("用户名或者密码错误");
-		}
-	}
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
+        try {
+            var user = JacksonUtils.toBean(request.getInputStream(), User.class);
+            var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
+                    user.getAuthorities());
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            var map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
+            ResponseUtils.out(response, map);
+            throw new UsernameNotFoundException("用户名或者密码错误");
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-			Authentication authResult) throws IOException, ServletException {
-		var user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
-		var token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
-		response.addHeader("Authorization", "Bearer ".concat(token));
-		var map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-		ResponseUtils.out(response, map);
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
+        var user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
+        var token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
+        response.addHeader("Authorization", "Bearer ".concat(token));
+        var map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
+        ResponseUtils.out(response, map);
+    }
 
 }

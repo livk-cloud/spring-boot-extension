@@ -17,8 +17,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(RsaKeyProperties.class)
 public class SSOResourceApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(SSOResourceApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(SSOResourceApp.class, args);
+    }
 
 }

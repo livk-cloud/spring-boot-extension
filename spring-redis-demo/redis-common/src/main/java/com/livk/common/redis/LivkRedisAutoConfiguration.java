@@ -16,17 +16,17 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @author livk
  * @date 2021/11/26
  */
-@AutoConfiguration(before = { RedisAutoConfiguration.class })
+@AutoConfiguration(before = {RedisAutoConfiguration.class})
 public class LivkRedisAutoConfiguration {
 
-	@Bean
-	public LivkRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-		return new LivkRedisTemplate(redisConnectionFactory);
-	}
+    @Bean
+    public LivkRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        return new LivkRedisTemplate(redisConnectionFactory);
+    }
 
-	@Bean
-	public LivkReactiveRedisTemplate livkReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
-		return new LivkReactiveRedisTemplate(redisConnectionFactory);
-	}
+    @Bean
+    public LivkReactiveRedisTemplate livkReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
+        return new LivkReactiveRedisTemplate(redisConnectionFactory);
+    }
 
 }

@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ExcelApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(ExcelApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(ExcelApp.class, args);
+    }
 
 }

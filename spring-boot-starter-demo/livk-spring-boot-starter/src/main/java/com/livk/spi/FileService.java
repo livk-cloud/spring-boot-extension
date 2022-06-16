@@ -12,10 +12,10 @@ import java.io.InputStream;
  */
 public interface FileService {
 
-	void upload(InputStream inputStream);
+    void upload(InputStream inputStream);
 
-	byte[] download(String filename);
+    byte[] download(String filename);
 
-	String getType();
+    String getType();
 
 }

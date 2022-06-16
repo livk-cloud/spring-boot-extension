@@ -14,22 +14,22 @@ import org.springframework.util.StringUtils;
 @UtilityClass
 public class TenantContext {
 
-	public final static String ATTRIBUTES = "tenant";
+    public final static String ATTRIBUTES = "tenant";
 
-	private final static ThreadLocal<String> TENANT_ID = new ThreadLocal<>();
+    private final static ThreadLocal<String> TENANT_ID = new ThreadLocal<>();
 
-	public String getTenantId() {
-		return TENANT_ID.get();
-	}
+    public String getTenantId() {
+        return TENANT_ID.get();
+    }
 
-	public synchronized void setTenantId(String tenantId) {
-		if (StringUtils.hasText(tenantId)) {
-			TENANT_ID.set(tenantId);
-		}
-	}
+    public synchronized void setTenantId(String tenantId) {
+        if (StringUtils.hasText(tenantId)) {
+            TENANT_ID.set(tenantId);
+        }
+    }
 
-	public void remove() {
-		TENANT_ID.remove();
-	}
+    public void remove() {
+        TENANT_ID.remove();
+    }
 
 }

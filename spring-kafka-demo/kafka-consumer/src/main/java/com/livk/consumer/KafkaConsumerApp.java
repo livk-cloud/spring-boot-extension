@@ -18,13 +18,13 @@ import org.springframework.kafka.annotation.KafkaListener;
 @SpringBootApplication
 public class KafkaConsumerApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(KafkaConsumerApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(KafkaConsumerApp.class, args);
+    }
 
-	@KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)
-	public void consumer(String input) {
-		log.info("data:{}", input);
-	}
+    @KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)
+    public void consumer(String input) {
+        log.info("data:{}", input);
+    }
 
 }

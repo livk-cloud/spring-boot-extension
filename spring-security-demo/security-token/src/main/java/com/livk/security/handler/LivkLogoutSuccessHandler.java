@@ -23,13 +23,13 @@ import java.util.Map;
 @Slf4j
 public class LivkLogoutSuccessHandler implements LogoutSuccessHandler {
 
-	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-			throws IOException, ServletException {
-		log.info("退出");
-		var token = request.getHeader("Authorization");
-		AuthenticationContext.delete(token);
-		ResponseUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
-	}
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
+        log.info("退出");
+        var token = request.getHeader("Authorization");
+        AuthenticationContext.delete(token);
+        ResponseUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
+    }
 
 }

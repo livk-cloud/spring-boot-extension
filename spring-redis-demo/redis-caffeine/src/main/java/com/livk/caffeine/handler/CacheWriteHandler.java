@@ -10,8 +10,8 @@ package com.livk.caffeine.handler;
  */
 public interface CacheWriteHandler<T> {
 
-	void put(String key, T value, long timeout);
+    void put(String key, T value, long timeout);
 
-	void delete(String key);
+    void delete(String key);
 
 }

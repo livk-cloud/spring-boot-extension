@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RedissonApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(RedissonApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(RedissonApp.class, args);
+    }
 
 }

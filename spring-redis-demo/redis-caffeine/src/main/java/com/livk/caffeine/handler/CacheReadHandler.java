@@ -10,6 +10,6 @@ package com.livk.caffeine.handler;
  */
 public interface CacheReadHandler<T> {
 
-	T read(String key);
+    T read(String key);
 
 }

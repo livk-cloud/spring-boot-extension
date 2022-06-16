@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UsersMapper, User> implements UserService {
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return this.getOne(Wrappers.lambdaQuery(User.class).eq(User::getUsername, username));
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.getOne(Wrappers.lambdaQuery(User.class).eq(User::getUsername, username));
+    }
 
 }

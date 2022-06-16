@@ -18,14 +18,14 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class KeyExpiredListener extends KeyExpirationEventMessageListener {
 
-	public KeyExpiredListener(RedisMessageListenerContainer listenerContainer) {
-		super(listenerContainer);
-	}
+    public KeyExpiredListener(RedisMessageListenerContainer listenerContainer) {
+        super(listenerContainer);
+    }
 
-	@Override
-	public void onMessage(Message message, byte[] pattern) {
-		var key = new String(message.getBody(), StandardCharsets.UTF_8);
-		log.info("key:<{}>", key);
-	}
+    @Override
+    public void onMessage(Message message, byte[] pattern) {
+        var key = new String(message.getBody(), StandardCharsets.UTF_8);
+        log.info("key:<{}>", key);
+    }
 
 }

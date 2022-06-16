@@ -15,10 +15,10 @@ import java.util.stream.Stream;
  */
 public interface MapstructService {
 
-	<T> T converter(Object source, Class<T> targetClass);
+    <T> T converter(Object source, Class<T> targetClass);
 
-	<T> Stream<T> converter(Collection<?> sources, Class<T> targetClass);
+    <T> Stream<T> converter(Collection<?> sources, Class<T> targetClass);
 
-	ConverterRepository getConverterRepository();
+    ConverterRepository getConverterRepository();
 
 }

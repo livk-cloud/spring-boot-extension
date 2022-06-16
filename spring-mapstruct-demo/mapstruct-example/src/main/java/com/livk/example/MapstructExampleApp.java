@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MapstructExampleApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(MapstructExampleApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(MapstructExampleApp.class, args);
+    }
 
 }

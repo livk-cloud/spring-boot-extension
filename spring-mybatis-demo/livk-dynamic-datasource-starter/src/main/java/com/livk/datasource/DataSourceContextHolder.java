@@ -10,18 +10,18 @@ package com.livk.datasource;
  */
 public class DataSourceContextHolder {
 
-	private static final ThreadLocal<String> datasourceContext = new ThreadLocal<>();
+    private static final ThreadLocal<String> datasourceContext = new ThreadLocal<>();
 
-	public static void switchDataSource(String datasource) {
-		datasourceContext.set(datasource);
-	}
+    public static void switchDataSource(String datasource) {
+        datasourceContext.set(datasource);
+    }
 
-	public static String getDataSource() {
-		return datasourceContext.get();
-	}
+    public static String getDataSource() {
+        return datasourceContext.get();
+    }
 
-	public static void clear() {
-		datasourceContext.remove();
-	}
+    public static void clear() {
+        datasourceContext.remove();
+    }
 
 }

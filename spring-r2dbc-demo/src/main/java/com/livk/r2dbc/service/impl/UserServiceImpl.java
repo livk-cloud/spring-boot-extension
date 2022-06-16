@@ -22,35 +22,35 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	@Override
-	public Flux<User> list() {
-		return userRepository.findAll();
-	}
+    @Override
+    public Flux<User> list() {
+        return userRepository.findAll();
+    }
 
-	@Override
-	public Mono<User> getById(Mono<Long> id) {
-		return userRepository.findById(id);
-	}
+    @Override
+    public Mono<User> getById(Mono<Long> id) {
+        return userRepository.findById(id);
+    }
 
-	@Override
-	public Mono<Void> save(Mono<User> userMono) {
-		return userMono.flatMap(user -> userRepository.save(user).flatMap(
-				u1 -> Objects.nonNull(u1.id()) ? Mono.empty() : Mono.defer(() -> Mono.error(new RuntimeException()))));
-	}
+    @Override
+    public Mono<Void> save(Mono<User> userMono) {
+        return userMono.flatMap(user -> userRepository.save(user).flatMap(
+                u1 -> Objects.nonNull(u1.id()) ? Mono.empty() : Mono.defer(() -> Mono.error(new RuntimeException()))));
+    }
 
-	@Override
-	public Mono<Void> updateById(Mono<Long> id, Mono<User> userMono) {
-		return userMono.flatMap(monoUser -> userRepository.findById(id)
-				.switchIfEmpty(Mono.error(new RuntimeException("Id Not Found!")))
-				.flatMap(user -> userRepository.save(new User(user.id(), monoUser.username(), monoUser.password()))))
-				.then();
-	}
+    @Override
+    public Mono<Void> updateById(Mono<Long> id, Mono<User> userMono) {
+        return userMono.flatMap(monoUser -> userRepository.findById(id)
+                        .switchIfEmpty(Mono.error(new RuntimeException("Id Not Found!")))
+                        .flatMap(user -> userRepository.save(new User(user.id(), monoUser.username(), monoUser.password()))))
+                .then();
+    }
 
-	@Override
-	public Mono<Void> deleteById(Mono<Long> id) {
-		return userRepository.deleteById(id);
-	}
+    @Override
+    public Mono<Void> deleteById(Mono<Long> id) {
+        return userRepository.deleteById(id);
+    }
 
 }

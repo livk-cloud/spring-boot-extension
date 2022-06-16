@@ -22,13 +22,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProducerTask {
 
-	private final Producer<String> producer;
+    private final Producer<String> producer;
 
-	@Scheduled(cron = "0/5 * * * * ?")
-	public void send() {
-		producer.newMessage(Schema.STRING).key(UUID.randomUUID().toString().substring(0, 5))
-				.value(UUID.randomUUID().toString()).sendAsync().handle((messageId, throwable) -> throwable == null)
-				.join();
-	}
+    @Scheduled(cron = "0/5 * * * * ?")
+    public void send() {
+        producer.newMessage(Schema.STRING).key(UUID.randomUUID().toString().substring(0, 5))
+                .value(UUID.randomUUID().toString()).sendAsync().handle((messageId, throwable) -> throwable == null)
+                .join();
+    }
 
 }

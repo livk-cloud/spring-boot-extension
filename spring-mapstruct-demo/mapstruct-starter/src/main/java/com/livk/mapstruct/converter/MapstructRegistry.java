@@ -10,8 +10,8 @@ package com.livk.mapstruct.converter;
  */
 public interface MapstructRegistry {
 
-	void addConverter(Converter<?, ?> converter);
+    void addConverter(Converter<?, ?> converter);
 
-	<S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter);
+    <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter);
 
 }
