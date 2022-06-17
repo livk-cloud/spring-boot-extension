@@ -13,16 +13,16 @@ import org.springframework.hateoas.RepresentationModel;
  */
 public abstract class AbstractEntity<T> extends RepresentationModel<AbstractEntity<T>> {
 
-	public AbstractEntity() {
-		super();
-	}
+    public AbstractEntity() {
+        super();
+    }
 
-	public AbstractEntity(Link initialLink) {
-		super(initialLink);
-	}
+    public AbstractEntity(Link initialLink) {
+        super(initialLink);
+    }
 
-	public AbstractEntity(Iterable<Link> initialLinks) {
-		super(initialLinks);
-	}
+    public AbstractEntity(Iterable<Link> initialLinks) {
+        super(initialLinks);
+    }
 
 }

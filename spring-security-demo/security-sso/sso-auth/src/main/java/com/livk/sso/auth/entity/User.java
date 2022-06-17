@@ -22,44 +22,44 @@ import java.util.List;
 @Accessors(chain = true)
 public class User implements UserDetails {
 
-	private Long id;
+    private Long id;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private Integer status;
+    private Integer status;
 
-	private List<Role> roles;
+    private List<Role> roles;
 
-	@JsonIgnore
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return AuthorityUtils.createAuthorityList("ROLE_ADMIN");
-	}
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList("ROLE_ADMIN");
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

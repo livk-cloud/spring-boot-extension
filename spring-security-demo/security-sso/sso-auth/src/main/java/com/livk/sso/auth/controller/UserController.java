@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user")
 public class UserController {
 
-	@GetMapping("list")
-	public HttpEntity<String> list() {
-		return ResponseEntity.ok("list");
-	}
+    @GetMapping("list")
+    public HttpEntity<String> list() {
+        return ResponseEntity.ok("list");
+    }
 
-	@PutMapping("update")
-	public HttpEntity<String> update() {
-		return ResponseEntity.ok("update");
-	}
+    @PutMapping("update")
+    public HttpEntity<String> update() {
+        return ResponseEntity.ok("update");
+    }
 
 }

@@ -15,16 +15,16 @@ import java.util.Collection;
  */
 public class DefaultExcelReadListener implements ExcelReadListener<Object> {
 
-	private final Collection<Object> dataExcels = new ArrayList<>();
+    private final Collection<Object> dataExcels = new ArrayList<>();
 
-	@Override
-	public void invoke(Object info, AnalysisContext context) {
-		dataExcels.add(info);
-	}
+    @Override
+    public void invoke(Object info, AnalysisContext context) {
+        dataExcels.add(info);
+    }
 
-	@Override
-	public Collection<Object> getCollectionData() {
-		return dataExcels;
-	}
+    @Override
+    public Collection<Object> getCollectionData() {
+        return dataExcels;
+    }
 
 }

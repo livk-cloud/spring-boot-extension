@@ -22,12 +22,12 @@ import java.util.Map;
 @Slf4j
 public class LivkAccessDeniedHandler implements AccessDeniedHandler {
 
-	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		log.error("exception:{}", accessDeniedException.getMessage());
-		accessDeniedException.printStackTrace();
-		ResponseUtils.out(response, Map.of("code", 403, "msg", accessDeniedException.getMessage()));
-	}
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        log.error("exception:{}", accessDeniedException.getMessage());
+        accessDeniedException.printStackTrace();
+        ResponseUtils.out(response, Map.of("code", 403, "msg", accessDeniedException.getMessage()));
+    }
 
 }

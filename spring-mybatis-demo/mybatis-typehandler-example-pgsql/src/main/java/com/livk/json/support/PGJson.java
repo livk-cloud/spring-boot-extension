@@ -16,26 +16,26 @@ import java.sql.SQLException;
  */
 class PGJson extends PGobject {
 
-	public static final String TYPE_NAME = "json";
+    public static final String TYPE_NAME = "json";
 
-	private PGJson(String json) throws SQLException {
-		super();
-		setType(TYPE_NAME);
-		setValue(json);
-	}
+    private PGJson(String json) throws SQLException {
+        super();
+        setType(TYPE_NAME);
+        setValue(json);
+    }
 
-	public PGJson(PGobject pGobject) throws SQLException {
-		super();
-		setType(TYPE_NAME);
-		setValue(pGobject.getValue());
-	}
+    public PGJson(PGobject pGobject) throws SQLException {
+        super();
+        setType(TYPE_NAME);
+        setValue(pGobject.getValue());
+    }
 
-	public static PGJson of(String json) throws SQLException {
-		return StringUtils.hasText(json) ? new PGJson(json) : null;
-	}
+    public static PGJson of(String json) throws SQLException {
+        return StringUtils.hasText(json) ? new PGJson(json) : null;
+    }
 
-	public static PGJson of(PGobject pGobject) throws SQLException {
-		return ObjectUtils.isEmpty(pGobject) ? null : new PGJson(pGobject);
-	}
+    public static PGJson of(PGobject pGobject) throws SQLException {
+        return ObjectUtils.isEmpty(pGobject) ? null : new PGJson(pGobject);
+    }
 
 }

@@ -16,8 +16,8 @@ import org.springframework.retry.annotation.EnableRetry;
 @SpringBootApplication
 public class RetryApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(RetryApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(RetryApp.class, args);
+    }
 
 }

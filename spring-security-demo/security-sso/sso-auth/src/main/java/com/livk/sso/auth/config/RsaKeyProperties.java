@@ -20,15 +20,15 @@ import java.security.PublicKey;
 @ConfigurationProperties(RsaKeyProperties.PREFIX)
 public class RsaKeyProperties {
 
-	public static final String PREFIX = "rsa.key";
+    public static final String PREFIX = "rsa.key";
 
-	private final PublicKey publicKey;
+    private final PublicKey publicKey;
 
-	private final PrivateKey privateKey;
+    private final PrivateKey privateKey;
 
-	public RsaKeyProperties(@Name("public-key") String publicKeyFile, @Name("private-key") String privateKeyFile) {
-		publicKey = RSAUtils.getPublicKey(publicKeyFile);
-		privateKey = RSAUtils.getPrivateKey(privateKeyFile);
-	}
+    public RsaKeyProperties(@Name("public-key") String publicKeyFile, @Name("private-key") String privateKeyFile) {
+        publicKey = RSAUtils.getPublicKey(publicKeyFile);
+        privateKey = RSAUtils.getPrivateKey(privateKeyFile);
+    }
 
 }

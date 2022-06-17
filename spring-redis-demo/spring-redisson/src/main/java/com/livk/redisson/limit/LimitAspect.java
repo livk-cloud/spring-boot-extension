@@ -29,25 +29,24 @@ import java.lang.reflect.Method;
 @RequiredArgsConstructor
 public class LimitAspect {
 
-	private final RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
 
-	@Around("@annotation(limiter)")
-	public Object around(ProceedingJoinPoint joinPoint, Limiter limiter) throws Throwable {
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-		Method method = signature.getMethod();
-		if (limiter == null) {
-			limiter = AnnotationUtils.findAnnotation(method, Limiter.class);
-		}
-		Assert.notNull(limiter, "limiter not null");
-		RRateLimiter rateLimiter = redissonClient.getRateLimiter(limiter.key());
-		rateLimiter.trySetRate(RateType.OVERALL, limiter.rate(), limiter.rateInterval(), limiter.rateIntervalUnit());
-		if (rateLimiter.tryAcquire(limiter.requestedTokens())) {
-			return joinPoint.proceed();
-		}
-		else {
-			ResponseUtils.out(ResponseEntity.status(403).build());
-			return null;
-		}
-	}
+    @Around("@annotation(limiter)")
+    public Object around(ProceedingJoinPoint joinPoint, Limiter limiter) throws Throwable {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        if (limiter == null) {
+            limiter = AnnotationUtils.findAnnotation(method, Limiter.class);
+        }
+        Assert.notNull(limiter, "limiter not null");
+        RRateLimiter rateLimiter = redissonClient.getRateLimiter(limiter.key());
+        rateLimiter.trySetRate(RateType.OVERALL, limiter.rate(), limiter.rateInterval(), limiter.rateIntervalUnit());
+        if (rateLimiter.tryAcquire(limiter.requestedTokens())) {
+            return joinPoint.proceed();
+        } else {
+            ResponseUtils.out(ResponseEntity.status(403).build());
+            return null;
+        }
+    }
 
 }

@@ -17,14 +17,14 @@ import java.util.Date;
 @Accessors(chain = true)
 public class User {
 
-	private Integer id;
+    private Integer id;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private Integer type;
+    private Integer type;
 
-	private Date createTime;
+    private Date createTime;
 
 }

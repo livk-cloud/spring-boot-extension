@@ -16,18 +16,18 @@ import java.lang.reflect.Field;
 @UtilityClass
 public class ReflectionUtils {
 
-	public Field[] getFields(Object parameter) {
-		var declaredFields = parameter.getClass().getDeclaredFields();
-		if (parameter.getClass().getSuperclass() != null) {
-			var superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
-			declaredFields = ArrayUtils.addAll(declaredFields, superFiled);
-		}
-		return declaredFields;
-	}
+    public Field[] getFields(Object parameter) {
+        var declaredFields = parameter.getClass().getDeclaredFields();
+        if (parameter.getClass().getSuperclass() != null) {
+            var superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
+            declaredFields = ArrayUtils.addAll(declaredFields, superFiled);
+        }
+        return declaredFields;
+    }
 
-	public void set(Field field, Object parameter, Object value) throws IllegalAccessException {
-		field.setAccessible(true);
-		field.set(parameter, value);
-	}
+    public void set(Field field, Object parameter, Object value) throws IllegalAccessException {
+        field.setAccessible(true);
+        field.set(parameter, value);
+    }
 
 }

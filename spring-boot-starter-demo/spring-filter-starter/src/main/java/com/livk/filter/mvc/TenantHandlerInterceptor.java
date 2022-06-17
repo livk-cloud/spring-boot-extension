@@ -17,17 +17,17 @@ import javax.annotation.Nonnull;
  */
 public class TenantHandlerInterceptor implements HandlerInterceptor {
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler)
-			throws Exception {
-		TenantContext.setTenantId(request.getHeader(TenantContext.ATTRIBUTES));
-		return HandlerInterceptor.super.preHandle(request, response, handler);
-	}
+    @Override
+    public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull Object handler)
+            throws Exception {
+        TenantContext.setTenantId(request.getHeader(TenantContext.ATTRIBUTES));
+        return HandlerInterceptor.super.preHandle(request, response, handler);
+    }
 
-	@Override
-	public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response,
-			@Nonnull Object handler, Exception ex) {
-		TenantContext.remove();
-	}
+    @Override
+    public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response,
+                                @Nonnull Object handler, Exception ex) {
+        TenantContext.remove();
+    }
 
 }

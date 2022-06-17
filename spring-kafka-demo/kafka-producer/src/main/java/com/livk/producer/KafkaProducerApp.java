@@ -16,8 +16,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class KafkaProducerApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(KafkaProducerApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(KafkaProducerApp.class, args);
+    }
 
 }

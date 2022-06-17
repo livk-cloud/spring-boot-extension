@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
  */
 public class LocalDateTimeFunction implements FunctionHandle<LocalDateTime> {
 
-	@Override
-	public LocalDateTime handler() {
-		return LocalDateTime.now();
-	}
+    @Override
+    public LocalDateTime handler() {
+        return LocalDateTime.now();
+    }
 
 }

@@ -22,40 +22,39 @@ import org.apache.ibatis.plugin.Signature;
  * @date 2022/1/29
  */
 @Slf4j
-@Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
+@Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class SqlInterceptor implements Interceptor {
 
-	@Override
-	public Object intercept(Invocation invocation) throws Throwable {
-		var mappedStatement = (MappedStatement) invocation.getArgs()[0];
-		var sqlCommandType = mappedStatement.getSqlCommandType();
-		var parameter = invocation.getArgs()[1];
-		var declaredFields = ReflectionUtils.getFields(parameter);
-		if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
-			for (var field : declaredFields) {
-				if (field.isAnnotationPresent(SqlFunction.class)) {
-					var sqlFunction = field.getAnnotation(SqlFunction.class);
-					var value = getValue(sqlFunction);
-					if (value == null) {
-						continue;
-					}
-					if (SqlCommandType.INSERT.equals(sqlCommandType)) {
-						ReflectionUtils.set(field, parameter, value);
-					}
-					else {
-						if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-							ReflectionUtils.set(field, parameter, value);
-						}
-					}
-				}
-			}
-		}
-		return invocation.proceed();
-	}
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        var mappedStatement = (MappedStatement) invocation.getArgs()[0];
+        var sqlCommandType = mappedStatement.getSqlCommandType();
+        var parameter = invocation.getArgs()[1];
+        var declaredFields = ReflectionUtils.getFields(parameter);
+        if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
+            for (var field : declaredFields) {
+                if (field.isAnnotationPresent(SqlFunction.class)) {
+                    var sqlFunction = field.getAnnotation(SqlFunction.class);
+                    var value = getValue(sqlFunction);
+                    if (value == null) {
+                        continue;
+                    }
+                    if (SqlCommandType.INSERT.equals(sqlCommandType)) {
+                        ReflectionUtils.set(field, parameter, value);
+                    } else {
+                        if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
+                            ReflectionUtils.set(field, parameter, value);
+                        }
+                    }
+                }
+            }
+        }
+        return invocation.proceed();
+    }
 
-	private Object getValue(SqlFunction sqlFunction) {
-		var value = sqlFunction.time().handler();
-		return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
-	}
+    private Object getValue(SqlFunction sqlFunction) {
+        var value = sqlFunction.time().handler();
+        return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
+    }
 
 }

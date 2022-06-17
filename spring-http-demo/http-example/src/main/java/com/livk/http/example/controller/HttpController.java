@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HttpController {
 
-	private final RemoteService service;
+    private final RemoteService service;
 
-	@GetMapping
-	public HttpEntity<String> get() {
-		return ResponseEntity.ok(service.get());
-	}
+    @GetMapping
+    public HttpEntity<String> get() {
+        return ResponseEntity.ok(service.get());
+    }
 
 }

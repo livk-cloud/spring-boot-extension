@@ -19,22 +19,22 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 @EnableConfigurationProperties(MqttProperties.class)
 public class MqttConfig {
 
-	@Bean
-	public MqttConnectOptions mqttConnectOptions(MqttProperties properties) {
-		var options = new MqttConnectOptions();
-		options.setUserName(properties.getUsername());
-		options.setPassword(properties.getPassword().toCharArray());
-		options.setServerURIs(properties.getUrl().split(";"));
-		options.setConnectionTimeout(properties.getConnectTimeout());
-		options.setKeepAliveInterval(properties.getKeepAliveInterval());
-		return options;
-	}
+    @Bean
+    public MqttConnectOptions mqttConnectOptions(MqttProperties properties) {
+        var options = new MqttConnectOptions();
+        options.setUserName(properties.getUsername());
+        options.setPassword(properties.getPassword().toCharArray());
+        options.setServerURIs(properties.getUrl().split(";"));
+        options.setConnectionTimeout(properties.getConnectTimeout());
+        options.setKeepAliveInterval(properties.getKeepAliveInterval());
+        return options;
+    }
 
-	@Bean
-	public MqttPahoClientFactory mqttPahoClientFactory(MqttConnectOptions mqttConnectOptions) {
-		var factory = new DefaultMqttPahoClientFactory();
-		factory.setConnectionOptions(mqttConnectOptions);
-		return factory;
-	}
+    @Bean
+    public MqttPahoClientFactory mqttPahoClientFactory(MqttConnectOptions mqttConnectOptions) {
+        var factory = new DefaultMqttPahoClientFactory();
+        factory.setConnectionOptions(mqttConnectOptions);
+        return factory;
+    }
 
 }

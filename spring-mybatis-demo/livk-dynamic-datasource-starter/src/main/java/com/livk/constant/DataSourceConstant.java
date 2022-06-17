@@ -10,6 +10,6 @@ package com.livk.constant;
  */
 public interface DataSourceConstant {
 
-	String DEFAULT_DATASOURCE_NAME = "defaultDatasource";
+    String DEFAULT_DATASOURCE_NAME = "defaultDatasource";
 
 }

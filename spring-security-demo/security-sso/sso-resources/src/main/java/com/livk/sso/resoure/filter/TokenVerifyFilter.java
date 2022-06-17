@@ -26,36 +26,34 @@ import java.util.Map;
  */
 public class TokenVerifyFilter extends BasicAuthenticationFilter {
 
-	private final RsaKeyProperties properties;
+    private final RsaKeyProperties properties;
 
-	public TokenVerifyFilter(AuthenticationManager authenticationManager, RsaKeyProperties properties) {
-		super(authenticationManager);
-		this.properties = properties;
-	}
+    public TokenVerifyFilter(AuthenticationManager authenticationManager, RsaKeyProperties properties) {
+        super(authenticationManager);
+        this.properties = properties;
+    }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		var authorization = request.getHeader("Authorization");
-		if (authorization != null && authorization.startsWith("Bearer ")) {
-			var token = authorization.replaceFirst("Bearer ", "");
-			var payload = JwtUtils.getInfo(token, properties.getPublicKey(), User.class);
-			var user = payload.getUserInfo();
-			if (user != null) {
-				var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
-						user.getPassword(), user.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-				chain.doFilter(request, response);
-			}
-			else {
-				var map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
-				ResponseUtils.out(response, map);
-			}
-		}
-		else {
-			var map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "请登录！");
-			ResponseUtils.out(response, map);
-		}
-	}
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        var authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            var token = authorization.replaceFirst("Bearer ", "");
+            var payload = JwtUtils.getInfo(token, properties.getPublicKey(), User.class);
+            var user = payload.getUserInfo();
+            if (user != null) {
+                var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
+                        user.getPassword(), user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                chain.doFilter(request, response);
+            } else {
+                var map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
+                ResponseUtils.out(response, map);
+            }
+        } else {
+            var map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "请登录！");
+            ResponseUtils.out(response, map);
+        }
+    }
 
 }

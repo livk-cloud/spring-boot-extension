@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 @Component
 public @interface LivkComponent {
 
-	@AliasFor(annotation = Component.class)
-	String value() default "";
+    @AliasFor(annotation = Component.class)
+    String value() default "";
 
 }

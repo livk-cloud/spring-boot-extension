@@ -22,21 +22,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LivkTest {
 
-	private final LivkDemo livkDemo;
+    private final LivkDemo livkDemo;
 
-	private final LivkTestDemo livkTestDemo;
+    private final LivkTestDemo livkTestDemo;
 
-	private final AnnoTest annoTest;
+    private final AnnoTest annoTest;
 
-	@Value("${username.spring.github}")
-	public String username;
+    @Value("${username.spring.github}")
+    public String username;
 
-	@PostConstruct
-	public void show() {
-		livkDemo.show();
-		livkTestDemo.show();
-		annoTest.show();
-		log.info(username);
-	}
+    @PostConstruct
+    public void show() {
+        livkDemo.show();
+        livkTestDemo.show();
+        annoTest.show();
+        log.info(username);
+    }
 
 }

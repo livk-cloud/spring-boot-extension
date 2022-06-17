@@ -34,43 +34,43 @@ import java.util.Set;
  */
 public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
-	private final HttpServiceProxyFactory proxyFactory;
+    private final HttpServiceProxyFactory proxyFactory;
 
-	private BeanFactory beanFactory;
+    private BeanFactory beanFactory;
 
-	private ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
 
-	public HttpServiceFactory() {
-		WebClient client = WebClient.builder().build();
-		this.proxyFactory = HttpServiceProxyFactory.builder(new WebClientAdapter(client)).build();
-	}
+    public HttpServiceFactory() {
+        WebClient client = WebClient.builder().build();
+        this.proxyFactory = HttpServiceProxyFactory.builder(new WebClientAdapter(client)).build();
+    }
 
-	@Override
-	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
-			@NonNull BeanDefinitionRegistry registry) {
-		List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
-		Set<Class<?>> typesAnnotatedClass = SpringUtils.findByAnnotationType(HttpExchange.class, resourceLoader,
-				packages.toArray(String[]::new));
-		for (Class<?> exchangeClass : typesAnnotatedClass) {
-			BeanName name = AnnotationUtils.getAnnotation(exchangeClass, BeanName.class);
-			String beanName = name != null ? name.value()
-					: CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, exchangeClass.getSimpleName());
-			registry.registerBeanDefinition(beanName, getBeanDefinition(exchangeClass));
-		}
-	}
+    @Override
+    public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
+                                        @NonNull BeanDefinitionRegistry registry) {
+        List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
+        Set<Class<?>> typesAnnotatedClass = SpringUtils.findByAnnotationType(HttpExchange.class, resourceLoader,
+                packages.toArray(String[]::new));
+        for (Class<?> exchangeClass : typesAnnotatedClass) {
+            BeanName name = AnnotationUtils.getAnnotation(exchangeClass, BeanName.class);
+            String beanName = name != null ? name.value()
+                    : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, exchangeClass.getSimpleName());
+            registry.registerBeanDefinition(beanName, getBeanDefinition(exchangeClass));
+        }
+    }
 
-	private <T> BeanDefinition getBeanDefinition(Class<T> exchangeClass) {
-		return new RootBeanDefinition(exchangeClass, () -> proxyFactory.createClient(exchangeClass));
-	}
+    private <T> BeanDefinition getBeanDefinition(Class<T> exchangeClass) {
+        return new RootBeanDefinition(exchangeClass, () -> proxyFactory.createClient(exchangeClass));
+    }
 
-	@Override
-	public void setResourceLoader(@NonNull ResourceLoader resourceLoader) {
-		this.resourceLoader = resourceLoader;
-	}
+    @Override
+    public void setResourceLoader(@NonNull ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
-	@Override
-	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
-	}
+    @Override
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
 
 }

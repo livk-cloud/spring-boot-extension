@@ -18,11 +18,11 @@ import javax.annotation.Nonnull;
  */
 public class TenantWebFilter implements WebFilter {
 
-	@Nonnull
-	@Override
-	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		TenantContext.setTenantId(exchange.getRequest().getHeaders().getFirst(TenantContext.ATTRIBUTES));
-		return chain.filter(exchange).doFinally(signalType -> TenantContext.remove());
-	}
+    @Nonnull
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        TenantContext.setTenantId(exchange.getRequest().getHeaders().getFirst(TenantContext.ATTRIBUTES));
+        return chain.filter(exchange).doFinally(signalType -> TenantContext.remove());
+    }
 
 }

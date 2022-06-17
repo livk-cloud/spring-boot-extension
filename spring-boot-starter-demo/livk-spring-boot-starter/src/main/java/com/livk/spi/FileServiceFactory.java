@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class FileServiceFactory extends AbstractServiceLoad<FileService> {
 
-	@Override
-	protected String getKey(FileService fileService) {
-		return fileService.getType();
-	}
+    @Override
+    protected String getKey(FileService fileService) {
+        return fileService.getType();
+    }
 
 }

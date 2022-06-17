@@ -23,50 +23,48 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class GenericMapstructService implements MapstructService, MapstructRegistry {
 
-	private final ConverterRepository repository;
+    private final ConverterRepository repository;
 
-	public static void addBeans(MapstructRegistry registry, ListableBeanFactory beanFactory) {
-		beanFactory.getBeansOfType(Converter.class).values().forEach(registry::addConverter);
-	}
+    public static void addBeans(MapstructRegistry registry, ListableBeanFactory beanFactory) {
+        beanFactory.getBeansOfType(Converter.class).values().forEach(registry::addConverter);
+    }
 
-	@Override
-	public void addConverter(Converter<?, ?> converter) {
-		repository.put(converter);
-	}
+    @Override
+    public void addConverter(Converter<?, ?> converter) {
+        repository.put(converter);
+    }
 
-	@Override
-	public <S, T> void addConverter(Class<S> sourceType, Class<T> targetType,
-			Converter<? super S, ? extends T> converter) {
-		repository.put(sourceType, targetType, converter);
-	}
+    @Override
+    public <S, T> void addConverter(Class<S> sourceType, Class<T> targetType,
+                                    Converter<? super S, ? extends T> converter) {
+        repository.put(sourceType, targetType, converter);
+    }
 
-	@Override
-	public <T> T converter(Object source, Class<T> targetClass) {
-		Class<?> sourceClass = source.getClass();
-		if (repository.contains(sourceClass, targetClass)) {
-			return (T) Objects.requireNonNull(repository.get(sourceClass, targetClass)).getTarget(source);
-		}
-		else if (repository.contains(targetClass, sourceClass)) {
-			return (T) Objects.requireNonNull(repository.get(targetClass, sourceClass)).getSource(source);
-		}
-		throw new ConverterNotFoundException(source + " to class " + targetClass + " not found converter");
-	}
+    @Override
+    public <T> T converter(Object source, Class<T> targetClass) {
+        Class<?> sourceClass = source.getClass();
+        if (repository.contains(sourceClass, targetClass)) {
+            return (T) Objects.requireNonNull(repository.get(sourceClass, targetClass)).getTarget(source);
+        } else if (repository.contains(targetClass, sourceClass)) {
+            return (T) Objects.requireNonNull(repository.get(targetClass, sourceClass)).getSource(source);
+        }
+        throw new ConverterNotFoundException(source + " to class " + targetClass + " not found converter");
+    }
 
-	@Override
-	public <T> Stream<T> converter(Collection<?> sources, Class<T> targetClass) {
-		Class<?> sourceClass = sources.stream().distinct().findFirst().orElseThrow().getClass();
-		if (repository.contains(sourceClass, targetClass)) {
-			return (Stream<T>) Objects.requireNonNull(repository.get(sourceClass, targetClass)).streamTarget(sources);
-		}
-		else if (repository.contains(targetClass, sourceClass)) {
-			return (Stream<T>) Objects.requireNonNull(repository.get(targetClass, sourceClass)).streamSource(sources);
-		}
-		throw new ConverterNotFoundException(sources + " to class " + targetClass + " not found converter");
-	}
+    @Override
+    public <T> Stream<T> converter(Collection<?> sources, Class<T> targetClass) {
+        Class<?> sourceClass = sources.stream().distinct().findFirst().orElseThrow().getClass();
+        if (repository.contains(sourceClass, targetClass)) {
+            return (Stream<T>) Objects.requireNonNull(repository.get(sourceClass, targetClass)).streamTarget(sources);
+        } else if (repository.contains(targetClass, sourceClass)) {
+            return (Stream<T>) Objects.requireNonNull(repository.get(targetClass, sourceClass)).streamSource(sources);
+        }
+        throw new ConverterNotFoundException(sources + " to class " + targetClass + " not found converter");
+    }
 
-	@Override
-	public ConverterRepository getConverterRepository() {
-		return this.repository;
-	}
+    @Override
+    public ConverterRepository getConverterRepository() {
+        return this.repository;
+    }
 
 }

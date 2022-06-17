@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CaffeineApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(CaffeineApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(CaffeineApp.class, args);
+    }
 
 }

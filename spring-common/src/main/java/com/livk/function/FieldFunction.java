@@ -22,32 +22,29 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface FieldFunction<T> extends Function<T, Object>, Serializable {
 
-	default String getFieldName() {
-		try {
-			Method method = this.getClass().getDeclaredMethod("writeReplace");
-			method.setAccessible(true);
-			SerializedLambda serializedLambda = (SerializedLambda) method.invoke(this);
-			String getter = serializedLambda.getImplMethodName();
-			if (getter.startsWith("get")) {
-				getter = getter.substring(3);
-			}
-			else if (getter.startsWith("is")) {
-				getter = getter.substring(2);
-			}
-			else {
-				return null;
-			}
-			if (!StringUtils.hasText(getter)) {
-				return null;
-			}
-			char[] cs = getter.toCharArray();
-			cs[0] += 32;
-			return String.valueOf(cs);
-		}
-		catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    default String getFieldName() {
+        try {
+            Method method = this.getClass().getDeclaredMethod("writeReplace");
+            method.setAccessible(true);
+            SerializedLambda serializedLambda = (SerializedLambda) method.invoke(this);
+            String getter = serializedLambda.getImplMethodName();
+            if (getter.startsWith("get")) {
+                getter = getter.substring(3);
+            } else if (getter.startsWith("is")) {
+                getter = getter.substring(2);
+            } else {
+                return null;
+            }
+            if (!StringUtils.hasText(getter)) {
+                return null;
+            }
+            char[] cs = getter.toCharArray();
+            cs[0] += 32;
+            return String.valueOf(cs);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

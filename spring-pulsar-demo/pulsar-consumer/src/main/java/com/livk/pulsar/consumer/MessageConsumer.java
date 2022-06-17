@@ -25,29 +25,28 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class MessageConsumer implements Runnable, InitializingBean {
 
-	private final Consumer<String> consumer;
+    private final Consumer<String> consumer;
 
-	@Override
-	public void run() {
-		while (true) {
-			try {
-				var message = consumer.receive();
-				var key = message.getKey();
-				var data = new String(message.getData(), StandardCharsets.UTF_8);
-				var topic = message.getTopicName();
-				log.info("topic:{} key:{} data:{}", topic, key, data);
-				consumer.acknowledge(message);
-			}
-			catch (PulsarClientException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                var message = consumer.receive();
+                var key = message.getKey();
+                var data = new String(message.getData(), StandardCharsets.UTF_8);
+                var topic = message.getTopicName();
+                log.info("topic:{} key:{} data:{}", topic, key, data);
+                consumer.acknowledge(message);
+            } catch (PulsarClientException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
-	@Override
-	public void afterPropertiesSet() {
-		var executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
-		executor.execute(this);
-	}
+    @Override
+    public void afterPropertiesSet() {
+        var executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
+        executor.execute(this);
+    }
 
 }

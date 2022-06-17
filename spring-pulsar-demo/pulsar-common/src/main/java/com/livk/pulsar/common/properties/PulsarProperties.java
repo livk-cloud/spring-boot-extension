@@ -15,10 +15,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(PulsarProperties.PULSAR_PREFIX)
 public class PulsarProperties {
 
-	public static final String PULSAR_PREFIX = "spring.pulsar";
+    public static final String PULSAR_PREFIX = "spring.pulsar";
 
-	private String address;
+    private String address;
 
-	private String topic;
+    private String topic;
 
 }

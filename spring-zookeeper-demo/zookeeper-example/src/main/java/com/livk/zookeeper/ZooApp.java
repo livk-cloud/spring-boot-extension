@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ZooApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(ZooApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(ZooApp.class, args);
+    }
 
 }

@@ -15,18 +15,18 @@ import java.io.Serial;
 @Getter
 public class LimitException extends RuntimeException {
 
-	@Serial
-	private static final long serialVersionUID = -6965865940214673219L;
+    @Serial
+    private static final long serialVersionUID = -6965865940214673219L;
 
-	private final int code;
+    private final int code;
 
-	public LimitException(String message) {
-		this(500, message);
-	}
+    public LimitException(String message) {
+        this(500, message);
+    }
 
-	public LimitException(int code, String message) {
-		super(message);
-		this.code = code;
-	}
+    public LimitException(int code, String message) {
+        super(message);
+        this.code = code;
+    }
 
 }

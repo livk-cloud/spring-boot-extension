@@ -12,20 +12,20 @@ import java.lang.annotation.*;
  * @author livk
  * @date 2022/6/13
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
 public @interface Limiter {
 
-	String key();
+    String key();
 
-	int rate();
+    int rate();
 
-	int rateInterval();
+    int rateInterval();
 
-	RateIntervalUnit rateIntervalUnit() default RateIntervalUnit.SECONDS;
+    RateIntervalUnit rateIntervalUnit() default RateIntervalUnit.SECONDS;
 
-	int requestedTokens() default 1;
+    int requestedTokens() default 1;
 
 }

@@ -17,21 +17,20 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
-	public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "Authorization";
 
-	@Override
-	public boolean checkOrigin(String originHeaderValue) {
-		var servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		Assert.notNull(servletRequestAttributes, "servletRequestAttributes not be null!");
-		var request = servletRequestAttributes.getRequest();
-		var token = request.getHeader(AUTHORIZATION);
-		if ("livk123".equals(token)) {
-			return super.checkOrigin(originHeaderValue);
-		}
-		else {
-			log.info("缺少参数!");
-			return false;
-		}
-	}
+    @Override
+    public boolean checkOrigin(String originHeaderValue) {
+        var servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Assert.notNull(servletRequestAttributes, "servletRequestAttributes not be null!");
+        var request = servletRequestAttributes.getRequest();
+        var token = request.getHeader(AUTHORIZATION);
+        if ("livk123".equals(token)) {
+            return super.checkOrigin(originHeaderValue);
+        } else {
+            log.info("缺少参数!");
+            return false;
+        }
+    }
 
 }

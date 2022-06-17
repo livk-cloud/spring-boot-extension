@@ -21,11 +21,6 @@ gradlePlugin {
             implementationClass = "com.livk.plugin.DependencyBomPlugin"
             description = "build dependency BOM"
         }
-        formatPlugin {
-            id = "com.livk.format"
-            implementationClass = "com.livk.plugin.FormatPlugin"
-            description = "code format"
-        }
         lombokPlugin {
             id = "com.livk.lombok"
             implementationClass = "com.livk.plugin.LombokPlugin"

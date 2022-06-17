@@ -61,7 +61,6 @@ configure(allprojects) {
 }
 
 configure(gradleModuleProjects) {
-    apply plugin: "com.livk.format"
     apply plugin: "com.livk.compile-args"
     apply plugin: "com.livk.dependency"
     apply plugin: "com.livk.lombok"

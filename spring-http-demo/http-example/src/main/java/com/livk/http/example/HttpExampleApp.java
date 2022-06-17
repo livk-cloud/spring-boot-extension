@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HttpExampleApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(HttpExampleApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(HttpExampleApp.class, args);
+    }
 
 }

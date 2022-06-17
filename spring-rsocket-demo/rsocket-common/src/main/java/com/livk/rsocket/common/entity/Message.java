@@ -19,24 +19,24 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Message {
 
-	private String from;
+    private String from;
 
-	private String to;
+    private String to;
 
-	private long index;
+    private long index;
 
-	private long created = Instant.now().getEpochSecond();
+    private long created = Instant.now().getEpochSecond();
 
-	public Message(String from, String to) {
-		this.from = from;
-		this.to = to;
-		this.index = 0;
-	}
+    public Message(String from, String to) {
+        this.from = from;
+        this.to = to;
+        this.index = 0;
+    }
 
-	public Message(String from, String to, long index) {
-		this.from = from;
-		this.to = to;
-		this.index = index;
-	}
+    public Message(String from, String to, long index) {
+        this.from = from;
+        this.to = to;
+        this.index = index;
+    }
 
 }

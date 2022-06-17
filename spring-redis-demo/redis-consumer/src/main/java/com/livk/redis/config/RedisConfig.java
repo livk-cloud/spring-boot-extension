@@ -32,29 +32,29 @@ import java.util.List;
 @ConditionalOnClass(RedisOperations.class)
 public class RedisConfig {
 
-	@Bean
-	public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
-			ReactiveRedisConnectionFactory connectionFactory) {
-		var container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-		var serializer = SerializerUtils.getSerializer(LivkMessage.class);
-		container
-				.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
-						RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
-						RedisSerializationContext.SerializationPair.fromSerializer(serializer))
-				.map(ReactiveSubscription.Message::getMessage).subscribe(obj -> log.info("message:{}", obj));
-		return container;
-	}
+    @Bean
+    public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
+            ReactiveRedisConnectionFactory connectionFactory) {
+        var container = new ReactiveRedisMessageListenerContainer(connectionFactory);
+        var serializer = SerializerUtils.getSerializer(LivkMessage.class);
+        container
+                .receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
+                        RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
+                        RedisSerializationContext.SerializationPair.fromSerializer(serializer))
+                .map(ReactiveSubscription.Message::getMessage).subscribe(obj -> log.info("message:{}", obj));
+        return container;
+    }
 
-	@Bean
-	public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory) {
-		var listenerContainer = new RedisMessageListenerContainer();
-		listenerContainer.setConnectionFactory(factory);
-		return listenerContainer;
-	}
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory) {
+        var listenerContainer = new RedisMessageListenerContainer();
+        listenerContainer.setConnectionFactory(factory);
+        return listenerContainer;
+    }
 
-	@Bean
-	public KeyExpiredListener keyExpiredListener(RedisMessageListenerContainer listenerContainer) {
-		return new KeyExpiredListener(listenerContainer);
-	}
+    @Bean
+    public KeyExpiredListener keyExpiredListener(RedisMessageListenerContainer listenerContainer) {
+        return new KeyExpiredListener(listenerContainer);
+    }
 
 }

@@ -16,8 +16,8 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @SpringBootApplication
 public class ReactorApp {
 
-	public static void main(String[] args) {
-		LivkSpring.run(ReactorApp.class, args);
-	}
+    public static void main(String[] args) {
+        LivkSpring.run(ReactorApp.class, args);
+    }
 
 }
