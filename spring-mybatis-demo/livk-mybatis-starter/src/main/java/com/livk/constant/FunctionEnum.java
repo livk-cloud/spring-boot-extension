@@ -19,8 +19,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FunctionEnum implements FunctionHandle<Object> {
 
-    DEFAULT(new NullFunction()), DATE(new DateFunction()), LOCAL_DATE(new LocalDateFunction()), LOCAL_DATE_TIME(
-            new LocalDateTimeFunction()), TIMESTAMP(new TimestampFunction());
+    DEFAULT(new NullFunction()),
+    DATE(new DateFunction()),
+    LOCAL_DATE(new LocalDateFunction()),
+    LOCAL_DATE_TIME(new LocalDateTimeFunction()),
+    TIMESTAMP(new TimestampFunction());
 
     private final FunctionHandle<?> function;
 
