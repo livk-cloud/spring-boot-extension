@@ -17,14 +17,15 @@ public class User {
 
     private String userName;
 
-	private String sex;
+    private String sex;
 
-	private Integer age;
+    private Integer age;
 
-	private String address;
+    private String address;
 
-	private Integer status;
+    private Integer status;
 
-	private Date createTime;
+    private Date createTime;
 
+    private Date updateTime;
 }

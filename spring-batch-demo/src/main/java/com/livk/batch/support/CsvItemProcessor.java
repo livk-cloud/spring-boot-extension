@@ -33,6 +33,7 @@ public class CsvItemProcessor implements ItemProcessor<User, User> {
 			}
 			item.setStatus(1);
 			item.setCreateTime(new Date());
+			item.setUpdateTime(new Date());
 			return item;
 		} catch (ValidationException e) {
 			return null;
