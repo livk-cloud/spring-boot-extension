@@ -1,7 +1,11 @@
 =  Spring-Boot-Demo
 
+link:README-en.adoc[English] +
+
 这是一个关于springboot项目的各种示例. +
 关于Gradle的各种使用方式以及示例 +
+里面的代码或多或少应该可以帮助到你 +
+如果觉得不错，可以star一下 +
 JDK:17 +
 SpringBoot: 3.0.0-M3(快照版) +
 Gradle: 7.4.2 +

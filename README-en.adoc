@@ -1,0 +1,26 @@
+=  Spring-Boot-Demo
+
+link:README-en.adoc[简体中文] +
+
+Here is a various example on springboot project. +
+Various ways of using Gradle and examples +
+The code inside should more or less help you +
+If you feel good, you can star it +
+JDK:17 +
+SpringBoot: 3.0.0-M3(Snapshot) +
+Gradle: 7.4.2 +
+
+commit trigger code format(Requires plugin support e.g.Spring checkStyle):
+link:.git/hooks/pre-commit[shell] +
+[source,shell]
+
+----
+#!/bin/bash
+echo "will run code format"
+gradle format
+----
+
+link:gradle.properties[Project information] +
+link:https://github.com/livk-cloud/Spring-Cloud-Demo[The official version of the Mobile Cloud Demo project] +
+link:example.md[Integration example] +
+link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
