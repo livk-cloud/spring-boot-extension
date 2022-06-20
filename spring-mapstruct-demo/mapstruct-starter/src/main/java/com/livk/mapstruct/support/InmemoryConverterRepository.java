@@ -38,7 +38,7 @@ public class InmemoryConverterRepository implements ConverterRepository {
     }
 
     @Override
-    public synchronized void put(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter) {
+    public void put(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter) {
         converterTable.put(sourceType, targetType, converter);
     }
 

@@ -1,4 +1,4 @@
-package com.livk;
+package com.livk.batch;
 
 import com.livk.common.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

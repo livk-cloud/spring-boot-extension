@@ -1,6 +1,6 @@
-package com.livk.support;
+package com.livk.batch.support;
 
-import com.livk.domain.User;
+import com.livk.batch.domain.User;
 import lombok.Setter;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;

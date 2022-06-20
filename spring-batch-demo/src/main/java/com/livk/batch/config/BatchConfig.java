@@ -1,9 +1,9 @@
-package com.livk.config;
+package com.livk.batch.config;
 
-import com.livk.domain.User;
-import com.livk.support.CsvBeanValidator;
-import com.livk.support.CsvItemProcessor;
-import com.livk.support.JobCompletionListener;
+import com.livk.batch.domain.User;
+import com.livk.batch.support.CsvBeanValidator;
+import com.livk.batch.support.CsvItemProcessor;
+import com.livk.batch.support.JobCompletionListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;

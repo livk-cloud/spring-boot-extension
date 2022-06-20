@@ -1,4 +1,4 @@
-package com.livk.controller;
+package com.livk.batch.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,4 +1,4 @@
-package com.livk.domain;
+package com.livk.batch.domain;
 
 import lombok.Data;
 

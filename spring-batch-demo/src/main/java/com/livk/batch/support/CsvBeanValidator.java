@@ -1,4 +1,4 @@
-package com.livk.support;
+package com.livk.batch.support;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
