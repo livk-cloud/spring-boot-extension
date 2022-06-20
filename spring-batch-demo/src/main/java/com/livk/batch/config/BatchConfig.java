@@ -41,9 +41,10 @@ public class BatchConfig {
         var reader = new FlatFileItemReader<User>();
         reader.setLinesToSkip(1);
         reader.setResource(new ClassPathResource("data.csv"));
-        CsvLineMapper<User> lineMapper = new CsvLineMapper<>(User.class);
-        lineMapper.setFiled("\t", "userName", "sex", "age", "address");
-        reader.setLineMapper(lineMapper);
+        reader.setLineMapper(CsvLineMapper.builder(User.class)
+                .delimiter("\t")
+                .fields("userName", "sex", "age", "address")
+                .build());
 //		reader.setLineMapper(new DefaultLineMapper<>() {
 //			{
 //				setLineTokenizer(new DelimitedLineTokenizer() {

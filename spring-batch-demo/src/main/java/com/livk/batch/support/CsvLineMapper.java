@@ -1,6 +1,8 @@
 package com.livk.batch.support;
 
 import com.livk.util.BeanUtils;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.LineMapper;
 
@@ -17,21 +19,17 @@ import java.lang.reflect.Method;
  * @date 2022/6/20
  */
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CsvLineMapper<T> implements LineMapper<T> {
 
     private final Class<T> targetClass;
 
-    private String[] fields;
+    private final String[] fields;
 
-    private String delimiter;
+    private final String delimiter;
 
-    public CsvLineMapper(Class<T> targetClass) {
-        this.targetClass = targetClass;
-    }
-
-    public void setFiled(String delimiter, String... fields) {
-        this.fields = fields;
-        this.delimiter = delimiter;
+    public static <T> Builder<T> builder(Class<T> targetClass) {
+        return new Builder<>(targetClass);
     }
 
     @Nonnull
@@ -45,7 +43,6 @@ public class CsvLineMapper<T> implements LineMapper<T> {
         for (int i = 0; i < fields.length; i++) {
             set(instance, fields[i], fieldArray[i]);
         }
-        log.info("{}", instance);
         return instance;
     }
 
@@ -73,6 +70,29 @@ public class CsvLineMapper<T> implements LineMapper<T> {
             method.invoke(t, value);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Builder<T> {
+        private final Class<T> targetClass;
+
+        private String[] fields;
+
+        private String delimiter;
+
+        public Builder<T> fields(String... fields) {
+            this.fields = fields;
+            return this;
+        }
+
+        public Builder<T> delimiter(String delimiter) {
+            this.delimiter = delimiter;
+            return this;
+        }
+
+        public CsvLineMapper<T> build() {
+            return new CsvLineMapper<>(targetClass, fields, delimiter);
         }
     }
 }
