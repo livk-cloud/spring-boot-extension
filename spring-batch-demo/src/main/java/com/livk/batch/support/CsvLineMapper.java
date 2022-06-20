@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.LineMapper;
+import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
@@ -92,6 +93,9 @@ public class CsvLineMapper<T> implements LineMapper<T> {
         }
 
         public CsvLineMapper<T> build() {
+            Assert.notNull(targetClass, "targetClass not null");
+            Assert.notNull(fields, "fields not null");
+            Assert.notNull(delimiter, "delimiter not null");
             return new CsvLineMapper<>(targetClass, fields, delimiter);
         }
     }
