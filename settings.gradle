@@ -19,12 +19,12 @@ fileTree(rootDir) {
     if (excludes) {
         exclude excludes
     }
-}.forEach { buildFile ->
-    def buildFilePath = buildFile.parentFile.absolutePath
+}.forEach {
+    def buildFilePath = it.parentFile.absolutePath
     def projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
     include projectPath
 
     def project = findProject(projectPath)
-    project.projectDir = buildFile.parentFile
-    project.buildFileName = buildFile.name
+    project.projectDir = it.parentFile
+    project.buildFileName = it.name
 }
