@@ -10,7 +10,7 @@ javaPlatform {
 
 ext {
     pagehelperVersion = "1.4.2"
-    oauth2AuthorizationVersion = "0.3.0"
+    oauth2AuthorizationVersion = "0.3.1"
     mpVersion = "3.5.2"
     mybatisVersion = "3.5.10"
     springMybatisVersion = "2.2.2"

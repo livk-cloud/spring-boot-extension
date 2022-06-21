@@ -11,7 +11,6 @@ SpringBoot: 3.0.0-M3(快照版) +
 Gradle: 7.4.2 +
 
 提交触发code format(需要插件支持例如:Spring checkStyle):
-link:.git/hooks/pre-commit[shell] +
 [source,shell]
 
 ----
