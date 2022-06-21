@@ -1,13 +1,12 @@
 package com.livk.mail.controller;
 
-import freemarker.template.Configuration;
+import com.livk.common.Pair;
+import com.livk.mail.support.MailTemplate;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +30,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class MailController {
 
-    private final Configuration configuration;
-
-    private final JavaMailSender sender;
+    private final MailTemplate mailTemplate;
 
     @PostMapping("send")
     public HttpEntity<Void> send() throws IOException, TemplateException, MessagingException {
@@ -48,17 +45,10 @@ public class MailController {
         // 往里面塞个List对象
         root.put("pets", pets);
 
-        var template = configuration.getTemplate("hello.ftl");
+        var template = mailTemplate.getConfiguration().getTemplate("hello.ftl");
         var text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
 
-        var mimeMessage = sender.createMimeMessage();
-        mimeMessage.setHeader("Importance", "High");
-        var helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        helper.setFrom("1375632510@qq.com", "I am Livk");
-        helper.setTo("1375632510@qq.com");
-        helper.setSubject("This is subject 主题");
-        helper.setText(text, true);
-        sender.send(mimeMessage);
+        mailTemplate.send(Pair.of("1375632510@qq.com", "I am Livk"), "This is subject 主题", text, root, "1375632510@qq.com");
         return ResponseEntity.ok().build();
     }
 
