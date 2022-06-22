@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -40,4 +41,16 @@ public class MessageController {
                 .flatMap(n -> Mono.empty());
     }
 
+    @PostMapping("/redis/hyper-log-log")
+    public Mono<Void> add(@RequestParam Object data) {
+        return livkReactiveRedisTemplate.opsForHyperLogLog()
+                .add("log", data)
+                .flatMap((Function<Long, Mono<Void>>) aLong -> Mono.empty());
+    }
+
+    @GetMapping("/redis/hyper-log-log")
+    public Mono<Long> get() {
+        return livkReactiveRedisTemplate.opsForHyperLogLog()
+                .size("log");
+    }
 }
