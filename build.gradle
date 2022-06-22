@@ -2,9 +2,8 @@ import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 plugins {
-    id "java"
-    id "org.springframework.boot" version "$springBootVersion" apply false
     id "com.livk.dependency"
+    id "org.springframework.boot" version "$springBootVersion" apply false
 }
 
 ext {
