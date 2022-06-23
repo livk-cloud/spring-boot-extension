@@ -16,23 +16,23 @@ import javax.annotation.Nonnull;
  */
 public class CsvBeanValidator<T> implements org.springframework.batch.item.validator.Validator<T> {
 
-	private final Validator validator;
+    private final Validator validator;
 
-	public CsvBeanValidator() {
-		try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
-			this.validator = validatorFactory.usingContext().getValidator();
-		}
-	}
+    public CsvBeanValidator() {
+        try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
+            this.validator = validatorFactory.usingContext().getValidator();
+        }
+    }
 
-	@Override
-	public void validate(@Nonnull T value) throws ValidationException {
-		var constraintViolations = validator.validate(value);
-		if (!constraintViolations.isEmpty()) {
-			var message = new StringBuilder();
-			constraintViolations
-					.forEach(constraintViolation -> message.append(constraintViolation.getMessage()).append("\n"));
-			throw new ValidationException(message.toString());
-		}
-	}
+    @Override
+    public void validate(@Nonnull T value) throws ValidationException {
+        var constraintViolations = validator.validate(value);
+        if (!constraintViolations.isEmpty()) {
+            var message = new StringBuilder();
+            constraintViolations
+                    .forEach(constraintViolation -> message.append(constraintViolation.getMessage()).append("\n"));
+            throw new ValidationException(message.toString());
+        }
+    }
 
 }

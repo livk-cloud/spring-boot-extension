@@ -26,9 +26,13 @@ public class RestTemplateConfiguration {
     @ConditionalOnMissingBean({OkHttpClient.class, RestTemplate.class})
     public RestTemplate restTemplate() {
         ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
-        OkHttpClient httpClient = new OkHttpClient().newBuilder().connectionPool(pool)
-                .connectTimeout(3, TimeUnit.SECONDS).readTimeout(3, TimeUnit.SECONDS).writeTimeout(3, TimeUnit.SECONDS)
-                .hostnameVerifier((s, sslSession) -> true).build();
+        OkHttpClient httpClient = new OkHttpClient().newBuilder()
+                .connectionPool(pool)
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(3, TimeUnit.SECONDS)
+                .writeTimeout(3, TimeUnit.SECONDS)
+                .hostnameVerifier((s, sslSession) -> true)
+                .build();
         return getRestTemplate(httpClient);
     }
 

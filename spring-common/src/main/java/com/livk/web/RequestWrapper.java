@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
  * @author livk
  * @date 2022/1/25
  */
-public class RequestWrapper extends HttpServletRequestWrapper {
+public final class RequestWrapper extends HttpServletRequestWrapper {
 
     private final HttpServletRequest request;
 

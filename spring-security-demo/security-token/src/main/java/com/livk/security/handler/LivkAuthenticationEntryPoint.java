@@ -1,6 +1,7 @@
 package com.livk.security.handler;
 
-import com.livk.security.util.ResponseUtils;
+
+import com.livk.util.ResponseUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

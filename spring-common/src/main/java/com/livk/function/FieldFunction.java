@@ -35,12 +35,11 @@ public interface FieldFunction<T> extends Function<T, Object>, Serializable {
             } else {
                 return null;
             }
-            if (!StringUtils.hasText(getter)) {
-                return null;
+            if (StringUtils.hasText(getter)) {
+                char[] cs = getter.toCharArray();
+                cs[0] += 32;
+                return String.valueOf(cs);
             }
-            char[] cs = getter.toCharArray();
-            cs[0] += 32;
-            return String.valueOf(cs);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package com.livk.security.filter;
 
 import com.livk.security.support.AuthenticationContext;
-import com.livk.security.util.ResponseUtils;
+import com.livk.util.ResponseUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
