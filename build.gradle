@@ -9,12 +9,17 @@ plugins {
 ext {
     bom = project ":livk-boot-dependencies"
     gradleModuleProjects = subprojects.findAll { it.buildFile.exists() } - bom
-    commonModuleProjects = gradleModuleProjects.findAll { it.name.endsWith("-common") || it.name.endsWith("-starter") }
+    commonModuleProjects = gradleModuleProjects.findAll {
+        it.name.endsWith("-common") ||
+                it.name.endsWith("-starter") ||
+                it.name.endsWith("-autoconfigure")
+    }
     springModuleProjects = gradleModuleProjects - commonModuleProjects
 }
 
 configure(commonModuleProjects) {
     apply plugin: "maven-publish"
+    apply plugin: "signing"
     apply plugin: "com.livk.resources"
 
     publishing {
@@ -26,6 +31,10 @@ configure(commonModuleProjects) {
                 artifact jar
             }
         }
+    }
+
+    signing {
+        sign publishing.publications.library
     }
 }
 

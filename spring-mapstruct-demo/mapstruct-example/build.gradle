@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":spring-mapstruct-demo:mapstruct-starter")
+    implementation project(":spring-mapstruct-demo:mapstruct-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.mapstruct:mapstruct"
     implementation "org.projectlombok:lombok-mapstruct-binding"

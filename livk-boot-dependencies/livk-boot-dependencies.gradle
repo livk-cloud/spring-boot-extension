@@ -2,6 +2,8 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id "java-platform"
+    id "maven-publish"
+    id "signing"
 }
 
 javaPlatform {
@@ -56,4 +58,19 @@ dependencies {
         api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
         api "io.r2dbc:r2dbc-postgresql:$r2dbcPostgresqlVersion"
     }
+}
+
+publishing {
+    publications {
+        mavenBom(MavenPublication) {
+            from components.javaPlatform
+            pom {
+                description "livk boot BOM"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenBom
 }
