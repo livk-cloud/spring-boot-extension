@@ -26,24 +26,22 @@ import java.util.function.Function;
 @NoArgsConstructor(staticName = "create")
 public class LivkBanner implements Banner {
 
-    private static final String[] banner = {"""
-			██ ██          ██       ██                          ██
-			░██░░          ░██      ░██                         ░██
-			░██ ██ ██    ██░██  ██  ░██       ██████   ██████  ██████
-			░██░██░██   ░██░██ ██   ░██████  ██░░░░██ ██░░░░██░░░██░
-			░██░██░░██ ░██ ░████    ░██░░░██░██   ░██░██   ░██  ░██
-			░██░██ ░░████  ░██░██   ░██  ░██░██   ░██░██   ░██  ░██
-			███░██  ░░██   ░██░░██  ░██████ ░░██████ ░░██████   ░░██
-			░░░ ░░    ░░    ░░  ░░   ░░░░░    ░░░░░░   ░░░░░░     ░░
-			"""};
+    private static final String banner = """
+            ██ ██          ██       ██                          ██
+            ░██░░          ░██      ░██                         ░██
+            ░██ ██ ██    ██░██  ██  ░██       ██████   ██████  ██████
+            ░██░██░██   ░██░██ ██   ░██████  ██░░░░██ ██░░░░██░░░██░
+            ░██░██░░██ ░██ ░████    ░██░░░██░██   ░██░██   ░██  ░██
+            ░██░██ ░░████  ░██░██   ░██  ░██░██   ░██░██   ░██  ░██
+            ███░██  ░░██   ░██░░██  ░██████ ░░██████ ░░██████   ░░██
+            ░░░ ░░    ░░    ░░  ░░   ░░░░░    ░░░░░░   ░░░░░░     ░░
+            """;
 
     @SneakyThrows
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
-        for (var line : banner) {
-            out.println(line);
-        }
-        int max = Arrays.stream(banner[0].split("\n")).map(String::length).max(Comparator.naturalOrder()).orElse(0);
+        out.println(banner);
+        int max = Arrays.stream(banner.split("\n")).map(String::length).max(Comparator.naturalOrder()).orElse(0);
         max = max % 2 == 0 ? max : max + 1;
         var format = Format.create(out, max);
         format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
