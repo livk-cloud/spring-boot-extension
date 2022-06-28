@@ -1,0 +1,52 @@
+[versions]
+springBoot = "3.0.0-M3"
+pagehelper = "1.4.3"
+oauth2Authorization = "0.3.1"
+mybatisPlus = "3.5.2"
+mybatis = "3.5.10"
+springMybatis = "2.2.2"
+guava = "31.1-jre"
+easyExcel = "3.1.1"
+javaWebSocket = "1.5.3"
+jsqlparser = "4.4"
+redisson = "3.17.4"
+zookeeper = "3.8.0"
+jjwtApi = "0.11.5"
+shardingsphere = "5.1.1"
+clickhouseJdbc = "0.3.2-patch10"
+pulsarClient = "2.10.0"
+googleFindbugs = "3.0.1"
+mapstruct = "1.5.2.Final"
+mapstructLombok = "0.2.0"
+r2dbcPostgresql = "0.8.12.RELEASE"
+
+[libraries]
+pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
+mybatis-plus-starter = { group = "com.baomidou", name = "mybatis-plus-boot-starter", version.ref = "mybatisPlus" }
+oauth2-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "oauth2Authorization" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyExcel" }
+mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "springMybatis" }
+mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
+java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "javaWebSocket" }
+jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
+redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
+zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwtApi" }
+jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwtApi" }
+jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwtApi" }
+shardingsphere-starter = { group = "org.apache.shardingsphere", name = "shardingsphere-jdbc-core-spring-boot-starter", version.ref = "shardingsphere" }
+clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouseJdbc" }
+pulsar-client = { group = "org.apache.pulsar", name = "pulsar-client", version.ref = "pulsarClient" }
+findbugs-annotations = { group = "com.google.code.findbugs", name = "annotations", version.ref = "googleFindbugs" }
+mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
+lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstructLombok" }
+r2dbc-postgresql = { group = "io.r2dbc", name = "r2dbc-postgresql", version.ref = "r2dbcPostgresql" }
+
+[bundles]
+jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
+
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

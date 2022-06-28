@@ -3,7 +3,7 @@ import java.util.concurrent.TimeUnit
 
 plugins {
     id "com.livk.dependency"
-    id "org.springframework.boot" version "$springBootVersion" apply false
+    alias(libs.plugins.spring.boot) apply false
 }
 
 ext {

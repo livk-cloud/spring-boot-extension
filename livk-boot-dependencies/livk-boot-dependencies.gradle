@@ -10,53 +10,29 @@ javaPlatform {
     allowDependencies()
 }
 
-ext {
-    pagehelperVersion = "1.4.2"
-    oauth2AuthorizationVersion = "0.3.1"
-    mybatisPlusVersion = "3.5.2"
-    mybatisVersion = "3.5.10"
-    springMybatisVersion = "2.2.2"
-    guavaVersion = "31.1-jre"
-    easyExcelVersion = "3.1.1"
-    javaWebSocketVersion = "1.5.3"
-    jsqlparserVersion = "4.4"
-    redissonVersion = "3.17.3"
-    zookeeperVersion = "3.8.0"
-    jjwtApiVersion = "0.11.5"
-    shardingsphereVersion = "5.1.1"
-    clickhouseJdbcVersion = "0.3.2-patch9"
-    pulsarClientVersion = "2.10.0"
-    googleFindbugsVersion = "3.0.1"
-    mapstructVersion = "1.5.1.Final"
-    mapstructLombokVersion = "0.2.0"
-    r2dbcPostgresqlVersion = "0.8.12.RELEASE"
-}
-
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
     constraints {
-        api "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion"
-        api "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
-        api "org.springframework.security:spring-security-oauth2-authorization-server:$oauth2AuthorizationVersion"
-        api "com.google.guava:guava:$guavaVersion"
-        api "com.alibaba:easyexcel:$easyExcelVersion"
-        api "org.mybatis.spring.boot:mybatis-spring-boot-starter:$springMybatisVersion"
-        api "org.mybatis:mybatis:$mybatisVersion"
-        api "org.java-websocket:Java-WebSocket:$javaWebSocketVersion"
-        api "com.github.jsqlparser:jsqlparser:$jsqlparserVersion"
-        api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
-        api "org.apache.zookeeper:zookeeper:$zookeeperVersion"
-        api "io.jsonwebtoken:jjwt-api:$jjwtApiVersion"
-        api "io.jsonwebtoken:jjwt-impl:$jjwtApiVersion"
-        api "io.jsonwebtoken:jjwt-jackson:$jjwtApiVersion"
-        api "org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:$shardingsphereVersion"
-        api "com.clickhouse:clickhouse-jdbc:$clickhouseJdbcVersion"
-        api "org.apache.pulsar:pulsar-client:$pulsarClientVersion"
-        api "com.google.code.findbugs:annotations:$googleFindbugsVersion"
-        api "org.mapstruct:mapstruct:$mapstructVersion"
-        api "org.mapstruct:mapstruct-processor:$mapstructVersion"
-        api "org.projectlombok:lombok-mapstruct-binding:$mapstructLombokVersion"
-        api "io.r2dbc:r2dbc-postgresql:$r2dbcPostgresqlVersion"
+        api libs.pagehelper.starter
+        api libs.mybatis.plus.starter
+        api libs.oauth2.authorization.server
+        api libs.guava
+        api libs.easyexcel
+        api libs.mybatis.starter
+        api libs.mybatis
+        api libs.java.webSocket
+        api libs.jsqlparser
+        api libs.redisson.starter
+        api libs.zookeeper
+        api libs.bundles.jjwt
+        api libs.shardingsphere.starter
+        api libs.clickhouse.jdbc
+        api libs.pulsar.client
+        api libs.findbugs.annotations
+        api libs.mapstruct
+        api libs.mapstruct.processor
+        api libs.lombok.mapstruct
+        api libs.r2dbc.postgresql
     }
 }
 
