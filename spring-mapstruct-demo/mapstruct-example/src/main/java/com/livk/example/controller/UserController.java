@@ -1,5 +1,6 @@
 package com.livk.example.controller;
 
+import com.livk.example.config.ConversionServiceAdapter;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
 import com.livk.mapstruct.converter.MapstructService;
@@ -41,6 +42,8 @@ public class UserController {
     // spring单向转换
     private final ConversionService conversionService;
 
+    private final ConversionServiceAdapter conversionServiceAdapter;
+
     @GetMapping
     public HttpEntity<Map<String, List<UserVO>>> list() {
         List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
@@ -53,7 +56,7 @@ public class UserController {
     public HttpEntity<Map<String, UserVO>> getById(@PathVariable Integer id) {
         User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
         UserVO userVOSpring = conversionService.convert(u, UserVO.class);
-        return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class), "spring", userVOSpring));
+        return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class), "spring", userVOSpring, "adapter", conversionServiceAdapter.mapUserToUserVO(u)));
     }
 
 }
