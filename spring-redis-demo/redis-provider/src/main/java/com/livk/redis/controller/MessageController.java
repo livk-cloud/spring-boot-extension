@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * <p>
@@ -37,7 +36,9 @@ public class MessageController {
     @PostMapping("/redis/stream")
     public Mono<Void> stream() {
         return livkReactiveRedisTemplate.opsForStream()
-                .add(StreamRecords.newRecord().ofObject("livk-object").withStreamKey("livk-streamKey"))
+                .add(StreamRecords.newRecord()
+                        .ofObject("livk-object")
+                        .withStreamKey("livk-streamKey"))
                 .flatMap(n -> Mono.empty());
     }
 
@@ -45,7 +46,7 @@ public class MessageController {
     public Mono<Void> add(@RequestParam Object data) {
         return livkReactiveRedisTemplate.opsForHyperLogLog()
                 .add("log", data)
-                .flatMap((Function<Long, Mono<Void>>) aLong -> Mono.empty());
+                .flatMap(n -> Mono.empty());
     }
 
     @GetMapping("/redis/hyper-log-log")

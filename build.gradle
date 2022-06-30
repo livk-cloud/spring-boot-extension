@@ -76,18 +76,6 @@ configure(gradleModuleProjects) {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
-    jar {
-        manifest {
-            attributes(
-                    "Implementation-Group": "$project.group",
-                    "Implementation-Title": "$project.name",
-                    "Implementation-Version": "$project.version",
-                    "Created-By": "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})",
-                    "Gradle-Version": gradle.properties.get("gradleVersion")
-            )
-        }
-    }
-
     dependencies {
         dependencyBom platform(project(":livk-boot-dependencies"))
 
