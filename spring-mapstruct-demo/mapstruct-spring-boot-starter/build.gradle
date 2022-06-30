@@ -1,7 +1,0 @@
-dependencies {
-    api project(":spring-mapstruct-demo:mapstruct-spring-boot-autoconfigure")
-}
-
-test {
-    useJUnitPlatform()
-}

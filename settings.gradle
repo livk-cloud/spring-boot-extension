@@ -10,7 +10,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "spring-boot-demo"
+rootProject.name = "spring-boot-example"
 
 fileTree(rootDir) {
     def excludes = gradle.startParameter.projectProperties.get("excludeProjects")?.split(",")

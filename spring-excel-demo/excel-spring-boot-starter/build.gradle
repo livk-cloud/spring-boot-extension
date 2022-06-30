@@ -1,8 +1,0 @@
-dependencies {
-    api project(":spring-excel-demo:excel-common")
-    compileOnly "org.springframework.boot:spring-boot-starter-web"
-}
-
-test {
-    useJUnitPlatform()
-}

@@ -1,7 +1,0 @@
-dependencies {
-    implementation project(":spring-rsocket-demo:rsocket-common")
-}
-
-test {
-    useJUnitPlatform()
-}

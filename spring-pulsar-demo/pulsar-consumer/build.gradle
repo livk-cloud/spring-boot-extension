@@ -1,8 +1,0 @@
-dependencies {
-    implementation project(":spring-pulsar-demo:pulsar-common")
-    implementation "org.springframework.boot:spring-boot-starter-web"
-}
-
-test {
-    useJUnitPlatform()
-}

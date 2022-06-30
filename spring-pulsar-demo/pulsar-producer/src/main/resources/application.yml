@@ -1,7 +1,0 @@
-server:
-  port: 9997
-
-spring:
-  pulsar:
-    address: pulsar://livk.com:6650
-    topic: livk-topic
