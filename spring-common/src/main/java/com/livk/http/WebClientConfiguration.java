@@ -1,10 +1,20 @@
 package com.livk.http;
 
+import io.netty.channel.ChannelOption;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.resources.LoopResources;
+
+import java.util.function.Function;
 
 /**
  * <p>
@@ -27,7 +37,16 @@ public class WebClientConfiguration {
     @ConditionalOnClass(WebClient.class)
     @ConditionalOnMissingBean
     public WebClient webClient() {
-        return WebClient.create();
+        ReactorResourceFactory factory = new ReactorResourceFactory();
+        factory.setUseGlobalResources(false);
+        factory.setConnectionProvider(ConnectionProvider.create("httpClient", 50));
+        factory.setLoopResources(LoopResources.create("httpClient", 50, true));
+        Function<HttpClient, HttpClient> function = httpClient ->
+                httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10)
+                        .doOnConnected(connection ->
+                                connection.addHandlerLast(new ReadTimeoutHandler(10))
+                                        .addHandlerLast(new WriteTimeoutHandler(10)));
+        ReactorClientHttpConnector connector = new ReactorClientHttpConnector(factory, function);
+        return WebClient.builder().clientConnector(connector).build();
     }
-
 }

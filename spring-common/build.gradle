@@ -1,6 +1,7 @@
 dependencies {
     compileOnly "org.springframework:spring-webmvc"
     compileOnly "org.springframework:spring-webflux"
+    compileOnly "io.projectreactor.netty:reactor-netty-http"
     compileOnly "org.springframework.boot:spring-boot-starter"
     compileOnly "com.github.pagehelper:pagehelper-spring-boot-starter"
     compileOnly "com.fasterxml.jackson.core:jackson-databind"
