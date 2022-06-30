@@ -1,4 +1,4 @@
-=  Spring-Boot-Demo
+=  Spring Boot Example
 
 link:README-en.adoc[English] +
 
