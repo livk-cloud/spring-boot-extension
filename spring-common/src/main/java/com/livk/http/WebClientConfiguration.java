@@ -39,8 +39,8 @@ public class WebClientConfiguration {
     public WebClient webClient() {
         ReactorResourceFactory factory = new ReactorResourceFactory();
         factory.setUseGlobalResources(false);
-        factory.setConnectionProvider(ConnectionProvider.create("httpClient", 50));
-        factory.setLoopResources(LoopResources.create("httpClient", 50, true));
+        factory.setConnectionProvider(ConnectionProvider.create("webClient", 50));
+        factory.setLoopResources(LoopResources.create("webClient", 50, true));
         Function<HttpClient, HttpClient> function = httpClient ->
                 httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10)
                         .doOnConnected(connection ->
