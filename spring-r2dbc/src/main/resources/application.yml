@@ -1,0 +1,14 @@
+server:
+  port: 9663
+spring:
+  application:
+    name: spring-r2dbc
+  profiles:
+    active: dev
+  r2dbc:
+    url: r2dbc:postgres://livk.com:5432/postgres
+    username: postgres
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update

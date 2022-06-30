@@ -1,0 +1,7 @@
+spring:
+  kafka:
+    bootstrap-servers: livk.com:9092
+    consumer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+server:
+  port: 9876

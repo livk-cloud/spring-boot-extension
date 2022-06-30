@@ -1,0 +1,4 @@
+com.livk.amqp.config.DirectConfig
+com.livk.amqp.config.FanoutConfig
+com.livk.amqp.config.TopicConfig
+com.livk.amqp.config.HeadersConfig

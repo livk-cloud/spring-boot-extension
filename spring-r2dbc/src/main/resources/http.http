@@ -1,0 +1,22 @@
+GET http://localhost:9663/user
+
+####
+GET http://localhost:9663/user/2
+
+###
+POST http://localhost:9663/user
+Content-Type: application/json
+
+{
+  "username": "livk-root",
+  "password": "123456"
+}
+
+###
+PUT http://localhost:9663/user/8
+Content-Type: application/json
+
+{
+  "username": "livk-root",
+  "password": "123456"
+}

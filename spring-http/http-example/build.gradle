@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(":spring-http:http-starter")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+}

@@ -1,0 +1,12 @@
+server:
+  port: 9956
+spring:
+  quartz:
+    jdbc:
+      platform: mysql
+    job-store-type: jdbc
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://livk.com:3306/quartz
+    username: root
+    password: 123456

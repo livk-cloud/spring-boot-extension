@@ -1,0 +1,13 @@
+spring:
+  mqtt:
+    username: admin
+    password: admin
+    url: tcp://livk.com:1883
+    sender:
+      clientId: mqtt-producer
+      defaultTopic: livk
+    receiver:
+      clientId: ${random.value}
+      defaultTopic: livk
+server:
+  port: 9632

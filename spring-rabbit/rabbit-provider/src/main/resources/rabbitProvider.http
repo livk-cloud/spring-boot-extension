@@ -1,0 +1,52 @@
+POST http://localhost:9968/provider/sendMsgDirect
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}
+
+###
+POST http://localhost:9968/provider/sendMsgFanout
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}
+
+###
+POST http://localhost:9968/provider/sendMsgTopic/rabbit.a.b
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}
+
+###
+POST http://localhost:9968/provider/sendMsgTopic/a.b
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}
+
+###
+POST http://localhost:9968/provider/sendMsgHeaders/json={"auth":"livk"}
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}
+
+###
+POST http://localhost:9968/provider/sendMsgHeaders/json={"username":"livk","password":"livk"}
+Content-Type: application/json
+
+{
+  "msg": "hello",
+  "data": "By Livk"
+}

@@ -1,0 +1,9 @@
+dependencies {
+    api project(":spring-common")
+    api "com.google.guava:guava"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,11 @@
+server:
+  port: 9514
+
+spring:
+  datasource:
+    url: jdbc:postgresql://livk.com:5432/postgres
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+mybatis-plus:
+  type-handlers-package: com.livk.json.support

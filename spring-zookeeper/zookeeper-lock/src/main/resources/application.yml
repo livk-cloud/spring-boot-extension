@@ -1,0 +1,3 @@
+spring:
+  zookeeper:
+    host: livk.com

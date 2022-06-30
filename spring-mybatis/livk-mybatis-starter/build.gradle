@@ -1,0 +1,11 @@
+dependencies {
+    api project(":spring-common")
+    api "org.mybatis:mybatis"
+    compileOnly "org.springframework.boot:spring-boot-starter"
+    api "org.apache.commons:commons-lang3"
+    api "com.github.jsqlparser:jsqlparser"
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,40 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: db0
+      db0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://livk.com:3306/sharding_jdbc?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+    props:
+      sql-show: true
+    rules:
+      sharding:
+        tables:
+          sys_log:
+            actualDataNodes: db0.sys_log_$->{2021}_$->{10..12}
+            table-strategy:
+              standard:
+                sharding-column: date
+                sharding-algorithm-name: livk
+        sharding-algorithms:
+          livk:
+            type: LIVK_PRECISE
+            props:
+              algorithm-expression: sys_log_$->{date}
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+
+mybatis-plus:
+  global-config:
+    banner: off
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 6666
