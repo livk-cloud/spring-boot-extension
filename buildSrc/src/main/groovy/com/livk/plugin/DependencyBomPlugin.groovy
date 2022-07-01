@@ -23,7 +23,7 @@ abstract class DependencyBomPlugin implements Plugin<Project> {
         dependencyBom.visible = false
         dependencyBom.canBeResolved = false
         dependencyBom.canBeConsumed = false
-        project.plugins.withType(JavaPlugin.class) {
+        project.plugins.withType(JavaPlugin.class) { javaPlugin ->
             project.configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME).extendsFrom(dependencyBom)
             project.configurations.getByName(JavaPlugin.API_ELEMENTS_CONFIGURATION_NAME).extendsFrom(dependencyBom)
             project.configurations.getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME).extendsFrom(dependencyBom)
