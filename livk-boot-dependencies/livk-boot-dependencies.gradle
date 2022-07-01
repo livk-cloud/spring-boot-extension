@@ -2,8 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id "java-platform"
-    id "maven-publish"
-    id "signing"
+    id "com.livk.maven.deployed"
 }
 
 javaPlatform {
@@ -36,17 +35,3 @@ dependencies {
     }
 }
 
-publishing {
-    publications {
-        mavenBom(MavenPublication) {
-            from components.javaPlatform
-            pom {
-                description "livk boot BOM"
-            }
-        }
-    }
-}
-
-signing {
-    sign publishing.publications.mavenBom
-}

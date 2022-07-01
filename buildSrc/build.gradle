@@ -1,12 +1,15 @@
 apply plugin: "groovy-gradle-plugin"
 
 repositories {
+    maven { url "https://repo.spring.io/milestone" }
     maven { url "https://maven.aliyun.com/repository/public" }
     maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://repo.spring.io/release" }
+    maven { url "https://repo.spring.io/libs-snapshot/" }
 }
 
 dependencies {
-    implementation "io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.31"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:3.0.0-M3"
 }
 
 gradlePlugin {
@@ -25,6 +28,14 @@ gradlePlugin {
             id = "com.livk.resources"
             implementationClass = "com.livk.plugin.ResourcesPlugin"
             description = "Add resource handling"
+        }
+        deployedPlugin {
+            id = "com.livk.maven.deployed"
+            implementationClass = "com.livk.plugin.maven.DeployedPlugin"
+        }
+        buildInfoPlugin {
+            id = "com.livk.build.boot"
+            implementationClass = "com.livk.plugin.BuildInfoPlugin"
         }
     }
 }
