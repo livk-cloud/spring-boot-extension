@@ -43,9 +43,6 @@ configure(gradleModuleProjects) {
     apply plugin: "com.livk.compile-args"
     apply plugin: "com.livk.dependency"
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
     dependencies {
         dependencyBom platform(project(":livk-boot-dependencies"))
 

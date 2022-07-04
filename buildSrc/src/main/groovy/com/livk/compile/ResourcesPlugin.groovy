@@ -1,4 +1,4 @@
-package com.livk.plugin
+package com.livk.compile
 
 
 import org.gradle.api.Plugin

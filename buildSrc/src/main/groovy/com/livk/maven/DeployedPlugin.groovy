@@ -1,4 +1,4 @@
-package com.livk.plugin.maven
+package com.livk.maven
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,7 +24,7 @@ abstract class DeployedPlugin implements Plugin<Project> {
         def publication = publication(project)
         project.afterEvaluate { evaluated ->
             project.plugins.withType(JavaPlugin.class).all {
-                if (((Jar) project.tasks.getByName(JavaPlugin.JAR_TASK_NAME)).isEnabled()) {
+                if ((project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar).isEnabled()) {
                     project.components
                             .matching { softwareComponent -> softwareComponent.name == "java" }
                             .every { publication.from(it) }

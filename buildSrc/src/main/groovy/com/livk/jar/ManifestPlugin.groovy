@@ -1,4 +1,4 @@
-package com.livk.plugin
+package com.livk.jar
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,14 +19,14 @@ abstract class ManifestPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
-        def jar = project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar
-        GradleVersion.current()
-        jar.manifest.attributes(
+        (project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar)
+                .manifest.attributes(
                 [
                         "Implementation-Group"  : project.group,
                         "Implementation-Title"  : project.name,
                         "Implementation-Version": project.version,
-                        "Created-By"            : System.getProperty("java.version") + " (" + (System.getProperty("java.specification.vendor")) + ")",
+                        "Created-By"            : System.getProperty("java.version") + " (" +
+                                (System.getProperty("java.specification.vendor")) + ")",
                         "Gradle-Version"        : GradleVersion.current()
                 ]
         )

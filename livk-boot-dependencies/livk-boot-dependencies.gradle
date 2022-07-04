@@ -12,26 +12,13 @@ javaPlatform {
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
     constraints {
-        api libs.pagehelper.starter
-        api libs.mybatis.plus.starter
-        api libs.oauth2.authorization.server
-        api libs.guava
-        api libs.easyexcel
-        api libs.mybatis.starter
-        api libs.mybatis
-        api libs.java.webSocket
-        api libs.jsqlparser
-        api libs.redisson.starter
-        api libs.zookeeper
-        api libs.bundles.jjwt
-        api libs.shardingsphere.starter
-        api libs.clickhouse.jdbc
-        api libs.pulsar.client
-        api libs.findbugs.annotations
-        api libs.mapstruct
-        api libs.mapstruct.processor
-        api libs.lombok.mapstruct
-        api libs.r2dbc.postgresql
+
+        def versionCatalog = rootProject.extensions
+                .getByType(VersionCatalogsExtension.class)
+                .named("libs")
+        versionCatalog.getLibraryAliases()
+                .collect { versionCatalog.findLibrary(it).get().get() }
+                .forEach { api it }
     }
 }
 

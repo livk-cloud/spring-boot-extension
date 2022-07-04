@@ -16,26 +16,26 @@ gradlePlugin {
     plugins {
         compileArgsPlugin {
             id = "com.livk.compile-args"
-            implementationClass = "com.livk.plugin.CompileArgsPlugin"
+            implementationClass = "com.livk.compile.CompileArgsPlugin"
             description = "Add compile parameters"
         }
         dependencyBomPlugin {
             id = "com.livk.dependency"
-            implementationClass = "com.livk.plugin.DependencyBomPlugin"
+            implementationClass = "com.livk.DependencyBomPlugin"
             description = "build dependency BOM"
         }
         resourcesPlugin {
             id = "com.livk.resources"
-            implementationClass = "com.livk.plugin.ResourcesPlugin"
+            implementationClass = "com.livk.compile.ResourcesPlugin"
             description = "Add resource handling"
         }
         deployedPlugin {
             id = "com.livk.maven.deployed"
-            implementationClass = "com.livk.plugin.maven.DeployedPlugin"
+            implementationClass = "com.livk.maven.DeployedPlugin"
         }
-        buildInfoPlugin {
+        bootPlugin {
             id = "com.livk.build.boot"
-            implementationClass = "com.livk.plugin.BuildInfoPlugin"
+            implementationClass = "com.livk.jar.BootPlugin"
         }
     }
 }
