@@ -1,6 +1,5 @@
 package com.livk.json.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.json.entity.User;
 import com.livk.json.mapper.UserMapper;
 import com.livk.util.JacksonUtils;
@@ -36,7 +35,7 @@ public class UserController {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin");
-        user.setDes(JacksonUtils.toBean(json, JsonNode.class));
+        user.setDes(JacksonUtils.readTree(json));
         return ResponseEntity.ok(userMapper.insert(user) != 0);
     }
 

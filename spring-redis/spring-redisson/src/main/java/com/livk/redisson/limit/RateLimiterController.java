@@ -2,6 +2,7 @@ package com.livk.redisson.limit;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RateIntervalUnit;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RateLimiterController {
 
-    @Limiter(key = "livk:user", rate = 3, rateInterval = 10)
+    @Limiter(key = "livk:user", rate = 3, rateInterval = 10, rateIntervalUnit = RateIntervalUnit.SECONDS, requestedTokens = 1)
     @GetMapping
     public HttpEntity<Map<String, Object>> rate() {
         return ResponseEntity.ok(Map.of("username", "root", "password", "123456"));

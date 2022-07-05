@@ -3,12 +3,17 @@ package com.livk.spring;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 /**
  * <p>
@@ -20,10 +25,12 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
+public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
 
     @Getter
     private static ApplicationContext applicationContext = null;
+
+    private static ListableBeanFactory beanFactory = null;
 
     /**
      * Spring事件发布
@@ -36,15 +43,30 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) {
-        return (T) applicationContext.getBean(name);
+        return (T) beanFactory.getBean(name);
     }
 
     public static <T> T getBean(Class<T> typeClass) {
-        return applicationContext.getBean(typeClass);
+        return beanFactory.getBean(typeClass);
     }
 
     public static <T> T getBean(String name, Class<T> typeClass) {
-        return applicationContext.getBean(name, typeClass);
+        return beanFactory.getBean(name, typeClass);
+    }
+
+    public static <T> Collection<T> getBeansOfType(Class<T> typeClass) {
+        return beanFactory.getBeansOfType(typeClass).values();
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        if (SpringContextHolder.beanFactory != null) {
+            log.warn("SpringContextHolder中的beanFactory被覆盖, 原有beanFactory为:{}",
+                    SpringContextHolder.beanFactory);
+        }
+        synchronized (SpringContextHolder.class) {
+            SpringContextHolder.beanFactory = (ListableBeanFactory) beanFactory;
+        }
     }
 
     @Override
@@ -62,9 +84,11 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
     public void destroy() {
         if (log.isDebugEnabled()) {
             log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
+            log.debug("清除SpringContextHolder中的beanFactory:{}", beanFactory);
         }
         synchronized (SpringContextHolder.class) {
             SpringContextHolder.applicationContext = null;
+            SpringContextHolder.beanFactory = null;
         }
     }
 

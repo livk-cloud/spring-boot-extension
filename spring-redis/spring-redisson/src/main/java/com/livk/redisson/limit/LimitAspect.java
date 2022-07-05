@@ -4,14 +4,12 @@ import com.livk.util.ResponseUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -24,8 +22,8 @@ import java.lang.reflect.Method;
  * @author livk
  * @date 2022/6/14
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 @RequiredArgsConstructor
 public class LimitAspect {
 
