@@ -1,15 +1,13 @@
 package com.livk.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -35,32 +33,23 @@ public class JacksonUtils {
      * @param <T>   type
      * @return T
      */
+    @SneakyThrows
     @SuppressWarnings("unchecked")
     public static <T> T toBean(String json, Class<T> clazz) {
-        if (json == null || json.isEmpty() || clazz == null) {
+        if (check(json, clazz)) {
             return null;
         }
         if (clazz.isInstance(json)) {
             return (T) json;
         }
-        try {
-            return MAPPER.readValue(json, clazz);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return BeanUtils.instantiateClass(clazz);
+        return MAPPER.readValue(json, clazz);
+
     }
 
+    @SneakyThrows
     public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
-        if (inputStream == null || clazz == null) {
-            return null;
-        }
-        try {
-            return MAPPER.readValue(inputStream, clazz);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return BeanUtils.instantiateClass(clazz);
+        return (inputStream == null || clazz == null) ? null :
+                MAPPER.readValue(inputStream, clazz);
     }
 
     /**
@@ -69,16 +58,12 @@ public class JacksonUtils {
      * @param obj obj
      * @return json
      */
+    @SneakyThrows
     public static String toJsonStr(Object obj) {
         if (obj instanceof String) {
             return (String) obj;
         }
-        try {
-            return MAPPER.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return JSON_EMPTY;
+        return MAPPER.writeValueAsString(obj);
     }
 
     /**
@@ -89,17 +74,14 @@ public class JacksonUtils {
      * @param <T>   泛型
      * @return List<T>
      */
+    @SneakyThrows
     public static <T> List<T> toList(String json, Class<T> clazz) {
-        if (json == null || json.isEmpty() || clazz == null) {
+        if (check(json, clazz)) {
             return new ArrayList<>();
         }
-        CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(List.class, clazz);
-        try {
-            return MAPPER.readValue(json, collectionType);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
+        var collectionType = MAPPER.getTypeFactory()
+                .constructCollectionType(List.class, clazz);
+        return MAPPER.readValue(json, collectionType);
     }
 
     /**
@@ -110,41 +92,36 @@ public class JacksonUtils {
      * @param valueClass V Class
      * @return Map<K, V>
      */
+    @SneakyThrows
     public static <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
-        if (!StringUtils.hasText(json) || keyClass == null || valueClass == null) {
+        if (check(json, keyClass, valueClass)) {
             return Collections.emptyMap();
         }
-        try {
-            var mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
-            return MAPPER.readValue(json, mapType);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyMap();
+        var mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        return MAPPER.readValue(json, mapType);
     }
 
+    @SneakyThrows
     public Properties toProperties(InputStream inputStream) {
         if (inputStream == null) {
             return new Properties();
         }
-        try {
-            var mapType = MAPPER.getTypeFactory().constructType(Properties.class);
-            return MAPPER.readValue(inputStream, mapType);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        var mapType = MAPPER.getTypeFactory().constructType(Properties.class);
+        return MAPPER.readValue(inputStream, mapType);
     }
 
+    @SneakyThrows
     public <T> T toBean(String json, TypeReference<T> typeReference) {
-        if (json == null || json.isEmpty() || typeReference == null) {
-            return null;
-        }
-        try {
-            return MAPPER.readValue(json, typeReference);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return BeanUtils.instantiateClass(ClassUtils.toClass(typeReference.getType()));
+        return check(json, typeReference) ? null :
+                MAPPER.readValue(json, typeReference);
     }
 
+    @SneakyThrows
+    public JsonNode readTree(String json) {
+        return MAPPER.readTree(json);
+    }
+
+    private boolean check(String json, Object... checkObj) {
+        return json == null || json.isEmpty() || ObjectUtils.anyChecked(Objects::isNull, checkObj);
+    }
 }
