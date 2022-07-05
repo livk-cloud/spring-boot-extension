@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @date 2022/6/21
  */
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class MailTemplate {
     @Getter
@@ -48,7 +50,7 @@ public class MailTemplate {
                     .text(text, isHtml)
                     .file(file)
                     .build();
-            javaMailSender.send(mimeMessage);
+            this.send(mimeMessage);
         } catch (Exception e) {
             log.error("send email error:{}", e.getMessage());
         }
