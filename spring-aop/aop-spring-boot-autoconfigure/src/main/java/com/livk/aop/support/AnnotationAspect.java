@@ -27,7 +27,7 @@ public class AnnotationAspect implements ImportBeanDefinitionRegistrar, BeanFact
     private ListableBeanFactory listableBeanFactory;
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+    public void setBeanFactory(@NotNull BeanFactory beanFactory) throws BeansException {
         listableBeanFactory = (ListableBeanFactory) beanFactory;
     }
 
