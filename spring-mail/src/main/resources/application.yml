@@ -5,8 +5,8 @@ spring:
     template-loader-path: classpath:/templates/ftl/
   mail:
     host: smtp.qq.com
-    username: 1375632510@qq.com
-    password: zasyaamntjyefjhc
+    username: xxxxxx@qq.com
+    password: xxxxxx
     properties:
       mail:
         smtp:

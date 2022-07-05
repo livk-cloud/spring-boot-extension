@@ -1,5 +1,5 @@
 dependencies {
     api project(":spring-common")
-    compileOnly "org.springframework.data:spring-data-redis"
+    api "org.springframework.data:spring-data-redis"
     compileOnly "org.springframework.security:spring-security-oauth2-authorization-server"
 }

@@ -15,6 +15,8 @@
  */
 package com.livk.auth.server.jose;
 
+import lombok.experimental.UtilityClass;
+
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
@@ -22,12 +24,10 @@ import java.security.KeyPairGenerator;
  * @author Joe Grandja
  * @since 0.1.0
  */
+@UtilityClass
 final class KeyGeneratorUtils {
 
-    private KeyGeneratorUtils() {
-    }
-
-    static KeyPair generateRsaKey() {
+    KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {
             var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
