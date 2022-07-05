@@ -1,4 +1,4 @@
-package com.livk.common;
+package com.livk.spring;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

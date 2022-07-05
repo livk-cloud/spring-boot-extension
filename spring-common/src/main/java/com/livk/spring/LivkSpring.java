@@ -1,4 +1,4 @@
-package com.livk.common;
+package com.livk.spring;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

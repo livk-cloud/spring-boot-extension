@@ -1,6 +1,6 @@
 package com.livk.r2dbc;
 
-import com.livk.common.LivkSpring;
+import com.livk.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.reactive.config.EnableWebFlux;
 

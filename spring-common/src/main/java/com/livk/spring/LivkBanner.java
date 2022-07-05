@@ -1,4 +1,4 @@
-package com.livk.common;
+package com.livk.spring;
 
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -24,7 +24,7 @@ import java.util.function.Function;
  * @date 2021/8/30
  */
 @NoArgsConstructor(staticName = "create")
-public class LivkBanner implements Banner {
+class LivkBanner implements Banner {
 
     private static final String banner = """
             ██ ██          ██       ██                          ██

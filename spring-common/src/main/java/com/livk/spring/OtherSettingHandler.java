@@ -1,4 +1,4 @@
-package com.livk.common;
+package com.livk.spring;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;

@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,37 +22,35 @@ import java.util.Map;
 @UtilityClass
 public class RequestUtils {
 
-	public HttpServletRequest getRequest() {
-		var requestAttributes = RequestContextHolder.getRequestAttributes();
-		var servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-		Assert.notNull(servletRequestAttributes, "attributes not null!");
-		return servletRequestAttributes.getRequest();
-	}
+    public HttpServletRequest getRequest() {
+        var requestAttributes = RequestContextHolder.getRequestAttributes();
+        var servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+        Assert.notNull(servletRequestAttributes, "attributes not null!");
+        return servletRequestAttributes.getRequest();
+    }
 
-	public HttpSession getSession() {
-		return RequestUtils.getRequest().getSession();
-	}
+    public HttpSession getSession() {
+        return RequestUtils.getRequest().getSession();
+    }
 
-	public String getParameter(String name) {
-		return RequestUtils.getRequest().getParameter(name);
-	}
+    public String getParameter(String name) {
+        return RequestUtils.getRequest().getParameter(name);
+    }
 
-	public String getHeader(String headerName) {
-		return RequestUtils.getRequest().getHeader(headerName);
-	}
+    public String getHeader(String headerName) {
+        return RequestUtils.getRequest().getHeader(headerName);
+    }
 
-	public Map<String, String> getHeaders() {
-		var request = RequestUtils.getRequest();
-		var map = new LinkedHashMap<String, String>();
-		var enumeration = request.getHeaderNames();
-		if (enumeration != null) {
-			while (enumeration.hasMoreElements()) {
-				var key = enumeration.nextElement();
-				var value = request.getHeader(key);
-				map.put(key, value);
-			}
-		}
-		return map;
-	}
+    public Map<String, String> getHeaders() {
+        var request = RequestUtils.getRequest();
+        var map = new LinkedHashMap<String, String>();
+        Iterator<String> iterator = request.getHeaderNames().asIterator();
+        while (iterator.hasNext()) {
+            var key = iterator.next();
+            var value = request.getHeader(key);
+            map.put(key, value);
+        }
+        return map;
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.livk.spring;
 
-import com.livk.common.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

@@ -1,6 +1,6 @@
 package com.livk.oauth;
 
-import com.livk.common.LivkSpring;
+import com.livk.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

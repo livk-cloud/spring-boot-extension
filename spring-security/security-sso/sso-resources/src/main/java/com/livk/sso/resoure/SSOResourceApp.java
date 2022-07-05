@@ -1,6 +1,6 @@
 package com.livk.sso.resoure;
 
-import com.livk.common.LivkSpring;
+import com.livk.spring.LivkSpring;
 import com.livk.sso.resoure.config.RsaKeyProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

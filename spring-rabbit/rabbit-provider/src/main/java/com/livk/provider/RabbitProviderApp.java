@@ -1,6 +1,6 @@
 package com.livk.provider;
 
-import com.livk.common.LivkSpring;
+import com.livk.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

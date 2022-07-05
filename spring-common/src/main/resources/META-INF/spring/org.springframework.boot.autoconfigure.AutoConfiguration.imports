@@ -1,2 +1,2 @@
-com.livk.common.SpringContextHolder
+com.livk.spring.SpringContextHolder
 com.livk.controller.SystemController

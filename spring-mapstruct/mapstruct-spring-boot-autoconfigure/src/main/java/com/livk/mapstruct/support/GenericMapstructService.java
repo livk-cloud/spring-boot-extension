@@ -2,7 +2,6 @@ package com.livk.mapstruct.support;
 
 import com.livk.mapstruct.converter.Converter;
 import com.livk.mapstruct.converter.MapstructRegistry;
-import org.springframework.beans.factory.ListableBeanFactory;
 
 /**
  * <p>
@@ -16,10 +15,6 @@ public class GenericMapstructService extends AbstractMapstructService implements
 
     public GenericMapstructService(ConverterRepository converterRepository) {
         super(converterRepository);
-    }
-
-    public static void addBeans(MapstructRegistry registry, ListableBeanFactory beanFactory) {
-        beanFactory.getBeansOfType(Converter.class).values().forEach(registry::addConverter);
     }
 
     @Override
