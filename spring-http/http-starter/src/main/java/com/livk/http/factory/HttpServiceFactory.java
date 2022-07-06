@@ -1,12 +1,12 @@
 package com.livk.http.factory;
 
-import com.google.common.base.CaseFormat;
 import com.livk.http.annotation.BeanName;
 import com.livk.util.SpringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -52,10 +52,11 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
         Set<Class<?>> typesAnnotatedClass = SpringUtils.findByAnnotationType(HttpExchange.class, resourceLoader,
                 packages.toArray(String[]::new));
         for (Class<?> exchangeClass : typesAnnotatedClass) {
+            BeanDefinition beanDefinition = getBeanDefinition(exchangeClass);
             BeanName name = AnnotationUtils.getAnnotation(exchangeClass, BeanName.class);
             String beanName = name != null ? name.value()
-                    : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, exchangeClass.getSimpleName());
-            registry.registerBeanDefinition(beanName, getBeanDefinition(exchangeClass));
+                    : BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
+            registry.registerBeanDefinition(beanName, beanDefinition);
         }
     }
 

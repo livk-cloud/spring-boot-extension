@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
  */
 public interface AnnotationIntercept {
 
-    Class<? extends Annotation> getType();
+    Class<? extends Annotation> type();
 
     default boolean supportMethod() {
         return true;

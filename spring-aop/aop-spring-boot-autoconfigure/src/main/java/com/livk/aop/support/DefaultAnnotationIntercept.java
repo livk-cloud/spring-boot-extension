@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @date 2022/7/5
  */
 @RequiredArgsConstructor
-class DefaultMethodInterceptor implements MethodInterceptor {
+class DefaultAnnotationIntercept implements MethodInterceptor {
 
     private final AnnotationIntercept annotationIntercept;
 
@@ -28,9 +28,9 @@ class DefaultMethodInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
-        Annotation annotation = method.getAnnotation(annotationIntercept.getType());
+        Annotation annotation = method.getAnnotation(annotationIntercept.type());
         if (annotation == null) {
-            annotation = AnnotationUtils.findAnnotation(method, annotationIntercept.getType());
+            annotation = AnnotationUtils.findAnnotation(method, annotationIntercept.type());
         }
         return annotationIntercept.invoke(invocation, AnnotationInvoke.of(annotation));
     }

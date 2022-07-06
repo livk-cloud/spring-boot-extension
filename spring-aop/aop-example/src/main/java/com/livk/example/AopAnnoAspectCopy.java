@@ -18,7 +18,7 @@ import java.lang.annotation.Annotation;
  */
 @Slf4j
 @Component
-public class AopAnnoAspect implements AnnotationIntercept {
+public class AopAnnoAspectCopy implements AnnotationIntercept {
     @Override
     public Class<? extends Annotation> type() {
         return AopAnno.class;
@@ -27,10 +27,10 @@ public class AopAnnoAspect implements AnnotationIntercept {
     @Override
     public Object invoke(MethodInvocation invocation, AnnotationInvoke<?> invoke) throws Throwable {
         AopAnno aopAnno = (AopAnno) invoke.getAnnotation();
-        log.info("anno:{}", aopAnno);
-        log.info("anno start");
+        log.info("copy anno:{}", aopAnno);
+        log.info("copy anno start");
         Object proceed = invocation.proceed();
-        log.info("anno end");
+        log.info("copy anno end");
         return proceed;
     }
 }
