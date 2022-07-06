@@ -3,16 +3,15 @@ plugins {
     id "org.springframework.boot" apply false
 }
 
-ext {
-    bom = project ":livk-boot-dependencies"
-    gradleModuleProjects = subprojects.findAll { it.buildFile.exists() } - bom
-    commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-common") ||
-                it.name.endsWith("-starter") ||
-                it.name.endsWith("-autoconfigure")
-    }
-    springModuleProjects = gradleModuleProjects - commonModuleProjects
+def bom = project ":livk-boot-dependencies"
+def gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
+def commonModuleProjects = gradleModuleProjects.findAll {
+    it.name.endsWith("-common") ||
+            it.name.endsWith("-starter") ||
+            it.name.endsWith("-autoconfigure")
 }
+def springModuleProjects = (gradleModuleProjects - commonModuleProjects)
+
 
 configure(commonModuleProjects) {
     apply plugin: "com.livk.maven.deployed"
