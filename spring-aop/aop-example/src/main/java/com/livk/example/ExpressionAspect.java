@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class ExpressionAspect implements ExecutionIntercept {
     @Override
     public String expression() {
-        return "execution(public * com.livk.example.AopController.*(..))";
+        return "execution(public * com.livk.example.AopController.look())";
     }
 
     @Override
