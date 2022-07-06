@@ -3,6 +3,7 @@ package com.livk.http;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class RestTemplateConfiguration {
 
     @Bean
+    @ConditionalOnClass(OkHttpClient.class)
     @ConditionalOnMissingBean({OkHttpClient.class, RestTemplate.class})
     public RestTemplate restTemplate() {
         ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
