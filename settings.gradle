@@ -29,4 +29,10 @@ fileTree(rootDir) {
     project.buildFileName = it.name
 }
 
+gradle.settingsEvaluated {
+    if (JavaVersion.current() != JavaVersion.VERSION_17) {
+        throw GradleException("This build requires JDK 17. It's currently ${getBuildJavaHome()}. You can ignore this check by passing '-Dorg.gradle.ignoreBuildJavaVersionCheck'.")
+    }
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

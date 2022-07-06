@@ -34,8 +34,8 @@ public abstract class BaseAspect<T> implements ImportBeanDefinitionRegistrar, Be
         Class<T> typeClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), BaseAspect.class);
         listableBeanFactory.getBeansOfType(typeClass)
                 .values()
-                .forEach(annotationIntercept -> {
-                    BeanDefinition beanDefinition = getBeanDefinition(annotationIntercept);
+                .forEach(t -> {
+                    BeanDefinition beanDefinition = getBeanDefinition(t);
                     String beanName = BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
                     registry.registerBeanDefinition(beanName, beanDefinition);
                 });
