@@ -2,7 +2,6 @@ package com.livk.aop.support;
 
 import com.google.common.base.CaseFormat;
 import com.livk.aop.intercept.AnnotationIntercept;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.beans.BeansException;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.NonNull;
 
 /**
  * <p>
@@ -27,12 +27,12 @@ public class AnnotationAspect implements ImportBeanDefinitionRegistrar, BeanFact
     private ListableBeanFactory listableBeanFactory;
 
     @Override
-    public void setBeanFactory(@NotNull BeanFactory beanFactory) throws BeansException {
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
         listableBeanFactory = (ListableBeanFactory) beanFactory;
     }
 
     @Override
-    public void registerBeanDefinitions(@NotNull AnnotationMetadata importingClassMetadata, @NotNull BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
         listableBeanFactory.getBeansOfType(AnnotationIntercept.class)
                 .values()
                 .forEach(annotationIntercept -> {

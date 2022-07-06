@@ -3,7 +3,6 @@ package com.livk.mail.controller;
 import com.livk.common.Pair;
 import com.livk.mail.support.MailTemplate;
 import freemarker.template.TemplateException;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class MailController {
     private final MailTemplate mailTemplate;
 
     @PostMapping("send")
-    public HttpEntity<Void> send() throws IOException, TemplateException, MessagingException {
+    public HttpEntity<Void> send() throws IOException, TemplateException {
         // 定义个数据根节点
         var root = new HashMap<String, Object>();
         // 往里面塞第一层节点

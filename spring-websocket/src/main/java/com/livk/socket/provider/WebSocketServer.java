@@ -50,7 +50,7 @@ public class WebSocketServer {
     /**
      * 群发自定义消息
      */
-    public static void sendInfo(@PathParam("sid") String sid, String message) throws IOException {
+    public static void sendInfo(@PathParam("sid") String sid, String message) {
         log.error("推送消息到窗口" + sid + "，推送内容:" + message);
         for (var item : websocketSet) {
             try {

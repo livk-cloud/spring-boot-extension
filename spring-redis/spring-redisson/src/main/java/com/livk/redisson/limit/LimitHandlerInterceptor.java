@@ -4,11 +4,11 @@ import com.livk.spring.SpringContextHolder;
 import com.livk.util.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -36,7 +36,7 @@ public class LimitHandlerInterceptor implements HandlerInterceptor {
 
 
     @Override
-    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
         init();
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Limiter limiter = handlerMethod.getMethodAnnotation(Limiter.class);

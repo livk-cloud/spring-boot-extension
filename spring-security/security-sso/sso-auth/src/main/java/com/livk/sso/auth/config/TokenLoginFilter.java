@@ -6,7 +6,6 @@ import com.livk.sso.util.JwtUtils;
 import com.livk.util.JacksonUtils;
 import com.livk.util.ResponseUtils;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,7 +61,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     @SuppressWarnings("unchecked")
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
+                                            Authentication authResult) {
         var user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
         var token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
         response.addHeader("Authorization", "Bearer ".concat(token));

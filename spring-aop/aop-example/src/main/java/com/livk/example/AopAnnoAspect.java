@@ -33,14 +33,4 @@ public class AopAnnoAspect implements AnnotationIntercept {
         log.info("end");
         return proceed;
     }
-
-    @Override
-    public boolean supportMethod() {
-        return AnnotationIntercept.super.supportMethod();
-    }
-
-    @Override
-    public boolean supportClass() {
-        return AnnotationIntercept.super.supportClass();
-    }
 }

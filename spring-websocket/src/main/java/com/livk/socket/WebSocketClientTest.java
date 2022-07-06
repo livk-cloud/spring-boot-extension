@@ -36,7 +36,7 @@ public class WebSocketClientTest implements Runnable {
         }
     }
 
-    public WebSocketClient getClient(String uri) {
+    public void getClient(String uri) {
         try {
             var webSocketClient = new WebSocketClient(new URI(uri)) {
 
@@ -71,7 +71,7 @@ public class WebSocketClientTest implements Runnable {
                 log.info("连接中.......");
             }
             if (webSocketClient.getReadyState().ordinal() == 1) {
-                return webSocketClient;
+                return;
             }
             if (!(webSocketClient.getReadyState().ordinal() == 1 || webSocketClient.getReadyState().ordinal() == 0)) {
                 log.info(uri + "连接失败.......");
@@ -79,7 +79,6 @@ public class WebSocketClientTest implements Runnable {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
 }

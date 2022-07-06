@@ -13,7 +13,7 @@ import java.io.InputStream;
 public class MinioFileService implements FileService {
 
     @Override
-    public void upload(final InputStream inputStream) {
+    public void upload(InputStream inputStream) {
 
     }
 
