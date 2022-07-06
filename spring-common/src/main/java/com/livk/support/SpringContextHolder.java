@@ -1,4 +1,4 @@
-package com.livk.spring;
+package com.livk.support;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +58,24 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
         return beanFactory.getBeansOfType(typeClass).values();
     }
 
+    public static String getProperty(String key) {
+        return getProperty(key, String.class);
+    }
+
+    public static <T> T getProperty(String key, Class<T> requiredType) {
+        return applicationContext.getEnvironment().getProperty(key, requiredType);
+    }
+
+    public static <T> T getProperty(String key, Class<T> requiredType, T defaultValue) {
+        return applicationContext.getEnvironment().getProperty(key, requiredType, defaultValue);
+    }
+
+    public static String resolvePlaceholders(String text) {
+        return applicationContext.getEnvironment().resolvePlaceholders(text);
+    }
+
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+    public void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException {
         if (SpringContextHolder.beanFactory != null) {
             log.warn("SpringContextHolder中的beanFactory被覆盖, 原有beanFactory为:{}",
                     SpringContextHolder.beanFactory);

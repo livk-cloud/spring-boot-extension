@@ -1,6 +1,6 @@
 package com.livk.zookeeper.util;
 
-import com.livk.spring.SpringContextHolder;
+import com.livk.support.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;

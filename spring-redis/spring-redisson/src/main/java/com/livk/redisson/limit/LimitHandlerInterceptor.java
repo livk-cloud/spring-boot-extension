@@ -1,6 +1,6 @@
 package com.livk.redisson.limit;
 
-import com.livk.spring.SpringContextHolder;
+import com.livk.support.SpringContextHolder;
 import com.livk.util.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
