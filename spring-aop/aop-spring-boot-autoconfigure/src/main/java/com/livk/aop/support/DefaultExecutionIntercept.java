@@ -17,7 +17,7 @@ import org.springframework.lang.Nullable;
  * @date 2022/7/6
  */
 @RequiredArgsConstructor
-public class DefaultExecutionIntercept implements MethodInterceptor {
+class DefaultExecutionIntercept implements MethodInterceptor {
 
     private final ExecutionIntercept executionIntercept;
 
