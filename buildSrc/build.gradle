@@ -8,8 +8,12 @@ repositories {
     maven { url "https://repo.spring.io/libs-snapshot/" }
 }
 
+ext {
+    bootVersion = libs.versions.springBoot.get()
+}
+
 dependencies {
-    implementation "org.springframework.boot:spring-boot-gradle-plugin:3.0.0-M3"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:$bootVersion"
 }
 
 gradlePlugin {

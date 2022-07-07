@@ -3,14 +3,17 @@ plugins {
     id "org.springframework.boot" apply false
 }
 
-def bom = project ":livk-boot-dependencies"
-def gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
-def commonModuleProjects = gradleModuleProjects.findAll {
-    it.name.endsWith("-common") ||
-            it.name.endsWith("-starter") ||
-            it.name.endsWith("-autoconfigure")
+ext {
+    bootVersion = libs.versions.springBoot.get()
+    bom = project ":livk-boot-dependencies"
+    gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
+    commonModuleProjects = gradleModuleProjects.findAll {
+        it.name.endsWith("-common") ||
+                it.name.endsWith("-starter") ||
+                it.name.endsWith("-autoconfigure")
+    }
+    springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
-def springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 
 
 configure(commonModuleProjects) {
@@ -35,6 +38,17 @@ configure(allprojects) {
         delete "$projectDir/build"
         delete "$projectDir/out"
         delete "$projectDir/bin"
+    }
+
+    configurations {
+        all {
+            resolutionStrategy {
+                dependencySubstitution {
+                    substitute(module("org.springframework.boot:spring-boot-starter-tomcat"))
+                            .using(module("org.springframework.boot:spring-boot-starter-undertow:$bootVersion"))
+                }
+            }
+        }
     }
 }
 
