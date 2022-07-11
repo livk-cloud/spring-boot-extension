@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+
 /**
  * <p>
  * MavenRepositoryPlugin
@@ -22,7 +23,7 @@ abstract class MavenRepositoryPlugin implements Plugin<Project> {
         publishing.repositories.maven { maven ->
             def releasesRepoUrl = "https:xxxx"
             def snapshotsRepoUrl = "https:xxx"
-            maven.url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            maven.url = project.version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             maven.credentials {
                 it.username = "xxxxxx"
                 it.password = "xxxxxx"
