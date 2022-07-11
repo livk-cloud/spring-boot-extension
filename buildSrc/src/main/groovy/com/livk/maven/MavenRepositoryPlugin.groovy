@@ -1,10 +1,10 @@
 package com.livk.maven
 
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-
 /**
  * <p>
  * MavenRepositoryPlugin
@@ -19,6 +19,14 @@ abstract class MavenRepositoryPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply(MavenPublishPlugin.class)
         def publishing = project.extensions.getByType(PublishingExtension.class)
-        publishing.repositories.mavenLocal()
+        publishing.repositories.maven { maven ->
+            def releasesRepoUrl = "https:xxxx"
+            def snapshotsRepoUrl = "https:xxx"
+            maven.url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            maven.credentials {
+                it.username = "xxxxxx"
+                it.password = "xxxxxx"
+            }
+        }
     }
 }
