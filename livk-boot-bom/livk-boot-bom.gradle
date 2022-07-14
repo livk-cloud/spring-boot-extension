@@ -1,10 +1,6 @@
 dependencies {
     api platform(project(":livk-boot-dependencies"))
     constraints {
-        rootProject.allprojects.findAll {
-            it.name.endsWith("-common") ||
-                    it.name.endsWith("-starter") ||
-                    it.name.endsWith("-autoconfigure")
-        }.forEach { api(it) }
+        parent.commonModuleProjects.forEach { api(it) }
     }
 }

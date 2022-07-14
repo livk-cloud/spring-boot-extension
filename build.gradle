@@ -3,15 +3,17 @@ plugins {
     id "org.springframework.boot" apply false
 }
 
-def bootVersion = libs.versions.springBoot.get()
-def bom = List.of(project(":livk-boot-dependencies"), project(":livk-boot-bom"))
-def gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
-def commonModuleProjects = gradleModuleProjects.findAll {
-    it.name.endsWith("-common") ||
-            it.name.endsWith("-starter") ||
-            it.name.endsWith("-autoconfigure")
+ext {
+    bootVersion = libs.versions.springBoot.get()
+    bom = List.of(project(":livk-boot-dependencies"), project(":livk-boot-bom"))
+    gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
+    commonModuleProjects = gradleModuleProjects.findAll {
+        it.name.endsWith("-common") ||
+                it.name.endsWith("-starter") ||
+                it.name.endsWith("-autoconfigure")
+    }
+    springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
-def springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 
 configure(bom) {
     apply plugin: "java-platform"
