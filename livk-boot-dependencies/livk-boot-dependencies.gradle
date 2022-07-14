@@ -1,14 +1,5 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-plugins {
-    id "java-platform"
-    id "com.livk.maven.deployed"
-}
-
-javaPlatform {
-    allowDependencies()
-}
-
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
     constraints {

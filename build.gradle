@@ -5,7 +5,7 @@ plugins {
 
 ext {
     bootVersion = libs.versions.springBoot.get()
-    bom = project ":livk-boot-dependencies"
+    bom = Set.of(project(":livk-boot-dependencies"), project(":livk-boot-bom"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
     commonModuleProjects = gradleModuleProjects.findAll {
         it.name.endsWith("-common") ||
@@ -15,6 +15,12 @@ ext {
     springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
 
+configure(bom) {
+    apply plugin: "java-platform"
+    apply plugin: "com.livk.maven.deployed"
+
+    project.extensions.getByType(JavaPlatformExtension.class).allowDependencies()
+}
 
 configure(commonModuleProjects) {
     apply plugin: "com.livk.maven.deployed"

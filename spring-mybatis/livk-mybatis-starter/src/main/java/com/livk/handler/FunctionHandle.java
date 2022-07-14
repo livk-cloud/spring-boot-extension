@@ -1,5 +1,7 @@
 package com.livk.handler;
 
+import org.springframework.core.GenericTypeResolver;
+
 /**
  * <p>
  * FunctionHandle
@@ -12,4 +14,8 @@ public interface FunctionHandle<T> {
 
     T handler();
 
+    @SuppressWarnings("unchecked")
+    default Class<T> getType() {
+        return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), FunctionHandle.class);
+    }
 }
