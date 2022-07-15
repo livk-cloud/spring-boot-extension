@@ -5,8 +5,7 @@ import com.livk.example.entity.UserVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.core.convert.converter.Converter;
-
-import javax.annotation.Nonnull;
+import org.springframework.lang.NonNull;
 
 /**
  * <p>
@@ -22,6 +21,6 @@ public interface UserSpringConverter extends Converter<User, UserVO> {
     @Mapping(target = "createTime", source = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
     @Mapping(target = "type", source = "type", numberFormat = "#")
     @Override
-    UserVO convert(@Nonnull User user);
+    UserVO convert(@NonNull User user);
 
 }

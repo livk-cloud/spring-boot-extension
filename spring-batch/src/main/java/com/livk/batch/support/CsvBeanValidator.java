@@ -3,8 +3,8 @@ package com.livk.batch.support;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.springframework.batch.item.validator.ValidationException;
+import org.springframework.lang.NonNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ public class CsvBeanValidator<T> implements org.springframework.batch.item.valid
     }
 
     @Override
-    public void validate(@Nonnull T value) throws ValidationException {
+    public void validate(@NonNull T value) throws ValidationException {
         var constraintViolations = validator.validate(value);
         if (!constraintViolations.isEmpty()) {
             var message = new StringBuilder();

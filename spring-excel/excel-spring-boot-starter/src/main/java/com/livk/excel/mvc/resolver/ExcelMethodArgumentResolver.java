@@ -6,13 +6,13 @@ import com.livk.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  @Nonnull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
             throw new IllegalArgumentException(
                     "Excel upload request resolver error, @ExcelData parameter is not Collection ");

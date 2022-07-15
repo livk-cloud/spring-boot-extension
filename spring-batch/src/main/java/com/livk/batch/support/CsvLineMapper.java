@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.LineMapper;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -33,9 +33,9 @@ public class CsvLineMapper<T> implements LineMapper<T> {
         return new Builder<>(targetClass);
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public T mapLine(@Nonnull String line, int lineNumber) {
+    public T mapLine(@NonNull String line, int lineNumber) {
         T instance = BeanUtils.instantiateClass(targetClass);
         String[] fieldArray = line.split(delimiter);
         if (fieldArray.length != fields.length) {
