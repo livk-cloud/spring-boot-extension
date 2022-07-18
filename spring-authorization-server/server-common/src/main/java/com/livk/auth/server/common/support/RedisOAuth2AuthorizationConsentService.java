@@ -1,4 +1,4 @@
-package com.livk.auth.server.support;
+package com.livk.auth.server.common.support;
 
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
