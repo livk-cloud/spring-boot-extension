@@ -5,7 +5,6 @@ import com.livk.excel.annotation.ExcelImport;
 import com.livk.excel.entity.Info;
 import com.livk.excel.listener.InfoExcelListener;
 import com.livk.excel.listener.JobListener;
-import com.livk.excel.mapper.InfoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -44,8 +43,6 @@ public class InfoController {
     private final StepBuilderFactory stepBuilderFactory;
     private final JobBuilderFactory jobBuilderFactory;
     private final JobLauncher jobLauncher;
-
-    private final InfoMapper infoMapper;
 
     @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
     @PostMapping("upload")

@@ -1,0 +1,9 @@
+dependencies {
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "org.springframework:spring-webflux"
+}
+
+test {
+    useJUnitPlatform()
+}
