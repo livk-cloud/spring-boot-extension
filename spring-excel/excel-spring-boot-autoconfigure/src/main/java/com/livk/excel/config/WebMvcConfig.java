@@ -1,8 +1,9 @@
-package com.livk.excel.mvc.config;
+package com.livk.excel.config;
 
-import com.livk.excel.mvc.resolver.ExcelMethodArgumentResolver;
-import com.livk.excel.mvc.resolver.ExcelMethodReturnValueHandler;
-import org.springframework.context.annotation.Configuration;
+import com.livk.excel.resolver.ExcelMethodArgumentResolver;
+import com.livk.excel.resolver.ExcelMethodReturnValueHandler;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,7 +18,8 @@ import java.util.List;
  * @author livk
  * @date 2022/1/17
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override

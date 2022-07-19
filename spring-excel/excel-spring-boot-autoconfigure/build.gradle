@@ -1,0 +1,10 @@
+dependencies {
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    compileOnly "com.alibaba:easyexcel"
+    compileOnly "org.springframework:spring-webmvc"
+}
+
+test {
+    useJUnitPlatform()
+}

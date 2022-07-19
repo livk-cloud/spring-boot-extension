@@ -1,8 +1,0 @@
-dependencies {
-    api project(":spring-common")
-    api "com.alibaba:easyexcel"
-}
-
-test {
-    useJUnitPlatform()
-}

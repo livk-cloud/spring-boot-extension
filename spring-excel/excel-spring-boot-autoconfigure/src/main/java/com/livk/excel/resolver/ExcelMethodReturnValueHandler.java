@@ -1,4 +1,4 @@
-package com.livk.excel.mvc.resolver;
+package com.livk.excel.resolver;
 
 import com.alibaba.excel.EasyExcel;
 import com.livk.excel.annotation.ExcelReturn;
