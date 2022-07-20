@@ -20,6 +20,6 @@ gradle format
 ----
 
 link:gradle.properties[Project information] +
-link:https://github.com/livk-cloud/Spring-Cloud-Demo[The official version of the Mobile Cloud Demo project] +
+link:https://github.com/livk-cloud/spring-cloud-example[The official version of the Mobile Cloud project] +
 link:example.adoc[Integration example] +
 link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
