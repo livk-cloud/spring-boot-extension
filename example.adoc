@@ -1,0 +1,21 @@
+link:livk-boot-dependencies[Gradle自定义BOM] +
+link:spring-authorization-server[Spring Auth授权服务器] +
+link:spring-batch[Spring整合Spring Batch] +
+link:spring-boot-starter[Spring自定义Starter] +
+link:spring-clickhouse[Spring整合ClickHouse] +
+link:spring-excel[spring整合Excel自定义注解实现导入和导出] +
+link:spring-hateoas[spring整合hateoas实现restful风格返回] +
+link:spring-http[spring整合spring Http Interface] +
+link:spring-kafka[spring整合kafka] +
+link:spring-mail[spring发送Email] +
+link:spring-mapstruct[spring整合mapstruct自定义转换器] +
+link:spring-mybatis[spring整合mybatis自定义拦截器] +
+link:spring-pulsar[spring整合Pulsar] +
+link:spring-quartz[spring整合Quartz] +
+link:spring-r2dbc[Spring整合R2DBC] +
+link:spring-rabbit[Spring整合Rabbit] +
+link:spring-redis[Spring整合Redis] +
+link:spring-retry[Spring整合Retry] +
+link:spring-security[Spring整合security] +
+link:spring-websocket[Spring整合Websocket] +
+link:spring-zookeeper[Spring整合Zookeeper] +

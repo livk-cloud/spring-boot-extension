@@ -1,7 +1,6 @@
-> 使用Import注解注入bean在XXXAutoConfiguration优先与@bean
-
-```java
-
+.使用Import注解注入bean在XXXAutoConfiguration优先与@bean
+[source,java,indent=0]
+----
 @Import(HttpServiceFactory.class) //优先级高
 @AutoConfiguration
 public class HttpAutoConfiguration {
@@ -10,5 +9,4 @@ public class HttpAutoConfiguration {
         return new HttpServiceFactory();
     }
 }
-
-```
+----
