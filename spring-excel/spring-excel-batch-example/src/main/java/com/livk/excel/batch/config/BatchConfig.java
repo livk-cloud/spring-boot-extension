@@ -1,6 +1,6 @@
-package com.livk.excel.config;
+package com.livk.excel.batch.config;
 
-import com.livk.excel.entity.Info;
+import com.livk.excel.batch.entity.Info;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;

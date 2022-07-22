@@ -42,7 +42,7 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 
     public HttpServiceFactory() {
         WebClient client = WebClient.builder().build();
-        this.proxyFactory = HttpServiceProxyFactory.builder(new WebClientAdapter(client)).build();
+        this.proxyFactory = WebClientAdapter.createHttpServiceProxyFactory(client);
     }
 
     @Override

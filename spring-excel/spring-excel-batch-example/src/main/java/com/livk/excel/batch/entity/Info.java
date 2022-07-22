@@ -1,4 +1,4 @@
-package com.livk.excel.entity;
+package com.livk.excel.batch.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
