@@ -1,5 +1,5 @@
 [versions]
-springBoot = "3.0.0-M3"
+springBoot = "3.0.0-M4"
 pagehelper = "1.4.3"
 oauth2Authorization = "0.3.1"
 mybatisPlus = "3.5.2"
