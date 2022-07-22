@@ -1,4 +1,4 @@
-package com.livk.excel.config;
+package com.livk.excel;
 
 import com.livk.excel.resolver.ExcelMethodArgumentResolver;
 import com.livk.excel.resolver.ExcelMethodReturnValueHandler;
@@ -12,15 +12,15 @@ import java.util.List;
 
 /**
  * <p>
- * WebMvcConfig
+ * ExcelAutoConfiguration
  * </p>
  *
  * @author livk
- * @date 2022/1/17
+ * @date 2022/7/22
  */
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class WebMvcConfig implements WebMvcConfigurer {
+public class ExcelAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -31,5 +31,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
         handlers.add(new ExcelMethodReturnValueHandler());
     }
-
 }

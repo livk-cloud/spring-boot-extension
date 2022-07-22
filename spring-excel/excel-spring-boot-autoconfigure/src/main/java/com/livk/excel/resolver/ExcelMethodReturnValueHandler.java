@@ -45,27 +45,25 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
             var excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
-            this.setResponse(excelReturn, response);
-            this.write(response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
+            this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
         } else if (returnValue instanceof Map) {
             @SuppressWarnings("unchecked")
             var result = (Map<String, Collection<?>>) returnValue;
             var excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
-            this.setResponse(excelReturn, response);
-            this.write(response, excelModelClass, result);
+            this.write(excelReturn, response, excelModelClass, result);
         } else {
             throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
         }
     }
 
-    public void write(HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
-        try (var outputStream = response.getOutputStream()) {
-            var writer = EasyExcel.write(outputStream, excelModelClass).build();
+    public void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+        this.setResponse(excelReturn, response);
+        try (var outputStream = response.getOutputStream();
+             var writer = EasyExcel.write(outputStream, excelModelClass).build()) {
             for (var entry : result.entrySet()) {
                 var sheet = EasyExcel.writerSheet(entry.getKey()).build();
                 writer.write(entry.getValue(), sheet);
             }
-            writer.finish();
         } catch (IOException e) {
             e.printStackTrace();
         }
