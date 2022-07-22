@@ -1,0 +1,31 @@
+*目前出现的问题*
+
+当切面类使用了构造函数注入的话，会出现启动异常 +
+在 *ImportBeanDefinitionRegistrar*,bean无法被实例化，只有一些普通的无参构造可以被getBean
+[source,java,indent=0]
+
+----
+public abstract class BaseAspect<T> implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
+    protected DefaultListableBeanFactory listableBeanFactory;
+
+    @Override
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
+        listableBeanFactory = (DefaultListableBeanFactory) beanFactory;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
+        Class<T> typeClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), BaseAspect.class);
+        listableBeanFactory.getBeansOfType(typeClass)
+                .values()
+                .forEach(t -> {
+                    BeanDefinition beanDefinition = getBeanDefinition(t);
+                    String beanName = BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
+                    registry.registerBeanDefinition(beanName, beanDefinition);
+                });
+    }
+
+    protected abstract BeanDefinition getBeanDefinition(T t);
+}
+----
