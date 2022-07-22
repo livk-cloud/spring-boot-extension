@@ -1,9 +1,9 @@
 package com.livk.redisson.limit;
 
-import com.livk.support.SpringContextHolder;
 import com.livk.util.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
@@ -20,24 +20,14 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @author livk
  * @date 2022/7/5
  */
+@RequiredArgsConstructor
 public class LimitHandlerInterceptor implements HandlerInterceptor {
 
-    private volatile RedissonClient redissonClient;
-
-    private void init() {
-        if (redissonClient == null) {
-            synchronized (this) {
-                if (redissonClient == null) {
-                    redissonClient = SpringContextHolder.getBean(RedissonClient.class);
-                }
-            }
-        }
-    }
+    private final RedissonClient redissonClient;
 
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
-        init();
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Limiter limiter = handlerMethod.getMethodAnnotation(Limiter.class);
         if (limiter == null) {
