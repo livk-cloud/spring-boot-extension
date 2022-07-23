@@ -7,8 +7,8 @@ Various ways of using Gradle and examples +
 The code inside should more or less help you +
 If you feel good, you can star it +
 JDK:17 +
-SpringBoot: 3.0.0-M3(Snapshot) +
-Gradle: 7.4.2 +
+SpringBoot: 3.0.0-M4(Snapshot) +
+Gradle: 7.5 +
 
 commit trigger code format(Requires plugin support e.g.Spring checkStyle):
 [source,shell]

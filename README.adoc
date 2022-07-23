@@ -7,8 +7,8 @@ link:README-en.adoc[English] +
 里面的代码或多或少应该可以帮助到你 +
 如果觉得不错，可以star一下 +
 JDK:17 +
-SpringBoot: 3.0.0-M3(快照版) +
-Gradle: 7.4.2 +
+SpringBoot: 3.0.0-M4(快照版) +
+Gradle: 7.5 +
 
 提交触发code format(需要插件支持例如:Spring checkStyle):
 [source,shell,indent=0]
