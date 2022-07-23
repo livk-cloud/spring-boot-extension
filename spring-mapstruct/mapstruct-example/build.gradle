@@ -3,8 +3,6 @@ dependencies {
     annotationProcessor 'org.mapstruct.extensions.spring:mapstruct-spring-extensions:0.1.2'
     implementation 'org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.2'
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.mapstruct:mapstruct"
-    implementation "org.projectlombok:lombok-mapstruct-binding"
     annotationProcessor "org.mapstruct:mapstruct-processor"
 }
 
