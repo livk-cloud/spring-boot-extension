@@ -1,11 +1,12 @@
 package com.livk.compile
 
-import com.livk.jar.ManifestPlugin
+import com.livk.info.ManifestPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
 
 /**
  * <p>
@@ -41,6 +42,10 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
         javaCompile.options.encoding = UTF_8
         javaCompile.sourceCompatibility = JavaVersion.VERSION_17
         javaCompile.targetCompatibility = JavaVersion.VERSION_17
+
+        project.tasks.withType(Test.class) {
+            it.useJUnitPlatform()
+        }
         //在 Project 配置结束后调用
         project.afterEvaluate {
             def dependencyName = new HashSet<>()

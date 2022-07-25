@@ -32,29 +32,14 @@ configure(springModuleProjects) {
 }
 
 configure(allprojects) {
+    apply plugin: "com.livk.clean.expand"
+    apply plugin: "com.livk.all.configuration"
     repositories {
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/release" }
         maven { url "https://repo.spring.io/libs-snapshot/" }
-    }
-
-    clean {
-        delete "$projectDir/build"
-        delete "$projectDir/out"
-        delete "$projectDir/bin"
-    }
-
-    configurations {
-        all {
-            resolutionStrategy {
-                dependencySubstitution {
-                    substitute(module("org.springframework.boot:spring-boot-starter-tomcat"))
-                            .using(module("org.springframework.boot:spring-boot-starter-undertow:$bootVersion"))
-                }
-            }
-        }
     }
 }
 

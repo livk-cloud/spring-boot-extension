@@ -39,7 +39,15 @@ gradlePlugin {
         }
         bootPlugin {
             id = "com.livk.build.boot"
-            implementationClass = "com.livk.jar.BootPlugin"
+            implementationClass = "com.livk.info.BootPlugin"
+        }
+        deleteExpand {
+            id = "com.livk.clean.expand"
+            implementationClass = "com.livk.tasks.DeleteExpand"
+        }
+        allConfiguration {
+            id = "com.livk.all.configuration"
+            implementationClass = "com.livk.config.AllConfiguration"
         }
     }
 }
