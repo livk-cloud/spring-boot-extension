@@ -1,0 +1,7 @@
+==== get
+
+operation::get[snippets='curl-request,http-request,http-response,httpie-request,request-body,response-body']
+
+==== post
+
+operation::post[snippets='curl-request,http-request,http-response,httpie-request,request-body,response-body']
