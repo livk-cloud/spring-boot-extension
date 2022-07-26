@@ -1,6 +1,6 @@
-package com.livk.annotation;
+package com.livk.mybatis.annotation;
 
-import com.livk.interceptor.SqlInterceptor;
+import com.livk.mybatis.InterceptorAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(SqlInterceptor.class)
+@Import(InterceptorAutoConfiguration.class)
 public @interface EnableSqlPlugin {
 
 }

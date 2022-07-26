@@ -1,9 +1,9 @@
-package com.livk.annotation;
+package com.livk.mybatis.annotation;
 
-import com.livk.constant.FunctionEnum;
-import com.livk.enums.SqlFill;
-import com.livk.handler.FunctionHandle;
-import com.livk.handler.NullFunction;
+import com.livk.mybatis.constant.FunctionEnum;
+import com.livk.mybatis.enums.SqlFill;
+import com.livk.mybatis.handler.FunctionHandle;
+import com.livk.mybatis.handler.NullFunction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

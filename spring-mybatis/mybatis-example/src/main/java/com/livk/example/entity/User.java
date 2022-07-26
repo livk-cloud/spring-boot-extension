@@ -2,11 +2,11 @@ package com.livk.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.livk.annotation.SqlFunction;
-import com.livk.constant.FunctionEnum;
-import com.livk.enums.SqlFill;
 import com.livk.example.handler.VersionFunction;
 import com.livk.function.FieldFunction;
+import com.livk.mybatis.annotation.SqlFunction;
+import com.livk.mybatis.constant.FunctionEnum;
+import com.livk.mybatis.enums.SqlFill;
 import lombok.Data;
 
 import java.io.Serial;
@@ -43,7 +43,7 @@ public class User implements Serializable {
     @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
     private Date updateTime;
 
-    public static <T> String of(FieldFunction<T> function) {
+    public static <T> String column(FieldFunction<T> function) {
         return function.getFieldName();
     }
 

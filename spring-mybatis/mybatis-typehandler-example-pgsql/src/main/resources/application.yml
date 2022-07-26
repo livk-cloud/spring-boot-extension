@@ -7,5 +7,3 @@ spring:
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
-mybatis-plus:
-  type-handlers-package: com.livk.json.support

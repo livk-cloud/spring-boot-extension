@@ -1,4 +1,4 @@
-package com.livk.json.support;
+package com.livk.mybatis.support.mysql;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.util.JacksonUtils;

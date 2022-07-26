@@ -1,4 +1,4 @@
-package com.livk.json.support;
+package com.livk.mybatis.support.postgresql;
 
 import org.postgresql.util.PGobject;
 import org.springframework.util.ObjectUtils;

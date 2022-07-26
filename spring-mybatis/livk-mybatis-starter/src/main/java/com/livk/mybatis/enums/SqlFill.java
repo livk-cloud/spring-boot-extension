@@ -1,4 +1,4 @@
-package com.livk.enums;
+package com.livk.mybatis.enums;
 
 /**
  * <p>

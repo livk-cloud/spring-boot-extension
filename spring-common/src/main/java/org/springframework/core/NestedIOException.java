@@ -47,7 +47,17 @@ public class NestedIOException extends IOException {
     @Override
     @Nullable
     public String getMessage() {
-        return NestedExceptionUtils.buildMessage(super.getMessage(), getCause());
+        String message = super.getMessage();
+        Throwable cause = getCause();
+        if (cause == null) {
+            return message;
+        }
+        StringBuilder sb = new StringBuilder(64);
+        if (message != null) {
+            sb.append(message).append("; ");
+        }
+        sb.append("nested exception is ").append(cause);
+        return sb.toString();
     }
 
 }

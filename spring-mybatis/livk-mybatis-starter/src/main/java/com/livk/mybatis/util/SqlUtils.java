@@ -1,4 +1,4 @@
-package com.livk.util;
+package com.livk.mybatis.util;
 
 import lombok.experimental.UtilityClass;
 import net.sf.jsqlparser.JSQLParserException;

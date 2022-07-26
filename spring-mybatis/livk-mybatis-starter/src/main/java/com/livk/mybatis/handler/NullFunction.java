@@ -1,4 +1,4 @@
-package com.livk.handler;
+package com.livk.mybatis.handler;
 
 /**
  * <p>

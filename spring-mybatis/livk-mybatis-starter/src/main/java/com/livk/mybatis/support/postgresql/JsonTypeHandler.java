@@ -1,4 +1,4 @@
-package com.livk.json.support;
+package com.livk.mybatis.support.postgresql;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.util.JacksonUtils;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 /**
  * <p>
- * 使用{@code rs.getObject()获取出来的类型是}{@link org.postgresql.util.PGobject}
+ * 使用{@code rs.getObject()获取出来的类型是}{@link PGobject}
  * </p>
  * <p>
  * 使用{@code rs.getString()获取出来的类型是}{@link PGobject#getValue()}

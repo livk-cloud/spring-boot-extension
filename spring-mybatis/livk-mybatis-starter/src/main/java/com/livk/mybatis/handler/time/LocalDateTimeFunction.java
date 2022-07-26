@@ -1,6 +1,6 @@
-package com.livk.handler.time;
+package com.livk.mybatis.handler.time;
 
-import com.livk.handler.FunctionHandle;
+import com.livk.mybatis.handler.FunctionHandle;
 
 import java.time.LocalDateTime;
 
