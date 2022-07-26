@@ -2,7 +2,9 @@ package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -16,13 +18,15 @@ import java.util.stream.Stream;
 @UtilityClass
 public class StreamUtils {
 
-    @SuppressWarnings("unchecked")
-    public <T> T[] concat(T[] start, T... end) {
-        return (T[]) Stream.concat(Stream.of(start), Stream.of(end)).toArray();
+    public <K, V> Map<K, List<V>> concat(Map<K, V> m1, Map<K, V> m2) {
+        return Stream.concat(m1.entrySet().stream(), m2.entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        kListEntry -> kListEntry.getValue()
+                                .stream()
+                                .map(Map.Entry::getValue)
+                                .collect(Collectors.toList())));
     }
-
-    public <T> Stream<T> concat(Collection<T> start, Collection<T> end) {
-        return Stream.concat(start.stream(), end.stream());
-    }
-
 }
