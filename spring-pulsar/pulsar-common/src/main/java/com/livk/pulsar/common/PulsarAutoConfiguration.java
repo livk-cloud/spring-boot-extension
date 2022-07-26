@@ -2,11 +2,11 @@ package com.livk.pulsar.common;
 
 import com.livk.pulsar.common.properties.PulsarProperties;
 import org.apache.pulsar.client.api.*;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/4/27
  */
 @ConditionalOnClass(PulsarClient.class)
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @EnableConfigurationProperties(PulsarProperties.class)
 public class PulsarAutoConfiguration {
 

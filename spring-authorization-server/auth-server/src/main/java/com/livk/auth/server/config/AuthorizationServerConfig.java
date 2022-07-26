@@ -5,8 +5,8 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +35,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author livk
  * @date 2022/4/24
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class AuthorizationServerConfig {
 
     @Bean
