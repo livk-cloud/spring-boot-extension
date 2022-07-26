@@ -1,0 +1,2 @@
+由于SAS没有发布兼容Spring6的版本，当前案例暂不可用 +
+正式版移步 link:https://github.com/livk-cloud/spring-cloud-example/tree/main/spring-cloud-auth[SAS示例项目]
