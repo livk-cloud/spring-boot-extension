@@ -2,9 +2,9 @@ package com.livk.auth.server.common.password;
 
 
 import com.livk.auth.server.common.base.AbstractAuthenticationConverter;
+import com.livk.auth.server.common.constant.OAuth2Constants;
 import com.livk.auth.server.common.util.OAuth2EndpointUtils;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.MultiValueMap;
@@ -24,7 +24,7 @@ import java.util.Set;
 public class OAuth2PasswordAuthenticationConverter implements AbstractAuthenticationConverter<OAuth2PasswordAuthenticationToken> {
     @Override
     public boolean support(String grantType) {
-        return AuthorizationGrantType.PASSWORD.getValue().equals(grantType);
+        return OAuth2Constants.GRANT_TYPE_PASSWORD.getValue().equals(grantType);
     }
 
     @Override
@@ -46,6 +46,6 @@ public class OAuth2PasswordAuthenticationConverter implements AbstractAuthentica
 
     @Override
     public OAuth2PasswordAuthenticationToken buildToken(Authentication authentication, Set<String> scopes, Map<String, Object> additionalParameters) {
-        return new OAuth2PasswordAuthenticationToken(AuthorizationGrantType.PASSWORD, authentication, scopes, additionalParameters);
+        return new OAuth2PasswordAuthenticationToken(OAuth2Constants.GRANT_TYPE_PASSWORD, authentication, scopes, additionalParameters);
     }
 }

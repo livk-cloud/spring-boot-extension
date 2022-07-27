@@ -1,5 +1,7 @@
 package com.livk.auth.server.common.constant;
 
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+
 /**
  * <p>
  * OAuth2Constants
@@ -16,4 +18,8 @@ public interface OAuth2Constants {
     String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
 
     String SCOPE_IS_EMPTY = "scope_is_empty";
+
+    String PASSWORD = "password";
+
+    AuthorizationGrantType GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
 }

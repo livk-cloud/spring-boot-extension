@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2Token;
@@ -91,12 +90,12 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends AuthenticationT
                     .principal(authenticate)
                     .providerContext(ProviderContextHolder.getProviderContext())
                     .authorizedScopes(authorizedScopes)
-                    .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+                    .authorizationGrantType(OAuth2Constants.GRANT_TYPE_PASSWORD)
                     .authorizationGrant(t);
 
             OAuth2Authorization.Builder builder = OAuth2Authorization.withRegisteredClient(registeredClient)
                     .principalName(authenticate.getName())
-                    .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+                    .authorizationGrantType(OAuth2Constants.GRANT_TYPE_PASSWORD)
                     .attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME, authorizedScopes);
 
 

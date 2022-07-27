@@ -19,9 +19,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class SerializerUtils {
 
     public <T> RedisSerializer<T> getSerializer(Class<T> tClass, ObjectMapper mapper) {
-        var serializer = new Jackson2JsonRedisSerializer<>(tClass);
-        serializer.setObjectMapper(mapper);
-        return serializer;
+        return new Jackson2JsonRedisSerializer<>(mapper, tClass);
     }
 
     public <T> RedisSerializer<T> getSerializer(Class<T> tClass) {
