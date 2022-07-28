@@ -32,7 +32,7 @@ import java.util.Set;
  * @author livk
  * @date 2022/5/20
  */
-public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+public class HttpServiceRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
     private final HttpServiceProxyFactory proxyFactory;
 
@@ -40,7 +40,7 @@ public class HttpServiceFactory implements BeanFactoryAware, ImportBeanDefinitio
 
     private ResourceLoader resourceLoader;
 
-    public HttpServiceFactory() {
+    public HttpServiceRegistrar() {
         WebClient client = WebClient.builder().build();
         this.proxyFactory = WebClientAdapter.createHttpServiceProxyFactory(client);
     }
