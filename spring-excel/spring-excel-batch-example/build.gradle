@@ -1,6 +1,5 @@
 dependencies {
     implementation project(":spring-excel:excel-spring-boot-starter")
-    implementation "com.google.guava:guava"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"

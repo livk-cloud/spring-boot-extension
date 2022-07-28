@@ -8,7 +8,7 @@ dependencies {
     compileOnly "com.squareup.okhttp3:okhttp"
     api "org.apache.commons:commons-lang3"
     api "com.google.code.findbugs:annotations"
-
+    api "com.google.guava:guava"
     testImplementation "com.fasterxml.jackson.core:jackson-databind"
 }
 
