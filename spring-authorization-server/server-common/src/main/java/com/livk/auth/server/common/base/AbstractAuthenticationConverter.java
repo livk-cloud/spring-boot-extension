@@ -25,7 +25,9 @@ import java.util.stream.Collectors;
  * @author livk
  * @date 2022/7/15
  */
-public interface AbstractAuthenticationConverter<T extends AuthenticationToken> extends AuthenticationConverter {
+public interface AbstractAuthenticationConverter<T extends OAuth2BaseAuthenticationToken> extends AuthenticationConverter {
+
+    String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
 
     boolean support(String grantType);
 

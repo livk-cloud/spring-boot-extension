@@ -17,7 +17,7 @@ import java.util.*;
  * @date 2022/7/15
  */
 @Getter
-public class AuthenticationToken extends AbstractAuthenticationToken {
+public abstract class OAuth2BaseAuthenticationToken extends AbstractAuthenticationToken {
 
     private final AuthorizationGrantType authorizationGrantType;
 
@@ -27,8 +27,8 @@ public class AuthenticationToken extends AbstractAuthenticationToken {
 
     private final Map<String, Object> additionalParameters;
 
-    public AuthenticationToken(AuthorizationGrantType authorizationGrantType, Authentication authentication,
-                               Set<String> scopes, Map<String, Object> additionalParameters) {
+    public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType, Authentication authentication,
+                                         Set<String> scopes, Map<String, Object> additionalParameters) {
         super(Collections.emptyList());
         Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
         Assert.notNull(authentication, "authentication cannot be null");

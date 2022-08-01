@@ -10,6 +10,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -53,4 +55,12 @@ public class RequestUtils {
         return map;
     }
 
+    public Map<String, String> getParamMap(CharSequence delimiter) {
+        Set<Map.Entry<String, String[]>> entrySet = RequestUtils.getRequest()
+                .getParameterMap()
+                .entrySet();
+        return entrySet.stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> String.join(delimiter, entry.getValue())));
+    }
 }

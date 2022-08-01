@@ -1,7 +1,7 @@
-package com.livk.auth.server.common.password;
+package com.livk.auth.server.common.base.password;
 
 
-import com.livk.auth.server.common.base.AuthenticationToken;
+import com.livk.auth.server.common.base.OAuth2BaseAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
@@ -16,7 +16,7 @@ import java.util.Set;
  * @author livk
  * @date 2022/7/15
  */
-public class OAuth2PasswordAuthenticationToken extends AuthenticationToken {
+public class OAuth2PasswordAuthenticationToken extends OAuth2BaseAuthenticationToken {
     public OAuth2PasswordAuthenticationToken(AuthorizationGrantType authorizationGrantType, Authentication authentication,
                                              Set<String> scopes, Map<String, Object> additionalParameters) {
         super(authorizationGrantType, authentication, scopes, additionalParameters);

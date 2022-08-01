@@ -10,6 +10,7 @@ import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -23,7 +24,7 @@ import java.lang.reflect.Method;
  * @date 2022/6/14
  */
 //@Aspect
-//@Component
+@Component
 @RequiredArgsConstructor
 public class LimitAspect {
 

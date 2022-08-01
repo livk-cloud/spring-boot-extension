@@ -1,4 +1,4 @@
-package com.livk.auth.server.common.password;
+package com.livk.auth.server.common.base.password;
 
 
 import com.livk.auth.server.common.base.AbstractAuthenticationConverter;
