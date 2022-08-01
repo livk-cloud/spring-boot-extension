@@ -24,14 +24,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * LocalDateTime 转时间戳
      */
-    public static Long getTimeStamp(LocalDateTime localDateTime) {
+    public static Long toTimestamp(LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
     /**
      * 时间戳转LocalDateTime
      */
-    public static LocalDateTime fromTimeStamp(Long timeStamp) {
+    public static LocalDateTime fromTimestamp(Long timeStamp) {
         return LocalDateTime.ofEpochSecond(timeStamp, 0, OffsetDateTime.now().getOffset());
     }
 
@@ -59,30 +59,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 日期 格式化
      */
-    public static String localDateTimeFormat(LocalDateTime localDateTime, String patten) {
+    public static String format(LocalDateTime localDateTime, String patten) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten);
-        return localDateTimeFormat(localDateTime, formatter);
+        return format(localDateTime, formatter);
     }
 
     /**
      * 日期 格式化
      */
-    public static String localDateTimeFormat(LocalDateTime localDateTime, DateTimeFormatter formatter) {
+    public static String format(LocalDateTime localDateTime, DateTimeFormatter formatter) {
         return formatter.format(localDateTime);
     }
 
     /**
      * 字符串转 LocalDateTime
      */
-    public static LocalDateTime parseLocalDateTimeFormat(String localDateTime, String pattern) {
+    public static LocalDateTime parse(String localDateTime, String pattern) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-        return parseLocalDateTimeFormat(localDateTime, dateTimeFormatter);
+        return parse(localDateTime, dateTimeFormatter);
     }
 
     /**
      * 字符串转 LocalDateTime
      */
-    public static LocalDateTime parseLocalDateTimeFormat(String localDateTime, DateTimeFormatter dateTimeFormatter) {
+    public static LocalDateTime parse(String localDateTime, DateTimeFormatter dateTimeFormatter) {
         return LocalDateTime.from(dateTimeFormatter.parse(localDateTime));
     }
 
