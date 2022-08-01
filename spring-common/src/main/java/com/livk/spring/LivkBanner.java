@@ -44,7 +44,7 @@ class LivkBanner implements Banner {
         max = max % 2 == 0 ? max : max + 1;
         var format = Format.create(max, out);
         format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
-        format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), "yyyy-MM-dd HH:mm:ss") + " ");
+        format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
         format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
         format.accept(" Operating System: " + System.getProperty("os.name") + " ");
         out.flush();

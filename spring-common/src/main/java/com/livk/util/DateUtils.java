@@ -17,9 +17,11 @@ import java.util.Date;
 @UtilityClass
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
-    public static final DateTimeFormatter YMD_HMS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final String YMD_HMS = "yyyy-MM-dd HH:mm:ss";
 
-    public static final DateTimeFormatter YMD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String YMD = "yyyy-MM-dd";
+
+    public static final String HMS = "HH:mm:ss";
 
     /**
      * LocalDateTime 转时间戳
@@ -76,14 +78,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static LocalDateTime parse(String localDateTime, String pattern) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-        return parse(localDateTime, dateTimeFormatter);
+        return LocalDateTime.parse(localDateTime, dateTimeFormatter);
     }
-
-    /**
-     * 字符串转 LocalDateTime
-     */
-    public static LocalDateTime parse(String localDateTime, DateTimeFormatter dateTimeFormatter) {
-        return LocalDateTime.from(dateTimeFormatter.parse(localDateTime));
-    }
-
 }

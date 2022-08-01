@@ -7,6 +7,7 @@ import com.livk.function.FieldFunction;
 import com.livk.mybatis.annotation.SqlFunction;
 import com.livk.mybatis.constant.FunctionEnum;
 import com.livk.mybatis.enums.SqlFill;
+import com.livk.util.DateUtils;
 import lombok.Data;
 
 import java.io.Serial;
@@ -35,11 +36,11 @@ public class User implements Serializable {
     @SqlFunction(fill = SqlFill.INSERT, supplier = VersionFunction.class)
     private Integer version;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
     @SqlFunction(fill = SqlFill.INSERT, time = FunctionEnum.DATE)
     private Date insertTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
     @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
     private Date updateTime;
 
