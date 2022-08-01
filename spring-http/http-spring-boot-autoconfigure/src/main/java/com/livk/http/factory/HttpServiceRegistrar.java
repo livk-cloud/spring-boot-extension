@@ -40,9 +40,10 @@ public class HttpServiceRegistrar implements BeanFactoryAware, ImportBeanDefinit
 
     private ResourceLoader resourceLoader;
 
-    public HttpServiceRegistrar() {
+    public HttpServiceRegistrar() throws Exception {
         WebClient client = WebClient.builder().build();
         this.proxyFactory = WebClientAdapter.createHttpServiceProxyFactory(client);
+        this.proxyFactory.afterPropertiesSet();
     }
 
     @Override

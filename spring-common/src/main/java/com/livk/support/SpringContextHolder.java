@@ -99,6 +99,8 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
             registerBean(defaultBeanFactory, bean, beanName);
         } else if (applicationContext instanceof GenericApplicationContext context) {
             registerBean(context, bean, beanName);
+        } else {
+            log.error("bean register fail name:{} instant:{}", beanName, bean);
         }
     }
 
