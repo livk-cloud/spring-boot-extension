@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -44,4 +45,10 @@ public class InfoController {
                 .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
     }
 
+    @ExcelReturn(fileName = "outFile")
+    @PostMapping("download")
+    public Map<String, List<Info>> download(@RequestBody List<Info> dataExcels) {
+        return dataExcels.stream()
+                .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+    }
 }
