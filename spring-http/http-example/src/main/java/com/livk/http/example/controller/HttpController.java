@@ -21,7 +21,7 @@ public class HttpController {
 
     private final RemoteService service;
 
-    @GetMapping
+    @GetMapping("get")
     public HttpEntity<String> get() {
         return ResponseEntity.ok(service.get());
     }
