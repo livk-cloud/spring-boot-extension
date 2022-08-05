@@ -4,6 +4,8 @@ import com.livk.example.config.ConversionServiceAdapter;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
 import com.livk.mapstruct.converter.MapstructService;
+import com.livk.support.SpringContextHolder;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpEntity;
@@ -43,6 +45,13 @@ public class UserController {
     private final ConversionService conversionService;
 
     private final ConversionServiceAdapter conversionServiceAdapter;
+
+    @PostConstruct
+    public void init() {
+        System.out.println(conversionService.convert(USERS.get(0), UserVO.class));
+        service.converter(USERS, UserVO.class).forEach(System.out::println);
+        SpringContextHolder.getBean(MapstructService.class).converter(USERS, UserVO.class).forEach(System.out::println);
+    }
 
     @GetMapping
     public HttpEntity<Map<String, List<UserVO>>> list() {
