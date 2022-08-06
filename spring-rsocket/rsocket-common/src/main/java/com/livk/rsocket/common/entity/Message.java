@@ -28,9 +28,7 @@ public class Message {
     private long created = Instant.now().getEpochSecond();
 
     public Message(String from, String to) {
-        this.from = from;
-        this.to = to;
-        this.index = 0;
+        this(from, to, 0);
     }
 
     public Message(String from, String to, long index) {
