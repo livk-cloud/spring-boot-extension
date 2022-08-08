@@ -6,7 +6,3 @@ dependencies {
     implementation "mysql:mysql-connector-java"
     implementation "org.springframework.security:spring-security-oauth2-authorization-server"
 }
-
-test {
-    useJUnitPlatform()
-}

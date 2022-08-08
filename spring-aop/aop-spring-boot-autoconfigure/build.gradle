@@ -3,7 +3,3 @@ dependencies {
     api "org.aspectj:aspectjweaver"
     api "org.springframework.boot:spring-boot-autoconfigure"
 }
-
-test {
-    useJUnitPlatform()
-}

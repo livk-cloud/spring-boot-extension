@@ -2,7 +2,3 @@ dependencies {
     implementation project(":spring-rabbit:rabbit-common")
     implementation "org.springframework.boot:spring-boot-starter-web"
 }
-
-test {
-    useJUnitPlatform()
-}

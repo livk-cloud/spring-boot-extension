@@ -2,7 +2,3 @@ dependencies {
     api project(":spring-http:http-spring-boot-autoconfigure")
     api "org.springframework:spring-webflux"
 }
-
-test {
-    useJUnitPlatform()
-}

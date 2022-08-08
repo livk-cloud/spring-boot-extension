@@ -1,7 +1,3 @@
 dependencies {
     api project(":spring-aop:aop-spring-boot-autoconfigure")
 }
-
-test {
-    useJUnitPlatform()
-}

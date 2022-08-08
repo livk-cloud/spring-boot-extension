@@ -4,7 +4,3 @@ dependencies {
     implementation "org.springframework.integration:spring-integration-stream"
     implementation "org.springframework.integration:spring-integration-mqtt"
 }
-
-test {
-    useJUnitPlatform()
-}

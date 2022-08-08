@@ -2,7 +2,3 @@ dependencies {
     api project(":spring-common")
     api "org.springframework.boot:spring-boot-autoconfigure"
 }
-
-test {
-    useJUnitPlatform()
-}

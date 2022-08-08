@@ -6,7 +6,3 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
     implementation "io.projectreactor.netty:reactor-netty"
 }
-
-test {
-    useJUnitPlatform()
-}

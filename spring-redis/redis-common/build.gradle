@@ -4,7 +4,3 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind"
     api "org.apache.commons:commons-pool2"
 }
-
-test {
-    useJUnitPlatform()
-}

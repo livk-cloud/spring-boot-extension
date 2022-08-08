@@ -5,7 +5,3 @@ dependencies {
     implementation "org.redisson:redisson-spring-boot-starter"
     implementation "com.github.ben-manes.caffeine:caffeine"
 }
-
-test {
-    useJUnitPlatform()
-}

@@ -5,7 +5,3 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-quartz"
     implementation "mysql:mysql-connector-java"
 }
-
-test {
-    useJUnitPlatform()
-}

@@ -5,7 +5,3 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     annotationProcessor "org.mapstruct:mapstruct-processor"
 }
-
-test {
-    useJUnitPlatform()
-}

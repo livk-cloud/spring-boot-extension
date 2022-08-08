@@ -58,14 +58,17 @@ public class UserController {
         List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
                 .filter(Objects::nonNull).toList();
         return ResponseEntity
-                .ok(Map.of("spring", userVOS, "customize", service.converter(USERS, UserVO.class).toList()));
+                .ok(Map.of("spring", userVOS,
+                        "customize", service.converter(USERS, UserVO.class).toList()));
     }
 
     @GetMapping("/{id}")
     public HttpEntity<Map<String, UserVO>> getById(@PathVariable Integer id) {
         User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
         UserVO userVOSpring = conversionService.convert(u, UserVO.class);
-        return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class), "spring", userVOSpring, "adapter", conversionServiceAdapter.mapUserToUserVO(u)));
+        return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class),
+                "spring", userVOSpring,
+                "adapter", conversionServiceAdapter.mapUserToUserVO(u)));
     }
 
 }

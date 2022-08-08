@@ -11,7 +11,3 @@ dependencies {
     api "com.google.guava:guava"
     testImplementation "com.fasterxml.jackson.core:jackson-databind"
 }
-
-test {
-    useJUnitPlatform()
-}

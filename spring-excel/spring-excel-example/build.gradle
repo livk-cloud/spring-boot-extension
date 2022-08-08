@@ -4,7 +4,3 @@ dependencies {
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "mysql:mysql-connector-java"
 }
-
-test {
-    useJUnitPlatform()
-}

@@ -6,7 +6,3 @@ dependencies {
     implementation "com.clickhouse:clickhouse-jdbc"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
-
-test {
-    useJUnitPlatform()
-}

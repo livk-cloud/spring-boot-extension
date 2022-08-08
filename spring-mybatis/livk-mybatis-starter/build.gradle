@@ -8,7 +8,3 @@ dependencies {
     compileOnly "org.postgresql:postgresql"
     api "com.github.jsqlparser:jsqlparser"
 }
-
-test {
-    useJUnitPlatform()
-}

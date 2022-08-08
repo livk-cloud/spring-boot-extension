@@ -5,7 +5,3 @@ dependencies {
     implementation "mysql:mysql-connector-java"
     implementation "com.github.pagehelper:pagehelper-spring-boot-starter"
 }
-
-test {
-    useJUnitPlatform()
-}

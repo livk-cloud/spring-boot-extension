@@ -5,7 +5,3 @@ dependencies {
     compileOnly "com.alibaba:easyexcel"
     compileOnly "org.springframework:spring-webmvc"
 }
-
-test {
-    useJUnitPlatform()
-}

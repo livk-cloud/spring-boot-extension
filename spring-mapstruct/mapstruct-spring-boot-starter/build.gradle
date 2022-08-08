@@ -3,7 +3,3 @@ dependencies {
     api "org.mapstruct:mapstruct"
     api "org.projectlombok:lombok-mapstruct-binding"
 }
-
-test {
-    useJUnitPlatform()
-}

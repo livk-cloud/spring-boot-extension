@@ -5,7 +5,3 @@ dependencies {
     implementation "org.postgresql:postgresql"
     implementation "com.github.pagehelper:pagehelper-spring-boot-starter"
 }
-
-test {
-    useJUnitPlatform()
-}
