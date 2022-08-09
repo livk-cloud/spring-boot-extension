@@ -1,6 +1,0 @@
-dependencies {
-    api platform(project(":livk-boot-dependencies"))
-    constraints {
-        parent.commonModuleProjects.forEach { api(it) }
-    }
-}

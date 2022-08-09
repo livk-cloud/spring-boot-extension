@@ -10,5 +10,7 @@ dependencies {
         versionCatalog.getLibraryAliases()
                 .collect { versionCatalog.findLibrary(it).get().get() }
                 .forEach { api it }
+
+        parent.commonModuleProjects.forEach { api(it) }
     }
 }
