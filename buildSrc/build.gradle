@@ -25,7 +25,7 @@ gradlePlugin {
         }
         dependencyBomPlugin {
             id = "com.livk.dependency"
-            implementationClass = "com.livk.DependencyBomPlugin"
+            implementationClass = "com.livk.ManagementPlugin"
             description = "build dependency BOM"
         }
         resourcesPlugin {

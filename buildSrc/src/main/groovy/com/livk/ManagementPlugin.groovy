@@ -16,9 +16,9 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
  * @author livk
  * @date 2022/6/1
  */
-abstract class DependencyBomPlugin implements Plugin<Project> {
+abstract class ManagementPlugin implements Plugin<Project> {
 
-    public static final String DEPENDENCY_BOM = "dependencyBom"
+    public static final String MANAGEMENT = "management"
 
     public static final Set<String> DEPENDENCY_NAMES_SET = new HashSet<>()
 
@@ -39,17 +39,17 @@ abstract class DependencyBomPlugin implements Plugin<Project> {
     void apply(Project project) {
         def configurations = project.configurations
         project.pluginManager.apply(JavaPlugin.class)
-        configurations.create(DEPENDENCY_BOM) { dependencyBom ->
-            dependencyBom.visible = false
-            dependencyBom.canBeResolved = false
-            dependencyBom.canBeConsumed = false
+        configurations.create(MANAGEMENT) { management ->
+            management.visible = false
+            management.canBeResolved = false
+            management.canBeConsumed = false
             def plugins = project.plugins
             plugins.withType(JavaPlugin.class) {
-                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(dependencyBom) }
+                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(management) }
             }
             plugins.withType(JavaTestFixturesPlugin.class) {
-                configurations.getByName("testFixturesCompileClasspath").extendsFrom(dependencyBom)
-                configurations.getByName("testFixturesRuntimeClasspath").extendsFrom(dependencyBom)
+                configurations.getByName("testFixturesCompileClasspath").extendsFrom(management)
+                configurations.getByName("testFixturesRuntimeClasspath").extendsFrom(management)
             }
             plugins.withType(MavenPublishPlugin.class) {
                 project.extensions

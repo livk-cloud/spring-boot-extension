@@ -48,7 +48,7 @@ configure(gradleModuleProjects) {
     apply plugin: "com.livk.dependency"
 
     dependencies {
-        dependencyBom platform(project(":livk-boot-dependencies"))
+        management platform(project(":livk-boot-dependencies"))
 
         compileOnly "org.projectlombok:lombok"
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
