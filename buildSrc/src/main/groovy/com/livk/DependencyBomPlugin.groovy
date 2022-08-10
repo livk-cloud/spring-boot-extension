@@ -25,12 +25,11 @@ abstract class DependencyBomPlugin implements Plugin<Project> {
     static {
         DEPENDENCY_NAMES_SET.addAll(
                 Set.of(
-                        JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME,
-                        JavaPlugin.API_ELEMENTS_CONFIGURATION_NAME,
-                        JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME,
+                        JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME,
+                        JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME,
                         JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME,
-                        JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-                        JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_NAME,
+                        JavaPlugin.TEST_COMPILE_CLASSPATH_CONFIGURATION_NAME,
+                        JavaPlugin.TEST_RUNTIME_CLASSPATH_CONFIGURATION_NAME,
                         JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME
                 )
         )
