@@ -1,6 +1,6 @@
-package com.livk.compile
+package com.livk.boot.compile
 
-import com.livk.info.ManifestPlugin
+import com.livk.boot.info.ManifestPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project

@@ -1,4 +1,4 @@
-package com.livk.tasks
+package com.livk.boot.tasks
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

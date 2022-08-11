@@ -3,7 +3,6 @@ package com.livk.example.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.livk.example.handler.VersionFunction;
-import com.livk.function.FieldFunction;
 import com.livk.mybatis.annotation.SqlFunction;
 import com.livk.mybatis.constant.FunctionEnum;
 import com.livk.mybatis.enums.SqlFill;
@@ -43,9 +42,4 @@ public class User implements Serializable {
     @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
     @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
     private Date updateTime;
-
-    public static <T> String column(FieldFunction<T> function) {
-        return function.getFieldName();
-    }
-
 }

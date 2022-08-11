@@ -18,36 +18,25 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        compileArgsPlugin {
-            id = "com.livk.compile-args"
-            implementationClass = "com.livk.compile.CompileArgsPlugin"
-            description = "Add compile parameters"
+        bomPlugin {
+            id = "com.livk.bom"
+            implementationClass = "com.livk.boot.BomPlugin"
         }
-        dependencyBomPlugin {
-            id = "com.livk.dependency"
-            implementationClass = "com.livk.ManagementPlugin"
-            description = "build dependency BOM"
+        modulePlugin {
+            id = "com.livk.module"
+            implementationClass = "com.livk.boot.ModulePlugin"
         }
-        resourcesPlugin {
-            id = "com.livk.resources"
-            implementationClass = "com.livk.compile.ResourcesPlugin"
-            description = "Add resource handling"
+        commonPlugin {
+            id = "com.livk.common"
+            implementationClass = "com.livk.boot.CommonPlugin"
         }
-        deployedPlugin {
-            id = "com.livk.maven.deployed"
-            implementationClass = "com.livk.maven.DeployedPlugin"
+        rootProjectPlugin {
+            id = "com.livk.root"
+            implementationClass = "com.livk.boot.RootProjectPlugin"
         }
-        bootPlugin {
-            id = "com.livk.build.boot"
-            implementationClass = "com.livk.info.BootPlugin"
-        }
-        deleteExpand {
-            id = "com.livk.clean.expand"
-            implementationClass = "com.livk.tasks.DeleteExpand"
-        }
-        allConfiguration {
-            id = "com.livk.all.configuration"
-            implementationClass = "com.livk.config.AllConfiguration"
+        servicePlugin {
+            id = "com.livk.service"
+            implementationClass = "com.livk.boot.ServicePlugin"
         }
     }
 }

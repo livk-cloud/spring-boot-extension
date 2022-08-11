@@ -1,4 +1,5 @@
-package com.livk.config
+package com.livk.boot.config
+
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

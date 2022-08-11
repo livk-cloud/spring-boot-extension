@@ -1,6 +1,5 @@
 plugins {
-    id "com.livk.dependency"
-    id "org.springframework.boot" apply false
+    id "com.livk.root"
 }
 
 ext {
@@ -8,54 +7,41 @@ ext {
     bom = List.of(project(":livk-boot-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
     commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-common") ||
-                it.name.endsWith("-starter") ||
-                it.name.endsWith("-autoconfigure")
+        it.name.endsWith("-common") || it.name.endsWith("-starter") || it.name.endsWith("-autoconfigure")
     }
     springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
 
 configure(bom) {
-    apply plugin: "java-platform"
-    apply plugin: "com.livk.maven.deployed"
-
-    project.extensions.getByType(JavaPlatformExtension.class).allowDependencies()
+    apply plugin: "com.livk.bom"
 }
 
 configure(commonModuleProjects) {
-    apply plugin: "com.livk.maven.deployed"
-    apply plugin: "com.livk.resources"
+    apply plugin: "com.livk.common"
 }
 
 configure(springModuleProjects) {
-    apply plugin: "com.livk.build.boot"
+    apply plugin: "com.livk.service"
+}
+
+configure(gradleModuleProjects) {
+    apply plugin: "com.livk.module"
+
+    dependencies {
+        management platform(project(":livk-boot-dependencies"))
+        provider "org.projectlombok:lombok"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        testImplementation "org.springframework:spring-tx"
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
 }
 
 configure(allprojects) {
-    apply plugin: "com.livk.clean.expand"
-    apply plugin: "com.livk.all.configuration"
     repositories {
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/release" }
         maven { url "https://repo.spring.io/libs-snapshot/" }
-    }
-}
-
-configure(gradleModuleProjects) {
-    apply plugin: "com.livk.compile-args"
-    apply plugin: "com.livk.dependency"
-
-    dependencies {
-        management platform(project(":livk-boot-dependencies"))
-
-        compileOnly "org.projectlombok:lombok"
-        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-        annotationProcessor "org.projectlombok:lombok"
-        testImplementation "org.springframework:spring-tx"
-        testImplementation "org.springframework.boot:spring-boot-starter-test"
-        testAnnotationProcessor "org.projectlombok:lombok"
-        testCompileOnly "org.projectlombok:lombok"
     }
 }

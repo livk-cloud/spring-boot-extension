@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 
 /**
- * <p>
- * 此接口必须继承{@link java.io.Serializable}
- * </p>
- * <p>
- * 否则出现丢失writeReplace()方法
- * </p>
+ * <p>用于获取字段名</p>
+ * <p>此接口必须继承{@link java.io.Serializable}</p>
+ * <p>否则出现丢失writeReplace()方法</p>
+ * <pre>{@code
+ *      FieldFunction.of(User::getId) --> "id"
+ * }</pre>
  *
  * @author livk
  * @date 2022/2/25
@@ -22,11 +22,11 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface FieldFunction<T> extends Function<T, Object>, Serializable {
 
-    default String getFieldName() {
+    static <T> String of(FieldFunction<T> function) {
         try {
-            Method method = this.getClass().getDeclaredMethod("writeReplace");
+            Method method = function.getClass().getDeclaredMethod("writeReplace");
             method.setAccessible(true);
-            SerializedLambda serializedLambda = (SerializedLambda) method.invoke(this);
+            SerializedLambda serializedLambda = (SerializedLambda) method.invoke(function);
             String getter = serializedLambda.getImplMethodName();
             if (getter.startsWith("get")) {
                 getter = getter.substring(3);
@@ -45,5 +45,4 @@ public interface FieldFunction<T> extends Function<T, Object>, Serializable {
         }
         return null;
     }
-
 }

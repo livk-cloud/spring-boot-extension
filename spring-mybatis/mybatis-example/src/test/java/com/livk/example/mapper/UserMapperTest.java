@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.common.LivkPage;
 import com.livk.example.entity.User;
+import com.livk.function.FieldFunction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ class UserMapperTest {
     @Test
     public void selectAllTest() {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(User.column(User::getId))
+                .countColumn(FieldFunction.of(User::getId))
                 .doSelectPage(userMapper::list)) {
             LivkPage<User> result = LivkPage.of(page);
             Assertions.assertNotNull(result);
