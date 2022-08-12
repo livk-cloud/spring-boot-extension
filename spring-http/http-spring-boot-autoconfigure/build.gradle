@@ -1,5 +1,5 @@
 dependencies {
     api project(":spring-common")
     api "org.springframework.boot:spring-boot-autoconfigure"
-    compileOnly "org.springframework:spring-webflux"
+    optional "org.springframework:spring-webflux"
 }

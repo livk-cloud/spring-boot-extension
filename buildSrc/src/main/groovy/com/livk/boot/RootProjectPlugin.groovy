@@ -1,6 +1,7 @@
 package com.livk.boot
 
 import com.livk.boot.dependency.ManagementPlugin
+import com.livk.boot.dependency.OptionalPlugin
 import com.livk.boot.dependency.ProviderPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,6 +20,7 @@ class RootProjectPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply(BasePlugin.class)
         project.pluginManager.apply(ManagementPlugin.class)
+        project.pluginManager.apply(OptionalPlugin.class)
         project.pluginManager.apply(ProviderPlugin.class)
     }
 }
