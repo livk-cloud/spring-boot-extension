@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -57,17 +58,15 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     private InputStream getInputStream(HttpServletRequest request, String fileName) {
         try {
-            if (request instanceof MultipartRequest) {
-                var file = ((MultipartRequest) request).getFile(fileName);
-                assert file != null;
+            if (request instanceof MultipartRequest multipartRequest) {
+                var file = multipartRequest.getFile(fileName);
+                Assert.notNull(file, "file not be null");
                 return file.getInputStream();
-            } else {
-                return request.getInputStream();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
 }
