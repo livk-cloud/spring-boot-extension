@@ -30,7 +30,7 @@ configure(gradleModuleProjects) {
     dependencies {
         management platform(project(":livk-boot-dependencies"))
         provider "org.projectlombok:lombok"
-        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        provider "org.springframework.boot:spring-boot-configuration-processor"
         testImplementation "org.springframework:spring-tx"
         testImplementation "org.springframework.boot:spring-boot-starter-test"
     }

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -117,7 +118,8 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
                     .principalName(authenticate.getName())
                     .authorizationGrantType(baseAuthentication.getAuthorizationGrantType())
                     .attribute(Principal.class.getName(), authenticate)
-                    .attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME, authorizedScopes);
+                    // 来自于0.3.1
+                    .attribute(OAuth2Authorization.class.getName().concat(".AUTHORIZED_SCOPE"), authorizedScopes);
 
             if (generatedAccessToken instanceof ClaimAccessor) {
                 authorizationBuilder.token(accessToken, metadata -> {
