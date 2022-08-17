@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @date 2022/8/16
  */
 @UtilityClass
-public class ReflectionUtils {
+public class FieldUtils extends org.apache.commons.lang3.reflect.FieldUtils {
 
     public <T> String getFieldName(FieldFunction<T> function) {
         try {
