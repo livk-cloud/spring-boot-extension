@@ -16,9 +16,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class PulsarProperties {
 
     public static final String PULSAR_PREFIX = "spring.pulsar";
-
+    /**
+     * Pulsar IP
+     */
     private String address;
-
+    /**
+     * topic
+     */
     private String topic;
 
 }
