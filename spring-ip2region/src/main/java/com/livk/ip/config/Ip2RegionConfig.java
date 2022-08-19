@@ -1,6 +1,5 @@
 package com.livk.ip.config;
 
-import com.google.common.io.Resources;
 import com.livk.ip.properties.Ip2RegionProperties;
 import com.livk.ip.support.Ip2RegionSearch;
 import org.lionsoul.ip2region.xdb.Searcher;
@@ -8,10 +7,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * <p>
@@ -29,9 +28,8 @@ public class Ip2RegionConfig {
     @Bean
     public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
         try {
-            ClassPathResource resource = new ClassPathResource(properties.getFilePath());
-            URL url = resource.getURL();
-            byte[] bytes = Resources.toByteArray(url);
+            Resource resource = properties.getFileResource();
+            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
             Searcher searcher = Searcher.newWithBuffer(bytes);
             return new Ip2RegionSearch(searcher);
         } catch (IOException e) {
