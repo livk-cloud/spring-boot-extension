@@ -32,6 +32,9 @@ class Ip2RegionControllerTest {
                         .param("ip", "110.242.68.66"))
                 .andExpect(status().isOk())
                 .andDo(print())
+                .andExpect(jsonPath("nation", "中国").exists())
+                .andExpect(jsonPath("province", "河北省").exists())
+                .andExpect(jsonPath("city", "保定市").exists())
                 .andExpect(jsonPath("operator", "联通").exists());
     }
 }
