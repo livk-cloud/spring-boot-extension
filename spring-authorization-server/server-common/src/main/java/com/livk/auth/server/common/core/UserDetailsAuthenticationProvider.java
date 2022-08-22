@@ -1,8 +1,8 @@
 package com.livk.auth.server.common.core;
 
-import com.livk.auth.server.common.constant.OAuth2Constants;
-import com.livk.auth.server.common.core.service.Oauth2UserDetailsService;
-import com.livk.auth.server.common.exception.BadCaptchaException;
+import com.livk.auth.server.common.constant.SecurityConstants;
+import com.livk.auth.server.common.core.exception.BadCaptchaException;
+import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.auth.server.common.util.MessageSourceUtils;
 import com.livk.support.SpringContextHolder;
 import com.livk.util.RequestUtils;
@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
@@ -65,10 +64,9 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
     @Setter
     private UserDetailsPasswordService userDetailsPasswordService;
 
-    @SuppressWarnings("deprecation")
-    public UserDetailsAuthenticationProvider() {
+    public UserDetailsAuthenticationProvider(PasswordEncoder passwordEncoder) {
         setMessageSource(MessageSourceUtils.get());
-        setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        setPasswordEncoder(passwordEncoder);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
                     .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
         }
         //校验验证码
-        if (Objects.equals(OAuth2Constants.SMS, grantType)) {
+        if (Objects.equals(SecurityConstants.SMS, grantType)) {
             String code = authentication.getCredentials().toString();
             if (!Objects.equals(code, "123456")) {
                 this.logger.debug("Failed to authenticate since code does not match stored value");
@@ -91,7 +89,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
             }
         }
         //校验密码
-        if (Objects.equals(OAuth2Constants.PASSWORD, grantType)) {
+        if (Objects.equals(SecurityConstants.PASSWORD, grantType)) {
             String presentedPassword = authentication.getCredentials().toString();
             String encodedPassword = extractEncodedPassword(userDetails.getPassword());
             if (!this.passwordEncoder.matches(presentedPassword, encodedPassword)) {
@@ -182,7 +180,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
     }
 
     private String extractEncodedPassword(String prefixEncodedPassword) {
-        int start = prefixEncodedPassword.indexOf(OAuth2Constants.DEFAULT_ID_SUFFIX);
-        return prefixEncodedPassword.substring(start + OAuth2Constants.DEFAULT_ID_SUFFIX.length());
+        int start = prefixEncodedPassword.indexOf(SecurityConstants.DEFAULT_ID_SUFFIX);
+        return prefixEncodedPassword.substring(start + SecurityConstants.DEFAULT_ID_SUFFIX.length());
     }
 }

@@ -30,14 +30,14 @@ public class Oauth2User extends User implements OAuth2AuthenticatedPrincipal {
     /**
      * 手机号
      */
-    private final String phone;
+    private final String mobile;
 
-    public Oauth2User(Long id, String username, String password, String phone, boolean enabled,
+    public Oauth2User(Long id, String username, String password, String mobile, boolean enabled,
                       boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                       Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
-        this.phone = phone;
+        this.mobile = mobile;
     }
 
     /**

@@ -1,8 +1,9 @@
 package com.livk.auth.server.common.handler;
 
-import com.livk.auth.server.common.constant.OAuth2Constants;
+import com.livk.auth.server.common.constant.SecurityConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,25 +19,30 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import java.io.IOException;
 
 /**
- * <p>
- * OAuth2AuthenticationFailureHandler
- * </p>
- *
  * @author livk
- * @date 2022/7/15
  */
 @Slf4j
-public class OAuth2AuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class AuthenticationFailureEventHandler implements AuthenticationFailureHandler {
+
     private final MappingJackson2HttpMessageConverter errorHttpResponseConverter = new MappingJackson2HttpMessageConverter();
 
+    /**
+     * Called when an authentication attempt fails.
+     *
+     * @param request   the request during which the authentication attempt occurred.
+     * @param response  the response.
+     * @param exception the exception which was thrown to reject the authentication
+     *                  request.
+     */
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+    @SneakyThrows
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
 
         String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
 
-        String username = request.getParameter(OAuth2Constants.SMS_PARAMETER_NAME);
+        String username = request.getParameter(SecurityConstants.SMS_PARAMETER_NAME);
 
-        if (OAuth2Constants.PASSWORD.equals(grantType)) {
+        if (SecurityConstants.PASSWORD.equals(grantType)) {
             username = request.getParameter(OAuth2ParameterNames.USERNAME);
         }
 
@@ -56,4 +62,5 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 
         this.errorHttpResponseConverter.write(ResponseEntity.status(403).body(error.getDescription()), MediaType.APPLICATION_JSON, httpResponse);
     }
+
 }

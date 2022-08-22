@@ -1,12 +1,7 @@
-package com.livk.auth.server.common.constant;
+package com.livk.auth.server.common.util;
 
 /**
- * <p>
- * OAuth2ErrorCodesExpand
- * </p>
- *
  * @author livk
- * @date 2022/8/1
  */
 public interface OAuth2ErrorCodesExpand {
 

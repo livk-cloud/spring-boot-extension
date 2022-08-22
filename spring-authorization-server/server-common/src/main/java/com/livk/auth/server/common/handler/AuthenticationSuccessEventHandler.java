@@ -1,9 +1,10 @@
 package com.livk.auth.server.common.handler;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,28 +21,42 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 /**
- * <p>
- * OAuth2AuthenticationSuccessHandler
- * </p>
- *
  * @author livk
- * @date 2022/7/15
  */
 @Slf4j
-public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class AuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
 
+    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
+
+    /**
+     * Called when a user has been successfully authenticated.
+     *
+     * @param request        the request which caused the successful authentication
+     * @param response       the response
+     * @param authentication the <tt>Authentication</tt> object which was created during
+     *                       the authentication process.
+     */
+    @SneakyThrows
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
         log.info("用户：{} 登录成功", authentication.getPrincipal());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // 输出token
+        sendAccessTokenResponse(request, response, authentication);
+    }
+
+    private void sendAccessTokenResponse(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+
         OAuth2AccessTokenAuthenticationToken accessTokenAuthentication = (OAuth2AccessTokenAuthenticationToken) authentication;
+
         OAuth2AccessToken accessToken = accessTokenAuthentication.getAccessToken();
         OAuth2RefreshToken refreshToken = accessTokenAuthentication.getRefreshToken();
         Map<String, Object> additionalParameters = accessTokenAuthentication.getAdditionalParameters();
 
-        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue())
-                .tokenType(accessToken.getTokenType()).scopes(accessToken.getScopes());
+        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue()).tokenType(accessToken.getTokenType()).scopes(accessToken.getScopes());
         if (accessToken.getIssuedAt() != null && accessToken.getExpiresAt() != null) {
             builder.expiresIn(ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt()));
         }
@@ -54,7 +69,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2AccessTokenResponse accessTokenResponse = builder.build();
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
+        // 无状态 注意删除 context 上下文的信息
         SecurityContextHolder.clearContext();
-        new OAuth2AccessTokenResponseHttpMessageConverter().write(accessTokenResponse, null, httpResponse);
+        this.accessTokenHttpResponseConverter.write(accessTokenResponse, null, httpResponse);
     }
+
 }

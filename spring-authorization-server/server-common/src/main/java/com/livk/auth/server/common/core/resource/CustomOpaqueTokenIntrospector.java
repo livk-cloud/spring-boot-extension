@@ -1,8 +1,7 @@
 package com.livk.auth.server.common.core.resource;
 
-
 import com.livk.auth.server.common.core.principal.Oauth2User;
-import com.livk.auth.server.common.core.service.Oauth2UserDetailsService;
+import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.support.SpringContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

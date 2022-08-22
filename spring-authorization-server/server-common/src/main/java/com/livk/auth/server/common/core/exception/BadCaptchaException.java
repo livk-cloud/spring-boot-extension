@@ -1,14 +1,9 @@
-package com.livk.auth.server.common.exception;
+package com.livk.auth.server.common.core.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * <p>
- * BadCaptchaException
- * </p>
- *
  * @author livk
- * @date 2022/8/1
  */
 public class BadCaptchaException extends AuthenticationException {
 

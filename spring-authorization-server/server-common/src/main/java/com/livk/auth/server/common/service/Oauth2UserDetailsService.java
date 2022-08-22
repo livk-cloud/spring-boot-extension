@@ -1,18 +1,10 @@
-package com.livk.auth.server.common.core.service;
+package com.livk.auth.server.common.service;
 
 import com.livk.auth.server.common.core.principal.Oauth2User;
 import org.springframework.core.Ordered;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-/**
- * <p>
- * Oauth2UserDetailsService
- * </p>
- *
- * @author livk
- * @date 2022/8/1
- */
 public interface Oauth2UserDetailsService extends UserDetailsService, Ordered {
 
     /**

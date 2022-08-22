@@ -1,7 +1,6 @@
 package com.livk.auth.server.common.core.customizer;
 
-import com.livk.auth.server.common.constant.OAuth2Constants;
-import com.livk.auth.server.common.core.principal.Oauth2User;
+import com.livk.auth.server.common.constant.SecurityConstants;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -23,8 +22,7 @@ public class OAuth2JwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodi
     @Override
     public void customize(JwtEncodingContext context) {
         JwtClaimsSet.Builder claims = context.getClaims();
-
-        claims.claim(OAuth2ParameterNames.GRANT_TYPE, context.getAuthorizationGrantType());
+        claims.claim(OAuth2ParameterNames.GRANT_TYPE, context.getAuthorizationGrantType().getValue());
         claims.claim(OAuth2ParameterNames.CLIENT_ID, context.getAuthorizationGrant().getName());
 
         // 客户端模式不返回具体用户信息
@@ -32,7 +30,7 @@ public class OAuth2JwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodi
             return;
         }
 
-        Oauth2User oauth2User = (Oauth2User) context.getPrincipal().getPrincipal();
-        claims.claim(OAuth2Constants.DETAILS_USER, oauth2User);
+//        Oauth2User oauth2User = (Oauth2User) context.getPrincipal().getPrincipal();
+        claims.claim(SecurityConstants.DETAILS_USER, context.getPrincipal().getPrincipal());
     }
 }

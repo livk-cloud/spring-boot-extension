@@ -8,6 +8,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 /**
  * <p>
  * HttpControllerTest
@@ -26,6 +28,7 @@ class HttpControllerTest {
     @Test
     void get() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/get"))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

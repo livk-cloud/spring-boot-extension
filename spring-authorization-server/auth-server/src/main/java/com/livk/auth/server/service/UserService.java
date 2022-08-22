@@ -1,8 +1,8 @@
 package com.livk.auth.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.auth.server.domain.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * <p>
@@ -12,6 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @author livk
  * @date 2021/12/22
  */
-public interface UserService extends IService<User>, UserDetailsService {
+public interface UserService extends IService<User>, Oauth2UserDetailsService {
 
 }
