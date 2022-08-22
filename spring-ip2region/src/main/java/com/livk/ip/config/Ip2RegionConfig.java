@@ -1,6 +1,7 @@
 package com.livk.ip.config;
 
 import com.livk.ip.properties.Ip2RegionProperties;
+import com.livk.ip.support.IPMethodArgumentResolver;
 import com.livk.ip.support.Ip2RegionSearch;
 import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -9,8 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +27,7 @@ import java.io.IOException;
 @Configuration
 @EnableConfigurationProperties(Ip2RegionProperties.class)
 @ConditionalOnProperty(prefix = Ip2RegionProperties.PREFIX, name = "enabled", havingValue = "true")
-public class Ip2RegionConfig {
+public class Ip2RegionConfig implements WebMvcConfigurer {
 
     @Bean
     public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
@@ -37,4 +41,8 @@ public class Ip2RegionConfig {
         }
     }
 
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new IPMethodArgumentResolver());
+    }
 }

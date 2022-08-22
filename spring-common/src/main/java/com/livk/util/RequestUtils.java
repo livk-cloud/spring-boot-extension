@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class RequestUtils {
 
+    private static final String UNKNOWN = "unknown";
+
+    private static final String HTTP_IP_SPLIT = ",";
+
     public HttpServletRequest getRequest() {
         var requestAttributes = RequestContextHolder.getRequestAttributes();
         var servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
@@ -62,5 +66,28 @@ public class RequestUtils {
         return entrySet.stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> String.join(delimiter, entry.getValue())));
+    }
+
+    public String getRealIp() {
+        return getRealIp(getRequest());
+    }
+
+    public String getRealIp(HttpServletRequest request) {
+        // 这个一般是Nginx反向代理设置的参数
+        var ip = request.getHeader("X-Real-IP");
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Forwarded-For");
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 处理多IP的情况（只取第一个IP）
+        return ip != null && ip.contains(HTTP_IP_SPLIT) ? ip.split(HTTP_IP_SPLIT)[0] : ip;
     }
 }

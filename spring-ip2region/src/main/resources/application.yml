@@ -1,0 +1,3 @@
+ip2region:
+  enabled: true
+  file-path: classpath:/ip/ip2region.xdb
