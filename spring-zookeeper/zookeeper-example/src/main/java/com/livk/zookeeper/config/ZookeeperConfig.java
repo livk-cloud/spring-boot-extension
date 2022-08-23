@@ -1,12 +1,13 @@
 package com.livk.zookeeper.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.io.IOException;
 
 /**
  * <p>
@@ -22,9 +23,17 @@ import java.io.IOException;
 public class ZookeeperConfig {
 
     @Bean
-    public ZooKeeper zooKeeper(ZookeeperProperties properties) throws IOException {
-        return new ZooKeeper(properties.getAddress() + ":" + properties.getPort(), properties.getTimeout(),
-                event -> log.info("status:{}", event.getState()));
+    public CuratorFramework curatorFramework(ZookeeperProperties zookeeperProperties) {
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(zookeeperProperties.getBaseSleepTime(),
+                zookeeperProperties.getMaxRetries());
+        CuratorFramework client = CuratorFrameworkFactory.builder()
+                .connectString(zookeeperProperties.getServers())
+                .connectionTimeoutMs(zookeeperProperties.getConnectionTimeout())
+                .sessionTimeoutMs(zookeeperProperties.getSessionTimeout())
+                .retryPolicy(retryPolicy)
+                .build();
+        client.start();
+        return client;
     }
 
 }

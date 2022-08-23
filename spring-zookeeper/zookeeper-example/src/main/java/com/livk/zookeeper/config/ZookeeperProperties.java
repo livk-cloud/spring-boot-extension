@@ -17,10 +17,29 @@ public class ZookeeperProperties {
 
     public static final String PREFIX = "spring.zookeeper";
 
-    private String address = "localhost";
+    /**
+     * zk连接集群，多个用逗号隔开
+     */
+    private String servers = "localhost:2181";
 
-    private int port = 2181;
+    /**
+     * 会话超时时间
+     */
+    private int sessionTimeout = 60000;
 
-    private int timeout = 4000;
+    /**
+     * 连接超时时间
+     */
+    private int connectionTimeout = 15000;
+
+    /**
+     * 初始重试等待时间(毫秒)
+     */
+    private int baseSleepTime = 1000;
+
+    /**
+     * 重试最大次数
+     */
+    private int maxRetries = 10;
 
 }

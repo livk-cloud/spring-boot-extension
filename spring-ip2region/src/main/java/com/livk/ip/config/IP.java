@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * @author livk
  * @date 2022/8/22
  */
-@Target({ElementType.PARAMETER, ElementType.TYPE_PARAMETER, ElementType.FIELD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = IPValidator.class)
 public @interface IP {

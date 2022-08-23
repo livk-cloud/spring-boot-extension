@@ -3,14 +3,17 @@ package com.livk.zookeeper.util;
 import com.livk.support.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.*;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -24,122 +27,319 @@ import java.util.List;
 @UtilityClass
 public class ZookeeperUtils {
 
-    private static final ZooKeeper zooKeeper = SpringContextHolder.getBean(ZooKeeper.class);
+    private static final CuratorFramework curatorFramework = SpringContextHolder.getBean(CuratorFramework.class);
 
     /**
-     * 判断指定节点是否存在
-     *
-     * @param path      path
-     * @param needWatch 指定是否复用zookeeper中默认的Watcher
-     * @return stat
+     * 路径分隔符
      */
-    public Stat exists(String path, boolean needWatch) {
+    private static final String PATH_SEPARATOR = "/";
+
+    /**
+     * 创建空节点，默认持久节点
+     *
+     * @param path 节点路径
+     * @param node 节点名称
+     * @return 完整路径
+     */
+    public String createNode(String path, String node) {
+        return createNode(path, node, CreateMode.PERSISTENT);
+    }
+
+    /**
+     * 创建带类型的空节点
+     *
+     * @param path       节点路径
+     * @param node       节点名称
+     * @param createMode 类型 CreateMode.PERSISTENT: 创建节点后，不删除就永久存在
+     *                   CreateMode.PERSISTENT_SEQUENTIAL：节点path末尾会追加一个10位数的单调递增的序列
+     *                   CreateMode.EPHEMERAL：创建后，回话结束节点会自动删除
+     *                   CreateMode.EPHEMERAL_SEQUENTIAL：节点path末尾会追加一个10位数的单调递增的序列
+     * @return 路径
+     */
+    public String createNode(String path, String node, CreateMode createMode) {
+        path = buildPath(path, node);
+        log.info("create node for path: {} with createMode: {}", path, createMode.name());
         try {
-            return zooKeeper.exists(path, needWatch);
+            curatorFramework.create()
+                    .creatingParentsIfNeeded()
+                    .withMode(createMode)
+                    .forPath(path);
+            log.info("create node :{} successfully", node);
+            return path;
         } catch (Exception e) {
-            log.error("【断指定节点是否存在异常】{},{}", path, e);
+            log.error("create node for path: {} with createMode: {} failed!", path, createMode.name(), e);
             return null;
         }
     }
 
     /**
-     * 检测结点是否存在 并设置监听事件 三种监听类型： 创建，删除，更新
+     * 创建节点，默认持久节点
      *
-     * @param path    path
-     * @param watcher 传入指定的监听类
-     * @return stat
+     * @param path  节点路径
+     * @param node  节点名称
+     * @param value 节点值
+     * @return 完整路径
      */
-    public Stat exists(String path, Watcher watcher) {
-        try {
-            return zooKeeper.exists(path, watcher);
-        } catch (Exception e) {
-            log.error("【断指定节点是否存在异常】{},{}", path, e);
-            return null;
-        }
+    public String createNode(String path, String node, String value) {
+        return createNode(path, node, value, CreateMode.PERSISTENT);
     }
 
     /**
-     * 创建持久化节点
+     * 创建节点，默认持久节点
      *
-     * @param path path
-     * @param data data
-     * @return boolean
+     * @param path       节点路径
+     * @param node       节点名称
+     * @param value      节点值
+     * @param createMode 节点类型
+     * @return 完整路径
      */
-    public boolean createNode(String path, String data) {
+    public String createNode(String path, String node, String value,
+                             CreateMode createMode) {
+        if (Objects.isNull(value)) {
+            log.error("ZooKeeper节点值不能为空!");
+        }
+        path = buildPath(path, node);
+        log.info("create node for path: {}, value: {}, with createMode: {}", path, value, createMode.name());
         try {
-            zooKeeper.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            curatorFramework.create()
+                    .creatingParentsIfNeeded()
+                    .withMode(createMode)
+                    .forPath(path, value.getBytes());
+            return path;
+        } catch (Exception e) {
+            log.error("create node for path: {}, value: {}, with createMode: {} failed!", path, value, createMode.name(), e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取节点数据
+     *
+     * @param path 路径
+     * @param node 节点名称
+     * @return 完整路径
+     */
+    public String get(String path, String node) {
+        path = buildPath(path, node);
+        try {
+            byte[] bytes = curatorFramework.getData().forPath(path);
+            if (bytes.length > 0) {
+                return new String(bytes);
+            }
+        } catch (Exception e) {
+            log.error("get value for path: {}, node: {} failed!", path, node, e);
+        }
+        return null;
+    }
+
+    /**
+     * 更新节点数据
+     *
+     * @param path  节点路径
+     * @param node  节点名称
+     * @param value 更新值
+     * @return 完整路径
+     */
+    public String update(String path, String node, String value) {
+        if (Objects.isNull(value)) {
+            log.error("ZooKeeper节点值不能为空!");
+        }
+        path = buildPath(path, node);
+        log.info("update path: {} to value: {}", path, value);
+
+        try {
+            curatorFramework.setData().forPath(path, value.getBytes());
+            return path;
+        } catch (Exception e) {
+            log.error("update path: {} to value: {} failed!", path, value);
+        }
+        return null;
+    }
+
+    /**
+     * 删除节点，并且递归删除子节点
+     *
+     * @param path 路径
+     * @param node 节点名称
+     * @return 路径
+     */
+    public boolean delete(String path, String node) {
+        path = buildPath(path, node);
+        log.info("delete node for path: {}", path);
+
+        try {
+            curatorFramework.delete().deletingChildrenIfNeeded().forPath(path);
             return true;
         } catch (Exception e) {
-            log.error("【创建持久化节点异常】{},{},{}", path, data, e);
-            return false;
+            log.error("delete node for path: {} failed!", path);
         }
+        return false;
     }
 
     /**
-     * 修改持久化节点
+     * 获取子节点
      *
-     * @param path path
-     * @param data data
-     * @return boolean
-     */
-    public boolean updateNode(String path, String data) {
-        try {
-            // zk的数据版本是从0开始计数的。如果客户端传入的是-1，则表示zk服务器需要基于最新的数据进行更新。如果对zk的数据节点的更新操作没有原子性要求则可以使用-1.
-            // version参数指定要更新的数据的版本, 如果version和真实的版本不同, 更新操作将失败. 指定version为-1则忽略版本检查
-            zooKeeper.setData(path, data.getBytes(), -1);
-            return true;
-        } catch (Exception e) {
-            log.error("【修改持久化节点异常】{},{},{}", path, data, e);
-            return false;
-        }
-    }
-
-    /**
-     * 删除持久化节点
-     *
-     * @param path path
-     * @return boolean
-     */
-    public boolean deleteNode(String path) {
-        try {
-            // version参数指定要更新的数据的版本, 如果version和真实的版本不同, 更新操作将失败. 指定version为-1则忽略版本检查
-            zooKeeper.delete(path, -1);
-            return true;
-        } catch (Exception e) {
-            log.error("【删除持久化节点异常】{},{}", path, e);
-            return false;
-        }
-    }
-
-    /**
-     * 获取当前节点的子节点(不包含孙子节点)
-     *
-     * @param path 父节点path
+     * @param path 节点路径
+     * @return
      */
     public List<String> getChildren(String path) {
+        if (ObjectUtils.isEmpty(path)) {
+            return null;
+        }
+
+        if (!path.startsWith(PATH_SEPARATOR)) {
+            path = PATH_SEPARATOR + path;
+        }
+
         try {
-            return zooKeeper.getChildren(path, false);
+            return curatorFramework.getChildren().forPath(path);
         } catch (Exception e) {
-            log.error("【获取持久化节点异常】{},{}", path, e);
-            return Collections.emptyList();
+            log.error("get children path:{} error", path, e);
+        }
+        return null;
+    }
+
+    /**
+     * 判断节点是否存在
+     *
+     * @param path 路径
+     * @param node 节点名称
+     * @return 结果
+     */
+    public boolean exists(String path, String node) {
+        try {
+            List<String> list = getChildren(path);
+            return !CollectionUtils.isEmpty(list) && list.contains(node);
+        } catch (Exception e) {
+            return false;
         }
     }
 
     /**
-     * 获取指定节点的值
+     * 申请锁，指定请求等待时间
      *
-     * @param path    path
-     * @param watcher watcher
-     * @return string
+     * @param path     加锁zk节点
+     * @param time     时间
+     * @param unit     时间单位
+     * @param runnable 执行方法
      */
-    public String getData(String path, Watcher watcher) {
+    public void lock(String path, long time, TimeUnit unit, Runnable runnable) {
         try {
-            var stat = new Stat();
-            var bytes = zooKeeper.getData(path, watcher, stat);
-            return new String(bytes);
+            InterProcessMutex lock = new InterProcessMutex(curatorFramework, path);
+            if (lock.acquire(time, unit)) {
+                try {
+                    runnable.run();
+                } finally {
+                    lock.release();
+                }
+            } else {
+                log.error("获取锁超时：{}!", path);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+            log.error("获取锁失败: {}!", path);
+        }
+    }
+
+    /**
+     * 申请锁，指定请求等待时间
+     *
+     * @param path     加锁zk节点
+     * @param time     时间
+     * @param unit     时间单位
+     * @param callable 执行方法
+     * @return .
+     */
+    public <T> T lock(String path, long time, TimeUnit unit,
+                      Callable<T> callable) {
+        try {
+            InterProcessMutex lock = new InterProcessMutex(curatorFramework, path);
+            if (lock.acquire(time, unit)) {
+                try {
+                    return callable.call();
+                } finally {
+                    lock.release();
+                }
+            } else {
+                log.error("获取锁超时：{}!", path);
+            }
+        } catch (Exception e) {
+            log.error("获取锁失败: {}!", path);
+        }
+        return null;
+    }
+
+    /* */
+
+    /**
+     * 对一个节点进行监听，监听事件包括指定的路径节点的增、删、改的操作
+     *
+     * @param path 节点路径
+     * @throws Exception
+     */
+
+    public void watchNode(String path, boolean dataIsCompressed) throws Exception {
+        try {
+            CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+            curatorCache.listenable().addListener((type, oldData, data) -> {
+                log.info("ZNode节点状态改变, path={}", data.getPath());
+                log.info("ZNode节点状态改变, data={}", data.getData());
+                log.info("ZNode节点状态改变, stat={}", data.getStat());
+            });
+            curatorCache.start();
+        } catch (Exception e) {
+            log.error("创建NodeCache监听失败, path={}", path);
+        }
+    }
+
+    /**
+     * 对指定的路径节点的一级子目录进行监听，不对该节点的操作进行监听，对其子目录的节点进行增、删、改的操作监听
+     *
+     * @param path     节点路径
+     * @param listener 回调方法
+     */
+    public void watchChildren(String path, PathChildrenCacheListener listener) {
+        try {
+            PathChildrenCache pathChildrenCache = new PathChildrenCache(curatorFramework,
+                    path, true);
+            pathChildrenCache.start(PathChildrenCache.StartMode.NORMAL);
+            pathChildrenCache.getListenable().addListener(listener);
+        } catch (Exception e) {
+            log.error("watch children failed for path: {}", path, e);
+        }
+    }
+
+    /**
+     * 将指定的路径节点作为根节点（祖先节点），对其所有的子节点操作进行监听，呈现树形目录的监听，可以设置监听深度，最大监听深度为2147483647（
+     * int类型的最大值）
+     *
+     * @param path     节点路径
+     * @param maxDepth 回调方法
+     * @param listener 监听
+     */
+    public void watchTree(String path, int maxDepth, TreeCacheListener listener) {
+        try {
+            TreeCache treeCache = TreeCache.newBuilder(curatorFramework, path)
+                    .setMaxDepth(maxDepth).build();
+            treeCache.start();
+            treeCache.getListenable().addListener(listener);
+        } catch (Exception e) {
+            log.error("watch tree failed for path: {}", path, e);
+        }
+    }
+
+    public String buildPath(String path, String node) {
+        if (ObjectUtils.isEmpty(path) || ObjectUtils.isEmpty(node)) {
+            log.error("ZooKeeper路径或者节点名称不能为空！");
+        }
+
+        if (!path.startsWith(PATH_SEPARATOR)) {
+            path = PATH_SEPARATOR + path;
+        }
+
+        if (PATH_SEPARATOR.equals(path)) {
+            return path + node;
+        } else {
+            return path + PATH_SEPARATOR + node;
         }
     }
 
