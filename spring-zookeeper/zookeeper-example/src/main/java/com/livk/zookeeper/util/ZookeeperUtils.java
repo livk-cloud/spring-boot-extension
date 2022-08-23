@@ -4,7 +4,8 @@ import com.livk.support.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.recipes.cache.*;
+import org.apache.curator.framework.recipes.cache.CuratorCache;
+import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.zookeeper.CreateMode;
 import org.springframework.util.CollectionUtils;
@@ -297,12 +298,11 @@ public class ZookeeperUtils {
      * @param path     节点路径
      * @param listener 回调方法
      */
-    public void watchChildren(String path, PathChildrenCacheListener listener) {
+    public void watchChildren(String path, CuratorCacheListener listener) {
         try {
-            PathChildrenCache pathChildrenCache = new PathChildrenCache(curatorFramework,
-                    path, true);
-            pathChildrenCache.start(PathChildrenCache.StartMode.NORMAL);
-            pathChildrenCache.getListenable().addListener(listener);
+            CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+            curatorCache.start();
+            curatorCache.listenable().addListener(listener);
         } catch (Exception e) {
             log.error("watch children failed for path: {}", path, e);
         }
@@ -316,12 +316,11 @@ public class ZookeeperUtils {
      * @param maxDepth 回调方法
      * @param listener 监听
      */
-    public void watchTree(String path, int maxDepth, TreeCacheListener listener) {
+    public void watchTree(String path, int maxDepth, CuratorCacheListener listener) {
         try {
-            TreeCache treeCache = TreeCache.newBuilder(curatorFramework, path)
-                    .setMaxDepth(maxDepth).build();
-            treeCache.start();
-            treeCache.getListenable().addListener(listener);
+            CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+            curatorCache.start();
+            curatorCache.listenable().addListener(listener);
         } catch (Exception e) {
             log.error("watch tree failed for path: {}", path, e);
         }
