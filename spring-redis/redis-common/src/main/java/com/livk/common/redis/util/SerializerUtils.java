@@ -29,9 +29,7 @@ public class SerializerUtils {
     }
 
     public RedisSerializer<Object> getDefaultSerializer() {
-        var mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        return getSerializer(Object.class, mapper);
+        return getSerializer(Object.class);
     }
 
 }

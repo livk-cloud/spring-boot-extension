@@ -2,7 +2,7 @@ package com.livk.env;
 
 import com.livk.util.JacksonUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -23,12 +23,11 @@ import java.util.Properties;
  * @author livk
  * @date 2022/3/25
  */
+@Slf4j
 @RequiredArgsConstructor
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
     private static final String source = "env.json";
-
-    private final Log log;
 
     private final ConfigurableBootstrapContext context;
 

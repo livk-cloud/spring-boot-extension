@@ -19,12 +19,9 @@ public class ExecutionAspect extends BaseAspect<ExecutionIntercept> {
     @Override
     protected BeanDefinition getBeanDefinition(ExecutionIntercept executionIntercept) {
         return new RootBeanDefinition(DefaultPointcutAdvisor.class, () -> {
-            DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
             AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
             pointcut.setExpression(executionIntercept.expression());
-            advisor.setPointcut(pointcut);
-            advisor.setAdvice(new DefaultExecutionIntercept(executionIntercept));
-            return advisor;
+            return new DefaultPointcutAdvisor(pointcut, new DefaultExecutionIntercept(executionIntercept));
         });
     }
 }

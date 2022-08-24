@@ -18,7 +18,6 @@ public class AnnotationAspect extends BaseAspect<AnnotationIntercept> {
     @Override
     protected BeanDefinition getBeanDefinition(AnnotationIntercept annotationIntercept) {
         return new RootBeanDefinition(DefaultPointcutAdvisor.class, () -> {
-            DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
             AnnotationMatchingPointcut pointcut;
             if (annotationIntercept.supportClass() && annotationIntercept.supportMethod()) {
                 pointcut = new AnnotationMatchingPointcut(annotationIntercept.type(), annotationIntercept.type());
@@ -27,9 +26,7 @@ public class AnnotationAspect extends BaseAspect<AnnotationIntercept> {
             } else {
                 pointcut = new AnnotationMatchingPointcut(null, annotationIntercept.type());
             }
-            advisor.setPointcut(pointcut);
-            advisor.setAdvice(new DefaultAnnotationIntercept(annotationIntercept));
-            return advisor;
+            return new DefaultPointcutAdvisor(pointcut, new DefaultAnnotationIntercept(annotationIntercept));
         });
     }
 }

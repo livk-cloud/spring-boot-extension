@@ -2,10 +2,11 @@ package com.livk.util;
 
 import com.livk.function.FieldFunction;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+import java.io.FileNotFoundException;
 import java.lang.invoke.SerializedLambda;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,6 +17,7 @@ import java.lang.reflect.Method;
  * @author livk
  * @date 2022/8/16
  */
+@Slf4j
 @UtilityClass
 public class FieldUtils extends org.apache.commons.lang3.reflect.FieldUtils {
 
@@ -30,16 +32,17 @@ public class FieldUtils extends org.apache.commons.lang3.reflect.FieldUtils {
             } else if (getter.startsWith("is")) {
                 getter = getter.substring(2);
             } else {
-                return null;
+                throw new FileNotFoundException("缺少get|is方法");
             }
             if (StringUtils.hasText(getter)) {
                 char[] cs = getter.toCharArray();
                 cs[0] += 32;
                 return String.valueOf(cs);
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new FileNotFoundException("属性字段值丢失");
+        } catch (Exception e) {
+            log.error("获取字段名称失败 message: {}", e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 }

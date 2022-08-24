@@ -1,5 +1,5 @@
 dependencies {
     implementation project(":spring-boot-starter:livk-spring-boot-starter")
     implementation project(":spring-boot-starter:spring-filter-starter")
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-web"
 }
