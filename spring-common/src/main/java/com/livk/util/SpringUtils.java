@@ -76,7 +76,7 @@ public class SpringUtils {
     /**
      * 解析SpEL表达式
      * 非模板表达式: #username
-     * 模板表达式:"taas_sms:#{#username}"
+     * 模板表达式:"livk:#{#username}"
      *
      * @param method      方法
      * @param args        方法参数
