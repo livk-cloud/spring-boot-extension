@@ -3,6 +3,7 @@ package com.livk.util;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -10,9 +11,11 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.expression.ParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -33,8 +36,6 @@ import java.util.Set;
 public class SpringUtils {
 
     private static final SpelExpressionParser PARSER = new SpelExpressionParser();
-
-    private static final StandardEvaluationContext CONTEXT = new StandardEvaluationContext();
 
     /**
      * 获取被注解标注的class
@@ -72,14 +73,40 @@ public class SpringUtils {
         return classSet;
     }
 
-    public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
-        var discoverer = new LocalVariableTableParameterNameDiscoverer();
-        var parameterNames = discoverer.getParameterNames(method);
+    /**
+     * 解析SpEL表达式
+     * 非模板表达式: #username
+     * 模板表达式:"taas_sms:#{#username}"
+     *
+     * @param method      方法
+     * @param args        方法参数
+     * @param condition   表达式
+     * @param returnClass 返回类型
+     * @param template    是否启用模板
+     * @param expandMap   拓展数据
+     * @param <T>         类型
+     * @return T
+     */
+    private <T> T parse(Method method, Object[] args, String condition, Class<T> returnClass, boolean template, Map<String, Object> expandMap) {
+        ParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+        String[] parameterNames = discoverer.getParameterNames(method);
         Assert.notNull(parameterNames, "参数列表不能为null");
+        StandardEvaluationContext context = new StandardEvaluationContext();
         for (int i = 0; i < parameterNames.length; i++) {
-            CONTEXT.setVariable(parameterNames[i], args[i]);
+            context.setVariable(parameterNames[i], args[i]);
         }
-        return PARSER.parseExpression(condition).getValue(CONTEXT, returnClass);
+        if (!CollectionUtils.isEmpty(expandMap)) {
+            context.setVariables(expandMap);
+        }
+        if (template) {
+            return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, returnClass);
+        } else {
+            return PARSER.parseExpression(condition).getValue(context, returnClass);
+        }
+    }
+
+    public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
+        return parse(method, args, condition, returnClass, false, null);
     }
 
     public String parseSpEL(Method method, Object[] args, String condition) {
@@ -87,12 +114,39 @@ public class SpringUtils {
     }
 
     public <T> T parseSpEL(Map<String, ?> variables, String condition, Class<T> returnClass) {
-        variables.forEach(CONTEXT::setVariable);
-        return PARSER.parseExpression(condition).getValue(CONTEXT, returnClass);
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        variables.forEach(context::setVariable);
+        return PARSER.parseExpression(condition).getValue(context, returnClass);
     }
 
     public String parseSpEL(Map<String, ?> variables, String condition) {
         return parseSpEL(variables, condition, String.class);
+    }
+
+    public <T> T parseTemplate(Method method, Object[] args, String condition, Class<T> returnClass) {
+        return parse(method, args, condition, returnClass, true, null);
+    }
+
+    public <T> T parseTemplate(Method method, Object[] args, String condition, Class<T> returnClass, Map<String, Object> expandMap) {
+        return parse(method, args, condition, returnClass, true, expandMap);
+    }
+
+    public String parseTemplate(Method method, Object[] args, String condition) {
+        return parseTemplate(method, args, condition, String.class);
+    }
+
+    public String parseTemplate(Method method, Object[] args, String condition, Map<String, Object> expandMap) {
+        return parse(method, args, condition, String.class, true, expandMap);
+    }
+
+    public <T> T parseTemplate(Map<String, ?> variables, String condition, Class<T> returnClass) {
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        variables.forEach(context::setVariable);
+        return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, returnClass);
+    }
+
+    public String parseTemplate(Map<String, ?> variables, String condition) {
+        return parseTemplate(variables, condition, String.class);
     }
 
 }

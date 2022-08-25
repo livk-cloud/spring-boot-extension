@@ -12,6 +12,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 /**
  * <p>
  * LimitHandlerInterceptor
@@ -36,6 +39,7 @@ public class LimitHandlerInterceptor implements HandlerInterceptor {
         if (limiter != null) {
             RRateLimiter rateLimiter = redissonClient.getRateLimiter(limiter.key());
             rateLimiter.trySetRate(RateType.OVERALL, limiter.rate(), limiter.rateInterval(), limiter.rateIntervalUnit());
+            rateLimiter.expireIfNotSet(Duration.of(2, ChronoUnit.MINUTES));
             if (rateLimiter.tryAcquire(limiter.requestedTokens())) {
                 return true;
             } else {
