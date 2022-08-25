@@ -8,16 +8,7 @@ link:README-en.adoc[English] +
 如果觉得不错，可以star一下 +
 JDK:17 +
 SpringBoot: 3.0.0-M4(快照版) +
-Gradle: 7.5 +
-
-提交触发code format(需要插件支持例如:Spring checkStyle):
-[source,shell,indent=0]
-
-----
-#!/bin/bash
-echo "will run code format"
-gradle format
-----
+Gradle: 7.5.1 +
 
 link:gradle.properties[项目信息] +
 link:https://github.com/livk-cloud/spring-cloud-example[正式版移步Cloud项目] +
