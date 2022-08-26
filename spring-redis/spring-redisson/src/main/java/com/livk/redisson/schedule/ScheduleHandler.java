@@ -30,5 +30,6 @@ public class ScheduleHandler {
         executorService.registerWorkers(WorkerOptions.defaults());
         executorService.schedule((Runnable & Serializable) () -> log.info("66666"), 5, TimeUnit.SECONDS);
         System.out.println(executorService.getTaskIds());
+        executorService.delete();
     }
 }
