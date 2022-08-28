@@ -22,8 +22,6 @@ public class MapstructFactory implements BeanFactoryPostProcessor {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        beanFactory.getBeansOfType(Converter.class)
-                .values()
-                .forEach(registry::addConverter);
+        beanFactory.getBeanProvider(Converter.class).forEach(registry::addConverter);
     }
 }
