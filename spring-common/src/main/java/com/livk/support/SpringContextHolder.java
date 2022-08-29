@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
@@ -59,6 +60,10 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
 
     public static <T> T getBean(String name, Class<T> typeClass) {
         return getBeanFactory().getBean(name, typeClass);
+    }
+
+    public static <T> ObjectProvider<T> getBeanProvider(Class<T> typeClass) {
+        return getBeanFactory().getBeanProvider(typeClass);
     }
 
     public static <T> Collection<T> getBeansOfType(Class<T> typeClass) {

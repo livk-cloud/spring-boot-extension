@@ -4,7 +4,6 @@ import com.livk.http.factory.HttpServiceRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -17,7 +16,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * @author livk
  * @date 2022/5/20
  */
-@Import(HttpServiceRegistrar.class)
+//@Import(HttpServiceRegistrar.class)
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)
 public class HttpAutoConfiguration {
@@ -30,5 +29,10 @@ public class HttpAutoConfiguration {
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient) {
         return WebClientAdapter.createHttpServiceProxyFactory(webClient);
+    }
+
+    @Bean
+    public HttpServiceRegistrar httpServiceRegistrar(HttpServiceProxyFactory httpServiceProxyFactory) {
+        return new HttpServiceRegistrar(httpServiceProxyFactory);
     }
 }
