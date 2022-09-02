@@ -5,7 +5,7 @@ spring:
       max-request-size: 1000MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://livk.com:3306/kris_security
+    url: jdbc:mysql://livk.com:3306/batch_config
     username: root
     password: 123456
 server:
