@@ -15,9 +15,9 @@ import java.util.stream.Stream;
  */
 public interface MapstructService {
 
-    <T> T converter(Object source, Class<T> targetClass);
+    <S, T> T converter(S source, Class<T> targetClass);
 
-    <T> Stream<T> converter(Collection<?> sources, Class<T> targetClass);
+    <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass);
 
     ConverterRepository getConverterRepository();
 

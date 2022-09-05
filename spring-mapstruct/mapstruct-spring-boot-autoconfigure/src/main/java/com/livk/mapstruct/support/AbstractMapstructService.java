@@ -23,8 +23,8 @@ public abstract class AbstractMapstructService implements MapstructService {
     protected final ConverterRepository converterRepository;
 
     @Override
-    public <T> T converter(Object source, Class<T> targetClass) {
-        Class<?> sourceClass = source.getClass();
+    public <S, T> T converter(S source, Class<T> targetClass) {
+        Class<S> sourceClass = (Class<S>) source.getClass();
         if (converterRepository.contains(sourceClass, targetClass)) {
             return (T) converterRepository.get(sourceClass, targetClass).getTarget(source);
         } else if (converterRepository.contains(targetClass, sourceClass)) {
@@ -34,8 +34,11 @@ public abstract class AbstractMapstructService implements MapstructService {
     }
 
     @Override
-    public <T> Stream<T> converter(Collection<?> sources, Class<T> targetClass) {
-        Class<?> sourceClass = sources.stream().distinct().findFirst().orElseThrow().getClass();
+    public <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass) {
+        if (sources == null) {
+            throw new IllegalArgumentException();
+        }
+        Class<S> sourceClass = (Class<S>) sources.stream().distinct().findFirst().orElseThrow().getClass();
         if (converterRepository.contains(sourceClass, targetClass)) {
             return (Stream<T>) converterRepository.get(sourceClass, targetClass).streamTarget(sources);
         } else if (converterRepository.contains(targetClass, sourceClass)) {
