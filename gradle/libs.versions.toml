@@ -17,7 +17,6 @@ pulsarClient = "2.10.1"
 googleFindbugs = "3.0.1"
 mapstruct = "1.5.2.Final"
 mapstructLombok = "0.2.0"
-r2dbcPostgresql = "0.8.12.RELEASE"
 curator = "5.3.0"
 
 [libraries]
@@ -42,7 +41,6 @@ findbugs-annotations = { group = "com.google.code.findbugs", name = "annotations
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstructLombok" }
-r2dbc-postgresql = { group = "io.r2dbc", name = "r2dbc-postgresql", version.ref = "r2dbcPostgresql" }
 curator-recipes = { group = "org.apache.curator", name = "curator-recipes", version.ref = "curator" }
 
 [bundles]
