@@ -38,10 +38,7 @@ class JacksonUtilsTest {
     @Test
     void testToJsonStr() {
         String result = JacksonUtils.toJsonStr(Map.of("username", "password"));
-        //language=JSON
-        String json = """
-                {"username": "password"}
-                """;
+        String json = "{\"username\":\"password\"}";
         Assertions.assertEquals(json, result);
     }
 
