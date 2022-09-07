@@ -1,5 +1,6 @@
 package com.livk.spring;
 
+import com.livk.selector.LivkImport;
 import com.livk.starter01.EnableLivk;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author livk
  */
+@LivkImport
 @EnableLivk
 @SpringBootApplication
 public class App {
