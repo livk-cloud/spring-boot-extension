@@ -1,7 +1,7 @@
 dependencies {
     implementation project(":spring-mapstruct:mapstruct-spring-boot-starter")
-    annotationProcessor 'org.mapstruct.extensions.spring:mapstruct-spring-extensions:0.1.2'
-    implementation 'org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.2'
+    annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions"
+    implementation "org.mapstruct.extensions.spring:mapstruct-spring-annotations"
     implementation "org.springframework.boot:spring-boot-starter-web"
     annotationProcessor "org.mapstruct:mapstruct-processor"
     annotationProcessor "org.projectlombok:lombok-mapstruct-binding"
