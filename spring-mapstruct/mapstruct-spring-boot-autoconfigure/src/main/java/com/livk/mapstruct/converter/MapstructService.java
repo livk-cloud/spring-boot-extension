@@ -18,7 +18,12 @@ public interface MapstructService {
 
     <S, T> T converter(S source, Class<T> targetClass);
 
-    <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass);
+    default <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass) {
+        if (sources == null || sources.isEmpty()) {
+            return Stream.empty();
+        }
+        return sources.stream().map(source -> converter(source, targetClass));
+    }
 
     default <S, T> List<T> converterList(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
         Stream<T> converter = converter(sources, targetClass);

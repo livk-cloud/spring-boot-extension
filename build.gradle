@@ -7,7 +7,11 @@ ext {
     bom = List.of(project(":livk-boot-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
     commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-common") || it.name.endsWith("-starter") || it.name.endsWith("-autoconfigure")
+        it.name.endsWith("-common")
+                || it.name.endsWith("-starter")
+                || it.name.endsWith("-autoconfigure")
+                || it.name.endsWith("-core")
+                || it.name.endsWith("-extensions")
     }
     springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
