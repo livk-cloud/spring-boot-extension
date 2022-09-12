@@ -2,7 +2,6 @@ package com.livk.mapstruct.support;
 
 import com.livk.mapstruct.converter.MapstructService;
 import com.livk.mapstruct.exception.ConverterNotFoundException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
@@ -19,7 +18,6 @@ import java.util.stream.Stream;
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor
 public abstract class AbstractMapstructService implements MapstructService {
-    @Getter(onMethod_ = @Override)
     protected final ConverterRepository converterRepository;
 
     @Override
@@ -35,15 +33,9 @@ public abstract class AbstractMapstructService implements MapstructService {
 
     @Override
     public <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass) {
-        if (sources == null) {
-            throw new IllegalArgumentException();
+        if (sources == null || sources.isEmpty()) {
+            return Stream.empty();
         }
-        Class<S> sourceClass = (Class<S>) sources.stream().distinct().findFirst().orElseThrow().getClass();
-        if (converterRepository.contains(sourceClass, targetClass)) {
-            return (Stream<T>) converterRepository.get(sourceClass, targetClass).streamTarget(sources);
-        } else if (converterRepository.contains(targetClass, sourceClass)) {
-            return (Stream<T>) converterRepository.get(targetClass, sourceClass).streamSource(sources);
-        }
-        throw new ConverterNotFoundException(sources + " to class " + targetClass + " not found converter");
+        return sources.stream().map(source -> converter(source, targetClass));
     }
 }

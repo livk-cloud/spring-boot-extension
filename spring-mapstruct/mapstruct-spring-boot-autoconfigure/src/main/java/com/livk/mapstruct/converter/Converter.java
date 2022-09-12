@@ -1,8 +1,5 @@
 package com.livk.mapstruct.converter;
 
-import java.util.Collection;
-import java.util.stream.Stream;
-
 /**
  * <p>
  * Converter
@@ -16,9 +13,5 @@ public interface Converter<S, T> {
     S getSource(T t);
 
     T getTarget(S s);
-
-    Stream<S> streamSource(Collection<T> t);
-
-    Stream<T> streamTarget(Collection<S> s);
 
 }
