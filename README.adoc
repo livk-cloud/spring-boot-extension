@@ -1,8 +1,9 @@
 =  Spring Boot Example
 
-link:README-en.adoc[English] +
+link:README-en.adoc[English]|link:README.adoc[简体中文] +
 
 这是一个关于springboot项目的各种示例. +
+https://github.com/livk-cloud/spring-cloud-example[正式版移步Cloud项目] +
 关于Gradle的各种使用方式以及示例 +
 里面的代码或多或少应该可以帮助到你 +
 如果觉得不错，可以star一下 +
@@ -11,6 +12,6 @@ SpringBoot: 3.0.0-M4(快照版) +
 Gradle: 7.5.1 +
 
 link:gradle.properties[项目信息] +
-link:https://github.com/livk-cloud/spring-cloud-example[正式版移步Cloud项目] +
+link:gradle/libs.versions.toml[版本控制] +
 link:example.adoc[整合示例] +
 link:livk-boot-dependencies/livk-boot-dependencies.gradle[Gradle BOM] +
