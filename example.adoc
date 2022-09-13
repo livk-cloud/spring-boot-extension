@@ -1,3 +1,6 @@
+[[example]]
+== example
+
 link:livk-boot-dependencies[Gradle自定义BOM] +
 link:spring-authorization-server[Spring Auth授权服务器] +
 link:spring-batch[Spring整合Spring Batch] +
