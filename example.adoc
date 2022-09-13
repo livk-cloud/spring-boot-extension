@@ -1,5 +1,5 @@
-[[example]]
-== example
+[[example-details]]
+== Example Details
 
 === link:livk-boot-dependencies[Gradle自定义BOM] +
 
