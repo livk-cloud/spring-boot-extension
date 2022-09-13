@@ -52,9 +52,7 @@ abstract class ManagementPlugin implements Plugin<Project> {
                 configurations.getByName("testFixturesRuntimeClasspath").extendsFrom(management)
             }
             plugins.withType(MavenPublishPlugin.class) {
-                project.extensions
-                        .getByType(PublishingExtension.class)
-                        .publications
+                project.extensions.getByType(PublishingExtension.class).publications
                         .withType(MavenPublication.class) { mavenPublication ->
                             mavenPublication.versionMapping { versions ->
                                 versions.allVariants {
