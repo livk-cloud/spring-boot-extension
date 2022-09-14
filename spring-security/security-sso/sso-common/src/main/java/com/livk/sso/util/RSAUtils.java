@@ -60,20 +60,34 @@ public class RSAUtils {
     }
 
     public void generateKey(String publicKeyFilename, String privateKeyFilename, String secret, int keySize) {
+        KeyPair keyPair = generateKeyPair(secret, keySize);
+
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        publicKeyBytes = Base64.getEncoder().encode(publicKeyBytes);
+        writeFile(publicKeyFilename, publicKeyBytes);
+
+        byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+        privateKeyBytes = Base64.getEncoder().encode(privateKeyBytes);
+        writeFile(privateKeyFilename, privateKeyBytes);
+    }
+
+    public void generatePublicKey(String publicKeyFilename, String secret, int keySize) {
+        KeyPair keyPair = generateKeyPair(secret, keySize);
+
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        publicKeyBytes = Base64.getEncoder().encode(publicKeyBytes);
+        writeFile(publicKeyFilename, publicKeyBytes);
+    }
+
+    private KeyPair generateKeyPair(String secret, int keySize) {
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             SecureRandom secureRandom = new SecureRandom(secret.getBytes());
             keyPairGenerator.initialize(Math.max(keySize, DEFAULT_SIZE), secureRandom);
-            KeyPair keyPair = keyPairGenerator.genKeyPair();
-            byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
-            publicKeyBytes = Base64.getEncoder().encode(publicKeyBytes);
-            writeFile(publicKeyFilename, publicKeyBytes);
-
-            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
-            privateKeyBytes = Base64.getEncoder().encode(privateKeyBytes);
-            writeFile(privateKeyFilename, privateKeyBytes);
+            return keyPairGenerator.genKeyPair();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -108,12 +122,12 @@ public class RSAUtils {
 
     /**
      * 生成公钥私钥
+     *
+     * @param location 存放位置
      */
-    public static void main(String[] args) {
-        String property = System.getProperty("user.dir");
-        String privateKey = property + "/id_key_rsa";
-        String publicKey = property + "/id_key_rsa.pub";
-        RSAUtils.generateKey(publicKey, privateKey, "livk", 1024);
+    public static void generateFile(String location, String secret, int keySize) {
+        String privateKey = location + "/id_key_rsa";
+        String publicKey = location + "/id_key_rsa.pub";
+        generateKey(publicKey, privateKey, secret, keySize);
     }
-
 }
