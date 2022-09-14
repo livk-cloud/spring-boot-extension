@@ -7,7 +7,6 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 import java.util.Date;
 
@@ -29,9 +28,8 @@ public class JobController {
 
     @SneakyThrows
     @GetMapping("doJob")
-    public Mono<Void> doJob() {
+    public void doJob() {
         jobLauncher.run(job, new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters());
-        return Mono.empty();
     }
 
 }
