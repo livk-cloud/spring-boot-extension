@@ -18,7 +18,7 @@ public abstract class AbstractMapstructService implements MapstructService {
     protected final ConverterRepository converterRepository;
 
     @Override
-    public <S, T> T converter(S source, Class<T> targetClass) {
+    public <S, T> T convert(S source, Class<T> targetClass) {
         Class<S> sourceClass = (Class<S>) source.getClass();
         if (converterRepository.contains(sourceClass, targetClass)) {
             return (T) converterRepository.get(sourceClass, targetClass).getTarget(source);

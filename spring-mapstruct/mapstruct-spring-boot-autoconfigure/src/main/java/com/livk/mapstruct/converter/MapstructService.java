@@ -16,38 +16,38 @@ import java.util.stream.Stream;
  */
 public interface MapstructService {
 
-    <S, T> T converter(S source, Class<T> targetClass);
+    <S, T> T convert(S source, Class<T> targetClass);
 
-    default <S, T> Stream<T> converter(Collection<S> sources, Class<T> targetClass) {
+    default <S, T> Stream<T> convert(Collection<S> sources, Class<T> targetClass) {
         if (sources == null || sources.isEmpty()) {
             return Stream.empty();
         }
-        return sources.stream().map(source -> converter(source, targetClass));
+        return sources.stream().map(source -> convert(source, targetClass));
     }
 
-    default <S, T> List<T> converterList(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
-        Stream<T> converter = converter(sources, targetClass);
-        return unmodifiable ? converter.toList() : converter.collect(Collectors.toList());
+    default <S, T> List<T> convertList(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
+        Stream<T> convert = convert(sources, targetClass);
+        return unmodifiable ? convert.toList() : convert.collect(Collectors.toList());
     }
 
-    default <S, T> List<T> converterList(Collection<S> sources, Class<T> targetClass) {
-        return converterList(sources, targetClass, false);
+    default <S, T> List<T> convertList(Collection<S> sources, Class<T> targetClass) {
+        return convertList(sources, targetClass, false);
     }
 
-    default <S, T> List<T> converterUnmodifiableList(Collection<S> sources, Class<T> targetClass) {
-        return converterList(sources, targetClass, true);
+    default <S, T> List<T> convertUnmodifiableList(Collection<S> sources, Class<T> targetClass) {
+        return convertList(sources, targetClass, true);
     }
 
-    default <S, T> Set<T> converterSet(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
-        Stream<T> converter = converter(sources, targetClass);
-        return unmodifiable ? converter.collect(Collectors.toUnmodifiableSet()) : converter.collect(Collectors.toSet());
+    default <S, T> Set<T> convertSet(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
+        Stream<T> convert = convert(sources, targetClass);
+        return unmodifiable ? convert.collect(Collectors.toUnmodifiableSet()) : convert.collect(Collectors.toSet());
     }
 
-    default <S, T> Set<T> converterSet(Collection<S> sources, Class<T> targetClass) {
-        return converterSet(sources, targetClass, false);
+    default <S, T> Set<T> convertSet(Collection<S> sources, Class<T> targetClass) {
+        return convertSet(sources, targetClass, false);
     }
 
-    default <S, T> Set<T> converterUnmodifiableSet(Collection<S> sources, Class<T> targetClass) {
-        return converterSet(sources, targetClass, true);
+    default <S, T> Set<T> convertUnmodifiableSet(Collection<S> sources, Class<T> targetClass) {
+        return convertSet(sources, targetClass, true);
     }
 }

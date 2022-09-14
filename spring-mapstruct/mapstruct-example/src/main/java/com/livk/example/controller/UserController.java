@@ -49,8 +49,8 @@ public class UserController {
     @PostConstruct
     public void init() {
         System.out.println(conversionService.convert(USERS.get(0), UserVO.class));
-        service.converter(USERS, UserVO.class).forEach(System.out::println);
-        SpringContextHolder.getBean(MapstructService.class).converter(USERS, UserVO.class).forEach(System.out::println);
+        service.convert(USERS, UserVO.class).forEach(System.out::println);
+        SpringContextHolder.getBean(MapstructService.class).convert(USERS, UserVO.class).forEach(System.out::println);
     }
 
     @GetMapping
@@ -59,14 +59,14 @@ public class UserController {
                 .filter(Objects::nonNull).toList();
         return ResponseEntity
                 .ok(Map.of("spring", userVOS,
-                        "customize", service.converter(USERS, UserVO.class).toList()));
+                        "customize", service.convert(USERS, UserVO.class).toList()));
     }
 
     @GetMapping("/{id}")
     public HttpEntity<Map<String, UserVO>> getById(@PathVariable Integer id) {
         User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
         UserVO userVOSpring = conversionService.convert(u, UserVO.class);
-        return ResponseEntity.ok(Map.of("customize", service.converter(u, UserVO.class),
+        return ResponseEntity.ok(Map.of("customize", service.convert(u, UserVO.class),
                 "spring", userVOSpring,
                 "adapter", conversionServiceAdapter.mapUserToUserVO(u)));
     }
