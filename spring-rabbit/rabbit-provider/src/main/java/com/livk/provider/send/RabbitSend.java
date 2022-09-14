@@ -50,7 +50,7 @@ public class RabbitSend {
     public <T> void sendMsgHeaders(Message<T> message, Map<String, Object> map) {
         message.setMsgId(UUID.randomUUID().toString());
         message.setSendTime(LocalDateTime.now());
-        var messageProperties = new MessageProperties();
+        MessageProperties messageProperties = new MessageProperties();
         messageProperties.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
         messageProperties.setContentType("UTF-8");
         messageProperties.getHeaders().putAll(map);

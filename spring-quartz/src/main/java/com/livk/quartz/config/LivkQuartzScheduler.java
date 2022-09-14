@@ -30,13 +30,13 @@ public class LivkQuartzScheduler {
 
     public boolean modifyJob(String name, String group, String time) throws SchedulerException {
         Date date = null;
-        var triggerKey = new TriggerKey(name, group);
-        var trigger = scheduler.getTrigger(triggerKey);
+        TriggerKey triggerKey = new TriggerKey(name, group);
+        Trigger trigger = scheduler.getTrigger(triggerKey);
         if (trigger instanceof CronTrigger cronTrigger) {
-            var oldTime = cronTrigger.getCronExpression();
+            String oldTime = cronTrigger.getCronExpression();
             if (!oldTime.equalsIgnoreCase(time)) {
-                var cronScheduleBuilder = CronScheduleBuilder.cronSchedule(time);
-                var build = TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder)
+                CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(time);
+                CronTrigger build = TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder)
                         .build();
                 date = scheduler.rescheduleJob(triggerKey, build);
             }
@@ -49,8 +49,8 @@ public class LivkQuartzScheduler {
     }
 
     public void pauseJob(String name, String group) throws SchedulerException {
-        var jobKey = new JobKey(name, group);
-        var jobDetail = scheduler.getJobDetail(jobKey);
+        JobKey jobKey = new JobKey(name, group);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail != null) {
             scheduler.pauseJob(jobKey);
         }
@@ -61,16 +61,16 @@ public class LivkQuartzScheduler {
     }
 
     public void resumeJob(String name, String group) throws SchedulerException {
-        var jobKey = new JobKey(name, group);
-        var jobDetail = scheduler.getJobDetail(jobKey);
+        JobKey jobKey = new JobKey(name, group);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail != null) {
             scheduler.resumeJob(jobKey);
         }
     }
 
     public void deleteJob(String name, String group) throws SchedulerException {
-        var jobKey = new JobKey(name, group);
-        var jobDetail = scheduler.getJobDetail(jobKey);
+        JobKey jobKey = new JobKey(name, group);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail != null) {
             scheduler.deleteJob(jobKey);
         }

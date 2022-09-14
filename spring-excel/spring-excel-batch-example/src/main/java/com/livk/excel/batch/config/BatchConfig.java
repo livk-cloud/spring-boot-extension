@@ -24,7 +24,7 @@ public class BatchConfig {
 
 //    @Bean
 //    public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
-//        var writer = new MyBatisBatchItemWriter<List<Info>>();
+//        MyBatisBatchItemWriter<List<Info>> writer = new MyBatisBatchItemWriter<>();
 //        writer.setStatementId("com.livk.excel.mapper.InfoMapper.saveBatch");
 //        writer.setSqlSessionFactory(sqlSessionFactory);
 //        return writer;

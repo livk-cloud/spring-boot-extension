@@ -30,9 +30,7 @@ public class JobController {
     @SneakyThrows
     @GetMapping("doJob")
     public Mono<Void> doJob() {
-        var builder = new JobParametersBuilder();
-        builder.addDate("jobDate", new Date());
-        jobLauncher.run(job, builder.toJobParameters());
+        jobLauncher.run(job, new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters());
         return Mono.empty();
     }
 

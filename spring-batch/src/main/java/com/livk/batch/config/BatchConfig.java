@@ -38,7 +38,7 @@ public class BatchConfig {
 
     @Bean
     public ItemReader<User> reader() {
-        var reader = new FlatFileItemReader<User>();
+        FlatFileItemReader<User> reader = new FlatFileItemReader<>();
         reader.setLinesToSkip(1);
         reader.setResource(new ClassPathResource("data.csv"));
         reader.setLineMapper(CsvLineMapper.builder(User.class)
@@ -69,14 +69,14 @@ public class BatchConfig {
 
     @Bean
     public ItemProcessor<User, User> processor() {
-        var processor = new CsvItemProcessor();
+        CsvItemProcessor processor = new CsvItemProcessor();
         processor.setValidator(csvBeanValidator());
         return processor;
     }
 
     @Bean
     public ItemWriter<User> writer(DataSource dataSource) {
-        var writer = new JdbcBatchItemWriter<User>();
+        JdbcBatchItemWriter<User> writer = new JdbcBatchItemWriter<>();
         writer.setDataSource(dataSource);
         writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
         writer.setSql("insert into sys_user(user_name, sex, age, address, status, create_time ,update_time) " +

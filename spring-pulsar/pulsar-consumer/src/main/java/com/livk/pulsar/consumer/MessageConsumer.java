@@ -3,6 +3,7 @@ package com.livk.pulsar.consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Consumer;
+import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -31,10 +32,10 @@ public class MessageConsumer implements Runnable, InitializingBean {
     public void run() {
         while (true) {
             try {
-                var message = consumer.receive();
-                var key = message.getKey();
-                var data = new String(message.getData(), StandardCharsets.UTF_8);
-                var topic = message.getTopicName();
+                Message<String> message = consumer.receive();
+                String key = message.getKey();
+                String data = new String(message.getData(), StandardCharsets.UTF_8);
+                String topic = message.getTopicName();
                 log.info("topic:{} key:{} data:{}", topic, key, data);
                 consumer.acknowledge(message);
             } catch (PulsarClientException e) {
@@ -45,7 +46,7 @@ public class MessageConsumer implements Runnable, InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        var executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
         executor.execute(this);
     }
 

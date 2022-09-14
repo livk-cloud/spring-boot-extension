@@ -38,7 +38,7 @@ public class WebSocketClientTest implements Runnable {
 
     public void getClient(String uri) {
         try {
-            var webSocketClient = new WebSocketClient(new URI(uri)) {
+            WebSocketClient webSocketClient = new WebSocketClient(new URI(uri)) {
 
                 @Override
                 public void onOpen(final ServerHandshake handshakedata) {

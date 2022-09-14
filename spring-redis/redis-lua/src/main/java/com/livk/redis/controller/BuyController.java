@@ -5,6 +5,7 @@ import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,7 @@ public class BuyController {
 
     @PostMapping("put")
     public void put() {
-        var value = livkRedisTemplate.opsForValue();
+        ValueOperations<String, Object> value = livkRedisTemplate.opsForValue();
         if ((Integer) value.get("livk") > 0) {
             value.decrement("livk");
         }

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -38,10 +39,10 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (!ArrayUtils.contains(permitAllUrl, request.getRequestURI())) {
-            var token = request.getHeader("Authorization");
+            String token = request.getHeader("Authorization");
             if (StringUtils.hasText(token)) {
                 // 切换为redis
-                var authentication = AuthenticationContext.getAuthentication(token);
+                Authentication authentication = AuthenticationContext.getAuthentication(token);
                 if (authentication == null) {
                     ResponseUtils.out(response,
                             Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", "token not available"));

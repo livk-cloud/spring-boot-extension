@@ -1,9 +1,12 @@
 package com.livk.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +82,7 @@ public class JacksonUtils {
         if (check(json, clazz)) {
             return new ArrayList<>();
         }
-        var collectionType = MAPPER.getTypeFactory()
+        CollectionType collectionType = MAPPER.getTypeFactory()
                 .constructCollectionType(List.class, clazz);
         return MAPPER.readValue(json, collectionType);
     }
@@ -97,7 +100,7 @@ public class JacksonUtils {
         if (check(json, keyClass, valueClass)) {
             return Collections.emptyMap();
         }
-        var mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
         return MAPPER.readValue(json, mapType);
     }
 
@@ -106,8 +109,8 @@ public class JacksonUtils {
         if (inputStream == null) {
             return new Properties();
         }
-        var mapType = MAPPER.getTypeFactory().constructType(Properties.class);
-        return MAPPER.readValue(inputStream, mapType);
+        JavaType javaType = MAPPER.getTypeFactory().constructType(Properties.class);
+        return MAPPER.readValue(inputStream, javaType);
     }
 
     @SneakyThrows

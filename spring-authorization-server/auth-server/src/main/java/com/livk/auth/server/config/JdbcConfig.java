@@ -28,7 +28,7 @@ public class JdbcConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-        var client = RegisteredClient.withId("livk").clientId("livk-client")
+        RegisteredClient client = RegisteredClient.withId("livk").clientId("livk-client")
                 .clientSecret(new BCryptPasswordEncoder().encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
@@ -40,7 +40,7 @@ public class JdbcConfig {
                 .redirectUri("http://127.0.0.1:8080/authorized").scope(OidcScopes.OPENID).scope("livk.read")
                 .scope("livk.write").clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
-        var repository = new JdbcRegisteredClientRepository(jdbcTemplate);
+        JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcTemplate);
         repository.save(client);
         return repository;
     }

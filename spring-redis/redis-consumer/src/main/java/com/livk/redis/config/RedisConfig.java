@@ -33,10 +33,11 @@ import java.util.List;
 public class RedisConfig {
 
     @Bean
+    @SuppressWarnings("rawtypes")
     public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
             ReactiveRedisConnectionFactory connectionFactory) {
-        var container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        var serializer = SerializerUtils.getSerializer(LivkMessage.class);
+        ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
+        RedisSerializer<LivkMessage> serializer = SerializerUtils.getSerializer(LivkMessage.class);
         container
                 .receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
                         RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
@@ -47,7 +48,7 @@ public class RedisConfig {
 
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory) {
-        var listenerContainer = new RedisMessageListenerContainer();
+        RedisMessageListenerContainer listenerContainer = new RedisMessageListenerContainer();
         listenerContainer.setConnectionFactory(factory);
         return listenerContainer;
     }

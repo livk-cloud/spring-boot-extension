@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 
     @PostConstruct
     public void init() {
-        var encode = passwordEncoder.encode("123456");
+        String encode = passwordEncoder.encode("123456");
         user.put("livk", new User("livk", encode, AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
         user.put("root", new User("root", encode, AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
         user.put("admin", new User("admin", encode, AuthorityUtils.createAuthorityList("ROLE_ADMIN")));

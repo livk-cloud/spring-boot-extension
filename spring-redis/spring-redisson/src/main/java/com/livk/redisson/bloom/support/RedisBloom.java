@@ -34,17 +34,17 @@ public class RedisBloom {
     }
 
     public void addKey(String data) {
-        for (var primeNum : primeNums) {
-            var hashcode = this.hash(data, primeNum);
-            var bitIndex = hashcode & (length - 1);
+        for (int primeNum : primeNums) {
+            int hashcode = this.hash(data, primeNum);
+            int bitIndex = hashcode & (length - 1);
             forValue.setBit(BLOOM_KEY, bitIndex, true);
         }
     }
 
     public boolean hasKey(String data) {
-        for (var primeNum : primeNums) {
-            var hashcode = this.hash(data, primeNum);
-            var bitIndex = hashcode & (length - 1);
+        for (int primeNum : primeNums) {
+            int hashcode = this.hash(data, primeNum);
+            int bitIndex = hashcode & (length - 1);
             if (Boolean.FALSE.equals(forValue.getBit(BLOOM_KEY, bitIndex))) {
                 return false;
             }
@@ -53,8 +53,8 @@ public class RedisBloom {
     }
 
     public int hash(String data, int prime) {
-        var h = 0;
-        for (var c : data.toCharArray()) {
+        int h = 0;
+        for (char c : data.toCharArray()) {
             h = prime * h + c;
         }
         return h;

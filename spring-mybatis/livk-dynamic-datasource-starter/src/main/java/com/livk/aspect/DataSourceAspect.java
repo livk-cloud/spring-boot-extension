@@ -9,6 +9,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+
 /**
  * <p>
  * DataSourceAspect
@@ -23,10 +25,10 @@ public class DataSourceAspect {
 
     @Around("@annotation(dataSource)||@within(dataSource)")
     public Object execute(ProceedingJoinPoint joinPoint, DataSource dataSource) throws Throwable {
-        var signature = (MethodSignature) joinPoint.getSignature();
-        var method = signature.getMethod();
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
         if (dataSource == null) {
-            var methodAnnotation = AnnotationUtils.findAnnotation(method, DataSource.class);
+            DataSource methodAnnotation = AnnotationUtils.findAnnotation(method, DataSource.class);
             if (methodAnnotation != null) {
                 dataSource = methodAnnotation;
             } else {
@@ -36,7 +38,7 @@ public class DataSourceAspect {
         if (dataSource != null) {
             DataSourceContextHolder.switchDataSource(dataSource.value());
         }
-        var proceed = joinPoint.proceed();
+        Object proceed = joinPoint.proceed();
         DataSourceContextHolder.clear();
         return proceed;
     }

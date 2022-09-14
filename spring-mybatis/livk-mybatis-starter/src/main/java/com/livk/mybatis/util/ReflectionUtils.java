@@ -17,9 +17,9 @@ import java.lang.reflect.Field;
 public class ReflectionUtils {
 
     public Field[] getFields(Object parameter) {
-        var declaredFields = parameter.getClass().getDeclaredFields();
+        Field[] declaredFields = parameter.getClass().getDeclaredFields();
         if (parameter.getClass().getSuperclass() != null) {
-            var superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
+            Field[] superFiled = parameter.getClass().getSuperclass().getDeclaredFields();
             declaredFields = ArrayUtils.addAll(declaredFields, superFiled);
         }
         return declaredFields;

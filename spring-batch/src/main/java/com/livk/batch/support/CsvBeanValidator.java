@@ -1,9 +1,13 @@
 package com.livk.batch.support;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.lang.NonNull;
+
+import java.util.Set;
 
 
 /**
@@ -19,16 +23,16 @@ public class CsvBeanValidator<T> implements org.springframework.batch.item.valid
     private final Validator validator;
 
     public CsvBeanValidator() {
-        try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
+        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             this.validator = validatorFactory.usingContext().getValidator();
         }
     }
 
     @Override
     public void validate(@NonNull T value) throws ValidationException {
-        var constraintViolations = validator.validate(value);
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(value);
         if (!constraintViolations.isEmpty()) {
-            var message = new StringBuilder();
+            StringBuilder message = new StringBuilder();
             constraintViolations
                     .forEach(constraintViolation -> message.append(constraintViolation.getMessage()).append("\n"));
             throw new ValidationException(message.toString());

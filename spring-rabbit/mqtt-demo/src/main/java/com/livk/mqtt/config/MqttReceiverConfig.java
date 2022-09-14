@@ -42,7 +42,7 @@ public class MqttReceiverConfig {
     @Bean
     public MessageProducer inbound(MqttPahoClientFactory factory, MqttProperties mqttProperties) {
         // 可以同时消费（订阅）多个Topic
-        var adapter = new MqttPahoMessageDrivenChannelAdapter(mqttProperties.getReceiver().getClientId(), factory,
+        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(mqttProperties.getReceiver().getClientId(), factory,
                 mqttProperties.getReceiver().getDefaultTopic());
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());

@@ -2,6 +2,7 @@ package com.livk.excel.resolver;
 
 import com.alibaba.excel.EasyExcel;
 import com.livk.excel.annotation.ExcelImport;
+import com.livk.excel.listener.ExcelReadListener;
 import com.livk.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        var excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
         return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
     }
 
@@ -44,11 +46,11 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             throw new IllegalArgumentException(
                     "Excel upload request resolver error, @ExcelData parameter is not Collection ");
         }
-        var importExcel = parameter.getMethodAnnotation(ExcelImport.class);
+        ExcelImport importExcel = parameter.getMethodAnnotation(ExcelImport.class);
         if (Objects.nonNull(importExcel)) {
-            var listener = BeanUtils.instantiateClass(importExcel.parse());
-            var request = webRequest.getNativeRequest(HttpServletRequest.class);
-            var excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+            ExcelReadListener<?> listener = BeanUtils.instantiateClass(importExcel.parse());
+            HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             EasyExcel.read(getInputStream(request, importExcel.fileName()), excelModelClass, listener)
                     .ignoreEmptyRow(importExcel.ignoreEmptyRow()).sheet().doRead();
             return listener.getCollectionData();
@@ -59,7 +61,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
     private InputStream getInputStream(HttpServletRequest request, String fileName) {
         try {
             if (request instanceof MultipartRequest multipartRequest) {
-                var file = multipartRequest.getFile(fileName);
+                MultipartFile file = multipartRequest.getFile(fileName);
                 Assert.notNull(file, "file not be null");
                 return file.getInputStream();
             }

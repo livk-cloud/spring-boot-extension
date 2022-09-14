@@ -6,6 +6,7 @@ import com.livk.excel.mapper.InfoMapper;
 import com.livk.excel.service.InfoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,11 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public void insertBatch(List<Info> records) {
-        var sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        var infoMapper = sqlSession.getMapper(InfoMapper.class);
-        var partition = Lists.partition(records, 1000);
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+        InfoMapper infoMapper = sqlSession.getMapper(InfoMapper.class);
+        List<List<Info>> partition = Lists.partition(records, 1000);
         int i = 0;
-        for (final var infos : partition) {
+        for (List<Info> infos : partition) {
             try {
                 infoMapper.insertBatch(infos);
             } catch (Exception e) {

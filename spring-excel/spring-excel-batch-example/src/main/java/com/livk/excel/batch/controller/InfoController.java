@@ -47,8 +47,8 @@ public class InfoController {
     @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
     @PostMapping("upload")
     public HttpEntity<Void> upload(List<Info> dataExcels) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        var step = excelStep(dataExcels);
-        var job = excelJob(step);
+        Step step = excelStep(dataExcels);
+        Job job = excelJob(step);
         jobLauncher.run(job, new JobParametersBuilder()
                 .addDate("date", new Date())
                 .toJobParameters());

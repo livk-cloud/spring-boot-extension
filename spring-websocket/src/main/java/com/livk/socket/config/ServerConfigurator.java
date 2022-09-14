@@ -1,5 +1,6 @@
 package com.livk.socket.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.ServerEndpointConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
@@ -21,10 +22,10 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
     @Override
     public boolean checkOrigin(String originHeaderValue) {
-        var servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Assert.notNull(servletRequestAttributes, "servletRequestAttributes not be null!");
-        var request = servletRequestAttributes.getRequest();
-        var token = request.getHeader(AUTHORIZATION);
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String token = request.getHeader(AUTHORIZATION);
         if ("livk123".equals(token)) {
             return super.checkOrigin(originHeaderValue);
         } else {

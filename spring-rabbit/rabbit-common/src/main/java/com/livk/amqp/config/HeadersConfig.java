@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -52,7 +53,7 @@ public class HeadersConfig {
 
     @Bean
     public Binding bindHeadersA() {
-        var map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("username", "livk");
         map.put("password", "livk");
         // 全匹配
@@ -61,7 +62,7 @@ public class HeadersConfig {
 
     @Bean
     public Binding bindHeadersB() {
-        var map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("code", "livk");
         map.put("auth", "livk");
         // 部分匹配

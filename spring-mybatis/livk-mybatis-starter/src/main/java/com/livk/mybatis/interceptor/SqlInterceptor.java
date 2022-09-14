@@ -13,6 +13,8 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 
+import java.lang.reflect.Field;
+
 /**
  * <p>
  * 仅支持Mybatis
@@ -27,15 +29,15 @@ public class SqlInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        var mappedStatement = (MappedStatement) invocation.getArgs()[0];
-        var sqlCommandType = mappedStatement.getSqlCommandType();
-        var parameter = invocation.getArgs()[1];
-        var declaredFields = ReflectionUtils.getFields(parameter);
+        MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
+        SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
+        Object parameter = invocation.getArgs()[1];
+        Field[] declaredFields = ReflectionUtils.getFields(parameter);
         if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
-            for (var field : declaredFields) {
+            for (Field field : declaredFields) {
                 if (field.isAnnotationPresent(SqlFunction.class)) {
-                    var sqlFunction = field.getAnnotation(SqlFunction.class);
-                    var value = getValue(sqlFunction);
+                    SqlFunction sqlFunction = field.getAnnotation(SqlFunction.class);
+                    Object value = getValue(sqlFunction);
                     if (value == null) {
                         continue;
                     }
@@ -53,7 +55,7 @@ public class SqlInterceptor implements Interceptor {
     }
 
     private Object getValue(SqlFunction sqlFunction) {
-        var value = sqlFunction.time().handler();
+        Object value = sqlFunction.time().handler();
         return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
     }
 

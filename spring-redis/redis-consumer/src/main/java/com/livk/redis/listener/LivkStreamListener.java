@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.data.redis.connection.stream.Consumer;
-import org.springframework.data.redis.connection.stream.ObjectRecord;
-import org.springframework.data.redis.connection.stream.ReadOffset;
-import org.springframework.data.redis.connection.stream.StreamOffset;
+import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.stream.StreamListener;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
@@ -48,7 +45,7 @@ public class LivkStreamListener
     @Override
     public void afterPropertiesSet() {
         if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk-streamKey"))) {
-            var groups = livkRedisTemplate.opsForStream().groups("livk-streamKey");
+            StreamInfo.XInfoGroups groups = livkRedisTemplate.opsForStream().groups("livk-streamKey");
             if (groups.isEmpty()) {
                 livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
             }
@@ -56,7 +53,8 @@ public class LivkStreamListener
             livkRedisTemplate.opsForStream().createGroup("livk-streamKey", "livk-group");
         }
 
-        var options = StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder().batchSize(10)
+        StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, String>> options
+                = StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder().batchSize(10)
                 .executor(new ThreadPoolExecutor(4, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10)))
                 .errorHandler(t -> log.error("ERROR:{}", t.getMessage())).pollTimeout(Duration.ZERO)
                 .serializer(RedisSerializer.string()).targetType(String.class).build();

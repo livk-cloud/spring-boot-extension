@@ -7,6 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class ProducerTask {
                 });
 
         // 同步获取结果
-        var future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
+        ListenableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
         try {
             SendResult<Object, Object> result = future.get();
             log.info("result:{}", result);

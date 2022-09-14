@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.function.Function;
 
 /**
- *
  * @author livk
  * @date 2022/2/25
  */

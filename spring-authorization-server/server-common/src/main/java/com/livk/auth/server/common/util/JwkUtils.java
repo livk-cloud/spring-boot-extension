@@ -18,6 +18,7 @@ package com.livk.auth.server.common.util;
 import com.nimbusds.jose.jwk.RSAKey;
 import lombok.experimental.UtilityClass;
 
+import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
@@ -28,9 +29,9 @@ import java.util.UUID;
 @UtilityClass
 public final class JwkUtils {
     public RSAKey generateRsa() {
-        var keyPair = KeyGeneratorUtils.generateRsaKey();
-        var publicKey = (RSAPublicKey) keyPair.getPublic();
-        var privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        KeyPair keyPair = KeyGeneratorUtils.generateRsaKey();
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
     }
 

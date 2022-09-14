@@ -47,12 +47,12 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            var user = JacksonUtils.toBean(request.getInputStream(), User.class);
-            var authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
+            User user = JacksonUtils.toBean(request.getInputStream(), User.class);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
                     user.getAuthorities());
             return authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {
-            var map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
+            Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
             ResponseUtils.out(response, map);
             throw new UsernameNotFoundException("用户名或者密码错误");
         }
@@ -62,10 +62,10 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) {
-        var user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
-        var token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
+        User user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
+        String token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
         response.addHeader("Authorization", "Bearer ".concat(token));
-        var map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
+        Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
         ResponseUtils.out(response, map);
     }
 

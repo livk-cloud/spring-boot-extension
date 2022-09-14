@@ -3,10 +3,12 @@ package com.livk.util;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * <p>
@@ -20,14 +22,14 @@ import java.io.IOException;
 public class ResponseUtils {
 
     public HttpServletResponse getResponse() {
-        var requestAttributes = RequestContextHolder.getRequestAttributes();
-        var servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         Assert.notNull(servletRequestAttributes, "attributes not null!");
         return servletRequestAttributes.getResponse();
     }
 
     public void out(Object data) {
-        var response = ResponseUtils.getResponse();
+        HttpServletResponse response = ResponseUtils.getResponse();
         Assert.notNull(response, "response not null!");
         ResponseUtils.out(response, JacksonUtils.toJsonStr(data));
     }
@@ -44,7 +46,7 @@ public class ResponseUtils {
      */
     public void out(HttpServletResponse response, String message) {
         response.setContentType("application/json;charset=utf-8");
-        try (var out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             out.print(message);
             out.flush();
         } catch (IOException exception) {

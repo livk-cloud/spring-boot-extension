@@ -29,8 +29,8 @@ public class SqlUtils {
 
     public List<String> parseTable(String sql) {
         try {
-            var statement = CCJSqlParserUtil.parse(sql);
-            var namesFinder = new TablesNamesFinder();
+            Statement statement = CCJSqlParserUtil.parse(sql);
+            TablesNamesFinder namesFinder = new TablesNamesFinder();
             return namesFinder.getTableList(statement);
         } catch (JSQLParserException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class SqlUtils {
             e.printStackTrace();
         }
         if (statement instanceof Select select) {
-            var plain = (PlainSelect) select.getSelectBody();
+            PlainSelect plain = (PlainSelect) select.getSelectBody();
             return plain.getSelectItems().stream().map(Object::toString).collect(Collectors.toList());
         } else if (statement instanceof Update update) {
             return update.getUpdateSets().get(0).getColumns().stream().map(Column::getColumnName)

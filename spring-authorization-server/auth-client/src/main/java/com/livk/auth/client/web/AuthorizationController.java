@@ -56,7 +56,7 @@ public class AuthorizationController {
     // '/authorized' is the registered 'redirect_uri' for authorization_code
     @GetMapping(value = "/authorized", params = OAuth2ParameterNames.ERROR)
     public OAuth2Error authorizationFailed(HttpServletRequest request) {
-        var errorCode = request.getParameter(OAuth2ParameterNames.ERROR);
+        String errorCode = request.getParameter(OAuth2ParameterNames.ERROR);
         if (StringUtils.hasText(errorCode)) {
             return new OAuth2Error(errorCode, request.getParameter(OAuth2ParameterNames.ERROR_DESCRIPTION),
                     request.getParameter(OAuth2ParameterNames.ERROR_URI));

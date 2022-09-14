@@ -30,7 +30,7 @@ public class IPMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        var request = webRequest.getNativeRequest(HttpServletRequest.class);
+        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         Assert.notNull(request, "request bot be null");
         String param = request.getParameter(parameter.getParameterName());
         return DNSForIp(param);

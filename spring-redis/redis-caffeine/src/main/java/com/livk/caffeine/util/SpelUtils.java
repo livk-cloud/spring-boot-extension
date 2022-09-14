@@ -1,6 +1,7 @@
 package com.livk.caffeine.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.expression.Expression;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -18,12 +19,12 @@ import java.util.Map;
 @UtilityClass
 public class SpelUtils {
 
-    public String parse(String spel, Map<String, ?> map) {
-        spel = String.format("#{%s}", spel);
-        var parser = new SpelExpressionParser();
-        var context = new StandardEvaluationContext();
+    public String parse(String spEL, Map<String, ?> map) {
+        spEL = String.format("#{%s}", spEL);
+        SpelExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext();
         map.forEach(context::setVariable);
-        var expression = parser.parseExpression(spel, new TemplateParserContext());
+        Expression expression = parser.parseExpression(spEL, new TemplateParserContext());
         return expression.getValue(context, String.class);
     }
 

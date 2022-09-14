@@ -42,7 +42,7 @@ class LivkBanner implements Banner {
         out.println(banner);
         int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
         max = max % 2 == 0 ? max : max + 1;
-        var format = Format.create(max, out);
+        Format format = Format.create(max, out);
         format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
         format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
         format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
@@ -59,9 +59,9 @@ class LivkBanner implements Banner {
 
         @Override
         public void accept(String str) {
-            var length = str.length();
+            int length = str.length();
             if (length < n) {
-                var index = (n - length) >> 1;
+                int index = (n - length) >> 1;
                 str = StringUtils.leftPad(str, length + index, ch);
                 str = StringUtils.rightPad(str, n, ch);
             }

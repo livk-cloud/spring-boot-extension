@@ -50,16 +50,16 @@ public class JwtUtils {
     }
 
     public <T> Payload<T> getInfo(String token, PublicKey publicKey, Class<T> targetClass) {
-        var claimsJws = parserToken(token, publicKey);
-        var body = claimsJws.getBody();
+        Jws<Claims> claimsJws = parserToken(token, publicKey);
+        Claims body = claimsJws.getBody();
         return Payload.<T>builder().id(body.getId())
                 .userInfo(JacksonUtils.toBean(body.get(JWT_KEY).toString(), targetClass))
                 .expiration(body.getExpiration()).build();
     }
 
     public <T> Payload<T> getInfo(String token, PublicKey publicKey) {
-        var claimsJws = parserToken(token, publicKey);
-        var body = claimsJws.getBody();
+        Jws<Claims> claimsJws = parserToken(token, publicKey);
+        Claims body = claimsJws.getBody();
         return Payload.<T>builder().id(body.getId()).expiration(body.getExpiration()).build();
     }
 

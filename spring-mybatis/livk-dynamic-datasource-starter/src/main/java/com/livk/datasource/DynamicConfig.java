@@ -21,8 +21,8 @@ public class DynamicConfig {
 
     @Bean
     public DynamicDatasource dynamicDatasource(Map<String, DataSource> dataSourceMap) {
-        var map = new HashMap<Object, Object>(dataSourceMap);
-        var dynamicDatasource = new DynamicDatasource();
+        Map<Object, Object> map = new HashMap<>(dataSourceMap);
+        DynamicDatasource dynamicDatasource = new DynamicDatasource();
         dynamicDatasource.setTargetDataSources(map);
         dynamicDatasource.setDefaultTargetDataSource(dataSourceMap.get(DataSourceConstant.DEFAULT_DATASOURCE_NAME));
         return dynamicDatasource;

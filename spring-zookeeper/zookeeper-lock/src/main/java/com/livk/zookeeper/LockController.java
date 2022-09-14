@@ -6,6 +6,8 @@ import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.locks.Lock;
+
 /**
  * <p>
  * LockController
@@ -23,7 +25,7 @@ public class LockController {
 
     @GetMapping
     public void lock() {
-        var lock = lockRegistry.obtain("zookeeper");
+        Lock lock = lockRegistry.obtain("zookeeper");
         if (lock.tryLock()) {
             try {
                 log.info("is locked");

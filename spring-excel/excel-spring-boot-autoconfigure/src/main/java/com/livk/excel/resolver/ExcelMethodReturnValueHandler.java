@@ -1,8 +1,11 @@
 package com.livk.excel.resolver;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.excel.annotation.ExcelReturn;
 import com.livk.excel.exception.ExcelExportException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -39,17 +42,17 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
-        var response = webRequest.getNativeResponse(HttpServletResponse.class);
-        var excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
+        HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+        ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
-            var excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
             this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
         } else if (returnValue instanceof Map) {
             @SuppressWarnings("unchecked")
-            var result = (Map<String, Collection<?>>) returnValue;
-            var excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
+            Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
+            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
             this.write(excelReturn, response, excelModelClass, result);
         } else {
             throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
@@ -58,10 +61,10 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     public void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
-        try (var outputStream = response.getOutputStream();
-             var writer = EasyExcel.write(outputStream, excelModelClass).build()) {
-            for (var entry : result.entrySet()) {
-                var sheet = EasyExcel.writerSheet(entry.getKey()).build();
+        try (ServletOutputStream outputStream = response.getOutputStream();
+             ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build()) {
+            for (Map.Entry<String, Collection<?>> entry : result.entrySet()) {
+                WriteSheet sheet = EasyExcel.writerSheet(entry.getKey()).build();
                 writer.write(entry.getValue(), sheet);
             }
         } catch (IOException e) {
@@ -70,8 +73,8 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     }
 
     private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
-        var fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
-        var contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
+        String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
+        String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
                 .orElse("application/vnd.ms-excel");
         response.setContentType(contentType);
         response.setCharacterEncoding(UTF8);

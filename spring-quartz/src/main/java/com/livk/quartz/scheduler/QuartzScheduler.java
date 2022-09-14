@@ -2,6 +2,7 @@ package com.livk.quartz.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 /**
@@ -22,7 +23,7 @@ public class QuartzScheduler implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         before();
-        var jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         log.info("{}", jobDataMap.getString("user"));
         after();
     }

@@ -16,7 +16,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class LivkRedisTemplate extends RedisTemplate<String, Object> {
 
     public LivkRedisTemplate() {
-        var serializer = SerializerUtils.getSerializer(Object.class);
+        RedisSerializer<Object> serializer = SerializerUtils.getSerializer(Object.class);
         this.setKeySerializer(RedisSerializer.string());
         this.setHashKeySerializer(RedisSerializer.string());
         this.setValueSerializer(serializer);

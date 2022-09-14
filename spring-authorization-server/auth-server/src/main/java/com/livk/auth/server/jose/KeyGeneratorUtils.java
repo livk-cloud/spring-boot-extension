@@ -30,7 +30,7 @@ final class KeyGeneratorUtils {
     KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {
-            var keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             keyPair = keyPairGenerator.generateKeyPair();
         } catch (Exception ex) {

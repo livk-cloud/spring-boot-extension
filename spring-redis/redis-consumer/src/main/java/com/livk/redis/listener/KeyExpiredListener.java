@@ -24,7 +24,7 @@ public class KeyExpiredListener extends KeyExpirationEventMessageListener {
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
-        var key = new String(message.getBody(), StandardCharsets.UTF_8);
+        String key = new String(message.getBody(), StandardCharsets.UTF_8);
         log.info("key:<{}>", key);
     }
 
