@@ -19,6 +19,7 @@ mapstruct = "1.5.2.Final"
 mapstructLombok = "0.2.0"
 curator = "5.3.0"
 mapstructSpring = "0.1.2"
+ip2region = "2.6.5"
 
 [libraries]
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
@@ -45,6 +46,7 @@ lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-bindi
 curator-recipes = { group = "org.apache.curator", name = "curator-recipes", version.ref = "curator" }
 mapstruct-spring-extensions = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-extensions", version.ref = "mapstructSpring" }
 mapstruct-spring-annotations = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-annotations", version.ref = "mapstructSpring" }
+ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
 
 [bundles]
 jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
