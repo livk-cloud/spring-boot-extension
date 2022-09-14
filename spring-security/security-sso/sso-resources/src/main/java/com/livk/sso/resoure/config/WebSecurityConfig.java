@@ -29,10 +29,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, RsaKeyProperties properties,
                                                    AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        return http.csrf().disable().authorizeRequests().antMatchers("/user/query").hasAnyRole("ADMIN").anyRequest()
-                .authenticated().and()
+        return http.csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/user/query")
+                .hasAnyRole("ADMIN")
+                .anyRequest()
+                .authenticated()
+                .and()
                 .addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .build();
     }
 
 }

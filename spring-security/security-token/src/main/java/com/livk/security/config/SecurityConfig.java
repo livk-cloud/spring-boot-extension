@@ -36,15 +36,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider,
                                                    AuthorizationTokenFilter authorizationTokenFilter) throws Exception {
-        return http.authorizeRequests().antMatchers(permitAllUrl).permitAll().anyRequest().authenticated().and()
-                .formLogin().loginProcessingUrl("/login").permitAll()
+        return http.authorizeRequests()
+                .antMatchers(permitAllUrl)
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .permitAll()
                 .failureHandler(new LivkAuthenticationFailureHandler())
-                .successHandler(new LivkAuthenticationSuccessHandler()).and().logout().logoutUrl("/logout")
-                .logoutSuccessHandler(new LivkLogoutSuccessHandler()).and()
+                .successHandler(new LivkAuthenticationSuccessHandler())
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(new LivkLogoutSuccessHandler())
+                .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterAfter(authorizationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().accessDeniedHandler(new LivkAccessDeniedHandler())
-                .authenticationEntryPoint(new LivkAuthenticationEntryPoint()).and().cors().disable().csrf().disable()
+                .exceptionHandling()
+                .accessDeniedHandler(new LivkAccessDeniedHandler())
+                .authenticationEntryPoint(new LivkAuthenticationEntryPoint())
+                .and()
+                .cors()
+                .disable()
+                .csrf()
+                .disable()
                 .build();
     }
 

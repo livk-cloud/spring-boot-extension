@@ -30,8 +30,7 @@ public class ResourceServerConfig {
     // @formatter:off
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .mvcMatcher("/resource-livk/**")
+        http.mvcMatcher("/resource-livk/**")
                 .authorizeRequests()
                 .mvcMatchers("/resource-livk/**").access("hasAuthority('livk.read')")
                 .and()
