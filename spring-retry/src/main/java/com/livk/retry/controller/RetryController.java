@@ -22,7 +22,7 @@ public class RetryController {
     private final RemoteSupport remoteSupport;
 
     @GetMapping("/retry")
-    public HttpEntity<String> test() {
+    public HttpEntity<String> retry() {
         return ResponseEntity.ok(remoteSupport.call("fail"));
     }
 
