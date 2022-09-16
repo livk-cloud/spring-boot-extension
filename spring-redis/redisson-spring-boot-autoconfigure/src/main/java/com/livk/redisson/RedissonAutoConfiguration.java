@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;
+import org.redisson.client.RedisException;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -36,27 +37,24 @@ import java.util.Map;
 @RequiredArgsConstructor
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
-public class RedissonAutoConfiguration implements EnvironmentAware, InitializingBean {
+public class RedissonAutoConfiguration implements EnvironmentAware {
     private static final String REDISSON_CONFIG = "spring.redisson.config.";
+
     private final List<RedissonAutoConfigurationCustomizer> redissonAutoConfigurationCustomizers;
+
     private StandardEnvironment environment;
-    private Config config;
 
     @Bean
+    @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnMissingBean(RedissonReactiveClient.class)
     public RedissonReactiveClient redissonReactive(RedissonClient redisson) {
         return redisson.reactive();
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient() {
-        return Redisson.create(config);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void afterPropertiesSet() {
         MutablePropertySources propertySources = environment.getPropertySources();
         Map<String, Object> redissonMap = new HashMap<>();
         for (PropertySource<?> propertySource : propertySources) {
@@ -71,19 +69,21 @@ public class RedissonAutoConfiguration implements EnvironmentAware, Initializing
                 }
             }
         }
-        String redissonYaml = YamlUtils.mapToYml(redissonMap);
+        String redissonYaml = YamlUtils.mapToYml(redissonMap).replaceAll("'", "");
         if (StringUtils.hasText(redissonYaml)) {
             try {
-                config = Config.fromYAML(redissonYaml);
+                Config config = Config.fromYAML(redissonYaml);
                 if (!CollectionUtils.isEmpty(redissonAutoConfigurationCustomizers)) {
                     for (RedissonAutoConfigurationCustomizer customizer : redissonAutoConfigurationCustomizers) {
                         customizer.customize(config);
                     }
                 }
+                return Redisson.create(config);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RedisException(e);
             }
         }
+        throw new RedisException("missing redisson yaml configuration");
     }
 
     @Override
