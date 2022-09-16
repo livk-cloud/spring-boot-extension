@@ -1,0 +1,80 @@
+{
+  "groups": [
+    {
+      "name": "spring.redisson.config.singleServerConfig",
+      "type": "org.redisson.config.SingleServerConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.redisson.config.nettyThreads",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.address",
+      "type": "java.lang.String",
+      "description": "redis address"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.connectTimeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.connectionMinimumIdleSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.connectionPoolSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.database",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.dnsMonitoringInterval",
+      "type": "java.lang.Long"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.idleConnectionTimeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.retryAttempts",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.retryInterval",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.subscriptionConnectionMinimumIdleSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.subscriptionConnectionPoolSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.subscriptionsPerConnection",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.singleServerConfig.timeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.threads",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.transportMode",
+      "type": "java.lang.String"
+    }
+  ],
+  "hints": []
+}

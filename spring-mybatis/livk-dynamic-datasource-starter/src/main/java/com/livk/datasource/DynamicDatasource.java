@@ -4,7 +4,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
  * <p>
- * DynamicDatasoutce
+ * DynamicDatasource
  * </p>
  *
  * @author livk

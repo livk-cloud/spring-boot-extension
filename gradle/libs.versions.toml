@@ -33,6 +33,7 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "javaWebSocket" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
+redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }
 jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwtApi" }
 jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwtApi" }

@@ -1,0 +1,4 @@
+dependencies {
+    api project(":spring-redis:redisson-spring-boot-autoconfigure")
+    api "org.redisson:redisson"
+}
