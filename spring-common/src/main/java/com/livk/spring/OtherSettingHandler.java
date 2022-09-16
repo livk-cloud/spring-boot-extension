@@ -1,8 +1,8 @@
 package com.livk.spring;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
  * @author livk
  * @date 2022/5/26
  */
-@Configuration
+@AutoConfiguration
 public class OtherSettingHandler implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private static final String MP_BANNER = "mybatis-plus.global-config.banner";
