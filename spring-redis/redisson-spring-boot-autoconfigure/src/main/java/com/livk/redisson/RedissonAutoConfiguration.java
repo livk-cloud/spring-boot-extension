@@ -12,6 +12,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -22,6 +24,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +41,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
+@EnableConfigurationProperties(RedisProperties.class)
 public class RedissonAutoConfiguration implements EnvironmentAware {
     private static final String REDISSON_CONFIG = "spring.redisson.config.";
+
+    private static final String REDIS_PROTOCOL_PREFIX = "redis://";
+
+    private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
     private final List<RedissonAutoConfigurationCustomizer> redissonAutoConfigurationCustomizers;
 
@@ -54,7 +63,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     @Bean
     @SuppressWarnings("unchecked")
     @ConditionalOnMissingBean(RedissonClient.class)
-    public RedissonClient redissonClient() {
+    public RedissonClient redissonClient(RedisProperties redisProperties) {
         MutablePropertySources propertySources = environment.getPropertySources();
         Map<String, Object> redissonMap = new HashMap<>();
         for (PropertySource<?> propertySource : propertySources) {
@@ -70,20 +79,63 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
             }
         }
         String redissonYaml = YamlUtils.mapToYml(redissonMap).replaceAll("'", "");
+        Config config;
+        Duration duration = redisProperties.getTimeout();
+        int timeout = duration == null ? 0 : (int) duration.toMillis();
         if (StringUtils.hasText(redissonYaml)) {
             try {
-                Config config = Config.fromYAML(redissonYaml);
-                if (!CollectionUtils.isEmpty(redissonAutoConfigurationCustomizers)) {
-                    for (RedissonAutoConfigurationCustomizer customizer : redissonAutoConfigurationCustomizers) {
-                        customizer.customize(config);
-                    }
-                }
-                return Redisson.create(config);
+                config = Config.fromYAML(redissonYaml);
             } catch (IOException e) {
                 throw new RedisException(e);
             }
+        } else if (redisProperties.getSentinel() != null) {
+            List<String> nodeList = redisProperties.getSentinel().getNodes();
+            String[] nodes = convert(nodeList);
+            config = new Config();
+            config.useSentinelServers()
+                    .setMasterName(redisProperties.getSentinel().getMaster())
+                    .addSentinelAddress(nodes)
+                    .setDatabase(redisProperties.getDatabase())
+                    .setConnectTimeout(timeout)
+                    .setPassword(redisProperties.getPassword());
+        } else if (redisProperties.getCluster() != null) {
+            List<String> nodeList = redisProperties.getCluster().getNodes();
+            String[] nodes = convert(nodeList);
+            config = new Config();
+            config.useClusterServers()
+                    .addNodeAddress(nodes)
+                    .setConnectTimeout(timeout)
+                    .setPassword(redisProperties.getPassword());
+        } else {
+            config = new Config();
+            String prefix = REDIS_PROTOCOL_PREFIX;
+            if (redisProperties.isSsl()) {
+                prefix = REDISS_PROTOCOL_PREFIX;
+            }
+            config.useSingleServer()
+                    .setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
+                    .setConnectTimeout(timeout)
+                    .setDatabase(redisProperties.getDatabase())
+                    .setPassword(redisProperties.getPassword());
         }
-        throw new RedisException("missing redisson yaml configuration");
+        if (!CollectionUtils.isEmpty(redissonAutoConfigurationCustomizers)) {
+            for (RedissonAutoConfigurationCustomizer customizer : redissonAutoConfigurationCustomizers) {
+                customizer.customize(config);
+            }
+        }
+        return Redisson.create(config);
+    }
+
+    private String[] convert(List<String> nodesObject) {
+        List<String> nodes = new ArrayList<>(nodesObject.size());
+        for (String node : nodesObject) {
+            if (!node.startsWith(REDIS_PROTOCOL_PREFIX) && !node.startsWith(REDISS_PROTOCOL_PREFIX)) {
+                nodes.add(REDIS_PROTOCOL_PREFIX + node);
+            } else {
+                nodes.add(node);
+            }
+        }
+        return nodes.toArray(new String[0]);
     }
 
     @Override
