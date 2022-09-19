@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
 import com.livk.security.support.AuthenticationContext;
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class LivkAuthenticationSuccessHandler implements AuthenticationSuccessHa
         log.info("登录成功处理");
         String token = UUID.randomUUID().toString();
         AuthenticationContext.setTokenAndAuthentication(token, authentication);
-        ResponseUtils.out(response, Map.of("code", 200, "data", token));
+        WebUtils.out(response, Map.of("code", 200, "data", token));
     }
 
 }

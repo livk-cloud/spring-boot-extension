@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
 
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class LivkAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException) {
         log.error("异常：{}", authException.getMessage());
         authException.printStackTrace();
-        ResponseUtils.out(response, Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", authException.getMessage()));
+        WebUtils.out(response, Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", authException.getMessage()));
     }
 
 }

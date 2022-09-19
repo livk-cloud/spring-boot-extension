@@ -1,7 +1,7 @@
 package com.livk.security.filter;
 
 import com.livk.security.support.AuthenticationContext;
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,14 +44,14 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
                 // 切换为redis
                 Authentication authentication = AuthenticationContext.getAuthentication(token);
                 if (authentication == null) {
-                    ResponseUtils.out(response,
+                    WebUtils.out(response,
                             Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", "token not available"));
                 } else {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     filterChain.doFilter(request, response);
                 }
             } else {
-                ResponseUtils.out(response, Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", "missing token"));
+                WebUtils.out(response, Map.of("code", HttpStatus.FORBIDDEN.value(), "msg", "missing token"));
             }
         } else {
             filterChain.doFilter(request, response);

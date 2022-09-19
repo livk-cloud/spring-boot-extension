@@ -1,6 +1,6 @@
 package com.livk.redisson.limit;
 
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -43,7 +43,7 @@ public class LimitAspect {
         if (rateLimiter.tryAcquire(limiter.requestedTokens())) {
             return joinPoint.proceed();
         } else {
-            ResponseUtils.out(ResponseEntity.status(403).build());
+            WebUtils.out(ResponseEntity.status(403).build());
             return null;
         }
     }

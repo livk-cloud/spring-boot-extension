@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
 
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class LivkAuthenticationFailureHandler implements AuthenticationFailureHa
                                         AuthenticationException exception) {
         log.error("异常：{}", exception.getMessage());
         exception.printStackTrace();
-        ResponseUtils.out(response, Map.of("code", HttpStatus.BAD_REQUEST.value(), "msg",
+        WebUtils.out(response, Map.of("code", HttpStatus.BAD_REQUEST.value(), "msg",
                 "login failed, username or password is incorrect"));
     }
 

@@ -1,6 +1,6 @@
 package com.livk.redisson.limit;
 
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class LimitHandlerInterceptor implements HandlerInterceptor {
             if (rateLimiter.tryAcquire(limiter.requestedTokens())) {
                 return true;
             } else {
-                ResponseUtils.out(response, ResponseEntity.status(403).build());
+                WebUtils.out(response, ResponseEntity.status(403).build());
                 return false;
             }
         }

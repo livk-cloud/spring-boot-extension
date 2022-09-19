@@ -4,7 +4,7 @@ import com.livk.sso.entity.Payload;
 import com.livk.sso.resoure.config.RsaKeyProperties;
 import com.livk.sso.resoure.entity.User;
 import com.livk.sso.util.JwtUtils;
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,11 +49,11 @@ public class TokenVerifyFilter extends BasicAuthenticationFilter {
                 chain.doFilter(request, response);
             } else {
                 Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
-                ResponseUtils.out(response, map);
+                WebUtils.out(response, map);
             }
         } else {
             Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "请登录！");
-            ResponseUtils.out(response, map);
+            WebUtils.out(response, map);
         }
     }
 

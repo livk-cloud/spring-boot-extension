@@ -4,7 +4,7 @@ import com.livk.sso.auth.entity.Role;
 import com.livk.sso.auth.entity.User;
 import com.livk.sso.util.JwtUtils;
 import com.livk.util.JacksonUtils;
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,7 +53,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
             return authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {
             Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
-            ResponseUtils.out(response, map);
+            WebUtils.out(response, map);
             throw new UsernameNotFoundException("用户名或者密码错误");
         }
     }
@@ -66,7 +66,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
         String token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
         response.addHeader("Authorization", "Bearer ".concat(token));
         Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-        ResponseUtils.out(response, map);
+        WebUtils.out(response, map);
     }
 
 }

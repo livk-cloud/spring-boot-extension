@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
 import com.livk.security.support.AuthenticationContext;
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class LivkLogoutSuccessHandler implements LogoutSuccessHandler {
         log.info("退出");
         String token = request.getHeader("Authorization");
         AuthenticationContext.delete(token);
-        ResponseUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
+        WebUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
     }
 
 }

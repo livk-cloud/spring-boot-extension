@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
 
-import com.livk.util.ResponseUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class LivkAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException accessDeniedException) {
         log.error("exception:{}", accessDeniedException.getMessage());
         accessDeniedException.printStackTrace();
-        ResponseUtils.out(response, Map.of("code", 403, "msg", accessDeniedException.getMessage()));
+        WebUtils.out(response, Map.of("code", 403, "msg", accessDeniedException.getMessage()));
     }
 
 }
