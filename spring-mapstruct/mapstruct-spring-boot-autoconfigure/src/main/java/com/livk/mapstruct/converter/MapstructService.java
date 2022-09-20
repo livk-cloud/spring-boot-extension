@@ -25,29 +25,19 @@ public interface MapstructService {
         return sources.stream().map(source -> convert(source, targetClass));
     }
 
-    default <S, T> List<T> convertList(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
-        Stream<T> convert = convert(sources, targetClass);
-        return unmodifiable ? convert.toList() : convert.collect(Collectors.toList());
-    }
-
     default <S, T> List<T> convertList(Collection<S> sources, Class<T> targetClass) {
-        return convertList(sources, targetClass, false);
+        return convert(sources, targetClass).collect(Collectors.toList());
     }
 
     default <S, T> List<T> convertUnmodifiableList(Collection<S> sources, Class<T> targetClass) {
-        return convertList(sources, targetClass, true);
-    }
-
-    default <S, T> Set<T> convertSet(Collection<S> sources, Class<T> targetClass, boolean unmodifiable) {
-        Stream<T> convert = convert(sources, targetClass);
-        return unmodifiable ? convert.collect(Collectors.toUnmodifiableSet()) : convert.collect(Collectors.toSet());
+        return convert(sources, targetClass).toList();
     }
 
     default <S, T> Set<T> convertSet(Collection<S> sources, Class<T> targetClass) {
-        return convertSet(sources, targetClass, false);
+        return convert(sources, targetClass).collect(Collectors.toSet());
     }
 
     default <S, T> Set<T> convertUnmodifiableSet(Collection<S> sources, Class<T> targetClass) {
-        return convertSet(sources, targetClass, true);
+        return convert(sources, targetClass).collect(Collectors.toUnmodifiableSet());
     }
 }
