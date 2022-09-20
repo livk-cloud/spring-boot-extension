@@ -22,7 +22,7 @@ public class LocalLock extends AbstractLock<Lock> {
     @Override
     protected Lock getLock(LockType type, String key) {
         return switch (type) {
-            case LOCK, REENTRANT -> new ReentrantLock();
+            case LOCK -> new ReentrantLock();
             case FAIR -> new ReentrantLock(true);
             case READ -> new ReentrantReadWriteLock().readLock();
             case WRITE -> new ReentrantReadWriteLock().writeLock();

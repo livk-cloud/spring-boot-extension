@@ -25,7 +25,7 @@ public class RedissonLock extends AbstractLock<RLock> {
     @Override
     protected RLock getLock(LockType type, String key) {
         return switch (type) {
-            case LOCK, REENTRANT -> redissonClient.getLock(key);
+            case LOCK -> redissonClient.getLock(key);
             case FAIR -> redissonClient.getFairLock(key);
             case READ -> redissonClient.getReadWriteLock(key).readLock();
             case WRITE -> redissonClient.getReadWriteLock(key).writeLock();

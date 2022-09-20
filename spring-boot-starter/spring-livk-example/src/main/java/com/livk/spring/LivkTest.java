@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * <p>
@@ -28,6 +30,10 @@ public class LivkTest {
 
     private final AnnoTest annoTest;
 
+    private final WebClient webClient;
+
+    private final RestTemplate restTemplate;
+
     @Value("${username.spring.github}")
     public String username;
 
@@ -37,6 +43,14 @@ public class LivkTest {
         livkTestDemo.show();
         annoTest.show();
         log.info(username);
+        String htmlWebClient = webClient.get()
+                .uri("https://cn.bing.com/")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        log.info("{}", htmlWebClient.substring(0, 20));
+        String htmlRestTemplate = restTemplate.getForObject("https://cn.bing.com/", String.class);
+        log.info("{}", htmlRestTemplate.substring(0, 20));
     }
 
 }

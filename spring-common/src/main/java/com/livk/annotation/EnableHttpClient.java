@@ -1,6 +1,6 @@
 package com.livk.annotation;
 
-import com.livk.http.RestTemplateConfiguration;
+import com.livk.http.RestTemplateImportSelector;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(RestTemplateConfiguration.class)
+@Import(RestTemplateImportSelector.class)
 public @interface EnableHttpClient {
 
 }

@@ -14,10 +14,6 @@ public enum LockType {
      */
     LOCK,
     /**
-     * 可重入锁
-     */
-    REENTRANT,
-    /**
      * 公平锁
      */
     FAIR,

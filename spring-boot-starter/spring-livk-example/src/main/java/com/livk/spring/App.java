@@ -1,5 +1,7 @@
 package com.livk.spring;
 
+import com.livk.annotation.EnableHttpClient;
+import com.livk.annotation.EnableWebClient;
 import com.livk.selector.LivkImport;
 import com.livk.starter01.EnableLivk;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @LivkImport
 @EnableLivk
+@EnableWebClient
+@EnableHttpClient
 @SpringBootApplication
 public class App {
 

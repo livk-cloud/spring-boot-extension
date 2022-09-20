@@ -1,2 +1,6 @@
 org.springframework.context.ApplicationContextInitializer=\
   com.livk.spring.OtherSettingHandler
+com.livk.annotation.EnableHttpClient=\
+  com.livk.http.RestTemplateConfiguration
+com.livk.annotation.EnableWebClient=\
+  com.livk.http.WebClientConfiguration
