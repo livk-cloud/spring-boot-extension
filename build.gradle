@@ -28,7 +28,7 @@ configure(springModuleProjects) {
     apply plugin: "com.livk.service"
 
     dependencies {
-        implementation "org.springframework.boot:spring-boot-devtools"
+        optional "org.springframework.boot:spring-boot-devtools"
     }
 }
 
