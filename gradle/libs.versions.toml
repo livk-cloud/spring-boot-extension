@@ -20,6 +20,7 @@ mapstructLombok = "0.2.0"
 curator = "5.3.0"
 mapstructSpring = "0.1.2"
 ip2region = "2.6.5"
+asciidoctorJvm = "3.3.2"
 
 [libraries]
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
@@ -55,3 +56,4 @@ jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
+asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctorJvm" }
