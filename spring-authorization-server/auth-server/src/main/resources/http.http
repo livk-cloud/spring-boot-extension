@@ -1,0 +1,58 @@
+# curl --location --request POST 'http://localhost:9000/oauth2/token'
+#--header 'Authorization: Basic bGl2ay1jbGllbnQ6c2VjcmV0'
+#--form 'grant_type="password"'
+#--form 'username="livk"'
+#--form 'password="123456"'
+#--form 'scope="livk.read"'
+POST http://localhost:9000/oauth2/token
+Authorization: Basic bGl2ay1jbGllbnQ6c2VjcmV0
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="grant_type"
+
+password
+--WebAppBoundary
+Content-Disposition: form-data; name="username"
+
+livk
+--WebAppBoundary
+Content-Disposition: form-data; name="password"
+
+123456
+--WebAppBoundary
+Content-Disposition: form-data; name="scope"
+
+livk.read
+--WebAppBoundary
+
+#########
+# curl --location --request POST 'http://localhost:9000/oauth2/token'
+#--header 'Authorization: Basic bGl2ay1jbGllbnQ6c2VjcmV0'
+#--form 'grant_type="sms"'
+#--form 'scope="livk.read"'
+#--form 'mobile="18664960000"'
+#--form 'code="1234"'
+POST http://localhost:9000/oauth2/token
+Authorization: Basic bGl2ay1jbGllbnQ6c2VjcmV0
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="grant_type"
+
+sms
+--WebAppBoundary
+Content-Disposition: form-data; name="scope"
+
+livk.read
+--WebAppBoundary
+Content-Disposition: form-data; name="mobile"
+
+18664960000
+--WebAppBoundary
+Content-Disposition: form-data; name="code"
+
+123456
+--WebAppBoundary--
+
+###
