@@ -20,6 +20,8 @@ abstract class DeleteExpand implements Plugin<Project> {
             it.delete(project.projectDir.absolutePath + "/build")
             it.delete(project.projectDir.absolutePath + "/out")
             it.delete(project.projectDir.absolutePath + "/bin")
+            it.delete(project.projectDir.absolutePath + "/src/main/generated")
+            it.delete(project.projectDir.absolutePath + "/src/test/generated_tests")
         }
     }
 }
