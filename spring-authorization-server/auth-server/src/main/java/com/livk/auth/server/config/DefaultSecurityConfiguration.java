@@ -1,6 +1,7 @@
 package com.livk.auth.server.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author livk
  * @date 2022/7/18
  */
+@Configuration
 @EnableWebSecurity
 public class DefaultSecurityConfiguration {
 

@@ -22,6 +22,9 @@ public class UserServiceImpl extends ServiceImpl<UsersMapper, User> implements U
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.equals("18664960000")) {
+            username = "livk";
+        }
         return this.getOne(Wrappers.lambdaQuery(User.class).eq(User::getUsername, username));
     }
 

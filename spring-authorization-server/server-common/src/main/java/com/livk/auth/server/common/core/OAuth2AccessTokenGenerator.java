@@ -33,8 +33,8 @@ public class OAuth2AccessTokenGenerator implements OAuth2TokenGenerator<OAuth2Ac
         }
 
         String issuer = null;
-        if (context.getProviderContext() != null) {
-            issuer = context.getProviderContext().getIssuer();
+        if (context.getAuthorizationServerContext() != null) {
+            issuer = context.getAuthorizationServerContext().getIssuer();
         }
         RegisteredClient registeredClient = context.getRegisteredClient();
 
@@ -63,7 +63,7 @@ public class OAuth2AccessTokenGenerator implements OAuth2TokenGenerator<OAuth2Ac
             OAuth2TokenClaimsContext.Builder accessTokenContextBuilder = OAuth2TokenClaimsContext.with(claimsBuilder)
                     .registeredClient(context.getRegisteredClient())
                     .principal(context.getPrincipal())
-                    .providerContext(context.getProviderContext())
+                    .authorizationServerContext(context.getAuthorizationServerContext())
                     .authorizedScopes(context.getAuthorizedScopes())
                     .tokenType(context.getTokenType())
                     .authorizationGrantType(context.getAuthorizationGrantType());
