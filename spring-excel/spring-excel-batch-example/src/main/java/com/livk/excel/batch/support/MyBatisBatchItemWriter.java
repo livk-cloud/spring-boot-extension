@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
-
-import java.util.List;
 
 /**
  * <p>
@@ -24,10 +23,10 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T> {
     private final String statementId;
 
     @Override
-    public void write(List<? extends T> items) {
+    public void write(Chunk<? extends T> chunk) throws Exception {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         try {
-            for (T item : items) {
+            for (T item : chunk.getItems()) {
                 sqlSession.update(statementId, item);
             }
             sqlSession.commit();

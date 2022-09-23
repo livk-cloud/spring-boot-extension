@@ -1,5 +1,7 @@
 package com.livk.selector;
 
+import com.livk.spring.AbstractImportSelector;
+
 /**
  * <p>
  * LivkImportSelector

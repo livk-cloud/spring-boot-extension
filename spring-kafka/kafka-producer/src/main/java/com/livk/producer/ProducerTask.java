@@ -7,10 +7,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
@@ -32,20 +31,16 @@ public class ProducerTask {
         kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
         // 异步获取结果
         kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString())
-                .addCallback(new ListenableFutureCallback<>() {
-                    @Override
-                    public void onFailure(Throwable ex) {
-                        log.error("ex:{}", ex.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(SendResult<Object, Object> result) {
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        log.error("ex:{}", throwable.getMessage());
+                    } else {
                         log.info("result:{}", result);
                     }
                 });
 
         // 同步获取结果
-        ListenableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
+        CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
         try {
             SendResult<Object, Object> result = future.get();
             log.info("result:{}", result);

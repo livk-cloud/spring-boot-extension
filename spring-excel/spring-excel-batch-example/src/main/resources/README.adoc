@@ -1,0 +1,4 @@
+link:META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports[Mybatis自动装配] +
+**老版本的自动装配失效** +
+**自定义新版本的自动装配** +
+**后期更新之后删除**

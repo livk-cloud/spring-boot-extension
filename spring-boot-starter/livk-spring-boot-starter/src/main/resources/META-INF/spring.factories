@@ -1,4 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
   com.livk.env.DynamicEnvironment
-com.livk.selector.LivkImport=\
-  com.livk.selector.LivkAutoConfiguration

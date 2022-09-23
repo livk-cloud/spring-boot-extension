@@ -10,17 +10,19 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +42,10 @@ import java.util.List;
 public class InfoController {
 
     private final ItemWriter<List<Info>> writer;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobBuilderFactory jobBuilderFactory;
+
+    private final JobRepository jobRepository;
+
+    private final DataSourceTransactionManager dataSourceTransactionManager;
     private final JobLauncher jobLauncher;
 
     @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
@@ -56,8 +60,8 @@ public class InfoController {
     }
 
     private Step excelStep(List<Info> dataExcels) {
-        return stepBuilderFactory.get("excelStep")
-                .<List<Info>, List<Info>>chunk(new SimpleCompletionPolicy())
+        return new StepBuilder("excelStep", jobRepository)
+                .<List<Info>, List<Info>>chunk(new SimpleCompletionPolicy(), dataSourceTransactionManager)
                 .reader(new ListItemReader<>(Lists.partition(dataExcels, 1000)))
                 .writer(writer)
                 .faultTolerant()
@@ -66,7 +70,7 @@ public class InfoController {
     }
 
     public Job excelJob(Step step) {
-        return jobBuilderFactory.get("excelJob")
+        return new JobBuilder("excelJob", jobRepository)
                 .start(step)
                 .listener(new JobListener())
                 .build();

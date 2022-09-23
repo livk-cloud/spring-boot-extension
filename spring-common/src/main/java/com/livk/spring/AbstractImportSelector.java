@@ -1,11 +1,12 @@
 package com.livk.spring;
 
+import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -29,8 +30,8 @@ public abstract class AbstractImportSelector<T> implements DeferredImportSelecto
         }
         Assert.notNull(annotationClass, "annotation Class not be null");
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        List<String> names = SpringFactoriesLoader.loadFactoryNames(annotationClass, classLoader);
-        return names.toArray(new String[0]);
+        List<String> names = ImportCandidates.load(annotationClass, classLoader).getCandidates();
+        return StringUtils.toStringArray(names);
     }
 
     protected Class<T> getAnnotationClass() {

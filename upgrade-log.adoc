@@ -1,0 +1,65 @@
+[]
+=== 升级到SpringBoot 3-M5
+
+废弃: +
+1. `org.springframework.core.io.support.SpringFactoriesLoader.loadFactoryNames(java.lang.Class<?>, java.lang.ClassLoader)` +
+目前代替方式
+
+[source,java,indent=0]
+----
+public class Main{
+    public static void main(String[] args){
+      List<String> names = ImportCandidates.load(annotationClass, classLoader).getCandidates();
+    }
+}
+----
+
+废弃: +
+1. `org.springframework.batch.core.configuration.annotation.StepBuilderFactory` +
+2. `org.springframework.batch.core.configuration.annotation.JobBuilderFactory` +
+新增用于事务: `org.springframework.transaction.PlatformTransactionManager` +
+代替方案
+
+[source,java,indent=0]
+----
+public class Main{
+@Bean
+    public Step csvStep(JobRepository jobRepository,
+                        DataSource dataSource,
+                        DataSourceTransactionManager dataSourceTransactionManager) {
+        return new StepBuilder("csvStep", jobRepository)
+                .<User, User>chunk(5, dataSourceTransactionManager)
+                .build();
+    }
+
+    @Bean
+    public Job csvJob(JobRepository jobRepository, Step step,
+                      JobCompletionListener listener) {
+        return new JobBuilder("csvJob", jobRepository).build();
+    }
+}
+----
+
+废弃： +
+`org.springframework.util.concurrent.ListenableFuture` +
+代替方案
+
+[source,java,indent=0]
+----
+public class Main{
+    public static void main(String[] args){
+        kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString())
+                .whenComplete((result, throwable) -> {
+                    if (throwable!=null){
+                        log.error("ex:{}", throwable.getMessage());
+                    }else {
+                        log.info("result:{}", result);
+                    }
+                });
+    }
+}
+----
+
+`spring.factories` 自动装配删除，新的自动装配 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` +
+第三方包未适配
+

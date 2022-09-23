@@ -8,8 +8,9 @@ import com.livk.batch.support.JobCompletionListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -20,6 +21,7 @@ import org.springframework.batch.item.validator.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.FileNotFoundException;
@@ -85,9 +87,11 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step csvStep(StepBuilderFactory stepBuilderFactory, DataSource dataSource) {
-        return stepBuilderFactory.get("csvStep")
-                .<User, User>chunk(5)
+    public Step csvStep(JobRepository jobRepository,
+                        DataSource dataSource,
+                        DataSourceTransactionManager dataSourceTransactionManager) {
+        return new StepBuilder("csvStep", jobRepository)
+                .<User, User>chunk(5, dataSourceTransactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer(dataSource))
@@ -102,8 +106,9 @@ public class BatchConfig {
     }
 
     @Bean
-    public Job csvJob(JobBuilderFactory jobBuilderFactory, Step step, JobCompletionListener listener) {
-        return jobBuilderFactory.get("csvJob")
+    public Job csvJob(JobRepository jobRepository, Step step,
+                      JobCompletionListener listener) {
+        return new JobBuilder("csvJob", jobRepository)
                 .start(step)
                 .listener(listener)
                 .build();
