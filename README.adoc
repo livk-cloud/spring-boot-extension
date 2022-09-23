@@ -13,4 +13,5 @@ SpringBoot: 3.0.0-M4(快照版) +
 Gradle: 7.5.1 +
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
-link:example.adoc[示例详情]
+link:example.adoc[示例详情] +
+link:upgrade-log.adoc[升级文档]
