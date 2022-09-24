@@ -1,6 +1,5 @@
 package com.livk.json.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
@@ -13,7 +12,6 @@ import lombok.Data;
  * @date 2022/5/26
  */
 @Data
-@TableName("\"user\"")
 public class User {
 
     private Long id;

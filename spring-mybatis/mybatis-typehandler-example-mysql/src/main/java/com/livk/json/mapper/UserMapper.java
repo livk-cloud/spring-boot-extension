@@ -1,8 +1,11 @@
 package com.livk.json.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.livk.json.entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +16,11 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022/5/26
  */
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper {
 
+    @Insert("insert into user (username,password,des) values (username,password,des)")
+    int insert(User user);
+
+    @Select("select * from user")
+    List<User> selectList();
 }

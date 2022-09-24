@@ -3,7 +3,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation "com.baomidou:mybatis-plus-boot-starter"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "mysql:mysql-connector-java"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }

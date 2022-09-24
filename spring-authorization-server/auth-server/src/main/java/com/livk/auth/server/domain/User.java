@@ -1,9 +1,5 @@
 package com.livk.auth.server.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
@@ -28,26 +24,16 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "users")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public class User implements Serializable, UserDetails {
-
-    public static final String COL_ID = "id";
-
-    public static final String COL_USERNAME = "username";
-
-    public static final String COL_PASSWORD = "password";
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "username")
     private String username;
 
-    @TableField(value = "`password`")
     private String password;
 
     @JsonIgnore

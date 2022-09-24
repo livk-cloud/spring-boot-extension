@@ -1,7 +1,7 @@
 dependencies {
     implementation project(":spring-mybatis:livk-mybatis-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "com.baomidou:mybatis-plus-boot-starter"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "mysql:mysql-connector-java"
     implementation "com.github.pagehelper:pagehelper-spring-boot-starter"
 }

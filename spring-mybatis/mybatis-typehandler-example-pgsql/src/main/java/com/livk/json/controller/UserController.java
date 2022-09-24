@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("user")
     public HttpEntity<List<User>> users() {
-        return ResponseEntity.ok(userMapper.selectList(null));
+        return ResponseEntity.ok(userMapper.selectList());
     }
 
 }

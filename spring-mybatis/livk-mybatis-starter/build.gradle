@@ -1,7 +1,6 @@
 dependencies {
     api project(":spring-common")
     optional "org.mybatis.spring.boot:mybatis-spring-boot-starter"
-    optional "com.baomidou:mybatis-plus-boot-starter"
     optional "org.springframework.boot:spring-boot-starter"
     optional "com.fasterxml.jackson.core:jackson-databind"
     optional "mysql:mysql-connector-java"

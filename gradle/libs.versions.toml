@@ -2,7 +2,6 @@
 springBoot = "3.0.0-M5"
 pagehelper = "1.4.5"
 oauth2Authorization = "1.0.0-M2"
-mybatisPlus = "3.5.2"
 mybatis = "3.5.11"
 springMybatis = "2.2.2"
 guava = "31.1-jre"
@@ -24,8 +23,6 @@ asciidoctorJvm = "3.3.2"
 
 [libraries]
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
-mybatis-plus-starter = { group = "com.baomidou", name = "mybatis-plus-boot-starter", version.ref = "mybatisPlus" }
-mybatis-plus = { group = "com.baomidou", name = "mybatis-plus", version.ref = "mybatisPlus" }
 oauth2-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "oauth2Authorization" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyExcel" }

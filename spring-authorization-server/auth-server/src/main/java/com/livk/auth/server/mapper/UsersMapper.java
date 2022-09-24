@@ -1,8 +1,9 @@
 package com.livk.auth.server.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.livk.auth.server.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -13,6 +14,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2021/12/22
  */
 @Mapper
-public interface UsersMapper extends BaseMapper<User> {
+public interface UsersMapper {
 
+    @Select("select * from users")
+    User getOne(@Param("username") String username);
 }

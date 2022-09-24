@@ -2,7 +2,7 @@ dependencies {
     implementation project(":spring-authorization-server:server-common")
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation "com.baomidou:mybatis-plus-boot-starter"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "mysql:mysql-connector-java"
     implementation "org.springframework.security:spring-security-oauth2-authorization-server"
 }
