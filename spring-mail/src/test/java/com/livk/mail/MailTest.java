@@ -69,6 +69,16 @@ public class MailTest {
     }
 
     @Test
+    public void testTemplate() throws Exception {
+        Map<String, Object> root = Map.of("bucketName", "Livk-Bucket");
+
+        Template template = configuration.getTemplate("ac.ftl");
+        String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
+        System.out.println(text);
+        Assertions.assertNotNull(text);
+    }
+
+    @Test
     public void test1() throws IOException, TemplateException {
         String txt = "${logo} -> ${code}";
         Map<String, Object> map = Map.of("logo", "www.baidu.com", "code", "123456");
