@@ -9,7 +9,7 @@ https://github.com/livk-cloud/spring-cloud-example[正式版移步Cloud项目] +
 里面的代码或多或少应该可以帮助到你 +
 如果觉得不错，可以star一下 +
 JDK:17 +
-SpringBoot: 3.0.0-M4(快照版) +
+SpringBoot: 3.0.0-M5(快照版) +
 Gradle: 7.5.1 +
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +

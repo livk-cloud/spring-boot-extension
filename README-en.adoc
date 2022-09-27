@@ -9,7 +9,7 @@ Various ways of using Gradle and examples +
 The code inside should more or less help you +
 If you feel good, you can star it +
 JDK:17 +
-SpringBoot: 3.0.0-M4(Snapshot) +
+SpringBoot: 3.0.0-M5(Snapshot) +
 Gradle: 7.5.1 +
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
