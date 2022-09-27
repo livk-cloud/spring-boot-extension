@@ -14,18 +14,8 @@ import org.springframework.util.StringUtils;
  */
 public class IPValidator implements ConstraintValidator<IP, String> {
 
-    private boolean dns;
-
-    @Override
-    public void initialize(IP constraintAnnotation) {
-        dns = constraintAnnotation.dns();
-    }
-
     @Override
     public boolean isValid(String ipStr, ConstraintValidatorContext context) {
-        if (dns && (ipStr.contains(IP.Constant.HTTPS) || ipStr.contains(IP.Constant.HTTP))) {
-            return true;
-        }
         if (StringUtils.hasText(ipStr)) {
             if (ipStr.length() >= 7 && ipStr.length() <= 15) {
                 String[] ipArray = ipStr.split("\\.");

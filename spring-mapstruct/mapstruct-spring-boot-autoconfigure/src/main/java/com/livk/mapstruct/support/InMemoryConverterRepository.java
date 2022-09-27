@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * <p>
- * InmemoryConverterRepository
+ * InMemoryConverterRepository
  * </p>
  *
  * @author livk

@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.URL;
 
 /**
  * <p>
@@ -24,31 +24,23 @@ public class IPMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameter().isAnnotationPresent(IP.class);
+        IP ip = parameter.getParameterAnnotation(IP.class);
+        return ip != null && ip.dns();
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        Assert.notNull(request, "request bot be null");
+        Assert.notNull(request, "request not be null");
         String param = request.getParameter(parameter.getParameterName());
         return DNSForIp(param);
     }
 
-    private String DNSForIp(String ip) {
-        if (ip.contains(IP.Constant.HTTPS)) {
-            ip = ip.replaceFirst(IP.Constant.HTTPS, "");
-        } else if (ip.contains(IP.Constant.HTTP)) {
-            ip = ip.replaceFirst(IP.Constant.HTTP, "");
-        } else {
-            //ip地址不解析
-            return ip;
+    private String DNSForIp(String ip) throws Exception {
+        if (ip.startsWith(IP.Constant.HTTPS) || ip.startsWith(IP.Constant.HTTP)) {
+            ip = new URL(ip).getHost();
         }
-        try {
-            return InetAddress.getByName(ip).getHostAddress();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        return InetAddress.getByName(ip).getCanonicalHostName();
     }
 }
