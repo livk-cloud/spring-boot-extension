@@ -19,9 +19,8 @@ import java.sql.SQLException;
  * @author livk
  * @date 2022/5/26
  */
-@SuppressWarnings("unused")
 @MappedTypes(JsonNode.class)
-public class JsonTypeHandler implements TypeHandler<JsonNode> {
+public class MysqlJsonTypeHandler implements TypeHandler<JsonNode> {
 
     @Override
     public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
