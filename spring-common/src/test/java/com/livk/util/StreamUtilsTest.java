@@ -41,7 +41,7 @@ class StreamUtilsTest {
         Assertions.assertEquals(users, List.of(new User(1, "1"), new User(2, "2")));
     }
 
-    private static record User(Integer id, String username) {
+    private record User(Integer id, String username) {
 
     }
 }
