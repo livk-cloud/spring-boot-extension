@@ -20,3 +20,7 @@ spring:
       nettyThreads: 0
       codec: '!org.redisson.codec.JsonJacksonCodec { }'
       transportMode: "NIO"
+  data:
+    redis:
+      host: livk.com
+      password: 123456

@@ -2,4 +2,5 @@ dependencies {
     implementation project(":spring-lock:lock-local-autoconfigure")
     implementation project(":spring-lock:lock-redis-autoconfigure")
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
 }
