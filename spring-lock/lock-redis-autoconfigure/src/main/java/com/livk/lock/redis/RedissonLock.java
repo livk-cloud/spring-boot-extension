@@ -34,7 +34,7 @@ public class RedissonLock extends AbstractLock<RLock> {
 
 
     @Override
-    protected void unlock(RLock lock) {
+    protected void unlock(String key, RLock lock) {
         if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
             lock.unlock();
         }

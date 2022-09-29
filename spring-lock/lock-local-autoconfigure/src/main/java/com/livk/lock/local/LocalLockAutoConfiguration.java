@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 public class LocalLockAutoConfiguration {
 
     @Bean
-    public DistributedLock redissonLock() {
+    public DistributedLock localLock() {
         return new LocalLock();
     }
 }

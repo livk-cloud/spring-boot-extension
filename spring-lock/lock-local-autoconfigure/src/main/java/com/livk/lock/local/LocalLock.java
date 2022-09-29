@@ -5,6 +5,8 @@ import com.livk.lock.constant.LockType;
 import com.livk.lock.exception.LockException;
 import com.livk.lock.support.AbstractLock;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -19,14 +21,17 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @date 2022/9/6
  */
 public class LocalLock extends AbstractLock<Lock> {
+
+    private static final Map<String, Lock> CACHE_LOCK = new ConcurrentHashMap<>();
+
     @Override
     protected Lock getLock(LockType type, String key) {
-        return switch (type) {
+        return CACHE_LOCK.computeIfAbsent(key, s -> switch (type) {
             case LOCK -> new ReentrantLock();
             case FAIR -> new ReentrantLock(true);
             case READ -> new ReentrantReadWriteLock().readLock();
             case WRITE -> new ReentrantReadWriteLock().writeLock();
-        };
+        });
     }
 
     @Override
@@ -50,9 +55,10 @@ public class LocalLock extends AbstractLock<Lock> {
     }
 
     @Override
-    protected void unlock(Lock lock) {
+    protected void unlock(String key, Lock lock) {
         if (lock != null) {
             lock.unlock();
+            CACHE_LOCK.remove(key);
         }
     }
 

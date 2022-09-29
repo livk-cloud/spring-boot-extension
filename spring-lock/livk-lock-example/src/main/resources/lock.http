@@ -1,0 +1,6 @@
+###获取结果
+GET http://localhost:8080/shop/result
+
+
+###重置数据
+POST http://localhost:8080/shop/reset

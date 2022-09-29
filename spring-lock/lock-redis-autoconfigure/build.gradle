@@ -1,4 +1,4 @@
 dependencies {
     api project(":spring-lock:lock-common")
-    api "org.redisson:redisson-spring-boot-starter"
+    api project(":spring-redis:redisson-spring-boot-starter")
 }

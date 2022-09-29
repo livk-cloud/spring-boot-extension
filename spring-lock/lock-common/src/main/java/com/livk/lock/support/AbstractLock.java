@@ -51,7 +51,7 @@ public abstract class AbstractLock<T extends Lock> implements DistributedLock {
     public void unlock() {
         Pair<String, T> pair = threadLocal.get();
         if (pair != null) {
-            unlock(pair.value());
+            unlock(pair.key(), pair.value());
             threadLocal.remove();
         }
     }
@@ -59,7 +59,7 @@ public abstract class AbstractLock<T extends Lock> implements DistributedLock {
 
     protected abstract T getLock(LockType type, String key);
 
-    protected abstract void unlock(T lock);
+    protected abstract void unlock(String key, T lock);
 
     protected abstract boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws Exception;
 
