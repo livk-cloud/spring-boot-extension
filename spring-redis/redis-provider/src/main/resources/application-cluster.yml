@@ -1,13 +1,14 @@
 spring:
-  redis:
-    password: 123456
-    cluster:
-      nodes:
-        - livk.com:6379
-        - livk1.com:6379
-    lettuce:
-      pool:
-        max-active: 1024
-        max-wait: 10000
-        max-idle: 200
-    timeout: 10000
+  data:
+    redis:
+      password: 123456
+      cluster:
+        nodes:
+          - livk.com:6379
+          - livk1.com:6379
+      lettuce:
+        pool:
+          max-active: 1024
+          max-wait: 10000
+          max-idle: 200
+      timeout: 10000

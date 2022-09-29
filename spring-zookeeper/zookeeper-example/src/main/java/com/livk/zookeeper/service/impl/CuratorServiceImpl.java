@@ -3,7 +3,6 @@ package com.livk.zookeeper.service.impl;
 import com.livk.zookeeper.service.CuratorService;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.CuratorEvent;
 import org.apache.curator.framework.api.CuratorListener;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
@@ -51,11 +50,8 @@ public class CuratorServiceImpl implements CuratorService {
 
     @Override
     public Stat setDataAsync(String path, String data) throws Exception {
-        CuratorListener listener = new CuratorListener() {
-            @Override
-            public void eventReceived(CuratorFramework client, CuratorEvent event) throws Exception {
-                //examine event for details
-            }
+        CuratorListener listener = (client, event) -> {
+            //examine event for details
         };
         curatorClient.getCuratorListenable().addListener(listener);
         return curatorClient.setData().inBackground().forPath(path, data.getBytes());

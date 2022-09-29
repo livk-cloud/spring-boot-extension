@@ -25,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RateLimiterController {
 
-    @Limiter(key = "livk:user", rate = 3, rateInterval = 10, rateIntervalUnit = RateIntervalUnit.SECONDS, requestedTokens = 1)
+    @Limiter(key = "livk:user", rate = 3, rateInterval = 10, rateIntervalUnit = RateIntervalUnit.SECONDS)
     @GetMapping
     public HttpEntity<Map<String, Object>> rate() {
         return ResponseEntity.ok(Map.of("username", "root", "password", "123456"));

@@ -1,5 +1,6 @@
 spring:
-  redis:
-    host: livk.com
-    password: 123456
-    timeout: 10000ms
+  data:
+    redis:
+      host: livk.com
+      timeout: 10000ms
+      password: 123456

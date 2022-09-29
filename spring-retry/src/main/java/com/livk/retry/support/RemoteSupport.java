@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Component
 public class RemoteSupport {
 
-    @Retryable(value = IllegalArgumentException.class, backoff = @Backoff(delay = 2000, multiplier = 1.5))
+    @Retryable(retryFor = IllegalArgumentException.class, backoff = @Backoff(delay = 2000, multiplier = 1.5))
     public String call(String username) {
         if ("fail".equals(username)) {
             log.info("Remote Fail time:{}", LocalDateTime.now());
