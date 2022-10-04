@@ -5,6 +5,7 @@ import com.livk.example.entity.UserVO;
 import com.livk.util.DateUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 
@@ -16,7 +17,7 @@ import org.springframework.lang.NonNull;
  * @author livk
  * @date 2022/5/13
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserSpringConverter extends Converter<User, UserVO> {
 
     @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
