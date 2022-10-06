@@ -14,7 +14,7 @@ import java.util.concurrent.locks.Lock;
  * @author livk
  * @date 2022/9/5
  */
-public abstract class AbstractLock<T extends Lock> implements DistributedLock {
+public abstract class AbstractLockSupport<T extends Lock> implements DistributedLock {
     protected final ThreadLocal<Pair<String, T>> threadLocal = new ThreadLocal<>();
 
     protected T localLock(LockType type, String key) {

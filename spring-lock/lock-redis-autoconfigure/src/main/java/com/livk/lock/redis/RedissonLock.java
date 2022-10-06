@@ -2,7 +2,7 @@ package com.livk.lock.redis;
 
 import com.livk.lock.constant.LockScope;
 import com.livk.lock.constant.LockType;
-import com.livk.lock.support.AbstractLock;
+import com.livk.lock.support.AbstractLockSupport;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/9/5
  */
 @RequiredArgsConstructor
-public class RedissonLock extends AbstractLock<RLock> {
+public class RedissonLock extends AbstractLockSupport<RLock> {
 
     private final RedissonClient redissonClient;
 

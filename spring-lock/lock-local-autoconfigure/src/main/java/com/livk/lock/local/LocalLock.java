@@ -3,7 +3,7 @@ package com.livk.lock.local;
 import com.livk.lock.constant.LockScope;
 import com.livk.lock.constant.LockType;
 import com.livk.lock.exception.LockException;
-import com.livk.lock.support.AbstractLock;
+import com.livk.lock.support.AbstractLockSupport;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author livk
  * @date 2022/9/6
  */
-public class LocalLock extends AbstractLock<Lock> {
+public class LocalLock extends AbstractLockSupport<Lock> {
 
     private static final Map<String, Lock> CACHE_LOCK = new ConcurrentHashMap<>();
 
