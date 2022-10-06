@@ -9,7 +9,6 @@ import com.livk.browscap.filter.UserAgentFilter;
 import com.livk.browscap.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
 import com.livk.browscap.resolver.UserAgentHandlerMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -47,8 +46,7 @@ public class BrowscapAutoConfiguration {
     }
 
 
-    @AutoConfiguration
-    @ConditionalOnBean(UserAgentParser.class)
+    @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class BrowscapMvcAutoConfiguration implements WebMvcConfigurer {
         @Bean
@@ -67,10 +65,10 @@ public class BrowscapAutoConfiguration {
         }
     }
 
-    @AutoConfiguration
-    @ConditionalOnBean(UserAgentParser.class)
+    @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class BrowscapReactiveAutoConfiguration implements WebFluxConfigurer {
+
         @Bean
         public ReactiveUserAgentFilter tenantWebFilter() {
             return new ReactiveUserAgentFilter();
