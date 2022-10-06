@@ -1,9 +1,11 @@
 package com.livk.aop;
 
-import com.livk.aop.support.AnnotationAspect;
-import com.livk.aop.support.ExecutionAspect;
+import com.livk.aop.interceptor.AnnotationInterceptor;
+import com.livk.aop.proxy.AnnotationAutoScanProxy;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,6 +16,10 @@ import org.springframework.context.annotation.Import;
  * @date 2022/7/5
  */
 @AutoConfiguration
-@Import({AnnotationAspect.class, ExecutionAspect.class})
 public class AopAutoConfiguration {
+
+    @Bean
+    public AnnotationAutoScanProxy annotationAutoScanProxy(List<AnnotationInterceptor<?>> annotationInterceptors) {
+        return new AnnotationAutoScanProxy(annotationInterceptors);
+    }
 }

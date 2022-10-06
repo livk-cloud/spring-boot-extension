@@ -2,7 +2,6 @@ package com.livk.example;
 
 import com.livk.spring.LivkSpring;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -17,8 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AopExample {
     public static void main(String[] args) {
-        LivkSpring.run(AopExample.class, args)
-                .getBeansOfType(DefaultPointcutAdvisor.class)
-                .forEach((s, defaultPointcutAdvisor) -> log.info("{}:{}", s, defaultPointcutAdvisor));
+        LivkSpring.run(AopExample.class, args);
     }
 }
