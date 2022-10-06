@@ -1,7 +1,6 @@
 package com.livk.browscap.support;
 
 import com.blueconic.browscap.Capabilities;
-import com.livk.browscap.util.UserAgentUtils;
 
 /**
  * <p>
@@ -16,10 +15,6 @@ public class UserAgentContext {
 
     public static void set(Capabilities capabilities) {
         context.set(capabilities);
-    }
-
-    public static void set(String userAgent) {
-        context.set(UserAgentUtils.parse(userAgent));
     }
 
     public static Capabilities get() {

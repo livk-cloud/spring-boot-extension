@@ -1,7 +1,7 @@
 package com.livk.browscap.filter;
 
-import com.livk.browscap.constant.UserAgentConstant;
 import com.livk.browscap.support.UserAgentContext;
+import com.livk.browscap.util.UserAgentUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +21,7 @@ import java.io.IOException;
 public class UserAgentFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String userAgent = request.getHeader(UserAgentConstant.userAgent);
-        UserAgentContext.set(userAgent);
+        UserAgentContext.set(UserAgentUtils.parse(request));
         filterChain.doFilter(request, response);
         UserAgentContext.remove();
     }

@@ -2,7 +2,6 @@ package com.livk.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.constant.UserAgentConstant;
 import com.livk.browscap.support.UserAgentContext;
 import com.livk.browscap.util.UserAgentUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +34,6 @@ public class UserAgentHandlerMethodArgumentResolver implements HandlerMethodArgu
         }
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         Assert.notNull(request, "request not be null!");
-        String userAgent = request.getHeader(UserAgentConstant.userAgent);
-        return UserAgentUtils.parse(userAgent);
+        return UserAgentUtils.parse(request);
     }
 }

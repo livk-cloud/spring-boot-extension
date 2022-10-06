@@ -2,7 +2,6 @@ package com.livk.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.constant.UserAgentConstant;
 import com.livk.browscap.support.UserAgentContext;
 import com.livk.browscap.util.UserAgentUtils;
 import org.springframework.core.MethodParameter;
@@ -40,8 +39,7 @@ public class ReactiveUserAgentHandlerMethodArgumentResolver implements HandlerMe
         Capabilities capabilities = UserAgentContext.get();
         if (capabilities == null) {
             ServerHttpRequest request = exchange.getRequest();
-            String userAgent = request.getHeaders().getFirst(UserAgentConstant.userAgent);
-            capabilities = UserAgentUtils.parse(userAgent);
+            capabilities = UserAgentUtils.parse(request);
         }
         Mono<Capabilities> mono = Mono.just(capabilities);
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
