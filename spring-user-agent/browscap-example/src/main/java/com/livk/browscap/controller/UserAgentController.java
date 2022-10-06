@@ -23,7 +23,6 @@ public class UserAgentController {
 
     @GetMapping
     public Mono<HttpEntity<Capabilities>> get(@UserAgent Mono<Capabilities> capabilities) {
-//        return Mono.just(ResponseEntity.ok(capabilities));
         return capabilities.map(ResponseEntity::ok);
     }
 }
