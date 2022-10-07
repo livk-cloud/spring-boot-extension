@@ -21,14 +21,4 @@ public class AopAnnoAnnotationIntercept implements AnnotationInterceptor<AopAnno
         log.info("copy anno end");
         return proceed;
     }
-
-    @Override
-    public boolean supportMethod() {
-        return false;
-    }
-
-    @Override
-    public boolean supportClass() {
-        return true;
-    }
 }
