@@ -25,7 +25,7 @@ public class AopAutoConfiguration {
     @Bean
     @ConditionalOnClass(Advice.class)
     public BeanFactoryPostProcessor beanFactoryPostProcessor() {
-        return (beanFactory) -> {
+        return beanFactory -> {
             if (beanFactory instanceof BeanDefinitionRegistry registry) {
                 RootBeanDefinition beanDefinition = new RootBeanDefinition(AnnotationAutoScanProxy.class);
                 beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);

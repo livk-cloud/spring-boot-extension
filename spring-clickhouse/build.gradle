@@ -4,5 +4,4 @@ dependencies {
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "com.github.pagehelper:pagehelper-spring-boot-starter"
     implementation "com.clickhouse:clickhouse-jdbc"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }

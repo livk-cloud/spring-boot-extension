@@ -3,5 +3,4 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-integration"
     implementation "org.springframework.integration:spring-integration-zookeeper"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
