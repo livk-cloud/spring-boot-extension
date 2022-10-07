@@ -21,6 +21,7 @@ mapstructSpring = "0.1.2"
 ip2region = "2.6.5"
 asciidoctorJvm = "3.3.2"
 browscapJava = "1.3.12"
+autoService = "1.0.1"
 
 [libraries]
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper" }
@@ -48,6 +49,8 @@ mapstruct-spring-extensions = { group = "org.mapstruct.extensions.spring", name 
 mapstruct-spring-annotations = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-annotations", version.ref = "mapstructSpring" }
 ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
 browscapJava = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
+autoService = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+autoServiceAnnotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "autoService" }
 
 [bundles]
 jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]

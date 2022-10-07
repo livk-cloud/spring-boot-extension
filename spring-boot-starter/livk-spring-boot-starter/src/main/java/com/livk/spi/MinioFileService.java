@@ -1,5 +1,7 @@
 package com.livk.spi;
 
+import com.google.auto.service.AutoService;
+
 import java.io.InputStream;
 
 /**
@@ -10,6 +12,7 @@ import java.io.InputStream;
  * @author livk
  * @date 2022/3/18
  */
+@AutoService(FileService.class)
 public class MinioFileService implements FileService {
 
     @Override
