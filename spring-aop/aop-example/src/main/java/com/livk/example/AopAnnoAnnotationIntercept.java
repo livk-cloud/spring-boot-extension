@@ -1,6 +1,5 @@
 package com.livk.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.aop.interceptor.AnnotationInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +13,6 @@ import javax.annotation.Nonnull;
 @RequiredArgsConstructor
 public class AopAnnoAnnotationIntercept implements AnnotationInterceptor<AopAnno> {
 
-    private final ObjectMapper objectMapper;
-
     @Override
     public Object invoke(@Nonnull MethodInvocation invocation, AopAnno annotation) throws Throwable {
         log.info("copy anno:{}", annotation);
@@ -26,8 +23,8 @@ public class AopAnnoAnnotationIntercept implements AnnotationInterceptor<AopAnno
     }
 
     @Override
-    public Class<AopAnno> annotationClass() {
-        return AopAnno.class;
+    public boolean supportMethod() {
+        return false;
     }
 
     @Override

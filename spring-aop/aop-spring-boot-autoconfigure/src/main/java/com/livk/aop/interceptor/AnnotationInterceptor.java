@@ -5,6 +5,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
+import org.springframework.core.GenericTypeResolver;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,17 +31,21 @@ public interface AnnotationInterceptor<T extends Annotation> extends MethodInter
             annotation = obj == null ? null : obj.getClass().getAnnotation(targetAnnotationClass);
         }
         if (supportMethod()) {
-            annotation = invocation.getMethod().getAnnotation(targetAnnotationClass);
+            T methodAnnotation = invocation.getMethod().getAnnotation(targetAnnotationClass);
+            annotation = methodAnnotation == null ? annotation : methodAnnotation;
         }
-        if (annotation == null) {
-            return invocation.proceed();
+        if (annotation != null) {
+            return this.invoke(invocation, annotation);
         }
-        return this.invoke(invocation, annotation);
+        return invocation.proceed();
     }
 
     Object invoke(@Nonnull MethodInvocation invocation, T annotation) throws Throwable;
 
-    Class<T> annotationClass();
+    @SuppressWarnings("unchecked")
+    default Class<T> annotationClass() {
+        return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AnnotationInterceptor.class);
+    }
 
     default boolean supportMethod() {
         return true;

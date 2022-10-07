@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.springframework.aop.Advisor;
+import org.springframework.beans.factory.ObjectProvider;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -22,7 +22,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AnnotationAutoScanProxy extends AbstractAutoScanProxy {
 
-    private final List<AnnotationInterceptor<?>> annotationInterceptors;
+    public static final String BEAN_NAME = "com.livk.aop.proxy.AnnotationAutoScanProxy";
+
+    private final ObjectProvider<AnnotationInterceptor<?>> annotationInterceptors;
 
     @Override
     protected Collection<Advice> getProxyClass() {

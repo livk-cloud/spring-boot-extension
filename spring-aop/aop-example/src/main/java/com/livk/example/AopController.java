@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author livk
  * @date 2022/7/5
  */
-@AopAnno
 @RestController
 public class AopController {
 
