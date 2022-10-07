@@ -50,7 +50,6 @@ mapstruct-spring-annotations = { group = "org.mapstruct.extensions.spring", name
 ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
 browscapJava = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
 autoService = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
-autoServiceAnnotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "autoService" }
 
 [bundles]
 jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]

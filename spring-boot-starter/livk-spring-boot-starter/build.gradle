@@ -4,5 +4,4 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     provider "com.google.auto.service:auto-service"
-    provider "com.google.auto.service:auto-service-annotations"
 }
