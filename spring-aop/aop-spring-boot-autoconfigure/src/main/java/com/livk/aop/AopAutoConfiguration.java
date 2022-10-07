@@ -1,11 +1,13 @@
 package com.livk.aop;
 
 import com.livk.aop.proxy.AnnotationAutoScanProxy;
+import org.aopalliance.aop.Advice;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 
@@ -21,6 +23,7 @@ import org.springframework.core.Ordered;
 public class AopAutoConfiguration {
 
     @Bean
+    @ConditionalOnClass(Advice.class)
     public BeanFactoryPostProcessor beanFactoryPostProcessor() {
         return (beanFactory) -> {
             if (beanFactory instanceof BeanDefinitionRegistry registry) {
