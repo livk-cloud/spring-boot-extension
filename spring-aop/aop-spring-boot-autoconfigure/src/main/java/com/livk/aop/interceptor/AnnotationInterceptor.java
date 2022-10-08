@@ -1,7 +1,7 @@
 package com.livk.aop.interceptor;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
  * @author livk
  * @date 2022/10/6
  */
-public interface AnnotationInterceptor<T extends Annotation> extends MethodInterceptor {
+public interface AnnotationInterceptor<T extends Annotation> extends IntroductionInterceptor {
 
     @Nullable
     @Override
@@ -38,6 +38,11 @@ public interface AnnotationInterceptor<T extends Annotation> extends MethodInter
             return this.invoke(invocation, annotation);
         }
         return invocation.proceed();
+    }
+
+    @Override
+    default boolean implementsInterface(Class<?> intf) {
+        return annotationClass().isAssignableFrom(intf);
     }
 
     Object invoke(@Nonnull MethodInvocation invocation, T annotation) throws Throwable;
