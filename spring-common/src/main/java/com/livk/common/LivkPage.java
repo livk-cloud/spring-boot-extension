@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * LivkPage
@@ -31,8 +32,17 @@ public class LivkPage<T> implements Serializable {
 
     private int pageSize;
 
-    private LivkPage(List<T> list) {
-        this.list = list;
+    /**
+     * {@link Page}
+     *
+     * @param list list or page
+     */
+    public LivkPage(List<T> list) {
+        this(list, Function.identity());
+    }
+
+    public <R> LivkPage(List<R> list, Function<List<R>, List<T>> function) {
+        this.list = function.apply(list);
         if (list instanceof Page<T> page) {
             this.pageNum = page.getPageNum();
             this.pageSize = page.getPageSize();
@@ -41,20 +51,4 @@ public class LivkPage<T> implements Serializable {
             this.total = list.size();
         }
     }
-
-    private LivkPage(Page<T> page) {
-        this.list = page.getResult();
-        this.pageNum = page.getPageNum();
-        this.pageSize = page.getPageSize();
-        this.total = page.getTotal();
-    }
-
-    public static <T> LivkPage<T> of(List<T> list) {
-        return new LivkPage<>(list);
-    }
-
-    public static <T> LivkPage<T> of(Page<T> page) {
-        return new LivkPage<>(page);
-    }
-
 }

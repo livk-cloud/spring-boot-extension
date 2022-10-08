@@ -43,7 +43,7 @@ class UserMapperTest {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
                 .countColumn(FieldUtils.getFieldName(User::getId))
                 .doSelectPage(userMapper::list)) {
-            LivkPage<User> result = LivkPage.of(page);
+            LivkPage<User> result = new LivkPage<>(page);
             Assertions.assertNotNull(result);
         }
     }
