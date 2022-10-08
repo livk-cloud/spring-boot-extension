@@ -42,13 +42,14 @@ public class LivkPage<T> implements Serializable {
     }
 
     public <R> LivkPage(List<R> list, Function<List<R>, List<T>> function) {
-        this.list = function.apply(list);
-        if (list instanceof Page<T> page) {
+        if (list instanceof Page<R> page) {
+            this.list = function.apply(page.getResult());
             this.pageNum = page.getPageNum();
             this.pageSize = page.getPageSize();
             this.total = page.getTotal();
         } else {
             this.total = list.size();
+            this.list = function.apply(list);
         }
     }
 }
