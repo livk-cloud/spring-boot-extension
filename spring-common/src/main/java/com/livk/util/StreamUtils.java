@@ -2,13 +2,13 @@ package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * <p>
@@ -36,5 +36,11 @@ public class StreamUtils {
     public <T> Predicate<T> distinct(Function<? super T, ?> function) {
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
+    }
+
+    public <T> Stream<T> of(Iterator<T> iterator) {
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
+                false);
     }
 }
