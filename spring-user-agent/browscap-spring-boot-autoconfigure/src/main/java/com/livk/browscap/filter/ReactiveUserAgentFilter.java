@@ -1,5 +1,6 @@
 package com.livk.browscap.filter;
 
+import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.support.ReactiveUserAgentContext;
 import com.livk.browscap.util.UserAgentUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -18,10 +19,11 @@ import reactor.core.publisher.Mono;
 public class ReactiveUserAgentFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        Capabilities capabilities = UserAgentUtils.parse(exchange.getRequest());
+        exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
+                .contextWrite(ReactiveUserAgentContext.clearContext())
+                .then());
         return chain.filter(exchange)
-                .contextWrite(ReactiveUserAgentContext.withContext(UserAgentUtils.parse(exchange.getRequest())))
-                .doFinally(signalType -> {
-                })
-                .contextWrite(ReactiveUserAgentContext.clearContext());
+                .contextWrite(ReactiveUserAgentContext.withContext(capabilities));
     }
 }
