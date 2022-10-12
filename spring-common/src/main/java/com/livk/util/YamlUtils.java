@@ -20,6 +20,12 @@ public class YamlUtils {
 
     private static final Yaml YAML = new Yaml(new Constructor());
 
+    /**
+     * {@example Map.of(" a.b.c ", " 1 ") -> YAML}
+     *
+     * @param map properties key map
+     * @return yml str
+     */
     public String mapToYml(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
             return "";
@@ -28,7 +34,12 @@ public class YamlUtils {
         return YAML.dumpAsMap(yamlMap);
     }
 
-
+    /**
+     * {@example Map.of(" a.b.c ", " 1 ") -> Map.of("a",Map.of("b",Map.of("c","1")))}
+     *
+     * @param map properties key map
+     * @return yml map
+     */
     @SuppressWarnings("unchecked")
     private synchronized Map<String, Object> mapToYmlMap(Map<String, String> map) {
         Map<String, Object> yml = new HashMap<>();
