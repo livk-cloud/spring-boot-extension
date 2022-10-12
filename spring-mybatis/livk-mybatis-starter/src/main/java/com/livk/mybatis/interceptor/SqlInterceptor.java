@@ -3,6 +3,7 @@ package com.livk.mybatis.interceptor;
 import com.livk.mybatis.annotation.SqlFunction;
 import com.livk.mybatis.enums.SqlFill;
 import com.livk.util.BeanUtils;
+import com.livk.util.FieldUtils;
 import com.livk.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
@@ -32,7 +33,7 @@ public class SqlInterceptor implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Object parameter = invocation.getArgs()[1];
-        Field[] declaredFields = ReflectionUtils.getFields(parameter);
+        Field[] declaredFields = FieldUtils.getAllFields(parameter.getClass());
         if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
             for (Field field : declaredFields) {
                 if (field.isAnnotationPresent(SqlFunction.class)) {
