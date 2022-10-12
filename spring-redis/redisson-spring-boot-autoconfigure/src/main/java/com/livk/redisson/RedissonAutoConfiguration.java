@@ -1,5 +1,6 @@
 package com.livk.redisson;
 
+import com.livk.redisson.util.EnvironmentUtils;
 import com.livk.redisson.util.YamlUtils;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
@@ -17,8 +18,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -26,7 +25,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +41,7 @@ import java.util.Map;
 @AutoConfiguration(before = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedissonAutoConfiguration implements EnvironmentAware {
-    private static final String REDISSON_CONFIG = "spring.redisson.config.";
+    private static final String REDISSON_CONFIG = "spring.redisson.config";
 
     private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 
@@ -61,24 +59,10 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     }
 
     @Bean
-    @SuppressWarnings("unchecked")
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties) {
-        MutablePropertySources propertySources = environment.getPropertySources();
-        Map<String, Object> redissonMap = new HashMap<>();
-        for (PropertySource<?> propertySource : propertySources) {
-            if (propertySource.getSource() instanceof Map) {
-                Map<String, Object> source = (Map<String, Object>) propertySource.getSource();
-                for (Map.Entry<String, Object> entry : source.entrySet()) {
-                    String key = entry.getKey();
-                    if (key.startsWith(REDISSON_CONFIG)) {
-                        key = key.replaceFirst(REDISSON_CONFIG, "");
-                        redissonMap.put(key, entry.getValue().toString());
-                    }
-                }
-            }
-        }
-        String redissonYaml = YamlUtils.mapToYml(redissonMap).replaceAll("'", "");
+        Map<String, String> redissonProperties = EnvironmentUtils.getSubProperties(environment, REDISSON_CONFIG);
+        String redissonYaml = YamlUtils.mapToYml(redissonProperties).replaceAll("'", "");
         Config config;
         Duration duration = redisProperties.getTimeout();
         int timeout = duration == null ? 0 : (int) duration.toMillis();

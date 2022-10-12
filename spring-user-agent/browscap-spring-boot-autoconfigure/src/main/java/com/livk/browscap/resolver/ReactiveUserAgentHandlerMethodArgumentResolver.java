@@ -13,8 +13,6 @@ import org.springframework.web.reactive.result.method.HandlerMethodArgumentResol
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
-
 /**
  * <p>
  * HandlerMethodArgumentResolver
@@ -39,8 +37,7 @@ public class ReactiveUserAgentHandlerMethodArgumentResolver implements HandlerMe
         ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
         Mono<Capabilities> mono = ReactiveUserAgentContext.get()
-                .defaultIfEmpty(UserAgentUtils.parse(exchange.getRequest()))
-                .contextWrite(Function.identity());
+                .defaultIfEmpty(UserAgentUtils.parse(exchange.getRequest()));
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }
 }

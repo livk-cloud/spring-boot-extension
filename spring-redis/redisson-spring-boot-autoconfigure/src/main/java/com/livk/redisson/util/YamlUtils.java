@@ -20,7 +20,7 @@ public class YamlUtils {
 
     private static final Yaml YAML = new Yaml(new Constructor());
 
-    public String mapToYml(Map<String, Object> map) {
+    public String mapToYml(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
             return "";
         }
@@ -30,9 +30,9 @@ public class YamlUtils {
 
 
     @SuppressWarnings("unchecked")
-    private synchronized Map<String, Object> mapToYmlMap(Map<String, Object> map) {
+    private synchronized Map<String, Object> mapToYmlMap(Map<String, String> map) {
         Map<String, Object> yml = new HashMap<>();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             int index = key.indexOf('.');
@@ -53,7 +53,7 @@ public class YamlUtils {
         }
         for (Map.Entry<String, Object> entry : yml.entrySet()) {
             if (entry.getValue() instanceof Map) {
-                Map<String, Object> childMap = mapToYmlMap((Map<String, Object>) entry.getValue());
+                Map<String, Object> childMap = mapToYmlMap((Map<String, String>) entry.getValue());
                 yml.put(entry.getKey(), childMap);
             }
         }
