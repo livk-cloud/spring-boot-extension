@@ -1,7 +1,7 @@
 package com.livk.redisson;
 
-import com.livk.redisson.util.EnvironmentUtils;
-import com.livk.redisson.util.YamlUtils;
+import com.livk.util.EnvironmentUtils;
+import com.livk.util.YamlUtils;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

@@ -1,4 +1,4 @@
-package com.livk.redisson.util;
+package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 import org.yaml.snakeyaml.Yaml;
@@ -13,7 +13,7 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/9/16
+ * @date 2022/10/12
  */
 @UtilityClass
 public class YamlUtils {

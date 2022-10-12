@@ -1,4 +1,4 @@
-package com.livk.mybatis.util;
+package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ArrayUtils;
@@ -7,14 +7,14 @@ import java.lang.reflect.Field;
 
 /**
  * <p>
- * ObjectUtils
+ * ReflectionUtils
  * </p>
  *
  * @author livk
- * @date 2022/3/25
+ * @date 2022/10/12
  */
 @UtilityClass
-public class ReflectionUtils {
+public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
     public Field[] getFields(Object parameter) {
         Field[] declaredFields = parameter.getClass().getDeclaredFields();

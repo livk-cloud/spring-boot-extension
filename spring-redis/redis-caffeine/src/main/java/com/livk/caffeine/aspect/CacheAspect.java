@@ -2,7 +2,7 @@ package com.livk.caffeine.aspect;
 
 import com.livk.caffeine.annotation.DoubleCache;
 import com.livk.caffeine.handler.CacheHandlerAdapter;
-import com.livk.caffeine.util.SpelUtils;
+import com.livk.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -46,7 +46,7 @@ public class CacheAspect {
         for (int i = 0; i < paramNames.length; i++) {
             treeMap.put(paramNames[i], point.getArgs()[i]);
         }
-        String spELResult = SpelUtils.parse(doubleCache.key(), treeMap);
+        String spELResult = SpringUtils.parseSpEL(treeMap, doubleCache.key());
         String realKey = doubleCache.cacheName() + ":" + spELResult;
         switch (doubleCache.type()) {
             case FULL -> {

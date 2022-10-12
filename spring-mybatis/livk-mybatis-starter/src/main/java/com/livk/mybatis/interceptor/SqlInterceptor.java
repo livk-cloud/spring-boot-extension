@@ -2,8 +2,8 @@ package com.livk.mybatis.interceptor;
 
 import com.livk.mybatis.annotation.SqlFunction;
 import com.livk.mybatis.enums.SqlFill;
-import com.livk.mybatis.util.ReflectionUtils;
 import com.livk.util.BeanUtils;
+import com.livk.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;

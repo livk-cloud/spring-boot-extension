@@ -1,4 +1,4 @@
-package com.livk.redisson.util;
+package com.livk.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.Bindable;
