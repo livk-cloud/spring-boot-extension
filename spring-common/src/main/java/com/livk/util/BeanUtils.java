@@ -57,7 +57,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @param <T>         类型
      * @return result list
      */
-    public <T> List<T> copyList(Collection<Object> sourceList, Class<T> targetClass) {
+    public <T> List<T> copyList(Collection<?> sourceList, Class<T> targetClass) {
         return sourceList.stream().map(source -> copy(source, targetClass)).toList();
     }
 

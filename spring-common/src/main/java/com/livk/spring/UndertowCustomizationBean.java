@@ -22,7 +22,7 @@ public class UndertowCustomizationBean implements WebServerFactoryCustomizer<Und
     @Override
     public void customize(UndertowServletWebServerFactory factory) {
         factory.addDeploymentInfoCustomizers(deploymentInfo -> deploymentInfo
-                .addServletContextAttribute("io.undertow.websockets.jsr.WebSocketDeploymentInfo",
+                .addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME,
                         new WebSocketDeploymentInfo().setBuffers(new DefaultByteBufferPool(false, 1024))));
     }
 }
