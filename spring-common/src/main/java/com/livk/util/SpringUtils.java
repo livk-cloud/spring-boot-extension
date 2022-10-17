@@ -1,7 +1,6 @@
 package com.livk.util;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -49,7 +48,7 @@ public class SpringUtils {
                                               ResourceLoader resourceLoader, String... packages) {
         Assert.notNull(annotationClass, "annotation not null");
         Set<Class<?>> classSet = new HashSet<>();
-        if (ArrayUtils.isEmpty(packages)) {
+        if (ObjectUtils.isEmpty(packages)) {
             return classSet;
         }
         ResourcePatternResolver resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
