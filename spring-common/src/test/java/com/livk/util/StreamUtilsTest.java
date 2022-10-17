@@ -41,6 +41,12 @@ class StreamUtilsTest {
         Assertions.assertEquals(users, List.of(new User(1, "1"), new User(2, "2")));
     }
 
+    @Test
+    void of() {
+        List<Integer> result = StreamUtils.of(List.of(1, 2, 3).iterator()).toList();
+        Assertions.assertIterableEquals(List.of(1, 2, 3), result);
+    }
+
     private record User(Integer id, String username) {
 
     }
