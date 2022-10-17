@@ -1,6 +1,6 @@
 package com.livk.filter.reactor;
 
-import com.livk.filter.context.TenantContext;
+import com.livk.filter.context.ReactiveTenantContextHolder;
 import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -20,8 +20,12 @@ public class TenantWebFilter implements WebFilter {
     @NonNull
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        TenantContext.setTenantId(exchange.getRequest().getHeaders().getFirst(TenantContext.ATTRIBUTES));
-        return chain.filter(exchange).doFinally(signalType -> TenantContext.remove());
+        String tenantId = exchange.getRequest().getHeaders().getFirst(ReactiveTenantContextHolder.ATTRIBUTES);
+        exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
+                .contextWrite(ReactiveTenantContextHolder.clearContext())
+                .then());
+        return chain.filter(exchange)
+                .contextWrite(ReactiveTenantContextHolder.withContext(tenantId));
     }
 
 }

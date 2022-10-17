@@ -1,7 +1,7 @@
 package com.livk.filter.mvc;
 
 import com.livk.filter.FilterAutoConfiguration;
-import com.livk.filter.context.TenantContext;
+import com.livk.filter.context.TenantContextHolder;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,10 +28,10 @@ public class TenantFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        TenantContext.setTenantId(((HttpServletRequest) request).getHeader(TenantContext.ATTRIBUTES));
+        TenantContextHolder.setTenantId(((HttpServletRequest) request).getHeader(TenantContextHolder.ATTRIBUTES));
         HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper((HttpServletRequest) request);
         chain.doFilter(requestWrapper, response);
-        TenantContext.remove();
+        TenantContextHolder.remove();
     }
 
 }

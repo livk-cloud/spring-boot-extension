@@ -2,7 +2,7 @@ package com.livk.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.support.ReactiveUserAgentContext;
+import com.livk.browscap.support.ReactiveUserAgentContextHolder;
 import com.livk.browscap.util.UserAgentUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
@@ -36,7 +36,7 @@ public class ReactiveUserAgentHandlerMethodArgumentResolver implements HandlerMe
         Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
         ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
-        Mono<Capabilities> mono = ReactiveUserAgentContext.get()
+        Mono<Capabilities> mono = ReactiveUserAgentContextHolder.get()
                 .defaultIfEmpty(UserAgentUtils.parse(exchange.getRequest()));
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }

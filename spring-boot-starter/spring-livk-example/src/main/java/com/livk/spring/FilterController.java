@@ -1,6 +1,6 @@
 package com.livk.spring;
 
-import com.livk.filter.context.TenantContext;
+import com.livk.filter.context.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FilterController {
 
     @GetMapping("tenant")
-    public HttpEntity<String> tenant(@RequestHeader(TenantContext.ATTRIBUTES) String tenant) {
-        log.info("tenant:{}", TenantContext.getTenantId());
+    public HttpEntity<String> tenant(@RequestHeader(TenantContextHolder.ATTRIBUTES) String tenant) {
+        log.info("tenant:{}", TenantContextHolder.getTenantId());
         return ResponseEntity.ok(tenant);
     }
 

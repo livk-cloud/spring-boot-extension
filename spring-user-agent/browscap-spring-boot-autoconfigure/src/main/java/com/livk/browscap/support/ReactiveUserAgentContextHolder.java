@@ -16,15 +16,15 @@ import java.util.function.Function;
  * @date 2022/10/11
  */
 @UtilityClass
-public final class ReactiveUserAgentContext {
+public final class ReactiveUserAgentContextHolder {
 
     private static final Class<?> USER_AGENT_KEY = Capabilities.class;
 
     public Mono<Capabilities> get() {
         return Mono.deferContextual(Mono::just)
                 .cast(Context.class)
-                .filter(ReactiveUserAgentContext::hasContext)
-                .flatMap(ReactiveUserAgentContext::getContext);
+                .filter(ReactiveUserAgentContextHolder::hasContext)
+                .flatMap(ReactiveUserAgentContextHolder::getContext);
     }
 
     private static boolean hasContext(Context context) {

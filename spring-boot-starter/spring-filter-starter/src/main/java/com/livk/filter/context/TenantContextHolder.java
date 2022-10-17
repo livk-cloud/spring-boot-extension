@@ -5,31 +5,38 @@ import org.springframework.util.StringUtils;
 
 /**
  * <p>
- * TenantContext
+ * TenantContextHolder
  * </p>
  *
  * @author livk
  * @date 2022/5/10
  */
 @UtilityClass
-public class TenantContext {
+public class TenantContextHolder {
 
     public final static String ATTRIBUTES = "tenant";
 
     private final static ThreadLocal<String> TENANT_ID = new ThreadLocal<>();
+    private final static ThreadLocal<String> INHERITABLE_TENANT_ID = new InheritableThreadLocal<>();
 
     public String getTenantId() {
-        return TENANT_ID.get();
+        String tenantId = TENANT_ID.get();
+        if (!StringUtils.hasText(tenantId)) {
+            tenantId = INHERITABLE_TENANT_ID.get();
+        }
+        return tenantId;
     }
 
-    public synchronized void setTenantId(String tenantId) {
+    public void setTenantId(String tenantId) {
         if (StringUtils.hasText(tenantId)) {
             TENANT_ID.set(tenantId);
+            INHERITABLE_TENANT_ID.set(tenantId);
         }
     }
 
     public void remove() {
         TENANT_ID.remove();
+        INHERITABLE_TENANT_ID.remove();
     }
 
 }

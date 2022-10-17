@@ -2,7 +2,7 @@ package com.livk.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.support.UserAgentContext;
+import com.livk.browscap.support.UserAgentContextHolder;
 import com.livk.browscap.util.UserAgentUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -28,7 +28,7 @@ public class UserAgentHandlerMethodArgumentResolver implements HandlerMethodArgu
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        Capabilities capabilities = UserAgentContext.get();
+        Capabilities capabilities = UserAgentContextHolder.get();
         if (capabilities != null) {
             return capabilities;
         }

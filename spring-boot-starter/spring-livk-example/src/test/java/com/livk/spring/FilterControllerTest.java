@@ -1,6 +1,6 @@
 package com.livk.spring;
 
-import com.livk.filter.context.TenantContext;
+import com.livk.filter.context.TenantContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,7 +29,7 @@ class FilterControllerTest {
 
     @Test
     void tenantTest() throws Exception {
-        mockMvc.perform(get("/tenant").header(TenantContext.ATTRIBUTES, "livk"))
+        mockMvc.perform(get("/tenant").header(TenantContextHolder.ATTRIBUTES, "livk"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.content().string("livk"));

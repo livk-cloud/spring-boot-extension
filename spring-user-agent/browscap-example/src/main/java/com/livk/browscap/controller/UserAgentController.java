@@ -2,7 +2,7 @@ package com.livk.browscap.controller;
 
 import com.blueconic.browscap.Capabilities;
 import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.support.ReactiveUserAgentContext;
+import com.livk.browscap.support.ReactiveUserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class UserAgentController {
 
     @GetMapping
     public Mono<HttpEntity<Map<String, Capabilities>>> get(@UserAgent Mono<Capabilities> capabilities) {
-        return ReactiveUserAgentContext.get()
+        return ReactiveUserAgentContextHolder.get()
                 .concatWith(capabilities)
                 .collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
                 .map(ResponseEntity::ok);
