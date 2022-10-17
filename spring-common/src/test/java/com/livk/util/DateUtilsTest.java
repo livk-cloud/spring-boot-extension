@@ -23,56 +23,56 @@ class DateUtilsTest {
     @Test
     void toTimestampTest() {
         Long result = DateUtils.toTimestamp(LocalDateTime.now());
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void fromTimestampTest() {
         LocalDateTime result = DateUtils.fromTimestamp(1663063303L);
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void toDateTest() {
         Date result = DateUtils.toDate(LocalDate.now());
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void testToDateTest() {
         Date result = DateUtils.toDate(LocalDateTime.now());
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void toLocalDateTimeTest() {
         LocalDateTime result = DateUtils.toLocalDateTime(new Date());
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void formatTest() {
         String result = DateUtils.format(LocalDateTime.now(), DateTimeFormatter.ofPattern(DateUtils.YMD_HMS));
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void testFormatTest() {
         String result = DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS);
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 
     @Test
     void parseTest() {
         LocalDateTime result = DateUtils.parse("2022-09-13 18:05:12", DateUtils.YMD_HMS);
-        log.info("result:{}", result);
+        LogUtils.info("result:{}", result);
         Assertions.assertNotNull(result);
     }
 }

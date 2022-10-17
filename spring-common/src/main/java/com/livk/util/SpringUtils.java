@@ -123,30 +123,18 @@ public class SpringUtils {
         return parseSpEL(variables, condition, String.class);
     }
 
-    public <T> T parseTemplate(Method method, Object[] args, String condition, Class<T> returnClass) {
-        return parse(method, args, condition, returnClass, true, null);
-    }
-
-    public <T> T parseTemplate(Method method, Object[] args, String condition, Class<T> returnClass, Map<String, Object> expandMap) {
-        return parse(method, args, condition, returnClass, true, expandMap);
-    }
-
     public String parseTemplate(Method method, Object[] args, String condition) {
-        return parseTemplate(method, args, condition, String.class);
+        return parseTemplate(method, args, condition, null);
     }
 
     public String parseTemplate(Method method, Object[] args, String condition, Map<String, Object> expandMap) {
         return parse(method, args, condition, String.class, true, expandMap);
     }
 
-    public <T> T parseTemplate(Map<String, ?> variables, String condition, Class<T> returnClass) {
+    public String parseTemplate(Map<String, ?> variables, String condition) {
         StandardEvaluationContext context = new StandardEvaluationContext();
         variables.forEach(context::setVariable);
-        return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, returnClass);
-    }
-
-    public String parseTemplate(Map<String, ?> variables, String condition) {
-        return parseTemplate(variables, condition, String.class);
+        return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, String.class);
     }
 
 }
