@@ -37,7 +37,7 @@ public class RedisConfig {
     public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
             ReactiveRedisConnectionFactory connectionFactory) {
         ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        RedisSerializer<LivkMessage> serializer = SerializerUtils.getSerializer(LivkMessage.class);
+        RedisSerializer<LivkMessage> serializer = SerializerUtils.json(LivkMessage.class);
         container
                 .receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
                         RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
