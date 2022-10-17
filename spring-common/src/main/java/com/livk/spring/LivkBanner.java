@@ -42,7 +42,7 @@ class LivkBanner implements Banner {
         out.println(banner);
         int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
         max = max % 2 == 0 ? max : max + 1;
-        Format format = Format.create(max, out);
+        Format format = Format.of(max, out);
         format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
         format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
         format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
@@ -50,7 +50,7 @@ class LivkBanner implements Banner {
         out.flush();
     }
 
-    @RequiredArgsConstructor(staticName = "create")
+    @RequiredArgsConstructor(staticName = "of")
     private static class Format implements Consumer<String> {
 
         private final static char ch = '*';
