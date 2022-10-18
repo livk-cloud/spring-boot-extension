@@ -58,6 +58,24 @@ class SpringUtilsTest {
         Assertions.assertEquals("root:livk", SpringUtils.parseTemplate(map, "root:#{#username}"));
     }
 
+    @Test
+    void parse() {
+        Assertions.assertEquals("root:livk", SpringUtils.parse(method, args, "root:#{#username}"));
+        Assertions.assertEquals("livk", SpringUtils.parse(method, args, "#username"));
+    }
+
+    @Test
+    void testParse() {
+        Assertions.assertEquals("root:livk:123456", SpringUtils.parse(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
+        Assertions.assertEquals("livk123456", SpringUtils.parse(method, args, "#username+#password", Map.of("password", "123456")));
+    }
+
+    @Test
+    void testParse1() {
+        Assertions.assertEquals("root:livk", SpringUtils.parse(map, "root:#{#username}"));
+        Assertions.assertEquals("livk", SpringUtils.parse(map, "#username"));
+    }
+
     private void parseMethod(String username) {
 
     }

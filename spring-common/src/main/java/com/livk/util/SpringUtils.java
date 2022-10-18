@@ -1,9 +1,12 @@
 package com.livk.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -19,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +74,18 @@ public class SpringUtils {
             throw new RuntimeException(e);
         }
         return classSet;
+    }
+
+    /**
+     * {@example env= "spring.data.redisson.host=127.0.0.1" keyPrefix="spring.data" result=Map.of("redisson.host","127.0.0.1")}
+     *
+     * @param environment env
+     * @param keyPrefix   prefix
+     * @return map
+     */
+    public Map<String, String> getSubProperties(Environment environment, String keyPrefix) {
+        return Binder.get(environment).bind(keyPrefix, Bindable.mapOf(String.class, String.class))
+                .orElseGet(Collections::emptyMap);
     }
 
     /**
@@ -136,4 +152,23 @@ public class SpringUtils {
         return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, String.class);
     }
 
+    public String parse(Method method, Object[] args, String condition) {
+        return parse(method, args, condition, null);
+    }
+
+    public String parse(Method method, Object[] args, String condition, Map<String, Object> expandMap) {
+        String result = parse(method, args, condition, String.class, true, expandMap);
+        if (condition.equals(result)) {
+            result = parse(method, args, condition, String.class, false, expandMap);
+        }
+        return result;
+    }
+
+    public String parse(Map<String, ?> variables, String condition) {
+        String result = parseTemplate(variables, condition);
+        if (condition.equals(result)) {
+            result = parseSpEL(variables, condition);
+        }
+        return result;
+    }
 }
