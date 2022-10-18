@@ -18,6 +18,7 @@ import org.springframework.web.reactive.result.method.annotation.ArgumentResolve
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,18 +34,8 @@ public class BrowscapAutoConfiguration {
 
     @Bean
     public UserAgentParser userAgentParser() throws IOException, ParseException {
-        return new UserAgentService().loadParser(List.of(BrowsCapField.BROWSER,
-                BrowsCapField.BROWSER_TYPE,
-                BrowsCapField.BROWSER_MAJOR_VERSION,
-                BrowsCapField.DEVICE_TYPE,
-                BrowsCapField.PLATFORM,
-                BrowsCapField.PLATFORM_VERSION,
-                BrowsCapField.RENDERING_ENGINE_VERSION,
-                BrowsCapField.RENDERING_ENGINE_NAME,
-                BrowsCapField.PLATFORM_MAKER,
-                BrowsCapField.RENDERING_ENGINE_MAKER));
+        return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
     }
-
 
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
