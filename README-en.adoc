@@ -1,5 +1,4 @@
 = Spring Boot Example
-:toc: right
 
 link:README-en.adoc[English]|link:README.adoc[简体中文] +
 
@@ -13,4 +12,5 @@ SpringBoot: 3.0.0-M5(Snapshot) +
 Gradle: 7.5.1 +
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
-link:example.adoc[example details]
+link:example.adoc[example details] +
+link:upgrade-log.adoc[upgrade documentation] +
