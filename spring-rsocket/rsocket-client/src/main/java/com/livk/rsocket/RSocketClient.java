@@ -32,7 +32,9 @@ public class RSocketClient {
 
         RSocket rsocket = this.rsocketRequester.rsocket();
         if (rsocket != null) {
-            rsocket.onClose().doOnError(error -> log.warn("发生错误，链接关闭")).doFinally(consumer -> log.info("链接关闭"))
+            rsocket.onClose()
+                    .doOnError(error -> log.warn("发生错误，链接关闭"))
+                    .doFinally(consumer -> log.info("链接关闭"))
                     .subscribe();
         } else {
             log.info("rsocket is null");
@@ -41,36 +43,43 @@ public class RSocketClient {
 
     @PreDestroy
     void shutdown() {
-        rsocketRequester.rsocket().dispose();
+        RSocket rsocket = rsocketRequester.rsocket();
+        if (rsocket != null) {
+            rsocket.dispose();
+        }
     }
 
     @GetMapping("request-response")
-    public Message requestResponse() {
-        Message message = this.rsocketRequester.route("request-response").data(new Message("客户端", "服务器"))
-                .retrieveMono(Message.class).block();
-        log.info("客户端request-response收到响应 {}", message);
-        return message;
+    public Mono<Message> requestResponse() {
+        return this.rsocketRequester.route("request-response")
+                .data(new Message("客户端", "服务器"))
+                .retrieveMono(Message.class)
+                .log();
     }
 
     @GetMapping("fire-and-forget")
-    public String fireAndForget() {
-        this.rsocketRequester.route("fire-and-forget").data(new Message("客户端", "服务器")).send().block();
-        return "fire and forget";
+    public Mono<String> fireAndForget() {
+        return this.rsocketRequester
+                .route("fire-and-forget")
+                .data(new Message("客户端", "服务器"))
+                .send()
+                .flatMap(unused -> Mono.just("fire and forget"));
     }
 
     @GetMapping("stream")
-    public String stream() {
-        return "stream";
+    public Mono<String> stream() {
+        return Mono.just("stream");
     }
 
     @GetMapping("channel")
-    public String channel() {
+    public Mono<String> channel() {
         Mono<Duration> setting1 = Mono.just(Duration.ofSeconds(1));
         Mono<Duration> setting2 = Mono.just(Duration.ofSeconds(3)).delayElement(Duration.ofSeconds(5));
         Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
         Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
                 .doOnNext(d -> log.info("客户端channel发送消息 {}", d.getSeconds()));
-        return "channel";
+        return settings.collectList()
+                .flatMap(durations -> Mono.just("channel"));
     }
 
 }
