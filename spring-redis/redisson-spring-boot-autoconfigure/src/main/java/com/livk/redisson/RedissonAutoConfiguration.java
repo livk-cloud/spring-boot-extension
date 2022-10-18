@@ -8,6 +8,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;
 import org.redisson.client.RedisException;
 import org.redisson.config.Config;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,7 +20,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-    private final List<RedissonAutoConfigurationCustomizer> redissonAutoConfigurationCustomizers;
+    private final ObjectProvider<RedissonAutoConfigurationCustomizer> redissonAutoConfigurationCustomizers;
 
     private StandardEnvironment environment;
 
@@ -102,11 +102,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
                     .setDatabase(redisProperties.getDatabase())
                     .setPassword(redisProperties.getPassword());
         }
-        if (!CollectionUtils.isEmpty(redissonAutoConfigurationCustomizers)) {
-            for (RedissonAutoConfigurationCustomizer customizer : redissonAutoConfigurationCustomizers) {
-                customizer.customize(config);
-            }
-        }
+        redissonAutoConfigurationCustomizers.forEach(customizer -> customizer.customize(config));
         return Redisson.create(config);
     }
 

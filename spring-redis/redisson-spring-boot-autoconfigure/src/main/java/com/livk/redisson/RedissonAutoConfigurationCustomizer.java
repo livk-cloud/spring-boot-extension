@@ -1,22 +1,18 @@
 package com.livk.redisson;
 
+import com.livk.function.Customizer;
 import org.redisson.config.Config;
 
 /**
  * <p>
- * RedissonAutoConfigurationCustomizer
+ * Customize the RedissonClient configuration.
+ * *
+ * * @param configuration the {@link Config} to customize
  * </p>
  *
  * @author livk
  * @date 2022/9/16
  */
-@FunctionalInterface
-public interface RedissonAutoConfigurationCustomizer {
+public interface RedissonAutoConfigurationCustomizer extends Customizer<Config> {
 
-    /**
-     * Customize the RedissonClient configuration.
-     *
-     * @param configuration the {@link Config} to customize
-     */
-    void customize(final Config configuration);
 }
