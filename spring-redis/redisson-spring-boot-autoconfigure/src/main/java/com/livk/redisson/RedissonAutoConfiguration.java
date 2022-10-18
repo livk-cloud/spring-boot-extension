@@ -1,6 +1,6 @@
 package com.livk.redisson;
 
-import com.livk.util.EnvironmentUtils;
+import com.livk.util.SpringUtils;
 import com.livk.util.YamlUtils;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
@@ -61,7 +61,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     @Bean
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties) {
-        Map<String, String> redissonProperties = EnvironmentUtils.getSubProperties(environment, REDISSON_CONFIG);
+        Map<String, String> redissonProperties = SpringUtils.getSubProperties(environment, REDISSON_CONFIG);
         String redissonYaml = YamlUtils.mapToYml(redissonProperties).replaceAll("'", "");
         Config config;
         Duration duration = redisProperties.getTimeout();
