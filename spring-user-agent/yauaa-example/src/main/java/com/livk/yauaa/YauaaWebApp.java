@@ -1,19 +1,19 @@
-package com.livk.browscap;
+package com.livk.yauaa;
 
 import com.livk.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * <p>
- * UserAgentWebApp
+ * YauaaWebApp
  * </p>
  *
  * @author livk
  * @date 2022/10/6
  */
 @SpringBootApplication
-public class UserAgentWebApp {
+public class YauaaWebApp {
     public static void main(String[] args) {
-        LivkSpring.run(UserAgentWebApp.class, args);
+        LivkSpring.run(YauaaWebApp.class, args);
     }
 }
