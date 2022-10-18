@@ -1,15 +1,18 @@
 = Spring Boot Example
 
 link:README-en.adoc[English]|link:README.adoc[简体中文] +
+https://github.com/livk-cloud/spring-cloud-example[The official version of the Move `Spring Cloud` project] +
 
-Here is a various example on springboot project. +
-https://github.com/livk-cloud/spring-cloud-example[The official version of the Mobile Cloud project] +
+Here is a various example on springboot project +
+Use 3rd party packages to basically overwrite the latest version +
 Various ways of using Gradle and examples +
+Also includes a variety of custom Spring Boot Starter +
 The code inside should more or less help you +
 If you feel good, you can star it +
-JDK:17 +
-SpringBoot: 3.0.0-M5(Snapshot) +
-Gradle: 7.5.1 +
+JDK:17(latest LTS) +
+SpringBoot: 3.0.0-M5(latest snapshot version) +
+Gradle: 7.5.1(current the latest version) +
+
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
 link:example.adoc[example details] +

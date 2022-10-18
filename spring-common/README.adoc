@@ -6,6 +6,7 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 
 添加google findbugs
 
+`Maven`
 [source,xml,indent=0]
 ----
 <dependency>
@@ -15,9 +16,10 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 </dependency>
 ----
 
+`Gradle`
 [source,groovy,indent=0]
 ----
 dependencies {
-    implementation 'com.google.code.findbugs:annotations:3.0.1'
+    implementation("com.google.code.findbugs:annotations:3.0.1")
 }
 ----

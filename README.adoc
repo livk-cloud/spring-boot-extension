@@ -1,15 +1,18 @@
 = Spring Boot Example
 
 link:README-en.adoc[English]|link:README.adoc[简体中文] +
+https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud` 项目] +
 
-这是一个关于springboot项目的各种示例. +
-https://github.com/livk-cloud/spring-cloud-example[正式版移步Cloud项目] +
+这是一个关于springboot项目的各种示例 +
+使用第三方包基本覆盖最新版本 +
 关于Gradle的各种使用方式以及示例 +
+同时包含了各种自定义Spring Boot Starter +
 里面的代码或多或少应该可以帮助到你 +
 如果觉得不错，可以star一下 +
-JDK:17 +
-SpringBoot: 3.0.0-M5(快照版) +
-Gradle: 7.5.1 +
+JDK:17(最新LTS) +
+SpringBoot: 3.0.0-M5(最新快照) +
+Gradle: 7.5.1(当前最新版) +
+
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:example.adoc[示例详情] +
