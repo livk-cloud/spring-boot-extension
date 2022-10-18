@@ -2,10 +2,9 @@ package com.livk.lock;
 
 import com.livk.lock.aspect.LockAspect;
 import com.livk.lock.support.DistributedLock;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-
-import java.util.List;
 
 /**
  * <p>
@@ -19,7 +18,7 @@ import java.util.List;
 public class LockAutoConfiguration {
 
     @Bean
-    public LockAspect lockAspect(List<DistributedLock> distributedLocks) {
-        return new LockAspect(distributedLocks);
+    public LockAspect lockAspect(ObjectProvider<DistributedLock> distributedLockProvider) {
+        return new LockAspect(distributedLockProvider);
     }
 }
