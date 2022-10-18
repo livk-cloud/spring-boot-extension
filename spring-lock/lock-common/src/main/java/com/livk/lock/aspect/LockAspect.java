@@ -10,11 +10,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * <p>
@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LockAspect {
 
-    private final List<DistributedLock> distributedLocks;
+    private final ObjectProvider<DistributedLock> distributedLockProvider;
 
     @Around("@annotation(onLock)")
     public Object around(ProceedingJoinPoint joinPoint, OnLock onLock) throws Throwable {
@@ -39,7 +39,7 @@ public class LockAspect {
         }
         Assert.notNull(onLock, "lock is null");
         LockScope scope = onLock.scope();
-        DistributedLock distributedLock = distributedLocks.stream()
+        DistributedLock distributedLock = distributedLockProvider.stream()
                 .filter(lock -> lock.scope().equals(scope))
                 .findFirst()
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
