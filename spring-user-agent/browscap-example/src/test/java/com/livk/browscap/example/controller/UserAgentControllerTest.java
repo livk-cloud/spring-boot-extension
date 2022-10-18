@@ -31,10 +31,14 @@ class UserAgentControllerTest {
         client.get()
                 .uri(uriBuilder -> uriBuilder.host("localhost")
                         .port(port)
-                        .path("/user-agent").build())
+                        .path("/user-agent")
+                        .build())
                 .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
-                .expectBody(JsonNode.class).value(System.out::println);
+                .expectStatus()
+                .isOk()
+                .expectHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+                .expectBody(JsonNode.class)
+                .value(System.out::println);
     }
 }
