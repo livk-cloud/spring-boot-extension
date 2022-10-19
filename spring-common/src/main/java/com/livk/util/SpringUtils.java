@@ -1,5 +1,6 @@
 package com.livk.util;
 
+import com.livk.support.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -7,6 +8,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -74,6 +76,32 @@ public class SpringUtils {
             throw new RuntimeException(e);
         }
         return classSet;
+    }
+
+    /**
+     * 获取被注解标注的class
+     *
+     * @param annotationClass 注解标记
+     * @param isWeb           是否Web
+     * @param packages        被扫描的包
+     * @return set class
+     */
+    public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationClass, boolean isWeb, String... packages) {
+        if (isWeb) {
+            return findByAnnotationType(annotationClass, SpringContextHolder.getApplicationContext(), packages);
+        }
+        return findByAnnotationType(annotationClass, packages);
+    }
+
+    /**
+     * 获取被注解标注的class
+     *
+     * @param annotationClass 注解标记
+     * @param packages        被扫描的包
+     * @return set class
+     */
+    public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationClass, String... packages) {
+        return findByAnnotationType(annotationClass, new DefaultResourceLoader(Thread.currentThread().getContextClassLoader()), packages);
     }
 
     /**
