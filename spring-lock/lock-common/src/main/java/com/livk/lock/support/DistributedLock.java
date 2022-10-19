@@ -2,6 +2,7 @@ package com.livk.lock.support;
 
 import com.livk.lock.constant.LockScope;
 import com.livk.lock.constant.LockType;
+import org.springframework.core.Ordered;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import com.livk.lock.constant.LockType;
  * @author livk
  * @date 2022/9/5
  */
-public interface DistributedLock {
+public interface DistributedLock extends Ordered {
 
     boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async);
 
@@ -20,4 +21,9 @@ public interface DistributedLock {
     void unlock();
 
     LockScope scope();
+
+    @Override
+    default int getOrder() {
+        return 0;
+    }
 }

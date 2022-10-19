@@ -15,6 +15,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
+import java.util.Comparator;
 
 /**
  * <p>
@@ -41,7 +42,7 @@ public class LockAspect {
         LockScope scope = onLock.scope();
         DistributedLock distributedLock = distributedLockProvider.stream()
                 .filter(lock -> lock.scope().equals(scope))
-                .findFirst()
+                .min(Comparator.comparingInt(DistributedLock::getOrder))
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
         try {
             if (distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), onLock.async())) {
