@@ -44,13 +44,16 @@ public class LockAspect {
                 .filter(lock -> lock.scope().equals(scope))
                 .min(Comparator.comparingInt(DistributedLock::getOrder))
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
+        boolean isLock = distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), onLock.async());
         try {
-            if (distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), onLock.async())) {
+            if (isLock) {
                 return joinPoint.proceed();
             }
             throw new LockException("获取锁失败!");
         } finally {
-            distributedLock.unlock();
+            if (isLock) {
+                distributedLock.unlock();
+            }
         }
     }
 }

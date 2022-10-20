@@ -17,32 +17,33 @@ import java.util.concurrent.locks.Lock;
 public abstract class AbstractLockSupport<T extends Lock> implements DistributedLock {
     protected final ThreadLocal<Pair<String, T>> threadLocal = new ThreadLocal<>();
 
-    protected T localLock(LockType type, String key) {
-        T lock = getLock(type, key);
-        threadLocal.set(Pair.of(key, lock));
-        return lock;
-    }
-
     @Override
     public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
-        T lock = localLock(type, key);
+        T lock = getLock(type, key);
         try {
-            return async ? tryLockAsync(lock, leaseTime, waitTime) : tryLock(lock, waitTime, leaseTime);
+            boolean isLocked = async ? tryLockAsync(lock, leaseTime, waitTime) : tryLock(lock, waitTime, leaseTime);
+            if (isLocked) {
+                threadLocal.set(Pair.of(key, lock));
+            }
+            return isLocked;
         } catch (Exception e) {
+            threadLocal.remove();
             throw new LockException(e);
         }
     }
 
     @Override
     public void lock(LockType type, String key, boolean async) {
-        T lock = localLock(type, key);
+        T lock = getLock(type, key);
         try {
             if (async) {
                 lockAsync(lock);
             } else {
                 lock(lock);
             }
+            threadLocal.set(Pair.of(key, lock));
         } catch (Exception e) {
+            threadLocal.remove();
             throw new LockException(e);
         }
     }

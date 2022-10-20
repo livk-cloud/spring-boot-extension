@@ -57,9 +57,19 @@ public class LocalLock extends AbstractLockSupport<Lock> {
     @Override
     protected void unlock(String key, Lock lock) {
         if (lock != null) {
-            lock.unlock();
-            CACHE_LOCK.remove(key);
+            if (lock instanceof ReentrantLock reentrantLock) {
+                if (reentrantLock.isLocked() && reentrantLock.isHeldByCurrentThread()) {
+                    lock.unlock();
+                }
+            } else if (lock instanceof ReentrantReadWriteLock.WriteLock writeLock) {
+                if (writeLock.isHeldByCurrentThread()) {
+                    lock.unlock();
+                }
+            } else {
+                lock.unlock();
+            }
         }
+        CACHE_LOCK.remove(key);
     }
 
     @Override
