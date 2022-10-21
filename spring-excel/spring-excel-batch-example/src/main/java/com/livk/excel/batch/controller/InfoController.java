@@ -5,6 +5,8 @@ import com.livk.excel.annotation.ExcelImport;
 import com.livk.excel.batch.entity.Info;
 import com.livk.excel.batch.listener.InfoExcelListener;
 import com.livk.excel.batch.listener.JobListener;
+import com.livk.excel.batch.support.EasyExcelItemReader;
+import com.livk.excel.listener.TypeExcelReadListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -24,8 +26,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +63,23 @@ public class InfoController {
                 .addDate("date", new Date())
                 .toJobParameters());
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("excel")
+    public HttpEntity<List<Info>> up(@RequestParam("file") MultipartFile file) throws IOException {
+        EasyExcelItemReader<Info> itemReader = new EasyExcelItemReader<>(file.getInputStream(), new TypeExcelReadListener<>() {
+        });
+        List<Info> list = new ArrayList<>();
+        while (true) {
+            Info o = itemReader.read();
+            if (o != null) {
+                o.setId(System.currentTimeMillis());
+                list.add(o);
+            } else {
+                break;
+            }
+        }
+        return ResponseEntity.ok(list);
     }
 
     private Step excelStep(List<Info> dataExcels) {

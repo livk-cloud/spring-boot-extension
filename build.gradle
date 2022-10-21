@@ -3,7 +3,6 @@ plugins {
 }
 
 ext {
-    bootVersion = libs.versions.springBoot.get()
     bom = List.of(project(":livk-boot-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
     commonModuleProjects = gradleModuleProjects.findAll {
