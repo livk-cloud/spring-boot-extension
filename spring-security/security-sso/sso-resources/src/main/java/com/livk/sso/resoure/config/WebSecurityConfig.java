@@ -31,8 +31,8 @@ public class WebSecurityConfig {
                                                    AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         return http.csrf()
                 .disable()
-                .authorizeRequests()
-                .antMatchers("/user/query")
+                .authorizeHttpRequests()
+                .requestMatchers("/user/query")
                 .hasAnyRole("ADMIN")
                 .anyRequest()
                 .authenticated()

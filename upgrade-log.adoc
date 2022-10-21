@@ -63,3 +63,20 @@ public class Main{
 `spring.factories` 自动装配删除，新的自动装配 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` +
 第三方包未适配
 
+=== 升级到SpringBoot 3-RC1
+
+废弃: +
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeRequests()` +
+代替方案 +
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeHttpRequests()` +
+
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeRequests(org.springframework.security.config.Customizer<org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer<org.springframework.security.config.annotation.web.builders.HttpSecurity>.ExpressionInterceptUrlRegistry>)` +
+代替方案 +
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeHttpRequests(org.springframework.security.config.Customizer<org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer<org.springframework.security.config.annotation.web.builders.HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>)` +
+
+删除: +
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.requestMatcher`
+代替方案 +
+`org.springframework.security.config.annotation.web.builders.HttpSecurity.securityMatcher(org.springframework.security.web.util.matcher.RequestMatcher)`
+
+

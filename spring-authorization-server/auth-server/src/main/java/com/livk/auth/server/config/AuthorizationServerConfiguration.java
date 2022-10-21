@@ -72,8 +72,8 @@ public class AuthorizationServerConfiguration {
         http.apply(configurer);
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
-        DefaultSecurityFilterChain securityFilterChain = http.requestMatcher(endpointsMatcher)
-                .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(endpointsMatcher)
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .apply(configurer.authorizationService(authorizationService))
                 .and()
                 .apply(new FormIdentityLoginConfigurer())

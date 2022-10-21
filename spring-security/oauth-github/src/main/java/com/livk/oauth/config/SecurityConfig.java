@@ -20,8 +20,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeRequests()
-                .antMatchers("/", "/error", "/webjars/**")
+        return http.authorizeHttpRequests()
+                .requestMatchers("/", "/error", "/webjars/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

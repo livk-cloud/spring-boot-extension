@@ -9,6 +9,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 /**
@@ -27,10 +28,10 @@ abstract class BootPlugin implements Plugin<Project> {
         project.extensions
                 .getByType(SpringBootExtension.class)
                 .buildInfo {
-                    it.properties {
-                        it.group = project.group
-                        it.version = project.version
-                        it.time = Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))
+                    it.properties { build ->
+                        build.group.set(project.group.toString())
+                        build.version.set(project.version.toString())
+                        build.time.set(DateTimeFormatter.ISO_INSTANT.format(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))))
                     }
                 }
         def bootJar = project.tasks.getByName(SpringBootPlugin.BOOT_JAR_TASK_NAME) as BootJar

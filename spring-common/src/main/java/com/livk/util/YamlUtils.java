@@ -18,7 +18,7 @@ import java.util.Map;
 @UtilityClass
 public class YamlUtils {
 
-    private static final Yaml YAML = new Yaml(new Constructor());
+    private static final Yaml YAML = new Yaml(new Constructor(Object.class));
 
     /**
      * {@example Map.of(" a.b.c ", " 1 ") -> YAML}

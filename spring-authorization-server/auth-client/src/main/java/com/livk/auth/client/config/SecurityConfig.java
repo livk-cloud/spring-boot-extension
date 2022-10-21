@@ -32,13 +32,13 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/webjars/**");
+        return (web) -> web.ignoring().requestMatchers("/webjars/**");
     }
 
     // @formatter:off
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login.loginPage("/oauth2/authorization/livk-client-oidc"))
                 .oauth2Client(withDefaults());
         return http.build();
