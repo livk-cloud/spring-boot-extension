@@ -30,7 +30,7 @@ public class HttpAutoConfiguration {
 
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient) {
-        return WebClientAdapter.createHttpServiceProxyFactory(webClient);
+        return HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();
     }
 
     @Bean

@@ -1,8 +1,8 @@
 package com.livk.order.controller;
 
 import com.livk.order.config.RabbitConfig;
-import com.livk.util.LogUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,7 @@ import java.util.UUID;
  * @author livk
  * @date 2022/10/13
  */
+@Slf4j
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class OrderController {
     @GetMapping
     public HttpEntity<Map<String, String>> submit() {
         String orderId = UUID.randomUUID().toString();
-        LogUtils.info("submit order {}", orderId);
+        log.info("submit order {}", orderId);
         this.rabbitTemplate.convertAndSend(RabbitConfig.orderExchange, RabbitConfig.routingKeyOrder, orderId);
         return ResponseEntity.ok(Map.of("orderId", orderId));
     }
