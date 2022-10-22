@@ -10,7 +10,7 @@ Also includes a variety of custom Spring Boot Starter +
 The code inside should more or less help you +
 If you feel good, you can star it +
 JDK:17(latest LTS) +
-SpringBoot: 3.0.0-M5(latest snapshot version) +
+SpringBoot: 3.0.0-RC1(latest snapshot version) +
 Gradle: 7.5.1(current the latest version) +
 
 link:gradle.properties[Project information] +
