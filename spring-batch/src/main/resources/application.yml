@@ -5,7 +5,7 @@ spring:
       table-prefix: BATCH_
     job:
       enabled: false
-      names: parentjob
+      name: parentjob
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://livk.com:3306/batch_config
