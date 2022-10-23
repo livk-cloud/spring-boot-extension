@@ -67,7 +67,7 @@ public class CsvLineMapper<T> implements LineMapper<T> {
             } else {
                 value = valueStr;
             }
-            field = StringUtils.capitalize(field);
+            field = StringUtils.uncapitalize(field);
             Method method = targetClass.getMethod("set" + field, type);
             method.invoke(t, value);
         } catch (Exception e) {

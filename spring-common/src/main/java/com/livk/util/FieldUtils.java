@@ -34,7 +34,7 @@ public class FieldUtils extends org.apache.commons.lang3.reflect.FieldUtils {
             } else {
                 throw new FileNotFoundException("缺少get|is方法");
             }
-            return StringUtils.capitalize(getter);
+            return StringUtils.uncapitalize(getter);
         } catch (Exception e) {
             log.error("获取字段名称失败 message: {}", e.getMessage(), e);
             return null;
