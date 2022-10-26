@@ -2,4 +2,5 @@ dependencies {
     implementation project(":spring-common")
     implementation "org.springframework.boot:spring-boot-starter-webflux"
     implementation "org.springdoc:springdoc-openapi-starter-webflux-ui"
+    implementation project(":spring-doc:springdoc-spring-boot-starter")
 }

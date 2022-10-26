@@ -1,12 +1,12 @@
 package com.livk.excel.batch.controller;
 
 import com.google.common.collect.Lists;
-import com.livk.excel.annotation.ExcelImport;
+import com.livk.autoconfigure.excel.annotation.ExcelImport;
+import com.livk.autoconfigure.excel.listener.TypeExcelReadListener;
 import com.livk.excel.batch.entity.Info;
 import com.livk.excel.batch.listener.InfoExcelListener;
 import com.livk.excel.batch.listener.JobListener;
 import com.livk.excel.batch.support.EasyExcelItemReader;
-import com.livk.excel.listener.TypeExcelReadListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;

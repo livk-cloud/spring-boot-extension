@@ -1,8 +1,8 @@
 package com.livk.browscap.example.controller;
 
 import com.blueconic.browscap.Capabilities;
-import com.livk.browscap.annotation.UserAgent;
-import com.livk.browscap.support.ReactiveUserAgentContextHolder;
+import com.livk.autoconfigure.browscap.annotation.UserAgent;
+import com.livk.autoconfigure.browscap.support.ReactiveUserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

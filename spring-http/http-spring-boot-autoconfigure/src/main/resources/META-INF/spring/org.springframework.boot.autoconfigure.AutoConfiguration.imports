@@ -1,1 +1,1 @@
-com.livk.http.HttpAutoConfiguration
+com.livk.autoconfigure.http.HttpAutoConfiguration

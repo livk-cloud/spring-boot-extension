@@ -1,7 +1,7 @@
 package com.livk.local.lock;
 
-import com.livk.lock.annotation.OnLock;
-import com.livk.lock.constant.LockScope;
+import com.livk.autoconfigure.lock.annotation.OnLock;
+import com.livk.autoconfigure.lock.constant.LockScope;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;

@@ -1,6 +1,6 @@
 package com.livk.example;
 
-import com.livk.aop.interceptor.AnnotationInterceptor;
+import com.livk.aop.autoconfigure.interceptor.AnnotationInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;

@@ -1,6 +1,6 @@
 package com.livk.yauaa.example.controller;
 
-import com.livk.yauaa.support.ReactiveUserAgentContextHolder;
+import com.livk.autoconfigure.yauaa.support.ReactiveUserAgentContextHolder;
 import nl.basjes.parse.useragent.UserAgent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class UserAgentController {
 
     @GetMapping
-    public Mono<HttpEntity<Map<String, UserAgent>>> get(@com.livk.yauaa.annotation.UserAgent Mono<UserAgent> userAgent) {
+    public Mono<HttpEntity<Map<String, UserAgent>>> get(@com.livk.autoconfigure.yauaa.annotation.UserAgent Mono<UserAgent> userAgent) {
         return ReactiveUserAgentContextHolder.get()
                 .concatWith(userAgent)
                 .collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))

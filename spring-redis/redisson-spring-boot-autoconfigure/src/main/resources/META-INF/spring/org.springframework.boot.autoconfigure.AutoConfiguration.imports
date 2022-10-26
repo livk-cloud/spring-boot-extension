@@ -1,1 +1,1 @@
-com.livk.redisson.RedissonAutoConfiguration
+com.livk.autoconfigure.redisson.RedissonAutoConfiguration

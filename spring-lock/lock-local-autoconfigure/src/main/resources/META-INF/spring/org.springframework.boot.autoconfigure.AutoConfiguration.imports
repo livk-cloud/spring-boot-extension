@@ -1,1 +1,1 @@
-com.livk.lock.local.LocalLockAutoConfiguration
+com.livk.autoconfigure.lock.local.LocalLockAutoConfiguration

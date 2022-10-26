@@ -1,1 +1,1 @@
-com.livk.lock.redis.RedissonLockAutoConfiguration
+com.livk.autoconfigure.lock.redis.RedissonLockAutoConfiguration
