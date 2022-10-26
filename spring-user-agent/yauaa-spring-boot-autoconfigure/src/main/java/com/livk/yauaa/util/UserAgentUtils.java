@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
@@ -17,9 +18,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
  */
 @UtilityClass
 public class UserAgentUtils {
-
-    public static final String USER_AGENT = "user-agent";
-
     private static final UserAgentAnalyzer ANALYZER;
 
     static {
@@ -31,12 +29,12 @@ public class UserAgentUtils {
     }
 
     public UserAgent parse(HttpServletRequest request) {
-        String userAgent = request.getHeader(UserAgentUtils.USER_AGENT);
+        String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
         return parse(userAgent);
     }
 
     public UserAgent parse(ServerHttpRequest request) {
-        String userAgent = request.getHeaders().getFirst(UserAgentUtils.USER_AGENT);
+        String userAgent = request.getHeaders().getFirst(HttpHeaders.USER_AGENT);
         return parse(userAgent);
     }
 }
