@@ -44,7 +44,8 @@ public class LockAspect {
                 .filter(lock -> lock.scope().equals(scope))
                 .min(Comparator.comparingInt(DistributedLock::getOrder))
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
-        boolean isLock = distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), onLock.async());
+        boolean async = !LockScope.STANDALONE_LOCK.equals(scope) && onLock.async();
+        boolean isLock = distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), async);
         try {
             if (isLock) {
                 return joinPoint.proceed();

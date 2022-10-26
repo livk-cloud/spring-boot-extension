@@ -62,7 +62,7 @@ public class LocalLock extends AbstractLockSupport<Lock> {
                     lock.unlock();
                 }
             } else if (lock instanceof ReentrantReadWriteLock.WriteLock writeLock) {
-                if (writeLock.isHeldByCurrentThread()) {
+                if (writeLock.getHoldCount() == 0 && writeLock.isHeldByCurrentThread()) {
                     lock.unlock();
                 }
             } else {

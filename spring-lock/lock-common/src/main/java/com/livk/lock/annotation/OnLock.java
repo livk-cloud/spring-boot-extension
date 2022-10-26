@@ -30,6 +30,10 @@ public @interface OnLock {
 
     long waitTime() default 3;
 
+    /**
+     * scope为{@link LockScope#STANDALONE_LOCK}
+     * async强制为false
+     */
     boolean async() default false;
 
     LockScope scope();
