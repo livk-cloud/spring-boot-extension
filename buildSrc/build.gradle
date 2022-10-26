@@ -1,3 +1,5 @@
+import org.gradle.util.GradleVersion
+
 apply plugin: "groovy-gradle-plugin"
 
 repositories {
@@ -39,4 +41,14 @@ gradlePlugin {
             implementationClass = "com.livk.boot.ServicePlugin"
         }
     }
+}
+
+(project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar).manifest {
+    attributes(
+            [
+                    "Created-By"    : System.getProperty("java.version") + " (" +
+                            System.getProperty("java.specification.vendor") + ")",
+                    "Gradle-Version": GradleVersion.current()
+            ]
+    )
 }

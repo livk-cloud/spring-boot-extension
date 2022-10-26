@@ -29,13 +29,6 @@ public class HttpAutoConfiguration {
     }
 
 
-//    @Bean
-//    public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient) {
-//        return HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient))
-//                .build();
-//    }
-//
-
     /**
      * 由于{@link HttpServiceProxyFactory#afterPropertiesSet()}被废弃 {@link }不能加入到IOC容器，不然会走afterPropertiesSet，导致报错
      */
