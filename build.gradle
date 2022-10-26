@@ -34,13 +34,6 @@ configure(springModuleProjects) {
 configure(gradleModuleProjects) {
     apply plugin: "com.livk.module"
 
-    //阿里云仓库缺少2.2.20.Final
-    configurations.all {
-        resolutionStrategy {
-            force("io.undertow:undertow-core:2.3.0.Final")
-        }
-    }
-
     dependencies {
         management platform(project(":livk-boot-dependencies"))
         provider "org.projectlombok:lombok"
@@ -55,6 +48,10 @@ configure(allprojects) {
     repositories {
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://maven.aliyun.com/repository/public" }
+        maven {
+            url "http://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
+            setAllowInsecureProtocol(true)
+        }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/release" }
         maven { url "https://repo.spring.io/libs-snapshot/" }
