@@ -11,5 +11,8 @@ spring:
     url: jdbc:mysql://livk.com:3306/batch_config
     username: root
     password: 123456
-    hikari:
-      schema: classpath:/org/springframework/batch/core/schema-mysql.sql
+#  sql:
+#    init:
+#      schema-locations: classpath*:/org/springframework/batch/core/schema-mysql.sql
+#      platform: mysql
+#      mode: always
