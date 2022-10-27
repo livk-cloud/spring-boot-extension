@@ -65,7 +65,7 @@ public class MailTest {
         helper.setTo("1375632510@qq.com");
         helper.setSubject("This is subject 主题");
         helper.setText(text, true);
-        sender.send(mimeMessage);
+//        sender.send(mimeMessage);
     }
 
     @Test
