@@ -45,6 +45,7 @@
     <insert id="insert" parameterType="com.livk.example.entity.User">
         INSERT INTO `user`
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            `id`,
             <if test="username != null and username != ''">
                 `username`,
             </if>
@@ -60,6 +61,7 @@
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id},
             <if test="username != null and username != ''">
                 #{username},
             </if>

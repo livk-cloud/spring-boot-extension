@@ -4,6 +4,10 @@ spring:
     url: jdbc:mysql://livk.com:3306/auth-demo
     username: root
     password: 123456
+  sql:
+    init:
+      schema-locations: classpath:table.sql
+      mode: always
 server:
   port: 6677
 mybatis:
