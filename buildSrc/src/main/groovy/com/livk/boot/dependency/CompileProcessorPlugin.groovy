@@ -6,15 +6,15 @@ import org.gradle.api.plugins.JavaPlugin
 
 /**
  * <p>
- * ProviderPlugin
+ * CompileProcessorPlugin
  * </p>
  *
  * @author livk
  * @date 2022/8/11
  */
-abstract class ProviderPlugin implements Plugin<Project> {
+abstract class CompileProcessorPlugin implements Plugin<Project> {
 
-    private static final String PROVIDER = "provider"
+    private static final String COMPILE_PROCESSOR = "compileProcessor"
 
     private static final Set<String> DEPENDENCY_NAMES_SET = new HashSet<>()
 
@@ -31,13 +31,13 @@ abstract class ProviderPlugin implements Plugin<Project> {
     void apply(Project project) {
         def configurations = project.configurations
         project.pluginManager.apply(JavaPlugin.class)
-        configurations.create(PROVIDER) { provider ->
-            provider.visible = false
-            provider.canBeResolved = false
-            provider.canBeConsumed = false
+        configurations.create(COMPILE_PROCESSOR) { compileProcessor ->
+            compileProcessor.visible = false
+            compileProcessor.canBeResolved = false
+            compileProcessor.canBeConsumed = false
             def plugins = project.plugins
             plugins.withType(JavaPlugin.class) {
-                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(provider) }
+                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(compileProcessor) }
             }
         }
     }
