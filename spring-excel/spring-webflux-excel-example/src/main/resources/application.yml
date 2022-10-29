@@ -1,0 +1,8 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+server:
+  port: 6679
+

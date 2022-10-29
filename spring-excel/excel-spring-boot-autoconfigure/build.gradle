@@ -4,4 +4,5 @@ dependencies {
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.alibaba:easyexcel"
     optional "org.springframework:spring-webmvc"
+    optional "org.springframework:spring-webflux"
 }
