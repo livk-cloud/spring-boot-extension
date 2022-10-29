@@ -37,6 +37,12 @@ public class InfoController {
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadList")
+    public HttpEntity<List<Info>> uploadList(List<Info> dataExcels) {
+        return ResponseEntity.ok(dataExcels);
+    }
+
     @ExcelReturn(fileName = "outFile")
     @ExcelImport(paramName = "dataExcels")
     @PostMapping("uploadAndDownload")
