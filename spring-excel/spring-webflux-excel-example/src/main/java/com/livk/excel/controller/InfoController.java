@@ -1,6 +1,7 @@
 package com.livk.excel.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelImport;
+import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.excel.entity.Info;
 import com.livk.excel.listener.InfoExcelListener;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,12 @@ public class InfoController {
     @PostMapping("uploadMono")
     public Mono<HttpEntity<List<Info>>> uploadMono(Mono<List<Info>> dataExcels) {
         return dataExcels.map(ResponseEntity::ok);
+    }
+
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadDownLoadMono")
+    public List<Info> uploadDownLoadMono(List<Info> dataExcels) {
+        return dataExcels;
     }
 }

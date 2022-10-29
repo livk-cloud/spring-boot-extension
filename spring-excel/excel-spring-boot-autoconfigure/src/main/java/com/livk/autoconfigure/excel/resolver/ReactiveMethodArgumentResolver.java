@@ -24,6 +24,9 @@ import java.util.Objects;
  * <p>
  * ReactiveMethodArgumentResolver
  * </p>
+ * <p>
+ * {@link reactor.core.publisher.Flux}未适配
+ * </p>
  *
  * @author livk
  * @date 2022/10/28

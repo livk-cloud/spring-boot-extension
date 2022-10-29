@@ -17,7 +17,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * @author livk
  * @date 2022/5/20
  */
-//@Import(HttpServiceRegistrar.class)
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)
 public class HttpAutoConfiguration {

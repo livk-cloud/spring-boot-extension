@@ -2,9 +2,11 @@ package com.livk.autoconfigure.excel;
 
 import com.livk.autoconfigure.excel.resolver.ExcelMethodArgumentResolver;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodReturnValueHandler;
+import com.livk.autoconfigure.excel.resolver.ReactiveExcelMethodReturnValueHandler;
 import com.livk.autoconfigure.excel.resolver.ReactiveMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -41,6 +43,12 @@ public class ExcelAutoConfiguration {
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
+
+        @Bean
+        public ReactiveExcelMethodReturnValueHandler reactiveExcelMethodReturnValueHandler() {
+            return new ReactiveExcelMethodReturnValueHandler();
+        }
+
         @Override
         public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
             configurer.addCustomResolver(new ReactiveMethodArgumentResolver());
