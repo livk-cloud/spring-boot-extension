@@ -57,7 +57,7 @@ public class ReactiveMethodArgumentResolver implements HandlerMethodArgumentReso
         if (Objects.nonNull(importExcel)) {
             ExcelReadListener<?> listener = BeanUtils.instantiateClass(importExcel.parse());
             mono = getPartValues(importExcel.fileName(), exchange)
-                    .mapNotNull(part -> DataBufferUtils.join(part.content())
+                    .flatMap(part -> DataBufferUtils.join(part.content())
                             .map(dataBuffer -> dataBuffer.toByteBuffer().array())
                             .map(ByteArrayInputStream::new)
                             .doOnSuccess(in -> EasyExcel.read(in, excelModelClass, listener)
@@ -65,7 +65,6 @@ public class ReactiveMethodArgumentResolver implements HandlerMethodArgumentReso
                                     .sheet()
                                     .doRead())
                             .flatMap(in -> Mono.just(listener.getCollectionData()))
-                            .block()
                     );
         }
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
