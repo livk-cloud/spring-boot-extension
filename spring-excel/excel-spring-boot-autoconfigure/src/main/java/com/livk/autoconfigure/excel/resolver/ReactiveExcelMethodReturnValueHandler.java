@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -42,6 +43,8 @@ import java.util.Map;
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
     public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
+
+    private static final Function<Collection<?>, Map<String, Collection<?>>> defaultFunction = c -> Map.of("sheet", c);
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
@@ -63,22 +66,30 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
         if (adapter != null) {
             ResolvableType genericType = returnType.getGeneric();
-//            ResolvableType elementType = getElementType(adapter, genericType);
-            if (Collection.class.isAssignableFrom(genericType.toClass())) {
-                Class<?> excelModelClass = genericType.resolveGeneric(0);
-                Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) returnValue).map(c -> Map.of("sheet", c));
+            if (Flux.class.isAssignableFrom(returnType.toClass())) {
+                Class<?> excelModelClass = genericType.toClass();
+                Flux<?> flux = (Flux<?>) returnValue;
+                Mono<Map<String, Collection<?>>> mono = flux.collectList().map(defaultFunction);
                 return this.write(excelReturn, response, excelModelClass, mono);
-            } else if (Map.class.isAssignableFrom(genericType.toClass())) {
-                Class<?> excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
-                Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) returnValue;
-                return this.write(excelReturn, response, excelModelClass, mono);
+            } else if (Mono.class.isAssignableFrom(returnType.toClass())) {
+                if (Collection.class.isAssignableFrom(genericType.toClass())) {
+                    Class<?> excelModelClass = genericType.resolveGeneric(0);
+                    Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) returnValue).map(defaultFunction);
+                    return this.write(excelReturn, response, excelModelClass, mono);
+                } else if (Map.class.isAssignableFrom(genericType.toClass())) {
+                    Class<?> excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
+                    Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) returnValue;
+                    return this.write(excelReturn, response, excelModelClass, mono);
+                } else {
+                    throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+                }
             } else {
-                throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+                throw new ExcelExportException("the return class is not reactor.core.publisher.Flux or reactor.core.publisher.Mono");
             }
         } else {
             if (Collection.class.isAssignableFrom(returnType.toClass())) {
                 Class<?> excelModelClass = returnType.resolveGeneric(0);
-                return this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
+                return this.write(excelReturn, response, excelModelClass, defaultFunction.apply((Collection<?>) returnValue));
             } else if (Map.class.isAssignableFrom(returnType.toClass())) {
                 Map<String, Collection<?>> map = (Map<String, Collection<?>>) returnValue;
                 Class<?> excelModelClass = returnType.getGeneric(1).resolveGeneric(0);
@@ -117,14 +128,6 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
         ContentDisposition contentDisposition = ContentDisposition.parse("attachment;filename=" + fileName);
         headers.setContentDisposition(contentDisposition);
-    }
-
-    private ResolvableType getElementType(ReactiveAdapter adapter, ResolvableType genericType) {
-        if (adapter.isNoValue()) {
-            return ResolvableType.forClass(Void.class);
-        } else {
-            return genericType != ResolvableType.NONE ? genericType : ResolvableType.forClass(Object.class);
-        }
     }
 
     private ExcelReturn getAnnotation(HandlerResult result) {
