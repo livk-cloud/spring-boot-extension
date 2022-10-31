@@ -5,8 +5,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.autoconfigure.excel.exception.ExcelExportException;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.Ordered;
+import org.springframework.core.*;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -44,28 +43,56 @@ import java.util.Map;
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
     public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
+    private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
+
     @Override
     public boolean supports(HandlerResult result) {
         return this.hasAnnotation(result);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
         Object returnValue = result.getReturnValue();
+        if (returnValue == null) {
+            return Mono.empty();
+        }
         ExcelReturn excelReturn = this.getAnnotation(result);
         ServerHttpResponse response = exchange.getResponse();
-        if (returnValue instanceof Collection) {
-            Class<?> excelModelClass = result.getReturnType().resolveGeneric(0);
-            return this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
-        } else if (returnValue instanceof Map) {
-            @SuppressWarnings("unchecked")
-            Map<String, Collection<?>> map = (Map<String, Collection<?>>) returnValue;
-            Class<?> excelModelClass = result.getReturnType().getGeneric(1).resolveGeneric(0);
-            return this.write(excelReturn, response, excelModelClass, map);
+        ResolvableType returnType = result.getReturnType();
+        ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+        if (adapter != null) {
+            ResolvableType genericType = returnType.getGeneric();
+//            ResolvableType elementType = getElementType(adapter, genericType);
+            if (Collection.class.isAssignableFrom(genericType.toClass())) {
+                Class<?> excelModelClass = genericType.resolveGeneric(0);
+                Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) returnValue).map(c -> Map.of("sheet", c));
+                return this.write(excelReturn, response, excelModelClass, mono);
+            } else if (Map.class.isAssignableFrom(genericType.toClass())) {
+                Class<?> excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
+                Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) returnValue;
+                return this.write(excelReturn, response, excelModelClass, mono);
+            } else {
+                throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+            }
         } else {
-            throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+            if (Collection.class.isAssignableFrom(returnType.toClass())) {
+                Class<?> excelModelClass = returnType.resolveGeneric(0);
+                return this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
+            } else if (Map.class.isAssignableFrom(returnType.toClass())) {
+                Map<String, Collection<?>> map = (Map<String, Collection<?>>) returnValue;
+                Class<?> excelModelClass = returnType.getGeneric(1).resolveGeneric(0);
+                return this.write(excelReturn, response, excelModelClass, map);
+            } else {
+                throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+            }
         }
     }
+
+    public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Mono<Map<String, Collection<?>>> result) {
+        return result.flatMap(r -> this.write(excelReturn, response, excelModelClass, r));
+    }
+
 
     public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
@@ -90,6 +117,14 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
         ContentDisposition contentDisposition = ContentDisposition.parse("attachment;filename=" + fileName);
         headers.setContentDisposition(contentDisposition);
+    }
+
+    private ResolvableType getElementType(ReactiveAdapter adapter, ResolvableType genericType) {
+        if (adapter.isNoValue()) {
+            return ResolvableType.forClass(Void.class);
+        } else {
+            return genericType != ResolvableType.NONE ? genericType : ResolvableType.forClass(Object.class);
+        }
     }
 
     private ExcelReturn getAnnotation(HandlerResult result) {

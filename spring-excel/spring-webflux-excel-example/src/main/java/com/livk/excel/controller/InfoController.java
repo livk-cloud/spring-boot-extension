@@ -39,8 +39,15 @@ public class InfoController {
 
     @ExcelReturn(fileName = "outFile")
     @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadDownLoadMono")
+    @PostMapping("uploadDownLoad")
     public List<Info> uploadDownLoadMono(List<Info> dataExcels) {
+        return dataExcels;
+    }
+
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadDownLoadMono")
+    public Mono<List<Info>> uploadDownLoadMono(Mono<List<Info>> dataExcels) {
         return dataExcels;
     }
 }
