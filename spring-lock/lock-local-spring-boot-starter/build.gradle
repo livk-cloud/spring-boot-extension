@@ -1,0 +1,3 @@
+dependencies {
+    api project(":spring-lock:lock-spring-boot-autoconfigure")
+}
