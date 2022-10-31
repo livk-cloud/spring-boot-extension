@@ -34,9 +34,6 @@ import java.util.function.Function;
  * <p>
  * ReactiveExcelMethodReturnValueHandler
  * </p>
- * <p>
- * {@link reactor.core.publisher.Flux} 和 {@link Mono}未适配
- * </p>
  *
  * @author livk
  * @date 2022/10/29
