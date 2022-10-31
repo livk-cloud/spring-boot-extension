@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,9 +41,8 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
-            throw new IllegalArgumentException(
-                    "Excel upload request resolver error, @ExcelData parameter is not Collection ");
+        if (!Collection.class.isAssignableFrom(parameter.getParameterType())) {
+            throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter is not Collection ");
         }
         ExcelImport importExcel = parameter.getMethodAnnotation(ExcelImport.class);
         if (Objects.nonNull(importExcel)) {

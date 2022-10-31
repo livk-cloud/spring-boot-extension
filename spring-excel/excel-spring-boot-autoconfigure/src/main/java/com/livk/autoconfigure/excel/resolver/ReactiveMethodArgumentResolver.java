@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -44,9 +43,8 @@ public class ReactiveMethodArgumentResolver implements HandlerMethodArgumentReso
         if (parameter.getParameterType().equals(Mono.class)) {
             excelModelClass = ResolvableType.forMethodParameter(parameter).getGeneric(0).resolveGeneric(0);
         } else {
-            if (!List.of(parameter.getParameterType().getInterfaces()).contains(Collection.class)) {
-                throw new IllegalArgumentException(
-                        "Excel upload request resolver error, @ExcelData parameter is not Collection ");
+            if (!Collection.class.isAssignableFrom(parameter.getParameterType())) {
+                throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter is not Collection ");
             }
             excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
         }
