@@ -1,10 +1,12 @@
 package com.livk.autoconfigure.excel;
 
+import com.alibaba.excel.EasyExcel;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodArgumentResolver;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodReturnValueHandler;
 import com.livk.autoconfigure.excel.resolver.ReactiveExcelMethodReturnValueHandler;
 import com.livk.autoconfigure.excel.resolver.ReactiveMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -24,6 +26,7 @@ import java.util.List;
  * @date 2022/7/22
  */
 @AutoConfiguration
+@ConditionalOnClass(EasyExcel.class)
 public class ExcelAutoConfiguration {
 
     @AutoConfiguration
