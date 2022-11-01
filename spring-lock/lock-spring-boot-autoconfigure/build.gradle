@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-lock:lock-common")
+    api project(":spring-common")
     api "org.springframework.boot:spring-boot-starter-aop"
     optional project(":spring-redis:redisson-spring-boot-starter")
 }
