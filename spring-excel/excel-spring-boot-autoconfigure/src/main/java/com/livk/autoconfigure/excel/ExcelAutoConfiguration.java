@@ -3,8 +3,8 @@ package com.livk.autoconfigure.excel;
 import com.alibaba.excel.EasyExcel;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodArgumentResolver;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodReturnValueHandler;
+import com.livk.autoconfigure.excel.resolver.ReactiveExcelMethodArgumentResolver;
 import com.livk.autoconfigure.excel.resolver.ReactiveExcelMethodReturnValueHandler;
-import com.livk.autoconfigure.excel.resolver.ReactiveMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -54,7 +54,7 @@ public class ExcelAutoConfiguration {
 
         @Override
         public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-            configurer.addCustomResolver(new ReactiveMethodArgumentResolver());
+            configurer.addCustomResolver(new ReactiveExcelMethodArgumentResolver());
         }
     }
 }

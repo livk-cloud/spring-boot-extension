@@ -21,13 +21,13 @@ import java.util.Objects;
 
 /**
  * <p>
- * ReactiveMethodArgumentResolver
+ * ReactiveExcelMethodArgumentResolver
  * </p>
  *
  * @author livk
  * @date 2022/10/28
  */
-public class ReactiveMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
