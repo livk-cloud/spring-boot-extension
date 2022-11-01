@@ -1,5 +1,6 @@
-package com.livk.ip.config;
+package com.livk.ip.annotation;
 
+import com.livk.ip.config.IPValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

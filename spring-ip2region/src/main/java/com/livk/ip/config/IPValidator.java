@@ -1,5 +1,6 @@
 package com.livk.ip.config;
 
+import com.livk.ip.annotation.IP;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;

@@ -3,6 +3,7 @@ package com.livk.ip.config;
 import com.livk.ip.properties.Ip2RegionProperties;
 import com.livk.ip.support.IPMethodArgumentResolver;
 import com.livk.ip.support.Ip2RegionSearch;
+import com.livk.ip.support.RequestIPMethodArgumentResolver;
 import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -44,5 +45,6 @@ public class Ip2RegionConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new IPMethodArgumentResolver());
+        resolvers.add(new RequestIPMethodArgumentResolver());
     }
 }

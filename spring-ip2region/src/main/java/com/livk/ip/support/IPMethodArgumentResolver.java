@@ -1,6 +1,6 @@
 package com.livk.ip.support;
 
-import com.livk.ip.config.IP;
+import com.livk.ip.annotation.IP;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
