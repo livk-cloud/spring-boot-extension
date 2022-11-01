@@ -1,6 +1,7 @@
 package com.livk.example.config;
 
 import org.mapstruct.MapperConfig;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.extensions.spring.SpringMapperConfig;
 
 /**
@@ -11,7 +12,7 @@ import org.mapstruct.extensions.spring.SpringMapperConfig;
  * @author livk
  * @date 2022/6/27
  */
-@MapperConfig(componentModel = "spring", uses = ConversionServiceAdapter.class)
+@MapperConfig(componentModel = MappingConstants.ComponentModel.SPRING, uses = ConversionServiceAdapter.class)
 @SpringMapperConfig
 public interface MapperSpringConfig {
 }
