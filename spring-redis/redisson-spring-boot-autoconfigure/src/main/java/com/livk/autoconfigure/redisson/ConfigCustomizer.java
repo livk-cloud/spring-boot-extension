@@ -13,6 +13,6 @@ import org.redisson.config.Config;
  * @author livk
  * @date 2022/9/16
  */
-public interface RedissonAutoConfigurationCustomizer extends Customizer<Config> {
+public interface ConfigCustomizer extends Customizer<Config> {
 
 }

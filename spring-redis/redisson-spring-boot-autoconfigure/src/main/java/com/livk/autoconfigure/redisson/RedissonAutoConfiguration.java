@@ -47,7 +47,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-    private final ObjectProvider<RedissonAutoConfigurationCustomizer> redissonAutoConfigurationCustomizers;
+    private final ObjectProvider<ConfigCustomizer> configCustomizers;
 
     private StandardEnvironment environment;
 
@@ -102,7 +102,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
                     .setDatabase(redisProperties.getDatabase())
                     .setPassword(redisProperties.getPassword());
         }
-        redissonAutoConfigurationCustomizers.forEach(customizer -> customizer.customize(config));
+        configCustomizers.forEach(customizer -> customizer.customize(config));
         return Redisson.create(config);
     }
 
