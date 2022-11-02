@@ -8,6 +8,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 /**
  * <p>
  * UserControllerTest
@@ -26,6 +28,7 @@ class UserControllerTest {
     @Test
     void testList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("customize[0].username", "livk").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("spring[0].username", "livk").exists());
@@ -34,6 +37,7 @@ class UserControllerTest {
     @Test
     void testGetById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("customize.username", "livk").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("spring.username", "livk").exists())
