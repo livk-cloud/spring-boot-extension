@@ -1,6 +1,6 @@
-package com.livk.excel.mapper;
+package com.livk.excel.mvc.mapper;
 
-import com.livk.excel.entity.Info;
+import com.livk.excel.mvc.entity.Info;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

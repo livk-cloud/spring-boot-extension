@@ -1,6 +1,6 @@
-package com.livk.excel.service;
+package com.livk.excel.mvc.service;
 
-import com.livk.excel.entity.Info;
+import com.livk.excel.mvc.entity.Info;
 
 import java.util.List;
 

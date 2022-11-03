@@ -1,4 +1,4 @@
-package com.livk.excel.entity;
+package com.livk.excel.mvc.entity;
 
 import java.util.Map;
 

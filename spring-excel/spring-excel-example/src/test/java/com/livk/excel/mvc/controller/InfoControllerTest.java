@@ -1,4 +1,4 @@
-package com.livk.excel.controller;
+package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.util.LogUtils;
@@ -37,9 +37,9 @@ class InfoControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    ClassPathResource resource = new ClassPathResource("mobile-test.xlsx");
+    ClassPathResource resource = new ClassPathResource("outFile.xls");
 
-    MockMultipartFile file = new MockMultipartFile("file", "mobile-test.xlsx", MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
+    MockMultipartFile file = new MockMultipartFile("file", "outFile.xlsx", MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
 
     InfoControllerTest() throws IOException {
     }
