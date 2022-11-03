@@ -7,7 +7,6 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * <p>
@@ -28,7 +27,7 @@ public class Ip2RegionProperties {
 
     private String filePath = "classpath*:ip/ip2region.xdb";
 
-    public Resource getFileResource() throws IOException {
-        return Arrays.stream(resourceResolver.getResources(filePath)).findFirst().orElseThrow(IOException::new);
+    public Resource[] getFileResource() throws IOException {
+        return resourceResolver.getResources(filePath);
     }
 }

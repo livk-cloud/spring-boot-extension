@@ -4,6 +4,7 @@ import com.livk.autoconfigure.ip2region.support.IPMethodArgumentResolver;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIPMethodArgumentResolver;
 import com.livk.ip2region.core.Searcher;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -15,6 +16,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +35,13 @@ public class Ip2regionAutoConfiguration {
     @Bean
     public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
         try {
-            Resource resource = properties.getFileResource();
-            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            Resource[] resources = properties.getFileResource();
+            ArrayList<byte[]> list = new ArrayList<>(resources.length);
+            for (Resource resource : resources) {
+                byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+                list.add(bytes);
+            }
+            byte[] bytes = list.stream().distinct().reduce(ArrayUtils::addAll).orElseThrow(IOException::new);
             Searcher searcher = Searcher.newWithBuffer(bytes);
             return new Ip2RegionSearch(searcher);
         } catch (IOException e) {
