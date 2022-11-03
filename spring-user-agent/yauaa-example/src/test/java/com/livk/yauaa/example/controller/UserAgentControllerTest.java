@@ -23,16 +23,11 @@ class UserAgentControllerTest {
 
     @Autowired
     WebTestClient client;
-    @Value("${server.port:8080}")
-    private int port;
 
     @Test
     void getTest() {
         client.get()
-                .uri(uriBuilder -> uriBuilder.host("localhost")
-                        .port(port)
-                        .path("/user-agent")
-                        .build())
+                .uri("/user-agent")
                 .exchange()
                 .expectStatus()
                 .isOk()
