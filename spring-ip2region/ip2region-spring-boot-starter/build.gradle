@@ -1,0 +1,4 @@
+dependencies {
+    api project(":spring-ip2region:ip2region-spring-boot-autoconfigure")
+    api project(":spring-ip2region:ip2region-core")
+}
