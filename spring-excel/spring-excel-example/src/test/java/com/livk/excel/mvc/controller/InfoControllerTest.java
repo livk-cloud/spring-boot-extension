@@ -2,6 +2,7 @@ package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.util.LogUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -61,6 +62,9 @@ class InfoControllerTest {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
                     down(in, "uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
                 });
+        File outFile = new File("./uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
+        Assertions.assertTrue(outFile.exists());
+        Assertions.assertTrue(outFile.delete());
     }
 
     private void down(InputStream stream, String name) throws IOException {

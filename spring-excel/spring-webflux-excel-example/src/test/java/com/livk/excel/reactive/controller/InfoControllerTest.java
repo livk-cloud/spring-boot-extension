@@ -3,6 +3,7 @@ package com.livk.excel.reactive.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.util.LogUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,9 @@ class InfoControllerTest {
                         throw new RuntimeException(e);
                     }
                 });
+        File outFile = new File("./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
+        Assertions.assertTrue(outFile.exists());
+        Assertions.assertTrue(outFile.delete());
     }
 
     @Test
@@ -102,6 +106,9 @@ class InfoControllerTest {
                         throw new RuntimeException(e);
                     }
                 });
+        File outFile = new File("./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
+        Assertions.assertTrue(outFile.exists());
+        Assertions.assertTrue(outFile.delete());
     }
 
     @Test
@@ -120,6 +127,9 @@ class InfoControllerTest {
                         throw new RuntimeException(e);
                     }
                 });
+        File outFile = new File("./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
+        Assertions.assertTrue(outFile.exists());
+        Assertions.assertTrue(outFile.delete());
     }
 
     private void down(InputStream stream, String name) throws IOException {
