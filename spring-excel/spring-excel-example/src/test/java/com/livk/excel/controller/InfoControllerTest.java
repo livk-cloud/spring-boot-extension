@@ -1,7 +1,6 @@
 package com.livk.excel.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
-import com.livk.excel.entity.Info;
 import com.livk.util.LogUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -19,7 +17,10 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>
@@ -45,16 +46,17 @@ class InfoControllerTest {
 
     @Test
     void uploadList() throws Exception {
-        mockMvc.perform(multipart("/uploadList")
+        mockMvc.perform(multipart(POST, "/uploadList")
                         .file(file))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     void uploadAndDownload() throws Exception {
-        mockMvc.perform(multipart("/uploadAndDownload")
+        mockMvc.perform(multipart(POST, "/uploadAndDownload")
                         .file(file))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
                     down(in, "uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
@@ -87,9 +89,4 @@ class InfoControllerTest {
         }
     }
 
-    public Info of(int i) {
-        Info info = new Info();
-        info.setPhone(String.valueOf(13000000000L + i));
-        return info;
-    }
 }
