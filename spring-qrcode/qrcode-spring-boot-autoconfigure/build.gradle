@@ -1,0 +1,8 @@
+dependencies {
+    api project(":spring-common")
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    optional "jakarta.servlet:jakarta.servlet-api"
+    optional "com.google.zxing:javase"
+    optional "org.springframework:spring-webmvc"
+    optional "org.springframework:spring-webflux"
+}

@@ -1,0 +1,4 @@
+dependencies {
+    api project(":spring-qrcode:qrcode-spring-boot-autoconfigure")
+    api "com.google.zxing:javase"
+}

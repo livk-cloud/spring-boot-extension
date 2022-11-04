@@ -1,0 +1,51 @@
+package com.livk.autoconfigure.qrcode.resolver;
+
+import com.livk.autoconfigure.qrcode.annotation.QRCode;
+import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
+import com.livk.util.AnnotationUtils;
+import com.livk.util.JacksonUtils;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.core.MethodParameter;
+import org.springframework.util.Assert;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
+import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.io.IOException;
+
+/**
+ * <p>
+ * QRCodeMethodReturnValueHandler
+ * </p>
+ *
+ * @author livk
+ * @date 2022/2/11
+ */
+public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+
+    @Override
+    public boolean supportsReturnType(MethodParameter returnType) {
+        return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
+    }
+
+    @Override
+    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest) throws IOException {
+        mavContainer.setRequestHandled(true);
+        HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+        QRCode qrCode = AnnotationUtils.getAnnotation(returnType, QRCode.class);
+        Assert.notNull(response, "response not be null");
+        Assert.notNull(qrCode, "excelReturn not be null");
+        String text = JacksonUtils.toJsonStr(returnValue);
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), outputStream, qrCode.type());
+        }
+    }
+
+    @Override
+    public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
+        return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
+    }
+
+}
