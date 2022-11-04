@@ -5,11 +5,11 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.autoconfigure.excel.exception.ExcelExportException;
+import com.livk.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -36,9 +36,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        Class<?> containingClass = returnType.getContainingClass();
-        return (AnnotatedElementUtils.hasAnnotation(containingClass, ExcelReturn.class) ||
-                returnType.hasMethodAnnotation(ExcelReturn.class));
+        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
                                   NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
+        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(returnType, ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
@@ -86,9 +84,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
-        Class<?> containingClass = returnType.getContainingClass();
-        return (AnnotatedElementUtils.hasAnnotation(containingClass, ExcelReturn.class) ||
-                returnType.hasMethodAnnotation(ExcelReturn.class));
+        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 
 }
