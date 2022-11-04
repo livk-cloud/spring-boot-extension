@@ -2,7 +2,7 @@ package com.livk.excel.reactive.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
-import com.livk.util.LogUtils;
+import com.livk.util.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,13 +15,7 @@ import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 
 /**
  * <p>
@@ -80,7 +74,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        down(resource.getInputStream(), "uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.testDownload(resource.getInputStream(), "uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -101,7 +95,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        down(resource.getInputStream(), "uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.testDownload(resource.getInputStream(), "uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -122,7 +116,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        down(resource.getInputStream(), "uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.testDownload(resource.getInputStream(), "uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -130,31 +124,5 @@ class InfoControllerTest {
         File outFile = new File("./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
         Assertions.assertTrue(outFile.exists());
         Assertions.assertTrue(outFile.delete());
-    }
-
-    private void down(InputStream stream, String name) throws IOException {
-        String path = "./" + name;
-        File file = new File(path);
-        if (!file.exists()) {
-            LogUtils.info("开始创建文件");
-            int count = 0;
-            while (!file.createNewFile()) {
-                if (++count == 3) {
-                    throw new IOException();
-                }
-            }
-        }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            FileChannel channel = fileOutputStream.getChannel();
-            ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            while (readableByteChannel.read(buffer) != -1) {
-                buffer.flip();
-                channel.write(buffer);
-                buffer.clear();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
