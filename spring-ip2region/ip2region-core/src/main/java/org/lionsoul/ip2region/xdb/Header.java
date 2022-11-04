@@ -1,4 +1,4 @@
-package com.livk.ip2region.core;
+package org.lionsoul.ip2region.xdb;
 
 import lombok.ToString;
 

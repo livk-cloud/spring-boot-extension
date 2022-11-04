@@ -1,10 +1,10 @@
 package com.livk.autoconfigure.ip2region;
 
 import com.livk.autoconfigure.ip2region.support.IPMethodArgumentResolver;
-import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIPMethodArgumentResolver;
-import com.livk.ip2region.core.Searcher;
+import com.livk.ip2region.support.Ip2RegionSearch;
 import org.apache.commons.lang3.ArrayUtils;
+import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

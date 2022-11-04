@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.ip2region.doamin;
+package com.livk.ip2region.doamin;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,3 +1,4 @@
 dependencies {
-
+    api project(":spring-common")
+    optional "org.springframework.boot:spring-boot-starter-logging"
 }

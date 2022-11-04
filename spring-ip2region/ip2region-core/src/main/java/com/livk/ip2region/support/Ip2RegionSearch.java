@@ -1,10 +1,10 @@
-package com.livk.autoconfigure.ip2region.support;
+package com.livk.ip2region.support;
 
-import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.ip2region.core.Searcher;
+import com.livk.ip2region.doamin.IpInfo;
 import com.livk.util.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.lionsoul.ip2region.xdb.Searcher;
 
 /**
  * <p>

@@ -2,9 +2,9 @@ package com.livk.ip2region.mvc.example.controller;
 
 import com.livk.autoconfigure.ip2region.annotation.IP;
 import com.livk.autoconfigure.ip2region.annotation.RequestIp;
-import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.common.Pair;
+import com.livk.ip2region.doamin.IpInfo;
+import com.livk.ip2region.support.Ip2RegionSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
