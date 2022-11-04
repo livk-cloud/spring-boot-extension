@@ -5,8 +5,11 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.autoconfigure.excel.exception.ExcelExportException;
-import org.springframework.core.*;
-import org.springframework.core.annotation.AnnotatedElementUtils;
+import com.livk.util.AnnotationUtils;
+import org.springframework.core.Ordered;
+import org.springframework.core.ReactiveAdapter;
+import org.springframework.core.ReactiveAdapterRegistry;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -47,7 +50,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 
     @Override
     public boolean supports(HandlerResult result) {
-        return this.hasAnnotation(result);
+        return AnnotationUtils.hasAnnotation(result, ExcelReturn.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -57,7 +60,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         if (returnValue == null) {
             return Mono.empty();
         }
-        ExcelReturn excelReturn = this.getAnnotation(result);
+        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(result, ExcelReturn.class);
         ServerHttpResponse response = exchange.getResponse();
         ResolvableType returnType = result.getReturnType();
         ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
@@ -125,23 +128,6 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
         ContentDisposition contentDisposition = ContentDisposition.parse("attachment;filename=" + fileName);
         headers.setContentDisposition(contentDisposition);
-    }
-
-    private ExcelReturn getAnnotation(HandlerResult result) {
-        MethodParameter returnType = result.getReturnTypeSource();
-        ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
-        if (excelReturn == null) {
-            Class<?> containingClass = returnType.getContainingClass();
-            excelReturn = AnnotatedElementUtils.getMergedAnnotation(containingClass, ExcelReturn.class);
-        }
-        return excelReturn;
-    }
-
-    private boolean hasAnnotation(HandlerResult result) {
-        MethodParameter returnType = result.getReturnTypeSource();
-        Class<?> containingClass = returnType.getContainingClass();
-        return (AnnotatedElementUtils.hasAnnotation(containingClass, ExcelReturn.class) ||
-                returnType.hasMethodAnnotation(ExcelReturn.class));
     }
 
     @Override

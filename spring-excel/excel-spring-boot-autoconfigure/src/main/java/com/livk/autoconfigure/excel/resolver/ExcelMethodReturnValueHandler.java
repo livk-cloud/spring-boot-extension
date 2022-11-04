@@ -5,6 +5,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.autoconfigure.excel.exception.ExcelExportException;
+import com.livk.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
@@ -35,7 +36,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        return returnType.hasMethodAnnotation(ExcelReturn.class);
+        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
                                   NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        ExcelReturn excelReturn = returnType.getMethodAnnotation(ExcelReturn.class);
+        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(returnType, ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
@@ -83,7 +84,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
-        return returnType.hasMethodAnnotation(ExcelReturn.class);
+        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 
 }

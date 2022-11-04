@@ -1,7 +1,7 @@
 package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
-import com.livk.util.LogUtils;
+import com.livk.util.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -60,37 +58,10 @@ class InfoControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    down(in, "uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
+                    FileUtils.testDownload(in, "uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
                 });
         File outFile = new File("./uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
         Assertions.assertTrue(outFile.exists());
         Assertions.assertTrue(outFile.delete());
     }
-
-    private void down(InputStream stream, String name) throws IOException {
-        String path = "./" + name;
-        File file = new File(path);
-        if (!file.exists()) {
-            LogUtils.info("开始创建文件");
-            int count = 0;
-            while (!file.createNewFile()) {
-                if (++count == 3) {
-                    throw new IOException();
-                }
-            }
-        }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            FileChannel channel = fileOutputStream.getChannel();
-            ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            while (readableByteChannel.read(buffer) != -1) {
-                buffer.flip();
-                channel.write(buffer);
-                buffer.clear();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
