@@ -1,8 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 dependencies {
-    //接入spring RC模块，正式版出来之后删除
-    api platform("org.springframework:spring-framework-bom:6.0.0-RC3")
     api platform(SpringBootPlugin.BOM_COORDINATES)
     constraints {
 
