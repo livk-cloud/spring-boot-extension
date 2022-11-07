@@ -49,6 +49,7 @@ public class ShopController {
 
     @PostConstruct
     public void init() {
+        redisTemplate.delete("shop");
         forHash.put("shop", "num", 500);
     }
 
