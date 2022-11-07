@@ -53,11 +53,12 @@ public class TreeNode<T> {
     }
 
     public void setChildren(List<TreeNode<T>> nodes) {
-        if (children == null) {
+        List<TreeNode<T>> treeNodeList = nodes.stream()
+                .filter(node -> id.equals(node.pid))
+                .toList();
+        if (!CollectionUtils.isEmpty(treeNodeList)) {
             children = new ArrayList<>();
-        }
-        children.addAll(nodes.stream().filter(node -> id.equals(node.pid)).toList());
-        if (!children.isEmpty()) {
+            children.addAll(treeNodeList);
             children.forEach(child -> child.setChildren(nodes));
         }
     }
