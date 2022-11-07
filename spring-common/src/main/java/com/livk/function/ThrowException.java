@@ -20,9 +20,9 @@ public interface ThrowException {
      * @param predicate the b
      * @return the throw exception
      */
-    static <T> ThrowException isTrue(Predicate<T> predicate) {
+    static <T> ThrowException isTrue(T obj, Predicate<T> predicate) {
         return (t) -> {
-            if (predicate.test(null))
+            if (predicate.test(obj))
                 throw t;
         };
     }
