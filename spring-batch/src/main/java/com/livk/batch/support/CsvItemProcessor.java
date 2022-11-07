@@ -1,7 +1,7 @@
 package com.livk.batch.support;
 
 import com.livk.batch.domain.User;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
@@ -17,10 +17,10 @@ import java.util.Date;
  * @author livk
  * @date 2021/12/27
  */
-@Setter
+@RequiredArgsConstructor
 public class CsvItemProcessor implements ItemProcessor<User, User> {
 
-    private Validator<? super User> validator;
+    private final Validator<? super User> validator;
 
     @Override
     public User process(@NonNull User item) throws ValidationException {
