@@ -51,14 +51,14 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     private StandardEnvironment environment;
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnMissingBean(RedissonReactiveClient.class)
     public RedissonReactiveClient redissonReactive(RedissonClient redisson) {
         return redisson.reactive();
     }
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties) {
         Map<String, String> redissonProperties = SpringUtils.getSubProperties(environment, REDISSON_CONFIG);
