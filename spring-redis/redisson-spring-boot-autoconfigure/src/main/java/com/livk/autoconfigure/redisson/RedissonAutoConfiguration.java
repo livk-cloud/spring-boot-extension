@@ -2,7 +2,6 @@ package com.livk.autoconfigure.redisson;
 
 import com.livk.util.SpringUtils;
 import com.livk.util.YamlUtils;
-import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;
@@ -36,7 +35,6 @@ import java.util.Map;
  * @author livk
  * @date 2022/9/16
  */
-@RequiredArgsConstructor
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
@@ -46,8 +44,6 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 
     private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
-
-    private final ObjectProvider<ConfigCustomizer> configCustomizers;
 
     private StandardEnvironment environment;
 
@@ -60,7 +56,8 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     @Bean(destroyMethod = "shutdown")
     @ConditionalOnMissingBean(RedissonClient.class)
-    public RedissonClient redissonClient(RedisProperties redisProperties) {
+    public RedissonClient redissonClient(RedisProperties redisProperties,
+                                         ObjectProvider<ConfigCustomizer> configCustomizers) {
         Map<String, String> redissonProperties = SpringUtils.getSubProperties(environment, REDISSON_CONFIG);
         String redissonYaml = YamlUtils.mapToYml(redissonProperties).replaceAll("'", "");
         Config config;
