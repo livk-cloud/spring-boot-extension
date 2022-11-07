@@ -1,6 +1,8 @@
 package com.livk.function;
 
+import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -34,5 +36,10 @@ public interface ThrowException {
      * @throws Throwable the throwable
      */
     void throwException(Throwable t) throws Throwable;
+
+    default void throwException(Supplier<Throwable> supplier) throws Throwable {
+        Objects.requireNonNull(supplier);
+        throwException(supplier.get());
+    }
 
 }

@@ -13,9 +13,9 @@ import java.util.function.Predicate;
 @FunctionalInterface
 public interface BranchHandle {
 
-    static <T> BranchHandle isTrueOrFalse(Predicate<T> predicate) {
+    static <T> BranchHandle isTrueOrFalse(T obj, Predicate<T> predicate) {
         return (trueHandle, falseHandle) -> {
-            if (predicate.test(null))
+            if (predicate.test(obj))
                 trueHandle.run();
             else
                 falseHandle.run();
