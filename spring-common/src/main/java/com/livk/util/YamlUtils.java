@@ -1,6 +1,7 @@
 package com.livk.util;
 
 import lombok.experimental.UtilityClass;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 @UtilityClass
 public class YamlUtils {
 
-    private static final Yaml YAML = new Yaml(new Constructor(Object.class));
+    private static final Yaml YAML = new Yaml(new Constructor(Object.class, new LoaderOptions()));
 
     /**
      * {@example Map.of(" a.b.c ", " 1 ") -> YAML}
