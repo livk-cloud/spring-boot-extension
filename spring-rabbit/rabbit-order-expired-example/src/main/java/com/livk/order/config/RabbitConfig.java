@@ -1,5 +1,6 @@
 package com.livk.order.config;
 
+import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -8,7 +9,6 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -50,7 +50,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue orderQueue() {
-        Map<String, Object> args = new HashMap<>(2);
+        Map<String, Object> args = Maps.newHashMapWithExpectedSize(2);
         args.put(MESSAGE_TTL, 30 * 1000);
         args.put(DEAD_LETTER_QUEUE_KEY, dealExchangeOrder);
         args.put(DEAD_LETTER_ROUTING_KEY, deadRoutingKeyOrder);

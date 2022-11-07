@@ -1,5 +1,6 @@
 package com.livk.auth.server.common.provider;
 
+import com.google.common.collect.Sets;
 import com.livk.auth.server.common.core.exception.BadCaptchaException;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
 import com.livk.auth.server.common.util.MessageSourceUtils;
@@ -128,7 +129,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
             if (baseAuthentication.getScopes().stream().noneMatch(scope -> registeredClient.getScopes().contains(scope))) {
                 throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
             }
-            authorizedScopes = new LinkedHashSet<>(baseAuthentication.getScopes());
+            authorizedScopes = Sets.newLinkedHashSet(baseAuthentication.getScopes());
         }
 
         Map<String, Object> reqParameters = baseAuthentication.getAdditionalParameters();

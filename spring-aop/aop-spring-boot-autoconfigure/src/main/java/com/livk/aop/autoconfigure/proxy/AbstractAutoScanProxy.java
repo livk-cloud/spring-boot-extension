@@ -1,5 +1,6 @@
 package com.livk.aop.autoconfigure.proxy;
 
+import com.google.common.collect.Sets;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
@@ -8,7 +9,6 @@ import org.springframework.beans.BeansException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,7 +23,7 @@ public abstract class AbstractAutoScanProxy extends AbstractAutoProxyCreator {
 
     @Override
     protected Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName, TargetSource customTargetSource) throws BeansException {
-        Set<Object> advices = new HashSet<>();
+        Set<Object> advices = Sets.newHashSet();
         for (Class<? extends Annotation> proxyAnnotation : findProxyAnnotations()) {
             if (beanClass.isAnnotationPresent(proxyAnnotation)) {
                 advices.addAll(getPointcutAdvisors());

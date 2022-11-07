@@ -1,8 +1,8 @@
 package com.livk.autoconfigure.excel.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
+import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public abstract class TypeExcelReadListener<T> implements ExcelReadListener<T> {
 
-    private final Collection<T> dataExcels = new ArrayList<>();
+    private final Collection<T> dataExcels = Lists.newArrayList();
 
     @Override
     public void invoke(T info, AnalysisContext context) {

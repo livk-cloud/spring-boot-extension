@@ -1,5 +1,7 @@
 package com.livk.auth.server.common.token;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -7,7 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>自定义授权模式抽象</p>
@@ -37,9 +41,9 @@ public abstract class OAuth2BaseAuthenticationToken extends AbstractAuthenticati
         Assert.notNull(clientPrincipal, "clientPrincipal cannot be null");
         this.authorizationGrantType = authorizationGrantType;
         this.clientPrincipal = clientPrincipal;
-        this.scopes = Collections.unmodifiableSet(scopes != null ? new HashSet<>(scopes) : Collections.emptySet());
+        this.scopes = Collections.unmodifiableSet(scopes != null ? Sets.newHashSet(scopes) : Collections.emptySet());
         this.additionalParameters = Collections.unmodifiableMap(
-                additionalParameters != null ? new HashMap<>(additionalParameters) : Collections.emptyMap());
+                additionalParameters != null ? Maps.newHashMap(additionalParameters) : Collections.emptyMap());
     }
 
     /**

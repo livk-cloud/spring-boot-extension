@@ -1,6 +1,7 @@
 package com.livk.auth.server.common.core.principal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
@@ -9,7 +10,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 import java.io.Serial;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,7 +47,7 @@ public class Oauth2User extends User implements OAuth2AuthenticatedPrincipal {
      */
     @Override
     public Map<String, Object> getAttributes() {
-        return new HashMap<>();
+        return Maps.newHashMap();
     }
 
     @Override
