@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         return userMono.flatMap(monoUser -> userRepository.findById(id)
                         .switchIfEmpty(Mono.error(new RuntimeException("Id Not Found!")))
                         .flatMap(user -> userRepository.save(new User(user.id(), monoUser.username(), monoUser.password()))))
-                .then();
+                .flatMap(mono -> Mono.empty());
     }
 
     @Override
