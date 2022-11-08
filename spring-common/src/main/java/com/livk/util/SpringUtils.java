@@ -67,7 +67,7 @@ public class SpringUtils {
                     MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
                     String className = metadataReader.getClassMetadata().getClassName();
                     Class<?> clazz = Class.forName(className);
-                    if (AnnotationUtils.findAnnotation(clazz, annotationClass) != null) {
+                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationClass, clazz)) {
                         classSet.add(clazz);
                     }
                 }
