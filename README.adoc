@@ -17,3 +17,5 @@ link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:example.adoc[示例详情] +
 link:upgrade-log.adoc[升级文档] +
+
+https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]
