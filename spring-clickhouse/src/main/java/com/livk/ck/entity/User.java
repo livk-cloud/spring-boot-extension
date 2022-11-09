@@ -2,6 +2,7 @@ package com.livk.ck.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,12 +18,12 @@ import java.util.Date;
 @Accessors(chain = true)
 public class User {
 
-    private Long id;
+    private Integer id;
 
     private String appId;
 
     private String version;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date regTime;
 
 }
