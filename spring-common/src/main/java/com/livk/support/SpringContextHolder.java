@@ -63,7 +63,12 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
         return getBeanFactory().getBean(name, typeClass);
     }
 
-    public static <T> T getBean(ResolvableType resolvableType) {
+    public static <T> T getBeanIfUnique(ResolvableType resolvableType) {
+        ObjectProvider<T> provider = applicationContext.getBeanProvider(resolvableType);
+        return provider.getIfUnique();
+    }
+
+    public static <T> T getBeanIfAvailable(ResolvableType resolvableType) {
         ObjectProvider<T> provider = applicationContext.getBeanProvider(resolvableType);
         return provider.getIfAvailable();
     }
