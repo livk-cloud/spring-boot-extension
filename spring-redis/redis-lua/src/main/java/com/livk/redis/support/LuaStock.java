@@ -2,7 +2,6 @@ package com.livk.redis.support;
 
 import com.livk.common.redis.supprot.LivkRedisTemplate;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import java.util.List;
  * @author livk
  * @date 2022/3/7
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class LuaStock {

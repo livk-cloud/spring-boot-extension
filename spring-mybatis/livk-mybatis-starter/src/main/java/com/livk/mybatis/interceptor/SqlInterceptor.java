@@ -5,7 +5,6 @@ import com.livk.mybatis.enums.SqlFill;
 import com.livk.util.BeanUtils;
 import com.livk.util.FieldUtils;
 import com.livk.util.ReflectionUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -24,7 +23,6 @@ import java.lang.reflect.Field;
  * @author livk
  * @date 2022/1/29
  */
-@Slf4j
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class SqlInterceptor implements Interceptor {
 

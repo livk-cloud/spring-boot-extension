@@ -6,10 +6,10 @@ import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.ConcurrentMapEventStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveHashOperations;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,7 +38,7 @@ public class RedisEventStore extends ConcurrentMapEventStore {
         hashOperations = reactiveRedisTemplate.opsForHash();
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Mono<Void> append(List<InstanceEvent> events) {
         if (events.isEmpty()) {

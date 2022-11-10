@@ -6,7 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,6 @@ import java.util.Map;
  * @author livk
  * @date 2022/3/23
  */
-@Slf4j
 @Component
 public class AuthorizationTokenFilter extends OncePerRequestFilter {
 

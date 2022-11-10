@@ -3,7 +3,6 @@ package com.livk.batch.support;
 import com.livk.util.BeanUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -20,7 +19,6 @@ import java.lang.reflect.Method;
  * @author livk
  * @date 2022/6/20
  */
-@Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CsvLineMapper<T> implements LineMapper<T> {
 

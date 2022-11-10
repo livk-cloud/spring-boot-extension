@@ -4,7 +4,6 @@ import com.livk.caffeine.annotation.DoubleCache;
 import com.livk.caffeine.handler.CacheHandlerAdapter;
 import com.livk.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +24,6 @@ import java.util.TreeMap;
  * @author livk
  * @date 2022/3/30
  */
-@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor

@@ -6,10 +6,9 @@ import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.events.InstanceStatusChangedEvent;
 import de.codecentric.boot.admin.server.notify.AbstractEventNotifier;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.Nonnull;
 
 /**
  * <p>
@@ -27,9 +26,9 @@ public class CustomNotifier extends AbstractEventNotifier {
         super(repository);
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    protected Mono<Void> doNotify(@Nonnull InstanceEvent event, @Nonnull Instance instance) {
+    protected Mono<Void> doNotify(@NonNull InstanceEvent event, @NonNull Instance instance) {
         return Mono.fromRunnable(() -> {
             if (event instanceof InstanceStatusChangedEvent statusChangedEvent) {
                 log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),

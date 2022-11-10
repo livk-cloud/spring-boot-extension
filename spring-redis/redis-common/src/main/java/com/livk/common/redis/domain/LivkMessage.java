@@ -3,6 +3,9 @@ package com.livk.common.redis.domain;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * <p>
  * LivkMessage
@@ -13,10 +16,11 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class LivkMessage<T> {
+public class LivkMessage<T> implements Serializable {
 
     public static final String CHANNEL = "livk-topic";
 
+    @Serial
     private static final long serialVersionUID = 8632296967087444509L;
 
     /**

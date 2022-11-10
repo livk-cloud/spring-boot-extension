@@ -1,7 +1,6 @@
 package com.livk.pulsar.producer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.Schema;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +16,6 @@ import java.util.UUID;
  * @author livk
  * @date 2022/4/27
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProducerTask {

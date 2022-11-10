@@ -3,7 +3,6 @@ package com.livk.redis.controller;
 import com.livk.common.redis.domain.LivkMessage;
 import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -18,7 +17,6 @@ import java.util.Map;
  * @author livk
  * @date 2021/11/26
  */
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MessageController {

@@ -1,6 +1,5 @@
 package com.livk.zookeeper.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * @author livk
  * @date 2022/4/6
  */
-@Slf4j
 @Configuration
 @EnableConfigurationProperties(ZookeeperProperties.class)
 public class ZookeeperConfig {

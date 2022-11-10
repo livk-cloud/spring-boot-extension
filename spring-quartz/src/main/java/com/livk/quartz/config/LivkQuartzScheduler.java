@@ -2,7 +2,6 @@ package com.livk.quartz.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,6 @@ import java.util.Date;
  * @author livk
  * @date 2021/10/25
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class LivkQuartzScheduler {

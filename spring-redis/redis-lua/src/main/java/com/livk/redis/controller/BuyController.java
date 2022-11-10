@@ -4,7 +4,6 @@ import com.livk.common.redis.supprot.LivkRedisTemplate;
 import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author livk
  * @date 2022/3/7
  */
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BuyController {

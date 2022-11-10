@@ -76,7 +76,7 @@ class SpringUtilsTest {
         Assertions.assertEquals("livk", SpringUtils.parse(map, "#username"));
     }
 
+    @SuppressWarnings("unused")
     private void parseMethod(String username) {
-
     }
 }

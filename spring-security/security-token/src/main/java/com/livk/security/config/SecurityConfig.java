@@ -2,7 +2,6 @@ package com.livk.security.config;
 
 import com.livk.security.filter.AuthorizationTokenFilter;
 import com.livk.security.handler.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author livk
  * @date 2022/3/23
  */
-@Slf4j
 @EnableWebSecurity
 public class SecurityConfig {
 

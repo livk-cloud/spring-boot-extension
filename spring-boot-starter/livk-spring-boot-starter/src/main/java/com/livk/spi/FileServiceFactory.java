@@ -1,6 +1,5 @@
 package com.livk.spi;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @author livk
  * @date 2022/3/18
  */
-@Slf4j
 @Component
 public class FileServiceFactory extends AbstractServiceLoad<FileService> {
 

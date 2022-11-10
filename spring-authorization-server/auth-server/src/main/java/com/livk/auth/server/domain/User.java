@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-public class User implements Serializable, UserDetails {
+public class User implements UserDetails {
 
     @Serial
     private static final long serialVersionUID = 1L;

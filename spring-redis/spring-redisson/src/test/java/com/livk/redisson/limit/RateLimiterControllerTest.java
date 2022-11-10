@@ -1,6 +1,5 @@
 package com.livk.redisson.limit;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  * @author livk
  * @date 2022/6/14
  */
-@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 class RateLimiterControllerTest {

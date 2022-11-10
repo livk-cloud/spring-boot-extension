@@ -3,7 +3,6 @@ package com.livk.auth.server.common.provider;
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2PasswordAuthenticationToken;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -22,7 +21,6 @@ import java.util.Map;
  *
  * @author livk
  */
-@Slf4j
 public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticationProvider<OAuth2PasswordAuthenticationToken> {
 
     /**

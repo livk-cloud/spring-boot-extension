@@ -3,7 +3,6 @@ package com.livk.r2dbc.controller;
 import com.livk.r2dbc.domain.User;
 import com.livk.r2dbc.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import reactor.core.publisher.Mono;
  * @author livk
  * @date 2021/12/6
  */
-@Slf4j
 @RestController
 @RequestMapping("user")
 @RequiredArgsConstructor

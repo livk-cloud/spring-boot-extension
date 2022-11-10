@@ -1,7 +1,6 @@
 package com.livk.redisson.limit;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RateIntervalUnit;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import java.util.Map;
  * @author livk
  * @date 2022/6/13
  */
-@Slf4j
 @RestController
 @RequestMapping("limit")
 @RequiredArgsConstructor

@@ -3,7 +3,6 @@ package com.livk.local.lock;
 import com.livk.autoconfigure.lock.annotation.OnLock;
 import com.livk.autoconfigure.lock.constant.LockScope;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,7 +24,6 @@ import java.util.Map;
  * @author livk
  * @date 2022/9/29
  */
-@Slf4j
 @RestController
 @RequestMapping("shop")
 public class ShopController {

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.util.*;
@@ -17,7 +16,6 @@ import java.util.*;
 /**
  * The type Jackson util.
  */
-@Slf4j
 @UtilityClass
 public class JacksonUtils {
 
