@@ -8,6 +8,7 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 
 `Maven`
 [source,xml,indent=0]
+
 ----
 <dependency>
     <groupId>com.google.code.findbugs</groupId>
@@ -18,6 +19,7 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 
 `Gradle`
 [source,groovy,indent=0]
+
 ----
 dependencies {
     implementation("com.google.code.findbugs:annotations:3.0.1")

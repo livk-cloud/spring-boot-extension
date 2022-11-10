@@ -4,6 +4,7 @@ import com.livk.boot.compile.CompileArgsPlugin
 import com.livk.boot.config.AllConfiguration
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+
 /**
  * <p>
  * ModulePlugin
