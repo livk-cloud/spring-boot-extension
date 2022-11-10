@@ -3,7 +3,6 @@ package com.livk.yauaa.example.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -18,7 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * @date 2022/10/6
  */
 @SpringBootTest
-@AutoConfigureWebTestClient(timeout = "10000")
+@AutoConfigureWebTestClient(timeout = "15000")
 class UserAgentControllerTest {
 
     @Autowired

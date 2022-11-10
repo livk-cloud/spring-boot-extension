@@ -26,7 +26,7 @@ import java.io.IOException;
  * @date 2022/11/2
  */
 @SpringBootTest("spring.main.web-application-type=reactive")
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "15000")
 class InfoControllerTest {
 
     static MultipartBodyBuilder builder = new MultipartBodyBuilder();

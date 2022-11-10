@@ -18,7 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * @date 2022/10/6
  */
 @SpringBootTest
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "15000")
 class UserAgentControllerTest {
 
     @Autowired

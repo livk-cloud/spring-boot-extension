@@ -22,7 +22,7 @@ import java.io.IOException;
  * @date 2022/11/4
  */
 @SpringBootTest
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "15000")
 class QRCodeControllerTest {
 
     @Autowired
