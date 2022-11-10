@@ -1,16 +1,20 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+def versionCatalog = rootProject.extensions
+        .getByType(VersionCatalogsExtension.class)
+        .named("libs")
+
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
+    versionCatalog.libraryAliases
+            .findAll { it.endsWithIgnoreCase("dependencies") || it.endsWithIgnoreCase("bom") }
+            .collect { versionCatalog.findLibrary(it).get().get() }
+            .forEach { api platform(it) }
     constraints {
-
-        def versionCatalog = rootProject.extensions
-                .getByType(VersionCatalogsExtension.class)
-                .named("libs")
-        versionCatalog.getLibraryAliases()
+        (versionCatalog.libraryAliases
+                .findAll { !it.endsWithIgnoreCase("plugin") } - bom.toSet())
                 .collect { versionCatalog.findLibrary(it).get().get() }
                 .forEach { api it }
-
         parent.commonModuleProjects.forEach { api(it) }
     }
 }

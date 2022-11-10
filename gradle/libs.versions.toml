@@ -26,8 +26,10 @@ autoService = "1.0.1"
 yauaa = "7.6.0"
 springdoc = "2.0.0-RC1"
 googleJavase = "3.5.0"
+springBootAdmin = "3.0.0-M5"
 
 [libraries]
+springBootAdminDependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelperBoot" }
 oauth2-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "oauth2Authorization" }
