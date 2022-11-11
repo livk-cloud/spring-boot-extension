@@ -10,7 +10,7 @@ https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud
 里面的代码或多或少应该可以帮助到你 +
 如果觉得不错，可以star一下 +
 JDK:17(最新LTS) +
-SpringBoot: 3.0.0-RC1(最新快照) +
+SpringBoot: 3.0.0-RC2(最新快照) +
 Gradle: 7.5.1(当前最新版) +
 
 link:gradle.properties[项目信息] +
