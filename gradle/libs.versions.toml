@@ -29,7 +29,7 @@ googleJavase = "3.5.0"
 springBootAdmin = "3.0.0-M5"
 
 [libraries]
-springBootAdminDependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
+spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelperBoot" }
 oauth2-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "oauth2Authorization" }
@@ -55,12 +55,12 @@ curator-recipes = { group = "org.apache.curator", name = "curator-recipes", vers
 mapstruct-spring-extensions = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-extensions", version.ref = "mapstructSpring" }
 mapstruct-spring-annotations = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-annotations", version.ref = "mapstructSpring" }
 ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
-browscapJava = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
-autoService = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
+auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
-springdocOpenapi = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
-springdocOpenapiWebflux = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
-googleJavase = { group = "com.google.zxing", name = "javase", version.ref = "googleJavase" }
+springdoc-openapi = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+springdoc-openapi-webflux = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
+google-javase = { group = "com.google.zxing", name = "javase", version.ref = "googleJavase" }
 
 [bundles]
 jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]

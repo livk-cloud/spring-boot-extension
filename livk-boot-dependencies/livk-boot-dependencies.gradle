@@ -7,12 +7,12 @@ def versionCatalog = rootProject.extensions
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
     versionCatalog.libraryAliases
-            .findAll { it.endsWithIgnoreCase("dependencies") || it.endsWithIgnoreCase("bom") }
+            .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
             .collect { versionCatalog.findLibrary(it).get().get() }
             .forEach { api platform(it) }
     constraints {
         (versionCatalog.libraryAliases
-                .findAll { !it.endsWithIgnoreCase("plugin") } - bom.toSet())
+                .findAll { !it.endsWith("plugin") } - bom.toSet())
                 .collect { versionCatalog.findLibrary(it).get().get() }
                 .forEach { api it }
         parent.commonModuleProjects.forEach { api(it) }
