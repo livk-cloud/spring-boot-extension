@@ -1,3 +1,4 @@
 com.livk.support.SpringContextHolder
 com.livk.controller.SystemController
 com.livk.spring.UndertowCustomizationBean
+com.livk.spring.JacksonConfig

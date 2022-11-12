@@ -1,7 +1,7 @@
 dependencies {
     implementation project(":spring-common")
     implementation project(":spring-redis:redis-common")
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-data-redis-reactive"
     implementation "de.codecentric:spring-boot-admin-starter-server"
     implementation "org.springframework.boot:spring-boot-starter-security"

@@ -2,10 +2,16 @@ package com.livk.admin.server.config;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.UUID;
 
 /**
  * <p>
@@ -15,43 +21,47 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
  * @author livk
  * @date 2021/11/8
  */
-@EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
-    private final String adminContextPath;
-
-    public SecurityConfig(AdminServerProperties adminServerProperties) {
-        this.adminContextPath = adminServerProperties.getContextPath();
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   AdminServerProperties adminServer) throws Exception {
         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
-        // 静态资源和登录页面可以不用认证
+        successHandler.setDefaultTargetUrl(adminServer.path("/"));
         return http.authorizeHttpRequests()
-                .requestMatchers(adminContextPath + "/assets/**")
+                .requestMatchers(adminServer.path("/assets/**"))
                 .permitAll()
-                .requestMatchers(adminContextPath + "/login")
+                .requestMatchers(adminServer.path("/variables.css"))
                 .permitAll()
-                // 其他请求必须认证
+                .requestMatchers(adminServer.path("/actuator/info"))
+                .permitAll()
+                .requestMatchers(adminServer.path("/actuator/health"))
+                .permitAll()
+                .requestMatchers(adminServer.path("/login"))
+                .permitAll()
                 .anyRequest()
                 .authenticated()
-                // 自定义登录和退出
                 .and()
                 .formLogin()
-                .loginPage(adminContextPath + "/login")
+                .loginPage(adminServer.path("/login"))
                 .successHandler(successHandler)
                 .and()
                 .logout()
-                .logoutUrl(adminContextPath + "/logout")
-                // 启用HTTP-Basic, 用于Spring Boot Admin Client注册
+                .logoutUrl(adminServer.path("/logout"))
                 .and()
-                .httpBasic()
-                .and()
+                .httpBasic(Customizer.withDefaults())
                 .csrf()
-                .disable()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringRequestMatchers(new AntPathRequestMatcher(adminServer.path("/instances"), HttpMethod.POST.toString()),
+                        new AntPathRequestMatcher(adminServer.path("/instances/*"), HttpMethod.DELETE.toString()),
+                        new AntPathRequestMatcher(adminServer.path("/actuator/**")))
+                .and()
+                .rememberMe()
+                .key(UUID.randomUUID().toString())
+                .tokenValiditySeconds(1209600)
+                .and()
                 .build();
     }
-
 }

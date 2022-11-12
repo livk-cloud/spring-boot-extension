@@ -10,9 +10,16 @@ spring:
         password: 123456
         instance:
           service-host-type: ip
+          metadata:
+            user:
+              name: ${spring.boot.admin.client.username}
+              password: ${spring.boot.admin.client.password}
 
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+  info:
+    env:
+      enabled: true

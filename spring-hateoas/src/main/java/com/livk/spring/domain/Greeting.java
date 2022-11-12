@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.Instant;
+
 /**
  * <p>
  * Greeting
@@ -22,4 +24,5 @@ public class Greeting extends AbstractEntity<Greeting> {
     @JsonProperty("content")
     private final String contents;
 
+    private final Instant instant = Instant.now();
 }
