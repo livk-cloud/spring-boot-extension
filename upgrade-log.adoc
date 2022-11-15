@@ -1,4 +1,4 @@
-[]
+[[version-upgrade-log]]
 === 升级到SpringBoot 3-M5
 
 废弃: +
