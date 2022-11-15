@@ -17,3 +17,10 @@ link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
 link:example.adoc[example details] +
 link:upgrade-log.adoc[upgrade documentation] +
+
+Profiling using the https://github.com/gradle/gradle-profiler[Gradle-Profiler] profiler
+
+[source,shell,indent=0]
+----
+gradle-profiler --gradle-user-home D:\gradle-7.5.1 --benchmark --cli --project-dir ./ clean
+----
