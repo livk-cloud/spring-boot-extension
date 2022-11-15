@@ -11,8 +11,8 @@ dependencies {
             .collect { versionCatalog.findLibrary(it).get().get() }
             .forEach { api platform(it) }
     constraints {
-        (versionCatalog.libraryAliases
-                .findAll { !it.endsWith("plugin") } - bom.toSet())
+        versionCatalog.libraryAliases
+                .findAll { !(it.endsWith("plugin") || it.endsWith("dependencies") || it.endsWith("bom")) }
                 .collect { versionCatalog.findLibrary(it).get().get() }
                 .forEach { api it }
         parent.commonModuleProjects.forEach { api(it) }
