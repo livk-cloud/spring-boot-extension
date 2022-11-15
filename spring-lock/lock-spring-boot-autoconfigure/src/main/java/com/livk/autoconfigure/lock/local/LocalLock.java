@@ -35,7 +35,7 @@ public class LocalLock extends AbstractLockSupport<Lock> {
     }
 
     @Override
-    protected boolean tryLockAsync(Lock lock, long leaseTime, long waitTime) throws Exception {
+    protected boolean tryLockAsync(Lock lock, long leaseTime, long waitTime) {
         throw new LockException("Async lock of Local isn't support");
     }
 
@@ -45,12 +45,12 @@ public class LocalLock extends AbstractLockSupport<Lock> {
     }
 
     @Override
-    protected void lockAsync(Lock lock) throws Exception {
+    protected void lockAsync(Lock lock) {
         throw new LockException("Async lock of Local isn't support");
     }
 
     @Override
-    protected void lock(Lock lock) throws Exception {
+    protected void lock(Lock lock) {
         lock.lock();
     }
 

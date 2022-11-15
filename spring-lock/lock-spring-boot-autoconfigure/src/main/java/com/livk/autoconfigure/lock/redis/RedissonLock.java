@@ -57,7 +57,7 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
     }
 
     @Override
-    protected void lock(RLock lock) throws Exception {
+    protected void lock(RLock lock) {
         lock.lock();
     }
 

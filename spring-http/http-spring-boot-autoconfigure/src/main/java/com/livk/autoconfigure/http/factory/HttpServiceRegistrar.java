@@ -46,16 +46,16 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
     private Environment environment;
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
     }
 
     @Override
-    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         ClassPathBeanDefinitionScanner scanner = getScanner(registry);
         scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class));
@@ -87,7 +87,7 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
     private ClassPathBeanDefinitionScanner getScanner(BeanDefinitionRegistry registry) {
         return new ClassPathBeanDefinitionScanner(registry, false, environment, resourceLoader) {
             @Override
-            protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+            protected boolean isCandidateComponent(@NonNull AnnotatedBeanDefinition beanDefinition) {
                 boolean isCandidate = false;
                 if (beanDefinition.getMetadata().isIndependent()) {
                     if (!beanDefinition.getMetadata().isAnnotation()) {

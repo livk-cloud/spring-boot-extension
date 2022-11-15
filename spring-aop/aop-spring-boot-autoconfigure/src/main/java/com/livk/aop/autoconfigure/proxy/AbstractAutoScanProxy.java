@@ -5,6 +5,7 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.beans.BeansException;
+import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -22,7 +23,7 @@ import java.util.Set;
 public abstract class AbstractAutoScanProxy extends AbstractAutoProxyCreator {
 
     @Override
-    protected Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName, TargetSource customTargetSource) throws BeansException {
+    protected Object[] getAdvicesAndAdvisorsForBean(@NonNull Class<?> beanClass, @NonNull String beanName, TargetSource customTargetSource) throws BeansException {
         Set<Object> advices = Sets.newHashSet();
         for (Class<? extends Annotation> proxyAnnotation : findProxyAnnotations()) {
             if (beanClass.isAnnotationPresent(proxyAnnotation)) {

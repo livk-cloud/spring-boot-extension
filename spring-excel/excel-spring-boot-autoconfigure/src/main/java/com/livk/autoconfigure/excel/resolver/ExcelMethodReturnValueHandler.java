@@ -13,6 +13,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
@@ -35,12 +36,12 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     public static final String UTF8 = "UTF-8";
 
     @Override
-    public boolean supportsReturnType(MethodParameter returnType) {
+    public boolean supportsReturnType(@NonNull MethodParameter returnType) {
         return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 
     @Override
-    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
+    public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
@@ -83,7 +84,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     }
 
     @Override
-    public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
+    public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
         return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
     }
 

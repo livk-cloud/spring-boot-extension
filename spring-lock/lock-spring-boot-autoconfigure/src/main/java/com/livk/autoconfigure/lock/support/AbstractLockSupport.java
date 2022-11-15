@@ -68,5 +68,5 @@ public abstract class AbstractLockSupport<T extends Lock> implements Distributed
 
     protected abstract void lockAsync(T lock) throws Exception;
 
-    protected abstract void lock(T lock) throws Exception;
+    protected abstract void lock(T lock);
 }

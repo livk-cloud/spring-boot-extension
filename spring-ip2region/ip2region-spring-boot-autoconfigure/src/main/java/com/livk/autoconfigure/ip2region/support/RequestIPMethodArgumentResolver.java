@@ -4,6 +4,7 @@ import com.livk.autoconfigure.ip2region.annotation.RequestIp;
 import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -25,7 +26,7 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (parameter.getParameterType().isAssignableFrom(String.class)) {
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Assert.notNull(request, "request not be null");

@@ -16,6 +16,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;
@@ -36,10 +37,11 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
     @Override
-    public boolean supports(HandlerResult result) {
+    public boolean supports(@NonNull HandlerResult result) {
         return AnnotationUtils.hasAnnotation(result, QRCode.class);
     }
 
+    @NonNull
     @Override
     public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
         Object returnValue = result.getReturnValue();

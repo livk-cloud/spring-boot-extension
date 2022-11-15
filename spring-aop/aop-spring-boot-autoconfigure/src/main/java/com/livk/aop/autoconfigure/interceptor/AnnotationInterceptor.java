@@ -6,6 +6,7 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.lang.NonNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ public interface AnnotationInterceptor<T extends Annotation> extends Introductio
     }
 
     @Override
-    default boolean implementsInterface(Class<?> intf) {
+    default boolean implementsInterface(@NonNull Class<?> intf) {
         return annotationClass().isAssignableFrom(intf);
     }
 

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.lang.NonNull;
 
 /**
  * <p>
@@ -23,7 +24,7 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T> {
     private final String statementId;
 
     @Override
-    public void write(Chunk<? extends T> chunk) throws Exception {
+    public void write(@NonNull Chunk<? extends T> chunk) {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         try {
             for (T item : chunk.getItems()) {

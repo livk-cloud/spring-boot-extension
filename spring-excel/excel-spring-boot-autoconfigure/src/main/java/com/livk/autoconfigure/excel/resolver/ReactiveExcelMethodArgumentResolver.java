@@ -10,6 +10,7 @@ import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.codec.multipart.Part;
+import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.ServerWebExchange;
@@ -37,8 +38,9 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
         return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
     }
 
+    @NonNull
     @Override
-    public Mono<Object> resolveArgument(MethodParameter parameter, BindingContext bindingContext, ServerWebExchange exchange) {
+    public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
         Class<?> excelModelClass;
         if (parameter.getParameterType().equals(Mono.class)) {
             excelModelClass = ResolvableType.forMethodParameter(parameter).getGeneric(0).resolveGeneric(0);

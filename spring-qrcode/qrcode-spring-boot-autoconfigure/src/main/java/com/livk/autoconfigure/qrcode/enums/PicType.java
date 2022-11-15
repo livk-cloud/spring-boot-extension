@@ -10,5 +10,5 @@ package com.livk.autoconfigure.qrcode.enums;
  */
 public enum PicType {
     PNG,
-    JPG;
+    JPG
 }

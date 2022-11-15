@@ -7,6 +7,7 @@ import com.livk.util.JacksonUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
@@ -25,12 +26,12 @@ import java.io.IOException;
 public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 
     @Override
-    public boolean supportsReturnType(MethodParameter returnType) {
+    public boolean supportsReturnType(@NonNull MethodParameter returnType) {
         return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
     }
 
     @Override
-    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
+    public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest) throws IOException {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
@@ -44,7 +45,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
     }
 
     @Override
-    public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
+    public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
         return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
     }
 

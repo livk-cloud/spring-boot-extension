@@ -275,10 +275,9 @@ public class ZookeeperUtils {
      * 对一个节点进行监听，监听事件包括指定的路径节点的增、删、改的操作
      *
      * @param path 节点路径
-     * @throws Exception
      */
 
-    public void watchNode(String path, boolean dataIsCompressed) throws Exception {
+    public void watchNode(String path, boolean dataIsCompressed) {
         try {
             CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
             curatorCache.listenable().addListener((type, oldData, data) -> {

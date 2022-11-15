@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
@@ -49,13 +50,14 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
     @Override
-    public boolean supports(HandlerResult result) {
+    public boolean supports(@NonNull HandlerResult result) {
         return AnnotationUtils.hasAnnotation(result, ExcelReturn.class);
     }
 
+    @NonNull
     @SuppressWarnings("unchecked")
     @Override
-    public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+    public Mono<Void> handleResult(@NonNull ServerWebExchange exchange, HandlerResult result) {
         Object returnValue = result.getReturnValue();
         if (returnValue == null) {
             return Mono.empty();
