@@ -5,10 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>
@@ -27,21 +28,21 @@ class UserControllerTest {
 
     @Test
     void testList() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+        mockMvc.perform(get("/user"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("customize[0].username", "livk").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("spring[0].username", "livk").exists());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("customize[0].username", "livk").exists())
+                .andExpect(jsonPath("spring[0].username", "livk").exists());
     }
 
     @Test
     void testGetById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/1"))
+        mockMvc.perform(get("/user/1"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("customize.username", "livk").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("spring.username", "livk").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("adapter.username", "livk").exists());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("customize.username", "livk").exists())
+                .andExpect(jsonPath("spring.username", "livk").exists())
+                .andExpect(jsonPath("adapter.username", "livk").exists());
     }
 }
 

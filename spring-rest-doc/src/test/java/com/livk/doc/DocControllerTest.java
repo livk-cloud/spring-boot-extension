@@ -12,12 +12,15 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Map;
+
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * <p>
@@ -46,22 +49,22 @@ class DocControllerTest {
 
     @Test
     void testGet() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/doc")
+        mockMvc.perform(get("/doc")
                         .param("name", "world"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("hello world"))
-                .andDo(MockMvcRestDocumentation.document("get"));
+                .andExpect(status().isOk())
+                .andExpect(content().string("hello world"))
+                .andDo(document("get"));
     }
 
     @Test
     void testPost() throws Exception {
         Map<String, String> map = Map.of("username", "livk", "password", "123456");
-        mockMvc.perform(MockMvcRequestBuilders.post("/doc")
+        mockMvc.perform(post("/doc")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(map)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("livk"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("123456"))
-                .andDo(MockMvcRestDocumentation.document("post"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("livk"))
+                .andExpect(jsonPath("$.password").value("123456"))
+                .andDo(document("post"));
     }
 }
