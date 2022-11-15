@@ -41,7 +41,7 @@ public class WebSocketClientTest implements Runnable {
             WebSocketClient webSocketClient = new WebSocketClient(new URI(uri)) {
 
                 @Override
-                public void onOpen(final ServerHandshake handshakedata) {
+                public void onOpen(final ServerHandshake serverHandshake) {
                     log.info(uri + "===建立连接===");
                 }
 
