@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.livk.mybatis.tree.example.mapper.MenuMapper">
+
+    <resultMap id="MenuList" type="com.livk.mybatis.tree.example.entity.Menu">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="children" select="listByPid" column="{id=id,name=name}"/>
+    </resultMap>
+
+    <select id="list" resultMap="MenuList">
+        select *
+        from menu
+        where pid = 0
+    </select>
+
+    <select id="listByPid" resultMap="MenuList">
+        select *
+        from menu
+        where pid = #{id}
+    </select>
+</mapper>
+
