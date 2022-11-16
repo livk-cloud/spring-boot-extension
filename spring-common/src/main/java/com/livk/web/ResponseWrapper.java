@@ -80,7 +80,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
         @Override
         public void write(@NonNull byte[] b) {
-            stream.write(b, 0, b.length);
+            stream.writeBytes(b);
         }
 
         @SneakyThrows

@@ -6,6 +6,8 @@ import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
@@ -32,7 +34,7 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
     private final String contentType;
 
     public RequestWrapper(HttpServletRequest request, String json) {
-        this(request, json, null);
+        this(request, json, MediaType.APPLICATION_JSON_VALUE);
     }
 
     public RequestWrapper(HttpServletRequest request, String json, String contentType) {
@@ -66,7 +68,7 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public Enumeration<String> getHeaders(String name) {
-        if (ObjectUtils.allChecked(StringUtils::hasText, name, contentType) && name.equalsIgnoreCase("Content-Type")) {
+        if (ObjectUtils.allChecked(StringUtils::hasText, name, contentType) && name.equalsIgnoreCase(HttpHeaders.CONTENT_TYPE)) {
             return new HeaderEnumeration(contentType);
         }
         return super.getHeaders(name);
