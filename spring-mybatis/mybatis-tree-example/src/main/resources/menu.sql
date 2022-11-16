@@ -6,7 +6,7 @@ create table menu
     pid  int default 0 not null
 );
 
-INSERT INTO menu (name, pid)
+INSERT INTO menu (id, name, pid)
 VALUES (1, '电影', 0),
        (2, '南方车站的聚会', 1),
        (3, '时速二十五', 1),
