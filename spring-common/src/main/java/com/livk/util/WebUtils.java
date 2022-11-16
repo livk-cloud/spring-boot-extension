@@ -32,52 +32,52 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
     private static final String HTTP_IP_SPLIT = ",";
 
-    public ServletRequestAttributes getAttributes() {
+    public ServletRequestAttributes servletRequestAttributes() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         Assert.notNull(servletRequestAttributes, "attributes not null!");
         return servletRequestAttributes;
     }
 
-    public HttpServletRequest getRequest() {
-        return getAttributes().getRequest();
+    public HttpServletRequest request() {
+        return servletRequestAttributes().getRequest();
     }
 
-    public HttpServletResponse getResponse() {
-        return getAttributes().getResponse();
+    public HttpServletResponse response() {
+        return servletRequestAttributes().getResponse();
     }
 
-    public HttpSession getSession() {
-        return getRequest().getSession();
+    public HttpSession session() {
+        return request().getSession();
     }
 
-    public String getParameter(String name) {
-        return getRequest().getParameter(name);
+    public String parameter(String name) {
+        return request().getParameter(name);
     }
 
-    public String getHeader(String headerName) {
-        return getRequest().getHeader(headerName);
+    public String header(String headerName) {
+        return request().getHeader(headerName);
     }
 
-    public Map<String, String> getHeaders() {
-        HttpServletRequest request = getRequest();
+    public Map<String, String> headers() {
+        HttpServletRequest request = request();
         return StreamUtils.of(request.getHeaderNames().asIterator())
                 .collect(Collectors.toMap(Function.identity(), request::getHeader));
     }
 
-    public Map<String, String> getParamMap(CharSequence delimiter) {
-        return getRequest()
+    public Map<String, String> paramMap(CharSequence delimiter) {
+        return request()
                 .getParameterMap()
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
     }
 
-    public String getRealIp() {
-        return getRealIp(getRequest());
+    public String realIp() {
+        return realIp(request());
     }
 
-    public String getRealIp(HttpServletRequest request) {
+    public String realIp(HttpServletRequest request) {
         // 这个一般是Nginx反向代理设置的参数
         String ip = request.getHeader("X-Real-IP");
         if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
@@ -97,7 +97,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     public void out(Object data) {
-        out(getResponse(), JacksonUtils.toJsonStr(data));
+        out(response(), JacksonUtils.toJsonStr(data));
     }
 
     public void out(HttpServletResponse response, Object data) {

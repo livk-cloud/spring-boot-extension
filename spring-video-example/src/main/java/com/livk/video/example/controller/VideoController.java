@@ -2,6 +2,7 @@ package com.livk.video.example.controller;
 
 import com.livk.util.WebUtils;
 import com.livk.video.example.support.VideoResourceHttpRequestHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +31,14 @@ public class VideoController {
     private final VideoResourceHttpRequestHandler requestHandler;
 
     @GetMapping
-    public void video(@RequestParam(defaultValue = "test") String videoName) throws Exception {
+    public void video(HttpServletRequest request,
+                      HttpServletResponse response,
+                      @RequestParam(defaultValue = "test") String videoName) throws Exception {
         //查询视频是否存在
         if ("test".equals(videoName)) {
-            WebUtils.getRequest().setAttribute(VideoResourceHttpRequestHandler.ATTR, "classpath:" + videoName + VIDEO_SUFFIX);
-            requestHandler.handleRequest(WebUtils.getRequest(), WebUtils.getResponse());
+            request.setAttribute(VideoResourceHttpRequestHandler.ATTR, "classpath:" + videoName + VIDEO_SUFFIX);
+            requestHandler.handleRequest(request, response);
         } else {
-            HttpServletResponse response = WebUtils.getResponse();
             Map<String, Serializable> map = Map.of("msg", "视频资源不存在", "status", HttpServletResponse.SC_NOT_FOUND);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());

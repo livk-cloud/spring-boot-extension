@@ -30,7 +30,7 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
         if (parameter.getParameterType().isAssignableFrom(String.class)) {
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Assert.notNull(request, "request not be null");
-            return WebUtils.getRealIp(request);
+            return WebUtils.realIp(request);
         }
         throw new RuntimeException("param not support " + parameter.getParameterType());
     }
