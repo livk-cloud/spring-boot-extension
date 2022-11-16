@@ -24,7 +24,7 @@ link:spring-mybatis/mybatis-typehandler-example-mysql[spring整合mybatis自定�
 link:spring-mybatis/mybatis-typehandler-example-pgsql[spring整合mybatis自定义类型转换器pgsql] +
 link:spring-pulsar[spring整合Pulsar] +
 link:spring-qrcode/spring-qrcode-mvc-example[spring mvc整合二维码] +
-link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码] +
+link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码]
 link:spring-quartz[spring整合Quartz] +
 link:spring-r2dbc[Spring整合R2DBC] +
 link:spring-rabbit/mqtt-example[Spring整合Rabbit mqtt] +
