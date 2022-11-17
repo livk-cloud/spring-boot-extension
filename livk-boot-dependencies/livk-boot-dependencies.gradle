@@ -5,8 +5,6 @@ def versionCatalog = rootProject.extensions
         .named("libs")
 
 dependencies {
-    // 暂时升级、等待springboot-3
-    api enforcedPlatform("org.springframework:spring-framework-bom:6.0.0")
     api platform(SpringBootPlugin.BOM_COORDINATES)
     versionCatalog.libraryAliases
             .findAll { it.endsWith("dependencies") || it.endsWith("bom") }

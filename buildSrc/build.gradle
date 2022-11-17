@@ -15,7 +15,6 @@ ext {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-gradle-plugin:$bootVersion"
-    implementation "org.springframework:spring-core:6.0.0"
 }
 
 gradlePlugin {
