@@ -97,7 +97,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     public void out(Object data) {
-        out(response(), JacksonUtils.toJsonStr(data));
+        out(response(), data);
     }
 
     public void out(HttpServletResponse response, Object data) {

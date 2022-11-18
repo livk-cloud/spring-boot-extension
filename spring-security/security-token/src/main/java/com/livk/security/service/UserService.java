@@ -1,7 +1,7 @@
 package com.livk.security.service;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -23,14 +23,14 @@ import java.util.Map;
  */
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, InitializingBean {
 
-    private static final Map<String, UserDetails> user = new HashMap<>();
+    private static final Map<String, UserDetails> user = new ConcurrentHashMap<>();
 
     private final PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    public void init() {
+
+    private void init() {
         String encode = passwordEncoder.encode("123456");
         user.put("livk", new User("livk", encode, AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
         user.put("root", new User("root", encode, AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
@@ -40,7 +40,13 @@ public class UserService implements UserDetailsService {
     @Override
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return user.get(username);
+        UserDetails userDetails = user.get(username);
+        init();
+        return userDetails;
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
+    }
 }
