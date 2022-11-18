@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `user`;
-
 create table `user`
 (
     `id`          int not null primary key,
@@ -7,4 +5,4 @@ create table `user`
     `version`     int,
     `insert_time` datetime,
     `update_time` datetime
-)
+);
