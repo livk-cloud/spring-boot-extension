@@ -1,0 +1,1 @@
+当前spring boot admin server无法使用UI进行登录
