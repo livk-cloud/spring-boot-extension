@@ -5,6 +5,8 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -92,6 +94,7 @@ public class RSAUtils {
     }
 
     private void writeFile(String destPath, byte[] bytes) {
+        destPath = URLDecoder.decode(destPath, StandardCharsets.UTF_8);
         File file = new File(destPath);
         if (!file.exists()) {
             try {

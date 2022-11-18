@@ -5,6 +5,8 @@ import com.livk.sso.auth.config.RsaKeyProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import java.io.FileNotFoundException;
+
 /**
  * <p>
  * SSOAuthApp
@@ -17,7 +19,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(RsaKeyProperties.class)
 public class SSOAuthApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+//        String path = ResourceUtils.getURL("classpath:")
+//                .getPath().replaceAll("/build/.*", "/src/main/resources");
+//        RSAUtils.generateFile(path, "livk", 1024);
         LivkSpring.run(SSOAuthApp.class, args);
     }
 
