@@ -1,4 +1,4 @@
-create table oauth2_authorization
+create table if not exists oauth2_authorization
 (
     id                            varchar(100) not null
         primary key,
@@ -28,7 +28,7 @@ create table oauth2_authorization
     refresh_token_metadata        blob null
 );
 
-create table oauth2_authorization_consent
+create table if not exists oauth2_authorization_consent
 (
     registered_client_id varchar(100)  not null,
     principal_name       varchar(200)  not null,
@@ -36,7 +36,7 @@ create table oauth2_authorization_consent
     primary key (registered_client_id, principal_name)
 );
 
-create table oauth2_registered_client
+create table if not exists oauth2_registered_client
 (
     id                            varchar(100)                        not null
         primary key,
@@ -53,12 +53,12 @@ create table oauth2_registered_client
     token_settings                varchar(2000)                       not null
 );
 
-create table users
+create table if not exists users
 (
     id       bigint null,
     username varchar(20) null,
     password varchar(100) null
 );
 
-INSERT INTO oauth.users (id, username, password)
-VALUES (1, 'livk', '$2a$10$LepUx6I/1y0Pc614ZqSK6eXvoMbNDjdjAKqV/GQ4C97b0pw/kiuBC');
+# INSERT INTO users (id, username, password)
+# VALUES (1, 'livk', '$2a$10$LepUx6I/1y0Pc614ZqSK6eXvoMbNDjdjAKqV/GQ4C97b0pw/kiuBC');

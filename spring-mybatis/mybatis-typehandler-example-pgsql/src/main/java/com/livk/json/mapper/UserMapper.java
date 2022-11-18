@@ -18,9 +18,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into user (username,password,des) values (#{username},#{password},#{des})")
+    @Insert("insert into \"user\" (username,password,des) values (#{username},#{password},#{des})")
     int insert(User user);
 
-    @Select("select * from user")
+    @Select("select * from \"user\"")
     List<User> selectList();
 }

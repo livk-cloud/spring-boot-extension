@@ -1,5 +1,5 @@
 -- auto-generated definition
-create table users
+create table if not exists users
 (
     id       bigint auto_increment
         primary key,
