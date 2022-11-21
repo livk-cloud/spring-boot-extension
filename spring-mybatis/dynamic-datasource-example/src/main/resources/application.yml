@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    dynamic:
+      mysql:
+        url: jdbc:mysql://livk.com:3306/mybatis
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        primary: true
+      pgsql:
+        url: jdbc:postgresql://livk.com:5432/mybatis
+        username: postgres
+        password: 123456
+        driver-class-name: org.postgresql.Driver

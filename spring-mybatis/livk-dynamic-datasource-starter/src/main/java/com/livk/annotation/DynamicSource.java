@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * DataSource
+ * DynamicSource
  * </p>
  *
  * @author livk
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface DataSource {
+public @interface DynamicSource {
 
     String value();
 
