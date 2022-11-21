@@ -62,14 +62,14 @@ class JacksonUtilsTest {
 
     @Test
     void testToMap() {
-        Map<String, String> result = JacksonUtils.toMap("""
+        Map<String, Object> result = JacksonUtils.toMap("""
                 {
                                     "c": "1",
                                     "a": "2",
                                     "b": {
                                         "c": 3
                                     }
-                                }""", String.class, String.class);
+                                }""", String.class, Object.class);
         assertNotNull(result);
     }
 
