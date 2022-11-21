@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * <p>
@@ -39,12 +37,7 @@ public class CacheAspect {
             doubleCache = AnnotationUtils.findAnnotation(method, DoubleCache.class);
         }
         Assert.notNull(doubleCache, "doubleCache is null");
-        String[] paramNames = signature.getParameterNames();
-        Map<String, Object> treeMap = new TreeMap<>();
-        for (int i = 0; i < paramNames.length; i++) {
-            treeMap.put(paramNames[i], point.getArgs()[i]);
-        }
-        String spELResult = SpringUtils.parseSpEL(treeMap, doubleCache.key());
+        String spELResult = SpringUtils.parseSpEL(method, point.getArgs(), doubleCache.key());
         String realKey = doubleCache.cacheName() + ":" + spELResult;
         switch (doubleCache.type()) {
             case FULL -> {
