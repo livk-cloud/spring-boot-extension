@@ -1,5 +1,6 @@
 package com.livk.util;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.FileCopyUtils;
 
@@ -45,5 +46,14 @@ public class FileUtils extends FileCopyUtils {
                 buffer.clear();
             }
         }
+    }
+
+    @SneakyThrows
+    public boolean createNewFile(File file) {
+        boolean flag = true;
+        if (!file.getParentFile().exists()) {
+            flag = file.getParentFile().mkdirs();
+        }
+        return flag && file.createNewFile();
     }
 }
