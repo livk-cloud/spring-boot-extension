@@ -51,7 +51,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 
     @Override
     public boolean supports(@NonNull HandlerResult result) {
-        return AnnotationUtils.hasAnnotation(result, ExcelReturn.class);
+        return AnnotationUtils.hasAnnotation(result.getReturnTypeSource(), ExcelReturn.class);
     }
 
     @NonNull
@@ -62,7 +62,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         if (returnValue == null) {
             return Mono.empty();
         }
-        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(result, ExcelReturn.class);
+        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(result.getReturnTypeSource(), ExcelReturn.class);
         ServerHttpResponse response = exchange.getResponse();
         ResolvableType returnType = result.getReturnType();
         ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
