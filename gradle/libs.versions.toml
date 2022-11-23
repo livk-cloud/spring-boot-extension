@@ -58,8 +58,7 @@ ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2regi
 browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
-springdoc-openapi = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
-springdoc-openapi-webflux = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
+springdoc-openapi-dependencies = { group = "org.springdoc", name = "springdoc-openapi", version.ref = "springdoc" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "googleJavase" }
 
 [bundles]

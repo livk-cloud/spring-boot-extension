@@ -2,6 +2,10 @@ package com.livk.auth.server;
 
 import com.livk.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author livk
  * @date 2022/4/24
  */
+@RestController
 @SpringBootApplication
 public class AuthServerApp {
 
@@ -18,4 +23,8 @@ public class AuthServerApp {
         LivkSpring.run(AuthServerApp.class, args);
     }
 
+    @GetMapping("hello")
+    public HttpEntity<String> hello() {
+        return ResponseEntity.ok("hello");
+    }
 }

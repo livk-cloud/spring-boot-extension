@@ -1,5 +1,5 @@
 dependencies {
     api project(":spring-common")
     api "org.springframework.boot:spring-boot-autoconfigure"
-    optional "org.springdoc:springdoc-openapi-starter-common:2.0.0-RC1"
+    optional "org.springdoc:springdoc-openapi-starter-common"
 }

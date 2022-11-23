@@ -3,7 +3,7 @@ package com.livk.auth.server.common.converter;
 
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2PasswordAuthenticationToken;
-import com.livk.auth.server.common.util.OAuth2EndpointUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -46,7 +46,7 @@ public class OAuth2PasswordAuthenticationConverter implements OAuth2BaseAuthenti
      */
     @Override
     public void checkParams(HttpServletRequest request) {
-        MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
+        MultiValueMap<String, String> parameters = WebUtils.params(request);
         // username (REQUIRED)
         String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
         if (!StringUtils.hasText(username) || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {

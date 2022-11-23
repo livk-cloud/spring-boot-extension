@@ -2,7 +2,7 @@ package com.livk.auth.server.common.converter;
 
 
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
-import com.livk.auth.server.common.util.OAuth2EndpointUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,7 +60,7 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
             return null;
         }
 
-        MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
+        MultiValueMap<String, String> parameters = WebUtils.params(request);
         // scope (OPTIONAL)
         String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
         if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {

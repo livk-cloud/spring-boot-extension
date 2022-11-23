@@ -2,7 +2,7 @@ package com.livk.auth.server.common.converter;
 
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2SmsAuthenticationToken;
-import com.livk.auth.server.common.util.OAuth2EndpointUtils;
+import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -46,7 +46,7 @@ public class OAuth2SmsAuthenticationConverter implements OAuth2BaseAuthenticatio
      */
     @Override
     public void checkParams(HttpServletRequest request) {
-        MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
+        MultiValueMap<String, String> parameters = WebUtils.params(request);
         // mobile (REQUIRED)
         String mobile = parameters.getFirst(SecurityConstants.SMS_PARAMETER_NAME);
         if (!StringUtils.hasText(mobile) || parameters.get(SecurityConstants.SMS_PARAMETER_NAME).size() != 1) {

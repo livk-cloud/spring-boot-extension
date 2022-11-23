@@ -3,8 +3,6 @@ package com.livk.autoconfigure.mapstruct.support;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.livk.autoconfigure.mapstruct.converter.Converter;
-import org.springframework.core.ResolvableType;
-import org.springframework.util.Assert;
 
 import java.util.Map;
 
@@ -25,16 +23,6 @@ public class InMemoryConverterRepository implements ConverterRepository {
     @Override
     public boolean contains(Class<?> sourceClass, Class<?> targetClass) {
         return converterTable.contains(sourceClass, targetClass);
-    }
-
-    @Override
-    public void put(Converter converter) {
-        ResolvableType resolvableType = ResolvableType.forClass(converter.getClass());
-        Class<?> source = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(0).resolve();
-        Class<?> target = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(1).resolve();
-        Assert.notNull(source, "source not null");
-        Assert.notNull(target, "target not null");
-        this.put(source, target, converter);
     }
 
     @Override
