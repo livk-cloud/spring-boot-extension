@@ -27,3 +27,61 @@ gradle-profiler --gradle-user-home D:\gradle-7.5.1 --benchmark --cli --project-d
 ----
 
 https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]
+
+#中间件#：MySql、Postgres、ClickHouse、Kafka、Pulsar、Rabbit、Redis、Zookeeper +
+
+#框架#：
+[%autowidth]
+
+|===
+|名称 |功能
+
+|Spring-Boot-Admin
+|springboot监控服务
+
+|Spring-Authorization-Server
+|spring授权服务器
+
+|Spring-Batch
+|spring批次处理框架
+
+|Springdoc-Openapi
+|新版Swagger API文档
+
+|EasyExcel
+|便捷的Excel处理框架
+
+|Spring-Hateoas
+|restful风格处理框架
+
+|Ip2region
+|ip地址查询框架
+
+|Mapstruct
+|优秀的实体转换工具
+
+|Mybatis
+|半自动ORM框架
+
+|Google Zxing Javase
+|谷歌二维码生成框架
+
+|Quartz
+|定时任务框架
+
+|R2dbc-postgresql
+|异步数据库协议
+
+|Spring-Restdocs
+|API文档生成框架
+
+|Spring-Retry
+|重试框架
+
+|Spring-Security
+|安全框架
+
+|Browscap-Java、Yauaa
+|HTTP用户信息解析框架
+|===
+
