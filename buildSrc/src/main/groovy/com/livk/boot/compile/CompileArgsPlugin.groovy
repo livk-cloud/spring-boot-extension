@@ -1,13 +1,12 @@
 package com.livk.boot.compile
 
-import com.livk.boot.info.ManifestPlugin
+
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
-
 /**
  * <p>
  * 添加编译参数
@@ -35,7 +34,6 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
-        project.pluginManager.apply(ManifestPlugin.class)
         def javaCompile = project.tasks
                 .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME) as JavaCompile
         javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)

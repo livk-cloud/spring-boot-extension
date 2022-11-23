@@ -1,7 +1,6 @@
 package com.livk.boot
 
 import com.livk.boot.compile.ResourcesPlugin
-import com.livk.boot.info.ManifestPlugin
 import com.livk.boot.maven.DeployedPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,7 +20,6 @@ class CommonPlugin implements Plugin<Project> {
         project.pluginManager.apply(JavaLibraryPlugin.class)
         project.pluginManager.apply(ModulePlugin.class)
         project.pluginManager.apply(ResourcesPlugin.class)
-        project.pluginManager.apply(ManifestPlugin.class)
         project.pluginManager.apply(DeployedPlugin.class)
     }
 }
