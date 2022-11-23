@@ -22,7 +22,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -42,7 +41,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.List;
 
@@ -58,10 +56,11 @@ import java.util.List;
 public class AuthorizationServerConfiguration {
 
     @Bean
+    @SuppressWarnings("unchecked")
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2AuthorizationService authorizationService,
-                                                                      PasswordEncoder passwordEncoder) throws Exception {
+                                                                      UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
                         tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
@@ -70,9 +69,8 @@ public class AuthorizationServerConfiguration {
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
         http.apply(configurer);
-        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
-        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(endpointsMatcher)
+        DefaultSecurityFilterChain chain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .apply(configurer.authorizationService(authorizationService))
                 .and()
@@ -80,8 +78,22 @@ public class AuthorizationServerConfiguration {
                 .and()
                 .build();
 
-        addCustomOAuth2GrantAuthenticationProvider(http, passwordEncoder);
-        return securityFilterChain;
+        OAuth2TokenGenerator<Jwt> tokenGenerator = (OAuth2TokenGenerator<Jwt>) http.getSharedObject(OAuth2TokenGenerator.class);
+
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+
+        OAuth2PasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
+                authenticationManager, authorizationService, tokenGenerator);
+
+        OAuth2SmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
+                authenticationManager, authorizationService, tokenGenerator);
+        // 处理 UsernamePasswordAuthenticationToken
+        http.authenticationProvider(userDetailsAuthenticationProvider)
+                // 处理 OAuth2ResourceOwnerPasswordAuthenticationToken s
+                .authenticationProvider(resourceOwnerPasswordAuthenticationProvider)
+                // 处理 OAuth2ResourceOwnerSmsAuthenticationToken
+                .authenticationProvider(resourceOwnerSmsAuthenticationProvider);
+        return chain;
     }
 
     @Bean
@@ -125,29 +137,5 @@ public class AuthorizationServerConfiguration {
                 new OAuth2RefreshTokenAuthenticationConverter(),
                 new OAuth2PasswordAuthenticationConverter(),
                 new OAuth2SmsAuthenticationConverter()));
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addCustomOAuth2GrantAuthenticationProvider(HttpSecurity http, PasswordEncoder passwordEncoder) {
-        OAuth2TokenGenerator<Jwt> tokenGenerator = (OAuth2TokenGenerator<Jwt>) http.getSharedObject(OAuth2TokenGenerator.class);
-
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-
-        OAuth2AuthorizationService authorizationService = http.getSharedObject(OAuth2AuthorizationService.class);
-
-        OAuth2PasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
-                authenticationManager, authorizationService, tokenGenerator);
-
-        OAuth2SmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
-                authenticationManager, authorizationService, tokenGenerator);
-
-        // 处理 UsernamePasswordAuthenticationToken
-        http.authenticationProvider(new UserDetailsAuthenticationProvider(passwordEncoder));
-
-        // 处理 OAuth2ResourceOwnerPasswordAuthenticationToken s
-        http.authenticationProvider(resourceOwnerPasswordAuthenticationProvider);
-
-        // 处理 OAuth2ResourceOwnerSmsAuthenticationToken
-        http.authenticationProvider(resourceOwnerSmsAuthenticationProvider);
     }
 }

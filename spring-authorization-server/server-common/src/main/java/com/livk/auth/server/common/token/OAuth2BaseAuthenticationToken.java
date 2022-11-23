@@ -1,7 +1,5 @@
 package com.livk.auth.server.common.token;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -18,18 +16,15 @@ import java.util.Set;
  *
  * @author livk
  */
+@Getter
 public abstract class OAuth2BaseAuthenticationToken extends AbstractAuthenticationToken {
 
-    @Getter
     private final AuthorizationGrantType authorizationGrantType;
 
-    @Getter
     private final Authentication clientPrincipal;
 
-    @Getter
     private final Set<String> scopes;
 
-    @Getter
     private final Map<String, Object> additionalParameters;
 
     public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType,
@@ -41,9 +36,8 @@ public abstract class OAuth2BaseAuthenticationToken extends AbstractAuthenticati
         Assert.notNull(clientPrincipal, "clientPrincipal cannot be null");
         this.authorizationGrantType = authorizationGrantType;
         this.clientPrincipal = clientPrincipal;
-        this.scopes = Collections.unmodifiableSet(scopes != null ? Sets.newHashSet(scopes) : Collections.emptySet());
-        this.additionalParameters = Collections.unmodifiableMap(
-                additionalParameters != null ? Maps.newHashMap(additionalParameters) : Collections.emptyMap());
+        this.scopes = scopes == null ? Set.of() : Collections.unmodifiableSet(scopes);
+        this.additionalParameters = additionalParameters == null ? Map.of() : Collections.unmodifiableMap(additionalParameters);
     }
 
     /**

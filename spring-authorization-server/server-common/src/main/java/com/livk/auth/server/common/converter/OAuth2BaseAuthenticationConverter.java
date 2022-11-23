@@ -30,7 +30,6 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
      * 是否支持此convert
      *
      * @param grantType 授权类型
-     * @return
      */
     boolean support(String grantType);
 
@@ -43,11 +42,6 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 
     /**
      * 构建具体类型的token
-     *
-     * @param clientPrincipal
-     * @param requestedScopes
-     * @param additionalParameters
-     * @return
      */
     T buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters);
 

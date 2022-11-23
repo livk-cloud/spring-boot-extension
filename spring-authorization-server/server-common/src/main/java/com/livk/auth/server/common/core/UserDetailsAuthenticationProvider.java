@@ -4,12 +4,11 @@ import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.core.exception.BadCaptchaException;
 import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.auth.server.common.util.MessageSourceUtils;
-import com.livk.support.SpringContextHolder;
 import com.livk.util.WebUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -64,9 +63,12 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
     @Setter
     private UserDetailsPasswordService userDetailsPasswordService;
 
-    public UserDetailsAuthenticationProvider(PasswordEncoder passwordEncoder) {
+    private final ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices;
+
+    public UserDetailsAuthenticationProvider(PasswordEncoder passwordEncoder, ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices) {
         setMessageSource(MessageSourceUtils.get());
         setPasswordEncoder(passwordEncoder);
+        this.oauth2UserDetailsServices = oauth2UserDetailsServices;
     }
 
     @Override
@@ -105,21 +107,17 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
     @Override
     protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) {
         prepareTimingAttackProtection();
-        HttpServletRequest request = WebUtils.request();
 
         Map<String, String> paramMap = WebUtils.paramMap(",");
         String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
         String clientId = paramMap.get(OAuth2ParameterNames.CLIENT_ID);
 
         if (!StringUtils.hasText(clientId)) {
-            clientId = basicConvert.convert(request).getName();
+            clientId = basicConvert.convert(WebUtils.request()).getName();
         }
 
-        Map<String, Oauth2UserDetailsService> userDetailsServiceMap = SpringContextHolder.getApplicationContext()
-                .getBeansOfType(Oauth2UserDetailsService.class);
-
         String finalClientId = clientId;
-        Optional<Oauth2UserDetailsService> optional = userDetailsServiceMap.values().stream()
+        Optional<Oauth2UserDetailsService> optional = oauth2UserDetailsServices.stream()
                 .filter(service -> service.support(finalClientId, grantType))
                 .max(Comparator.comparingInt(Ordered::getOrder));
 

@@ -1,6 +1,7 @@
 dependencies {
     api project(":spring-common")
-    optional "org.springframework.data:spring-data-redis"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    optional "org.springframework.boot:spring-boot-starter-logging"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "org.springframework.security:spring-security-oauth2-authorization-server"
 }

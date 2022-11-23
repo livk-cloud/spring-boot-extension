@@ -1,0 +1,2 @@
+com.livk.auth.server.common.core.resource.ResourceServerAutoConfiguration
+com.livk.auth.server.common.AuthorizationServerAutoConfiguration
