@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://livk.com:5432/mybatis-type
+    url: jdbc:postgresql://livk.com:5432/mybatis_type
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
