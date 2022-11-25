@@ -1,6 +1,7 @@
 package com.livk.admin.server.config;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,6 +41,8 @@ public class SecurityConfig {
                 .requestMatchers(adminServer.path("/actuator/health"))
                 .permitAll()
                 .requestMatchers(adminServer.path("/login"))
+                .permitAll()
+                .dispatcherTypeMatchers(DispatcherType.ASYNC)
                 .permitAll()
                 .anyRequest()
                 .authenticated()
