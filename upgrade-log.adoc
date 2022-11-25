@@ -80,3 +80,5 @@ public class Main{
 `org.springframework.security.config.annotation.web.builders.HttpSecurity.securityMatcher(org.springframework.security.web.util.matcher.RequestMatcher)`
 
 === 升级到SpringBoot 3-RC2
+
+=== 升级到SpringBoot 3.0.0

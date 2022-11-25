@@ -5,25 +5,12 @@ def versionCatalog = rootProject.extensions
         .named("libs")
 
 dependencies {
-    api platform("org.springframework:spring-framework-bom:6.0.0")
-    api platform("org.springframework.security:spring-security-bom:6.0.0")
-    api platform("org.springframework.data:spring-data-bom:2022.0.0")
-    api platform("org.springframework.restdocs:spring-restdocs-bom:3.0.0")
-    api platform("com.fasterxml.jackson:jackson-bom:2.14.0")
-    api platform("org.springframework.integration:spring-integration-bom:6.0.0")
     api platform(SpringBootPlugin.BOM_COORDINATES)
     versionCatalog.libraryAliases
             .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
             .collect { versionCatalog.findLibrary(it).get().get() }
             .forEach { api platform(it) }
     constraints {
-        api "org.springframework.amqp:spring-amqp:3.0.0"
-        api "org.springframework.amqp:spring-rabbit:3.0.0"
-        api "org.springframework.amqp:spring-rabbit-stream:3.0.0"
-        api "org.springframework.kafka:spring-kafka:3.0.0"
-        api "org.springframework.retry:spring-retry:2.0.0"
-        api "org.springframework.plugin:spring-plugin-core:3.0.0"
-        api "org.springframework.hateoas:spring-hateoas:2.0.0"
         versionCatalog.libraryAliases
                 .findAll { !(it.endsWith("plugin") || it.endsWith("dependencies") || it.endsWith("bom")) }
                 .collect { versionCatalog.findLibrary(it).get().get() }

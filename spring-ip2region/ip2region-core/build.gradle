@@ -1,4 +1,5 @@
 dependencies {
     api project(":spring-common")
+    api("org.lionsoul:ip2region")
     optional "org.springframework.boot:spring-boot-starter-logging"
 }
