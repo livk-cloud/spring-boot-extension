@@ -12,6 +12,8 @@ link:spring-doc/spring-doc-webflux-example[spring webflux整合spring doc] +
 link:spring-excel/spring-excel-example[spring mvc整合Excel自定义注解实现导入和导出] +
 link:spring-excel/spring-webflux-excel-example[spring webflux整合Excel自定义注解实现导入和导出] +
 link:spring-excel/spring-excel-batch-example[spring batch整合Excel自定义注解实现导入和导出] +
+link:spring-graphql/spring-graphql-mybatis-example[graphql整合Mybatis] +
+link:spring-graphql/spring-graphql-r2dbc-example[graphql整合Postgres R2dbc] +
 link:spring-hateoas[spring整合hateoas实现restful风格返回] +
 link:spring-http/http-example[spring整合spring Http Interface] +
 link:spring-ip2region/ip2region-mvc-example[spring整合ip2region] +
@@ -19,6 +21,7 @@ link:spring-kafka[spring整合kafka] +
 link:spring-lock/livk-lock-example[spring整合redis RLock、JDK Lock] +
 link:spring-mail[spring发送Email] +
 link:spring-mapstruct/mapstruct-example[spring整合mapstruct自定义转换器] +
+link:spring-mybatis/dynamic-datasource-example[mybatis动态数据源] +
 link:spring-mybatis/mybatis-example[spring整合mybatis自定义拦截器] +
 link:spring-mybatis/mybatis-tree-example[spring整合mybatis实现SQL查询树形结构] +
 link:spring-mybatis/mybatis-typehandler-example-mysql[spring整合mybatis自定义类型转换器mysql] +
@@ -29,6 +32,7 @@ link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码]
 link:spring-quartz[spring整合Quartz] +
 link:spring-r2dbc[Spring整合R2DBC] +
 link:spring-rabbit/mqtt-example[Spring整合Rabbit mqtt] +
+link:spring-rabbit/rabbit-order-expired-example[Rabbit处理订单过期取消] +
 link:spring-rabbit[Spring整合Rabbit] +
 link:spring-redis[Spring整合Redis] +
 link:spring-redis/redis-lua[Spring整合Redis lua] +
@@ -39,6 +43,7 @@ link:spring-rsocket[Spring整合rsocket] +
 link:spring-security/security-sso[Spring整合security SSO] +
 link:spring-security/security-token[Spring security整合token] +
 link:spring-server-sent-events[Spring整合SSE] +
+link:spring-video-example[Spring webmvc传输视频] +
 link:spring-user-agent/browscap-example[Spring webflux整合 browscap-java] +
 link:spring-user-agent/yauaa-example[Spring webflux整合yauaa] +
 link:spring-video-example[Spring webmvc传输视频文件] +

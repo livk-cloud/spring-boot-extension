@@ -1,6 +1,7 @@
 = Spring Boot Example
 
 link:README-en.adoc[English]|link:README.adoc[简体中文] +
+https://github.com/livk-cloud/spring-boot-example[GitHub] | https://gitee.com/livk-cloud/spring-boot-example[Gitee] +
 https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud` 项目] +
 
 这是一个关于springboot项目的各种示例 +
@@ -50,6 +51,9 @@ https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=web
 
 |EasyExcel
 |便捷的Excel处理框架
+
+|GraphQL
+|查询语言规划
 
 |Spring-Hateoas
 |restful风格处理框架
