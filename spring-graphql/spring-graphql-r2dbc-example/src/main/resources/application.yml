@@ -1,0 +1,22 @@
+spring:
+  graphql:
+    websocket:
+      path: /graphql
+    graphiql:
+      enabled: true
+    path: /graphql
+  sql:
+    init:
+      schema-locations: classpath:data.sql
+      mode: always
+  r2dbc:
+    url: r2dbc:postgres://livk.com:5432/graphql
+    username: postgres
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 6677
