@@ -12,8 +12,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * <p>
@@ -32,25 +32,25 @@ public class BookController {
     private final AuthorMapper authorMapper;
 
     @QueryMapping
-    public List<Book> bookList() {
-        return bookMapper.list();
+    public Flux<Book> bookList() {
+        return Flux.fromIterable(bookMapper.list());
     }
 
     @QueryMapping
-    public Book bookByIsbn(@Argument String isbn) {
-        return bookMapper.getByIsbn(isbn);
+    public Mono<Book> bookByIsbn(@Argument String isbn) {
+        return Mono.justOrEmpty(bookMapper.getByIsbn(isbn));
     }
 
     @SchemaMapping(typeName = "Book", field = "author")
-    public Author getAuthor(Book book) {
-        return authorMapper.getByIdCardNo(book.getAuthorIdCardNo());
+    public Mono<Author> getAuthor(Book book) {
+        return Mono.justOrEmpty(authorMapper.getByIdCardNo(book.getAuthorIdCardNo()));
     }
 
     @MutationMapping
-    public Boolean createBook(@Argument BookDTO dto) {
+    public Mono<Boolean> createBook(@Argument BookDTO dto) {
         Book book = new Book();
         BeanUtils.copyProperties(dto, book);
-        return bookMapper.save(book) != 0;
+        return Mono.justOrEmpty(bookMapper.save(book) != 0);
     }
 }
 

@@ -1,8 +1,8 @@
 package com.livk.graphql.mybatis.controller;
 
+import com.livk.graphql.mybatis.mapper.AuthorMapper;
 import com.livk.graphql.mybatis.mapper.BookMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookControllerTest {
 
     @Autowired
@@ -38,6 +39,9 @@ class BookControllerTest {
     @Autowired
     BookMapper bookMapper;
 
+    @Autowired
+    AuthorMapper authorMapper;
+
     WebGraphQlTester tester;
 
     @BeforeEach
@@ -46,6 +50,7 @@ class BookControllerTest {
         tester = HttpGraphQlTester.builder(builder).build();
     }
 
+    @Order(3)
     @Test
     @SuppressWarnings("rawtypes")
     void list() {
@@ -86,6 +91,7 @@ class BookControllerTest {
         assertNotNull(r1);
     }
 
+    @Order(4)
     @Test
     @SuppressWarnings("rawtypes")
     void bookByIsbn() {
@@ -109,6 +115,7 @@ class BookControllerTest {
         assertNotNull(result);
     }
 
+    @Order(2)
     @Test
     void createBook() {
         bookMapper.clear();
@@ -163,5 +170,41 @@ class BookControllerTest {
                 .entity(Boolean.class)
                 .get();
         assertTrue(r3);
+    }
+
+    @Order(1)
+    @Test
+    void createAuthor() {
+        authorMapper.clear();
+        //language=GraphQL
+        String document = """
+                mutation{
+                    createAuthor(dto: {
+                        idCardNo: "341234567891234567",
+                        name: "汪云飞",
+                        age: 38
+                    })
+                }""";
+        Boolean result = tester.document(document)
+                .execute()
+                .path("createAuthor")
+                .entity(Boolean.class)
+                .get();
+        assertTrue(result);
+        //language=GraphQL
+        String d2 = """
+                mutation{
+                    createAuthor(dto: {
+                        idCardNo: "341234567891234568",
+                        name: "罗伯特C.马丁",
+                        age: 70 }
+                    )
+                }""";
+        Boolean result2 = tester.document(d2)
+                .execute()
+                .path("createAuthor")
+                .entity(Boolean.class)
+                .get();
+        assertTrue(result2);
     }
 }

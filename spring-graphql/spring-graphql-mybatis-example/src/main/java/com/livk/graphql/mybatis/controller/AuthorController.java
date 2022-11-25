@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Mono;
 
 /**
  * <p>
@@ -24,9 +25,9 @@ public class AuthorController {
     private final AuthorMapper authorMapper;
 
     @MutationMapping
-    public Boolean createAuthor(@Argument AuthorDTO dto) {
+    public Mono<Boolean> createAuthor(@Argument AuthorDTO dto) {
         Author author = new Author();
         BeanUtils.copyProperties(dto, author);
-        return authorMapper.save(author) != 0;
+        return Mono.justOrEmpty(authorMapper.save(author) != 0);
     }
 }
