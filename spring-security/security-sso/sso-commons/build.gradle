@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-common")
+    api project(":spring-commons")
     api "io.jsonwebtoken:jjwt-api"
     optional "org.springframework:spring-core"
     runtimeOnly "io.jsonwebtoken:jjwt-impl"

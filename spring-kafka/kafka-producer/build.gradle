@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(":spring-kafka:kafka-common")
+    implementation project(":spring-kafka:kafka-commons")
     implementation "org.springframework.boot:spring-boot-starter-web"
 }

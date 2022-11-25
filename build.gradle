@@ -6,7 +6,7 @@ ext {
     bom = List.of(project(":livk-boot-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
     commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-common")
+        it.name.endsWith("-commons")
                 || it.name.endsWith("-starter")
                 || it.name.endsWith("-autoconfigure")
                 || it.name.endsWith("-core")
@@ -42,7 +42,6 @@ configure(gradleModuleProjects) {
 
 configure(allprojects) {
     repositories {
-        maven { url "https://repo.spring.io/milestone" }
         maven { url "https://repo.spring.io/release" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://maven.aliyun.com/repository/public" }

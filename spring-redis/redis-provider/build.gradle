@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(":spring-redis:redis-common")
+    implementation project(":spring-redis:redis-commons")
     implementation "org.springframework.boot:spring-boot-starter-webflux"
 }

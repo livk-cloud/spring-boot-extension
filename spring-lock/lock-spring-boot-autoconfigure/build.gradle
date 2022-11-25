@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-common")
+    api project(":spring-commons")
     api "org.springframework.boot:spring-boot-starter-aop"
     optional project(":spring-redis:redisson-spring-boot-starter")
 }

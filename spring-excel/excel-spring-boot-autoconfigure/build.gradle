@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-common")
+    api project(":spring-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.alibaba:easyexcel"

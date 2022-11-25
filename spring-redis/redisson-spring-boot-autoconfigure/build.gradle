@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-redis:redis-common")
+    api project(":spring-redis:redis-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
     optional "org.redisson:redisson"
 }

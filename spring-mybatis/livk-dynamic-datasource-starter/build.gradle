@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-common")
+    api project(":spring-commons")
     api "org.springframework:spring-jdbc"
     api "org.springframework.boot:spring-boot-starter-aop"
     optional "org.springframework.boot:spring-boot-starter"
