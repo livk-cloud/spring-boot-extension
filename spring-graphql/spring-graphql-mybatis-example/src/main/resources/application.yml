@@ -1,0 +1,26 @@
+spring:
+  graphql:
+    websocket:
+      path: /graphql
+    graphiql:
+      enabled: true
+    path: /graphql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://livk.com:3306/graphql
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+  sql:
+    init:
+      schema-locations: classpath:data.sql
+      mode: always
+
+server:
+  port: 6677
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+
