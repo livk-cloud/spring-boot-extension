@@ -13,7 +13,7 @@ If you feel good, you can star it +
 Mock and WebclientTest tests cover most functions +
 JDK:17(latest LTS) +
 SpringBoot: 3.0.0(latest GA version) +
-Gradle: 7.6(current the latest version) +
+Gradle: 7.5.1(current the latest version) +
 
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
