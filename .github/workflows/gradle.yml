@@ -32,4 +32,4 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build -x test
-          gradle-version: 7.5.1
+          gradle-version: 7.6
