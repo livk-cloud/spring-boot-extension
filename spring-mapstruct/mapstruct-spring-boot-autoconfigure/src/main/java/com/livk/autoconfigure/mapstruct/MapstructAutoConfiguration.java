@@ -1,7 +1,5 @@
 package com.livk.autoconfigure.mapstruct;
 
-import com.livk.autoconfigure.mapstruct.converter.MapstructRegistry;
-import com.livk.autoconfigure.mapstruct.factory.MapstructFactory;
 import com.livk.autoconfigure.mapstruct.support.ConverterRepository;
 import com.livk.autoconfigure.mapstruct.support.GenericMapstructService;
 import com.livk.autoconfigure.mapstruct.support.InMemoryConverterRepository;
@@ -18,11 +16,6 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration
 public class MapstructAutoConfiguration {
-
-    @Bean
-    public MapstructFactory mapstructFactory(MapstructRegistry registry) {
-        return new MapstructFactory(registry);
-    }
 
     @Bean
     public GenericMapstructService genericMapstructService(ConverterRepository repository) {
