@@ -1,4 +1,4 @@
-package com.livk.sso.resoure.config;
+package com.livk.sso.resource.config;
 
 import com.livk.sso.util.RSAUtils;
 import lombok.Getter;

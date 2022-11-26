@@ -1,4 +1,4 @@
-package com.livk.sso.resoure.entity;
+package com.livk.sso.resource.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

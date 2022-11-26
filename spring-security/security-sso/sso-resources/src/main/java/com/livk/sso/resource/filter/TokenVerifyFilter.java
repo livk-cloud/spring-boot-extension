@@ -1,8 +1,8 @@
-package com.livk.sso.resoure.filter;
+package com.livk.sso.resource.filter;
 
 import com.livk.sso.entity.Payload;
-import com.livk.sso.resoure.config.RsaKeyProperties;
-import com.livk.sso.resoure.entity.User;
+import com.livk.sso.resource.config.RsaKeyProperties;
+import com.livk.sso.resource.entity.User;
 import com.livk.sso.util.JwtUtils;
 import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;

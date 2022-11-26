@@ -1,6 +1,6 @@
-package com.livk.sso.resoure.config;
+package com.livk.sso.resource.config;
 
-import com.livk.sso.resoure.filter.TokenVerifyFilter;
+import com.livk.sso.resource.filter.TokenVerifyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

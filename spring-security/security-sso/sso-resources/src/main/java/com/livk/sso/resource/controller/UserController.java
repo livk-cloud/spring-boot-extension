@@ -1,4 +1,4 @@
-package com.livk.sso.resoure.controller;
+package com.livk.sso.resource.controller;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
