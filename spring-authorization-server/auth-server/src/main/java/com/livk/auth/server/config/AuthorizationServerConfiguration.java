@@ -21,7 +21,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -40,6 +42,7 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import java.util.List;
 
@@ -59,21 +62,25 @@ public class AuthorizationServerConfiguration {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2AuthorizationService authorizationService,
                                                                       OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-                                                                      UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
-        http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> {// 个性化认证授权端点
-                    tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter()) // 注入自定义的授权认证Converter
-                            .accessTokenResponseHandler(new AuthenticationSuccessEventHandler()) // 登录成功处理器
-                            .errorResponseHandler(new AuthenticationFailureEventHandler());// 登录失败处理器
-                }).clientAuthentication(oAuth2ClientAuthenticationConfigurer -> // 个性化客户端认证
-                        oAuth2ClientAuthenticationConfigurer.errorResponseHandler(new AuthenticationFailureEventHandler()))// 处理客户端认证异常
-                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint// 授权码端点个性化confirm页面
-                        .consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)));
+                                                                      UserDetailsAuthenticationProvider userDetailsAuthenticationProvider,
+                                                                      AuthorizationServerSettings authorizationServerSettings) throws Exception {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+        authorizationServerConfigurer.oidc(Customizer.withDefaults());
+        http.exceptionHandling(configurer -> configurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> {// 个性化认证授权端点
+                            tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter()) // 注入自定义的授权认证Converter
+                                    .accessTokenResponseHandler(new AuthenticationSuccessEventHandler()) // 登录成功处理器
+                                    .errorResponseHandler(new AuthenticationFailureEventHandler());// 登录失败处理器
+                        }).clientAuthentication(oAuth2ClientAuthenticationConfigurer -> // 个性化客户端认证
+                                oAuth2ClientAuthenticationConfigurer.errorResponseHandler(new AuthenticationFailureEventHandler()))// 处理客户端认证异常
+                        .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint// 授权码端点个性化confirm页面
+                                .consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)));
 
         DefaultSecurityFilterChain chain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .apply(authorizationServerConfigurer.authorizationService(authorizationService)
-                        .authorizationServerSettings(AuthorizationServerSettings.builder().build()))
+                        .authorizationServerSettings(authorizationServerSettings))
                 .and()
                 .apply(new FormIdentityLoginConfigurer())
                 .and()
@@ -114,9 +121,7 @@ public class AuthorizationServerConfiguration {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(@Value("${server.port}") Integer port) {
-        return AuthorizationServerSettings.builder()
-                .issuer("http://localhost:" + port)
-                .build();
+        return AuthorizationServerSettings.builder().build();
     }
 
     @Bean
