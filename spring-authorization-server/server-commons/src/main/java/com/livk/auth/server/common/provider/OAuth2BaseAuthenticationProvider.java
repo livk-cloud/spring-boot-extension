@@ -8,6 +8,7 @@ import com.livk.auth.server.common.util.OAuth2AuthenticationProviderUtils;
 import com.livk.auth.server.common.util.OAuth2ErrorCodesExpand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,16 +22,13 @@ import org.springframework.security.oauth2.server.authorization.authentication.O
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContextHolder;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
-import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.security.Principal;
-import java.time.Instant;
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * <p>处理自定义授权</p>
@@ -49,8 +47,6 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
     private final AuthenticationManager authenticationManager;
 
     private final MessageSourceAccessor messages;
-
-    private Supplier<String> refreshTokenGenerator;
 
     /**
      * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
@@ -73,12 +69,6 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
         this.messages = new MessageSourceAccessor(MessageSourceUtils.get(), Locale.CHINA);
     }
 
-    @Deprecated
-    public void setRefreshTokenGenerator(Supplier<String> refreshTokenGenerator) {
-        Assert.notNull(refreshTokenGenerator, "refreshTokenGenerator cannot be null");
-        this.refreshTokenGenerator = refreshTokenGenerator;
-    }
-
     /**
      * 封装简易principal
      *
@@ -94,7 +84,12 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
      * @return
      */
     @Override
-    public abstract boolean supports(Class<?> authentication);
+    @SuppressWarnings("unchecked")
+    public boolean supports(Class<?> authentication) {
+        Class<T> childType = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), OAuth2BaseAuthenticationProvider.class);
+        Assert.notNull(childType, "child Type is null");
+        return childType.isAssignableFrom(authentication);
+    }
 
     /**
      * 当前的请求客户端是否支持此模式
@@ -113,9 +108,10 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
      * {@link AuthenticationManager#authenticate(Authentication)} .
      */
     @Override
+    @SuppressWarnings("unchecked")
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        OAuth2BaseAuthenticationToken baseAuthentication = (OAuth2BaseAuthenticationToken) authentication;
+        T baseAuthentication = (T) authentication;
 
         OAuth2ClientAuthenticationToken clientPrincipal = OAuth2AuthenticationProviderUtils.getAuthenticatedClientElseThrowInvalidClient(baseAuthentication);
 
@@ -123,7 +119,6 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 
         checkClient(registeredClient);
 
-        // Default to configured scopes
         Set<String> authorizedScopes = Objects.requireNonNull(registeredClient).getScopes();
         if (!CollectionUtils.isEmpty(baseAuthentication.getScopes())) {
             if (baseAuthentication.getScopes().stream().noneMatch(scope -> registeredClient.getScopes().contains(scope))) {
@@ -134,77 +129,50 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 
         Map<String, Object> reqParameters = baseAuthentication.getAdditionalParameters();
         try {
-            /* 自行构造UsernamePasswordAuthenticationToken，用来去数据库进行校验 */
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = assemble(reqParameters);
 
             Authentication principal = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-            // @formatter:off
             DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
                     .registeredClient(registeredClient)
                     .principal(principal)
                     .authorizationServerContext(AuthorizationServerContextHolder.getContext())
                     .authorizedScopes(authorizedScopes)
-                    .authorizationGrantType(baseAuthentication.getAuthorizationGrantType())
+                    .authorizationGrantType(baseAuthentication.getGrantType())
                     .authorizationGrant(baseAuthentication);
-            // @formatter:on
 
-            /* ACCESS TOKEN CONTEXT */
+            OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization
+                    .withRegisteredClient(registeredClient).principalName(principal.getName())
+                    .authorizationGrantType(baseAuthentication.getGrantType())
+                    .authorizedScopes(authorizedScopes);
+
             OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
 
-            // -------------------- Access token start --------------------
+
             OAuth2Token generatedAccessToken = Optional.ofNullable(this.tokenGenerator.generate(tokenContext)).orElseThrow(() ->
                     new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, "The token generator failed to generate the access token.", ERROR_URI)));
 
             OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
                     generatedAccessToken.getTokenValue(), generatedAccessToken.getIssuedAt(),
                     generatedAccessToken.getExpiresAt(), tokenContext.getAuthorizedScopes());
-            // -------------------- Access token end --------------------
 
-            /**
-             * 封装OAuth2Authorization，给OAuth2AuthorizationService保存信息
-             * @see org.springframework.security.oauth2.server.authorization.authentication.OAuth2RefreshTokenAuthenticationProvider#authenticate(Authentication)
-             * 两个attribute属性放在这是因为OAuth2RefreshTokenAuthenticationProvider调用authorizationService.findByToken读取用
-             */
-            OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization
-                    .withRegisteredClient(registeredClient).principalName(principal.getName())
-                    .authorizationGrantType(baseAuthentication.getAuthorizationGrantType())
-                    .attribute(Principal.class.getName(), principal)
-                    .attribute(OAuth2Authorization.class.getName().concat(".AUTHORIZED_SCOPE"), authorizedScopes);
-
-            /**
-             * 如果Generator有扩展信息输出增强
-             * @see com.somnus.microservice.commons.security.core.customizer.CustomeOAuth2JwtTokenCustomizer#customize(JwtEncodingContext)
-             * @see OAuth2Authorization.Builder#token(OAuth2Token)
-             */
             if (generatedAccessToken instanceof ClaimAccessor) {
-                authorizationBuilder.token(accessToken, (metadata) -> {
-                    metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims());
-                    //这个其实可要可不要，底层默认会添加，并就是false
-                    metadata.put(OAuth2Authorization.Token.INVALIDATED_METADATA_NAME, false);
-                });
+                authorizationBuilder
+                        .token(accessToken, metadata -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims())).authorizedScopes(authorizedScopes)
+                        .attribute(Principal.class.getName(), principal);
             } else {
                 authorizationBuilder.accessToken(accessToken);
             }
 
-            // ----- Refresh token -----
             OAuth2RefreshToken refreshToken = null;
-            if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) && !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
-                if (this.refreshTokenGenerator != null) {
-                    Instant issuedAt = Instant.now();
-                    Instant expiresAt = issuedAt.plus(registeredClient.getTokenSettings().getRefreshTokenTimeToLive());
-                    refreshToken = new OAuth2RefreshToken(this.refreshTokenGenerator.get(), issuedAt, expiresAt);
-                } else {
-                    /* REFRESH TOKEN CONTEXT */
-                    tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
-                    // -------------------- Refresh token start --------------------
-                    OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
-                    if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
-                        throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, "The token generator failed to generate the refresh token.", ERROR_URI));
-                    }
-                    refreshToken = (OAuth2RefreshToken) generatedRefreshToken;
-                    // -------------------- Refresh token end --------------------
+            if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) &&
+                !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
+                tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
+                OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
+                if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
+                    throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, "The token generator failed to generate the refresh token.", ERROR_URI));
                 }
+                refreshToken = (OAuth2RefreshToken) generatedRefreshToken;
                 authorizationBuilder.refreshToken(refreshToken);
             }
 

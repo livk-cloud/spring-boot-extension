@@ -37,11 +37,6 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
-        return OAuth2SmsAuthenticationToken.class.isAssignableFrom(authentication);
-    }
-
-    @Override
     public void checkClient(@NonNull RegisteredClient registeredClient) {
         if (!registeredClient.getAuthorizationGrantTypes().contains(new AuthorizationGrantType(SecurityConstants.SMS))) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);

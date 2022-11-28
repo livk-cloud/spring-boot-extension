@@ -61,17 +61,19 @@ public class AuthorizationServerConfiguration {
                                                                       OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
                                                                       UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
-        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
-                        tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
-                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                                .errorResponseHandler(new AuthenticationFailureEventHandler()))
-                .authorizationEndpoint(authorizationEndpoint ->
-                        authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
-        http.apply(configurer);
+        http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> {// 个性化认证授权端点
+                    tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter()) // 注入自定义的授权认证Converter
+                            .accessTokenResponseHandler(new AuthenticationSuccessEventHandler()) // 登录成功处理器
+                            .errorResponseHandler(new AuthenticationFailureEventHandler());// 登录失败处理器
+                }).clientAuthentication(oAuth2ClientAuthenticationConfigurer -> // 个性化客户端认证
+                        oAuth2ClientAuthenticationConfigurer.errorResponseHandler(new AuthenticationFailureEventHandler()))// 处理客户端认证异常
+                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint// 授权码端点个性化confirm页面
+                        .consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)));
 
         DefaultSecurityFilterChain chain = http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-                .apply(configurer.authorizationService(authorizationService))
+                .apply(authorizationServerConfigurer.authorizationService(authorizationService)
+                        .authorizationServerSettings(AuthorizationServerSettings.builder().build()))
                 .and()
                 .apply(new FormIdentityLoginConfigurer())
                 .and()

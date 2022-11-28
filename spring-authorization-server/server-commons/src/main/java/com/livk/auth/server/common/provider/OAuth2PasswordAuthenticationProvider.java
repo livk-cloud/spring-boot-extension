@@ -39,11 +39,6 @@ public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticati
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
-        return OAuth2PasswordAuthenticationToken.class.isAssignableFrom(authentication);
-    }
-
-    @Override
     public void checkClient(@NonNull RegisteredClient registeredClient) {
         if (!registeredClient.getAuthorizationGrantTypes().contains(new AuthorizationGrantType(SecurityConstants.PASSWORD))) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);

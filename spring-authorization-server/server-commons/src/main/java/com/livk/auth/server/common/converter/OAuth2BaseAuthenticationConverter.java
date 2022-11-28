@@ -1,6 +1,7 @@
 package com.livk.auth.server.common.converter;
 
 
+import com.google.common.collect.Sets;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
 import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,10 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -63,7 +67,7 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 
         Set<String> requestedScopes = Collections.emptySet();
         if (StringUtils.hasText(scope)) {
-            requestedScopes = new HashSet<>(Arrays.asList(StringUtils.delimitedListToStringArray(scope, " ")));
+            requestedScopes = Sets.newHashSet(StringUtils.delimitedListToStringArray(scope, " "));
         }
 
         // 校验个性化参数

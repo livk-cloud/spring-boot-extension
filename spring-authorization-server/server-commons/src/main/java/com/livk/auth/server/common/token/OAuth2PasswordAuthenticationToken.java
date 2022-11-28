@@ -19,5 +19,4 @@ public class OAuth2PasswordAuthenticationToken extends OAuth2BaseAuthenticationT
                                              Map<String, Object> additionalParameters) {
         super(authorizationGrantType, clientPrincipal, scopes, additionalParameters);
     }
-
 }

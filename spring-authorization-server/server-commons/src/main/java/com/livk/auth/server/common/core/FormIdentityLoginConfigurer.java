@@ -15,9 +15,11 @@ public final class FormIdentityLoginConfigurer
 
     @Override
     public void init(HttpSecurity http) throws Exception {
-        http.formLogin(formLogin -> formLogin.loginPage("/token/login")
-                        .loginProcessingUrl("/token/form")
-                        .failureHandler(new FormAuthenticationFailureHandler()))
+        http.formLogin()
+                .loginPage("/token/login")
+                .loginProcessingUrl("/token/form")
+                .failureHandler(new FormAuthenticationFailureHandler())
+                .and()
                 .logout()
                 .logoutSuccessHandler(new SsoLogoutSuccessHandler())
                 .deleteCookies("JSESSIONID")
