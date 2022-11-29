@@ -1,4 +1,4 @@
-package com.livk.sso.auth.controller;
+package com.livk.sso.resource.controller;
 
 import com.livk.util.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,16 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>
@@ -23,31 +25,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </p>
  *
  * @author livk
- * @date 2022/11/18
+ * @date 2022/11/29
  */
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+
     @Autowired
     MockMvc mockMvc;
 
     String token;
 
     @BeforeEach
-    public void init() throws Exception {
+    public void init() {
+        RestTemplate template = new RestTemplate();
         Map<String, String> body = new HashMap<>();
         body.put("username", "livk");
         body.put("password", "123456");
-        MockHttpServletResponse response = mockMvc.perform(post("/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.toJsonStr(body)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("code", "200").exists())
-                .andReturn().getResponse();
-        token = "Bearer " + JacksonUtils.toMap(response.getContentAsString(), String.class, String.class).get("data");
+        ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JacksonUtils.toJsonStr(body), String.class);
+        token = "Bearer " + JacksonUtils.toMap(responseEntity.getBody(), String.class, String.class).get("data");
     }
 
+    @Test
+    public void test() {
+        System.out.println(token);
+    }
 
     @Test
     void testList() throws Exception {
@@ -67,5 +69,3 @@ class UserControllerTest {
                 .andExpect(content().string("update"));
     }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

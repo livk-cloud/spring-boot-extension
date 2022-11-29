@@ -12,7 +12,9 @@ mybatis:
   mapper-locations: classpath*:mapper/*.xml
 rsa:
   key:
-    private-key: classpath:id_key_rsa
-    public-key: classpath:id_key_rsa.pub
+    jks:
+      location: classpath:/jwt.jks
+      password: 123456
+      alias: jwt
 server:
   port: 9987

@@ -1,9 +1,9 @@
 package com.livk.sso.auth.filter;
 
-import com.livk.sso.auth.config.RsaKeyProperties;
-import com.livk.sso.auth.entity.User;
-import com.livk.sso.entity.Payload;
-import com.livk.sso.util.JwtUtils;
+import com.livk.sso.commons.RsaKeyProperties;
+import com.livk.sso.commons.entity.Payload;
+import com.livk.sso.commons.entity.User;
+import com.livk.sso.commons.util.JwtUtils;
 import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -37,7 +37,7 @@ public class TokenVerifyFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.replaceFirst("Bearer ", "");
-            Payload<User> payload = JwtUtils.getInfo(token, properties.getPublicKey(), User.class);
+            Payload payload = JwtUtils.parse(token, properties.rsaKey());
             User user = payload.getUserInfo();
             if (user != null) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),

@@ -1,6 +1,7 @@
 package com.livk.sso.auth.config;
 
 import com.livk.sso.auth.filter.TokenVerifyFilter;
+import com.livk.sso.commons.RsaKeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

@@ -1,8 +1,8 @@
 dependencies {
     api project(":spring-commons")
-    api "io.jsonwebtoken:jjwt-api"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    api "com.nimbusds:nimbus-jose-jwt"
     optional "org.springframework:spring-core"
-    runtimeOnly "io.jsonwebtoken:jjwt-impl"
-    runtimeOnly "io.jsonwebtoken:jjwt-jackson"
+    optional "org.springframework.security:spring-security-core"
     api "com.fasterxml.jackson.core:jackson-databind"
 }

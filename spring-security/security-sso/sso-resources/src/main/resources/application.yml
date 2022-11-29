@@ -1,11 +1,8 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://livk.com:3306/livk_oauth
-    username: root
-    password: 123456
 rsa:
   key:
-    public-key: classpath:id_key_rsa.pub
+    jks:
+      location: classpath:/jwt.jks
+      password: 123456
+      alias: jwt
 server:
   port: 9977

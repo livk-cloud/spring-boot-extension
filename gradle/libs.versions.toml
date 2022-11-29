@@ -11,7 +11,6 @@ javaWebSocket = "1.5.3"
 jsqlparser = "4.5"
 redisson = "3.18.0"
 zookeeper = "3.8.0"
-jjwtApi = "0.11.5"
 clickhouseJdbc = "0.3.2-patch11"
 pulsarClient = "2.10.2"
 googleFindbugs = "3.0.1"
@@ -27,6 +26,7 @@ yauaa = "7.8.0"
 springdoc = "2.0.0"
 googleJavase = "3.5.1"
 springBootAdmin = "3.0.0-M5"
+nimbusdsJwt = "9.25.6"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -42,9 +42,6 @@ jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }
-jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwtApi" }
-jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwtApi" }
-jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwtApi" }
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouseJdbc" }
 pulsar-client = { group = "org.apache.pulsar", name = "pulsar-client", version.ref = "pulsarClient" }
 findbugs-annotations = { group = "com.google.code.findbugs", name = "annotations", version.ref = "googleFindbugs" }
@@ -60,10 +57,7 @@ auto-service = { group = "com.google.auto.service", name = "auto-service", versi
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
 springdoc-openapi-dependencies = { group = "org.springdoc", name = "springdoc-openapi", version.ref = "springdoc" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "googleJavase" }
-
-[bundles]
-jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
-
+nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusdsJwt" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

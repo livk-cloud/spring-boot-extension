@@ -1,6 +1,9 @@
-package com.livk.sso.resource.entity;
+package com.livk.sso.commons.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @date 2022/4/11
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role implements GrantedAuthority {
 
     private Integer id;
@@ -25,6 +29,13 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return roleName;
+    }
+
+    @JsonCreator
+    public static Role create(@JsonProperty("authority") String authority) {
+        Role role = new Role();
+        role.setRoleName(authority);
+        return role;
     }
 
 }

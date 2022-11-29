@@ -1,8 +1,9 @@
 package com.livk.sso.auth.config;
 
-import com.livk.sso.auth.entity.Role;
-import com.livk.sso.auth.entity.User;
-import com.livk.sso.util.JwtUtils;
+import com.livk.sso.commons.RsaKeyProperties;
+import com.livk.sso.commons.entity.Role;
+import com.livk.sso.commons.entity.User;
+import com.livk.sso.commons.util.JwtUtils;
 import com.livk.util.JacksonUtils;
 import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
@@ -63,7 +64,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) {
         User user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
-        String token = JwtUtils.generateTokenExpireInMinutes(user, properties.getPrivateKey(), 24 * 60);
+        String token = JwtUtils.generateToken(user, properties.rsaKey());
         response.addHeader("Authorization", "Bearer ".concat(token));
         Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
         WebUtils.out(response, map);
