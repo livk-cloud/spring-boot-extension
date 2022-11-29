@@ -9,6 +9,7 @@ import com.livk.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,7 +66,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
                                             Authentication authResult) {
         User user = new User().setUsername(authResult.getName()).setRoles((List<Role>) authResult.getAuthorities());
         String token = JwtUtils.generateToken(user, properties.rsaKey());
-        response.addHeader("Authorization", "Bearer ".concat(token));
+        response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token));
         Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
         WebUtils.out(response, map);
     }

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
@@ -37,7 +38,7 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (!ArrayUtils.contains(permitAllUrl, request.getRequestURI())) {
-            String token = request.getHeader("Authorization");
+            String token = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (StringUtils.hasText(token)) {
                 // 切换为redis
                 Authentication authentication = AuthenticationContext.getAuthentication(token);

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,7 +53,7 @@ class UserControllerTest {
     @Test
     void testList() throws Exception {
         mockMvc.perform(get("/user/list")
-                        .header("Authorization", token))
+                        .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string("list"));
@@ -61,7 +62,7 @@ class UserControllerTest {
     @Test
     void testUpdate() throws Exception {
         mockMvc.perform(put("/user/update")
-                        .header("Authorization", token))
+                        .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string("update"));

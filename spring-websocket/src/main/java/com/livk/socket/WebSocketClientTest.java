@@ -1,10 +1,10 @@
 package com.livk.socket;
 
-import com.livk.socket.config.ServerConfigurator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.springframework.http.HttpHeaders;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,7 +60,7 @@ public class WebSocketClientTest implements Runnable {
                     log.error("====出现错误====" + ex.getMessage());
                 }
             };
-            webSocketClient.addHeader(ServerConfigurator.AUTHORIZATION, "livk123");
+            webSocketClient.addHeader(HttpHeaders.AUTHORIZATION, "livk123");
             webSocketClient.connect();
             while (webSocketClient.getReadyState().ordinal() == 0) {
                 try {

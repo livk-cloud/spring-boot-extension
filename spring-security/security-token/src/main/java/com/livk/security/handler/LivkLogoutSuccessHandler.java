@@ -5,6 +5,7 @@ import com.livk.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -24,7 +25,7 @@ public class LivkLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         log.info("退出");
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         AuthenticationContext.delete(token);
         WebUtils.out(response, Map.of("code", 200, "msg", "exit successfully"));
     }

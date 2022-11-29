@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
@@ -38,7 +39,7 @@ class AuthServerAppTest {
         params.set("password", "123456");
         params.set("scope", "livk.read");
         mockMvc.perform(post("/oauth2/token")
-                        .header("Authorization", "Basic " + Base64.encode("livk-client:secret"))
+                        .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .params(params))
                 .andExpect(status().isOk())
@@ -57,7 +58,7 @@ class AuthServerAppTest {
         params.set("code", "123456");
         params.set("scope", "livk.read");
         mockMvc.perform(post("/oauth2/token")
-                        .header("Authorization", "Basic " + Base64.encode("livk-client:secret"))
+                        .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .params(params))
                 .andExpect(status().isOk())
