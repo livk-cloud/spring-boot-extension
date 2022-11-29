@@ -2,6 +2,7 @@ package com.livk.sso.resource.controller;
 
 import com.livk.util.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  * @date 2022/11/29
  */
+@Disabled("需要启动授权服务器")
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
