@@ -3,8 +3,8 @@ package com.livk.util;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -103,7 +103,7 @@ public class SpringUtils {
      * @return T
      */
     private <T> T parse(Method method, Object[] args, String condition, Class<T> returnClass, boolean template, Map<String, Object> expandMap) {
-        ParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
+        ParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
         String[] parameterNames = discoverer.getParameterNames(method);
         Assert.notNull(parameterNames, "参数列表不能为null");
         StandardEvaluationContext context = new StandardEvaluationContext();

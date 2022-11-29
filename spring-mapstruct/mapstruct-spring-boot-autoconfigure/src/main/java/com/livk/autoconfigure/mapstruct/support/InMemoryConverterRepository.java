@@ -14,11 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author livk
  * @date 2022/5/18
  */
-@SuppressWarnings("rawtypes")
 public class InMemoryConverterRepository implements ConverterRepository {
 
-    // 本质是HashMap<Class,HashMap<Class,Converter>> put添加synchronized锁
-    private final Map<ConverterPair, Converter> converterMap = new ConcurrentHashMap<>();
+    private final Map<ConverterPair, Converter<?, ?>> converterMap = new ConcurrentHashMap<>();
 
     @Override
     public boolean contains(Class<?> sourceType, Class<?> targetType) {
@@ -31,7 +29,7 @@ public class InMemoryConverterRepository implements ConverterRepository {
     }
 
     @Override
-    public Converter get(Class<?> sourceType, Class<?> targetType) {
+    public Converter<?, ?> get(Class<?> sourceType, Class<?> targetType) {
         return converterMap.get(ConverterPair.of(sourceType, targetType));
     }
 

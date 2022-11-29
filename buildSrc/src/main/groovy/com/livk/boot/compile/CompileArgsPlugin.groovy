@@ -1,12 +1,12 @@
 package com.livk.boot.compile
 
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
+
 /**
  * <p>
  * 添加编译参数
@@ -27,7 +27,8 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
         COMPILER_ARGS.addAll(Arrays.asList("-Xlint:-options",
                 "-Xlint:rawtypes",
                 "-Xlint:deprecation",
-                "-Xlint:unchecked",))
+                "-Xlint:unchecked",
+                "-parameters"))
         MAPSTRUCT_COMPILER_ARGS.addAll(Arrays.asList("-Amapstruct.unmappedTargetPolicy=IGNORE"))
     }
 
@@ -40,6 +41,15 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
         javaCompile.options.encoding = UTF_8
         javaCompile.sourceCompatibility = JavaVersion.VERSION_17
         javaCompile.targetCompatibility = JavaVersion.VERSION_17
+
+        def test = project.tasks.getByName(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
+        if (test != null) {
+            def javaTestCompile = test as JavaCompile
+            javaTestCompile.options.compilerArgs.addAll(COMPILER_ARGS)
+            javaTestCompile.options.encoding = UTF_8
+            javaTestCompile.sourceCompatibility = JavaVersion.VERSION_17
+            javaTestCompile.targetCompatibility = JavaVersion.VERSION_17
+        }
 
         project.tasks.withType(Test.class) {
             it.useJUnitPlatform()
