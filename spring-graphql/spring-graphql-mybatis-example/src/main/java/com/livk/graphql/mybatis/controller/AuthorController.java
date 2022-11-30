@@ -26,8 +26,6 @@ public class AuthorController {
 
     @MutationMapping
     public Mono<Boolean> createAuthor(@Argument AuthorDTO dto) {
-        Author author = new Author();
-        BeanUtils.copyProperties(dto, author);
-        return Mono.justOrEmpty(authorMapper.save(author) != 0);
+        return Mono.justOrEmpty(authorMapper.save(BeanUtils.copy(dto, Author.class)) != 0);
     }
 }

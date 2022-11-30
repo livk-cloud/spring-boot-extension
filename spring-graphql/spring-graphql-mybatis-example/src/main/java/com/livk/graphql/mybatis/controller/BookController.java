@@ -48,9 +48,7 @@ public class BookController {
 
     @MutationMapping
     public Mono<Boolean> createBook(@Argument BookDTO dto) {
-        Book book = new Book();
-        BeanUtils.copyProperties(dto, book);
-        return Mono.justOrEmpty(bookMapper.save(book) != 0);
+        return Mono.justOrEmpty(bookMapper.save(BeanUtils.copy(dto, Book.class)) != 0);
     }
 }
 

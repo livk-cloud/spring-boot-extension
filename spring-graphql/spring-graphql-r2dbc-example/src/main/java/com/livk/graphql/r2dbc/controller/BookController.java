@@ -48,9 +48,7 @@ public class BookController {
 
     @MutationMapping
     public Mono<Book> createBook(@Argument BookDTO dto) {
-        Book book = new Book();
-        BeanUtils.copyProperties(dto, book);
-        return bookRepository.save(book);
+        return bookRepository.save(BeanUtils.copy(dto, Book.class));
     }
 }
 

@@ -28,12 +28,4 @@ public class HttpFactoryBean<T> implements FactoryBean<T> {
     public Class<?> getObjectType() {
         return httpInterface;
     }
-
-    public Class<T> getHttpInterface() {
-        return httpInterface;
-    }
-
-    public HttpServiceProxyFactory getProxyFactory() {
-        return proxyFactory;
-    }
 }
