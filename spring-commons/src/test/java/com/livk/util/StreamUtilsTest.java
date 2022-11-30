@@ -19,12 +19,19 @@ import java.util.stream.Stream;
 class StreamUtilsTest {
 
     @Test
-    void testConcat3() {
-        Map<String, List<String>> result = StreamUtils.concat(Map.of("username", "livk", "password", "123456"),
+    void testConcat() {
+        Map<String, List<String>> result1 = StreamUtils.concat(Map.of("username", "livk", "password", "123456"),
                 Map.of("username", "root", "host", "192.168.1.1"));
-        Map<String, List<String>> listMap = Map.of("username", List.of("livk", "root"), "password",
+        Map<String, List<String>> listMap1 = Map.of("username", List.of("livk", "root"), "password",
                 List.of("123456"), "host", List.of("192.168.1.1"));
-        Assertions.assertEquals(listMap, result);
+        Assertions.assertEquals(listMap1, result1);
+
+        Map<String, List<String>> result2 = StreamUtils.concat(Map.of("username", "livk", "password", "123456"),
+                Map.of("username", "root", "host", "192.168.1.1"),
+                Map.of("username", "admin", "host", "192.168.1.2"));
+        Map<String, List<String>> listMap2 = Map.of("username", List.of("livk", "root", "admin"), "password",
+                List.of("123456"), "host", List.of("192.168.1.1", "192.168.1.2"));
+        Assertions.assertEquals(listMap2, result2);
     }
 
     @Test

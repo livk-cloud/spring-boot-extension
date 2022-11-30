@@ -21,8 +21,14 @@ import java.util.stream.StreamSupport;
 @UtilityClass
 public class StreamUtils {
 
-    public <K, V> Map<K, List<V>> concat(Map<K, V> m1, Map<K, V> m2) {
-        return Stream.concat(m1.entrySet().stream(), m2.entrySet().stream())
+    @SafeVarargs
+    public <K, V> Map<K, List<V>> concat(Map<K, V>... maps) {
+        if (ObjectUtils.isEmpty(maps)) {
+            return Collections.emptyMap();
+        }
+        return Arrays.stream(maps)
+                .filter(Objects::nonNull)
+                .flatMap(map -> map.entrySet().stream())
                 .collect(Collectors.groupingBy(Map.Entry::getKey))
                 .entrySet()
                 .stream()
