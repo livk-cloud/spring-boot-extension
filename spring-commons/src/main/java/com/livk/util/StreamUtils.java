@@ -39,6 +39,14 @@ public class StreamUtils {
                                 .collect(Collectors.toList())));
     }
 
+    @SafeVarargs
+    public <T> Stream<T> concat(T[]... ts) {
+        if (ObjectUtils.isEmpty(ts)) {
+            return Stream.empty();
+        }
+        return Arrays.stream(ts).filter(Objects::nonNull).flatMap(Arrays::stream);
+    }
+
     public <T> Predicate<T> distinct(Function<? super T, ?> function) {
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
