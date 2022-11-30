@@ -7,6 +7,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
@@ -26,6 +27,7 @@ import java.util.function.Function;
  * @date 2022/5/9
  */
 @AutoConfiguration
+@ConditionalOnClass(WebClient.class)
 public class WebClientConfiguration {
 
     @Bean
@@ -35,17 +37,8 @@ public class WebClientConfiguration {
         return factory;
     }
 
-    /**
-     * spring官方建议使用{@link WebClient} <a href=
-     * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
-     *
-     * @return WebClient
-     */
     @Bean
-    @ConditionalOnClass(WebClient.class)
-    @ConditionalOnMissingBean
-    public WebClient webClient(ReactorResourceFactory reactorResourceFactory,
-                               WebClient.Builder webClientBuilder) {
+    public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
         Function<HttpClient, HttpClient> function = httpClient ->
                 httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
                         .responseTimeout(Duration.ofSeconds(15))
@@ -56,6 +49,19 @@ public class WebClientConfiguration {
                                 connection.addHandlerLast(new ReadTimeoutHandler(20))
                                         .addHandlerLast(new WriteTimeoutHandler(20)));
         ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
-        return webClientBuilder.clientConnector(connector).build();
+        return webClientBuilder -> webClientBuilder.clientConnector(connector);
+    }
+
+
+    /**
+     * spring官方建议使用{@link WebClient} <a href=
+     * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
+     *
+     * @return WebClient
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public WebClient webClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder.build();
     }
 }

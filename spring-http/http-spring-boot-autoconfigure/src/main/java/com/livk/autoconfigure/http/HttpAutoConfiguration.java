@@ -33,7 +33,7 @@ public class HttpAutoConfiguration {
     public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient,
                                                            ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers) {
         HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient));
-        customizers.forEach(customizer -> customizer.customize(builder));
+        customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
         return builder.build();
     }
 
