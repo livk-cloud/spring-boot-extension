@@ -17,44 +17,44 @@ import java.util.Date;
 @UtilityClass
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
-    public static final String YMD_HMS = "yyyy-MM-dd HH:mm:ss";
-
     public static final String YMD = "yyyy-MM-dd";
 
     public static final String HMS = "HH:mm:ss";
 
+    public static final String YMD_HMS = YMD + " " + HMS;
+
     /**
      * LocalDateTime 转时间戳
      */
-    public static Long toTimestamp(LocalDateTime localDateTime) {
+    public static Long timestamp(LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
     /**
      * 时间戳转LocalDateTime
      */
-    public static LocalDateTime fromTimestamp(Long timeStamp) {
+    public static LocalDateTime localDateTime(Long timeStamp) {
         return LocalDateTime.ofEpochSecond(timeStamp, 0, OffsetDateTime.now().getOffset());
     }
 
     /**
      * LocalDateTime 转 Date
      */
-    public static Date toDate(LocalDateTime localDateTime) {
+    public static Date date(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     /**
      * LocalDate 转 Date
      */
-    public static Date toDate(LocalDate localDate) {
-        return toDate(localDate.atTime(LocalTime.now(ZoneId.systemDefault())));
+    public static Date date(LocalDate localDate) {
+        return date(localDate.atTime(LocalTime.now(ZoneId.systemDefault())));
     }
 
     /**
      * Date转 LocalDateTime
      */
-    public static LocalDateTime toLocalDateTime(Date date) {
+    public static LocalDateTime localDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
