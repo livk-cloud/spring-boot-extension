@@ -23,8 +23,8 @@ public class HttpAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebClient webClient() {
-        return WebClient.builder().build();
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder.build();
     }
 
 

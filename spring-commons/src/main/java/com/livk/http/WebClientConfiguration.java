@@ -44,7 +44,8 @@ public class WebClientConfiguration {
     @Bean
     @ConditionalOnClass(WebClient.class)
     @ConditionalOnMissingBean
-    public WebClient webClient(ReactorResourceFactory reactorResourceFactory) {
+    public WebClient webClient(ReactorResourceFactory reactorResourceFactory,
+                               WebClient.Builder webClientBuilder) {
         Function<HttpClient, HttpClient> function = httpClient ->
                 httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
                         .responseTimeout(Duration.ofSeconds(15))
@@ -55,6 +56,6 @@ public class WebClientConfiguration {
                                 connection.addHandlerLast(new ReadTimeoutHandler(20))
                                         .addHandlerLast(new WriteTimeoutHandler(20)));
         ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
-        return WebClient.builder().clientConnector(connector).build();
+        return webClientBuilder.clientConnector(connector).build();
     }
 }
