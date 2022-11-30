@@ -74,7 +74,7 @@ https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=web
 |定时任务框架
 
 |R2dbc-postgresql
-|异步数据库协议
+|响应式数据库协议
 
 |Spring-Restdocs
 |API文档生成框架
