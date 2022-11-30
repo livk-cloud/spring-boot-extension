@@ -2,7 +2,6 @@ package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.util.FileUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -61,7 +61,7 @@ class InfoControllerTest {
                     FileUtils.testDownload(in, "uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
                 });
         File outFile = new File("./uploadAndDownloadMock" + ExcelReturn.Suffix.XLS.getName());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 }

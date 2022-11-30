@@ -5,9 +5,15 @@ import com.github.pagehelper.PageHelper;
 import com.livk.common.LivkPage;
 import com.livk.example.entity.User;
 import com.livk.util.FieldUtils;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * <p>
@@ -33,7 +39,7 @@ class UserMapperTest {
         user.setId(id);
         user.setUsername("livk");
         int result = userMapper.insert(user);
-        Assertions.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Order(2)
@@ -43,14 +49,14 @@ class UserMapperTest {
         user.setId(id);
         user.setUsername("livk https");
         int result = userMapper.updateById(user);
-        Assertions.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Order(3)
     @Test
     public void selectByIdTest() {
         User result = userMapper.selectById(id);
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
     }
 
     @Order(4)
@@ -60,7 +66,7 @@ class UserMapperTest {
                 .countColumn(FieldUtils.getFieldName(User::getId))
                 .doSelectPage(userMapper::list)) {
             LivkPage<User> result = new LivkPage<>(page);
-            Assertions.assertNotNull(result);
+            assertNotNull(result);
         }
     }
 
@@ -68,6 +74,6 @@ class UserMapperTest {
     @Test
     public void deleteTest() {
         int result = userMapper.deleteById(id);
-        Assertions.assertEquals(1, result);
+        assertEquals(1, result);
     }
 }

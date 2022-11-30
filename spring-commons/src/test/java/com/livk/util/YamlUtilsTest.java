@@ -1,9 +1,10 @@
 package com.livk.util;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <p>
@@ -25,6 +26,6 @@ class YamlUtilsTest {
                     """;
         Map<String, String> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", "5672");
         String result = YamlUtils.mapToYml(map);
-        Assertions.assertEquals(yml, result);
+        assertEquals(yml, result);
     }
 }

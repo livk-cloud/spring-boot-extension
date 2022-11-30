@@ -7,7 +7,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * <p>
@@ -75,7 +77,7 @@ public class MailTest {
         Template template = configuration.getTemplate("ac.ftl");
         String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
         System.out.println(text);
-        Assertions.assertNotNull(text);
+        assertNotNull(text);
     }
 
     @Test
@@ -86,10 +88,10 @@ public class MailTest {
         String result = "www.baidu.com -> 123456";
         String s1 = FreemarkerUtils.processTemplateIntoString(template, map);
         log.info("processTemplateIntoString result:{}", s1);
-        Assertions.assertEquals(result, s1);
+        assertEquals(result, s1);
         String s2 = FreemarkerUtils.parse(txt, map);
         log.info("parse result:{}", s2);
-        Assertions.assertEquals(result, s2);
+        assertEquals(result, s2);
     }
 
     @Test
@@ -105,7 +107,7 @@ public class MailTest {
         String resultSql = "INSERT INTO sys_user(user_name,sex,age,address,status,create_time,update_time) VALUES (livk,1,26,shenzhen,1," + format + "," + format + "),(livk,1,26,shenzhen,1," + format + "," + format + ")";
         String parse = parse(sql, map);
         log.info("parse result:{}", parse);
-        Assertions.assertEquals(resultSql, parse);
+        assertEquals(resultSql, parse);
     }
 
     public String parse(String freemarker, Map<String, Object> model) {

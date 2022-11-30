@@ -1,8 +1,10 @@
 package com.livk.util;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -17,13 +19,13 @@ class ObjectUtilsTest {
     @Test
     void testAllChecked() {
         boolean result = ObjectUtils.allChecked(StringUtils::hasText, "1", "");
-        Assertions.assertFalse(result);
+        assertFalse(result);
     }
 
     @Test
     void testAnyChecked() {
         boolean result = ObjectUtils.anyChecked(StringUtils::hasText, "1", "");
-        Assertions.assertTrue(result);
+        assertTrue(result);
     }
 }
 

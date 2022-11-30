@@ -1,7 +1,6 @@
 package com.livk.util.springutils;
 
 import com.livk.util.SpringUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,9 @@ import org.springframework.core.io.ResourceLoader;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 /**
  * <p>
@@ -36,7 +38,7 @@ public class SpringUtilsTest {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         Set<Class<?>> result = SpringUtils.findByAnnotationType(TestAnnotation.class, resourceLoader,
                 packages.toArray(String[]::new));
-        Assertions.assertIterableEquals(Set.of(A.class), result);
+        assertIterableEquals(Set.of(A.class), result);
     }
 
     @Autowired
@@ -45,6 +47,6 @@ public class SpringUtilsTest {
     @Test
     void getSubPropertiesTest() {
         Map<String, String> result = SpringUtils.getSubProperties(environment, "spring.application.root");
-        Assertions.assertEquals(Map.of("name", "livk"), result);
+        assertEquals(Map.of("name", "livk"), result);
     }
 }

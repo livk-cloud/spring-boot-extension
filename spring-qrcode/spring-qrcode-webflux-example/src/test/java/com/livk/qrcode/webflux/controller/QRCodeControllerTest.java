@@ -2,7 +2,6 @@ package com.livk.qrcode.webflux.controller;
 
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.util.FileUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -12,6 +11,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -44,8 +45,8 @@ class QRCodeControllerTest {
                     }
                 });
         File outFile = new File("hello." + PicType.JPG.name().toLowerCase());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -64,8 +65,8 @@ class QRCodeControllerTest {
                     }
                 });
         File outFile = new File("helloMono." + PicType.JPG.name().toLowerCase());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -84,8 +85,8 @@ class QRCodeControllerTest {
                     }
                 });
         File outFile = new File("json." + PicType.JPG.name().toLowerCase());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -104,7 +105,7 @@ class QRCodeControllerTest {
                     }
                 });
         File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 }

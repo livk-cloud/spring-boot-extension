@@ -3,10 +3,12 @@ package com.livk.util;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * <p>
@@ -27,14 +29,14 @@ class BeanUtilsTest {
     void copy() {
         TargetBean result = BeanUtils.copy(bean, TargetBean.class);
         TargetBean targetBean = new TargetBean("source", 10);
-        Assertions.assertEquals(result, targetBean);
+        assertEquals(result, targetBean);
     }
 
     @Test
     void copySupplier() {
         TargetBean result = BeanUtils.copy(bean, TargetBean::new);
         TargetBean targetBean = new TargetBean("source", 10);
-        Assertions.assertEquals(result, targetBean);
+        assertEquals(result, targetBean);
     }
 
     @Test
@@ -42,13 +44,13 @@ class BeanUtilsTest {
         List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
         List<TargetBean> targetBeans = List.of(new TargetBean("source", 10),
                 new TargetBean("target", 9));
-        Assertions.assertEquals(result, targetBeans);
+        assertEquals(result, targetBeans);
     }
 
     @Test
     void isFieldNull() {
         boolean result = BeanUtils.isFieldNull(bean);
-        Assertions.assertFalse(result);
+        assertFalse(result);
     }
 }
 

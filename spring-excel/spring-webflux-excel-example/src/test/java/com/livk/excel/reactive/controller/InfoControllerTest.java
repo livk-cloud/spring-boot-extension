@@ -3,7 +3,6 @@ package com.livk.excel.reactive.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.util.FileUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -80,8 +81,8 @@ class InfoControllerTest {
                     }
                 });
         File outFile = new File("./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -101,8 +102,8 @@ class InfoControllerTest {
                     }
                 });
         File outFile = new File("./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -122,7 +123,7 @@ class InfoControllerTest {
                     }
                 });
         File outFile = new File("./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
-        Assertions.assertTrue(outFile.exists());
-        Assertions.assertTrue(outFile.delete());
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
     }
 }

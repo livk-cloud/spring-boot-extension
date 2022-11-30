@@ -1,10 +1,11 @@
 package com.livk.util;
 
 import lombok.Data;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ class ReflectionUtilsTest {
     void set() throws IllegalAccessException {
         Maker maker = new Maker();
         ReflectionUtils.set(fieldNo, maker, 2);
-        Assertions.assertEquals(2, maker.getNo());
+        assertEquals(2, maker.getNo());
     }
 }
 
