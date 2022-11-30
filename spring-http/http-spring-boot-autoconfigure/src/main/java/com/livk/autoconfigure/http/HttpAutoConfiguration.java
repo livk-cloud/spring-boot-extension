@@ -1,6 +1,8 @@
 package com.livk.autoconfigure.http;
 
+import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.autoconfigure.http.factory.HttpServiceRegistrar;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,10 +29,17 @@ public class HttpAutoConfiguration {
         return builder.build();
     }
 
+    @Bean
+    public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient,
+                                                           ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers) {
+        HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient));
+        customizers.forEach(customizer -> customizer.customize(builder));
+        return builder.build();
+    }
+
 
     @Bean
-    public HttpServiceRegistrar httpServiceRegistrar(WebClient webClient) {
-        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();
+    public HttpServiceRegistrar httpServiceRegistrar(HttpServiceProxyFactory httpServiceProxyFactory) {
         return new HttpServiceRegistrar(httpServiceProxyFactory);
     }
 }
