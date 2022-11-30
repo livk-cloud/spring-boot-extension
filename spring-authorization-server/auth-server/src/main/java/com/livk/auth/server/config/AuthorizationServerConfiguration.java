@@ -15,7 +15,6 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -37,6 +36,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtGenerat
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -120,7 +120,7 @@ public class AuthorizationServerConfiguration {
     }
 
     @Bean
-    public AuthorizationServerSettings authorizationServerSettings(@Value("${server.port}") Integer port) {
+    public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
     }
 
@@ -133,6 +133,7 @@ public class AuthorizationServerConfiguration {
 
     private AuthenticationConverter accessTokenRequestConverter() {
         return new DelegatingAuthenticationConverter(List.of(
+                new OAuth2AuthorizationCodeAuthenticationConverter(),
                 new OAuth2ClientCredentialsAuthenticationConverter(),
                 new OAuth2RefreshTokenAuthenticationConverter(),
                 new OAuth2PasswordAuthenticationConverter(),
