@@ -6,7 +6,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.livk.autoconfigure.qrcode.enums.PicType;
-import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import lombok.experimental.UtilityClass;
 
 import java.io.ByteArrayOutputStream;
@@ -25,15 +24,9 @@ import java.io.OutputStream;
 public class QRCodeUtils {
 
     public byte[] getQRCodeImage(String text, int width, int height, PicType type) {
-        try {
-            QRCodeWriter writer = new QRCodeWriter();
-            BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, width, height);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            MatrixToImageWriter.writeToStream(matrix, type.name(), stream);
-            return stream.toByteArray();
-        } catch (WriterException | IOException e) {
-            throw new QRCodeException("QR code generation failed!");
-        }
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        getQRCodeImage(text, width, height, stream, type);
+        return stream.toByteArray();
     }
 
     public void getQRCodeImage(String text, int width, int height, OutputStream out, PicType type) {
