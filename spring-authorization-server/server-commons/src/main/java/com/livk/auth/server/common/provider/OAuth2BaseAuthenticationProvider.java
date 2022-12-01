@@ -56,9 +56,9 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
      * @param tokenGenerator       the token generator
      * @since 0.2.3
      */
-    public OAuth2BaseAuthenticationProvider(AuthenticationManager authenticationManager,
-                                            OAuth2AuthorizationService authorizationService,
-                                            OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+    protected OAuth2BaseAuthenticationProvider(AuthenticationManager authenticationManager,
+                                               OAuth2AuthorizationService authorizationService,
+                                               OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
         this.authenticationManager = authenticationManager;
@@ -75,7 +75,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
      * @param reqParameters
      * @return
      */
-    public abstract UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters);
+    protected abstract UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters);
 
     /**
      * 当前provider是否支持此令牌类型
@@ -96,7 +96,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
      *
      * @param registeredClient
      */
-    public abstract void checkClient(RegisteredClient registeredClient);
+    protected abstract void checkClient(RegisteredClient registeredClient);
 
     /**
      * Performs authentication with the same contract as

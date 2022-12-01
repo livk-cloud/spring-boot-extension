@@ -39,14 +39,14 @@ public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticati
     }
 
     @Override
-    public void checkClient(@NonNull RegisteredClient registeredClient) {
+    protected void checkClient(@NonNull RegisteredClient registeredClient) {
         if (!registeredClient.getAuthorizationGrantTypes().contains(new AuthorizationGrantType(SecurityConstants.PASSWORD))) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
     }
 
     @Override
-    public UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
+    protected UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
         String username = (String) reqParameters.get(OAuth2ParameterNames.USERNAME);
         String password = (String) reqParameters.get(OAuth2ParameterNames.PASSWORD);
         return new UsernamePasswordAuthenticationToken(username, password);

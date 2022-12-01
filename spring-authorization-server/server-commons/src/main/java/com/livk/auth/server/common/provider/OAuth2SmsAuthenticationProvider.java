@@ -37,14 +37,14 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
     }
 
     @Override
-    public void checkClient(@NonNull RegisteredClient registeredClient) {
+    protected void checkClient(@NonNull RegisteredClient registeredClient) {
         if (!registeredClient.getAuthorizationGrantTypes().contains(new AuthorizationGrantType(SecurityConstants.SMS))) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
     }
 
     @Override
-    public UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
+    protected UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
         String mobile = (String) reqParameters.get(SecurityConstants.SMS_PARAMETER_NAME);
         String code = (String) reqParameters.get(OAuth2ParameterNames.CODE);
         return new UsernamePasswordAuthenticationToken(mobile, code);
