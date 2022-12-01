@@ -23,10 +23,10 @@ abstract class OptionalPlugin implements Plugin<Project> {
         def optional = configurations.create(OPTIONAL)
         optional.canBeConsumed = false
         optional.canBeResolved = false
-        project.getPlugins().withType(JavaPlugin.class) {
+        project.getPlugins().withType(JavaPlugin.class).configureEach {
             project.extensions.getByType(JavaPluginExtension.class).sourceSets.every { sourceSet ->
-                configurations.getByName(sourceSet.getCompileClasspathConfigurationName()).extendsFrom(optional)
-                configurations.getByName(sourceSet.getRuntimeClasspathConfigurationName()).extendsFrom(optional)
+                configurations.named(sourceSet.getCompileClasspathConfigurationName()).get().extendsFrom(optional)
+                configurations.named(sourceSet.getRuntimeClasspathConfigurationName()).get().extendsFrom(optional)
             }
         }
     }

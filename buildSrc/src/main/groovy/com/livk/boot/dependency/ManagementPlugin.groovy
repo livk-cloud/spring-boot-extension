@@ -44,22 +44,30 @@ abstract class ManagementPlugin implements Plugin<Project> {
             management.canBeResolved = false
             management.canBeConsumed = false
             def plugins = project.plugins
-            plugins.withType(JavaPlugin.class) {
-                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(management) }
+            plugins.withType(JavaPlugin.class).tap {
+                configureEach {
+                    DEPENDENCY_NAMES_SET.forEach { configurations.named(it).get().extendsFrom(management) }
+                }
             }
-            plugins.withType(JavaTestFixturesPlugin.class) {
-                configurations.getByName("testFixturesCompileClasspath").extendsFrom(management)
-                configurations.getByName("testFixturesRuntimeClasspath").extendsFrom(management)
+            plugins.withType(JavaTestFixturesPlugin.class).tap {
+                configureEach {
+                    configurations.named("testFixturesCompileClasspath").get().extendsFrom(management)
+                    configurations.named("testFixturesRuntimeClasspath").get().extendsFrom(management)
+                }
             }
-            plugins.withType(MavenPublishPlugin.class) {
-                project.extensions.getByType(PublishingExtension.class).publications
-                        .withType(MavenPublication.class) { mavenPublication ->
+            plugins.withType(MavenPublishPlugin.class).tap {
+                configureEach {
+                    project.extensions.getByType(PublishingExtension.class).publications
+                            .withType(MavenPublication.class).tap {
+                        configureEach { mavenPublication ->
                             mavenPublication.versionMapping { versions ->
                                 versions.allVariants {
                                     it.fromResolutionResult()
                                 }
                             }
                         }
+                    }
+                }
             }
         }
     }

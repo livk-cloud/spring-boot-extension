@@ -25,7 +25,7 @@ abstract class DeployedPlugin implements Plugin<Project> {
         def publication = publication(project)
         project.afterEvaluate { evaluated ->
             project.plugins.withType(JavaPlugin.class).every {
-                if ((project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar).isEnabled()) {
+                if ((project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).isEnabled()) {
                     def javaPluginExtension = project.extensions.getByType(JavaPluginExtension.class)
                     javaPluginExtension.withSourcesJar()
                     project.components

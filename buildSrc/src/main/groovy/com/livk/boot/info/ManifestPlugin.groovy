@@ -19,7 +19,7 @@ abstract class ManifestPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
-        (project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar)
+        (project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar)
                 .manifest.attributes(
                 [
                         "Implementation-Group"  : project.group,

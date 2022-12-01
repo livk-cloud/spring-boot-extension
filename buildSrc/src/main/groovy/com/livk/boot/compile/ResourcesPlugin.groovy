@@ -19,8 +19,7 @@ abstract class ResourcesPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(JavaLibraryPlugin.class)
-        project.tasks
-                .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME)
+        project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get()
                 .dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
     }
 }

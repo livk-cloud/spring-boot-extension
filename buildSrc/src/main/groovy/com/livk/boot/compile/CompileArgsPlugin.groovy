@@ -35,14 +35,13 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
-        def javaCompile = project.tasks
-                .getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME) as JavaCompile
+        def javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
         javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
         javaCompile.options.encoding = UTF_8
         javaCompile.sourceCompatibility = JavaVersion.VERSION_17
         javaCompile.targetCompatibility = JavaVersion.VERSION_17
 
-        def test = project.tasks.getByName(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME)
+        def test = project.tasks.named(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME).get()
         if (test != null) {
             def javaTestCompile = test as JavaCompile
             javaTestCompile.options.compilerArgs.addAll(COMPILER_ARGS)
@@ -51,7 +50,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
             javaTestCompile.targetCompatibility = JavaVersion.VERSION_17
         }
 
-        project.tasks.withType(Test.class) {
+        project.tasks.withType(Test.class).configureEach {
             it.useJUnitPlatform()
         }
         //在 Project 配置结束后调用

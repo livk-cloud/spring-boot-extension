@@ -36,8 +36,10 @@ abstract class CompileProcessorPlugin implements Plugin<Project> {
             compileProcessor.canBeResolved = false
             compileProcessor.canBeConsumed = false
             def plugins = project.plugins
-            plugins.withType(JavaPlugin.class) {
-                DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(compileProcessor) }
+            plugins.withType(JavaPlugin.class).tap {
+                configureEach {
+                    DEPENDENCY_NAMES_SET.forEach { configurations.named(it).get().extendsFrom(compileProcessor) }
+                }
             }
         }
     }
