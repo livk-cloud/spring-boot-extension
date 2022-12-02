@@ -100,7 +100,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
                     .setDatabase(redisProperties.getDatabase())
                     .setPassword(redisProperties.getPassword());
         }
-        configCustomizers.forEach(customizer -> customizer.customize(config));
+        configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
         return Redisson.create(config);
     }
 
