@@ -1,6 +1,7 @@
-package com.livk.autoconfigure.dynamic.datasource;
+package com.livk.autoconfigure.dynamic;
 
 import com.livk.autoconfigure.dynamic.annotation.EnableDynamicDatasource;
+import com.livk.autoconfigure.dynamic.datasource.DynamicDatasourceProperties;
 import com.livk.commons.spring.AbstractImportSelector;
 
 /**

@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.dynamic.annotation;
 
-import com.livk.autoconfigure.dynamic.datasource.DynamicDatasourceImportSelector;
+import com.livk.autoconfigure.dynamic.DynamicDatasourceImportSelector;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
