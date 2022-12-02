@@ -1,0 +1,3 @@
+dependencies {
+    api "nl.basjes.parse.useragent:yauaa"
+}

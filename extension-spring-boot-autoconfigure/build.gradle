@@ -1,0 +1,25 @@
+dependencies {
+    api project(":spring-commons")
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    optional "org.springdoc:springdoc-openapi-starter-common"
+    optional "jakarta.servlet:jakarta.servlet-api"
+    optional "com.alibaba:easyexcel"
+    optional "org.springframework:spring-webmvc"
+    optional "org.springframework:spring-webflux"
+    optional "org.lionsoul:ip2region"
+    optional "org.redisson:redisson"
+    optional "org.mapstruct:mapstruct"
+    optional "org.aspectj:aspectjweaver"
+    optional "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+    optional "com.mysql:mysql-connector-j"
+    optional "org.postgresql:postgresql"
+    optional "com.google.zxing:javase"
+    optional "org.springframework.data:spring-data-redis"
+    optional "com.blueconic:browscap-java"
+    optional "nl.basjes.parse.useragent:yauaa"
+}
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+}
+

@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-user-agent:yauaa-spring-boot-autoconfigure")
-    api "nl.basjes.parse.useragent:yauaa"
-}

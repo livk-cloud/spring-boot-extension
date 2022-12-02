@@ -1,8 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    api "org.springframework.boot:spring-boot-autoconfigure"
-    optional "nl.basjes.parse.useragent:yauaa"
-    optional "org.springframework:spring-webflux"
-    optional "org.springframework:spring-webmvc"
-    optional "jakarta.servlet:jakarta.servlet-api"
-}

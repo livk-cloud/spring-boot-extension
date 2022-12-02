@@ -1,6 +1,6 @@
 package com.livk.redis.listener;
 
-import com.livk.common.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;

@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-lock:lock-spring-boot-autoconfigure")
-    api project(":spring-redis:redisson-spring-boot-starter")
-}

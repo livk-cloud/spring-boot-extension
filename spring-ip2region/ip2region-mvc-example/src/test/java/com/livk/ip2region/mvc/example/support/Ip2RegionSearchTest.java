@@ -1,7 +1,7 @@
 package com.livk.ip2region.mvc.example.support;
 
-import com.livk.ip2region.doamin.IpInfo;
-import com.livk.ip2region.support.Ip2RegionSearch;
+import com.livk.autoconfigure.ip2region.doamin.IpInfo;
+import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

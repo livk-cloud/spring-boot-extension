@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-mapstruct:mapstruct-spring-boot-autoconfigure")
-    api "org.mapstruct:mapstruct"
-}

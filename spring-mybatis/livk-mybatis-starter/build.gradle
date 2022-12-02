@@ -1,9 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    optional "org.mybatis.spring.boot:mybatis-spring-boot-starter"
-    optional "org.springframework.boot:spring-boot-starter"
-    optional "com.fasterxml.jackson.core:jackson-databind"
-    optional "com.mysql:mysql-connector-j"
-    optional "org.postgresql:postgresql"
-    api "com.github.jsqlparser:jsqlparser"
-}

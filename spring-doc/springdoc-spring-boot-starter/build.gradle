@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-doc:springdoc-spring-boot-autoconfigure")
-    api "org.springdoc:springdoc-openapi-starter-common"
-}

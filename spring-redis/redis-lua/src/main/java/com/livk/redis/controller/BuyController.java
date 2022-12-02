@@ -1,6 +1,6 @@
 package com.livk.redis.controller;
 
-import com.livk.common.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

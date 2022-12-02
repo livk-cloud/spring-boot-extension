@@ -1,7 +1,7 @@
 package com.livk.redis.controller;
 
+import com.livk.autoconfigure.redis.supprot.LivkReactiveRedisTemplate;
 import com.livk.common.redis.domain.LivkMessage;
-import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.web.bind.annotation.*;

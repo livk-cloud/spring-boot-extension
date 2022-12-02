@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":spring-excel:excel-spring-boot-starter")
+    implementation project(":extension-spring-boot-starters:excel-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "com.mysql:mysql-connector-j"

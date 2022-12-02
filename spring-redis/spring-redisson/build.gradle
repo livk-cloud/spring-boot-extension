@@ -3,6 +3,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-aop"
 //    implementation "org.redisson:redisson-spring-boot-starter"
-    implementation project(":spring-redis:redisson-spring-boot-starter")
+    implementation project(":extension-spring-boot-starters:redisson-spring-boot-starter")
     implementation "com.github.ben-manes.caffeine:caffeine"
 }

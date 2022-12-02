@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-excel:excel-spring-boot-autoconfigure")
-    api "com.alibaba:easyexcel"
-}

@@ -1,0 +1,3 @@
+dependencies {
+    api "org.springdoc:springdoc-openapi-starter-common"
+}

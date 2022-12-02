@@ -1,6 +1,6 @@
 package com.livk.example.handler;
 
-import com.livk.mybatis.handler.FunctionHandle;
+import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
 
 /**
  * <p>
