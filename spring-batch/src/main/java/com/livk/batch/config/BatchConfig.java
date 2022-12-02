@@ -1,14 +1,12 @@
 package com.livk.batch.config;
 
 import com.livk.batch.domain.User;
-import com.livk.batch.support.CsvBeanValidator;
-import com.livk.batch.support.CsvItemProcessor;
-import com.livk.batch.support.CsvLineMapper;
-import com.livk.batch.support.JobCompletionListener;
+import com.livk.batch.support.*;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -90,8 +88,10 @@ public class BatchConfig {
         return new StepBuilder("csvStep", jobRepository)
                 .<User, User>chunk(5, dataSourceTransactionManager)
                 .reader(reader())
+                .listener(new JobReadListener())
                 .processor(processor())
                 .writer(writer(dataSource))
+                .listener(new JobWriteListener())
                 .faultTolerant()
                 // 设定一个我们允许的这个step可以跳过的异常数量，假如我们设定为3，则当这个step运行时，只要出现的异常数目不超过3，整个step都不会fail。注意，若不设定skipLimit，则其默认值是0
                 .skipLimit(3)
@@ -109,5 +109,13 @@ public class BatchConfig {
                 .start(step)
                 .listener(listener)
                 .build();
+    }
+
+    @Bean
+    public TaskExecutorJobLauncher taskExecutorJobLauncher(JobRepository jobRepository) throws Exception {
+        TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
+        // 设置jobRepository
+        jobLauncher.setJobRepository(jobRepository);
+        return jobLauncher;
     }
 }
