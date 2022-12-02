@@ -41,7 +41,7 @@ gradlePlugin {
     }
 }
 
-(project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar).manifest {
+(project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).manifest {
     attributes(
             [
                     "Created-By"    : System.getProperty("java.version") + " (" +
