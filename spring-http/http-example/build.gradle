@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(":spring-http:http-spring-boot-starter")
+    implementation project(":extension-spring-boot-starters:http-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
 }

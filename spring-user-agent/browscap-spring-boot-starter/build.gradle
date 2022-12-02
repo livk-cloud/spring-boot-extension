@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-user-agent:browscap-spring-boot-autoconfigure")
-    api "com.blueconic:browscap-java"
-}

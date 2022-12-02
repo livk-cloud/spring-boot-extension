@@ -1,7 +1,7 @@
 package com.livk.redis.config;
 
+import com.livk.autoconfigure.redis.util.SerializerUtils;
 import com.livk.common.redis.domain.LivkMessage;
-import com.livk.common.redis.util.SerializerUtils;
 import com.livk.redis.listener.KeyExpiredListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

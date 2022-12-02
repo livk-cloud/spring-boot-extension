@@ -1,6 +1,6 @@
 package com.livk.admin.server.config;
 
-import com.livk.common.redis.supprot.LivkReactiveRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.LivkReactiveRedisTemplate;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.ConcurrentMapEventStore;

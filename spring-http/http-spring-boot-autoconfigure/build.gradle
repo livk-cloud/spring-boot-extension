@@ -1,5 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    api "org.springframework.boot:spring-boot-autoconfigure"
-    optional "org.springframework:spring-webflux"
-}

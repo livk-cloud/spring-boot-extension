@@ -3,8 +3,9 @@ plugins {
 }
 
 ext {
+    root = List.of(project(":extension-spring-boot-starters"))
     bom = List.of(project(":livk-boot-dependencies"))
-    gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - bom)
+    gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - (bom + root))
     commonModuleProjects = gradleModuleProjects.findAll {
         it.name.endsWith("-commons")
                 || it.name.endsWith("-starter")

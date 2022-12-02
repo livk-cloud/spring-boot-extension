@@ -1,6 +1,6 @@
 package com.livk.redisson.bloom.support;
 
-import com.livk.common.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 

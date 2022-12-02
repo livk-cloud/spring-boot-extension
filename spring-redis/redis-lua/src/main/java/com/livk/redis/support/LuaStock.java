@@ -1,6 +1,6 @@
 package com.livk.redis.support;
 
-import com.livk.common.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.RedisScript;

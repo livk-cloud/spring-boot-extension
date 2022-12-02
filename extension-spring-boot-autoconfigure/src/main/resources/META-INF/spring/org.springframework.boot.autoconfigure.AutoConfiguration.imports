@@ -1,0 +1,13 @@
+com.livk.autoconfigure.openapi.OpenAPIAutoConfiguration
+com.livk.autoconfigure.excel.ExcelAutoConfiguration
+com.livk.autoconfigure.http.HttpAutoConfiguration
+com.livk.autoconfigure.ip2region.Ip2regionAutoConfiguration
+com.livk.autoconfigure.redisson.RedissonAutoConfiguration
+com.livk.autoconfigure.lock.LockAutoConfiguration
+com.livk.autoconfigure.mapstruct.MapstructAutoConfiguration
+com.livk.autoconfigure.mybatis.InterceptorAutoConfiguration
+com.livk.autoconfigure.dynamic.DynamicAutoConfiguration
+com.livk.autoconfigure.qrcode.QRCodeAutoConfiguration
+com.livk.autoconfigure.redis.LivkRedisAutoConfiguration
+com.livk.autoconfigure.useragent.browscap.BrowscapAutoConfiguration
+com.livk.autoconfigure.useragent.yauaa.YauaaAutoConfiguration

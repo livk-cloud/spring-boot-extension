@@ -59,7 +59,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
             project.configurations.forEach {
                 dependencyName.addAll(it.dependencies.name)
             }
-            if (dependencyName.contains(MAPSTRUCT_NAME) || dependencyName.contains(MAPSTRUCT_PROCESSOR_NAME)) {
+            if (dependencyName.contains(MAPSTRUCT_PROCESSOR_NAME)) {
                 javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
             }
         }
