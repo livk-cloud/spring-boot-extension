@@ -1,6 +1,8 @@
 [[example-details]]
 == Example Details
 
+link:extension-spring-boot-autoconfigure[自定义自动装配]
+link:extension-spring-boot-starters[自定义starter包集合]
 link:livk-boot-dependencies[Gradle自定义BOM] +
 link:spring-admin[Spring Boot Admin示例] +
 link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
