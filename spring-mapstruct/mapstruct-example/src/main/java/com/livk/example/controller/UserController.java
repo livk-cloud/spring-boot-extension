@@ -4,7 +4,7 @@ import com.livk.autoconfigure.mapstruct.converter.MapstructService;
 import com.livk.example.config.ConversionServiceAdapter;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.support.SpringContextHolder;
+import com.livk.commons.support.SpringContextHolder;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;

@@ -4,7 +4,7 @@ import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;
-import com.livk.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

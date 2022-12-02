@@ -1,6 +1,7 @@
 package com.livk.dynamic.example;
 
-import com.livk.spring.LivkSpring;
+import com.livk.autoconfigure.dynamic.annotation.EnableDynamicDatasource;
+import com.livk.commons.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author livk
  * @date 2022/11/21
  */
+@EnableDynamicDatasource
 @SpringBootApplication
 public class DynamicExample {
     public static void main(String[] args) {

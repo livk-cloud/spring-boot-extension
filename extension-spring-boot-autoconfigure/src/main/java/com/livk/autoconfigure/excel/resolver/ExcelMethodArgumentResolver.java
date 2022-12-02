@@ -3,7 +3,7 @@ package com.livk.autoconfigure.excel.resolver;
 import com.alibaba.excel.EasyExcel;
 import com.livk.autoconfigure.excel.annotation.ExcelImport;
 import com.livk.autoconfigure.excel.listener.ExcelReadListener;
-import com.livk.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;

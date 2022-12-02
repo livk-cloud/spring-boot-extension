@@ -1,6 +1,6 @@
 package com.livk.auth.server;
 
-import com.livk.spring.LivkSpring;
+import com.livk.commons.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

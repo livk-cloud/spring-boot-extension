@@ -5,7 +5,7 @@ import com.livk.graphql.r2dbc.entity.Book;
 import com.livk.graphql.r2dbc.entity.dto.BookDTO;
 import com.livk.graphql.r2dbc.repository.AuthorRepository;
 import com.livk.graphql.r2dbc.repository.BookRepository;
-import com.livk.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

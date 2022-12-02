@@ -2,7 +2,7 @@ package com.livk.redisson.limit;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.livk.common.Pair;
+import com.livk.commons.domain.Pair;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;

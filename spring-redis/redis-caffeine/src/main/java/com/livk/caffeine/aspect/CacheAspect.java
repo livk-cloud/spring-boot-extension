@@ -2,7 +2,7 @@ package com.livk.caffeine.aspect;
 
 import com.livk.caffeine.annotation.DoubleCache;
 import com.livk.caffeine.handler.CacheHandlerAdapter;
-import com.livk.util.SpringUtils;
+import com.livk.commons.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

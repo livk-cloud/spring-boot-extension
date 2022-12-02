@@ -1,6 +1,6 @@
 package com.livk.security.controller;
 
-import com.livk.util.JacksonUtils;
+import com.livk.commons.util.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

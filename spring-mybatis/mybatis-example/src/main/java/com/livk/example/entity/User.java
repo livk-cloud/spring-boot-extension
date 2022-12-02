@@ -6,7 +6,7 @@ import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
 import com.livk.autoconfigure.mybatis.constant.FunctionEnum;
 import com.livk.autoconfigure.mybatis.enums.SqlFill;
 import com.livk.example.handler.VersionFunction;
-import com.livk.util.DateUtils;
+import com.livk.commons.util.DateUtils;
 import lombok.Data;
 
 import java.io.Serial;

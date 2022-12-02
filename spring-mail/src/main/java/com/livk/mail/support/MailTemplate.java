@@ -1,6 +1,6 @@
 package com.livk.mail.support;
 
-import com.livk.common.Pair;
+import com.livk.commons.domain.Pair;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import jakarta.mail.internet.MimeMessage;

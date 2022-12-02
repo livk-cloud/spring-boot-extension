@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.http.factory;
 
 import com.livk.autoconfigure.http.annotation.BeanName;
-import com.livk.util.AnnotationUtils;
+import com.livk.commons.util.AnnotationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

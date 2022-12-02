@@ -2,7 +2,7 @@ package com.livk.example.converter;
 
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.util.DateUtils;
+import com.livk.commons.util.DateUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

@@ -2,9 +2,9 @@ package com.livk.example.mapper;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.common.LivkPage;
+import com.livk.commons.domain.LivkPage;
 import com.livk.example.entity.User;
-import com.livk.util.FieldUtils;
+import com.livk.commons.util.FieldUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

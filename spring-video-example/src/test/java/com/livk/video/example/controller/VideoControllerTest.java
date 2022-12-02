@@ -1,6 +1,6 @@
 package com.livk.video.example.controller;
 
-import com.livk.util.FileUtils;
+import com.livk.commons.util.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

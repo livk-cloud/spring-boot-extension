@@ -2,7 +2,7 @@ package com.livk.autoconfigure.useragent.browscap.util;
 
 import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.UserAgentParser;
-import com.livk.support.SpringContextHolder;
+import com.livk.commons.support.SpringContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;

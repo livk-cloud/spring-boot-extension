@@ -1,6 +1,6 @@
 spring:
-  datasource:
-    dynamic:
+  dynamic:
+    datasource:
       mysql:
         url: jdbc:mysql://livk.com:3306/mybatis
         username: root

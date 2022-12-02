@@ -6,7 +6,6 @@ com.livk.autoconfigure.redisson.RedissonAutoConfiguration
 com.livk.autoconfigure.lock.LockAutoConfiguration
 com.livk.autoconfigure.mapstruct.MapstructAutoConfiguration
 com.livk.autoconfigure.mybatis.InterceptorAutoConfiguration
-com.livk.autoconfigure.dynamic.DynamicAutoConfiguration
 com.livk.autoconfigure.qrcode.QRCodeAutoConfiguration
 com.livk.autoconfigure.redis.LivkRedisAutoConfiguration
 com.livk.autoconfigure.useragent.browscap.BrowscapAutoConfiguration

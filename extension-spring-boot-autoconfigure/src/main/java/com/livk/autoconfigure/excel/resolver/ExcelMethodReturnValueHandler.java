@@ -5,7 +5,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.excel.annotation.ExcelReturn;
 import com.livk.autoconfigure.excel.exception.ExcelExportException;
-import com.livk.util.AnnotationUtils;
+import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;

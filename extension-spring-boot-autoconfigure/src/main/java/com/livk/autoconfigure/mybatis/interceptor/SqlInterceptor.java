@@ -2,9 +2,9 @@ package com.livk.autoconfigure.mybatis.interceptor;
 
 import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
 import com.livk.autoconfigure.mybatis.enums.SqlFill;
-import com.livk.util.BeanUtils;
-import com.livk.util.FieldUtils;
-import com.livk.util.ReflectionUtils;
+import com.livk.commons.util.BeanUtils;
+import com.livk.commons.util.FieldUtils;
+import com.livk.commons.util.ReflectionUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;

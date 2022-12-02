@@ -22,21 +22,21 @@ import java.util.Map;
 @ConfigurationProperties(DynamicDatasourceProperties.PREFIX)
 public class DynamicDatasourceProperties implements InitializingBean {
 
-    public static final String PREFIX = "spring.datasource";
+    public static final String PREFIX = "spring.dynamic";
 
-    private Map<String, PrimaryProperties> dynamic;
+    private Map<String, PrimaryProperties> datasource;
 
     private String primaryName;
 
     @Override
     public void afterPropertiesSet() {
-        if (dynamic.size() == 1) {
-            primaryName = dynamic.keySet()
+        if (datasource.size() == 1) {
+            primaryName = datasource.keySet()
                     .stream()
                     .findFirst()
                     .orElse(null);
         } else {
-            List<Map.Entry<String, PrimaryProperties>> entries = dynamic.entrySet()
+            List<Map.Entry<String, PrimaryProperties>> entries = datasource.entrySet()
                     .stream()
                     .filter(entry -> entry.getValue().isPrimary())
                     .toList();

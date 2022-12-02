@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.useragent.yauaa.util;
 
-import com.livk.support.SpringContextHolder;
+import com.livk.commons.support.SpringContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import nl.basjes.parse.useragent.UserAgent;

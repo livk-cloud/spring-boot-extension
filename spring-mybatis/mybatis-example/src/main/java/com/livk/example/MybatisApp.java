@@ -1,7 +1,7 @@
 package com.livk.example;
 
 import com.livk.autoconfigure.mybatis.annotation.EnableSqlPlugin;
-import com.livk.spring.LivkSpring;
+import com.livk.commons.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

@@ -5,7 +5,7 @@ import com.livk.graphql.mybatis.entity.Book;
 import com.livk.graphql.mybatis.entity.dto.BookDTO;
 import com.livk.graphql.mybatis.mapper.AuthorMapper;
 import com.livk.graphql.mybatis.mapper.BookMapper;
-import com.livk.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

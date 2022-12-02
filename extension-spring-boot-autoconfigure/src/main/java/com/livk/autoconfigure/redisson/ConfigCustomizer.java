@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.redisson;
 
-import com.livk.function.Customizer;
+import com.livk.commons.function.Customizer;
 import org.redisson.config.Config;
 
 /**

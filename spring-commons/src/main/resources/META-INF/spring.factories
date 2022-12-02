@@ -1,2 +1,2 @@
 org.springframework.context.ApplicationContextInitializer=\
-  com.livk.spring.OtherSettingHandler
+  com.livk.commons.spring.OtherSettingHandler

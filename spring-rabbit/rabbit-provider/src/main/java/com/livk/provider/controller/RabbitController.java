@@ -2,7 +2,7 @@ package com.livk.provider.controller;
 
 import com.livk.amqp.entity.Message;
 import com.livk.provider.send.RabbitSend;
-import com.livk.util.JacksonUtils;
+import com.livk.commons.util.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

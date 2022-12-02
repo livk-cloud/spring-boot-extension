@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.redisson;
 
-import com.livk.util.SpringUtils;
-import com.livk.util.YamlUtils;
+import com.livk.commons.util.SpringUtils;
+import com.livk.commons.util.YamlUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;

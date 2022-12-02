@@ -2,7 +2,7 @@ package com.livk.sso.commons.util;
 
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
-import com.livk.util.JacksonUtils;
+import com.livk.commons.util.JacksonUtils;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;

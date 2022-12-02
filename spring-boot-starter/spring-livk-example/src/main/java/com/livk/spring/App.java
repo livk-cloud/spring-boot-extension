@@ -1,7 +1,8 @@
 package com.livk.spring;
 
-import com.livk.annotation.EnableHttpClient;
-import com.livk.annotation.EnableWebClient;
+import com.livk.commons.annotation.EnableHttpClient;
+import com.livk.commons.annotation.EnableWebClient;
+import com.livk.commons.spring.LivkSpring;
 import com.livk.selector.LivkImport;
 import com.livk.starter01.EnableLivk;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

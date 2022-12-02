@@ -1,7 +1,7 @@
 package com.livk.mail;
 
 import com.livk.mail.util.FreemarkerUtils;
-import com.livk.util.DateUtils;
+import com.livk.commons.util.DateUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
