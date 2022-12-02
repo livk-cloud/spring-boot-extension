@@ -16,8 +16,6 @@ ext {
     springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
 
-println allprojects.size()
-
 configure(bom) {
     apply plugin: "com.livk.bom"
 }
