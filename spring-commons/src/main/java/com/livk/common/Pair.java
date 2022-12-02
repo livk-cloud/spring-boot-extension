@@ -47,16 +47,16 @@ public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
         }
     }
 
-    static class PairJsonSerializer extends StdScalarSerializer<Pair<String, ?>> {
+    static class PairJsonSerializer extends StdScalarSerializer<Pair<?, ?>> {
 
         protected PairJsonSerializer() {
             super(Pair.class, false);
         }
 
         @Override
-        public void serialize(Pair<String, ?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        public void serialize(Pair<?, ?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
             gen.writeStartObject(value);
-            gen.writeObjectField(value.key, value.value);
+            gen.writeObjectField(value.key.toString(), value.value);
             gen.writeEndObject();
         }
     }
