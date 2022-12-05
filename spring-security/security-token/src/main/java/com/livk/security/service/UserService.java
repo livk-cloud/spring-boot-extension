@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService, InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         init();
     }
 }

@@ -2,11 +2,11 @@ package com.livk.commons.support;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
@@ -18,11 +18,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * <p>
@@ -63,26 +64,16 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
         return getBeanFactory().getBean(name, typeClass);
     }
 
-    public static <T> T getBeanIfUnique(ResolvableType resolvableType) {
-        ObjectProvider<T> provider = applicationContext.getBeanProvider(resolvableType);
-        return provider.getIfUnique();
-    }
-
-    public static <T> T getBeanIfAvailable(ResolvableType resolvableType) {
-        ObjectProvider<T> provider = applicationContext.getBeanProvider(resolvableType);
-        return provider.getIfAvailable();
-    }
-
     public static <T> ObjectProvider<T> getBeanProvider(Class<T> typeClass) {
         return getBeanFactory().getBeanProvider(typeClass);
     }
 
     public static <T> ObjectProvider<T> getBeanProvider(ResolvableType resolvableType) {
-        return applicationContext.getBeanProvider(resolvableType);
+        return getBeanFactory().getBeanProvider(resolvableType);
     }
 
-    public static <T> Collection<T> getBeansOfType(Class<T> typeClass) {
-        return getBeanFactory().getBeansOfType(typeClass).values();
+    public static <T> Map<String, T> getBeansOfType(Class<T> typeClass) {
+        return getBeanFactory().getBeansOfType(typeClass);
     }
 
     public static String getProperty(String key) {
@@ -113,20 +104,23 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
      * @param beanName beanName可为空，为空会自动生成
      * @param <T>      bean类型
      */
+    @SuppressWarnings("unchecked")
     public static <T> void registerBean(T bean, String beanName) {
-        if (null != beanFactory) {
-            DefaultListableBeanFactory defaultBeanFactory = (DefaultListableBeanFactory) beanFactory;
-            registerBean(defaultBeanFactory, bean, beanName);
+        RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<T>) bean.getClass(), () -> bean);
+        registerBean(beanDefinition, beanName);
+    }
+
+    public static void registerBean(BeanDefinition beanDefinition, String beanName) {
+        if (beanFactory instanceof DefaultListableBeanFactory defaultBeanFactory) {
+            registerBean(defaultBeanFactory, beanDefinition, beanName);
         } else if (applicationContext instanceof GenericApplicationContext context) {
-            registerBean(context, bean, beanName);
+            registerBean(context, beanDefinition, beanName);
         } else {
-            log.error("bean register fail name:{} instant:{}", beanName, bean);
+            log.error("bean register fail name:{} instantClass:{}", beanName, beanDefinition.getBeanClassName());
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> void registerBean(BeanDefinitionRegistry registry, T bean, String beanName) {
-        RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<T>) bean.getClass(), () -> bean);
+    private static void registerBean(BeanDefinitionRegistry registry, BeanDefinition beanDefinition, String beanName) {
         beanName = StringUtils.hasText(beanName) ? beanName :
                 BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
         registry.registerBeanDefinition(beanName, beanDefinition);
@@ -137,36 +131,18 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
     }
 
     @Override
-    public void postProcessBeanFactory(@NotNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        if (SpringContextHolder.beanFactory != null) {
-            log.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:{}",
-                    SpringContextHolder.applicationContext);
-        }
-        synchronized (SpringContextHolder.class) {
-            SpringContextHolder.beanFactory = beanFactory;
-        }
+    public synchronized void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        SpringContextHolder.beanFactory = beanFactory;
     }
 
     @Override
-    public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
-        if (SpringContextHolder.applicationContext != null) {
-            log.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:{}",
-                    SpringContextHolder.applicationContext);
-        }
-        synchronized (SpringContextHolder.class) {
-            SpringContextHolder.applicationContext = applicationContext;
-        }
+    public synchronized void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
+        SpringContextHolder.applicationContext = applicationContext;
     }
 
     @Override
-    public void destroy() {
-        if (log.isDebugEnabled()) {
-            log.debug("清除SpringContextHolder中的ApplicationContext:{}", applicationContext);
-            log.debug("清除SpringContextHolder中的beanFactory:{}", beanFactory);
-        }
-        synchronized (SpringContextHolder.class) {
-            SpringContextHolder.applicationContext = null;
-            SpringContextHolder.beanFactory = null;
-        }
+    public synchronized void destroy() {
+        SpringContextHolder.applicationContext = null;
+        SpringContextHolder.beanFactory = null;
     }
 }

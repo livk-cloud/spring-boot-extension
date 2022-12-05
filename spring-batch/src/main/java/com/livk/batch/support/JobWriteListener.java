@@ -4,6 +4,7 @@ import com.livk.batch.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.item.Chunk;
+import org.springframework.lang.Nullable;
 
 /**
  * <p>
@@ -17,17 +18,17 @@ import org.springframework.batch.item.Chunk;
 public class JobWriteListener implements ItemWriteListener<User> {
 
     @Override
-    public void beforeWrite(Chunk<? extends User> items) {
+    public void beforeWrite(@Nullable Chunk<? extends User> items) {
         log.info("spring batch start write,data:{}", items);
     }
 
     @Override
-    public void afterWrite(Chunk<? extends User> items) {
+    public void afterWrite(@Nullable Chunk<? extends User> items) {
         log.info("spring batch is write,data:{}", items);
     }
 
     @Override
-    public void onWriteError(Exception e, Chunk<? extends User> items) {
+    public void onWriteError(@Nullable Exception e, @Nullable Chunk<? extends User> items) {
         log.error("spring batch write an error occurred ,message:{} data:{}", e.getMessage(), items, e);
     }
 }

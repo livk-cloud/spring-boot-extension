@@ -22,14 +22,6 @@ import java.util.List;
 @EnableBatchProcessing
 public class BatchConfig {
 
-//    @Bean
-//    public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
-//        MyBatisBatchItemWriter<List<Info>> writer = new MyBatisBatchItemWriter<>();
-//        writer.setStatementId("com.livk.excel.mapper.InfoMapper.saveBatch");
-//        writer.setSqlSessionFactory(sqlSessionFactory);
-//        return writer;
-//    }
-
     @Bean
     public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
         return new MyBatisBatchItemWriter<>(sqlSessionFactory, "com.livk.excel.batch.mapper.InfoMapper.saveBatch");

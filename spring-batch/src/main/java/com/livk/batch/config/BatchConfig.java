@@ -112,7 +112,7 @@ public class BatchConfig {
     }
 
     @Bean
-    public TaskExecutorJobLauncher taskExecutorJobLauncher(JobRepository jobRepository) throws Exception {
+    public TaskExecutorJobLauncher taskExecutorJobLauncher(JobRepository jobRepository) {
         TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
         // 设置jobRepository
         jobLauncher.setJobRepository(jobRepository);
