@@ -8,8 +8,7 @@ springMybatis = "3.0.0"
 guava = "31.1-jre"
 easyExcel = "3.1.3"
 javaWebSocket = "1.5.3"
-jsqlparser = "4.5"
-redisson = "3.18.0"
+redisson = "3.18.1"
 zookeeper = "3.8.0"
 clickhouseJdbc = "0.3.2-patch11"
 pulsarClient = "2.10.2"
@@ -38,7 +37,6 @@ easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyExce
 mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "springMybatis" }
 mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "javaWebSocket" }
-jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }

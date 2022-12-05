@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class ShopController {
 
     @PostMapping("/buy/local")
     @OnLock(key = "shop", scope = LockScope.STANDALONE_LOCK)
-    public HttpEntity<Map<String, Object>> buyLocal(@RequestParam Integer count) {
+    public HttpEntity<Map<String, Object>> buyLocal(@RequestParam(defaultValue = "2") Integer count) {
         buyCount++;
         if (num >= count) {
             num -= count;
@@ -66,7 +67,7 @@ public class ShopController {
 
     @PostMapping("/buy/distributed")
     @OnLock(key = "shop", scope = LockScope.DISTRIBUTED_LOCK)
-    public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam Integer count) {
+    public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam(defaultValue = "2") Integer count) {
         RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("script/buy.lua"), Long.class);
         Long result = redisTemplate.execute(redisScript, RedisSerializer.string(), new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"), String.valueOf(count));
         if (result != null && result == 1) {
@@ -80,10 +81,26 @@ public class ShopController {
         num = 500;
         buyCount = 0;
         buySucCount = 0;
+
+        redisTemplate.delete("shop");
+        forHash.put("shop", "num", 500);
     }
 
     @GetMapping("result")
-    public Map<String, Integer> result() {
-        return Map.of("num", num, "buyCount", buyCount, "buySucCount", buySucCount);
+    public HttpEntity<Map<String, Object>> result() {
+        Map<String, Integer> local = Map.of("num", num, "buyCount", buyCount, "buySucCount", buySucCount);
+        Map<String, Integer> distributed = change(forHash.entries("shop"), String.class, Integer.class);
+        return ResponseEntity.ok(Map.of("local", local, "distributed", distributed));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <K, V> Map<K, V> change(Map<?, ?> map, Class<K> kClass, Class<V> vClass) {
+        Map<K, V> result = new HashMap<>();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            if (kClass.isInstance(entry.getKey()) && vClass.isInstance(entry.getValue())) {
+                result.put((K) entry.getKey(), (V) entry.getValue());
+            }
+        }
+        return result;
     }
 }
