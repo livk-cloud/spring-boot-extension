@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @ImportAutoConfiguration(SpringContextHolder.class)
 @SpringBootTest("spring.data.redis.host=livk.com")
-public class SpringContextHolderTest {
+class SpringContextHolderTest {
 
     BeanTest bean = new BeanTest();
 
