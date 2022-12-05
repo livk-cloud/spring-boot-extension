@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  * <p>{@example Mono<List < ?>>}</p>
  *
  * @author livk
- * @date 2022/1/19
+ *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

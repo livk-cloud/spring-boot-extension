@@ -11,7 +11,7 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
  * </p>
  *
  * @author livk
- * @date 2022/7/1
+ *
  */
 abstract class MavenRepositoryPlugin implements Plugin<Project> {
 

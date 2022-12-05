@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2022/10/31
+ *
  */
 @AutoConfiguration
 @ConditionalOnClass(name = "com.livk.lock.marker.Marker")

@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
  * </p>
  *
  * @author livk
- * @date 2022/1/29
+ *
  */
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class SqlInterceptor implements Interceptor {

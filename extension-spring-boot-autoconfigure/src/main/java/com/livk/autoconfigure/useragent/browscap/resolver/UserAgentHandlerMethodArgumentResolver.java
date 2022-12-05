@@ -19,7 +19,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * </p>
  *
  * @author livk
- * @date 2022/9/30
+ * 
  */
 public class UserAgentHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override

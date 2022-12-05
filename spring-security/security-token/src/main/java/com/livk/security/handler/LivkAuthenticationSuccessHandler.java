@@ -1,7 +1,7 @@
 package com.livk.security.handler;
 
-import com.livk.security.support.AuthenticationContext;
 import com.livk.commons.util.WebUtils;
+import com.livk.security.support.AuthenticationContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import java.util.UUID;
  * </p>
  *
  * @author livk
- * @date 2022/3/23
  */
 @Slf4j
 public class LivkAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

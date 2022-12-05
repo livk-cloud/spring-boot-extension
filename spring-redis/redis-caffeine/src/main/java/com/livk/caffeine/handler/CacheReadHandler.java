@@ -6,7 +6,6 @@ package com.livk.caffeine.handler;
  * </p>
  *
  * @author livk
- * @date 2022/3/30
  */
 public interface CacheReadHandler<T> {
 

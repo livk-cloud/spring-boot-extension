@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * </p>
  *
  * @author livk
- * @date 2022/8/22
  */
 @SpringBootTest
 class RemoteServiceTest {

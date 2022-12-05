@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author livk
- * @date 2022/3/2
  */
 @Component
 @MessagingGateway(defaultRequestChannel = MqttSenderConfig.CHANNEL_NAME_OUT)

@@ -17,7 +17,6 @@ import java.io.UnsupportedEncodingException;
  * </p>
  *
  * @author livk
- * @date 2022/6/21
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MailMessageBuilder {

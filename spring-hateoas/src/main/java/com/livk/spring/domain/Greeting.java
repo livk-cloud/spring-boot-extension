@@ -14,7 +14,6 @@ import java.time.Instant;
  * </p>
  *
  * @author livk
- * @date 2021/11/24
  */
 @EqualsAndHashCode(callSuper = false)
 @Getter

@@ -8,7 +8,6 @@ import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
  * </p>
  *
  * @author livk
- * @date 2022/3/3
  */
 public class VersionFunction implements FunctionHandle<Integer> {
 

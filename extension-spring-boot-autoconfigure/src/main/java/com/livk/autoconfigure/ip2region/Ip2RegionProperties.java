@@ -14,7 +14,7 @@ import java.io.IOException;
  * </p>
  *
  * @author livk
- * @date 2022/8/18
+ *
  */
 @Data
 @ConfigurationProperties(Ip2RegionProperties.PREFIX)

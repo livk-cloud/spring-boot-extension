@@ -14,7 +14,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2021/11/18
  */
 public class InfoExcelListener implements ExcelReadListener<Info> {
 

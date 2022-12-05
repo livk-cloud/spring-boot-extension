@@ -14,7 +14,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
  * </p>
  *
  * @author livk
- * @date 2022/9/30
+ *
  */
 @UtilityClass
 public class UserAgentUtils {

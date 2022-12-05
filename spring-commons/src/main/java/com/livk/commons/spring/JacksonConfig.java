@@ -14,7 +14,6 @@ import java.util.Locale;
  * </p>
  *
  * @author livk
- * @date 2022/11/12
  */
 @AutoConfiguration(before = JacksonAutoConfiguration.class)
 public class JacksonConfig {

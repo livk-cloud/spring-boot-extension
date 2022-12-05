@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/12/5
  */
 class ColumnTest {
 

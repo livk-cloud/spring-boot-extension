@@ -1,7 +1,7 @@
 package com.livk.mail;
 
-import com.livk.mail.util.FreemarkerUtils;
 import com.livk.commons.util.DateUtils;
+import com.livk.mail.util.FreemarkerUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * </p>
  *
  * @author livk
- * @date 2022/2/8
  */
 @Slf4j
 @SpringBootTest

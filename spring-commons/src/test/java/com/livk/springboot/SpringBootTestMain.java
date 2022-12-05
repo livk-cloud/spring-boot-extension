@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class SpringBootTestMain {

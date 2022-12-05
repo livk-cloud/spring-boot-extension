@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 @SpringBootTest("spring.application.root.name=livk")
 public class SpringUtilsTest {
 
     @Autowired
+    Environment environment;
+    @Autowired
     private ResourceLoader resourceLoader;
-
     @Autowired
     private BeanFactory beanFactory;
 
@@ -40,9 +40,6 @@ public class SpringUtilsTest {
                 packages.toArray(String[]::new));
         assertIterableEquals(Set.of(A.class), result);
     }
-
-    @Autowired
-    Environment environment;
 
     @Test
     void getSubPropertiesTest() {

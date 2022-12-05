@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * </p>
  *
  * @author livk
- * @date 2021/11/26
  */
 @EnableScheduling
 @SpringBootApplication

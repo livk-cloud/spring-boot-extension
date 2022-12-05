@@ -11,7 +11,6 @@ import org.springframework.lang.Nullable;
  * </p>
  *
  * @author livk
- * @date 2022/12/1
  */
 @Slf4j
 public class JobReadListener implements ItemReadListener<User> {

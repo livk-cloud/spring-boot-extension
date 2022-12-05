@@ -14,7 +14,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * </p>
  *
  * @author livk
- * @date 2022/2/14
  */
 @Slf4j
 public class ServerConfigurator extends ServerEndpointConfig.Configurator {

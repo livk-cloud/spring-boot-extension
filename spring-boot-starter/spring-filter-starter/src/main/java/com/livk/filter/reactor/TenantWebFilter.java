@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2022/5/10
  */
 public class TenantWebFilter implements WebFilter {
 

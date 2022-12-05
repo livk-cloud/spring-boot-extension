@@ -6,7 +6,7 @@ package com.livk.autoconfigure.lock.exception;
  * </p>
  *
  * @author livk
- * @date 2022/9/12
+ *
  */
 public class UnSupportLockException extends RuntimeException {
 

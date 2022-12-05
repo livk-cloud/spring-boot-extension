@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
  * </p>
  *
  * @author livk
- * @date 2021/12/22
+ *
  */
 @Mapper
 public interface UsersMapper {

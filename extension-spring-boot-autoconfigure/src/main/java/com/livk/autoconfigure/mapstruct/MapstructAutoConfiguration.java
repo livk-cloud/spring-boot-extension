@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2022/5/11
+ *
  */
 @AutoConfiguration
 @ConditionalOnClass(Mappers.class)

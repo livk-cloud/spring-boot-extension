@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * </p>
  *
  * @author livk
- * @date 2022/7/5
  */
 @Configuration
 @RequiredArgsConstructor

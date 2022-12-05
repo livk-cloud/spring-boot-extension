@@ -25,7 +25,7 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/9/30
+ *
  */
 @AutoConfiguration
 @ConditionalOnClass(UserAgentAnalyzer.class)

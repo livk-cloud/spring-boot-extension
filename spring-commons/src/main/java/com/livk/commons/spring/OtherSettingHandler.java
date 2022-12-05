@@ -11,7 +11,6 @@ import org.springframework.core.env.Environment;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
  */
 @AutoConfiguration
 public class OtherSettingHandler implements ApplicationContextInitializer<ConfigurableApplicationContext> {

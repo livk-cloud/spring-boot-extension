@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 public interface BookRepository extends R2dbcRepository<Book, Long> {
     Mono<Book> findByIsbn(String isbn);

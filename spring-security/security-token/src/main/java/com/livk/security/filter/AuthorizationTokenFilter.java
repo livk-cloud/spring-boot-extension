@@ -1,7 +1,7 @@
 package com.livk.security.filter;
 
-import com.livk.security.support.AuthenticationContext;
 import com.livk.commons.util.WebUtils;
+import com.livk.security.support.AuthenticationContext;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/3/23
  */
 @Component
 public class AuthorizationTokenFilter extends OncePerRequestFilter {

@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- * @date 2022/9/22
  */
 public class SentContext {
     private static final Map<String, SseEmitter> SSE_CACHE = new ConcurrentHashMap<>();

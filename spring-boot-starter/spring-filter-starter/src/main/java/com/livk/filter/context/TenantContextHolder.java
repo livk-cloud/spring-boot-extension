@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
  * </p>
  *
  * @author livk
- * @date 2022/5/10
  */
 @UtilityClass
 public class TenantContextHolder {

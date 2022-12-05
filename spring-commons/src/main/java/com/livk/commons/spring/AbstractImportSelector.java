@@ -22,7 +22,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/9/20
  */
 public abstract class AbstractImportSelector<T> implements DeferredImportSelector, Ordered, EnvironmentAware {
 

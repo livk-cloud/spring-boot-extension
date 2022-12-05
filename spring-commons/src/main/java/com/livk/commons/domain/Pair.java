@@ -22,16 +22,14 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/3/30
  */
 @JsonSerialize(using = Pair.PairJsonSerializer.class)
 @JsonDeserialize(using = Pair.PairJsonDeserializer.class)
 public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
 
+    public static final Pair<?, ?> EMPTY = Pair.of(null, null);
     @Serial
     private static final long serialVersionUID = -2303547536834226401L;
-
-    public static final Pair<?, ?> EMPTY = Pair.of(null, null);
 
     public static <K, V> Pair<K, V> of(K key, V value) {
         return new Pair<>(key, value);

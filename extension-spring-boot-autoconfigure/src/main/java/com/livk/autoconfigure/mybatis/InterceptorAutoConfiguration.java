@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2022/7/26
+ * 
  */
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
 @ConditionalOnClass(SqlSessionFactory.class)

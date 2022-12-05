@@ -40,7 +40,7 @@ import java.util.function.Function;
  * </p>
  *
  * @author livk
- * @date 2022/10/29
+ *
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
     public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");

@@ -18,7 +18,7 @@ import java.io.OutputStream;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
+ * 
  */
 @UtilityClass
 public class QRCodeUtils {

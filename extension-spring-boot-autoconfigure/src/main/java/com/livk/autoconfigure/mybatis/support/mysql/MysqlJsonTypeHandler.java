@@ -17,7 +17,7 @@ import java.sql.SQLException;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
+ *
  */
 @MappedTypes(JsonNode.class)
 public class MysqlJsonTypeHandler implements TypeHandler<JsonNode> {

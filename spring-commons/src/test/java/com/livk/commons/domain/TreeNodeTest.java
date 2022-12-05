@@ -1,6 +1,5 @@
 package com.livk.commons.domain;
 
-import com.livk.commons.domain.TreeNode;
 import com.livk.commons.util.JacksonUtils;
 import com.livk.commons.util.LogUtils;
 import org.junit.jupiter.api.MethodOrderer;
@@ -18,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * </p>
  *
  * @author livk
- * @date 2022/11/3
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TreeNodeTest {

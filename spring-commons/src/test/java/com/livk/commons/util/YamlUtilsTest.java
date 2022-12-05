@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.util.YamlUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 class YamlUtilsTest {
 

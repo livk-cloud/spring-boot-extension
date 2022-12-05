@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * </p>
  *
  * @author livk
- * @date 2022/3/23
  */
 @Configuration
 public class SecurityConfig {

@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2022/3/30
  */
 @SpringBootApplication
 public class CaffeineApp {

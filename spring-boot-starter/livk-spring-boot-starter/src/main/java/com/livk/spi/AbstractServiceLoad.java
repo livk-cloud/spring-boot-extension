@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/4/16
  */
 @Slf4j
 public abstract class AbstractServiceLoad<T> implements InitializingBean {

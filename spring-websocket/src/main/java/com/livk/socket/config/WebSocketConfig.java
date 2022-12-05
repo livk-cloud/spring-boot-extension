@@ -10,7 +10,6 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * </p>
  *
  * @author livk
- * @date 2022/2/14
  */
 @Configuration
 public class WebSocketConfig {

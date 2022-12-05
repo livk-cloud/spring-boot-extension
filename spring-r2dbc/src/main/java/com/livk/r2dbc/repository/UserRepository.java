@@ -9,7 +9,6 @@ import org.springframework.data.r2dbc.repository.R2dbcRepository;
  * </p>
  *
  * @author livk
- * @date 2021/12/6
  */
 public interface UserRepository extends R2dbcRepository<User, Long> {
 

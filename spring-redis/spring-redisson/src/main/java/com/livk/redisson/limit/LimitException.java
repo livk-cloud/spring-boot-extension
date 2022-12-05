@@ -10,7 +10,6 @@ import java.io.Serial;
  * </p>
  *
  * @author livk
- * @date 2022/3/22
  */
 @Getter
 public class LimitException extends RuntimeException {

@@ -14,7 +14,6 @@ import org.springframework.kafka.core.KafkaAdmin;
  * </p>
  *
  * @author livk
- * @date 2022/5/4
  */
 @AutoConfiguration(after = KafkaAutoConfiguration.class)
 public class KafkaConfiguration {

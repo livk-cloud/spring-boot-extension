@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.util.StreamUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  *
  * @author livk
- * @date 2022/7/26
  */
 class StreamUtilsTest {
 

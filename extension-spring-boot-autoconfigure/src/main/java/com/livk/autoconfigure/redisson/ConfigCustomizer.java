@@ -11,7 +11,7 @@ import org.redisson.config.Config;
  * </p>
  *
  * @author livk
- * @date 2022/9/16
+ *
  */
 public interface ConfigCustomizer extends Customizer<Config> {
 

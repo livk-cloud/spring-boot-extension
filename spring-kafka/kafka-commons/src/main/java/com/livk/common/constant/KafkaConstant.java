@@ -6,7 +6,6 @@ package com.livk.common.constant;
  * </p>
  *
  * @author livk
- * @date 2022/5/4
  */
 public interface KafkaConstant {
 

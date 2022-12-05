@@ -17,7 +17,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/10/13
  */
 @Configuration
 @RequiredArgsConstructor

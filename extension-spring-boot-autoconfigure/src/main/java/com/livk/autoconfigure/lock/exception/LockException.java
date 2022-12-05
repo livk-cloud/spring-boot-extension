@@ -6,7 +6,7 @@ package com.livk.autoconfigure.lock.exception;
  * </p>
  *
  * @author livk
- * @date 2022/9/5
+ *
  */
 public class LockException extends RuntimeException {
     public LockException() {

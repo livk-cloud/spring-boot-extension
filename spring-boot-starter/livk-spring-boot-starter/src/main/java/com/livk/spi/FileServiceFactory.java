@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author livk
- * @date 2022/3/18
  */
 @Component
 public class FileServiceFactory extends AbstractServiceLoad<FileService> {

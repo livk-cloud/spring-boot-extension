@@ -11,7 +11,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * </p>
  *
  * @author livk
- * @date 2021/11/26
+ *
  */
 public class LivkRedisTemplate extends RedisTemplate<String, Object> {
 

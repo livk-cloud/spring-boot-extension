@@ -20,7 +20,6 @@ import java.util.Objects;
  * </p>
  *
  * @author livk
- * @date 2022/3/2
  */
 @Slf4j
 @Configuration

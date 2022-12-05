@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  * </p>
  *
  * @author livk
- * @date 2022/5/10
  */
 @Slf4j
 @Component

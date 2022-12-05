@@ -13,7 +13,6 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
  * </p>
  *
  * @author livk
- * @date 2022/3/3
  */
 @Configuration
 @EnableConfigurationProperties(MqttProperties.class)

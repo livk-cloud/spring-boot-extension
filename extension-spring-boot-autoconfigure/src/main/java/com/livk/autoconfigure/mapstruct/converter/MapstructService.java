@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * </p>
  *
  * @author livk
- * @date 2022/6/9
+ *
  */
 public interface MapstructService {
 

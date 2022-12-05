@@ -9,7 +9,6 @@ import java.util.function.Predicate;
  * </p>
  *
  * @author livk
- * @date 2021/11/26
  */
 @FunctionalInterface
 public interface Present<T> {

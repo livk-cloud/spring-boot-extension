@@ -11,7 +11,6 @@ import org.springframework.batch.core.JobExecutionListener;
  * </p>
  *
  * @author livk
- * @date 2022/7/19
  */
 @Slf4j
 public class JobListener implements JobExecutionListener {

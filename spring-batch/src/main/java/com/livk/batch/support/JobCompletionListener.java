@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author livk
- * @date 2021/12/27
  */
 @Slf4j
 @Component

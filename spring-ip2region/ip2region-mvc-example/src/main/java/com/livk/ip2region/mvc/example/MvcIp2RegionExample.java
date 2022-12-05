@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2022/8/18
  */
 @SpringBootApplication
 public class MvcIp2RegionExample {

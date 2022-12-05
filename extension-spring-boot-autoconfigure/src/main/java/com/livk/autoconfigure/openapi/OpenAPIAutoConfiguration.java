@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2022/12/2
+ *
  */
 @AutoConfiguration
 @ConditionalOnBean(GroupedOpenApi.class)

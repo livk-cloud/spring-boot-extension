@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/6/7
  */
 @Configuration(enforceUniqueMethods = false)
 public class RestTemplateConfiguration {

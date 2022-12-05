@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.util.LogUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
  * </p>
  *
  * @author livk
- * @date 2022/10/12
  */
 class LogUtilsTest {
 

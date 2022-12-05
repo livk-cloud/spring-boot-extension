@@ -9,7 +9,7 @@ import com.livk.autoconfigure.mapstruct.converter.MapstructRegistry;
  * </p>
  *
  * @author livk
- * @date 2022/6/9
+ * 
  */
 public class GenericMapstructService extends AbstractMapstructService implements MapstructRegistry {
 

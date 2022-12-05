@@ -16,7 +16,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/7/23
  */
 @RestController
 @RequestMapping("doc")

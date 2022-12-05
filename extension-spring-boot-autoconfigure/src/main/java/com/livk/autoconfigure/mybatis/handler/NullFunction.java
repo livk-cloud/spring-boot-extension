@@ -6,7 +6,7 @@ package com.livk.autoconfigure.mybatis.handler;
  * </p>
  *
  * @author livk
- * @date 2022/3/28
+ *
  */
 public class NullFunction implements FunctionHandle<Object> {
 

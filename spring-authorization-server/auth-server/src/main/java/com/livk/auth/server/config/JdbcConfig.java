@@ -26,7 +26,7 @@ import java.time.Duration;
  * </p>
  *
  * @author livk
- * @date 2022/7/18
+ *
  */
 @Configuration
 public class JdbcConfig {

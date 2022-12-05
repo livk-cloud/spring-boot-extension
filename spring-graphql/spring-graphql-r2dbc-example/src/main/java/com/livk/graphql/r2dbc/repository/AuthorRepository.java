@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 public interface AuthorRepository extends R2dbcRepository<Author, Long> {
     Mono<Author> findByIdCardNo(String authorIdCardNo);

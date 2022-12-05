@@ -8,7 +8,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/1/17
  */
 public class Pair<K, V> implements Map.Entry<K, V> {
 

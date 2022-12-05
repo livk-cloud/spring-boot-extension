@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- * @date 2022/9/7
  */
 @Import(LivkImportSelector.class)
 @Target(ElementType.TYPE)

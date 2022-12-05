@@ -11,7 +11,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/11/15
  */
 @Mapper
 public interface MenuMapper {

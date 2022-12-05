@@ -16,7 +16,6 @@ import java.util.concurrent.CountDownLatch;
  * </p>
  *
  * @author livk
- * @date 2022/2/14
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +24,17 @@ public class WebSocketClientTest implements Runnable {
     private final String uri;
 
     private final CountDownLatch countDownLatch;
+
+    public static void main(String[] args) {
+        String uri = "ws://127.0.0.1:8888/websocket/";
+        int threadNum = 1000;
+        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
+        for (int i = 0; i < threadNum; i++) {
+            String url = uri + "No" + i;
+            new Thread(new WebSocketClientTest(url, countDownLatch)).start();
+            countDownLatch.countDown();
+        }
+    }
 
     @Override
     public void run() {
@@ -78,17 +88,6 @@ public class WebSocketClientTest implements Runnable {
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        String uri = "ws://127.0.0.1:8888/websocket/";
-        int threadNum = 1000;
-        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
-        for (int i = 0; i < threadNum; i++) {
-            String url = uri + "No" + i;
-            new Thread(new WebSocketClientTest(url, countDownLatch)).start();
-            countDownLatch.countDown();
         }
     }
 }

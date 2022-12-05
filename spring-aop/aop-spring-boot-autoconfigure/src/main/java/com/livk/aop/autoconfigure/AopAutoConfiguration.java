@@ -17,7 +17,6 @@ import org.springframework.core.Ordered;
  * </p>
  *
  * @author livk
- * @date 2022/7/5
  */
 @AutoConfiguration
 public class AopAutoConfiguration {

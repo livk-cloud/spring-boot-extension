@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  * </p>
  *
  * @author livk
- * @date 2022/8/25
  */
 @SpringBootTest
 class ScheduleHandlerTest {

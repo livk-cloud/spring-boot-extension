@@ -19,7 +19,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
  */
 @RestController
 @RequestMapping("user")

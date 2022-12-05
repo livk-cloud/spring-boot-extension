@@ -11,7 +11,7 @@ import org.gradle.api.plugins.JavaPluginExtension
  * </p>
  *
  * @author livk
- * @date 2022/8/12
+ *
  */
 abstract class OptionalPlugin implements Plugin<Project> {
 

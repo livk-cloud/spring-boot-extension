@@ -8,7 +8,7 @@ import lombok.Getter;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
+ *
  */
 @Getter
 public class QRCodeException extends RuntimeException {

@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- * @date 2022/10/12
  */
 @UtilityClass
 public class LogUtils {

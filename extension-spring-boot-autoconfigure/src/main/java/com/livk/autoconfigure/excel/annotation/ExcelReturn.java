@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * <p>{@example Flux<?>}</p>
  *
  * @author livk
- * @date 2022/1/19
+ *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

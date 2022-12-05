@@ -8,7 +8,7 @@ import nl.basjes.parse.useragent.UserAgent;
  * </p>
  *
  * @author livk
- * @date 2022/9/30
+ *
  */
 public class UserAgentContextHolder {
     private static final ThreadLocal<UserAgent> context = new ThreadLocal<>();

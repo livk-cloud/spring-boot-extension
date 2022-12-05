@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2022/5/10
  */
 @AutoConfiguration
 public class FilterAutoConfiguration {

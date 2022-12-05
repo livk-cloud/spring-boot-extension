@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author livk
- * @date 2022/4/27
  */
 @Data
 public class PulsarMessage<T> implements Serializable {

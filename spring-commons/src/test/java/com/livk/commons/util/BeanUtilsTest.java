@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  * </p>
  *
  * @author livk
- * @date 2022/10/14
  */
 class BeanUtilsTest {
 

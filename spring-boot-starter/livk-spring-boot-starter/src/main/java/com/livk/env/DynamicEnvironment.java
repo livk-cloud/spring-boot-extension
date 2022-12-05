@@ -21,7 +21,6 @@ import java.util.Properties;
  * </p>
  *
  * @author livk
- * @date 2022/3/25
  */
 @Slf4j
 @RequiredArgsConstructor

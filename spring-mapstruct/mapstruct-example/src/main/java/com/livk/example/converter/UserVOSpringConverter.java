@@ -15,7 +15,6 @@ import org.springframework.lang.Nullable;
  * </p>
  *
  * @author livk
- * @date 2022/9/12
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserVOSpringConverter extends Converter<UserVO, User> {

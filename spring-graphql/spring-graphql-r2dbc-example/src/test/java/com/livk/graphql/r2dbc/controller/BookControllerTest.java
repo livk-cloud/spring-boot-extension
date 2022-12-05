@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 @SpringBootTest
 @AutoConfigureWebTestClient

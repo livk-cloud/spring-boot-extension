@@ -14,7 +14,7 @@ import org.gradle.api.plugins.BasePlugin
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 class RootProjectPlugin implements Plugin<Project> {
     @Override

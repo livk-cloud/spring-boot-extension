@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 @TestAnnotation
 @Component

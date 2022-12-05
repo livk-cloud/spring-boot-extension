@@ -13,7 +13,6 @@ import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
  * </p>
  *
  * @author livk
- * @date 2022/4/7
  */
 @Configuration
 @EnableConfigurationProperties(ZookeeperProperties.class)

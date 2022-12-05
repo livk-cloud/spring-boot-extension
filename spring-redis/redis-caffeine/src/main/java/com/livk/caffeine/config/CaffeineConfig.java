@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/3/30
  */
 @Configuration
 public class CaffeineConfig {

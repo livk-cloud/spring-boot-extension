@@ -6,7 +6,7 @@ package com.livk.autoconfigure.mapstruct.exception;
  * </p>
  *
  * @author livk
- * @date 2022/5/19
+ *
  */
 public class ConverterNotFoundException extends RuntimeException {
 

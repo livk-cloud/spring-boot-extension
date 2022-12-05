@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,17 +24,17 @@ public class Role implements GrantedAuthority {
 
     private String roleDescription;
 
-    @JsonIgnore
-    @Override
-    public String getAuthority() {
-        return roleName;
-    }
-
     @JsonCreator
     public static Role create(@JsonProperty("authority") String authority) {
         Role role = new Role();
         role.setRoleName(authority);
         return role;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getAuthority() {
+        return roleName;
     }
 
 }

@@ -1,8 +1,8 @@
 package com.livk.provider.controller;
 
 import com.livk.amqp.entity.Message;
-import com.livk.provider.send.RabbitSend;
 import com.livk.commons.util.JacksonUtils;
+import com.livk.provider.send.RabbitSend;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
  * </p>
  *
  * @author livk
- * @date 2022/4/14
  */
 @RestController
 @RequestMapping("provider")

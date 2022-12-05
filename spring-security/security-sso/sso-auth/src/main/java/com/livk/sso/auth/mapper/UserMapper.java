@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Param;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @Mapper
 public interface UserMapper {

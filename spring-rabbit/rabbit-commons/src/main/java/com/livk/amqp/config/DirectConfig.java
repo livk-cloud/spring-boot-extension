@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
  * </p>
  *
  * @author livk
- * @date 2022/4/14
  */
 @Configuration
 public class DirectConfig {

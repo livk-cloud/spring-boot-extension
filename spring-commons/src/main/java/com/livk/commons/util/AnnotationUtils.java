@@ -12,7 +12,6 @@ import java.lang.annotation.Annotation;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
  */
 @UtilityClass
 public class AnnotationUtils extends org.springframework.core.annotation.AnnotationUtils {

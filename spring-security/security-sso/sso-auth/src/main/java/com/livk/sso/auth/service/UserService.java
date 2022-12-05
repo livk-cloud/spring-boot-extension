@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 public interface UserService extends UserDetailsService {
 

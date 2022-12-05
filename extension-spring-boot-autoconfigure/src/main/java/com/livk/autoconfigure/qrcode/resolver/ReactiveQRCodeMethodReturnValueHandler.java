@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2022/10/29
+ *
  */
 public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHandler, Ordered {
 

@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.util.ClassUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 class ClassUtilsTest {
 

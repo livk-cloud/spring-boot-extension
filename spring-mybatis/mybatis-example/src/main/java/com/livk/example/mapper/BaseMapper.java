@@ -11,7 +11,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/3/4
  */
 public interface BaseMapper<T> {
 

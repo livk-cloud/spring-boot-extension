@@ -10,7 +10,7 @@ import org.gradle.api.plugins.JavaPlugin
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 abstract class CompileProcessorPlugin implements Plugin<Project> {
 

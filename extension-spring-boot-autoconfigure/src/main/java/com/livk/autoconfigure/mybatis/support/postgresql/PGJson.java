@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
+ *
  */
 class PGJson extends PGobject {
 

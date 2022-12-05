@@ -15,7 +15,6 @@ import java.io.Serializable;
  * </p>
  *
  * @author livk
- * @date 2022/1/12
  */
 @Data
 @AllArgsConstructor

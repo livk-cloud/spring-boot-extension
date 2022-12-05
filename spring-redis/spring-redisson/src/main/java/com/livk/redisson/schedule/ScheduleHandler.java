@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/8/25
  */
 @Slf4j
 @Component

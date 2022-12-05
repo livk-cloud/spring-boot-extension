@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- * @date 2022/2/21
  */
 @Component
 public class RedisEventStore extends ConcurrentMapEventStore {

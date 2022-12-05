@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @Service
 public class UserService implements UserDetailsService {

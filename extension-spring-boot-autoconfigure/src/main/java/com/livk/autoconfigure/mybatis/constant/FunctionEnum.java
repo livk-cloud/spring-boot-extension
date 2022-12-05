@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  * </p>
  *
  * @author livk
- * @date 2022/3/28
+ * 
  */
 @RequiredArgsConstructor
 public enum FunctionEnum implements FunctionHandle<Object> {

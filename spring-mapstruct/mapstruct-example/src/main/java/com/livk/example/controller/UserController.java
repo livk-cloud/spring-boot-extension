@@ -1,10 +1,10 @@
 package com.livk.example.controller;
 
 import com.livk.autoconfigure.mapstruct.converter.MapstructService;
+import com.livk.commons.support.SpringContextHolder;
 import com.livk.example.config.ConversionServiceAdapter;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
-import com.livk.commons.support.SpringContextHolder;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -26,7 +26,6 @@ import java.util.Objects;
  * </p>
  *
  * @author livk
- * @date 2022/5/12
  */
 @RestController
 @RequestMapping("user")

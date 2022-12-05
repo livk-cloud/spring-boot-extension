@@ -12,7 +12,7 @@ import org.gradle.api.plugins.JavaLibraryPlugin
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 class CommonPlugin implements Plugin<Project> {
     @Override

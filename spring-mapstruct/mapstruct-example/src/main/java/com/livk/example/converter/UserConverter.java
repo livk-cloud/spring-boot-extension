@@ -14,7 +14,6 @@ import org.mapstruct.MappingConstants;
  * </p>
  *
  * @author livk
- * @date 2022/5/12
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserConverter extends Converter<User, UserVO> {

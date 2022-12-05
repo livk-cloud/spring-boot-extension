@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/4/6
  */
 @Slf4j
 @UtilityClass

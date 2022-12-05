@@ -20,7 +20,6 @@ import java.util.function.Consumer;
  * </p>
  *
  * @author livk
- * @date 2021/8/30
  */
 @NoArgsConstructor(staticName = "create")
 class LivkBanner implements Banner {

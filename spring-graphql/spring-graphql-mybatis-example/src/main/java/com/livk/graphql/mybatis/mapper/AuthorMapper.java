@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.*;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 @Mapper
 public interface AuthorMapper {

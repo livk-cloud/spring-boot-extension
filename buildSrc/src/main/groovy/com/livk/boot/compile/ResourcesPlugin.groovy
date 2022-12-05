@@ -10,7 +10,7 @@ import org.gradle.api.plugins.JavaPlugin
  * </p>
  *
  * @author livk
- * @date 2022/4/24
+ *
  */
 abstract class ResourcesPlugin implements Plugin<Project> {
 

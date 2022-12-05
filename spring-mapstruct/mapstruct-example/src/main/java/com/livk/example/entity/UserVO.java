@@ -9,7 +9,6 @@ import lombok.Data;
  * </p>
  *
  * @author livk
- * @date 2022/5/12
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

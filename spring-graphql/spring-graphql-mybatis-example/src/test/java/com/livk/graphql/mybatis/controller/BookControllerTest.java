@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 @SpringBootTest
 @AutoConfigureWebTestClient

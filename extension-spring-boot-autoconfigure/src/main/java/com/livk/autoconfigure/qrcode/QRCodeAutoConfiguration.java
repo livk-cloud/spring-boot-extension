@@ -18,7 +18,7 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
+ *
  */
 @AutoConfiguration
 @ConditionalOnClass(name = "com.google.zxing.common.BitMatrix")

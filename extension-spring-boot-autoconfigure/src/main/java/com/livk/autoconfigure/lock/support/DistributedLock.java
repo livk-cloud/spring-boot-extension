@@ -10,7 +10,7 @@ import org.springframework.core.Ordered;
  * </p>
  *
  * @author livk
- * @date 2022/9/5
+ * 
  */
 public interface DistributedLock extends Ordered {
 

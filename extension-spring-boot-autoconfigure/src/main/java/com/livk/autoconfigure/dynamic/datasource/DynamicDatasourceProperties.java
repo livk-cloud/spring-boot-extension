@@ -16,7 +16,7 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/11/21
+ *
  */
 @Data
 @ConfigurationProperties(DynamicDatasourceProperties.PREFIX)

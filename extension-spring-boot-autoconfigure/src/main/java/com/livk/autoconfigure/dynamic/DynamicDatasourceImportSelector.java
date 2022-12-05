@@ -10,7 +10,7 @@ import com.livk.commons.spring.AbstractImportSelector;
  * </p>
  *
  * @author livk
- * @date 2022/12/2
+ * 
  */
 public class DynamicDatasourceImportSelector extends AbstractImportSelector<EnableDynamicDatasource> {
 

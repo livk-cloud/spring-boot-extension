@@ -19,7 +19,6 @@ import java.nio.channels.ReadableByteChannel;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
  */
 @UtilityClass
 public class FileUtils extends FileCopyUtils {

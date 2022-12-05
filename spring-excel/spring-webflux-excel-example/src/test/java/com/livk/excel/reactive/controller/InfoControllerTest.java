@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </p>
  *
  * @author livk
- * @date 2022/11/2
  */
 @SpringBootTest("spring.main.web-application-type=reactive")
 @AutoConfigureWebTestClient(timeout = "15000")

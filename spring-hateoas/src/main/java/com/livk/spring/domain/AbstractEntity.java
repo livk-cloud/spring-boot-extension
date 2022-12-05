@@ -9,7 +9,6 @@ import org.springframework.hateoas.RepresentationModel;
  * </p>
  *
  * @author livk
- * @date 2022/5/4
  */
 public abstract class AbstractEntity<T> extends RepresentationModel<AbstractEntity<T>> {
 

@@ -16,7 +16,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * </p>
  *
  * @author livk
- * @date 2022/4/1
+ *
  */
 @UtilityClass
 public class SerializerUtils {

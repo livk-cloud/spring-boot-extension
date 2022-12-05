@@ -13,7 +13,6 @@ import java.lang.reflect.TypeVariable;
  * </p>
  *
  * @author livk
- * @date 2022/6/7
  */
 @UtilityClass
 public class ClassUtils extends org.springframework.util.ClassUtils {

@@ -1,10 +1,10 @@
 package com.livk.sso.auth.filter;
 
+import com.livk.commons.util.WebUtils;
 import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;
-import com.livk.commons.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @RequiredArgsConstructor
 public class TokenVerifyFilter extends OncePerRequestFilter {

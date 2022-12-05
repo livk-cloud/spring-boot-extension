@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </p>
  *
  * @author livk
- * @date 2022/11/29
  */
 @Disabled("需要启动授权服务器")
 @SpringBootTest

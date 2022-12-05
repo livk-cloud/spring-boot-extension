@@ -10,7 +10,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/1/12
  */
 public interface InfoService {
 

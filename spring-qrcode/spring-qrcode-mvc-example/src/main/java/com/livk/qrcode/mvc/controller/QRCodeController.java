@@ -13,7 +13,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
  */
 @RestController
 @RequestMapping("qrcode")

@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2021/12/6
  */
 @RestController
 @RequestMapping("user")

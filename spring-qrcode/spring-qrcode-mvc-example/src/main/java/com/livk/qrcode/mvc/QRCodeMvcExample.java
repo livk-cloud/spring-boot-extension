@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2022/11/4
  */
 @SpringBootApplication
 public class QRCodeMvcExample {

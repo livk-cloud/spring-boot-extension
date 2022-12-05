@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
 import com.livk.autoconfigure.mybatis.constant.FunctionEnum;
 import com.livk.autoconfigure.mybatis.enums.SqlFill;
-import com.livk.example.handler.VersionFunction;
 import com.livk.commons.util.DateUtils;
+import com.livk.example.handler.VersionFunction;
 import lombok.Data;
 
 import java.io.Serial;
@@ -19,7 +19,6 @@ import java.util.Date;
  * </p>
  *
  * @author livk
- * @date 2022/3/3
  */
 @Data
 public class User implements Serializable {

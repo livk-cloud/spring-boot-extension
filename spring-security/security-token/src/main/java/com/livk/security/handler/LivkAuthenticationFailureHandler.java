@@ -17,7 +17,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/3/23
  */
 @Slf4j
 public class LivkAuthenticationFailureHandler implements AuthenticationFailureHandler {

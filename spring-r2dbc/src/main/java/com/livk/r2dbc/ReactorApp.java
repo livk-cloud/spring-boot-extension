@@ -10,7 +10,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
  * </p>
  *
  * @author livk
- * @date 2021/12/6
  */
 @EnableWebFlux
 @SpringBootApplication

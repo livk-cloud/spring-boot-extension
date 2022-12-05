@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
  * </p>
  *
  * @author livk
- * @date 2022/5/4
  */
 @Slf4j
 @Component

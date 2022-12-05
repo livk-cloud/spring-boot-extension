@@ -8,7 +8,7 @@ import com.livk.auth.server.common.service.Oauth2UserDetailsService;
  * </p>
  *
  * @author livk
- * @date 2021/12/22
+ *
  */
 public interface UserService extends Oauth2UserDetailsService {
 

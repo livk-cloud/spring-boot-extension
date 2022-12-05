@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- * @date 2022/3/23
  */
 public class AuthenticationContext {
 

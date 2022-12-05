@@ -12,7 +12,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/8/23
  */
 public interface CuratorService {
     /**

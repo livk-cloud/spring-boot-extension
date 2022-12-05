@@ -21,7 +21,7 @@ import java.io.IOException;
  * </p>
  *
  * @author livk
- * @date 2022/2/11
+ *
  */
 public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 

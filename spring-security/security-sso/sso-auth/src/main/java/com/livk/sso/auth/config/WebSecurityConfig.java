@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @Configuration
 public class WebSecurityConfig {

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @RestController
 @RequestMapping("user")

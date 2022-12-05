@@ -20,7 +20,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/11/16
  */
 @RestController
 @RequestMapping("video")

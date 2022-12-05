@@ -18,7 +18,6 @@ import java.util.Set;
  * </p>
  *
  * @author livk
- * @date 2022/9/29
  */
 public abstract class AbstractAutoScanProxy extends AbstractAutoProxyCreator {
 

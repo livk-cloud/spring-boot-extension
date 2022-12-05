@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/9/19
  */
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {

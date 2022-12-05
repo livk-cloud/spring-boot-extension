@@ -11,7 +11,7 @@ import org.gradle.api.plugins.JavaPlugin
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 class ServicePlugin implements Plugin<Project> {
     @Override

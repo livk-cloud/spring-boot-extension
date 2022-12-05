@@ -21,7 +21,6 @@ import java.util.*;
  * </p>
  *
  * @author livk
- * @date 2022/2/8
  */
 @RequestMapping("mail")
 @RestController

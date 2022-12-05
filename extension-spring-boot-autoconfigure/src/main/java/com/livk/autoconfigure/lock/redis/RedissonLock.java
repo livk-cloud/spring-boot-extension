@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/9/5
+ *
  */
 @RequiredArgsConstructor
 public class RedissonLock extends AbstractLockSupport<RLock> {

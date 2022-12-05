@@ -14,7 +14,6 @@ import org.springframework.lang.NonNull;
  * </p>
  *
  * @author livk
- * @date 2022/8/17
  */
 @RequiredArgsConstructor
 public class MyBatisBatchItemWriter<T> implements ItemWriter<T> {

@@ -1,8 +1,8 @@
 package com.livk.json.controller;
 
+import com.livk.commons.util.JacksonUtils;
 import com.livk.json.entity.User;
 import com.livk.json.mapper.UserMapper;
-import com.livk.commons.util.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
  */
 @RestController
 @RequiredArgsConstructor

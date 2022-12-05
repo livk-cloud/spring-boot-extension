@@ -17,7 +17,6 @@ import java.lang.reflect.Method;
  * </p>
  *
  * @author livk
- * @date 2022/6/20
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CsvLineMapper<T> implements LineMapper<T> {

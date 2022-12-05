@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2021/12/27
  */
 @SpringBootApplication
 public class BatchApp {

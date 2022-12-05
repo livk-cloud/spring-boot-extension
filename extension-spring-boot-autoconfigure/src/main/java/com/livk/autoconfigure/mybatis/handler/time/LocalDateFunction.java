@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * </p>
  *
  * @author livk
- * @date 2022/3/28
+ *
  */
 public class LocalDateFunction implements FunctionHandle<LocalDate> {
 

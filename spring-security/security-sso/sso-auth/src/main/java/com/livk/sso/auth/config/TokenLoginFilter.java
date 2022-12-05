@@ -1,11 +1,11 @@
 package com.livk.sso.auth.config;
 
+import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.util.WebUtils;
 import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Role;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;
-import com.livk.commons.util.JacksonUtils;
-import com.livk.commons.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +28,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 

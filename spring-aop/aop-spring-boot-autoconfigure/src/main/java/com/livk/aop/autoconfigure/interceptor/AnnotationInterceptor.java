@@ -18,7 +18,6 @@ import java.lang.annotation.Annotation;
  * </p>
  *
  * @author livk
- * @date 2022/10/6
  */
 public interface AnnotationInterceptor<T extends Annotation> extends IntroductionInterceptor {
 

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/3/23
+ *
  */
 @AutoConfiguration(before = DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DynamicDatasourceProperties.class)

@@ -12,7 +12,7 @@ import org.gradle.api.plugins.JavaPlatformPlugin
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 class BomPlugin implements Plugin<Project> {
     @Override

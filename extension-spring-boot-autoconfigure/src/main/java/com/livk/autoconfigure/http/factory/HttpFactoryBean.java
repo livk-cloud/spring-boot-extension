@@ -10,7 +10,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * </p>
  *
  * @author livk
- * @date 2022/11/9
+ *
  */
 @RequiredArgsConstructor
 public class HttpFactoryBean<T> implements FactoryBean<T> {

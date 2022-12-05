@@ -3,8 +3,8 @@ package com.livk.example.mapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.domain.LivkPage;
-import com.livk.example.entity.User;
 import com.livk.commons.util.FieldUtils;
+import com.livk.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * </p>
  *
  * @author livk
- * @date 2022/7/26
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest

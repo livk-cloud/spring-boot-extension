@@ -1,6 +1,5 @@
 package com.livk.commons.function;
 
-import com.livk.commons.function.BranchHandle;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -11,7 +10,6 @@ import java.util.Objects;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 class BranchHandleTest {
 

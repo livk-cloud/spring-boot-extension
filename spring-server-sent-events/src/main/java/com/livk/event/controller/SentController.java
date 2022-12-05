@@ -17,7 +17,6 @@ import java.util.UUID;
  * </p>
  *
  * @author livk
- * @date 2022/9/22
  */
 @Slf4j
 @RestController

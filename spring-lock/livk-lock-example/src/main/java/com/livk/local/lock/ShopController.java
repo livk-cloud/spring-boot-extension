@@ -23,20 +23,16 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/9/29
  */
 @RestController
 @RequestMapping("shop")
 public class ShopController {
 
-    private Integer num = 500;
-
-    private int buyCount = 0;
-
-    private int buySucCount = 0;
-
     private final HashOperations<Object, Object, Object> forHash;
     private final RedisTemplate<Object, Object> redisTemplate;
+    private Integer num = 500;
+    private int buyCount = 0;
+    private int buySucCount = 0;
 
     public ShopController(RedisTemplate<Object, Object> redisTemplate) {
         redisTemplate.setKeySerializer(RedisSerializer.string());

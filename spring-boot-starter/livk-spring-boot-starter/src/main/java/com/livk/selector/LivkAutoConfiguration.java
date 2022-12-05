@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
  * </p>
  *
  * @author livk
- * @date 2022/9/7
  */
 @Slf4j
 @AutoConfiguration

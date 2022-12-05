@@ -9,7 +9,6 @@ import com.livk.commons.spring.AbstractImportSelector;
  * </p>
  *
  * @author livk
- * @date 2022/9/20
  */
 public class WebClientImportSelector extends AbstractImportSelector<EnableWebClient> {
 

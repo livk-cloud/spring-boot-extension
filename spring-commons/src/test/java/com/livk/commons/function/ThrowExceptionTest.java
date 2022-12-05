@@ -1,6 +1,5 @@
 package com.livk.commons.function;
 
-import com.livk.commons.function.ThrowException;
 import com.livk.commons.util.LogUtils;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,6 @@ import java.util.Objects;
  * </p>
  *
  * @author livk
- * @date 2022/11/7
  */
 class ThrowExceptionTest {
 

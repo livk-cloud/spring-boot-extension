@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.util.SpringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -15,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </p>
  *
  * @author livk
- * @date 2022/8/25
  */
 class SpringUtilsTest {
 

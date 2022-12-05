@@ -14,7 +14,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/10/12
  */
 @UtilityClass
 public class YamlUtils {

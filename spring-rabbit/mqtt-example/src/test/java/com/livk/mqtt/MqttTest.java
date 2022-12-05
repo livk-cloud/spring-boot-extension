@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  * </p>
  *
  * @author livk
- * @date 2022/3/2
  */
 @SpringBootTest(classes = MqttApp.class)
 public class MqttTest {

@@ -32,7 +32,7 @@ import java.util.Set;
  * </p>
  *
  * @author livk
- * @date 2022/5/20
+ *
  */
 @RequiredArgsConstructor
 public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {

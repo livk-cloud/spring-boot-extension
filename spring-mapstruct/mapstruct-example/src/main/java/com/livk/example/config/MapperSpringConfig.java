@@ -10,7 +10,6 @@ import org.mapstruct.extensions.spring.SpringMapperConfig;
  * </p>
  *
  * @author livk
- * @date 2022/6/27
  */
 @MapperConfig(componentModel = MappingConstants.ComponentModel.SPRING, uses = ConversionServiceAdapter.class)
 @SpringMapperConfig

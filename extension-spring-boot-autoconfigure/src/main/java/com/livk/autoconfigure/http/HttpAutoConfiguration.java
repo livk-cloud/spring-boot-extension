@@ -17,7 +17,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * </p>
  *
  * @author livk
- * @date 2022/5/20
+ *
  */
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)

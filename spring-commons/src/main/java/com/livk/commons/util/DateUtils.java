@@ -12,7 +12,6 @@ import java.util.Date;
  * </p>
  *
  * @author livk
- * @date 2022/6/7
  */
 @UtilityClass
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {

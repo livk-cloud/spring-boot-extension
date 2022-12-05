@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * </p>
  *
  * @author livk
- * @date 2022/11/23
+ *
  */
 @AutoConfiguration
 public class AuthorizationServerAutoConfiguration {

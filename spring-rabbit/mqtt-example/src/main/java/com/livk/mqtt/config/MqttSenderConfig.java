@@ -15,7 +15,6 @@ import org.springframework.messaging.MessageHandler;
  * </p>
  *
  * @author livk
- * @date 2022/3/2
  */
 @Configuration
 public class MqttSenderConfig {

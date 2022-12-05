@@ -8,7 +8,7 @@ import com.blueconic.browscap.Capabilities;
  * </p>
  *
  * @author livk
- * @date 2022/9/30
+ *
  */
 public class UserAgentContextHolder {
     private static final ThreadLocal<Capabilities> context = new ThreadLocal<>();

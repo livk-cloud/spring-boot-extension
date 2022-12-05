@@ -21,7 +21,6 @@ import java.time.temporal.ChronoUnit;
  * </p>
  *
  * @author livk
- * @date 2022/7/5
  */
 @RequiredArgsConstructor
 public class LimitHandlerInterceptor implements HandlerInterceptor {

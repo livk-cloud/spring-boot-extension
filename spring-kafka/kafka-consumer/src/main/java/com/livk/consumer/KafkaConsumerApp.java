@@ -12,7 +12,6 @@ import org.springframework.kafka.annotation.KafkaListener;
  * </p>
  *
  * @author livk
- * @date 2022/5/4
  */
 @Slf4j
 @SpringBootApplication

@@ -6,7 +6,6 @@ package com.livk.caffeine.enums;
  * </p>
  *
  * @author livk
- * @date 2022/3/30
  */
 public enum CacheType {
 

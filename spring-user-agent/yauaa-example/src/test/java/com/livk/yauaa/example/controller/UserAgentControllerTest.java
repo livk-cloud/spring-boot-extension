@@ -14,7 +14,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * </p>
  *
  * @author livk
- * @date 2022/10/6
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")

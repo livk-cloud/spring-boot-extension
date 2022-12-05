@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/7/5
  */
 @UtilityClass
 public class AnnotationCacheUtil {

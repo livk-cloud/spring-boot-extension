@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
  * </p>
  *
  * @author livk
- * @date 2022/4/6
  */
 @Configuration
 @EnableConfigurationProperties(ZookeeperProperties.class)

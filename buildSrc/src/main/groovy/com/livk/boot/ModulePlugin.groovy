@@ -9,7 +9,7 @@ import org.gradle.api.Project
  * </p>
  *
  * @author livk
- * @date 2022/8/11
+ *
  */
 class ModulePlugin implements Plugin<Project> {
     @Override

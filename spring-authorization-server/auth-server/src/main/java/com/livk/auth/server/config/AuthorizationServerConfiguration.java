@@ -52,7 +52,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/7/18
  */
 @Configuration
 public class AuthorizationServerConfiguration {

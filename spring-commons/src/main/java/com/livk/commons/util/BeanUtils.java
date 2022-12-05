@@ -13,7 +13,6 @@ import java.util.function.Supplier;
  * </p>
  *
  * @author livk
- * @date 2022/6/7
  */
 @UtilityClass
 public class BeanUtils extends org.springframework.beans.BeanUtils {

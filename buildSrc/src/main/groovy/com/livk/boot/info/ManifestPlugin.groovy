@@ -12,7 +12,7 @@ import org.gradle.util.GradleVersion
  * </p>
  *
  * @author livk
- * @date 2022/6/28
+ *
  */
 abstract class ManifestPlugin implements Plugin<Project> {
 

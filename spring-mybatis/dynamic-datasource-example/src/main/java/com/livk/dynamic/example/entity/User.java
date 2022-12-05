@@ -8,7 +8,6 @@ import lombok.Data;
  * </p>
  *
  * @author livk
- * @date 2022/5/26
  */
 @Data
 public class User {

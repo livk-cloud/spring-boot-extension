@@ -24,7 +24,6 @@ import java.util.function.Function;
  * </p>
  *
  * @author livk
- * @date 2022/5/9
  */
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)

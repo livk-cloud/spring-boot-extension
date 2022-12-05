@@ -14,7 +14,6 @@ import java.util.concurrent.locks.Lock;
  * </p>
  *
  * @author livk
- * @date 2022/4/7
  */
 @Slf4j
 @RestController("lock")

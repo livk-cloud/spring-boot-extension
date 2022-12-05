@@ -12,7 +12,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * </p>
  *
  * @author livk
- * @date 2022/5/10
  */
 public class TenantHandlerInterceptor implements HandlerInterceptor {
 

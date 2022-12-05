@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
  * </p>
  *
  * @author livk
- * @date 2021/10/11
  */
 @Slf4j
 public class LivkTestDemo {

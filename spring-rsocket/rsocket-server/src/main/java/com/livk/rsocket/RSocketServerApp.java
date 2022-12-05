@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2022/5/23
  */
 @SpringBootApplication
 public class RSocketServerApp {

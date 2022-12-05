@@ -9,7 +9,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * </p>
  *
  * @author livk
- * @date 2022/11/29
  */
 @AutoConfiguration
 @EnableConfigurationProperties(RsaKeyProperties.class)

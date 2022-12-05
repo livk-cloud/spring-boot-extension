@@ -14,7 +14,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * @author livk
- * @date 2022/11/25
  */
 @Controller
 public class GreetingController {

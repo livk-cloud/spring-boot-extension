@@ -6,7 +6,7 @@ package com.livk.autoconfigure.lock.constant;
  * </p>
  *
  * @author livk
- * @date 2022/9/12
+ *
  */
 public enum LockScope {
     /**

@@ -10,7 +10,6 @@ import org.springframework.retry.annotation.EnableRetry;
  * </p>
  *
  * @author livk
- * @date 2022/4/29
  */
 @EnableRetry
 @SpringBootApplication

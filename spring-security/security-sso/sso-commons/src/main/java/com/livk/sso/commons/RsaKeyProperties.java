@@ -14,7 +14,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  * </p>
  *
  * @author livk
- * @date 2022/4/11
  */
 @ConfigurationProperties(RsaKeyProperties.PREFIX)
 public class RsaKeyProperties {

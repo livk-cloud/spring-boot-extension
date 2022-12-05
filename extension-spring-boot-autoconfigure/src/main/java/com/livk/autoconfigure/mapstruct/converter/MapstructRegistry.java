@@ -6,7 +6,7 @@ package com.livk.autoconfigure.mapstruct.converter;
  * </p>
  *
  * @author livk
- * @date 2022/6/9
+ *
  */
 public interface MapstructRegistry {
 

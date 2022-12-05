@@ -11,7 +11,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/7/19
  */
 @Mapper
 public interface InfoMapper {

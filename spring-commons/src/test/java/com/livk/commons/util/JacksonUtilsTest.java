@@ -2,7 +2,6 @@ package com.livk.commons.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.util.JacksonUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  *
  * @author livk
- * @date 2022/7/5
  */
 class JacksonUtilsTest {
 

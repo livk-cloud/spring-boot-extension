@@ -16,7 +16,7 @@ import org.springframework.data.redis.core.RedisOperations;
  * </p>
  *
  * @author livk
- * @date 2021/11/26
+ *
  */
 @ConditionalOnClass(RedisOperations.class)
 @AutoConfiguration(before = {RedisAutoConfiguration.class})

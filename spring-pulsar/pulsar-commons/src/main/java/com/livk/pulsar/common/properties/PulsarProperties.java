@@ -9,7 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * </p>
  *
  * @author livk
- * @date 2022/4/27
  */
 @Data
 @ConfigurationProperties(PulsarProperties.PULSAR_PREFIX)

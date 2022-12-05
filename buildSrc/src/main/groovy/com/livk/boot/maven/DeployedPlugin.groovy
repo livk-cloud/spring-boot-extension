@@ -16,7 +16,7 @@ import org.gradle.api.tasks.bundling.Jar
  * </p>
  *
  * @author livk
- * @date 2022/7/1
+ * 
  */
 abstract class DeployedPlugin implements Plugin<Project> {
 

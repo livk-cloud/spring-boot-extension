@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
  * </p>
  *
  * @author livk
- * @date 2022/3/17
  */
 @Slf4j
 public class KeyExpiredListener extends KeyExpirationEventMessageListener {

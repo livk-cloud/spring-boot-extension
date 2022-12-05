@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/8/18
  */
 @SpringBootTest("ip2region.enabled=true")
 class Ip2RegionSearchTest {

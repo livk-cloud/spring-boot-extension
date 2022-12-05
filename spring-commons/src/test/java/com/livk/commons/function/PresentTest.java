@@ -1,6 +1,5 @@
 package com.livk.commons.function;
 
-import com.livk.commons.function.Present;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
  * </p>
  *
  * @author livk
- * @date 2022/10/17
  */
 class PresentTest {
 

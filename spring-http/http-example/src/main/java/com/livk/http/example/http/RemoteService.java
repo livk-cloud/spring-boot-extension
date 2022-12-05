@@ -10,7 +10,6 @@ import org.springframework.web.service.annotation.HttpExchange;
  * </p>
  *
  * @author livk
- * @date 2022/5/20
  */
 @BeanName("remoteService")
 @HttpExchange("https://cn.bing.com/")

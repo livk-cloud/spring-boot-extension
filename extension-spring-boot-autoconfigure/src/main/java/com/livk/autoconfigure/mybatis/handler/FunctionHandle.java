@@ -8,7 +8,7 @@ import org.springframework.core.GenericTypeResolver;
  * </p>
  *
  * @author livk
- * @date 2022/1/29
+ *
  */
 public interface FunctionHandle<T> {
 

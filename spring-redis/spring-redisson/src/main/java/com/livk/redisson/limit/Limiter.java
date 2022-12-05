@@ -10,7 +10,6 @@ import java.lang.annotation.*;
  * </p>
  *
  * @author livk
- * @date 2022/6/13
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

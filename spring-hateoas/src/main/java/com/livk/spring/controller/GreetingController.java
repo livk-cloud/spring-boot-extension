@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * @date 2021/11/24
  */
 @RestController
 public class GreetingController {

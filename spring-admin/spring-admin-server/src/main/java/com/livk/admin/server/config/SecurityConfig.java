@@ -20,7 +20,6 @@ import java.util.UUID;
  * </p>
  *
  * @author livk
- * @date 2021/11/8
  */
 @Configuration
 public class SecurityConfig {

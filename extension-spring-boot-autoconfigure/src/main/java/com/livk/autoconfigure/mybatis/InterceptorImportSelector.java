@@ -9,7 +9,7 @@ import com.livk.commons.spring.AbstractImportSelector;
  * </p>
  *
  * @author livk
- * @date 2022/9/28
+ *
  */
 public class InterceptorImportSelector extends AbstractImportSelector<EnableSqlPlugin> {
 }

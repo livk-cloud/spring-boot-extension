@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/10/6
  */
 @RestController
 @RequestMapping("user-agent")

@@ -6,7 +6,6 @@ package com.livk.commons.function;
  * </p>
  *
  * @author livk
- * @date 2022/10/18
  */
 @FunctionalInterface
 public interface Customizer<T> {

@@ -15,7 +15,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/10/21
  */
 public class EasyExcelItemReader<T> implements ItemReader<T> {
 

@@ -10,7 +10,6 @@ import java.util.function.Supplier;
  * </p>
  *
  * @author livk
- * @date 2021 /11/26
  */
 @FunctionalInterface
 public interface ThrowException {

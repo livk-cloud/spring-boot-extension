@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/12/5
  */
 @ImportAutoConfiguration(SpringContextHolder.class)
 @SpringBootTest("spring.data.redis.host=livk.com")
