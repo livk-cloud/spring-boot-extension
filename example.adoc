@@ -1,8 +1,8 @@
 [[example-details]]
 == Example Details
 
-link:extension-spring-boot-autoconfigure[自定义自动装配]
-link:extension-spring-boot-starters[自定义starter包集合]
+link:extension-spring-boot-autoconfigure[自定义自动装配] +
+link:extension-spring-boot-starters[自定义starter包集合] +
 link:livk-boot-dependencies[Gradle自定义BOM] +
 link:spring-admin[Spring Boot Admin示例] +
 link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
@@ -30,7 +30,7 @@ link:spring-mybatis/mybatis-typehandler-example-mysql[spring整合mybatis自定�
 link:spring-mybatis/mybatis-typehandler-example-pgsql[spring整合mybatis自定义类型转换器pgsql] +
 link:spring-pulsar[spring整合Pulsar] +
 link:spring-qrcode/spring-qrcode-mvc-example[spring mvc整合二维码] +
-link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码]
+link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码] +
 link:spring-quartz[spring整合Quartz] +
 link:spring-r2dbc[Spring整合R2DBC] +
 link:spring-rabbit/mqtt-example[Spring整合Rabbit mqtt] +
@@ -45,7 +45,6 @@ link:spring-rsocket[Spring整合rsocket] +
 link:spring-security/security-sso[Spring整合security SSO] +
 link:spring-security/security-token[Spring security整合token] +
 link:spring-server-sent-events[Spring整合SSE] +
-link:spring-video-example[Spring webmvc传输视频] +
 link:spring-user-agent/browscap-example[Spring webflux整合 browscap-java] +
 link:spring-user-agent/yauaa-example[Spring webflux整合yauaa] +
 link:spring-video-example[Spring webmvc传输视频文件] +
