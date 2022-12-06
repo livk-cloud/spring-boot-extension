@@ -11,7 +11,6 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
  * </p>
  *
  * @author livk
- *
  */
 public class LivkReactiveRedisTemplate extends ReactiveRedisTemplate<String, Object> {
 
@@ -21,7 +20,7 @@ public class LivkReactiveRedisTemplate extends ReactiveRedisTemplate<String, Obj
 
     public LivkReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory,
                                      RedisSerializationContext<String, Object> serializationContext) {
-        super(connectionFactory, serializationContext);
+        this(connectionFactory, serializationContext, false);
     }
 
     public LivkReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory,
