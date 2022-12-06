@@ -1,5 +1,4 @@
 dependencies {
-    api project(":spring-commons")
     api project(":extension-spring-boot-starters:redis-spring-boot-starter")
     api "com.fasterxml.jackson.core:jackson-databind"
     api "org.apache.commons:commons-pool2"
