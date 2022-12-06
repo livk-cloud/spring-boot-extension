@@ -4,17 +4,19 @@ def versionCatalog = rootProject.extensions
         .getByType(VersionCatalogsExtension.class)
         .named("libs")
 
+def bom = versionCatalog.libraryAliases
+        .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
+def dependency = (versionCatalog.libraryAliases - bom)
+
+static Collection<String> dependencyManagement(Collection<String> dependencyNames, VersionCatalog versionCatalog) {
+    return dependencyNames.stream().map { versionCatalog.findLibrary(it).get().get().toString() }.toList()
+}
+
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
-    versionCatalog.libraryAliases
-            .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
-            .collect { versionCatalog.findLibrary(it).get().get().toString() }
-            .forEach { api platform(it) }
+    dependencyManagement(bom, versionCatalog).forEach { api(platform(it)) }
     constraints {
-        versionCatalog.libraryAliases
-                .findAll { !(it.endsWith("plugin") || it.endsWith("dependencies") || it.endsWith("bom")) }
-                .collect { versionCatalog.findLibrary(it).get().get().toString() }
-                .forEach { api it }
+        dependencyManagement(dependency, versionCatalog).forEach { api(it) }
         parent.commonModuleProjects.forEach { api(it) }
     }
 }

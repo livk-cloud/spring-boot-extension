@@ -12,8 +12,7 @@
     },
     {
       "name": "spring.redisson.config.singleServerConfig.address",
-      "type": "java.lang.String",
-      "description": "redis address"
+      "type": "java.lang.String"
     },
     {
       "name": "spring.redisson.config.singleServerConfig.connectTimeout",
