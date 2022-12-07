@@ -3,8 +3,9 @@ link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 
 == Spring Boot Example
 
-link:README-en.adoc[English]|link:README.adoc[简体中文] +
-https://github.com/livk-cloud/spring-boot-example[GitHub] | https://gitee.com/livk-cloud/spring-boot-example[Gitee] +
+link:README-en.adoc[English] | link:README.adoc[简体中文] +
+image:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white["Build Status",link="https://github.com/livk-cloud/spring-boot-example"] +
+image:https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white["Build Status",link="https://gitee.com/livk-cloud/spring-boot-example"] +
 https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud` 项目] +
 
 这是一个关于springboot项目的各种示例 +
@@ -27,16 +28,20 @@ link:upgrade-log.adoc[升级文档] +
 
 [source,shell,indent=0]
 ----
-gradle-profiler --gradle-user-home D:\gradle-7.5.1 --benchmark --cli --project-dir ./ clean
+gradle-profiler --gradle-user-home D:\gradle-7.6 --benchmark --cli --project-dir ./ clean
 ----
 
 https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]
 
-#中间件#：MySql、Postgres、ClickHouse、Kafka、Pulsar、Rabbit、Redis、Zookeeper +
+image:https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white[]
+image:https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white[]
+image:https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka[]
+image:https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white[]
+image:https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white[]
+image:https://pulsar.apache.org/img/logo.svg[width=140 height=140]
+image:https://clickhouse.com/docs/img/logo_without_text.svg[]
 
-#框架#：
 [%autowidth]
-
 |===
 |名称 |功能
 

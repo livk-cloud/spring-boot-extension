@@ -3,8 +3,9 @@ link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 
 == Spring Boot Example
 
-link:README-en.adoc[English]|link:README.adoc[简体中文] +
-https://github.com/livk-cloud/spring-boot-example[GitHub] | https://gitee.com/livk-cloud/spring-boot-example[Gitee] +
+link:README-en.adoc[English] | link:README.adoc[简体中文] +
+image:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white["Build Status",link="https://github.com/livk-cloud/spring-boot-example"] +
+image:https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white["Build Status",link="https://gitee.com/livk-cloud/spring-boot-example"] +
 https://github.com/livk-cloud/spring-cloud-example[The official version of the Move `Spring Cloud` project] +
 
 Here is a various example on springboot project +
@@ -27,5 +28,5 @@ Profiling using the https://github.com/gradle/gradle-profiler[Gradle-Profiler] p
 
 [source,shell,indent=0]
 ----
-gradle-profiler --gradle-user-home D:\gradle-7.5.1 --benchmark --cli --project-dir ./ clean
+gradle-profiler --gradle-user-home D:\gradle-7.6 --benchmark --cli --project-dir ./ clean
 ----
