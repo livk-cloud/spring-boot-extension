@@ -1,4 +1,7 @@
-= Spring Boot Example
+image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml/badge.svg?branch=main["Build Status",
+link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
+
+== Spring Boot Example
 
 link:README-en.adoc[English]|link:README.adoc[简体中文] +
 https://github.com/livk-cloud/spring-boot-example[GitHub] | https://gitee.com/livk-cloud/spring-boot-example[Gitee] +

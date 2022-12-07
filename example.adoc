@@ -39,6 +39,7 @@ link:spring-rabbit[Spring整合Rabbit] +
 link:spring-redis[Spring整合Redis] +
 link:spring-redis/redis-lua[Spring整合Redis lua] +
 link:spring-redis/spring-redisson[Spring整合redisson] +
+link:spring-redis/redisson-order-expired-example[redisson处理订单过期取消] +
 link:spring-rest-doc[Spring整合restDoc] +
 link:spring-retry[Spring整合Retry] +
 link:spring-rsocket[Spring整合rsocket] +
