@@ -61,8 +61,7 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         ClassPathBeanDefinitionScanner scanner = getScanner(registry);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(Provider.class));
-        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class, true));
         for (String basePackage : packages) {
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidateComponent : candidateComponents) {
