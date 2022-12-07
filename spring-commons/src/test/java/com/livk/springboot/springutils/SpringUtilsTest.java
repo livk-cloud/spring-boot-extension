@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 /**
  * <p>
@@ -38,7 +37,7 @@ public class SpringUtilsTest {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         Set<Class<?>> result = SpringUtils.findByAnnotationType(TestAnnotation.class, resourceLoader,
                 packages.toArray(String[]::new));
-        assertIterableEquals(Set.of(A.class), result);
+        assertEquals(Set.of(A.class, TestController.class), result);
     }
 
     @Test

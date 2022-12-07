@@ -1,7 +1,5 @@
 package com.livk.springboot.springutils;
 
-import org.springframework.stereotype.Component;
-
 /**
  * <p>
  * A
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Component;
  *
  * @author livk
  */
-@TestAnnotation
-@Component
+@TestController
 public class A {
 }

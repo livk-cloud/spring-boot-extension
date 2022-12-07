@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.StandardReflectionParameterNameDiscoverer;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -64,7 +65,8 @@ public class SpringUtils {
                     MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
                     String className = metadataReader.getClassMetadata().getClassName();
                     Class<?> clazz = Class.forName(className);
-                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationClass, clazz)) {
+                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationClass, clazz) ||
+                        AnnotatedElementUtils.hasAnnotation(clazz, annotationClass)) {
                         classSet.add(clazz);
                     }
                 }
