@@ -27,13 +27,13 @@ import java.lang.annotation.Target;
  * @author livk
  *
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelReturn {
 
     String fileName();
 
-    Suffix suffix() default Suffix.XLS;
+    Suffix suffix() default Suffix.XLSM;
 
     @Getter
     @RequiredArgsConstructor
