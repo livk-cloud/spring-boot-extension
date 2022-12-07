@@ -43,12 +43,12 @@ public class LivkTest {
         annoTest.show();
         log.info(username);
         String htmlWebClient = webClient.get()
-                .uri("https://cn.bing.com/")
+                .uri("https://github.com/")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
         log.info("{}", htmlWebClient.substring(0, 20));
-        String htmlRestTemplate = restTemplate.getForObject("https://cn.bing.com/", String.class);
+        String htmlRestTemplate = restTemplate.getForObject("https://github.com/", String.class);
         log.info("{}", htmlRestTemplate.substring(0, 20));
     }
 

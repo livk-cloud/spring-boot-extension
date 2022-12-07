@@ -39,6 +39,19 @@ configure(gradleModuleProjects) {
         testImplementation "org.springframework:spring-tx"
         testImplementation "org.springframework.boot:spring-boot-starter-test"
     }
+
+    test {
+        systemProperties(System.getProperties())
+        def skipExclude = systemProperties.get("exclude") as Boolean
+        if (skipExclude) {
+            try (def reader = new FileReader("./exclude.txt")
+                 def bufferedReader = new BufferedReader(reader)) {
+                def lines = bufferedReader.readLines()
+                        .stream().map { it.replaceAll("\\.", "/") + ".class" }.toList()
+                it.exclude(lines)
+            }
+        }
+    }
 }
 
 configure(allprojects) {

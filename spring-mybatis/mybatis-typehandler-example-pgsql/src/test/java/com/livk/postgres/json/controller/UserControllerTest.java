@@ -1,4 +1,4 @@
-package com.livk.json.controller;
+package com.livk.postgres.json.controller;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -47,5 +47,3 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
