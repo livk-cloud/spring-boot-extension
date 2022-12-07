@@ -13,9 +13,8 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- * 
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QRCode {
 
