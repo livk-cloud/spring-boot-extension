@@ -30,7 +30,6 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- *
  */
 public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHandler, Ordered {
 
@@ -38,14 +37,14 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
 
     @Override
     public boolean supports(@NonNull HandlerResult result) {
-        return AnnotationUtils.hasAnnotation(result.getReturnTypeSource(), QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), QRCode.class);
     }
 
     @NonNull
     @Override
     public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
         Object returnValue = result.getReturnValue();
-        QRCode qrCode = AnnotationUtils.getAnnotation(result.getReturnTypeSource(), QRCode.class);
+        QRCode qrCode = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(), QRCode.class);
         ServerHttpResponse response = exchange.getResponse();
         ResolvableType returnType = result.getReturnType();
         ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);

@@ -29,7 +29,7 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * 
+ *
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 
@@ -37,7 +37,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
                                   NativeWebRequest webRequest) {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        ExcelReturn excelReturn = AnnotationUtils.getAnnotation(returnType, ExcelReturn.class);
+        ExcelReturn excelReturn = AnnotationUtils.getAnnotationElement(returnType, ExcelReturn.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(excelReturn, "excelReturn not be null");
         if (returnValue instanceof Collection) {
@@ -85,7 +85,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotation(returnType, ExcelReturn.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
     }
 
 }

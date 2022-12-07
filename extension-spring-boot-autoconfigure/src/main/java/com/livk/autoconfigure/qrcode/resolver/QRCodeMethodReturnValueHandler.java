@@ -27,7 +27,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
 
     @Override
     public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, QRCode.class);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
                                   NativeWebRequest webRequest) throws IOException {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        QRCode qrCode = AnnotationUtils.getAnnotation(returnType, QRCode.class);
+        QRCode qrCode = AnnotationUtils.getAnnotationElement(returnType, QRCode.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(qrCode, "excelReturn not be null");
         String text = JacksonUtils.toJsonStr(returnValue);
@@ -46,7 +46,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotation(returnType, QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, QRCode.class);
     }
 
 }
