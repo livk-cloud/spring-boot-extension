@@ -103,26 +103,32 @@ public class SpringUtils {
      * @param <T>         类型
      * @return T
      */
-    private <T> T parse(Method method, Object[] args, String condition, Class<T> returnClass, boolean template, Map<String, Object> expandMap) {
-        ParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
-        String[] parameterNames = discoverer.getParameterNames(method);
-        Assert.notNull(parameterNames, "参数列表不能为null");
+    @SuppressWarnings("unchecked")
+    private <T> T parse(Method method, Object[] args, String condition, Class<T> returnClass, boolean template, Map<String, ?> expandMap) {
         StandardEvaluationContext context = new StandardEvaluationContext();
-        for (int i = 0; i < parameterNames.length; i++) {
-            context.setVariable(parameterNames[i], args[i]);
+        if (method != null && !ObjectUtils.isEmpty(args)) {
+            ParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
+            String[] parameterNames = discoverer.getParameterNames(method);
+            Assert.notNull(parameterNames, "参数列表不能为null");
+            for (int i = 0; i < parameterNames.length; i++) {
+                context.setVariable(parameterNames[i], args[i]);
+            }
         }
         if (!CollectionUtils.isEmpty(expandMap)) {
-            context.setVariables(expandMap);
+            expandMap.forEach(context::setVariable);
         }
         if (template) {
             return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, returnClass);
         } else {
+            if (returnClass.isInstance(condition) && !condition.contains("#")) {
+                return (T) condition;
+            }
             return PARSER.parseExpression(condition).getValue(context, returnClass);
         }
     }
 
     public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
-        return parse(method, args, condition, returnClass, false, null);
+        return parse(method, args, condition, returnClass, false, Map.of());
     }
 
     public String parseSpEL(Method method, Object[] args, String condition) {
@@ -130,9 +136,7 @@ public class SpringUtils {
     }
 
     public <T> T parseSpEL(Map<String, ?> variables, String condition, Class<T> returnClass) {
-        StandardEvaluationContext context = new StandardEvaluationContext();
-        variables.forEach(context::setVariable);
-        return PARSER.parseExpression(condition).getValue(context, returnClass);
+        return parse(null, null, condition, returnClass, false, variables);
     }
 
     public String parseSpEL(Map<String, ?> variables, String condition) {
@@ -143,21 +147,19 @@ public class SpringUtils {
         return parseTemplate(method, args, condition, null);
     }
 
-    public String parseTemplate(Method method, Object[] args, String condition, Map<String, Object> expandMap) {
+    public String parseTemplate(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         return parse(method, args, condition, String.class, true, expandMap);
     }
 
     public String parseTemplate(Map<String, ?> variables, String condition) {
-        StandardEvaluationContext context = new StandardEvaluationContext();
-        variables.forEach(context::setVariable);
-        return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, String.class);
+        return parse(null, null, condition, String.class, true, variables);
     }
 
-    public String parse(Method method, Object[] args, String condition) {
-        return parse(method, args, condition, null);
+    public String parseEverything(Method method, Object[] args, String condition) {
+        return parseEverything(method, args, condition, null);
     }
 
-    public String parse(Method method, Object[] args, String condition, Map<String, Object> expandMap) {
+    public String parseEverything(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         String result = parseTemplate(method, args, condition, expandMap);
         if (condition.equals(result)) {
             result = parse(method, args, condition, String.class, false, expandMap);
@@ -165,11 +167,7 @@ public class SpringUtils {
         return result;
     }
 
-    public String parse(Map<String, ?> variables, String condition) {
-        String result = parseTemplate(variables, condition);
-        if (condition.equals(result)) {
-            result = parseSpEL(variables, condition);
-        }
-        return result;
+    public String parseEverything(Map<String, ?> variables, String condition) {
+        return parseEverything(null, null, condition, variables);
     }
 }
