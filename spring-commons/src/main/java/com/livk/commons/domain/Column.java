@@ -17,6 +17,7 @@ import java.util.Map;
 @Getter
 @ToString
 @EqualsAndHashCode
+@SuppressWarnings("unchecked")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Column<T> {
 
@@ -24,12 +25,11 @@ public class Column<T> {
 
     private final Map<String, Object> map;
 
-    @SuppressWarnings("unchecked")
     public static <T> Column<T> create(T t) {
         return new Column<T>(t, BeanMap.create(t));
     }
 
-    public Object get(FieldFunction<T> function) {
-        return map.get(FieldUtils.getFieldName(function));
+    public <V> V get(FieldFunction<T> function) {
+        return (V) map.get(FieldUtils.getFieldName(function));
     }
 }

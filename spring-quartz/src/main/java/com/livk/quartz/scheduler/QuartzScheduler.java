@@ -1,9 +1,9 @@
 package com.livk.quartz.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * <p>
@@ -13,16 +13,16 @@ import org.quartz.JobExecutionContext;
  * @author livk
  */
 @Slf4j
-public class QuartzScheduler implements Job {
+public class QuartzScheduler extends QuartzJobBean {
 
     private void before() {
         log.info("before");
     }
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) {
+    protected void executeInternal(JobExecutionContext context) {
         before();
-        JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
         log.info("{}", jobDataMap.getString("user"));
         after();
     }

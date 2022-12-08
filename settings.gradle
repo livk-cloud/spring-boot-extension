@@ -18,7 +18,7 @@ fileTree(rootDir) {
     }
 }.forEach {
     def buildFilePath = it.parentFile.absolutePath
-    def projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
+    def projectPath = buildFilePath.replace(rootProject.projectDir.absolutePath, "").replace(File.separator, ":")
     include projectPath
 
     def project = findProject(projectPath)
