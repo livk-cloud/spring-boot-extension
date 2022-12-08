@@ -15,22 +15,11 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin
  */
 abstract class DeleteExpand implements Plugin<Project> {
 
-    public static final String CLEAN_GENERATED_TASK_NAME = "cleanGenerated"
-
-    public static final String CLEAN_OTHER_TASK_NAME = "cleanOther"
-
     public static final String CLEAN_ALL_TASK_NAME = "cleanAll"
 
     @Override
     void apply(Project project) {
-        project.tasks.register(CLEAN_GENERATED_TASK_NAME, Delete.class) {
-            setGroup(LifecycleBasePlugin.BUILD_GROUP)
-            it.delete(project.projectDir.absolutePath + "/src/main/generated")
-            it.delete(project.projectDir.absolutePath + "/src/test/generated_tests")
-        }
-
-        project.tasks.register(CLEAN_OTHER_TASK_NAME, Delete.class) {
-            setGroup(LifecycleBasePlugin.BUILD_GROUP)
+        project.tasks.withType(Delete.class).configureEach {
             it.delete(project.projectDir.absolutePath + "/build")
             it.delete(project.projectDir.absolutePath + "/out")
             it.delete(project.projectDir.absolutePath + "/bin")
@@ -38,7 +27,8 @@ abstract class DeleteExpand implements Plugin<Project> {
 
         project.tasks.register(CLEAN_ALL_TASK_NAME, Delete.class) {
             setGroup(LifecycleBasePlugin.BUILD_GROUP)
-            dependsOn(CLEAN_GENERATED_TASK_NAME, CLEAN_OTHER_TASK_NAME)
+            it.delete(project.projectDir.absolutePath + "/src/main/generated")
+            it.delete(project.projectDir.absolutePath + "/src/test/generated_tests")
         }
 
     }

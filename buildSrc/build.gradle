@@ -32,7 +32,7 @@ gradlePlugin {
         }
         rootProjectPlugin {
             id = "com.livk.root"
-            implementationClass = "com.livk.boot.RootProjectPlugin"
+            implementationClass = "com.livk.boot.RootPlugin"
         }
         servicePlugin {
             id = "com.livk.service"

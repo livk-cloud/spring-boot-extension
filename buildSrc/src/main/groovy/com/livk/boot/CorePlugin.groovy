@@ -7,19 +7,18 @@ import com.livk.boot.info.ManifestPlugin
 import com.livk.boot.tasks.DeleteExpand
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePlugin
+
 /**
  * <p>
- * RootProjectPlugin
+ * CorePlugin
  * </p>
  *
  * @author livk
- *
+ * @date 2022/12/8
  */
-class RootProjectPlugin implements Plugin<Project> {
+class CorePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
-        project.pluginManager.apply(BasePlugin.class)
         project.pluginManager.apply(DeleteExpand.class)
         project.pluginManager.apply(ManagementPlugin.class)
         project.pluginManager.apply(OptionalPlugin.class)
