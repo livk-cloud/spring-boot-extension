@@ -32,6 +32,8 @@ public class SpringUtilsTest {
     @Autowired
     private BeanFactory beanFactory;
 
+    private final static Map<String, String> map = Map.of("username", "livk");
+
     @Test
     void findByAnnotationTypeTest() {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
@@ -44,5 +46,17 @@ public class SpringUtilsTest {
     void getSubPropertiesTest() {
         Map<String, String> result = SpringUtils.getSubProperties(environment, "spring.application.root");
         assertEquals(Map.of("name", "livk"), result);
+    }
+
+    @Test
+    void parseTemplateTest() {
+        assertEquals("livk:livk",
+                SpringUtils.parseTemplate(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
+    }
+
+    @Test
+    void parseEverythingTest() {
+        assertEquals("livk:livk",
+                SpringUtils.parseEverything(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
     }
 }

@@ -39,6 +39,8 @@ class SpringUtilsTest {
         assertEquals("root:livk:123456", SpringUtils.parseTemplate(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
 
         assertEquals("root:livk", SpringUtils.parseTemplate(map, "root:#{#username}"));
+        assertEquals("livk:" + System.getProperty("user.dir"),
+                SpringUtils.parseTemplate(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
     }
 
     @Test
@@ -52,6 +54,8 @@ class SpringUtilsTest {
 
         assertEquals("root:livk", SpringUtils.parseEverything(map, "root:#{#username}"));
         assertEquals("livk", SpringUtils.parseEverything(map, "#username"));
+        assertEquals("livk:" + System.getProperty("user.dir"),
+                SpringUtils.parseEverything(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
     }
 
     @SuppressWarnings("unused")
