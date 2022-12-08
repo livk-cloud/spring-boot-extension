@@ -5,6 +5,7 @@ import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.autoconfigure.lock.support.DistributedLock;
+import com.livk.commons.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,7 +24,6 @@ import java.util.Comparator;
  * </p>
  *
  * @author livk
- *
  */
 @Aspect
 @RequiredArgsConstructor
@@ -45,7 +45,8 @@ public class LockAspect {
                 .min(Comparator.comparingInt(DistributedLock::getOrder))
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
         boolean async = !LockScope.STANDALONE_LOCK.equals(scope) && onLock.async();
-        boolean isLock = distributedLock.tryLock(onLock.type(), onLock.key(), onLock.leaseTime(), onLock.waitTime(), async);
+        String key = SpringUtils.parseEverything(method, joinPoint.getArgs(), onLock.key());
+        boolean isLock = distributedLock.tryLock(onLock.type(), key, onLock.leaseTime(), onLock.waitTime(), async);
         try {
             if (isLock) {
                 return joinPoint.proceed();
