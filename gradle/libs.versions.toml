@@ -26,6 +26,7 @@ springdoc = "2.0.0"
 googleJavase = "3.5.1"
 springBootAdmin = "3.0.0-M5"
 nimbusdsJwt = "9.25.6"
+rocketStarter = "2.2.2"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -56,6 +57,7 @@ yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "ya
 springdoc-openapi-dependencies = { group = "org.springdoc", name = "springdoc-openapi", version.ref = "springdoc" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "googleJavase" }
 nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusdsJwt" }
+rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring-boot-starter", version.ref = "rocketStarter" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

@@ -1,5 +1,6 @@
 package com.livk.boot.consumer;
-import org.springframework.boot.SpringApplication;
+
+import com.livk.commons.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -8,6 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RocketConsumerApp {
     public static void main(String[] args) {
-        SpringApplication.run(RocketConsumerApp.class);
+        LivkSpring.run(RocketConsumerApp.class, args);
     }
 }
