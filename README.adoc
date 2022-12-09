@@ -23,6 +23,7 @@ link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:example.adoc[示例详情] +
 link:upgrade-log.adoc[升级文档] +
+link:extension-spring-boot-autoconfigure/doc/extension-spring-boot-autoconfigure.adoc[自动装配拓展简单使用讲解] +
 
 使用 https://github.com/gradle/gradle-profiler[Gradle-Profiler]分析器进行分析
 

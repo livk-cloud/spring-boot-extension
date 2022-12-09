@@ -1,0 +1,10 @@
+= SpringBoot自动装配拓展
+:revdate: {docdate}
+:toc: right
+:Author: Livk
+
+:numbered:
+
+include::dynamic.adoc[]
+
+include::excel.adoc[]
