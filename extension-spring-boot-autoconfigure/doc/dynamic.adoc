@@ -1,4 +1,4 @@
-[[dynamic-spring-boot-autoconfigure]]
+[[dynamic-spring-boot-starter]]
 == 动态数据源
 
 使用方式 +

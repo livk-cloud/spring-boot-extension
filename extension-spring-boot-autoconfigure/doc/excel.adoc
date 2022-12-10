@@ -1,4 +1,4 @@
-[[excel-spring-boot-autoconfigure]]
+[[excel-spring-boot-starter]]
 == 注解导入或生成Excel
 
 使用方式: +
