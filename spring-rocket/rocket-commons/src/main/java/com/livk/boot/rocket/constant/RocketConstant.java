@@ -1,4 +1,4 @@
-package com.livk.boot.consumer.constant;
+package com.livk.boot.rocket.constant;
 
 /**
  * @author Kou Shenhai

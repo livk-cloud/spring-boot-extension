@@ -17,20 +17,26 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RocketProducer {
 
-   private final RocketMQTemplate rocketMQTemplate;
+    private final RocketMQTemplate rocketMQTemplate;
 
-    @PostMapping("/send/{topic}")
     /**
      * rocketmq消息>同步发送
+     *
+     * @param topic topic
+     * @param dto   dto
      */
+    @PostMapping("/send/{topic}")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        rocketMQTemplate.syncSend(topic,dto.getData(),3000);
+        rocketMQTemplate.syncSend(topic, dto.getData(), 3000);
     }
 
-    @PostMapping("/sendAsync/{topic}")
     /**
      * rocketmq消息>异步发送
+     *
+     * @param topic topic
+     * @param dto   dto
      */
+    @PostMapping("/sendAsync/{topic}")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         rocketMQTemplate.asyncSend(topic, dto.getData(), new SendCallback() {
             @Override
@@ -40,21 +46,22 @@ public class RocketProducer {
 
             @Override
             public void onException(Throwable throwable) {
-                log.error("报错信息：{}",throwable.getMessage());
+                log.error("报错信息：{}", throwable.getMessage());
             }
         });
     }
 
-    @PostMapping("/sendOne/{topic}")
     /**
      * rocketmq消息>单向发送
+     *
+     * @param topic topic
+     * @param dto   dto
      */
+    @PostMapping("/sendOne/{topic}")
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        /**
-         * 单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
-         * 适用于耗时短，但对可靠性不高的场景，如日志收集
-         */
-        rocketMQTemplate.sendOneWay(topic,dto.getData());
+        //单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
+        //适用于耗时短，但对可靠性不高的场景，如日志收集
+        rocketMQTemplate.sendOneWay(topic, dto.getData());
     }
 
 }
