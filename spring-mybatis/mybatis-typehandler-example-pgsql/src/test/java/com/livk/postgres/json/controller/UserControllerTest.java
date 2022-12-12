@@ -1,5 +1,6 @@
 package com.livk.postgres.json.controller;
 
+import com.livk.json.PGSQLTypeHandlerExampleApp;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest
+@SpringBootTest(classes = PGSQLTypeHandlerExampleApp.class)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {

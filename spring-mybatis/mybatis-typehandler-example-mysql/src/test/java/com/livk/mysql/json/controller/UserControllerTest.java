@@ -1,5 +1,6 @@
 package com.livk.mysql.json.controller;
 
+import com.livk.json.MySQLTypeHandlerExampleApp;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest
+@SpringBootTest(classes = MySQLTypeHandlerExampleApp.class)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
