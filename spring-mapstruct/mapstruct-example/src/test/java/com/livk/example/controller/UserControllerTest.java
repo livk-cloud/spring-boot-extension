@@ -30,18 +30,30 @@ class UserControllerTest {
         mockMvc.perform(get("/user"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("customize[0].username", "livk").exists())
-                .andExpect(jsonPath("spring[0].username", "livk").exists());
+                .andExpect(jsonPath("customize[0:2].username", "livk1", "livk2", "livk3").exists())
+                .andExpect(jsonPath("customize[0:2].type", "1", "2", "3").exists())
+                .andExpect(jsonPath("customize[0:2].createTime").exists())
+                .andExpect(jsonPath("spring[0:2].username", "livk1", "livk2", "livk3").exists())
+                .andExpect(jsonPath("spring[0:2].type", "1", "2", "3").exists())
+                .andExpect(jsonPath("spring[0:2].createTime").exists());
     }
 
     @Test
     void testGetById() throws Exception {
-        mockMvc.perform(get("/user/1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("customize.username", "livk").exists())
-                .andExpect(jsonPath("spring.username", "livk").exists())
-                .andExpect(jsonPath("adapter.username", "livk").exists());
+        for (int i = 1; i <= 3; i++) {
+            mockMvc.perform(get("/user/{id}", i))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("customize.username", "livk" + i).exists())
+                    .andExpect(jsonPath("customize.type", i).exists())
+                    .andExpect(jsonPath("customize.createTime").exists())
+                    .andExpect(jsonPath("spring.username", "livk" + i).exists())
+                    .andExpect(jsonPath("spring.type", i).exists())
+                    .andExpect(jsonPath("spring.createTime").exists())
+                    .andExpect(jsonPath("adapter.username", "livk" + i).exists())
+                    .andExpect(jsonPath("adapter.type", i).exists())
+                    .andExpect(jsonPath("adapter.createTime").exists());
+        }
     }
 }
 

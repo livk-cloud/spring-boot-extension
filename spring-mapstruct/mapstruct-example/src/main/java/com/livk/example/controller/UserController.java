@@ -33,7 +33,7 @@ import java.util.Objects;
 public class UserController {
 
     public static final List<User> USERS = List.of(
-            new User().setId(1).setUsername("livk").setPassword("123456").setType(1).setCreateTime(new Date()),
+            new User().setId(1).setUsername("livk1").setPassword("123456").setType(1).setCreateTime(new Date()),
             new User().setId(2).setUsername("livk2").setPassword("123456").setType(2).setCreateTime(new Date()),
             new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
 
