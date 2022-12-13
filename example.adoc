@@ -6,6 +6,7 @@ link:extension-spring-boot-starters[自定义starter包集合] +
 link:livk-boot-dependencies[Gradle自定义BOM] +
 link:spring-admin[Spring Boot Admin示例] +
 link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
+link:spring-auto-processor[Spring自动装配处理器] +
 link:spring-batch[Spring整合Spring Batch] +
 link:spring-boot-starter[Spring自定义Starter] +
 link:spring-clickhouse[Spring整合ClickHouse] +
