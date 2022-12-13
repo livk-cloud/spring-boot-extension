@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author livk
  */
 @SpringBootTest
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "15000")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookControllerTest {
 
