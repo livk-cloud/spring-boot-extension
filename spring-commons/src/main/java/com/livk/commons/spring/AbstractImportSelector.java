@@ -29,7 +29,7 @@ public abstract class AbstractImportSelector<T> implements DeferredImportSelecto
     private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
     @Getter
-    @Setter(onMethod_ = @Override)
+    @Setter
     private Environment environment;
 
     @NotNull

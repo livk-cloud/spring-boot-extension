@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.http;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.autoconfigure.http.factory.HttpServiceRegistrar;
 import org.springframework.beans.factory.ObjectProvider;
@@ -20,6 +21,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnClass(WebClient.class)
 public class HttpAutoConfiguration {
 

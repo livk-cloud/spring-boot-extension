@@ -1,5 +1,6 @@
 package com.livk.common.config;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.common.constant.KafkaConstant;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.kafka.core.KafkaAdmin;
  *
  * @author livk
  */
+@SpringAutoService
 @AutoConfiguration(after = KafkaAutoConfiguration.class)
 public class KafkaConfiguration {
 

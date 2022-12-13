@@ -1,5 +1,7 @@
 package com.livk.commons.http;
 
+import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.commons.annotation.EnableHttpClient;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author livk
  */
 @Configuration(enforceUniqueMethods = false)
+@SpringAutoService(auto = EnableHttpClient.class)
 public class RestTemplateConfiguration {
 
     @Bean

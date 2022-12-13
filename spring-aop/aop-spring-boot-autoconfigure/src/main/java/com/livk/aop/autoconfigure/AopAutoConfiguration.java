@@ -1,6 +1,7 @@
 package com.livk.aop.autoconfigure;
 
 import com.livk.aop.autoconfigure.proxy.AnnotationAutoScanProxy;
+import com.livk.auto.service.annotation.SpringAutoService;
 import org.aopalliance.aop.Advice;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -18,6 +19,7 @@ import org.springframework.core.Ordered;
  *
  * @author livk
  */
+@SpringAutoService
 @AutoConfiguration
 public class AopAutoConfiguration {
 

@@ -1,5 +1,6 @@
 package com.livk.pulsar.common;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.pulsar.common.properties.PulsarProperties;
 import org.apache.pulsar.client.api.*;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @ConditionalOnClass(PulsarClient.class)
 @AutoConfiguration
+@SpringAutoService
 @EnableConfigurationProperties(PulsarProperties.class)
 public class PulsarAutoConfiguration {
 

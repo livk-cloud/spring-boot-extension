@@ -1,0 +1,4 @@
+dependencies {
+    api "com.google.auto.service:auto-service"
+    compileProcessor "com.google.auto.service:auto-service"
+}

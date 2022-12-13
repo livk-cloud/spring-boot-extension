@@ -1,5 +1,6 @@
 package com.livk.amqp.config;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @author livk
  */
 @Configuration
+@SpringAutoService
 public class FanoutConfig {
 
     /**

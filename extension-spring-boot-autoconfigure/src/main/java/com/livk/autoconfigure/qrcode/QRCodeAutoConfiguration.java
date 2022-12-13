@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.qrcode;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.qrcode.resolver.QRCodeMethodReturnValueHandler;
 import com.livk.autoconfigure.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -21,6 +22,7 @@ import java.util.List;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnClass(name = "com.google.zxing.common.BitMatrix")
 public class QRCodeAutoConfiguration {
 

@@ -1,5 +1,6 @@
 package com.livk.commons.support;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+@SpringAutoService
 public class SpringContextHolder implements BeanFactoryPostProcessor, ApplicationContextAware, DisposableBean {
 
     @Getter

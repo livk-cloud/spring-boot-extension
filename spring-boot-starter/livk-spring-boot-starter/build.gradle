@@ -4,4 +4,5 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     compileProcessor "com.google.auto.service:auto-service"
+    compileProcessor project(":spring-auto-processor")
 }

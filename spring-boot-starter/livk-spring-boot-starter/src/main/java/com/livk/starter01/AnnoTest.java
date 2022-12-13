@@ -1,5 +1,6 @@
 package com.livk.starter01;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @LivkComponent
+@SpringAutoService
 public class AnnoTest {
 
     public void show() {

@@ -1,5 +1,6 @@
 package com.livk.spi;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
  * @author livk
  */
 @Component
+@SpringAutoService
 public class FileServiceFactory extends AbstractServiceLoad<FileService> {
 
     @Override

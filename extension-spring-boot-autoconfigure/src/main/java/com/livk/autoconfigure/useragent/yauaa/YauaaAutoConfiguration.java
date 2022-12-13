@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.useragent.yauaa;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.yauaa.filter.ReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.filter.UserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
@@ -27,6 +28,7 @@ import java.util.List;
  * @author livk
  *
  */
+@SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass(UserAgentAnalyzer.class)
 public class YauaaAutoConfiguration {

@@ -1,5 +1,6 @@
 package com.livk.commons.controller;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author livk
  */
 @RestController
+@SpringAutoService
 @RequiredArgsConstructor
 public class SystemController {
 

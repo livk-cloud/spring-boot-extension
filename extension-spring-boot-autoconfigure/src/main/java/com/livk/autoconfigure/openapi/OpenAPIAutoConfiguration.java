@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.openapi;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Bean;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnBean(GroupedOpenApi.class)
 public class OpenAPIAutoConfiguration {
 

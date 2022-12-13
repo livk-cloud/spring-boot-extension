@@ -4,6 +4,7 @@ import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.ParseException;
 import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.browscap.filter.ReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.browscap.filter.UserAgentFilter;
 import com.livk.autoconfigure.useragent.browscap.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
@@ -30,6 +31,7 @@ import java.util.List;
  * @author livk
  *
  */
+@SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass(UserAgentParser.class)
 public class BrowscapAutoConfiguration {

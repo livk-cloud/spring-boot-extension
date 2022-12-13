@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.lock;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.lock.aspect.LockAspect;
 import com.livk.autoconfigure.lock.local.LocalLock;
 import com.livk.autoconfigure.lock.redis.RedissonLock;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Bean;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnClass(name = "com.livk.lock.marker.Marker")
 public class LockAutoConfiguration {
 

@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.mybatis;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.mybatis.interceptor.SqlInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
@@ -15,8 +16,9 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * 
+ *
  */
+@SpringAutoService
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
 @ConditionalOnClass(SqlSessionFactory.class)
 @ImportAutoConfiguration(TypeHandlerAutoConfiguration.class)

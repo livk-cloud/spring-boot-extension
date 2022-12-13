@@ -17,6 +17,7 @@ dependencies {
     optional "org.springframework.data:spring-data-redis"
     optional "com.blueconic:browscap-java"
     optional "nl.basjes.parse.useragent:yauaa"
+    compileProcessor project(":spring-auto-processor")
 }
 
 jar {

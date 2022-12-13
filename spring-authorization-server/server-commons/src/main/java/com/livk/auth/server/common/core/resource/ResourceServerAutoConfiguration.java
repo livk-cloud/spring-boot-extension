@@ -1,5 +1,6 @@
 package com.livk.auth.server.common.core.resource;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 /**
  * @author livk
  */
+@SpringAutoService
 @AutoConfiguration
 @RequiredArgsConstructor
 public class ResourceServerAutoConfiguration {

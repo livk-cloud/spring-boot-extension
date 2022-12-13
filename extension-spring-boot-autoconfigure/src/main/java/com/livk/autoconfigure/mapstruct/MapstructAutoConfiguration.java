@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.mapstruct;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.mapstruct.support.ConverterRepository;
 import com.livk.autoconfigure.mapstruct.support.GenericMapstructService;
 import com.livk.autoconfigure.mapstruct.support.InMemoryConverterRepository;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnClass(Mappers.class)
 public class MapstructAutoConfiguration {
 

@@ -1,5 +1,7 @@
 package com.livk.commons.http;
 
+import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.commons.annotation.EnableWebClient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -27,6 +29,7 @@ import java.util.function.Function;
  */
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)
+@SpringAutoService(auto = EnableWebClient.class)
 public class WebClientConfiguration {
 
     @Bean

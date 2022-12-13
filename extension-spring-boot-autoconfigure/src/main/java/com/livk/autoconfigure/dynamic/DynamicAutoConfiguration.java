@@ -1,5 +1,7 @@
 package com.livk.autoconfigure.dynamic;
 
+import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.autoconfigure.dynamic.annotation.EnableDynamicDatasource;
 import com.livk.autoconfigure.dynamic.aspect.DataSourceAspect;
 import com.livk.autoconfigure.dynamic.datasource.DynamicDatasource;
 import com.livk.autoconfigure.dynamic.datasource.DynamicDatasourceProperties;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
  * @author livk
  *
  */
+@SpringAutoService(auto = EnableDynamicDatasource.class)
 @AutoConfiguration(before = DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DynamicDatasourceProperties.class)
 public class DynamicAutoConfiguration {

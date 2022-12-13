@@ -1,5 +1,6 @@
 package com.livk.filter;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.filter.mvc.TenantFilter;
 import com.livk.filter.reactor.TenantWebFilter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @author livk
  */
+@SpringAutoService
 @AutoConfiguration
 public class FilterAutoConfiguration {
 

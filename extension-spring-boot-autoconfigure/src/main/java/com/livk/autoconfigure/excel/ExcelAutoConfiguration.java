@@ -1,6 +1,7 @@
 package com.livk.autoconfigure.excel;
 
 import com.alibaba.excel.EasyExcel;
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodArgumentResolver;
 import com.livk.autoconfigure.excel.resolver.ExcelMethodReturnValueHandler;
 import com.livk.autoconfigure.excel.resolver.ReactiveExcelMethodArgumentResolver;
@@ -26,6 +27,7 @@ import java.util.List;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @ConditionalOnClass(EasyExcel.class)
 public class ExcelAutoConfiguration {
 

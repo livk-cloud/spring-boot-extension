@@ -2,6 +2,7 @@ package com.livk.auth.server.common;
 
 import com.livk.auth.server.common.core.UserDetailsAuthenticationProvider;
 import com.livk.auth.server.common.service.Oauth2UserDetailsService;
+import com.livk.auto.service.annotation.SpringAutoService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author livk
  *
  */
+@SpringAutoService
 @AutoConfiguration
 public class AuthorizationServerAutoConfiguration {
 

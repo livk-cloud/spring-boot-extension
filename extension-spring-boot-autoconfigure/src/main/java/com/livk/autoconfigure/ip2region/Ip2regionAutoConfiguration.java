@@ -1,5 +1,6 @@
 package com.livk.autoconfigure.ip2region;
 
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.ip2region.support.IPMethodArgumentResolver;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIPMethodArgumentResolver;
@@ -28,6 +29,7 @@ import java.util.List;
  *
  */
 @AutoConfiguration
+@SpringAutoService
 @EnableConfigurationProperties(Ip2RegionProperties.class)
 @ConditionalOnProperty(prefix = Ip2RegionProperties.PREFIX, name = "enabled", havingValue = "true")
 public class Ip2regionAutoConfiguration {
