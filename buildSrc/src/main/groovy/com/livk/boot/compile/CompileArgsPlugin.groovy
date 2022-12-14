@@ -36,18 +36,12 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
         def javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
-        javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
-        javaCompile.options.encoding = UTF_8
-        javaCompile.sourceCompatibility = JavaVersion.VERSION_17
-        javaCompile.targetCompatibility = JavaVersion.VERSION_17
+        addCompile(javaCompile)
 
         def test = project.tasks.named(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME).get()
         if (test != null) {
             def javaTestCompile = test as JavaCompile
-            javaTestCompile.options.compilerArgs.addAll(COMPILER_ARGS)
-            javaTestCompile.options.encoding = UTF_8
-            javaTestCompile.sourceCompatibility = JavaVersion.VERSION_17
-            javaTestCompile.targetCompatibility = JavaVersion.VERSION_17
+            addCompile(javaTestCompile)
         }
 
         project.tasks.withType(Test.class).configureEach {
@@ -63,5 +57,12 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
                 javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
             }
         }
+    }
+
+    private static void addCompile(JavaCompile javaCompile) {
+        javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
+        javaCompile.options.encoding = UTF_8
+        javaCompile.sourceCompatibility = JavaVersion.VERSION_17
+        javaCompile.targetCompatibility = JavaVersion.VERSION_17
     }
 }
