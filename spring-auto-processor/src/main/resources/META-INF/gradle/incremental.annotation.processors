@@ -1,1 +1,2 @@
 com.livk.auto.service.processor.SpringAutoServiceProcessor,AGGREGATING
+com.livk.auto.service.processor.SpringFactoriesProcessor,AGGREGATING

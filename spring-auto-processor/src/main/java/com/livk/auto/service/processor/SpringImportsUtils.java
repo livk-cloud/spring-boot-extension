@@ -12,14 +12,14 @@ import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
- * AutoConfigurationUtils
+ * SpringImportsUtils
  * </p>
  *
  * @author livk
  * @date 2022/12/13
  */
 @UtilityClass
-class AutoConfigurationUtils {
+class SpringImportsUtils {
 
     public static Set<String> read(FileObject fileObject) throws IOException {
         try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {

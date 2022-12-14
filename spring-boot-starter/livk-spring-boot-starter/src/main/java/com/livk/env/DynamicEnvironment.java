@@ -1,5 +1,6 @@
 package com.livk.env;
 
+import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.util.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import java.util.Properties;
  */
 @Slf4j
 @RequiredArgsConstructor
+@SpringFactories(type = EnvironmentPostProcessor.class)
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
     private static final String source = "env.json";

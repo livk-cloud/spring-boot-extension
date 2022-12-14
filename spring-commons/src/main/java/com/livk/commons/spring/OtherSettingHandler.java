@@ -1,5 +1,6 @@
 package com.livk.commons.spring;
 
+import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,6 +14,7 @@ import org.springframework.core.env.Environment;
  * @author livk
  */
 @AutoConfiguration
+@SpringFactories(type = ApplicationContextInitializer.class)
 public class OtherSettingHandler implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private static final String PAGEHELPER_BANNER = "pagehelper.banner";

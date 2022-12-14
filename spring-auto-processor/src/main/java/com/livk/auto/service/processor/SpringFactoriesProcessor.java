@@ -1,7 +1,7 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
-import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Processor;
@@ -24,20 +24,18 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * SpringAutoServiceProcessor
+ * SpringFactoriesProcessor
  * </p>
  *
  * @author livk
- * @date 2022/12/13
+ * @date 2022/12/14
  */
 @AutoService(Processor.class)
-public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
+public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
-    private static final Class<SpringAutoService> SUPPORT_CLASS = SpringAutoService.class;
+    private static final Class<SpringFactories> SUPPORT_CLASS = SpringFactories.class;
 
-    private static final String AUTOCONFIGURATION = "org.springframework.boot.autoconfigure.AutoConfiguration";
-
-    private static final String LOCATION = "META-INF/spring/%s.imports";
+    private static final String LOCATION = "META-INF/spring.factories";
 
     private final Map<String, Set<String>> providerMap = new ConcurrentHashMap<>();
 
@@ -50,22 +48,21 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     protected void generateConfigFiles() {
         Filer filer = processingEnv.getFiler();
         for (String providerInterface : providerMap.keySet()) {
-            String resourceFile = String.format(LOCATION, providerInterface);
             try {
                 Set<String> exitImports = new HashSet<>();
                 try {
-                    FileObject resource = filer.getResource(StandardLocation.SOURCE_OUTPUT, "", resourceFile);
-                    exitImports = SpringImportsUtils.read(resource);
+                    FileObject resource = filer.getResource(StandardLocation.SOURCE_OUTPUT, "", LOCATION);
+                    exitImports = SpringFactoriesUtils.read(resource);
                 } catch (IOException ignored) {
 
                 }
                 Set<String> allImports = Stream.concat(exitImports.stream(), providerMap.get(providerInterface).stream())
                         .collect(Collectors.toSet());
                 FileObject fileObject =
-                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
+                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", LOCATION);
 
                 try (OutputStream out = fileObject.openOutputStream()) {
-                    SpringImportsUtils.writeFile(allImports, out);
+                    SpringFactoriesUtils.writeFile(providerInterface, allImports, out);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -83,9 +80,9 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
                         .entrySet()
                         .stream()
                         .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(), Map.Entry::getValue));
-                Optional<String> optionalProvider = Optional.ofNullable(elementValues.get("auto"))
+                Optional<String> optionalProvider = Optional.ofNullable(elementValues.get("type"))
                         .map(annotationValue -> annotationValue.getValue().toString());
-                String provider = optionalProvider.orElse(AUTOCONFIGURATION);
+                String provider = optionalProvider.orElseThrow();
                 Set<String> providers = providerMap.computeIfAbsent(provider, k -> new HashSet<>());
                 providers.add(element.toString());
             }
