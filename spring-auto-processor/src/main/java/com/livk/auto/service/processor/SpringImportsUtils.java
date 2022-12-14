@@ -25,7 +25,6 @@ class SpringImportsUtils {
         try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
             return reader.lines()
                     .map(String::trim)
-                    .filter(line -> !line.startsWith("#"))
                     .collect(Collectors.toUnmodifiableSet());
         }
     }

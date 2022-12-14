@@ -54,7 +54,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                     for (StandardLocation standardLocation : StandardLocation.values()) {
                         if (!standardLocation.isOutputLocation()) {
                             FileObject resource = filer.getResource(standardLocation, "", LOCATION);
-                            exitImports.addAll(SpringFactoriesUtils.read(resource));
+                            exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                         }
                     }
                 } catch (IOException ignored) {
