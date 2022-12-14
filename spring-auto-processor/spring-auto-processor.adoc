@@ -13,22 +13,38 @@
 </dependency>
 ----
 
+
+
 *Gradle-Groovy*
 [source,groovy,indent=0]
 
 ----
-compileProcessor project(":spring-auto-processor")
+dependencies {
+    compileProcessor project(":spring-auto-processor")
 
-compileOnly project(":spring-auto-processor")
-annotationProcessor project(":spring-auto-processor")
+    compileOnly project(":spring-auto-processor")
+    annotationProcessor project(":spring-auto-processor")
+}
+
+// 为了防止重复打包出错，请添加重复处理
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 ----
 
 *Gradle-Kotlin*
 [source,kotlin,indent=0]
 
 ----
-compileProcessor(project(":spring-auto-processor"))
+dependencies {
+    compileProcessor(project(":spring-auto-processor"))
 
-compileOnly(project(":spring-auto-processor"))
-annotationProcessor(project(":spring-auto-processor"))
+    compileOnly(project(":spring-auto-processor"))
+    annotationProcessor(project(":spring-auto-processor"))
+}
+
+// 为了防止重复打包出错，请添加重复处理
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 ----
