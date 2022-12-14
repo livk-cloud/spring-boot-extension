@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  *
  * @author livk
- * @date 2022/12/7
  */
 class AnnotationUtilsTest {
 

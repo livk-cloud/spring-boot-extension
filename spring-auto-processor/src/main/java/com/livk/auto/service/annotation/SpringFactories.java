@@ -8,12 +8,15 @@ import java.lang.annotation.*;
  * </p>
  *
  * @author livk
- * @date 2022/12/13
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface SpringFactories {
-
+    /**
+     * spring factories process interface
+     *
+     * @return class
+     */
     Class<?> type();
 }

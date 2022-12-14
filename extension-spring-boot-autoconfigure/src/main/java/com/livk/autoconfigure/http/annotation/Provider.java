@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- * @date 2022/12/7
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

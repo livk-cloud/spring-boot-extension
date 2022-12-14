@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/12/9
  */
 public class SPIBeanRegistrar implements ImportBeanDefinitionRegistrar {
 

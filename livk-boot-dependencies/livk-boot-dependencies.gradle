@@ -18,6 +18,7 @@ dependencies {
     constraints {
         dependencyManagement(dependency, versionCatalog).forEach { api(it) }
         api(project(":spring-commons"))
+        api(project(":spring-auto-processor"))
         api(project(":extension-spring-boot-autoconfigure"))
         project(":extension-spring-boot-starters").subprojects {
             api(it)

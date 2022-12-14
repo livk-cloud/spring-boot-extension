@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/12/7
  */
 @ExcelController
 @RequestMapping("info")

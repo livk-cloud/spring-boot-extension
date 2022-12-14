@@ -16,7 +16,6 @@ import static com.google.common.base.Charsets.UTF_8;
  * </p>
  *
  * @author livk
- * @date 2022/12/13
  */
 @UtilityClass
 class SpringImportsUtils {

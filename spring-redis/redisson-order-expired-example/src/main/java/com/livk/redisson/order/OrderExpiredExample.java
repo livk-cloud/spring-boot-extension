@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- * @date 2022/12/6
  */
 @SpringBootApplication
 public class OrderExpiredExample {

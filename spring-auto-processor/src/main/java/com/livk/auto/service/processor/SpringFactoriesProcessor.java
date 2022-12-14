@@ -28,7 +28,6 @@ import java.util.stream.Stream;
  * </p>
  *
  * @author livk
- * @date 2022/12/14
  */
 @AutoService(Processor.class)
 public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {

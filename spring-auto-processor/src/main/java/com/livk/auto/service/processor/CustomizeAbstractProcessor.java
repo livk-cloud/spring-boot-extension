@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/12/14
  */
 public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
@@ -31,6 +30,11 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Set supported annotations
+     *
+     * @return Set class
+     */
     protected abstract Set<Class<?>> getSupportedAnnotation();
 
     @Override
@@ -43,10 +47,27 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
         return false;
     }
 
+    /**
+     * 生成文件
+     */
     protected abstract void generateConfigFiles();
 
+    /**
+     * 处理注解
+     *
+     * @param annotations annotations
+     * @param roundEnv    roundEnv
+     */
     protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
+    /**
+     * Get Mirror annotation meta properties
+     *
+     * @param element     element
+     * @param targetClass annotation class
+     * @param <T>         annotation
+     * @return AnnotationMirror
+     */
     protected <T> AnnotationMirror getAnnotationMirrorWith(Element element, Class<T> targetClass) {
         for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
             TypeElement typeElement = (TypeElement) annotationMirror.getAnnotationType().asElement();

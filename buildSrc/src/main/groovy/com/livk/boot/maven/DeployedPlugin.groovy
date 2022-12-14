@@ -16,7 +16,7 @@ import org.gradle.api.tasks.bundling.Jar
  * </p>
  *
  * @author livk
- * 
+ *
  */
 abstract class DeployedPlugin implements Plugin<Project> {
 

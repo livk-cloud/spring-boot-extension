@@ -8,12 +8,15 @@ import java.lang.annotation.*;
  * </p>
  *
  * @author livk
- * @date 2022/12/13
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface SpringAutoService {
-
+    /**
+     * Annotation for automatic assembly, default org.springframework.boot.autoconfigure.AutoConfiguration
+     *
+     * @return class
+     */
     Class<? extends Annotation> auto() default Annotation.class;
 }

@@ -14,7 +14,6 @@ import org.gradle.api.Project
  * </p>
  *
  * @author livk
- * @date 2022/12/8
  */
 class CorePlugin implements Plugin<Project> {
     @Override
