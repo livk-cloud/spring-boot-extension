@@ -23,6 +23,26 @@ abstract class DeployedPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         def publication = publication(project)
+        publication.pom {
+            licenses {
+                name.set(project.name)
+                description.set(project.description)
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    name.set("livk")
+                    email.set("1375632510@qq.com")
+                }
+            }
+            scm {
+                connection.set("git@github.com:livk-cloud/spring-boot-example.git")
+                url.set("https://github.com/livk-cloud/spring-boot-example")
+            }
+        }
         project.afterEvaluate { evaluated ->
             project.plugins.withType(JavaPlugin.class).every {
                 if ((project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).isEnabled()) {
