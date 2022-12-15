@@ -47,8 +47,10 @@ link:spring-rsocket[Spring整合rsocket] +
 link:spring-security/security-sso[Spring整合security SSO] +
 link:spring-security/security-token[Spring security整合token] +
 link:spring-server-sent-events[Spring整合SSE] +
-link:spring-user-agent/browscap-example[Spring webflux整合 browscap-java] +
-link:spring-user-agent/yauaa-example[Spring webflux整合yauaa] +
+link:spring-user-agent/browscap-webflux-example[Spring webflux整合 browscap-java] +
+link:spring-user-agent/browscap-webmvc-example[Spring webmvc整合 browscap-java] +
+link:spring-user-agent/yauaa-webflux-example[Spring webflux整合yauaa] +
+link:spring-user-agent/yauaa-webmvc-example[Spring webmvc整合yauaa] +
 link:spring-video-example[Spring webmvc传输视频文件] +
 link:spring-websocket[Spring整合Websocket] +
 link:spring-zookeeper[Spring整合Zookeeper] +

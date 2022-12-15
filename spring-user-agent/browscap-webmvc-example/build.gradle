@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(":extension-spring-boot-starters:browscap-spring-boot-starter")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+}
