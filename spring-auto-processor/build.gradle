@@ -1,4 +1,18 @@
+plugins {
+    id("signing")
+}
+
+description "spring boot auto processor EnableAutoConfiguration"
+
 dependencies {
     api "com.google.auto.service:auto-service"
     compileProcessor "com.google.auto.service:auto-service"
+}
+
+java {
+    withJavadocJar()
+}
+
+signing {
+    sign publishing.publications.maven
 }
