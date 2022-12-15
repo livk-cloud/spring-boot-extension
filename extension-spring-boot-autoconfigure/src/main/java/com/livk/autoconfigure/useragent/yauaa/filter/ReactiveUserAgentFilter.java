@@ -1,13 +1,12 @@
 package com.livk.autoconfigure.useragent.yauaa.filter;
 
+import com.livk.autoconfigure.useragent.filter.AbstractReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.support.ReactiveUserAgentContextHolder;
 import com.livk.autoconfigure.useragent.yauaa.util.UserAgentUtils;
-import nl.basjes.parse.useragent.UserAgent;
-import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
+
+import java.util.function.Function;
 
 /**
  * <p>
@@ -15,18 +14,16 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- *
  */
-public class ReactiveUserAgentFilter implements WebFilter {
+public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter {
 
-    @NonNull
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        UserAgent userAgent = UserAgentUtils.parse(exchange.getRequest());
-        exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
-                .contextWrite(ReactiveUserAgentContextHolder.clearContext())
-                .then());
-        return chain.filter(exchange)
-                .contextWrite(ReactiveUserAgentContextHolder.withContext(userAgent));
+    protected Context write(ServerWebExchange exchange) {
+        return ReactiveUserAgentContextHolder.withContext(UserAgentUtils.parse(exchange.getRequest()));
+    }
+
+    @Override
+    protected Function<Context, Context> clear() {
+        return ReactiveUserAgentContextHolder.clearContext();
     }
 }

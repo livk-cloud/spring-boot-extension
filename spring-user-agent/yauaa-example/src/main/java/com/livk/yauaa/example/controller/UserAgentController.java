@@ -27,9 +27,11 @@ import java.util.stream.Collectors;
 public class UserAgentController {
 
     @GetMapping
-    public Mono<HttpEntity<Map<String, UserAgent>>> get(@UserAgentInfo Mono<UserAgent> userAgent) {
+    public Mono<HttpEntity<Map<String, Map<String, String>>>> get(@UserAgentInfo Mono<UserAgent> userAgent) {
         return ReactiveUserAgentContextHolder.get()
                 .concatWith(userAgent)
+                .map(agent -> agent.getAvailableFieldNamesSorted().stream()
+                        .collect(Collectors.toMap(Function.identity(), agent::getValue)))
                 .collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
                 .map(ResponseEntity::ok);
     }

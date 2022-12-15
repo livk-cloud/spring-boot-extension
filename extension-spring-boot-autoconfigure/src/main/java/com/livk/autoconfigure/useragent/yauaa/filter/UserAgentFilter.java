@@ -1,15 +1,9 @@
 package com.livk.autoconfigure.useragent.yauaa.filter;
 
+import com.livk.autoconfigure.useragent.filter.AbstractUserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.support.UserAgentContextHolder;
 import com.livk.autoconfigure.useragent.yauaa.util.UserAgentUtils;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.lang.NonNull;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 /**
  * <p>
@@ -17,13 +11,16 @@ import java.io.IOException;
  * </p>
  *
  * @author livk
- * 
  */
-public class UserAgentFilter extends OncePerRequestFilter {
+public class UserAgentFilter extends AbstractUserAgentFilter {
+
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    protected void set(HttpServletRequest request) {
         UserAgentContextHolder.set(UserAgentUtils.parse(request));
-        filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected void remove() {
         UserAgentContextHolder.remove();
     }
 }
