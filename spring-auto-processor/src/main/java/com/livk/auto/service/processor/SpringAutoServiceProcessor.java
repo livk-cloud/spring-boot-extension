@@ -38,7 +38,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
     private static final String LOCATION = "META-INF/spring/%s.imports";
 
-    private final Map<String, Set<String>> providerMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<String>> importsMap = new ConcurrentHashMap<>();
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -48,13 +48,13 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     @Override
     protected void generateConfigFiles() {
         Filer filer = processingEnv.getFiler();
-        for (String providerInterface : providerMap.keySet()) {
+        for (String providerInterface : importsMap.keySet()) {
             String resourceFile = String.format(LOCATION, providerInterface);
             try {
                 Set<String> exitImports = new HashSet<>();
                 try {
                     for (StandardLocation standardLocation : StandardLocation.values()) {
-                        if (!standardLocation.isOutputLocation()) {
+                        if (!standardLocation.isOutputLocation() && standardLocation.name().endsWith("_PATH")) {
                             FileObject resource = filer.getResource(standardLocation, "", resourceFile);
                             exitImports.addAll(SpringImportsUtils.read(resource));
                         }
@@ -62,7 +62,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
                 } catch (IOException ignored) {
 
                 }
-                Set<String> allImports = Stream.concat(exitImports.stream(), providerMap.get(providerInterface).stream())
+                Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
                         .collect(Collectors.toSet());
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
@@ -89,7 +89,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
                 Optional<String> optionalProvider = Optional.ofNullable(elementValues.get("auto"))
                         .map(annotationValue -> annotationValue.getValue().toString());
                 String provider = optionalProvider.orElse(AUTOCONFIGURATION);
-                Set<String> providers = providerMap.computeIfAbsent(provider, k -> new HashSet<>());
+                Set<String> providers = importsMap.computeIfAbsent(provider, k -> new HashSet<>());
                 providers.add(element.toString());
             }
         }

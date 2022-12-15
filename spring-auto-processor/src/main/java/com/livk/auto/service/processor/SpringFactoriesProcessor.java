@@ -36,7 +36,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private static final String LOCATION = "META-INF/spring.factories";
 
-    private final Map<String, Set<String>> providerMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<String>> factoriesMap = new ConcurrentHashMap<>();
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -46,12 +46,12 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     @Override
     protected void generateConfigFiles() {
         Filer filer = processingEnv.getFiler();
-        for (String providerInterface : providerMap.keySet()) {
+        for (String providerInterface : factoriesMap.keySet()) {
             try {
                 Set<String> exitImports = new HashSet<>();
                 try {
                     for (StandardLocation standardLocation : StandardLocation.values()) {
-                        if (!standardLocation.isOutputLocation()) {
+                        if (!standardLocation.isOutputLocation() && standardLocation.name().endsWith("_PATH")) {
                             FileObject resource = filer.getResource(standardLocation, "", LOCATION);
                             exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                         }
@@ -59,7 +59,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 } catch (IOException ignored) {
 
                 }
-                Set<String> allImports = Stream.concat(exitImports.stream(), providerMap.get(providerInterface).stream())
+                Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
                         .collect(Collectors.toSet());
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", LOCATION);
@@ -86,7 +86,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 Optional<String> optionalProvider = Optional.ofNullable(elementValues.get("type"))
                         .map(annotationValue -> annotationValue.getValue().toString());
                 String provider = optionalProvider.orElseThrow();
-                Set<String> providers = providerMap.computeIfAbsent(provider, k -> new HashSet<>());
+                Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
                 providers.add(element.toString());
             }
         }
