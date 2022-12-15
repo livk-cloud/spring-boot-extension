@@ -1,7 +1,3 @@
-plugins {
-    id("signing")
-}
-
 description "spring boot auto processor EnableAutoConfiguration"
 
 dependencies {
@@ -11,8 +7,4 @@ dependencies {
 
 java {
     withJavadocJar()
-}
-
-signing {
-    sign publishing.publications.maven
 }

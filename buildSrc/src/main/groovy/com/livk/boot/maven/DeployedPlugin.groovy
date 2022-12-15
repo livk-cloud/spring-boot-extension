@@ -9,6 +9,8 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.bundling.Jar
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 
 /**
  * <p>
@@ -22,7 +24,10 @@ abstract class DeployedPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.pluginManager.apply(SigningPlugin.class)
         def publication = publication(project)
+        def signing = project.extensions.getByType(SigningExtension.class)
+        signing.sign(publication)
         project.afterEvaluate { evaluated ->
             project.plugins.withType(JavaPlugin.class).every {
                 if ((project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).isEnabled()) {
