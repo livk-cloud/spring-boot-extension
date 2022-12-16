@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Jackson一些基本序列化与反序列化
@@ -28,10 +29,11 @@ import java.util.*;
 @UtilityClass
 public class JacksonUtils {
 
-    private static ObjectMapper MAPPER;
+    private static final ObjectMapper MAPPER;
 
     static {
         Wrapper<ObjectMapper> wrapper = null;
+        AtomicReference<ObjectMapper> atomicReference = new AtomicReference<>();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Wrapper.class, ObjectMapper.class);
         try {
             wrapper = SpringContextHolder.<Wrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
@@ -41,8 +43,9 @@ public class JacksonUtils {
             log.debug("spring ioc缺少type:" + resolvableType.getType() + " 的Bean");
         }
         Present.handler(wrapper, Objects::nonNull)
-                .present(mapperWrapper -> MAPPER = mapperWrapper.obj()
-                        , () -> MAPPER = JsonMapper.builder().build());
+                .present(mapperWrapper -> atomicReference.set(mapperWrapper.obj())
+                        , () -> atomicReference.set(JsonMapper.builder().build()));
+        MAPPER = atomicReference.get();
         MAPPER.registerModules(new JavaTimeModule());
     }
 
