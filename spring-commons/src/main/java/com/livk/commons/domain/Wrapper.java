@@ -1,7 +1,5 @@
 package com.livk.commons.domain;
 
-import org.springframework.beans.factory.FactoryBean;
-
 /**
  * <p>
  * Wrapper
@@ -10,15 +8,6 @@ import org.springframework.beans.factory.FactoryBean;
  * @author livk
  * @date 2022/12/16
  */
-public record Wrapper<T>(T obj) implements FactoryBean<Wrapper<T>> {
+public record Wrapper<T>(T obj) {
 
-    @Override
-    public Wrapper<T> getObject() throws Exception {
-        return this;
-    }
-
-    @Override
-    public Class<?> getObjectType() {
-        return this.getClass();
-    }
 }
