@@ -7,25 +7,44 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.livk.commons.domain.Wrapper;
+import com.livk.commons.function.Present;
+import com.livk.commons.support.SpringContextHolder;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ResolvableType;
 import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
 import java.util.*;
 
 /**
- * The type Jackson util.
+ * Jackson一些基本序列化与反序列化
+ * 自定义Mapper，请注册{@link Wrapper}到IOC (Wrapper<ObjectMapper>)
  */
+@Slf4j
 @UtilityClass
 public class JacksonUtils {
 
-    /**
-     * The constant JSON_EMPTY.
-     */
-    public static final String JSON_EMPTY = "{}";
+    private static ObjectMapper MAPPER;
 
-    private static final ObjectMapper MAPPER = JsonMapper.builder().build();
+    static {
+        Wrapper<ObjectMapper> wrapper = null;
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Wrapper.class, ObjectMapper.class);
+        try {
+            wrapper = SpringContextHolder.<Wrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
+        } catch (NullPointerException e) {
+            log.debug(JacksonUtils.class + "在非Spring环境中使用!");
+        } catch (Exception e) {
+            log.debug("spring ioc缺少type:" + resolvableType.getType() + " 的Bean");
+        }
+        Present.handler(wrapper, Objects::nonNull)
+                .present(mapperWrapper -> MAPPER = mapperWrapper.obj()
+                        , () -> MAPPER = JsonMapper.builder().build());
+        MAPPER.registerModules(new JavaTimeModule());
+    }
 
     /**
      * json字符转Bean
