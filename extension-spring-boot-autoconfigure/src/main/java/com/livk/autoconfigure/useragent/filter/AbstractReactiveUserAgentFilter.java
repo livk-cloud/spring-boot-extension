@@ -21,7 +21,7 @@ public abstract class AbstractReactiveUserAgentFilter implements WebFilter {
 
     @NonNull
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
                 .contextWrite(clear())
                 .then());

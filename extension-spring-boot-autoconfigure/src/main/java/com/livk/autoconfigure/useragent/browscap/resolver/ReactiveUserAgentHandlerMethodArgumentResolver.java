@@ -1,17 +1,10 @@
 package com.livk.autoconfigure.useragent.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
-import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.browscap.support.ReactiveUserAgentContextHolder;
 import com.livk.autoconfigure.useragent.browscap.util.UserAgentUtils;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ReactiveAdapter;
-import org.springframework.core.ReactiveAdapterRegistry;
-import org.springframework.core.ResolvableType;
-import org.springframework.lang.NonNull;
-import org.springframework.web.reactive.BindingContext;
-import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
-import org.springframework.web.server.ServerWebExchange;
+import com.livk.autoconfigure.useragent.resolver.AbstractReactiveUserAgentResolver;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,27 +13,17 @@ import reactor.core.publisher.Mono;
  * </p>
  *
  * @author livk
- * 
  */
-public class ReactiveUserAgentHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-
-
-    private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
+public class ReactiveUserAgentHandlerMethodArgumentResolver extends AbstractReactiveUserAgentResolver<Capabilities> {
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserAgentInfo.class);
+    protected Mono<Capabilities> getUserAgent() {
+        return ReactiveUserAgentContextHolder.get();
     }
 
-    @NonNull
     @Override
-    public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext, ServerWebExchange exchange) {
-        Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-        ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
-
-        Mono<Capabilities> mono = ReactiveUserAgentContextHolder.get()
-                .defaultIfEmpty(UserAgentUtils.parse(exchange.getRequest()));
-        return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+    protected Mono<Capabilities> parseUserAgent(ServerHttpRequest request) {
+        return Mono.just(UserAgentUtils.parse(request));
     }
 }
 

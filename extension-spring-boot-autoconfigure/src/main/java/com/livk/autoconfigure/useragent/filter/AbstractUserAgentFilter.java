@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public abstract class AbstractUserAgentFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         set(request);
         filterChain.doFilter(request, response);
         remove();

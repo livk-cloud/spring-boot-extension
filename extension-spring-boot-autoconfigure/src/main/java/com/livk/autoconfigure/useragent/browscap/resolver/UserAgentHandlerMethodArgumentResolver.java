@@ -1,17 +1,10 @@
 package com.livk.autoconfigure.useragent.browscap.resolver;
 
 import com.blueconic.browscap.Capabilities;
-import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.browscap.support.UserAgentContextHolder;
 import com.livk.autoconfigure.useragent.browscap.util.UserAgentUtils;
+import com.livk.autoconfigure.useragent.resolver.AbstractUserAgentResolver;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.core.MethodParameter;
-import org.springframework.lang.NonNull;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
  * <p>
@@ -19,22 +12,16 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * </p>
  *
  * @author livk
- * 
  */
-public class UserAgentHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class UserAgentHandlerMethodArgumentResolver extends AbstractUserAgentResolver<Capabilities> {
+
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserAgentInfo.class);
+    protected Capabilities getUserAgent() {
+        return UserAgentContextHolder.get();
     }
 
     @Override
-    public Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        Capabilities capabilities = UserAgentContextHolder.get();
-        if (capabilities != null) {
-            return capabilities;
-        }
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        Assert.notNull(request, "request not be null!");
+    protected Capabilities parseUserAgent(HttpServletRequest request) {
         return UserAgentUtils.parse(request);
     }
 }
