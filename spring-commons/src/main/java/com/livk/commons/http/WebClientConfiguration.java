@@ -32,29 +32,6 @@ import java.util.function.Function;
 @SpringAutoService(auto = EnableWebClient.class)
 public class WebClientConfiguration {
 
-    @Bean
-    public ReactorResourceFactory reactorResourceFactory() {
-        ReactorResourceFactory factory = new ReactorResourceFactory();
-        factory.setUseGlobalResources(false);
-        return factory;
-    }
-
-    @Bean
-    public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
-        Function<HttpClient, HttpClient> function = httpClient ->
-                httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
-                        .responseTimeout(Duration.ofSeconds(15))
-                        .secure(sslContextSpec -> sslContextSpec.sslContext(
-                                DefaultSslContextSpec.forClient()
-                                        .configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
-                        .doOnConnected(connection ->
-                                connection.addHandlerLast(new ReadTimeoutHandler(20))
-                                        .addHandlerLast(new WriteTimeoutHandler(20)));
-        ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
-        return webClientBuilder -> webClientBuilder.clientConnector(connector);
-    }
-
-
     /**
      * spring官方建议使用{@link WebClient} <a href=
      * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
@@ -65,5 +42,31 @@ public class WebClientConfiguration {
     @ConditionalOnMissingBean
     public WebClient webClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder.build();
+    }
+
+    @AutoConfiguration
+    @ConditionalOnClass(HttpClient.class)
+    public static class ReactorClientConfiguration {
+        @Bean
+        public ReactorResourceFactory reactorResourceFactory() {
+            ReactorResourceFactory factory = new ReactorResourceFactory();
+            factory.setUseGlobalResources(false);
+            return factory;
+        }
+
+        @Bean
+        public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
+            Function<HttpClient, HttpClient> function = httpClient ->
+                    httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
+                            .responseTimeout(Duration.ofSeconds(15))
+                            .secure(sslContextSpec -> sslContextSpec.sslContext(
+                                    DefaultSslContextSpec.forClient()
+                                            .configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
+                            .doOnConnected(connection ->
+                                    connection.addHandlerLast(new ReadTimeoutHandler(20))
+                                            .addHandlerLast(new WriteTimeoutHandler(20)));
+            ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
+            return webClientBuilder -> webClientBuilder.clientConnector(connector);
+        }
     }
 }

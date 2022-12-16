@@ -4,6 +4,7 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.annotation.EnableHttpClient;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author livk
  */
-@Configuration(enforceUniqueMethods = false)
+@AutoConfiguration
 @SpringAutoService(auto = EnableHttpClient.class)
 public class RestTemplateConfiguration {
 
@@ -32,26 +33,28 @@ public class RestTemplateConfiguration {
         return builder.build();
     }
 
-    @Bean
-    @ConditionalOnClass(name = "okhttp3.OkHttpClient")
-    @ConditionalOnMissingBean(OkHttpClient.class)
-    public RestTemplateCustomizer restTemplateCustomizer() {
-        ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
-        OkHttpClient httpClient = new OkHttpClient().newBuilder()
-                .connectionPool(pool)
-                .connectTimeout(3, TimeUnit.SECONDS)
-                .readTimeout(3, TimeUnit.SECONDS)
-                .writeTimeout(3, TimeUnit.SECONDS)
-                .hostnameVerifier((s, sslSession) -> true)
-                .build();
-        return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(httpClient));
-    }
 
-    @Bean
-    @ConditionalOnClass(name = "okhttp3.OkHttpClient")
-    @ConditionalOnBean(OkHttpClient.class)
-    public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
-        return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
-    }
+    @Configuration(enforceUniqueMethods = false)
+    @ConditionalOnClass(OkHttpClient.class)
+    public static class OkHttpClientConfiguration {
+        @Bean
+        @ConditionalOnMissingBean(OkHttpClient.class)
+        public RestTemplateCustomizer restTemplateCustomizer() {
+            ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
+            OkHttpClient httpClient = new OkHttpClient().newBuilder()
+                    .connectionPool(pool)
+                    .connectTimeout(3, TimeUnit.SECONDS)
+                    .readTimeout(3, TimeUnit.SECONDS)
+                    .writeTimeout(3, TimeUnit.SECONDS)
+                    .hostnameVerifier((s, sslSession) -> true)
+                    .build();
+            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(httpClient));
+        }
 
+        @Bean
+        @ConditionalOnBean(OkHttpClient.class)
+        public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
+            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
+        }
+    }
 }
