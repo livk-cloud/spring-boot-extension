@@ -57,6 +57,6 @@ public class SpringUtilsTest {
     @Test
     void parseEverythingTest() {
         assertEquals("livk:livk",
-                SpringUtils.parseEverything(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
+                SpringUtils.parse(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
     }
 }

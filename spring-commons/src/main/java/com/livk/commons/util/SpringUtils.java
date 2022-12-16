@@ -127,39 +127,116 @@ public class SpringUtils {
         }
     }
 
+    /**
+     * 解析SpEL表达式
+     *
+     * @param method      方法
+     * @param args        方法参数
+     * @param condition   表达式
+     * @param returnClass 返回类型
+     * @param <T>         类型
+     * @return T
+     */
     public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
         return parse(method, args, condition, returnClass, false, Map.of());
     }
 
+    /**
+     * 解析SpEL表达式
+     * 非模板表达式: #username
+     * 模板表达式:"livk:#{#username}"
+     *
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @return string
+     */
     public String parseSpEL(Method method, Object[] args, String condition) {
         return parseSpEL(method, args, condition, String.class);
     }
 
+    /**
+     * 解析SpEL表达式
+     *
+     * @param variables   需要填充的数据
+     * @param condition   表达式
+     * @param returnClass 返回类型
+     * @param <T>         类型
+     * @return T
+     */
     public <T> T parseSpEL(Map<String, ?> variables, String condition, Class<T> returnClass) {
         return parse(null, null, condition, returnClass, false, variables);
     }
 
+    /**
+     * 解析SpEL表达式
+     *
+     * @param variables 需要填充的数据
+     * @param condition 表达式
+     * @return string
+     */
     public String parseSpEL(Map<String, ?> variables, String condition) {
         return parseSpEL(variables, condition, String.class);
     }
 
+    /**
+     * 解析SpEL模板表达式
+     *
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @return string
+     */
     public String parseTemplate(Method method, Object[] args, String condition) {
         return parseTemplate(method, args, condition, null);
     }
 
+    /**
+     * 解析SpEL模板表达式
+     *
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @param expandMap 拓展数据
+     * @return string
+     */
     public String parseTemplate(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         return parse(method, args, condition, String.class, true, expandMap);
     }
 
+    /**
+     * 解析SpEL模板表达式
+     *
+     * @param variables 需要填充的数据
+     * @param condition 表达式
+     * @return string
+     */
     public String parseTemplate(Map<String, ?> variables, String condition) {
         return parse(null, null, condition, String.class, true, variables);
     }
 
-    public String parseEverything(Method method, Object[] args, String condition) {
-        return parseEverything(method, args, condition, null);
+    /**
+     * 通用解析 spEL与Template
+     *
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @return string
+     */
+    public String parse(Method method, Object[] args, String condition) {
+        return parse(method, args, condition, null);
     }
 
-    public String parseEverything(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
+    /**
+     * 通用解析 spEL与Template
+     *
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @param expandMap 拓展数据
+     * @return string
+     */
+    public String parse(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         String result = parseTemplate(method, args, condition, expandMap);
         if (condition.equals(result)) {
             result = parse(method, args, condition, String.class, false, expandMap);
@@ -167,7 +244,14 @@ public class SpringUtils {
         return result;
     }
 
-    public String parseEverything(Map<String, ?> variables, String condition) {
-        return parseEverything(null, null, condition, variables);
+    /**
+     * 通用解析 spEL与Template
+     *
+     * @param variables 需要填充的数据
+     * @param condition 表达式
+     * @return string
+     */
+    public String parse(Map<String, ?> variables, String condition) {
+        return parse(null, null, condition, variables);
     }
 }

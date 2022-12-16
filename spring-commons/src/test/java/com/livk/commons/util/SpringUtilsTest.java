@@ -44,18 +44,18 @@ class SpringUtilsTest {
     }
 
     @Test
-    void parseEverythingTest() {
-        assertEquals("root:livk", SpringUtils.parseEverything(method, args, "root:#{#username}"));
-        assertEquals("livk", SpringUtils.parseEverything(method, args, "#username"));
-        assertEquals("livk", SpringUtils.parseEverything(method, args, "livk"));
+    void parseTest() {
+        assertEquals("root:livk", SpringUtils.parse(method, args, "root:#{#username}"));
+        assertEquals("livk", SpringUtils.parse(method, args, "#username"));
+        assertEquals("livk", SpringUtils.parse(method, args, "livk"));
 
-        assertEquals("root:livk:123456", SpringUtils.parseEverything(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
-        assertEquals("livk123456", SpringUtils.parseEverything(method, args, "#username+#password", Map.of("password", "123456")));
+        assertEquals("root:livk:123456", SpringUtils.parse(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
+        assertEquals("livk123456", SpringUtils.parse(method, args, "#username+#password", Map.of("password", "123456")));
 
-        assertEquals("root:livk", SpringUtils.parseEverything(map, "root:#{#username}"));
-        assertEquals("livk", SpringUtils.parseEverything(map, "#username"));
+        assertEquals("root:livk", SpringUtils.parse(map, "root:#{#username}"));
+        assertEquals("livk", SpringUtils.parse(map, "#username"));
         assertEquals("livk:" + System.getProperty("user.dir"),
-                SpringUtils.parseEverything(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
+                SpringUtils.parse(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
     }
 
     @SuppressWarnings("unused")

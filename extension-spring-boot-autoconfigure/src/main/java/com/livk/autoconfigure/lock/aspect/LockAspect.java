@@ -45,7 +45,7 @@ public class LockAspect {
                 .min(Comparator.comparingInt(DistributedLock::getOrder))
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
         boolean async = !LockScope.STANDALONE_LOCK.equals(scope) && onLock.async();
-        String key = SpringUtils.parseEverything(method, joinPoint.getArgs(), onLock.key());
+        String key = SpringUtils.parse(method, joinPoint.getArgs(), onLock.key());
         boolean isLock = distributedLock.tryLock(onLock.type(), key, onLock.leaseTime(), onLock.waitTime(), async);
         try {
             if (isLock) {
