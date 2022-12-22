@@ -51,7 +51,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 Set<String> exitImports = new HashSet<>();
                 try {
                     for (StandardLocation standardLocation : StandardLocation.values()) {
-                        if (!standardLocation.isOutputLocation() && standardLocation.name().endsWith("_PATH")) {
+                        if (standardLocation.isOutputLocation()) {
                             FileObject resource = filer.getResource(standardLocation, "", LOCATION);
                             exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                         }
