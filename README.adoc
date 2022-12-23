@@ -16,7 +16,7 @@ https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud
 如果觉得不错，可以star一下 +
 Mock与WebclientTest测试覆盖大部分功能 +
 JDK:17(最新LTS) +
-SpringBoot: 3.0.0(最新正式版) +
+SpringBoot: 3.0.1(最新正式版) +
 Gradle: 7.6(当前最新版) +
 
 link:gradle.properties[项目信息] +
