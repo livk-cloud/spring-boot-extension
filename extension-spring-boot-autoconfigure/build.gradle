@@ -1,6 +1,7 @@
 dependencies {
     api project(":spring-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
+    optional "org.springframework:spring-jdbc"
     optional "org.springdoc:springdoc-openapi-starter-common"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.alibaba:easyexcel"
@@ -10,7 +11,9 @@ dependencies {
     optional "org.redisson:redisson"
     optional "org.mapstruct:mapstruct"
     optional "org.aspectj:aspectjweaver"
-    optional "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+    optional "org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure"
+    optional "org.mybatis:mybatis-spring"
+    optional "org.mybatis:mybatis"
     optional "com.mysql:mysql-connector-j"
     optional "org.postgresql:postgresql"
     optional "com.google.zxing:javase"
