@@ -55,7 +55,8 @@ public class ShopController {
         if (num >= count) {
             num -= count;
             buySucCount++;
-            return ResponseEntity.ok(Map.of("code", "200", "msg", "购买成功，数量：" + count));
+            Map<String, Integer> msg = Map.of("购买成功数量", count, "总计购买次数", buyCount, "购买成功次数", buySucCount);
+            return ResponseEntity.ok(Map.of("code", "200", "msg", msg));
         } else {
             return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));
         }

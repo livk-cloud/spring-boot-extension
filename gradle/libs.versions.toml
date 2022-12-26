@@ -24,7 +24,7 @@ autoService = "1.0.1"
 yauaa = "7.9.1"
 springdoc = "2.0.2"
 googleJavase = "3.5.1"
-springBootAdmin = "3.0.0-M5"
+springBootAdmin = "3.0.0-M8"
 nimbusdsJwt = "9.25.6"
 rocketStarter = "2.2.2"
 

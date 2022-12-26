@@ -22,7 +22,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  */
 @AutoConfiguration
 @SpringAutoService
-@ConditionalOnClass(WebClient.class)
+@ConditionalOnClass(value = WebClient.class, name = "com.livk.http.marker.HttpMarker")
 public class HttpAutoConfiguration {
 
     @Bean
