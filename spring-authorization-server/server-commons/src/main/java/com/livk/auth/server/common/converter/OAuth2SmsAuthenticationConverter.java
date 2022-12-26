@@ -50,13 +50,13 @@ public class OAuth2SmsAuthenticationConverter implements OAuth2BaseAuthenticatio
         // mobile (REQUIRED)
         String mobile = parameters.getFirst(SecurityConstants.SMS_PARAMETER_NAME);
         if (!StringUtils.hasText(mobile) || parameters.get(SecurityConstants.SMS_PARAMETER_NAME).size() != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, SecurityConstants.SMS_PARAMETER_NAME, ACCESS_TOKEN_REQUEST_ERROR_URI));
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, SecurityConstants.SMS_PARAMETER_NAME, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
 
         // code (REQUIRED)
         String code = parameters.getFirst(OAuth2ParameterNames.CODE);
         if (!StringUtils.hasText(code) || parameters.get(OAuth2ParameterNames.CODE).size() != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.CODE, ACCESS_TOKEN_REQUEST_ERROR_URI));
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.CODE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
     }
 

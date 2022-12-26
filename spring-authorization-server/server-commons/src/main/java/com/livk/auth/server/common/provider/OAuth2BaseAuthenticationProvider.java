@@ -158,7 +158,8 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 
             if (generatedAccessToken instanceof ClaimAccessor) {
                 authorizationBuilder
-                        .token(accessToken, metadata -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims())).authorizedScopes(authorizedScopes)
+                        .token(accessToken, metadata -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()))
+                        .authorizedScopes(authorizedScopes)
                         .attribute(Principal.class.getName(), principal);
             } else {
                 authorizationBuilder.accessToken(accessToken);

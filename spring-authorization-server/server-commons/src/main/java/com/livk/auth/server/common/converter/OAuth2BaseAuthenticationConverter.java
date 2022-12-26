@@ -2,6 +2,7 @@ package com.livk.auth.server.common.converter;
 
 
 import com.google.common.collect.Sets;
+import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
 import com.livk.commons.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +29,6 @@ import java.util.stream.Collectors;
  */
 public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthenticationToken> extends AuthenticationConverter {
 
-    String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
-
     /**
      * 是否支持此convert
      *
@@ -42,7 +41,9 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
      *
      * @param request 请求
      */
-    void checkParams(HttpServletRequest request);
+    default void checkParams(HttpServletRequest request) {
+
+    }
 
     /**
      * 构建具体类型的token
@@ -62,7 +63,7 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
         // scope (OPTIONAL)
         String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
         if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, ACCESS_TOKEN_REQUEST_ERROR_URI));
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
 
         Set<String> requestedScopes = Collections.emptySet();
@@ -76,7 +77,7 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
         // 获取当前已经认证的客户端信息
         Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
         Optional.ofNullable(clientPrincipal).orElseThrow(() ->
-                new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, ACCESS_TOKEN_REQUEST_ERROR_URI)));
+                new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
         // 扩展信息
         Map<String, Object> additionalParameters = parameters.entrySet().stream()

@@ -1,5 +1,6 @@
 package com.livk.commons.spring;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +29,8 @@ public abstract class AbstractImportSelector<T> implements DeferredImportSelecto
     @SuppressWarnings("unchecked")
     private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(onMethod_ = {@Override})
     private Environment environment;
 
     @NotNull
