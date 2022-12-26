@@ -40,7 +40,7 @@ public class CacheAspect {
         String realKey = doubleCache.cacheName() + ":" + spELResult;
         switch (doubleCache.type()) {
             case FULL -> {
-                return adapter.readAndPut(realKey, point, doubleCache.timeOut());
+                return adapter.readAndPut(realKey, point.proceed(), doubleCache.timeOut());
             }
             case PUT -> {
                 Object proceed = point.proceed();

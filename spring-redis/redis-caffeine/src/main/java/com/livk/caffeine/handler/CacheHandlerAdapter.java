@@ -36,11 +36,7 @@ public class CacheHandlerAdapter implements CacheHandler<Object> {
 
     @Override
     public Object read(String key) {
-        Object cacheObj = cache.getIfPresent(key);
-        if (cacheObj == null) {
-            cacheObj = livkRedisTemplate.opsForValue().get(key);
-        }
-        return cacheObj;
+        return cache.get(key, s -> livkRedisTemplate.opsForValue().get(s));
     }
 
 }
