@@ -25,3 +25,4 @@ com.livk.qrcode.mvc.controller.QRCodeControllerTest
 com.livk.qrcode.webflux.controller.QRCode2ControllerTest
 com.livk.qrcode.webflux.controller.QRCodeControllerTest
 com.livk.video.example.controller.VideoControllerTest
+com.livk.caffeine.controller.CacheControllerTest
