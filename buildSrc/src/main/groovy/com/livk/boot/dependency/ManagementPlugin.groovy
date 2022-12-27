@@ -44,27 +44,19 @@ abstract class ManagementPlugin implements Plugin<Project> {
             management.canBeResolved = false
             management.canBeConsumed = false
             def plugins = project.plugins
-            plugins.withType(JavaPlugin.class).tap {
-                configureEach {
-                    DEPENDENCY_NAMES_SET.forEach { configurations.named(it).get().extendsFrom(management) }
-                }
+            plugins.withType(JavaPlugin.class).every {
+                DEPENDENCY_NAMES_SET.forEach { configurations.named(it).get().extendsFrom(management) }
             }
-            plugins.withType(JavaTestFixturesPlugin.class).tap {
-                configureEach {
-                    configurations.named("testFixturesCompileClasspath").get().extendsFrom(management)
-                    configurations.named("testFixturesRuntimeClasspath").get().extendsFrom(management)
-                }
+            plugins.withType(JavaTestFixturesPlugin.class).every {
+                configurations.named("testFixturesCompileClasspath").get().extendsFrom(management)
+                configurations.named("testFixturesRuntimeClasspath").get().extendsFrom(management)
             }
-            plugins.withType(MavenPublishPlugin.class).tap {
-                configureEach {
-                    project.extensions.getByType(PublishingExtension.class).publications
-                            .withType(MavenPublication.class).tap {
-                        configureEach { mavenPublication ->
-                            mavenPublication.versionMapping { versions ->
-                                versions.allVariants {
-                                    it.fromResolutionResult()
-                                }
-                            }
+            plugins.withType(MavenPublishPlugin.class).every {
+                project.extensions.getByType(PublishingExtension.class).publications
+                        .withType(MavenPublication.class).every { mavenPublication ->
+                    mavenPublication.versionMapping { versions ->
+                        versions.allVariants {
+                            it.fromResolutionResult()
                         }
                     }
                 }

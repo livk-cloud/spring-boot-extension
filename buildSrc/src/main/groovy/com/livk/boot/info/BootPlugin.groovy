@@ -25,8 +25,7 @@ abstract class BootPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin.class)
         project.pluginManager.apply(SpringBootPlugin.class)
-        project.extensions
-                .getByType(SpringBootExtension.class)
+        project.extensions.getByType(SpringBootExtension.class)
                 .buildInfo {
                     it.properties { build ->
                         build.group.set(project.group.toString())

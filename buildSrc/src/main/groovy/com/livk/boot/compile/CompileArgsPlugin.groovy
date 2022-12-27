@@ -44,7 +44,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
             addCompile(javaTestCompile)
         }
 
-        project.tasks.withType(Test.class).configureEach {
+        project.tasks.withType(Test.class).every {
             it.useJUnitPlatform()
         }
         //在 Project 配置结束后调用

@@ -19,7 +19,7 @@ abstract class DeleteExpand implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.tasks.withType(Delete.class).configureEach {
+        project.tasks.withType(Delete.class).every {
             it.delete(project.projectDir.absolutePath + "/build")
             it.delete(project.projectDir.absolutePath + "/out")
             it.delete(project.projectDir.absolutePath + "/bin")
@@ -29,6 +29,7 @@ abstract class DeleteExpand implements Plugin<Project> {
             setGroup(LifecycleBasePlugin.BUILD_GROUP)
             it.delete(project.projectDir.absolutePath + "/src/main/generated")
             it.delete(project.projectDir.absolutePath + "/src/test/generated_tests")
+            dependsOn(LifecycleBasePlugin.CLEAN_TASK_NAME)
         }
 
     }
