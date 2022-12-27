@@ -9,6 +9,7 @@ dependencies {
     optional "org.springframework:spring-webflux"
     optional "org.lionsoul:ip2region"
     optional "org.redisson:redisson"
+    optional "org.apache.curator:curator-recipes"
     optional "org.mapstruct:mapstruct"
     optional "org.aspectj:aspectjweaver"
     optional "org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure"

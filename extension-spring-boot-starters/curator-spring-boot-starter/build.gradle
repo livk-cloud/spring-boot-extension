@@ -1,0 +1,3 @@
+dependencies {
+    api "org.apache.curator:curator-recipes"
+}

@@ -1,20 +1,20 @@
-package com.livk.zookeeper.config;
+package com.livk.autoconfigure.curator;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * ZookeeperProperties
+ * CuratorProperties
  * </p>
  *
  * @author livk
  */
 @Data
-@ConfigurationProperties(ZookeeperProperties.PREFIX)
-public class ZookeeperProperties {
+@ConfigurationProperties(CuratorProperties.PREFIX)
+public class CuratorProperties {
 
-    public static final String PREFIX = "spring.zookeeper";
+    public static final String PREFIX = "spring.zookeeper.curator";
 
     /**
      * zk连接集群，多个用逗号隔开

@@ -1,5 +1,8 @@
-package com.livk.zookeeper.service;
+package com.livk.autoconfigure.curator.support;
 
+import com.livk.autoconfigure.curator.lock.ZkLockType;
+import org.apache.curator.framework.api.CuratorListener;
+import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
@@ -8,12 +11,13 @@ import java.util.List;
 
 /**
  * <p>
- * CuratorService
+ * CuratorOperations
  * </p>
  *
  * @author livk
+ * @date 2022/12/27
  */
-public interface CuratorService {
+public interface CuratorOperations {
     /**
      * 创建节点
      *
@@ -59,10 +63,11 @@ public interface CuratorService {
      *
      * @param path
      * @param data
+     * @param listener
      * @return
      * @throws Exception
      */
-    Stat setDataAsync(String path, String data) throws Exception;
+    Stat setDataAsync(String path, String data, CuratorListener listener) throws Exception;
 
     /**
      * 删除节点
@@ -96,7 +101,7 @@ public interface CuratorService {
      *
      * @return
      */
-    void getLock(String path, int waitTime);
+    InterProcessLock getLock(String path, ZkLockType type);
 
     /**
      * 获取分布式ID

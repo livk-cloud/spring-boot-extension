@@ -1,5 +1,5 @@
 dependencies {
     implementation project(":spring-commons")
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.apache.curator:curator-recipes"
+    implementation project(":extension-spring-boot-starters:curator-spring-boot-starter")
 }
