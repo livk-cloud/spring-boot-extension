@@ -1,8 +1,7 @@
-package com.livk.autoconfigure.lock.redis;
+package com.livk.autoconfigure.lock.support;
 
 import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.constant.LockType;
-import com.livk.autoconfigure.lock.support.AbstractLockSupport;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;

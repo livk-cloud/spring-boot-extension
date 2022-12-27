@@ -1,9 +1,8 @@
-package com.livk.autoconfigure.lock.local;
+package com.livk.autoconfigure.lock.support;
 
 import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.constant.LockType;
 import com.livk.autoconfigure.lock.exception.LockException;
-import com.livk.autoconfigure.lock.support.AbstractLockSupport;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

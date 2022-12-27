@@ -4,17 +4,14 @@ import com.livk.autoconfigure.lock.constant.LockType;
 import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.commons.domain.Pair;
 
-import java.util.concurrent.locks.Lock;
-
 /**
  * <p>
  * AbstractLock
  * </p>
  *
  * @author livk
- *
  */
-public abstract class AbstractLockSupport<T extends Lock> implements DistributedLock {
+public abstract class AbstractLockSupport<T> implements DistributedLock {
     protected final ThreadLocal<Pair<String, T>> threadLocal = new ThreadLocal<>();
 
     @Override
@@ -68,5 +65,5 @@ public abstract class AbstractLockSupport<T extends Lock> implements Distributed
 
     protected abstract void lockAsync(T lock) throws Exception;
 
-    protected abstract void lock(T lock);
+    protected abstract void lock(T lock) throws Exception;
 }
