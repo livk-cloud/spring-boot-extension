@@ -1,6 +1,7 @@
 package com.livk.autoconfigure.lock;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
 import com.livk.autoconfigure.lock.aspect.LockAspect;
 import com.livk.autoconfigure.lock.support.CuratorLock;
 import com.livk.autoconfigure.lock.support.DistributedLock;
@@ -11,7 +12,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -49,8 +49,8 @@ public class LockAutoConfiguration {
         }
     }
 
-    @ConditionalOnBean(CuratorFramework.class)
-    @AutoConfiguration
+    @ConditionalOnClass(CuratorFramework.class)
+    @AutoConfiguration(after = CuratorAutoConfiguration.class)
     public static class CuratorLockAutoConfiguration {
         @Bean
         public DistributedLock redissonLock(CuratorFramework curatorFramework) {
