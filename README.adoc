@@ -8,6 +8,8 @@ image:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo
 image:https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white["Build Status",link="https://gitee.com/livk-cloud/spring-boot-example"] +
 https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud` 项目] +
 
+link:gradle-idea.adoc[gradle idea配置指导]
+
 这是一个关于springboot项目的各种示例 +
 使用第三方包基本覆盖最新版本 +
 关于Gradle的各种使用方式以及示例 +

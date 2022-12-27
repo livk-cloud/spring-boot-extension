@@ -1,0 +1,15 @@
+gradle使用 +
+下载 https://gradle.org/install/[gradle] +
+gradle环境变量配置 +
+
+GRADLE_USER_HOME ： 配置gradle地址 +
+path ： %GRADLE_USER_HOME%\bin +
+
+idea配置gradle
+
+image::gradle/gradle-idea.png[]
+
+使用Gradle Wrapper +
+
+image::gradle/gradle-wrapper-idea.png[]
+
