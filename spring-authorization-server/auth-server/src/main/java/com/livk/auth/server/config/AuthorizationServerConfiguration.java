@@ -21,6 +21,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -38,7 +39,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 
@@ -58,14 +58,26 @@ public class AuthorizationServerConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2AuthorizationService authorizationService,
+                                                                      AuthenticationManagerBuilder authenticationManagerBuilder,
                                                                       OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
                                                                       UserDetailsAuthenticationProvider userDetailsAuthenticationProvider,
                                                                       AuthorizationServerSettings authorizationServerSettings) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
 
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.getObject();
+
+        OAuth2PasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
+                authenticationManager, authorizationService, oAuth2TokenGenerator);
+
+        OAuth2SmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
+                authenticationManager, authorizationService, oAuth2TokenGenerator);
+
         OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(tokenEndpoint -> {
                     tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+                            .authenticationProvider(userDetailsAuthenticationProvider)
+                            .authenticationProvider(resourceOwnerPasswordAuthenticationProvider)
+                            .authenticationProvider(resourceOwnerSmsAuthenticationProvider)
                             .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
                             .errorResponseHandler(new AuthenticationFailureEventHandler());
                 }).clientAuthentication(oAuth2ClientAuthenticationConfigurer ->
@@ -76,26 +88,11 @@ public class AuthorizationServerConfiguration {
                 .authorizationServerSettings(authorizationServerSettings)
                 .oidc(Customizer.withDefaults());
 
-        DefaultSecurityFilterChain chain = http.apply(configurer)
+        return http.apply(configurer)
                 .and()
                 .apply(new FormIdentityLoginConfigurer())
                 .and()
                 .build();
-
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-
-        OAuth2PasswordAuthenticationProvider resourceOwnerPasswordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
-
-        OAuth2SmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
-        // 处理 UsernamePasswordAuthenticationToken
-        http.authenticationProvider(userDetailsAuthenticationProvider)
-                // 处理 OAuth2ResourceOwnerPasswordAuthenticationToken s
-                .authenticationProvider(resourceOwnerPasswordAuthenticationProvider)
-                // 处理 OAuth2ResourceOwnerSmsAuthenticationToken
-                .authenticationProvider(resourceOwnerSmsAuthenticationProvider);
-        return chain;
     }
 
     @Bean
