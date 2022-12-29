@@ -1,5 +1,6 @@
 package com.livk.commons.util;
 
+import com.livk.commons.spliterator.EnumerationSpliterator;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;
@@ -51,9 +52,15 @@ public class StreamUtils {
         return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
     }
 
-    public <T> Stream<T> of(Iterator<T> iterator) {
+    public <T> Stream<T> convert(Iterator<T> iterator) {
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
+                false);
+    }
+
+    public <T> Stream<T> convert(Enumeration<T> enumeration) {
+        return StreamSupport.stream(
+                EnumerationSpliterator.spliteratorUnknownSize(enumeration),
                 false);
     }
 }

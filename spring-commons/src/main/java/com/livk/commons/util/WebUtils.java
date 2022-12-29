@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -62,17 +64,38 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         return request().getHeader(headerName);
     }
 
-    public Map<String, String> headers() {
+    public HttpHeaders headers() {
         HttpServletRequest request = request();
-        return StreamUtils.of(request.getHeaderNames().asIterator())
-                .collect(Collectors.toMap(Function.identity(), request::getHeader));
+        return headers(request);
+    }
+
+    public HttpHeaders headers(HttpServletRequest request) {
+        MultiValueMap<String, String> headers = StreamUtils.convert(request.getHeaderNames())
+                .collect(Collectors.toMap(Function.identity(),
+                        s -> StreamUtils.convert(request.getHeaders(s)).toList(),
+                        (list1, list2) -> Stream.concat(list1.stream(), list2.stream()).toList(),
+                        LinkedMultiValueMap::new));
+        return new HttpHeaders(headers);
+    }
+
+    public Map<String, String> headersConcat(HttpServletRequest request, CharSequence delimiter) {
+        HttpHeaders headers = headers(request);
+        return headersConcat(headers, delimiter);
+    }
+
+    public Map<String, String> headersConcat(HttpHeaders headers, CharSequence delimiter) {
+        return headers.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> String.join(delimiter, entry.getValue())));
     }
 
     public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
         return request.getParameterMap()
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> String.join(delimiter, entry.getValue())));
     }
 
     public Map<String, String> paramMap(CharSequence delimiter) {
@@ -83,7 +106,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         Map<String, List<String>> map = request.getParameterMap()
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> Lists.newArrayList(entry.getValue())));
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> Lists.newArrayList(entry.getValue())));
         return new LinkedMultiValueMap<>(map);
     }
 

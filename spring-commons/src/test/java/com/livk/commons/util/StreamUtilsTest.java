@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -57,9 +58,13 @@ class StreamUtilsTest {
     }
 
     @Test
-    void of() {
-        List<Integer> result = StreamUtils.of(List.of(1, 2, 3).iterator()).toList();
-        assertIterableEquals(List.of(1, 2, 3), result);
+    void convert() {
+        List<Integer> list = List.of(1, 2, 3);
+        List<Integer> result1 = StreamUtils.convert(list.iterator()).toList();
+        assertIterableEquals(List.of(1, 2, 3), result1);
+
+        List<Integer> result2 = StreamUtils.convert(new Vector<>(list).elements()).toList();
+        assertIterableEquals(List.of(1, 2, 3), result2);
     }
 
     private record User(Integer id, String username) {

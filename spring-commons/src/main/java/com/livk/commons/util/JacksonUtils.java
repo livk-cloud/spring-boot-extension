@@ -241,7 +241,7 @@ public class JacksonUtils {
         if (jsonNode.isArray()) {
             int range = Integer.parseInt(nodePath.substring(0, index));
             Iterator<JsonNode> elements = jsonNode.elements();
-            JsonNode node = StreamUtils.of(elements).toList().get(range);
+            JsonNode node = StreamUtils.convert(elements).toList().get(range);
             return findNode(node, nodePath.substring(index + 1));
         } else {
             Iterator<String> iterator = jsonNode.fieldNames();
