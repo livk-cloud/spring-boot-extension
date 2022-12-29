@@ -78,18 +78,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         return new HttpHeaders(headers);
     }
 
-    public Map<String, String> headersConcat(HttpServletRequest request, CharSequence delimiter) {
-        HttpHeaders headers = headers(request);
-        return headersConcat(headers, delimiter);
-    }
-
-    public Map<String, String> headersConcat(HttpHeaders headers, CharSequence delimiter) {
-        return headers.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> String.join(delimiter, entry.getValue())));
-    }
-
     public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
         return request.getParameterMap()
                 .entrySet()
