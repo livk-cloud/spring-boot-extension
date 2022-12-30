@@ -14,10 +14,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,30 +43,31 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     @Override
     protected void generateConfigFiles() {
         Filer filer = processingEnv.getFiler();
+        Map<String, Set<String>> allImportMap = new HashMap<>();
         for (String providerInterface : factoriesMap.keySet()) {
+            Set<String> exitImports = new HashSet<>();
             try {
-                Set<String> exitImports = new HashSet<>();
-                try {
-                    for (StandardLocation standardLocation : StandardLocation.values()) {
-                        if (standardLocation.isOutputLocation()) {
-                            FileObject resource = filer.getResource(standardLocation, "", LOCATION);
-                            exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
-                        }
+                for (StandardLocation standardLocation : StandardLocation.values()) {
+                    if (standardLocation.isOutputLocation()) {
+                        FileObject resource = filer.getResource(standardLocation, "", LOCATION);
+                        exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                     }
-                } catch (IOException ignored) {
-
                 }
-                Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
-                        .collect(Collectors.toSet());
-                FileObject fileObject =
-                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", LOCATION);
+            } catch (IOException ignored) {
 
-                try (OutputStream out = fileObject.openOutputStream()) {
-                    SpringFactoriesUtils.writeFile(providerInterface, allImports, out);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+            Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
+                    .collect(Collectors.toSet());
+            allImportMap.put(providerInterface, allImports);
+        }
+        try {
+            FileObject fileObject =
+                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", LOCATION);
+            try (OutputStream out = fileObject.openOutputStream()) {
+                SpringFactoriesUtils.writeFile(allImportMap, out);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
