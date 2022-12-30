@@ -2,6 +2,8 @@ package com.livk.redis.controller;
 
 import com.livk.autoconfigure.redis.supprot.LivkReactiveRedisTemplate;
 import com.livk.common.redis.domain.LivkMessage;
+import com.livk.redis.entity.Person;
+import com.livk.redis.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class MessageController {
 
     private final LivkReactiveRedisTemplate livkReactiveRedisTemplate;
+
+    private final PersonRepository personRepository;
 
     @PostMapping("/redis/{id}")
     public Mono<Void> send(@PathVariable("id") Long id, @RequestParam("msg") String msg,
@@ -50,5 +54,10 @@ public class MessageController {
     public Mono<Long> get() {
         return livkReactiveRedisTemplate.opsForHyperLogLog()
                 .size("log");
+    }
+
+    @PostMapping("person")
+    public Mono<Void> add(@RequestBody Mono<Person> personMono) {
+        return personMono.doOnNext(personRepository::save).then();
     }
 }
