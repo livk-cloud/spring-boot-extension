@@ -56,6 +56,11 @@ abstract class DeployedPlugin implements Plugin<Project> {
     }
 
     static void mavenInfo(MavenPublication publication, Project project) {
+        publication.versionMapping {
+            allVariants {
+                fromResolutionResult()
+            }
+        }
         publication.pom {
             name.set(project.name)
             description.set(project.description)
