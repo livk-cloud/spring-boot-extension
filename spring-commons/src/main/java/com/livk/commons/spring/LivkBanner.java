@@ -7,12 +7,12 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringBootVersion;
+import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
 
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 /**
  * <p>
@@ -25,14 +25,14 @@ import java.util.function.Consumer;
 class LivkBanner implements Banner {
 
     private static final String banner = """
-            ██ ██          ██       ██                          ██
-            ░██░░          ░██      ░██                         ░██
-            ░██ ██ ██    ██░██  ██  ░██       ██████   ██████  ██████
-            ░██░██░██   ░██░██ ██   ░██████  ██░░░░██ ██░░░░██░░░██░
-            ░██░██░░██ ░██ ░████    ░██░░░██░██   ░██░██   ░██  ░██
-            ░██░██ ░░████  ░██░██   ░██  ░██░██   ░██░██   ░██  ░██
-            ███░██  ░░██   ░██░░██  ░██████ ░░██████ ░░██████   ░░██
-            ░░░ ░░    ░░    ░░  ░░   ░░░░░    ░░░░░░   ░░░░░░     ░░
+             ██       ██          ██         ██████   ██                       ██
+            ░██      ░░          ░██        ██░░░░██ ░██                      ░██
+            ░██       ██ ██    ██░██  ██   ██    ░░  ░██  ██████  ██   ██     ░██
+            ░██      ░██░██   ░██░██ ██   ░██        ░██ ██░░░░██░██  ░██  ██████
+            ░██      ░██░░██ ░██ ░████    ░██        ░██░██   ░██░██  ░██ ██░░░██
+            ░██      ░██ ░░████  ░██░██   ░░██    ██ ░██░██   ░██░██  ░██░██  ░██
+            ░████████░██  ░░██   ░██░░██   ░░██████  ███░░██████ ░░██████░░██████
+            ░░░░░░░░ ░░    ░░    ░░  ░░     ░░░░░░  ░░░  ░░░░░░   ░░░░░░  ░░░░░░
             """;
 
     @SneakyThrows
@@ -42,6 +42,7 @@ class LivkBanner implements Banner {
         int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
         max = max % 2 == 0 ? max : max + 1;
         Format format = Format.of(max, out);
+        format.accept(" Spring Version: " + SpringVersion.getVersion() + " ");
         format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
         format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
         format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
@@ -50,13 +51,12 @@ class LivkBanner implements Banner {
     }
 
     @RequiredArgsConstructor(staticName = "of")
-    private static class Format implements Consumer<String> {
+    private static class Format {
 
         private final static char ch = '*';
         private final int n;
         private final PrintStream out;
 
-        @Override
         public void accept(String str) {
             int length = str.length();
             if (length < n) {
