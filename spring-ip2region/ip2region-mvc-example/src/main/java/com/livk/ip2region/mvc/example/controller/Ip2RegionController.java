@@ -4,8 +4,10 @@ import com.livk.autoconfigure.ip2region.annotation.IP;
 import com.livk.autoconfigure.ip2region.annotation.RequestIp;
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
+import com.livk.autoconfigure.ip2region.support.RequestIpContextHolder;
 import com.livk.commons.domain.Pair;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author livk
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("ip")
@@ -36,6 +39,7 @@ public class Ip2RegionController {
 
     @PostMapping
     public HttpEntity<Pair<String, IpInfo>> post(@RequestIp String ip) {
+        log.info("ip:{}", RequestIpContextHolder.get());
         return ResponseEntity.ok(Pair.of(ip, search.searchAsInfo(ip)));
     }
 }

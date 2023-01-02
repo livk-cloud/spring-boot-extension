@@ -5,36 +5,23 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * <p>
  * IPValidator
  * </p>
  *
  * @author livk
- *
  */
 public class IPValidator implements ConstraintValidator<IP, String> {
+
+    private static final Pattern IP_MATCH = Pattern.compile("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$");
 
     @Override
     public boolean isValid(String ipStr, ConstraintValidatorContext context) {
         if (StringUtils.hasText(ipStr)) {
-            if (ipStr.length() >= 7 && ipStr.length() <= 15) {
-                String[] ipArray = ipStr.split("\\.");
-                if (ipArray.length == 4) {
-                    for (String s : ipArray) {
-                        try {
-                            int number = Integer.parseInt(s);
-                            //4.判断每段数字是否都在0-255之间
-                            if (number < 0 || number > 255) {
-                                return false;
-                            }
-                        } catch (Exception e) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
+            return IP_MATCH.matcher(ipStr).matches();
         }
         return false;
     }

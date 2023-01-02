@@ -17,7 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * </p>
  *
  * @author livk
- *
  */
 public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -28,10 +27,14 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (parameter.getParameterType().isAssignableFrom(String.class)) {
-            HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-            Assert.notNull(request, "request not be null");
-            return WebUtils.realIp(request);
+            return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
         }
         throw new RuntimeException("param not support " + parameter.getParameterType());
+    }
+
+    private String parseIp(NativeWebRequest webRequest) {
+        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        Assert.notNull(request, "request not be null");
+        return WebUtils.realIp(request);
     }
 }

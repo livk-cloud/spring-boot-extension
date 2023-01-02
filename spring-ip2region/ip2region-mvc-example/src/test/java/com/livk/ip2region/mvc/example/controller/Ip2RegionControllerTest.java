@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,5 +36,16 @@ class Ip2RegionControllerTest {
                 .andExpect(jsonPath("province", "河北省").exists())
                 .andExpect(jsonPath("city", "保定市").exists())
                 .andExpect(jsonPath("operator", "联通").exists());
+    }
+
+    @Test
+    void post() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/ip"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("*.nation").exists())
+                .andExpect(jsonPath("*.province").exists())
+                .andExpect(jsonPath("*.city", "内网IP").exists())
+                .andExpect(jsonPath("*.operator", "内网IP").exists());
     }
 }
