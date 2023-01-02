@@ -65,7 +65,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
         String redissonYaml = YamlUtils.mapToYml(redissonProperties).replaceAll("'", "");
         Config config;
         Duration duration = redisProperties.getTimeout();
-        int timeout = duration == null ? 0 : (int) duration.toMillis();
+        int timeout = duration == null ? 10000 : (int) duration.toMillis();
         if (StringUtils.hasText(redissonYaml)) {
             try {
                 config = Config.fromYAML(redissonYaml);
