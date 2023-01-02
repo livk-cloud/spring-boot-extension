@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,5 +33,20 @@ class FilterControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string("livk"));
+    }
+
+    @Test
+    void uuid() throws Exception {
+        String uuid1 = mockMvc.perform(get("/uuid"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString();
+
+        String uuid2 = mockMvc.perform(get("/uuid"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString();
+
+        assertNotEquals(uuid1, uuid2);
     }
 }

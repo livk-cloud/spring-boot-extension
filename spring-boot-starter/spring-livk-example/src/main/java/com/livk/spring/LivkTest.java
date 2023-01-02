@@ -42,14 +42,8 @@ public class LivkTest {
         livkTestDemo.show();
         annoTest.show();
         log.info(username);
-        String htmlWebClient = webClient.get()
-                .uri("https://spring.io")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        log.info("{}", htmlWebClient.substring(0, 20));
-        String htmlRestTemplate = restTemplate.getForObject("https://spring.io", String.class);
-        log.info("{}", htmlRestTemplate.substring(0, 20));
+        log.info("restTemplate:{}", restTemplate);
+        log.info("webClient:{}", webClient);
     }
 
 }
