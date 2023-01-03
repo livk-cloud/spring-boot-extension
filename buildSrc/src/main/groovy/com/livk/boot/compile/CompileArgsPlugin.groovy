@@ -18,7 +18,6 @@ import org.gradle.api.tasks.testing.Test
 abstract class CompileArgsPlugin implements Plugin<Project> {
 
     private static final List<String> COMPILER_ARGS = new ArrayList<>()
-    private static final String MAPSTRUCT_NAME = "mapstruct"
     private static final String MAPSTRUCT_PROCESSOR_NAME = "mapstruct-processor"
     private static final List<String> MAPSTRUCT_COMPILER_ARGS = new ArrayList<>()
     private static final String UTF_8 = "UTF-8"
@@ -38,7 +37,7 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
         def javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
         addCompile(javaCompile)
 
-        def test = project.tasks.named(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME).get()
+        def test = project.tasks.named(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME).getOrNull()
         if (test != null) {
             def javaTestCompile = test as JavaCompile
             addCompile(javaTestCompile)
