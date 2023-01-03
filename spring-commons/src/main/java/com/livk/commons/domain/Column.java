@@ -1,7 +1,7 @@
 package com.livk.commons.domain;
 
 import com.livk.commons.function.FieldFunction;
-import com.livk.commons.util.FieldUtils;
+import com.livk.commons.util.ReflectionUtils;
 import lombok.*;
 import org.springframework.cglib.beans.BeanMap;
 
@@ -30,6 +30,6 @@ public class Column<T> {
     }
 
     public <V> V get(FieldFunction<T> function) {
-        return (V) map.get(FieldUtils.getFieldName(function));
+        return (V) map.get(ReflectionUtils.getFieldName(function));
     }
 }

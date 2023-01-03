@@ -3,7 +3,6 @@ package com.livk.autoconfigure.mybatis.interceptor;
 import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
 import com.livk.autoconfigure.mybatis.enums.SqlFill;
 import com.livk.commons.util.BeanUtils;
-import com.livk.commons.util.FieldUtils;
 import com.livk.commons.util.ReflectionUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -14,6 +13,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * <p>
@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
  * </p>
  *
  * @author livk
- *
  */
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class SqlInterceptor implements Interceptor {
@@ -31,7 +30,7 @@ public class SqlInterceptor implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Object parameter = invocation.getArgs()[1];
-        Field[] declaredFields = FieldUtils.getAllFields(parameter.getClass());
+        List<Field> declaredFields = ReflectionUtils.getAllFields(parameter.getClass());
         if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
             for (Field field : declaredFields) {
                 if (field.isAnnotationPresent(SqlFunction.class)) {
@@ -41,10 +40,10 @@ public class SqlInterceptor implements Interceptor {
                         continue;
                     }
                     if (SqlCommandType.INSERT.equals(sqlCommandType)) {
-                        ReflectionUtils.set(field, parameter, value);
+                        ReflectionUtils.setFieldAndAccessible(field, parameter, value);
                     } else {
                         if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-                            ReflectionUtils.set(field, parameter, value);
+                            ReflectionUtils.setFieldAndAccessible(field, parameter, value);
                         }
                     }
                 }

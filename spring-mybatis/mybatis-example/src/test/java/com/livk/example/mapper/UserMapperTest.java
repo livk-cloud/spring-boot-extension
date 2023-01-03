@@ -3,7 +3,7 @@ package com.livk.example.mapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.domain.LivkPage;
-import com.livk.commons.util.FieldUtils;
+import com.livk.commons.util.ReflectionUtils;
 import com.livk.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -62,7 +62,7 @@ class UserMapperTest {
     @Test
     public void selectAllTest() {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(FieldUtils.getFieldName(User::getId))
+                .countColumn(ReflectionUtils.getFieldName(User::getId))
                 .doSelectPage(userMapper::list)) {
             LivkPage<User> result = new LivkPage<>(page);
             assertNotNull(result);
