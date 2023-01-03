@@ -12,9 +12,9 @@ link:spring-boot-starter[Spring自定义Starter] +
 link:spring-clickhouse[Spring整合ClickHouse] +
 link:spring-doc/spring-doc-mvc-example[spring mvc整合Spring doc] +
 link:spring-doc/spring-doc-webflux-example[spring webflux整合spring doc] +
-link:spring-excel/spring-excel-example[spring mvc整合Excel自定义注解实现导入和导出] +
-link:spring-excel/spring-webflux-excel-example[spring webflux整合Excel自定义注解实现导入和导出] +
-link:spring-excel/spring-excel-batch-example[spring batch整合Excel自定义注解实现导入和导出] +
+link:spring-easyexcel/spring-webmvc-easyexcel-example[spring mvc整合Excel自定义注解实现导入和导出] +
+link:spring-easyexcel/spring-webflux-easyexcel-example[spring webflux整合Excel自定义注解实现导入和导出] +
+link:spring-easyexcel/spring-easyexcel-batch-example[spring batch整合Excel自定义注解实现导入和导出] +
 link:spring-graphql/spring-graphql-mybatis-example[graphql整合Mybatis] +
 link:spring-graphql/spring-graphql-r2dbc-example[graphql整合Postgres R2dbc] +
 link:spring-hateoas[spring整合hateoas实现restful风格返回] +

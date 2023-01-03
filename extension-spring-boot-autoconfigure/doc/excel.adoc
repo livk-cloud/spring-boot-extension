@@ -2,8 +2,8 @@
 == 注解导入或生成Excel
 
 使用方式: +
-link:../../spring-excel/spring-excel-example[SpringMvc示例] +
-link:../../spring-excel/spring-webflux-excel-example[SpringWebflux示例] +
+link:../../spring-easyexcel/spring-webmvc-easyexcel-example[SpringMvc示例] +
+link:../../spring-easyexcel/spring-webflux-easyexcel-example[SpringWebflux示例] +
 
 === Excel导入
 
