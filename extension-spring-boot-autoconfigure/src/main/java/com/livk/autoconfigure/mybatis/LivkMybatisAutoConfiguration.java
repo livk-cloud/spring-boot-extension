@@ -10,6 +10,7 @@ import com.livk.autoconfigure.mybatis.monitor.SqlMonitor;
 import com.livk.autoconfigure.mybatis.support.mysql.MysqlJsonTypeHandler;
 import com.livk.autoconfigure.mybatis.support.postgresql.PostgresJsonTypeHandler;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.mybatis.spring.boot.autoconfigure.SqlSessionFactoryBeanCustomizer;
@@ -29,6 +30,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringAutoService
 @AutoConfiguration
+@ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class LivkMybatisAutoConfiguration {
 
     @Bean
