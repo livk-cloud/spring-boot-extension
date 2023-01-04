@@ -1,7 +1,8 @@
 package com.livk.event.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.event.context.SentContext;
+import com.livk.event.context.SseEmitterRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,18 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class SentController {
+
+    private final SseEmitterRepository<String> sseEmitterRepository;
 
     @GetMapping("/subscribe/{id}")
     public HttpEntity<SseEmitter> subscribe(@PathVariable String id) {
-        SseEmitter sseEmitter = SentContext.get(id);
+        SseEmitter sseEmitter = sseEmitterRepository.get(id);
         if (sseEmitter == null) {
             sseEmitter = new SseEmitter(3600_000L);
-            SentContext.put(id, sseEmitter);
-            sseEmitter.onTimeout(() -> SentContext.remove(id));
+            sseEmitterRepository.put(id, sseEmitter);
+            sseEmitter.onTimeout(() -> sseEmitterRepository.remove(id));
             sseEmitter.onCompletion(() -> log.warn("推送结束！"));
         }
         return ResponseEntity.ok(sseEmitter);
@@ -38,7 +42,7 @@ public class SentController {
     public HttpEntity<Boolean> push(@PathVariable String id,
                                     @RequestBody JsonNode content) throws IOException {
         log.info("{}", content);
-        SseEmitter sseEmitter = SentContext.get(id);
+        SseEmitter sseEmitter = sseEmitterRepository.get(id);
         if (sseEmitter == null) {
             return ResponseEntity.ok(false);
         }
@@ -50,7 +54,7 @@ public class SentController {
 
     @PostMapping("/push/data/{id}")
     public HttpEntity<Boolean> pushData(@PathVariable String id) throws IOException {
-        SseEmitter sseEmitter = SentContext.get(id);
+        SseEmitter sseEmitter = sseEmitterRepository.get(id);
         if (sseEmitter == null) {
             return ResponseEntity.ok(false);
         }
@@ -60,18 +64,18 @@ public class SentController {
                     .id(id));
         }
         sseEmitter.complete();
-        SentContext.remove(id);
+        sseEmitterRepository.remove(id);
         return ResponseEntity.ok(true);
     }
 
     @DeleteMapping("/over/{id}")
     public HttpEntity<Boolean> over(@PathVariable String id) {
-        SseEmitter sseEmitter = SentContext.get(id);
+        SseEmitter sseEmitter = sseEmitterRepository.get(id);
         if (sseEmitter == null) {
             return ResponseEntity.ok(false);
         }
         sseEmitter.complete();
-        SentContext.remove(id);
+        sseEmitterRepository.remove(id);
         return ResponseEntity.ok(true);
     }
 }
