@@ -24,6 +24,7 @@ link:spring-kafka[spring整合kafka] +
 link:spring-lock/livk-lock-example[spring整合redis RLock、JDK Lock] +
 link:spring-mail[spring发送Email] +
 link:spring-mapstruct/mapstruct-example[spring整合mapstruct自定义转换器] +
+link:spring-micrometer[spring整合micrometer trace] +
 link:spring-mybatis/dynamic-datasource-example[mybatis动态数据源] +
 link:spring-mybatis/mybatis-example[spring整合mybatis自定义拦截器] +
 link:spring-mybatis/mybatis-tree-example[spring整合mybatis实现SQL查询树形结构] +
