@@ -1,9 +1,8 @@
 package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
-import org.yaml.snakeyaml.LoaderOptions;
+import org.springframework.util.CollectionUtils;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.Map;
 @UtilityClass
 public class YamlUtils {
 
-    private static final Yaml YAML = new Yaml(new Constructor(Object.class, new LoaderOptions()));
+    private static final Yaml YAML = new Yaml();
 
     /**
      * {@example Map.of(" a.b.c ", " 1 ") -> YAML}
@@ -27,7 +26,7 @@ public class YamlUtils {
      * @return yml str
      */
     public String mapToYml(Map<String, String> map) {
-        if (map == null || map.isEmpty()) {
+        if (CollectionUtils.isEmpty(map)) {
             return "";
         }
         Map<String, Object> yamlMap = mapToYmlMap(map);

@@ -46,12 +46,8 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public void flushBuffer() throws IOException {
-        if (out != null) {
-            out.flush();
-        }
-        if (writer != null) {
-            writer.flush();
-        }
+        out.flush();
+        writer.flush();
     }
 
     @Override
