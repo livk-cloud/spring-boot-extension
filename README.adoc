@@ -45,55 +45,55 @@ image:https://clickhouse.com/docs/img/logo_without_text.svg[link="https://clickh
 |===
 |名称 |功能
 
-|Spring-Boot-Admin
+|https://codecentric.github.io/spring-boot-admin/[Spring-Boot-Admin]
 |springboot监控服务
 
-|Spring-Authorization-Server
+|https://spring.io/projects/spring-authorization-server[Spring-Authorization-Server]
 |spring授权服务器
 
-|Spring-Batch
+|https://spring.io/projects/spring-batch[Spring-Batch]
 |spring批次处理框架
 
-|Springdoc-Openapi
+|https://springdoc.org/v2/#Introduction[Springdoc-Openapi]
 |新版Swagger API文档
 
-|EasyExcel
+|https://easyexcel.opensource.alibaba.com/docs/current/[EasyExcel]
 |便捷的Excel处理框架
 
-|GraphQL
+|https://graphql.cn/[GraphQL]
 |查询语言规划
 
-|Spring-Hateoas
+|https://spring.io/projects/spring-hateoas[Spring-Hateoas]
 |restful风格处理框架
 
-|Ip2region
+|https://github.com/lionsoul2014/ip2region[Ip2region]
 |ip地址查询框架
 
-|Mapstruct
+|https://mapstruct.org/[Mapstruct]
 |优秀的实体转换工具
 
-|Mybatis
+|https://mybatis.net.cn/[Mybatis]
 |半自动ORM框架
 
-|Google Zxing Javase
+|https://github.com/zxing/zxing[Google Zxing Javase]
 |谷歌二维码生成框架
 
-|Quartz
+|[https://www.quartz-scheduler.org/]Quartz
 |定时任务框架
 
-|R2dbc-postgresql
+|https://r2dbc.io/[R2dbc]
 |响应式数据库协议
 
-|Spring-Restdocs
+|https://spring.io/projects/spring-restdocs[Spring-Restdocs]
 |API文档生成框架
 
-|Spring-Retry
+|https://github.com/spring-projects/spring-retry[Spring-Retry]
 |重试框架
 
-|Spring-Security
+|https://spring.io/projects/spring-security[Spring-Security]
 |安全框架
 
-|Browscap-Java、Yauaa
+|https://github.com/blueconic/browscap-java[Browscap-Java]、 https://yauaa.basjes.nl/[Yauaa]
 |HTTP用户信息解析框架
 |===
 
