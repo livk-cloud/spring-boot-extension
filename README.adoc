@@ -4,7 +4,7 @@ link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 image:https://img.shields.io/badge/Spring--Framework-6.0.3-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring--Boot-3.0.1-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Gradle-7.6-blue[link="https://gradle.org/"]
-image:https://img.shields.io/badge/Java-17.5-brightgreen[]
+image:https://img.shields.io/badge/Java-17.0.5-brightgreen[]
 
 == Spring Boot Example
 
