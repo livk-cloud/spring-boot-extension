@@ -17,9 +17,7 @@ import java.time.temporal.ChronoUnit;
 @ConfigurationProperties(MybatisLogMonitorProperties.PREFIX)
 public class MybatisLogMonitorProperties {
 
-    static final String PREFIX = "mybatis.log.monitor";
-
-    private boolean enabled = true;
+    public static final String PREFIX = "mybatis.log.monitor";
 
     private long timeOut = 1L;
 
