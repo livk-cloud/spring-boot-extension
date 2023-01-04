@@ -78,7 +78,7 @@ image:https://clickhouse.com/docs/img/logo_without_text.svg[link="https://clickh
 |https://github.com/zxing/zxing[Google Zxing Javase]
 |谷歌二维码生成框架
 
-|[https://www.quartz-scheduler.org/]Quartz
+|https://www.quartz-scheduler.org/[Quartz]
 |定时任务框架
 
 |https://r2dbc.io/[R2dbc]
