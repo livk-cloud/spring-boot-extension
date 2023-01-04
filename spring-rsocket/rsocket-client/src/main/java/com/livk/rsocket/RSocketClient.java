@@ -28,16 +28,6 @@ public class RSocketClient {
 
     public RSocketClient(RSocketRequester.Builder rsocketRequesterBuilder, RSocketStrategies strategies) {
         this.rsocketRequester = rsocketRequesterBuilder.rsocketStrategies(strategies).tcp("localhost", 7000);
-
-        RSocket rsocket = this.rsocketRequester.rsocket();
-        if (rsocket != null) {
-            rsocket.onClose()
-                    .doOnError(error -> log.warn("发生错误，链接关闭"))
-                    .doFinally(consumer -> log.info("链接关闭"))
-                    .subscribe();
-        } else {
-            log.info("rsocket is null");
-        }
     }
 
     @PreDestroy
