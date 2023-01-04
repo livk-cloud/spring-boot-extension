@@ -22,8 +22,14 @@ import java.util.List;
  *
  * @author livk
  */
-@Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
-public class SqlInterceptor implements Interceptor {
+@Intercepts({
+        @Signature(
+                type = Executor.class,
+                method = "update",
+                args = {MappedStatement.class, Object.class}
+        )
+})
+public class SqlDataInjection implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

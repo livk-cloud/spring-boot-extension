@@ -5,11 +5,10 @@ import com.livk.commons.spring.AbstractImportSelector;
 
 /**
  * <p>
- * InterceptorImportSelector
+ * SqlDataInjectionInterceptorImportSelector
  * </p>
  *
  * @author livk
- *
  */
-public class InterceptorImportSelector extends AbstractImportSelector<EnableSqlPlugin> {
+public class SqlDataInjectionInterceptorImportSelector extends AbstractImportSelector<EnableSqlPlugin> {
 }

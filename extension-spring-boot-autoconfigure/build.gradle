@@ -15,6 +15,7 @@ dependencies {
     optional "org.mybatis.spring.boot:mybatis-spring-boot-autoconfigure"
     optional "org.mybatis:mybatis-spring"
     optional "org.mybatis:mybatis"
+    optional "com.github.jsqlparser:jsqlparser"
     optional "com.mysql:mysql-connector-j"
     optional "org.postgresql:postgresql"
     optional "com.google.zxing:javase"
