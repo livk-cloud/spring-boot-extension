@@ -11,14 +11,14 @@ import java.util.Locale;
 
 /**
  * <p>
- * JacksonConfig
+ * JacksonConfiguration
  * </p>
  *
  * @author livk
  */
 @SpringAutoService
 @AutoConfiguration(before = JacksonAutoConfiguration.class)
-public class JacksonConfig {
+public class JacksonConfiguration {
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer javaTimeCustomizer() {
