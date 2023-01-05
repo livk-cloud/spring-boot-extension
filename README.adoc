@@ -13,7 +13,7 @@ image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,li
 link:README-en.adoc[English] | link:README.adoc[简体中文] +
 image:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white["Build Status",link="https://github.com/livk-cloud/spring-boot-example"] +
 image:https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white["Build Status",link="https://gitee.com/livk-cloud/spring-boot-example"] +
-https://github.com/livk-cloud/spring-cloud-example[正式版移步 `Spring Cloud` 项目] +
+https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
 
 link:gradle-idea.adoc[gradle idea配置指导]
 
