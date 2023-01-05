@@ -2,7 +2,10 @@ package com.livk.commons.util;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.codec.multipart.Part;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,5 +51,10 @@ public class FileUtils extends FileCopyUtils {
             flag = file.getParentFile().mkdirs();
         }
         return flag && file.createNewFile();
+    }
+
+    public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
+        return exchange.getMultipartData()
+                .mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
     }
 }
