@@ -21,9 +21,6 @@ import static com.google.common.base.Charsets.UTF_8;
 @UtilityClass
 class SpringFactoriesUtils {
 
-    /**
-     * 暂定不扫描，后续考虑如何实现
-     */
     public static Set<String> read(String providerInterface, FileObject fileObject) {
         try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
             boolean read = false;
@@ -51,25 +48,28 @@ class SpringFactoriesUtils {
         }
     }
 
-    public static void writeFile(Map<String, Set<String>> allImportMap, OutputStream output) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8));
-        for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
-            String providerInterface = entry.getKey();
-            Set<String> services = entry.getValue();
-            writer.write(providerInterface);
-            writer.write("=\\");
-            writer.newLine();
-            String[] serviceArrays = services.toArray(String[]::new);
-            for (int i = 0; i < serviceArrays.length; i++) {
-                writer.write("\t");
-                writer.write(serviceArrays[i]);
-                if (i != serviceArrays.length - 1) {
-                    writer.write(",\\");
-                }
+    public static void writeFile(Map<String, Set<String>> allImportMap, OutputStream output) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+            for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
+                String providerInterface = entry.getKey();
+                Set<String> services = entry.getValue();
+                writer.write(providerInterface);
+                writer.write("=\\");
                 writer.newLine();
+                String[] serviceArrays = services.toArray(String[]::new);
+                for (int i = 0; i < serviceArrays.length; i++) {
+                    writer.write("\t");
+                    writer.write(serviceArrays[i]);
+                    if (i != serviceArrays.length - 1) {
+                        writer.write(",\\");
+                    }
+                    writer.newLine();
+                }
             }
+            writer.newLine();
+            writer.flush();
+        } catch (IOException ignored) {
+
         }
-        writer.newLine();
-        writer.flush();
     }
 }
