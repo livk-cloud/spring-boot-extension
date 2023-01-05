@@ -2,7 +2,7 @@ package com.livk.caffeine.controller;
 
 import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import com.livk.autoconfigure.redis.util.RedisUtils;
-import com.livk.commons.util.LogUtils;
+import com.livk.commons.util.TestLogUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -87,12 +87,12 @@ class CacheControllerTest {
     public void test() {
         try (Cursor<String> cursor = RedisUtils.scan(redisTemplate, "*", 100)) {
             while (cursor.hasNext()) {
-                LogUtils.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
+                TestLogUtils.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
             }
         }
 
         Set<String> keys = RedisUtils.scan(redisTemplate, "*", 10, 1);
-        LogUtils.info("keys:{}", keys);
+        TestLogUtils.info("keys:{}", keys);
         assertEquals(1, keys.size());
     }
 }

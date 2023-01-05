@@ -53,7 +53,7 @@ class Info2ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "infoUploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+                    FileUtils.testDownload(in, "./infoUploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
                 });
         File outFile = new File("./infoUploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
         assertTrue(outFile.exists());
@@ -71,7 +71,7 @@ class Info2ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+                    FileUtils.testDownload(in, "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
                 });
         File outFile = new File("./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
         assertTrue(outFile.exists());

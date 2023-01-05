@@ -13,26 +13,26 @@ class LogUtilsTest {
 
     @Test
     void infoTest() {
-        LogUtils.info("666");
+        TestLogUtils.info("666");
     }
 
     @Test
     void traceTest() {
-        LogUtils.trace("666");
+        TestLogUtils.trace("666");
     }
 
     @Test
     void warnTest() {
-        LogUtils.warn("666");
+        TestLogUtils.warn("666");
     }
 
     @Test
     void debugTest() {
-        LogUtils.debug("666");
+        TestLogUtils.debug("666");
     }
 
     @Test
     void errorTest() {
-        LogUtils.error("666");
+        TestLogUtils.error("666");
     }
 }

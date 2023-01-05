@@ -34,7 +34,7 @@ class VideoControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "test.mp4");
+                    FileUtils.testDownload(in, "./test.mp4");
                 });
         File video = new File("./test.mp4");
         assertTrue(video.exists());

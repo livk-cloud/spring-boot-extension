@@ -1,6 +1,6 @@
 package com.livk.commons.function;
 
-import com.livk.commons.util.LogUtils;
+import com.livk.commons.util.TestLogUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -19,7 +19,7 @@ class ThrowExceptionTest {
         try {
             ThrowException.isTrue(new Object(), Objects::nonNull).throwException(new RuntimeException("xxx"));
         } catch (Throwable e) {
-            LogUtils.warn("exception:{}", e.getMessage());
+            TestLogUtils.warn("exception:{}", e.getMessage());
         }
         ThrowException.isTrue(new Object(), Objects::isNull).throwException(RuntimeException::new);
     }

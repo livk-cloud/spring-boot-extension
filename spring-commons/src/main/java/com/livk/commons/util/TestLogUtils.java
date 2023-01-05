@@ -16,10 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author livk
  */
 @UtilityClass
-public class LogUtils {
+public class TestLogUtils {
     private static final Map<String, Logger> LOGGER_MAP = new ConcurrentHashMap<>();
 
-    private static final String NAME = LogUtils.class.getName();
+    private static final String NAME = TestLogUtils.class.getName();
 
     public void info(String format, Object... arguments) {
         Logger logger = currentLogger();
@@ -63,7 +63,7 @@ public class LogUtils {
     private Logger currentLogger() {
         StackTraceElement stackTraceElement = Arrays.stream(Thread.currentThread().getStackTrace())
                 .skip(1)
-                .filter(LogUtils::notEqualsClass)
+                .filter(TestLogUtils::notEqualsClass)
                 .findFirst()
                 .orElseThrow();
         String className = stackTraceElement.getClassName();

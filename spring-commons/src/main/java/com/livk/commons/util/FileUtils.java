@@ -23,27 +23,21 @@ import java.nio.channels.ReadableByteChannel;
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
-    public void testDownload(InputStream stream, String name) throws IOException {
-        String path = "./" + name;
-        File file = new File(path);
-        if (!file.exists()) {
-            LogUtils.info("开始创建文件");
-            int count = 0;
-            while (!file.createNewFile()) {
-                if (++count == 3) {
-                    throw new IOException();
+    public void testDownload(InputStream stream, String filePath) throws IOException {
+        File file = new File(filePath);
+        if (createNewFile(file)) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                FileChannel channel = fileOutputStream.getChannel();
+                ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                while (readableByteChannel.read(buffer) != -1) {
+                    buffer.flip();
+                    channel.write(buffer);
+                    buffer.clear();
                 }
             }
-        }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            FileChannel channel = fileOutputStream.getChannel();
-            ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            while (readableByteChannel.read(buffer) != -1) {
-                buffer.flip();
-                channel.write(buffer);
-                buffer.clear();
-            }
+        } else {
+            throw new IOException();
         }
     }
 
