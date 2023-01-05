@@ -1,10 +1,10 @@
-package com.livk.example.mapper;
+package com.livk.mybatis.example.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.domain.LivkPage;
 import com.livk.commons.util.ReflectionUtils;
-import com.livk.example.entity.User;
+import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -12,67 +12,68 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
- * UserMapperTest
+ * UserServiceTest
  * </p>
  *
  * @author livk
+ * @date 2023/1/5
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-class UserMapperTest {
+class UserServiceTest {
+
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     Integer id = 10;
 
-
-    @Order(1)
+    @Order(3)
     @Test
-    public void saveTest() {
-        User user = new User();
-        user.setId(id);
-        user.setUsername("livk");
-        int result = userMapper.insert(user);
-        assertEquals(1, result);
+    void getById() {
+        User result = userService.getById(id);
+        assertNotNull(result);
     }
 
     @Order(2)
     @Test
-    public void updateTest() {
+    void updateById() {
         User user = new User();
         user.setId(id);
         user.setUsername("livk https");
-        int result = userMapper.updateById(user);
-        assertEquals(1, result);
+        boolean result = userService.updateById(user);
+        assertTrue(result);
     }
 
-    @Order(3)
+    @Order(1)
     @Test
-    public void selectByIdTest() {
-        User result = userMapper.selectById(id);
-        assertNotNull(result);
-    }
-
-    @Order(4)
-    @Test
-    public void selectAllTest() {
-        try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(ReflectionUtils.getFieldName(User::getId))
-                .doSelectPage(userMapper::list)) {
-            LivkPage<User> result = new LivkPage<>(page);
-            assertNotNull(result);
-        }
+    void save() {
+        User user = new User();
+        user.setId(id);
+        user.setUsername("livk");
+        boolean result = userService.save(user);
+        assertTrue(result);
     }
 
     @Order(5)
     @Test
-    public void deleteTest() {
-        int result = userMapper.deleteById(id);
-        assertEquals(1, result);
+    void deleteById() {
+        boolean result = userService.deleteById(id);
+        assertTrue(result);
+    }
+
+    @Order(4)
+    @Test
+    void list() {
+        try (Page<User> page = PageHelper.<User>startPage(1, 10)
+                .countColumn(ReflectionUtils.getFieldName(User::getId))
+                .doSelectPage(userService::list)) {
+            LivkPage<User> result = new LivkPage<>(page);
+            assertNotNull(result);
+        }
     }
 }

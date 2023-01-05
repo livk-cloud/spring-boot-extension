@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.livk.example.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.livk.example.entity.User">
+<mapper namespace="com.livk.mybatis.example.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.livk.mybatis.example.entity.User">
         <!--@mbg.generated-->
         <!--@Table `user`-->
         <id column="id" property="id"/>
@@ -15,7 +15,7 @@
         id, username, version, insert_time, update_time
     </sql>
 
-    <update id="updateById" parameterType="com.livk.example.entity.User">
+    <update id="updateById" parameterType="com.livk.mybatis.example.entity.User">
         UPDATE `user`
         <set>
             <if test="username != null and username != ''">
@@ -42,7 +42,7 @@
         WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="com.livk.example.entity.User">
+    <insert id="insert" parameterType="com.livk.mybatis.example.entity.User">
         INSERT INTO `user`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             `id`,

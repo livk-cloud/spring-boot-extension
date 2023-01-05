@@ -1,4 +1,4 @@
-package com.livk.example.entity;
+package com.livk.mybatis.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,7 +6,7 @@ import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
 import com.livk.autoconfigure.mybatis.constant.FunctionEnum;
 import com.livk.autoconfigure.mybatis.enums.SqlFill;
 import com.livk.commons.util.DateUtils;
-import com.livk.example.handler.VersionFunction;
+import com.livk.mybatis.example.handler.VersionFunction;
 import lombok.Data;
 
 import java.io.Serial;

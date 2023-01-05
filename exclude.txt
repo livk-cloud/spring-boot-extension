@@ -8,7 +8,9 @@ com.livk.graphql.mybatis.controller.GreetingControllerTest
 com.livk.graphql.r2dbc.controller.BookControllerTest
 com.livk.graphql.r2dbc.controller.GreetingControllerTest
 com.livk.dynamic.example.controller.UserControllerTest
-com.livk.example.mapper.UserMapperTest
+com.livk.mybatis.example.mapper.UserMapperTest
+com.livk.mybatis.example.service.UserServiceTest
+com.livk.mybatis.example.controller.UserControllerTest
 com.livk.mybatis.tree.example.controller.MenuControllerTest
 com.livk.mysql.json.controller.UserControllerTest
 com.livk.postgres.json.controller.UserControllerTest

@@ -1,4 +1,4 @@
-package com.livk.example.mapper;
+package com.livk.mybatis.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
 

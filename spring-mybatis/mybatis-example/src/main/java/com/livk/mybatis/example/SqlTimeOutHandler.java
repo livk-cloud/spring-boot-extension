@@ -1,4 +1,4 @@
-package com.livk.example;
+package com.livk.mybatis.example;
 
 import com.livk.autoconfigure.mybatis.monitor.SqlMonitor;
 import lombok.extern.slf4j.Slf4j;

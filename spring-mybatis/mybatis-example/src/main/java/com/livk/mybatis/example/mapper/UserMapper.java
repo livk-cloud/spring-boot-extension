@@ -1,6 +1,6 @@
-package com.livk.example.mapper;
+package com.livk.mybatis.example.mapper;
 
-import com.livk.example.entity.User;
+import com.livk.mybatis.example.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
