@@ -45,12 +45,10 @@ public class SqlDataInjection implements Interceptor {
                     if (value == null) {
                         continue;
                     }
-                    if (SqlCommandType.INSERT.equals(sqlCommandType)) {
+                    //insert或者update并且SqlFill.INSERT_UPDATE
+                    if (SqlCommandType.INSERT.equals(sqlCommandType) ||
+                        sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
                         ReflectionUtils.setFieldAndAccessible(field, parameter, value);
-                    } else {
-                        if (sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-                            ReflectionUtils.setFieldAndAccessible(field, parameter, value);
-                        }
                     }
                 }
             }
