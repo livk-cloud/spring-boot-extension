@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.mybatis.support.postgresql;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;

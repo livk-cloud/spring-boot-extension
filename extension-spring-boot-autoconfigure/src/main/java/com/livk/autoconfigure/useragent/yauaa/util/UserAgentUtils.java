@@ -2,7 +2,7 @@ package com.livk.autoconfigure.useragent.yauaa.util;
 
 import com.livk.autoconfigure.useragent.util.HttpHeadersUtils;
 import com.livk.commons.support.SpringContextHolder;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import nl.basjes.parse.useragent.UserAgent;

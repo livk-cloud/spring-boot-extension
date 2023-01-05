@@ -1,6 +1,6 @@
 package com.livk.sso.auth.controller;
 
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

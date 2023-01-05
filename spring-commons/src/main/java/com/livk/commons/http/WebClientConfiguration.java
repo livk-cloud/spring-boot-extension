@@ -1,7 +1,7 @@
 package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.annotation.EnableWebClient;
+import com.livk.commons.http.annotation.EnableWebClient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;

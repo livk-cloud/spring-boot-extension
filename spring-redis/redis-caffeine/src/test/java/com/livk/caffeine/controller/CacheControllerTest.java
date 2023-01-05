@@ -2,7 +2,7 @@ package com.livk.caffeine.controller;
 
 import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
 import com.livk.autoconfigure.redis.util.RedisUtils;
-import com.livk.commons.util.TestLogUtils;
+import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

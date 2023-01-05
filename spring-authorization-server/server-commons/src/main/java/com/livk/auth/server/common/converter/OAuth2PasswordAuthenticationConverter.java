@@ -3,7 +3,7 @@ package com.livk.auth.server.common.converter;
 
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2PasswordAuthenticationToken;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;

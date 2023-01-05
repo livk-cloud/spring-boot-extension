@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.autoconfigure.ip2region.annotation.RequestIp;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;

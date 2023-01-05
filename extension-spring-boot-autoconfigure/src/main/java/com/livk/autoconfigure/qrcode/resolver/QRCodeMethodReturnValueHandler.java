@@ -2,8 +2,8 @@ package com.livk.autoconfigure.qrcode.resolver;
 
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.JacksonUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;

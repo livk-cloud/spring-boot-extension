@@ -1,7 +1,7 @@
 package com.livk.commons.domain;
 
-import com.livk.commons.util.JacksonUtils;
-import com.livk.commons.util.TestLogUtils;
+import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.livk.sso.commons.util;
 
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.nimbusds.jose.JOSEObjectType;

@@ -1,6 +1,6 @@
 package com.livk.commons.http;
 
-import com.livk.commons.annotation.EnableHttpClient;
+import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.spring.AbstractImportSelector;
 
 /**

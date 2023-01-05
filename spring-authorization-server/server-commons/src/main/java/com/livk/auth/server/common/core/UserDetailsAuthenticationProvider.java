@@ -4,7 +4,7 @@ import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.core.exception.BadCaptchaException;
 import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.auth.server.common.util.MessageSourceUtils;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;

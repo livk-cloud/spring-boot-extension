@@ -18,7 +18,8 @@ public class LivkSpring {
         if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {
             throw new AnnotationConfigurationException("must use @SpringBootApplication in start class");
         }
-        SpringApplicationBuilder builder = new SpringApplicationBuilder(targetClass).banner(LivkBanner.create())
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(targetClass)
+                .banner(LivkBanner.create())
                 .bannerMode(Banner.Mode.CONSOLE);
         application = builder.application();
         return builder.run(args);

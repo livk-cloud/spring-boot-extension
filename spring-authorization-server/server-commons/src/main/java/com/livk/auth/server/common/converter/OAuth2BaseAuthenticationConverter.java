@@ -4,7 +4,7 @@ package com.livk.auth.server.common.converter;
 import com.google.common.collect.Sets;
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

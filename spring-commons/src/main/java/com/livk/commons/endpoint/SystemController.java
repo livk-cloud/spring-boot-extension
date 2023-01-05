@@ -1,4 +1,4 @@
-package com.livk.commons.controller;
+package com.livk.commons.endpoint;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.RequiredArgsConstructor;

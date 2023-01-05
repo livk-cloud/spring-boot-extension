@@ -1,6 +1,6 @@
 package com.livk.commons.function;
 
-import com.livk.commons.util.TestLogUtils;
+import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;

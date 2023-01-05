@@ -1,6 +1,6 @@
 package com.livk.sso.resource.controller;
 
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

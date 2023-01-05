@@ -15,7 +15,7 @@ import org.springframework.core.env.Environment;
  */
 @AutoConfiguration
 @SpringFactories(type = ApplicationContextInitializer.class)
-public class OtherSettingHandler implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class PageHelperBannerSettings implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private static final String PAGEHELPER_BANNER = "pagehelper.banner";
 

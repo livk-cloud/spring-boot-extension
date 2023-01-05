@@ -1,4 +1,4 @@
-package com.livk.commons.util;
+package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

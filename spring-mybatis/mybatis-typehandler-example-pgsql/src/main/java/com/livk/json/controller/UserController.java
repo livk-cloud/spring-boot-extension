@@ -1,7 +1,7 @@
 package com.livk.json.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import com.livk.json.entity.User;
 import com.livk.json.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;

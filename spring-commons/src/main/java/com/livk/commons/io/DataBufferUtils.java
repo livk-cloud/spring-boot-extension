@@ -1,4 +1,4 @@
-package com.livk.commons.util;
+package com.livk.commons.io;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.io.ByteArrayResource;

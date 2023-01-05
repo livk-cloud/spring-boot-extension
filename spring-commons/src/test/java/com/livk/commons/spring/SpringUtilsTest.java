@@ -1,4 +1,4 @@
-package com.livk.commons.util;
+package com.livk.commons.spring;
 
 import org.junit.jupiter.api.Test;
 

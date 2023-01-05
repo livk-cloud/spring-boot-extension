@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.redisson;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.util.SpringUtils;
+import com.livk.commons.spring.SpringUtils;
 import com.livk.commons.util.YamlUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

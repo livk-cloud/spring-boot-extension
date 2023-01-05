@@ -1,7 +1,7 @@
 package com.livk.env;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.commons.util.JacksonUtils;
+import com.livk.commons.jackson.JacksonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ConfigurableBootstrapContext;

@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.ip2region.support;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.StringUtils;
 

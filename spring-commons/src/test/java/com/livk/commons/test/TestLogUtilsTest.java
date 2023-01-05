@@ -1,15 +1,15 @@
-package com.livk.commons.util;
+package com.livk.commons.test;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * <p>
- * LogUtilsTest
+ * TestLogUtilsTest
  * </p>
  *
  * @author livk
  */
-class LogUtilsTest {
+class TestLogUtilsTest {
 
     @Test
     void infoTest() {

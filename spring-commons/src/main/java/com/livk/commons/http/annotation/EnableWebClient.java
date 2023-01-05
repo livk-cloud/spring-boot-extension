@@ -1,6 +1,6 @@
-package com.livk.commons.annotation;
+package com.livk.commons.http.annotation;
 
-import com.livk.commons.http.RestTemplateImportSelector;
+import com.livk.commons.http.WebClientImportSelector;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -10,14 +10,14 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * EnableHttpClient
+ * EnableWebClient
  * </p>
  *
  * @author livk
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(RestTemplateImportSelector.class)
-public @interface EnableHttpClient {
+@Import(WebClientImportSelector.class)
+public @interface EnableWebClient {
 
 }

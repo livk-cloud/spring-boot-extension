@@ -1,4 +1,4 @@
-package com.livk.commons.util;
+package com.livk.commons.test;
 
 import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;

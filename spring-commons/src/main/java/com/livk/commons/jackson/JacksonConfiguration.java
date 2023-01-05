@@ -1,4 +1,4 @@
-package com.livk.commons.spring;
+package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.auto.service.annotation.SpringAutoService;
