@@ -5,16 +5,13 @@ import com.livk.autoconfigure.qrcode.annotation.QRCode;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.DataBufferUtils;
 import com.livk.commons.util.JacksonUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -63,8 +60,7 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
     private Mono<Void> write(Object value, QRCode qrCode, ServerHttpResponse response) {
         String text = JacksonUtils.toJsonStr(value);
         byte[] bytes = QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), qrCode.type());
-        Resource resource = new ByteArrayResource(bytes);
-        Flux<DataBuffer> bufferFlux = DataBufferUtils.read(resource, new DefaultDataBufferFactory(), 4096);
+        Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
         return response.writeWith(bufferFlux);
     }
 

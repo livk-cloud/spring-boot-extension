@@ -1,20 +1,15 @@
 package com.livk.autoconfigure.easyexcel.resolver;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
+import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
 import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.DataBufferUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,7 +35,6 @@ import java.util.function.Function;
  * </p>
  *
  * @author livk
- *
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
     public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
@@ -110,14 +104,8 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build()) {
-            for (Map.Entry<String, Collection<?>> entry : result.entrySet()) {
-                WriteSheet sheet = EasyExcel.writerSheet(entry.getKey()).build();
-                writer.write(entry.getValue(), sheet);
-            }
-        }
-        Resource resource = new ByteArrayResource(outputStream.toByteArray());
-        Flux<DataBuffer> bufferFlux = DataBufferUtils.read(resource, new DefaultDataBufferFactory(), 4096);
+        ExcelUtils.write(outputStream, excelModelClass, result);
+        Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream);
         return response.writeWith(bufferFlux);
     }
 

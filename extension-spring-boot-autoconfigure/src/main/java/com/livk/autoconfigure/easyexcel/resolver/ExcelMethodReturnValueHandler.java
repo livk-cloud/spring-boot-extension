@@ -1,10 +1,8 @@
 package com.livk.autoconfigure.easyexcel.resolver;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
+import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +27,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- *
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 
@@ -63,12 +60,8 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
     public void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
-        try (ServletOutputStream outputStream = response.getOutputStream();
-             ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build()) {
-            for (Map.Entry<String, Collection<?>> entry : result.entrySet()) {
-                WriteSheet sheet = EasyExcel.writerSheet(entry.getKey()).build();
-                writer.write(entry.getValue(), sheet);
-            }
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            ExcelUtils.write(outputStream, excelModelClass, result);
         } catch (IOException e) {
             e.printStackTrace();
         }
