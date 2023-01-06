@@ -23,6 +23,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -41,6 +43,8 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.List;
 
@@ -62,8 +66,24 @@ public class AuthorizationServerConfiguration {
                                                                       OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
                                                                       UserDetailsAuthenticationProvider userDetailsAuthenticationProvider,
                                                                       AuthorizationServerSettings authorizationServerSettings) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+
+        http.securityMatcher(endpointsMatcher)
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .requestMatchers("/actuator/**")
+                .permitAll()
+                .requestMatchers("/css/**")
+                .permitAll()
+                .requestMatchers("/error")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+                .apply(authorizationServerConfigurer);
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.getObject();
 
@@ -73,15 +93,16 @@ public class AuthorizationServerConfiguration {
         OAuth2SmsAuthenticationProvider resourceOwnerSmsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
 
-        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(tokenEndpoint -> {
-                    tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
-                            .authenticationProvider(userDetailsAuthenticationProvider)
-                            .authenticationProvider(resourceOwnerPasswordAuthenticationProvider)
-                            .authenticationProvider(resourceOwnerSmsAuthenticationProvider)
-                            .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                            .errorResponseHandler(new AuthenticationFailureEventHandler());
-                }).clientAuthentication(oAuth2ClientAuthenticationConfigurer ->
-                        oAuth2ClientAuthenticationConfigurer.errorResponseHandler(new AuthenticationFailureEventHandler()))
+        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(tokenEndpoint ->
+                        tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+                                .authenticationProvider(userDetailsAuthenticationProvider)
+                                .authenticationProvider(resourceOwnerPasswordAuthenticationProvider)
+                                .authenticationProvider(resourceOwnerSmsAuthenticationProvider)
+                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+                                .errorResponseHandler(new AuthenticationFailureEventHandler()))
+                .clientAuthentication(oAuth2ClientAuthenticationConfigurer ->
+                        oAuth2ClientAuthenticationConfigurer
+                                .errorResponseHandler(new AuthenticationFailureEventHandler()))
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI))
                 .authorizationService(authorizationService)
@@ -90,9 +111,18 @@ public class AuthorizationServerConfiguration {
 
         return http.apply(configurer)
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .and()
                 .apply(new FormIdentityLoginConfigurer())
                 .and()
+                .formLogin(Customizer.withDefaults())
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

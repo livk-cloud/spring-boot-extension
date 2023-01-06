@@ -1,5 +1,6 @@
 package com.livk.auth.server;
 
+import com.livk.commons.jackson.JacksonUtils;
 import com.nimbusds.jose.util.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * <p>
@@ -22,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </p>
  *
  * @author livk
- *
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,7 +38,7 @@ class AuthServerAppTest {
         params.set("username", "livk");
         params.set("password", "123456");
         params.set("scope", "livk.read");
-        mockMvc.perform(post("/oauth2/token")
+        String json = mockMvc.perform(post("/oauth2/token")
                         .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .params(params))
@@ -47,7 +47,12 @@ class AuthServerAppTest {
                 .andExpect(jsonPath("sub", "livk").exists())
                 .andExpect(jsonPath("iss", "http://localhost:9000").exists())
                 .andExpect(jsonPath("token_type", "Bearer").exists())
-                .andExpect(jsonPath("client_id", "livk-client").exists());
+                .andExpect(jsonPath("client_id", "livk-client").exists())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
+        hello(accessToken);
     }
 
     @Test
@@ -57,7 +62,7 @@ class AuthServerAppTest {
         params.set("mobile", "18664960000");
         params.set("code", "123456");
         params.set("scope", "livk.read");
-        mockMvc.perform(post("/oauth2/token")
+        String json = mockMvc.perform(post("/oauth2/token")
                         .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .params(params))
@@ -66,6 +71,19 @@ class AuthServerAppTest {
                 .andExpect(jsonPath("sub", "livk").exists())
                 .andExpect(jsonPath("iss", "http://localhost:9000").exists())
                 .andExpect(jsonPath("token_type", "Bearer").exists())
-                .andExpect(jsonPath("client_id", "livk-client").exists());
+                .andExpect(jsonPath("client_id", "livk-client").exists())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
+        hello(accessToken);
+    }
+
+    private void hello(String token) throws Exception {
+        mockMvc.perform(get("/hello")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().string("hello"));
     }
 }
