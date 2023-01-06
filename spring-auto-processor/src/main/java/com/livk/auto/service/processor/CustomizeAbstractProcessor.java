@@ -1,11 +1,14 @@
 package com.livk.auto.service.processor;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import javax.tools.StandardLocation;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,47 @@ import java.util.stream.Collectors;
  * @author livk
  */
 public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
+
+    /**
+     * The Filer.
+     */
+    protected Filer filer;
+
+    /**
+     * The Elements.
+     */
+    protected Elements elements;
+
+    /**
+     * The Messager.
+     */
+    protected Messager messager;
+
+    /**
+     * The Options.
+     */
+    protected Map<String, String> options;
+
+    /**
+     * The Types.
+     */
+    protected Types types;
+
+    /**
+     * The Out.
+     */
+    protected Set<StandardLocation> out;
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        out = Set.of(StandardLocation.CLASS_OUTPUT, StandardLocation.SOURCE_OUTPUT);
+        filer = processingEnv.getFiler();
+        elements = processingEnv.getElementUtils();
+        messager = processingEnv.getMessager();
+        options = processingEnv.getOptions();
+        types = processingEnv.getTypeUtils();
+    }
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
@@ -63,10 +107,10 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
     /**
      * Get Mirror annotation meta properties
      *
+     * @param <T>         annotation
      * @param element     element
      * @param targetClass annotation class
-     * @param <T>         annotation
-     * @return AnnotationMirror
+     * @return AnnotationMirror annotation mirror with
      */
     protected <T> AnnotationMirror getAnnotationMirrorWith(Element element, Class<T> targetClass) {
         for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {

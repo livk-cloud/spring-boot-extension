@@ -3,7 +3,6 @@ package com.livk.auto.service.processor;
 import com.google.auto.service.AutoService;
 import com.livk.auto.service.annotation.SpringFactories;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.AnnotationMirror;
@@ -42,16 +41,13 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     @Override
     protected void generateConfigFiles() {
-        Filer filer = processingEnv.getFiler();
         Map<String, Set<String>> allImportMap = new HashMap<>();
         for (String providerInterface : factoriesMap.keySet()) {
             Set<String> exitImports = new HashSet<>();
             try {
-                for (StandardLocation standardLocation : StandardLocation.values()) {
-                    if (standardLocation.isOutputLocation()) {
-                        FileObject resource = filer.getResource(standardLocation, "", LOCATION);
-                        exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
-                    }
+                for (StandardLocation standardLocation : out) {
+                    FileObject resource = filer.getResource(standardLocation, "", LOCATION);
+                    exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                 }
             } catch (IOException ignored) {
 
