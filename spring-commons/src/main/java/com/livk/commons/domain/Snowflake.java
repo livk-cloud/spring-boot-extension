@@ -44,8 +44,7 @@ public class Snowflake {
     private long sequence = 0L;
 
     public Snowflake() {
-        this.datacenterId = getMaxDatacenterId();
-        this.workerId = getMaxWorkerId(datacenterId);
+        this(-1, -1);
     }
 
     /**
@@ -53,11 +52,11 @@ public class Snowflake {
      * @param datacenterId 序列号
      */
     public Snowflake(long workerId, long datacenterId) {
-        if (workerId > MAX_WORKER_ID || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
-        }
         if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", MAX_DATACENTER_ID));
+            datacenterId = getMaxDatacenterId();
+        }
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            workerId = getMaxWorkerId(datacenterId);
         }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
