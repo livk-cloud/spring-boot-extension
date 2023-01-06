@@ -5,6 +5,8 @@ import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 
+import java.util.regex.Pattern
+
 /**
  * <p>
  * MavenRepositoryPlugin
@@ -25,11 +27,24 @@ abstract class MavenRepositoryPlugin implements Plugin<Project> {
             def snapshotsRepoUrl = project.property("mvn.releasesRepoUrl")
             //使用不安全的http请求、也就是缺失SSL
             maven.setAllowInsecureProtocol(true)
-            maven.url = project.version.toString().endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            maven.url = checkSnapshot(project.version.toString()) ? snapshotsRepoUrl : releasesRepoUrl
             maven.credentials {
                 it.username = project.property("mvn.username")
                 it.password = project.property("mvn.password")
             }
         }
+    }
+
+    static boolean checkSnapshot(String version) {
+        int index = version.lastIndexOf('-');
+        if (index > -1) {
+            def snapshot = version.substring(index + 1)
+            def rc = Pattern.compile("RC[0-9]*")
+            def m = Pattern.compile("M[0-9]*")
+            return "SNAPSHOT".equalsIgnoreCase(snapshot) ||
+                    rc.matcher(snapshot) ||
+                    m.matcher(snapshot)
+        }
+        return false
     }
 }
