@@ -5,7 +5,6 @@ import com.livk.auth.server.common.token.OAuth2SmsAuthenticationToken;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -36,7 +35,7 @@ public class OAuth2SmsAuthenticationConverter implements OAuth2BaseAuthenticatio
 
     @Override
     public OAuth2SmsAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
-        return new OAuth2SmsAuthenticationToken(new AuthorizationGrantType(SecurityConstants.SMS), clientPrincipal, requestedScopes, additionalParameters);
+        return new OAuth2SmsAuthenticationToken(SecurityConstants.AUTHORIZATION_GRANT_TYPE_SMS, clientPrincipal, requestedScopes, additionalParameters);
     }
 
     /**

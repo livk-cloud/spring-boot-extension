@@ -1,5 +1,7 @@
 package com.livk.auth.server.common.constant;
 
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+
 /**
  * @author livk
  */
@@ -14,7 +16,11 @@ public interface SecurityConstants {
      * 手机号登录
      */
     String SMS = "sms";
+
+    AuthorizationGrantType AUTHORIZATION_GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
     String PASSWORD = "password";
+
+    AuthorizationGrantType AUTHORIZATION_GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
 
 
     /**

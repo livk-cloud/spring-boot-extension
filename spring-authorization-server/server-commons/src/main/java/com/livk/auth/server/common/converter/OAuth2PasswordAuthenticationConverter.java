@@ -6,7 +6,6 @@ import com.livk.auth.server.common.token.OAuth2PasswordAuthenticationToken;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -36,7 +35,7 @@ public class OAuth2PasswordAuthenticationConverter implements OAuth2BaseAuthenti
 
     @Override
     public OAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
-        return new OAuth2PasswordAuthenticationToken(new AuthorizationGrantType(SecurityConstants.PASSWORD), clientPrincipal, requestedScopes, additionalParameters);
+        return new OAuth2PasswordAuthenticationToken(SecurityConstants.AUTHORIZATION_GRANT_TYPE_PASSWORD, clientPrincipal, requestedScopes, additionalParameters);
     }
 
     /**

@@ -27,7 +27,6 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.security.Principal;
 import java.util.*;
 
 /**
@@ -158,9 +157,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 
             if (generatedAccessToken instanceof ClaimAccessor) {
                 authorizationBuilder
-                        .token(accessToken, metadata -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()))
-                        .authorizedScopes(authorizedScopes)
-                        .attribute(Principal.class.getName(), principal);
+                        .token(accessToken, metadata -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()));
             } else {
                 authorizationBuilder.accessToken(accessToken);
             }
@@ -170,10 +167,14 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
                 tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
                 OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
-                if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
+                if (generatedRefreshToken == null) {
                     throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR, "The token generator failed to generate the refresh token.", ERROR_URI));
                 }
-                refreshToken = (OAuth2RefreshToken) generatedRefreshToken;
+                if (generatedRefreshToken instanceof OAuth2RefreshToken oAuth2RefreshToken) {
+                    refreshToken = oAuth2RefreshToken;
+                } else {
+                    refreshToken = new OAuth2RefreshToken(generatedRefreshToken.getTokenValue(), generatedRefreshToken.getIssuedAt(), generatedRefreshToken.getExpiresAt());
+                }
                 authorizationBuilder.refreshToken(refreshToken);
             }
 

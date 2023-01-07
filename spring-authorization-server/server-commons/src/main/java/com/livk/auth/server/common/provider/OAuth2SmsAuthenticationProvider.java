@@ -5,7 +5,6 @@ import com.livk.auth.server.common.token.OAuth2SmsAuthenticationToken;
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2Token;
@@ -38,7 +37,7 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
 
     @Override
     protected void checkClient(@NonNull RegisteredClient registeredClient) {
-        if (!registeredClient.getAuthorizationGrantTypes().contains(new AuthorizationGrantType(SecurityConstants.SMS))) {
+        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.AUTHORIZATION_GRANT_TYPE_SMS)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
     }
