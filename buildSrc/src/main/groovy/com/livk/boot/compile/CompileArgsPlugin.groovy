@@ -5,6 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
 
 /**
@@ -33,6 +34,12 @@ abstract class CompileArgsPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        project.tasks.withType(Javadoc.class).every { javadoc ->
+            javadoc.options {
+                encoding(UTF_8)
+            }
+        }
+
         project.pluginManager.apply(JavaPlugin.class)
         def javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
         addCompile(javaCompile)
