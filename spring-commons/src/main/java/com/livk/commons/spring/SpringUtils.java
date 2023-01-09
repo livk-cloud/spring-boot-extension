@@ -79,11 +79,11 @@ public class SpringUtils {
     }
 
     /**
-     * {@example env= "spring.data.redisson.host=127.0.0.1" keyPrefix="spring.data" result=Map.of("redisson.host","127.0.0.1")}
+     * {example env= "spring.data.redisson.host=127.0.0.1" keyPrefix="spring.data" result=Map.of("redisson.host","127.0.0.1")}
      *
      * @param environment env
      * @param keyPrefix   prefix
-     * @return map
+     * @return map sub properties
      */
     public Map<String, String> getSubProperties(Environment environment, String keyPrefix) {
         return Binder.get(environment).bind(keyPrefix, Bindable.mapOf(String.class, String.class))
@@ -131,12 +131,12 @@ public class SpringUtils {
     /**
      * 解析SpEL表达式
      *
+     * @param <T>         类型
      * @param method      方法
      * @param args        方法参数
      * @param condition   表达式
      * @param returnClass 返回类型
-     * @param <T>         类型
-     * @return T
+     * @return T t
      */
     public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
         return parse(method, args, condition, returnClass, false, Map.of());
@@ -150,7 +150,7 @@ public class SpringUtils {
      * @param method    方法
      * @param args      方法参数
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parseSpEL(Method method, Object[] args, String condition) {
         return parseSpEL(method, args, condition, String.class);
@@ -159,11 +159,11 @@ public class SpringUtils {
     /**
      * 解析SpEL表达式
      *
+     * @param <T>         类型
      * @param variables   需要填充的数据
      * @param condition   表达式
      * @param returnClass 返回类型
-     * @param <T>         类型
-     * @return T
+     * @return T t
      */
     public <T> T parseSpEL(Map<String, ?> variables, String condition, Class<T> returnClass) {
         return parse(null, null, condition, returnClass, false, variables);
@@ -174,7 +174,7 @@ public class SpringUtils {
      *
      * @param variables 需要填充的数据
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parseSpEL(Map<String, ?> variables, String condition) {
         return parseSpEL(variables, condition, String.class);
@@ -186,7 +186,7 @@ public class SpringUtils {
      * @param method    方法
      * @param args      方法参数
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parseTemplate(Method method, Object[] args, String condition) {
         return parseTemplate(method, args, condition, null);
@@ -199,7 +199,7 @@ public class SpringUtils {
      * @param args      方法参数
      * @param condition 表达式
      * @param expandMap 拓展数据
-     * @return string
+     * @return string string
      */
     public String parseTemplate(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         return parse(method, args, condition, String.class, true, expandMap);
@@ -210,7 +210,7 @@ public class SpringUtils {
      *
      * @param variables 需要填充的数据
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parseTemplate(Map<String, ?> variables, String condition) {
         return parse(null, null, condition, String.class, true, variables);
@@ -222,7 +222,7 @@ public class SpringUtils {
      * @param method    方法
      * @param args      方法参数
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parse(Method method, Object[] args, String condition) {
         return parse(method, args, condition, null);
@@ -235,7 +235,7 @@ public class SpringUtils {
      * @param args      方法参数
      * @param condition 表达式
      * @param expandMap 拓展数据
-     * @return string
+     * @return string string
      */
     public String parse(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
         String result = parseTemplate(method, args, condition, expandMap);
@@ -250,7 +250,7 @@ public class SpringUtils {
      *
      * @param variables 需要填充的数据
      * @param condition 表达式
-     * @return string
+     * @return string string
      */
     public String parse(Map<String, ?> variables, String condition) {
         return parse(null, null, condition, variables);

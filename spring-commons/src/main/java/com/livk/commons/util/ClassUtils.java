@@ -17,6 +17,13 @@ import java.lang.reflect.TypeVariable;
 @UtilityClass
 public class ClassUtils extends org.springframework.util.ClassUtils {
 
+    /**
+     * To class class.
+     *
+     * @param <T>  the type parameter
+     * @param type the type
+     * @return the class
+     */
     @SneakyThrows
     @SuppressWarnings("unchecked")
     public <T> Class<T> toClass(Type type) {

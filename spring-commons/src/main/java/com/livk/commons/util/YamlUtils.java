@@ -20,7 +20,7 @@ public class YamlUtils {
     private static final Yaml YAML = new Yaml();
 
     /**
-     * {@example Map.of(" a.b.c ", " 1 ") -> YAML}
+     * {example Map.of(" a.b.c ", " 1 ") -> YAML}
      *
      * @param map properties key map
      * @return yml str

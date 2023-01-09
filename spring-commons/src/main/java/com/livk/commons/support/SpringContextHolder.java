@@ -52,39 +52,105 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
         applicationContext.publishEvent(event);
     }
 
+    /**
+     * Gets bean.
+     *
+     * @param <T>  the type parameter
+     * @param name the name
+     * @return the bean
+     */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) {
         return (T) getBeanFactory().getBean(name);
     }
 
+    /**
+     * Gets bean.
+     *
+     * @param <T>       the type parameter
+     * @param typeClass the type class
+     * @return the bean
+     */
     public static <T> T getBean(Class<T> typeClass) {
         return getBeanFactory().getBean(typeClass);
     }
 
+    /**
+     * Gets bean.
+     *
+     * @param <T>       the type parameter
+     * @param name      the name
+     * @param typeClass the type class
+     * @return the bean
+     */
     public static <T> T getBean(String name, Class<T> typeClass) {
         return getBeanFactory().getBean(name, typeClass);
     }
 
+    /**
+     * Gets bean provider.
+     *
+     * @param <T>       the type parameter
+     * @param typeClass the type class
+     * @return the bean provider
+     */
     public static <T> ObjectProvider<T> getBeanProvider(Class<T> typeClass) {
         return getBeanFactory().getBeanProvider(typeClass);
     }
 
+    /**
+     * Gets bean provider.
+     *
+     * @param <T>            the type parameter
+     * @param resolvableType the resolvable type
+     * @return the bean provider
+     */
     public static <T> ObjectProvider<T> getBeanProvider(ResolvableType resolvableType) {
         return getBeanFactory().getBeanProvider(resolvableType);
     }
 
+    /**
+     * Gets beans of type.
+     *
+     * @param <T>       the type parameter
+     * @param typeClass the type class
+     * @return the beans of type
+     */
     public static <T> Map<String, T> getBeansOfType(Class<T> typeClass) {
         return getBeanFactory().getBeansOfType(typeClass);
     }
 
+    /**
+     * Gets property.
+     *
+     * @param key the key
+     * @return the property
+     */
     public static String getProperty(String key) {
         return getProperty(key, String.class);
     }
 
+    /**
+     * Gets property.
+     *
+     * @param <T>          the type parameter
+     * @param key          the key
+     * @param requiredType the required type
+     * @return the property
+     */
     public static <T> T getProperty(String key, Class<T> requiredType) {
         return applicationContext.getEnvironment().getProperty(key, requiredType);
     }
 
+    /**
+     * Gets property.
+     *
+     * @param <T>          the type parameter
+     * @param key          the key
+     * @param requiredType the required type
+     * @param defaultValue the default value
+     * @return the property
+     */
     public static <T> T getProperty(String key, Class<T> requiredType, T defaultValue) {
         return applicationContext.getEnvironment().getProperty(key, requiredType, defaultValue);
     }
@@ -93,6 +159,7 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
      * 解析文本占位符${**}
      *
      * @param text the String to resolve
+     * @return the string
      */
     public static String resolvePlaceholders(String text) {
         return applicationContext.getEnvironment().resolvePlaceholders(text);
@@ -101,9 +168,9 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
     /**
      * 注册bean
      *
+     * @param <T>      bean类型
      * @param bean     bean实例
      * @param beanName beanName可为空，为空会自动生成
-     * @param <T>      bean类型
      */
     @SuppressWarnings("unchecked")
     public static <T> void registerBean(T bean, String beanName) {
@@ -111,6 +178,12 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
         registerBean(beanDefinition, beanName);
     }
 
+    /**
+     * Register bean.
+     *
+     * @param beanDefinition the bean definition
+     * @param beanName       the bean name
+     */
     public static void registerBean(BeanDefinition beanDefinition, String beanName) {
         if (beanFactory instanceof DefaultListableBeanFactory defaultBeanFactory) {
             registerBean(defaultBeanFactory, beanDefinition, beanName);

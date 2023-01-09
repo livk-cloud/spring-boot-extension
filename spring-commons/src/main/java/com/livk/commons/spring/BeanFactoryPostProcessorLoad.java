@@ -15,7 +15,6 @@ import java.util.Objects;
  * </p>
  *
  * @author livk
- * @date 2023/1/3
  */
 @AutoConfiguration
 @SpringFactories(type = ApplicationContextInitializer.class)

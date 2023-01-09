@@ -20,10 +20,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     /**
      * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
      *
+     * @param <A>             annotation泛型
      * @param methodParameter parameter
      * @param annotationClass annotation
-     * @param <A>             annotation泛型
-     * @return annotation
+     * @return annotation annotation element
      */
     public <A extends Annotation> A getAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
         A annotation = methodParameter.getMethodAnnotation(annotationClass);
@@ -37,10 +37,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     /**
      * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
      *
+     * @param <A>             annotation泛型
      * @param method          method
      * @param annotationClass annotation
-     * @param <A>             annotation泛型
-     * @return annotation
+     * @return annotation annotation element
      */
     public <A extends Annotation> A getAnnotationElement(Method method, Class<A> annotationClass) {
         A annotation = getAnnotation(method, annotationClass);
@@ -53,10 +53,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     /**
      * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
      *
+     * @param <A>             annotation泛型
      * @param methodParameter parameter
      * @param annotationClass annotation
-     * @param <A>             annotation泛型
-     * @return bool
+     * @return bool boolean
      */
     public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
         Class<?> containingClass = methodParameter.getContainingClass();
@@ -67,10 +67,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     /**
      * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
      *
+     * @param <A>             annotation泛型
      * @param method          method
      * @param annotationClass annotation
-     * @param <A>             annotation泛型
-     * @return bool
+     * @return bool boolean
      */
     public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
         return method.isAnnotationPresent(annotationClass) ||

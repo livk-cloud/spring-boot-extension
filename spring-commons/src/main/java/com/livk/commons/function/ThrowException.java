@@ -18,6 +18,7 @@ public interface ThrowException {
      * Is true throw exception.
      *
      * @param <T>       the type parameter
+     * @param obj       the obj
      * @param predicate the b
      * @return the throw exception
      */
@@ -36,6 +37,12 @@ public interface ThrowException {
      */
     void throwException(Throwable t) throws Throwable;
 
+    /**
+     * Throw exception.
+     *
+     * @param supplier the supplier
+     * @throws Throwable the throwable
+     */
     default void throwException(Supplier<Throwable> supplier) throws Throwable {
         Objects.requireNonNull(supplier);
         throwException(supplier.get());

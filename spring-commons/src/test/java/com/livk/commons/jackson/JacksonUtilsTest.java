@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * <p>
@@ -104,67 +105,5 @@ class JacksonUtilsTest {
                                     }
                                 }""");
         assertNotNull(result);
-    }
-
-    @Test
-    void getNodeFirst() {
-        JsonNode node = JacksonUtils.readTree("""
-                {
-                    "c": "1",
-                    "a": "2",
-                    "b": {
-                        "c": 3
-                    }
-                }""");
-        assertEquals("1", JacksonUtils.findNodeFirst(node, "c").asText());
-        assertEquals("2", JacksonUtils.findNodeFirst(node, "a").asText());
-    }
-
-    @Test
-    void getNodeFirstAll() {
-        JsonNode node = JacksonUtils.readTree("""
-                {
-                    "c": "1",
-                    "a": "2",
-                    "b": {
-                        "c": "3",
-                        "a": "4"
-                    }
-                }""");
-        assertArrayEquals(new String[]{"1", "3"}, JacksonUtils.findNodeAll(node, "c").stream().map(JsonNode::asText).toArray(String[]::new));
-        assertArrayEquals(new String[]{"2", "4"}, JacksonUtils.findNodeAll(node, "a").stream().map(JsonNode::asText).toArray(String[]::new));
-    }
-
-    @Test
-    void getNode() {
-        JsonNode node = JacksonUtils.readTree("""
-                {
-                    "c": "1",
-                    "a": "2",
-                    "b": {
-                        "c": "3",
-                        "d": {
-                            "ab": "6"
-                        }
-                    },
-                    "f": [
-                        {
-                            "a": "7"
-                        },
-                        {
-                            "a": "8"
-                        },
-                        {
-                            "a": "9"
-                        }
-                    ]
-                }""");
-        assertEquals("1", JacksonUtils.findNode(node, "c").asText());
-        assertEquals("2", JacksonUtils.findNode(node, "a").asText());
-        assertEquals("3", JacksonUtils.findNode(node, "b.c").asText());
-        assertEquals("6", JacksonUtils.findNode(node, "b.d.ab").asText());
-        assertEquals("7", JacksonUtils.findNode(node, "f.0.a").asText());
-        assertEquals("8", JacksonUtils.findNode(node, "f.1.a").asText());
-        assertEquals("9", JacksonUtils.findNode(node, "f.2.a").asText());
     }
 }

@@ -21,6 +21,14 @@ import java.util.stream.StreamSupport;
 @UtilityClass
 public class StreamUtils {
 
+    /**
+     * Concat map.
+     *
+     * @param <K>  the type parameter
+     * @param <V>  the type parameter
+     * @param maps the maps
+     * @return the map
+     */
     @SafeVarargs
     public <K, V> Map<K, List<V>> concat(Map<K, V>... maps) {
         if (ObjectUtils.isEmpty(maps)) {
@@ -39,6 +47,13 @@ public class StreamUtils {
                                 .collect(Collectors.toList())));
     }
 
+    /**
+     * Concat stream.
+     *
+     * @param <T> the type parameter
+     * @param ts  the ts
+     * @return the stream
+     */
     @SafeVarargs
     public <T> Stream<T> concat(T[]... ts) {
         if (ObjectUtils.isEmpty(ts)) {
@@ -47,17 +62,38 @@ public class StreamUtils {
         return Arrays.stream(ts).filter(Objects::nonNull).flatMap(Arrays::stream);
     }
 
+    /**
+     * Distinct predicate.
+     *
+     * @param <T>      the type parameter
+     * @param function the function
+     * @return the predicate
+     */
     public <T> Predicate<T> distinct(Function<? super T, ?> function) {
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
     }
 
+    /**
+     * Convert stream.
+     *
+     * @param <T>      the type parameter
+     * @param iterator the iterator
+     * @return the stream
+     */
     public <T> Stream<T> convert(Iterator<T> iterator) {
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
                 false);
     }
 
+    /**
+     * Convert stream.
+     *
+     * @param <T>         the type parameter
+     * @param enumeration the enumeration
+     * @return the stream
+     */
     public <T> Stream<T> convert(Enumeration<T> enumeration) {
         return StreamSupport.stream(
                 EnumerationSpliterator.spliteratorUnknownSize(enumeration),

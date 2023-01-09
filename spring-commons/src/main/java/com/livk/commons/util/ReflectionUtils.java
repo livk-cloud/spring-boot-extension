@@ -24,6 +24,13 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
+    /**
+     * Gets field name.
+     *
+     * @param <T>      the type parameter
+     * @param function the function
+     * @return the field name
+     */
     public <T> String getFieldName(FieldFunction<T> function) {
         try {
             Method method = function.getClass().getDeclaredMethod("writeReplace");
@@ -44,11 +51,24 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
         }
     }
 
+    /**
+     * Sets field and accessible.
+     *
+     * @param field     the field
+     * @param parameter the parameter
+     * @param value     the value
+     */
     public void setFieldAndAccessible(Field field, Object parameter, Object value) {
         field.setAccessible(true);
         setField(field, parameter, value);
     }
 
+    /**
+     * Gets read methods.
+     *
+     * @param targetClass the target class
+     * @return the read methods
+     */
     public Set<Method> getReadMethods(Class<?> targetClass) {
         Field[] fields = targetClass.getDeclaredFields();
         return Arrays.stream(fields)
@@ -57,6 +77,13 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Gets read method.
+     *
+     * @param targetClass the target class
+     * @param field       the field
+     * @return the read method
+     */
     public Method getReadMethod(Class<?> targetClass, Field field) {
         try {
             PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
@@ -67,6 +94,12 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
         }
     }
 
+    /**
+     * Gets all fields.
+     *
+     * @param targetClass the target class
+     * @return the all fields
+     */
     public List<Field> getAllFields(Class<?> targetClass) {
         List<Field> allFields = new ArrayList<>();
         Class<?> currentClass = targetClass;

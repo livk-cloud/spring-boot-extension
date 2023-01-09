@@ -28,15 +28,29 @@ import java.util.concurrent.TimeUnit;
 @SpringAutoService(auto = EnableHttpClient.class)
 public class RestTemplateConfiguration {
 
+    /**
+     * Rest template rest template.
+     *
+     * @param builder the builder
+     * @return the rest template
+     */
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 
 
+    /**
+     * The type Ok http client configuration.
+     */
     @Configuration(enforceUniqueMethods = false)
     @ConditionalOnClass(OkHttpClient.class)
     public static class OkHttpClientConfiguration {
+        /**
+         * Rest template customizer rest template customizer.
+         *
+         * @return the rest template customizer
+         */
         @Bean
         @ConditionalOnMissingBean(OkHttpClient.class)
         public RestTemplateCustomizer restTemplateCustomizer() {
@@ -51,6 +65,12 @@ public class RestTemplateConfiguration {
             return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(httpClient));
         }
 
+        /**
+         * Rest template customizer rest template customizer.
+         *
+         * @param okHttpClient the ok http client
+         * @return the rest template customizer
+         */
         @Bean
         @ConditionalOnBean(OkHttpClient.class)
         public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {

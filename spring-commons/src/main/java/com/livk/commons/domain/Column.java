@@ -12,6 +12,7 @@ import java.util.Map;
  * Column
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
  */
 @Getter
@@ -25,10 +26,24 @@ public class Column<T> {
 
     private final Map<String, Object> map;
 
+    /**
+     * 创建Column
+     *
+     * @param <T> the type parameter
+     * @param t   实体
+     * @return the column
+     */
     public static <T> Column<T> create(T t) {
         return new Column<T>(t, BeanMap.create(t));
     }
 
+    /**
+     * Gets the field value
+     *
+     * @param <V>      the type parameter
+     * @param function the function
+     * @return the v
+     */
     public <V> V get(FieldFunction<T> function) {
         return (V) map.get(ReflectionUtils.getFieldName(function));
     }

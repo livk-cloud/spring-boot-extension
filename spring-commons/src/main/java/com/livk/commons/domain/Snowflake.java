@@ -13,7 +13,6 @@ import java.net.NetworkInterface;
  * </p>
  *
  * @author livk
- * @date 2023/1/3
  */
 @Slf4j
 public class Snowflake {
@@ -43,13 +42,18 @@ public class Snowflake {
     private final long datacenterId;
     private long sequence = 0L;
 
+    /**
+     * Instantiates a new Snowflake.
+     */
     public Snowflake() {
         this(-1, -1);
     }
 
     /**
-     * @param workerId     工作机器ID
-     * @param datacenterId 序列号
+     * Instantiates a new Snowflake.
+     *
+     * @param workerId     Working machine ID
+     * @param datacenterId Serial number
      */
     public Snowflake(long workerId, long datacenterId) {
         if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
@@ -66,6 +70,9 @@ public class Snowflake {
      * <p>
      * 获取 maxWorkerId
      * </p>
+     *
+     * @param datacenterId the datacenter id
+     * @return the max worker id
      */
     protected static long getMaxWorkerId(long datacenterId) {
         StringBuilder buffer = new StringBuilder();
@@ -81,6 +88,8 @@ public class Snowflake {
      * <p>
      * 数据标识id部分
      * </p>
+     *
+     * @return the max datacenter id
      */
     protected static long getMaxDatacenterId() {
         long id = 0L;
@@ -104,7 +113,7 @@ public class Snowflake {
     /**
      * 获取下一个ID
      *
-     * @return ID
+     * @return ID long
      */
     public synchronized long nextId() {
         long timestamp = System.currentTimeMillis();

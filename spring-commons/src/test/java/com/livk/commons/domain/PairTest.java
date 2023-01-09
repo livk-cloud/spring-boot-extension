@@ -16,11 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2022/12/28
  */
 class PairTest {
 
-    static Pair<String, Integer> pair = Pair.of("livk", 123456);
+    Pair<String, Integer> pair = Pair.of("livk", 123456);
 
     @Test
     public void pairJsonSerializerTest() {

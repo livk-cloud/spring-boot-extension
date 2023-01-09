@@ -20,16 +20,39 @@ import java.io.Serializable;
  * Pair
  * </p>
  *
+ * @param <K> the type parameter
+ * @param <V> the type parameter
  * @author livk
  */
 @JsonSerialize(using = Pair.PairJsonSerializer.class)
 @JsonDeserialize(using = Pair.PairJsonDeserializer.class)
-public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
+public record Pair<K, V>(
+        /**
+         * key
+         */
+        K key,
+        /**
+         * value
+         */
+        V value
+) implements Serializable, Cloneable {
 
+    /**
+     * The constant EMPTY.
+     */
     public static final Pair<?, ?> EMPTY = Pair.of(null, null);
     @Serial
     private static final long serialVersionUID = -2303547536834226401L;
 
+    /**
+     * Statically constructed
+     *
+     * @param <K>   the type parameter
+     * @param <V>   the type parameter
+     * @param key   the key
+     * @param value the value
+     * @return the pair
+     */
     public static <K, V> Pair<K, V> of(K key, V value) {
         return new Pair<>(key, value);
     }
@@ -44,8 +67,14 @@ public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * The type Pair json serializer.
+     */
     static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> implements ContextualSerializer {
 
+        /**
+         * Instantiates a new Pair json serializer.
+         */
         protected PairJsonSerializer() {
             super(Pair.class, false);
         }
@@ -67,11 +96,17 @@ public record Pair<K, V>(K key, V value) implements Serializable, Cloneable {
         }
     }
 
+    /**
+     * The type Pair json deserializer.
+     */
     static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> implements ContextualDeserializer {
 
         private KeyDeserializer keyDeserializer;
         private JsonDeserializer<Object> valueDeserializer;
 
+        /**
+         * Instantiates a new Pair json deserializer.
+         */
         protected PairJsonDeserializer() {
             super(Pair.class);
         }

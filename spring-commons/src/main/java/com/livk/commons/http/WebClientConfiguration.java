@@ -36,7 +36,8 @@ public class WebClientConfiguration {
      * spring官方建议使用{@link WebClient} <a href=
      * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
      *
-     * @return WebClient
+     * @param webClientBuilder the web client builder
+     * @return WebClient web client
      */
     @Bean
     @ConditionalOnMissingBean
@@ -44,9 +45,17 @@ public class WebClientConfiguration {
         return webClientBuilder.build();
     }
 
+    /**
+     * The type Reactor client configuration.
+     */
     @AutoConfiguration
     @ConditionalOnClass(HttpClient.class)
     public static class ReactorClientConfiguration {
+        /**
+         * Reactor resource factory reactor resource factory.
+         *
+         * @return the reactor resource factory
+         */
         @Bean
         public ReactorResourceFactory reactorResourceFactory() {
             ReactorResourceFactory factory = new ReactorResourceFactory();
@@ -54,6 +63,12 @@ public class WebClientConfiguration {
             return factory;
         }
 
+        /**
+         * Reactor client web client customizer web client customizer.
+         *
+         * @param reactorResourceFactory the reactor resource factory
+         * @return the web client customizer
+         */
         @Bean
         public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
             Function<HttpClient, HttpClient> function = httpClient ->

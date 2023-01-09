@@ -5,8 +5,8 @@ package com.livk.commons.domain;
  * Wrapper
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- * @date 2022/12/16
  */
 public record Wrapper<T>(T obj) {
 

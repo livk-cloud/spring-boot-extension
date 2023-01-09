@@ -13,6 +13,7 @@ import java.util.function.Function;
 /**
  * LivkPage
  *
+ * @param <T> the type parameter
  * @author livk
  */
 @Getter
@@ -22,13 +23,21 @@ public class LivkPage<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 总数
+     */
     private final long total;
-
+    /**
+     * 当前分页数据
+     */
     private final List<T> list;
-
+    /**
+     * 页数
+     */
     private int pageNum;
-
+    /**
+     * 数量
+     */
     private int pageSize;
 
     /**
@@ -40,6 +49,13 @@ public class LivkPage<T> implements Serializable {
         this(list, Function.identity());
     }
 
+    /**
+     * 构建分页实体，同时使用{@link Function}转换list
+     *
+     * @param list     the list
+     * @param function the function
+     * @param <R>      the r
+     */
     public <R> LivkPage(List<R> list, Function<List<R>, List<T>> function) {
         if (list instanceof Page<R> page) {
             this.list = function.apply(page.getResult());

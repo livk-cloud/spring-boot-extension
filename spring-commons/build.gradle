@@ -1,3 +1,5 @@
+description "spring commons packages"
+
 dependencies {
     optional "org.springframework:spring-webflux"
     optional "io.projectreactor.netty:reactor-netty-http"
@@ -11,4 +13,14 @@ dependencies {
     api "com.google.code.findbugs:annotations"
     api "com.google.guava:guava"
     compileProcessor project(":spring-auto-processor")
+}
+
+java {
+    withJavadocJar()
+}
+
+javadoc {
+    options {
+        encoding("UTF-8")
+    }
 }

@@ -21,6 +21,9 @@ public class SystemController {
 
     private final ApplicationContext applicationContext;
 
+    /**
+     * Shutdown.
+     */
     @PostMapping("shutdown")
     public void shutdown() {
         System.exit(SpringApplication.exit(applicationContext));

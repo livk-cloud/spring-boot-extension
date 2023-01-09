@@ -27,6 +27,12 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
     private final PrintWriter writer;
 
+    /**
+     * Instantiates a new Response wrapper.
+     *
+     * @param response the response
+     * @throws IOException the io exception
+     */
     public ResponseWrapper(HttpServletResponse response) throws IOException {
         super(response);
         buffer = new ByteArrayOutputStream();
@@ -55,6 +61,12 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         buffer.reset();
     }
 
+    /**
+     * Get response data byte [ ].
+     *
+     * @return the byte [ ]
+     * @throws IOException the io exception
+     */
     public byte[] getResponseData() throws IOException {
         this.flushBuffer();
         return buffer.toByteArray();
@@ -64,6 +76,11 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
         private final ByteArrayOutputStream stream;
 
+        /**
+         * Instantiates a new Wrapper output stream.
+         *
+         * @param stream the stream
+         */
         public WrapperOutputStream(ByteArrayOutputStream stream) {
             this.stream = stream;
         }

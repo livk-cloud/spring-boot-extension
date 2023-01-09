@@ -22,6 +22,7 @@ import java.util.List;
  * AbstractImportSelector
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
  */
 public abstract class AbstractImportSelector<T> implements DeferredImportSelector, Ordered, EnvironmentAware {
@@ -30,7 +31,7 @@ public abstract class AbstractImportSelector<T> implements DeferredImportSelecto
     private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
     @Getter(AccessLevel.PROTECTED)
-    @Setter(onMethod_ = {@Override})
+    @Setter
     private Environment environment;
 
     @NotNull
@@ -45,10 +46,20 @@ public abstract class AbstractImportSelector<T> implements DeferredImportSelecto
         return StringUtils.toStringArray(names);
     }
 
+    /**
+     * Gets annotation class.
+     *
+     * @return the annotation class
+     */
     protected Class<T> getAnnotationClass() {
         return this.annotationClass;
     }
 
+    /**
+     * Is enabled boolean.
+     *
+     * @return the boolean
+     */
     protected boolean isEnabled() {
         return true;
     }

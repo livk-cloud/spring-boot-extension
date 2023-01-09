@@ -13,9 +13,10 @@ import java.util.List;
 
 /**
  * <p>
- * TreeNode
+ * Construct tree nodes, node ID are not allowed to be duplicated
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
  */
 @Slf4j
@@ -32,10 +33,24 @@ public class TreeNode<T> {
     private Long pid;
     private List<TreeNode<T>> children;
 
+    /**
+     * Construct the root node
+     *
+     * @param <T>  the type parameter
+     * @param id   the id
+     * @param node the node
+     * @return the tree node
+     */
     public static <T> TreeNode<T> createRoot(Long id, T node) {
         return new TreeNode<>(id, node, null, new ArrayList<>());
     }
 
+    /**
+     * Add a child node
+     *
+     * @param treeNo the tree no
+     * @return the boolean
+     */
     public boolean addChild(TreeNode<T> treeNo) {
         if (this.findById(treeNo.id) != null) {
             log.info("出现相同节点 id:{}", treeNo.id);
@@ -51,6 +66,11 @@ public class TreeNode<T> {
         return parent.children.add(treeNo);
     }
 
+    /**
+     * Set up child nodes
+     *
+     * @param nodes the nodes
+     */
     public void setChildren(List<TreeNode<T>> nodes) {
         List<TreeNode<T>> treeNodeList = nodes.stream()
                 .filter(node -> id.equals(node.pid))
@@ -62,6 +82,12 @@ public class TreeNode<T> {
         }
     }
 
+    /**
+     * Find by id tree node.
+     *
+     * @param id the id
+     * @return the tree node
+     */
     public TreeNode<T> findById(Long id) {
         if (this.id.equals(id)) {
             return this;

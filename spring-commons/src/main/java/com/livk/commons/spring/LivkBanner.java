@@ -57,6 +57,11 @@ class LivkBanner implements Banner {
         private final int n;
         private final PrintStream out;
 
+        /**
+         * Accept.
+         *
+         * @param str the str
+         */
         public void accept(String str) {
             int length = str.length();
             if (length < n) {

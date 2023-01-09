@@ -26,6 +26,13 @@ import java.nio.channels.ReadableByteChannel;
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
+    /**
+     * Test download.
+     *
+     * @param stream   the stream
+     * @param filePath the file path
+     * @throws IOException the io exception
+     */
     public void testDownload(InputStream stream, String filePath) throws IOException {
         File file = new File(filePath);
         if (createNewFile(file)) {
@@ -44,6 +51,12 @@ public class FileUtils extends FileCopyUtils {
         }
     }
 
+    /**
+     * Create new file boolean.
+     *
+     * @param file the file
+     * @return the boolean
+     */
     @SneakyThrows
     public boolean createNewFile(File file) {
         boolean flag = true;
@@ -53,6 +66,13 @@ public class FileUtils extends FileCopyUtils {
         return flag && file.createNewFile();
     }
 
+    /**
+     * Gets part values.
+     *
+     * @param name     the name
+     * @param exchange the exchange
+     * @return the part values
+     */
     public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
         return exchange.getMultipartData()
                 .mapNotNull(multiValueMap -> multiValueMap.getFirst(name));

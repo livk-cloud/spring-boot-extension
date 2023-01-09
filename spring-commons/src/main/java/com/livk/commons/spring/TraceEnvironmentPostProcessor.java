@@ -17,7 +17,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2022/12/30
  */
 @SpringFactories(type = EnvironmentPostProcessor.class)
 public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {

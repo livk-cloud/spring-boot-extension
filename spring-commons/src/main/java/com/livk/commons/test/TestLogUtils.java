@@ -21,6 +21,12 @@ public class TestLogUtils {
 
     private static final String NAME = TestLogUtils.class.getName();
 
+    /**
+     * Info.
+     *
+     * @param format    the format
+     * @param arguments the arguments
+     */
     public void info(String format, Object... arguments) {
         Logger logger = currentLogger();
         if (logger.isInfoEnabled()) {
@@ -28,6 +34,12 @@ public class TestLogUtils {
         }
     }
 
+    /**
+     * Trace.
+     *
+     * @param format    the format
+     * @param arguments the arguments
+     */
     public void trace(String format, Object... arguments) {
         Logger logger = currentLogger();
         if (logger.isTraceEnabled()) {
@@ -35,6 +47,12 @@ public class TestLogUtils {
         }
     }
 
+    /**
+     * Warn.
+     *
+     * @param format    the format
+     * @param arguments the arguments
+     */
     public void warn(String format, Object... arguments) {
         Logger logger = currentLogger();
         if (logger.isWarnEnabled()) {
@@ -42,6 +60,12 @@ public class TestLogUtils {
         }
     }
 
+    /**
+     * Debug.
+     *
+     * @param format    the format
+     * @param arguments the arguments
+     */
     public void debug(String format, Object... arguments) {
         Logger logger = currentLogger();
         if (logger.isDebugEnabled()) {
@@ -49,6 +73,12 @@ public class TestLogUtils {
         }
     }
 
+    /**
+     * Error.
+     *
+     * @param format    the format
+     * @param arguments the arguments
+     */
     public void error(String format, Object... arguments) {
         Logger logger = currentLogger();
         if (logger.isErrorEnabled()) {

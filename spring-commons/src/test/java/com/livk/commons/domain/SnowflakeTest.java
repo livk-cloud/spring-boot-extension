@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 class SnowflakeTest {
 

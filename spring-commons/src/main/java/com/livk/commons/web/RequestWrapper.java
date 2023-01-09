@@ -32,14 +32,34 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
 
     private final MediaType contentType;
 
+    /**
+     * Instantiates a new Request wrapper.
+     *
+     * @param request the request
+     * @param json    the json
+     */
     public RequestWrapper(HttpServletRequest request, String json) {
         this(request, json, MediaType.APPLICATION_JSON);
     }
 
+    /**
+     * Instantiates a new Request wrapper.
+     *
+     * @param request     the request
+     * @param json        the json
+     * @param contentType the content type
+     */
     public RequestWrapper(HttpServletRequest request, String json, String contentType) {
         this(request, json, MediaType.valueOf(contentType));
     }
 
+    /**
+     * Instantiates a new Request wrapper.
+     *
+     * @param request     the request
+     * @param json        the json
+     * @param contentType the content type
+     */
     public RequestWrapper(HttpServletRequest request, String json, MediaType contentType) {
         super(request);
         this.request = getRequest();
@@ -81,6 +101,13 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
 
         private final InputStream in;
 
+        /**
+         * Instantiates a new Request servlet input stream.
+         *
+         * @param request the request
+         * @param json    the json
+         * @throws UnsupportedEncodingException the unsupported encoding exception
+         */
         public RequestServletInputStream(ServletRequest request, String json) throws UnsupportedEncodingException {
             in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
         }
@@ -117,6 +144,11 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
 
         private boolean hasMoreElements = false;
 
+        /**
+         * Instantiates a new Header enumeration.
+         *
+         * @param contentType the content type
+         */
         public HeaderEnumeration(String contentType) {
             this.contentType = contentType;
         }

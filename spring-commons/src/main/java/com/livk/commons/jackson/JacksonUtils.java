@@ -12,12 +12,10 @@ import com.livk.commons.domain.Wrapper;
 import com.livk.commons.function.Present;
 import com.livk.commons.support.SpringContextHolder;
 import com.livk.commons.util.ObjectUtils;
-import com.livk.commons.util.StreamUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ResolvableType;
-import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
 import java.util.*;
@@ -25,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Jackson一些基本序列化与反序列化
- * 自定义Mapper，请注册{@link Wrapper}到IOC (Wrapper<ObjectMapper>)
+ * 自定义Mapper，请注册{@link Wrapper}到IOC
  */
 @Slf4j
 @UtilityClass
@@ -54,10 +52,10 @@ public class JacksonUtils {
     /**
      * json字符转Bean
      *
+     * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @param <T>   type
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -72,6 +70,14 @@ public class JacksonUtils {
 
     }
 
+    /**
+     * To bean t.
+     *
+     * @param <T>         the type parameter
+     * @param inputStream the input stream
+     * @param clazz       the clazz
+     * @return the t
+     */
     @SneakyThrows
     public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
         return (inputStream == null || clazz == null) ? null :
@@ -82,7 +88,7 @@ public class JacksonUtils {
      * 序列化
      *
      * @param obj obj
-     * @return json
+     * @return json string
      */
     @SneakyThrows
     public static String toJsonStr(Object obj) {
@@ -95,10 +101,10 @@ public class JacksonUtils {
     /**
      * json to List
      *
+     * @param <T>   泛型
      * @param json  json数组
      * @param clazz 类型
-     * @param <T>   泛型
-     * @return List<T>
+     * @return the list
      */
     @SneakyThrows
     public static <T> List<T> toList(String json, Class<T> clazz) {
@@ -113,10 +119,12 @@ public class JacksonUtils {
     /**
      * json反序列化Map
      *
+     * @param <K>        the type parameter
+     * @param <V>        the type parameter
      * @param json       json字符串
      * @param keyClass   K Class
      * @param valueClass V Class
-     * @return Map<K, V>
+     * @return the map
      */
     @SneakyThrows
     public static <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
@@ -127,6 +135,12 @@ public class JacksonUtils {
         return MAPPER.readValue(json, mapType);
     }
 
+    /**
+     * To properties properties.
+     *
+     * @param inputStream the input stream
+     * @return the properties
+     */
     @SneakyThrows
     public Properties toProperties(InputStream inputStream) {
         if (inputStream == null) {
@@ -136,139 +150,29 @@ public class JacksonUtils {
         return MAPPER.readValue(inputStream, javaType);
     }
 
+    /**
+     * To bean t.
+     *
+     * @param <T>           the type parameter
+     * @param json          the json
+     * @param typeReference the type reference
+     * @return the t
+     */
     @SneakyThrows
     public <T> T toBean(String json, TypeReference<T> typeReference) {
         return check(json, typeReference) ? null :
                 MAPPER.readValue(json, typeReference);
     }
 
+    /**
+     * Read tree json node.
+     *
+     * @param json the json
+     * @return the json node
+     */
     @SneakyThrows
     public JsonNode readTree(String json) {
         return MAPPER.readTree(json);
-    }
-
-    /**
-     * 获取json字符串的第一个子节点 从json串中自顶向下依次查找第一个出现的节点
-     *
-     * @param jsonNode json
-     * @param nodeName node
-     * @return str node first
-     * @example { "c": "1", "a": "2", "b": {"c": 3} } getNodeFirst(json,"c")==>1
-     * <p>
-     * { "c": "1", "a": "2", "b": {"c": 3,"d":4}, "d": 5 } getNodeFirst(json,"d")==>4
-     */
-    public JsonNode findNodeFirst(JsonNode jsonNode, String nodeName) {
-        if (!StringUtils.hasText(nodeName)) {
-            return null;
-        }
-        if (jsonNode.isArray()) {
-            Iterator<JsonNode> elements = jsonNode.elements();
-            while (elements.hasNext()) {
-                JsonNode result = findNodeFirst(elements.next(), nodeName);
-                if (result != null) {
-                    return result;
-                }
-            }
-        } else {
-            Iterator<String> iterator = jsonNode.fieldNames();
-            while (iterator.hasNext()) {
-                String node = iterator.next();
-                if (node.equals(nodeName)) {
-                    return jsonNode.get(nodeName);
-                } else {
-                    JsonNode child = jsonNode.get(node);
-                    if (child.isContainerNode()) {
-                        JsonNode result = findNodeFirst(child, nodeName);
-                        if (result != null) {
-                            return result;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获取所有节点为nodeName的数据
-     *
-     * @param jsonNode json
-     * @param nodeName name
-     * @return list
-     */
-    public List<JsonNode> findNodeAll(JsonNode jsonNode, String nodeName) {
-        if (!StringUtils.hasText(nodeName)) {
-            return Collections.emptyList();
-        }
-        List<JsonNode> jsonNodeList = new ArrayList<>();
-        if (jsonNode.isArray()) {
-            Iterator<JsonNode> elements = jsonNode.elements();
-            while (elements.hasNext()) {
-                List<JsonNode> firstAll = findNodeAll(elements.next(), nodeName);
-                jsonNodeList.addAll(firstAll);
-            }
-        } else {
-            Iterator<String> iterator = jsonNode.fieldNames();
-            while (iterator.hasNext()) {
-                String node = iterator.next();
-                if (node.equals(nodeName)) {
-                    jsonNodeList.add(jsonNode.get(nodeName));
-                } else {
-                    JsonNode child = jsonNode.get(node);
-                    if (child.isContainerNode()) {
-                        List<JsonNode> firstAll = findNodeAll(child, nodeName);
-                        jsonNodeList.addAll(firstAll);
-                    }
-                }
-            }
-        }
-        return jsonNodeList;
-    }
-
-    /**
-     * 获取json字符串的节点
-     *
-     * @param jsonNode json
-     * @param nodePath node(节点之间以.隔开)
-     * @return node node
-     * @example { "c": "1", "a": "2", "b": { "c": 3, "d": { "ab": 6 } } } getNode(json,
-     * "b"))==>{"c":3,"d":{"ab":6}} getNode(json, "b.c"))==>3 getNode(json,
-     * "b.d"))==>{"ab":6} getNode(json, "b.d.ab"))==>6 getNode(json, "d"))==>null
-     */
-    public JsonNode findNode(JsonNode jsonNode, String nodePath) {
-        if (!StringUtils.hasText(nodePath)) {
-            return null;
-        }
-        int index = nodePath.indexOf(".");
-        if (jsonNode.isArray()) {
-            int range = Integer.parseInt(nodePath.substring(0, index));
-            Iterator<JsonNode> elements = jsonNode.elements();
-            JsonNode node = StreamUtils.convert(elements).toList().get(range);
-            return findNode(node, nodePath.substring(index + 1));
-        } else {
-            Iterator<String> iterator = jsonNode.fieldNames();
-            while (iterator.hasNext()) {
-                String node = iterator.next();
-                if (index <= 0) {
-                    if (node.equals(nodePath)) {
-                        return jsonNode.get(nodePath);
-                    }
-                } else {
-                    String parentNode = nodePath.substring(0, index);
-                    if (node.equals(parentNode)) {
-                        JsonNode child = jsonNode.get(node);
-                        if (child.isContainerNode()) {
-                            String childNode = nodePath.substring(index + 1);
-                            JsonNode result = findNode(child, childNode);
-                            if (result != null) {
-                                return result;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     private boolean check(String json, Object... checkObj) {
