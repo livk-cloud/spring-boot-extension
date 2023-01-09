@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class PairTest {
 
-    Pair<String, Integer> pair = Pair.of("livk", 123456);
+    static Pair<String, Integer> pair = Pair.of("livk", 123456);
 
     @Test
     public void pairJsonSerializerTest() {

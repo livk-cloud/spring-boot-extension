@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.type.TypeBindings;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.io.Serial;
@@ -24,18 +25,37 @@ import java.io.Serializable;
  * @param <V> the type parameter
  * @author livk
  */
+@RequiredArgsConstructor(staticName = "of")
 @JsonSerialize(using = Pair.PairJsonSerializer.class)
 @JsonDeserialize(using = Pair.PairJsonDeserializer.class)
-public record Pair<K, V>(
-        /**
-         * key
-         */
-        K key,
-        /**
-         * value
-         */
-        V value
-) implements Serializable, Cloneable {
+public class Pair<K, V> implements Serializable, Cloneable {
+    /**
+     * key
+     */
+    private final K key;
+
+    /**
+     * value
+     */
+    private final V value;
+
+    /**
+     * Get Key.
+     *
+     * @return the k
+     */
+    public K key() {
+        return key;
+    }
+
+    /**
+     * Get Value
+     *
+     * @return the v
+     */
+    public V value() {
+        return value;
+    }
 
     /**
      * The constant EMPTY.
@@ -43,19 +63,6 @@ public record Pair<K, V>(
     public static final Pair<?, ?> EMPTY = Pair.of(null, null);
     @Serial
     private static final long serialVersionUID = -2303547536834226401L;
-
-    /**
-     * Statically constructed
-     *
-     * @param <K>   the type parameter
-     * @param <V>   the type parameter
-     * @param key   the key
-     * @param value the value
-     * @return the pair
-     */
-    public static <K, V> Pair<K, V> of(K key, V value) {
-        return new Pair<>(key, value);
-    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -85,7 +92,7 @@ public record Pair<K, V>(
         public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializerProvider provider) throws IOException {
             gen.writeStartObject(pair);
             keySerializer.serialize(pair.key(), gen, provider);
-            gen.writeObject(pair.value);
+            gen.writeObject(pair.value());
             gen.writeEndObject();
         }
 
