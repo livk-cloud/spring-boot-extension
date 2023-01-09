@@ -2,7 +2,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
-import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,7 +61,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     public void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
-            ExcelUtils.write(outputStream, excelModelClass, result);
+            EasyExcelUtils.write(outputStream, excelModelClass, result);
         } catch (IOException e) {
             e.printStackTrace();
         }

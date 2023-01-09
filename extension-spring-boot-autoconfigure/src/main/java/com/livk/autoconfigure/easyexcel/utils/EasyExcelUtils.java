@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2023/1/5
  */
 @UtilityClass
-public class ExcelUtils {
+public class EasyExcelUtils {
 
     public void read(InputStream in, Class<?> excelModelClass, ExcelReadListener<?> listener, Boolean ignoreEmptyRow) {
         EasyExcel.read(in, excelModelClass, listener)

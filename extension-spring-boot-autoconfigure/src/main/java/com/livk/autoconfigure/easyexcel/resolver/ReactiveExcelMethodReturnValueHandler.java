@@ -2,7 +2,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
-import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
 import org.springframework.core.Ordered;
@@ -104,7 +104,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ExcelUtils.write(outputStream, excelModelClass, result);
+        EasyExcelUtils.write(outputStream, excelModelClass, result);
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream);
         return response.writeWith(bufferFlux);
     }

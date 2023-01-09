@@ -2,7 +2,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
-import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -49,7 +49,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             InputStream in = getInputStream(request, importExcel.fileName());
-            ExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow());
+            EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow());
             return listener.getCollectionData();
         }
         return Collections.emptyList();

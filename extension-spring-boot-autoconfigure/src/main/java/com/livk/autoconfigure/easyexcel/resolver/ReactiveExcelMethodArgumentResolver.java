@@ -2,7 +2,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
-import com.livk.autoconfigure.easyexcel.utils.ExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.util.BeanUtils;
@@ -56,7 +56,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
             ExcelReadListener<?> listener = BeanUtils.instantiateClass(importExcel.parse());
             mono = FileUtils.getPartValues(importExcel.fileName(), exchange)
                     .flatMap(DataBufferUtils::transform)
-                    .doOnSuccess(in -> ExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow()))
+                    .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow()))
                     .map(in -> listener.getCollectionData());
         }
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
