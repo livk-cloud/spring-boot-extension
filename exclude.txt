@@ -11,7 +11,6 @@ com.livk.dynamic.example.controller.UserControllerTest
 com.livk.mybatis.example.mapper.UserMapperTest
 com.livk.mybatis.example.service.UserServiceTest
 com.livk.mybatis.example.controller.UserControllerTest
-com.livk.mybatis.tree.example.controller.MenuControllerTest
 com.livk.mysql.json.controller.UserControllerTest
 com.livk.postgres.json.controller.UserControllerTest
 com.livk.mqtt.MqttTest
