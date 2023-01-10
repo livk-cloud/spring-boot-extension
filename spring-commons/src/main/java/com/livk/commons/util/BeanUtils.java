@@ -69,7 +69,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (source == null) {
             return true;
         }
-        return ObjectUtils.anyChecked(field -> ReflectionUtils.getField(field, source) == null,
+        return ObjectUtils.anyChecked(field -> ReflectionUtils.getDeclaredFieldValue(field, source) == null,
                 source.getClass().getDeclaredFields());
     }
 }
