@@ -10,12 +10,12 @@ import com.livk.commons.spring.AbstractImportSelector;
  * </p>
  *
  * @author livk
- * 
+ *
  */
 public class DynamicDatasourceImportSelector extends AbstractImportSelector<EnableDynamicDatasource> {
 
     @Override
     protected boolean isEnabled() {
-        return getEnvironment().getProperty(DynamicDatasourceProperties.PREFIX + "enabled", Boolean.class, Boolean.TRUE);
+        return environment.getProperty(DynamicDatasourceProperties.PREFIX + "enabled", Boolean.class, Boolean.TRUE);
     }
 }
