@@ -111,6 +111,13 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
         return allFields;
     }
 
+    /**
+     * Gets declared field value.
+     *
+     * @param field  the field
+     * @param target the target
+     * @return the declared field value
+     */
     public static Object getDeclaredFieldValue(Field field, Object target) {
         field.setAccessible(true);
         return ReflectionUtils.getField(field, target);
