@@ -16,7 +16,6 @@ googleFindbugs = "3.0.1"
 mapstruct = "1.5.3.Final"
 mapstructLombok = "0.2.0"
 curator = "5.4.0"
-mapstructSpring = "0.1.2"
 ip2region = "2.6.6"
 asciidoctorJvm = "3.3.2"
 browscapJava = "1.3.13"
@@ -51,8 +50,6 @@ mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstr
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstructLombok" }
 curator-recipes = { group = "org.apache.curator", name = "curator-recipes", version.ref = "curator" }
-mapstruct-spring-extensions = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-extensions", version.ref = "mapstructSpring" }
-mapstruct-spring-annotations = { group = "org.mapstruct.extensions.spring", name = "mapstruct-spring-annotations", version.ref = "mapstructSpring" }
 ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
 browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref = "browscapJava" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
