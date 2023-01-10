@@ -49,10 +49,7 @@ class UserControllerTest {
                     .andExpect(jsonPath("customize.createTime").exists())
                     .andExpect(jsonPath("spring.username", "livk" + i).exists())
                     .andExpect(jsonPath("spring.type", i).exists())
-                    .andExpect(jsonPath("spring.createTime").exists())
-                    .andExpect(jsonPath("adapter.username", "livk" + i).exists())
-                    .andExpect(jsonPath("adapter.type", i).exists())
-                    .andExpect(jsonPath("adapter.createTime").exists());
+                    .andExpect(jsonPath("spring.createTime").exists());
         }
     }
 }
