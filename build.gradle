@@ -62,7 +62,7 @@ configure(allprojects) {
         maven { url "https://maven.aliyun.com/repository/public" }
         maven {
             url "http://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
-            setAllowInsecureProtocol(true)
+            allowInsecureProtocol true
         }
     }
 }

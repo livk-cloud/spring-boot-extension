@@ -18,9 +18,3 @@ dependencies {
 java {
     withJavadocJar()
 }
-
-javadoc {
-    options {
-        encoding("UTF-8")
-    }
-}

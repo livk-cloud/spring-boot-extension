@@ -2,7 +2,6 @@ package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -70,14 +69,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (source == null) {
             return true;
         }
-        return Arrays.stream(source.getClass().getDeclaredFields())
-                .noneMatch(field -> {
-                    field.setAccessible(true);
-                    try {
-                        return field.get(source) != null;
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        return ObjectUtils.anyChecked(field -> ReflectionUtils.getField(field, source) == null,
+                source.getClass().getDeclaredFields());
     }
 }
