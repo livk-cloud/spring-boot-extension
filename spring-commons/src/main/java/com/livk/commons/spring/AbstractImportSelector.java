@@ -13,6 +13,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  * @param <T> the type parameter
  * @author livk
  */
-public abstract class AbstractImportSelector<T> implements DeferredImportSelector, Ordered, EnvironmentAware {
+public abstract class AbstractImportSelector<T extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware {
 
     @SuppressWarnings("unchecked")
     private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
