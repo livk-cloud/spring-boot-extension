@@ -68,7 +68,7 @@ public class CustomPage<T> implements Serializable {
      */
     public <R> CustomPage(List<R> list, Function<List<R>, List<T>> function) {
         if (list instanceof Page<R> page) {
-            this.list = function.apply(page.getResult());
+            this.list = function.apply(page.getResult().stream().toList());
             this.pageNum = page.getPageNum();
             this.pageSize = page.getPageSize();
             this.total = page.getTotal();
@@ -78,10 +78,11 @@ public class CustomPage<T> implements Serializable {
         }
     }
 
-    CustomPage(List<T> list, int pageNum, int pageSize) {
-        this(list);
+    CustomPage(List<T> list, int pageNum, int pageSize, long total) {
+        this.list = list;
         this.pageNum = pageNum;
         this.pageSize = pageSize;
+        this.total = total;
     }
 
     static class CustomPageJsonDeserializer extends StdScalarDeserializer<CustomPage<Object>> implements ContextualDeserializer {
@@ -103,11 +104,12 @@ public class CustomPage<T> implements Serializable {
             List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, javaType, mapper);
             int pageNum = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageNum)).asInt();
             int pageSize = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageSize)).asInt();
-            return new CustomPage<>(list, pageNum, pageSize);
+            long total = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getTotal)).asLong();
+            return new CustomPage<>(list, pageNum, pageSize, total);
         }
 
         @Override
-        public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+        public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) {
             JavaType contextualType = context.getContextualType();
             TypeBindings bindings = contextualType.getBindings();
             javaType = bindings.getBoundType(0);
