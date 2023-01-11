@@ -8,6 +8,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.StandardLocation;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -120,5 +121,32 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets annotation mirror attributes.
+     *
+     * @param annotationMirror the annotation mirror
+     * @return the annotation mirror attributes
+     */
+    protected Map<String, String> getAnnotationMirrorAttributes(AnnotationMirror annotationMirror) {
+        return annotationMirror.getElementValues()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() != null)
+                .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
+                        entry -> entry.getValue().getValue().toString()));
+    }
+
+    /**
+     * Factories add.
+     *
+     * @param factoriesMap the factories map
+     * @param provider     the provider
+     * @param serviceImpl  the service
+     */
+    protected void factoriesAdd(Map<String, Set<String>> factoriesMap, String provider, String serviceImpl) {
+        Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
+        providers.add(serviceImpl);
     }
 }
