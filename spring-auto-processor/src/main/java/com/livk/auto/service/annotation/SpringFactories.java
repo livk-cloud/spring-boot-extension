@@ -19,4 +19,11 @@ public @interface SpringFactories {
      * @return class
      */
     Class<?> type();
+
+    /**
+     * Aot boolean.
+     *
+     * @return the boolean
+     */
+    boolean aot() default false;
 }

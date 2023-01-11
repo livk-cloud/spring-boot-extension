@@ -6,7 +6,6 @@ import com.livk.auto.service.annotation.SpringFactories;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
@@ -30,9 +29,13 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private static final Class<SpringFactories> SUPPORT_CLASS = SpringFactories.class;
 
-    private static final String LOCATION = "META-INF/spring.factories";
+    private static final String SPRING_LOCATION = "META-INF/spring.factories";
 
-    private final Map<String, Set<String>> factoriesMap = new ConcurrentHashMap<>();
+    private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
+
+    private final Map<String, Set<String>> springFactoriesMap = new ConcurrentHashMap<>();
+
+    private final Map<String, Set<String>> aotFactoriesMap = new ConcurrentHashMap<>();
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -41,29 +44,36 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     @Override
     protected void generateConfigFiles() {
-        Map<String, Set<String>> allImportMap = new HashMap<>();
-        for (String providerInterface : factoriesMap.keySet()) {
-            Set<String> exitImports = new HashSet<>();
-            try {
-                for (StandardLocation standardLocation : out) {
-                    FileObject resource = filer.getResource(standardLocation, "", LOCATION);
-                    exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
-                }
-            } catch (IOException ignored) {
+        generateConfigFiles(springFactoriesMap, SPRING_LOCATION);
+        generateConfigFiles(aotFactoriesMap, AOT_LOCATION);
+    }
 
+    private void generateConfigFiles(Map<String, Set<String>> factoriesMap, String location) {
+        if (!factoriesMap.isEmpty()) {
+            Map<String, Set<String>> allImportMap = new HashMap<>();
+            for (String providerInterface : factoriesMap.keySet()) {
+                Set<String> exitImports = new HashSet<>();
+                try {
+                    for (StandardLocation standardLocation : out) {
+                        FileObject resource = filer.getResource(standardLocation, "", location);
+                        exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
+                    }
+                } catch (IOException ignored) {
+
+                }
+                Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
+                        .collect(Collectors.toSet());
+                allImportMap.put(providerInterface, allImports);
             }
-            Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
-                    .collect(Collectors.toSet());
-            allImportMap.put(providerInterface, allImports);
-        }
-        try {
-            FileObject fileObject =
-                    filer.createResource(StandardLocation.CLASS_OUTPUT, "", LOCATION);
-            try (OutputStream out = fileObject.openOutputStream()) {
-                SpringFactoriesUtils.writeFile(allImportMap, out);
+            try {
+                FileObject fileObject =
+                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
+                try (OutputStream out = fileObject.openOutputStream()) {
+                    SpringFactoriesUtils.writeFile(allImportMap, out);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -73,15 +83,17 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         for (Element element : elements) {
             AnnotationMirror annotationMirror = getAnnotationMirrorWith(element, SUPPORT_CLASS);
             if (annotationMirror != null) {
-                Map<String, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues()
-                        .entrySet()
-                        .stream()
-                        .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(), Map.Entry::getValue));
-                Optional<String> optionalProvider = Optional.ofNullable(elementValues.get("type"))
-                        .map(annotationValue -> annotationValue.getValue().toString());
+                Map<String, String> attributes = getAnnotationMirrorAttributes(annotationMirror);
+                Optional<String> optionalProvider = Optional.ofNullable(attributes.get("type"));
+                Optional<Boolean> optionalAot = Optional.ofNullable(attributes.get("aot"))
+                        .map(Boolean::parseBoolean);
                 String provider = optionalProvider.orElseThrow();
-                Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
-                providers.add(element.toString());
+                boolean aot = optionalAot.orElse(false);
+                if (aot) {
+                    factoriesAdd(aotFactoriesMap, provider, element.toString());
+                } else {
+                    factoriesAdd(springFactoriesMap, provider, element.toString());
+                }
             }
         }
     }
