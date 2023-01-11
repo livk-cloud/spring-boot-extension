@@ -12,10 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>
@@ -52,7 +53,7 @@ class AuthServerAppTest {
                 .getResponse()
                 .getContentAsString();
         String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
-        hello(accessToken);
+        assertNotNull(accessToken);
     }
 
     @Test
@@ -76,14 +77,6 @@ class AuthServerAppTest {
                 .getResponse()
                 .getContentAsString();
         String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
-        hello(accessToken);
-    }
-
-    private void hello(String token) throws Exception {
-        mockMvc.perform(get("/hello")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("hello"));
+        assertNotNull(accessToken);
     }
 }

@@ -2,7 +2,7 @@ package com.livk.mybatis.example.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.domain.LivkPage;
+import com.livk.commons.domain.CustomPage;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.mybatis.example.entity.User;
 import com.livk.mybatis.example.service.UserService;
@@ -49,12 +49,12 @@ public class UserController {
     }
 
     @GetMapping
-    public HttpEntity<LivkPage<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
-                                           @RequestParam(defaultValue = "10") Integer pageSize) {
+    public HttpEntity<CustomPage<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
+                                             @RequestParam(defaultValue = "10") Integer pageSize) {
         try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
                 .countColumn(ReflectionUtils.getFieldName(User::getId))
                 .doSelectPage(userService::list)) {
-            LivkPage<User> result = new LivkPage<>(page);
+            CustomPage<User> result = new CustomPage<>(page);
             return ResponseEntity.ok(result);
         }
     }

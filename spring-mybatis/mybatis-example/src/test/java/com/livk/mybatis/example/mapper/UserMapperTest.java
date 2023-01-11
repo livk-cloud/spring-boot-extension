@@ -1,8 +1,10 @@
 package com.livk.mybatis.example.mapper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.domain.LivkPage;
+import com.livk.commons.domain.CustomPage;
+import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
@@ -64,8 +66,12 @@ class UserMapperTest {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
                 .countColumn(ReflectionUtils.getFieldName(User::getId))
                 .doSelectPage(userMapper::list)) {
-            LivkPage<User> result = new LivkPage<>(page);
+            CustomPage<User> result = new CustomPage<>(page);
             assertNotNull(result);
+            String json = JacksonUtils.toJsonStr(result);
+            CustomPage<User> customPage = JacksonUtils.toBean(json, new TypeReference<>() {
+            });
+            assertNotNull(customPage);
         }
     }
 
