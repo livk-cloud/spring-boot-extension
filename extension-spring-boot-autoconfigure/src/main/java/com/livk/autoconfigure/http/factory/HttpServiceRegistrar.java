@@ -72,8 +72,8 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
                 beanDefinition.setInstanceSupplier(httpFactoryBean::getObject);
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
                 String beanName;
-                if (provider != null) {
-                    beanName = StringUtils.hasText(provider.value()) ? provider.value() : StringUtils.uncapitalize(clazz.getSimpleName());
+                if (provider != null && StringUtils.hasText(provider.value())) {
+                    beanName = provider.value();
                 } else {
                     beanName = StringUtils.uncapitalize(clazz.getSimpleName());
                 }
