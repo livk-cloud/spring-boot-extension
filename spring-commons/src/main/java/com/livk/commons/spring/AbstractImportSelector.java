@@ -29,6 +29,9 @@ public abstract class AbstractImportSelector<T extends Annotation> implements De
     @SuppressWarnings("unchecked")
     private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
+    /**
+     * The Environment.
+     */
     @Setter
     protected Environment environment;
 
