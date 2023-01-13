@@ -15,6 +15,32 @@ image:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo
 image:https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white["Build Status",link="https://gitee.com/livk-cloud/spring-boot-example"] +
 https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
 
+#Maven#
+[source,xml,indent=0]
+
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>livk-boot-dependencies</artifactId>
+            <version>1.0.0-M1</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+[source,groovy,indent=0]
+
+----
+dependencies {
+    implementation platform(project("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M1")
+}
+----
+
 link:gradle-idea.adoc[gradle idea配置指导]
 
 这是一个关于springboot项目的各种示例 +
