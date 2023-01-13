@@ -38,6 +38,10 @@ gradlePlugin {
             id = "com.livk.service"
             implementationClass = "com.livk.boot.ServicePlugin"
         }
+        deployedPlugin {
+            id = "com.livk.mvn.deployed"
+            implementationClass = "com.livk.boot.maven.DeployedPlugin"
+        }
     }
 }
 
