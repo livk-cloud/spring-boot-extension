@@ -30,6 +30,9 @@ import java.util.Map;
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 
+    /**
+     * The constant UTF8.
+     */
     public static final String UTF8 = "UTF-8";
 
     @Override
@@ -58,7 +61,15 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         }
     }
 
-    public void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+    /**
+     * Write.
+     *
+     * @param excelReturn     the excel return
+     * @param response        the response
+     * @param excelModelClass the excel model class
+     * @param result          the result
+     */
+    private void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             EasyExcelUtils.write(outputStream, excelModelClass, result);
@@ -67,6 +78,12 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
         }
     }
 
+    /**
+     * set response
+     *
+     * @param excelReturn the excel return
+     * @param response    response
+     */
     private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
         String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
         String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)

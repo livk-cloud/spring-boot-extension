@@ -18,17 +18,34 @@ import java.io.OutputStream;
  * </p>
  *
  * @author livk
- * 
  */
 @UtilityClass
 public class QRCodeUtils {
 
+    /**
+     * Get qr code image byte [ ].
+     *
+     * @param text   the text
+     * @param width  the width
+     * @param height the height
+     * @param type   the type
+     * @return the byte [ ]
+     */
     public byte[] getQRCodeImage(String text, int width, int height, PicType type) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         getQRCodeImage(text, width, height, stream, type);
         return stream.toByteArray();
     }
 
+    /**
+     * Gets qr code image.
+     *
+     * @param text   the text
+     * @param width  the width
+     * @param height the height
+     * @param out    the out
+     * @param type   the type
+     */
     public void getQRCodeImage(String text, int width, int height, OutputStream out, PicType type) {
         try {
             QRCodeWriter writer = new QRCodeWriter();

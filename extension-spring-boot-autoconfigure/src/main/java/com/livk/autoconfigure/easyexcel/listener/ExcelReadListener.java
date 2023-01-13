@@ -12,15 +12,15 @@ import java.util.Collection;
  * ExcelReadListener
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- *
  */
 public interface ExcelReadListener<T> extends ReadListener<T> {
 
     /**
      * 获取数据集合
      *
-     * @return collection
+     * @return collection collection data
      */
     Collection<T> getCollectionData();
 
@@ -34,7 +34,7 @@ public interface ExcelReadListener<T> extends ReadListener<T> {
      *
      * @param inputStream 数据流
      * @param targetClass 数据类型
-     * @return this
+     * @return excel read listener
      */
     default ExcelReadListener<T> parse(InputStream inputStream, Class<?> targetClass) {
         EasyExcel.read(inputStream, targetClass, this).sheet().doRead();

@@ -10,8 +10,8 @@ import java.util.Collection;
  * TypeExcelReadListener
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- *
  */
 public abstract class TypeExcelReadListener<T> implements ExcelReadListener<T> {
 

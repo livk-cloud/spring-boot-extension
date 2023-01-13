@@ -15,8 +15,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- * @date 2022/12/16
  */
 public abstract class AbstractUserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
@@ -36,7 +36,18 @@ public abstract class AbstractUserAgentResolver<T> implements HandlerMethodArgum
         return parseUserAgent(request);
     }
 
+    /**
+     * Gets user agent.
+     *
+     * @return the user agent
+     */
     protected abstract T getUserAgent();
 
+    /**
+     * Parse user agent t.
+     *
+     * @param request the request
+     * @return the t
+     */
     protected abstract T parseUserAgent(HttpServletRequest request);
 }

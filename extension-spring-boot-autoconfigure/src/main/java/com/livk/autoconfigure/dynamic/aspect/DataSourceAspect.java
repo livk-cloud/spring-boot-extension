@@ -16,11 +16,18 @@ import java.lang.reflect.Method;
  * </p>
  *
  * @author livk
- *
  */
 @Aspect
 public class DataSourceAspect {
 
+    /**
+     * Execute object.
+     *
+     * @param joinPoint     the join point
+     * @param dynamicSource the dynamic source
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @Around("@annotation(dynamicSource)||@within(dynamicSource)")
     public Object execute(ProceedingJoinPoint joinPoint, DynamicSource dynamicSource) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

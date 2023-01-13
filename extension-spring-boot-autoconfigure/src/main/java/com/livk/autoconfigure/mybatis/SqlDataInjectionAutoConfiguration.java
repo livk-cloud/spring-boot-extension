@@ -17,13 +17,17 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @SpringAutoService(auto = EnableSqlPlugin.class)
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class SqlDataInjectionAutoConfiguration {
 
+    /**
+     * Sql data injection configuration customizer configuration customizer.
+     *
+     * @return the configuration customizer
+     */
     @Bean
     public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
         return configuration -> configuration.addInterceptor(new SqlDataInjection());

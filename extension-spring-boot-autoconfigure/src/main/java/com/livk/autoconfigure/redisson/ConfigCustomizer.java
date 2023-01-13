@@ -11,7 +11,6 @@ import org.redisson.config.Config;
  * </p>
  *
  * @author livk
- *
  */
 public interface ConfigCustomizer extends Customizer<Config> {
 

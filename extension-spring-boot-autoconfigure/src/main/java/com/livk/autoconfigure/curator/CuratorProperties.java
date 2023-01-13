@@ -14,6 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(CuratorProperties.PREFIX)
 public class CuratorProperties {
 
+    /**
+     * The constant PREFIX.
+     */
     public static final String PREFIX = "spring.zookeeper.curator";
 
     /**

@@ -32,10 +32,22 @@ public class UserAgentUtils {
         return ANALYZER.parse(headersConcat);
     }
 
+    /**
+     * Parse user agent.
+     *
+     * @param request the request
+     * @return the user agent
+     */
     public UserAgent parse(HttpServletRequest request) {
         return parse(WebUtils.headers(request));
     }
 
+    /**
+     * Parse user agent.
+     *
+     * @param request the request
+     * @return the user agent
+     */
     public UserAgent parse(ServerHttpRequest request) {
         return parse(request.getHeaders());
     }

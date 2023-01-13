@@ -9,7 +9,6 @@ import com.livk.commons.spring.AbstractImportSelector;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 public class MybatisLogMonitorImportSelector extends AbstractImportSelector<EnableSqlMonitor> {
 }

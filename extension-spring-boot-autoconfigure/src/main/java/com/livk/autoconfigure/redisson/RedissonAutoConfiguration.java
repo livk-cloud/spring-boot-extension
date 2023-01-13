@@ -35,7 +35,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- *
  */
 @SpringAutoService
 @ConditionalOnClass(Redisson.class)
@@ -50,6 +49,12 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     private StandardEnvironment environment;
 
+    /**
+     * Redisson reactive client.
+     *
+     * @param redisson the redisson
+     * @return the redisson reactive client
+     */
     @Bean(destroyMethod = "shutdown")
     @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnMissingBean(RedissonReactiveClient.class)
@@ -57,6 +62,13 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
         return redisson.reactive();
     }
 
+    /**
+     * Redisson client redisson client.
+     *
+     * @param redisProperties   the redis properties
+     * @param configCustomizers the config customizers
+     * @return the redisson client
+     */
     @Bean(destroyMethod = "shutdown")
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties,

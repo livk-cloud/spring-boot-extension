@@ -19,5 +19,10 @@ import java.lang.annotation.Target;
 @Import(SPIBeanRegistrar.class)
 public @interface ImportSPI {
 
+    /**
+     * Value class.
+     *
+     * @return the class
+     */
     Class<?> value();
 }

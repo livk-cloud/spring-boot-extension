@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- *
  */
 @RequiredArgsConstructor
 public class RedissonLock extends AbstractLockSupport<RLock> {

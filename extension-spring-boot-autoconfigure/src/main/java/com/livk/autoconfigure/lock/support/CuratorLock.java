@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author livk
- * @date 2022/12/27
  */
 @RequiredArgsConstructor
 public class CuratorLock extends AbstractLockSupport<InterProcessLock> {

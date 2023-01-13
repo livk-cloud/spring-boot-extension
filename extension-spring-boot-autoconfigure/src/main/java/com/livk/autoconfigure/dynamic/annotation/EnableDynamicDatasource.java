@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

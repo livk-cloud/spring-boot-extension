@@ -8,7 +8,6 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * </p>
  *
  * @author livk
- *
  */
 public class DynamicDatasource extends AbstractRoutingDataSource {
 

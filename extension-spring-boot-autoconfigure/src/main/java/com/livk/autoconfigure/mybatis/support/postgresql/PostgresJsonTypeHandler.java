@@ -24,7 +24,6 @@ import java.sql.SQLException;
  * </p>
  *
  * @author livk
- *
  */
 @MappedTypes(JsonNode.class)
 public class PostgresJsonTypeHandler implements TypeHandler<JsonNode> {

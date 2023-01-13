@@ -1,3 +1,5 @@
+description "openapi spring boot starter"
+
 dependencies {
     api "org.springdoc:springdoc-openapi-starter-common"
 }

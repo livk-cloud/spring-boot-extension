@@ -17,11 +17,18 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2023/1/5
  */
 @UtilityClass
 public class EasyExcelUtils {
 
+    /**
+     * Read.
+     *
+     * @param in              the in
+     * @param excelModelClass the excel model class
+     * @param listener        the listener
+     * @param ignoreEmptyRow  the ignore empty row
+     */
     public void read(InputStream in, Class<?> excelModelClass, ExcelReadListener<?> listener, Boolean ignoreEmptyRow) {
         EasyExcel.read(in, excelModelClass, listener)
                 .ignoreEmptyRow(ignoreEmptyRow)
@@ -29,6 +36,13 @@ public class EasyExcelUtils {
                 .doRead();
     }
 
+    /**
+     * Write.
+     *
+     * @param outputStream    the output stream
+     * @param excelModelClass the excel model class
+     * @param result          the result
+     */
     public void write(OutputStream outputStream, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         try (ExcelWriter writer = EasyExcel.write(outputStream, excelModelClass).build()) {
             for (Map.Entry<String, Collection<?>> entry : result.entrySet()) {

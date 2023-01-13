@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
  * </p>
  *
  * @author livk
- * @date 2022/12/26
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HttpMarker {

@@ -6,7 +6,6 @@ package com.livk.autoconfigure.easyexcel.listener;
  * </p>
  *
  * @author livk
- *
  */
 public class DefaultExcelReadListener extends TypeExcelReadListener<Object> {
 

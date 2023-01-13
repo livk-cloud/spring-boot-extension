@@ -8,18 +8,27 @@ import com.blueconic.browscap.Capabilities;
  * </p>
  *
  * @author livk
- *
  */
 public class UserAgentContextHolder {
     private static final ThreadLocal<Capabilities> context = new ThreadLocal<>();
 
     private static final ThreadLocal<Capabilities> inheritableContext = new InheritableThreadLocal<>();
 
+    /**
+     * Set.
+     *
+     * @param capabilities the capabilities
+     */
     public static void set(Capabilities capabilities) {
         context.set(capabilities);
         inheritableContext.set(capabilities);
     }
 
+    /**
+     * Get capabilities.
+     *
+     * @return the capabilities
+     */
     public static Capabilities get() {
         Capabilities capabilities = context.get();
         if (capabilities == null) {
@@ -28,6 +37,9 @@ public class UserAgentContextHolder {
         return capabilities;
     }
 
+    /**
+     * Remove.
+     */
     public static void remove() {
         context.remove();
         inheritableContext.remove();

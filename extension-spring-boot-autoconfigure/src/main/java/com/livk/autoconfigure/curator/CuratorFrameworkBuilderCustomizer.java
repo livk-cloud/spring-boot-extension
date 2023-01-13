@@ -9,7 +9,6 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 public interface CuratorFrameworkBuilderCustomizer extends Customizer<CuratorFrameworkFactory.Builder> {
 }

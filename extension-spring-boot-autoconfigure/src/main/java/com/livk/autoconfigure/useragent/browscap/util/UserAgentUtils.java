@@ -14,7 +14,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
  * </p>
  *
  * @author livk
- *
  */
 @UtilityClass
 public class UserAgentUtils {
@@ -24,15 +23,33 @@ public class UserAgentUtils {
         PARSER = SpringContextHolder.getBean(UserAgentParser.class);
     }
 
+    /**
+     * Parse capabilities.
+     *
+     * @param userAgent the user agent
+     * @return the capabilities
+     */
     public Capabilities parse(String userAgent) {
         return PARSER.parse(userAgent);
     }
 
+    /**
+     * Parse capabilities.
+     *
+     * @param request the request
+     * @return the capabilities
+     */
     public Capabilities parse(HttpServletRequest request) {
         String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
         return parse(userAgent);
     }
 
+    /**
+     * Parse capabilities.
+     *
+     * @param request the request
+     * @return the capabilities
+     */
     public Capabilities parse(ServerHttpRequest request) {
         String userAgent = request.getHeaders().getFirst(HttpHeaders.USER_AGENT);
         return parse(userAgent);

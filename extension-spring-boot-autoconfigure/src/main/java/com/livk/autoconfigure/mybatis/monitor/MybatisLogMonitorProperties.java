@@ -11,12 +11,14 @@ import java.time.temporal.ChronoUnit;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @Data
 @ConfigurationProperties(MybatisLogMonitorProperties.PREFIX)
 public class MybatisLogMonitorProperties {
 
+    /**
+     * The constant PREFIX.
+     */
     public static final String PREFIX = "mybatis.log.monitor";
 
     private long timeOut = 1L;

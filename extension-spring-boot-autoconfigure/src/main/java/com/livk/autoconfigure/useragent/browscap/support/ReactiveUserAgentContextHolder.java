@@ -13,13 +13,17 @@ import java.util.function.Function;
  * </p>
  *
  * @author livk
- *
  */
 @UtilityClass
 public final class ReactiveUserAgentContextHolder {
 
     private static final Class<?> USER_AGENT_KEY = Capabilities.class;
 
+    /**
+     * Get mono.
+     *
+     * @return the mono
+     */
     public Mono<Capabilities> get() {
         return Mono.deferContextual(Mono::just)
                 .cast(Context.class)
@@ -35,14 +39,31 @@ public final class ReactiveUserAgentContextHolder {
         return context.<Mono<Capabilities>>get(USER_AGENT_KEY);
     }
 
+    /**
+     * Clear context function.
+     *
+     * @return the function
+     */
     public static Function<Context, Context> clearContext() {
         return (context) -> context.delete(USER_AGENT_KEY);
     }
 
+    /**
+     * With context context.
+     *
+     * @param capabilities the capabilities
+     * @return the context
+     */
     public static Context withContext(Mono<? extends Capabilities> capabilities) {
         return Context.of(USER_AGENT_KEY, capabilities);
     }
 
+    /**
+     * With context context.
+     *
+     * @param capabilities the capabilities
+     * @return the context
+     */
     public static Context withContext(Capabilities capabilities) {
         return withContext(Mono.just(capabilities));
     }

@@ -29,21 +29,35 @@ import java.util.List;
  * </p>
  *
  * @author livk
- *
  */
 @SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass(UserAgentParser.class)
 public class BrowscapAutoConfiguration {
 
+    /**
+     * User agent parser user agent parser.
+     *
+     * @return the user agent parser
+     * @throws IOException    the io exception
+     * @throws ParseException the parse exception
+     */
     @Bean
     public UserAgentParser userAgentParser() throws IOException, ParseException {
         return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
     }
 
+    /**
+     * The type Browscap mvc auto configuration.
+     */
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class BrowscapMvcAutoConfiguration implements WebMvcConfigurer {
+        /**
+         * Filter registration bean filter registration bean.
+         *
+         * @return the filter registration bean
+         */
         @Bean
         public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
             FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
@@ -60,10 +74,18 @@ public class BrowscapAutoConfiguration {
         }
     }
 
+    /**
+     * The type Browscap reactive auto configuration.
+     */
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class BrowscapReactiveAutoConfiguration implements WebFluxConfigurer {
 
+        /**
+         * Tenant web filter reactive user agent filter.
+         *
+         * @return the reactive user agent filter
+         */
         @Bean
         public ReactiveUserAgentFilter tenantWebFilter() {
             return new ReactiveUserAgentFilter();

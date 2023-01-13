@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- * 
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

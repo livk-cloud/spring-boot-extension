@@ -11,10 +11,12 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * </p>
  *
  * @author livk
- *
  */
 public class LivkRedisTemplate extends RedisTemplate<String, Object> {
 
+    /**
+     * Instantiates a new Livk redis template.
+     */
     public LivkRedisTemplate() {
         RedisSerializer<Object> serializer = SerializerUtils.json();
         this.setKeySerializer(RedisSerializer.string());
@@ -23,6 +25,11 @@ public class LivkRedisTemplate extends RedisTemplate<String, Object> {
         this.setHashValueSerializer(serializer);
     }
 
+    /**
+     * Instantiates a new Livk redis template.
+     *
+     * @param redisConnectionFactory the redis connection factory
+     */
     public LivkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         this();
         this.setConnectionFactory(redisConnectionFactory);

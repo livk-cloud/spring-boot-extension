@@ -15,7 +15,6 @@ import java.util.function.Function;
  * </p>
  *
  * @author livk
- * @date 2022/12/15
  */
 public abstract class AbstractReactiveUserAgentFilter implements WebFilter {
 
@@ -29,8 +28,19 @@ public abstract class AbstractReactiveUserAgentFilter implements WebFilter {
                 .contextWrite(write(exchange));
     }
 
+    /**
+     * Write context.
+     *
+     * @param exchange the exchange
+     * @return the context
+     */
     protected abstract Context write(ServerWebExchange exchange);
 
+    /**
+     * Clear function.
+     *
+     * @return the function
+     */
     protected abstract Function<Context, Context> clear();
 
 

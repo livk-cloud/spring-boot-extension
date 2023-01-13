@@ -37,6 +37,9 @@ import java.util.function.Function;
  * @author livk
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
+    /**
+     * The constant EXCEL_MEDIA_TYPE.
+     */
     public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
     private static final Function<Collection<?>, Map<String, Collection<?>>> defaultFunction = c -> Map.of("sheet", c);
@@ -96,12 +99,30 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         }
     }
 
-    public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Mono<Map<String, Collection<?>>> result) {
+    /**
+     * Write mono.
+     *
+     * @param excelReturn     the excel return
+     * @param response        the response
+     * @param excelModelClass the excel model class
+     * @param result          the result
+     * @return the mono
+     */
+    private Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Mono<Map<String, Collection<?>>> result) {
         return result.flatMap(r -> this.write(excelReturn, response, excelModelClass, r));
     }
 
 
-    public Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+    /**
+     * Write mono.
+     *
+     * @param excelReturn     the excel return
+     * @param response        the response
+     * @param excelModelClass the excel model class
+     * @param result          the result
+     * @return the mono
+     */
+    private Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcelUtils.write(outputStream, excelModelClass, result);

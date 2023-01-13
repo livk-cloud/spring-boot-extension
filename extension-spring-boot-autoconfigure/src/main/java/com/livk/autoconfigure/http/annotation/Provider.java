@@ -22,18 +22,43 @@ import java.lang.annotation.Target;
 @HttpExchange
 public @interface Provider {
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     @AliasFor(annotation = Component.class, attribute = "value")
     String value() default "";
 
+    /**
+     * Url string.
+     *
+     * @return the string
+     */
     @AliasFor(annotation = HttpExchange.class, attribute = "url")
     String url() default "";
 
+    /**
+     * Method string.
+     *
+     * @return the string
+     */
     @AliasFor(annotation = HttpExchange.class, attribute = "method")
     String method() default "";
 
+    /**
+     * Content type string.
+     *
+     * @return the string
+     */
     @AliasFor(annotation = HttpExchange.class, attribute = "contentType")
     String contentType() default "";
 
+    /**
+     * Accept string [ ].
+     *
+     * @return the string [ ]
+     */
     @AliasFor(annotation = HttpExchange.class, attribute = "accept")
     String[] accept() default {};
 }

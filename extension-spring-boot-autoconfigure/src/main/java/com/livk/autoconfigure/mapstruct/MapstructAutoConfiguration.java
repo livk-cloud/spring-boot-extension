@@ -15,18 +15,28 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnClass(Mappers.class)
 public class MapstructAutoConfiguration {
 
+    /**
+     * Generic mapstruct service generic mapstruct service.
+     *
+     * @param repository the repository
+     * @return the generic mapstruct service
+     */
     @Bean
     public GenericMapstructService genericMapstructService(ConverterRepository repository) {
         return new GenericMapstructService(repository);
     }
 
+    /**
+     * Converter repository converter repository.
+     *
+     * @return the converter repository
+     */
     @Bean
     public ConverterRepository converterRepository() {
         return new InMemoryConverterRepository();

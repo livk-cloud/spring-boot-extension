@@ -26,13 +26,17 @@ import java.util.List;
  * </p>
  *
  * @author livk
- *
  */
 @SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass(UserAgentAnalyzer.class)
 public class YauaaAutoConfiguration {
 
+    /**
+     * User agent analyzer user agent analyzer.
+     *
+     * @return the user agent analyzer
+     */
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public UserAgentAnalyzer userAgentAnalyzer() {
@@ -44,9 +48,17 @@ public class YauaaAutoConfiguration {
     }
 
 
+    /**
+     * The type Yauaa mvc auto configuration.
+     */
     @AutoConfiguration(after = YauaaAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class YauaaMvcAutoConfiguration implements WebMvcConfigurer {
+        /**
+         * Filter registration bean filter registration bean.
+         *
+         * @return the filter registration bean
+         */
         @Bean
         public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
             FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
@@ -63,10 +75,18 @@ public class YauaaAutoConfiguration {
         }
     }
 
+    /**
+     * The type Yauaa reactive auto configuration.
+     */
     @AutoConfiguration(after = YauaaAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class YauaaReactiveAutoConfiguration implements WebFluxConfigurer {
 
+        /**
+         * Tenant web filter reactive user agent filter.
+         *
+         * @return the reactive user agent filter
+         */
         @Bean
         public ReactiveUserAgentFilter tenantWebFilter() {
             return new ReactiveUserAgentFilter();

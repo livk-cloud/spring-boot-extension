@@ -11,12 +11,16 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author livk
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DynamicSource {
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     String value();
 
 }

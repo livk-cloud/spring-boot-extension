@@ -26,6 +26,13 @@ import org.springframework.context.annotation.Bean;
 @EnableConfigurationProperties(CuratorProperties.class)
 public class CuratorAutoConfiguration {
 
+    /**
+     * Curator framework
+     *
+     * @param curatorProperties                  the curator properties
+     * @param curatorFrameworkBuilderCustomizers the curator framework builder customizers
+     * @return the curator framework
+     */
     @ConditionalOnMissingBean
     @Bean(initMethod = "start", destroyMethod = "close")
     public CuratorFramework curatorFramework(CuratorProperties curatorProperties,
@@ -41,6 +48,12 @@ public class CuratorAutoConfiguration {
         return builder.build();
     }
 
+    /**
+     * Curator template curator template.
+     *
+     * @param curatorFramework the curator framework
+     * @return the curator template
+     */
     @Bean
     @ConditionalOnMissingBean
     public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {

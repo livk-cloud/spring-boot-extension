@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @SpringAutoService(auto = EnableSqlMonitor.class)
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
@@ -29,6 +28,13 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class MybatisLogMonitorAutoConfiguration {
 
+    /**
+     * Mybatis log monitor configuration customizer configuration customizer.
+     *
+     * @param properties  the properties
+     * @param monitorList the monitor list
+     * @return the configuration customizer
+     */
     @Bean
     public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(MybatisLogMonitorProperties properties,
                                                                             ObjectProvider<SqlMonitor> monitorList) {

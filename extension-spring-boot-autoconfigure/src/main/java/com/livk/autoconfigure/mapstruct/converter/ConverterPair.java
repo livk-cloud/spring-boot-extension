@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
  * </p>
  *
  * @author livk
- * 
  */
 @Getter
 @ToString
@@ -26,6 +25,13 @@ public class ConverterPair {
         this.pair = Pair.of(sourceType, targetType);
     }
 
+    /**
+     * Of converter pair.
+     *
+     * @param sourceType the source type
+     * @param targetType the target type
+     * @return the converter pair
+     */
     public static ConverterPair of(Class<?> sourceType, Class<?> targetType) {
         return new ConverterPair(sourceType, targetType);
     }

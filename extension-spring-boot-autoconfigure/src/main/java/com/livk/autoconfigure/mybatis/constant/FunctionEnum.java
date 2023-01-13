@@ -14,15 +14,29 @@ import lombok.RequiredArgsConstructor;
  * </p>
  *
  * @author livk
- * 
  */
 @RequiredArgsConstructor
 public enum FunctionEnum implements FunctionHandle<Object> {
 
+    /**
+     * The Default.
+     */
     DEFAULT(new NullFunction()),
+    /**
+     * The Date.
+     */
     DATE(new DateFunction()),
+    /**
+     * The Local date.
+     */
     LOCAL_DATE(new LocalDateFunction()),
+    /**
+     * The Local date time.
+     */
     LOCAL_DATE_TIME(new LocalDateTimeFunction()),
+    /**
+     * The Timestamp.
+     */
     TIMESTAMP(new TimestampFunction());
 
     private final FunctionHandle<?> function;
@@ -32,6 +46,13 @@ public enum FunctionEnum implements FunctionHandle<Object> {
         return function.handler();
     }
 
+    /**
+     * Handler t.
+     *
+     * @param <T>         the type parameter
+     * @param targetClass the target class
+     * @return the t
+     */
     @SuppressWarnings("unchecked")
     public <T> T handler(Class<T> targetClass) {
         Object value = handler();

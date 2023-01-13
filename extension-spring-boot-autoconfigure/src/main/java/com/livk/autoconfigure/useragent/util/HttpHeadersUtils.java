@@ -12,10 +12,16 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2022/12/29
  */
 @UtilityClass
 public class HttpHeadersUtils {
+    /**
+     * Headers concat map.
+     *
+     * @param headers   the headers
+     * @param delimiter the delimiter
+     * @return the map
+     */
     public Map<String, String> headersConcat(HttpHeaders headers, CharSequence delimiter) {
         return headers.entrySet()
                 .stream()

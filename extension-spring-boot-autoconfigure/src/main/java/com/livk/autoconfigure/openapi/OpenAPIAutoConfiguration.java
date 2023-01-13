@@ -14,13 +14,17 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnBean(GroupedOpenApi.class)
 public class OpenAPIAutoConfiguration {
 
+    /**
+     * Open api open api.
+     *
+     * @return the open api
+     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()

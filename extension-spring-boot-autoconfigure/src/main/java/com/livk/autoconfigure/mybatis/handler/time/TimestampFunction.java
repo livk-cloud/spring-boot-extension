@@ -8,7 +8,6 @@ import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
  * </p>
  *
  * @author livk
- * 
  */
 public class TimestampFunction implements FunctionHandle<Long> {
 

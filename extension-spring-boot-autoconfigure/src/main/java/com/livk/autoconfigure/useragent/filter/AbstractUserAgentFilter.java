@@ -15,7 +15,6 @@ import java.io.IOException;
  * </p>
  *
  * @author livk
- * @date 2022/12/15
  */
 public abstract class AbstractUserAgentFilter extends OncePerRequestFilter {
     @Override
@@ -25,7 +24,15 @@ public abstract class AbstractUserAgentFilter extends OncePerRequestFilter {
         remove();
     }
 
+    /**
+     * Set.
+     *
+     * @param request the request
+     */
     protected abstract void set(HttpServletRequest request);
 
+    /**
+     * Remove.
+     */
     protected abstract void remove();
 }

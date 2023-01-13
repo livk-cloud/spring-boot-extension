@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- *
  */
 public class InMemoryConverterRepository implements ConverterRepository {
 

@@ -26,7 +26,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
@@ -34,6 +33,12 @@ import java.util.List;
 @ConditionalOnProperty(prefix = Ip2RegionProperties.PREFIX, name = "enabled", havingValue = "true")
 public class Ip2regionAutoConfiguration {
 
+    /**
+     * Ip 2 region search ip 2 region search.
+     *
+     * @param properties the properties
+     * @return the ip 2 region search
+     */
     @Bean
     public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
         try {
@@ -51,6 +56,9 @@ public class Ip2regionAutoConfiguration {
         }
     }
 
+    /**
+     * The type Web mvc ip 2 region auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class WebMvcIp2regionAutoConfiguration implements WebMvcConfigurer {

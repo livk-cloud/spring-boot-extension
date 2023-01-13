@@ -9,9 +9,13 @@ import com.livk.commons.domain.Pair;
  * AbstractLock
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
  */
 public abstract class AbstractLockSupport<T> implements DistributedLock {
+    /**
+     * The Thread local.
+     */
     protected final ThreadLocal<Pair<String, T>> threadLocal = new ThreadLocal<>();
 
     @Override
@@ -55,15 +59,58 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
     }
 
 
+    /**
+     * Gets lock.
+     *
+     * @param type the type
+     * @param key  the key
+     * @return the lock
+     */
     protected abstract T getLock(LockType type, String key);
 
+    /**
+     * Unlock.
+     *
+     * @param key  the key
+     * @param lock the lock
+     */
     protected abstract void unlock(String key, T lock);
 
+    /**
+     * Try lock async boolean.
+     *
+     * @param lock      the lock
+     * @param leaseTime the lease time
+     * @param waitTime  the wait time
+     * @return the boolean
+     * @throws Exception the exception
+     */
     protected abstract boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws Exception;
 
+    /**
+     * Try lock boolean.
+     *
+     * @param lock      the lock
+     * @param leaseTime the lease time
+     * @param waitTime  the wait time
+     * @return the boolean
+     * @throws Exception the exception
+     */
     protected abstract boolean tryLock(T lock, long leaseTime, long waitTime) throws Exception;
 
+    /**
+     * Lock async.
+     *
+     * @param lock the lock
+     * @throws Exception the exception
+     */
     protected abstract void lockAsync(T lock) throws Exception;
 
+    /**
+     * Lock.
+     *
+     * @param lock the lock
+     * @throws Exception the exception
+     */
     protected abstract void lock(T lock) throws Exception;
 }

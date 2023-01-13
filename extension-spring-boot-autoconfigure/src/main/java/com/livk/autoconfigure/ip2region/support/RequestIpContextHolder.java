@@ -12,23 +12,38 @@ import java.util.function.Supplier;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 public class RequestIpContextHolder {
     private static final ThreadLocal<String> context = new ThreadLocal<>();
 
     private static final ThreadLocal<String> inheritableContext = new InheritableThreadLocal<>();
 
+    /**
+     * Set.
+     *
+     * @param ip the ip
+     */
     public static void set(String ip) {
         context.set(ip);
         inheritableContext.set(ip);
     }
 
+    /**
+     * Set.
+     *
+     * @param request the request
+     */
     public static void set(HttpServletRequest request) {
         String ip = WebUtils.realIp(request);
         set(ip);
     }
 
+    /**
+     * Compute if absent string.
+     *
+     * @param supplier the supplier
+     * @return the string
+     */
     public synchronized static String computeIfAbsent(Supplier<String> supplier) {
         String ip = get();
         if (StringUtils.hasText(ip)) {
@@ -39,6 +54,11 @@ public class RequestIpContextHolder {
         return supplierIp;
     }
 
+    /**
+     * Get string.
+     *
+     * @return the string
+     */
     public static String get() {
         String ip = context.get();
         if (!StringUtils.hasText(ip)) {
@@ -47,6 +67,9 @@ public class RequestIpContextHolder {
         return ip;
     }
 
+    /**
+     * Remove.
+     */
     public static void remove() {
         context.remove();
         inheritableContext.remove();

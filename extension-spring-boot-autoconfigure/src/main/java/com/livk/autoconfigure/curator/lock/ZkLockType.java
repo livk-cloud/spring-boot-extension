@@ -6,7 +6,6 @@ package com.livk.autoconfigure.curator.lock;
  * </p>
  *
  * @author livk
- * @date 2022/12/27
  */
 public enum ZkLockType {
     /**

@@ -18,19 +18,31 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnClass(value = WebClient.class, name = "com.livk.http.marker.HttpMarker")
 public class HttpAutoConfiguration {
 
+    /**
+     * Web client web client.
+     *
+     * @param builder the builder
+     * @return the web client
+     */
     @Bean
     @ConditionalOnMissingBean
     public WebClient webClient(WebClient.Builder builder) {
         return builder.build();
     }
 
+    /**
+     * Http service proxy factory http service proxy factory.
+     *
+     * @param webClient   the web client
+     * @param customizers the customizers
+     * @return the http service proxy factory
+     */
     @Bean
     public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient,
                                                            ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers) {
@@ -39,6 +51,12 @@ public class HttpAutoConfiguration {
         return builder.build();
     }
 
+    /**
+     * Http service registrar http service registrar.
+     *
+     * @param httpServiceProxyFactory the http service proxy factory
+     * @return the http service registrar
+     */
     @Bean
     public HttpServiceRegistrar httpServiceRegistrar(HttpServiceProxyFactory httpServiceProxyFactory) {
         return new HttpServiceRegistrar(httpServiceProxyFactory);

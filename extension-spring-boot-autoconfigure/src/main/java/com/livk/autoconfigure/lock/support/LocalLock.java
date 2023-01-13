@@ -17,7 +17,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * </p>
  *
  * @author livk
- *
  */
 public class LocalLock extends AbstractLockSupport<Lock> {
 

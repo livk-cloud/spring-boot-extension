@@ -8,21 +8,34 @@ import lombok.Getter;
  * </p>
  *
  * @author livk
- *
  */
 @Getter
 public class ExcelExportException extends RuntimeException {
 
-    private final int code = 511;
-
+    /**
+     * Instantiates a new Excel export exception.
+     *
+     * @param message the message
+     */
     public ExcelExportException(String message) {
         super(message);
     }
 
+    /**
+     * Instantiates a new Excel export exception.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     public ExcelExportException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Instantiates a new Excel export exception.
+     *
+     * @param cause the cause
+     */
     public ExcelExportException(Throwable cause) {
         super(cause);
     }

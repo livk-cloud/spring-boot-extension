@@ -9,10 +9,14 @@ import com.livk.autoconfigure.mapstruct.converter.MapstructRegistry;
  * </p>
  *
  * @author livk
- * 
  */
 public class GenericMapstructService extends AbstractMapstructService implements MapstructRegistry {
 
+    /**
+     * Instantiates a new Generic mapstruct service.
+     *
+     * @param converterRepository the converter repository
+     */
     public GenericMapstructService(ConverterRepository converterRepository) {
         super(converterRepository);
     }

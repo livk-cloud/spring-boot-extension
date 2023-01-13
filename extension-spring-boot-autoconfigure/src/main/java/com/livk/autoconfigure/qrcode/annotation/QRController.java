@@ -21,6 +21,11 @@ import java.lang.annotation.Target;
 @Controller
 public @interface QRController {
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     @AliasFor(annotation = Controller.class)
     String value() default "";
 }

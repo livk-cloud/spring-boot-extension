@@ -10,7 +10,6 @@ import java.util.Date;
  * </p>
  *
  * @author livk
- *
  */
 public class DateFunction implements FunctionHandle<Date> {
 

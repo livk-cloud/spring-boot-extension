@@ -63,7 +63,11 @@ abstract class DeployedPlugin implements Plugin<Project> {
         }
         publication.pom {
             name.set(project.name)
-            description.set(project.description)
+            def projectDescription = project.description
+            if (projectDescription == null || projectDescription.isBlank()) {
+                projectDescription = project.name.replaceAll("-", " ")
+            }
+            description.set(projectDescription)
             url.set("https://github.com/livk-cloud/spring-boot-example/" + project.name)
             licenses {
                 license {

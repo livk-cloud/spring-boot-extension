@@ -6,8 +6,13 @@ package com.livk.autoconfigure.mybatis.monitor;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 public interface SqlMonitor {
+    /**
+     * Run.
+     *
+     * @param sql       the sql
+     * @param timestamp the timestamp
+     */
     void run(String sql, long timestamp);
 }

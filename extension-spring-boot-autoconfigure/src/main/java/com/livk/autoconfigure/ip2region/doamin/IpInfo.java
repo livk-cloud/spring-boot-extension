@@ -10,7 +10,6 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author livk
- *
  */
 @Data
 @Accessors(chain = true)
@@ -36,6 +35,12 @@ public class IpInfo {
         operator = checkData(arr[4]);
     }
 
+    /**
+     * Of ip info.
+     *
+     * @param info the info
+     * @return the ip info
+     */
     public static IpInfo of(String info) {
         return new IpInfo(info);
     }

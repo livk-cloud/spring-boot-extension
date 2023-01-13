@@ -29,15 +29,30 @@ import reactor.core.publisher.Flux;
 @AutoConfiguration(before = {RedisAutoConfiguration.class})
 public class LivkRedisAutoConfiguration {
 
+    /**
+     * Livk redis template livk redis template.
+     *
+     * @param redisConnectionFactory the redis connection factory
+     * @return the livk redis template
+     */
     @Bean
     public LivkRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         return new LivkRedisTemplate(redisConnectionFactory);
     }
 
 
+    /**
+     * The type Livk reactive redis auto configuration.
+     */
     @AutoConfiguration(before = {RedisReactiveAutoConfiguration.class})
     @ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
     public static class LivkReactiveRedisAutoConfiguration {
+        /**
+         * Livk reactive redis template livk reactive redis template.
+         *
+         * @param redisConnectionFactory the redis connection factory
+         * @return the livk reactive redis template
+         */
         @Bean
         public LivkReactiveRedisTemplate livkReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
             RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.

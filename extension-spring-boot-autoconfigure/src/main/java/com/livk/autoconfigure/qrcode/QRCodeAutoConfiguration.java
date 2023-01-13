@@ -19,13 +19,15 @@ import java.util.List;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnClass(name = "com.google.zxing.common.BitMatrix")
 public class QRCodeAutoConfiguration {
 
+    /**
+     * The type Web mvc qr code auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class WebMvcQRCodeAutoConfiguration implements WebMvcConfigurer {
@@ -36,10 +38,18 @@ public class QRCodeAutoConfiguration {
         }
     }
 
+    /**
+     * The type Web flux qr code auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class WebFluxQRCodeAutoConfiguration implements WebFluxConfigurer {
 
+        /**
+         * Reactive qr code method return value handler reactive qr code method return value handler.
+         *
+         * @return the reactive qr code method return value handler
+         */
         @Bean
         public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler() {
             return new ReactiveQRCodeMethodReturnValueHandler();

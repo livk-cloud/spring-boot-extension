@@ -22,11 +22,16 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @UtilityClass
 public class SqlUtils {
 
+    /**
+     * Parse table list.
+     *
+     * @param sql the sql
+     * @return the list
+     */
     public List<String> parseTable(String sql) {
         try {
             var statement = CCJSqlParserUtil.parse(sql);
@@ -38,6 +43,12 @@ public class SqlUtils {
         return Collections.emptyList();
     }
 
+    /**
+     * Gets params.
+     *
+     * @param sql the sql
+     * @return the params
+     */
     public List<String> getParams(String sql) {
         try {
             Statement statement = CCJSqlParserUtil.parse(new StringReader(sql));
@@ -56,6 +67,12 @@ public class SqlUtils {
         return Collections.emptyList();
     }
 
+    /**
+     * Format sql string.
+     *
+     * @param sql the sql
+     * @return the string
+     */
     public String formatSql(String sql) {
         try {
             return CCJSqlParserUtil.parse(new StringReader(sql)).toString();

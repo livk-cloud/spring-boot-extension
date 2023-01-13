@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author livk
- *
  */
 public class LocalDateTimeFunction implements FunctionHandle<LocalDateTime> {
 

@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- * @date 2022/12/16
  */
 public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
@@ -39,7 +39,18 @@ public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMet
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }
 
+    /**
+     * Gets user agent.
+     *
+     * @return the user agent
+     */
     protected abstract Mono<T> getUserAgent();
 
+    /**
+     * Parse user agent mono.
+     *
+     * @param request the request
+     * @return the mono
+     */
     protected abstract Mono<T> parseUserAgent(ServerHttpRequest request);
 }

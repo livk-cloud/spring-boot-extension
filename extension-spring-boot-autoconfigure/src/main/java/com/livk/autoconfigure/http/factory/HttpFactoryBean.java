@@ -9,8 +9,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * HttpFactoryBean
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
- *
  */
 @RequiredArgsConstructor
 public class HttpFactoryBean<T> implements FactoryBean<T> {

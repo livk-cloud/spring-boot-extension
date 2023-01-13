@@ -24,13 +24,15 @@ import java.util.List;
  * </p>
  *
  * @author livk
- *
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnClass(EasyExcel.class)
 public class ExcelAutoConfiguration {
 
+    /**
+     * The type Excel web mvc auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class ExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
@@ -45,10 +47,18 @@ public class ExcelAutoConfiguration {
         }
     }
 
+    /**
+     * The type Excel web flux auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
 
+        /**
+         * Reactive excel method return value handler reactive excel method return value handler.
+         *
+         * @return the reactive excel method return value handler
+         */
         @Bean
         public ReactiveExcelMethodReturnValueHandler reactiveExcelMethodReturnValueHandler() {
             return new ReactiveExcelMethodReturnValueHandler();

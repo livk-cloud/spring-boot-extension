@@ -1,3 +1,5 @@
+description "extension spring boot autoconfigure"
+
 dependencies {
     api project(":spring-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
@@ -27,5 +29,9 @@ dependencies {
 
 jar {
     duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+}
+
+java {
+    withJavadocJar()
 }
 

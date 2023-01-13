@@ -1,5 +1,8 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+description "spring boot extension bom"
+project.setDescription("spring boot extension bom")
+
 def versionCatalog = rootProject.extensions
         .getByType(VersionCatalogsExtension.class)
         .named("libs")

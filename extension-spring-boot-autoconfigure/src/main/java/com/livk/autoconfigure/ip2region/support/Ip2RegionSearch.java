@@ -12,7 +12,6 @@ import org.lionsoul.ip2region.xdb.Searcher;
  * </p>
  *
  * @author livk
- *
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +19,12 @@ public class Ip2RegionSearch {
 
     private final Searcher searcher;
 
+    /**
+     * Search as string.
+     *
+     * @param ip the ip
+     * @return the string
+     */
     public String searchAsString(String ip) {
         try {
             return searcher.search(ip);
@@ -29,10 +34,22 @@ public class Ip2RegionSearch {
         }
     }
 
+    /**
+     * Search as info ip info.
+     *
+     * @param ip the ip
+     * @return the ip info
+     */
     public IpInfo searchAsInfo(String ip) {
         return IpInfo.of(this.searchAsString(ip));
     }
 
+    /**
+     * Search as json string.
+     *
+     * @param ip the ip
+     * @return the string
+     */
     public String searchAsJson(String ip) {
         return JacksonUtils.toJsonStr(this.searchAsInfo(ip));
     }

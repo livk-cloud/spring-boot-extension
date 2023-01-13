@@ -19,7 +19,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2022/12/27
  */
 @RequiredArgsConstructor
 public class CuratorTemplate implements CuratorOperations {
@@ -52,6 +51,14 @@ public class CuratorTemplate implements CuratorOperations {
         return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
     }
 
+    /**
+     * Sets data async.
+     *
+     * @param path the path
+     * @param data the data
+     * @return the data async
+     * @throws Exception the exception
+     */
     public Stat setDataAsync(String path, String data) throws Exception {
         return setDataAsync(path, data, (client, event) -> {
 
@@ -82,14 +89,32 @@ public class CuratorTemplate implements CuratorOperations {
         };
     }
 
+    /**
+     * Gets lock.
+     *
+     * @param path the path
+     * @return the lock
+     */
     public InterProcessLock getLock(String path) {
         return getLock(path, ZkLockType.LOCK);
     }
 
+    /**
+     * Gets read lock.
+     *
+     * @param path the path
+     * @return the read lock
+     */
     public InterProcessLock getReadLock(String path) {
         return getLock(path, ZkLockType.READ);
     }
 
+    /**
+     * Gets write lock.
+     *
+     * @param path the path
+     * @return write lock
+     */
     public InterProcessLock getWriteLock(String path) {
         return getLock(path, ZkLockType.WRITE);
     }

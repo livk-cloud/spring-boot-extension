@@ -16,13 +16,18 @@ import org.springframework.lang.Nullable;
  * </p>
  *
  * @author livk
- *
  */
 @SuppressWarnings("unchecked")
 @RequiredArgsConstructor
 public abstract class AbstractMapstructService implements MapstructService, ApplicationContextAware {
+    /**
+     * The Converter repository.
+     */
     protected final ConverterRepository converterRepository;
 
+    /**
+     * The Application context.
+     */
     protected ApplicationContext applicationContext;
 
     @Override

@@ -18,9 +18,24 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QRCode {
 
+    /**
+     * Width int.
+     *
+     * @return the int
+     */
     int width() default 400;
 
+    /**
+     * Height int.
+     *
+     * @return the int
+     */
     int height() default 400;
 
+    /**
+     * Type pic type.
+     *
+     * @return the pic type
+     */
     PicType type() default PicType.JPG;
 }

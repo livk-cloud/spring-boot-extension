@@ -15,7 +15,6 @@ import java.sql.Connection;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @Slf4j
 @Intercepts({

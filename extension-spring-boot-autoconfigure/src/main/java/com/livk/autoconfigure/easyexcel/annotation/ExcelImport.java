@@ -10,26 +10,45 @@ import java.lang.annotation.Target;
 
 /**
  * <p>在Mvc的环境下支持{@link java.util.Collection}</p>
- * <p>{@example List<?>}</p>
- * <p></p><p>在Reactive的环境下支持
+ * <p>{example List}</p>
+ * <p>在Reactive的环境下支持
  * {@link java.util.Collection}、</p>
  * <p>{@link reactor.core.publisher.Mono}</p>
- * <p>{@example List<?>}</p>
- * <p>{@example Mono<List < ?>>}</p>
+ * <p>{example List}</p>
+ * <p>{example Mono List }</p>
  *
  * @author livk
- *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelImport {
 
+    /**
+     * Parse class.
+     *
+     * @return the class
+     */
     Class<? extends ExcelReadListener<?>> parse() default DefaultExcelReadListener.class;
 
+    /**
+     * File name string.
+     *
+     * @return the string
+     */
     String fileName() default "file";
 
+    /**
+     * Param name string.
+     *
+     * @return the string
+     */
     String paramName();
 
+    /**
+     * Ignore empty row boolean.
+     *
+     * @return the boolean
+     */
     boolean ignoreEmptyRow() default false;
 
 }

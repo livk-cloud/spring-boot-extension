@@ -9,7 +9,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * </p>
  *
  * @author livk
- *
  */
 public interface HttpServiceProxyFactoryCustomizer extends Customizer<HttpServiceProxyFactory.Builder> {
 

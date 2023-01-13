@@ -31,6 +31,14 @@ public class LockAspect {
 
     private final ObjectProvider<DistributedLock> distributedLockProvider;
 
+    /**
+     * Around object.
+     *
+     * @param joinPoint the join point
+     * @param onLock    the on lock
+     * @return the object
+     * @throws Throwable the throwable
+     */
     @Around("@annotation(onLock)")
     public Object around(ProceedingJoinPoint joinPoint, OnLock onLock) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

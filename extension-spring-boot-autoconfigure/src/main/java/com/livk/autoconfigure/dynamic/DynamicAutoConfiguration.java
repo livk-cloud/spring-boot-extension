@@ -19,13 +19,18 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- *
  */
 @SpringAutoService(auto = EnableDynamicDatasource.class)
 @AutoConfiguration(before = DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DynamicDatasourceProperties.class)
 public class DynamicAutoConfiguration {
 
+    /**
+     * Dynamic datasource dynamic datasource.
+     *
+     * @param datasourceProperties the datasource properties
+     * @return the dynamic datasource
+     */
     @Bean
     public DynamicDatasource dynamicDatasource(DynamicDatasourceProperties datasourceProperties) {
         Map<Object, Object> datasourceMap = datasourceProperties.getDatasource()
@@ -38,6 +43,11 @@ public class DynamicAutoConfiguration {
         return dynamicDatasource;
     }
 
+    /**
+     * Data source aspect data source aspect.
+     *
+     * @return the data source aspect
+     */
     @Bean
     public DataSourceAspect dataSourceAspect() {
         return new DataSourceAspect();

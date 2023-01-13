@@ -16,12 +16,14 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- *
  */
 @Data
 @ConfigurationProperties(DynamicDatasourceProperties.PREFIX)
 public class DynamicDatasourceProperties implements InitializingBean {
 
+    /**
+     * The constant PREFIX.
+     */
     public static final String PREFIX = "spring.dynamic";
 
     private Map<String, PrimaryProperties> datasource;
@@ -47,10 +49,15 @@ public class DynamicDatasourceProperties implements InitializingBean {
         Assert.notNull(primaryName, "缺少primary || 包含多个primary");
     }
 
+    /**
+     * The type Primary properties.
+     */
     @Data
     @EqualsAndHashCode(callSuper = true)
     public static class PrimaryProperties extends DataSourceProperties {
-
+        /**
+         * primary bool
+         */
         private boolean primary;
     }
 }

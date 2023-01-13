@@ -18,7 +18,6 @@ import java.net.URL;
  * </p>
  *
  * @author livk
- *
  */
 public class IPMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
