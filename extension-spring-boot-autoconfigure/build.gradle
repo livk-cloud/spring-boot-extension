@@ -8,8 +8,8 @@ dependencies {
     api project(":spring-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
     optional "org.springframework:spring-jdbc"
-    optional "org.springdoc:springdoc-openapi-starter-common"
     optional "jakarta.servlet:jakarta.servlet-api"
+    optional "jakarta.validation:jakarta.validation-api"
     optional "com.alibaba:easyexcel"
     optional "org.springframework:spring-webmvc"
     optional "org.springframework:spring-webflux"
