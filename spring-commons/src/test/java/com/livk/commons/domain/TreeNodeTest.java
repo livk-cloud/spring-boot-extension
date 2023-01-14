@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TreeNodeTest {
 
-    static TreeNode<String> root;
+    static TreeNode<Long, String> root;
 
     @Order(1)
     @Test
@@ -35,12 +35,12 @@ class TreeNodeTest {
     @Test
     void setChildren() {
         var nodes = List.of(
-                new TreeNode<String>().setId(1L).setNode("1").setPid(0L),
-                new TreeNode<String>().setId(2L).setNode("2").setPid(0L),
-                new TreeNode<String>().setId(3L).setNode("3").setPid(1L),
-                new TreeNode<String>().setId(4L).setNode("4").setPid(1L),
-                new TreeNode<String>().setId(5L).setNode("5").setPid(2L),
-                new TreeNode<String>().setId(6L).setNode("6").setPid(3L)
+                new TreeNode<Long, String>().setId(1L).setNode("1").setPid(0L),
+                new TreeNode<Long, String>().setId(2L).setNode("2").setPid(0L),
+                new TreeNode<Long, String>().setId(3L).setNode("3").setPid(1L),
+                new TreeNode<Long, String>().setId(4L).setNode("4").setPid(1L),
+                new TreeNode<Long, String>().setId(5L).setNode("5").setPid(2L),
+                new TreeNode<Long, String>().setId(6L).setNode("6").setPid(3L)
         );
         root.setChildren(nodes);
         TestLogUtils.info("{}", root);
@@ -51,7 +51,7 @@ class TreeNodeTest {
     @Order(3)
     @Test
     void addChild() {
-        TreeNode<String> node = new TreeNode<String>().setId(7L).setNode("7").setPid(4L);
+        TreeNode<Long, String> node = new TreeNode<Long, String>().setId(7L).setNode("7").setPid(4L);
         root.addChild(node);
         TestLogUtils.info("{}", root);
         TestLogUtils.info("{}", JacksonUtils.toJsonStr(root));
@@ -60,7 +60,7 @@ class TreeNodeTest {
     @Order(4)
     @Test
     void findById() {
-        TreeNode<String> childNode = root.findById(3L);
+        TreeNode<Long, String> childNode = root.findById(3L);
         TestLogUtils.info("{}", childNode);
     }
 }

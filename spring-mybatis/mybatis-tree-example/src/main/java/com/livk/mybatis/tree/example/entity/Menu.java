@@ -1,9 +1,6 @@
 package com.livk.mybatis.tree.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-
-import java.util.List;
+import com.livk.commons.domain.TreeNode;
 
 /**
  * <p>
@@ -12,10 +9,6 @@ import java.util.List;
  *
  * @author livk
  */
-@Data
-public class Menu {
-    private Integer id;
-    private String name;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Menu> children;
+public class Menu extends TreeNode<Integer, String> {
+
 }

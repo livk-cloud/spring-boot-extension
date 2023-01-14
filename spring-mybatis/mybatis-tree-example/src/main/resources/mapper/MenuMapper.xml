@@ -4,8 +4,9 @@
 
     <resultMap id="MenuList" type="com.livk.mybatis.tree.example.entity.Menu">
         <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <collection property="children" select="listByPid" column="{id=id,name=name}"/>
+        <result column="name" property="node"/>
+        <result column="pid" property="pid"/>
+        <collection property="children" select="listByPid" column="{id=id,node=name}"/>
     </resultMap>
 
     <select id="list" resultMap="MenuList">

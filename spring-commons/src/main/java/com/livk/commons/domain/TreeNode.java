@@ -25,13 +25,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TreeNode<T> {
+public class TreeNode<I, T> {
 
-    private Long id;
+    private I id;
 
     private T node;
-    private Long pid;
-    private List<TreeNode<T>> children;
+    private I pid;
+    private List<TreeNode<I, T>> children;
 
     /**
      * Construct the root node
@@ -41,7 +41,7 @@ public class TreeNode<T> {
      * @param node the node
      * @return the tree node
      */
-    public static <T> TreeNode<T> createRoot(Long id, T node) {
+    public static <I, T> TreeNode<I, T> createRoot(I id, T node) {
         return new TreeNode<>(id, node, null, new ArrayList<>());
     }
 
@@ -51,12 +51,12 @@ public class TreeNode<T> {
      * @param treeNo the tree no
      * @return the boolean
      */
-    public boolean addChild(TreeNode<T> treeNo) {
+    public boolean addChild(TreeNode<I, T> treeNo) {
         if (this.findById(treeNo.id) != null) {
             log.info("出现相同节点 id:{}", treeNo.id);
             return false;
         }
-        TreeNode<T> parent = this.findById(treeNo.pid);
+        TreeNode<I, T> parent = this.findById(treeNo.pid);
         if (parent == null) {
             return false;
         }
@@ -71,8 +71,8 @@ public class TreeNode<T> {
      *
      * @param nodes the nodes
      */
-    public void setChildren(List<TreeNode<T>> nodes) {
-        List<TreeNode<T>> treeNodeList = nodes.stream()
+    public void setChildren(List<TreeNode<I, T>> nodes) {
+        List<TreeNode<I, T>> treeNodeList = nodes.stream()
                 .filter(node -> id.equals(node.pid))
                 .toList();
         if (!CollectionUtils.isEmpty(treeNodeList)) {
@@ -88,13 +88,13 @@ public class TreeNode<T> {
      * @param id the id
      * @return the tree node
      */
-    public TreeNode<T> findById(Long id) {
+    public TreeNode<I, T> findById(I id) {
         if (this.id.equals(id)) {
             return this;
         }
         if (!CollectionUtils.isEmpty(children)) {
-            for (TreeNode<T> child : children) {
-                TreeNode<T> treeNo = child.findById(id);
+            for (TreeNode<I, T> child : children) {
+                TreeNode<I, T> treeNo = child.findById(id);
                 if (treeNo != null) {
                     return treeNo;
                 }
