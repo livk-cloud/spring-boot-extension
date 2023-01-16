@@ -39,7 +39,7 @@ https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
 
 ----
 dependencies {
-    implementation platform(project("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M1")
+    implementation platform("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M1")
 }
 ----
 
