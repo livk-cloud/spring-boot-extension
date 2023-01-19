@@ -16,6 +16,7 @@ import java.util.List;
  * Construct tree nodes, node ID are not allowed to be duplicated
  * </p>
  *
+ * @param <I> the type parameter
  * @param <T> the type parameter
  * @author livk
  */
@@ -36,6 +37,7 @@ public class TreeNode<I, T> {
     /**
      * Construct the root node
      *
+     * @param <I>  the type parameter
      * @param <T>  the type parameter
      * @param id   the id
      * @param node the node
