@@ -188,11 +188,8 @@ public class JacksonUtils {
      * @return the map
      */
     public static <K, V> Map<K, V> objectToMap(Object datum, Class<K> keyClass, Class<V> valueClass) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
-        return mapper.convertValue(datum, mapType);
+        return MAPPER.convertValue(datum, mapType);
     }
 
     private boolean check(String json, Object... checkObj) {
