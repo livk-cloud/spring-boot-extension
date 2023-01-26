@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.domain.Wrapper;
-import com.livk.commons.function.Present;
 import com.livk.commons.support.SpringContextHolder;
 import com.livk.commons.util.ObjectUtils;
 import lombok.SneakyThrows;
@@ -19,7 +18,6 @@ import org.springframework.core.ResolvableType;
 
 import java.io.InputStream;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Jackson一些基本序列化与反序列化
@@ -33,7 +31,6 @@ public class JacksonUtils {
 
     static {
         Wrapper<ObjectMapper> wrapper = null;
-        AtomicReference<ObjectMapper> atomicReference = new AtomicReference<>();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Wrapper.class, ObjectMapper.class);
         try {
             wrapper = SpringContextHolder.<Wrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
@@ -42,10 +39,7 @@ public class JacksonUtils {
         } catch (Exception e) {
             log.debug("spring ioc缺少type:" + resolvableType.getType() + " 的Bean");
         }
-        Present.handler(wrapper, Objects::nonNull)
-                .present(mapperWrapper -> atomicReference.set(mapperWrapper.obj())
-                        , () -> atomicReference.set(JsonMapper.builder().build()));
-        MAPPER = atomicReference.get();
+        MAPPER = wrapper == null ? JsonMapper.builder().build() : wrapper.obj();
         MAPPER.registerModules(new JavaTimeModule());
     }
 
