@@ -1,5 +1,7 @@
 package com.livk.commons.jackson;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -173,6 +175,24 @@ public class JacksonUtils {
     @SneakyThrows
     public JsonNode readTree(String json) {
         return MAPPER.readTree(json);
+    }
+
+    /**
+     * Object to map map.
+     *
+     * @param <K>        the type parameter
+     * @param <V>        the type parameter
+     * @param datum      the datum
+     * @param keyClass   the key class
+     * @param valueClass the value class
+     * @return the map
+     */
+    public static <K, V> Map<K, V> objectToMap(Object datum, Class<K> keyClass, Class<V> valueClass) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        return mapper.convertValue(datum, mapType);
     }
 
     private boolean check(String json, Object... checkObj) {
