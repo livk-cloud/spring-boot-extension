@@ -22,6 +22,11 @@ class PairTest {
     static Pair<String, Integer> pair = Pair.of("livk", 123456);
 
     @Test
+    void toMap() {
+        assertEquals(pair.toMap(), Map.of("livk", 123456));
+    }
+
+    @Test
     public void pairJsonSerializerTest() {
         String json = "{\"livk\":123456}";
         String result = JacksonUtils.toJsonStr(pair);
