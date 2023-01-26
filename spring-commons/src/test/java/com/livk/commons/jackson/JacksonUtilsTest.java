@@ -2,6 +2,7 @@ package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.livk.commons.domain.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -105,5 +106,12 @@ class JacksonUtilsTest {
                                     }
                                 }""");
         assertNotNull(result);
+    }
+
+    @Test
+    void objectToMap() {
+        Pair<String, String> pair = Pair.of("username", "password");
+        Map<String, String> map = JacksonUtils.objectToMap(pair, String.class, String.class);
+        assertEquals(pair.toMap(), map);
     }
 }
