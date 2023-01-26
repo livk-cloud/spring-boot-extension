@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * <p>
@@ -55,6 +56,15 @@ public class Pair<K, V> implements Serializable, Cloneable {
      */
     public V value() {
         return value;
+    }
+
+    /**
+     * To map map.
+     *
+     * @return the map
+     */
+    public Map<K, V> toMap() {
+        return Map.of(key, value);
     }
 
     /**
