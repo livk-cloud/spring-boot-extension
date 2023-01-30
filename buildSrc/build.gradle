@@ -10,10 +10,12 @@ repositories {
 
 ext {
     bootVersion = libs.versions.springBoot.get()
+    nexusStaging = libs.versions.nexusStaging.get()
 }
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-gradle-plugin:$bootVersion"
+    implementation "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:$nexusStaging"
 }
 
 gradlePlugin {
