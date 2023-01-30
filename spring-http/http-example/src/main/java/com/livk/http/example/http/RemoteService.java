@@ -10,7 +10,7 @@ import org.springframework.web.service.annotation.GetExchange;
  *
  * @author livk
  */
-@Provider(url = "https://spring.io")
+@Provider(url = "https://jwt.io/")
 public interface RemoteService {
 
     @GetExchange()
