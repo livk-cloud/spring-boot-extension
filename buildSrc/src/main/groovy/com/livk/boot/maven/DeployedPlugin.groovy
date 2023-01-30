@@ -25,7 +25,6 @@ abstract class DeployedPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(SigningPlugin.class)
-        project.pluginManager.apply(NexusStagingPlugin.class)
         def publication = publication(project)
         def signing = project.extensions.getByType(SigningExtension.class)
         signing.sign(publication)

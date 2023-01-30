@@ -44,6 +44,10 @@ gradlePlugin {
             id = "com.livk.mvn.deployed"
             implementationClass = "com.livk.boot.maven.DeployedPlugin"
         }
+        nexusStagingPlugin {
+            id = "com.livk.nexus.staging"
+            implementationClass = "com.livk.boot.maven.NexusStagingPlugin"
+        }
     }
 }
 
