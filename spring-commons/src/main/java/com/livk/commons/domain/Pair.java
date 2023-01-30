@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -68,9 +70,69 @@ public class Pair<K, V> implements Serializable, Cloneable {
     }
 
     /**
+     * Of pair.
+     *
+     * @param <K>   the type parameter
+     * @param <V>   the type parameter
+     * @param entry the entry
+     * @return the pair
+     */
+    public static <K, V> Pair<K, V> of(Map.Entry<K, V> entry) {
+        return of(entry.getKey(), entry.getValue());
+    }
+
+    /**
+     * Map pair.
+     *
+     * @param <S>           the type parameter
+     * @param <U>           the type parameter
+     * @param keyFunction   the key function
+     * @param valueFunction the value function
+     * @return the pair
+     */
+    public <S, U> Pair<S, U> map(Function<K, S> keyFunction, Function<V, U> valueFunction) {
+        return of(keyFunction.apply(key), valueFunction.apply(value));
+    }
+
+    /**
+     * Key map pair.
+     *
+     * @param <S>         the type parameter
+     * @param keyFunction the key function
+     * @return the pair
+     */
+    public <S> Pair<S, V> keyMap(Function<K, S> keyFunction) {
+        return map(keyFunction, Function.identity());
+    }
+
+    /**
+     * Value map pair.
+     *
+     * @param <U>           the type parameter
+     * @param valueFunction the value function
+     * @return the pair
+     */
+    public <U> Pair<K, U> valueMap(Function<V, U> valueFunction) {
+        return map(Function.identity(), valueFunction);
+    }
+
+    /**
      * The constant EMPTY.
      */
     public static final Pair<?, ?> EMPTY = Pair.of(null, null);
+
+    /**
+     * Flat map pair.
+     *
+     * @param <S>        the type parameter
+     * @param <U>        the type parameter
+     * @param biFunction the bi function
+     * @return the pair
+     */
+    public <S, U> Pair<S, U> flatMap(BiFunction<K, V, Pair<S, U>> biFunction) {
+        return biFunction.apply(key, value);
+    }
+
     @Serial
     private static final long serialVersionUID = -2303547536834226401L;
 
@@ -82,6 +144,14 @@ public class Pair<K, V> implements Serializable, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Pair{" +
+               "key=" + key +
+               ", value=" + value +
+               '}';
     }
 
     /**
