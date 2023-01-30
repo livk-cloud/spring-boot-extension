@@ -1,6 +1,5 @@
 plugins {
     id "com.livk.root"
-    id "com.livk.nexus.staging"
 }
 
 ext {

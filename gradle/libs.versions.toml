@@ -27,7 +27,6 @@ springBootAdmin = "3.0.0-M9"
 nimbusdsJwt = "9.28"
 rocketStarter = "2.2.2"
 jsqlparser = "4.5"
-nexusStaging = "0.30.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
