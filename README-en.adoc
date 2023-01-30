@@ -26,7 +26,7 @@ https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
         <dependency>
             <groupId>io.github.livk-cloud</groupId>
             <artifactId>livk-boot-dependencies</artifactId>
-            <version>1.0.0-M1</version>
+            <version>1.0.0-M2</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
@@ -39,7 +39,7 @@ https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
 
 ----
 dependencies {
-    implementation platform("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M1")
+    implementation platform("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M2")
 }
 ----
 
