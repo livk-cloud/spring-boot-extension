@@ -3,7 +3,6 @@ package com.livk.autoconfigure.dynamic.datasource;
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestAttributes;
 
 /**
  * <p>
@@ -26,8 +25,27 @@ public class DataSourceContextHolder {
      * @param datasource the datasource
      */
     public static void switchDataSource(String datasource) {
-        datasourceHolder.set(datasource);
-        inheritableDatasourceHolder.set(datasource);
+        switchDataSource(datasource, false);
+    }
+
+    /**
+     * Switch data source.
+     *
+     * @param datasource  the datasource
+     * @param inheritable the inheritable
+     */
+    public static void switchDataSource(String datasource, boolean inheritable) {
+        if (StringUtils.hasText(datasource)) {
+            if (inheritable) {
+                inheritableDatasourceHolder.set(datasource);
+                datasourceHolder.remove();
+            } else {
+                datasourceHolder.set(datasource);
+                inheritableDatasourceHolder.remove();
+            }
+        } else {
+            clear();
+        }
     }
 
     /**

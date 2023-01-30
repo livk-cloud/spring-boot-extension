@@ -1,6 +1,8 @@
 package com.livk.autoconfigure.useragent.browscap.support;
 
 import com.blueconic.browscap.Capabilities;
+import org.springframework.core.NamedInheritableThreadLocal;
+import org.springframework.core.NamedThreadLocal;
 
 /**
  * <p>
@@ -10,9 +12,10 @@ import com.blueconic.browscap.Capabilities;
  * @author livk
  */
 public class UserAgentContextHolder {
-    private static final ThreadLocal<Capabilities> context = new ThreadLocal<>();
+    private static final ThreadLocal<Capabilities> context = new NamedThreadLocal<>("capabilities context");
 
-    private static final ThreadLocal<Capabilities> inheritableContext = new InheritableThreadLocal<>();
+    private static final ThreadLocal<Capabilities> inheritableContext = new NamedInheritableThreadLocal<>("inheritable capabilities context");
+
 
     /**
      * Set.
@@ -20,8 +23,27 @@ public class UserAgentContextHolder {
      * @param capabilities the capabilities
      */
     public static void set(Capabilities capabilities) {
-        context.set(capabilities);
-        inheritableContext.set(capabilities);
+        set(capabilities, false);
+    }
+
+    /**
+     * Set.
+     *
+     * @param capabilities the capabilities
+     * @param inheritable  the inheritable
+     */
+    public static void set(Capabilities capabilities, boolean inheritable) {
+        if (capabilities != null) {
+            if (inheritable) {
+                inheritableContext.set(capabilities);
+                context.remove();
+            } else {
+                context.set(capabilities);
+                inheritableContext.remove();
+            }
+        } else {
+            remove();
+        }
     }
 
     /**

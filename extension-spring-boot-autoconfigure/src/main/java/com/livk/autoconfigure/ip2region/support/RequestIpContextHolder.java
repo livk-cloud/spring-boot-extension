@@ -2,6 +2,8 @@ package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.NamedInheritableThreadLocal;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.StringUtils;
 
 import java.util.function.Supplier;
@@ -14,9 +16,9 @@ import java.util.function.Supplier;
  * @author livk
  */
 public class RequestIpContextHolder {
-    private static final ThreadLocal<String> context = new ThreadLocal<>();
+    private static final ThreadLocal<String> context = new NamedThreadLocal<>("request ip context");
 
-    private static final ThreadLocal<String> inheritableContext = new InheritableThreadLocal<>();
+    private static final ThreadLocal<String> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
 
     /**
      * Set.
@@ -24,8 +26,27 @@ public class RequestIpContextHolder {
      * @param ip the ip
      */
     public static void set(String ip) {
-        context.set(ip);
-        inheritableContext.set(ip);
+        set(ip, false);
+    }
+
+    /**
+     * Set.
+     *
+     * @param ip          the ip
+     * @param inheritable the inheritable
+     */
+    public static void set(String ip, boolean inheritable) {
+        if (StringUtils.hasText(ip)) {
+            if (inheritable) {
+                inheritableContext.set(ip);
+                context.remove();
+            } else {
+                context.set(ip);
+                inheritableContext.remove();
+            }
+        } else {
+            remove();
+        }
     }
 
     /**

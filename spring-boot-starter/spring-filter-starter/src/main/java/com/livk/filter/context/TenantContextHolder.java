@@ -1,6 +1,8 @@
 package com.livk.filter.context;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.core.NamedInheritableThreadLocal;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.StringUtils;
 
 /**
@@ -15,8 +17,9 @@ public class TenantContextHolder {
 
     public final static String ATTRIBUTES = "tenant";
 
-    private final static ThreadLocal<String> TENANT_ID = new ThreadLocal<>();
-    private final static ThreadLocal<String> INHERITABLE_TENANT_ID = new InheritableThreadLocal<>();
+    private final static ThreadLocal<String> TENANT_ID = new NamedThreadLocal<>("tenant context");
+    private final static ThreadLocal<String> INHERITABLE_TENANT_ID = new NamedInheritableThreadLocal<>("inheritable tenant ip context");
+
 
     public String getTenantId() {
         String tenantId = TENANT_ID.get();
@@ -27,9 +30,20 @@ public class TenantContextHolder {
     }
 
     public void setTenantId(String tenantId) {
+        setTenantId(tenantId, false);
+    }
+
+    public void setTenantId(String tenantId, boolean inheritable) {
         if (StringUtils.hasText(tenantId)) {
-            TENANT_ID.set(tenantId);
-            INHERITABLE_TENANT_ID.set(tenantId);
+            if (inheritable) {
+                INHERITABLE_TENANT_ID.set(tenantId);
+                TENANT_ID.remove();
+            } else {
+                TENANT_ID.set(tenantId);
+                INHERITABLE_TENANT_ID.remove();
+            }
+        } else {
+            remove();
         }
     }
 

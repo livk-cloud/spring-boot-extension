@@ -1,6 +1,8 @@
 package com.livk.autoconfigure.useragent.yauaa.support;
 
 import nl.basjes.parse.useragent.UserAgent;
+import org.springframework.core.NamedInheritableThreadLocal;
+import org.springframework.core.NamedThreadLocal;
 
 /**
  * <p>
@@ -10,9 +12,9 @@ import nl.basjes.parse.useragent.UserAgent;
  * @author livk
  */
 public class UserAgentContextHolder {
-    private static final ThreadLocal<UserAgent> context = new ThreadLocal<>();
+    private static final ThreadLocal<UserAgent> context = new NamedThreadLocal<>("useragent context");
 
-    private static final ThreadLocal<UserAgent> inheritableContext = new InheritableThreadLocal<>();
+    private static final ThreadLocal<UserAgent> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
 
     /**
      * Set.
@@ -20,8 +22,27 @@ public class UserAgentContextHolder {
      * @param userAgent the user agent
      */
     public static void set(UserAgent userAgent) {
-        context.set(userAgent);
-        inheritableContext.set(userAgent);
+        set(userAgent, false);
+    }
+
+    /**
+     * Set.
+     *
+     * @param userAgent   the user agent
+     * @param inheritable the inheritable
+     */
+    public static void set(UserAgent userAgent, boolean inheritable) {
+        if (userAgent != null) {
+            if (inheritable) {
+                inheritableContext.set(userAgent);
+                context.remove();
+            } else {
+                context.set(userAgent);
+                inheritableContext.remove();
+            }
+        } else {
+            remove();
+        }
     }
 
     /**
