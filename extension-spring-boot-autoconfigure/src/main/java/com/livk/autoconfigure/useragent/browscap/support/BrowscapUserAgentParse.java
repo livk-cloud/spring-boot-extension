@@ -21,7 +21,7 @@ public class BrowscapUserAgentParse implements HttpUserAgentParser<Capabilities>
 
     @Override
     public Wrapper<Capabilities> parse(HttpHeaders headers) {
-        String userAgent = headers.getFirst(HttpHeaders.USER_AGENT.toLowerCase());
+        String userAgent = headers.getFirst(HttpHeaders.USER_AGENT);
         Capabilities capabilities = userAgentParser.parse(userAgent);
         return new Wrapper<>(capabilities);
     }
