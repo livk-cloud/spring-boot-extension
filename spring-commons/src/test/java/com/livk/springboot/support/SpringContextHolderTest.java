@@ -4,7 +4,6 @@ import com.livk.commons.support.SpringContextHolder;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
-@ImportAutoConfiguration(SpringContextHolder.class)
 @SpringBootTest("spring.data.redis.host=livk.com")
 class SpringContextHolderTest {
 

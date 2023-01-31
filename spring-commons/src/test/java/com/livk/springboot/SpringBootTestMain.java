@@ -2,7 +2,6 @@ package com.livk.springboot;
 
 import com.livk.commons.spring.LivkSpring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  * <p>
@@ -11,7 +10,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  *
  * @author livk
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 public class SpringBootTestMain {
     public static void main(String[] args) {
         LivkSpring.run(SpringBootTestMain.class, args);
