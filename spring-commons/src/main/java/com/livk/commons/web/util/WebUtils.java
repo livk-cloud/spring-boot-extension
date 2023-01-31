@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -115,12 +112,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      * @return the http headers
      */
     public HttpHeaders headers(HttpServletRequest request) {
-        MultiValueMap<String, String> headers = StreamUtils.convert(request.getHeaderNames())
+        LinkedCaseInsensitiveMap<List<String>> insensitiveMap = StreamUtils.convert(request.getHeaderNames())
                 .collect(Collectors.toMap(Function.identity(),
                         s -> StreamUtils.convert(request.getHeaders(s)).toList(),
                         (list1, list2) -> Stream.concat(list1.stream(), list2.stream()).toList(),
-                        LinkedMultiValueMap::new));
-        return new HttpHeaders(headers);
+                        LinkedCaseInsensitiveMap::new));
+        return new HttpHeaders(CollectionUtils.toMultiValueMap(insensitiveMap));
     }
 
     /**
