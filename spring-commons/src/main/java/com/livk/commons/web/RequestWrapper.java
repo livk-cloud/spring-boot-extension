@@ -26,8 +26,6 @@ import java.util.NoSuchElementException;
  */
 public final class RequestWrapper extends HttpServletRequestWrapper {
 
-    private final ServletRequest request;
-
     private final String requestJson;
 
     private final MediaType contentType;
@@ -62,31 +60,30 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
      */
     public RequestWrapper(HttpServletRequest request, String json, MediaType contentType) {
         super(request);
-        this.request = getRequest();
         this.requestJson = json;
         this.contentType = contentType;
     }
 
     @Override
     public ServletInputStream getInputStream() throws UnsupportedEncodingException {
-        return new RequestServletInputStream(request, requestJson);
+        return new RequestServletInputStream(getRequest(), requestJson);
     }
 
     @SneakyThrows
     @Override
     public int getContentLength() {
-        return requestJson.getBytes(request.getCharacterEncoding()).length;
+        return requestJson.getBytes(getRequest().getCharacterEncoding()).length;
     }
 
     @SneakyThrows
     @Override
     public long getContentLengthLong() {
-        return requestJson.getBytes(request.getCharacterEncoding()).length;
+        return requestJson.getBytes(getRequest().getCharacterEncoding()).length;
     }
 
     @Override
     public String getContentType() {
-        return ObjectUtils.isEmpty(contentType) ? request.getContentType() : contentType.getType();
+        return ObjectUtils.isEmpty(contentType) ? getRequest().getContentType() : contentType.getType();
     }
 
     @Override
