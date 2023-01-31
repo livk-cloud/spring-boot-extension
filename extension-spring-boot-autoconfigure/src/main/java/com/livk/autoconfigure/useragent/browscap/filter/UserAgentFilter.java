@@ -1,9 +1,7 @@
 package com.livk.autoconfigure.useragent.browscap.filter;
 
-import com.livk.autoconfigure.useragent.browscap.support.UserAgentContextHolder;
-import com.livk.autoconfigure.useragent.browscap.util.UserAgentUtils;
-import com.livk.autoconfigure.useragent.filter.AbstractUserAgentFilter;
-import jakarta.servlet.http.HttpServletRequest;
+import com.livk.autoconfigure.useragent.servlet.AbstractUserAgentFilter;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 
 /**
  * <p>
@@ -14,13 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class UserAgentFilter extends AbstractUserAgentFilter {
 
-    @Override
-    protected void set(HttpServletRequest request) {
-        UserAgentContextHolder.set(UserAgentUtils.parse(request));
-    }
-
-    @Override
-    protected void remove() {
-        UserAgentContextHolder.remove();
+    /**
+     * Instantiates a new User agent filter.
+     *
+     * @param userAgentParse the user agent parse
+     */
+    public UserAgentFilter(HttpUserAgentParser<?> userAgentParse) {
+        super(userAgentParse);
     }
 }

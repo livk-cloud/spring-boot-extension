@@ -1,13 +1,14 @@
-package com.livk.autoconfigure.useragent.filter;
+package com.livk.autoconfigure.useragent.reactive;
 
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-import reactor.util.context.Context;
-
-import java.util.function.Function;
 
 /**
  * <p>
@@ -16,32 +17,19 @@ import java.util.function.Function;
  *
  * @author livk
  */
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractReactiveUserAgentFilter implements WebFilter {
+
+    private final HttpUserAgentParser<?> userAgentParse;
 
     @NonNull
     @Override
     public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
-                .contextWrite(clear())
+                .contextWrite(ReactiveUserAgentContextHolder.clearContext())
                 .then());
+        HttpHeaders headers = exchange.getRequest().getHeaders();
         return chain.filter(exchange)
-                .contextWrite(write(exchange));
+                .contextWrite(ReactiveUserAgentContextHolder.withContext(userAgentParse.parse(headers)));
     }
-
-    /**
-     * Write context.
-     *
-     * @param exchange the exchange
-     * @return the context
-     */
-    protected abstract Context write(ServerWebExchange exchange);
-
-    /**
-     * Clear function.
-     *
-     * @return the function
-     */
-    protected abstract Function<Context, Context> clear();
-
-
 }

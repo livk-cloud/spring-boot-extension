@@ -1,11 +1,11 @@
-package com.livk.autoconfigure.useragent.resolver;
+package com.livk.autoconfigure.useragent.reactive;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ReactiveAdapter;
-import org.springframework.core.ReactiveAdapterRegistry;
-import org.springframework.core.ResolvableType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
+import com.livk.commons.domain.Wrapper;
+import com.livk.commons.support.SpringContextHolder;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.core.*;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
@@ -24,6 +24,19 @@ public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMet
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
+    private final HttpUserAgentParser<T> userAgentParse;
+
+    /**
+     * Instantiates a new Abstract reactive user agent resolver.
+     */
+    @SuppressWarnings("unchecked")
+    public AbstractReactiveUserAgentResolver() {
+        Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractReactiveUserAgentResolver.class);
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(HttpUserAgentParser.class, annotationClass);
+        ObjectProvider<HttpUserAgentParser<T>> beanProvider = SpringContextHolder.getBeanProvider(resolvableType);
+        userAgentParse = beanProvider.getIfAvailable();
+    }
+
     @Override
     public final boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(UserAgentInfo.class);
@@ -35,22 +48,9 @@ public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMet
         Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
         ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
-        Mono<T> mono = getUserAgent().switchIfEmpty(parseUserAgent(exchange.getRequest()));
+        Mono<Object> mono = ReactiveUserAgentContextHolder.get()
+                .switchIfEmpty(Mono.justOrEmpty((Wrapper<?>) userAgentParse.parse(exchange.getRequest().getHeaders())))
+                .map(Wrapper::obj);
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }
-
-    /**
-     * Gets user agent.
-     *
-     * @return the user agent
-     */
-    protected abstract Mono<T> getUserAgent();
-
-    /**
-     * Parse user agent mono.
-     *
-     * @param request the request
-     * @return the mono
-     */
-    protected abstract Mono<T> parseUserAgent(ServerHttpRequest request);
 }

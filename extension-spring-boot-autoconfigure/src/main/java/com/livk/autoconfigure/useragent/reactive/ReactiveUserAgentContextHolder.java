@@ -1,30 +1,24 @@
-package com.livk.autoconfigure.useragent.yauaa.support;
+package com.livk.autoconfigure.useragent.reactive;
 
-import lombok.experimental.UtilityClass;
-import nl.basjes.parse.useragent.UserAgent;
+import com.livk.commons.domain.Wrapper;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
 import java.util.function.Function;
 
 /**
- * <p>
- * ReactiveUserAgentContext
- * </p>
- *
- * @author livk
+ * The type Reactive user agent context holder.
  */
-@UtilityClass
-public final class ReactiveUserAgentContextHolder {
+public class ReactiveUserAgentContextHolder {
 
-    private static final Class<?> USER_AGENT_KEY = UserAgent.class;
+    private static final Class<?> USER_AGENT_KEY = ReactiveUserAgentContextHolder.class;
 
     /**
      * Get mono.
      *
      * @return the mono
      */
-    public Mono<UserAgent> get() {
+    public static Mono<Wrapper<?>> get() {
         return Mono.deferContextual(Mono::just)
                 .cast(Context.class)
                 .filter(ReactiveUserAgentContextHolder::hasContext)
@@ -35,8 +29,8 @@ public final class ReactiveUserAgentContextHolder {
         return context.hasKey(USER_AGENT_KEY);
     }
 
-    private static Mono<UserAgent> getContext(Context context) {
-        return context.<Mono<UserAgent>>get(USER_AGENT_KEY);
+    private static Mono<Wrapper<?>> getContext(Context context) {
+        return context.<Mono<Wrapper<?>>>get(USER_AGENT_KEY);
     }
 
     /**
@@ -51,20 +45,20 @@ public final class ReactiveUserAgentContextHolder {
     /**
      * With context context.
      *
-     * @param capabilities the capabilities
+     * @param useragentWrapper the useragent wrapper
      * @return the context
      */
-    public static Context withContext(Mono<? extends UserAgent> capabilities) {
-        return Context.of(USER_AGENT_KEY, capabilities);
+    public static Context withContext(Mono<? extends Wrapper<?>> useragentWrapper) {
+        return Context.of(USER_AGENT_KEY, useragentWrapper);
     }
 
     /**
      * With context context.
      *
-     * @param capabilities the capabilities
+     * @param useragentWrapper the useragent wrapper
      * @return the context
      */
-    public static Context withContext(UserAgent capabilities) {
-        return withContext(Mono.just(capabilities));
+    public static Context withContext(Wrapper<?> useragentWrapper) {
+        return withContext(Mono.just(useragentWrapper));
     }
 }

@@ -1,9 +1,7 @@
 package com.livk.autoconfigure.useragent.yauaa.filter;
 
-import com.livk.autoconfigure.useragent.filter.AbstractUserAgentFilter;
-import com.livk.autoconfigure.useragent.yauaa.support.UserAgentContextHolder;
-import com.livk.autoconfigure.useragent.yauaa.util.UserAgentUtils;
-import jakarta.servlet.http.HttpServletRequest;
+import com.livk.autoconfigure.useragent.servlet.AbstractUserAgentFilter;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 
 /**
  * <p>
@@ -14,13 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class UserAgentFilter extends AbstractUserAgentFilter {
 
-    @Override
-    protected void set(HttpServletRequest request) {
-        UserAgentContextHolder.set(UserAgentUtils.parse(request));
-    }
-
-    @Override
-    protected void remove() {
-        UserAgentContextHolder.remove();
+    /**
+     * Instantiates a new User agent filter.
+     *
+     * @param userAgentParse the user agent parse
+     */
+    public UserAgentFilter(HttpUserAgentParser<?> userAgentParse) {
+        super(userAgentParse);
     }
 }

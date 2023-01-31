@@ -1,16 +1,16 @@
 package com.livk.autoconfigure.useragent.browscap;
 
-import com.blueconic.browscap.BrowsCapField;
-import com.blueconic.browscap.ParseException;
-import com.blueconic.browscap.UserAgentParser;
-import com.blueconic.browscap.UserAgentService;
+import com.blueconic.browscap.*;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.browscap.filter.ReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.browscap.filter.UserAgentFilter;
 import com.livk.autoconfigure.useragent.browscap.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
 import com.livk.autoconfigure.useragent.browscap.resolver.UserAgentHandlerMethodArgumentResolver;
+import com.livk.autoconfigure.useragent.browscap.support.BrowscapUserAgentParse;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -48,6 +48,18 @@ public class BrowscapAutoConfiguration {
     }
 
     /**
+     * Browscap user agent parse browscap user agent parse.
+     *
+     * @param userAgentAnalyzer the user agent analyzer
+     * @return the browscap user agent parse
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public BrowscapUserAgentParse browscapUserAgentParse(UserAgentParser userAgentAnalyzer) {
+        return new BrowscapUserAgentParse(userAgentAnalyzer);
+    }
+
+    /**
      * The type Browscap mvc auto configuration.
      */
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
@@ -56,12 +68,13 @@ public class BrowscapAutoConfiguration {
         /**
          * Filter registration bean filter registration bean.
          *
+         * @param httpUserAgentParser the http user agent parser
          * @return the filter registration bean
          */
         @Bean
-        public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
+        public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean(HttpUserAgentParser<Capabilities> httpUserAgentParser) {
             FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
-            registrationBean.setFilter(new UserAgentFilter());
+            registrationBean.setFilter(new UserAgentFilter(httpUserAgentParser));
             registrationBean.addUrlPatterns("/*");
             registrationBean.setName("userAgentFilter");
             registrationBean.setOrder(1);
@@ -84,11 +97,12 @@ public class BrowscapAutoConfiguration {
         /**
          * Tenant web filter reactive user agent filter.
          *
+         * @param httpUserAgentParser the http user agent parser
          * @return the reactive user agent filter
          */
         @Bean
-        public ReactiveUserAgentFilter tenantWebFilter() {
-            return new ReactiveUserAgentFilter();
+        public ReactiveUserAgentFilter reactiveUserAgentFilter(HttpUserAgentParser<Capabilities> httpUserAgentParser) {
+            return new ReactiveUserAgentFilter(httpUserAgentParser);
         }
 
         @Override

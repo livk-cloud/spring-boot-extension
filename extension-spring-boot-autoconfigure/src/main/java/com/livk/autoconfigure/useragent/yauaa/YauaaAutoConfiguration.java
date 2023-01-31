@@ -1,14 +1,18 @@
 package com.livk.autoconfigure.useragent.yauaa;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 import com.livk.autoconfigure.useragent.yauaa.filter.ReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.filter.UserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
 import com.livk.autoconfigure.useragent.yauaa.resolver.UserAgentHandlerMethodArgumentResolver;
+import com.livk.autoconfigure.useragent.yauaa.support.YauaaUserAgentParse;
+import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +51,18 @@ public class YauaaAutoConfiguration {
                 .build();
     }
 
+    /**
+     * Yauaa user agent parse yauaa user agent parse.
+     *
+     * @param userAgentAnalyzer the user agent analyzer
+     * @return the yauaa user agent parse
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public YauaaUserAgentParse yauaaUserAgentParse(UserAgentAnalyzer userAgentAnalyzer) {
+        return new YauaaUserAgentParse(userAgentAnalyzer);
+    }
+
 
     /**
      * The type Yauaa mvc auto configuration.
@@ -54,15 +70,17 @@ public class YauaaAutoConfiguration {
     @AutoConfiguration(after = YauaaAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class YauaaMvcAutoConfiguration implements WebMvcConfigurer {
+
         /**
          * Filter registration bean filter registration bean.
          *
+         * @param httpUserAgentParse the http user agent parse
          * @return the filter registration bean
          */
         @Bean
-        public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
+        public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean(HttpUserAgentParser<UserAgent> httpUserAgentParse) {
             FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
-            registrationBean.setFilter(new UserAgentFilter());
+            registrationBean.setFilter(new UserAgentFilter(httpUserAgentParse));
             registrationBean.addUrlPatterns("/*");
             registrationBean.setName("userAgentFilter");
             registrationBean.setOrder(1);
@@ -85,11 +103,12 @@ public class YauaaAutoConfiguration {
         /**
          * Tenant web filter reactive user agent filter.
          *
+         * @param httpUserAgentParse the http user agent parse
          * @return the reactive user agent filter
          */
         @Bean
-        public ReactiveUserAgentFilter tenantWebFilter() {
-            return new ReactiveUserAgentFilter();
+        public ReactiveUserAgentFilter reactiveUserAgentFilter(HttpUserAgentParser<UserAgent> httpUserAgentParse) {
+            return new ReactiveUserAgentFilter(httpUserAgentParse);
         }
 
         @Override

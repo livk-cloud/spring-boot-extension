@@ -1,12 +1,7 @@
 package com.livk.autoconfigure.useragent.yauaa.filter;
 
-import com.livk.autoconfigure.useragent.filter.AbstractReactiveUserAgentFilter;
-import com.livk.autoconfigure.useragent.yauaa.support.ReactiveUserAgentContextHolder;
-import com.livk.autoconfigure.useragent.yauaa.util.UserAgentUtils;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.util.context.Context;
-
-import java.util.function.Function;
+import com.livk.autoconfigure.useragent.reactive.AbstractReactiveUserAgentFilter;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 
 /**
  * <p>
@@ -17,13 +12,12 @@ import java.util.function.Function;
  */
 public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter {
 
-    @Override
-    protected Context write(ServerWebExchange exchange) {
-        return ReactiveUserAgentContextHolder.withContext(UserAgentUtils.parse(exchange.getRequest()));
-    }
-
-    @Override
-    protected Function<Context, Context> clear() {
-        return ReactiveUserAgentContextHolder.clearContext();
+    /**
+     * Instantiates a new Reactive user agent filter.
+     *
+     * @param userAgentParse the user agent parse
+     */
+    public ReactiveUserAgentFilter(HttpUserAgentParser<?> userAgentParse) {
+        super(userAgentParse);
     }
 }
