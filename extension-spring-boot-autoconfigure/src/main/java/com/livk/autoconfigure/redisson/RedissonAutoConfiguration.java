@@ -19,7 +19,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
@@ -47,7 +46,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-    private StandardEnvironment environment;
+    private Environment environment;
 
     /**
      * Redisson reactive client.
@@ -132,6 +131,6 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
-        this.environment = (StandardEnvironment) environment;
+        this.environment = environment;
     }
 }
