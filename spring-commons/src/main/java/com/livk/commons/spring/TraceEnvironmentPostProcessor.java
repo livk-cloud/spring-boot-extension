@@ -25,7 +25,9 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (ClassUtils.isPresent("io.micrometer.tracing.Tracer", Thread.currentThread().getContextClassLoader())) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (ClassUtils.isPresent("io.micrometer.tracing.Tracer", classLoader) &&
+            ClassUtils.isPresent("io.micrometer.tracing.otel.bridge.OtelTracer", classLoader)) {
             if (Boolean.parseBoolean(environment.getProperty("management.tracing.enabled", "true"))) {
                 Map<String, Object> map = new HashMap<>();
                 if (!environment.containsProperty("management.tracing.sampling.probability")) {
