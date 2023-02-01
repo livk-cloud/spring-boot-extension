@@ -24,6 +24,26 @@ class PairTest {
     @Test
     void toMap() {
         assertEquals(pair.toMap(), Map.of("livk", 123456));
+        assertEquals(Map.entry("livk", 123456), pair.toEntry());
+    }
+
+    @Test
+    void map() {
+        Pair<String, String> map = pair.map(String::toUpperCase, String::valueOf);
+        assertEquals("LIVK", map.key());
+        assertEquals("123456", map.value());
+
+        Pair<String, Integer> keyMap = pair.keyMap(String::toUpperCase);
+        assertEquals("LIVK", keyMap.key());
+        assertEquals(123456, keyMap.value());
+
+        Pair<String, String> valueMap = pair.valueMap(String::valueOf);
+        assertEquals("livk", valueMap.key());
+        assertEquals("123456", valueMap.value());
+
+        Pair<String, String> flatMap = pair.flatMap((key, value) -> Pair.of(key.toUpperCase(), String.valueOf(value)));
+        assertEquals("LIVK", flatMap.key());
+        assertEquals("123456", flatMap.value());
     }
 
     @Test
