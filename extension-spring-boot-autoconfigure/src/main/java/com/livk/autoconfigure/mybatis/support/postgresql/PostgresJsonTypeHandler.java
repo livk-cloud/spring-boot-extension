@@ -37,19 +37,19 @@ public class PostgresJsonTypeHandler implements TypeHandler<JsonNode> {
     @Override
     public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
         String json = rs.getString(columnName);
-        return JacksonUtils.toBean(json, JsonNode.class);
+        return JacksonUtils.readTree(json);
     }
 
     @Override
     public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
         String json = rs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
+        return JacksonUtils.readTree(json);
     }
 
     @Override
     public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
         String json = cs.getString(columnIndex);
-        return JacksonUtils.toBean(json, JsonNode.class);
+        return JacksonUtils.readTree(json);
     }
 
 }
