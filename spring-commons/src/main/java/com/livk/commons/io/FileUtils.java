@@ -1,6 +1,5 @@
 package com.livk.commons.io;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.util.FileCopyUtils;
@@ -57,11 +56,11 @@ public class FileUtils extends FileCopyUtils {
      * @param file the file
      * @return the boolean
      */
-    @SneakyThrows
-    public boolean createNewFile(File file) {
+    public boolean createNewFile(File file) throws IOException {
         boolean flag = true;
-        if (!file.getParentFile().exists()) {
-            flag = file.getParentFile().mkdirs();
+        File parentFile = file.getParentFile();
+        if (parentFile != null && !parentFile.exists()) {
+            flag = parentFile.mkdirs();
         }
         return flag && file.createNewFile();
     }
