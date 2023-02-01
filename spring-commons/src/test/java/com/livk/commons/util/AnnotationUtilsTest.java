@@ -53,13 +53,13 @@ class AnnotationUtilsTest {
         assertTrue(AnnotationUtils.hasAnnotationElement(method, RestController.class));
         assertFalse(AnnotationUtils.hasAnnotationElement(method, RequestBody.class));
     }
-}
 
-@RestController
-class AnnotationTestClass {
+    @RestController
+    static class AnnotationTestClass {
 
-    @RequestMapping
-    @SuppressWarnings("unused")
-    private void parseMethod(String username) {
+        @RequestMapping
+        @SuppressWarnings("unused")
+        private void parseMethod(String username) {
+        }
     }
 }

@@ -82,9 +82,9 @@ class SpringContextHolderTest {
             context.removeBeanDefinition("test2");
         }
     }
-}
 
-@Data
-class BeanTest {
-    private final Long id = 1L;
+    @Data
+    static class BeanTest {
+        private final Long id = 1L;
+    }
 }

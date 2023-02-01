@@ -51,15 +51,15 @@ class BeanUtilsTest {
         boolean result = BeanUtils.isFieldNull(bean);
         assertFalse(result);
     }
-}
 
-record SourceBean(String beanName, Integer beanNo) {
-}
+    record SourceBean(String beanName, Integer beanNo) {
+    }
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class TargetBean {
-    private String beanName;
-    private Integer beanNo;
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class TargetBean {
+        private String beanName;
+        private Integer beanNo;
+    }
 }

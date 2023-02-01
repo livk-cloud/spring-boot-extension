@@ -31,19 +31,17 @@ class ColumnTest {
 
     @Test
     void get() {
-        Long id = column.get(User::getId);
-        assertEquals(12L, id);
-        String username = column.get(User::getUsername);
-        assertEquals("livk", username);
+        assertEquals(12L, column.<Long>get(User::getId));
+        assertEquals("livk", column.<String>get(User::getUsername));
         assertEquals(user, column.getEntity());
         assertEquals(Map.of("id", 12L, "username", "livk"), column.getMap());
     }
-}
 
-@Data
-class User {
+    @Data
+    static class User {
 
-    private Long id;
+        private Long id;
 
-    private String username;
+        private String username;
+    }
 }

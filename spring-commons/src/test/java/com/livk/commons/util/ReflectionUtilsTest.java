@@ -58,11 +58,11 @@ class ReflectionUtilsTest {
         List<String> list = fieldList.stream().map(Field::getName).collect(Collectors.toList());
         assertLinesMatch(List.of("no", "username"), list);
     }
-}
 
-@Data
-class Maker {
-    private Integer no;
+    @Data
+    static class Maker {
+        private Integer no;
 
-    private String username;
+        private String username;
+    }
 }
