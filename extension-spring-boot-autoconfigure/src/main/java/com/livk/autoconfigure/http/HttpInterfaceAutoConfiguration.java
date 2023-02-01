@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -21,8 +22,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  */
 @AutoConfiguration
 @SpringAutoService
+@Import(HttpServiceRegistrar.class)
 @ConditionalOnClass(value = WebClient.class, name = "com.livk.http.marker.HttpMarker")
-public class HttpAutoConfiguration {
+public class HttpInterfaceAutoConfiguration {
 
     /**
      * Web client web client.
@@ -49,16 +51,5 @@ public class HttpAutoConfiguration {
         HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient));
         customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
         return builder.build();
-    }
-
-    /**
-     * Http service registrar http service registrar.
-     *
-     * @param httpServiceProxyFactory the http service proxy factory
-     * @return the http service registrar
-     */
-    @Bean
-    public HttpServiceRegistrar httpServiceRegistrar(HttpServiceProxyFactory httpServiceProxyFactory) {
-        return new HttpServiceRegistrar(httpServiceProxyFactory);
     }
 }

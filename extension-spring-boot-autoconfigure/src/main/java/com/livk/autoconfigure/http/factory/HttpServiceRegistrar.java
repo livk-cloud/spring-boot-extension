@@ -8,23 +8,22 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.service.annotation.HttpExchange;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,9 +37,7 @@ import java.util.Set;
  * @author livk
  */
 @RequiredArgsConstructor
-public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
-
-    private final HttpServiceProxyFactory proxyFactory;
+public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
 
     private ResourceLoader resourceLoader;
 
@@ -54,11 +51,7 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
     }
 
     @Override
-    public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-    }
-
-    @Override
-    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         ClassPathBeanDefinitionScanner scanner = getScanner(registry);
         scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class, true));
@@ -66,10 +59,10 @@ public class HttpServiceRegistrar implements BeanDefinitionRegistryPostProcessor
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidateComponent : candidateComponents) {
                 Class<?> clazz = ClassUtils.resolveClassName(Objects.requireNonNull(candidateComponent.getBeanClassName()), null);
-                HttpFactoryBean<?> httpFactoryBean = new HttpFactoryBean<>(clazz, proxyFactory);
-                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(clazz);
+                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
+                builder.addPropertyValue("httpInterfaceType", clazz.getName());
                 AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-                beanDefinition.setInstanceSupplier(httpFactoryBean::getObject);
+
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
                 String beanName;
                 if (provider != null && StringUtils.hasText(provider.value())) {
