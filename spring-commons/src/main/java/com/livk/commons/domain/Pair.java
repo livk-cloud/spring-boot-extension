@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.type.TypeBindings;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -28,10 +29,17 @@ import java.util.function.Function;
  * @param <V> the type parameter
  * @author livk
  */
+@EqualsAndHashCode
 @RequiredArgsConstructor(staticName = "of")
 @JsonSerialize(using = Pair.PairJsonSerializer.class)
 @JsonDeserialize(using = Pair.PairJsonDeserializer.class)
 public class Pair<K, V> implements Serializable, Cloneable {
+
+    /**
+     * The constant EMPTY.
+     */
+    public static final Pair<?, ?> EMPTY = Pair.of(null, null);
+
     /**
      * key
      */
@@ -67,6 +75,15 @@ public class Pair<K, V> implements Serializable, Cloneable {
      */
     public Map<K, V> toMap() {
         return Map.of(key, value);
+    }
+
+    /**
+     * To entry map . entry.
+     *
+     * @return the map . entry
+     */
+    public Map.Entry<K, V> toEntry() {
+        return Map.entry(key, value);
     }
 
     /**
@@ -115,11 +132,6 @@ public class Pair<K, V> implements Serializable, Cloneable {
     public <U> Pair<K, U> valueMap(Function<V, U> valueFunction) {
         return map(Function.identity(), valueFunction);
     }
-
-    /**
-     * The constant EMPTY.
-     */
-    public static final Pair<?, ?> EMPTY = Pair.of(null, null);
 
     /**
      * Flat map pair.
