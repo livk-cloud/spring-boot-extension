@@ -25,17 +25,6 @@ public class WebSocketClientTest implements Runnable {
 
     private final CountDownLatch countDownLatch;
 
-    public static void main(String[] args) {
-        String uri = "ws://127.0.0.1:8888/websocket/";
-        int threadNum = 1000;
-        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
-        for (int i = 0; i < threadNum; i++) {
-            String url = uri + "No" + i;
-            new Thread(new WebSocketClientTest(url, countDownLatch)).start();
-            countDownLatch.countDown();
-        }
-    }
-
     @Override
     public void run() {
         getClient(uri);
@@ -46,7 +35,7 @@ public class WebSocketClientTest implements Runnable {
         }
     }
 
-    public void getClient(String uri) {
+    private void getClient(String uri) {
         try {
             WebSocketClient webSocketClient = new WebSocketClient(new URI(uri)) {
 
