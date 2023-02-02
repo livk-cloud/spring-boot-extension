@@ -57,7 +57,7 @@ class InfoControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "./uploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+                    FileUtils.download(in, "./uploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
                 });
         File outFile = new File("./uploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
         assertTrue(outFile.exists());

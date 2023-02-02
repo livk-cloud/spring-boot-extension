@@ -52,7 +52,7 @@ class Info2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
+                        FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -76,7 +76,7 @@ class Info2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+                        FileUtils.download(resource.getInputStream(), "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

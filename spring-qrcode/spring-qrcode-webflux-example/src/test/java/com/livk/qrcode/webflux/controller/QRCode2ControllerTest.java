@@ -38,7 +38,7 @@ class QRCode2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./hello." + PicType.JPG.name().toLowerCase());
+                        FileUtils.download(resource.getInputStream(), "./hello." + PicType.JPG.name().toLowerCase());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -58,7 +58,7 @@ class QRCode2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./helloMono." + PicType.JPG.name().toLowerCase());
+                        FileUtils.download(resource.getInputStream(), "./helloMono." + PicType.JPG.name().toLowerCase());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -78,7 +78,7 @@ class QRCode2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
+                        FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -98,7 +98,7 @@ class QRCode2ControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
+                        FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

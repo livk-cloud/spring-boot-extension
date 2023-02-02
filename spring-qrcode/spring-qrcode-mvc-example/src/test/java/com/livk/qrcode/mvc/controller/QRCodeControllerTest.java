@@ -35,7 +35,7 @@ class QRCodeControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "./hello." + PicType.JPG.name().toLowerCase());
+                    FileUtils.download(in, "./hello." + PicType.JPG.name().toLowerCase());
                 });
         File outFile = new File("hello." + PicType.JPG.name().toLowerCase());
         assertTrue(outFile.exists());
@@ -48,7 +48,7 @@ class QRCodeControllerTest {
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.testDownload(in, "./json." + PicType.JPG.name().toLowerCase());
+                    FileUtils.download(in, "./json." + PicType.JPG.name().toLowerCase());
                 });
         File outFile = new File("json." + PicType.JPG.name().toLowerCase());
         assertTrue(outFile.exists());

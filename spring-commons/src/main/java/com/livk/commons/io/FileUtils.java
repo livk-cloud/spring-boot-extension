@@ -16,25 +16,21 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
 /**
- * <p>
- * FileUtils
- * </p>
- *
- * @author livk
+ * The type File utils.
  */
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
     /**
-     * Test download.
+     * Download.
      *
      * @param stream   the stream
      * @param filePath the file path
      * @throws IOException the io exception
      */
-    public void testDownload(InputStream stream, String filePath) throws IOException {
+    public void download(InputStream stream, String filePath) throws IOException {
         File file = new File(filePath);
-        if (createNewFile(file)) {
+        if (file.exists() || createNewFile(file)) {
             try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
                 FileChannel channel = fileOutputStream.getChannel();
                 ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
@@ -55,6 +51,7 @@ public class FileUtils extends FileCopyUtils {
      *
      * @param file the file
      * @return the boolean
+     * @throws IOException the io exception
      */
     public boolean createNewFile(File file) throws IOException {
         boolean flag = true;

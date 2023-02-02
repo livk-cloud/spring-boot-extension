@@ -74,7 +74,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -95,7 +95,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -116,7 +116,7 @@ class InfoControllerTest {
                 .expectBody(Resource.class)
                 .value(resource -> {
                     try {
-                        FileUtils.testDownload(resource.getInputStream(), "./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
+                        FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
