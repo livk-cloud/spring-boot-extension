@@ -3,6 +3,7 @@ package com.livk.commons.endpoint;
 import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringAutoService
 @RequiredArgsConstructor
+@ConditionalOnWebApplication
 public class SystemController {
 
     private final ApplicationContext applicationContext;
