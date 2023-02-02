@@ -28,3 +28,4 @@ com.livk.qrcode.webflux.controller.QRCodeControllerTest
 com.livk.video.example.controller.VideoControllerTest
 com.livk.caffeine.controller.CacheControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
+com.livk.commons.io.FileUtilsTest
