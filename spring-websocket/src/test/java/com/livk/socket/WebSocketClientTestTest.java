@@ -1,5 +1,6 @@
 package com.livk.socket;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author livk
  * @date 2023/2/2
  */
+@Disabled("单独测试，性能损耗大")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
         useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
 class WebSocketClientTestTest {
