@@ -46,6 +46,16 @@ class StudentControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("[0:9].name",
                         "livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6", "livk-7", "livk-8", "livk-9").exists());
+
+        mockMvc.perform(get("/student")
+                        .param("query", "女"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        mockMvc.perform(get("/student")
+                        .param("query", "是一个学生"))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
 
