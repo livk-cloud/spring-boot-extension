@@ -1,0 +1,7 @@
+spring:
+  r2dbc:
+    url: r2dbc:clickhouse://livk.com:18123/default
+  sql:
+    init:
+      schema-locations: classpath:data.sql
+      mode: always

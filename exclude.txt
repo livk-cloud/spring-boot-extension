@@ -1,6 +1,7 @@
 com.livk.auth.server.AuthServerAppTest
 com.livk.batch.controller.JobControllerTest
-com.livk.ck.controller.UserControllerTest
+com.livk.ck.jdbc.controller.UserControllerTest
+com.livk.ck.r2dbc.controller.UserControllerTest
 com.livk.excel.mvc.controller.Info2ControllerTest
 com.livk.excel.mvc.controller.InfoControllerTest
 com.livk.graphql.mybatis.controller.BookControllerTest
