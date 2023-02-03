@@ -184,6 +184,18 @@ public class JacksonUtils {
         return MAPPER.convertValue(datum, mapType);
     }
 
+    /**
+     * Map to bean
+     *
+     * @param <T>         the type parameter
+     * @param map         the map
+     * @param targetClass the target class
+     * @return the t
+     */
+    public static <T> T mapToBean(Map<String, ?> map, Class<T> targetClass) {
+        return MAPPER.convertValue(map, targetClass);
+    }
+
     private boolean check(String json, Object... checkObj) {
         return json == null || json.isEmpty() || ObjectUtils.anyChecked(Objects::isNull, checkObj);
     }
