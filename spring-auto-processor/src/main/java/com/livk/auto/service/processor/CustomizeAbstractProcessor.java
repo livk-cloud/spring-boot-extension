@@ -149,4 +149,31 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
         Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
         providers.add(serviceImpl);
     }
+
+    /**
+     * 类字符串进行转换
+     *
+     * @param provider the provider
+     * @return the string
+     */
+    protected String transform(String provider) {
+        boolean flag = true;
+        char[] array = provider.toCharArray();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            if (i == array.length - 1) {
+                builder.append(array[i]);
+            } else if (array[i] == '.' && array[i + 1] >= 'A' && array[i + 1] <= 'Z') {
+                if (flag) {
+                    flag = false;
+                    builder.append(array[i]);
+                } else {
+                    builder.append('$');
+                }
+            } else {
+                builder.append(array[i]);
+            }
+        }
+        return builder.toString();
+    }
 }

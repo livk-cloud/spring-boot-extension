@@ -79,7 +79,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
             if (annotationMirror != null) {
                 Map<String, String> attributes = getAnnotationMirrorAttributes(annotationMirror);
                 Optional<String> optionalProvider = Optional.ofNullable(attributes.get("auto"));
-                String provider = optionalProvider.orElse(AUTOCONFIGURATION);
+                String provider = super.transform(optionalProvider.orElse(AUTOCONFIGURATION));
                 factoriesAdd(importsMap, provider, element.toString());
             }
         }

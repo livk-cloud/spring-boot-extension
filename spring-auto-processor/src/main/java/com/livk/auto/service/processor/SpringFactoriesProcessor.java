@@ -87,7 +87,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 Optional<String> optionalProvider = Optional.ofNullable(attributes.get("type"));
                 Optional<Boolean> optionalAot = Optional.ofNullable(attributes.get("aot"))
                         .map(Boolean::parseBoolean);
-                String provider = optionalProvider.orElseThrow();
+                String provider = super.transform(optionalProvider.orElseThrow());
                 boolean aot = optionalAot.orElse(false);
                 if (aot) {
                     factoriesAdd(aotFactoriesMap, provider, element.toString());
