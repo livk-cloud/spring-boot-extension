@@ -27,6 +27,7 @@ springBootAdmin = "3.0.0"
 nimbusdsJwt = "9.28"
 rocketStarter = "2.2.2"
 jsqlparser = "4.5"
+lettucemod = "3.3.1"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -61,6 +62,7 @@ google-javase = { group = "com.google.zxing", name = "javase", version.ref = "go
 nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusdsJwt" }
 rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring-boot-starter", version.ref = "rocketStarter" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
+lettucemod = { group = "com.redis", name = "spring-lettucemod", version.ref = "lettucemod" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

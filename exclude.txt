@@ -30,3 +30,4 @@ com.livk.video.example.controller.VideoControllerTest
 com.livk.caffeine.controller.CacheControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
 com.livk.commons.io.FileUtilsTest
+com.livk.redisearch.controller.StudentControllerTest

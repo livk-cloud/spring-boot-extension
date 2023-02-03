@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(":spring-redis:redis-commons")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "com.redis:spring-lettucemod"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+}

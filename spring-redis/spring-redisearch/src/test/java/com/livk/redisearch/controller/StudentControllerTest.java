@@ -1,0 +1,39 @@
+package com.livk.redisearch.controller;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * <p>
+ * StudentControllerTest
+ * </p>
+ *
+ * @author livk
+ * @date 2023/2/3
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
+class StudentControllerTest {
+    @Autowired
+    MockMvc mockMvc;
+
+
+    @Test
+    void testList() throws Exception {
+        mockMvc.perform(get("/student"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("[0:9].name",
+                        "livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6", "livk-7", "livk-8", "livk-9").exists());
+    }
+}
+
+
