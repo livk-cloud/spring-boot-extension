@@ -1,6 +1,6 @@
 package com.livk.redis.support;
 
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LuaStock {
 
-    private final LivkRedisTemplate livkRedisTemplate;
+    private final UniversalRedisTemplate livkRedisTemplate;
 
     public String buy(Integer num) {
         RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("good.lua"), Long.class);

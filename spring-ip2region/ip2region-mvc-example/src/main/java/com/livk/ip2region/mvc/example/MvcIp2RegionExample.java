@@ -1,6 +1,6 @@
 package com.livk.ip2region.mvc.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MvcIp2RegionExample {
     public static void main(String[] args) {
-        LivkSpring.run(MvcIp2RegionExample.class, args);
+        SpringLauncher.run(MvcIp2RegionExample.class, args);
     }
 }

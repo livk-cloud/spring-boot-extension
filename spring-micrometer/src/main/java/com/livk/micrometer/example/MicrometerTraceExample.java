@@ -1,6 +1,6 @@
 package com.livk.micrometer.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MicrometerTraceExample {
 
     public static void main(String[] args) {
-        LivkSpring.run(MicrometerTraceExample.class, args);
+        SpringLauncher.run(MicrometerTraceExample.class, args);
     }
 
     @GetMapping("home")

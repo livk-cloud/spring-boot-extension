@@ -1,6 +1,6 @@
 package com.livk.redisson.bloom.support;
 
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class RedisBloom {
 
     private final ValueOperations<String, Object> forValue;
 
-    public RedisBloom(LivkRedisTemplate livkRedisTemplate) {
+    public RedisBloom(UniversalRedisTemplate livkRedisTemplate) {
         this.forValue = livkRedisTemplate.opsForValue();
     }
 

@@ -1,6 +1,6 @@
 package com.livk.zookeeper;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ZooApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(ZooApp.class, args);
+        SpringLauncher.run(ZooApp.class, args);
     }
 
 }

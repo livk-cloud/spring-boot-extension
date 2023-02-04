@@ -1,7 +1,7 @@
 package com.livk.consumer;
 
 import com.livk.common.constant.KafkaConstant;
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,7 +18,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 public class KafkaConsumerApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(KafkaConsumerApp.class, args);
+        SpringLauncher.run(KafkaConsumerApp.class, args);
     }
 
     @KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)

@@ -1,7 +1,7 @@
 package com.livk.redisearch;
 
 import com.livk.commons.jackson.JacksonUtils;
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.redisearch.entity.Student;
 import com.redis.lettucemod.RedisModulesClient;
@@ -30,7 +30,7 @@ import java.util.Random;
 @SpringBootApplication
 public class RediSearchApp {
     public static void main(String[] args) {
-        LivkSpring.run(RediSearchApp.class, args);
+        SpringLauncher.run(RediSearchApp.class, args);
     }
 
     @Bean

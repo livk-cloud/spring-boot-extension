@@ -1,6 +1,6 @@
 package com.livk.redisson;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RedissonApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(RedissonApp.class, args);
+        SpringLauncher.run(RedissonApp.class, args);
     }
 
 }

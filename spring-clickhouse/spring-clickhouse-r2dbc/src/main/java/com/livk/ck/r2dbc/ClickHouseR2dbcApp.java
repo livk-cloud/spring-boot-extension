@@ -1,6 +1,6 @@
 package com.livk.ck.r2dbc;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Bean;
 })
 public class ClickHouseR2dbcApp {
     public static void main(String[] args) {
-        LivkSpring.run(ClickHouseR2dbcApp.class, args);
+        SpringLauncher.run(ClickHouseR2dbcApp.class, args);
     }
 
     @Bean

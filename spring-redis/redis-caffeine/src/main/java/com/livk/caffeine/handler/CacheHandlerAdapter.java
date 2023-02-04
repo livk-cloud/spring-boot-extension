@@ -1,7 +1,7 @@
 package com.livk.caffeine.handler;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class CacheHandlerAdapter implements CacheHandler<Object> {
 
-    private final LivkRedisTemplate livkRedisTemplate;
+    private final UniversalRedisTemplate livkRedisTemplate;
 
     private final Cache<String, Object> cache;
 

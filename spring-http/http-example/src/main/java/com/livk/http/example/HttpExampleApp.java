@@ -1,6 +1,6 @@
 package com.livk.http.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HttpExampleApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(HttpExampleApp.class, args);
+        SpringLauncher.run(HttpExampleApp.class, args);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.livk.admin.client;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringClientApp {
     public static void main(String[] args) {
-        LivkSpring.run(SpringClientApp.class, args);
+        SpringLauncher.run(SpringClientApp.class, args);
     }
 }

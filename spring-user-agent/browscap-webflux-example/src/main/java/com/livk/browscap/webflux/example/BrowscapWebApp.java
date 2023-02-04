@@ -1,6 +1,6 @@
 package com.livk.browscap.webflux.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BrowscapWebApp {
     public static void main(String[] args) {
-        LivkSpring.run(BrowscapWebApp.class, args);
+        SpringLauncher.run(BrowscapWebApp.class, args);
     }
 }

@@ -1,6 +1,6 @@
 package com.livk.excel.mvc;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ExcelApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(ExcelApp.class, args);
+        SpringLauncher.run(ExcelApp.class, args);
     }
 
 }

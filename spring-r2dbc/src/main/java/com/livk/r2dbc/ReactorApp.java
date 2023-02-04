@@ -1,6 +1,6 @@
 package com.livk.r2dbc;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
@@ -16,7 +16,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 public class ReactorApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(ReactorApp.class, args);
+        SpringLauncher.run(ReactorApp.class, args);
     }
 
 }

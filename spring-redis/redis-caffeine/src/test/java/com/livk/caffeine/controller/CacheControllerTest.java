@@ -1,6 +1,6 @@
 package com.livk.caffeine.controller;
 
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import com.livk.autoconfigure.redis.util.RedisUtils;
 import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class CacheControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    LivkRedisTemplate redisTemplate;
+    UniversalRedisTemplate redisTemplate;
 
 
     @Test

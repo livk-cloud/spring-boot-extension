@@ -3,7 +3,7 @@ package com.livk.boot.producer;
 import com.livk.boot.producer.controller.RocketProducer;
 import com.livk.boot.producer.dto.RocketDTO;
 import com.livk.boot.rocket.constant.RocketConstant;
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 public class RocketProducerApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(RocketProducerApp.class, args);
+        SpringLauncher.run(RocketProducerApp.class, args);
     }
 
     @Bean

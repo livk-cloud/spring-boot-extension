@@ -1,6 +1,6 @@
 package com.livk.redis.controller;
 
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class BuyController {
 
     private final LuaStock luaStock;
 
-    private final LivkRedisTemplate livkRedisTemplate;
+    private final UniversalRedisTemplate livkRedisTemplate;
 
     @PostConstruct
     public void init() {

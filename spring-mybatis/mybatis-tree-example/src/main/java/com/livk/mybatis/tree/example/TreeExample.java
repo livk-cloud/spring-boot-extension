@@ -1,6 +1,6 @@
 package com.livk.mybatis.tree.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TreeExample {
     public static void main(String[] args) {
-        LivkSpring.run(TreeExample.class, args);
+        SpringLauncher.run(TreeExample.class, args);
     }
 }

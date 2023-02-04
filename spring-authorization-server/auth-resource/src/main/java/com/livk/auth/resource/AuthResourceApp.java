@@ -1,6 +1,6 @@
 package com.livk.auth.resource;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AuthResourceApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(AuthResourceApp.class, args);
+        SpringLauncher.run(AuthResourceApp.class, args);
     }
 
 }

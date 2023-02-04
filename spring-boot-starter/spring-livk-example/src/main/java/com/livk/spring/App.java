@@ -2,7 +2,7 @@ package com.livk.spring;
 
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.EnableWebClient;
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import com.livk.selector.LivkImport;
 import com.livk.starter01.EnableLivk;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +23,7 @@ public class App {
 
     public static void main(String[] args) {
         System.setProperty("server.port", "9099");
-        LivkSpring.run(App.class, args);
+        SpringLauncher.run(App.class, args);
     }
 
 }

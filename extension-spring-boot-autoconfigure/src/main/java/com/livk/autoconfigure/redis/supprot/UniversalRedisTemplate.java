@@ -6,18 +6,16 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
- * <p>
- * LivkRedisTemplate
- * </p>
+ * The type Universal redis template.
  *
  * @author livk
  */
-public class LivkRedisTemplate extends RedisTemplate<String, Object> {
+public class UniversalRedisTemplate extends RedisTemplate<String, Object> {
 
     /**
-     * Instantiates a new Livk redis template.
+     * Instantiates a new Universal redis template.
      */
-    public LivkRedisTemplate() {
+    public UniversalRedisTemplate() {
         RedisSerializer<Object> serializer = SerializerUtils.json();
         this.setKeySerializer(RedisSerializer.string());
         this.setHashKeySerializer(RedisSerializer.string());
@@ -26,11 +24,11 @@ public class LivkRedisTemplate extends RedisTemplate<String, Object> {
     }
 
     /**
-     * Instantiates a new Livk redis template.
+     * Instantiates a new Universal redis template.
      *
      * @param redisConnectionFactory the redis connection factory
      */
-    public LivkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public UniversalRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         this();
         this.setConnectionFactory(redisConnectionFactory);
         this.afterPropertiesSet();

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * <p>
- * LivkMybatisAutoConfiguration
+ * MybatisTypeHanderAutoConfiguration
  * </p>
  *
  * @author livk
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 @SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
-public class LivkMybatisAutoConfiguration {
+public class MybatisTypeHanderAutoConfiguration {
 
     /**
      * Mysql sql session factory bean customizer sql session factory bean customizer.

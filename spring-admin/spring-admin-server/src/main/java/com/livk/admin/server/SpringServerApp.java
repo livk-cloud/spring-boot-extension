@@ -1,6 +1,6 @@
 package com.livk.admin.server;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -15,6 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringServerApp {
     public static void main(String[] args) {
-        LivkSpring.run(SpringServerApp.class, args);
+        SpringLauncher.run(SpringServerApp.class, args);
     }
 }

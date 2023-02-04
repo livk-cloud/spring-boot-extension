@@ -1,6 +1,6 @@
 package com.livk.redis;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ConsumerRedis {
 
     public static void main(String[] args) {
-        LivkSpring.run(ConsumerRedis.class, args);
+        SpringLauncher.run(ConsumerRedis.class, args);
     }
 
 }

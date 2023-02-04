@@ -1,6 +1,6 @@
 package com.livk.rsocket;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RSocketServerApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(RSocketServerApp.class, args);
+        SpringLauncher.run(RSocketServerApp.class, args);
     }
 
 }

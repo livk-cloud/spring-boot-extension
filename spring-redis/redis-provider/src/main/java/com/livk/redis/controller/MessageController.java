@@ -1,6 +1,6 @@
 package com.livk.redis.controller;
 
-import com.livk.autoconfigure.redis.supprot.LivkReactiveRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
 import com.livk.common.redis.domain.LivkMessage;
 import com.livk.redis.entity.Person;
 import com.livk.redis.repository.PersonRepository;
@@ -22,21 +22,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final LivkReactiveRedisTemplate livkReactiveRedisTemplate;
+    private final UniversalReactiveRedisTemplate universalReactiveRedisTemplate;
 
     private final PersonRepository personRepository;
 
     @PostMapping("/redis/{id}")
     public Mono<Void> send(@PathVariable("id") Long id, @RequestParam("msg") String msg,
                            @RequestBody Map<String, Object> data) {
-        return livkReactiveRedisTemplate
+        return universalReactiveRedisTemplate
                 .convertAndSend(LivkMessage.CHANNEL, LivkMessage.of().setId(id).setMsg(msg).setData(data))
                 .flatMap(n -> Mono.empty());
     }
 
     @PostMapping("/redis/stream")
     public Mono<Void> stream() {
-        return livkReactiveRedisTemplate.opsForStream()
+        return universalReactiveRedisTemplate.opsForStream()
                 .add(StreamRecords.newRecord()
                         .ofObject("livk-object")
                         .withStreamKey("livk-streamKey"))
@@ -45,14 +45,14 @@ public class MessageController {
 
     @PostMapping("/redis/hyper-log-log")
     public Mono<Void> add(@RequestParam Object data) {
-        return livkReactiveRedisTemplate.opsForHyperLogLog()
+        return universalReactiveRedisTemplate.opsForHyperLogLog()
                 .add("log", data)
                 .flatMap(n -> Mono.empty());
     }
 
     @GetMapping("/redis/hyper-log-log")
     public Mono<Long> get() {
-        return livkReactiveRedisTemplate.opsForHyperLogLog()
+        return universalReactiveRedisTemplate.opsForHyperLogLog()
                 .size("log");
     }
 

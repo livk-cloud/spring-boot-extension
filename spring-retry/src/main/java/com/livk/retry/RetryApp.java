@@ -1,6 +1,6 @@
 package com.livk.retry;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.retry.annotation.EnableRetry;
 
@@ -16,7 +16,7 @@ import org.springframework.retry.annotation.EnableRetry;
 public class RetryApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(RetryApp.class, args);
+        SpringLauncher.run(RetryApp.class, args);
     }
 
 }

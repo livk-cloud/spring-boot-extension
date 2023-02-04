@@ -1,6 +1,6 @@
 package com.livk.event;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -15,6 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class SentServer {
     public static void main(String[] args) {
-        LivkSpring.run(SentServer.class, args);
+        SpringLauncher.run(SentServer.class, args);
     }
 }

@@ -1,6 +1,6 @@
 package com.livk.yauaa.webflux.example;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class YauaaWebApp {
     public static void main(String[] args) {
-        LivkSpring.run(YauaaWebApp.class, args);
+        SpringLauncher.run(YauaaWebApp.class, args);
     }
 }

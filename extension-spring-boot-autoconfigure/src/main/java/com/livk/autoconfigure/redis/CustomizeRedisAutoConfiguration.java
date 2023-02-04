@@ -1,8 +1,8 @@
 package com.livk.autoconfigure.redis;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.redis.supprot.LivkReactiveRedisTemplate;
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import com.livk.autoconfigure.redis.util.SerializerUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,48 +18,47 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import reactor.core.publisher.Flux;
 
 /**
- * <p>
- * LivkRedisAutoConfiguration
- * </p>
+ * The type Customize redis auto configuration.
  *
  * @author livk
  */
 @SpringAutoService
 @ConditionalOnClass(RedisOperations.class)
 @AutoConfiguration(before = {RedisAutoConfiguration.class})
-public class LivkRedisAutoConfiguration {
+public class CustomizeRedisAutoConfiguration {
 
     /**
-     * Livk redis template livk redis template.
+     * Livk redis template universal redis template.
      *
      * @param redisConnectionFactory the redis connection factory
-     * @return the livk redis template
+     * @return the universal redis template
      */
     @Bean
-    public LivkRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        return new LivkRedisTemplate(redisConnectionFactory);
+    public UniversalRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        return new UniversalRedisTemplate(redisConnectionFactory);
     }
 
 
     /**
-     * The type Livk reactive redis auto configuration.
+     * The type Customize reactive redis auto configuration.
      */
     @AutoConfiguration(before = {RedisReactiveAutoConfiguration.class})
     @ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
-    public static class LivkReactiveRedisAutoConfiguration {
+    public static class CustomizeReactiveRedisAutoConfiguration {
+
         /**
-         * Livk reactive redis template livk reactive redis template.
+         * Universal reactive redis template universal reactive redis template.
          *
          * @param redisConnectionFactory the redis connection factory
-         * @return the livk reactive redis template
+         * @return the universal reactive redis template
          */
         @Bean
-        public LivkReactiveRedisTemplate livkReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
+        public UniversalReactiveRedisTemplate universalReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
             RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
                     <String, Object>newSerializationContext()
                     .key(RedisSerializer.string()).value(SerializerUtils.json())
                     .hashKey(RedisSerializer.string()).hashValue(SerializerUtils.json()).build();
-            return new LivkReactiveRedisTemplate(redisConnectionFactory, serializationContext);
+            return new UniversalReactiveRedisTemplate(redisConnectionFactory, serializationContext);
         }
     }
 

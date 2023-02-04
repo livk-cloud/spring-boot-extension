@@ -1,6 +1,6 @@
 package com.livk.json;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MySQLTypeHandlerExampleApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(MySQLTypeHandlerExampleApp.class, args);
+        SpringLauncher.run(MySQLTypeHandlerExampleApp.class, args);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.livk.graphql.r2dbc;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GraphqlR2dbcExample {
     public static void main(String[] args) {
-        LivkSpring.run(GraphqlR2dbcExample.class, args);
+        SpringLauncher.run(GraphqlR2dbcExample.class, args);
     }
 }

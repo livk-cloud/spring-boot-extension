@@ -15,7 +15,7 @@
  */
 package com.livk.auth.client;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AuthClientApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(AuthClientApp.class, args);
+        SpringLauncher.run(AuthClientApp.class, args);
     }
 
 }

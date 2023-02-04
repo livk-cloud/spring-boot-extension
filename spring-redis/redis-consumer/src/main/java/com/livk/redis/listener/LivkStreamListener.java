@@ -1,6 +1,6 @@
 package com.livk.redis.listener;
 
-import com.livk.autoconfigure.redis.supprot.LivkRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class LivkStreamListener
         implements StreamListener<String, ObjectRecord<String, String>>, InitializingBean, DisposableBean {
 
-    private final LivkRedisTemplate livkRedisTemplate;
+    private final UniversalRedisTemplate livkRedisTemplate;
 
     private StreamMessageListenerContainer<String, ObjectRecord<String, String>> listenerContainer;
 

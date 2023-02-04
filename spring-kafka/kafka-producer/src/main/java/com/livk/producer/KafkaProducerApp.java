@@ -1,6 +1,6 @@
 package com.livk.producer;
 
-import com.livk.commons.spring.LivkSpring;
+import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class KafkaProducerApp {
 
     public static void main(String[] args) {
-        LivkSpring.run(KafkaProducerApp.class, args);
+        SpringLauncher.run(KafkaProducerApp.class, args);
     }
 
 }
