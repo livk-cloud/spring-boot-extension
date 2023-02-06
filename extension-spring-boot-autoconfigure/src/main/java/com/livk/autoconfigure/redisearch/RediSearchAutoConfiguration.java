@@ -28,7 +28,7 @@ import java.time.Duration;
  */
 @SpringAutoService
 @AutoConfiguration
-@ConditionalOnClass(RedisURI.class)
+@ConditionalOnClass(RedisModulesClient.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RediSearchAutoConfiguration {
 
