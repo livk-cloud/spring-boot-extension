@@ -62,7 +62,7 @@ google-javase = { group = "com.google.zxing", name = "javase", version.ref = "go
 nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusdsJwt" }
 rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring-boot-starter", version.ref = "rocketStarter" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
-lettucemod = { group = "com.redis", name = "spring-lettucemod", version.ref = "lettucemod" }
+lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
