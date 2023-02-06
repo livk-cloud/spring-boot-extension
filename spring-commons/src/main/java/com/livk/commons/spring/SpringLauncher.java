@@ -4,16 +4,13 @@ import com.livk.commons.util.DateUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.SpringVersion;
-import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.core.env.Environment;
 
 import java.io.PrintStream;
@@ -37,9 +34,6 @@ public class SpringLauncher {
      * @return the configurable application context
      */
     public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
-        if (!targetClass.isAnnotationPresent(SpringBootApplication.class)) {
-            throw new AnnotationConfigurationException("must use @SpringBootApplication in start class");
-        }
         SpringApplicationBuilder builder = new SpringApplicationBuilder(targetClass)
                 .banner(CloudBanner.create())
                 .bannerMode(Banner.Mode.CONSOLE);
@@ -69,19 +63,20 @@ public class SpringLauncher {
                 ░░░░░░░░ ░░    ░░    ░░  ░░     ░░░░░░  ░░░  ░░░░░░   ░░░░░░  ░░░░░░
                 """;
 
-        @SneakyThrows
         @Override
         public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
-            out.println(banner);
-            int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
-            max = max % 2 == 0 ? max : max + 1;
-            Format format = Format.of(max, out);
-            format.accept(" Spring Version: " + SpringVersion.getVersion() + " ");
-            format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
-            format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
-            format.accept(" Current JDK Version: " + System.getProperty("java.version") + " ");
-            format.accept(" Operating System: " + System.getProperty("os.name") + " ");
-            out.flush();
+            if (environment.getProperty("spring.banner.enabled", Boolean.class, true)) {
+                out.println(banner);
+                int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
+                max = max % 2 == 0 ? max : max + 1;
+                Format format = Format.of(max, out);
+                format.accept(" Spring Version: " + SpringVersion.getVersion() + " ");
+                format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
+                format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
+                format.accept(" Current JDK Version: " + environment.getProperty("java.version") + " ");
+                format.accept(" Operating System: " + environment.getProperty("os.name") + " ");
+                out.flush();
+            }
         }
     }
 
