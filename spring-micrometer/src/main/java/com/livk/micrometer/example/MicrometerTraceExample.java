@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * MicrometerTraceExample
+ * {@link com.livk.commons.spring.TraceEnvironmentPostProcessor}
  * </p>
  *
  * @author livk
