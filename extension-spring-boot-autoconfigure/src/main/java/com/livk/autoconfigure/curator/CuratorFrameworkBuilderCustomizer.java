@@ -10,5 +10,6 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
  *
  * @author livk
  */
+@FunctionalInterface
 public interface CuratorFrameworkBuilderCustomizer extends Customizer<CuratorFrameworkFactory.Builder> {
 }
