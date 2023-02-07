@@ -3,13 +3,10 @@ package com.livk.autoconfigure.useragent.servlet;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 import com.livk.commons.domain.Wrapper;
-import com.livk.commons.support.SpringContextHolder;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.core.GenericTypeResolver;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -26,20 +23,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @param <T> the type parameter
  * @author livk
  */
+@RequiredArgsConstructor
 public abstract class AbstractUserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     private final HttpUserAgentParser<T> userAgentParse;
-
-    /**
-     * Instantiates a new Abstract user agent resolver.
-     */
-    @SuppressWarnings("unchecked")
-    public AbstractUserAgentResolver() {
-        Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractUserAgentResolver.class);
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(HttpUserAgentParser.class, annotationClass);
-        ObjectProvider<HttpUserAgentParser<T>> beanProvider = SpringContextHolder.getBeanProvider(resolvableType);
-        userAgentParse = beanProvider.getIfUnique();
-    }
 
     @Override
     public final boolean supportsParameter(MethodParameter parameter) {

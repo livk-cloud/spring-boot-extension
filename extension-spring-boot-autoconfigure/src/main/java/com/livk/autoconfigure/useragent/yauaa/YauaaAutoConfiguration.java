@@ -7,6 +7,7 @@ import com.livk.autoconfigure.useragent.yauaa.filter.UserAgentFilter;
 import com.livk.autoconfigure.useragent.yauaa.resolver.ReactiveUserAgentHandlerMethodArgumentResolver;
 import com.livk.autoconfigure.useragent.yauaa.resolver.UserAgentHandlerMethodArgumentResolver;
 import com.livk.autoconfigure.useragent.yauaa.support.YauaaUserAgentParse;
+import lombok.RequiredArgsConstructor;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -67,9 +68,12 @@ public class YauaaAutoConfiguration {
     /**
      * The type Yauaa mvc auto configuration.
      */
+    @RequiredArgsConstructor
     @AutoConfiguration(after = YauaaAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class YauaaMvcAutoConfiguration implements WebMvcConfigurer {
+
+        private final YauaaUserAgentParse userAgentParse;
 
         /**
          * Filter registration bean filter registration bean.
@@ -89,16 +93,19 @@ public class YauaaAutoConfiguration {
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new UserAgentHandlerMethodArgumentResolver());
+            resolvers.add(new UserAgentHandlerMethodArgumentResolver(userAgentParse));
         }
     }
 
     /**
      * The type Yauaa reactive auto configuration.
      */
+    @RequiredArgsConstructor
     @AutoConfiguration(after = YauaaAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class YauaaReactiveAutoConfiguration implements WebFluxConfigurer {
+
+        private final YauaaUserAgentParse userAgentParse;
 
         /**
          * Tenant web filter reactive user agent filter.
@@ -113,7 +120,7 @@ public class YauaaAutoConfiguration {
 
         @Override
         public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-            configurer.addCustomResolver(new ReactiveUserAgentHandlerMethodArgumentResolver());
+            configurer.addCustomResolver(new ReactiveUserAgentHandlerMethodArgumentResolver(userAgentParse));
         }
     }
 

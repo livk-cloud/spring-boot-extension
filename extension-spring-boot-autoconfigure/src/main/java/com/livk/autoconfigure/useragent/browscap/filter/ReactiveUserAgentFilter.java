@@ -1,23 +1,20 @@
 package com.livk.autoconfigure.useragent.browscap.filter;
 
+import com.blueconic.browscap.Capabilities;
 import com.livk.autoconfigure.useragent.reactive.AbstractReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 
 /**
- * <p>
- * ReactiveUserAgentFilter
- * </p>
- *
- * @author livk
+ * The type Reactive user agent filter.
  */
-public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter {
+public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter<Capabilities> {
 
     /**
      * Instantiates a new Reactive user agent filter.
      *
      * @param userAgentParse the user agent parse
      */
-    public ReactiveUserAgentFilter(HttpUserAgentParser<?> userAgentParse) {
+    public ReactiveUserAgentFilter(HttpUserAgentParser<Capabilities> userAgentParse) {
         super(userAgentParse);
     }
 }

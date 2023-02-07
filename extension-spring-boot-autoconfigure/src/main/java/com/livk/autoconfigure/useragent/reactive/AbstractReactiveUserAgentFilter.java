@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
  * @author livk
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractReactiveUserAgentFilter implements WebFilter {
+public abstract class AbstractReactiveUserAgentFilter<T> implements WebFilter {
 
-    private final HttpUserAgentParser<?> userAgentParse;
+    private final HttpUserAgentParser<T> userAgentParse;
 
     @NonNull
     @Override

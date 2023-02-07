@@ -8,6 +8,7 @@ import com.livk.autoconfigure.useragent.browscap.resolver.ReactiveUserAgentHandl
 import com.livk.autoconfigure.useragent.browscap.resolver.UserAgentHandlerMethodArgumentResolver;
 import com.livk.autoconfigure.useragent.browscap.support.BrowscapUserAgentParse;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -62,9 +63,13 @@ public class BrowscapAutoConfiguration {
     /**
      * The type Browscap mvc auto configuration.
      */
+    @RequiredArgsConstructor
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class BrowscapMvcAutoConfiguration implements WebMvcConfigurer {
+
+        private final BrowscapUserAgentParse userAgentParse;
+
         /**
          * Filter registration bean filter registration bean.
          *
@@ -83,16 +88,19 @@ public class BrowscapAutoConfiguration {
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new UserAgentHandlerMethodArgumentResolver());
+            resolvers.add(new UserAgentHandlerMethodArgumentResolver(userAgentParse));
         }
     }
 
     /**
      * The type Browscap reactive auto configuration.
      */
+    @RequiredArgsConstructor
     @AutoConfiguration(after = BrowscapAutoConfiguration.class)
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class BrowscapReactiveAutoConfiguration implements WebFluxConfigurer {
+
+        private final BrowscapUserAgentParse userAgentParse;
 
         /**
          * Tenant web filter reactive user agent filter.
@@ -107,7 +115,7 @@ public class BrowscapAutoConfiguration {
 
         @Override
         public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-            configurer.addCustomResolver(new ReactiveUserAgentHandlerMethodArgumentResolver());
+            configurer.addCustomResolver(new ReactiveUserAgentHandlerMethodArgumentResolver(userAgentParse));
         }
     }
 

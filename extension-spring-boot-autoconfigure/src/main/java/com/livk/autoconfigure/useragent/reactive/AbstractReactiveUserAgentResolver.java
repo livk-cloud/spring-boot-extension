@@ -3,9 +3,11 @@ package com.livk.autoconfigure.useragent.reactive;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 import com.livk.commons.domain.Wrapper;
-import com.livk.commons.support.SpringContextHolder;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.core.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.ReactiveAdapter;
+import org.springframework.core.ReactiveAdapterRegistry;
+import org.springframework.core.ResolvableType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
@@ -20,22 +22,13 @@ import reactor.core.publisher.Mono;
  * @param <T> the type parameter
  * @author livk
  */
+@RequiredArgsConstructor
 public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
     private final HttpUserAgentParser<T> userAgentParse;
 
-    /**
-     * Instantiates a new Abstract reactive user agent resolver.
-     */
-    @SuppressWarnings("unchecked")
-    public AbstractReactiveUserAgentResolver() {
-        Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractReactiveUserAgentResolver.class);
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(HttpUserAgentParser.class, annotationClass);
-        ObjectProvider<HttpUserAgentParser<T>> beanProvider = SpringContextHolder.getBeanProvider(resolvableType);
-        userAgentParse = beanProvider.getIfAvailable();
-    }
 
     @Override
     public final boolean supportsParameter(MethodParameter parameter) {

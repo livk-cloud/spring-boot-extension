@@ -1,6 +1,7 @@
 package com.livk.autoconfigure.useragent.yauaa.resolver;
 
 import com.livk.autoconfigure.useragent.servlet.AbstractUserAgentResolver;
+import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 import nl.basjes.parse.useragent.UserAgent;
 
 /**
@@ -12,4 +13,12 @@ import nl.basjes.parse.useragent.UserAgent;
  */
 public class UserAgentHandlerMethodArgumentResolver extends AbstractUserAgentResolver<UserAgent> {
 
+    /**
+     * Instantiates a new User agent handler method argument resolver.
+     *
+     * @param userAgentParse the user agent parse
+     */
+    public UserAgentHandlerMethodArgumentResolver(HttpUserAgentParser<UserAgent> userAgentParse) {
+        super(userAgentParse);
+    }
 }

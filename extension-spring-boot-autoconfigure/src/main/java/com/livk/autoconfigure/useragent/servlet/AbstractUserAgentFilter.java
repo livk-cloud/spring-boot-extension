@@ -23,9 +23,9 @@ import java.io.IOException;
  * @author livk
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractUserAgentFilter extends OncePerRequestFilter {
+public abstract class AbstractUserAgentFilter<T> extends OncePerRequestFilter {
 
-    private final HttpUserAgentParser<?> userAgentParse;
+    private final HttpUserAgentParser<T> userAgentParse;
 
     @Override
     protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
