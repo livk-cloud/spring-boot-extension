@@ -1,9 +1,9 @@
-package com.livk.redisearch;
+package com.livk.redisearch.webflux;
 
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.commons.util.ReflectionUtils;
-import com.livk.redisearch.entity.Student;
+import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;

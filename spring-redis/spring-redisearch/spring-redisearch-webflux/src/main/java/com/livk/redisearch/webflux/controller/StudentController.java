@@ -1,10 +1,9 @@
-package com.livk.redisearch.controller;
+package com.livk.redisearch.webflux.controller;
 
 import com.livk.commons.jackson.JacksonUtils;
-import com.livk.redisearch.entity.Student;
+import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
-import com.redis.lettucemod.api.sync.RedisModulesCommands;
-import com.redis.lettucemod.search.SearchResults;
+import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 /**
  * <p>
@@ -31,12 +29,11 @@ public class StudentController {
     private final StatefulRedisModulesConnection<String, String> connection;
 
     @GetMapping
-    public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
-        RedisModulesCommands<String, String> search = connection.sync();
-        SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
-        List<Student> studentList = result.stream()
-                .map(document -> JacksonUtils.mapToBean(document, Student.class))
-                .toList();
-        return ResponseEntity.ok(studentList);
+    public HttpEntity<Flux<Student>> list(@RequestParam(defaultValue = "*") String query) {
+        RedisModulesReactiveCommands<String, String> search = connection.reactive();
+        Flux<Student> flux = search.ftSearch(Student.INDEX, query)
+                .flatMapMany(Flux::fromIterable)
+                .map(document -> JacksonUtils.mapToBean(document, Student.class));
+        return ResponseEntity.ok(flux);
     }
 }

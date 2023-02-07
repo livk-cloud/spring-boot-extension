@@ -1,4 +1,4 @@
-package com.livk.redisearch.controller;
+package com.livk.redisearch.mvc.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
