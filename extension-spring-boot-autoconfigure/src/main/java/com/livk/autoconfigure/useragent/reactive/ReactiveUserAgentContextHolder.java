@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 /**
  * The type Reactive user agent context holder.
+ *
+ * @author livk
  */
 public class ReactiveUserAgentContextHolder {
 

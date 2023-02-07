@@ -28,6 +28,8 @@ import java.util.List;
 
 /**
  * The type Browscap auto configuration.
+ *
+ * @author livk
  */
 @SpringAutoService
 @AutoConfiguration

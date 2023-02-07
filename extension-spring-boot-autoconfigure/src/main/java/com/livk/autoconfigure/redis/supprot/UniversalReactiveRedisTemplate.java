@@ -6,6 +6,8 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 /**
  * The type Universal reactive redis template.
+ *
+ * @author livk
  */
 public class UniversalReactiveRedisTemplate extends ReactiveRedisTemplate<String, Object> {
 

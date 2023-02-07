@@ -25,6 +25,8 @@ import java.util.List;
 
 /**
  * The type Yauaa auto configuration.
+ *
+ * @author livk
  */
 @SpringAutoService
 @AutoConfiguration

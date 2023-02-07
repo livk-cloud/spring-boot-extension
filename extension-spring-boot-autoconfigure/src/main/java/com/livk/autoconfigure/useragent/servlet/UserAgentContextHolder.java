@@ -6,6 +6,8 @@ import org.springframework.core.NamedThreadLocal;
 
 /**
  * The type User agent context holder.
+ *
+ * @author livk
  */
 public class UserAgentContextHolder {
 

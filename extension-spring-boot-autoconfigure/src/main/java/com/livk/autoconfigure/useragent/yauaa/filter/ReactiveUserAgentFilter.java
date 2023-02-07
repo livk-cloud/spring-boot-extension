@@ -6,6 +6,8 @@ import nl.basjes.parse.useragent.UserAgent;
 
 /**
  * The type Reactive user agent filter.
+ *
+ * @author livk
  */
 public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter<UserAgent> {
 

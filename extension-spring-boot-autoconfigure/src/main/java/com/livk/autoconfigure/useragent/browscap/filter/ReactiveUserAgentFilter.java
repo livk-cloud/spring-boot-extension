@@ -6,6 +6,8 @@ import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
 
 /**
  * The type Reactive user agent filter.
+ *
+ * @author livk
  */
 public class ReactiveUserAgentFilter extends AbstractReactiveUserAgentFilter<Capabilities> {
 
