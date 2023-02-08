@@ -27,6 +27,7 @@ abstract class DeployedPlugin implements Plugin<Project> {
         project.pluginManager.apply(SigningPlugin.class)
         def publication = publication(project)
         def signing = project.extensions.getByType(SigningExtension.class)
+        signing.setRequired(false)
         signing.sign(publication)
         project.afterEvaluate { evaluated ->
             project.plugins.withType(JavaPlugin.class).every {
