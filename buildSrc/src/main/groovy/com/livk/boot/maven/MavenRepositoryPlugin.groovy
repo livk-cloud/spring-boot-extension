@@ -22,16 +22,20 @@ abstract class MavenRepositoryPlugin implements Plugin<Project> {
         project.pluginManager.apply(MavenPublishPlugin.class)
         def publishing = project.extensions.getByType(PublishingExtension.class)
         publishing.repositories.mavenLocal()
-        publishing.repositories.maven { maven ->
-            def releasesRepoUrl = project.property("mvn.releasesRepoUrl")
-            def snapshotsRepoUrl = project.property("mvn.releasesRepoUrl")
-            //使用不安全的http请求、也就是缺失SSL
-            maven.setAllowInsecureProtocol(true)
-            maven.url = checkSnapshot(project.version.toString()) ? snapshotsRepoUrl : releasesRepoUrl
-            maven.credentials {
-                it.username = project.property("mvn.username")
-                it.password = project.property("mvn.password")
+        try {
+            def releasesRepoUrl = project.property("mvn.releasesRepoUrl") as String
+            def snapshotsRepoUrl = project.property("mvn.snapshotsRepoUrl") as String
+            publishing.repositories.maven { maven ->
+                //使用不安全的http请求、也就是缺失SSL
+                maven.setAllowInsecureProtocol(true)
+                maven.url = checkSnapshot(project.version.toString()) ? snapshotsRepoUrl : releasesRepoUrl
+                maven.credentials {
+                    it.username = project.property("mvn.username")
+                    it.password = project.property("mvn.password")
+                }
             }
+        } catch (Exception ignored) {
+
         }
     }
 
