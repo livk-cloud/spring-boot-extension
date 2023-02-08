@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.domain.Wrapper;
 import com.livk.commons.support.SpringContextHolder;
@@ -44,12 +45,58 @@ public class JacksonUtils {
     }
 
     /**
+     * 获取当前MAPPER的TypeFactory
+     *
+     * @return the type factory
+     */
+    public static TypeFactory typeFactory() {
+        return MAPPER.getTypeFactory();
+    }
+
+    /**
+     * 构建一个JavaType
+     *
+     * @param <T>         the type parameter
+     * @param targetClass the target class
+     * @return the java type
+     */
+    public static <T> JavaType javaType(Class<T> targetClass) {
+        return MAPPER.getTypeFactory().constructType(targetClass);
+    }
+
+    /**
+     * 构建一个CollectionType
+     *
+     * @param <T>         the type parameter
+     * @param targetClass the target class
+     * @return the java type
+     * @see CollectionType
+     */
+    public static <T> JavaType collectionType(Class<T> targetClass) {
+        return MAPPER.getTypeFactory().constructCollectionType(Collection.class, targetClass);
+    }
+
+    /**
+     * 构建一个MapType
+     *
+     * @param <K>        the type parameter
+     * @param <V>        the type parameter
+     * @param keyClass   the key class
+     * @param valueClass the value class
+     * @return the java type
+     * @see MapType
+     */
+    public static <K, V> JavaType mapType(Class<K> keyClass, Class<V> valueClass) {
+        return MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+    }
+
+    /**
      * json字符转Bean
      *
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -65,12 +112,12 @@ public class JacksonUtils {
     }
 
     /**
-     * To bean t.
+     * 输入流转换bean
      *
      * @param <T>         the type parameter
      * @param inputStream the input stream
      * @param clazz       the clazz
-     * @return the t
+     * @return T
      */
     @SneakyThrows
     public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
@@ -79,7 +126,7 @@ public class JacksonUtils {
     }
 
     /**
-     * 序列化
+     * json序列化
      *
      * @param obj obj
      * @return json string
@@ -93,7 +140,9 @@ public class JacksonUtils {
     }
 
     /**
-     * json to List
+     * json反序列化成List
+     * <p>也可以看看{@link JacksonUtils#toBean(String, TypeReference)},
+     * <p> {@link JacksonUtils#convert(Object, JavaType)}
      *
      * @param <T>   泛型
      * @param json  json数组
@@ -111,7 +160,9 @@ public class JacksonUtils {
     }
 
     /**
-     * json反序列化Map
+     * json反序列化成Map
+     * <p>也可以看看{@link JacksonUtils#toBean(String, TypeReference)},
+     * <p> {@link JacksonUtils#convert(Object, JavaType)}
      *
      * @param <K>        the type parameter
      * @param <V>        the type parameter
@@ -130,7 +181,7 @@ public class JacksonUtils {
     }
 
     /**
-     * To properties properties.
+     * 输入流转换Properties
      *
      * @param inputStream the input stream
      * @return the properties
@@ -145,12 +196,12 @@ public class JacksonUtils {
     }
 
     /**
-     * To bean t.
+     * json转换成bean
      *
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return the t
+     * @return T
      */
     @SneakyThrows
     public <T> T toBean(String json, TypeReference<T> typeReference) {
@@ -170,18 +221,29 @@ public class JacksonUtils {
     }
 
     /**
+     * Convert object.
+     *
+     * @param fromValue the  value
+     * @param javaType  the java type
+     * @return the object
+     */
+    public static Object convert(Object fromValue, JavaType javaType) {
+        return MAPPER.convertValue(fromValue, javaType);
+    }
+
+    /**
      * Object to map map.
      *
      * @param <K>        the type parameter
      * @param <V>        the type parameter
-     * @param datum      the datum
+     * @param fromValue  the fromValue
      * @param keyClass   the key class
      * @param valueClass the value class
      * @return the map
      */
-    public static <K, V> Map<K, V> objectToMap(Object datum, Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> Map<K, V> objectToMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
         MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
-        return MAPPER.convertValue(datum, mapType);
+        return MAPPER.convertValue(fromValue, mapType);
     }
 
     /**
