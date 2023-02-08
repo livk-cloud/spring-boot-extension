@@ -160,10 +160,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Pair{" +
-               "key=" + key +
-               ", value=" + value +
-               '}';
+        return "{" + key + ":" + value + "}";
     }
 
     /**
