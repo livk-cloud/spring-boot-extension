@@ -1,9 +1,11 @@
 package com.livk.commons.test;
 
+import com.livk.commons.util.ClassUtils;
 import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -90,6 +92,7 @@ public class TestLogUtils {
         return !stackTraceElement.getClassName().equals(NAME);
     }
 
+    @SuppressWarnings("unchecked")
     private Logger currentLogger() {
         StackTraceElement stackTraceElement = Arrays.stream(Thread.currentThread().getStackTrace())
                 .skip(1)
@@ -98,6 +101,17 @@ public class TestLogUtils {
                 .orElseThrow();
         String className = stackTraceElement.getClassName();
         String methodName = stackTraceElement.getMethodName();
+        try {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            Class<?> targetClass = ClassUtils.forName(className, loader);
+            String testClassName = "org.junit.jupiter.api.Test";
+            Class<? extends Annotation> testClass = (Class<? extends Annotation>) ClassUtils.forName(testClassName, loader);
+            if (!targetClass.getDeclaredMethod(methodName).isAnnotationPresent(testClass)) {
+                throw new RuntimeException("当前环境不是测试环境!");
+            }
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            throw new RuntimeException("当前环境不是测试环境!");
+        }
         return LOGGER_MAP.computeIfAbsent(className + "#" + methodName, LoggerFactory::getLogger);
     }
 }

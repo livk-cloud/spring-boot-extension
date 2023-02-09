@@ -1,6 +1,6 @@
 package com.livk.springboot.springutils;
 
-import com.livk.commons.spring.SpringUtils;
+import com.livk.commons.spring.util.SpringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;

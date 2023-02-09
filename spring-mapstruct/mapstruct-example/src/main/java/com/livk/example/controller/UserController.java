@@ -1,7 +1,7 @@
 package com.livk.example.controller;
 
 import com.livk.autoconfigure.mapstruct.converter.MapstructService;
-import com.livk.commons.support.SpringContextHolder;
+import com.livk.commons.spring.context.SpringContextHolder;
 import com.livk.example.entity.User;
 import com.livk.example.entity.UserVO;
 import jakarta.annotation.PostConstruct;

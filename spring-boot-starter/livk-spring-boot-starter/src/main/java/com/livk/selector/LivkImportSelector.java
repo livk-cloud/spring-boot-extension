@@ -1,6 +1,6 @@
 package com.livk.selector;
 
-import com.livk.commons.spring.AbstractImportSelector;
+import com.livk.commons.spring.context.AbstractImportSelector;
 
 /**
  * <p>

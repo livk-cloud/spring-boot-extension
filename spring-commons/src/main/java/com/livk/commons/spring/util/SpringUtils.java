@@ -1,4 +1,4 @@
-package com.livk.commons.spring;
+package com.livk.commons.spring.util;
 
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;

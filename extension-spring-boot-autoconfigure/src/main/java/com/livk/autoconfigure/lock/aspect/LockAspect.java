@@ -5,7 +5,7 @@ import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.autoconfigure.lock.support.DistributedLock;
-import com.livk.commons.spring.SpringUtils;
+import com.livk.commons.spring.util.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

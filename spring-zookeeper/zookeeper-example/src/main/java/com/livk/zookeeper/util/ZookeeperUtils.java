@@ -1,6 +1,6 @@
 package com.livk.zookeeper.util;
 
-import com.livk.commons.support.SpringContextHolder;
+import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;

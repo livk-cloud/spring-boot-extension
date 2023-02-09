@@ -1,6 +1,6 @@
 package com.livk.springboot.support;
 
-import com.livk.commons.support.SpringContextHolder;
+import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.RootBeanDefinition;

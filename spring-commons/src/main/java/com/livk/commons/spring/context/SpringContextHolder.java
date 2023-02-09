@@ -1,4 +1,4 @@
-package com.livk.commons.support;
+package com.livk.commons.spring.context;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.mybatis;
 
 import com.livk.autoconfigure.mybatis.annotation.EnableSqlPlugin;
-import com.livk.commons.spring.AbstractImportSelector;
+import com.livk.commons.spring.context.AbstractImportSelector;
 
 /**
  * <p>

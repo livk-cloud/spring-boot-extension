@@ -1,4 +1,4 @@
-package com.livk.commons.spring;
+package com.livk.commons.spring.context;
 
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;

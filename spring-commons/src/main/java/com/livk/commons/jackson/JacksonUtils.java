@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.domain.Wrapper;
-import com.livk.commons.support.SpringContextHolder;
+import com.livk.commons.spring.context.SpringContextHolder;
 import com.livk.commons.util.ObjectUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
