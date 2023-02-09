@@ -1,5 +1,6 @@
 package com.livk.springboot.springutils;
 
+import com.livk.commons.spring.context.SpringContextHolder;
 import com.livk.commons.spring.util.SpringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
@@ -56,14 +57,16 @@ public class SpringUtilsTest {
 
     @Test
     void parseTemplateTest() {
+        String springContextHolderName = SpringContextHolder.class.getName();
         assertEquals("livk:livk",
-                SpringUtils.parseTemplate(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
+                SpringUtils.parseTemplate(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
     }
 
     @Test
     void parseEverythingTest() {
+        String springContextHolderName = SpringContextHolder.class.getName();
         assertEquals("livk:livk",
-                SpringUtils.parse(map, "#{#username}:#{T(com.livk.commons.support.SpringContextHolder).getProperty(\"spring.application.root.name\")}"));
+                SpringUtils.parse(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
     }
 
     @Target(ElementType.TYPE)
