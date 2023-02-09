@@ -9,7 +9,8 @@ link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
 link:spring-auto-processor[Spring自动装配处理器] +
 link:spring-batch[Spring整合Spring Batch] +
 link:spring-boot-starter[Spring自定义Starter] +
-link:spring-clickhouse[Spring整合ClickHouse] +
+link:spring-clickhouse/spring-clickhouse-jdbc[Spring整合ClickHouse-jdbc] +
+link:spring-clickhouse/spring-clickhouse-r2dbc[Spring整合ClickHouse-r2dbc] +
 link:spring-doc/spring-doc-mvc-example[spring mvc整合Spring doc] +
 link:spring-doc/spring-doc-webflux-example[spring webflux整合spring doc] +
 link:spring-easyexcel/spring-webmvc-easyexcel-example[spring mvc整合Excel自定义注解实现导入和导出] +
@@ -40,6 +41,8 @@ link:spring-rabbit/rabbit-order-expired-example[Rabbit处理订单过期取消] 
 link:spring-rabbit[Spring整合Rabbit] +
 link:spring-redis[Spring整合Redis] +
 link:spring-redis/redis-lua[Spring整合Redis lua] +
+link:spring-redis/redis-caffeine[Spring整合Redis caffeine] +
+link:spring-redis/spring-redisearch[Spring整合redisearch] +
 link:spring-redis/spring-redisson[Spring整合redisson] +
 link:spring-redis/redisson-order-expired-example[redisson处理订单过期取消] +
 link:spring-rest-doc[Spring整合restDoc] +
