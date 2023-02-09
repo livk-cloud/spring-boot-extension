@@ -1,12 +1,12 @@
 package com.livk.mail;
 
+import com.livk.commons.test.TestLogUtils;
 import com.livk.commons.util.DateUtils;
 import com.livk.mail.util.FreemarkerUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author livk
  */
-@Slf4j
 @SpringBootTest
 public class MailTest {
 
@@ -86,10 +85,10 @@ public class MailTest {
         Template template = new Template("template", new StringReader(txt), configuration);
         String result = "www.baidu.com -> 123456";
         String s1 = FreemarkerUtils.processTemplateIntoString(template, map);
-        log.info("processTemplateIntoString result:{}", s1);
+        TestLogUtils.info("processTemplateIntoString result:{}", s1);
         assertEquals(result, s1);
         String s2 = FreemarkerUtils.parse(txt, map);
-        log.info("parse result:{}", s2);
+        TestLogUtils.info("parse result:{}", s2);
         assertEquals(result, s2);
     }
 
@@ -105,7 +104,7 @@ public class MailTest {
                 "valuesArray", List.of(values, values2));
         String resultSql = "INSERT INTO sys_user(user_name,sex,age,address,status,create_time,update_time) VALUES (livk,1,26,shenzhen,1," + format + "," + format + "),(livk,1,26,shenzhen,1," + format + "," + format + ")";
         String parse = parse(sql, map);
-        log.info("parse result:{}", parse);
+        TestLogUtils.info("parse result:{}", parse);
         assertEquals(resultSql, parse);
     }
 
@@ -114,7 +113,7 @@ public class MailTest {
             new Template("template", new StringReader(freemarker), configuration).process(model, out);
             return out.toString();
         } catch (Exception e) {
-            log.error("{}", e.getMessage());
+            TestLogUtils.error("{}", e.getMessage());
             return "";
         }
     }

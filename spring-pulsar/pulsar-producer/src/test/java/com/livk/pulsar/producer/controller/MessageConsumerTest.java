@@ -1,7 +1,7 @@
 package com.livk.pulsar.producer.controller;
 
+import com.livk.commons.test.TestLogUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Consumer;
 import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.PulsarClientException;
@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author livk
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MessageConsumerTest implements Runnable, InitializingBean {
@@ -35,7 +34,7 @@ public class MessageConsumerTest implements Runnable, InitializingBean {
                 String key = message.getKey();
                 String data = new String(message.getData(), StandardCharsets.UTF_8);
                 String topic = message.getTopicName();
-                log.info("topic:{} key:{} data:{}", topic, key, data);
+                TestLogUtils.info("topic:{} key:{} data:{}", topic, key, data);
                 consumer.acknowledge(message);
             } catch (PulsarClientException e) {
                 throw new RuntimeException(e);

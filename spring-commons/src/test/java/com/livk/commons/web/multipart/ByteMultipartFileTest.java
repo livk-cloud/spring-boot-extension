@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ByteMultipartFileTest {
     @Test
-    public void whenProvidingByteArray_thenMultipartFileCreated() throws IOException {
+    public void test() throws IOException {
         byte[] bytes = "Test String".getBytes();
         MultipartFile multipartFile = new ByteMultipartFile("test", bytes);
         assertFalse(multipartFile.isEmpty());
