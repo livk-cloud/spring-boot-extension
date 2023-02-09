@@ -1,5 +1,6 @@
 image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml/badge.svg?branch=main["Build Status",
 link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
+image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
 image:https://img.shields.io/badge/Spring%20Framework-6.0.4-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring%20Boot-3.0.2-green[link="https://spring.io/projects/spring-boot"]
