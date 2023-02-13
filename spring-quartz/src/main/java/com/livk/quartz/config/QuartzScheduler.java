@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Component
 @RequiredArgsConstructor
-public class LivkQuartzScheduler {
+public class QuartzScheduler {
 
     private final Scheduler scheduler;
 
@@ -73,8 +73,8 @@ public class LivkQuartzScheduler {
         }
     }
 
-    public void scheduleJob(JobDetail jobDetail, CronTrigger cronTrigger) throws SchedulerException {
-        scheduler.scheduleJob(jobDetail, cronTrigger);
+    public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
+        scheduler.scheduleJob(jobDetail, trigger);
     }
 
 }
