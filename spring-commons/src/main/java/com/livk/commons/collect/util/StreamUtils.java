@@ -38,14 +38,9 @@ public class StreamUtils {
         return Arrays.stream(maps)
                 .filter(Objects::nonNull)
                 .flatMap(map -> map.entrySet().stream())
-                .collect(Collectors.groupingBy(Map.Entry::getKey))
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        kListEntry -> kListEntry.getValue()
-                                .stream()
-                                .map(Map.Entry::getValue)
-                                .collect(Collectors.toList())));
+                .collect(Collectors.groupingBy(Map.Entry::getKey,
+                        Collectors.mapping(Map.Entry::getValue,
+                                Collectors.toList())));
     }
 
     /**
