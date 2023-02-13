@@ -5,7 +5,7 @@ import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
 import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.util.BeanUtils;
+import com.livk.commons.bean.util.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;

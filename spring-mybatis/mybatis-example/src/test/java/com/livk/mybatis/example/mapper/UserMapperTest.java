@@ -3,7 +3,7 @@ package com.livk.mybatis.example.mapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.domain.CustomPage;
+import com.livk.commons.bean.domain.CustomPage;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.mybatis.example.entity.User;

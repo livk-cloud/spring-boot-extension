@@ -1,7 +1,7 @@
 package com.livk.commons.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.bean.util.ClassUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.env.EnvironmentPostProcessor;

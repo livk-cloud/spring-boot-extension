@@ -3,7 +3,7 @@ package com.livk.browscap.webflux.example.controller;
 import com.blueconic.browscap.Capabilities;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentContextHolder;
-import com.livk.commons.domain.Wrapper;
+import com.livk.commons.bean.domain.Wrapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

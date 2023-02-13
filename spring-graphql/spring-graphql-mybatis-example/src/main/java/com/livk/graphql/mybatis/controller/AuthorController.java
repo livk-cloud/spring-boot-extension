@@ -1,6 +1,6 @@
 package com.livk.graphql.mybatis.controller;
 
-import com.livk.commons.util.BeanUtils;
+import com.livk.commons.bean.util.BeanUtils;
 import com.livk.graphql.mybatis.entity.Author;
 import com.livk.graphql.mybatis.entity.dto.AuthorDTO;
 import com.livk.graphql.mybatis.mapper.AuthorMapper;

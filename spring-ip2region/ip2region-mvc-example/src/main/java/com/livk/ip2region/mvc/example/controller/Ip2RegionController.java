@@ -5,7 +5,7 @@ import com.livk.autoconfigure.ip2region.annotation.RequestIp;
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIpContextHolder;
-import com.livk.commons.domain.Pair;
+import com.livk.commons.bean.domain.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

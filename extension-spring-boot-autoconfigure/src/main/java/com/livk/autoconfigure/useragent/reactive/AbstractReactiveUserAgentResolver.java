@@ -2,7 +2,7 @@ package com.livk.autoconfigure.useragent.reactive;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.domain.Wrapper;
+import com.livk.commons.bean.domain.Wrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;

@@ -3,7 +3,7 @@ package com.livk.autoconfigure.useragent.browscap.support;
 import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.UserAgentParser;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.domain.Wrapper;
+import com.livk.commons.bean.domain.Wrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 

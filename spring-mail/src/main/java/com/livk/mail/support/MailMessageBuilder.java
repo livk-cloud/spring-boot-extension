@@ -1,6 +1,6 @@
 package com.livk.mail.support;
 
-import com.livk.commons.domain.Pair;
+import com.livk.commons.bean.domain.Pair;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AccessLevel;

@@ -1,6 +1,6 @@
 package com.livk.graphql.r2dbc.controller;
 
-import com.livk.commons.util.BeanUtils;
+import com.livk.commons.bean.util.BeanUtils;
 import com.livk.graphql.r2dbc.entity.Author;
 import com.livk.graphql.r2dbc.entity.dto.AuthorDTO;
 import com.livk.graphql.r2dbc.repository.AuthorRepository;

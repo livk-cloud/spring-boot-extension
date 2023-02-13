@@ -1,4 +1,4 @@
-package com.livk.commons.spliterator;
+package com.livk.commons.collect;
 
 import java.util.Enumeration;
 import java.util.Objects;

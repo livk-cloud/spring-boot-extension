@@ -1,6 +1,6 @@
 package com.livk.commons.test;
 
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.bean.util.ClassUtils;
 import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.livk.commons.domain;
+package com.livk.commons.bean.domain;
 
 import com.livk.commons.function.FieldFunction;
 import com.livk.commons.util.ReflectionUtils;

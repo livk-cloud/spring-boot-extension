@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.useragent.yauaa.support;
 
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.domain.Wrapper;
+import com.livk.commons.bean.domain.Wrapper;
 import lombok.RequiredArgsConstructor;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;

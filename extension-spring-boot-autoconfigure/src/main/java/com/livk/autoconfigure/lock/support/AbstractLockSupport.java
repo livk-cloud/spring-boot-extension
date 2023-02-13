@@ -2,7 +2,7 @@ package com.livk.autoconfigure.lock.support;
 
 import com.livk.autoconfigure.lock.constant.LockType;
 import com.livk.autoconfigure.lock.exception.LockException;
-import com.livk.commons.domain.Pair;
+import com.livk.commons.bean.domain.Pair;
 
 /**
  * <p>

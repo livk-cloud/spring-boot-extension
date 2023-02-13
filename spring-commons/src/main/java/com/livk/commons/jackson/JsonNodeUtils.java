@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.livk.commons.util.StreamUtils;
+import com.livk.commons.collect.util.StreamUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 

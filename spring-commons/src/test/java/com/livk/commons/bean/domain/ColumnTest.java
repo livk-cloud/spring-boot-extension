@@ -1,5 +1,6 @@
-package com.livk.commons.domain;
+package com.livk.commons.bean.domain;
 
+import com.livk.commons.bean.domain.Column;
 import lombok.Data;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

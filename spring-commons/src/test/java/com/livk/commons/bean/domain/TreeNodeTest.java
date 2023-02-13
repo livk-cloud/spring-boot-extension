@@ -1,5 +1,6 @@
-package com.livk.commons.domain;
+package com.livk.commons.bean.domain;
 
+import com.livk.commons.bean.domain.TreeNode;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.MethodOrderer;

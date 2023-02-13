@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.useragent.servlet;
 
-import com.livk.commons.domain.Wrapper;
+import com.livk.commons.bean.domain.Wrapper;
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.core.NamedThreadLocal;
 

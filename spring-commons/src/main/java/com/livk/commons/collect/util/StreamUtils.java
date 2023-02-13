@@ -1,6 +1,7 @@
-package com.livk.commons.util;
+package com.livk.commons.collect.util;
 
-import com.livk.commons.spliterator.EnumerationSpliterator;
+import com.livk.commons.collect.EnumerationSpliterator;
+import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;

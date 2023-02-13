@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.mapstruct.converter;
 
-import com.livk.commons.domain.Pair;
+import com.livk.commons.bean.domain.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

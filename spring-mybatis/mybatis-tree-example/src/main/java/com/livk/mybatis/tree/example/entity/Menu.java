@@ -1,6 +1,6 @@
 package com.livk.mybatis.tree.example.entity;
 
-import com.livk.commons.domain.TreeNode;
+import com.livk.commons.bean.domain.TreeNode;
 
 /**
  * <p>

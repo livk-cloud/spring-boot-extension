@@ -2,7 +2,7 @@ package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JacksonUtils;
-import com.livk.commons.jackson.support.annotation.NumberJsonFormat;
+import com.livk.commons.jackson.annotation.NumberJsonFormat;
 import com.livk.commons.util.ReflectionUtils;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.livk.commons.util;
+package com.livk.commons.bean.util;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;

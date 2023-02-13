@@ -1,6 +1,7 @@
-package com.livk.commons.domain;
+package com.livk.commons.bean.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.livk.commons.bean.domain.Pair;
 import com.livk.commons.jackson.JacksonUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;

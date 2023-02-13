@@ -1,4 +1,4 @@
-package com.livk.commons.jackson.support.annotation;
+package com.livk.commons.jackson.annotation;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

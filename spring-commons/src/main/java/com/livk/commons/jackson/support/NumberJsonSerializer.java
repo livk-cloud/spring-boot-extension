@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.type.SimpleType;
-import com.livk.commons.jackson.support.annotation.NumberJsonFormat;
+import com.livk.commons.jackson.annotation.NumberJsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.jackson.JsonComponent;

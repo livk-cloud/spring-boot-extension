@@ -1,4 +1,4 @@
-package com.livk.commons.domain;
+package com.livk.commons.bean.domain;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

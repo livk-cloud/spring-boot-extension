@@ -2,7 +2,7 @@ package com.livk.mybatis.example.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.domain.CustomPage;
+import com.livk.commons.bean.domain.CustomPage;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
