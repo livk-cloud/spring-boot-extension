@@ -1,0 +1,6 @@
+spring:
+  oss:
+    host: livk.com
+    port: 9010
+    access-key: admin
+    secret-key: 1375632510

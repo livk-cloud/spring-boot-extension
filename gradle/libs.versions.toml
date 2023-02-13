@@ -28,6 +28,7 @@ nimbusdsJwt = "9.28"
 rocketStarter = "2.2.2"
 jsqlparser = "4.5"
 lettucemod = "3.3.1"
+minio = "8.5.1"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -63,6 +64,7 @@ nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.re
 rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring-boot-starter", version.ref = "rocketStarter" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
+minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

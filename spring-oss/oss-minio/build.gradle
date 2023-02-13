@@ -1,0 +1,5 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation project(":extension-spring-boot-starters:oss-spring-boot-starter")
+    implementation "io.minio:minio"
+}

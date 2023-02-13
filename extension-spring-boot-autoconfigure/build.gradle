@@ -30,6 +30,7 @@ dependencies {
     optional "nl.basjes.parse.useragent:yauaa"
     optional "com.redis:lettucemod"
     optional "org.apache.commons:commons-pool2"
+    optional "io.minio:minio"
     compileProcessor project(":spring-auto-processor")
 }
 
