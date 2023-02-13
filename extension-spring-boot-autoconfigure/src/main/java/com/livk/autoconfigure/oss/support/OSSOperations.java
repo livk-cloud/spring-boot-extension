@@ -10,6 +10,8 @@ import java.util.List;
  */
 public sealed interface OSSOperations extends AutoCloseable permits AbstractService, OSSTemplate {
 
+    boolean exist(String bucketName);
+
     /**
      * Create bucket.
      *

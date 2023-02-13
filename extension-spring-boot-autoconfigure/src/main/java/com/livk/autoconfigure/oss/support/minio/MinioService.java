@@ -1,6 +1,7 @@
 package com.livk.autoconfigure.oss.support.minio;
 
 import com.livk.autoconfigure.oss.OSSProperties;
+import com.livk.autoconfigure.oss.client.OSSClientFactory;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import io.minio.*;
 import io.minio.http.Method;
@@ -35,26 +36,26 @@ public class MinioService extends AbstractService<MinioClient> {
                                               "}";
 
     /**
-     * Instantiates a new Minio service.
+     * Instantiates a new Abstract oss service.
      *
-     * @param properties the properties
+     * @param properties    the properties
+     * @param clientFactory clientFactory
      */
-    public MinioService(OSSProperties properties) {
-        super(properties);
+    public MinioService(OSSProperties properties,
+                        OSSClientFactory<MinioClient> clientFactory) {
+        super(properties, clientFactory);
     }
 
+    @SneakyThrows
     @Override
-    protected MinioClient instance(OSSProperties properties) {
-        return new MinioClient.Builder()
-                .endpoint(properties.endpoint())
-                .credentials(properties.getAccessKey(), properties.getSecretKey())
-                .build();
+    public boolean exist(String bucketName) {
+        return client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
     }
 
     @SneakyThrows
     @Override
     public void createBucket(String bucketName) {
-        if (!client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+        if (!this.exist(bucketName)) {
             client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             //设置桶策略
             String config = POLICY_JSON.replaceAll("\\$\\{bucketName}", bucketName);

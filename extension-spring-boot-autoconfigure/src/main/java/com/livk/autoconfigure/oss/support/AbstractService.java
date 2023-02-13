@@ -1,6 +1,7 @@
 package com.livk.autoconfigure.oss.support;
 
 import com.livk.autoconfigure.oss.OSSProperties;
+import com.livk.autoconfigure.oss.client.OSSClientFactory;
 
 /**
  * The type Abstract oss service.
@@ -20,15 +21,8 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
      *
      * @param properties the properties
      */
-    protected AbstractService(OSSProperties properties) {
-        this.client = this.instance(properties);
+    protected AbstractService(OSSProperties properties,
+                              OSSClientFactory<T> clientFactory) {
+        this.client = clientFactory.instance(properties.endpoint(), properties.getAccessKey(), properties.getSecretKey());
     }
-
-    /**
-     * Instance t.
-     *
-     * @param properties the properties
-     * @return the t
-     */
-    protected abstract T instance(OSSProperties properties);
 }

@@ -1,7 +1,6 @@
 package com.livk.autoconfigure.oss.support;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.ObjectProvider;
+import lombok.RequiredArgsConstructor;
 
 import java.io.InputStream;
 import java.util.List;
@@ -11,23 +10,14 @@ import java.util.List;
  *
  * @author livk
  */
+@RequiredArgsConstructor
 public final class OSSTemplate implements OSSOperations {
 
     private final AbstractService<?> ossService;
 
-    /**
-     * Instantiates a new Oss template.
-     *
-     * @param ossServiceObjectProvider the oss service object provider
-     */
-    public OSSTemplate(ObjectProvider<AbstractService<?>> ossServiceObjectProvider) {
-        this.ossService = ossServiceObjectProvider.orderedStream()
-                .findFirst()
-                .orElseThrow(this::exception);
-    }
-
-    private RuntimeException exception() {
-        return new NoSuchBeanDefinitionException("缺少" + AbstractService.class + "可用实例");
+    @Override
+    public boolean exist(String bucketName) {
+        return ossService.exist(bucketName);
     }
 
     @Override
@@ -51,8 +41,10 @@ public final class OSSTemplate implements OSSOperations {
     }
 
     public void removeBucketAndObj(String bucketName) {
-        this.removeObjs(bucketName);
-        this.removeBucket(bucketName);
+        if (this.exist(bucketName)) {
+            this.removeObjs(bucketName);
+            this.removeBucket(bucketName);
+        }
     }
 
     @Override
