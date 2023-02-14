@@ -2,7 +2,7 @@ package com.livk.autoconfigure.useragent.servlet;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +43,6 @@ public abstract class AbstractUserAgentResolver<T> implements HandlerMethodArgum
             useragentWrapper = userAgentParse.parse(headers);
             UserAgentContextHolder.setUserAgentContext(useragentWrapper);
         }
-        return useragentWrapper.obj();
+        return useragentWrapper.unwrap();
     }
 }

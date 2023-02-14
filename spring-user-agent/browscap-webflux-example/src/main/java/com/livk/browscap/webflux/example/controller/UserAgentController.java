@@ -3,7 +3,7 @@ package com.livk.browscap.webflux.example.controller;
 import com.blueconic.browscap.Capabilities;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentContextHolder;
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +30,8 @@ public class UserAgentController {
     @GetMapping
     public Mono<HttpEntity<Map<String, Capabilities>>> get(@UserAgentInfo Mono<Capabilities> capabilities) {
         return ReactiveUserAgentContextHolder.get()
-                .concatWith(capabilities.map(Wrapper::new))
-                .map(wrapper -> (Capabilities) wrapper.obj())
+                .concatWith(capabilities.map(Wrapper::of))
+                .map(wrapper -> (Capabilities) wrapper.unwrap())
                 .collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
                 .map(ResponseEntity::ok);
     }

@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.useragent.support;
 
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import org.springframework.http.HttpHeaders;
 
 /**

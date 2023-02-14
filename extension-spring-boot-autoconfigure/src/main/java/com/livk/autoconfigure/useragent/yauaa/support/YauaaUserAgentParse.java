@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.useragent.yauaa.support;
 
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import lombok.RequiredArgsConstructor;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
@@ -29,6 +29,6 @@ public class YauaaUserAgentParse implements HttpUserAgentParser<UserAgent> {
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> String.join(",", entry.getValue())));
         UserAgent userAgent = userAgentAnalyzer.parse(headersConcat);
-        return new Wrapper<>(userAgent);
+        return Wrapper.of(userAgent);
     }
 }

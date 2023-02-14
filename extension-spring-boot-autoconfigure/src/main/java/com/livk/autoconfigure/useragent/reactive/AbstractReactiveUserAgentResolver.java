@@ -2,7 +2,7 @@ package com.livk.autoconfigure.useragent.reactive;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
@@ -43,7 +43,7 @@ public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMet
 
         Mono<Object> mono = ReactiveUserAgentContextHolder.get()
                 .switchIfEmpty(Mono.justOrEmpty((Wrapper<?>) userAgentParse.parse(exchange.getRequest().getHeaders())))
-                .map(Wrapper::obj);
+                .map(Wrapper::unwrap);
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }
 }

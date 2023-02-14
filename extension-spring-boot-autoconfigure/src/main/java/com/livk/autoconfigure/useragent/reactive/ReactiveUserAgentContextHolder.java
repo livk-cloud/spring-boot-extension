@@ -1,6 +1,6 @@
 package com.livk.autoconfigure.useragent.reactive;
 
-import com.livk.commons.bean.domain.Wrapper;
+import com.livk.commons.bean.Wrapper;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
