@@ -40,6 +40,11 @@ public final class OSSTemplate implements OSSOperations {
         ossService.removeObjs(bucketName);
     }
 
+    /**
+     * Remove bucket and obj.
+     *
+     * @param bucketName the bucket name
+     */
     public void removeBucketAndObj(String bucketName) {
         if (this.exist(bucketName)) {
             this.removeObjs(bucketName);

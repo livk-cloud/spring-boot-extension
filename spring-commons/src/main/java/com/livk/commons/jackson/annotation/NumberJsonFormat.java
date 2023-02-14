@@ -10,6 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The interface Number json format.
+ *
  * @author livk
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,7 +20,17 @@ import java.lang.annotation.Target;
 @JsonSerialize(using = NumberJsonSerializer.class)
 public @interface NumberJsonFormat {
 
+    /**
+     * Pattern string.
+     *
+     * @return the string
+     */
     String pattern() default "#0.00";
 
+    /**
+     * Simple type support boolean.
+     *
+     * @return the boolean
+     */
     boolean simpleTypeSupport() default true;
 }

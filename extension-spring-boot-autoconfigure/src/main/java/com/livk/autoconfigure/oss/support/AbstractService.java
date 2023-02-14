@@ -19,7 +19,8 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
     /**
      * Instantiates a new Abstract oss service.
      *
-     * @param properties the properties
+     * @param properties    the properties
+     * @param clientFactory the client factory
      */
     protected AbstractService(OSSProperties properties,
                               OSSClientFactory<T> clientFactory) {
