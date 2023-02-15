@@ -1,6 +1,5 @@
 package com.livk.autoconfigure.mapstruct.converter;
 
-import com.livk.commons.bean.domain.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,12 +16,14 @@ import org.springframework.util.Assert;
 @ToString
 @EqualsAndHashCode
 public class ConverterPair {
-    private final Pair<Class<?>, Class<?>> pair;
+    private final Class<?> sourceType;
+    private final Class<?> targetType;
 
     private ConverterPair(Class<?> sourceType, Class<?> targetType) {
         Assert.notNull(sourceType, "Source type must not be null");
         Assert.notNull(targetType, "Target type must not be null");
-        this.pair = Pair.of(sourceType, targetType);
+        this.sourceType = sourceType;
+        this.targetType = targetType;
     }
 
     /**

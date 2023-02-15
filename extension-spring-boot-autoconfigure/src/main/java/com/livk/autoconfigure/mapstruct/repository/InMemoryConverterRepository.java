@@ -1,0 +1,43 @@
+package com.livk.autoconfigure.mapstruct.repository;
+
+import com.livk.autoconfigure.mapstruct.converter.Converter;
+import com.livk.autoconfigure.mapstruct.converter.ConverterPair;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * <p>
+ * InMemoryConverterRepository
+ * </p>
+ *
+ * @author livk
+ */
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class InMemoryConverterRepository implements ConverterRepository {
+
+    private final Map<ConverterPair, Converter<?, ?>> converterMap = new ConcurrentHashMap<>();
+
+    @Override
+    public boolean contains(ConverterPair converterPair) {
+        return converterMap.containsKey(converterPair);
+    }
+
+    @Override
+    public void put(ConverterPair converterPair, Converter<?, ?> converter) {
+        converterMap.put(converterPair, converter);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <S, T> Converter<S, T> get(ConverterPair converterPair) {
+        return (Converter<S, T>) converterMap.get(converterPair);
+    }
+
+    @Override
+    public void computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
+        converterMap.computeIfAbsent(converterPair, pair -> converter);
+    }
+}

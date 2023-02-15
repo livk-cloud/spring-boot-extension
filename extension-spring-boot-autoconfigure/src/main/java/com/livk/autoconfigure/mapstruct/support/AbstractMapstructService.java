@@ -1,14 +1,17 @@
 package com.livk.autoconfigure.mapstruct.support;
 
 import com.livk.autoconfigure.mapstruct.converter.Converter;
+import com.livk.autoconfigure.mapstruct.converter.ConverterPair;
+import com.livk.autoconfigure.mapstruct.converter.MapstructRegistry;
 import com.livk.autoconfigure.mapstruct.converter.MapstructService;
 import com.livk.autoconfigure.mapstruct.exception.ConverterNotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.livk.autoconfigure.mapstruct.repository.MapstructLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,41 +20,40 @@ import org.springframework.lang.Nullable;
  *
  * @author livk
  */
-@SuppressWarnings("unchecked")
-@RequiredArgsConstructor
-public abstract class AbstractMapstructService implements MapstructService, ApplicationContextAware {
-    /**
-     * The Converter repository.
-     */
-    protected final ConverterRepository converterRepository;
+public abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {
 
     /**
      * The Application context.
      */
     protected ApplicationContext applicationContext;
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <S, T> T convert(S source, Class<T> targetClass) {
-        Class<S> sourceClass = (Class<S>) source.getClass();
-        if (converterRepository.contains(sourceClass, targetClass)) {
-            return (T) converterRepository.get(sourceClass, targetClass).getTarget(source);
-        } else if (converterRepository.contains(targetClass, sourceClass)) {
-            return (T) converterRepository.get(targetClass, sourceClass).getSource(source);
-        } else {
-            ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Converter.class, sourceClass, targetClass);
-            Converter<S, T> sourceConverter = (Converter<S, T>) applicationContext.getBeanProvider(resolvableType).getIfUnique();
+    public <S, T> T convert(S source, Class<T> targetType) {
+        Class<S> sourceType = (Class<S>) source.getClass();
+        List<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class)
+                .orderedStream().toList();
+        for (MapstructLocator mapstructLocator : mapstructLocators) {
+            Converter<S, T> sourceConverter = this.handler(sourceType, targetType, mapstructLocator);
             if (sourceConverter != null) {
-                converterRepository.put(sourceClass, targetClass, sourceConverter);
                 return sourceConverter.getTarget(source);
             }
-            resolvableType = ResolvableType.forClassWithGenerics(Converter.class, targetClass, sourceClass);
-            Converter<T, S> targetConverter = (Converter<T, S>) applicationContext.getBeanProvider(resolvableType).getIfUnique();
+
+            Converter<T, S> targetConverter = this.handler(targetType, sourceType, mapstructLocator);
             if (targetConverter != null) {
-                converterRepository.put(targetClass, sourceClass, targetConverter);
                 return targetConverter.getSource(source);
             }
         }
-        throw new ConverterNotFoundException(source + " to class " + targetClass + " not found converter");
+        throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
+    }
+
+    private <S, T> Converter<S, T> handler(Class<S> sourceType, Class<T> targetType, MapstructLocator mapstructLocator) {
+        ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
+        Converter<S, T> converter = mapstructLocator.get(converterPair);
+        if (converter != null) {
+            this.addConverter(sourceType, targetType, converter);
+        }
+        return converter;
     }
 
     @Override
