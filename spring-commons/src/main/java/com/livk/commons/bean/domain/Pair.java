@@ -198,7 +198,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
     static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> implements ContextualDeserializer {
 
         private KeyDeserializer keyDeserializer;
-        private JsonDeserializer<Object> valueDeserializer;
+        private JavaType valueType;
 
         /**
          * Instantiates a new Pair json deserializer.
@@ -211,8 +211,9 @@ public class Pair<K, V> implements Serializable, Cloneable {
         public Pair<Object, Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
             p.nextToken();
             String name = p.currentName();
-            p.nextToken();
-            return Pair.of(keyDeserializer.deserializeKey(name, context), valueDeserializer.deserialize(p, context));
+            JsonNode valueNode = context.readTree(p).get(name);
+            ObjectMapper mapper = (ObjectMapper) p.getCodec();
+            return Pair.of(keyDeserializer.deserializeKey(name, context), mapper.convertValue(valueNode, valueType));
         }
 
         @Override
@@ -220,9 +221,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
             JavaType contextualType = context.getContextualType();
             TypeBindings bindings = contextualType.getBindings();
             JavaType keyType = bindings.getBoundType(0);
-            JavaType valueType = bindings.getBoundType(1);
+            valueType = bindings.getBoundType(1);
             keyDeserializer = context.findKeyDeserializer(keyType, property);
-            valueDeserializer = context.findContextualValueDeserializer(valueType, property);
             return this;
         }
     }

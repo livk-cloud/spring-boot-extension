@@ -1,7 +1,6 @@
 package com.livk.commons.bean.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.livk.commons.bean.domain.Pair;
 import com.livk.commons.jackson.JacksonUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * <p>
@@ -56,6 +56,12 @@ class PairTest {
 
     @Test
     public void pairJsonDeserializerTest() {
+
+        Pair<String, Integer> empty = JacksonUtils.toBean("{}", new TypeReference<>() {
+        });
+        assertNull(empty.key());
+        assertNull(empty.value());
+
         @Language("JSON") String json = "{\"livk\":123456}";
         Pair<String, Integer> result = JacksonUtils.toBean(json, new TypeReference<>() {
         });
