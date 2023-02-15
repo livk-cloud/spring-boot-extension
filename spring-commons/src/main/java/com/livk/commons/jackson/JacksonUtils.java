@@ -35,10 +35,8 @@ public class JacksonUtils {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Wrapper.class, ObjectMapper.class);
         try {
             wrapper = SpringContextHolder.<Wrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
-        } catch (NullPointerException e) {
-            log.debug(JacksonUtils.class + "在非Spring环境中使用!");
         } catch (Exception e) {
-            log.debug("spring ioc缺少type:" + resolvableType.getType() + " 的Bean");
+            log.debug("Building 'ObjectMapper'");
         }
         MAPPER = wrapper == null ? JsonMapper.builder().build() : wrapper.unwrap();
         MAPPER.registerModules(new JavaTimeModule());

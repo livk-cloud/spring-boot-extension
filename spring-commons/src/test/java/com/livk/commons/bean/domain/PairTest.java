@@ -61,12 +61,14 @@ class PairTest {
         });
         assertNull(empty.key());
         assertNull(empty.value());
+        assertEquals(Pair.EMPTY, empty);
 
         @Language("JSON") String json = "{\"livk\":123456}";
         Pair<String, Integer> result = JacksonUtils.toBean(json, new TypeReference<>() {
         });
         assertEquals("livk", result.key());
         assertEquals(123456, result.value());
+        assertEquals(pair, result);
 
         @Language("JSON") String json2 = """
                 {"livk": {"root": "username"}}""";
