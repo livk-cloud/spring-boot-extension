@@ -9,7 +9,6 @@ import com.livk.autoconfigure.mapstruct.repository.MapstructLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -25,14 +24,12 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
     /**
      * The Application context.
      */
-    protected ApplicationContext applicationContext;
+    private List<MapstructLocator> mapstructLocators;
 
     @SuppressWarnings("unchecked")
     @Override
     public <S, T> T convert(S source, Class<T> targetType) {
         Class<S> sourceType = (Class<S>) source.getClass();
-        List<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class)
-                .orderedStream().toList();
         for (MapstructLocator mapstructLocator : mapstructLocators) {
             Converter<S, T> sourceConverter = this.handler(sourceType, targetType, mapstructLocator);
             if (sourceConverter != null) {
@@ -57,7 +54,9 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
     }
 
     @Override
-    public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class)
+                .orderedStream()
+                .toList();
     }
 }

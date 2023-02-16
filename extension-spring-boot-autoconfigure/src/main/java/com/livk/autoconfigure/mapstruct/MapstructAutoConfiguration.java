@@ -9,6 +9,7 @@ import com.livk.autoconfigure.mapstruct.support.GenericMapstructService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -40,10 +41,16 @@ public class MapstructAutoConfiguration {
      * @return the converter repository
      */
     @Bean
+    @ConditionalOnMissingBean
     public ConverterRepository converterRepository() {
         return new InMemoryConverterRepository();
     }
 
+    /**
+     * Spring mapstruct locator mapstruct locator.
+     *
+     * @return the mapstruct locator
+     */
     @Bean
     public MapstructLocator springMapstructLocator() {
         return new SpringMapstructLocator();
