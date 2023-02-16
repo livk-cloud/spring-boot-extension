@@ -2,8 +2,6 @@ package com.livk.autoconfigure.mapstruct.repository;
 
 import com.livk.autoconfigure.mapstruct.converter.Converter;
 import com.livk.autoconfigure.mapstruct.converter.ConverterPair;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author livk
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class InMemoryConverterRepository implements ConverterRepository {
 
     private final Map<ConverterPair, Converter<?, ?>> converterMap = new ConcurrentHashMap<>();

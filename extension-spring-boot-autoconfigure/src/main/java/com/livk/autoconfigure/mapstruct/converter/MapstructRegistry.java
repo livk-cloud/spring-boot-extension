@@ -1,5 +1,7 @@
 package com.livk.autoconfigure.mapstruct.converter;
 
+import com.livk.autoconfigure.mapstruct.support.ConverterSupport;
+
 /**
  * <p>
  * MapstructFactory
@@ -9,12 +11,17 @@ package com.livk.autoconfigure.mapstruct.converter;
  */
 public interface MapstructRegistry {
 
+    void addConverter(ConverterPair converterPair, Converter<?, ?> converter);
+
     /**
      * Add converter.
      *
      * @param converter the converter
      */
-    void addConverter(Converter<?, ?> converter);
+    default void addConverter(Converter<?, ?> converter) {
+        ConverterPair converterPair = ConverterSupport.parser(converter);
+        this.addConverter(converterPair, converter);
+    }
 
     /**
      * Add converter.
@@ -25,6 +32,9 @@ public interface MapstructRegistry {
      * @param targetType the target type
      * @param converter  the converter
      */
-    <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter);
+    default <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
+        ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
+        this.addConverter(converterPair, converter);
+    }
 
 }

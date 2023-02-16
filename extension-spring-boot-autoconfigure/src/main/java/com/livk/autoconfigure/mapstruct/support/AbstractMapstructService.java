@@ -7,10 +7,9 @@ import com.livk.autoconfigure.mapstruct.converter.MapstructService;
 import com.livk.autoconfigure.mapstruct.exception.ConverterNotFoundException;
 import com.livk.autoconfigure.mapstruct.repository.MapstructLocator;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.List;
 
 /**
  * <p>
@@ -24,39 +23,32 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
     /**
      * The Application context.
      */
-    private List<MapstructLocator> mapstructLocators;
+    private PrioritizedMapstructLocator mapstructLocator;
 
     @SuppressWarnings("unchecked")
     @Override
     public <S, T> T convert(S source, Class<T> targetType) {
         Class<S> sourceType = (Class<S>) source.getClass();
-        for (MapstructLocator mapstructLocator : mapstructLocators) {
-            Converter<S, T> sourceConverter = this.handler(sourceType, targetType, mapstructLocator);
-            if (sourceConverter != null) {
-                return sourceConverter.getTarget(source);
-            }
+        Converter<S, T> sourceConverter = this.handler(sourceType, targetType);
+        if (sourceConverter != null) {
+            return sourceConverter.getTarget(source);
+        }
 
-            Converter<T, S> targetConverter = this.handler(targetType, sourceType, mapstructLocator);
-            if (targetConverter != null) {
-                return targetConverter.getSource(source);
-            }
+        Converter<T, S> targetConverter = this.handler(targetType, sourceType);
+        if (targetConverter != null) {
+            return targetConverter.getSource(source);
         }
         throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
     }
 
-    private <S, T> Converter<S, T> handler(Class<S> sourceType, Class<T> targetType, MapstructLocator mapstructLocator) {
+    private <S, T> Converter<S, T> handler(Class<S> sourceType, Class<T> targetType) {
         ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
-        Converter<S, T> converter = mapstructLocator.get(converterPair);
-        if (converter != null) {
-            this.addConverter(sourceType, targetType, converter);
-        }
-        return converter;
+        return mapstructLocator.get(converterPair);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class)
-                .orderedStream()
-                .toList();
+        ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
+        this.mapstructLocator = new PrioritizedMapstructLocator(this, mapstructLocators);
     }
 }
