@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
-import org.springframework.http.codec.multipart.Part;
 import org.springframework.util.StreamUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,11 +22,11 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
     /**
      * Transform mono.
      *
-     * @param part the part
+     * @param dataBufferFlux the data buffer flux
      * @return the mono
      */
-    public Mono<InputStream> transform(Part part) {
-        return join(part.content()).map(DataBuffer::asInputStream);
+    public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
+        return join(dataBufferFlux).map(DataBuffer::asInputStream);
     }
 
     /**

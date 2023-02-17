@@ -3,13 +3,14 @@ package com.livk.autoconfigure.easyexcel.resolver;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
 import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.commons.bean.util.BeanUtils;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.bean.util.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
+import org.springframework.http.codec.multipart.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
@@ -55,6 +56,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
         if (Objects.nonNull(importExcel)) {
             ExcelReadListener<?> listener = BeanUtils.instantiateClass(importExcel.parse());
             mono = FileUtils.getPartValues(importExcel.fileName(), exchange)
+                    .map(Part::content)
                     .flatMap(DataBufferUtils::transform)
                     .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow()))
                     .map(in -> listener.getCollectionData());

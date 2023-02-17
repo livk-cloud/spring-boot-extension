@@ -17,4 +17,5 @@ dependencies {
     api "com.google.code.findbugs:annotations"
     api "com.google.guava:guava"
     compileProcessor project(":spring-auto-processor")
+    testImplementation "io.projectreactor:reactor-test"
 }
