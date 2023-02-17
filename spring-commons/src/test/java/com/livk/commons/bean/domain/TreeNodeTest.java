@@ -1,6 +1,5 @@
 package com.livk.commons.bean.domain;
 
-import com.livk.commons.bean.domain.TreeNode;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.MethodOrderer;
@@ -45,7 +44,7 @@ class TreeNodeTest {
         );
         root.setChildren(nodes);
         TestLogUtils.info("{}", root);
-        TestLogUtils.info("{}", JacksonUtils.toJsonStr(root));
+        TestLogUtils.info("{}", JacksonUtils.writeValueAsString(root));
         assertNotNull(root);
     }
 
@@ -55,7 +54,7 @@ class TreeNodeTest {
         TreeNode<Long, String> node = new TreeNode<Long, String>().setId(7L).setNode("7").setPid(4L);
         root.addChild(node);
         TestLogUtils.info("{}", root);
-        TestLogUtils.info("{}", JacksonUtils.toJsonStr(root));
+        TestLogUtils.info("{}", JacksonUtils.writeValueAsString(root));
     }
 
     @Order(4)

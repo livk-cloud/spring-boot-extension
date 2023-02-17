@@ -67,7 +67,7 @@ class Info2ControllerTest {
                 .toList();
         mockMvc.perform(MockMvcRequestBuilders.post("/info/download")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.toJsonStr(infos)))
+                        .content(JacksonUtils.writeValueAsString(infos)))
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());

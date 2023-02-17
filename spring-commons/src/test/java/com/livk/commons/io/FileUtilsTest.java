@@ -37,7 +37,7 @@ class FileUtilsTest {
     @Test
     void gzip() throws IOException {
         InputStream inputStream = new ClassPathResource("data.json").getInputStream();
-        String data = JacksonUtils.toBean(inputStream, JsonNode.class).toString();
+        String data = JacksonUtils.readValue(inputStream, JsonNode.class).toString();
         File file = new File("./data.gzip");
         FileUtils.createNewFile(file);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {

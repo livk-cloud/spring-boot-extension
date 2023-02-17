@@ -48,7 +48,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            User user = JacksonUtils.toBean(request.getInputStream(), User.class);
+            User user = JacksonUtils.readValue(request.getInputStream(), User.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
                     user.getAuthorities());
             return authenticationManager.authenticate(authenticationToken);

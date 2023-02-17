@@ -35,7 +35,7 @@ public class UserController {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin");
-        user.setDes(JacksonUtils.toBean(json, JsonNode.class));
+        user.setDes(JacksonUtils.readValue(json, JsonNode.class));
         return ResponseEntity.ok(userMapper.insert(user) != 0);
     }
 

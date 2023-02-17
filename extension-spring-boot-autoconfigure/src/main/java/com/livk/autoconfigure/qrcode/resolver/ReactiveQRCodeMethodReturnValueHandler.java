@@ -58,7 +58,7 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
     }
 
     private Mono<Void> write(Object value, QRCode qrCode, ServerHttpResponse response) {
-        String text = JacksonUtils.toJsonStr(value);
+        String text = JacksonUtils.writeValueAsString(value);
         byte[] bytes = QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), qrCode.type());
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
         return response.writeWith(bufferFlux);

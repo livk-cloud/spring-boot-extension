@@ -68,8 +68,8 @@ class UserMapperTest {
                 .doSelectPage(userMapper::list)) {
             CustomPage<User> result = new CustomPage<>(page);
             assertNotNull(result);
-            String json = JacksonUtils.toJsonStr(result);
-            CustomPage<User> customPage = JacksonUtils.toBean(json, new TypeReference<>() {
+            String json = JacksonUtils.writeValueAsString(result);
+            CustomPage<User> customPage = JacksonUtils.readValue(json, new TypeReference<>() {
             });
             assertNotNull(customPage);
         }

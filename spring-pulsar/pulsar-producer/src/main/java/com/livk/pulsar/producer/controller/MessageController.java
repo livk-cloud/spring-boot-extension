@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
-
 /**
  * <p>
  * MessageController
@@ -35,6 +33,6 @@ public class MessageController {
                 .value(jsonNode.toString())
                 .sendAsync()
                 .get();
-        return ResponseEntity.ok(JacksonUtils.toJsonStr(messageId));
+        return ResponseEntity.ok(JacksonUtils.writeValueAsString(messageId));
     }
 }

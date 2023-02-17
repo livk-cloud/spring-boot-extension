@@ -55,12 +55,12 @@ public class RediSearchApp {
                         .setSex(randomNum == 0 ? "男" : "女")
                         .setDesc("是一个学生")
                         .setClassX((i + 1) + "班");
-                Map<String, String> body = JacksonUtils.objectToMap(student, String.class, String.class);
+                Map<String, String> body = JacksonUtils.convertValueMap(student, String.class, String.class);
                 search.hmset("00" + i, body);
             }
             SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
             for (Document<String, String> document : result) {
-                Student bean = JacksonUtils.mapToBean(document, Student.class);
+                Student bean = JacksonUtils.convertValueBean(document, Student.class);
                 log.info("{}", bean);
             }
         };

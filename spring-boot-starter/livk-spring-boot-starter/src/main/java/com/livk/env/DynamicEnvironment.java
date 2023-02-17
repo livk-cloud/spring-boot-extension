@@ -40,7 +40,7 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
             ClassPathResource resource = new ClassPathResource(source);
             if (resource.exists()) {
                 InputStream inputStream = resource.getInputStream();
-                Properties properties = JacksonUtils.toProperties(inputStream);
+                Properties properties = JacksonUtils.readValueProperties(inputStream);
                 PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
                 propertySources.addLast(livkSource);
             }

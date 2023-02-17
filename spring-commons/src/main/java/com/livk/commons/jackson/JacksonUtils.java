@@ -70,7 +70,7 @@ public class JacksonUtils {
      * @return the java type
      * @see CollectionType
      */
-    public static <T> JavaType collectionType(Class<T> targetClass) {
+    public static <T> CollectionType collectionType(Class<T> targetClass) {
         return MAPPER.getTypeFactory().constructCollectionType(Collection.class, targetClass);
     }
 
@@ -84,7 +84,7 @@ public class JacksonUtils {
      * @return the java type
      * @see MapType
      */
-    public static <K, V> JavaType mapType(Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> MapType mapType(Class<K> keyClass, Class<V> valueClass) {
         return MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
     }
 
@@ -98,7 +98,7 @@ public class JacksonUtils {
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
-    public static <T> T toBean(String json, Class<T> clazz) {
+    public static <T> T readValue(String json, Class<T> clazz) {
         if (check(json, clazz)) {
             return null;
         }
@@ -118,7 +118,7 @@ public class JacksonUtils {
      * @return T
      */
     @SneakyThrows
-    public static <T> T toBean(InputStream inputStream, Class<T> clazz) {
+    public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
         return (inputStream == null || clazz == null) ? null :
                 MAPPER.readValue(inputStream, clazz);
     }
@@ -130,7 +130,7 @@ public class JacksonUtils {
      * @return json string
      */
     @SneakyThrows
-    public static String toJsonStr(Object obj) {
+    public static String writeValueAsString(Object obj) {
         if (obj instanceof String) {
             return (String) obj;
         }
@@ -139,8 +139,8 @@ public class JacksonUtils {
 
     /**
      * json反序列化成List
-     * <p>也可以看看{@link JacksonUtils#toBean(String, TypeReference)},
-     * <p> {@link JacksonUtils#convert(Object, JavaType)}
+     * <p>也可以看看{@link JacksonUtils#readValue(String, TypeReference)} ,
+     * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
      *
      * @param <T>   泛型
      * @param json  json数组
@@ -148,7 +148,7 @@ public class JacksonUtils {
      * @return the list
      */
     @SneakyThrows
-    public static <T> List<T> toList(String json, Class<T> clazz) {
+    public static <T> List<T> readValueList(String json, Class<T> clazz) {
         if (check(json, clazz)) {
             return new ArrayList<>();
         }
@@ -159,8 +159,8 @@ public class JacksonUtils {
 
     /**
      * json反序列化成Map
-     * <p>也可以看看{@link JacksonUtils#toBean(String, TypeReference)},
-     * <p> {@link JacksonUtils#convert(Object, JavaType)}
+     * <p>也可以看看{@link JacksonUtils#readValue(String, TypeReference)} ,
+     * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
      *
      * @param <K>        the type parameter
      * @param <V>        the type parameter
@@ -170,7 +170,7 @@ public class JacksonUtils {
      * @return the map
      */
     @SneakyThrows
-    public static <K, V> Map<K, V> toMap(String json, Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> Map<K, V> readValueMap(String json, Class<K> keyClass, Class<V> valueClass) {
         if (check(json, keyClass, valueClass)) {
             return Collections.emptyMap();
         }
@@ -185,7 +185,7 @@ public class JacksonUtils {
      * @return the properties
      */
     @SneakyThrows
-    public Properties toProperties(InputStream inputStream) {
+    public Properties readValueProperties(InputStream inputStream) {
         if (inputStream == null) {
             return new Properties();
         }
@@ -202,7 +202,7 @@ public class JacksonUtils {
      * @return T
      */
     @SneakyThrows
-    public <T> T toBean(String json, TypeReference<T> typeReference) {
+    public <T> T readValue(String json, TypeReference<T> typeReference) {
         return check(json, typeReference) ? null :
                 MAPPER.readValue(json, typeReference);
     }
@@ -221,11 +221,12 @@ public class JacksonUtils {
     /**
      * Convert object.
      *
+     * @param <T>       the type parameter
      * @param fromValue the  value
      * @param javaType  the java type
      * @return the object
      */
-    public static Object convert(Object fromValue, JavaType javaType) {
+    public static <T> T convertValue(Object fromValue, JavaType javaType) {
         return MAPPER.convertValue(fromValue, javaType);
     }
 
@@ -239,7 +240,7 @@ public class JacksonUtils {
      * @param valueClass the value class
      * @return the map
      */
-    public static <K, V> Map<K, V> objectToMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
         MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
         return MAPPER.convertValue(fromValue, mapType);
     }
@@ -252,7 +253,7 @@ public class JacksonUtils {
      * @param targetClass the target class
      * @return the t
      */
-    public static <T> T mapToBean(Map<String, ?> map, Class<T> targetClass) {
+    public static <T> T convertValueBean(Map<String, ?> map, Class<T> targetClass) {
         return MAPPER.convertValue(map, targetClass);
     }
 

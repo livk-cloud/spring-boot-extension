@@ -25,8 +25,8 @@ class NumberJsonSerializerTest {
         big.f = 0.333333f;
         big.count = BigDecimal.valueOf(0.333333);
         big.sunCount = BigDecimal.valueOf(0.333333);
-        String json = JacksonUtils.toJsonStr(big);
-        Big bean = JacksonUtils.toBean(json, Big.class);
+        String json = JacksonUtils.writeValueAsString(big);
+        Big bean = JacksonUtils.readValue(json, Big.class);
         assertNotNull(bean);
         assertEquals(33L, bean.l);
         assertEquals(0.33d, bean.d);

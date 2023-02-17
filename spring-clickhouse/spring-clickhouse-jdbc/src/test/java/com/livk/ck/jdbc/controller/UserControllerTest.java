@@ -63,7 +63,7 @@ class UserControllerTest {
                 .setRegTime(new Date());
         mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.toJsonStr(user)))
+                        .content(JacksonUtils.writeValueAsString(user)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));

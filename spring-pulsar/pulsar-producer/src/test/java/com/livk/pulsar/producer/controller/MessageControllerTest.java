@@ -32,8 +32,8 @@ class MessageControllerTest {
     void testSend() throws Exception {
         Map<String, String> map = Map.of("username", "livk", "password", "123456");
         mockMvc.perform(post("/producer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JacksonUtils.toJsonStr(map)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JacksonUtils.writeValueAsString(map)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

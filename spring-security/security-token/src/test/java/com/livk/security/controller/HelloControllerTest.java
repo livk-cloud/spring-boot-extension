@@ -45,7 +45,7 @@ class HelloControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("code", "200").exists())
                 .andReturn().getResponse();
-        token = JacksonUtils.toMap(response.getContentAsString(), String.class, String.class).get("data");
+        token = JacksonUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
     }
 
 

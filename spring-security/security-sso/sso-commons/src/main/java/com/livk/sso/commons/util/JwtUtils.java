@@ -29,7 +29,7 @@ public class JwtUtils {
     public String generateToken(User userInfo, RSAKey key) {
         JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).type(JOSEObjectType.JWT).build();
         Payload payload = new Payload(UUID.randomUUID().toString(), userInfo);
-        JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JacksonUtils.toJsonStr(payload)));
+        JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JacksonUtils.writeValueAsString(payload)));
         RSASSASigner signer = new RSASSASigner(key);
         jwsObject.sign(signer);
         return jwsObject.serialize();
@@ -42,7 +42,7 @@ public class JwtUtils {
         RSASSAVerifier verifier = new RSASSAVerifier(key);
         if (jwsObject.verify(verifier)) {
             String json = jwsObject.getPayload().toString();
-            return JacksonUtils.toBean(json, Payload.class);
+            return JacksonUtils.readValue(json, Payload.class);
         }
         throw new RuntimeException("500");
     }

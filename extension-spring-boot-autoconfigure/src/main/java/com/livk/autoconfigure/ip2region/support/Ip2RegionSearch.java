@@ -51,6 +51,6 @@ public class Ip2RegionSearch {
      * @return the string
      */
     public String searchAsJson(String ip) {
-        return JacksonUtils.toJsonStr(this.searchAsInfo(ip));
+        return JacksonUtils.writeValueAsString(this.searchAsInfo(ip));
     }
 }

@@ -37,7 +37,7 @@ public class RabbitController {
 
     @PostMapping("sendMsgHeaders")
     public <T> void sendMsgHeaders(@RequestBody Message<T> message, @RequestParam String json) {
-        send.sendMsgHeaders(message, JacksonUtils.toMap(json, String.class, Object.class));
+        send.sendMsgHeaders(message, JacksonUtils.readValueMap(json, String.class, Object.class));
     }
 
 }

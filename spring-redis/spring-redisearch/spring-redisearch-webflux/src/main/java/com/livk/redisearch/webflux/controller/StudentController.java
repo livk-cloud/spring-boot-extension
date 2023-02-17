@@ -33,7 +33,7 @@ public class StudentController {
         RedisModulesReactiveCommands<String, String> search = connection.reactive();
         Flux<Student> flux = search.ftSearch(Student.INDEX, query)
                 .flatMapMany(Flux::fromIterable)
-                .map(document -> JacksonUtils.mapToBean(document, Student.class));
+                .map(document -> JacksonUtils.convertValueBean(document, Student.class));
         return ResponseEntity.ok(flux);
     }
 }

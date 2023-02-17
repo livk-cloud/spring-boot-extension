@@ -44,8 +44,8 @@ class UserControllerTest {
         Map<String, String> body = new HashMap<>();
         body.put("username", "livk");
         body.put("password", "123456");
-        ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JacksonUtils.toJsonStr(body), String.class);
-        token = "Bearer " + JacksonUtils.toMap(responseEntity.getBody(), String.class, String.class).get("data");
+        ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JacksonUtils.writeValueAsString(body), String.class);
+        token = "Bearer " + JacksonUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
     }
 
     @Test

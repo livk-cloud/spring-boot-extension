@@ -40,12 +40,12 @@ class UserControllerTest {
         body.put("password", "123456");
         MockHttpServletResponse response = mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.toJsonStr(body)))
+                        .content(JacksonUtils.writeValueAsString(body)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("code", "200").exists())
                 .andReturn().getResponse();
-        token = "Bearer " + JacksonUtils.toMap(response.getContentAsString(), String.class, String.class).get("data");
+        token = "Bearer " + JacksonUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
     }
 
 

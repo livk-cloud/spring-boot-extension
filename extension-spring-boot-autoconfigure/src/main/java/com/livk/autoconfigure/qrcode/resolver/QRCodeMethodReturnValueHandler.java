@@ -37,7 +37,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
         QRCode qrCode = AnnotationUtils.getAnnotationElement(returnType, QRCode.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(qrCode, "excelReturn not be null");
-        String text = JacksonUtils.toJsonStr(returnValue);
+        String text = JacksonUtils.writeValueAsString(returnValue);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), outputStream, qrCode.type());
         }
