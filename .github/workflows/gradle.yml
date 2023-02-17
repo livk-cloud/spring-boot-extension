@@ -31,5 +31,5 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.3.3
         with:
-          arguments: cleanAll build -D exclude=true --scan
+          arguments: cleanAll build --scan -D exclude=true
           gradle-version: current
