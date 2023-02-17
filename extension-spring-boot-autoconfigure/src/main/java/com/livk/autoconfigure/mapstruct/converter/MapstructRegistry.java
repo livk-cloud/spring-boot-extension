@@ -11,6 +11,12 @@ import com.livk.autoconfigure.mapstruct.support.ConverterSupport;
  */
 public interface MapstructRegistry {
 
+    /**
+     * Add converter.
+     *
+     * @param converterPair the converter pair
+     * @param converter     the converter
+     */
     void addConverter(ConverterPair converterPair, Converter<?, ?> converter);
 
     /**
