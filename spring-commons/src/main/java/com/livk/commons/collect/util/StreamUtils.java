@@ -6,8 +6,8 @@ import lombok.experimental.UtilityClass;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -94,5 +94,30 @@ public class StreamUtils {
         return StreamSupport.stream(
                 EnumerationSpliterator.spliteratorUnknownSize(enumeration),
                 false);
+    }
+
+    /**
+     * Map with index function.
+     *
+     * @param <T>        the type parameter
+     * @param <R>        the type parameter
+     * @param biFunction the bi function
+     * @return the function
+     */
+    <T, R> Function<T, R> mapWithIndex(BiFunction<T, Integer, R> biFunction) {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        return t -> biFunction.apply(t, atomicInteger.getAndIncrement());
+    }
+
+    /**
+     * For each with index consumer.
+     *
+     * @param <T>        the type parameter
+     * @param biConsumer the bi consumer
+     * @return the consumer
+     */
+    <T> Consumer<T> forEachWithIndex(BiConsumer<T, Integer> biConsumer) {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        return t -> biConsumer.accept(t, atomicInteger.getAndIncrement());
     }
 }

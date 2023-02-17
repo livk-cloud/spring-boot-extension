@@ -67,6 +67,25 @@ class StreamUtilsTest {
         assertIterableEquals(List.of(1, 2, 3), result2);
     }
 
+    @Test
+    void mapWithIndex() {
+        List<String> list = List.of("root", "livk", "admin");
+        List<User> users = List.of(
+                new User(0, "root"),
+                new User(1, "livk"),
+                new User(2, "admin")
+        );
+        List<User> result = list.stream().map(StreamUtils.mapWithIndex((s, i) -> new User(i, s))).toList();
+
+        assertIterableEquals(users, result);
+    }
+
+    @Test
+    void forEachWithIndex() {
+        List.of("root", "livk", "admin")
+                .forEach(StreamUtils.forEachWithIndex((s, i) -> System.out.println("index:" + i + " data:" + s)));
+    }
+
     private record User(Integer id, String username) {
 
     }
