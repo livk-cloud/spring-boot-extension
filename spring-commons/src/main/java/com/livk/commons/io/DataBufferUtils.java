@@ -9,8 +9,6 @@ import org.springframework.util.StreamUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
@@ -22,18 +20,6 @@ import java.io.InputStream;
  */
 @UtilityClass
 public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
-
-    /**
-     * Transform input stream.
-     *
-     * @param dataBuffer the data buffer
-     * @return the input stream
-     */
-    public InputStream transform(DataBuffer dataBuffer) {
-        byte[] array = dataBuffer.toByteBuffer().array();
-        return new ByteArrayInputStream(array);
-    }
-
     /**
      * Transform mono.
      *
@@ -41,17 +27,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
      * @return the mono
      */
     public Mono<InputStream> transform(Part part) {
-        return join(part.content()).map(DataBufferUtils::transform);
-    }
-
-    /**
-     * Transform flux.
-     *
-     * @param byteArrayOutputStream the byte array output stream
-     * @return the flux
-     */
-    public Flux<DataBuffer> transform(ByteArrayOutputStream byteArrayOutputStream) {
-        return transform(byteArrayOutputStream.toByteArray());
+        return join(part.content()).map(DataBuffer::asInputStream);
     }
 
     /**

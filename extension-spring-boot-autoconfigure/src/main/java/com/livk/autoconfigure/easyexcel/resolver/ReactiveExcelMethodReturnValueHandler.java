@@ -126,7 +126,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         EasyExcelUtils.write(outputStream, excelModelClass, result);
-        Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream);
+        Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
         return response.writeWith(bufferFlux);
     }
 
