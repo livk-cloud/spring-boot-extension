@@ -70,20 +70,30 @@ class StreamUtilsTest {
     @Test
     void mapWithIndex() {
         List<String> list = List.of("root", "livk", "admin");
-        List<User> users = List.of(
+        List<User> users1 = List.of(
                 new User(0, "root"),
                 new User(1, "livk"),
                 new User(2, "admin")
         );
-        List<User> result = list.stream().map(StreamUtils.mapWithIndex((s, i) -> new User(i, s))).toList();
+        List<User> result1 = list.stream().map(StreamUtils.mapWithIndex(0, (s, i) -> new User(i, s))).toList();
+        assertIterableEquals(users1, result1);
 
-        assertIterableEquals(users, result);
+        List<User> users2 = List.of(
+                new User(10, "root"),
+                new User(11, "livk"),
+                new User(12, "admin")
+        );
+        List<User> result2 = list.stream().map(StreamUtils.mapWithIndex(10, (s, i) -> new User(i, s))).toList();
+        assertIterableEquals(users2, result2);
     }
 
     @Test
     void forEachWithIndex() {
         List.of("root", "livk", "admin")
-                .forEach(StreamUtils.forEachWithIndex((s, i) -> System.out.println("index:" + i + " data:" + s)));
+                .forEach(StreamUtils.forEachWithIndex(0, (s, i) -> System.out.println("index:" + i + " data:" + s)));
+
+        List.of("root", "livk", "admin")
+                .forEach(StreamUtils.forEachWithIndex(10, (s, i) -> System.out.println("index:" + i + " data:" + s)));
     }
 
     private record User(Integer id, String username) {
