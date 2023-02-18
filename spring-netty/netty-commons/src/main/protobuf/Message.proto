@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.livk.netty.commons.protobuf";
+option java_outer_classname = "NettyMessage";
+
+message Message{
+  string requestId = 1;
+  MessageType type = 2;
+  string content = 3;
+  enum MessageType{
+    NORMAL = 0;
+    HEARTBEAT_CLIENT = 1;
+    HEARTBEAT_SERVER = 2;
+  }
+}

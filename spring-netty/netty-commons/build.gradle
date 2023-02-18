@@ -1,0 +1,45 @@
+plugins {
+    id "com.google.protobuf" version("0.9.2")
+}
+
+dependencies {
+    api "io.netty:netty-all:4.1.87.Final"
+    api "com.google.protobuf:protobuf-java:3.21.12"
+    testImplementation "org.springframework:spring-tx:6.0.4"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${libs.versions.springBoot.get()}"
+}
+
+compileJava {
+    dependsOn("generateProto")
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "src/main/protobuf"
+        }
+        java {
+            srcDirs "src/main/java/com/livk/protobuf"
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.12"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.52.1"
+        }
+    }
+
+    generateProtoTasks {
+        ofSourceSet("main").configureEach {
+            plugins {
+                grpc {}
+            }
+        }
+    }
+}

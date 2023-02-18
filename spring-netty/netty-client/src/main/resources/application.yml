@@ -1,0 +1,7 @@
+server:
+  port: 9977
+
+spring:
+  netty:
+    host: 127.0.0.1
+    port: 12345
