@@ -54,12 +54,22 @@ public class JacksonUtils {
     /**
      * 构建一个JavaType
      *
-     * @param <T>         the type parameter
      * @param targetClass the target class
      * @return the java type
      */
-    public static <T> JavaType javaType(Class<T> targetClass) {
+    public static JavaType javaType(Class<?> targetClass) {
         return MAPPER.getTypeFactory().constructType(targetClass);
+    }
+
+    /**
+     * 构建一个JavaType
+     *
+     * @param targetClass the target class
+     * @param generics    the generics
+     * @return the java type
+     */
+    public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
+        return MAPPER.getTypeFactory().constructParametricType(targetClass, generics);
     }
 
     /**
@@ -94,7 +104,7 @@ public class JacksonUtils {
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -115,7 +125,7 @@ public class JacksonUtils {
      * @param <T>         the type parameter
      * @param inputStream the input stream
      * @param clazz       the clazz
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
@@ -199,7 +209,7 @@ public class JacksonUtils {
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public <T> T readValue(String json, TypeReference<T> typeReference) {

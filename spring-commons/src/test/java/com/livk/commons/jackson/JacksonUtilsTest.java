@@ -45,6 +45,11 @@ class JacksonUtilsTest {
         assertEquals(Integer.class, JacksonUtils.javaType(Integer.class).getRawClass());
         assertEquals(Long.class, JacksonUtils.javaType(Long.class).getRawClass());
 
+        JavaType javaType = JacksonUtils.javaType(Pair.class, String.class, Integer.class);
+        assertEquals(Pair.class, javaType.getRawClass());
+        assertEquals(String.class, javaType.getBindings().getBoundType(0).getRawClass());
+        assertEquals(Integer.class, javaType.getBindings().getBoundType(1).getRawClass());
+
         assertEquals(String.class, JacksonUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
         assertEquals(Integer.class, JacksonUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
         assertEquals(Long.class, JacksonUtils.collectionType(Long.class).getBindings().getBoundType(0).getRawClass());
