@@ -29,7 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest({
+        "spring.datasource.driver-class-name=org.h2.Driver",
+        "spring.datasource.url=jdbc:h2:mem:test",
+        "spring.sql.init.mode=never"
+})
 class InfoControllerTest {
 
     @Autowired
