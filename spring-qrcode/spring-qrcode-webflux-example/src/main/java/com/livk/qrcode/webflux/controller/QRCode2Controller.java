@@ -1,7 +1,11 @@
 package com.livk.qrcode.webflux.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.qrcode.annotation.QRController;
+import com.livk.commons.jackson.JacksonUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
@@ -19,22 +23,22 @@ import java.util.Map;
 public class QRCode2Controller {
 
     @GetMapping
-    public String hello() {
-        return "hello world";
+    public String text(String text) {
+        return text;
     }
 
     @GetMapping("mono")
-    public Mono<String> helloMono() {
-        return Mono.just("hello world Mono");
+    public Mono<String> textMono(String text) {
+        return Mono.just(text);
     }
 
-    @GetMapping("json")
-    public Map<String, String> json() {
-        return Map.of("username", "root", "password", "123456");
+    @PostMapping("json")
+    public Map<String, String> json(@RequestBody JsonNode node) {
+        return JacksonUtils.convertValueMap(node, String.class, String.class);
     }
 
-    @GetMapping("/json/mono")
-    public Mono<Map<String, String>> jsonMono() {
-        return Mono.just(Map.of("username", "root", "password", "123456"));
+    @PostMapping("/json/mono")
+    public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
+        return Mono.just(JacksonUtils.convertValueMap(node, String.class, String.class));
     }
 }

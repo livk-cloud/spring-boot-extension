@@ -1,9 +1,9 @@
 package com.livk.qrcode.mvc.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.livk.commons.jackson.JacksonUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -18,15 +18,15 @@ import java.util.Map;
 @RequestMapping("qrcode")
 public class QRCodeController {
 
-    @GetMapping
     @QRCode
-    public String hello() {
-        return "hello world";
+    @GetMapping
+    public String text(String text) {
+        return text;
     }
 
-    @GetMapping("json")
     @QRCode
-    public Map<String, String> json() {
-        return Map.of("username", "root", "password", "123456");
+    @PostMapping("json")
+    public Map<String, String> json(@RequestBody JsonNode node) {
+        return JacksonUtils.convertValueMap(node, String.class, String.class);
     }
 }

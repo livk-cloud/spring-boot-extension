@@ -2,6 +2,7 @@ package com.livk.autoconfigure.qrcode.resolver;
 
 
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
+import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.DataBufferUtils;
@@ -12,6 +13,8 @@ import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -20,6 +23,9 @@ import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * <p>
@@ -58,10 +64,17 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
     }
 
     private Mono<Void> write(Object value, QRCode qrCode, ServerHttpResponse response) {
+        setResponse(qrCode.type(), response);
         String text = JacksonUtils.writeValueAsString(value);
         byte[] bytes = QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), qrCode.type());
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
         return response.writeWith(bufferFlux);
+    }
+
+    private void setResponse(PicType type, ServerHttpResponse response) {
+        HttpHeaders headers = response.getHeaders();
+        headers.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG);
+        headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
     }
 
     @Override
