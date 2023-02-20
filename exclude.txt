@@ -2,8 +2,6 @@ com.livk.auth.server.AuthServerAppTest
 com.livk.batch.controller.JobControllerTest
 com.livk.ck.jdbc.controller.UserControllerTest
 com.livk.ck.r2dbc.controller.UserControllerTest
-com.livk.excel.mvc.controller.Info2ControllerTest
-com.livk.excel.mvc.controller.InfoControllerTest
 com.livk.graphql.mybatis.controller.BookControllerTest
 com.livk.graphql.mybatis.controller.GreetingControllerTest
 com.livk.graphql.r2dbc.controller.BookControllerTest
@@ -18,12 +16,6 @@ com.livk.mqtt.MqttTest
 com.livk.redisson.limit.RateLimiterControllerTest
 com.livk.redisson.schedule.ScheduleHandlerTest
 com.livk.sso.auth.controller.UserControllerTest
-com.livk.excel.mvc.controller.Info2ControllerTest
-com.livk.excel.mvc.controller.InfoControllerTest
-com.livk.qrcode.mvc.controller.QRCode2ControllerTest
-com.livk.qrcode.mvc.controller.QRCodeControllerTest
-com.livk.qrcode.webflux.controller.QRCode2ControllerTest
-com.livk.qrcode.webflux.controller.QRCodeControllerTest
 com.livk.video.example.controller.VideoControllerTest
 com.livk.caffeine.controller.CacheControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
