@@ -20,8 +20,6 @@ com.livk.redisson.schedule.ScheduleHandlerTest
 com.livk.sso.auth.controller.UserControllerTest
 com.livk.excel.mvc.controller.Info2ControllerTest
 com.livk.excel.mvc.controller.InfoControllerTest
-com.livk.excel.reactive.controller.Info2ControllerTest
-com.livk.excel.reactive.controller.InfoControllerTest
 com.livk.qrcode.mvc.controller.QRCode2ControllerTest
 com.livk.qrcode.mvc.controller.QRCodeControllerTest
 com.livk.qrcode.webflux.controller.QRCode2ControllerTest
