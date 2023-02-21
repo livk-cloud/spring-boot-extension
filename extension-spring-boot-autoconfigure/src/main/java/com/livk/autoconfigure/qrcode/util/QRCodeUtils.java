@@ -62,6 +62,12 @@ public class QRCodeUtils {
         }
     }
 
+    /**
+     * Parse qr code string.
+     *
+     * @param inputStream the input stream
+     * @return the string
+     */
     public static String parseQRCode(InputStream inputStream) {
         String content = null;
         BufferedImage image;
