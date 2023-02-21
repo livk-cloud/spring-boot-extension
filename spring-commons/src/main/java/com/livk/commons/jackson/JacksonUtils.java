@@ -11,14 +11,16 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.bean.Wrapper;
 import com.livk.commons.spring.context.SpringContextHolder;
-import com.livk.commons.util.ObjectUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ResolvableType;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Jackson一些基本序列化与反序列化
@@ -104,14 +106,11 @@ public class JacksonUtils {
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
     public static <T> T readValue(String json, Class<T> clazz) {
-        if (check(json, clazz)) {
-            return null;
-        }
         if (clazz.isInstance(json)) {
             return (T) json;
         }
@@ -125,12 +124,11 @@ public class JacksonUtils {
      * @param <T>         the type parameter
      * @param inputStream the input stream
      * @param clazz       the clazz
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
-        return (inputStream == null || clazz == null) ? null :
-                MAPPER.readValue(inputStream, clazz);
+        return MAPPER.readValue(inputStream, clazz);
     }
 
     /**
@@ -159,11 +157,7 @@ public class JacksonUtils {
      */
     @SneakyThrows
     public static <T> List<T> readValueList(String json, Class<T> clazz) {
-        if (check(json, clazz)) {
-            return new ArrayList<>();
-        }
-        CollectionType collectionType = MAPPER.getTypeFactory()
-                .constructCollectionType(List.class, clazz);
+        CollectionType collectionType = collectionType(clazz);
         return MAPPER.readValue(json, collectionType);
     }
 
@@ -181,10 +175,7 @@ public class JacksonUtils {
      */
     @SneakyThrows
     public static <K, V> Map<K, V> readValueMap(String json, Class<K> keyClass, Class<V> valueClass) {
-        if (check(json, keyClass, valueClass)) {
-            return Collections.emptyMap();
-        }
-        MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        MapType mapType = mapType(keyClass, valueClass);
         return MAPPER.readValue(json, mapType);
     }
 
@@ -209,16 +200,15 @@ public class JacksonUtils {
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     public <T> T readValue(String json, TypeReference<T> typeReference) {
-        return check(json, typeReference) ? null :
-                MAPPER.readValue(json, typeReference);
+        return MAPPER.readValue(json, typeReference);
     }
 
     /**
-     * Read tree json node.
+     * 将json转化成JsonNode
      *
      * @param json the json
      * @return the json node
@@ -251,7 +241,7 @@ public class JacksonUtils {
      * @return the map
      */
     public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        MapType mapType = mapType(keyClass, valueClass);
         return MAPPER.convertValue(fromValue, mapType);
     }
 
@@ -265,9 +255,5 @@ public class JacksonUtils {
      */
     public static <T> T convertValueBean(Map<String, ?> map, Class<T> targetClass) {
         return MAPPER.convertValue(map, targetClass);
-    }
-
-    private boolean check(String json, Object... checkObj) {
-        return json == null || json.isEmpty() || ObjectUtils.anyChecked(Objects::isNull, checkObj);
     }
 }
