@@ -17,7 +17,7 @@ public interface Wrapper<T> {
      * @return the wrapper
      */
     static <T> Wrapper<T> of(T t) {
-        return new SimpleWrapper<>(t);
+        return new WrapperProxy<>(t).unwrap();
     }
 
     /**
