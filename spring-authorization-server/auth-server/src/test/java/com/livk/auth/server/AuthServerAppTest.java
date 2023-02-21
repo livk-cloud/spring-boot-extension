@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,6 +55,7 @@ class AuthServerAppTest {
                 .getContentAsString();
         String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
         assertNotNull(accessToken);
+        assertFalse(accessToken.isBlank());
     }
 
     @Test
@@ -78,5 +80,6 @@ class AuthServerAppTest {
                 .getContentAsString();
         String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
         assertNotNull(accessToken);
+        assertFalse(accessToken.isBlank());
     }
 }
