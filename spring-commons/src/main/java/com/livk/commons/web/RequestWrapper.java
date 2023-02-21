@@ -83,7 +83,7 @@ public final class RequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String getContentType() {
-        return ObjectUtils.isEmpty(contentType) ? getRequest().getContentType() : contentType.getType();
+        return ObjectUtils.isEmpty(contentType) ? getRequest().getContentType() : contentType.toString();
     }
 
     @Override
