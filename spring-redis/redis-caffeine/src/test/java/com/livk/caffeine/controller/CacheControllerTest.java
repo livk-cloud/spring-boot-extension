@@ -1,17 +1,18 @@
 package com.livk.caffeine.controller;
 
 import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
-import com.livk.autoconfigure.redis.util.RedisUtils;
 import com.livk.commons.test.TestLogUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -85,15 +86,18 @@ class CacheControllerTest {
 
     @Test
     public void test() {
-        try (Cursor<String> cursor = RedisUtils.scan(redisTemplate, "*", 100)) {
+        ScanOptions options = ScanOptions.scanOptions().match("*").count(100).build();
+        try (Cursor<String> cursor = redisTemplate.scan(options)) {
             while (cursor.hasNext()) {
                 TestLogUtils.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
             }
         }
 
-        Set<String> keys = RedisUtils.scan(redisTemplate, "*", 10, 1);
-        TestLogUtils.info("keys:{}", keys);
-        assertEquals(1, keys.size());
+        try (Cursor<String> scan = redisTemplate.scan(options)) {
+            Set<String> keys = scan.stream().limit(1).collect(Collectors.toSet());
+            TestLogUtils.info("keys:{}", keys);
+            assertEquals(1, keys.size());
+        }
     }
 }
 
