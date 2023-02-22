@@ -2,7 +2,7 @@
 springBoot = "3.0.2"
 pagehelper = "5.3.2"
 pagehelperBoot = "1.4.6"
-oauth2Authorization = "1.0.1"
+oauth2Authorization = "1.0.0"
 mybatis = "3.5.11"
 springMybatis = "3.0.1"
 guava = "31.1-jre"
