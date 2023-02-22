@@ -25,6 +25,9 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 
     @Override
     protected InterProcessLock getLock(LockType type, String key) {
+        if (!key.startsWith("/")) {
+            key = "/".concat(key);
+        }
         return switch (type) {
             case LOCK, FAIR -> new InterProcessMutex(curatorFramework, key);
             case READ -> new InterProcessReadWriteLock(curatorFramework, key).readLock();

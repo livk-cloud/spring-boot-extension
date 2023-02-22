@@ -1,0 +1,4 @@
+spring:
+  zookeeper:
+    curator:
+      servers: livk.com:2181

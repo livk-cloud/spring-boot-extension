@@ -2,7 +2,7 @@
 == 本地锁与分布式锁
 
 使用方式: +
-link:../../spring-lock/livk-lock-example[lock示例] +
+link:../../spring-lock/local-lock-example[lock示例] +
 
 使用示例 +
 key支持SpEL表达式，同时支持公平锁、读锁、写锁，并支持异步 +

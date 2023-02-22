@@ -22,7 +22,9 @@ link:spring-hateoas[spring整合hateoas实现restful风格返回] +
 link:spring-http/http-example[spring整合spring Http Interface] +
 link:spring-ip2region/ip2region-mvc-example[spring整合ip2region] +
 link:spring-kafka[spring整合kafka] +
-link:spring-lock/livk-lock-example[spring整合redis RLock、JDK Lock] +
+link:spring-lock/curator-lock-example[spring整合curator lock] +
+link:spring-lock/local-lock-example[spring整合JDK Lock] +
+link:spring-lock/redisson-lock-example[spring整合redisson lock] +
 link:spring-mail[spring发送Email] +
 link:spring-mapstruct/mapstruct-example[spring整合mapstruct自定义转换器] +
 link:spring-micrometer[spring整合micrometer trace] +

@@ -1,0 +1,2 @@
+###购买
+POST http://localhost:8080/shop/buy/distributed

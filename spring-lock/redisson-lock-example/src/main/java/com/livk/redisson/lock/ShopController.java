@@ -1,4 +1,4 @@
-package com.livk.local.lock;
+package com.livk.redisson.lock;
 
 import com.livk.autoconfigure.lock.annotation.OnLock;
 import com.livk.autoconfigure.lock.constant.LockScope;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +29,6 @@ public class ShopController {
 
     private final HashOperations<Object, Object, Object> forHash;
     private final RedisTemplate<Object, Object> redisTemplate;
-    private Integer num = 500;
-    private int buyCount = 0;
-    private int buySucCount = 0;
 
     public ShopController(RedisTemplate<Object, Object> redisTemplate) {
         redisTemplate.setKeySerializer(RedisSerializer.string());
@@ -48,20 +44,6 @@ public class ShopController {
         forHash.put("shop", "num", 500);
     }
 
-    @PostMapping("/buy/local")
-    @OnLock(key = "shop", scope = LockScope.STANDALONE_LOCK)
-    public HttpEntity<Map<String, Object>> buyLocal(@RequestParam(defaultValue = "2") Integer count) {
-        buyCount++;
-        if (num >= count) {
-            num -= count;
-            buySucCount++;
-            Map<String, Integer> msg = Map.of("购买成功数量", count, "总计购买次数", buyCount, "购买成功次数", buySucCount);
-            return ResponseEntity.ok(Map.of("code", "200", "msg", msg));
-        } else {
-            return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));
-        }
-    }
-
     @PostMapping("/buy/distributed")
     @OnLock(key = "shop", scope = LockScope.DISTRIBUTED_LOCK)
     public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam(defaultValue = "2") Integer count) {
@@ -73,31 +55,9 @@ public class ShopController {
         return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));
     }
 
-    @PostMapping("reset")
-    public void add() {
-        num = 500;
-        buyCount = 0;
-        buySucCount = 0;
-
-        redisTemplate.delete("shop");
-        forHash.put("shop", "num", 500);
-    }
-
     @GetMapping("result")
     public HttpEntity<Map<String, Object>> result() {
-        Map<String, Integer> local = Map.of("num", num, "buyCount", buyCount, "buySucCount", buySucCount);
-        Map<String, Integer> distributed = change(forHash.entries("shop"), String.class, Integer.class);
-        return ResponseEntity.ok(Map.of("local", local, "distributed", distributed));
-    }
-
-    @SuppressWarnings("unchecked")
-    private <K, V> Map<K, V> change(Map<?, ?> map, Class<K> kClass, Class<V> vClass) {
-        Map<K, V> result = new HashMap<>();
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-            if (kClass.isInstance(entry.getKey()) && vClass.isInstance(entry.getValue())) {
-                result.put((K) entry.getKey(), (V) entry.getValue());
-            }
-        }
-        return result;
+        Map<Object, Object> distributed = forHash.entries("shop");
+        return ResponseEntity.ok(Map.of("redisson", distributed));
     }
 }

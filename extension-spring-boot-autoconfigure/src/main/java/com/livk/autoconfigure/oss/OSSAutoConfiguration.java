@@ -9,6 +9,7 @@ import io.minio.MinioClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -30,6 +31,7 @@ public class OSSAutoConfiguration {
      * @return the oss template
      */
     @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnBean(AbstractService.class)
     public OSSTemplate ossTemplate(AbstractService<?> abstractService) {
         return new OSSTemplate(abstractService);
@@ -60,6 +62,7 @@ public class OSSAutoConfiguration {
          * @return the minio service
          */
         @Bean(destroyMethod = "close")
+        @ConditionalOnMissingBean(AbstractService.class)
         public MinioService minioService(OSSProperties properties,
                                          MinioClientFactory minioClientFactory) {
             return new MinioService(properties, minioClientFactory);
