@@ -1,6 +1,6 @@
 package com.livk.redis.config;
 
-import com.livk.autoconfigure.redis.util.SerializerUtils;
+import com.livk.autoconfigure.redis.util.JacksonSerializerUtils;
 import com.livk.common.redis.domain.LivkMessage;
 import com.livk.redis.listener.KeyExpiredListener;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class RedisConfig {
     public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
             ReactiveRedisConnectionFactory connectionFactory) {
         ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        RedisSerializer<LivkMessage> serializer = SerializerUtils.json(LivkMessage.class);
+        RedisSerializer<LivkMessage> serializer = JacksonSerializerUtils.json(LivkMessage.class);
         container
                 .receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
                         RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),

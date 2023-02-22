@@ -3,7 +3,7 @@ package com.livk.autoconfigure.redis;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
 import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
-import com.livk.autoconfigure.redis.util.SerializerUtils;
+import com.livk.autoconfigure.redis.util.JacksonSerializerUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -56,8 +56,8 @@ public class CustomizeRedisAutoConfiguration {
         public UniversalReactiveRedisTemplate universalReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
             RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
                     <String, Object>newSerializationContext()
-                    .key(RedisSerializer.string()).value(SerializerUtils.json())
-                    .hashKey(RedisSerializer.string()).hashValue(SerializerUtils.json()).build();
+                    .key(RedisSerializer.string()).value(JacksonSerializerUtils.json())
+                    .hashKey(RedisSerializer.string()).hashValue(JacksonSerializerUtils.json()).build();
             return new UniversalReactiveRedisTemplate(redisConnectionFactory, serializationContext);
         }
     }
