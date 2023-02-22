@@ -8,7 +8,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 public interface SseEmitterWriter<K> {
 

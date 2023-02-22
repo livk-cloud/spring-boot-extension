@@ -11,7 +11,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 //@Component
 @SpringFactories(type = BeanFactoryPostProcessor.class)

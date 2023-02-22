@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.RedisHash;
  * </p>
  *
  * @author livk
- * @date 2022/12/30
  */
 @Data
 @RedisHash("people")

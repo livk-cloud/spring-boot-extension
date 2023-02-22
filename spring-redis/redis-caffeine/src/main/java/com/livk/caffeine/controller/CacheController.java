@@ -12,7 +12,6 @@ import java.util.UUID;
  * </p>
  *
  * @author livk
- * @date 2022/12/26
  */
 @RestController
 @RequestMapping("cache")

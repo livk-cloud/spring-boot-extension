@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author livk
- * @date 2023/2/3
  */
 @SpringBootApplication(exclude = {
         R2dbcAutoConfiguration.class,

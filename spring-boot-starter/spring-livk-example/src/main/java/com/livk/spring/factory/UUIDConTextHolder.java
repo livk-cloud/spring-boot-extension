@@ -10,7 +10,6 @@ import java.util.UUID;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 @UtilityClass
 public class UUIDConTextHolder {

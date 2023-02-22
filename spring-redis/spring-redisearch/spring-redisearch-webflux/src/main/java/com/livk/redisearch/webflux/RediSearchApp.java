@@ -24,7 +24,6 @@ import java.util.Random;
  * </p>
  *
  * @author livk
- * @date 2023/2/3
  */
 @Slf4j
 @SpringBootApplication

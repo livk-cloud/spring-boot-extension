@@ -13,7 +13,6 @@ import java.io.Serializable;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 public class UUIDObjectFactory implements ObjectFactory<UUIDRequest>, Serializable {
 

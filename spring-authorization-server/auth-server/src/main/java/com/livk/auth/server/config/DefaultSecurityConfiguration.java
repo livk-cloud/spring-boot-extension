@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
  * </p>
  *
  * @author livk
- * @date 2023/1/6
  */
 @Configuration
 @EnableWebSecurity

@@ -16,7 +16,6 @@ import java.io.IOException;
  * </p>
  *
  * @author livk
- * @date 2023/1/2
  */
 @Component
 @WebFilter(filterName = "UUIDFilter", urlPatterns = "/*")

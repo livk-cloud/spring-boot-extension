@@ -21,7 +21,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2023/2/3
  */
 @RestController
 @RequestMapping("student")

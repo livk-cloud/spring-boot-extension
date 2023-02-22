@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author livk
- * @date 2022/12/16
  */
 @Slf4j
 @RestController

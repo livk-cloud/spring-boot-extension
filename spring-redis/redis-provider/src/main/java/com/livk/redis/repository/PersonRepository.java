@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
  * </p>
  *
  * @author livk
- * @date 2022/12/30
  */
 @Repository
 public interface PersonRepository extends CrudRepository<Person, String> {

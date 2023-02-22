@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
  * </p>
  *
  * @author livk
- * @date 2023/1/5
  */
 @RestController
 @RequestMapping("user")

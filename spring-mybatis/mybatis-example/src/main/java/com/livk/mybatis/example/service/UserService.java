@@ -10,7 +10,6 @@ import java.util.List;
  * </p>
  *
  * @author livk
- * @date 2023/1/5
  */
 public interface UserService {
     User getById(Integer id);

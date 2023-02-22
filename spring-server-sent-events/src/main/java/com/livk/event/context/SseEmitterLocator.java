@@ -10,7 +10,6 @@ import java.util.Map;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 public interface SseEmitterLocator<K> {
 

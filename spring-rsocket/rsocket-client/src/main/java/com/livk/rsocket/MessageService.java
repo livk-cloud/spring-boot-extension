@@ -13,7 +13,6 @@ import java.time.Duration;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 public interface MessageService {
 

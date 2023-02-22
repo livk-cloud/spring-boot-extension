@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  *
  * @author livk
- * @date 2023/1/4
  */
 @Component
 public class InMemorySseEmitterRepository implements SseEmitterRepository<String> {

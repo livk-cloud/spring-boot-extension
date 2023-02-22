@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  *
  * @author livk
- * @date 2023/2/1
  */
 class ByteMultipartFileTest {
     @Test

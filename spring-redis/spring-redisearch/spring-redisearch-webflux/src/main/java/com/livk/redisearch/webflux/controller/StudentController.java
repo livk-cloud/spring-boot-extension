@@ -19,7 +19,6 @@ import reactor.core.publisher.Flux;
  * </p>
  *
  * @author livk
- * @date 2023/2/3
  */
 @RestController
 @RequestMapping("student")

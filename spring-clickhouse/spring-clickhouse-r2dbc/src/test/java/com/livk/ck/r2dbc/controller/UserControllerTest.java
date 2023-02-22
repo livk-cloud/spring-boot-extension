@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  * </p>
  *
  * @author livk
- * @date 2023/2/3
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")

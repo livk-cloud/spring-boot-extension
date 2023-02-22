@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </p>
  *
  * @author livk
- * @date 2023/1/5
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
