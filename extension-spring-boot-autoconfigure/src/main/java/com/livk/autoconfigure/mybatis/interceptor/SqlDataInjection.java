@@ -13,6 +13,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -48,7 +49,8 @@ public class SqlDataInjection implements Interceptor {
                     //insert或者update并且SqlFill.INSERT_UPDATE
                     if (SqlCommandType.INSERT.equals(sqlCommandType) ||
                         sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-                        ReflectionUtils.setFieldAndAccessible(field, parameter, value);
+                        Method writeMethod = ReflectionUtils.getWriteMethod(parameter.getClass(), field);
+                        writeMethod.invoke(parameter, value);
                     }
                 }
             }

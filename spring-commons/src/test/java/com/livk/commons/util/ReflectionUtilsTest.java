@@ -4,6 +4,7 @@ import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
@@ -40,16 +41,32 @@ class ReflectionUtilsTest {
     }
 
     @Test
-    void getReadMethods() {
+    void getReadMethod() throws InvocationTargetException, IllegalAccessException {
+        Maker maker = new Maker();
+        maker.setNo(10);
+        maker.setUsername("root");
+        Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
+        assertEquals("getNo", readMethod.getName());
+        assertEquals(10, readMethod.invoke(maker));
+
         Set<Method> readMethods = ReflectionUtils.getReadMethods(Maker.class);
-        List<String> list = readMethods.stream().map(Method::getName).collect(Collectors.toList());
-        assertLinesMatch(List.of("getNo", "getUsername"), list);
+        Set<String> set = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
+        assertEquals(Set.of("getNo", "getUsername"), set);
     }
 
     @Test
-    void getReadMethod() {
-        Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
-        assertEquals("getNo", readMethod.getName());
+    void getWriteMethod() throws InvocationTargetException, IllegalAccessException {
+        Maker maker = new Maker();
+        maker.setNo(10);
+        maker.setUsername("root");
+        Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
+        assertEquals("setNo", writeMethod.getName());
+        writeMethod.invoke(maker, 20);
+        assertEquals(20, maker.getNo());
+
+        Set<Method> writeMethods = ReflectionUtils.getWriteMethods(Maker.class);
+        Set<String> set = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
+        assertEquals(Set.of("setNo", "setUsername"), set);
     }
 
     @Test

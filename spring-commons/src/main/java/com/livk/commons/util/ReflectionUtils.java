@@ -95,6 +95,37 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
     }
 
     /**
+     * Gets write methods.
+     *
+     * @param targetClass the target class
+     * @return the write methods
+     */
+    public Set<Method> getWriteMethods(Class<?> targetClass) {
+        Field[] fields = targetClass.getDeclaredFields();
+        return Arrays.stream(fields)
+                .map(field -> getWriteMethod(targetClass, field))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get write method.
+     *
+     * @param targetClass the target class
+     * @param field       the field
+     * @return the method
+     */
+    public Method getWriteMethod(Class<?> targetClass, Field field) {
+        try {
+            PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
+            return descriptor.getWriteMethod();
+        } catch (Exception e) {
+            log.error("获取字段set方法失败 message: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
      * Gets all fields.
      *
      * @param targetClass the target class
