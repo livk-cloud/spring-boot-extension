@@ -28,12 +28,14 @@ public class EasyExcelUtils {
      * @param excelModelClass the excel model class
      * @param listener        the listener
      * @param ignoreEmptyRow  the ignore empty row
+     * @return the collection
      */
-    public void read(InputStream in, Class<?> excelModelClass, ExcelReadListener<?> listener, Boolean ignoreEmptyRow) {
+    public Collection<?> read(InputStream in, Class<?> excelModelClass, ExcelReadListener<?> listener, Boolean ignoreEmptyRow) {
         EasyExcel.read(in, excelModelClass, listener)
                 .ignoreEmptyRow(ignoreEmptyRow)
                 .sheet()
                 .doRead();
+        return listener.getCollectionData();
     }
 
     /**

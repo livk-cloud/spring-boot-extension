@@ -58,8 +58,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
             mono = FileUtils.getPartValues(importExcel.fileName(), exchange)
                     .map(Part::content)
                     .flatMap(DataBufferUtils::transform)
-                    .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow()))
-                    .map(in -> listener.getCollectionData());
+                    .map(in -> EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow()));
         }
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }

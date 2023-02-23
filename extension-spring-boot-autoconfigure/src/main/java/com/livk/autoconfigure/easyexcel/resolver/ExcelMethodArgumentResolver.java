@@ -49,8 +49,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
             InputStream in = getInputStream(request, importExcel.fileName());
-            EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow());
-            return listener.getCollectionData();
+            return EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow());
         }
         return Collections.emptyList();
     }
