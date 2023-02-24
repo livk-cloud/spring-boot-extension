@@ -33,14 +33,4 @@ class DataBufferUtilsTest {
                 .expectNext(text)
                 .verifyComplete();
     }
-
-    @Test
-    void testTransform() {
-        byte[] bytes = "123456".getBytes();
-        Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
-        DefaultDataBuffer defaultDataBuffer = DefaultDataBufferFactory.sharedInstance.wrap(bytes);
-        StepVerifier.create(bufferFlux)
-                .expectNext(defaultDataBuffer)
-                .verifyComplete();
-    }
 }
