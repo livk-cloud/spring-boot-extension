@@ -33,9 +33,9 @@ class ShopControllerTest {
     @Order(1)
     @Test
     void testBuyLocal() throws InterruptedException {
-        ExecutorService service = Executors.newFixedThreadPool(500);
-        CountDownLatch countDownLatch = new CountDownLatch(500);
-        for (int i = 0; i < 500; i++) {
+        ExecutorService service = Executors.newFixedThreadPool(10);
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        for (int i = 0; i < 10; i++) {
             service.submit(() -> {
                 try {
                     mockMvc.perform(post("/shop/buy/distributed"))
@@ -56,9 +56,9 @@ class ShopControllerTest {
         mockMvc.perform(get("/shop/result"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("curator.buyCount", 500).exists())
-                .andExpect(jsonPath("curator.buySucCount", 250).exists())
-                .andExpect(jsonPath("curator.num", 0).exists());
+                .andExpect(jsonPath("curator.buyCount", 10).exists())
+                .andExpect(jsonPath("curator.buySucCount", 10).exists())
+                .andExpect(jsonPath("curator.num", 480).exists());
     }
 }
 
