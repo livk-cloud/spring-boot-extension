@@ -54,7 +54,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
         List<String> packages = AutoConfigurationPackages.get(beanFactory);
         ClassPathBeanDefinitionScanner scanner = getScanner(registry);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class, true));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpExchange.class));
         for (String basePackage : packages) {
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidateComponent : candidateComponents) {
