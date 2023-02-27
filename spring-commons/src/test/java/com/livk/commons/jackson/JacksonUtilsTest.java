@@ -87,6 +87,13 @@ class JacksonUtilsTest {
         assertEquals("1", result3.get("c").asText());
         assertEquals("2", result3.get("a").asText());
         assertEquals(3, result3.get("b").get("c").asInt());
+
+        JavaType javaType = JacksonUtils.javaType(JsonNode.class);
+        JsonNode result4 = JacksonUtils.readValue(json, javaType);
+        assertNotNull(result3);
+        assertEquals("1", result4.get("c").asText());
+        assertEquals("2", result4.get("a").asText());
+        assertEquals(3, result4.get("b").get("c").asInt());
     }
 
     @Test

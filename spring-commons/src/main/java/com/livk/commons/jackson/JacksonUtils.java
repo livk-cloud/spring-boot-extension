@@ -208,6 +208,19 @@ public class JacksonUtils {
     }
 
     /**
+     * Read value t.
+     *
+     * @param <T>      the type parameter
+     * @param json     the json
+     * @param javaType the java type
+     * @return the t
+     */
+    @SneakyThrows
+    public <T> T readValue(String json, JavaType javaType) {
+        return MAPPER.readValue(json, javaType);
+    }
+
+    /**
      * 将json转化成JsonNode
      *
      * @param json the json

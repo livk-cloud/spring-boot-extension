@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import com.livk.commons.collect.util.StreamUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
@@ -68,22 +67,21 @@ public class JsonNodeUtils {
     }
 
     /**
-     * Find value list.
+     * Find value.
      *
      * @param <T>       the type parameter
      * @param jsonNode  the json node
      * @param fieldName the field name
      * @param javaType  the java type
      * @param mapper    the mapper
-     * @return the list
+     * @return T
      */
-    public <T> List<T> findValue(JsonNode jsonNode, String fieldName, JavaType javaType, ObjectMapper mapper) {
+    public <T> T findValue(JsonNode jsonNode, String fieldName, JavaType javaType, ObjectMapper mapper) {
         if (jsonNode == null) {
             return null;
         }
         JsonNode value = jsonNode.findValue(fieldName);
-        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
-        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, collectionType) : null;
+        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, javaType) : null;
     }
 
     /**
