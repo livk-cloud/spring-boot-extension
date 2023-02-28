@@ -3,13 +3,16 @@ package com.livk.autoconfigure.http.factory;
 import com.livk.autoconfigure.http.annotation.Provider;
 import com.livk.commons.util.AnnotationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeansException;
+import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.EnvironmentAware;
@@ -36,6 +39,7 @@ import java.util.Set;
  *
  * @author livk
  */
+@Setter
 @RequiredArgsConstructor
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
 
@@ -44,11 +48,6 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
     private BeanFactory beanFactory;
 
     private Environment environment;
-
-    @Override
-    public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
-    }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -61,7 +60,10 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
                 Class<?> clazz = ClassUtils.resolveClassName(Objects.requireNonNull(candidateComponent.getBeanClassName()), null);
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
                 builder.addPropertyValue("httpInterfaceType", clazz.getName());
+                builder.addPropertyValue("beanFactory", beanFactory);
+                builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
                 AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+                beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, clazz.getName());
 
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
                 String beanName;
@@ -70,19 +72,10 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
                 } else {
                     beanName = StringUtils.uncapitalize(clazz.getSimpleName());
                 }
-                registry.registerBeanDefinition(beanName, beanDefinition);
+                BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, clazz.getName(), new String[]{beanName});
+                BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
             }
         }
-    }
-
-    @Override
-    public void setResourceLoader(@NonNull ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
-    @Override
-    public void setEnvironment(@NonNull Environment environment) {
-        this.environment = environment;
     }
 
     private ClassPathBeanDefinitionScanner getScanner(BeanDefinitionRegistry registry) {

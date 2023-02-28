@@ -2,7 +2,6 @@ package com.livk.autoconfigure.http.factory;
 
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,7 +16,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * @author livk
  */
 @Setter
-public class HttpFactoryBean<T> implements FactoryBean<T>, ApplicationContextAware, BeanFactoryAware {
+public class HttpFactoryBean<T> implements FactoryBean<T>, ApplicationContextAware {
 
     private Class<T> httpInterfaceType;
 
@@ -27,8 +26,8 @@ public class HttpFactoryBean<T> implements FactoryBean<T>, ApplicationContextAwa
 
     @Override
     public T getObject() {
-        HttpServiceProxyFactory proxyFactory = beanFactory != null ? beanFactory.getBean(HttpServiceProxyFactory.class)
-                : applicationContext.getBean(HttpServiceProxyFactory.class);
+        BeanFactory factory = beanFactory != null ? beanFactory : applicationContext;
+        HttpServiceProxyFactory proxyFactory = factory.getBean(HttpServiceProxyFactory.class);
         return proxyFactory.createClient(httpInterfaceType);
     }
 
