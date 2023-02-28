@@ -27,7 +27,7 @@ public class Ip2RegionProperties {
 
     private Boolean enabled = false;
 
-    private String filePath = "classpath*:ip/ip2region.xdb";
+    private String filePath = "classpath:ip/ip2region.xdb";
 
     /**
      * Get file resource resource [ ].
@@ -35,7 +35,7 @@ public class Ip2RegionProperties {
      * @return the resource [ ]
      * @throws IOException the io exception
      */
-    public Resource[] getFileResource() throws IOException {
-        return resourceResolver.getResources(filePath);
+    public Resource getFileResource() throws IOException {
+        return resourceResolver.getResource(filePath);
     }
 }
