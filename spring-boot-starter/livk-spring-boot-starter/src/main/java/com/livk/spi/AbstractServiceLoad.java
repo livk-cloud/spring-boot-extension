@@ -6,7 +6,6 @@ import org.springframework.core.GenericTypeResolver;
 
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,7 +29,7 @@ public abstract class AbstractServiceLoad<T> implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         servicesMap = ServiceLoader.load(getServiceClass()).stream().map(ServiceLoader.Provider::get)
-                .collect(Collectors.toMap(this::getKey, Function.identity(), (t1, t2) -> t2, ConcurrentHashMap::new));
+                .collect(Collectors.toMap(this::getKey, Function.identity()));
         log.info("data:{}", servicesMap);
     }
 
