@@ -125,7 +125,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     private Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        EasyExcelUtils.write(outputStream, excelModelClass, result);
+        EasyExcelUtils.write(outputStream, excelModelClass, excelReturn.template(), result);
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
         return response.writeWith(bufferFlux);
     }

@@ -72,7 +72,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     private void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
-            EasyExcelUtils.write(outputStream, excelModelClass, result);
+            EasyExcelUtils.write(outputStream, excelModelClass, excelReturn.template(), result);
         } catch (IOException e) {
             e.printStackTrace();
         }
