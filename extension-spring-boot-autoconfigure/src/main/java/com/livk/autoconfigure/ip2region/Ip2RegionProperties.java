@@ -1,10 +1,9 @@
 package com.livk.autoconfigure.ip2region;
 
+import com.livk.commons.io.ResourceUtils;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
 
@@ -19,7 +18,6 @@ import java.io.IOException;
 @ConfigurationProperties(Ip2RegionProperties.PREFIX)
 public class Ip2RegionProperties {
 
-    private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
     /**
      * The constant PREFIX.
      */
@@ -36,6 +34,6 @@ public class Ip2RegionProperties {
      * @throws IOException the io exception
      */
     public Resource getFileResource() throws IOException {
-        return resourceResolver.getResource(filePath);
+        return ResourceUtils.getResource(filePath);
     }
 }
