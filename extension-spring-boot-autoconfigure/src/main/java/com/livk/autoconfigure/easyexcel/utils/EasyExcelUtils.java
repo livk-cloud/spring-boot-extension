@@ -1,10 +1,12 @@
 package com.livk.autoconfigure.easyexcel.utils;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
-import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
+import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
 import com.livk.commons.io.ResourceUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,12 +40,19 @@ public class EasyExcelUtils {
      * @param ignoreEmptyRow  the ignore empty row
      * @return the collection
      */
-    public Collection<?> read(InputStream in, Class<?> excelModelClass, ExcelReadListener<?> listener, Boolean ignoreEmptyRow) {
-        EasyExcel.read(in, excelModelClass, listener)
-                .ignoreEmptyRow(ignoreEmptyRow)
-                .sheet()
-                .doRead();
-        return listener.getCollectionData();
+    public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener, Boolean ignoreEmptyRow) {
+        try (ExcelReader excelReader = EasyExcel.read(in, listener)
+                .ignoreEmptyRow(ignoreEmptyRow).build()) {
+            List<ReadSheet> readSheets = excelReader.excelExecutor()
+                    .sheetList()
+                    .stream()
+                    .map(sheet -> EasyExcel.readSheet(sheet.getSheetNo(), sheet.getSheetName())
+                            .head(excelModelClass)
+                            .build())
+                    .toList();
+            excelReader.read(readSheets);
+            excelReader.finish();
+        }
     }
 
     /**

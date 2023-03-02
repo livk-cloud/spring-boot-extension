@@ -1,6 +1,7 @@
 package com.livk.excel.reactive.controller;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
+import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.excel.reactive.entity.Info;
 import com.livk.excel.reactive.listener.InfoExcelListener;
@@ -25,36 +26,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InfoController {
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("upload")
-    public HttpEntity<List<Info>> upload(List<Info> dataExcels) {
+    public HttpEntity<List<Info>> upload(@ExcelParam List<Info> dataExcels) {
         return ResponseEntity.ok(dataExcels);
     }
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("uploadMono")
-    public Mono<HttpEntity<List<Info>>> uploadMono(Mono<List<Info>> dataExcels) {
+    public Mono<HttpEntity<List<Info>>> uploadMono(@ExcelParam Mono<List<Info>> dataExcels) {
         return dataExcels.map(ResponseEntity::ok);
     }
 
     @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("uploadDownLoad")
-    public List<Info> uploadDownLoadMono(List<Info> dataExcels) {
+    public List<Info> uploadDownLoadMono(@ExcelParam List<Info> dataExcels) {
         return dataExcels;
     }
 
     @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("uploadDownLoadMono")
-    public Mono<List<Info>> uploadDownLoadMono(Mono<List<Info>> dataExcels) {
+    public Mono<List<Info>> uploadDownLoadMono(@ExcelParam Mono<List<Info>> dataExcels) {
         return dataExcels;
     }
 
     @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("uploadDownLoadFlux")
-    public Flux<Info> uploadDownLoadFlux(Mono<List<Info>> dataExcels) {
+    public Flux<Info> uploadDownLoadFlux(@ExcelParam Mono<List<Info>> dataExcels) {
         return dataExcels.flatMapMany(Flux::fromIterable);
     }
 }

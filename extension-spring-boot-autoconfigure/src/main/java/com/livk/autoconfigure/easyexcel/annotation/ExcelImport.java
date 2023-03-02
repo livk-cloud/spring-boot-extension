@@ -1,7 +1,7 @@
 package com.livk.autoconfigure.easyexcel.annotation;
 
-import com.livk.autoconfigure.easyexcel.listener.DefaultExcelReadListener;
-import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
+import com.livk.autoconfigure.easyexcel.listener.DefaultExcelMapReadListener;
+import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,21 +28,7 @@ public @interface ExcelImport {
      *
      * @return the class
      */
-    Class<? extends ExcelReadListener<?>> parse() default DefaultExcelReadListener.class;
-
-    /**
-     * File name string.
-     *
-     * @return the string
-     */
-    String fileName() default "file";
-
-    /**
-     * Param name string.
-     *
-     * @return the string
-     */
-    String paramName();
+    Class<? extends ExcelMapReadListener<?>> parse() default DefaultExcelMapReadListener.class;
 
     /**
      * Ignore empty row boolean.

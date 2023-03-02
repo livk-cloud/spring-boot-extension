@@ -1,6 +1,7 @@
 package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
+import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.excel.mvc.entity.Info;
 import com.livk.excel.mvc.listener.InfoExcelListener;
@@ -29,23 +30,23 @@ public class InfoController {
 
     private final InfoService infoService;
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("upload")
-    public HttpEntity<Boolean> upload(List<Info> dataExcels) {
+    public HttpEntity<Boolean> upload(@ExcelParam List<Info> dataExcels) {
         infoService.insertBatch(dataExcels);
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @ExcelImport(parse = InfoExcelListener.class)
     @PostMapping("uploadList")
-    public HttpEntity<List<Info>> uploadList(List<Info> dataExcels) {
+    public HttpEntity<List<Info>> uploadList(@ExcelParam List<Info> dataExcels) {
         return ResponseEntity.ok(dataExcels);
     }
 
     @ExcelReturn(fileName = "outFile")
-    @ExcelImport(paramName = "dataExcels")
+    @ExcelImport
     @PostMapping("uploadAndDownload")
-    public Map<String, List<Info>> uploadAndDownload(List<Info> dataExcels) {
+    public Map<String, List<Info>> uploadAndDownload(@ExcelParam List<Info> dataExcels) {
         return dataExcels.stream()
                 .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
     }
