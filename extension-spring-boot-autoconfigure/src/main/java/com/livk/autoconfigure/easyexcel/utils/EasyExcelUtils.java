@@ -21,11 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * ExcelUtils
- * </p>
- *
- * @author livk
+ * The type Easy excel utils.
  */
 @Slf4j
 @UtilityClass
@@ -38,7 +34,6 @@ public class EasyExcelUtils {
      * @param excelModelClass the excel model class
      * @param listener        the listener
      * @param ignoreEmptyRow  the ignore empty row
-     * @return the collection
      */
     public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener, Boolean ignoreEmptyRow) {
         try (ExcelReader excelReader = EasyExcel.read(in, listener)
