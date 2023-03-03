@@ -61,6 +61,11 @@ public @interface ExcelReturn {
          * Xls suffix.
          */
         XLS(".xls"),
+
+        /**
+         * Xlsx suffix.
+         */
+        XLSX(".xlsx"),
         /**
          * Xlsm suffix.
          */

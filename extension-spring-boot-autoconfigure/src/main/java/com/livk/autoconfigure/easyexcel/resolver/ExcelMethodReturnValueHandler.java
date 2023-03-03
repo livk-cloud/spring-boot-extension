@@ -85,7 +85,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
      * @param response    response
      */
     private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
-        String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
+        String fileName = EasyExcelUtils.fileName(excelReturn);
         String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
                 .orElse("application/vnd.ms-excel");
         response.setContentType(contentType);

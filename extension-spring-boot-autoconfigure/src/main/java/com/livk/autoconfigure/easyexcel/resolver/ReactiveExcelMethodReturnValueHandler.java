@@ -131,7 +131,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     }
 
     private void setResponse(ExcelReturn excelReturn, ServerHttpResponse response) {
-        String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
+        String fileName = EasyExcelUtils.fileName(excelReturn);
         MediaType mediaType = MediaTypeFactory.getMediaType(fileName)
                 .orElse(EXCEL_MEDIA_TYPE);
         HttpHeaders headers = response.getHeaders();
