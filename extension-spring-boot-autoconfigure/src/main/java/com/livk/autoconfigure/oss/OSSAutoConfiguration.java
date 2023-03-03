@@ -1,7 +1,6 @@
 package com.livk.autoconfigure.oss;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.oss.client.MinioClientFactory;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
 import com.livk.autoconfigure.oss.support.minio.MinioService;
@@ -15,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * The type Oss auto configuration.
- *
- * @author livk
  */
 @SpringAutoService
 @AutoConfiguration
@@ -45,27 +42,15 @@ public class OSSAutoConfiguration {
     public static class MinioOSSAutoConfiguration {
 
         /**
-         * Minio client factory minio client factory.
-         *
-         * @return the minio client factory
-         */
-        @Bean
-        public MinioClientFactory minioClientFactory() {
-            return new MinioClientFactory();
-        }
-
-        /**
          * Minio service minio service.
          *
-         * @param properties         the properties
-         * @param minioClientFactory the minio client factory
+         * @param properties the properties
          * @return the minio service
          */
         @Bean(destroyMethod = "close")
         @ConditionalOnMissingBean(AbstractService.class)
-        public MinioService minioService(OSSProperties properties,
-                                         MinioClientFactory minioClientFactory) {
-            return new MinioService(properties, minioClientFactory);
+        public MinioService minioService(OSSProperties properties) {
+            return new MinioService(properties);
         }
     }
 }

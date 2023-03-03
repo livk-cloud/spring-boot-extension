@@ -18,17 +18,11 @@ public class OSSProperties implements InitializingBean {
      */
     public static final String PREFIX = "spring.oss";
 
-    private static final String TEMPLATE = "%s://%s:%d";
-
-    private String host;
-
-    private Integer port;
+    private String url;
 
     private String accessKey;
 
     private String secretKey;
-
-    private boolean ssl = false;
 
     /**
      * Endpoint string.
@@ -36,14 +30,25 @@ public class OSSProperties implements InitializingBean {
      * @return the string
      */
     public String endpoint() {
-        String http = ssl ? "https" : "http";
-        return String.format(TEMPLATE, http, host, port);
+        return url.replaceAll(getPrefix() + ":", "");
+    }
+
+    /**
+     * Gets prefix.
+     *
+     * @return the prefix
+     */
+    public String getPrefix() {
+        int index = url.indexOf(":");
+        if (index != -1) {
+            return url.substring(0, index);
+        }
+        throw new RuntimeException("url缺少前缀!");
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.hasText(host, "host not be blank");
-        Assert.notNull(port, "port not be null");
+        Assert.hasText(url, "url not be blank");
         Assert.hasText(accessKey, "accessKey not be blank");
         Assert.hasText(secretKey, "secretKey not be blank");
     }
