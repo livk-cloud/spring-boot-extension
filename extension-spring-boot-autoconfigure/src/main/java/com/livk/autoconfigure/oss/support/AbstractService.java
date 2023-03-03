@@ -13,7 +13,7 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
     /**
      * The Client.
      */
-    protected final T client;
+    protected T client;
 
     /**
      * Instantiates a new Abstract service.
