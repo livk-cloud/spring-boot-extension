@@ -5,7 +5,7 @@ image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/
 image:https://img.shields.io/badge/Spring%20Framework-6.0.5-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring%20Boot-3.0.3-green[link="https://spring.io/projects/spring-boot"]
 
-image:https://img.shields.io/badge/Gradle-8.0.1-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Gradle-8.0.2-blue[link="https://gradle.org/"]
 image:https://img.shields.io/badge/Java-17.0.6-brightgreen[]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/livk-boot-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
