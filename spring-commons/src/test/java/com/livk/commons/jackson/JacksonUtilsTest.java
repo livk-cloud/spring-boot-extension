@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -122,21 +121,18 @@ class JacksonUtilsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void testToMap() {
+    void testToMap() throws IOException {
         Map<String, Object> result = JacksonUtils.readValueMap(json, String.class, Object.class);
         assertNotNull(result);
         assertEquals("1", result.get("c"));
         assertEquals("2", result.get("a"));
         assertEquals(3, ((Map<String, Object>) result.get("b")).get("c"));
-    }
 
-    @Test
-    void testToProperties() throws IOException {
-        InputStream inputStream = new ClassPathResource("properties.json").getInputStream();
-        Properties result = JacksonUtils.readValueProperties(inputStream);
-        assertNotNull(result);
-        assertEquals("1", result.get("c"));
-        assertEquals("2", result.get("a"));
+        Map<String, Object> result1 = JacksonUtils.readValueMap(new ClassPathResource("input.json").getInputStream(), String.class, Object.class);
+        assertNotNull(result1);
+        assertEquals("1", result1.get("c"));
+        assertEquals("2", result1.get("a"));
+        assertEquals(3, ((Map<String, Object>) result1.get("b")).get("c"));
     }
 
     @Test

@@ -1,12 +1,15 @@
 package com.livk.spring;
 
 import com.livk.filter.context.TenantContextHolder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,6 +29,15 @@ class FilterControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    Environment environment;
+
+    @BeforeEach
+    public void init() throws Exception {
+        assertEquals("livk", environment.getProperty("spring.github.username"));
+        assertEquals("123456", environment.getProperty("spring.github.password"));
+    }
 
     @Test
     void tenantTest() throws Exception {

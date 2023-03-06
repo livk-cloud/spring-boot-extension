@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class YamlUtilsTest {
 
+    Map<String, String> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", "5672");
+
     @Test
     void mapToYmlTest() {
         String yml = """
@@ -23,8 +25,14 @@ class YamlUtilsTest {
                     port: '5672'
                     host: livk.com
                     """;
-        Map<String, String> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", "5672");
         String result = YamlUtils.mapToYml(map);
         assertEquals(yml, result);
+    }
+
+    @Test
+    public void mapToMapTest() {
+        Map<String, Object> ymlMap = YamlUtils.mapToYmlMap(map);
+        Map<String, Object> result = YamlUtils.ymlMapToMap(ymlMap);
+        assertEquals(map, result);
     }
 }

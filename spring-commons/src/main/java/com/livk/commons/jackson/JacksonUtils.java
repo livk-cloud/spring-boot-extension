@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Jackson一些基本序列化与反序列化
@@ -106,7 +105,7 @@ public class JacksonUtils {
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -124,7 +123,7 @@ public class JacksonUtils {
      * @param <T>         the type parameter
      * @param inputStream the input stream
      * @param clazz       the clazz
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
@@ -180,18 +179,19 @@ public class JacksonUtils {
     }
 
     /**
-     * 输入流转换Properties
+     * Read value map map.
      *
+     * @param <K>         the type parameter
+     * @param <V>         the type parameter
      * @param inputStream the input stream
-     * @return the properties
+     * @param keyClass    the key class
+     * @param valueClass  the value class
+     * @return the map
      */
     @SneakyThrows
-    public Properties readValueProperties(InputStream inputStream) {
-        if (inputStream == null) {
-            return new Properties();
-        }
-        JavaType javaType = MAPPER.getTypeFactory().constructType(Properties.class);
-        return MAPPER.readValue(inputStream, javaType);
+    public static <K, V> Map<K, V> readValueMap(InputStream inputStream, Class<K> keyClass, Class<V> valueClass) {
+        MapType mapType = mapType(keyClass, valueClass);
+        return MAPPER.readValue(inputStream, mapType);
     }
 
     /**
@@ -200,7 +200,7 @@ public class JacksonUtils {
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public <T> T readValue(String json, TypeReference<T> typeReference) {

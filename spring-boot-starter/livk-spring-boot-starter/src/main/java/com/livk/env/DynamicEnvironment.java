@@ -2,6 +2,7 @@ package com.livk.env;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.util.YamlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ConfigurableBootstrapContext;
@@ -14,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -40,7 +42,10 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
             ClassPathResource resource = new ClassPathResource(source);
             if (resource.exists()) {
                 InputStream inputStream = resource.getInputStream();
-                Properties properties = JacksonUtils.readValueProperties(inputStream);
+                Map<String, Object> map = JacksonUtils.readValueMap(inputStream, String.class, Object.class);
+                Map<String, Object> objectMap = YamlUtils.ymlMapToMap(map);
+                Properties properties = new Properties();
+                properties.putAll(objectMap);
                 PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
                 propertySources.addLast(livkSource);
             }

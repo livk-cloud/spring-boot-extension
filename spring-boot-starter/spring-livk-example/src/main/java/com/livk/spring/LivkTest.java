@@ -33,7 +33,7 @@ public class LivkTest {
 
     private final RestTemplate restTemplate;
 
-    @Value("${username.spring.github}")
+    @Value("${spring.github.username}")
     public String username;
 
     @PostConstruct
