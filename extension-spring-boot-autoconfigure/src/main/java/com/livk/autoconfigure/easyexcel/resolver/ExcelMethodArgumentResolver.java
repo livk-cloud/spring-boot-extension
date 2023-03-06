@@ -1,7 +1,8 @@
 package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
-import com.livk.autoconfigure.easyexcel.listener.ExcelReadListener;
+import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
+import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
 import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
 import com.livk.commons.bean.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -33,25 +34,30 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
-        return excelImport != null && excelImport.paramName().equals(parameter.getParameterName());
+        return parameter.hasMethodAnnotation(ExcelImport.class) &&
+               parameter.hasParameterAnnotation(ExcelParam.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (!Collection.class.isAssignableFrom(parameter.getParameterType())) {
-            throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter is not Collection ");
-        }
-        ExcelImport importExcel = parameter.getMethodAnnotation(ExcelImport.class);
-        if (Objects.nonNull(importExcel)) {
-            ExcelReadListener<?> listener = BeanUtils.instantiateClass(importExcel.parse());
+        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+        ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
+        if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
+            ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-            InputStream in = getInputStream(request, importExcel.fileName());
-            return EasyExcelUtils.read(in, excelModelClass, listener, importExcel.ignoreEmptyRow());
+            InputStream in = getInputStream(request, excelParam.fileName());
+            if (Collection.class.isAssignableFrom(parameter.getParameterType())) {
+                Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+                EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
+                return listener.getCollectionData();
+            } else if (Map.class.isAssignableFrom(parameter.getParameterType())) {
+                Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).getGeneric(1).resolveGeneric(0);
+                EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
+                return listener.getMapData();
+            }
         }
-        return Collections.emptyList();
+        throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
     }
 
     private InputStream getInputStream(HttpServletRequest request, String fileName) {

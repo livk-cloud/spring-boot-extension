@@ -37,6 +37,13 @@ public @interface ExcelReturn {
     String fileName();
 
     /**
+     * Template path string.
+     *
+     * @return the string
+     */
+    String template() default "";
+
+    /**
      * Suffix suffix.
      *
      * @return the suffix
@@ -54,6 +61,11 @@ public @interface ExcelReturn {
          * Xls suffix.
          */
         XLS(".xls"),
+
+        /**
+         * Xlsx suffix.
+         */
+        XLSX(".xlsx"),
         /**
          * Xlsm suffix.
          */

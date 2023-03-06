@@ -4,10 +4,9 @@ import com.livk.autoconfigure.oss.OSSProperties;
 import com.livk.autoconfigure.oss.client.OSSClientFactory;
 
 /**
- * The type Abstract oss service.
+ * The type Abstract service.
  *
  * @param <T> the type parameter
- * @author livk
  */
 public abstract non-sealed class AbstractService<T> implements OSSOperations {
 
@@ -17,13 +16,13 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
     protected T client;
 
     /**
-     * Instantiates a new Abstract oss service.
+     * Instantiates a new Abstract service.
      *
-     * @param properties    the properties
-     * @param clientFactory the client factory
+     * @param properties the properties
      */
-    protected AbstractService(OSSProperties properties,
-                              OSSClientFactory<T> clientFactory) {
-        this.client = clientFactory.instance(properties.endpoint(), properties.getAccessKey(), properties.getSecretKey());
+    protected AbstractService(OSSProperties properties) {
+        OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
+        OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
+        this.client = factory.instance(properties.endpoint(), properties.getAccessKey(), properties.getSecretKey());
     }
 }

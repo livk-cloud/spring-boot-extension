@@ -1,6 +1,6 @@
 package com.livk.mybatis.example.mapper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.bean.domain.CustomPage;
@@ -69,8 +69,8 @@ class UserMapperTest {
             CustomPage<User> result = new CustomPage<>(page);
             assertNotNull(result);
             String json = JacksonUtils.writeValueAsString(result);
-            CustomPage<User> customPage = JacksonUtils.readValue(json, new TypeReference<>() {
-            });
+            JavaType javaType = JacksonUtils.javaType(CustomPage.class, User.class);
+            CustomPage<User> customPage = JacksonUtils.readValue(json, javaType);
             assertNotNull(customPage);
         }
     }

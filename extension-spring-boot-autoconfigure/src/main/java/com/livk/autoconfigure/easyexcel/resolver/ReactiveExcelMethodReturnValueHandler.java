@@ -125,13 +125,13 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     private Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        EasyExcelUtils.write(outputStream, excelModelClass, result);
+        EasyExcelUtils.write(outputStream, excelModelClass, excelReturn.template(), result);
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
         return response.writeWith(bufferFlux);
     }
 
     private void setResponse(ExcelReturn excelReturn, ServerHttpResponse response) {
-        String fileName = excelReturn.fileName().concat(excelReturn.suffix().getName());
+        String fileName = EasyExcelUtils.fileName(excelReturn);
         MediaType mediaType = MediaTypeFactory.getMediaType(fileName)
                 .orElse(EXCEL_MEDIA_TYPE);
         HttpHeaders headers = response.getHeaders();

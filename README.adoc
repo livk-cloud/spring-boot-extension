@@ -2,14 +2,12 @@ image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.0.5-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.0.3-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Framework-6.0.6-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.0.4-green[link="https://spring.io/projects/spring-boot"]
 
-image:https://img.shields.io/badge/Gradle-8.0.1-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Gradle-8.0.2-blue[link="https://gradle.org/"]
 image:https://img.shields.io/badge/Java-17.0.6-brightgreen[]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/livk-boot-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
-
-== Spring Boot Example
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
 
@@ -25,7 +23,7 @@ https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
         <dependency>
             <groupId>io.github.livk-cloud</groupId>
             <artifactId>livk-boot-dependencies</artifactId>
-            <version>1.0.0-M3</version>
+            <version>${version}</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
@@ -38,24 +36,38 @@ https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
 
 ----
 dependencies {
-    implementation platform("io.github.livk-cloud:livk-boot-dependencies:1.0.0-M3")
+    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
 }
 ----
 
-link:gradle-idea.adoc[gradle idea配置指导]
-
-这是一个关于springboot项目的各种示例 +
+这是一个springboot整合多个第三方框架的starter集合 +
+同时也是一个关于springboot项目的各种示例 +
+以及关于Gradle的各种使用方式示例 +
 使用第三方包基本覆盖最新版本 +
-关于Gradle的各种使用方式以及示例 +
-同时包含了各种自定义Spring Boot Starter +
 里面的代码或多或少应该可以帮助到你 +
-如果觉得不错，可以star一下 +
-Mock与WebclientTest测试覆盖大部分功能 +
+如果能从中学习到某些技术或者技巧，麻烦star一下 +
+MockMvc与WebclientTest测试覆盖大部分功能 +
+
+#项目结构#
+
+[source,text,indent=0]
+----
+|--spring-boot-example
+    |--buildSrc(Gradle自定义插件)
+    |--extension-spring-boot-autoconfigure(spring boot自动装配)
+    |--extension-spring-boot-starters(starter集合包)
+    |--gradle/libs.versions.toml(gradle Catalog依赖管理)
+    |--livk-boot-dependencies(版本控制 BOM)
+    |--spring-auto-processor(SpringBoot自动装配文件生成器)
+    |--spring-commons(通用基础工具包)
+    |--(其他均为示例项目)
+----
 
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:example.adoc[示例详情] +
 link:extension-spring-boot-autoconfigure/doc/extension-spring-boot-autoconfigure.adoc[自动装配拓展简单使用讲解] +
+link:gradle-idea.adoc[gradle idea配置指导] +
 
 https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]
 

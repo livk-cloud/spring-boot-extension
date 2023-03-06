@@ -17,4 +17,11 @@ public interface OSSClientFactory<T> {
      * @return the t
      */
     T instance(String endpoint, String accessKey, String secretKey);
+
+    /**
+     * Prefix string.
+     *
+     * @return the string
+     */
+    String prefix();
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
 import com.livk.commons.jackson.JsonNodeUtils;
@@ -101,7 +102,8 @@ public class CustomPage<T> implements Serializable {
             JsonNode jsonNode = context.readTree(p);
             ObjectMapper mapper = (ObjectMapper) p.getCodec();
             String listFieldName = ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getList);
-            List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, javaType, mapper);
+            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
+            List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
             int pageNum = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageNum)).asInt();
             int pageSize = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageSize)).asInt();
             long total = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getTotal)).asLong();

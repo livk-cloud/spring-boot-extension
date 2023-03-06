@@ -39,7 +39,7 @@ public class DynamicAutoConfiguration {
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().initializeDataSourceBuilder().build()));
         DynamicDatasource dynamicDatasource = new DynamicDatasource();
         dynamicDatasource.setTargetDataSources(datasourceMap);
-        dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimaryName()));
+        dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimary()));
         return dynamicDatasource;
     }
 

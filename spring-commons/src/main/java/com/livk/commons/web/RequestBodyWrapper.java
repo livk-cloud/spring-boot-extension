@@ -1,11 +1,12 @@
 package com.livk.commons.web;
 
-import com.livk.commons.util.ObjectUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,66 +25,41 @@ import java.util.NoSuchElementException;
  *
  * @author livk
  */
-public final class RequestWrapper extends HttpServletRequestWrapper {
+public final class RequestBodyWrapper extends HttpServletRequestWrapper {
 
-    private final String requestJson;
-
-    private final MediaType contentType;
+    @Setter
+    @Getter
+    private String body;
 
     /**
-     * Instantiates a new Request wrapper.
+     * Instantiates a new Request body wrapper.
      *
      * @param request the request
-     * @param json    the json
      */
-    public RequestWrapper(HttpServletRequest request, String json) {
-        this(request, json, MediaType.APPLICATION_JSON);
-    }
-
-    /**
-     * Instantiates a new Request wrapper.
-     *
-     * @param request     the request
-     * @param json        the json
-     * @param contentType the content type
-     */
-    public RequestWrapper(HttpServletRequest request, String json, String contentType) {
-        this(request, json, MediaType.valueOf(contentType));
-    }
-
-    /**
-     * Instantiates a new Request wrapper.
-     *
-     * @param request     the request
-     * @param json        the json
-     * @param contentType the content type
-     */
-    public RequestWrapper(HttpServletRequest request, String json, MediaType contentType) {
+    public RequestBodyWrapper(HttpServletRequest request) {
         super(request);
-        this.requestJson = json;
-        this.contentType = contentType;
     }
 
     @Override
     public ServletInputStream getInputStream() throws UnsupportedEncodingException {
-        return new RequestServletInputStream(getRequest(), requestJson);
+        return new RequestServletInputStream(getRequest(), body);
     }
 
     @SneakyThrows
     @Override
     public int getContentLength() {
-        return requestJson.getBytes(getRequest().getCharacterEncoding()).length;
+        return body.getBytes(getRequest().getCharacterEncoding()).length;
     }
 
     @SneakyThrows
     @Override
     public long getContentLengthLong() {
-        return requestJson.getBytes(getRequest().getCharacterEncoding()).length;
+        return body.getBytes(getRequest().getCharacterEncoding()).length;
     }
 
     @Override
     public String getContentType() {
-        return ObjectUtils.isEmpty(contentType) ? getRequest().getContentType() : contentType.toString();
+        return MediaType.APPLICATION_JSON_VALUE;
     }
 
     @Override

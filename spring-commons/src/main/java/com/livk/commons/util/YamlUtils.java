@@ -40,7 +40,7 @@ public class YamlUtils {
      * @return yml map
      */
     @SuppressWarnings("unchecked")
-    private synchronized Map<String, Object> mapToYmlMap(Map<String, String> map) {
+    private Map<String, Object> mapToYmlMap(Map<String, String> map) {
         Map<String, Object> yml = new HashMap<>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();

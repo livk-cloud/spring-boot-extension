@@ -105,7 +105,7 @@ public class StreamUtils {
      * @param biFunction the bi function
      * @return the function
      */
-    <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
+    public <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
         AtomicInteger atomicInteger = new AtomicInteger(initValue);
         return t -> biFunction.apply(t, atomicInteger.getAndIncrement());
     }
@@ -118,7 +118,7 @@ public class StreamUtils {
      * @param biConsumer the bi consumer
      * @return the consumer
      */
-    <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
+    public <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
         AtomicInteger atomicInteger = new AtomicInteger(initValue);
         return t -> biConsumer.accept(t, atomicInteger.getAndIncrement());
     }
