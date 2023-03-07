@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @UtilityClass
 public class AnnotationCacheUtil {
 
-    private static final Cache<Pair<Method, Class<?>>, Integer> caffeineCache = Caffeine.newBuilder()
+    private static final Cache<Pair<Method, Class<? extends Annotation>>, Integer> caffeineCache = Caffeine.newBuilder()
             .initialCapacity(256)
             .maximumSize(1024)
             .expireAfterWrite(60, TimeUnit.MINUTES)
