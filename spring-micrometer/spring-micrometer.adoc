@@ -3,7 +3,7 @@
 
 micrometer-trace是一个链路追踪类似于spring cloud sleuth
 
-使用条件: *spring-webmvc*,*spring-actuator*
+使用条件: #spring-webmvc# #spring-actuator#
 
 link:https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#actuator.metrics.micrometer-observation[spring micrometer介绍使用]
 
