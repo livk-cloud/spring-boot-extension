@@ -2,7 +2,6 @@ package com.livk.autoconfigure.http.factory;
 
 import com.livk.autoconfigure.http.annotation.Provider;
 import com.livk.commons.util.AnnotationUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -40,7 +39,6 @@ import java.util.Set;
  * @author livk
  */
 @Setter
-@RequiredArgsConstructor
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
 
     private ResourceLoader resourceLoader;
