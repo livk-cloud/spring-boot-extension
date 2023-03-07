@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * <p>
@@ -25,11 +26,11 @@ public class YamlUtils {
      * @param map properties key map
      * @return yml str
      */
-    public String mapToYml(Map<String, ?> map) {
+    public String toYml(Map<?, ?> map) {
         if (CollectionUtils.isEmpty(map)) {
             return "";
         }
-        Map<String, Object> yamlMap = mapToYmlMap(map);
+        Map<String, Object> yamlMap = toYmlMap(map);
         return YAML.dumpAsMap(yamlMap);
     }
 
@@ -40,10 +41,10 @@ public class YamlUtils {
      * @return yml map
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> mapToYmlMap(Map<String, ?> map) {
+    public Map<String, Object> toYmlMap(Map<?, ?> map) {
         Map<String, Object> yml = new HashMap<>();
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            String key = entry.getKey();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            String key = String.valueOf(entry.getKey());
             Object value = entry.getValue();
             int index = key.indexOf('.');
             if (index != -1) {
@@ -63,7 +64,7 @@ public class YamlUtils {
         }
         for (Map.Entry<String, Object> entry : yml.entrySet()) {
             if (entry.getValue() instanceof Map) {
-                Map<String, Object> childMap = mapToYmlMap((Map<String, String>) entry.getValue());
+                Map<String, Object> childMap = toYmlMap((Map<String, String>) entry.getValue());
                 yml.put(entry.getKey(), childMap);
             }
         }
@@ -77,15 +78,15 @@ public class YamlUtils {
      * @return the map
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> ymlMapToMap(Map<String, Object> map) {
-        Map<String, Object> result = new HashMap<>();
+    public Properties ymlMapToMap(Map<String, Object> map) {
+        Properties result = new Properties();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (value instanceof Map) {
                 Map<String, Object> childMap = (Map<String, Object>) value;
-                Map<String, Object> childResult = ymlMapToMap(childMap);
-                for (Map.Entry<String, Object> childEntry : childResult.entrySet()) {
+                Properties childResult = ymlMapToMap(childMap);
+                for (Map.Entry<Object, Object> childEntry : childResult.entrySet()) {
                     result.put(key + "." + childEntry.getKey(), childEntry.getValue());
                 }
             } else {

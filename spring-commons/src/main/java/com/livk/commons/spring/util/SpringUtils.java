@@ -2,6 +2,7 @@ package com.livk.commons.spring.util;
 
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -24,10 +25,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -85,9 +83,34 @@ public class SpringUtils {
      * @param keyPrefix   prefix
      * @return map sub properties
      */
-    public Map<String, String> getSubProperties(Environment environment, String keyPrefix) {
-        return Binder.get(environment).bind(keyPrefix, Bindable.mapOf(String.class, String.class))
+    public Map<String, String> getSubPropertiesMap(Environment environment, String keyPrefix) {
+        return bind(environment, keyPrefix, Bindable.mapOf(String.class, String.class))
                 .orElseGet(Collections::emptyMap);
+    }
+
+    /**
+     * Gets sub properties.
+     *
+     * @param environment the environment
+     * @param keyPrefix   the key prefix
+     * @return the sub properties
+     */
+    public Properties getSubProperties(Environment environment, String keyPrefix) {
+        return bind(environment, keyPrefix, Bindable.of(Properties.class))
+                .orElseGet(Properties::new);
+    }
+
+    /**
+     * Bind bind result.
+     *
+     * @param <T>         the type parameter
+     * @param environment the environment
+     * @param keyPrefix   the key prefix
+     * @param bindable    the bindable
+     * @return the bind result
+     */
+    public <T> BindResult<T> bind(Environment environment, String keyPrefix, Bindable<T> bindable) {
+        return Binder.get(environment).bind(keyPrefix, bindable);
     }
 
     /**

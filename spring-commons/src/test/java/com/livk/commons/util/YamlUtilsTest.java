@@ -3,6 +3,7 @@ package com.livk.commons.util;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,14 +26,14 @@ class YamlUtilsTest {
                     port: '5672'
                     host: livk.com
                     """;
-        String result = YamlUtils.mapToYml(map);
+        String result = YamlUtils.toYml(map);
         assertEquals(yml, result);
     }
 
     @Test
     public void mapToMapTest() {
-        Map<String, Object> ymlMap = YamlUtils.mapToYmlMap(map);
-        Map<String, Object> result = YamlUtils.ymlMapToMap(ymlMap);
+        Map<String, Object> ymlMap = YamlUtils.toYmlMap(map);
+        Properties result = YamlUtils.ymlMapToMap(ymlMap);
         assertEquals(map, result);
     }
 }

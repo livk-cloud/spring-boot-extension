@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
+import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.env.Environment;
@@ -18,6 +19,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -99,8 +101,20 @@ class SpringUtilsTest {
 
     @Test
     void getSubPropertiesTest() {
-        Map<String, String> result = SpringUtils.getSubProperties(environment, "spring.application.root");
-        assertEquals(Map.of("name", "livk"), result);
+        Map<String, String> resultMap = SpringUtils.getSubPropertiesMap(environment, "spring.application.root");
+        Properties resultProperties = SpringUtils.getSubProperties(environment, "spring.application.root");
+
+        assertEquals(Map.of("name", "livk"), resultMap);
+        assertEquals(Map.of("name", "livk"), resultProperties);
+
+        Map<String, String> bindResultMap = SpringUtils.bind(environment, "spring.application.root",
+                Bindable.mapOf(String.class, String.class)).get();
+
+        Properties bindResultProperties = SpringUtils.bind(environment, "spring.application.root",
+                Bindable.of(Properties.class)).get();
+
+        assertEquals(resultMap, bindResultMap);
+        assertEquals(resultProperties, bindResultProperties);
     }
 
     @SuppressWarnings("unused")
