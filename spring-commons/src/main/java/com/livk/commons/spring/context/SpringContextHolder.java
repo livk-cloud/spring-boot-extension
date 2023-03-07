@@ -4,12 +4,8 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -19,7 +15,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -36,12 +31,12 @@ import java.util.Map;
 @Slf4j
 @Component
 @SpringAutoService
-public class SpringContextHolder implements BeanFactoryPostProcessor, ApplicationContextAware, DisposableBean {
+public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
 
     @Getter
     private static ApplicationContext applicationContext = null;
 
-    private static ConfigurableListableBeanFactory beanFactory = null;
+    private static BeanFactory beanFactory = null;
 
     /**
      * Spring事件发布
@@ -201,11 +196,11 @@ public class SpringContextHolder implements BeanFactoryPostProcessor, Applicatio
     }
 
     private static ListableBeanFactory getBeanFactory() {
-        return beanFactory != null ? beanFactory : applicationContext;
+        return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory : applicationContext;
     }
 
     @Override
-    public synchronized void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    public synchronized void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException {
         SpringContextHolder.beanFactory = beanFactory;
     }
 
