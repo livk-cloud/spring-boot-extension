@@ -89,10 +89,11 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                         .map(Boolean::parseBoolean);
                 String provider = super.transform(optionalProvider.orElseThrow());
                 boolean aot = optionalAot.orElse(false);
+                String serviceImpl = super.transform(element.toString());
                 if (aot) {
-                    factoriesAdd(aotFactoriesMap, provider, element.toString());
+                    factoriesAdd(aotFactoriesMap, provider, serviceImpl);
                 } else {
-                    factoriesAdd(springFactoriesMap, provider, element.toString());
+                    factoriesAdd(springFactoriesMap, provider, serviceImpl);
                 }
             }
         }
