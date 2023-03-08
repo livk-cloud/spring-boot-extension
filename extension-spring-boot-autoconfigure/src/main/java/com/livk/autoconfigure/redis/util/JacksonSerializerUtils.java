@@ -1,19 +1,15 @@
 package com.livk.autoconfigure.redis.util;
 
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
- * <p>
- * SerializerUtils
- * </p>
- *
- * @author livk
+ * The type Jackson serializer utils.
  */
 @UtilityClass
 public class JacksonSerializerUtils {
@@ -33,17 +29,12 @@ public class JacksonSerializerUtils {
     /**
      * Json redis serializer.
      *
-     * @param <T>             the type parameter
-     * @param targetClass     the t class
-     * @param useSpringMapper the is use spring mapper
+     * @param <T>         the type parameter
+     * @param targetClass the target class
      * @return the redis serializer
      */
-    public <T> RedisSerializer<T> json(Class<T> targetClass, boolean useSpringMapper) {
-        ObjectMapper mapper = useSpringMapper ?
-                SpringContextHolder.getBean(ObjectMapper.class) :
-                JsonMapper.builder().build();
-        mapper.registerModule(new JavaTimeModule());
-        return json(targetClass, mapper);
+    public <T> RedisSerializer<T> json(Class<T> targetClass) {
+        return json(targetClass, new JavaTimeModule());
     }
 
     /**
@@ -51,10 +42,13 @@ public class JacksonSerializerUtils {
      *
      * @param <T>         the type parameter
      * @param targetClass the target class
+     * @param modules     the modules
      * @return the redis serializer
      */
-    public <T> RedisSerializer<T> json(Class<T> targetClass) {
-        return json(targetClass, false);
+    public <T> RedisSerializer<T> json(Class<T> targetClass, Module... modules) {
+        ObjectMapper mapper = JsonMapper.builder().build();
+        mapper.registerModules(modules);
+        return json(targetClass, mapper);
     }
 
     /**
@@ -63,26 +57,6 @@ public class JacksonSerializerUtils {
      * @return the redis serializer
      */
     public RedisSerializer<Object> json() {
-        return json(Object.class);
-    }
-
-    /**
-     * Spring json redis serializer.
-     *
-     * @param <T>         the type parameter
-     * @param targetClass the target class
-     * @return the redis serializer
-     */
-    public <T> RedisSerializer<T> springJson(Class<T> targetClass) {
-        return json(targetClass, true);
-    }
-
-    /**
-     * Spring json redis serializer.
-     *
-     * @return the redis serializer
-     */
-    public RedisSerializer<Object> springJson() {
         return json(Object.class);
     }
 
