@@ -17,9 +17,9 @@ class LoaderTest {
 
     @Test
     public void loadTest() {
-        assertEquals(List.of(Dog.class), Loader.load(Animal.class, LoaderType.SPRING_FACTORY).stream().map(Object::getClass).toList());
-        assertEquals(List.of(Cat.class), Loader.load(Animal.class, LoaderType.JDK_SERVICE).stream().map(Object::getClass).toList());
-        assertEquals(Set.of(Dog.class, Cat.class), Loader.load(Animal.class, LoaderType.ALL).stream().map(Object::getClass).collect(Collectors.toSet()));
+        assertEquals(List.of(Dog.class), Loader.load(Animal.class, DefaultLoaderType.SPRING_FACTORY).stream().map(Object::getClass).toList());
+        assertEquals(List.of(Cat.class), Loader.load(Animal.class, DefaultLoaderType.JDK_SERVICE).stream().map(Object::getClass).toList());
+        assertEquals(Set.of(Dog.class, Cat.class), Loader.load(Animal.class, DefaultLoaderType.ALL).stream().map(Object::getClass).collect(Collectors.toSet()));
     }
 
     interface Animal {

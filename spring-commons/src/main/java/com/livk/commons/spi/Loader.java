@@ -18,7 +18,7 @@ public interface Loader {
      * @return the stream
      */
     static <T> List<T> load(Class<T> type, LoaderType loaderType) {
-        return loaderType.getLoader().load(type);
+        return loaderType.load(type);
     }
 
     /**
