@@ -2,6 +2,8 @@ server:
   port: 7777
 
 spring:
+  thymeleaf:
+    check-template-location: false
   boot:
     admin:
       instance-auth:
