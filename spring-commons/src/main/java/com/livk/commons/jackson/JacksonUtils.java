@@ -63,7 +63,7 @@ public class JacksonUtils {
     }
 
     /**
-     * 构建一个JavaType
+     * 构建一个含有泛型的JavaType
      *
      * @param targetClass the target class
      * @param generics    the generics
@@ -105,7 +105,7 @@ public class JacksonUtils {
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public class JacksonUtils {
      * @param <T>         the type parameter
      * @param inputStream the input stream
      * @param clazz       the clazz
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
@@ -179,7 +179,7 @@ public class JacksonUtils {
     }
 
     /**
-     * Read value map map.
+     * 将流读取转成Map
      *
      * @param <K>         the type parameter
      * @param <V>         the type parameter
@@ -200,7 +200,7 @@ public class JacksonUtils {
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return T t
+     * @return T
      */
     @SneakyThrows
     public <T> T readValue(String json, TypeReference<T> typeReference) {
@@ -208,7 +208,7 @@ public class JacksonUtils {
     }
 
     /**
-     * Read value t.
+     * 将json转成Bean
      *
      * @param <T>      the type parameter
      * @param json     the json
@@ -266,7 +266,7 @@ public class JacksonUtils {
      * @param targetClass the target class
      * @return the t
      */
-    public static <T> T convertValueBean(Map<String, ?> map, Class<T> targetClass) {
+    public static <T> T convertValue(Map<String, ?> map, Class<T> targetClass) {
         return MAPPER.convertValue(map, targetClass);
     }
 }

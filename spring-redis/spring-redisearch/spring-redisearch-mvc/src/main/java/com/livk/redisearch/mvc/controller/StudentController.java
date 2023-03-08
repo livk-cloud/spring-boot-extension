@@ -34,7 +34,7 @@ public class StudentController {
         RedisModulesCommands<String, String> search = connection.sync();
         SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
         List<Student> studentList = result.stream()
-                .map(document -> JacksonUtils.convertValueBean(document, Student.class))
+                .map(document -> JacksonUtils.convertValue(document, Student.class))
                 .toList();
         return ResponseEntity.ok(studentList);
     }

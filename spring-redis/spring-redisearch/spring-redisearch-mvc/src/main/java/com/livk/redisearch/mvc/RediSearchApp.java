@@ -59,7 +59,7 @@ public class RediSearchApp {
             }
             SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
             for (Document<String, String> document : result) {
-                Student bean = JacksonUtils.convertValueBean(document, Student.class);
+                Student bean = JacksonUtils.convertValue(document, Student.class);
                 log.info("{}", bean);
             }
         };
