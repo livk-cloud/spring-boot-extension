@@ -4,7 +4,6 @@ import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.ConcurrentMapEventStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -27,13 +26,8 @@ public class RedisEventStore extends ConcurrentMapEventStore {
 
     private final ReactiveHashOperations<String, String, List<InstanceEvent>> hashOperations;
 
-    @Autowired
     public RedisEventStore(UniversalReactiveRedisTemplate reactiveRedisTemplate) {
-        this(reactiveRedisTemplate, 100);
-    }
-
-    public RedisEventStore(UniversalReactiveRedisTemplate reactiveRedisTemplate, int maxLogSizePerAggregate) {
-        super(maxLogSizePerAggregate, new ConcurrentHashMap<>());
+        super(100, new ConcurrentHashMap<>());
         hashOperations = reactiveRedisTemplate.opsForHash();
     }
 
