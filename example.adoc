@@ -33,6 +33,8 @@ link:spring-mybatis/mybatis-example[spring整合mybatis自定义拦截器] +
 link:spring-mybatis/mybatis-tree-example[spring整合mybatis实现SQL查询树形结构] +
 link:spring-mybatis/mybatis-typehandler-example-mysql[spring整合mybatis自定义类型转换器mysql] +
 link:spring-mybatis/mybatis-typehandler-example-pgsql[spring整合mybatis自定义类型转换器pgsql] +
+link:spring-netty[spring整合netty] +
+link:spring-oss/oss-minio[spring整合oss minio] +
 link:spring-pulsar[spring整合Pulsar] +
 link:spring-qrcode/spring-qrcode-mvc-example[spring mvc整合二维码] +
 link:spring-qrcode/spring-qrcode-webflux-example[spring webflux整合二维码] +
