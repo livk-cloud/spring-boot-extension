@@ -14,6 +14,7 @@ dependencies {
     optional "org.springframework:spring-webmvc"
     optional "org.springframework:spring-webflux"
     optional "org.lionsoul:ip2region"
+    optional "dnsjava:dnsjava"
     optional "org.redisson:redisson"
     optional "org.apache.curator:curator-recipes"
     optional "org.mapstruct:mapstruct"
