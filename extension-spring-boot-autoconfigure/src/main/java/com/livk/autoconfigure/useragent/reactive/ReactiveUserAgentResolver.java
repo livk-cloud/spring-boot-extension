@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
  * @author livk
  */
 @RequiredArgsConstructor
-public abstract class AbstractReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolver {
+public class ReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 

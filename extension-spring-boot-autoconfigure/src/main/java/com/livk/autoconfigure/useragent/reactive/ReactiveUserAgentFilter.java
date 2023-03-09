@@ -1,7 +1,6 @@
 package com.livk.autoconfigure.useragent.reactive;
 
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
@@ -17,8 +16,8 @@ import reactor.core.publisher.Mono;
  *
  * @author livk
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractReactiveUserAgentFilter<T> implements WebFilter {
+@RequiredArgsConstructor
+public class ReactiveUserAgentFilter<T> implements WebFilter {
 
     private final HttpUserAgentParser<T> userAgentParse;
 

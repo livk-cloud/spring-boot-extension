@@ -24,7 +24,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author livk
  */
 @RequiredArgsConstructor
-public abstract class AbstractUserAgentResolver<T> implements HandlerMethodArgumentResolver {
+public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     private final HttpUserAgentParser<T> userAgentParse;
 
