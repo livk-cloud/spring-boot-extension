@@ -1,0 +1,50 @@
+[[spring-auto-service]]
+== spring boot自动装配文件生成
+
+*Maven*
+
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-auto-service</artifactId>
+    <version>${version}</version>
+    <scope>provided</scope>
+</dependency>
+----
+
+
+
+*Gradle-Groovy*
+
+[source,groovy,indent=0]
+----
+dependencies {
+    compileProcessor project(":spring-auto-service")
+
+    compileOnly project(":spring-auto-service")
+    annotationProcessor project(":spring-auto-service")
+}
+
+// 为了防止重复打包出错，请添加重复处理
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+----
+
+*Gradle-Kotlin*
+
+[source,kotlin,indent=0]
+----
+dependencies {
+    compileProcessor(project(":spring-auto-service"))
+
+    compileOnly(project(":spring-auto-service"))
+    annotationProcessor(project(":spring-auto-service"))
+}
+
+// 为了防止重复打包出错，请添加重复处理
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+----

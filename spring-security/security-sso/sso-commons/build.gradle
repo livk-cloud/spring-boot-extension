@@ -5,5 +5,5 @@ dependencies {
     optional "org.springframework:spring-core"
     optional "org.springframework.security:spring-security-core"
     api "com.fasterxml.jackson.core:jackson-databind"
-    compileProcessor project(":spring-auto-processor")
+    compileProcessor project(":spring-auto-service")
 }

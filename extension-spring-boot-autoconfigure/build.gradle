@@ -31,7 +31,7 @@ dependencies {
     optional "com.redis:lettucemod"
     optional "org.apache.commons:commons-pool2"
     optional "io.minio:minio"
-    compileProcessor project(":spring-auto-processor")
+    compileProcessor project(":spring-auto-service")
 }
 
 jar {

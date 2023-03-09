@@ -4,5 +4,5 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc"
     implementation "com.clickhouse:clickhouse-r2dbc"
     implementation "com.clickhouse:clickhouse-client"
-    compileProcessor project(":spring-auto-processor")
+    compileProcessor project(":spring-auto-service")
 }

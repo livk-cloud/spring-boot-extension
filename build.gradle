@@ -12,7 +12,7 @@ ext {
                 || it.name.endsWith("-autoconfigure")
                 || it.name.endsWith("-core")
                 || it.name.endsWith("-extensions")
-                || it.name.endsWith("-processor")
+                || it.name == "spring-auto-service"
     }
     springModuleProjects = (gradleModuleProjects - commonModuleProjects)
 }
