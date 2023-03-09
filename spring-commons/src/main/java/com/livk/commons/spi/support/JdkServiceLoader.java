@@ -1,6 +1,7 @@
-package com.livk.commons.spi;
+package com.livk.commons.spi.support;
 
 import com.google.common.collect.Lists;
+import com.livk.commons.spi.AbstractLoader;
 
 import java.util.List;
 import java.util.ServiceLoader;
