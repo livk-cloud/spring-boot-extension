@@ -5,7 +5,6 @@ import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
@@ -81,20 +80,14 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
-            AnnotationMirror annotationMirror = getAnnotationMirrorWith(element, SUPPORT_CLASS);
-            if (annotationMirror != null) {
-                Map<String, String> attributes = getAnnotationMirrorAttributes(annotationMirror);
-                Optional<String> optionalProvider = Optional.ofNullable(attributes.get("type"));
-                Optional<Boolean> optionalAot = Optional.ofNullable(attributes.get("aot"))
-                        .map(Boolean::parseBoolean);
-                String provider = super.transform(optionalProvider.orElseThrow());
-                boolean aot = optionalAot.orElse(false);
-                String serviceImpl = super.transform(element.toString());
-                if (aot) {
-                    factoriesAdd(aotFactoriesMap, provider, serviceImpl);
-                } else {
-                    factoriesAdd(springFactoriesMap, provider, serviceImpl);
-                }
+            Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
+            String provider = super.transform(value.orElseThrow());
+            boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
+            String serviceImpl = super.transform(element.toString());
+            if (aot) {
+                super.factoriesAdd(aotFactoriesMap, provider, serviceImpl);
+            } else {
+                super.factoriesAdd(springFactoriesMap, provider, serviceImpl);
             }
         }
     }

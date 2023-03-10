@@ -18,5 +18,5 @@ public @interface SpringAutoService {
      *
      * @return class
      */
-    Class<? extends Annotation> auto() default Annotation.class;
+    Class<? extends Annotation> value() default Annotation.class;
 }

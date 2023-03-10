@@ -24,7 +24,7 @@ import java.util.Properties;
  * @author livk
  */
 @Slf4j
-@SpringFactories(type = EnvironmentPostProcessor.class)
+@SpringFactories(EnvironmentPostProcessor.class)
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
     private static final String source = "env.json";

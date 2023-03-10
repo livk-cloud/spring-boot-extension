@@ -5,7 +5,6 @@ import com.livk.auto.service.annotation.SpringAutoService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
@@ -75,14 +74,10 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
-            AnnotationMirror annotationMirror = getAnnotationMirrorWith(element, SUPPORT_CLASS);
-            if (annotationMirror != null) {
-                Map<String, String> attributes = getAnnotationMirrorAttributes(annotationMirror);
-                Optional<String> optionalProvider = Optional.ofNullable(attributes.get("auto"));
-                String provider = super.transform(optionalProvider.orElse(AUTOCONFIGURATION));
-                String serviceImpl = super.transform(element.toString());
-                factoriesAdd(importsMap, provider, serviceImpl);
-            }
+            Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
+            String provider = super.transform(value.orElse(AUTOCONFIGURATION));
+            String serviceImpl = super.transform(element.toString());
+            super.factoriesAdd(importsMap, provider, serviceImpl);
         }
     }
 }

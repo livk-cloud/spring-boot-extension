@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @author livk
  */
 @AutoConfiguration
-@SpringAutoService(auto = EnableHttpClient.class)
+@SpringAutoService(EnableHttpClient.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestTemplateConfiguration {
 

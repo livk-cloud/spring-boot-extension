@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 @AutoConfiguration
 @ConditionalOnClass(WebClient.class)
-@SpringAutoService(auto = EnableWebClient.class)
+@SpringAutoService(EnableWebClient.class)
 public class WebClientConfiguration {
 
     /**

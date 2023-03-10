@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @author livk
  */
-@SpringAutoService(auto = EnableSqlPlugin.class)
+@SpringAutoService(EnableSqlPlugin.class)
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class SqlDataInjectionAutoConfiguration {

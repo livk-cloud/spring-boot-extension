@@ -18,7 +18,7 @@ public @interface SpringFactories {
      *
      * @return class
      */
-    Class<?> type();
+    Class<?> value();
 
     /**
      * Aot boolean.
