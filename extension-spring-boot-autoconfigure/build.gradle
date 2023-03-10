@@ -5,7 +5,7 @@ plugins {
 description "extension spring boot autoconfigure"
 
 dependencies {
-    api project(":spring-commons")
+    api project(":spring-extension-commons")
     api "org.springframework.boot:spring-boot-autoconfigure"
     optional "org.springframework:spring-jdbc"
     optional "jakarta.servlet:jakarta.servlet-api"

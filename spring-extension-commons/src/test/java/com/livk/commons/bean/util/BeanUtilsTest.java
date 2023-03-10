@@ -1,6 +1,5 @@
 package com.livk.commons.bean.util;
 
-import com.livk.commons.bean.util.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

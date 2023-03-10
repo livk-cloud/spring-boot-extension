@@ -1,6 +1,5 @@
 package com.livk.commons.bean.domain;
 
-import com.livk.commons.bean.domain.Snowflake;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

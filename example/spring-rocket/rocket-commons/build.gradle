@@ -1,4 +1,4 @@
 dependencies {
-    api project(":spring-commons")
+    api project(":spring-extension-commons")
     api "org.apache.rocketmq:rocketmq-spring-boot-starter"
 }

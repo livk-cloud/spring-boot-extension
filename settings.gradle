@@ -18,7 +18,7 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "spring-boot-example"
+rootProject.name = "spring-boot-extension"
 
 fileTree(rootDir) {
     def excludes = gradle.startParameter.projectProperties.get("excludeProjects")?.split(",")

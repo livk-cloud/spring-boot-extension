@@ -1,5 +1,5 @@
 dependencies {
-    api project(":spring-commons")
+    api project(":spring-extension-commons")
     api "org.springframework.kafka:spring-kafka"
     api "org.springframework.boot:spring-boot-autoconfigure"
     compileProcessor project(":spring-auto-service")
