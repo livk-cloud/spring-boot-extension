@@ -1,0 +1,4 @@
+dependencies {
+    api project(":example:spring-aop:aop-spring-boot-autoconfigure")
+    api "org.aspectj:aspectjweaver"
+}

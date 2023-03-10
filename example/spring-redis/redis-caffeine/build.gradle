@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(":example:spring-redis:redis-commons")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+    implementation "com.github.ben-manes.caffeine:caffeine"
+}

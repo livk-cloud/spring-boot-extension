@@ -1,6 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    optional "org.springframework.boot:spring-boot-starter-web"
-    optional "org.springframework.boot:spring-boot-starter-webflux"
-    compileProcessor project(":spring-auto-processor")
-}

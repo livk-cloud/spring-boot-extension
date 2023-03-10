@@ -72,8 +72,8 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties,
                                          ObjectProvider<ConfigCustomizer> configCustomizers) {
-        Map<String, String> redissonProperties = SpringUtils.getSubProperties(environment, REDISSON_CONFIG);
-        String redissonYaml = YamlUtils.mapToYml(redissonProperties).replaceAll("'", "");
+        Map<String, String> redissonProperties = SpringUtils.getSubPropertiesMap(environment, REDISSON_CONFIG);
+        String redissonYaml = YamlUtils.toYml(redissonProperties).replaceAll("'", "");
         Config config;
         Duration duration = redisProperties.getTimeout();
         int timeout = duration == null ? 10000 : (int) duration.toMillis();

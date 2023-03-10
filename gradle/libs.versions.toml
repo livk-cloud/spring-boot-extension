@@ -29,6 +29,7 @@ rocketStarter = "2.2.3"
 jsqlparser = "4.6"
 lettucemod = "3.4.1"
 minio = "8.5.2"
+dnsjava = "3.5.2"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -65,6 +66,7 @@ rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
+dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

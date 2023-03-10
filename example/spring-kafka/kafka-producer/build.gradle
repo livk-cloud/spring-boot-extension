@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(":example:spring-kafka:kafka-commons")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+}

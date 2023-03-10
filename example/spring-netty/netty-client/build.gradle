@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(":spring-extension-commons")
+    implementation project(":example:spring-netty:netty-commons")
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+}

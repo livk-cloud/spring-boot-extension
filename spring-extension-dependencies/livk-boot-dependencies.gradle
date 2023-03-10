@@ -1,0 +1,29 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+description "spring boot extension bom"
+
+def versionCatalog = rootProject.extensions
+        .getByType(VersionCatalogsExtension.class)
+        .named("libs")
+
+def bom = versionCatalog.libraryAliases
+        .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
+def dependency = (versionCatalog.libraryAliases - bom)
+
+static Collection<String> dependencyManagement(Collection<String> dependencyNames, VersionCatalog versionCatalog) {
+    return dependencyNames.stream().map { versionCatalog.findLibrary(it).get().get().toString() }.toList()
+}
+
+dependencies {
+    api platform(SpringBootPlugin.BOM_COORDINATES)
+    dependencyManagement(bom, versionCatalog).forEach { api(platform(it)) }
+    constraints {
+        dependencyManagement(dependency, versionCatalog).forEach { api(it) }
+        api(project(":spring-extension-commons"))
+        api(project(":spring-auto-service"))
+        api(project(":extension-spring-boot-autoconfigure"))
+        project(":extension-spring-boot-starters").subprojects {
+            api(it)
+        }
+    }
+}

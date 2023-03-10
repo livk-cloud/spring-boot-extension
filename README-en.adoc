@@ -54,18 +54,18 @@ MockMvc and WebclientTest tests cover most functions +
 ----
 |--spring-boot-example
     |--buildSrc(Gradle custom plugin)
+    |--example
     |--extension-spring-boot-autoconfigure(Spring boot automatic assembly)
     |--extension-spring-boot-starters(starter bundle)
     |--gradle/libs.versions.toml(gradle Catalog dependency management)
-    |--livk-boot-dependencies(Version Controlled BOMs)
-    |--spring-auto-processor(SpringBoot automatic assembly file generator)
-    |--spring-commons(General Basic Toolkit)
-    |--(Others are sample projects)
+    |--spring-auto-service(SpringBoot automatic assembly file generator)
+    |--spring-extension-commons(General Basic Toolkit)
+    |--spring-extension-dependencies(Version Controlled BOMs)
 ----
 
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
-link:example.adoc[example details] +
+link:example/example.adoc[example details] +
 
 image:https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white[link="https://www.mysql.com/"]
 image:https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white[link="https://www.postgresql.org/"]

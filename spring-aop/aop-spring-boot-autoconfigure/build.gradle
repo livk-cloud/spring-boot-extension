@@ -1,6 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    optional "org.aspectj:aspectjweaver"
-    api "org.springframework.boot:spring-boot-autoconfigure"
-    compileProcessor project(":spring-auto-processor")
-}

@@ -1,6 +1,0 @@
-dependencies {
-    api project(":spring-commons")
-    api "org.springframework.boot:spring-boot-starter-amqp"
-    api "org.springframework.amqp:spring-rabbit-stream"
-    compileProcessor project(":spring-auto-processor")
-}
