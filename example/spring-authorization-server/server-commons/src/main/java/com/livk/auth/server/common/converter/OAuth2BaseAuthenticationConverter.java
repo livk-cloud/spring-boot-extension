@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -80,9 +82,11 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
                 new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
         // 扩展信息
-        Map<String, Object> additionalParameters = parameters.entrySet().stream()
-                .filter(e -> !e.getKey().equals(OAuth2ParameterNames.GRANT_TYPE) && !e.getKey().equals(OAuth2ParameterNames.SCOPE))
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
+        Map<String, Object> additionalParameters = parameters.keySet()
+                .stream()
+                .filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE).negate()
+                        .and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))
+                .collect(Collectors.toMap(Function.identity(), key -> parameters.get(key).get(0)));
 
         // 创建token
         return buildToken(clientPrincipal, requestedScopes, additionalParameters);

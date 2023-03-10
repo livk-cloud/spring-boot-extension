@@ -4,6 +4,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,7 +22,7 @@ class Allprioritizedloader extends PrioritizedLoader {
     public <T> List<T> load(Class<T> type) {
         return loaderDiscoverers.stream()
                 .map(loader -> loader.load(type))
-                .filter(list -> !CollectionUtils.isEmpty(list))
+                .filter(Predicate.not(CollectionUtils::isEmpty))
                 .reduce(this::concat)
                 .orElse(Collections.emptyList());
     }
