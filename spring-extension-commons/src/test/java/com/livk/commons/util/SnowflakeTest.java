@@ -1,4 +1,4 @@
-package com.livk.commons.bean.domain;
+package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
 
