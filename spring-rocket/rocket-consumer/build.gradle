@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(":spring-rocket:rocket-commons")
-    implementation "org.springframework.boot:spring-boot-starter-web"
-}

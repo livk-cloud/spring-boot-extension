@@ -4,7 +4,7 @@ plugins {
 
 ext {
     root = List.of(project(":extension-spring-boot-starters"))
-    bom = List.of(project(":livk-boot-dependencies"))
+    bom = List.of(project(":spring-extension-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - (bom + root))
     commonModuleProjects = gradleModuleProjects.findAll {
         it.name.endsWith("-commons")
@@ -33,7 +33,7 @@ configure(gradleModuleProjects) {
     apply plugin: "com.livk.module"
 
     dependencies {
-        management platform(project(":livk-boot-dependencies"))
+        management platform(project(":spring-extension-dependencies"))
         compileProcessor "org.projectlombok:lombok"
         compileProcessor "org.springframework.boot:spring-boot-configuration-processor"
         compileProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"

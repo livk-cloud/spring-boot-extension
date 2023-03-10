@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(":spring-pulsar:pulsar-commons")
-    implementation "org.springframework.boot:spring-boot-starter-web"
-}

@@ -1,4 +1,0 @@
-dependencies {
-    api project(":spring-aop:aop-spring-boot-autoconfigure")
-    api "org.aspectj:aspectjweaver"
-}
