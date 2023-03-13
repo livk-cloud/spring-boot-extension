@@ -11,7 +11,6 @@ dependencies {
     optional "com.github.pagehelper:pagehelper"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.squareup.okhttp3:okhttp"
-    api "net.bytebuddy:byte-buddy"
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     api "org.apache.commons:commons-lang3"

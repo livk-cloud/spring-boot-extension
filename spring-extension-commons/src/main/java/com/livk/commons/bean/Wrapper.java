@@ -1,6 +1,6 @@
 package com.livk.commons.bean;
 
-import com.livk.commons.proxy.ProxyType;
+import lombok.RequiredArgsConstructor;
 
 /**
  * <p>
@@ -14,28 +14,12 @@ public interface Wrapper<T> {
     /**
      * Of wrapper.
      *
-     * @param <T> the type parameter
-     * @param t   the t
+     * @param <T>   the type parameter
+     * @param value the t
      * @return the wrapper
      */
-    static <T> Wrapper<T> of(T t) {
-        return new WrapperProxy<>(t).unwrap();
-    }
-
-    /**
-     * Proxy wrapper.
-     *
-     * @param <T>  the type parameter
-     * @param t    the t
-     * @param type the type
-     * @return the wrapper
-     */
-    static <T> Wrapper<T> proxy(T t, ProxyType type) {
-        WrapperProxy<T> proxy = new WrapperProxy<>(t);
-        return switch (type) {
-            case JDK_PROXY -> proxy.unwrap();
-            case BYTE_BUDDY -> new ByteBuddyWrapperProxy<>(proxy).unwrap();
-        };
+    static <T> Wrapper<T> of(T value) {
+        return new SimpleWrapper<>(value);
     }
 
     /**
@@ -44,4 +28,20 @@ public interface Wrapper<T> {
      * @return the t
      */
     T unwrap();
+
+    /**
+     * The type Simple wrapper.
+     *
+     * @param <T> the type parameter
+     */
+    @RequiredArgsConstructor
+    class SimpleWrapper<T> implements Wrapper<T> {
+
+        private final T value;
+
+        @Override
+        public T unwrap() {
+            return value;
+        }
+    }
 }
