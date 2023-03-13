@@ -231,6 +231,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      */
     public void out(HttpServletResponse response, String message, String contentType) {
         response.setContentType(contentType);
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.print(message);
             out.flush();
