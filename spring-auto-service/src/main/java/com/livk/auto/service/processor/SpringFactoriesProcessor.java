@@ -50,21 +50,17 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     private void generateConfigFiles(Map<String, Set<String>> factoriesMap, String location) {
         if (!factoriesMap.isEmpty()) {
             Map<String, Set<String>> allImportMap = new HashMap<>();
-            for (String providerInterface : factoriesMap.keySet()) {
-                Set<String> exitImports = new HashSet<>();
-                try {
+            try {
+                for (String providerInterface : factoriesMap.keySet()) {
+                    Set<String> exitImports = new HashSet<>();
                     for (StandardLocation standardLocation : out) {
                         FileObject resource = filer.getResource(standardLocation, "", location);
                         exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
                     }
-                } catch (IOException ignored) {
-
+                    Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
+                            .collect(Collectors.toSet());
+                    allImportMap.put(providerInterface, allImports);
                 }
-                Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
-                        .collect(Collectors.toSet());
-                allImportMap.put(providerInterface, allImports);
-            }
-            try {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
                 try (OutputStream out = fileObject.openOutputStream()) {

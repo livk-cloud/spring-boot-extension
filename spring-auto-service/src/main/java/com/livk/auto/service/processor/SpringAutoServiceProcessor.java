@@ -48,13 +48,9 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
             String resourceFile = String.format(LOCATION, providerInterface);
             try {
                 Set<String> exitImports = new HashSet<>();
-                try {
-                    for (StandardLocation standardLocation : out) {
-                        FileObject resource = filer.getResource(standardLocation, "", resourceFile);
-                        exitImports.addAll(SpringImportsUtils.read(resource));
-                    }
-                } catch (IOException ignored) {
-
+                for (StandardLocation standardLocation : out) {
+                    FileObject resource = filer.getResource(standardLocation, "", resourceFile);
+                    exitImports.addAll(SpringImportsUtils.read(resource));
                 }
                 Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
                         .collect(Collectors.toSet());
