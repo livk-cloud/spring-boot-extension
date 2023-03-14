@@ -5,8 +5,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-
 /**
  * <p>
  * Ip2RegionProperties
@@ -31,9 +29,8 @@ public class Ip2RegionProperties {
      * Get file resource resource [ ].
      *
      * @return the resource [ ]
-     * @throws IOException the io exception
      */
-    public Resource getFileResource() throws IOException {
+    public Resource getFileResource() {
         return ResourceUtils.getResource(filePath);
     }
 }
