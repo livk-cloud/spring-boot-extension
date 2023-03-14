@@ -31,7 +31,7 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
             return (Class<T>) parameterizedType.getRawType();
         } else if (type instanceof TypeVariable<?> typeVariable) {
             String className = typeVariable.getGenericDeclaration().toString();
-            return (Class<T>) Class.forName(className);
+            return (Class<T>) forName(className, Thread.currentThread().getContextClassLoader());
         } else {
             return (Class<T>) type;
         }
