@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.bean.domain.CustomPage;
+import com.livk.commons.function.FieldFunc;
 import com.livk.commons.jackson.JacksonUtils;
-import com.livk.commons.util.ReflectionUtils;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -64,7 +64,7 @@ class UserMapperTest {
     @Test
     public void selectAllTest() {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(ReflectionUtils.getFieldName(User::getId))
+                .countColumn(FieldFunc.get(User::getId))
                 .doSelectPage(userMapper::list)) {
             CustomPage<User> result = new CustomPage<>(page);
             assertNotNull(result);

@@ -1,8 +1,8 @@
 package com.livk.redisearch.mvc;
 
+import com.livk.commons.function.FieldFunc;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.spring.SpringLauncher;
-import com.livk.commons.util.ReflectionUtils;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
@@ -41,9 +41,9 @@ public class RediSearchApp {
 
             if (!search.ftList().contains(Student.INDEX)) {
                 search.ftCreate(Student.INDEX,
-                        Field.text(ReflectionUtils.getFieldName(Student::getName)).weight(5.0).build(),
-                        Field.text(ReflectionUtils.getFieldName(Student::getSex)).build(),
-                        Field.text(ReflectionUtils.getFieldName(Student::getDesc)).build(),
+                        Field.text(FieldFunc.get(Student::getName)).weight(5.0).build(),
+                        Field.text(FieldFunc.get(Student::getSex)).build(),
+                        Field.text(FieldFunc.get(Student::getDesc)).build(),
                         Field.tag("class").build());
             }
             Random random = new Random();

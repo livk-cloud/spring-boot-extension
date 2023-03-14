@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
+import com.livk.commons.function.FieldFunc;
 import com.livk.commons.jackson.JsonNodeUtils;
-import com.livk.commons.util.ReflectionUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -101,12 +101,12 @@ public class CustomPage<T> implements Serializable {
         public CustomPage<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
             JsonNode jsonNode = context.readTree(p);
             ObjectMapper mapper = (ObjectMapper) p.getCodec();
-            String listFieldName = ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getList);
+            String listFieldName = FieldFunc.<CustomPage<Object>>get(CustomPage::getList);
             CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
             List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
-            int pageNum = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageNum)).asInt();
-            int pageSize = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getPageSize)).asInt();
-            long total = jsonNode.get(ReflectionUtils.<CustomPage<Object>>getFieldName(CustomPage::getTotal)).asLong();
+            int pageNum = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getPageNum)).asInt();
+            int pageSize = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getPageSize)).asInt();
+            long total = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getTotal)).asLong();
             return new CustomPage<>(list, pageNum, pageSize, total);
         }
 

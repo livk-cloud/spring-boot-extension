@@ -3,7 +3,7 @@ package com.livk.mybatis.example.controller;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.bean.domain.CustomPage;
-import com.livk.commons.util.ReflectionUtils;
+import com.livk.commons.function.FieldFunc;
 import com.livk.mybatis.example.entity.User;
 import com.livk.mybatis.example.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class UserController {
     public HttpEntity<CustomPage<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
                                              @RequestParam(defaultValue = "10") Integer pageSize) {
         try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
-                .countColumn(ReflectionUtils.getFieldName(User::getId))
+                .countColumn(FieldFunc.get(User::getId))
                 .doSelectPage(userService::list)) {
             CustomPage<User> result = new CustomPage<>(page);
             return ResponseEntity.ok(result);
