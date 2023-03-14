@@ -12,41 +12,14 @@ image:https://img.shields.io/maven-central/v/io.github.livk-cloud/livk-boot-depe
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
 
 link:README-en.adoc[English] | link:README.adoc[简体中文] +
-https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
-
-#Maven#
-[source,xml,indent=0]
-
-----
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.github.livk-cloud</groupId>
-            <artifactId>livk-boot-dependencies</artifactId>
-            <version>${version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-----
-
-#Gradle#
-[source,groovy,indent=0]
-
-----
-dependencies {
-    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
-}
-----
 
 This is a starter collection that springboot integrates multiple third-party frameworks +
-It is also a variety of examples about springboot projects +
-And examples of various ways of using Gradle +
+It is also a variety of examples about springboot projects https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`]+ And examples of various ways of using Gradle +
 Use third-party packages to basically cover the latest version +
 The code inside should more or less help you +
 If you can learn some techniques or techniques from it, please give it a star +
 MockMvc and WebclientTest tests cover most functions +
+Please raise an issue if necessary +
 
 #project structure#
 
@@ -66,6 +39,32 @@ MockMvc and WebclientTest tests cover most functions +
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
 link:example/example.adoc[example details] +
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>livk-boot-dependencies</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
+}
+----
 
 image:https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white[link="https://www.mysql.com/"]
 image:https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white[link="https://www.postgresql.org/"]

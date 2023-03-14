@@ -12,41 +12,15 @@ image:https://img.shields.io/maven-central/v/io.github.livk-cloud/livk-boot-depe
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
 
 link:README-en.adoc[English] | link:README.adoc[简体中文] +
-https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`] +
-
-#Maven#
-[source,xml,indent=0]
-
-----
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.github.livk-cloud</groupId>
-            <artifactId>livk-boot-dependencies</artifactId>
-            <version>${version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-----
-
-#Gradle#
-[source,groovy,indent=0]
-
-----
-dependencies {
-    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
-}
-----
 
 这是一个springboot整合多个第三方框架的starter集合 +
-同时也是一个关于springboot项目的各种示例 +
+同时也是一个关于springboot项目的各种示例 https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud示例项目`] +
 以及关于Gradle的各种使用方式示例 +
 使用第三方包基本覆盖最新版本 +
 里面的代码或多或少应该可以帮助到你 +
 如果能从中学习到某些技术或者技巧，麻烦star一下 +
 MockMvc与WebclientTest测试覆盖大部分功能 +
+如有需要请提出issue +
 
 #项目结构#
 
@@ -70,6 +44,32 @@ link:extension-spring-boot-autoconfigure/doc/extension-spring-boot-autoconfigure
 link:gradle-idea.adoc[gradle idea配置指导] +
 
 https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>livk-boot-dependencies</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
+}
+----
 
 image:https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white[link="https://www.mysql.com/"]
 image:https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white[link="https://www.postgresql.org/"]
