@@ -29,6 +29,7 @@ public class UserController {
 
     @PutMapping("update")
     public HttpEntity<String> update() {
+        log.info("{}", SecurityContextUtils.getUser());
         return ResponseEntity.ok("update");
     }
 

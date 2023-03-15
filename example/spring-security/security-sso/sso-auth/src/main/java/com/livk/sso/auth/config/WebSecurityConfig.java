@@ -5,7 +5,6 @@ import com.livk.sso.auth.handler.CustomAuthenticationFailureHandler;
 import com.livk.sso.auth.handler.CustomAuthenticationSuccessHandler;
 import com.livk.sso.auth.handler.CustomLogoutSuccessHandler;
 import com.livk.sso.auth.support.CustomAuthenticationEntryPoint;
-import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.filter.TokenVerifyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,13 +34,12 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   RsaKeyProperties properties,
                                                    AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties.rsaKey());
+        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManagerBuilder.getObject());
         tokenLoginFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
         tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
-        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties.rsaKey());
+        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManagerBuilder.getObject());
         return http.csrf()
                 .disable()
                 .authorizeHttpRequests()

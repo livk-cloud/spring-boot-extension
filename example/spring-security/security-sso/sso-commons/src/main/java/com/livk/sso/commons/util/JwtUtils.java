@@ -1,6 +1,8 @@
 package com.livk.sso.commons.util;
 
 import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.nimbusds.jose.JOSEObjectType;
@@ -25,21 +27,27 @@ import java.util.UUID;
 @UtilityClass
 public class JwtUtils {
 
+    private static final RSAKey RSA_KEY;
+
+    static {
+        RSA_KEY = SpringContextHolder.getBean(RsaKeyProperties.class).rsaKey();
+    }
+
     @SneakyThrows
-    public String generateToken(User userInfo, RSAKey key) {
+    public String generateToken(User userInfo) {
         JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).type(JOSEObjectType.JWT).build();
         Payload payload = new Payload(UUID.randomUUID().toString(), userInfo);
         JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JacksonUtils.writeValueAsString(payload)));
-        RSASSASigner signer = new RSASSASigner(key);
+        RSASSASigner signer = new RSASSASigner(RSA_KEY);
         jwsObject.sign(signer);
         return jwsObject.serialize();
     }
 
 
     @SneakyThrows
-    public Payload parse(String token, RSAKey key) {
+    public Payload parse(String token) {
         JWSObject jwsObject = JWSObject.parse(token);
-        RSASSAVerifier verifier = new RSASSAVerifier(key);
+        RSASSAVerifier verifier = new RSASSAVerifier(RSA_KEY);
         if (jwsObject.verify(verifier)) {
             String json = jwsObject.getPayload().toString();
             return JacksonUtils.readValue(json, Payload.class);

@@ -5,7 +5,6 @@ import com.livk.commons.web.util.WebUtils;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;
-import com.nimbusds.jose.jwk.RSAKey;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +22,8 @@ import java.util.Map;
  */
 public class TokenVerifyFilter extends BasicAuthenticationFilter {
 
-    private final RSAKey rsaKey;
-
-    public TokenVerifyFilter(AuthenticationManager authenticationManager, RSAKey rsaKey) {
+    public TokenVerifyFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        this.rsaKey = rsaKey;
     }
 
     @Override
@@ -36,7 +32,7 @@ public class TokenVerifyFilter extends BasicAuthenticationFilter {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.replaceFirst("Bearer ", "");
-            Payload payload = JwtUtils.parse(token, rsaKey);
+            Payload payload = JwtUtils.parse(token);
             User user = payload.getUserInfo();
             if (user != null) {
                 UsernamePasswordAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user,
