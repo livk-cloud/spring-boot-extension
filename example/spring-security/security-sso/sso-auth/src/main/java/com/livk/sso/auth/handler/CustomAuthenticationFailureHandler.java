@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -21,7 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("异常：{}", exception.getMessage());
         exception.printStackTrace();
-        WebUtils.out(response, Map.of("code", HttpStatus.BAD_REQUEST, "msg",
+        WebUtils.out(response, Map.of("code", HttpServletResponse.SC_BAD_REQUEST, "msg",
                 "login failed, username or password is incorrect"));
     }
 }

@@ -39,9 +39,9 @@ public class TokenVerifyFilter extends BasicAuthenticationFilter {
             Payload payload = JwtUtils.parse(token, rsaKey);
             User user = payload.getUserInfo();
             if (user != null) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                        user.getPassword(), user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                UsernamePasswordAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user,
+                        "", user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticated);
                 chain.doFilter(request, response);
             } else {
                 Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
