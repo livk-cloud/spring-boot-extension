@@ -3,7 +3,7 @@ package com.livk.mybatis.example.mapper;
 import com.fasterxml.jackson.databind.JavaType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.bean.domain.CustomPage;
+import com.livk.commons.bean.domain.PageInfo;
 import com.livk.commons.function.FieldFunc;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.mybatis.example.entity.User;
@@ -66,11 +66,11 @@ class UserMapperTest {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
                 .countColumn(FieldFunc.get(User::getId))
                 .doSelectPage(userMapper::list)) {
-            CustomPage<User> result = new CustomPage<>(page);
+            PageInfo<User> result = new PageInfo<>(page);
             assertNotNull(result);
             String json = JacksonUtils.writeValueAsString(result);
-            JavaType javaType = JacksonUtils.javaType(CustomPage.class, User.class);
-            CustomPage<User> customPage = JacksonUtils.readValue(json, javaType);
+            JavaType javaType = JacksonUtils.javaType(PageInfo.class, User.class);
+            PageInfo<User> customPage = JacksonUtils.readValue(json, javaType);
             assertNotNull(customPage);
         }
     }

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * LivkPage
+ * 自定义分页信息
  *
  * @param <T> the type parameter
  * @author livk
@@ -29,8 +29,8 @@ import java.util.function.Function;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-@JsonDeserialize(using = CustomPage.CustomPageJsonDeserializer.class)
-public class CustomPage<T> implements Serializable {
+@JsonDeserialize(using = PageInfo.PageInfoJsonDeserializer.class)
+public class PageInfo<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -56,7 +56,7 @@ public class CustomPage<T> implements Serializable {
      *
      * @param list list or page
      */
-    public CustomPage(List<T> list) {
+    public PageInfo(List<T> list) {
         this(list, Function.identity());
     }
 
@@ -65,9 +65,8 @@ public class CustomPage<T> implements Serializable {
      *
      * @param list     the list
      * @param function the function
-     * @param <R>      the r
      */
-    public <R> CustomPage(List<R> list, Function<List<R>, List<T>> function) {
+    public <R> PageInfo(List<R> list, Function<List<R>, List<T>> function) {
         if (list instanceof Page<R> page) {
             this.list = function.apply(page.getResult().stream().toList());
             this.pageNum = page.getPageNum();
@@ -79,35 +78,46 @@ public class CustomPage<T> implements Serializable {
         }
     }
 
-    CustomPage(List<T> list, int pageNum, int pageSize, long total) {
+    /**
+     * 用于Jackson反序列化构建
+     *
+     * @param list     the list
+     * @param pageNum  the page num
+     * @param pageSize the page size
+     * @param total    the total
+     */
+    PageInfo(List<T> list, int pageNum, int pageSize, long total) {
         this.list = list;
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.total = total;
     }
 
-    static class CustomPageJsonDeserializer extends StdScalarDeserializer<CustomPage<Object>> implements ContextualDeserializer {
+    /**
+     * {@link PageInfo} 反序列化器
+     */
+    static class PageInfoJsonDeserializer extends StdScalarDeserializer<PageInfo<Object>> implements ContextualDeserializer {
 
         private JavaType javaType;
 
         /**
-         * Instantiates a new Pair json deserializer.
+         * PageInfoJsonDeserializer构造方法
          */
-        protected CustomPageJsonDeserializer() {
-            super(CustomPage.class);
+        protected PageInfoJsonDeserializer() {
+            super(PageInfo.class);
         }
 
         @Override
-        public CustomPage<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
             JsonNode jsonNode = context.readTree(p);
             ObjectMapper mapper = (ObjectMapper) p.getCodec();
-            String listFieldName = FieldFunc.<CustomPage<Object>>get(CustomPage::getList);
+            String listFieldName = FieldFunc.<PageInfo<Object>>get(PageInfo::getList);
             CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
             List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
-            int pageNum = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getPageNum)).asInt();
-            int pageSize = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getPageSize)).asInt();
-            long total = jsonNode.get(FieldFunc.<CustomPage<Object>>get(CustomPage::getTotal)).asLong();
-            return new CustomPage<>(list, pageNum, pageSize, total);
+            int pageNum = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageNum)).asInt();
+            int pageSize = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageSize)).asInt();
+            long total = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getTotal)).asLong();
+            return new PageInfo<>(list, pageNum, pageSize, total);
         }
 
         @Override
