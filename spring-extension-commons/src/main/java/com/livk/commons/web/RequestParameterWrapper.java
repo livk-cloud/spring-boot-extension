@@ -1,11 +1,13 @@
 package com.livk.commons.web;
 
+import com.livk.commons.collect.util.StreamUtils;
 import com.livk.commons.util.ObjectUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Map;
  */
 public final class RequestParameterWrapper extends HttpServletRequestWrapper {
 
-    private final Hashtable<String, String[]> parameter = new Hashtable<>();
+    private final Map<String, String[]> parameter = new LinkedHashMap<>(16);
 
     /**
      * Instantiates a new Request parameter wrapper.
@@ -42,7 +44,7 @@ public final class RequestParameterWrapper extends HttpServletRequestWrapper {
 
     @Override
     public Enumeration<String> getParameterNames() {
-        return parameter.keys();
+        return Collections.enumeration(parameter.keySet());
     }
 
     @Override
@@ -53,11 +55,12 @@ public final class RequestParameterWrapper extends HttpServletRequestWrapper {
     /**
      * Put.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name   the name
+     * @param values the values
      */
-    public void put(String name, String[] value) {
-        parameter.put(name, value);
+    public void put(String name, String[] values) {
+        parameter.merge(name, values,
+                (oldValues, newValues) -> StreamUtils.concat(oldValues, newValues).distinct().toArray(String[]::new));
     }
 
     /**
@@ -67,11 +70,6 @@ public final class RequestParameterWrapper extends HttpServletRequestWrapper {
      * @param value the value
      */
     public void put(String name, String value) {
-        String[] values = getParameterValues(name);
-        if (ObjectUtils.isEmpty(values)) {
-            put(name, new String[]{value});
-        } else {
-            put(name, ObjectUtils.addObjectToArray(values, value));
-        }
+        put(name, new String[]{value});
     }
 }
