@@ -6,6 +6,7 @@ import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.JacksonUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -25,9 +26,9 @@ class ResourceFilePartTest {
     public void test() throws IOException {
         ClassPathResource resource = new ClassPathResource("input.json");
         ResourceFilePart part = new ResourceFilePart(resource);
-        System.out.println(part.filename());
-        System.out.println(part.name());
-        System.out.println(part.headers());
+        assertEquals("input.json", part.filename());
+        assertEquals("input.json", part.name());
+        assertEquals(new HttpHeaders(), part.headers());
 
         File file = new File(System.getProperty("user.dir") + "/input.json");
         StepVerifier.create(part.transferTo(file))
@@ -42,15 +43,10 @@ class ResourceFilePartTest {
         assertEquals(jsonNode, newFileNode);
         assertTrue(file.delete());
 
-        Mono<JsonNode> mono = DataBufferUtils.transform(part.content())
+        Mono<JsonNode> mono = DataBufferUtils.transformByte(part.content())
                 .publishOn(Schedulers.boundedElastic())
-                .map(inputStream -> {
-                    try {
-                        return new String(inputStream.readAllBytes());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).map(JacksonUtils::readTree);
+                .map(String::new)
+                .map(JacksonUtils::readTree);
         StepVerifier.create(mono)
                 .expectNext(jsonNode)
                 .verifyComplete();
