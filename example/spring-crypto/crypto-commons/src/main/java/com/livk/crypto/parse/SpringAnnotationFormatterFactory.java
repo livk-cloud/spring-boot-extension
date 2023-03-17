@@ -1,5 +1,6 @@
 package com.livk.crypto.parse;
 
+import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.AnnoDecrypt;
 import com.livk.crypto.exception.FormatterNotFountException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -31,21 +32,19 @@ public class SpringAnnotationFormatterFactory implements AnnotationFormatterFact
 
     @Override
     public Printer<?> getPrinter(AnnoDecrypt annotation, Class<?> fieldType) {
-        for (CryptoFormatter<?> parser : map.get(fieldType)) {
-            if (annotation.value().equals(parser.type())) {
-                return parser;
-            }
-        }
-        throw new FormatterNotFountException("fieldType:" + fieldType + " CryptoType:" + annotation.value() + " Printer NotFount!");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Parser<?> getParser(AnnoDecrypt annotation, Class<?> fieldType) {
-        for (CryptoFormatter<?> parser : map.get(fieldType)) {
-            if (annotation.value().equals(parser.type())) {
-                return parser;
+        return (text, locale) -> {
+            CryptoType type = CryptoType.match(text);
+            for (CryptoFormatter<?> parser : map.get(fieldType)) {
+                if (type.equals(parser.type())) {
+                    return parser.parse(type.unwrap(text), locale);
+                }
             }
-        }
-        throw new FormatterNotFountException("fieldType:" + fieldType + " CryptoType:" + annotation.value() + " Parser NotFount!");
+            throw new FormatterNotFountException("fieldType:" + fieldType + " Parser NotFount!");
+        };
     }
 }

@@ -1,6 +1,7 @@
 package com.livk.mvc.controller;
 
 import com.livk.commons.jackson.JacksonUtils;
+import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.AesSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,11 +34,12 @@ class InfoControllerTest {
     @Test
     void info() throws Exception {
         String encoding = aesSecurity.print(123456L, Locale.CHINA);
+        encoding = CryptoType.AES.wrapper(encoding);
         String json = JacksonUtils.writeValueAsString(Map.of("variableId", encoding, "paramId", encoding));
         mockMvc.perform(post("/info/{id}", encoding)
                         .param("id", encoding).contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andDo(print())
+                .andDo(log())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id.paramId", encoding).exists())
                 .andExpect(jsonPath("id.variableId", encoding).exists())

@@ -7,41 +7,49 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.SecureRandom;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import java.util.Map;
 
 /**
  * @author livk
  */
 @Slf4j
-public class AesSecurity extends AbstractCryptoFormatter<Long> {
-    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
+public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 
-    private final SecretKeySpec spec;
+    private static final String CIPHER_NAME = "PBEwithMD5AndDES";
 
-    public AesSecurity(Map<String, String> metadata) {
+    private final SecretKey secretKey;
+
+    private final PBEParameterSpec pbeParameterSpec;
+
+    public PbeSecurity(Map<String, String> metadata) {
         String salt = metadata.get("salt");
         if (!StringUtils.hasText(salt)) {
             throw new MetadataIllegalException("缺少salt的配置!", "请添加 'spring.crypto.metadata.salt' ");
         }
+        String password = metadata.get("password");
+        if (!StringUtils.hasText(password)) {
+            throw new MetadataIllegalException("缺少password的配置!", "请添加 'spring.crypto.metadata.password' ");
+        }
         try {
-            KeyGenerator kg = KeyGenerator.getInstance(CryptoType.AES.getAlgorithm());
-            kg.init(256, new SecureRandom(salt.getBytes()));
-            SecretKey secretKey = kg.generateKey();
-            spec = new SecretKeySpec(secretKey.getEncoded(), CryptoType.AES.getAlgorithm());
+            PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray());
+            SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(CIPHER_NAME);
+            secretKey = secretKeyFactory.generateSecret(keySpec);
+            pbeParameterSpec = new PBEParameterSpec(salt.getBytes(), 1000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+
     @Override
     protected byte[] decrypt(byte[] decode) {
         try {
-            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, spec);
+            Cipher cipher = Cipher.getInstance(CIPHER_NAME);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParameterSpec);
             return cipher.doFinal(decode);
         } catch (Exception e) {
             log.error("decrypt error:{}", e.getMessage());
@@ -52,8 +60,8 @@ public class AesSecurity extends AbstractCryptoFormatter<Long> {
     @Override
     protected byte[] encrypt(byte[] encode) {
         try {
-            Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, spec);
+            Cipher cipher = Cipher.getInstance(CIPHER_NAME);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParameterSpec);
             return cipher.doFinal(encode);
         } catch (Exception e) {
             log.error("encrypt error:{}", e.getMessage());
@@ -73,6 +81,6 @@ public class AesSecurity extends AbstractCryptoFormatter<Long> {
 
     @Override
     public CryptoType type() {
-        return CryptoType.AES;
+        return CryptoType.PBE;
     }
 }

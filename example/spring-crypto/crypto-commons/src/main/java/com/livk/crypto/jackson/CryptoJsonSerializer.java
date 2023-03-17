@@ -19,16 +19,17 @@ import java.util.Optional;
  * @author livk
  */
 @JsonComponent
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CryptoJsonSerializer extends JsonSerializer<Object> implements ContextualSerializer {
 
-    private Printer<Object> printer;
+    private CryptoFormatter<Object> formatter;
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        String text = printer.print(value, Locale.CHINA);
-        gen.writeString(text);
+        String text = formatter.print(value, Locale.CHINA);
+        CryptoType type = formatter.type();
+        gen.writeString(type.wrapper(text));
     }
 
     @SuppressWarnings("unchecked")
@@ -39,12 +40,12 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
                 .orElse(property.getContextAnnotation(AnnoEncrypt.class));
         Printer<?> printer = getPrinter(javaType.getRawClass(), encrypt.value());
         if (printer != null) {
-            return new CryptoJsonSerializer((Printer<Object>) printer);
+            return new CryptoJsonSerializer((CryptoFormatter<Object>) printer);
         }
         return prov.findValueSerializer(javaType, property);
     }
 
-    private Printer<?> getPrinter(Class<?> rawClass, CryptoType type) {
+    private CryptoFormatter<?> getPrinter(Class<?> rawClass, CryptoType type) {
         for (CryptoFormatter<?> formatter : CryptoFormatter.fromContext().get(rawClass)) {
             if (formatter.type().equals(type)) {
                 return formatter;

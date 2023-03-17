@@ -5,6 +5,6 @@ dependencies {
     optional "org.springframework:spring-webmvc"
     optional "org.springframework:spring-webflux"
     api "com.fasterxml.jackson.core:jackson-databind"
-    api "commons-codec:commons-codec"
     api "org.springframework.boot:spring-boot-autoconfigure"
+    api "org.springframework.boot:spring-boot-starter-logging"
 }

@@ -2,7 +2,8 @@ package com.livk.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonNodeUtils;
-import com.livk.crypto.support.AesSecurity;
+import com.livk.crypto.CryptoType;
+import com.livk.crypto.support.PbeSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -25,10 +26,13 @@ class InfoControllerTest {
     @Autowired
     WebTestClient client;
 
+    @Autowired
+    PbeSecurity pbeSecurity;
+
     @Test
     void info() {
-        AesSecurity security = new AesSecurity();
-        String encoding = security.print(123456L, Locale.CHINA);
+        String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+        String encoding = CryptoType.PBE.wrapper(encodingStr);
         Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
         client.post()
                 .uri(uriBuilder -> uriBuilder.path("/info/{id}")

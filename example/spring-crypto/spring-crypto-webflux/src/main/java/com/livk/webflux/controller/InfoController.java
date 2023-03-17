@@ -1,6 +1,5 @@
 package com.livk.webflux.controller;
 
-import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.AnnoDecrypt;
 import com.livk.webflux.entity.Info;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +16,8 @@ import java.util.Map;
 public class InfoController {
 
     @PostMapping("{id}")
-    public Map<String, Info> info(@PathVariable("id") @AnnoDecrypt(CryptoType.AES) Long variableId,
-                                  @RequestParam("id") @AnnoDecrypt(CryptoType.AES) Long paramId,
+    public Map<String, Info> info(@PathVariable("id") @AnnoDecrypt Long variableId,
+                                  @RequestParam("id") @AnnoDecrypt Long paramId,
                                   @RequestBody Info info) {
         log.info("PathVariable:{}", variableId);
         log.info("RequestParam:{}", paramId);

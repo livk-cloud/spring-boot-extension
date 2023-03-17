@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Info {
     @AnnoEncrypt(CryptoType.AES)
-    @AnnoDecrypt(CryptoType.AES)
+    @AnnoDecrypt
     private Long variableId;
 
     @AnnoEncrypt(CryptoType.AES)
-    @AnnoDecrypt(CryptoType.AES)
+    @AnnoDecrypt
     private Long paramId;
 }
