@@ -1,6 +1,7 @@
 package com.livk.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.livk.commons.jackson.JsonNodeUtils;
 import com.livk.crypto.support.AesSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Locale;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,10 +29,13 @@ class InfoControllerTest {
     void info() {
         AesSecurity security = new AesSecurity();
         String encoding = security.print(123456L, Locale.CHINA);
-        client.get()
+        Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
+        client.post()
                 .uri(uriBuilder -> uriBuilder.path("/info/{id}")
                         .queryParam("id", encoding)
                         .build(encoding))
+                .bodyValue(body)
+                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -38,8 +43,10 @@ class InfoControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .expectBody(JsonNode.class)
                 .value(jsonNode -> {
-                    assertEquals(encoding, jsonNode.get("paramId").asText());
-                    assertEquals(encoding, jsonNode.get("idStr").asText());
+                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
+                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.variableId").asText());
+                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
+                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.variableId").asText());
                 });
     }
 }

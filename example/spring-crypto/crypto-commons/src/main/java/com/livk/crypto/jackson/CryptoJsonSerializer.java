@@ -41,7 +41,7 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
         if (printer != null) {
             return new CryptoJsonSerializer((Printer<Object>) printer);
         }
-        return prov.findValueSerializer(property.getType(), property);
+        return prov.findValueSerializer(javaType, property);
     }
 
     private Printer<?> getPrinter(Class<?> rawClass, CryptoType type) {
