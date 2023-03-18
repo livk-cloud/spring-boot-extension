@@ -8,7 +8,6 @@ import com.livk.crypto.annotation.CryptoEncrypt;
 import com.livk.crypto.parse.CryptoFormatter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.format.Printer;
 
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.util.Optional;
 /**
  * @author livk
  */
-@JsonComponent
 @NoArgsConstructor
 @AllArgsConstructor
 public class CryptoJsonSerializer extends JsonSerializer<Object> implements ContextualSerializer {

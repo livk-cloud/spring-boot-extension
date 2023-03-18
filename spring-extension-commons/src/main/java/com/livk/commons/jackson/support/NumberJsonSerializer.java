@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 import com.livk.commons.jackson.annotation.NumberJsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -16,7 +15,6 @@ import java.util.Optional;
 /**
  * @author livk
  */
-@JsonComponent
 @AllArgsConstructor
 @NoArgsConstructor
 public class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {

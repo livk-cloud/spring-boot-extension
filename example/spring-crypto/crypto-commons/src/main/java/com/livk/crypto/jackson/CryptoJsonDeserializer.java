@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.parse.CryptoFormatter;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.format.Parser;
 
 import java.io.IOException;
@@ -17,7 +16,6 @@ import java.util.Locale;
 /**
  * @author livk
  */
-@JsonComponent
 @NoArgsConstructor
 public class CryptoJsonDeserializer extends JsonDeserializer<Object> implements ContextualDeserializer {
 
