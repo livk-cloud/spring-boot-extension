@@ -1,6 +1,6 @@
 package com.livk.mvc.controller;
 
-import com.livk.crypto.annotation.AnnoDecrypt;
+import com.livk.crypto.annotation.CryptoDecrypt;
 import com.livk.mvc.entity.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ import java.util.Map;
 public class InfoController {
 
     @PostMapping("{id}")
-    public Map<String, Info> info(@PathVariable("id") @AnnoDecrypt Long variableId,
-                                  @RequestParam("id") @AnnoDecrypt Long paramId,
+    public Map<String, Info> info(@PathVariable("id") @CryptoDecrypt Long variableId,
+                                  @RequestParam("id") @CryptoDecrypt Long paramId,
                                   @RequestBody Info info) {
         log.info("PathVariable:{}", variableId);
         log.info("RequestParam:{}", paramId);

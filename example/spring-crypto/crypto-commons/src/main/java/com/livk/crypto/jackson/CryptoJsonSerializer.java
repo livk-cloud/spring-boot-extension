@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.livk.crypto.CryptoType;
-import com.livk.crypto.annotation.AnnoEncrypt;
+import com.livk.crypto.annotation.CryptoEncrypt;
 import com.livk.crypto.parse.CryptoFormatter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -36,8 +36,8 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
         JavaType javaType = property.getType();
-        AnnoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((AnnoEncrypt.class)))
-                .orElse(property.getContextAnnotation(AnnoEncrypt.class));
+        CryptoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((CryptoEncrypt.class)))
+                .orElse(property.getContextAnnotation(CryptoEncrypt.class));
         Printer<?> printer = getPrinter(javaType.getRawClass(), encrypt.value());
         if (printer != null) {
             return new CryptoJsonSerializer((CryptoFormatter<Object>) printer);

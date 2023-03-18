@@ -18,6 +18,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonDeserialize(using = CryptoJsonDeserializer.class)
-public @interface AnnoDecrypt {
+public @interface CryptoDecrypt {
 
 }

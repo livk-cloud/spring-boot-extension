@@ -1,7 +1,7 @@
 package com.livk.crypto.parse;
 
 import com.livk.crypto.CryptoType;
-import com.livk.crypto.annotation.AnnoDecrypt;
+import com.livk.crypto.annotation.CryptoDecrypt;
 import com.livk.crypto.exception.FormatterNotFountException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.format.AnnotationFormatterFactory;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * @author livk
  */
-public class SpringAnnotationFormatterFactory implements AnnotationFormatterFactory<AnnoDecrypt> {
+public class SpringAnnotationFormatterFactory implements AnnotationFormatterFactory<CryptoDecrypt> {
 
     private final Map<Class<?>, List<CryptoFormatter<?>>> map;
 
@@ -31,12 +31,12 @@ public class SpringAnnotationFormatterFactory implements AnnotationFormatterFact
     }
 
     @Override
-    public Printer<?> getPrinter(AnnoDecrypt annotation, Class<?> fieldType) {
+    public Printer<?> getPrinter(CryptoDecrypt annotation, Class<?> fieldType) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Parser<?> getParser(AnnoDecrypt annotation, Class<?> fieldType) {
+    public Parser<?> getParser(CryptoDecrypt annotation, Class<?> fieldType) {
         return (text, locale) -> {
             CryptoType type = CryptoType.match(text);
             for (CryptoFormatter<?> parser : map.get(fieldType)) {

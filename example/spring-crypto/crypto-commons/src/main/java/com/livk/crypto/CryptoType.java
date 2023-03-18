@@ -26,12 +26,20 @@ public enum CryptoType {
     }
 
     public String wrapper(String str) {
-        return algorithm + "(" + str + ")";
+        return checkWrapper(str) ? str : algorithm + "(" + str + ")";
     }
 
     public String unwrap(String str) {
-        str = str.replaceFirst(algorithm + "\\(", "");
-        int length = str.length();
-        return str.substring(0, length - 1);
+        if (checkWrapper(str)) {
+            str = str.replaceFirst(algorithm + "\\(", "");
+            int length = str.length();
+            return str.substring(0, length - 1);
+        } else {
+            return str;
+        }
+    }
+
+    private boolean checkWrapper(String str) {
+        return str.startsWith(algorithm + "(") && str.endsWith(")");
     }
 }

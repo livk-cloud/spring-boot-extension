@@ -1,8 +1,8 @@
 package com.livk.webflux.entity;
 
 import com.livk.crypto.CryptoType;
-import com.livk.crypto.annotation.AnnoDecrypt;
-import com.livk.crypto.annotation.AnnoEncrypt;
+import com.livk.crypto.annotation.CryptoDecrypt;
+import com.livk.crypto.annotation.CryptoEncrypt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Info {
-    @AnnoEncrypt(CryptoType.PBE)
-    @AnnoDecrypt
+    @CryptoEncrypt(CryptoType.PBE)
+    @CryptoDecrypt
     private Long variableId;
 
-    @AnnoEncrypt(CryptoType.PBE)
-    @AnnoDecrypt
+    @CryptoEncrypt(CryptoType.PBE)
+    @CryptoDecrypt
     private Long paramId;
 }

@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonSerialize(using = CryptoJsonSerializer.class)
-public @interface AnnoEncrypt {
+public @interface CryptoEncrypt {
     /**
      * Value crypto type.
      *
