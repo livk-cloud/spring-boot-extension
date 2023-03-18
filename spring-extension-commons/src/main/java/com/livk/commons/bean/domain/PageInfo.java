@@ -65,6 +65,7 @@ public class PageInfo<T> implements Serializable {
      *
      * @param list     the list
      * @param function the function
+     * @param <R>      r
      */
     public <R> PageInfo(List<R> list, Function<List<R>, List<T>> function) {
         if (list instanceof Page<R> page) {

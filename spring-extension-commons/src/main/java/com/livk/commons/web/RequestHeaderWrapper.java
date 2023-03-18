@@ -15,16 +15,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * The type Request header wrapper.
+ *
  * @author livk
  */
 public class RequestHeaderWrapper extends HttpServletRequestWrapper {
 
     private final HttpHeaders headers = new HttpHeaders();
 
+    /**
+     * Instantiates a new Request header wrapper.
+     *
+     * @param request the request
+     */
     public RequestHeaderWrapper(HttpServletRequest request) {
         super(request);
     }
 
+    /**
+     * Add header.
+     *
+     * @param name  the name
+     * @param value the value
+     */
     public void addHeader(String name, String value) {
         headers.add(name, value);
     }
