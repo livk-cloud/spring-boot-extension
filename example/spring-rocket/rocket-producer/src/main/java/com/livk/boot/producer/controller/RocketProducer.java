@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.apache.rocketmq.spring.support.RocketMQHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
-
 /**
  * @author laokou
  */
@@ -62,6 +64,12 @@ public class RocketProducer {
         //单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
         //适用于耗时短，但对可靠性不高的场景，如日志收集
         rocketMQTemplate.sendOneWay(topic, dto.getData());
+    }
+
+    @PostMapping("/sendTransaction/{topic}")
+    public void sendTransactionMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
+        Message<RocketDTO> message = MessageBuilder.withPayload(dto).setHeader(RocketMQHeaders.TRANSACTION_ID, "2").build();
+        rocketMQTemplate.sendMessageInTransaction(topic,message,dto);
     }
 
 }
