@@ -1,7 +1,7 @@
 package com.livk.boot.rocket.constant;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 public interface RocketConstant {
 

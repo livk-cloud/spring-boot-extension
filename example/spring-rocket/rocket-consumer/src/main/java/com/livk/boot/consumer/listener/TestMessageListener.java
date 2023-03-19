@@ -7,7 +7,7 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Slf4j
 @Component

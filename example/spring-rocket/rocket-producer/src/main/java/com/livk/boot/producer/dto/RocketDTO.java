@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @Data
 public class RocketDTO implements Serializable {

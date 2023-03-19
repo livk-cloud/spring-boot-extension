@@ -9,7 +9,7 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author Kou Shenhai
+ * @author laokou
  */
 @RestController
 @RequestMapping("/api")
