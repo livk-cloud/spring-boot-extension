@@ -25,3 +25,4 @@ com.livk.commons.io.FileUtilsTest
 com.livk.redisearch.mvc.controller.StudentControllerTest
 com.livk.redisearch.webflux.controller.StudentControllerTest
 com.livk.oss.minio.controller.OssControllerTest
+com.livk.boot.producer.ProducerTest
