@@ -1,4 +1,4 @@
-package com.livk.boot.consumer;
+package com.livk.rocket.consumer;
 
 import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

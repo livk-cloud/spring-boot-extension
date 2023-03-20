@@ -1,4 +1,4 @@
-package com.livk.boot.producer;
+package com.livk.rocket.producer;
 
 import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,6 @@
-package com.livk.boot.producer.controller;
+package com.livk.rocket.producer.controller;
 
-import com.livk.boot.producer.dto.RocketDTO;
+import com.livk.rocket.producer.dto.RocketDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;

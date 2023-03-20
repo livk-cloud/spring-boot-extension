@@ -1,4 +1,4 @@
-package com.livk.boot.rocket.constant;
+package com.livk.rocket.constant;
 
 /**
  * @author laokou

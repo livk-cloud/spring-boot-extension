@@ -1,6 +1,6 @@
-package com.livk.boot.consumer.listener;
+package com.livk.rocket.consumer.listener;
 
-import com.livk.boot.rocket.constant.RocketConstant;
+import com.livk.rocket.constant.RocketConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;

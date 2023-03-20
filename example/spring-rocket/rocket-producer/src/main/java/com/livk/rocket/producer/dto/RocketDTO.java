@@ -1,4 +1,4 @@
-package com.livk.boot.producer.dto;
+package com.livk.rocket.producer.dto;
 
 import lombok.Data;
 
