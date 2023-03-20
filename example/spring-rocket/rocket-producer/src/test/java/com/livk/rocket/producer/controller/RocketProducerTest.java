@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +38,7 @@ class RocketProducerTest {
     @Test
     void sendMessage() throws Exception {
         mockMvc.perform(post("/api/send/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
@@ -45,6 +47,7 @@ class RocketProducerTest {
     @Test
     void sendAsyncMessage() throws Exception {
         mockMvc.perform(post("/api/sendAsync/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
@@ -53,6 +56,7 @@ class RocketProducerTest {
     @Test
     void sendOneMessage() throws Exception {
         mockMvc.perform(post("/api/sendOne/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
@@ -61,6 +65,7 @@ class RocketProducerTest {
     @Test
     void sendTransactionMessage() throws Exception {
         mockMvc.perform(post("/api/sendTransaction/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
