@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RocketMQTransactionListener
 @Slf4j
+@SuppressWarnings("rawtypes")
 public class TestTxListener implements RocketMQLocalTransactionListener {
 
     /**
