@@ -15,6 +15,7 @@ com.livk.mybatis.example.controller.UserControllerTest
 com.livk.mysql.json.controller.UserControllerTest
 com.livk.postgres.json.controller.UserControllerTest
 com.livk.mqtt.MqttTest
+com.livk.provider.controller.RabbitControllerTest
 com.livk.redisson.limit.RateLimiterControllerTest
 com.livk.redisson.schedule.ScheduleHandlerTest
 com.livk.sso.auth.controller.UserControllerTest
