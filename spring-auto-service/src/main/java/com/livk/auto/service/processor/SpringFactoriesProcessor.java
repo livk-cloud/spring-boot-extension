@@ -9,12 +9,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
@@ -55,7 +56,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                     Set<String> exitImports = new HashSet<>();
                     for (StandardLocation standardLocation : out) {
                         FileObject resource = filer.getResource(standardLocation, "", location);
-                        exitImports.addAll(SpringFactoriesUtils.read(providerInterface, resource));
+                        exitImports.addAll(this.read(providerInterface, resource));
                     }
                     Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
                             .collect(Collectors.toSet());
@@ -64,7 +65,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
                 try (OutputStream out = fileObject.openOutputStream()) {
-                    SpringFactoriesUtils.writeFile(allImportMap, out);
+                    this.writeFile(allImportMap, out);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -85,6 +86,71 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
             } else {
                 super.factoriesAdd(springFactoriesMap, provider, serviceImpl);
             }
+        }
+    }
+
+    /**
+     * 从文件读取某个接口的配置
+     *
+     * @param providerInterface 供应商接口
+     * @param fileObject        文件信息
+     * @return set className
+     */
+    private Set<String> read(String providerInterface, FileObject fileObject) {
+        try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
+            boolean read = false;
+            List<String> lines = reader.lines().toList();
+            Set<String> providers = new HashSet<>();
+            for (String line : lines) {
+                if (line.startsWith("#") || line.isBlank()) {
+                    continue;
+                }
+                if (line.equals(providerInterface + "=\\")) {
+                    read = true;
+                    continue;
+                }
+                if (line.endsWith("=\\")) {
+                    read = false;
+                    continue;
+                }
+                if (read) {
+                    providers.add(line.replaceAll(",\\\\", "").trim());
+                }
+            }
+            return providers;
+        } catch (IOException e) {
+            return Set.of();
+        }
+    }
+
+    /**
+     * 将配置信息写入到文件
+     *
+     * @param allImportMap 供应商接口及实现类信息
+     * @param output       输出流
+     */
+    private void writeFile(Map<String, Set<String>> allImportMap, OutputStream output) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+            for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
+                String providerInterface = entry.getKey();
+                Set<String> services = entry.getValue();
+                writer.write(providerInterface);
+                writer.write("=\\");
+                writer.newLine();
+                String[] serviceArrays = services.toArray(String[]::new);
+                for (int i = 0; i < serviceArrays.length; i++) {
+                    writer.write("\t");
+                    writer.write(serviceArrays[i]);
+                    if (i != serviceArrays.length - 1) {
+                        writer.write(",\\");
+                    }
+                    writer.newLine();
+                }
+            }
+            writer.newLine();
+            writer.flush();
+        } catch (IOException ignored) {
+
         }
     }
 }

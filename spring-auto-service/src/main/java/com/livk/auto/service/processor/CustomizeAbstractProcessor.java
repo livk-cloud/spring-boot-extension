@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author livk
  */
-public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
+abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
     /**
      * The Filer.
