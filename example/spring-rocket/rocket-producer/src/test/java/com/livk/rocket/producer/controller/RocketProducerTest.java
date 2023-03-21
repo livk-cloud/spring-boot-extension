@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -41,7 +41,7 @@ class RocketProducerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andDo(log());
+                .andDo(print());
     }
 
     @Test
@@ -50,7 +50,7 @@ class RocketProducerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andDo(log());
+                .andDo(print());
     }
 
     @Test
@@ -59,7 +59,7 @@ class RocketProducerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andDo(log());
+                .andDo(print());
     }
 
     @Test
@@ -68,6 +68,6 @@ class RocketProducerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andDo(log());
+                .andDo(print());
     }
 }

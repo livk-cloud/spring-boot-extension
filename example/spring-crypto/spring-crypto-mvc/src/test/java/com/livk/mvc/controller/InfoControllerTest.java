@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +39,7 @@ class InfoControllerTest {
         mockMvc.perform(post("/info/{id}", encoding)
                         .param("id", encoding).contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andDo(log())
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id.paramId", encoding).exists())
                 .andExpect(jsonPath("id.variableId", encoding).exists())
