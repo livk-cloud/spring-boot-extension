@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 /**
  * @author laokou
  */
+@RocketMQTransactionListener(rocketMQTemplateBeanName = "extRocketMQTemplate")
 @Component
-@RocketMQTransactionListener
 @Slf4j
 @SuppressWarnings("rawtypes")
-public class TestTxListener implements RocketMQLocalTransactionListener {
+public class TestExtTxListener implements RocketMQLocalTransactionListener {
 
     /**
      * 监听发送half消息，执行本地事务

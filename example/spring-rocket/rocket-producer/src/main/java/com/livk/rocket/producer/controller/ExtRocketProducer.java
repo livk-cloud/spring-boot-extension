@@ -10,16 +10,18 @@ import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
+
 /**
  * @author laokou
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/ext")
 @Slf4j
 @RequiredArgsConstructor
-public class RocketProducer {
+public class ExtRocketProducer {
 
-    private final RocketMQTemplate rocketMQTemplate;
+
+    private final RocketMQTemplate extRocketMQTemplate;
 
     /**
      * rocketmq消息>同步发送
@@ -29,7 +31,7 @@ public class RocketProducer {
      */
     @PostMapping("/send/{topic}")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        rocketMQTemplate.syncSend(topic, dto.getData(), 3000);
+        extRocketMQTemplate.syncSend(topic, dto.getData(), 3000);
     }
 
     /**
@@ -40,7 +42,7 @@ public class RocketProducer {
      */
     @PostMapping("/sendAsync/{topic}")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        rocketMQTemplate.asyncSend(topic, dto.getData(), new SendCallback() {
+        extRocketMQTemplate.asyncSend(topic, dto.getData(), new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
@@ -63,13 +65,13 @@ public class RocketProducer {
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         //单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
         //适用于耗时短，但对可靠性不高的场景，如日志收集
-        rocketMQTemplate.sendOneWay(topic, dto.getData());
+        extRocketMQTemplate.sendOneWay(topic, dto.getData());
     }
 
     @PostMapping("/sendTransaction/{topic}")
     public void sendTransactionMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         Message<RocketDTO> message = MessageBuilder.withPayload(dto).setHeader(RocketMQHeaders.TRANSACTION_ID, "3").build();
-        rocketMQTemplate.sendMessageInTransaction(topic,message,dto);
+        extRocketMQTemplate.sendMessageInTransaction(topic,message,dto);
     }
 
 }

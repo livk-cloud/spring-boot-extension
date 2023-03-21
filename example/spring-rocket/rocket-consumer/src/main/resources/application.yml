@@ -4,4 +4,4 @@ server:
 rocketmq:
   producer:
     group: livk-producer-group
-  name-server: 192.168.62.144:9876
+  name-server: laokou.org:9876
