@@ -26,3 +26,4 @@ com.livk.redisearch.mvc.controller.StudentControllerTest
 com.livk.redisearch.webflux.controller.StudentControllerTest
 com.livk.oss.minio.controller.OssControllerTest
 com.livk.rocket.producer.controller.RocketProducerTest
+com.livk.rocket.producer.controller.ExtRocketProducerTest
