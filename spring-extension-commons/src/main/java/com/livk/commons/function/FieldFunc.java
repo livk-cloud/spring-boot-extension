@@ -18,6 +18,16 @@ import java.util.function.Function;
 public interface FieldFunc<T> extends Function<T, Object>, Serializable {
 
     /**
+     * The constant GET_PREFIX.
+     */
+    String GET_PREFIX = "get";
+
+    /**
+     * The constant IS_PREFIX.
+     */
+    String IS_PREFIX = "is";
+
+    /**
      * Gets field name.
      *
      * @param <T>      the type parameter
@@ -30,10 +40,10 @@ public interface FieldFunc<T> extends Function<T, Object>, Serializable {
         method.setAccessible(true);
         SerializedLambda serializedLambda = (SerializedLambda) method.invoke(function);
         String getter = serializedLambda.getImplMethodName();
-        if (getter.startsWith("get")) {
-            getter = getter.substring(3);
-        } else if (getter.startsWith("is")) {
-            getter = getter.substring(2);
+        if (getter.startsWith(GET_PREFIX)) {
+            getter = getter.replaceFirst(GET_PREFIX, "");
+        } else if (getter.startsWith(IS_PREFIX)) {
+            getter = getter.replaceFirst(IS_PREFIX, "");
         } else {
             throw new NoSuchMethodException("缺少get|is方法");
         }
