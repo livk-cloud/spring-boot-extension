@@ -2,7 +2,7 @@ package com.livk.rocket.producer.controller;
 
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.rocket.constant.RocketConstant;
-import com.livk.rocket.producer.dto.RocketDTO;
+import com.livk.rocket.dto.RocketDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ class RocketProducerTest {
     @BeforeEach
     public void init() {
         String msg = "Java第一，老寇无敌。千秋万代，一统江湖。";
-        dto.setData(msg);
+        dto.setBody(msg);
     }
 
 
@@ -65,6 +65,15 @@ class RocketProducerTest {
     @Test
     void sendTransactionMessage() throws Exception {
         mockMvc.perform(post("/api/sendTransaction/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JacksonUtils.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void sendDelay() throws Exception {
+        mockMvc.perform(post("/api/sendDelay/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JacksonUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())

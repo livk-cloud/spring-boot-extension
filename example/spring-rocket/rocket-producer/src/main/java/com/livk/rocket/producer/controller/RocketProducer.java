@@ -1,6 +1,5 @@
 package com.livk.rocket.producer.controller;
-
-import com.livk.rocket.producer.dto.RocketDTO;
+import com.livk.rocket.dto.RocketDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
@@ -29,7 +28,7 @@ public class RocketProducer {
      */
     @PostMapping("/send/{topic}")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        rocketMQTemplate.syncSend(topic, dto.getData(), 3000);
+        rocketMQTemplate.syncSend(topic, dto, 3000);
     }
 
     /**
@@ -40,7 +39,7 @@ public class RocketProducer {
      */
     @PostMapping("/sendAsync/{topic}")
     public void sendAsyncMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        rocketMQTemplate.asyncSend(topic, dto.getData(), new SendCallback() {
+        rocketMQTemplate.asyncSend(topic, dto, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 log.info("发送成功");
@@ -63,13 +62,18 @@ public class RocketProducer {
     public void sendOneMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         //单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
         //适用于耗时短，但对可靠性不高的场景，如日志收集
-        rocketMQTemplate.sendOneWay(topic, dto.getData());
+        rocketMQTemplate.sendOneWay(topic, dto);
     }
 
     @PostMapping("/sendTransaction/{topic}")
     public void sendTransactionMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         Message<RocketDTO> message = MessageBuilder.withPayload(dto).setHeader(RocketMQHeaders.TRANSACTION_ID, "3").build();
         rocketMQTemplate.sendMessageInTransaction(topic,message,dto);
+    }
+
+    @PostMapping("/sendDelay/{topic}")
+    public void sendDelay(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
+        rocketMQTemplate.syncSendDelayTimeSeconds(topic,dto,10);
     }
 
 }
