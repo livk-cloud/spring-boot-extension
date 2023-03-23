@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api "io.netty:netty-all:4.1.87.Final"
+    api "io.netty:netty-all:4.1.90.Final"
     api "com.google.protobuf:protobuf-java:3.22.0"
-    testImplementation "org.springframework:spring-tx:6.0.6"
+    testImplementation "org.springframework:spring-tx:6.0.7"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${libs.versions.springBoot.get()}"
 }
 
