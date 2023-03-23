@@ -8,8 +8,9 @@ import java.security.ProtectionDomain;
 import java.util.*;
 
 /**
- * The type Bean map.
- * 根据{@link org.springframework.cglib.beans.BeanMap} 修改泛型等
+ * <p>The type Bean map.</p>
+ * <p>根据{@link org.springframework.cglib.beans.BeanMap} 调整</p>
+ * <p>依赖于spring-core</p>
  *
  * @author livk
  * @see org.springframework.cglib.beans.BeanMap
