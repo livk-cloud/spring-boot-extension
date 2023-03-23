@@ -80,4 +80,44 @@ class ExtRocketProducerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    void sendMessageOrderly() throws Exception {
+        for (int i = 1; i <= 6; i++) {
+            RocketDTO rocketDTO = new RocketDTO();
+            rocketDTO.setBody("同步顺序消息" + i);
+            mockMvc.perform(post("/api/ext/sendOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                    .andExpect(status().isOk())
+                    .andDo(print());
+        }
+    }
+
+    @Test
+    void sendAsyncMessageOrderly() throws Exception {
+        for (int i = 1; i <= 6; i++) {
+            RocketDTO rocketDTO = new RocketDTO();
+            rocketDTO.setBody("异步顺序消息" + i);
+            mockMvc.perform(post("/api/ext/sendAsyncOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                    .andExpect(status().isOk())
+                    .andDo(print());
+        }
+    }
+
+    @Test
+    void sendOneMessageOrderly() throws Exception {
+        for (int i = 1; i <= 6; i++) {
+            RocketDTO rocketDTO = new RocketDTO();
+            rocketDTO.setBody("单向顺序消息" + i);
+            mockMvc.perform(post("/api/ext/sendOneOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                    .andExpect(status().isOk())
+                    .andDo(print());
+        }
+    }
+
 }
