@@ -1,5 +1,6 @@
 package com.livk.rocket.producer.controller;
 
+import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class ExtRocketProducer {
      */
     @PostMapping("/send/{topic}")
     public void sendMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
-        extRocketMQTemplate.syncSend(topic, dto, 3000);
+        extRocketMQTemplate.syncSend(topic, dto);
     }
 
     /**
@@ -68,14 +69,70 @@ public class ExtRocketProducer {
         extRocketMQTemplate.sendOneWay(topic, dto);
     }
 
+    /**
+     * 事务消息
+     * @param topic
+     * @param dto
+     */
     @PostMapping("/sendTransaction/{topic}")
     public void sendTransactionMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         Message<RocketDTO> message = MessageBuilder.withPayload(dto).setHeader(RocketMQHeaders.TRANSACTION_ID, "3").build();
         extRocketMQTemplate.sendMessageInTransaction(topic,message,dto);
     }
 
+    /**
+     * 延迟消息
+     * @param topic
+     * @param dto
+     */
     @PostMapping("/sendDelay/{topic}")
     public void sendDelay(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
         extRocketMQTemplate.syncSendDelayTimeSeconds(topic,dto,10);
     }
+
+    /**
+     * rocketmq消息>同步发送顺序消息
+     *
+     * @param topic topic
+     * @param dto   dto
+     */
+    @PostMapping("/sendOrderly/{topic}")
+    public void sendMessageOrderly(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
+        extRocketMQTemplate.syncSendOrderly(topic, dto, RocketConstant.LIVK_MESSAGE_QUEUE_SELECTOR_KEY);
+    }
+
+    /**
+     * rocketmq消息>异步发送顺序消息
+     *
+     * @param topic topic
+     * @param dto   dto
+     */
+    @PostMapping("/sendAsyncOrderly/{topic}")
+    public void sendAsyncMessageOrderly(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
+        extRocketMQTemplate.asyncSendOrderly(topic, dto,RocketConstant.LIVK_MESSAGE_QUEUE_SELECTOR_KEY, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("发送成功");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("报错信息：{}", throwable.getMessage());
+            }
+        });
+    }
+
+    /**
+     * rocketmq消息>单向发送顺序消息
+     *
+     * @param topic topic
+     * @param dto   dto
+     */
+    @PostMapping("/sendOneOrderly/{topic}")
+    public void sendOneMessageOrderly(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
+        //单向发送，只负责发送消息，不会触发回调函数，即发送消息请求不等待
+        //适用于耗时短，但对可靠性不高的场景，如日志收集
+        extRocketMQTemplate.sendOneWayOrderly(topic, dto, RocketConstant.LIVK_MESSAGE_QUEUE_SELECTOR_KEY);
+    }
+
 }
