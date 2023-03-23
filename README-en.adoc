@@ -2,12 +2,12 @@ image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.0.6-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.0.4-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Framework-6.0.7-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.0.5-green[link="https://spring.io/projects/spring-boot"]
 
 image:https://img.shields.io/badge/Gradle-8.0.2-blue[link="https://gradle.org/"]
 image:https://img.shields.io/badge/Java-17.0.6-brightgreen[]
-image:https://img.shields.io/maven-central/v/io.github.livk-cloud/livk-boot-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
+image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
 
@@ -48,7 +48,7 @@ link:example/example.adoc[example details] +
     <dependencies>
         <dependency>
             <groupId>io.github.livk-cloud</groupId>
-            <artifactId>livk-boot-dependencies</artifactId>
+            <artifactId>spring-extension-dependencies</artifactId>
             <version>${version}</version>
             <scope>import</scope>
             <type>pom</type>
@@ -62,7 +62,7 @@ link:example/example.adoc[example details] +
 [source,groovy,indent=0]
 ----
 dependencies {
-    implementation platform("io.github.livk-cloud:livk-boot-dependencies:$version")
+    implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
 }
 ----
 
