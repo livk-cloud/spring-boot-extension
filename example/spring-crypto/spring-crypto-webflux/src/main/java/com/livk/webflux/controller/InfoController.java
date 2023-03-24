@@ -15,13 +15,17 @@ import java.util.Map;
 @RequestMapping("info")
 public class InfoController {
 
-    @PostMapping("{id}")
+    @PostMapping
+    public Map<String, Info> info(@RequestBody Info info) {
+        log.info("RequestBody:{}", info);
+        return Map.of("body", info);
+    }
+
+    @GetMapping("{id}")
     public Map<String, Info> info(@PathVariable("id") @CryptoDecrypt Long variableId,
-                                  @RequestParam("id") @CryptoDecrypt Long paramId,
-                                  @RequestBody Info info) {
+                                  @RequestParam("id") @CryptoDecrypt Long paramId) {
         log.info("PathVariable:{}", variableId);
         log.info("RequestParam:{}", paramId);
-        log.info("RequestBody:{}", info);
-        return Map.of("id", new Info(variableId, paramId), "body", info);
+        return Map.of("id", new Info(variableId, paramId));
     }
 }
