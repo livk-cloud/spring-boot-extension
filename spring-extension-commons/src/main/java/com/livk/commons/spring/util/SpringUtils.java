@@ -127,7 +127,6 @@ public class SpringUtils {
      * @param <T>         类型
      * @return T
      */
-    @SuppressWarnings("unchecked")
     private <T> T parse(Method method, Object[] args, String condition, Class<T> returnClass, boolean template, Map<String, ?> expandMap) {
         StandardEvaluationContext context = new StandardEvaluationContext();
         if (method != null && !ObjectUtils.isEmpty(args)) {
@@ -145,7 +144,7 @@ public class SpringUtils {
             return PARSER.parseExpression(condition, ParserContext.TEMPLATE_EXPRESSION).getValue(context, returnClass);
         } else {
             if (returnClass.isInstance(condition) && !condition.contains("#")) {
-                return (T) condition;
+                return returnClass.cast(condition);
             }
             return PARSER.parseExpression(condition).getValue(context, returnClass);
         }

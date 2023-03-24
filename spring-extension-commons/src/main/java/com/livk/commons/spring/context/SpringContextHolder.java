@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
@@ -167,10 +167,10 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
      * @param bean     bean实例
      * @param beanName beanName可为空，为空会自动生成
      */
-    @SuppressWarnings("unchecked")
     public static <T> void registerBean(T bean, String beanName) {
-        RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<T>) bean.getClass(), () -> bean);
-        registerBean(beanDefinition, beanName);
+        ResolvableType resolvableType = ResolvableType.forInstance(bean);
+        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> bean);
+        registerBean(definitionBuilder.getBeanDefinition(), beanName);
     }
 
     /**

@@ -108,10 +108,9 @@ public class JacksonUtils {
      * @return T
      */
     @SneakyThrows
-    @SuppressWarnings("unchecked")
     public static <T> T readValue(String json, Class<T> clazz) {
         if (clazz.isInstance(json)) {
-            return (T) json;
+            return clazz.cast(json);
         }
         return MAPPER.readValue(json, clazz);
 
@@ -138,8 +137,8 @@ public class JacksonUtils {
      */
     @SneakyThrows
     public static String writeValueAsString(Object obj) {
-        if (obj instanceof String) {
-            return (String) obj;
+        if (obj instanceof String str) {
+            return str;
         }
         return MAPPER.writeValueAsString(obj);
     }
