@@ -30,16 +30,14 @@ class InfoControllerTest {
     PbeSecurity pbeSecurity;
 
     @Test
-    void info() {
+    void infoGet() {
         String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
         String encoding = CryptoType.PBE.wrapper(encodingStr);
         Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
-        client.post()
+        client.get()
                 .uri(uriBuilder -> uriBuilder.path("/info/{id}")
                         .queryParam("id", encoding)
                         .build(encoding))
-                .bodyValue(body)
-                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -49,6 +47,25 @@ class InfoControllerTest {
                 .value(jsonNode -> {
                     assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
                     assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.variableId").asText());
+                });
+    }
+
+    @Test
+    void infoPost() {
+        String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+        String encoding = CryptoType.PBE.wrapper(encodingStr);
+        Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
+        client.post()
+                .uri("/info")
+                .bodyValue(body)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+                .expectBody(JsonNode.class)
+                .value(jsonNode -> {
                     assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
                     assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.variableId").asText());
                 });
