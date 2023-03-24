@@ -108,7 +108,7 @@ public class JsonNodeUtils {
      * @return str node first
      */
     public JsonNode findNodeFirst(JsonNode jsonNode, String nodeName) {
-        if (!StringUtils.hasText(nodeName)) {
+        if (jsonNode == null || !StringUtils.hasText(nodeName)) {
             return null;
         }
         if (jsonNode.isArray()) {
@@ -147,7 +147,7 @@ public class JsonNodeUtils {
      * @return list list
      */
     public List<JsonNode> findNodeAll(JsonNode jsonNode, String nodeName) {
-        if (!StringUtils.hasText(nodeName)) {
+        if (jsonNode == null || !StringUtils.hasText(nodeName)) {
             return Collections.emptyList();
         }
         List<JsonNode> jsonNodeList = new ArrayList<>();
@@ -184,7 +184,7 @@ public class JsonNodeUtils {
      * @return node node
      */
     public JsonNode findNode(JsonNode jsonNode, String nodePath) {
-        if (!StringUtils.hasText(nodePath)) {
+        if (jsonNode == null || !StringUtils.hasText(nodePath)) {
             return null;
         }
         int index = nodePath.indexOf(".");
