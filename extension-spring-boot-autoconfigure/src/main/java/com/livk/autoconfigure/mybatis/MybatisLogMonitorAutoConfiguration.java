@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @author livk
  */
-@SpringAutoService(auto = EnableSqlMonitor.class)
+@SpringAutoService(EnableSqlMonitor.class)
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
 @EnableConfigurationProperties(MybatisLogMonitorProperties.class)
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})

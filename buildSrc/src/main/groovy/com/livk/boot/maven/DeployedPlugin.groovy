@@ -70,7 +70,8 @@ abstract class DeployedPlugin implements Plugin<Project> {
                 projectDescription = project.name.replaceAll("-", " ")
             }
             description.set(projectDescription)
-            url.set("https://github.com/livk-cloud/spring-boot-example/" + project.name)
+            def rootProjectName = project.rootProject.name
+            url.set("https://github.com/livk-cloud/" + rootProjectName + "/")
             licenses {
                 license {
                     name.set("The Apache License, Version 2.0")
@@ -84,8 +85,8 @@ abstract class DeployedPlugin implements Plugin<Project> {
                 }
             }
             scm {
-                connection.set("git@github.com:livk-cloud/spring-boot-example.git")
-                url.set("https://github.com/livk-cloud/spring-boot-example")
+                connection.set("git@github.com:livk-cloud/" + rootProjectName + ".git")
+                url.set("https://github.com/livk-cloud/" + rootProjectName + "/")
             }
         }
     }

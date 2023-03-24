@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author livk
  */
-@SpringFactories(type = EnvironmentPostProcessor.class)
+@SpringFactories(EnvironmentPostProcessor.class)
 public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
     private static final String PROPERTY_SOURCE_NAME = "traceProperties";

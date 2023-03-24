@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * @author livk
  */
-@SpringAutoService(auto = EnableDynamicDatasource.class)
+@SpringAutoService(EnableDynamicDatasource.class)
 @AutoConfiguration(before = DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DynamicDatasourceProperties.class)
 public class DynamicAutoConfiguration {

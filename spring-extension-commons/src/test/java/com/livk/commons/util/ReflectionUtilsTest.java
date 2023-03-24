@@ -1,5 +1,6 @@
 package com.livk.commons.util;
 
+import com.livk.commons.function.FieldFunc;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ class ReflectionUtilsTest {
 
     @Test
     void getFieldNameTest() {
-        String result = ReflectionUtils.getFieldName(Maker::getNo);
+        String result = FieldFunc.get(Maker::getNo);
         assertEquals("no", result);
     }
 

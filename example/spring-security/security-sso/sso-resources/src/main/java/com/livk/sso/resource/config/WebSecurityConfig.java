@@ -1,7 +1,6 @@
 package com.livk.sso.resource.config;
 
-import com.livk.sso.commons.RsaKeyProperties;
-import com.livk.sso.resource.filter.TokenVerifyFilter;
+import com.livk.sso.commons.filter.TokenVerifyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, RsaKeyProperties properties,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         return http.csrf()
                 .disable()
@@ -30,7 +29,7 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject(), properties))
+                .addFilter(new TokenVerifyFilter(authenticationManagerBuilder.getObject()))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

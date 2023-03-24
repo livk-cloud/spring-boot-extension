@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
  */
 @Slf4j
 @AutoConfiguration
-@SpringAutoService(auto = LivkImport.class)
+@SpringAutoService(LivkImport.class)
 public class LivkAutoConfiguration {
 
     @PostConstruct

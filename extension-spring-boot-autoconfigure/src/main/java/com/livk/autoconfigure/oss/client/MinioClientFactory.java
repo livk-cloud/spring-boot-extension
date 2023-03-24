@@ -8,7 +8,7 @@ import io.minio.MinioClient;
  *
  * @author livk
  */
-@SpringFactories(type = OSSClientFactory.class)
+@SpringFactories(OSSClientFactory.class)
 public class MinioClientFactory implements OSSClientFactory<MinioClient> {
 
     @Override

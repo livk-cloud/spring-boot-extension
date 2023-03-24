@@ -23,6 +23,6 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
     protected AbstractService(OSSProperties properties) {
         OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
         OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
-        this.client = factory.instance(properties.endpoint(), properties.getAccessKey(), properties.getSecretKey());
+        this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey());
     }
 }

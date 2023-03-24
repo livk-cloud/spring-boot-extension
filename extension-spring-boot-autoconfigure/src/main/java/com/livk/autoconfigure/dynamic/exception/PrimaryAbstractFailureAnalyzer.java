@@ -8,7 +8,7 @@ import org.springframework.boot.diagnostics.FailureAnalyzer;
 /**
  * @author livk
  */
-@SpringFactories(type = FailureAnalyzer.class)
+@SpringFactories(FailureAnalyzer.class)
 public class PrimaryAbstractFailureAnalyzer extends AbstractFailureAnalyzer<PrimaryNotFountException> {
 
     @Override

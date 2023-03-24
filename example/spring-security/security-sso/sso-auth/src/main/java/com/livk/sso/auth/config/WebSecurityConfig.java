@@ -1,7 +1,11 @@
 package com.livk.sso.auth.config;
 
-import com.livk.sso.auth.filter.TokenVerifyFilter;
-import com.livk.sso.commons.RsaKeyProperties;
+import com.livk.sso.auth.handler.CustomAccessDeniedHandler;
+import com.livk.sso.auth.handler.CustomAuthenticationFailureHandler;
+import com.livk.sso.auth.handler.CustomAuthenticationSuccessHandler;
+import com.livk.sso.auth.handler.CustomLogoutSuccessHandler;
+import com.livk.sso.auth.support.CustomAuthenticationEntryPoint;
+import com.livk.sso.commons.filter.TokenVerifyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,8 +33,13 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, RsaKeyProperties properties,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManagerBuilder.getObject());
+        tokenLoginFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
+        tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
+
+        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManagerBuilder.getObject());
         return http.csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -39,11 +48,15 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(new TokenLoginFilter(authenticationManagerBuilder.getObject(), properties),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new TokenVerifyFilter(properties), BasicAuthenticationFilter.class)
+                .addFilterBefore(tokenLoginFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(tokenVerifyFilter, BasicAuthenticationFilter.class)
+                .exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
                 .logout()
                 .logoutUrl("/oauth2/logout")
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

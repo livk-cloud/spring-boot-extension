@@ -10,6 +10,7 @@ import javax.lang.model.util.Types;
 import javax.tools.StandardLocation;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author livk
  */
-public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
+abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
     /**
      * The Filer.
@@ -105,37 +106,30 @@ public abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      */
     protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
-    /**
-     * Get Mirror annotation meta properties
-     *
-     * @param <T>         annotation
-     * @param element     element
-     * @param targetClass annotation class
-     * @return AnnotationMirror annotation mirror with
-     */
-    protected <T> AnnotationMirror getAnnotationMirrorWith(Element element, Class<T> targetClass) {
-        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            TypeElement typeElement = (TypeElement) annotationMirror.getAnnotationType().asElement();
-            if (typeElement.getQualifiedName().contentEquals(targetClass.getCanonicalName())) {
-                return annotationMirror;
-            }
-        }
-        return null;
-    }
 
     /**
      * Gets annotation mirror attributes.
      *
-     * @param annotationMirror the annotation mirror
+     * @param <T>         the type parameter
+     * @param element     the element
+     * @param targetClass the target class
+     * @param key         the key
      * @return the annotation mirror attributes
      */
-    protected Map<String, String> getAnnotationMirrorAttributes(AnnotationMirror annotationMirror) {
-        return annotationMirror.getElementValues()
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
-                        entry -> entry.getValue().getValue().toString()));
+    protected <T> Optional<String> getAnnotationMirrorAttributes(Element element, Class<T> targetClass, String key) {
+        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+            TypeElement typeElement = (TypeElement) annotationMirror.getAnnotationType().asElement();
+            if (typeElement.getQualifiedName().contentEquals(targetClass.getCanonicalName())) {
+                Map<String, String> map = annotationMirror.getElementValues()
+                        .entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue() != null)
+                        .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
+                                entry -> entry.getValue().getValue().toString()));
+                return Optional.ofNullable(map.get(key));
+            }
+        }
+        return Optional.empty();
     }
 
     /**

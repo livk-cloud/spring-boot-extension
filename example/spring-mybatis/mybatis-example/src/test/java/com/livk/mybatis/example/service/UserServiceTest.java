@@ -2,8 +2,8 @@ package com.livk.mybatis.example.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.bean.domain.CustomPage;
-import com.livk.commons.util.ReflectionUtils;
+import com.livk.commons.bean.domain.PageInfo;
+import com.livk.commons.function.FieldFunc;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -69,9 +69,9 @@ class UserServiceTest {
     @Test
     void list() {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(ReflectionUtils.getFieldName(User::getId))
+                .countColumn(FieldFunc.get(User::getId))
                 .doSelectPage(userService::list)) {
-            CustomPage<User> result = new CustomPage<>(page);
+            PageInfo<User> result = new PageInfo<>(page);
             assertNotNull(result);
         }
     }
