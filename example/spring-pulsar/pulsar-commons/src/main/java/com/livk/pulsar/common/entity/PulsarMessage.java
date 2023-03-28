@@ -1,5 +1,6 @@
 package com.livk.pulsar.common.entity;
 
+import com.livk.commons.jackson.JacksonUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,8 +20,9 @@ public class PulsarMessage<T> implements Serializable {
 
     private LocalDateTime sendTime;
 
-    private String msg;
-
     private T data;
 
+    public String toJson() {
+        return JacksonUtils.writeValueAsString(this);
+    }
 }

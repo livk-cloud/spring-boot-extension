@@ -21,7 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest
+@SpringBootTest({
+        "spring.pulsar.client.service-url=pulsar://livk.com:6650",
+        "spring.pulsar.consumer.topics=livk-topic",
+        "spring.pulsar.consumer.subscription-name=consumer"
+})
 @AutoConfigureMockMvc
 class MessageControllerTest {
     @Autowired

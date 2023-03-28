@@ -105,7 +105,7 @@ public class JacksonUtils {
      * @param <T>   type
      * @param json  json string
      * @param clazz class
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public static <T> T readValue(String json, Class<T> clazz) {
@@ -141,6 +141,20 @@ public class JacksonUtils {
             return str;
         }
         return MAPPER.writeValueAsString(obj);
+    }
+
+    /**
+     * Write value as bytes byte [ ].
+     *
+     * @param obj the obj
+     * @return the byte [ ]
+     */
+    @SneakyThrows
+    public static byte[] writeValueAsBytes(Object obj) {
+        if (obj instanceof String str) {
+            return str.getBytes();
+        }
+        return MAPPER.writeValueAsBytes(obj);
     }
 
     /**
@@ -199,7 +213,7 @@ public class JacksonUtils {
      * @param <T>           the type parameter
      * @param json          the json
      * @param typeReference the type reference
-     * @return T
+     * @return T t
      */
     @SneakyThrows
     public <T> T readValue(String json, TypeReference<T> typeReference) {
