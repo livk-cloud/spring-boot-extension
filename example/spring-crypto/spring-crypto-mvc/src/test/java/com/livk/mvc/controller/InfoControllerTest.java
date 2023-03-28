@@ -37,7 +37,8 @@ class InfoControllerTest {
         String encoding = aesSecurity.print(123456L, Locale.CHINA);
         encoding = CryptoType.AES.wrapper(encoding);
         mockMvc.perform(get("/info/{id}", encoding)
-                        .param("id", encoding))
+                        .param("id", encoding)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id.paramId", encoding).exists())
