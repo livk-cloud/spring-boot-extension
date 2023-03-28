@@ -12,7 +12,7 @@ redisson = "3.20.0"
 zookeeper = "3.8.1"
 clickhouse = "0.4.0"
 springPulsar = "0.2.0"
-googleFindbugs = "3.0.1"
+spotbugsAnnotations = "4.7.3"
 mapstruct = "1.5.3.Final"
 mapstructLombok = "0.2.0"
 curator = "5.4.0"
@@ -50,7 +50,7 @@ clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
 clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
 spring-pulsar-starter = { group = "org.springframework.pulsar", name = "spring-pulsar-spring-boot-starter", version.ref = "springPulsar" }
-findbugs-annotations = { group = "com.google.code.findbugs", name = "annotations", version.ref = "googleFindbugs" }
+spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugsAnnotations" }
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstructLombok" }
