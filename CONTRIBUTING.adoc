@@ -1,0 +1,20 @@
+= 向 spring-boot-extension贡献代码
+
+== 项目环境
+
+SpringBoot最新版本 +
+JDK则为STL最新版 +
+Gradle最新版 +
+
+== Using GitHub Issues
+
+使用Github Issues记录项目出现的各种问题 +
+或者是有新的意见、示例等
+
+== 提交代码前的工作
+
+请使用命令 `gradle build` 构建当前提交的代码，以保证可正常运行 +
+如出现使用第三方中间件的测试用例，将测试用例的全类名提交至 *exclude.txt* 避免Github Gradle CI出现错误
+
+
+
