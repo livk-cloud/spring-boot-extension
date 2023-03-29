@@ -1,5 +1,6 @@
 package com.livk.commons.jackson;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,7 +17,11 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ResolvableType;
 
+import java.io.DataInput;
+import java.io.File;
 import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -100,33 +105,59 @@ public class JacksonUtils {
     }
 
     /**
-     * json字符转Bean
+     * Read value t.
      *
-     * @param <T>   type
-     * @param json  json string
-     * @param clazz class
-     * @return T t
+     * @param <T>  the type parameter
+     * @param obj  the obj
+     * @param type the type
+     * @return the t
      */
     @SneakyThrows
-    public static <T> T readValue(String json, Class<T> clazz) {
-        if (clazz.isInstance(json)) {
-            return clazz.cast(json);
-        }
-        return MAPPER.readValue(json, clazz);
-
+    public static <T> T readValue(Object obj, Class<T> type) {
+        return readValue(obj, javaType(type));
     }
 
     /**
-     * 输入流转换bean
+     * Read value t.
      *
-     * @param <T>         the type parameter
-     * @param inputStream the input stream
-     * @param clazz       the clazz
-     * @return T
+     * @param <T>  the type parameter
+     * @param obj  the obj
+     * @param type the type
+     * @return the t
      */
     @SneakyThrows
-    public static <T> T readValue(InputStream inputStream, Class<T> clazz) {
-        return MAPPER.readValue(inputStream, clazz);
+    public <T> T readValue(Object obj, JavaType type) {
+        if (obj instanceof JsonParser jsonParser) {
+            return MAPPER.readValue(jsonParser, type);
+        } else if (obj instanceof File file) {
+            return MAPPER.readValue(file, type);
+        } else if (obj instanceof URL url) {
+            return MAPPER.readValue(url, type);
+        } else if (obj instanceof String json) {
+            return MAPPER.readValue(json, type);
+        } else if (obj instanceof Reader reader) {
+            return MAPPER.readValue(reader, type);
+        } else if (obj instanceof InputStream inputStream) {
+            return MAPPER.readValue(inputStream, type);
+        } else if (obj instanceof byte[] bytes) {
+            return MAPPER.readValue(bytes, type);
+        } else if (obj instanceof DataInput dataInput) {
+            return MAPPER.readValue(dataInput, type);
+        }
+        return MAPPER.convertValue(obj, type);
+    }
+
+    /**
+     * Read value t.
+     *
+     * @param <T>           the type parameter
+     * @param obj           the obj
+     * @param typeReference the type reference
+     * @return the t
+     */
+    @SneakyThrows
+    public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
+        return readValue(obj, MAPPER.getTypeFactory().constructType(typeReference));
     }
 
     /**
@@ -159,89 +190,86 @@ public class JacksonUtils {
 
     /**
      * json反序列化成List
-     * <p>也可以看看{@link JacksonUtils#readValue(String, TypeReference)} ,
+     * <p>也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
      * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
      *
      * @param <T>   泛型
-     * @param json  json数组
+     * @param obj   the obj
      * @param clazz 类型
      * @return the list
      */
     @SneakyThrows
-    public static <T> List<T> readValueList(String json, Class<T> clazz) {
+    public static <T> List<T> readValueList(Object obj, Class<T> clazz) {
         CollectionType collectionType = collectionType(clazz);
-        return MAPPER.readValue(json, collectionType);
+        return readValue(obj, collectionType);
     }
 
     /**
      * json反序列化成Map
-     * <p>也可以看看{@link JacksonUtils#readValue(String, TypeReference)} ,
+     * <p>也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
      * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
      *
      * @param <K>        the type parameter
      * @param <V>        the type parameter
-     * @param json       json字符串
+     * @param obj        the obj
      * @param keyClass   K Class
      * @param valueClass V Class
      * @return the map
      */
     @SneakyThrows
-    public static <K, V> Map<K, V> readValueMap(String json, Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
         MapType mapType = mapType(keyClass, valueClass);
-        return MAPPER.readValue(json, mapType);
-    }
-
-    /**
-     * 将流读取转成Map
-     *
-     * @param <K>         the type parameter
-     * @param <V>         the type parameter
-     * @param inputStream the input stream
-     * @param keyClass    the key class
-     * @param valueClass  the value class
-     * @return the map
-     */
-    @SneakyThrows
-    public static <K, V> Map<K, V> readValueMap(InputStream inputStream, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = mapType(keyClass, valueClass);
-        return MAPPER.readValue(inputStream, mapType);
-    }
-
-    /**
-     * json转换成bean
-     *
-     * @param <T>           the type parameter
-     * @param json          the json
-     * @param typeReference the type reference
-     * @return T t
-     */
-    @SneakyThrows
-    public <T> T readValue(String json, TypeReference<T> typeReference) {
-        return MAPPER.readValue(json, typeReference);
-    }
-
-    /**
-     * 将json转成Bean
-     *
-     * @param <T>      the type parameter
-     * @param json     the json
-     * @param javaType the java type
-     * @return the t
-     */
-    @SneakyThrows
-    public <T> T readValue(String json, JavaType javaType) {
-        return MAPPER.readValue(json, javaType);
+        return readValue(obj, mapType);
     }
 
     /**
      * 将json转化成JsonNode
      *
-     * @param json the json
+     * @param obj the obj
      * @return the json node
      */
     @SneakyThrows
-    public JsonNode readTree(String json) {
-        return MAPPER.readTree(json);
+    public JsonNode readTree(Object obj) {
+        if (obj instanceof JsonParser jsonParser) {
+            return MAPPER.readTree(jsonParser);
+        } else if (obj instanceof File file) {
+            return MAPPER.readTree(file);
+        } else if (obj instanceof URL url) {
+            return MAPPER.readTree(url);
+        } else if (obj instanceof String json) {
+            return MAPPER.readTree(json);
+        } else if (obj instanceof Reader reader) {
+            return MAPPER.readTree(reader);
+        } else if (obj instanceof InputStream inputStream) {
+            return MAPPER.readTree(inputStream);
+        } else if (obj instanceof byte[] bytes) {
+            return MAPPER.readTree(bytes);
+        }
+        return null;
+    }
+
+    /**
+     * Convert object.
+     *
+     * @param <T>       the type parameter
+     * @param fromValue the  value
+     * @param type      the type
+     * @return the object
+     */
+    public static <T> T convertValue(Object fromValue, Class<T> type) {
+        return MAPPER.convertValue(fromValue, type);
+    }
+
+    /**
+     * Convert value t.
+     *
+     * @param <T>           the type parameter
+     * @param fromValue     the value
+     * @param typeReference the type reference
+     * @return the t
+     */
+    public static <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
+        return MAPPER.convertValue(fromValue, typeReference);
     }
 
     /**
@@ -269,17 +297,5 @@ public class JacksonUtils {
     public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
         MapType mapType = mapType(keyClass, valueClass);
         return MAPPER.convertValue(fromValue, mapType);
-    }
-
-    /**
-     * Map to bean
-     *
-     * @param <T>         the type parameter
-     * @param map         the map
-     * @param targetClass the target class
-     * @return the t
-     */
-    public static <T> T convertValue(Map<String, ?> map, Class<T> targetClass) {
-        return MAPPER.convertValue(map, targetClass);
     }
 }
