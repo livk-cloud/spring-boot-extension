@@ -1,5 +1,6 @@
 package com.livk.socket;
 
+import com.livk.socket.session.WebSocketClientTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

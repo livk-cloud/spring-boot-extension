@@ -1,4 +1,4 @@
-package com.livk.socket.config;
+package com.livk.socket.session.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

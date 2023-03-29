@@ -1,4 +1,4 @@
-package com.livk.socket;
+package com.livk.socket.session;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

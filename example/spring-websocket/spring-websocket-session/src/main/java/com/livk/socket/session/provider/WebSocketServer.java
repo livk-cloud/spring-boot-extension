@@ -1,6 +1,6 @@
-package com.livk.socket.provider;
+package com.livk.socket.session.provider;
 
-import com.livk.socket.config.ServerConfigurator;
+import com.livk.socket.session.config.ServerConfigurator;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;

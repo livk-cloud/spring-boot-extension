@@ -1,4 +1,4 @@
-package com.livk.socket.config;
+package com.livk.socket.session.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.ServerEndpointConfig;
