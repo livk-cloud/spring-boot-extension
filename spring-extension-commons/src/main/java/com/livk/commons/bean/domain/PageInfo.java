@@ -112,12 +112,12 @@ public class PageInfo<T> implements Serializable {
         public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
             JsonNode jsonNode = context.readTree(p);
             ObjectMapper mapper = (ObjectMapper) p.getCodec();
-            String listFieldName = FieldFunc.<PageInfo<Object>>get(PageInfo::getList);
+            String listFieldName = FieldFunc.<PageInfo<Object>>getName(PageInfo::getList);
             CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
             List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
-            int pageNum = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageNum)).asInt();
-            int pageSize = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageSize)).asInt();
-            long total = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getTotal)).asLong();
+            int pageNum = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getPageNum)).asInt();
+            int pageSize = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getPageSize)).asInt();
+            long total = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getTotal)).asLong();
             return new PageInfo<>(list, pageNum, pageSize, total);
         }
 

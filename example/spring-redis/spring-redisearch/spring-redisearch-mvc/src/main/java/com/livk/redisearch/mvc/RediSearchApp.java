@@ -41,9 +41,9 @@ public class RediSearchApp {
 
             if (!search.ftList().contains(Student.INDEX)) {
                 search.ftCreate(Student.INDEX,
-                        Field.text(FieldFunc.get(Student::getName)).weight(5.0).build(),
-                        Field.text(FieldFunc.get(Student::getSex)).build(),
-                        Field.text(FieldFunc.get(Student::getDesc)).build(),
+                        Field.text(FieldFunc.getName(Student::getName)).weight(5.0).build(),
+                        Field.text(FieldFunc.getName(Student::getSex)).build(),
+                        Field.text(FieldFunc.getName(Student::getDesc)).build(),
                         Field.tag("class").build());
             }
             Random random = new Random();

@@ -69,7 +69,7 @@ class UserServiceTest {
     @Test
     void list() {
         try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(FieldFunc.get(User::getId))
+                .countColumn(FieldFunc.getName(User::getId))
                 .doSelectPage(userService::list)) {
             PageInfo<User> result = new PageInfo<>(page);
             assertNotNull(result);

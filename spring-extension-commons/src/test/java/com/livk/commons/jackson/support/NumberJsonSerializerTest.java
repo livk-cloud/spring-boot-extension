@@ -34,11 +34,11 @@ class NumberJsonSerializerTest {
         assertEquals(0.33d, bean.count.doubleValue());
         assertEquals(0.333d, bean.sunCount.doubleValue());
         JsonNode jsonNode = JacksonUtils.readTree(json);
-        assertEquals("0033", jsonNode.get(FieldFunc.get(Big::getL)).asText());
-        assertEquals(0.33d, jsonNode.get(FieldFunc.get(Big::getD)).asDouble());
-        assertEquals(0.3d, jsonNode.get(FieldFunc.get(Big::getF)).asDouble());
-        assertEquals(0.33d, jsonNode.get(FieldFunc.get(Big::getCount)).asDouble());
-        assertEquals(0.333d, jsonNode.get(FieldFunc.get(Big::getSunCount)).asDouble());
+        assertEquals("0033", jsonNode.get(FieldFunc.getName(Big::getL)).asText());
+        assertEquals(0.33d, jsonNode.get(FieldFunc.getName(Big::getD)).asDouble());
+        assertEquals(0.3d, jsonNode.get(FieldFunc.getName(Big::getF)).asDouble());
+        assertEquals(0.33d, jsonNode.get(FieldFunc.getName(Big::getCount)).asDouble());
+        assertEquals(0.333d, jsonNode.get(FieldFunc.getName(Big::getSunCount)).asDouble());
     }
 
     @Getter

@@ -1,6 +1,5 @@
 package com.livk.commons.util;
 
-import com.livk.commons.function.FieldFunc;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -26,12 +25,6 @@ class ReflectionUtilsTest {
     final Field fieldNo = Maker.class.getDeclaredField("no");
 
     ReflectionUtilsTest() throws NoSuchFieldException {
-    }
-
-    @Test
-    void getFieldNameTest() {
-        String result = FieldFunc.get(Maker::getNo);
-        assertEquals("no", result);
     }
 
     @Test

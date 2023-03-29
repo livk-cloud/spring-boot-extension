@@ -51,7 +51,7 @@ public class UserController {
     public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
                                            @RequestParam(defaultValue = "10") Integer pageSize) {
         try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
-                .countColumn(FieldFunc.get(User::getId))
+                .countColumn(FieldFunc.getName(User::getId))
                 .doSelectPage(userService::list)) {
             PageInfo<User> result = new PageInfo<>(page);
             return ResponseEntity.ok(result);
