@@ -20,13 +20,12 @@ public class SpringMapstructLocator implements MapstructLocator, ApplicationCont
      */
     private ApplicationContext applicationContext;
 
-    @SuppressWarnings("unchecked")
     @Override
     public <S, T> Converter<S, T> get(ConverterPair converterPair) {
         Class<?> sourceType = converterPair.getSourceType();
         Class<?> targetType = converterPair.getTargetType();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Converter.class, sourceType, targetType);
-        return (Converter<S, T>) applicationContext.getBeanProvider(resolvableType).getIfUnique();
+        return applicationContext.<Converter<S, T>>getBeanProvider(resolvableType).getIfUnique();
     }
 
     @Override

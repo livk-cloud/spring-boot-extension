@@ -2,8 +2,9 @@ package com.livk.autoconfigure.mapstruct.support;
 
 import com.livk.autoconfigure.mapstruct.converter.Converter;
 import com.livk.autoconfigure.mapstruct.converter.ConverterPair;
+import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
-import org.springframework.core.ResolvableType;
+import org.springframework.core.GenericTypeResolver;
 
 /**
  * The type Converter support.
@@ -20,9 +21,10 @@ public class ConverterSupport {
      * @return the converter pair
      */
     public ConverterPair parser(Converter<?, ?> converter) {
-        ResolvableType resolvableType = ResolvableType.forClass(converter.getClass());
-        Class<?> sourceType = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(0).resolve();
-        Class<?> targetType = resolvableType.getInterfaces()[0].getInterfaces()[0].getGeneric(1).resolve();
-        return ConverterPair.of(sourceType, targetType);
+        Class<?>[] types = GenericTypeResolver.resolveTypeArguments(converter.getClass(), Converter.class);
+        if (ObjectUtils.isEmpty(types)) {
+            return null;
+        }
+        return ConverterPair.of(types[0], types[1]);
     }
 }

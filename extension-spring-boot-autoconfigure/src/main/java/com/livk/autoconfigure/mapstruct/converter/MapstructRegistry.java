@@ -26,7 +26,9 @@ public interface MapstructRegistry {
      */
     default void addConverter(Converter<?, ?> converter) {
         ConverterPair converterPair = ConverterSupport.parser(converter);
-        this.addConverter(converterPair, converter);
+        if (converterPair != null) {
+            this.addConverter(converterPair, converter);
+        }
     }
 
     /**
