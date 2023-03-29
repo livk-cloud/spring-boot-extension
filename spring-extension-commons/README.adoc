@@ -11,9 +11,9 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 
 ----
 <dependency>
-    <groupId>com.google.code.findbugs</groupId>
-    <artifactId>annotations</artifactId>
-    <version>3.0.1</version>
+   <groupId>com.github.spotbugs</groupId>
+   <artifactId>spotbugs-annotations</artifactId>
+   <version>4.7.3</version>
 </dependency>
 ----
 
@@ -22,6 +22,6 @@ Warning:java: 未知的枚举常量 javax.annotation.meta.When.MAYBE，
 
 ----
 dependencies {
-    implementation("com.google.code.findbugs:annotations:3.0.1")
+    implementation("com.github.spotbugs:spotbugs-annotations:4.7.3")
 }
 ----
