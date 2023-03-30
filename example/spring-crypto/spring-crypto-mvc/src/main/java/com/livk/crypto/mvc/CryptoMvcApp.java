@@ -1,4 +1,4 @@
-package com.livk.mvc;
+package com.livk.crypto.mvc;
 
 import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

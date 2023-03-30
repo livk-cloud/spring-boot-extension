@@ -1,4 +1,4 @@
-package com.livk.mvc.controller;
+package com.livk.crypto.mvc.controller;
 
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.crypto.CryptoType;

@@ -1,4 +1,4 @@
-package com.livk.mvc.entity;
+package com.livk.crypto.mvc.entity;
 
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.CryptoDecrypt;

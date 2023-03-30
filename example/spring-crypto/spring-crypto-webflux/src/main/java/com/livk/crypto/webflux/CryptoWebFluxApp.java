@@ -1,4 +1,4 @@
-package com.livk.webflux;
+package com.livk.crypto.webflux;
 
 import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

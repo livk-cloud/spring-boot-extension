@@ -1,7 +1,7 @@
-package com.livk.mvc.controller;
+package com.livk.crypto.webflux.controller;
 
 import com.livk.crypto.annotation.CryptoDecrypt;
-import com.livk.mvc.entity.Info;
+import com.livk.crypto.webflux.entity.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

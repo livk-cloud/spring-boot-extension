@@ -1,4 +1,4 @@
-package com.livk.webflux.entity;
+package com.livk.crypto.webflux.entity;
 
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.CryptoDecrypt;
