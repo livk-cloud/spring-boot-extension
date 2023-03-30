@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("info")
+@RequestMapping("/info")
 public class InfoController {
 
     @PostMapping
@@ -21,7 +21,7 @@ public class InfoController {
         return Map.of("body", info);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Map<String, Info> info(@PathVariable("id") @CryptoDecrypt Long variableId,
                                   @RequestParam("id") @CryptoDecrypt Long paramId) {
         log.info("PathVariable:{}", variableId);
