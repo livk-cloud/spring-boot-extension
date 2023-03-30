@@ -56,39 +56,32 @@ class SpringUtilsTest {
 
         assertTrue(SpringUtils.parseSpEL(map, "'livk'==#username", Boolean.class));
         assertEquals("livk", SpringUtils.parseSpEL(map, "#username"));
-    }
 
-    @Test
-    void parseTemplateTest() {
-        assertEquals("root:livk", SpringUtils.parseTemplate(method, args, "root:#{#username}"));
-        assertEquals("root:livk:123456", SpringUtils.parseTemplate(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
+        assertEquals("root:livk", SpringUtils.parseSpEL(method, args, "root:#{#username}"));
+        assertEquals("root:livk:123456", SpringUtils.parseSpEL(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
 
-        assertEquals("root:livk", SpringUtils.parseTemplate(map, "root:#{#username}"));
+        assertEquals("root:livk", SpringUtils.parseSpEL(map, "root:#{#username}"));
         assertEquals("livk:" + System.getProperty("user.dir"),
-                SpringUtils.parseTemplate(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
+                SpringUtils.parseSpEL(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
 
         String springContextHolderName = SpringContextHolder.class.getName();
         assertEquals("livk:livk",
-                SpringUtils.parseTemplate(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
-    }
+                SpringUtils.parseSpEL(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
 
-    @Test
-    void parseTest() {
-        assertEquals("root:livk", SpringUtils.parse(method, args, "root:#{#username}"));
-        assertEquals("livk", SpringUtils.parse(method, args, "#username"));
-        assertEquals("livk", SpringUtils.parse(method, args, "livk"));
+        assertEquals("root:livk", SpringUtils.parseSpEL(method, args, "root:#{#username}"));
+        assertEquals("livk", SpringUtils.parseSpEL(method, args, "#username"));
+        assertEquals("livk", SpringUtils.parseSpEL(method, args, "livk"));
 
-        assertEquals("root:livk:123456", SpringUtils.parse(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
-        assertEquals("livk123456", SpringUtils.parse(method, args, "#username+#password", Map.of("password", "123456")));
+        assertEquals("root:livk:123456", SpringUtils.parseSpEL(method, args, "root:#{#username}:#{#password}", Map.of("password", "123456")));
+        assertEquals("livk123456", SpringUtils.parseSpEL(method, args, "#username+#password", Map.of("password", "123456")));
 
-        assertEquals("root:livk", SpringUtils.parse(map, "root:#{#username}"));
-        assertEquals("livk", SpringUtils.parse(map, "#username"));
+        assertEquals("root:livk", SpringUtils.parseSpEL(map, "root:#{#username}"));
+        assertEquals("livk", SpringUtils.parseSpEL(map, "#username"));
         assertEquals("livk:" + System.getProperty("user.dir"),
-                SpringUtils.parse(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
+                SpringUtils.parseSpEL(map, "#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"));
 
-        String springContextHolderName = SpringContextHolder.class.getName();
         assertEquals("livk:livk",
-                SpringUtils.parse(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
+                SpringUtils.parseSpEL(map, "#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}"));
     }
 
     @Test

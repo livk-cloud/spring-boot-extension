@@ -5,7 +5,7 @@ import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.autoconfigure.lock.support.DistributedLock;
-import com.livk.commons.spring.util.SpringUtils;
+import com.livk.commons.spring.el.SpringExpressionResolver;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,6 +30,8 @@ public class LockAspect {
 
     private final ObjectProvider<DistributedLock> distributedLockProvider;
 
+    private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+
     /**
      * Around object.
      *
@@ -52,7 +54,7 @@ public class LockAspect {
                 .findFirst()
                 .orElseThrow(() -> new UnSupportLockException("缺少scope：" + scope + "的锁实现"));
         boolean async = !LockScope.STANDALONE_LOCK.equals(scope) && onLock.async();
-        String key = SpringUtils.parse(method, joinPoint.getArgs(), onLock.key());
+        String key = resolver.evaluate(onLock.key(), method, joinPoint.getArgs());
         boolean isLock = distributedLock.tryLock(onLock.type(), key, onLock.leaseTime(), onLock.waitTime(), async);
         try {
             if (isLock) {
