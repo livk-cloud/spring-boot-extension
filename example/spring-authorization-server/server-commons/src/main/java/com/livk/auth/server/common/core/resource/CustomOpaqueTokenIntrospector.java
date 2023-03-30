@@ -34,8 +34,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 
-        Map<String, Oauth2UserDetailsService> userDetailsServiceMap = SpringContextHolder.getApplicationContext()
-                .getBeansOfType(Oauth2UserDetailsService.class);
+        Map<String, Oauth2UserDetailsService> userDetailsServiceMap = SpringContextHolder.getBeansOfType(Oauth2UserDetailsService.class);
 
         Optional<Oauth2UserDetailsService> optional = userDetailsServiceMap.values().stream()
                 .filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
