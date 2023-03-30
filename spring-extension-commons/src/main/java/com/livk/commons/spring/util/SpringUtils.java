@@ -1,6 +1,6 @@
 package com.livk.commons.spring.util;
 
-import com.livk.commons.spring.el.SpringExpressionResolver;
+import com.livk.commons.spring.spel.SpringExpressionResolver;
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.BindResult;

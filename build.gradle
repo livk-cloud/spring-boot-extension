@@ -49,7 +49,7 @@ configure(gradleModuleProjects) {
                  def bufferedReader = new BufferedReader(reader)) {
                 def lines = bufferedReader.readLines()
                         .stream().map { it.replaceAll("\\.", "/") + ".class" }.toList()
-                it.exclude(lines)
+                exclude(lines)
             }
         }
     }

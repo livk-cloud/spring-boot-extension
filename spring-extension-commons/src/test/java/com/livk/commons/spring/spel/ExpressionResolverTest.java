@@ -1,4 +1,4 @@
-package com.livk.commons.spring.el;
+package com.livk.commons.spring.spel;
 
 import com.livk.commons.spring.context.SpringContextHolder;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,6 @@ class ExpressionResolverTest {
 
     ExpressionResolverTest() throws NoSuchMethodException {
     }
-
 
     @Test
     void evaluate() {

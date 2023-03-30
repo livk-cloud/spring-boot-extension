@@ -1,4 +1,4 @@
-package com.livk.commons.spring.el;
+package com.livk.commons.spring.spel;
 
 import org.springframework.context.expression.BeanExpressionContextAccessor;
 import org.springframework.context.expression.BeanFactoryAccessor;
@@ -8,6 +8,8 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.expression.spel.support.StandardTypeConverter;
+import org.springframework.expression.spel.support.StandardTypeLocator;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -48,6 +50,8 @@ class DefaultEvaluationContextFactory implements EvaluationContextFactory {
         context.addPropertyAccessor(new BeanFactoryAccessor());
         context.addPropertyAccessor(new MapAccessor());
         context.addPropertyAccessor(new EnvironmentAccessor());
+        context.setTypeLocator(new StandardTypeLocator());
+        context.setTypeConverter(new StandardTypeConverter());
         return context;
     }
 }

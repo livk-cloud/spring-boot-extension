@@ -1,4 +1,4 @@
-package com.livk.commons.spring.el;
+package com.livk.commons.spring.spel;
 
 import org.springframework.expression.EvaluationContext;
 
