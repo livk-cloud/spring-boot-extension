@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient
-class InfoControllerTest {
+class InfoWebFluxControllerTest {
 
     @Autowired
     WebTestClient client;
