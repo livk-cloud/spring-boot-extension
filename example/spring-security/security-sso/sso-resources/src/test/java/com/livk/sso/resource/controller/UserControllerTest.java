@@ -1,5 +1,6 @@
 package com.livk.sso.resource.controller;
 
+import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.jackson.JacksonUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @Disabled("需要启动授权服务器")
+@EnableHttpClient
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -36,11 +38,13 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    RestTemplate template;
+
     String token;
 
     @BeforeEach
     public void init() {
-        RestTemplate template = new RestTemplate();
         Map<String, String> body = new HashMap<>();
         body.put("username", "livk");
         body.put("password", "123456");
