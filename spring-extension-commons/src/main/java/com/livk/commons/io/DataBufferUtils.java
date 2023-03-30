@@ -63,11 +63,11 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
     public Mono<byte[]> transformByte(Flux<DataBuffer> bufferFlux) {
         return DataBufferUtils.transform(bufferFlux)
                 .publishOn(Schedulers.boundedElastic())
-                .map(inputStream -> {
+                .handle((inputStream, sink) -> {
                     try {
-                        return inputStream.readAllBytes();
+                        sink.next(inputStream.readAllBytes());
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        sink.error(new RuntimeException(e));
                     }
                 });
     }
