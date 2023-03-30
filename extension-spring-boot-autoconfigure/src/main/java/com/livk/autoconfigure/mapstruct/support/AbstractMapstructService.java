@@ -23,25 +23,25 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
     /**
      * The Application context.
      */
-    private PrioritizedMapstructLocator mapstructLocator;
+    private MapstructLocator mapstructLocator;
 
     @SuppressWarnings("unchecked")
     @Override
     public <S, T> T convert(S source, Class<T> targetType) {
         Class<S> sourceType = (Class<S>) source.getClass();
-        Converter<S, T> sourceConverter = this.handler(sourceType, targetType);
+        Converter<S, T> sourceConverter = this.getConverter(sourceType, targetType);
         if (sourceConverter != null) {
             return sourceConverter.getTarget(source);
         }
 
-        Converter<T, S> targetConverter = this.handler(targetType, sourceType);
+        Converter<T, S> targetConverter = this.getConverter(targetType, sourceType);
         if (targetConverter != null) {
             return targetConverter.getSource(source);
         }
         throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
     }
 
-    private <S, T> Converter<S, T> handler(Class<S> sourceType, Class<T> targetType) {
+    private <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
         ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
         return mapstructLocator.get(converterPair);
     }

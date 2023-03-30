@@ -45,6 +45,6 @@ public interface ConverterRepository extends MapstructLocator {
      * @param converterPair the converter pair
      * @param converter     the converter
      */
-    void computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter);
+    Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter);
 
 }

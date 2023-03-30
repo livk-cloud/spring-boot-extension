@@ -31,6 +31,7 @@ class PrioritizedMapstructLocator implements MapstructLocator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <S, T> Converter<S, T> get(ConverterPair converterPair) {
         Converter<S, T> converter = converterRepository.get(converterPair);
@@ -38,8 +39,7 @@ class PrioritizedMapstructLocator implements MapstructLocator {
             for (MapstructLocator mapstructLocator : mapstructLocators) {
                 converter = mapstructLocator.get(converterPair);
                 if (converter != null) {
-                    mapstructRegistry.addConverter(converterPair, converter);
-                    return converter;
+                    return (Converter<S, T>) mapstructRegistry.addConverter(converterPair, converter);
                 }
             }
         }

@@ -17,18 +17,19 @@ public interface MapstructRegistry {
      * @param converterPair the converter pair
      * @param converter     the converter
      */
-    void addConverter(ConverterPair converterPair, Converter<?, ?> converter);
+    Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter);
 
     /**
      * Add converter.
      *
      * @param converter the converter
      */
-    default void addConverter(Converter<?, ?> converter) {
+    default Converter<?, ?> addConverter(Converter<?, ?> converter) {
         ConverterPair converterPair = ConverterSupport.parser(converter);
         if (converterPair != null) {
-            this.addConverter(converterPair, converter);
+            return this.addConverter(converterPair, converter);
         }
+        return converter;
     }
 
     /**
@@ -40,9 +41,9 @@ public interface MapstructRegistry {
      * @param targetType the target type
      * @param converter  the converter
      */
-    default <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
+    default <S, T> Converter<?, ?> addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
         ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
-        this.addConverter(converterPair, converter);
+        return this.addConverter(converterPair, converter);
     }
 
 }

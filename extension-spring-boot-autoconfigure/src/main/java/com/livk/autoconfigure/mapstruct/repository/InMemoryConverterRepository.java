@@ -34,7 +34,7 @@ public class InMemoryConverterRepository implements ConverterRepository {
     }
 
     @Override
-    public void computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
-        converterMap.computeIfAbsent(converterPair, pair -> converter);
+    public Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
+        return converterMap.computeIfAbsent(converterPair, pair -> converter);
     }
 }

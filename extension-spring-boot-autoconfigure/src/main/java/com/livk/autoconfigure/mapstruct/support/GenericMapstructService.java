@@ -19,7 +19,7 @@ public class GenericMapstructService extends AbstractMapstructService implements
     private final ConverterRepository converterRepository;
 
     @Override
-    public void addConverter(ConverterPair converterPair, Converter<?, ?> converter) {
-        converterRepository.computeIfAbsent(converterPair, converter);
+    public Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter) {
+        return converterRepository.computeIfAbsent(converterPair, converter);
     }
 }
