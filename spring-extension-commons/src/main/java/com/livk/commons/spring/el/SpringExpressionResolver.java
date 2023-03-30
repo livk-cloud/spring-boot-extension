@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * The type Spring expression resolver.
+ *
  * @author livk
  */
 public class SpringExpressionResolver implements ExpressionResolver {
@@ -25,14 +27,27 @@ public class SpringExpressionResolver implements ExpressionResolver {
     @Setter
     private Environment environment;
 
+    /**
+     * Instantiates a new Spring expression resolver.
+     */
     public SpringExpressionResolver() {
         this.expressionParser = new SpelExpressionParser();
     }
 
+    /**
+     * Instantiates a new Spring expression resolver.
+     *
+     * @param beanClassLoader the bean class loader
+     */
     public SpringExpressionResolver(ClassLoader beanClassLoader) {
         this.expressionParser = new SpelExpressionParser(new SpelParserConfiguration(null, beanClassLoader));
     }
 
+    /**
+     * Instantiates a new Spring expression resolver.
+     *
+     * @param environment the environment
+     */
     public SpringExpressionResolver(Environment environment) {
         this();
         this.environment = environment;
