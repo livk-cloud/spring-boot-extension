@@ -15,7 +15,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -32,46 +31,43 @@ import java.util.*;
  */
 @UtilityClass
 public class SpringUtils {
-
-    private static final SpelExpressionParser PARSER = new SpelExpressionParser();
-
     private static final SpringExpressionResolver RESOLVER = new SpringExpressionResolver();
 
     /**
      * 获取被注解标注的class
      *
-     * @param annotationClass annotation
-     * @param resourceLoader  resourceLoader
-     * @param packages        待扫描的包
+     * @param annotationType annotation
+     * @param resourceLoader resourceLoader
+     * @param packages       待扫描的包
      * @return set class
      */
-    public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationClass,
+    public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationType,
                                               ResourceLoader resourceLoader, String... packages) {
-        Assert.notNull(annotationClass, "annotation not null");
-        Set<Class<?>> classSet = new HashSet<>();
+        Assert.notNull(annotationType, "annotation not null");
+        Set<Class<?>> typeSet = new HashSet<>();
         if (ObjectUtils.isEmpty(packages)) {
-            return classSet;
+            return typeSet;
         }
         ResourcePatternResolver resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
         CachingMetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
-        try {
-            for (String packageStr : packages) {
-                packageStr = packageStr.replace(".", "/");
+        for (String packageStr : packages) {
+            packageStr = packageStr.replace(".", "/");
+            try {
                 Resource[] resources = resolver.getResources("classpath*:" + packageStr + "/**/*.class");
                 for (Resource resource : resources) {
                     MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
                     String className = metadataReader.getClassMetadata().getClassName();
-                    Class<?> clazz = Class.forName(className);
-                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationClass, clazz) ||
-                        AnnotatedElementUtils.hasAnnotation(clazz, annotationClass)) {
-                        classSet.add(clazz);
+                    Class<?> type = Class.forName(className);
+                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationType, type) ||
+                        AnnotatedElementUtils.hasAnnotation(type, annotationType)) {
+                        typeSet.add(type);
                     }
                 }
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
-        return classSet;
+        return typeSet;
     }
 
     /**
@@ -136,7 +132,7 @@ public class SpringUtils {
      * @param args        方法参数
      * @param condition   表达式
      * @param returnClass 返回类型
-     * @return T t
+     * @return T
      */
     public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass) {
         return parseSpEL(method, args, condition, returnClass, Map.of());
@@ -181,12 +177,12 @@ public class SpringUtils {
     }
 
     /**
-     * Parse sp el string.
+     * 解析SpEL表达式
      *
-     * @param method    the method
-     * @param args      the args
-     * @param condition the condition
-     * @param expandMap the expand map
+     * @param method    方法
+     * @param args      方法参数
+     * @param condition 表达式
+     * @param expandMap 需要填充的数据
      * @return the string
      */
     public String parseSpEL(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
