@@ -1,7 +1,7 @@
 package com.livk.caffeine.controller;
 
 import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
-import com.livk.commons.test.TestLogUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 class CacheControllerTest {
@@ -88,13 +89,13 @@ class CacheControllerTest {
         ScanOptions options = ScanOptions.scanOptions().match("*").count(100).build();
         try (Cursor<String> cursor = redisTemplate.scan(options)) {
             while (cursor.hasNext()) {
-                TestLogUtils.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
+                log.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
             }
         }
 
         try (Cursor<String> scan = redisTemplate.scan(options)) {
             Set<String> keys = scan.stream().limit(1).collect(Collectors.toSet());
-            TestLogUtils.info("keys:{}", keys);
+            log.info("keys:{}", keys);
             assertEquals(1, keys.size());
         }
     }

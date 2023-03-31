@@ -1,7 +1,7 @@
 package com.livk.commons.bean.domain;
 
 import com.livk.commons.jackson.JacksonUtils;
-import com.livk.commons.test.TestLogUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author livk
  */
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TreeNodeTest {
 
@@ -27,7 +28,7 @@ class TreeNodeTest {
     @Test
     void createRoot() {
         root = TreeNode.createRoot(0L, "root");
-        TestLogUtils.info("{}", root);
+        log.info("{}", root);
         assertNotNull(root);
     }
 
@@ -43,8 +44,8 @@ class TreeNodeTest {
                 new TreeNode<Long, String>().setId(6L).setNode("6").setPid(3L)
         );
         root.setChildren(nodes);
-        TestLogUtils.info("{}", root);
-        TestLogUtils.info("{}", JacksonUtils.writeValueAsString(root));
+        log.info("{}", root);
+        log.info("{}", JacksonUtils.writeValueAsString(root));
         assertNotNull(root);
     }
 
@@ -53,14 +54,14 @@ class TreeNodeTest {
     void addChild() {
         TreeNode<Long, String> node = new TreeNode<Long, String>().setId(7L).setNode("7").setPid(4L);
         root.addChild(node);
-        TestLogUtils.info("{}", root);
-        TestLogUtils.info("{}", JacksonUtils.writeValueAsString(root));
+        log.info("{}", root);
+        log.info("{}", JacksonUtils.writeValueAsString(root));
     }
 
     @Order(4)
     @Test
     void findById() {
         TreeNode<Long, String> childNode = root.findById(3L);
-        TestLogUtils.info("{}", childNode);
+        log.info("{}", childNode);
     }
 }
