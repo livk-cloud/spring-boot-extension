@@ -30,6 +30,17 @@ public interface Wrapper<T> {
     T unwrap();
 
     /**
+     * Cast v.
+     *
+     * @param <V>  the type parameter
+     * @param type the type
+     * @return the v
+     */
+    default <V> V cast(Class<V> type) {
+        return type.cast(unwrap());
+    }
+
+    /**
      * The type Simple wrapper.
      *
      * @param <T> the type parameter

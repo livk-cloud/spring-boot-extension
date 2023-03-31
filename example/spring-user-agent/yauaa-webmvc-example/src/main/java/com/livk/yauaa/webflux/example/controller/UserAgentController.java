@@ -2,7 +2,6 @@ package com.livk.yauaa.webflux.example.controller;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.servlet.UserAgentContextHolder;
-import com.livk.commons.bean.Wrapper;
 import nl.basjes.parse.useragent.UserAgent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -28,17 +28,12 @@ public class UserAgentController {
 
     @GetMapping
     public HttpEntity<Map<String, Map<String, String>>> get(@UserAgentInfo UserAgent userAgent) {
-        Map<String, Map<String, String>> map = Map.of(UUID.randomUUID().toString(), convert(Wrapper.of(userAgent)),
-                UUID.randomUUID().toString(), convert(UserAgentContextHolder.getUserAgentContext()));
+        Map<String, Map<String, String>> map = Stream.of(userAgent, UserAgentContextHolder.getUserAgentContext().cast(UserAgent.class))
+                .map(u -> u
+                        .getAvailableFieldNamesSorted()
+                        .stream()
+                        .collect(Collectors.toMap(Function.identity(), u::getValue)))
+                .collect(Collectors.toMap(stringStringMap -> UUID.randomUUID().toString(), Function.identity()));
         return ResponseEntity.ok(map);
-    }
-
-    private Map<String, String> convert(Wrapper<?> userAgentWrapper) {
-        if (userAgentWrapper.unwrap() instanceof UserAgent userAgent) {
-            return userAgent.getAvailableFieldNamesSorted()
-                    .stream()
-                    .collect(Collectors.toMap(Function.identity(), userAgent::getValue));
-        }
-        return Map.of();
     }
 }

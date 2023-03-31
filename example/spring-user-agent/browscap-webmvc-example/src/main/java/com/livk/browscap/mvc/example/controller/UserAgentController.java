@@ -26,7 +26,7 @@ public class UserAgentController {
     @GetMapping
     public HttpEntity<Map<String, Capabilities>> get(@UserAgentInfo Capabilities capabilities) {
         Map<String, Capabilities> map = Map.of(UUID.randomUUID().toString(), capabilities,
-                UUID.randomUUID().toString(), (Capabilities) UserAgentContextHolder.getUserAgentContext().unwrap());
+                UUID.randomUUID().toString(), UserAgentContextHolder.getUserAgentContext().cast(Capabilities.class));
         return ResponseEntity.ok(map);
     }
 }
