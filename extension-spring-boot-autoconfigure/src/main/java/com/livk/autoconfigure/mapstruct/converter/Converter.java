@@ -1,5 +1,8 @@
 package com.livk.autoconfigure.mapstruct.converter;
 
+import com.livk.commons.util.ObjectUtils;
+import org.springframework.core.GenericTypeResolver;
+
 /**
  * <p>
  * Converter
@@ -26,5 +29,18 @@ public interface Converter<S, T> {
      * @return the target
      */
     T getTarget(S s);
+
+    /**
+     * Type converter pair.
+     *
+     * @return the converter pair
+     */
+    default ConverterPair type() {
+        Class<?>[] types = GenericTypeResolver.resolveTypeArguments(this.getClass(), Converter.class);
+        if (ObjectUtils.isEmpty(types)) {
+            return null;
+        }
+        return ConverterPair.of(types[0], types[1]);
+    }
 
 }

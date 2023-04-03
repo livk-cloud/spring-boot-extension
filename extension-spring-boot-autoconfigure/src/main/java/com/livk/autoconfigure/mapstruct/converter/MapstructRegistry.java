@@ -1,7 +1,5 @@
 package com.livk.autoconfigure.mapstruct.converter;
 
-import com.livk.autoconfigure.mapstruct.support.ConverterSupport;
-
 /**
  * <p>
  * MapstructFactory
@@ -27,7 +25,7 @@ public interface MapstructRegistry {
      * @return the converter
      */
     default Converter<?, ?> addConverter(Converter<?, ?> converter) {
-        ConverterPair converterPair = ConverterSupport.parser(converter);
+        ConverterPair converterPair = converter.type();
         if (converterPair != null) {
             return this.addConverter(converterPair, converter);
         }
