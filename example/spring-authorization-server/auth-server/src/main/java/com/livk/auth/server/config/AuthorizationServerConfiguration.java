@@ -18,6 +18,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +35,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -75,34 +75,26 @@ public class AuthorizationServerConfiguration {
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
 
-        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(endpointsMatcher)
-                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
-                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
-                .authorizeHttpRequests().anyRequest().authenticated().and()
-                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
-                .apply(configurer.authorizationService(authorizationService)).and()
-                .apply(new FormIdentityLoginConfigurer()).and()
-                .build();
-
-        // 注入自定义授权模式实现
-        addCustomOAuth2GrantAuthenticationProvider(http, oAuth2TokenGenerator, userDetailsAuthenticationProvider);
-        return securityFilterChain;
-    }
-
-    private void addCustomOAuth2GrantAuthenticationProvider(HttpSecurity http,
-                                                            OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-                                                            UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) {
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-        OAuth2AuthorizationService authorizationService = http.getSharedObject(OAuth2AuthorizationService.class);
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
         OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
 
         OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
-        http.authenticationProvider(userDetailsAuthenticationProvider);
-        http.authenticationProvider(passwordAuthenticationProvider);
-        http.authenticationProvider(smsAuthenticationProvider);
+
+        return http.securityMatcher(endpointsMatcher)
+                .authenticationManager(authenticationManager)
+                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
+                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
+                .authorizeHttpRequests().anyRequest().authenticated().and()
+                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
+                .apply(configurer.authorizationService(authorizationService)).and()
+                .apply(new FormIdentityLoginConfigurer()).and()
+                .authenticationProvider(userDetailsAuthenticationProvider)
+                .authenticationProvider(passwordAuthenticationProvider)
+                .authenticationProvider(smsAuthenticationProvider)
+                .build();
     }
 
     @Bean
