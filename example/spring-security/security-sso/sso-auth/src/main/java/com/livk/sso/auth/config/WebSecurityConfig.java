@@ -8,6 +8,7 @@ import com.livk.sso.auth.support.CustomAuthenticationEntryPoint;
 import com.livk.sso.commons.filter.TokenVerifyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,15 +34,18 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManagerBuilder.getObject());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
+
+        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManager);
         tokenLoginFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
         tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
-        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManagerBuilder.getObject());
+        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManager);
         return http.csrf()
                 .disable()
+                .authenticationManager(authenticationManager)
                 .authorizeHttpRequests()
                 .requestMatchers("/user/query")
                 .hasAnyRole("ADMIN")
