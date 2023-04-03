@@ -15,12 +15,12 @@ public enum UniversalLoaderType implements LoaderType {
     /**
      * The Spring factory.
      */
-    SPRING_FACTORY(new SpringFactoryLoader()),
+    SPRING_FACTORY(SpringFactoryLoader.INSTANCE),
 
     /**
      * The Jdk service.
      */
-    JDK_SERVICE(new JdkServiceLoader()),
+    JDK_SERVICE(SpringFactoryLoader.INSTANCE),
 
     /**
      * The All.

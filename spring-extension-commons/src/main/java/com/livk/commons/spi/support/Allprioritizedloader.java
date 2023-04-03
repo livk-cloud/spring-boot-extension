@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 class Allprioritizedloader extends PrioritizedLoader {
 
     public Allprioritizedloader() {
-        addLoader(new SpringFactoryLoader());
-        addLoader(new JdkServiceLoader());
+        addLoader(SpringFactoryLoader.INSTANCE);
+        addLoader(JdkServiceLoader.INSTANCE);
     }
 
     @Override
