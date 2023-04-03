@@ -20,7 +20,7 @@ public enum UniversalLoaderType implements LoaderType {
     /**
      * The Jdk service.
      */
-    JDK_SERVICE(SpringFactoryLoader.INSTANCE),
+    JDK_SERVICE(JdkServiceLoader.INSTANCE),
 
     /**
      * The All.

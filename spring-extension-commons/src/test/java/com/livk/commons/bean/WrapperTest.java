@@ -12,7 +12,7 @@ class WrapperTest {
     @Test
     void test() {
         String value = "livk";
-        Wrapper<String> wrapper = Wrapper.of(value);
-        assertEquals(value, wrapper.unwrap());
+        Wrapper wrapper = Wrapper.of(value);
+        assertEquals(value, wrapper.unwrap(String.class));
     }
 }
