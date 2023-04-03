@@ -11,9 +11,9 @@ import org.springframework.core.NamedThreadLocal;
  */
 public class UserAgentContextHolder {
 
-    private static final ThreadLocal<Wrapper<?>> context = new NamedThreadLocal<>("useragent context");
+    private static final ThreadLocal<Wrapper> context = new NamedThreadLocal<>("useragent context");
 
-    private static final ThreadLocal<Wrapper<?>> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
+    private static final ThreadLocal<Wrapper> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
 
     /**
      * Sets user agent context.
@@ -21,7 +21,7 @@ public class UserAgentContextHolder {
      * @param useragentWrapper the useragent wrapper
      * @param inheritable      the inheritable
      */
-    public static void setUserAgentContext(Wrapper<?> useragentWrapper, boolean inheritable) {
+    public static void setUserAgentContext(Wrapper useragentWrapper, boolean inheritable) {
         if (useragentWrapper != null) {
             if (inheritable) {
                 inheritableContext.set(useragentWrapper);
@@ -40,8 +40,8 @@ public class UserAgentContextHolder {
      *
      * @return the user agent context
      */
-    public static Wrapper<?> getUserAgentContext() {
-        Wrapper<?> useragentWrapper = context.get();
+    public static Wrapper getUserAgentContext() {
+        Wrapper useragentWrapper = context.get();
         if (useragentWrapper == null) {
             useragentWrapper = inheritableContext.get();
         }
@@ -53,7 +53,7 @@ public class UserAgentContextHolder {
      *
      * @param useragentWrapper the useragent wrapper
      */
-    public static void setUserAgentContext(Wrapper<?> useragentWrapper) {
+    public static void setUserAgentContext(Wrapper useragentWrapper) {
         setUserAgentContext(useragentWrapper, false);
     }
 

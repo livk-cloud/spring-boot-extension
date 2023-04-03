@@ -31,7 +31,7 @@ public class UserAgentAutoConfiguration {
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class UserAgentMvcAutoConfiguration implements WebMvcConfigurer {
 
-        private final HttpUserAgentParser<?> userAgentParse;
+        private final HttpUserAgentParser userAgentParse;
 
         /**
          * Filter registration bean filter registration bean.
@@ -39,9 +39,9 @@ public class UserAgentAutoConfiguration {
          * @return the filter registration bean
          */
         @Bean
-        public FilterRegistrationBean<UserAgentFilter<?>> filterRegistrationBean() {
-            FilterRegistrationBean<UserAgentFilter<?>> registrationBean = new FilterRegistrationBean<>();
-            registrationBean.setFilter(new UserAgentFilter<>(userAgentParse));
+        public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
+            FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
+            registrationBean.setFilter(new UserAgentFilter(userAgentParse));
             registrationBean.addUrlPatterns("/*");
             registrationBean.setName("userAgentFilter");
             registrationBean.setOrder(1);
@@ -50,7 +50,7 @@ public class UserAgentAutoConfiguration {
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new UserAgentResolver<>(userAgentParse));
+            resolvers.add(new UserAgentResolver(userAgentParse));
         }
     }
 
@@ -62,7 +62,7 @@ public class UserAgentAutoConfiguration {
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     public static class UserAgentReactiveAutoConfiguration implements WebFluxConfigurer {
 
-        private final HttpUserAgentParser<?> userAgentParse;
+        private final HttpUserAgentParser userAgentParse;
 
         /**
          * Reactive user agent filter reactive user agent filter.
@@ -70,13 +70,13 @@ public class UserAgentAutoConfiguration {
          * @return the reactive user agent filter
          */
         @Bean
-        public ReactiveUserAgentFilter<?> reactiveUserAgentFilter() {
-            return new ReactiveUserAgentFilter<>(userAgentParse);
+        public ReactiveUserAgentFilter reactiveUserAgentFilter() {
+            return new ReactiveUserAgentFilter(userAgentParse);
         }
 
         @Override
         public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-            configurer.addCustomResolver(new ReactiveUserAgentResolver<>(userAgentParse));
+            configurer.addCustomResolver(new ReactiveUserAgentResolver(userAgentParse));
         }
     }
 }

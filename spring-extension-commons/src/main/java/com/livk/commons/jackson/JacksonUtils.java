@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.livk.commons.bean.GenericWrapper;
 import com.livk.commons.bean.Wrapper;
 import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.SneakyThrows;
@@ -37,10 +38,10 @@ public class JacksonUtils {
     private static final ObjectMapper MAPPER;
 
     static {
-        Wrapper<ObjectMapper> wrapper = null;
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Wrapper.class, ObjectMapper.class);
+        GenericWrapper<ObjectMapper> wrapper = null;
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(GenericWrapper.class, ObjectMapper.class);
         try {
-            wrapper = SpringContextHolder.<Wrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
+            wrapper = SpringContextHolder.<GenericWrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
         } catch (Exception e) {
             log.debug("Building 'ObjectMapper'");
         }

@@ -22,14 +22,14 @@ import java.io.IOException;
  * @author livk
  */
 @RequiredArgsConstructor
-public class UserAgentFilter<T> extends OncePerRequestFilter {
+public class UserAgentFilter extends OncePerRequestFilter {
 
-    private final HttpUserAgentParser<T> userAgentParse;
+    private final HttpUserAgentParser userAgentParse;
 
     @Override
     protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpHeaders headers = WebUtils.headers(request);
-        Wrapper<?> useragentWrapper = userAgentParse.parse(headers);
+        Wrapper useragentWrapper = userAgentParse.parse(headers);
         UserAgentContextHolder.setUserAgentContext(useragentWrapper);
         filterChain.doFilter(request, response);
         UserAgentContextHolder.cleanUserAgentContext();

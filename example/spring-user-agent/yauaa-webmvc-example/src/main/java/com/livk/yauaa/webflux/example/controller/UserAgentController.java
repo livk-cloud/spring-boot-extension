@@ -28,7 +28,7 @@ public class UserAgentController {
 
     @GetMapping
     public HttpEntity<Map<String, Map<String, String>>> get(@UserAgentInfo UserAgent userAgent) {
-        Map<String, Map<String, String>> map = Stream.of(userAgent, UserAgentContextHolder.getUserAgentContext().cast(UserAgent.class))
+        Map<String, Map<String, String>> map = Stream.of(userAgent, UserAgentContextHolder.getUserAgentContext().unwrap(UserAgent.class))
                 .map(u -> u
                         .getAvailableFieldNamesSorted()
                         .stream()

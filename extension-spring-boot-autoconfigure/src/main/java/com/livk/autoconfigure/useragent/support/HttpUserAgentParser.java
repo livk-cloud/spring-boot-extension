@@ -11,7 +11,7 @@ import org.springframework.http.HttpHeaders;
  * @param <T> the type parameter
  * @author livk
  */
-public interface HttpUserAgentParser<T> {
+public interface HttpUserAgentParser {
 
     /**
      * Parse wrapper.
@@ -19,5 +19,5 @@ public interface HttpUserAgentParser<T> {
      * @param headers the headers
      * @return the wrapper
      */
-    Wrapper<T> parse(HttpHeaders headers);
+    Wrapper parse(HttpHeaders headers);
 }

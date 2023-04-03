@@ -17,9 +17,9 @@ import reactor.core.publisher.Mono;
  * @author livk
  */
 @RequiredArgsConstructor
-public class ReactiveUserAgentFilter<T> implements WebFilter {
+public class ReactiveUserAgentFilter implements WebFilter {
 
-    private final HttpUserAgentParser<T> userAgentParse;
+    private final HttpUserAgentParser userAgentParse;
 
     @NonNull
     @Override

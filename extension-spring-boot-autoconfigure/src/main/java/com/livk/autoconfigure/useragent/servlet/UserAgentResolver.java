@@ -24,9 +24,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author livk
  */
 @RequiredArgsConstructor
-public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
+public class UserAgentResolver implements HandlerMethodArgumentResolver {
 
-    private final HttpUserAgentParser<T> userAgentParse;
+    private final HttpUserAgentParser userAgentParse;
 
     @Override
     public final boolean supportsParameter(MethodParameter parameter) {
@@ -35,7 +35,7 @@ public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     @Override
     public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        Wrapper<?> useragentWrapper = UserAgentContextHolder.getUserAgentContext();
+        Wrapper useragentWrapper = UserAgentContextHolder.getUserAgentContext();
         if (useragentWrapper == null) {
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Assert.notNull(request, "request not be null!");
@@ -43,6 +43,6 @@ public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
             useragentWrapper = userAgentParse.parse(headers);
             UserAgentContextHolder.setUserAgentContext(useragentWrapper);
         }
-        return useragentWrapper.unwrap();
+        return useragentWrapper.unwrap(parameter.getParameterType());
     }
 }

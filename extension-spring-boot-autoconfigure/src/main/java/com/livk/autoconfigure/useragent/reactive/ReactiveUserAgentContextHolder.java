@@ -20,7 +20,7 @@ public class ReactiveUserAgentContextHolder {
      *
      * @return the mono
      */
-    public static Mono<Wrapper<?>> get() {
+    public static Mono<Wrapper> get() {
         return Mono.deferContextual(Mono::just)
                 .cast(Context.class)
                 .filter(ReactiveUserAgentContextHolder::hasContext)
@@ -31,8 +31,8 @@ public class ReactiveUserAgentContextHolder {
         return context.hasKey(USER_AGENT_KEY);
     }
 
-    private static Mono<Wrapper<?>> getContext(Context context) {
-        return context.<Mono<Wrapper<?>>>get(USER_AGENT_KEY);
+    private static Mono<Wrapper> getContext(Context context) {
+        return context.<Mono<Wrapper>>get(USER_AGENT_KEY);
     }
 
     /**
@@ -50,7 +50,7 @@ public class ReactiveUserAgentContextHolder {
      * @param useragentWrapper the useragent wrapper
      * @return the context
      */
-    public static Context withContext(Mono<? extends Wrapper<?>> useragentWrapper) {
+    public static Context withContext(Mono<? extends Wrapper> useragentWrapper) {
         return Context.of(USER_AGENT_KEY, useragentWrapper);
     }
 
@@ -60,7 +60,7 @@ public class ReactiveUserAgentContextHolder {
      * @param useragentWrapper the useragent wrapper
      * @return the context
      */
-    public static Context withContext(Wrapper<?> useragentWrapper) {
+    public static Context withContext(Wrapper useragentWrapper) {
         return withContext(Mono.just(useragentWrapper));
     }
 }

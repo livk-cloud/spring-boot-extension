@@ -1,58 +1,52 @@
 package com.livk.commons.bean;
 
-import lombok.RequiredArgsConstructor;
-
 /**
- * <p>
- * Wrapper
- * </p>
- *
- * @param <T> the type parameter
- * @author livk
+ * The interface Wrapper.
  */
-public interface Wrapper<T> {
+public interface Wrapper {
+
+    /**
+     * Try unwrap t.
+     *
+     * @param <T>  the type parameter
+     * @param obj  the obj
+     * @param type the type
+     * @return the t
+     */
+    static <T> T tryUnwrap(Object obj, Class<T> type) {
+        if (obj instanceof Wrapper wrapper) {
+            if (wrapper.isWrapperFor(type)) {
+                return wrapper.unwrap(type);
+            }
+        }
+        return type.cast(obj);
+    }
+
     /**
      * Of wrapper.
      *
      * @param <T>   the type parameter
-     * @param value the t
+     * @param value the value
      * @return the wrapper
      */
-    static <T> Wrapper<T> of(T value) {
-        return new SimpleWrapper<>(value);
+    static <T> Wrapper of(T value) {
+        return new GenericWrapper.SimpleWrapper<>(value);
     }
 
     /**
      * Unwrap t.
      *
+     * @param <T>  the type parameter
+     * @param type the type
      * @return the t
      */
-    T unwrap();
+    <T> T unwrap(Class<T> type);
 
     /**
-     * Cast v.
+     * Is wrapper for boolean.
      *
-     * @param <V>  the type parameter
      * @param type the type
-     * @return the v
+     * @return the boolean
      */
-    default <V> V cast(Class<V> type) {
-        return type.cast(unwrap());
-    }
-
-    /**
-     * The type Simple wrapper.
-     *
-     * @param <T> the type parameter
-     */
-    @RequiredArgsConstructor
-    class SimpleWrapper<T> implements Wrapper<T> {
-
-        private final T value;
-
-        @Override
-        public T unwrap() {
-            return value;
-        }
-    }
+    boolean isWrapperFor(Class<?> type);
 }

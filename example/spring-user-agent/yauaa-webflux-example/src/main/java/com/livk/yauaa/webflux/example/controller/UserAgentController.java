@@ -28,7 +28,7 @@ public class UserAgentController {
 
     @GetMapping
     public Mono<HttpEntity<Map<String, Map<String, String>>>> get(@UserAgentInfo Mono<UserAgent> userAgentMono) {
-        return userAgentMono.concatWith(ReactiveUserAgentContextHolder.get().map(wrapper -> wrapper.cast(UserAgent.class)))
+        return userAgentMono.concatWith(ReactiveUserAgentContextHolder.get().map(wrapper -> wrapper.unwrap(UserAgent.class)))
                 .map(userAgent -> userAgent
                         .getAvailableFieldNamesSorted()
                         .stream()
