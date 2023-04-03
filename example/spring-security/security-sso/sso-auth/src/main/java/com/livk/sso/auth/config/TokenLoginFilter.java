@@ -3,9 +3,6 @@ package com.livk.sso.auth.config;
 import com.livk.commons.jackson.JacksonUtils;
 import com.livk.commons.web.util.WebUtils;
 import com.livk.sso.commons.entity.User;
-import com.livk.sso.commons.util.JwtUtils;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,15 +49,4 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new UsernameNotFoundException("用户名或者密码错误");
         }
     }
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws ServletException, IOException {
-        super.successfulAuthentication(request, response, chain, authResult);
-        User user = (User) authResult.getPrincipal();
-        String token = JwtUtils.generateToken(user);
-        Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-        WebUtils.out(response, map);
-    }
-
 }
