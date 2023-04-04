@@ -2,7 +2,7 @@ package com.livk.autoconfigure.lock;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
-import com.livk.autoconfigure.lock.aspect.LockAspect;
+import com.livk.autoconfigure.lock.intercept.LockInterceptor;
 import com.livk.autoconfigure.lock.support.CuratorLock;
 import com.livk.autoconfigure.lock.support.DistributedLock;
 import com.livk.autoconfigure.lock.support.LocalLock;
@@ -36,8 +36,8 @@ public class LockAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public LockAspect lockAspect(ObjectProvider<DistributedLock> distributedLockProvider) {
-        return new LockAspect(distributedLockProvider);
+    public LockInterceptor lockInterceptor(ObjectProvider<DistributedLock> distributedLockProvider) {
+        return new LockInterceptor(distributedLockProvider);
     }
 
     /**
