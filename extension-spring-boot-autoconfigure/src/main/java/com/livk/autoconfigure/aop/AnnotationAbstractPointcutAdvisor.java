@@ -45,6 +45,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
      * @param invocation the invocation
      * @param annotation the annotation
      * @return the object
+     * @throws Throwable the throwable
      */
     protected abstract Object invoke(MethodInvocation invocation, A annotation) throws Throwable;
 

@@ -13,12 +13,19 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * The type Annotation class or method pointcut.
+ *
  * @author livk
  */
 public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut {
 
     private final MethodMatcher methodResolver;
 
+    /**
+     * Instantiates a new Annotation class or method pointcut.
+     *
+     * @param annotationType the annotation type
+     */
     public AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
         this.methodResolver = new AnnotationMethodMatcher(annotationType);
         setClassFilter(new AnnotationClassOrMethodFilter(annotationType));
@@ -44,6 +51,11 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 
         private final AnnotationMethodsResolver methodResolver;
 
+        /**
+         * Instantiates a new Annotation class or method filter.
+         *
+         * @param annotationType the annotation type
+         */
         AnnotationClassOrMethodFilter(Class<? extends Annotation> annotationType) {
             super(annotationType, true);
             this.methodResolver = new AnnotationMethodsResolver(annotationType);
@@ -60,10 +72,21 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 
         private final Class<? extends Annotation> annotationType;
 
+        /**
+         * Instantiates a new Annotation methods resolver.
+         *
+         * @param annotationType the annotation type
+         */
         public AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
             this.annotationType = annotationType;
         }
 
+        /**
+         * Has annotated methods boolean.
+         *
+         * @param clazz the clazz
+         * @return the boolean
+         */
         public boolean hasAnnotatedMethods(Class<?> clazz) {
             final AtomicBoolean found = new AtomicBoolean(false);
             ReflectionUtils.doWithMethods(clazz, method -> {

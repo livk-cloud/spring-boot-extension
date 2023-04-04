@@ -23,9 +23,14 @@ import org.springframework.util.Assert;
  */
 @RequiredArgsConstructor
 public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock> {
-
+    /**
+     * lock的实现类集合
+     */
     private final ObjectProvider<DistributedLock> distributedLockProvider;
 
+    /**
+     * SpEL表达式解析器
+     */
     private final SpringExpressionResolver resolver = new SpringExpressionResolver();
 
     @Override
