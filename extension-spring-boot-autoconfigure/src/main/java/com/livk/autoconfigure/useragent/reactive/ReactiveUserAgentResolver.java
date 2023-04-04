@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
 @RequiredArgsConstructor

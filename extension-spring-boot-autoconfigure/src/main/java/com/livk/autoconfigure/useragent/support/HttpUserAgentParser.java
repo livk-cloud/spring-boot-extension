@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders;
  * UserAgentParse
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
 public interface HttpUserAgentParser {

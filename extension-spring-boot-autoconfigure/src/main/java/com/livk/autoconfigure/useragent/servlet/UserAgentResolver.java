@@ -20,7 +20,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
 @RequiredArgsConstructor
