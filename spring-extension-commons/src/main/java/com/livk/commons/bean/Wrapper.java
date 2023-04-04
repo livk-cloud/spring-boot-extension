@@ -23,17 +23,6 @@ public interface Wrapper {
     }
 
     /**
-     * Of wrapper.
-     *
-     * @param <T>   the type parameter
-     * @param value the value
-     * @return the wrapper
-     */
-    static <T> Wrapper of(T value) {
-        return new GenericWrapper.SimpleWrapper<>(value);
-    }
-
-    /**
      * Unwrap t.
      *
      * @param <T>  the type parameter

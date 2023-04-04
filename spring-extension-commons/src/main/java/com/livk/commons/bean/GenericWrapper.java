@@ -1,6 +1,5 @@
 package com.livk.commons.bean;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.GenericTypeResolver;
 
 /**
@@ -19,7 +18,7 @@ public interface GenericWrapper<T> extends Wrapper {
      * @return the delegating wrapper
      */
     static <T> GenericWrapper<T> of(T value) {
-        return new SimpleWrapper<>(value);
+        return new RecordWrapper<>(value);
     }
 
     @Override
@@ -45,14 +44,7 @@ public interface GenericWrapper<T> extends Wrapper {
      *
      * @param <T> the type parameter
      */
-    @RequiredArgsConstructor
-    class SimpleWrapper<T> implements GenericWrapper<T> {
+    record RecordWrapper<T>(T unwrap) implements GenericWrapper<T> {
 
-        private final T value;
-
-        @Override
-        public T unwrap() {
-            return value;
-        }
     }
 }
