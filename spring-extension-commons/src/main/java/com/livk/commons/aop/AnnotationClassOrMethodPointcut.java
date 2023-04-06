@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.aop;
+package com.livk.commons.aop;
 
 import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;

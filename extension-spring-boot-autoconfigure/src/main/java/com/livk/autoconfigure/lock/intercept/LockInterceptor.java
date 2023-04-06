@@ -1,16 +1,14 @@
 package com.livk.autoconfigure.lock.intercept;
 
-import com.livk.autoconfigure.aop.AnnotationAbstractPointcutAdvisor;
 import com.livk.autoconfigure.lock.annotation.OnLock;
 import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.autoconfigure.lock.support.DistributedLock;
+import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
 import com.livk.commons.spring.spel.SpringExpressionResolver;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.aop.Pointcut;
-import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.Assert;
 
@@ -22,7 +20,7 @@ import org.springframework.util.Assert;
  * @author livk
  */
 @RequiredArgsConstructor
-public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock> {
+public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLock> {
     /**
      * lock的实现类集合
      */
@@ -54,10 +52,5 @@ public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock> {
                 distributedLock.unlock();
             }
         }
-    }
-
-    @Override
-    public Pointcut getPointcut() {
-        return AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
     }
 }

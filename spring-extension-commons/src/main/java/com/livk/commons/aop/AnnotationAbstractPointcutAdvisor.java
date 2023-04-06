@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.aop;
+package com.livk.commons.aop;
 
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
@@ -51,7 +51,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 
     @Override
     public boolean implementsInterface(Class<?> intf) {
-        return annotationType.isAssignableFrom(intf);
+        return annotationType != null && annotationType.isAssignableFrom(intf);
     }
 
     @Override
