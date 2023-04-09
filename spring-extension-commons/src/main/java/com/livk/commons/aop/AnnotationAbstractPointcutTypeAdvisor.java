@@ -14,7 +14,7 @@ public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation
 
     @Override
     public Pointcut getPointcut() {
-        return AnnotationPointcutType.of(pointcutType(), annotationType);
+        return pointcutType().getPointcut(annotationType);
     }
 
     /**
