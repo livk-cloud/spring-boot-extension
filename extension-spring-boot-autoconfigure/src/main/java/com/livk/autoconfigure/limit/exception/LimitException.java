@@ -27,6 +27,7 @@ public class LimitException extends RuntimeException {
      * Instantiates a new Limit exception.
      *
      * @param message the message
+     * @param cause   the cause
      */
     public LimitException(String message, Throwable cause) {
         super(message, cause);

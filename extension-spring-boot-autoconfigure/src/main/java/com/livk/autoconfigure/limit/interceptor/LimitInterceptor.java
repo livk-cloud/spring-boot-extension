@@ -26,6 +26,9 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
      */
     private final SpringExpressionResolver resolver = new SpringExpressionResolver();
 
+    /**
+     * 执行器
+     */
     private final LimitExecutor limitExecutor;
 
     @Override
