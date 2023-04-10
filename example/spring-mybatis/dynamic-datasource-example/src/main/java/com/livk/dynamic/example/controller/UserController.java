@@ -21,6 +21,7 @@ import java.util.List;
  * @author livk
  */
 @RestController
+@DynamicSource("pgsql")
 @RequestMapping("user")
 @RequiredArgsConstructor
 public class UserController {
@@ -42,7 +43,6 @@ public class UserController {
         return ResponseEntity.ok(userMapper.selectList("user"));
     }
 
-    @DynamicSource("pgsql")
     @PostMapping("pgsql")
     public HttpEntity<Boolean> pgsqlSave() {
         User user = new User();
@@ -51,7 +51,6 @@ public class UserController {
         return ResponseEntity.ok(userMapper.insert(user, "\"user\"") != 0);
     }
 
-    @DynamicSource("pgsql")
     @GetMapping("pgsql")
     public HttpEntity<List<User>> pgsqlUser() {
         return ResponseEntity.ok(userMapper.selectList("\"user\""));

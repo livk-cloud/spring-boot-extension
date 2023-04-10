@@ -1,5 +1,6 @@
 package com.livk.commons.aop;
 
+import com.livk.commons.util.AnnotationUtils;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
