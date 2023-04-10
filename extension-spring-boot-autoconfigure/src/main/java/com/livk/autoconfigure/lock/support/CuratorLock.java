@@ -36,13 +36,12 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
     }
 
     @Override
-    protected void unlock(String key, InterProcessLock lock) {
-        if (lock != null && lock.isAcquiredInThisProcess()) {
-            try {
-                lock.release();
-            } catch (Exception e) {
-                throw new LockException(e);
-            }
+    protected boolean unlock(String key, InterProcessLock lock) {
+        try {
+            lock.release();
+            return !isLocked(lock);
+        } catch (Exception e) {
+            throw new LockException(e);
         }
     }
 
@@ -54,6 +53,11 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
     @Override
     protected void lock(InterProcessLock lock) throws Exception {
         lock.acquire();
+    }
+
+    @Override
+    protected boolean isLocked(InterProcessLock lock) {
+        return lock.isAcquiredInThisProcess();
     }
 
     @Override

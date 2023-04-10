@@ -17,7 +17,7 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
     /**
      * The Thread local.
      */
-    protected final ThreadLocal<Pair<String, T>> threadLocal = new ThreadLocal<>();
+    protected final ThreadLocal<Pair<String, T>> threadLocal = new InheritableThreadLocal<>();
 
     @Override
     public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
@@ -56,8 +56,11 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
     public void unlock() {
         Pair<String, T> pair = threadLocal.get();
         if (pair != null) {
-            unlock(pair.key(), pair.value());
-            threadLocal.remove();
+            String key = pair.key();
+            T lock = pair.value();
+            if (isLocked(lock) && unlock(key, lock)) {
+                threadLocal.remove();
+            }
         }
     }
 
@@ -76,8 +79,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
      *
      * @param key  the key
      * @param lock the lock
+     * @return the boolean
      */
-    protected abstract void unlock(String key, T lock);
+    protected abstract boolean unlock(String key, T lock);
 
     /**
      * Try lock async boolean.
@@ -120,6 +124,14 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
      * @throws Exception the exception
      */
     protected abstract void lock(T lock) throws Exception;
+
+    /**
+     * Is locked boolean.
+     *
+     * @param lock the lock
+     * @return the boolean
+     */
+    protected abstract boolean isLocked(T lock);
 
     /**
      * Support async boolean.
