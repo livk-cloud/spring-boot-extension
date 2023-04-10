@@ -1,26 +1,21 @@
 package com.livk.commons.spring.util;
 
+import com.livk.commons.spring.context.AnnotationMetadataResolver;
 import com.livk.commons.spring.spel.SpringExpressionResolver;
-import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternUtils;
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
-import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * <p>
@@ -44,30 +39,7 @@ public class SpringUtils {
     public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationType,
                                               ResourceLoader resourceLoader, String... packages) {
         Assert.notNull(annotationType, "annotation not null");
-        Set<Class<?>> typeSet = new HashSet<>();
-        if (ObjectUtils.isEmpty(packages)) {
-            return typeSet;
-        }
-        ResourcePatternResolver resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-        CachingMetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
-        for (String packageStr : packages) {
-            packageStr = packageStr.replace(".", "/");
-            try {
-                Resource[] resources = resolver.getResources("classpath*:" + packageStr + "/**/*.class");
-                for (Resource resource : resources) {
-                    MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-                    String className = metadataReader.getClassMetadata().getClassName();
-                    Class<?> type = Class.forName(className);
-                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationType, type) ||
-                        AnnotatedElementUtils.hasAnnotation(type, annotationType)) {
-                        typeSet.add(type);
-                    }
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return typeSet;
+        return new AnnotationMetadataResolver(resourceLoader, packages).find(annotationType);
     }
 
     /**
