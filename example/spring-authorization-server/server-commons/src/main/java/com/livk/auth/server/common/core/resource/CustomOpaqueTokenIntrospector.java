@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 
 import java.security.Principal;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,9 +33,8 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 
-        Map<String, Oauth2UserDetailsService> userDetailsServiceMap = SpringContextHolder.getBeansOfType(Oauth2UserDetailsService.class);
-
-        Optional<Oauth2UserDetailsService> optional = userDetailsServiceMap.values().stream()
+        Optional<Oauth2UserDetailsService> optional = SpringContextHolder.getBeanProvider(Oauth2UserDetailsService.class)
+                .orderedStream()
                 .filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
                         oldAuthorization.getAuthorizationGrantType().getValue()))
                 .max(Comparator.comparingInt(Ordered::getOrder));
