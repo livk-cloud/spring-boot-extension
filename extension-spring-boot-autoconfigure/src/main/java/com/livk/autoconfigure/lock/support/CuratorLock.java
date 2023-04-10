@@ -47,18 +47,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
     }
 
     @Override
-    protected boolean tryLockAsync(InterProcessLock lock, long leaseTime, long waitTime) throws Exception {
-        throw new LockException("Async lock of Curator isn't support");
-    }
-
-    @Override
     protected boolean tryLock(InterProcessLock lock, long leaseTime, long waitTime) throws Exception {
         return lock.acquire(waitTime, TimeUnit.SECONDS);
-    }
-
-    @Override
-    protected void lockAsync(InterProcessLock lock) throws Exception {
-        throw new LockException("Async lock of Curator isn't support");
     }
 
     @Override

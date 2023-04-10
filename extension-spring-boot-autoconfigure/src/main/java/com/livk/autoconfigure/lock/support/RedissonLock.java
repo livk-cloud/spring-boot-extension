@@ -63,4 +63,9 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
     public LockScope scope() {
         return LockScope.DISTRIBUTED_LOCK;
     }
+
+    @Override
+    protected boolean supportAsync() {
+        return true;
+    }
 }

@@ -2,7 +2,6 @@ package com.livk.autoconfigure.lock.support;
 
 import com.livk.autoconfigure.lock.constant.LockScope;
 import com.livk.autoconfigure.lock.constant.LockType;
-import com.livk.autoconfigure.lock.exception.LockException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,18 +32,8 @@ public class LocalLock extends AbstractLockSupport<Lock> {
     }
 
     @Override
-    protected boolean tryLockAsync(Lock lock, long leaseTime, long waitTime) {
-        throw new LockException("Async lock of Local isn't support");
-    }
-
-    @Override
     protected boolean tryLock(Lock lock, long leaseTime, long waitTime) throws Exception {
         return lock.tryLock(waitTime, TimeUnit.SECONDS);
-    }
-
-    @Override
-    protected void lockAsync(Lock lock) {
-        throw new LockException("Async lock of Local isn't support");
     }
 
     @Override
@@ -67,7 +56,6 @@ public class LocalLock extends AbstractLockSupport<Lock> {
                 lock.unlock();
             }
         }
-        CACHE_LOCK.remove(key);
     }
 
     @Override

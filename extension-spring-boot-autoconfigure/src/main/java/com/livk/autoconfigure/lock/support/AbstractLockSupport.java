@@ -2,6 +2,7 @@ package com.livk.autoconfigure.lock.support;
 
 import com.livk.autoconfigure.lock.constant.LockType;
 import com.livk.autoconfigure.lock.exception.LockException;
+import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.commons.bean.domain.Pair;
 
 /**
@@ -22,7 +23,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
     public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
         T lock = getLock(type, key);
         try {
-            boolean isLocked = async ? tryLockAsync(lock, leaseTime, waitTime) : tryLock(lock, waitTime, leaseTime);
+            boolean isLocked = supportAsync() && async ?
+                    tryLockAsync(lock, leaseTime, waitTime) :
+                    tryLock(lock, waitTime, leaseTime);
             if (isLocked) {
                 threadLocal.set(Pair.of(key, lock));
             }
@@ -37,7 +40,7 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
     public void lock(LockType type, String key, boolean async) {
         T lock = getLock(type, key);
         try {
-            if (async) {
+            if (supportAsync() && async) {
                 lockAsync(lock);
             } else {
                 lock(lock);
@@ -85,7 +88,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
      * @return the boolean
      * @throws Exception the exception
      */
-    protected abstract boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws Exception;
+    protected boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws Exception {
+        throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
+    }
 
     /**
      * Try lock boolean.
@@ -104,7 +109,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
      * @param lock the lock
      * @throws Exception the exception
      */
-    protected abstract void lockAsync(T lock) throws Exception;
+    protected void lockAsync(T lock) throws Exception {
+        throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
+    }
 
     /**
      * Lock.
@@ -113,4 +120,13 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
      * @throws Exception the exception
      */
     protected abstract void lock(T lock) throws Exception;
+
+    /**
+     * Support async boolean.
+     *
+     * @return the boolean
+     */
+    protected boolean supportAsync() {
+        return false;
+    }
 }
