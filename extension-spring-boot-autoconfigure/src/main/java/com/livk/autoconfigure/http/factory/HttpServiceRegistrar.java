@@ -29,6 +29,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -64,12 +65,9 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
                 beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, clazz.getName());
 
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
-                String beanName;
-                if (provider != null && StringUtils.hasText(provider.value())) {
-                    beanName = provider.value();
-                } else {
-                    beanName = StringUtils.uncapitalize(clazz.getSimpleName());
-                }
+                String beanName = Optional.ofNullable(provider)
+                        .map(Provider::value)
+                        .orElse(StringUtils.uncapitalize(clazz.getSimpleName()));
                 BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, clazz.getName(), new String[]{beanName});
                 BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
             }
