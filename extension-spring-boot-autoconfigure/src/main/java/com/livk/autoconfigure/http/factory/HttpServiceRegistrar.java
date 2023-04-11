@@ -80,13 +80,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
         return new ClassPathBeanDefinitionScanner(registry, false, environment, resourceLoader) {
             @Override
             protected boolean isCandidateComponent(@NonNull AnnotatedBeanDefinition beanDefinition) {
-                boolean isCandidate = false;
-                if (beanDefinition.getMetadata().isIndependent()) {
-                    if (!beanDefinition.getMetadata().isAnnotation()) {
-                        isCandidate = true;
-                    }
-                }
-                return isCandidate;
+                return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
             }
         };
     }
