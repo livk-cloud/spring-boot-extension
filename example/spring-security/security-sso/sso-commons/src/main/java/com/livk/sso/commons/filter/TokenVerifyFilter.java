@@ -1,6 +1,5 @@
 package com.livk.sso.commons.filter;
 
-import com.google.common.net.HttpHeaders;
 import com.livk.commons.web.util.WebUtils;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
@@ -9,6 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
