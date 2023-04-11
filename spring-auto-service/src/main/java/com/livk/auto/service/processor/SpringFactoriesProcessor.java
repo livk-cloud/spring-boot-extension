@@ -9,13 +9,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
@@ -64,9 +64,8 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 }
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
-                try (OutputStream out = fileObject.openOutputStream()) {
-                    this.writeFile(allImportMap, out);
-                }
+
+                this.writeFile(allImportMap, fileObject);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -97,7 +96,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * @return set className
      */
     private Set<String> read(String providerInterface, FileObject fileObject) {
-        try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
+        try (BufferedReader reader = bufferedReader(fileObject)) {
             boolean read = false;
             List<String> lines = reader.lines().toList();
             Set<String> providers = new HashSet<>();
@@ -119,7 +118,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
             }
             return providers;
         } catch (IOException e) {
-            return Set.of();
+            return Collections.emptySet();
         }
     }
 
@@ -127,10 +126,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * 将配置信息写入到文件
      *
      * @param allImportMap 供应商接口及实现类信息
-     * @param output       输出流
+     * @param fileObject   文件信息
      */
-    private void writeFile(Map<String, Set<String>> allImportMap, OutputStream output) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+    private void writeFile(Map<String, Set<String>> allImportMap, FileObject fileObject) {
+        try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
                 String providerInterface = entry.getKey();
                 Set<String> services = entry.getValue();

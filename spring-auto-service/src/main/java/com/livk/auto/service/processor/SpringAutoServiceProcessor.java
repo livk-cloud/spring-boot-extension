@@ -9,13 +9,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
@@ -55,9 +55,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
 
-                try (OutputStream out = fileObject.openOutputStream()) {
-                    this.writeFile(allImports, out);
-                }
+                this.writeFile(allImports, fileObject);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -82,7 +80,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
      * @return set className
      */
     private Set<String> read(FileObject fileObject) {
-        try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
+        try (BufferedReader reader = bufferedReader(fileObject)) {
             return reader.lines()
                     .map(String::trim)
                     .collect(Collectors.toUnmodifiableSet());
@@ -94,11 +92,11 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     /**
      * 将配置信息写入到文件
      *
-     * @param services 实现类信息
-     * @param output   输出流
+     * @param services   实现类信息
+     * @param fileObject 文件信息
      */
-    private void writeFile(Collection<String> services, OutputStream output) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+    private void writeFile(Collection<String> services, FileObject fileObject) {
+        try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (String service : services) {
                 writer.write(service);
                 writer.newLine();

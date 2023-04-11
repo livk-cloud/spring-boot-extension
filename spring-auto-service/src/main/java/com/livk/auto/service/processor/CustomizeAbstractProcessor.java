@@ -7,7 +7,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -165,5 +169,27 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
             builder.replace(index, index + 1, "$");
         }
         return builder.toString();
+    }
+
+    /**
+     * buffered reader.
+     *
+     * @param fileObject the file object
+     * @return the buffered reader
+     * @throws IOException the io exception
+     */
+    protected BufferedReader bufferedReader(FileObject fileObject) throws IOException {
+        return new BufferedReader(fileObject.openReader(true));
+    }
+
+    /**
+     * buffered writer.
+     *
+     * @param fileObject the file object
+     * @return the buffered writer
+     * @throws IOException the io exception
+     */
+    protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
+        return new BufferedWriter(fileObject.openWriter());
     }
 }
