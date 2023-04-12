@@ -5,18 +5,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.bean.GenericWrapper;
 import com.livk.commons.bean.Wrapper;
-import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ResolvableType;
 
 import java.io.DataInput;
 import java.io.File;
@@ -38,14 +34,7 @@ public class JacksonUtils {
     private static final ObjectMapper MAPPER;
 
     static {
-        GenericWrapper<ObjectMapper> wrapper = null;
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(GenericWrapper.class, ObjectMapper.class);
-        try {
-            wrapper = SpringContextHolder.<GenericWrapper<ObjectMapper>>getBeanProvider(resolvableType).getIfUnique();
-        } catch (Exception e) {
-            log.debug("Building 'ObjectMapper'");
-        }
-        MAPPER = wrapper == null ? JsonMapper.builder().build() : wrapper.unwrap();
+        MAPPER = JacksonWrapper.unwrapOfContext();
         MAPPER.registerModules(new JavaTimeModule());
     }
 
