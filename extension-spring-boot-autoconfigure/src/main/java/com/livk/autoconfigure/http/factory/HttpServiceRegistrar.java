@@ -67,6 +67,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
                 String beanName = Optional.ofNullable(provider)
                         .map(Provider::value)
+                        .filter(StringUtils::hasText)
                         .orElse(StringUtils.uncapitalize(clazz.getSimpleName()));
                 BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, clazz.getName(), new String[]{beanName});
                 BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
