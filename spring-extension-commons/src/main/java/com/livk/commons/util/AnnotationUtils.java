@@ -3,6 +3,8 @@ package com.livk.commons.util;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -75,5 +77,28 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
         return method.isAnnotationPresent(annotationClass) ||
                AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
+    }
+
+    /**
+     * Attributes for annotation attributes.
+     *
+     * @param metadata            the metadata
+     * @param annotationClassName the annotation class name
+     * @return the annotation attributes
+     */
+    public AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) {
+        return AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(annotationClassName));
+    }
+
+    /**
+     * Attributes for annotation attributes.
+     *
+     * @param <A>             the type parameter
+     * @param metadata        the metadata
+     * @param annotationClass the annotation class
+     * @return the annotation attributes
+     */
+    public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, Class<A> annotationClass) {
+        return attributesFor(metadata, annotationClass.getName());
     }
 }
