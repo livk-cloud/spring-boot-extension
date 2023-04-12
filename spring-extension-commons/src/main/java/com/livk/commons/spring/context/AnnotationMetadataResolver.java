@@ -5,6 +5,7 @@ import com.livk.commons.util.ObjectUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -12,6 +13,7 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -26,7 +28,7 @@ import java.util.Set;
  */
 public class AnnotationMetadataResolver {
 
-    private final String[] packages;
+    private final ResourceLoader resourceLoader;
 
     private final ResourcePatternResolver resolver;
 
@@ -36,31 +38,28 @@ public class AnnotationMetadataResolver {
      * Instantiates a new Annotation metadata resolver.
      *
      * @param resourceLoader the resource loader
-     * @param packages       the packages
      */
-    public AnnotationMetadataResolver(ResourceLoader resourceLoader, String... packages) {
-        this.packages = packages;
+    public AnnotationMetadataResolver(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
         this.resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
         this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
     }
 
     /**
      * Instantiates a new Annotation metadata resolver.
-     *
-     * @param resourceLoader the resource loader
-     * @param beanFactory    the bean factory
      */
-    public AnnotationMetadataResolver(ResourceLoader resourceLoader, BeanFactory beanFactory) {
-        this(resourceLoader, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
+    public AnnotationMetadataResolver() {
+        this(new DefaultResourceLoader());
     }
 
     /**
-     * Find set.
+     * 获取被注解标注的class
      *
-     * @param annotationType the annotation type
-     * @return the set
+     * @param annotationType 注解
+     * @param packages       待扫描的包
+     * @return set class
      */
-    public Set<Class<?>> find(Class<? extends Annotation> annotationType) {
+    public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
         Set<Class<?>> typeSet = new HashSet<>();
         if (ObjectUtils.isEmpty(packages)) {
             return typeSet;
@@ -72,7 +71,7 @@ public class AnnotationMetadataResolver {
                 for (Resource resource : resources) {
                     MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
                     String className = metadataReader.getClassMetadata().getClassName();
-                    Class<?> type = Class.forName(className);
+                    Class<?> type = ClassUtils.forName(className, resourceLoader.getClassLoader());
                     if (AnnotationUtils.isAnnotationDeclaredLocally(annotationType, type) ||
                         AnnotatedElementUtils.hasAnnotation(type, annotationType)) {
                         typeSet.add(type);
@@ -83,5 +82,16 @@ public class AnnotationMetadataResolver {
             }
         }
         return typeSet;
+    }
+
+    /**
+     * 获取被注解标注的class
+     *
+     * @param annotationType 注解
+     * @param beanFactory    springboot包扫描
+     * @return set class
+     */
+    public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
+        return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
     }
 }
