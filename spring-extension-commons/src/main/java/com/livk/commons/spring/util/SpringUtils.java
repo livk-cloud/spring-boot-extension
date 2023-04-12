@@ -24,6 +24,7 @@ import java.util.Set;
  *
  * @author livk
  */
+@Deprecated(forRemoval = true)
 @UtilityClass
 public class SpringUtils {
     private static final SpringExpressionResolver RESOLVER = new SpringExpressionResolver();
@@ -39,7 +40,7 @@ public class SpringUtils {
     public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationType,
                                               ResourceLoader resourceLoader, String... packages) {
         Assert.notNull(annotationType, "annotation not null");
-        return new AnnotationMetadataResolver(resourceLoader, packages).find(annotationType);
+        return new AnnotationMetadataResolver(resourceLoader).find(annotationType, packages);
     }
 
     /**
