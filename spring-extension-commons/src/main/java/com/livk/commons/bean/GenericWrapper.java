@@ -5,19 +5,19 @@ import org.springframework.core.GenericTypeResolver;
 /**
  * The interface Delegating wrapper.
  *
- * @param <T> the type parameter
+ * @param <V> the type parameter
  * @author livk
  */
-public interface GenericWrapper<T> extends Wrapper {
+public interface GenericWrapper<V> extends Wrapper {
 
     /**
      * Of delegating wrapper.
      *
-     * @param <T>   the type parameter
+     * @param <V>   the type parameter
      * @param value the value
      * @return the delegating wrapper
      */
-    static <T> GenericWrapper<T> of(T value) {
+    static <V> GenericWrapper<V> of(V value) {
         return new RecordWrapper<>(value);
     }
 
@@ -37,14 +37,5 @@ public interface GenericWrapper<T> extends Wrapper {
      *
      * @return the t
      */
-    T unwrap();
-
-    /**
-     * The type Simple wrapper.
-     *
-     * @param <T> the type parameter
-     */
-    record RecordWrapper<T>(T unwrap) implements GenericWrapper<T> {
-
-    }
+    V unwrap();
 }
