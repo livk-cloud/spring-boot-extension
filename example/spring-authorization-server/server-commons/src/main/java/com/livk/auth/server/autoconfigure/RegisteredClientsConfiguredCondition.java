@@ -1,6 +1,6 @@
 package com.livk.auth.server.autoconfigure;
 
-import com.livk.commons.spring.util.SpringUtils;
+import com.livk.commons.spring.env.SpringEnvBinder;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -38,7 +38,7 @@ class RegisteredClientsConfiguredCondition extends SpringBootCondition {
     }
 
     private Map<String, OAuth2AuthorizationServerProperties.Client> getRegistrations(Environment environment) {
-        return SpringUtils.bind(environment, "spring.security.oauth2.authorizationserver.client", STRING_CLIENT_MAP)
+        return new SpringEnvBinder(environment).bind("spring.security.oauth2.authorizationserver.client", STRING_CLIENT_MAP)
                 .orElse(Collections.emptyMap());
     }
 
