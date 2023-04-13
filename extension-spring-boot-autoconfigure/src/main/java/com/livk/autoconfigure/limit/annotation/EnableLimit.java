@@ -1,7 +1,6 @@
 package com.livk.autoconfigure.limit.annotation;
 
-import com.livk.autoconfigure.limit.LimitImportSelector;
-import org.springframework.context.annotation.Import;
+import com.livk.commons.spring.context.AutoImport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,9 +10,9 @@ import java.lang.annotation.Target;
 /**
  * @author livk
  */
+@AutoImport
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(LimitImportSelector.class)
 public @interface EnableLimit {
 
 

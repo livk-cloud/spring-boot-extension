@@ -1,7 +1,6 @@
 package com.livk.autoconfigure.mybatis.annotation;
 
-import com.livk.autoconfigure.mybatis.SqlDataInjectionInterceptorImportSelector;
-import org.springframework.context.annotation.Import;
+import com.livk.commons.spring.context.AutoImport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,9 +14,9 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
+@AutoImport
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(SqlDataInjectionInterceptorImportSelector.class)
 public @interface EnableSqlPlugin {
 
 }

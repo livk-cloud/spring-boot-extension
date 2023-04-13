@@ -2,6 +2,7 @@ package com.livk.commons.spring.context;
 
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.DeferredImportSelector;
@@ -24,16 +25,24 @@ import java.util.List;
  * @param <T> the type parameter
  * @author livk
  */
-public abstract class AbstractImportSelector<T extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware {
+public abstract class AbstractImportSelector<T extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
+    /**
+     * The Annotation class.
+     */
     @SuppressWarnings("unchecked")
-    private final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
+    protected final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
     /**
      * The Environment.
      */
     @Setter
     protected Environment environment;
+
+    /**
+     * The Class loader.
+     */
+    protected ClassLoader classLoader;
 
     @NotNull
     @Override
@@ -42,18 +51,8 @@ public abstract class AbstractImportSelector<T extends Annotation> implements De
             return new String[0];
         }
         Assert.notNull(annotationClass, "annotation Class not be null");
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         List<String> names = ImportCandidates.load(annotationClass, classLoader).getCandidates();
         return StringUtils.toStringArray(names);
-    }
-
-    /**
-     * Gets annotation class.
-     *
-     * @return the annotation class
-     */
-    protected Class<T> getAnnotationClass() {
-        return this.annotationClass;
     }
 
     /**
@@ -68,5 +67,10 @@ public abstract class AbstractImportSelector<T extends Annotation> implements De
     @Override
     public int getOrder() {
         return Ordered.HIGHEST_PRECEDENCE;
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 }
