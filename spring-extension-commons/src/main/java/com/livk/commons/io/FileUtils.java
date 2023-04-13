@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -60,6 +61,20 @@ public class FileUtils extends FileCopyUtils {
             flag = parentFile.mkdirs();
         }
         return flag && file.createNewFile();
+    }
+
+    /**
+     * Read string.
+     *
+     * @param file the file
+     * @return the string
+     * @throws IOException the io exception
+     */
+    public String read(File file) throws IOException {
+        try (FileReader fileReader = new FileReader(file);
+             BufferedReader reader = new BufferedReader(fileReader)) {
+            return reader.lines().collect(Collectors.joining("\n"));
+        }
     }
 
     /**

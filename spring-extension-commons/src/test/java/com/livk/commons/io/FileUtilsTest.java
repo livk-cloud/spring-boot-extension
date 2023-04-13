@@ -49,4 +49,12 @@ class FileUtilsTest {
             assertTrue(file.delete());
         }
     }
+
+    @Test
+    void read() throws IOException {
+        File file = new ClassPathResource("input.json").getFile();
+        String json = FileUtils.read(file);
+        JsonNode result = JacksonUtils.readTree(file);
+        assertEquals(result, JacksonUtils.readTree(json));
+    }
 }
