@@ -58,6 +58,22 @@ public class StreamUtils {
         return Arrays.stream(ts).filter(Objects::nonNull).flatMap(Arrays::stream);
     }
 
+
+    /**
+     * Zip stream.
+     *
+     * @param <T>        the type parameter
+     * @param <R>        the type parameter
+     * @param combinator the combinator
+     * @param streams    the streams
+     * @return the stream
+     */
+    @SafeVarargs
+    public <T, R> Stream<R> zip(Function<Stream<T>, Stream<R>> combinator, Stream<T>... streams) {
+        return ObjectUtils.isEmpty(streams) ? Stream.empty() :
+                Stream.of(streams).flatMap(combinator);
+    }
+
     /**
      * Distinct predicate.
      *

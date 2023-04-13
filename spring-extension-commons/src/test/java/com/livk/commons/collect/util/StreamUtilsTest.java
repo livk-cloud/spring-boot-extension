@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -94,6 +95,14 @@ class StreamUtilsTest {
 
         List.of("root", "livk", "admin")
                 .forEach(StreamUtils.forEachWithIndex(10, (s, i) -> System.out.println("index:" + i + " data:" + s)));
+    }
+
+    @Test
+    void zip() {
+        Stream<String> result = Stream.of("1", "2", "3", "4", "5", "6");
+        Stream<String> zip = StreamUtils.zip(stream -> stream.map(Objects::toString), Stream.of(1, 2), Stream.of(3, 4), Stream.of(5, 6));
+
+        assertLinesMatch(result, zip);
     }
 
     private record User(Integer id, String username) {
