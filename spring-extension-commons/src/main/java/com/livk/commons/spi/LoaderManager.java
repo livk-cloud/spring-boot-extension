@@ -7,5 +7,10 @@ package com.livk.commons.spi;
  */
 public interface LoaderManager {
 
+    /**
+     * Loader loader.
+     *
+     * @return the loader
+     */
     Loader loader();
 }

@@ -6,10 +6,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The type Reentrant limit executor.
+ *
  * @author livk
  */
 public abstract class ReentrantLimitExecutor implements LimitExecutor {
 
+    /**
+     * The constant ATTRIBUTE_NAME.
+     */
     public static final String ATTRIBUTE_NAME = "limit";
 
     /**
