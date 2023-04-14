@@ -7,8 +7,8 @@ import com.livk.autoconfigure.limit.support.LimitExecutor;
 import com.livk.autoconfigure.limit.support.RedissonLimitExecutor;
 import com.livk.autoconfigure.redisson.RedissonAutoConfiguration;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
@@ -24,13 +24,12 @@ public class LimitAutoConfiguration {
     /**
      * Limit interceptor limit interceptor.
      *
-     * @param limitExecutor the limit executor
+     * @param provider the provider
      * @return the limit interceptor
      */
     @Bean
-    @ConditionalOnBean(LimitExecutor.class)
-    public LimitInterceptor limitInterceptor(LimitExecutor limitExecutor) {
-        return new LimitInterceptor(limitExecutor);
+    public LimitInterceptor limitInterceptor(ObjectProvider<LimitExecutor> provider) {
+        return new LimitInterceptor(provider);
     }
 
     /**
@@ -47,7 +46,6 @@ public class LimitAutoConfiguration {
          */
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(RedissonClient.class)
         public LimitExecutor redissonLimitExecutor(RedissonClient redissonClient) {
             return new RedissonLimitExecutor(redissonClient);
         }

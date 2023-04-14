@@ -16,12 +16,12 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class RedissonLimitExecutor implements LimitExecutor {
+public class RedissonLimitExecutor extends ReentrantLimitExecutor implements LimitExecutor {
 
     private final RedissonClient redissonClient;
 
     @Override
-    public boolean tryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
+    protected boolean reentrantTryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
         if (StringUtils.hasText(compositeKey)) {
             RRateLimiter rateLimiter = redissonClient.getRateLimiter(compositeKey);
             try {
@@ -34,5 +34,4 @@ public class RedissonLimitExecutor implements LimitExecutor {
         }
         throw new LimitException("Composite key is null or empty");
     }
-
 }

@@ -3,14 +3,12 @@ package com.livk.autoconfigure.limit.interceptor;
 import com.livk.autoconfigure.limit.annotation.Limit;
 import com.livk.autoconfigure.limit.exception.LimitException;
 import com.livk.autoconfigure.limit.support.LimitExecutor;
+import com.livk.autoconfigure.limit.support.LimitSupport;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
-import com.livk.commons.spring.spel.SpringExpressionResolver;
-import com.livk.commons.web.util.WebUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;
-
-import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.ObjectProvider;
 
 /**
  * The type Limit interceptor.
@@ -22,31 +20,19 @@ import java.util.concurrent.TimeUnit;
 public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limit> {
 
     /**
-     * SpEL表达式解析器
-     */
-    private final SpringExpressionResolver resolver = new SpringExpressionResolver();
-
-    /**
      * 执行器
      */
-    private final LimitExecutor limitExecutor;
+    private final ObjectProvider<LimitExecutor> provider;
 
     @Override
     protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
-        String key = limit.key();
-        int rate = limit.rate();
-        int rateInterval = limit.rateInterval();
-        TimeUnit rateIntervalUnit = limit.rateIntervalUnit();
-        String spELKey = resolver.evaluate(key, invocation.getMethod(), invocation.getArguments());
-        if (limit.restrictIp()) {
-            String ip = WebUtils.realIp(WebUtils.request());
-            spELKey = spELKey + "#" + ip;
-        }
-        boolean status = limitExecutor.tryAccess(spELKey, rate, rateInterval, rateIntervalUnit);
+        LimitSupport limitSupport = LimitSupport.of(provider.getIfAvailable());
+        boolean status = limitSupport.exec(limit, invocation.getMethod(), invocation.getArguments());
         if (status) {
             return invocation.proceed();
         } else {
-            throw new LimitException("key=" + key + " is reach max limited access count=" + rate + " within period=" + rateInterval + " " + rateIntervalUnit.name());
+            throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate() +
+                                     " within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
         }
     }
 

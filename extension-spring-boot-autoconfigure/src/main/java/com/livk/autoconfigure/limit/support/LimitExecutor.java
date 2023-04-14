@@ -16,7 +16,7 @@ public interface LimitExecutor {
      * @param rate             最多的访问限制次数
      * @param rateInterval     给定的时间段(单位秒)
      * @param rateIntervalUnit the rate interval unit
-     * @return boolean boolean
+     * @return boolean
      */
     boolean tryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit);
 }

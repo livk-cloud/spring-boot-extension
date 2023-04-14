@@ -1,4 +1,4 @@
-package com.livk.redisson.limit;
+package com.livk.redisson.limit.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>
- * RateLimiterControllerTest
- * </p>
- *
  * @author livk
  */
 @SpringBootTest
@@ -26,11 +22,17 @@ class RateLimiterControllerTest {
     MockMvc mockMvc;
 
     @Test
-    void testRate() throws Exception {
+    void rate() throws Exception {
+        for (int i = 0; i < 2; i++) {
+            mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andReturn();
+        }
+
         mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().is5xxServerError())
                 .andDo(print())
                 .andReturn();
     }
-
 }
