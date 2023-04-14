@@ -34,8 +34,10 @@ class DefaultEvaluationContextFactory implements EvaluationContextFactory {
         if (method != null) {
             String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
             Assert.notNull(parameterNames, "参数列表不能为null");
-            for (int i = 0; i < parameterNames.length; i++) {
-                context.setVariable(parameterNames[i], args[i]);
+            if (args != null && parameterNames.length == args.length) {
+                for (int i = 0; i < parameterNames.length; i++) {
+                    context.setVariable(parameterNames[i], args[i]);
+                }
             }
         }
         if (!CollectionUtils.isEmpty(expandMap)) {
