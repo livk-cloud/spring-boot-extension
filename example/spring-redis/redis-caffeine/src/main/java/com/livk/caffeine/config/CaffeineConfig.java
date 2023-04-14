@@ -2,6 +2,8 @@ package com.livk.caffeine.config;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.livk.caffeine.handler.CacheHandler;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,4 +28,8 @@ public class CaffeineConfig {
                 .build();
     }
 
+    @Bean
+    public CacheManager cacheManager(CacheHandler<Object> cacheHandler) {
+        return new RedisCaffeineManager(cacheHandler);
+    }
 }

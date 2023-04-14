@@ -1,13 +1,15 @@
 package com.livk.caffeine.aspect;
 
 import com.livk.caffeine.annotation.DoubleCache;
-import com.livk.caffeine.handler.CacheHandlerAdapter;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
 import com.livk.commons.spring.spel.SpringExpressionResolver;
-import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import java.util.concurrent.Callable;
 
 /**
  * <p>
@@ -17,12 +19,15 @@ import org.springframework.util.Assert;
  * @author livk
  */
 @Component
-@RequiredArgsConstructor
 public class CacheInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DoubleCache> {
 
-    private final CacheHandlerAdapter adapter;
+    private final Cache cache;
 
     private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+
+    public CacheInterceptor(CacheManager cacheManager) {
+        this.cache = cacheManager.getCache("redis-caffeine");
+    }
 
     @Override
     protected Object invoke(MethodInvocation invocation, DoubleCache doubleCache) throws Throwable {
@@ -31,19 +36,23 @@ public class CacheInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Doub
         String realKey = doubleCache.cacheName() + ":" + spELResult;
         switch (doubleCache.type()) {
             case FULL -> {
-                return adapter.readAndPut(realKey, invocation.proceed(), doubleCache.timeOut());
+                return cache.get(realKey, call(invocation.proceed()));
             }
             case PUT -> {
                 Object proceed = invocation.proceed();
-                adapter.put(realKey, proceed, doubleCache.timeOut());
+                cache.put(realKey, proceed);
                 return proceed;
             }
             case DELETE -> {
                 Object proceed = invocation.proceed();
-                adapter.delete(realKey);
+                cache.evict(realKey);
                 return proceed;
             }
         }
         return invocation.proceed();
+    }
+
+    private Callable<Object> call(Object obj) {
+        return () -> obj;
     }
 }
