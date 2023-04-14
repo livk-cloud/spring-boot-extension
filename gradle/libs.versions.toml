@@ -30,6 +30,7 @@ jsqlparser = "4.6"
 lettucemod = "3.4.1"
 minio = "8.5.2"
 dnsjava = "3.5.2"
+snakeyaml = "2.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -67,7 +68,7 @@ jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
-
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctorJvm" }
