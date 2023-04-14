@@ -5,5 +5,7 @@ package com.livk.commons.spi;
  *
  * @author livk
  */
-public interface LoaderType extends Loader {
+public interface LoaderManager {
+
+    Loader loader();
 }

@@ -12,13 +12,13 @@ public interface Loader {
     /**
      * Load stream.
      *
-     * @param <T>        the type parameter
-     * @param type       the type
-     * @param loaderType the loader type
+     * @param <T>     the type parameter
+     * @param type    the type
+     * @param manager the loader type
      * @return the stream
      */
-    static <T> List<T> load(Class<T> type, LoaderType loaderType) {
-        return loaderType.load(type);
+    static <T> List<T> load(Class<T> type, LoaderManager manager) {
+        return manager.loader().load(type);
     }
 
     /**

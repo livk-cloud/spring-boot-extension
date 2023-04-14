@@ -1,16 +1,14 @@
 package com.livk.commons.spi.support;
 
 import com.livk.commons.spi.Loader;
-import com.livk.commons.spi.LoaderType;
+import com.livk.commons.spi.LoaderManager;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 /**
  * The enum Loader type.
  */
 @RequiredArgsConstructor
-public enum UniversalLoaderType implements LoaderType {
+public enum UniversalManager implements LoaderManager {
 
     /**
      * The Spring factory.
@@ -30,7 +28,7 @@ public enum UniversalLoaderType implements LoaderType {
     private final Loader loader;
 
     @Override
-    public <T> List<T> load(Class<T> type) {
-        return this.loader.load(type);
+    public Loader loader() {
+        return this.loader;
     }
 }
