@@ -55,12 +55,12 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
     /**
      * The Out.
      */
-    protected Set<StandardLocation> out;
+    protected StandardLocation out;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        out = Set.of(StandardLocation.CLASS_OUTPUT, StandardLocation.SOURCE_OUTPUT);
+        out = StandardLocation.CLASS_OUTPUT;
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
         messager = processingEnv.getMessager();

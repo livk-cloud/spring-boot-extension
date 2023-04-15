@@ -53,11 +53,8 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
             Map<String, Set<String>> allImportMap = new HashMap<>();
             try {
                 for (String providerInterface : factoriesMap.keySet()) {
-                    Set<String> exitImports = new HashSet<>();
-                    for (StandardLocation standardLocation : out) {
-                        FileObject resource = filer.getResource(standardLocation, "", location);
-                        exitImports.addAll(this.read(providerInterface, resource));
-                    }
+                    FileObject resource = filer.getResource(out, "", location);
+                    Set<String> exitImports = this.read(providerInterface, resource);
                     Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
                             .collect(Collectors.toSet());
                     allImportMap.put(providerInterface, allImports);
