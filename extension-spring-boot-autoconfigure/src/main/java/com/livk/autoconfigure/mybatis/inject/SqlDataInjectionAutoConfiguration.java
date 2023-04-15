@@ -1,8 +1,8 @@
-package com.livk.autoconfigure.mybatis;
+package com.livk.autoconfigure.mybatis.inject;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.mybatis.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatis.interceptor.SqlDataInjection;
+import com.livk.autoconfigure.mybatis.inject.annotation.EnableSqlPlugin;
+import com.livk.autoconfigure.mybatis.inject.interceptor.SqlDataInjection;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;

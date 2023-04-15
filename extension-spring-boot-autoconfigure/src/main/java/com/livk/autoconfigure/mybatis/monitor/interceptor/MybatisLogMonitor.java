@@ -1,13 +1,18 @@
-package com.livk.autoconfigure.mybatis.monitor;
+package com.livk.autoconfigure.mybatis.monitor.interceptor;
 
+import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitorProperties;
+import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
+import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
 import com.livk.autoconfigure.mybatis.util.SqlUtils;
+import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
-import org.springframework.beans.factory.ObjectProvider;
 
 import java.sql.Connection;
+import java.time.temporal.ChronoUnit;
+import java.util.Properties;
 
 /**
  * <p>
@@ -27,9 +32,7 @@ import java.sql.Connection;
 @RequiredArgsConstructor
 public class MybatisLogMonitor implements Interceptor {
 
-    private final MybatisLogMonitorProperties properties;
-
-    private final ObjectProvider<SqlMonitor> monitorList;
+    private Properties properties;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -37,10 +40,10 @@ public class MybatisLogMonitor implements Interceptor {
         Object proceed = invocation.proceed();
         long time = System.currentTimeMillis() - start;
         String sql = SqlUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
-        long timeOut = properties.getUnit().getDuration().toMillis() * properties.getTimeOut();
-        if (time > timeOut) {
+        if (time > timeOut()) {
             log.warn("{SQL超时 SQL:[{}],Time:[{}ms]}", sql, time);
-            monitorList.orderedStream().forEach(sqlMonitor -> sqlMonitor.run(sql, time));
+            MonitorSQLInfo monitorSQLInfo = MonitorSQLInfo.of(sql, time, proceed);
+            SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
         }
         return proceed;
     }
@@ -48,5 +51,17 @@ public class MybatisLogMonitor implements Interceptor {
     @Override
     public Object plugin(Object target) {
         return Plugin.wrap(target, this);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
+    private long timeOut() {
+        return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName()))
+                       .getDuration()
+                       .toMillis() *
+               (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
     }
 }

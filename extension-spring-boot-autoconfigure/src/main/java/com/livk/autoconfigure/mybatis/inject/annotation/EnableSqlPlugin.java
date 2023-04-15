@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.mybatis.monitor;
+package com.livk.autoconfigure.mybatis.inject.annotation;
 
 import com.livk.commons.spring.context.AutoImport;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * EnableSqlMonitor
+ * EnableSqlPlugin
  * </p>
  *
  * @author livk
@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 @AutoImport
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface EnableSqlMonitor {
+public @interface EnableSqlPlugin {
+
 }

@@ -1,6 +1,6 @@
-package com.livk.autoconfigure.mybatis.handler.time;
+package com.livk.autoconfigure.mybatis.inject.handler.time;
 
-import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
+import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
 
 import java.util.Date;
 

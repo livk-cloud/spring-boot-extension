@@ -1,11 +1,11 @@
-package com.livk.autoconfigure.mybatis.constant;
+package com.livk.autoconfigure.mybatis.inject.enums;
 
-import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
-import com.livk.autoconfigure.mybatis.handler.NullFunction;
-import com.livk.autoconfigure.mybatis.handler.time.DateFunction;
-import com.livk.autoconfigure.mybatis.handler.time.LocalDateFunction;
-import com.livk.autoconfigure.mybatis.handler.time.LocalDateTimeFunction;
-import com.livk.autoconfigure.mybatis.handler.time.TimestampFunction;
+import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
+import com.livk.autoconfigure.mybatis.inject.handler.NullFunction;
+import com.livk.autoconfigure.mybatis.inject.handler.time.DateFunction;
+import com.livk.autoconfigure.mybatis.inject.handler.time.LocalDateFunction;
+import com.livk.autoconfigure.mybatis.inject.handler.time.LocalDateTimeFunction;
+import com.livk.autoconfigure.mybatis.inject.handler.time.TimestampFunction;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
  * @author livk
  */
 @RequiredArgsConstructor
-public enum FunctionEnum implements FunctionHandle<Object> {
+public enum FunctionType implements FunctionHandle<Object> {
 
     /**
      * The Default.

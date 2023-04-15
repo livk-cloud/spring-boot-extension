@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.mybatis.support.postgresql;
+package com.livk.autoconfigure.mybatis.type.postgresql;
 
 import org.postgresql.util.PGobject;
 import org.springframework.util.ObjectUtils;

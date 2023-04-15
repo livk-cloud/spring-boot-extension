@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.mybatis.handler;
+package com.livk.autoconfigure.mybatis.inject.handler;
 
 /**
  * <p>

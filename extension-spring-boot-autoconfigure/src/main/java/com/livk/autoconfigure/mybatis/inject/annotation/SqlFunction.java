@@ -1,9 +1,9 @@
-package com.livk.autoconfigure.mybatis.annotation;
+package com.livk.autoconfigure.mybatis.inject.annotation;
 
-import com.livk.autoconfigure.mybatis.constant.FunctionEnum;
-import com.livk.autoconfigure.mybatis.enums.SqlFill;
-import com.livk.autoconfigure.mybatis.handler.FunctionHandle;
-import com.livk.autoconfigure.mybatis.handler.NullFunction;
+import com.livk.autoconfigure.mybatis.inject.enums.FunctionType;
+import com.livk.autoconfigure.mybatis.inject.enums.SqlFill;
+import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
+import com.livk.autoconfigure.mybatis.inject.handler.NullFunction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -48,6 +48,6 @@ public @interface SqlFunction {
      *
      * @return the function enum
      */
-    FunctionEnum time() default FunctionEnum.DEFAULT;
+    FunctionType time() default FunctionType.DEFAULT;
 
 }

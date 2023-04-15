@@ -1,15 +1,12 @@
-package com.livk.autoconfigure.mybatis;
+package com.livk.autoconfigure.mybatis.monitor;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.mybatis.monitor.EnableSqlMonitor;
-import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitor;
-import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitorProperties;
-import com.livk.autoconfigure.mybatis.monitor.SqlMonitor;
+import com.livk.autoconfigure.mybatis.monitor.annotation.EnableSqlMonitor;
+import com.livk.autoconfigure.mybatis.monitor.interceptor.MybatisLogMonitor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -31,14 +28,14 @@ public class MybatisLogMonitorAutoConfiguration {
     /**
      * Mybatis log monitor configuration customizer configuration customizer.
      *
-     * @param properties  the properties
-     * @param monitorList the monitor list
+     * @param monitorProperties the properties
      * @return the configuration customizer
      */
     @Bean
-    public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(MybatisLogMonitorProperties properties,
-                                                                            ObjectProvider<SqlMonitor> monitorList) {
+    public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(MybatisLogMonitorProperties monitorProperties) {
+        MybatisLogMonitor logMonitor = new MybatisLogMonitor();
+        logMonitor.setProperties(monitorProperties.properties());
         return configuration ->
-                configuration.addInterceptor(new MybatisLogMonitor(properties, monitorList));
+                configuration.addInterceptor(logMonitor);
     }
 }

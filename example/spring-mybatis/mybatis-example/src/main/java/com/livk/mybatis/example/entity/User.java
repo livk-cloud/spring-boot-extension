@@ -2,9 +2,9 @@ package com.livk.mybatis.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
-import com.livk.autoconfigure.mybatis.constant.FunctionEnum;
-import com.livk.autoconfigure.mybatis.enums.SqlFill;
+import com.livk.autoconfigure.mybatis.inject.annotation.SqlFunction;
+import com.livk.autoconfigure.mybatis.inject.enums.FunctionType;
+import com.livk.autoconfigure.mybatis.inject.enums.SqlFill;
 import com.livk.commons.util.DateUtils;
 import com.livk.mybatis.example.handler.VersionFunction;
 import lombok.Data;
@@ -35,10 +35,10 @@ public class User implements Serializable {
     private Integer version;
 
     @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT, time = FunctionEnum.DATE)
+    @SqlFunction(fill = SqlFill.INSERT, time = FunctionType.DATE)
     private Date insertTime;
 
     @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-    @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionEnum.DATE)
+    @SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionType.DATE)
     private Date updateTime;
 }

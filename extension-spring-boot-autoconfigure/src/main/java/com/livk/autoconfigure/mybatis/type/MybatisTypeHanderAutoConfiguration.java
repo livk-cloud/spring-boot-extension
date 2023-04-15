@@ -1,8 +1,8 @@
-package com.livk.autoconfigure.mybatis;
+package com.livk.autoconfigure.mybatis.type;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.mybatis.support.mysql.MysqlJsonTypeHandler;
-import com.livk.autoconfigure.mybatis.support.postgresql.PostgresJsonTypeHandler;
+import com.livk.autoconfigure.mybatis.type.mysql.MysqlJsonTypeHandler;
+import com.livk.autoconfigure.mybatis.type.postgresql.PostgresJsonTypeHandler;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SqlSessionFactoryBeanCustomizer;

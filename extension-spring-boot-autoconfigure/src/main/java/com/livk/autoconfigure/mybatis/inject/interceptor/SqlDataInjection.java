@@ -1,7 +1,7 @@
-package com.livk.autoconfigure.mybatis.interceptor;
+package com.livk.autoconfigure.mybatis.inject.interceptor;
 
-import com.livk.autoconfigure.mybatis.annotation.SqlFunction;
-import com.livk.autoconfigure.mybatis.enums.SqlFill;
+import com.livk.autoconfigure.mybatis.inject.annotation.SqlFunction;
+import com.livk.autoconfigure.mybatis.inject.enums.SqlFill;
 import com.livk.commons.bean.util.BeanUtils;
 import com.livk.commons.util.ReflectionUtils;
 import org.apache.ibatis.executor.Executor;

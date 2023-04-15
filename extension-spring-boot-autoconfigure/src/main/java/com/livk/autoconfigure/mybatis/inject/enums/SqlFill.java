@@ -1,4 +1,4 @@
-package com.livk.autoconfigure.mybatis.enums;
+package com.livk.autoconfigure.mybatis.inject.enums;
 
 /**
  * <p>
