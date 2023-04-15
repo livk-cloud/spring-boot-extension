@@ -42,7 +42,7 @@ public class MybatisLogMonitor implements Interceptor {
         String sql = SqlUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
         if (time > timeOut()) {
             log.warn("{SQL超时 SQL:[{}],Time:[{}ms]}", sql, time);
-            MonitorSQLInfo monitorSQLInfo = MonitorSQLInfo.of(sql, time, proceed);
+            MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
             SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
         }
         return proceed;

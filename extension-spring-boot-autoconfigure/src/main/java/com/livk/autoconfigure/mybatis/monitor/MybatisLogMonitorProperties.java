@@ -27,14 +27,29 @@ public class MybatisLogMonitorProperties {
 
     private ChronoUnit unit = ChronoUnit.SECONDS;
 
+    /**
+     * Time out name string.
+     *
+     * @return the string
+     */
     public static String timeOutName() {
         return FieldFunc.getName(MybatisLogMonitorProperties::getTimeOut);
     }
 
+    /**
+     * Unit name string.
+     *
+     * @return the string
+     */
     public static String unitName() {
         return FieldFunc.getName(MybatisLogMonitorProperties::getUnit);
     }
 
+    /**
+     * Properties properties.
+     *
+     * @return the properties
+     */
     public Properties properties() {
         Properties properties = new Properties();
         properties.put(timeOutName(), timeOut);

@@ -1,20 +1,10 @@
 package com.livk.autoconfigure.mybatis.monitor.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 /**
  * The type Monitor sql info.
  *
  * @author livk
  */
-@Data
-@AllArgsConstructor(staticName = "of")
-public class MonitorSQLInfo {
+public record MonitorSQLInfo(String sql, Long timeout, Object result) {
 
-    private String sql;
-
-    private Long timeout;
-
-    private Object result;
 }
