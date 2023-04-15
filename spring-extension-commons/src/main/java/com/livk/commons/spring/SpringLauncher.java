@@ -34,11 +34,11 @@ public class SpringLauncher {
      * @return the configurable application context
      */
     public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
-        SpringApplicationBuilder builder = new SpringApplicationBuilder(targetClass)
+        application = new SpringApplicationBuilder(targetClass)
                 .banner(CloudBanner.create())
-                .bannerMode(Banner.Mode.CONSOLE);
-        application = builder.application();
-        return builder.run(args);
+                .bannerMode(Banner.Mode.CONSOLE)
+                .build(args);
+        return application.run(args);
     }
 
     /**
