@@ -13,7 +13,8 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * The type Annotation class or method pointcut.
+ * <p>类注解或者方法注解的切点</p>
+ * <p>参考 {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}</p>
  *
  * @author livk
  */

@@ -13,16 +13,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * The type Annotation abstract pointcut advisor.
+ * 注解型切点处理器
  *
- * @param <A> the type parameter
+ * @param <A> 注解
  * @author livk
  */
 public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> extends AbstractPointcutAdvisor
         implements IntroductionInterceptor {
 
     /**
-     * The Annotation type.
+     * 切点注解类型
      */
     @SuppressWarnings("unchecked")
     protected final Class<A> annotationType = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AnnotationAbstractPointcutAdvisor.class);
@@ -40,11 +40,11 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
     }
 
     /**
-     * Invoke object.
+     * 执行拦截的方法
      *
-     * @param invocation the invocation
-     * @param annotation the annotation
-     * @return the object
+     * @param invocation 方法相关信息
+     * @param annotation 注解信息
+     * @return 方法返回结果
      * @throws Throwable the throwable
      */
     protected abstract Object invoke(MethodInvocation invocation, A annotation) throws Throwable;

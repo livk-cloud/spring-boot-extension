@@ -11,31 +11,35 @@ import java.lang.annotation.Target;
 import java.util.HashSet;
 
 /**
- * The enum Pointcut type.
+ * <p>{@link AnnotationAutoPointcut} 的泛型实现</p>
+ * <p>用于便捷的获取各种切点</p>
  *
  * @author livk
+ * @see AnnotationAutoPointcut
  */
 @RequiredArgsConstructor
 public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 
     /**
-     * Type annotation pointcut type.
+     * 用于指定类级别的切点
      */
     TYPE(AnnotationMatchingPointcut::forClassAnnotation),
 
     /**
-     * Method annotation pointcut type.
+     * 用于指定方法级别的切点
      */
     METHOD(AnnotationMatchingPointcut::forMethodAnnotation),
 
 
     /**
-     * Type or method annotation pointcut type.
+     * 用于指定类级别或方法级别的切点
      */
     TYPE_OR_METHOD(AnnotationClassOrMethodPointcut::new),
 
     /**
-     * Auto annotation pointcut type.
+     * 自动识别，根据注解上的元注解信息
+     *
+     * @see Target
      */
     AUTO(annotationType -> {
         Target target = annotationType.getAnnotation(Target.class);
