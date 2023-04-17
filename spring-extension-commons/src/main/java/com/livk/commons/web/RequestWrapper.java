@@ -72,10 +72,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
      * @param values the values
      */
     public void putParameter(String name, String[] values) {
-        parameter.merge(name, values,
-                (oldValues, newValues) -> StreamUtils.concat(oldValues, newValues)
-                        .distinct()
-                        .toArray(String[]::new));
+        parameter.merge(name, values, StreamUtils::concatDistinct);
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.livk.commons.collect.util;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -38,10 +40,42 @@ class StreamUtilsTest {
 
     @Test
     void testConcatArray() {
-        Integer[] result = StreamUtils.concat(new Integer[]{1, 2, 3}, new Integer[]{4, 5, 6},
-                new Integer[]{7, 8, 9}).toArray(Integer[]::new);
-        Integer[] intArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        assertArrayEquals(intArray, result);
+        int[] result1 = StreamUtils.concat(new int[]{1, 2, 3}, new int[]{4, 5, 6},
+                new int[]{7, 8, 9});
+        int[] intArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        assertArrayEquals(intArray, result1);
+
+        long[] result2 = StreamUtils.concat(new long[]{1, 2, 3}, new long[]{4, 5, 6},
+                new long[]{7, 8, 9});
+        long[] longArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        assertArrayEquals(longArray, result2);
+
+        double[] result3 = StreamUtils.concat(new double[]{1, 2, 3}, new double[]{4, 5, 6},
+                new double[]{7, 8, 9});
+        double[] doubleArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        assertArrayEquals(doubleArray, result3);
+
+        String[] result4 = StreamUtils.concat(false, new String[]{"1", "2", "3"}, new String[]{"4", "5", "6"},
+                new String[]{"1", "2", "3"});
+        String[] stringArray = {"1", "2", "3", "4", "5", "6", "1", "2", "3"};
+        assertArrayEquals(stringArray, result4);
+
+        String[] result5 = StreamUtils.concatDistinct(new String[]{"1", "2", "3"}, new String[]{"4", "5", "6"},
+                new String[]{"1", "2", "3"});
+        String[] stringArrayDistinct = {"1", "2", "3", "4", "5", "6"};
+        assertArrayEquals(stringArrayDistinct, result5);
+
+        Recode[] result6 = StreamUtils.concat(new Recode[]{Recode.of("root"), Recode.of("admin")},
+                new Recode[]{Recode.of("guest")}).toArray(Recode[]::new);
+        Recode[] recodeArray = {Recode.of("root"), Recode.of("admin"), Recode.of("guest")};
+        assertArrayEquals(recodeArray, result6);
+    }
+
+    @Data
+    @RequiredArgsConstructor(staticName = "of")
+    static class Recode {
+
+        private final String name;
     }
 
     @Test
