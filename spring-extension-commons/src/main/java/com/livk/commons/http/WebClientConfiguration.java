@@ -3,6 +3,7 @@ package com.livk.commons.http;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableWebClient;
 import io.netty.channel.ChannelOption;
+import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -16,7 +17,9 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.DefaultSslContextSpec;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -36,13 +39,13 @@ public class WebClientConfiguration {
      * spring官方建议使用{@link WebClient} <a href=
      * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
      *
-     * @param webClientBuilder the web client builder
+     * @param builder the web client builder
      * @return WebClient web client
      */
     @Bean
     @ConditionalOnMissingBean
-    public WebClient webClient(WebClient.Builder webClientBuilder) {
-        return webClientBuilder.build();
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder.build();
     }
 
     /**
@@ -73,10 +76,12 @@ public class WebClientConfiguration {
         public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
             Function<HttpClient, HttpClient> function = httpClient ->
                     httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
+                            .wiretap(WebClient.class.getName(), LogLevel.DEBUG,
+                                    AdvancedByteBufFormat.TEXTUAL, StandardCharsets.UTF_8)
                             .responseTimeout(Duration.ofSeconds(15))
                             .secure(sslContextSpec -> sslContextSpec.sslContext(
-                                    DefaultSslContextSpec.forClient()
-                                            .configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
+                                    DefaultSslContextSpec.forClient().configure(builder ->
+                                            builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
                             .doOnConnected(connection ->
                                     connection.addHandlerLast(new ReadTimeoutHandler(20))
                                             .addHandlerLast(new WriteTimeoutHandler(20)));

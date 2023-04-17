@@ -18,7 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest({
+        "logging.level.org.springframework.web.reactive.function.client.WebClient = debug"
+})
 class HttpControllerTest {
 
     @Autowired
