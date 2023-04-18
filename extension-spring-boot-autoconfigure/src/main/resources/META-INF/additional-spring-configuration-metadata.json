@@ -1,14 +1,35 @@
 {
   "groups": [
     {
+      "name": "spring.redisson.config",
+      "type": "org.redisson.config.Config"
+    },
+    {
       "name": "spring.redisson.config.singleServerConfig",
       "type": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.clusterServersConfig",
+      "type": "org.redisson.config.ClusterServersConfig"
     }
   ],
   "properties": [
     {
       "name": "spring.redisson.config.nettyThreads",
       "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.threads",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.codec",
+      "type": "java.lang.String",
+      "description": "redisson serialization processor"
+    },
+    {
+      "name": "spring.redisson.config.transportMode",
+      "type": "java.lang.String"
     },
     {
       "name": "spring.redisson.config.singleServerConfig.address",
@@ -67,12 +88,16 @@
       "type": "java.lang.Integer"
     },
     {
-      "name": "spring.redisson.config.threads",
+      "name": "spring.redisson.config.clusterServersConfig.idleConnectionTimeout",
       "type": "java.lang.Integer"
     },
     {
-      "name": "spring.redisson.config.transportMode",
-      "type": "java.lang.String"
+      "name": "spring.redisson.config.clusterServersConfig.connectTimeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "spring.redisson.config.clusterServersConfig.timeout",
+      "type": "java.lang.Integer"
     }
   ],
   "hints": []
