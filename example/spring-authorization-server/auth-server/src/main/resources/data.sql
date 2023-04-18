@@ -1,22 +1,39 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 create table if not exists oauth2_authorization
 (
-    id                            varchar(100) not null
+    id                            varchar(100)  not null
         primary key,
-    registered_client_id          varchar(100) not null,
-    principal_name                varchar(200) not null,
-    authorization_grant_type      varchar(100) not null,
+    registered_client_id          varchar(100)  not null,
+    principal_name                varchar(200)  not null,
+    authorization_grant_type      varchar(100)  not null,
     authorized_scopes             varchar(1000) null,
-    attributes                    blob null,
-    state                         varchar(500) null,
-    authorization_code_value      blob null,
-    authorization_code_issued_at  timestamp null,
-    authorization_code_expires_at timestamp null,
-    authorization_code_metadata   blob null,
-    access_token_value            blob null,
-    access_token_issued_at        timestamp null,
-    access_token_expires_at       timestamp null,
-    access_token_metadata         blob null,
-    access_token_type             varchar(100) null,
+    attributes                    blob          null,
+    state                         varchar(500)  null,
+    authorization_code_value      blob          null,
+    authorization_code_issued_at  timestamp     null,
+    authorization_code_expires_at timestamp     null,
+    authorization_code_metadata   blob          null,
+    access_token_value            blob          null,
+    access_token_issued_at        timestamp     null,
+    access_token_expires_at       timestamp     null,
+    access_token_metadata         blob          null,
+    access_token_type             varchar(100)  null,
     access_token_scopes           varchar(1000) null,
     oidc_id_token_value           blob null,
     oidc_id_token_issued_at       timestamp null,
