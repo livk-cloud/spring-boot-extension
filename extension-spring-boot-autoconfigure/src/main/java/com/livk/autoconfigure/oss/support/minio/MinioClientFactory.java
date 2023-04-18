@@ -1,6 +1,7 @@
-package com.livk.autoconfigure.oss.client;
+package com.livk.autoconfigure.oss.support.minio;
 
 import com.livk.auto.service.annotation.SpringFactories;
+import com.livk.autoconfigure.oss.client.OSSClientFactory;
 import io.minio.MinioClient;
 
 /**
@@ -8,7 +9,7 @@ import io.minio.MinioClient;
  *
  * @author livk
  */
-@SpringFactories(OSSClientFactory.class)
+@SpringFactories
 public class MinioClientFactory implements OSSClientFactory<MinioClient> {
 
     @Override

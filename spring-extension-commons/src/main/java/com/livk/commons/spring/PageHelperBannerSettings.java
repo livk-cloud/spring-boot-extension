@@ -15,7 +15,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @author livk
  */
 @AutoConfiguration
-@SpringFactories(EnvironmentPostProcessor.class)
+@SpringFactories
 public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 
     private static final String PAGEHELPER_BANNER = "pagehelper.banner";

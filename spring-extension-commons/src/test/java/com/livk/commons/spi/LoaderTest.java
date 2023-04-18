@@ -27,7 +27,7 @@ class LoaderTest {
 
     }
 
-    @SpringFactories(Animal.class)
+    @SpringFactories
     public static class Dog implements Animal {
 
     }

@@ -7,6 +7,8 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.BufferedReader;
@@ -74,7 +76,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
             Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
-            String provider = super.transform(value.orElseThrow());
+            String provider = value.isPresent() ? super.transform(value.get()) : fromInterface(element);
+            if (provider == null || provider.isBlank()) {
+                throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
+            }
             boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
             String serviceImpl = super.transform(element.toString());
             if (aot) {
@@ -83,6 +88,19 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 super.factoriesAdd(springFactoriesMap, provider, serviceImpl);
             }
         }
+    }
+
+    private String fromInterface(Element element) {
+        if (element instanceof TypeElement typeElement) {
+            List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
+            if (interfaces != null && interfaces.size() == 1) {
+                TypeMirror typeMirror = interfaces.get(0);
+                if (typeMirror instanceof DeclaredType declaredType) {
+                    return declaredType.asElement().toString();
+                }
+            }
+        }
+        return null;
     }
 
     /**

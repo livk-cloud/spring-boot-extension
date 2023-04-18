@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @author livk
  */
 @AutoConfiguration
-@SpringFactories(ApplicationContextInitializer.class)
+@SpringFactories
 public class UUIDBeanFactoryPostProcessorLoad implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {

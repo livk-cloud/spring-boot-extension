@@ -14,14 +14,15 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 public @interface SpringFactories {
     /**
-     * spring factories process interface
+     * 指定spring.factories文件生成接口
+     * 如当前类仅有一个接口，则可以自动推断
      *
      * @return class
      */
-    Class<?> value();
+    Class<?> value() default Void.class;
 
     /**
-     * Aot boolean.
+     * 将spring.factories文件调整至aot.factories
      *
      * @return the boolean
      */
