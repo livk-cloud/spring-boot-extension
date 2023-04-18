@@ -76,7 +76,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
             Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
-            String provider = value.isPresent() ? super.transform(value.get()) : fromInterface(element);
+            String provider = super.transform(value.orElseGet(() -> fromInterface(element)));
             if (provider == null || provider.isBlank()) {
                 throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
             }
