@@ -1,5 +1,9 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+plugins {
+    id "com.livk.bom"
+}
+
 description "spring boot extension bom"
 
 def versionCatalog = rootProject.extensions

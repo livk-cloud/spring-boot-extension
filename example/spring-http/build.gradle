@@ -1,3 +1,7 @@
+plugins {
+    id "com.livk.service"
+}
+
 dependencies {
     implementation project(":extension-spring-boot-starters:http-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"

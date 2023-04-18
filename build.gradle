@@ -3,30 +3,9 @@ plugins {
 }
 
 ext {
-    root = List.of(project(":extension-spring-boot-starters"))
-    bom = List.of(project(":spring-extension-dependencies"))
+    root = Set.of(project(":extension-spring-boot-starters"))
+    bom = Set.of(project(":spring-extension-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - (bom + root))
-    commonModuleProjects = gradleModuleProjects.findAll {
-        it.name.endsWith("-commons")
-                || it.name.endsWith("-starter")
-                || it.name.endsWith("-autoconfigure")
-                || it.name.endsWith("-core")
-                || it.name.endsWith("-extensions")
-                || it.name == "spring-auto-service"
-    }
-    springModuleProjects = (gradleModuleProjects - commonModuleProjects)
-}
-
-configure(bom) {
-    apply plugin: "com.livk.bom"
-}
-
-configure(commonModuleProjects) {
-    apply plugin: "com.livk.common"
-}
-
-configure(springModuleProjects) {
-    apply plugin: "com.livk.service"
 }
 
 configure(gradleModuleProjects) {

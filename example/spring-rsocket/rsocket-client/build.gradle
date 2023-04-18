@@ -1,3 +1,7 @@
+plugins {
+    id "com.livk.service"
+}
+
 dependencies {
     implementation project(":example:spring-rsocket:rsocket-commons")
 }

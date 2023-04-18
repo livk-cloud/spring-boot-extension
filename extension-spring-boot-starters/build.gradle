@@ -4,6 +4,7 @@ plugins {
 }
 
 subprojects {
+    apply plugin: "com.livk.common"
     apply plugin: "com.livk.mvn.deployed"
 
     dependencies {
