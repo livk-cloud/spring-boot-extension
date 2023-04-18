@@ -16,5 +16,19 @@ Gradle最新版 +
 请使用命令 `gradle build` 构建当前提交的代码，以保证可正常运行 +
 如出现使用第三方中间件的测试用例，将测试用例的全类名提交至 *exclude.txt* 避免Github Gradle CI出现错误
 
+== gradle custom plugins
 
+"com.livk.bom" ------bom或者dependencies使用 +
+"com.livk.module" ------用于标记模块，所有可用节点 +
+"com.livk.common" ------打包方式是普通jar而不是spring bootJar +
+"com.livk.service" ------打包方式是spring bootJar +
+"com.livk.root" ------用于标记某些根节点，从而直接操作子包 +
+"com.livk.mvn.deployed" ------用于部署发布到MVN +
 
+== gradle dependency api
+
+management platform ------ 用于添加BOM +
+compileProcessor ------ 在编译器可用的注解处理器 +
+optional ------ 等同于Maven optional +
+api ------ 可传递的依赖引用 +
+implementation ------ 不可传递的依赖引用 +
