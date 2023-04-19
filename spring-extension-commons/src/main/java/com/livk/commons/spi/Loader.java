@@ -17,6 +17,8 @@
 
 package com.livk.commons.spi;
 
+import org.springframework.core.ResolvableType;
+
 import java.util.List;
 
 /**
@@ -36,6 +38,11 @@ public interface Loader {
      */
     static <T> List<T> load(Class<T> type, LoaderManager manager) {
         return manager.loader().load(type);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> List<T> load(ResolvableType resolvableType, LoaderManager manager) {
+        return manager.loader().load((Class<T>) resolvableType.resolve());
     }
 
     /**
