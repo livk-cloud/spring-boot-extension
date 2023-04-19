@@ -202,7 +202,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
         } else if (applicationContext instanceof GenericApplicationContext context) {
             registerBean(context, beanDefinition, beanName);
         } else {
-            log.error("bean register fail name:{} instantClass:{}", beanName, beanDefinition.getBeanClassName());
+            log.error("bean register fail name: {} instantClass: {}", beanName, beanDefinition.getResolvableType());
         }
     }
 
