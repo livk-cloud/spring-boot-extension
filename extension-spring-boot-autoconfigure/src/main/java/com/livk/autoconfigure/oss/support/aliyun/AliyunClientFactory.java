@@ -15,28 +15,28 @@
  *
  */
 
-package com.livk.autoconfigure.oss.support.minio;
+package com.livk.autoconfigure.oss.support.aliyun;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.common.auth.CredentialsProvider;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.livk.autoconfigure.oss.client.OSSClientFactory;
-import io.minio.MinioClient;
 
 /**
- * The type Minio client factory.
+ * The type Aliyun client factory.
  *
  * @author livk
  */
-public class MinioClientFactory implements OSSClientFactory<MinioClient> {
-
+public class AliyunClientFactory implements OSSClientFactory<OSS> {
     @Override
-    public MinioClient instance(String endpoint, String accessKey, String secretKey) {
-        return new MinioClient.Builder()
-                .endpoint(endpoint)
-                .credentials(accessKey, secretKey)
-                .build();
+    public OSS instance(String endpoint, String accessKey, String secretKey) {
+        CredentialsProvider provider = new DefaultCredentialProvider(accessKey, secretKey);
+        return new OSSClientBuilder().build(endpoint, provider);
     }
 
     @Override
     public String name() {
-        return "minio";
+        return "aliyun";
     }
 }

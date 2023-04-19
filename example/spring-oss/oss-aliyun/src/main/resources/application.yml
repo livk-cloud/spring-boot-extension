@@ -1,0 +1,5 @@
+spring:
+  oss:
+    access-key: ${ACCESS_KEY}
+    secret-key: ${SECRET_KEY}
+    url: aliyun:https://oss-cn-shenzhen.aliyuncs.com

@@ -91,7 +91,7 @@ public class MinioService extends AbstractService<MinioClient> {
 
     @SneakyThrows
     @Override
-    public void removeBucket(String bucketName) {
+    public void removeObj(String bucketName) {
         client.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
     }
 
@@ -128,23 +128,11 @@ public class MinioService extends AbstractService<MinioClient> {
 
     @SneakyThrows
     @Override
-    public void removeBucket(String bucketName, String fileName) {
+    public void removeObj(String bucketName, String fileName) {
         client.removeObject(RemoveObjectArgs.builder()
                 .bucket(bucketName)
                 .object(fileName)
                 .build());
-    }
-
-    @SneakyThrows
-    @Override
-    public void removeObjs(String bucketName) {
-        List<String> objs = getAllObj(bucketName);
-        for (String obj : objs) {
-            client.removeObject(RemoveObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(obj)
-                    .build());
-        }
     }
 
     @SneakyThrows
@@ -157,9 +145,15 @@ public class MinioService extends AbstractService<MinioClient> {
                 .build());
     }
 
+    @SneakyThrows
     @Override
-    public void close() {
-        client = null;
+    public String getStrUrl(String bucketName, String fileName, int expires) {
+        return client.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .method(Method.GET)
+                .expiry(expires)
+                .build());
     }
 
     @SneakyThrows
@@ -173,5 +167,10 @@ public class MinioService extends AbstractService<MinioClient> {
             list.add(result.get().objectName());
         }
         return list;
+    }
+
+    @Override
+    public void close() {
+        client = null;
     }
 }

@@ -19,13 +19,24 @@ package com.livk.autoconfigure.oss.support;
 
 import com.livk.autoconfigure.oss.OSSProperties;
 import com.livk.autoconfigure.oss.client.OSSClientFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.ResolvableType;
 
 /**
  * The type Abstract service.
  *
  * @param <T> the type parameter
  */
-public abstract non-sealed class AbstractService<T> implements OSSOperations {
+public abstract non-sealed class AbstractService<T> implements OSSOperations, ApplicationContextAware {
+
+    /**
+     * The Resolver.
+     */
+    protected final OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
 
     /**
      * The Client.
@@ -33,13 +44,27 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations {
     protected T client;
 
     /**
+     * The Name.
+     */
+    protected final String name;
+
+    /**
      * Instantiates a new Abstract service.
      *
      * @param properties the properties
      */
     protected AbstractService(OSSProperties properties) {
-        OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
         OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
+        this.name = factory.name();
         this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey());
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        ResolvableType resolvableType = ResolvableType.forInstance(client);
+        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> client);
+        if (applicationContext instanceof GenericApplicationContext context) {
+            context.registerBeanDefinition(name, definitionBuilder.getBeanDefinition());
+        }
     }
 }

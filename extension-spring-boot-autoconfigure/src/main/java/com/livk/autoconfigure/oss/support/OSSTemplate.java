@@ -48,13 +48,8 @@ public final class OSSTemplate implements OSSOperations {
     }
 
     @Override
-    public void removeBucket(String bucketName) {
-        ossService.removeBucket(bucketName);
-    }
-
-    @Override
-    public void removeObjs(String bucketName) {
-        ossService.removeObjs(bucketName);
+    public void removeObj(String bucketName) {
+        ossService.removeObj(bucketName);
     }
 
     /**
@@ -65,7 +60,7 @@ public final class OSSTemplate implements OSSOperations {
     public void removeBucketAndObj(String bucketName) {
         if (this.exist(bucketName)) {
             this.removeObjs(bucketName);
-            this.removeBucket(bucketName);
+            this.removeObj(bucketName);
         }
     }
 
@@ -85,8 +80,8 @@ public final class OSSTemplate implements OSSOperations {
     }
 
     @Override
-    public void removeBucket(String bucketName, String fileName) {
-        ossService.removeBucket(bucketName, fileName);
+    public void removeObj(String bucketName, String fileName) {
+        ossService.removeObj(bucketName, fileName);
     }
 
     @Override
@@ -97,6 +92,11 @@ public final class OSSTemplate implements OSSOperations {
     @Override
     public String getStrUrl(String bucketName, String fileName) {
         return ossService.getStrUrl(bucketName, fileName);
+    }
+
+    @Override
+    public String getStrUrl(String bucketName, String fileName, int expires) {
+        return ossService.getStrUrl(bucketName, fileName, expires);
     }
 
     @Override

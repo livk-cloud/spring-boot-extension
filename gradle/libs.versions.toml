@@ -31,6 +31,7 @@ lettucemod = "3.5.0"
 minio = "8.5.2"
 dnsjava = "3.5.2"
 snakeyaml = "2.0"
+aliyunOss = "3.16.2"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -69,6 +70,7 @@ lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucem
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyunOss" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

@@ -54,7 +54,7 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      *
      * @param bucketName the bucket name
      */
-    void removeBucket(String bucketName);
+    void removeObj(String bucketName);
 
     /**
      * Exist boolean.
@@ -89,14 +89,19 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      * @param bucketName the bucket name
      * @param fileName   the file name
      */
-    void removeBucket(String bucketName, String fileName);
+    void removeObj(String bucketName, String fileName);
 
     /**
      * Remove objs.
      *
      * @param bucketName the bucket name
      */
-    void removeObjs(String bucketName);
+    default void removeObjs(String bucketName) {
+        List<String> objs = getAllObj(bucketName);
+        for (String obj : objs) {
+            removeObj(bucketName, obj);
+        }
+    }
 
     /**
      * Gets str url.
@@ -106,6 +111,16 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      * @return the str url
      */
     String getStrUrl(String bucketName, String fileName);
+
+    /**
+     * Gets str url.
+     *
+     * @param bucketName the bucket name
+     * @param fileName   the file name
+     * @param expires    the expires
+     * @return the str url
+     */
+    String getStrUrl(String bucketName, String fileName, int expires);
 
     /**
      * Gets all obj.

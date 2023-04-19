@@ -21,6 +21,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import java.net.URI;
 
 /**
  * The type Oss properties.
@@ -50,16 +53,16 @@ public class OSSProperties {
      * @param accessKey the access key
      * @param secretKey the secret key
      */
-    public OSSProperties(@Name("url") String url,
+    public OSSProperties(@Name("url") URI url,
                          @Name("accessKey") String accessKey,
                          @Name("secretKey") String secretKey) {
-        Assert.hasText(url, "url not be blank");
+        Assert.notNull(url, "url not be blank");
         Assert.hasText(accessKey, "accessKey not be blank");
         Assert.hasText(secretKey, "secretKey not be blank");
         this.accessKey = accessKey;
         this.secretKey = secretKey;
         this.prefix = prefix(url);
-        this.endpoint = endpoint(url, prefix);
+        this.endpoint = endpoint(url);
     }
 
     /**
@@ -67,8 +70,8 @@ public class OSSProperties {
      *
      * @return the string
      */
-    private String endpoint(String url, String prefix) {
-        return url.replaceFirst(prefix + ":", "");
+    private String endpoint(URI url) {
+        return url.getSchemeSpecificPart();
     }
 
     /**
@@ -76,10 +79,10 @@ public class OSSProperties {
      *
      * @return the prefix
      */
-    private String prefix(String url) {
-        int index = url.indexOf(":");
-        if (index != -1) {
-            return url.substring(0, index);
+    private String prefix(URI uri) {
+        String scheme = uri.getScheme();
+        if (StringUtils.hasText(scheme)) {
+            return scheme;
         }
         throw new RuntimeException("url缺少前缀!");
     }

@@ -17,9 +17,11 @@
 
 package com.livk.autoconfigure.oss;
 
+import com.aliyun.oss.OSS;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
+import com.livk.autoconfigure.oss.support.aliyun.AliyunOSSService;
 import com.livk.autoconfigure.oss.support.minio.MinioService;
 import io.minio.MinioClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -68,6 +70,23 @@ public class OSSAutoConfiguration {
         @ConditionalOnMissingBean(AbstractService.class)
         public MinioService minioService(OSSProperties properties) {
             return new MinioService(properties);
+        }
+    }
+
+    @AutoConfiguration
+    @ConditionalOnClass(OSS.class)
+    public static class AliyunOSSAutoConfiguration {
+
+        /**
+         * Minio service minio service.
+         *
+         * @param properties the properties
+         * @return the minio service
+         */
+        @Bean(destroyMethod = "close")
+        @ConditionalOnMissingBean(AbstractService.class)
+        public AliyunOSSService aliyunOSSService(OSSProperties properties) {
+            return new AliyunOSSService(properties);
         }
     }
 }

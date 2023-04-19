@@ -15,11 +15,11 @@
  *
  */
 
-package com.livk.oss.minio.controller;
+package com.livk.oss.aliyun.controller;
 
+import com.aliyun.oss.OSS;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
 import com.livk.commons.spring.context.SpringContextHolder;
-import io.minio.MinioClient;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,18 +46,20 @@ public class OssController {
 
     @PostConstruct
     public void init() {
-        ossTemplate.removeBucketAndObj("test");
+        if (ossTemplate.exist("livk-cloud")) {
+            ossTemplate.removeBucketAndObj("livk-cloud");
+        }
     }
 
     @GetMapping("test")
     public HttpEntity<String> test() throws IOException {
-        log.info("minioClient: {}", SpringContextHolder.getBean(MinioClient.class));
+        log.info("minioClient: {}", SpringContextHolder.getBean(OSS.class));
         InputStream stream = new ClassPathResource("test.jpg").getInputStream();
-        ossTemplate.createBucket("test");
-        if (!ossTemplate.exist("test", "test.jpg")) {
-            ossTemplate.upload("test", "test.jpg", stream);
+        ossTemplate.createBucket("livk-cloud");
+        if (!ossTemplate.exist("livk-cloud", "test.jpg")) {
+            ossTemplate.upload("livk-cloud", "test.jpg", stream);
         }
-        String url = ossTemplate.getExternalLink("test", "test.jpg");
+        String url = ossTemplate.getExternalLink("livk-cloud", "test.jpg");
         return ResponseEntity.ok(url);
     }
 }
