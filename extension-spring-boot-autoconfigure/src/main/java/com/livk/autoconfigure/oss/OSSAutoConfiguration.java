@@ -73,6 +73,9 @@ public class OSSAutoConfiguration {
         }
     }
 
+    /**
+     * The type Aliyun oss auto configuration.
+     */
     @AutoConfiguration
     @ConditionalOnClass(OSS.class)
     public static class AliyunOSSAutoConfiguration {

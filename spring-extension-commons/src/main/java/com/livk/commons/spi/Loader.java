@@ -40,6 +40,14 @@ public interface Loader {
         return manager.loader().load(type);
     }
 
+    /**
+     * Load list.
+     *
+     * @param <T>            the type parameter
+     * @param resolvableType the resolvable type
+     * @param manager        the manager
+     * @return the list
+     */
     @SuppressWarnings("unchecked")
     static <T> List<T> load(ResolvableType resolvableType, LoaderManager manager) {
         return manager.loader().load((Class<T>) resolvableType.resolve());

@@ -31,5 +31,5 @@ public interface OSSClientFactoryLoader {
      * @param prefix the prefix
      * @return the oss client factory
      */
-    <T> OSSClientFactory<T> loader(String prefix) throws Throwable;
+    <T> OSSClientFactory<T> loader(String prefix);
 }
