@@ -47,8 +47,6 @@ class DocControllerTest {
                 .expectHeader()
                 .contentType(MediaType.APPLICATION_JSON)
                 .expectBody(JsonNode.class)
-                .value(jsonNode -> {
-                    assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText());
-                });
+                .value(jsonNode -> assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText()));
     }
 }

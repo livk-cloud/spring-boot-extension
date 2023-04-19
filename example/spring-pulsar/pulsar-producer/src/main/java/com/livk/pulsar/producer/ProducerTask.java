@@ -48,7 +48,7 @@ public class ProducerTask {
         PulsarMessage<String> message = new PulsarMessage<>();
         message.setMsgId(UUID.randomUUID().toString());
         message.setSendTime(LocalDateTime.now());
-        message.setData(SNOWFLAKE.nextId() + "");
+        message.setData(String.valueOf(SNOWFLAKE.nextId()));
 
         pulsarTemplate.newMessage(message.toJson())
                 .withSchema(Schema.STRING)

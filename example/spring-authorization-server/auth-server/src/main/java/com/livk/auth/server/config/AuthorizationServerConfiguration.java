@@ -78,11 +78,9 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
         OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(
-                        (tokenEndpoint) -> {
-                            tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
-                                    .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                                    .errorResponseHandler(new AuthenticationFailureEventHandler());
-                        }
+                        (tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+                                .errorResponseHandler(new AuthenticationFailureEventHandler())
                 )
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));

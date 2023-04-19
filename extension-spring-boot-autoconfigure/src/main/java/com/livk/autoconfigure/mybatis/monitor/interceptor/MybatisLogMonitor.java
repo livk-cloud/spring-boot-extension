@@ -25,7 +25,10 @@ import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Signature;
 
 import java.sql.Connection;
 import java.time.temporal.ChronoUnit;
@@ -63,11 +66,6 @@ public class MybatisLogMonitor implements Interceptor {
             SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
         }
         return proceed;
-    }
-
-    @Override
-    public Object plugin(Object target) {
-        return Plugin.wrap(target, this);
     }
 
     @Override

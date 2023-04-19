@@ -38,7 +38,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<NettyMessage
             //回应pong
             ctx.writeAndFlush(new ServerPackage());
         } else if (msg.getType().equals(NettyMessage.Message.MessageType.NORMAL)) {
-            log.info("收到客户端的业务消息：{}", msg.toString());
+            log.info("收到客户端的业务消息：{}", msg);
         }
     }
 }

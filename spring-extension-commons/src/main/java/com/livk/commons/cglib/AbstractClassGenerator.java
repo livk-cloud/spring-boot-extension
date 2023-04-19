@@ -47,7 +47,7 @@ abstract class AbstractClassGenerator<T> implements ClassGenerator {
 
     private NamingPolicy namingPolicy = DefaultNamingPolicy.INSTANCE;
 
-    private Source source;
+    private final Source source;
 
     private ClassLoader classLoader;
 

@@ -82,7 +82,7 @@ class Info2ControllerTest {
     @Test
     void download() {
         List<Info> infos = LongStream.rangeClosed(1, 100)
-                .mapToObj(i -> new Info(i, 13_000_000_000L + i + ""))
+                .mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
                 .toList();
         client.post()
                 .uri("/info/download")
