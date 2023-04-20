@@ -18,6 +18,7 @@
 package com.livk.oss.aliyun.controller;
 
 import com.livk.commons.io.FileUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author livk
  */
+@Disabled("需要阿里云OSS账号")
 @SpringBootTest
 @AutoConfigureMockMvc
 class OssControllerTest {
