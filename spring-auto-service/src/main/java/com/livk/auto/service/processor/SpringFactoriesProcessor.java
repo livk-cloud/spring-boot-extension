@@ -18,6 +18,7 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
+import com.google.common.collect.Sets;
 import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
@@ -69,15 +70,12 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private void generateConfigFiles(Map<String, Set<String>> factoriesMap, String location) {
         if (!factoriesMap.isEmpty()) {
-            Map<String, Set<String>> allImportMap = new HashMap<>();
             try {
-                for (String providerInterface : factoriesMap.keySet()) {
-                    FileObject resource = filer.getResource(out, "", location);
-                    Set<String> exitImports = this.read(providerInterface, resource);
-                    Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
-                            .collect(Collectors.toSet());
-                    allImportMap.put(providerInterface, allImports);
-                }
+                FileObject resource = filer.getResource(out, "", location);
+                Map<String, Set<String>> map = this.read(resource);
+                Map<String, Set<String>> allImportMap = Stream.concat(map.entrySet().stream(),
+                                factoriesMap.entrySet().stream())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Sets::union));
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
 
@@ -123,34 +121,30 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     /**
      * 从文件读取某个接口的配置
      *
-     * @param providerInterface 供应商接口
-     * @param fileObject        文件信息
+     * @param fileObject 文件信息
      * @return set className
      */
-    private Set<String> read(String providerInterface, FileObject fileObject) {
+    private Map<String, Set<String>> read(FileObject fileObject) {
         try (BufferedReader reader = bufferedReader(fileObject)) {
-            boolean read = false;
-            List<String> lines = reader.lines().toList();
-            Set<String> providers = new HashSet<>();
-            for (String line : lines) {
-                if (line.startsWith("#") || line.isBlank()) {
-                    continue;
-                }
-                if (line.equals(providerInterface + "=\\")) {
-                    read = true;
+            String line;
+            Map<String, Set<String>> providers = new HashMap<>();
+            String provider = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
                     continue;
                 }
                 if (line.endsWith("=\\")) {
-                    read = false;
+                    provider = line.replaceAll("=\\\\", "");
                     continue;
                 }
-                if (read) {
-                    providers.add(line.replaceAll(",\\\\", "").trim());
+                if (provider != null) {
+                    providers.computeIfAbsent(provider, k -> new HashSet<>())
+                            .add(line.replaceAll(",\\\\", "").trim());
                 }
             }
             return providers;
         } catch (IOException e) {
-            return Collections.emptySet();
+            return Collections.emptyMap();
         }
     }
 
