@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.oss.support.minio;
 
 import com.livk.autoconfigure.oss.OSSProperties;
@@ -74,7 +91,7 @@ public class MinioService extends AbstractService<MinioClient> {
 
     @SneakyThrows
     @Override
-    public void removeBucket(String bucketName) {
+    public void removeObj(String bucketName) {
         client.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
     }
 
@@ -111,23 +128,11 @@ public class MinioService extends AbstractService<MinioClient> {
 
     @SneakyThrows
     @Override
-    public void removeBucket(String bucketName, String fileName) {
+    public void removeObj(String bucketName, String fileName) {
         client.removeObject(RemoveObjectArgs.builder()
                 .bucket(bucketName)
                 .object(fileName)
                 .build());
-    }
-
-    @SneakyThrows
-    @Override
-    public void removeObjs(String bucketName) {
-        List<String> objs = getAllObj(bucketName);
-        for (String obj : objs) {
-            client.removeObject(RemoveObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(obj)
-                    .build());
-        }
     }
 
     @SneakyThrows
@@ -140,9 +145,15 @@ public class MinioService extends AbstractService<MinioClient> {
                 .build());
     }
 
+    @SneakyThrows
     @Override
-    public void close() {
-        client = null;
+    public String getStrUrl(String bucketName, String fileName, int expires) {
+        return client.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .method(Method.GET)
+                .expiry(expires)
+                .build());
     }
 
     @SneakyThrows
@@ -156,5 +167,10 @@ public class MinioService extends AbstractService<MinioClient> {
             list.add(result.get().objectName());
         }
         return list;
+    }
+
+    @Override
+    public void close() {
+        client = null;
     }
 }

@@ -3,5 +3,8 @@ server:
 
 spring:
   pulsar:
-    address: pulsar://livk.com:6650
-    topic: livk-topic
+    client:
+      service-url: pulsar://livk.com:6650
+    consumer:
+      topics: livk-topic
+      subscription-name: consumer

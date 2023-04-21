@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -48,43 +65,6 @@ public class JsonNodeUtils {
     }
 
     /**
-     * Find value t.
-     *
-     * @param <T>                the type parameter
-     * @param jsonNode           the json node
-     * @param fieldName          the field name
-     * @param valueTypeReference the value type reference
-     * @param mapper             the mapper
-     * @return the t
-     */
-    public <T> T findValue(JsonNode jsonNode, String fieldName, TypeReference<T> valueTypeReference,
-                           ObjectMapper mapper) {
-        if (jsonNode == null) {
-            return null;
-        }
-        JsonNode value = jsonNode.findValue(fieldName);
-        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, valueTypeReference) : null;
-    }
-
-    /**
-     * Find value.
-     *
-     * @param <T>       the type parameter
-     * @param jsonNode  the json node
-     * @param fieldName the field name
-     * @param javaType  the java type
-     * @param mapper    the mapper
-     * @return T
-     */
-    public <T> T findValue(JsonNode jsonNode, String fieldName, JavaType javaType, ObjectMapper mapper) {
-        if (jsonNode == null) {
-            return null;
-        }
-        JsonNode value = jsonNode.findValue(fieldName);
-        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, javaType) : null;
-    }
-
-    /**
      * Find object node json node.
      *
      * @param jsonNode  the json node
@@ -97,6 +77,55 @@ public class JsonNodeUtils {
         }
         JsonNode value = jsonNode.findValue(fieldName);
         return (value != null && value.isObject()) ? value : null;
+    }
+
+    /**
+     * Find value t.
+     *
+     * @param <T>                the type parameter
+     * @param jsonNode           the json node
+     * @param fieldName          the field name
+     * @param valueTypeReference the value type reference
+     * @param mapper             the mapper
+     * @return the t
+     */
+    public <T> T findValue(JsonNode jsonNode, String fieldName, TypeReference<T> valueTypeReference,
+                           ObjectMapper mapper) {
+        JavaType javaType = mapper.getTypeFactory().constructType(valueTypeReference);
+        return findValue(jsonNode, fieldName, javaType, mapper);
+    }
+
+    /**
+     * Find value t.
+     *
+     * @param <T>       the type parameter
+     * @param jsonNode  the json node
+     * @param fieldName the field name
+     * @param type      the type
+     * @param mapper    the mapper
+     * @return the t
+     */
+    public <T> T findValue(JsonNode jsonNode, String fieldName, Class<T> type, ObjectMapper mapper) {
+        JavaType javaType = mapper.getTypeFactory().constructType(type);
+        return findValue(jsonNode, fieldName, javaType, mapper);
+    }
+
+    /**
+     * Find value.
+     *
+     * @param <T>       the type parameter
+     * @param jsonNode  the json node
+     * @param fieldName the field name
+     * @param javaType  the java type
+     * @param mapper    the mapper
+     * @return T t
+     */
+    public <T> T findValue(JsonNode jsonNode, String fieldName, JavaType javaType, ObjectMapper mapper) {
+        if (jsonNode == null) {
+            return null;
+        }
+        JsonNode value = jsonNode.findValue(fieldName);
+        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, javaType) : null;
     }
 
     /**

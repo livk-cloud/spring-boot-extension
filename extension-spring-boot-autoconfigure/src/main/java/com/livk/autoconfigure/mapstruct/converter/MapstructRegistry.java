@@ -1,6 +1,21 @@
-package com.livk.autoconfigure.mapstruct.converter;
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-import com.livk.autoconfigure.mapstruct.support.ConverterSupport;
+package com.livk.autoconfigure.mapstruct.converter;
 
 /**
  * <p>
@@ -16,17 +31,22 @@ public interface MapstructRegistry {
      *
      * @param converterPair the converter pair
      * @param converter     the converter
+     * @return the converter
      */
-    void addConverter(ConverterPair converterPair, Converter<?, ?> converter);
+    Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter);
 
     /**
      * Add converter.
      *
      * @param converter the converter
+     * @return the converter
      */
-    default void addConverter(Converter<?, ?> converter) {
-        ConverterPair converterPair = ConverterSupport.parser(converter);
-        this.addConverter(converterPair, converter);
+    default Converter<?, ?> addConverter(Converter<?, ?> converter) {
+        ConverterPair converterPair = converter.type();
+        if (converterPair != null) {
+            return this.addConverter(converterPair, converter);
+        }
+        return converter;
     }
 
     /**
@@ -37,10 +57,11 @@ public interface MapstructRegistry {
      * @param sourceType the source type
      * @param targetType the target type
      * @param converter  the converter
+     * @return the converter
      */
-    default <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
+    default <S, T> Converter<?, ?> addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
         ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
-        this.addConverter(converterPair, converter);
+        return this.addConverter(converterPair, converter);
     }
 
 }

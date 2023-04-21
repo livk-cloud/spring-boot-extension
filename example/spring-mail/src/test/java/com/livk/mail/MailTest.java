@@ -1,12 +1,29 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.mail;
 
-import com.livk.commons.test.TestLogUtils;
 import com.livk.commons.util.DateUtils;
 import com.livk.mail.util.FreemarkerUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author livk
  */
+@Slf4j
 @SpringBootTest
 public class MailTest {
 
@@ -85,10 +103,10 @@ public class MailTest {
         Template template = new Template("template", new StringReader(txt), configuration);
         String result = "www.baidu.com -> 123456";
         String s1 = FreemarkerUtils.processTemplateIntoString(template, map);
-        TestLogUtils.info("processTemplateIntoString result:{}", s1);
+        log.info("processTemplateIntoString result:{}", s1);
         assertEquals(result, s1);
         String s2 = FreemarkerUtils.parse(txt, map);
-        TestLogUtils.info("parse result:{}", s2);
+        log.info("parse result:{}", s2);
         assertEquals(result, s2);
     }
 
@@ -104,7 +122,7 @@ public class MailTest {
                 "valuesArray", List.of(values, values2));
         String resultSql = "INSERT INTO sys_user(user_name,sex,age,address,status,create_time,update_time) VALUES (livk,1,26,shenzhen,1," + format + "," + format + "),(livk,1,26,shenzhen,1," + format + "," + format + ")";
         String parse = parse(sql, map);
-        TestLogUtils.info("parse result:{}", parse);
+        log.info("parse result:{}", parse);
         assertEquals(resultSql, parse);
     }
 
@@ -113,7 +131,7 @@ public class MailTest {
             new Template("template", new StringReader(freemarker), configuration).process(model, out);
             return out.toString();
         } catch (Exception e) {
-            TestLogUtils.error("{}", e.getMessage());
+            log.error("{}", e.getMessage());
             return "";
         }
     }

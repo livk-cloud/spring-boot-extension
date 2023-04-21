@@ -1,4 +1,5 @@
 plugins {
+    id "com.livk.service"
     alias(libs.plugins.asciidoctor.jvm)
 }
 

@@ -1,17 +1,26 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.pulsar.consumer;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Consumer;
 import org.apache.pulsar.client.api.Message;
-import org.apache.pulsar.client.api.PulsarClientException;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.pulsar.annotation.PulsarListener;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -22,31 +31,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class MessageConsumer implements Runnable, InitializingBean {
+public class MessageConsumer {
 
-    private final Consumer<String> consumer;
-
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                Message<String> message = consumer.receive();
-                String key = message.getKey();
-                String data = new String(message.getData(), StandardCharsets.UTF_8);
-                String topic = message.getTopicName();
-                log.info("topic:{} key:{} data:{}", topic, key, data);
-                consumer.acknowledge(message);
-            } catch (PulsarClientException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    @PulsarListener
+    public void receive(Message<String> message) {
+        String key = message.getKey();
+        String data = message.getValue();
+        String topic = message.getTopicName();
+        log.info("topic:{} key:{} data:{}", topic, key, data);
     }
-
-    @Override
-    public void afterPropertiesSet() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
-        executor.execute(this);
-    }
-
 }

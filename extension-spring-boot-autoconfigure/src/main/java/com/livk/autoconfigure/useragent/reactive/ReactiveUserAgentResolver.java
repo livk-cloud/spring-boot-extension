@@ -1,8 +1,24 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.useragent.reactive;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.Wrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
@@ -19,15 +35,14 @@ import reactor.core.publisher.Mono;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
 @RequiredArgsConstructor
-public class ReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolver {
+public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver {
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
-    private final HttpUserAgentParser<T> userAgentParse;
+    private final HttpUserAgentParser userAgentParse;
 
 
     @Override
@@ -42,8 +57,14 @@ public class ReactiveUserAgentResolver<T> implements HandlerMethodArgumentResolv
         ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
         Mono<Object> mono = ReactiveUserAgentContextHolder.get()
-                .switchIfEmpty(Mono.justOrEmpty((Wrapper<?>) userAgentParse.parse(exchange.getRequest().getHeaders())))
-                .map(Wrapper::unwrap);
+                .switchIfEmpty(Mono.justOrEmpty(userAgentParse.parse(exchange.getRequest().getHeaders())))
+                .map(wrapper -> {
+                    if (adapter != null) {
+                        Class<?> type = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+                        return wrapper.unwrap(type);
+                    }
+                    return wrapper.unwrap(resolvedType);
+                });
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
     }
 }

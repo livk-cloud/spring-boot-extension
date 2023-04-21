@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
@@ -11,10 +28,8 @@ import io.lettuce.core.resource.DefaultClientResources;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +37,7 @@ import org.springframework.context.annotation.Bean;
 import java.time.Duration;
 
 /**
- * The type Redi search auto configuration.
+ * The type RediSearch autoconfiguration.
  *
  * @author livk
  */
@@ -33,16 +48,60 @@ import java.time.Duration;
 public class RediSearchAutoConfiguration {
 
     /**
-     * Configure generic object pool config.
+     * Client resources client resources.
      *
-     * @param <K>             the type parameter
-     * @param <V>             the type parameter
+     * @return the client resources
+     */
+    @Bean(destroyMethod = "shutdown")
+    public ClientResources clientResources() {
+        return DefaultClientResources.create();
+    }
+
+    /**
+     * Client redis modules client.
+     *
+     * @param clientResources the client resources
+     * @param properties      the properties
+     * @return the redis modules client
+     */
+    @Bean(destroyMethod = "shutdown")
+    public RedisModulesClient client(ClientResources clientResources,
+                                     RedisProperties properties) {
+        RedisURI redisURI = new RedisURI();
+        redisURI.setHost(properties.getHost());
+        redisURI.setPort(properties.getPort());
+        redisURI.setCredentialsProvider(RedisCredentialsProvider.from(
+                () -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
+        redisURI.setDatabase(properties.getDatabase());
+        Duration timeout = properties.getTimeout();
+        if (timeout != null) {
+            redisURI.setTimeout(timeout);
+        }
+        redisURI.setSsl(properties.isSsl());
+        redisURI.setClientName(properties.getClientName());
+        return RedisModulesClient.create(clientResources, redisURI);
+    }
+
+    /**
+     * Connection stateful redis modules connection.
+     *
+     * @param redisModulesClient the redis modules client
+     * @return the stateful redis modules connection
+     */
+    @Bean(name = "redisModulesConnection", destroyMethod = "close")
+    public StatefulRedisModulesConnection<String, String> connection(RedisModulesClient redisModulesClient) {
+        return redisModulesClient.connect();
+    }
+
+    /**
+     * Pool config generic object pool config.
+     *
      * @param redisProperties the redis properties
-     * @param config          the config
      * @return the generic object pool config
      */
-    public static <K, V> GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> configure(RedisProperties redisProperties,
-                                                                                                 GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> config) {
+    @Bean(name = "redisModulesConnectionPoolConfig")
+    public GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> poolConfig(RedisProperties redisProperties) {
+        GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config = new GenericObjectPoolConfig<>();
         config.setJmxEnabled(false);
         RedisProperties.Pool lettucePool = redisProperties.getLettuce().getPool();
         RedisProperties.Pool jedisPool = redisProperties.getJedis().getPool();
@@ -62,75 +121,6 @@ public class RediSearchAutoConfiguration {
             }
         }
         return config;
-    }
-
-    /**
-     * Redis uri redis uri.
-     *
-     * @param properties          the properties
-     * @param redisURICustomizers the redis uri customizers
-     * @return the redis uri
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public RedisURI redisURI(RedisProperties properties,
-                             ObjectProvider<RedisURICustomizer> redisURICustomizers) {
-        RedisURI redisURI = new RedisURI();
-        redisURI.setHost(properties.getHost());
-        redisURI.setPort(properties.getPort());
-        redisURI.setCredentialsProvider(RedisCredentialsProvider.from(
-                () -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
-        redisURI.setDatabase(properties.getDatabase());
-        Duration timeout = properties.getTimeout();
-        if (timeout != null) {
-            redisURI.setTimeout(timeout);
-        }
-        redisURICustomizers.orderedStream().forEach(customizer -> customizer.customize(redisURI));
-        return redisURI;
-    }
-
-    /**
-     * Client resources client resources.
-     *
-     * @return the client resources
-     */
-    @Bean(destroyMethod = "shutdown")
-    public ClientResources clientResources() {
-        return DefaultClientResources.create();
-    }
-
-    /**
-     * Client redis modules client.
-     *
-     * @param redisURI        the redis uri
-     * @param clientResources the client resources
-     * @return the redis modules client
-     */
-    @Bean(destroyMethod = "shutdown")
-    public RedisModulesClient client(RedisURI redisURI, ClientResources clientResources) {
-        return RedisModulesClient.create(clientResources, redisURI);
-    }
-
-    /**
-     * Connection stateful redis modules connection.
-     *
-     * @param redisModulesClient the redis modules client
-     * @return the stateful redis modules connection
-     */
-    @Bean(name = "redisModulesConnection", destroyMethod = "close")
-    StatefulRedisModulesConnection<String, String> connection(RedisModulesClient redisModulesClient) {
-        return redisModulesClient.connect();
-    }
-
-    /**
-     * Pool config generic object pool config.
-     *
-     * @param redisProperties the redis properties
-     * @return the generic object pool config
-     */
-    @Bean(name = "redisModulesConnectionPoolConfig")
-    public GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> poolConfig(RedisProperties redisProperties) {
-        return configure(redisProperties, new GenericObjectPoolConfig<>());
     }
 
     /**

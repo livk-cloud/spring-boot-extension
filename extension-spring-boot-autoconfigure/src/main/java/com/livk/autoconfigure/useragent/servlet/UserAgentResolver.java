@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.useragent.servlet;
 
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
@@ -20,13 +37,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * AbstractUserAgentHandlerMethodArgumentResolver
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
 @RequiredArgsConstructor
-public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
+public class UserAgentResolver implements HandlerMethodArgumentResolver {
 
-    private final HttpUserAgentParser<T> userAgentParse;
+    private final HttpUserAgentParser userAgentParse;
 
     @Override
     public final boolean supportsParameter(MethodParameter parameter) {
@@ -35,7 +51,7 @@ public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
 
     @Override
     public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        Wrapper<?> useragentWrapper = UserAgentContextHolder.getUserAgentContext();
+        Wrapper useragentWrapper = UserAgentContextHolder.getUserAgentContext();
         if (useragentWrapper == null) {
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             Assert.notNull(request, "request not be null!");
@@ -43,6 +59,6 @@ public class UserAgentResolver<T> implements HandlerMethodArgumentResolver {
             useragentWrapper = userAgentParse.parse(headers);
             UserAgentContextHolder.setUserAgentContext(useragentWrapper);
         }
-        return useragentWrapper.unwrap();
+        return useragentWrapper.unwrap(parameter.getParameterType());
     }
 }

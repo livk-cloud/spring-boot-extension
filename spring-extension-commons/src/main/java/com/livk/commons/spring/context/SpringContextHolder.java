@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.spring.context;
 
 import com.livk.auto.service.annotation.SpringAutoService;
@@ -6,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
@@ -167,10 +184,10 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
      * @param bean     bean实例
      * @param beanName beanName可为空，为空会自动生成
      */
-    @SuppressWarnings("unchecked")
     public static <T> void registerBean(T bean, String beanName) {
-        RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<T>) bean.getClass(), () -> bean);
-        registerBean(beanDefinition, beanName);
+        ResolvableType resolvableType = ResolvableType.forInstance(bean);
+        BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> bean);
+        registerBean(definitionBuilder.getBeanDefinition(), beanName);
     }
 
     /**
@@ -185,7 +202,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
         } else if (applicationContext instanceof GenericApplicationContext context) {
             registerBean(context, beanDefinition, beanName);
         } else {
-            log.error("bean register fail name:{} instantClass:{}", beanName, beanDefinition.getBeanClassName());
+            log.error("bean register fail name: {} instantClass: {}", beanName, beanDefinition.getResolvableType());
         }
     }
 

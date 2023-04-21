@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
@@ -9,13 +26,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
@@ -45,19 +62,14 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
         for (String providerInterface : importsMap.keySet()) {
             String resourceFile = String.format(LOCATION, providerInterface);
             try {
-                Set<String> exitImports = new HashSet<>();
-                for (StandardLocation standardLocation : out) {
-                    FileObject resource = filer.getResource(standardLocation, "", resourceFile);
-                    exitImports.addAll(this.read(resource));
-                }
+                FileObject resource = filer.getResource(out, "", resourceFile);
+                Set<String> exitImports = this.read(resource);
                 Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
                         .collect(Collectors.toSet());
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
 
-                try (OutputStream out = fileObject.openOutputStream()) {
-                    this.writeFile(allImports, out);
-                }
+                this.writeFile(allImports, fileObject);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -82,7 +94,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
      * @return set className
      */
     private Set<String> read(FileObject fileObject) {
-        try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
+        try (BufferedReader reader = bufferedReader(fileObject)) {
             return reader.lines()
                     .map(String::trim)
                     .collect(Collectors.toUnmodifiableSet());
@@ -94,11 +106,11 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     /**
      * 将配置信息写入到文件
      *
-     * @param services 实现类信息
-     * @param output   输出流
+     * @param services   实现类信息
+     * @param fileObject 文件信息
      */
-    private void writeFile(Collection<String> services, OutputStream output) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+    private void writeFile(Collection<String> services, FileObject fileObject) {
+        try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (String service : services) {
                 writer.write(service);
                 writer.newLine();

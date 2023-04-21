@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.web.util;
 
 import com.google.common.collect.Lists;
@@ -16,11 +33,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -69,20 +87,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     /**
      * Session http session.
      *
+     * @param request the request
      * @return the http session
      */
-    public HttpSession session() {
-        return request().getSession();
-    }
-
-    /**
-     * Parameter string.
-     *
-     * @param name the name
-     * @return the string
-     */
-    public String parameter(String name) {
-        return request().getParameter(name);
+    public HttpSession session(HttpServletRequest request) {
+        return request.getSession();
     }
 
     /**
@@ -98,26 +107,39 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     /**
      * Headers http headers.
      *
-     * @return the http headers
-     */
-    public HttpHeaders headers() {
-        HttpServletRequest request = request();
-        return headers(request);
-    }
-
-    /**
-     * Headers http headers.
-     *
      * @param request the request
      * @return the http headers
      */
     public HttpHeaders headers(HttpServletRequest request) {
-        LinkedCaseInsensitiveMap<List<String>> insensitiveMap = StreamUtils.convert(request.getHeaderNames())
-                .collect(Collectors.toMap(Function.identity(),
-                        s -> StreamUtils.convert(request.getHeaders(s)).toList(),
-                        (list1, list2) -> Stream.concat(list1.stream(), list2.stream()).toList(),
-                        LinkedCaseInsensitiveMap::new));
+        LinkedCaseInsensitiveMap<List<String>> insensitiveMap = new LinkedCaseInsensitiveMap<>();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            Enumeration<String> headers = request.getHeaders(headerName);
+            insensitiveMap.put(headerName, Collections.list(headers));
+        }
         return new HttpHeaders(CollectionUtils.toMultiValueMap(insensitiveMap));
+    }
+
+    /**
+     * Attributes map.
+     *
+     * @param request the request
+     * @return the map
+     */
+    public Map<String, Object> attributes(HttpServletRequest request) {
+        return StreamUtils.convert(request.getHeaderNames())
+                .collect(Collectors.toMap(Function.identity(), request::getAttribute));
+    }
+
+    /**
+     * Parameter string.
+     *
+     * @param name the name
+     * @return the string
+     */
+    public String parameter(String name) {
+        return request().getParameter(name);
     }
 
     /**
@@ -158,24 +180,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> Lists.newArrayList(entry.getValue())));
         return new LinkedMultiValueMap<>(map);
-    }
-
-    /**
-     * Params multi value map.
-     *
-     * @return the multi value map
-     */
-    public MultiValueMap<String, String> params() {
-        return params(request());
-    }
-
-    /**
-     * Real ip string.
-     *
-     * @return the string
-     */
-    public String realIp() {
-        return realIp(request());
     }
 
     /**

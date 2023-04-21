@@ -1,8 +1,27 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -75,5 +94,28 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
         return method.isAnnotationPresent(annotationClass) ||
                AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
+    }
+
+    /**
+     * Attributes for annotation attributes.
+     *
+     * @param metadata            the metadata
+     * @param annotationClassName the annotation class name
+     * @return the annotation attributes
+     */
+    public AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) {
+        return AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(annotationClassName));
+    }
+
+    /**
+     * Attributes for annotation attributes.
+     *
+     * @param <A>             the type parameter
+     * @param metadata        the metadata
+     * @param annotationClass the annotation class
+     * @return the annotation attributes
+     */
+    public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, Class<A> annotationClass) {
+        return attributesFor(metadata, annotationClass.getName());
     }
 }

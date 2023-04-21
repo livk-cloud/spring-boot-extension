@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.auto.service.processor;
 
 import javax.annotation.processing.*;
@@ -7,7 +24,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -51,12 +72,12 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
     /**
      * The Out.
      */
-    protected Set<StandardLocation> out;
+    protected StandardLocation out;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        out = Set.of(StandardLocation.CLASS_OUTPUT, StandardLocation.SOURCE_OUTPUT);
+        out = StandardLocation.CLASS_OUTPUT;
         filer = processingEnv.getFiler();
         elements = processingEnv.getElementUtils();
         messager = processingEnv.getMessager();
@@ -165,5 +186,27 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
             builder.replace(index, index + 1, "$");
         }
         return builder.toString();
+    }
+
+    /**
+     * buffered reader.
+     *
+     * @param fileObject the file object
+     * @return the buffered reader
+     * @throws IOException the io exception
+     */
+    protected BufferedReader bufferedReader(FileObject fileObject) throws IOException {
+        return new BufferedReader(fileObject.openReader(true));
+    }
+
+    /**
+     * buffered writer.
+     *
+     * @param fileObject the file object
+     * @return the buffered writer
+     * @throws IOException the io exception
+     */
+    protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
+        return new BufferedWriter(fileObject.openWriter());
     }
 }

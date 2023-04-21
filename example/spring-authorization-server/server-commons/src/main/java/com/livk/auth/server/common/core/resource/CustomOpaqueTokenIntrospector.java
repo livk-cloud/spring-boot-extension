@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.auth.server.common.core.resource;
 
 import com.livk.auth.server.common.core.principal.Oauth2User;
@@ -17,7 +34,6 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 
 import java.security.Principal;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,10 +50,8 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 
-        Map<String, Oauth2UserDetailsService> userDetailsServiceMap = SpringContextHolder.getApplicationContext()
-                .getBeansOfType(Oauth2UserDetailsService.class);
-
-        Optional<Oauth2UserDetailsService> optional = userDetailsServiceMap.values().stream()
+        Optional<Oauth2UserDetailsService> optional = SpringContextHolder.getBeanProvider(Oauth2UserDetailsService.class)
+                .orderedStream()
                 .filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
                         oldAuthorization.getAuthorizationGrantType().getValue()))
                 .max(Comparator.comparingInt(Ordered::getOrder));

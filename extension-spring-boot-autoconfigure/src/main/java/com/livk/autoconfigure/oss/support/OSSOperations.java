@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.oss.support;
 
 import java.io.InputStream;
@@ -37,7 +54,7 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      *
      * @param bucketName the bucket name
      */
-    void removeBucket(String bucketName);
+    void removeObj(String bucketName);
 
     /**
      * Exist boolean.
@@ -72,14 +89,19 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      * @param bucketName the bucket name
      * @param fileName   the file name
      */
-    void removeBucket(String bucketName, String fileName);
+    void removeObj(String bucketName, String fileName);
 
     /**
      * Remove objs.
      *
      * @param bucketName the bucket name
      */
-    void removeObjs(String bucketName);
+    default void removeObjs(String bucketName) {
+        List<String> objs = getAllObj(bucketName);
+        for (String obj : objs) {
+            removeObj(bucketName, obj);
+        }
+    }
 
     /**
      * Gets str url.
@@ -89,6 +111,16 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
      * @return the str url
      */
     String getStrUrl(String bucketName, String fileName);
+
+    /**
+     * Gets str url.
+     *
+     * @param bucketName the bucket name
+     * @param fileName   the file name
+     * @param expires    the expires
+     * @return the str url
+     */
+    String getStrUrl(String bucketName, String fileName, int expires);
 
     /**
      * Gets all obj.

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.http.factory;
 
 import com.livk.autoconfigure.http.annotation.Provider;
@@ -29,6 +46,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -64,12 +82,10 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
                 beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, clazz.getName());
 
                 Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
-                String beanName;
-                if (provider != null && StringUtils.hasText(provider.value())) {
-                    beanName = provider.value();
-                } else {
-                    beanName = StringUtils.uncapitalize(clazz.getSimpleName());
-                }
+                String beanName = Optional.ofNullable(provider)
+                        .map(Provider::value)
+                        .filter(StringUtils::hasText)
+                        .orElse(StringUtils.uncapitalize(clazz.getSimpleName()));
                 BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, clazz.getName(), new String[]{beanName});
                 BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
             }
@@ -80,13 +96,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
         return new ClassPathBeanDefinitionScanner(registry, false, environment, resourceLoader) {
             @Override
             protected boolean isCandidateComponent(@NonNull AnnotatedBeanDefinition beanDefinition) {
-                boolean isCandidate = false;
-                if (beanDefinition.getMetadata().isIndependent()) {
-                    if (!beanDefinition.getMetadata().isAnnotation()) {
-                        isCandidate = true;
-                    }
-                }
-                return isCandidate;
+                return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
             }
         };
     }

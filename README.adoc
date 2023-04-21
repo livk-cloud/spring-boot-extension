@@ -2,11 +2,11 @@ image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.0.7-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.0.5-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Framework-6.0.8-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.0.6-green[link="https://spring.io/projects/spring-boot"]
 
-image:https://img.shields.io/badge/Gradle-8.0.2-blue[link="https://gradle.org/"]
-image:https://img.shields.io/badge/Java-17.0.6-brightgreen[]
+image:https://img.shields.io/badge/Gradle-8.1-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Java-17.0.7-brightgreen[]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
@@ -70,12 +70,3 @@ dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
 }
 ----
-
-image:https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white[link="https://www.mysql.com/"]
-image:https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white[link="https://www.postgresql.org/"]
-image:https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka[link="https://kafka.apache.org/"]
-image:https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white[link="https://www.rabbitmq.com/"]
-image:https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white[link="https://redis.io/"]
-image:https://pulsar.apache.org/img/logo.svg[width=140 height=140,link="https://pulsar.apache.org/"]
-image:https://clickhouse.com/docs/img/logo_without_text.svg[link="https://clickhouse.com/"]
-

@@ -1,3 +1,7 @@
+plugins {
+    id "com.livk.service"
+}
+
 dependencies {
     implementation project(":example:spring-boot-starter:livk-spring-boot-starter")
     implementation project(":example:spring-boot-starter:spring-filter-starter")

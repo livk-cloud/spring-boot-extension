@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.auth.server.config;
 
 import com.livk.auth.server.common.constant.SecurityConstants;
@@ -10,9 +27,6 @@ import com.livk.auth.server.common.handler.AuthenticationFailureEventHandler;
 import com.livk.auth.server.common.handler.AuthenticationSuccessEventHandler;
 import com.livk.auth.server.common.provider.OAuth2PasswordAuthenticationProvider;
 import com.livk.auth.server.common.provider.OAuth2SmsAuthenticationProvider;
-import com.livk.auth.server.common.util.JwkUtils;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
@@ -20,15 +34,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2Token;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
@@ -37,7 +52,6 @@ import org.springframework.security.oauth2.server.authorization.web.authenticati
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -64,11 +78,9 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
         OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(
-                        (tokenEndpoint) -> {
-                            tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
-                                    .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                                    .errorResponseHandler(new AuthenticationFailureEventHandler());
-                        }
+                        (tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+                                .errorResponseHandler(new AuthenticationFailureEventHandler())
                 )
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
@@ -78,51 +90,35 @@ public class AuthorizationServerConfiguration {
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
 
-        DefaultSecurityFilterChain securityFilterChain = http.securityMatcher(endpointsMatcher)
-                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
-                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
-                .authorizeHttpRequests().anyRequest().authenticated().and()
-                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
-                .apply(configurer.authorizationService(authorizationService)).and()
-                .apply(new FormIdentityLoginConfigurer()).and()
-                .build();
-
-        // 注入自定义授权模式实现
-        addCustomOAuth2GrantAuthenticationProvider(http, oAuth2TokenGenerator, userDetailsAuthenticationProvider);
-        return securityFilterChain;
-    }
-
-    private void addCustomOAuth2GrantAuthenticationProvider(HttpSecurity http,
-                                                            OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-                                                            UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) {
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-        OAuth2AuthorizationService authorizationService = http.getSharedObject(OAuth2AuthorizationService.class);
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
         OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
 
         OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
-        http.authenticationProvider(userDetailsAuthenticationProvider);
-        http.authenticationProvider(passwordAuthenticationProvider);
-        http.authenticationProvider(smsAuthenticationProvider);
+
+        return http.securityMatcher(endpointsMatcher)
+                .authenticationManager(authenticationManager)
+                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
+                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
+                .authorizeHttpRequests().anyRequest().authenticated().and()
+                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
+                .apply(configurer.authorizationService(authorizationService)).and()
+                .apply(new FormIdentityLoginConfigurer()).and()
+                .authenticationProvider(userDetailsAuthenticationProvider)
+                .authenticationProvider(passwordAuthenticationProvider)
+                .authenticationProvider(smsAuthenticationProvider)
+                .build();
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        RSAKey rsaKey = JwkUtils.generateRsa();
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
-    }
-
-    @Bean
-    public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
-        return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
-    }
-
-    @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
+                                                               UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
     }
 
     @Bean

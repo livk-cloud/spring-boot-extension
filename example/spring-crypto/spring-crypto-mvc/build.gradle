@@ -1,3 +1,7 @@
+plugins {
+    id "com.livk.service"
+}
+
 dependencies {
     implementation project(":example:spring-crypto:crypto-commons")
     implementation "org.springframework.boot:spring-boot-starter-web"

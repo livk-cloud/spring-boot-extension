@@ -1,21 +1,41 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
+import com.google.common.collect.Sets;
 import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * <p>
@@ -50,23 +70,16 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private void generateConfigFiles(Map<String, Set<String>> factoriesMap, String location) {
         if (!factoriesMap.isEmpty()) {
-            Map<String, Set<String>> allImportMap = new HashMap<>();
             try {
-                for (String providerInterface : factoriesMap.keySet()) {
-                    Set<String> exitImports = new HashSet<>();
-                    for (StandardLocation standardLocation : out) {
-                        FileObject resource = filer.getResource(standardLocation, "", location);
-                        exitImports.addAll(this.read(providerInterface, resource));
-                    }
-                    Set<String> allImports = Stream.concat(exitImports.stream(), factoriesMap.get(providerInterface).stream())
-                            .collect(Collectors.toSet());
-                    allImportMap.put(providerInterface, allImports);
-                }
+                FileObject resource = filer.getResource(out, "", location);
+                Map<String, Set<String>> map = this.read(resource);
+                Map<String, Set<String>> allImportMap = Stream.concat(map.entrySet().stream(),
+                                factoriesMap.entrySet().stream())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Sets::union));
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
-                try (OutputStream out = fileObject.openOutputStream()) {
-                    this.writeFile(allImportMap, out);
-                }
+
+                this.writeFile(allImportMap, fileObject);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -78,7 +91,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
             Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
-            String provider = super.transform(value.orElseThrow());
+            String provider = super.transform(value.orElseGet(() -> fromInterface(element)));
+            if (provider == null || provider.isBlank()) {
+                throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
+            }
             boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
             String serviceImpl = super.transform(element.toString());
             if (aot) {
@@ -89,37 +105,46 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         }
     }
 
+    private String fromInterface(Element element) {
+        if (element instanceof TypeElement typeElement) {
+            List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
+            if (interfaces != null && interfaces.size() == 1) {
+                TypeMirror typeMirror = interfaces.get(0);
+                if (typeMirror instanceof DeclaredType declaredType) {
+                    return declaredType.asElement().toString();
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 从文件读取某个接口的配置
      *
-     * @param providerInterface 供应商接口
-     * @param fileObject        文件信息
+     * @param fileObject 文件信息
      * @return set className
      */
-    private Set<String> read(String providerInterface, FileObject fileObject) {
-        try (BufferedReader reader = new BufferedReader(fileObject.openReader(true))) {
-            boolean read = false;
-            List<String> lines = reader.lines().toList();
-            Set<String> providers = new HashSet<>();
-            for (String line : lines) {
-                if (line.startsWith("#") || line.isBlank()) {
-                    continue;
-                }
-                if (line.equals(providerInterface + "=\\")) {
-                    read = true;
+    private Map<String, Set<String>> read(FileObject fileObject) {
+        try (BufferedReader reader = bufferedReader(fileObject)) {
+            String line;
+            Map<String, Set<String>> providers = new HashMap<>();
+            String provider = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
                     continue;
                 }
                 if (line.endsWith("=\\")) {
-                    read = false;
+                    provider = line.replaceAll("=\\\\", "");
                     continue;
                 }
-                if (read) {
-                    providers.add(line.replaceAll(",\\\\", "").trim());
+                if (provider != null) {
+                    providers.computeIfAbsent(provider, k -> new HashSet<>())
+                            .add(line.replaceAll(",\\\\", "").trim());
                 }
             }
             return providers;
         } catch (IOException e) {
-            return Set.of();
+            return Collections.emptyMap();
         }
     }
 
@@ -127,10 +152,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * 将配置信息写入到文件
      *
      * @param allImportMap 供应商接口及实现类信息
-     * @param output       输出流
+     * @param fileObject   文件信息
      */
-    private void writeFile(Map<String, Set<String>> allImportMap, OutputStream output) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, UTF_8))) {
+    private void writeFile(Map<String, Set<String>> allImportMap, FileObject fileObject) {
+        try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
                 String providerInterface = entry.getKey();
                 Set<String> services = entry.getValue();

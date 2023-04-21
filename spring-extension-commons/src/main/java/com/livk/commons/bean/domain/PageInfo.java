@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.bean.domain;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -112,12 +129,12 @@ public class PageInfo<T> implements Serializable {
         public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
             JsonNode jsonNode = context.readTree(p);
             ObjectMapper mapper = (ObjectMapper) p.getCodec();
-            String listFieldName = FieldFunc.<PageInfo<Object>>get(PageInfo::getList);
+            String listFieldName = FieldFunc.<PageInfo<Object>>getName(PageInfo::getList);
             CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
             List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
-            int pageNum = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageNum)).asInt();
-            int pageSize = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getPageSize)).asInt();
-            long total = jsonNode.get(FieldFunc.<PageInfo<Object>>get(PageInfo::getTotal)).asLong();
+            int pageNum = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getPageNum)).asInt();
+            int pageSize = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getPageSize)).asInt();
+            long total = jsonNode.get(FieldFunc.<PageInfo<Object>>getName(PageInfo::getTotal)).asLong();
             return new PageInfo<>(list, pageNum, pageSize, total);
         }
 

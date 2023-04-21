@@ -1,4 +1,5 @@
 plugins {
+    id "com.livk.common"
     id "com.livk.mvn.deployed"
 }
 
@@ -32,6 +33,7 @@ dependencies {
     optional "com.redis:lettucemod"
     optional "org.apache.commons:commons-pool2"
     optional "io.minio:minio"
+    optional "com.aliyun.oss:aliyun-sdk-oss"
     compileProcessor project(":spring-auto-service")
 }
 

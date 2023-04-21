@@ -1,7 +1,24 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.spi;
 
 import com.livk.commons.spi.Loader;
-import com.livk.commons.spi.support.UniversalLoaderType;
+import com.livk.commons.spi.support.UniversalManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.GenericTypeResolver;
@@ -29,7 +46,7 @@ public abstract class AbstractServiceLoad<T> implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        servicesMap = Loader.load(getServiceClass(), UniversalLoaderType.JDK_SERVICE).stream()
+        servicesMap = Loader.load(getServiceClass(), UniversalManager.JDK_SERVICE).stream()
                 .collect(Collectors.toMap(this::getKey, Function.identity()));
         log.info("data:{}", servicesMap);
     }

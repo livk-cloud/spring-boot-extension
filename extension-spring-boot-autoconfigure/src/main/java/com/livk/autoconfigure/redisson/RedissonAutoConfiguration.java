@@ -1,7 +1,24 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.autoconfigure.redisson;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.spring.util.SpringUtils;
+import com.livk.commons.spring.env.SpringEnvBinder;
 import com.livk.commons.util.YamlUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -26,7 +43,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 
 /**
  * <p>
@@ -72,7 +89,8 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
     @ConditionalOnMissingBean(RedissonClient.class)
     public RedissonClient redissonClient(RedisProperties redisProperties,
                                          ObjectProvider<ConfigCustomizer> configCustomizers) {
-        Map<String, String> redissonProperties = SpringUtils.getSubPropertiesMap(environment, REDISSON_CONFIG);
+        Properties redissonProperties = new SpringEnvBinder(environment).propertiesOf(REDISSON_CONFIG)
+                .orElseGet(Properties::new);
         String redissonYaml = YamlUtils.toYml(redissonProperties).replaceAll("'", "");
         Config config;
         Duration duration = redisProperties.getTimeout();

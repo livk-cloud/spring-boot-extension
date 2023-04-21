@@ -8,11 +8,11 @@ springMybatis = "3.0.1"
 guava = "31.1-jre"
 easyexcel = "3.2.1"
 javaWebSocket = "1.5.3"
-redisson = "3.20.0"
+redisson = "3.20.1"
 zookeeper = "3.8.1"
-clickhouse = "0.4.0"
-pulsarClient = "2.11.0"
-googleFindbugs = "3.0.1"
+clickhouse = "0.4.4"
+springPulsar = "0.2.0"
+spotbugsAnnotations = "4.7.3"
 mapstruct = "1.5.3.Final"
 mapstructLombok = "0.2.0"
 curator = "5.4.0"
@@ -20,16 +20,18 @@ ip2region = "2.7.0"
 asciidoctorJvm = "3.3.2"
 browscapJava = "1.4.0"
 autoService = "1.0.1"
-yauaa = "7.16.0"
-springdoc = "2.0.4"
+yauaa = "7.19.0"
+springdoc = "2.1.0"
 googleJavase = "3.5.1"
-springBootAdmin = "3.0.1"
+springBootAdmin = "3.0.2"
 nimbusdsJwt = "9.31"
 rocketStarter = "2.2.3"
 jsqlparser = "4.6"
-lettucemod = "3.4.1"
+lettucemod = "3.5.0"
 minio = "8.5.2"
 dnsjava = "3.5.2"
+snakeyaml = "2.0"
+aliyunOss = "3.16.2"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "springBootAdmin" }
@@ -49,8 +51,8 @@ zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = 
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
 clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
-pulsar-client = { group = "org.apache.pulsar", name = "pulsar-client", version.ref = "pulsarClient" }
-findbugs-annotations = { group = "com.google.code.findbugs", name = "annotations", version.ref = "googleFindbugs" }
+spring-pulsar-starter = { group = "org.springframework.pulsar", name = "spring-pulsar-spring-boot-starter", version.ref = "springPulsar" }
+spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugsAnnotations" }
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstructLombok" }
@@ -67,6 +69,8 @@ jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyunOss" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
