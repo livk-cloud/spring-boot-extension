@@ -39,16 +39,11 @@ public class DefaultSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error")
-                .permitAll()
-                .and()
-                .authorizeHttpRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin(Customizer.withDefaults())
-                .build();
+        return http.authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
+                .formLogin(Customizer.withDefaults()).build();
     }
 
     @Bean

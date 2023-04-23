@@ -47,8 +47,7 @@ public class SecurityConfig {
         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminServer.path("/"));
-        return http.authorizeHttpRequests()
-                .requestMatchers(adminServer.path("/assets/**"))
+        return http.authorizeHttpRequests(registry -> registry.requestMatchers(adminServer.path("/assets/**"))
                 .permitAll()
                 .requestMatchers(adminServer.path("/variables.css"))
                 .permitAll()
@@ -61,26 +60,14 @@ public class SecurityConfig {
                 .dispatcherTypeMatchers(DispatcherType.ASYNC)
                 .permitAll()
                 .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                .loginPage(adminServer.path("/login"))
-                .successHandler(successHandler)
-                .and()
-                .logout()
-                .logoutUrl(adminServer.path("/logout"))
-                .and()
+                .authenticated()).formLogin(configurer -> configurer.loginPage(adminServer.path("/login"))
+                        .successHandler(successHandler))
                 .httpBasic(Customizer.withDefaults())
-                .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringRequestMatchers(new AntPathRequestMatcher(adminServer.path("/instances"), HttpMethod.POST.toString()),
-                        new AntPathRequestMatcher(adminServer.path("/instances/*"), HttpMethod.DELETE.toString()),
-                        new AntPathRequestMatcher(adminServer.path("/actuator/**")))
-                .and()
-                .rememberMe()
-                .key(UUID.randomUUID().toString())
-                .tokenValiditySeconds(1209600)
-                .and()
-                .build();
+                .csrf(configurer -> configurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers(new AntPathRequestMatcher(adminServer.path("/instances"), HttpMethod.POST.toString()),
+                                new AntPathRequestMatcher(adminServer.path("/instances/*"), HttpMethod.DELETE.toString()),
+                                new AntPathRequestMatcher(adminServer.path("/actuator/**"))))
+                .rememberMe(configurer -> configurer.key(UUID.randomUUID().toString())
+                        .tokenValiditySeconds(1209600)).build();
     }
 }

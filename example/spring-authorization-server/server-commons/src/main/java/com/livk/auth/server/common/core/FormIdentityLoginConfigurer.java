@@ -32,18 +32,13 @@ public final class FormIdentityLoginConfigurer
 
     @Override
     public void init(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .loginPage("/token/login")
+        http.formLogin(configurer -> configurer.loginPage("/token/login")
                 .loginProcessingUrl("/token/form")
-                .failureHandler(new FormAuthenticationFailureHandler())
-                .and()
-                .logout()
-                .logoutSuccessHandler(new SsoLogoutSuccessHandler())
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .and()
-                .csrf()
-                .disable();
+                .failureHandler(new FormAuthenticationFailureHandler()))
+                .logout(configurer -> configurer.logoutSuccessHandler(new SsoLogoutSuccessHandler())
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true))
+                .csrf(AbstractHttpConfigurer::disable);
     }
 
 }

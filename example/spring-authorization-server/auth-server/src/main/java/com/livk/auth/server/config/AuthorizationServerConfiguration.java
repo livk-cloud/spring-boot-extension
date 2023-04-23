@@ -86,6 +86,8 @@ public class AuthorizationServerConfiguration {
                         authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
 
         http.apply(configurer);
+        http.apply(configurer.authorizationService(authorizationService));
+        http.apply(new FormIdentityLoginConfigurer());
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
@@ -97,15 +99,11 @@ public class AuthorizationServerConfiguration {
 
         OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
-
         return http.securityMatcher(endpointsMatcher)
                 .authenticationManager(authenticationManager)
-                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
-                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
-                .authorizeHttpRequests().anyRequest().authenticated().and()
-                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
-                .apply(configurer.authorizationService(authorizationService)).and()
-                .apply(new FormIdentityLoginConfigurer()).and()
+                .securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
+                .authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
+                .csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
                 .authenticationProvider(userDetailsAuthenticationProvider)
                 .authenticationProvider(passwordAuthenticationProvider)
                 .authenticationProvider(smsAuthenticationProvider)
