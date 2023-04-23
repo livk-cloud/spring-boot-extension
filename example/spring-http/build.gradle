@@ -5,5 +5,4 @@ plugins {
 dependencies {
     implementation project(":extension-spring-boot-starters:http-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "io.projectreactor.netty:reactor-netty-http"
 }
