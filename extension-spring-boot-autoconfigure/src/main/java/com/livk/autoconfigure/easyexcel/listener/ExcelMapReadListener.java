@@ -19,6 +19,7 @@ package com.livk.autoconfigure.easyexcel.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
+import com.livk.autoconfigure.easyexcel.utils.ExcelDataType;
 
 import java.util.Collection;
 import java.util.Map;
@@ -54,4 +55,17 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
      * @return collection collection data
      */
     Map<String, ? extends Collection<T>> getMapData();
+
+    /**
+     * Get data object.
+     *
+     * @param type the type
+     * @return the object
+     */
+    default Object getData(ExcelDataType type) {
+        return switch (type) {
+            case MAP -> getMapData();
+            case COLLECTION -> getCollectionData();
+        };
+    }
 }

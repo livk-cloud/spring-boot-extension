@@ -21,6 +21,7 @@ import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
 import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.ExcelDataType;
 import com.livk.commons.bean.util.BeanUtils;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
@@ -36,8 +37,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -67,30 +66,20 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
         Mono<?> mono = Mono.empty();
         if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
             ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
-            Class<?> excelModelClass;
             ResolvableType genericType = ResolvableType.forMethodParameter(parameter);
             if (parameter.getParameterType().equals(Mono.class)) {
                 genericType = genericType.getGeneric(0);
             }
             if (genericType.getRawClass() != null) {
-                if (Collection.class.isAssignableFrom(genericType.getRawClass()) ||
-                    Flux.class.isAssignableFrom(genericType.getRawClass())) {
-                    excelModelClass = genericType.resolveGeneric(0);
-                    mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
-                            .map(Part::content)
-                            .flatMap(DataBufferUtils::transform)
-                            .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
-                            .map(in -> listener.getCollectionData());
-                } else if (Map.class.isAssignableFrom(genericType.getRawClass())) {
-                    excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
-                    mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
-                            .map(Part::content)
-                            .flatMap(DataBufferUtils::transform)
-                            .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
-                            .map(in -> listener.getMapData());
-                } else {
-                    throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
-                }
+
+                ExcelDataType dataType = Flux.class.isAssignableFrom(genericType.getRawClass()) ?
+                        ExcelDataType.COLLECTION : ExcelDataType.match(genericType.getRawClass());
+                Class<?> excelModelClass = dataType.getFunction().apply(genericType);
+                mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
+                        .map(Part::content)
+                        .flatMap(DataBufferUtils::transform)
+                        .doOnSuccess(in -> EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
+                        .map(in -> listener.getData(dataType));
             }
         }
         return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
