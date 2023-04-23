@@ -18,10 +18,14 @@
 package com.livk.micrometer.example;
 
 import com.livk.commons.spring.SpringLauncher;
+import io.micrometer.context.ContextExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * <p>
@@ -42,6 +46,12 @@ public class MicrometerTraceExample {
     @GetMapping("home")
     public String home() {
         log.info("home() has been called");
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        ExecutorService wrap = ContextExecutorService.wrap(service);
+        for (int i = 0; i < 3; i++) {
+            wrap.execute(() -> log.info("home"));
+        }
+        service.shutdown();
         return "Hello World!";
     }
 }
