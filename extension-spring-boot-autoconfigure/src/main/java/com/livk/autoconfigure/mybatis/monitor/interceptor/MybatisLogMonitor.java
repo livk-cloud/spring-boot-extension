@@ -20,8 +20,8 @@ package com.livk.autoconfigure.mybatis.monitor.interceptor;
 import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitorProperties;
 import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
 import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import com.livk.autoconfigure.mybatis.util.SqlUtils;
 import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.sqlparser.SqlParserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -59,7 +59,7 @@ public class MybatisLogMonitor implements Interceptor {
         long start = System.currentTimeMillis();
         Object proceed = invocation.proceed();
         long time = System.currentTimeMillis() - start;
-        String sql = SqlUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
+        String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
         if (time > timeOut()) {
             log.warn("{SQL超时 SQL:[{}],Time:[{}ms]}", sql, time);
             MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
