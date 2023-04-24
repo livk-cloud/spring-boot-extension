@@ -47,7 +47,7 @@ import java.util.Map;
  */
 @Slf4j
 @UtilityClass
-public class EasyExcelUtils {
+public class EasyExcelSupport {
 
     /**
      * Read.

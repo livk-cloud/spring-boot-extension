@@ -19,7 +19,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
-import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelSupport;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
 import org.springframework.core.Ordered;
@@ -142,13 +142,13 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
     private Mono<Void> write(ExcelReturn excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        EasyExcelUtils.write(outputStream, excelModelClass, excelReturn.template(), result);
+        EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
         return response.writeWith(bufferFlux);
     }
 
     private void setResponse(ExcelReturn excelReturn, ServerHttpResponse response) {
-        String fileName = EasyExcelUtils.fileName(excelReturn);
+        String fileName = EasyExcelSupport.fileName(excelReturn);
         MediaType mediaType = MediaTypeFactory.getMediaType(fileName)
                 .orElse(EXCEL_MEDIA_TYPE);
         HttpHeaders headers = response.getHeaders();

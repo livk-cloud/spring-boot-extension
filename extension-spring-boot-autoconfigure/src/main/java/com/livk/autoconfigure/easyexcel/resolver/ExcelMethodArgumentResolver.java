@@ -20,7 +20,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
-import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelSupport;
 import com.livk.autoconfigure.easyexcel.utils.ExcelDataType;
 import com.livk.commons.bean.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,7 +65,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             InputStream in = getInputStream(request, excelParam.fileName());
             ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
             Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
-            EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
+            EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
             return listener.getData(dataType);
         }
         throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
