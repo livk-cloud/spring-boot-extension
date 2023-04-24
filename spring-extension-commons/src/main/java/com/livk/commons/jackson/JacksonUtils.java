@@ -30,12 +30,15 @@ import com.livk.commons.bean.Wrapper;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ResolvableType;
 
 import java.io.DataInput;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
+import java.lang.reflect.ParameterizedType;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +86,24 @@ public class JacksonUtils {
      */
     public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
         return MAPPER.getTypeFactory().constructParametricType(targetClass, generics);
+    }
+
+    /**
+     * ResolvableType转成Jackson JavaType
+     *
+     * @param resolvableType the resolvable type
+     * @return the java type
+     * @see ResolvableType
+     */
+    public static JavaType javaType(ResolvableType resolvableType) {
+        Class<?> rawClass = resolvableType.getRawClass();
+        if (resolvableType.getType() instanceof ParameterizedType parameterizedType) {
+            JavaType[] javaTypes = Arrays.stream(parameterizedType.getActualTypeArguments())
+                    .map(type -> javaType(ResolvableType.forType(type)))
+                    .toArray(JavaType[]::new);
+            return typeFactory().constructParametricType(rawClass, javaTypes);
+        }
+        return javaType(rawClass);
     }
 
     /**

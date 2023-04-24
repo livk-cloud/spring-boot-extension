@@ -26,6 +26,7 @@ import com.livk.commons.bean.domain.Pair;
 import com.livk.commons.collect.util.StreamUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -65,6 +66,12 @@ class JacksonUtilsTest {
         assertEquals(Pair.class, javaType.getRawClass());
         assertEquals(String.class, javaType.getBindings().getBoundType(0).getRawClass());
         assertEquals(Integer.class, javaType.getBindings().getBoundType(1).getRawClass());
+
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Pair.class, String.class, Integer.class);
+        JavaType type = JacksonUtils.javaType(resolvableType);
+        assertEquals(Pair.class, type.getRawClass());
+        assertEquals(String.class, type.getBindings().getBoundType(0).getRawClass());
+        assertEquals(Integer.class, type.getBindings().getBoundType(1).getRawClass());
 
         assertEquals(String.class, JacksonUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
         assertEquals(Integer.class, JacksonUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
