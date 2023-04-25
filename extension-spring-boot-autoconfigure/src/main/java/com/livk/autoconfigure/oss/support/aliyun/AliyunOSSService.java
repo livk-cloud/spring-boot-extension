@@ -22,7 +22,6 @@ import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.CannedAccessControlList;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.SetBucketCORSRequest;
-import com.livk.autoconfigure.oss.OSSProperties;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import com.livk.commons.util.DateUtils;
 
@@ -36,14 +35,6 @@ import java.util.List;
  * @author livk
  */
 public class AliyunOSSService extends AbstractService<OSS> {
-    /**
-     * Instantiates a new Abstract service.
-     *
-     * @param properties the properties
-     */
-    public AliyunOSSService(OSSProperties properties) {
-        super(properties);
-    }
 
     @Override
     public boolean exist(String bucketName) {
