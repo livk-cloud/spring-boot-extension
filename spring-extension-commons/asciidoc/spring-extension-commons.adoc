@@ -1,0 +1,19 @@
+= spring extension commons
+:revdate: {docdate}
+:toc: right
+:Author: Livk
+
+:numbered:
+
+include::commons/aop.adoc[]
+include::commons/bean.adoc[]
+include::commons/cglib.adoc[]
+include::commons/collect.adoc[]
+include::commons/function.adoc[]
+include::commons/http.adoc[]
+include::commons/io.adoc[]
+include::commons/jackson.adoc[]
+include::commons/spring.adoc[]
+include::commons/sqlparser.adoc[]
+include::commons/util.adoc[]
+include::commons/web.adoc[]
