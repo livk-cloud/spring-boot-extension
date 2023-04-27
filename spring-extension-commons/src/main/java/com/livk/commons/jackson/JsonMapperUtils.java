@@ -17,7 +17,6 @@
 
 package com.livk.commons.jackson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,7 +44,7 @@ public class JsonMapperUtils {
 
     static {
         JsonMapper.Builder builder = MapperFactory.builder(JacksonFormat.JSON);
-        JSON = JacksonSupport.create(builder.serializationInclusion(JsonInclude.Include.NON_NULL));
+        JSON = JacksonSupport.create(builder);
     }
 
     /**
