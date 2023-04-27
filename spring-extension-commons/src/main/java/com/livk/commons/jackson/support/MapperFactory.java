@@ -22,18 +22,63 @@ import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.livk.commons.bean.Wrapper;
 
 /**
+ * The type Mapper factory.
+ *
  * @author livk
  */
 public class MapperFactory {
 
+    /**
+     * Builder b.
+     *
+     * @param <M>    the type parameter
+     * @param <B>    the type parameter
+     * @param format the format
+     * @return the b
+     */
     @SuppressWarnings("unchecked")
     public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(JacksonFormat format) {
-        return switch (format) {
-            case JSON -> (B) JsonMapper.builder();
-            case YAML -> (B) YAMLMapper.builder();
-            case XML -> (B) XmlMapper.builder();
+        Wrapper wrapper = switch (format) {
+            case JSON -> new JsonBuilderWrapper();
+            case YAML -> new YamlBuilderWrapper();
+            case XML -> new XmlBuilderWrapper();
         };
+        return (B) wrapper.unwrap(MapperBuilder.class);
+    }
+
+
+    private static abstract class BuilderWrapper implements Wrapper {
+
+        @Override
+        public boolean isWrapperFor(Class<?> type) {
+            return MapperBuilder.class.isAssignableFrom(type);
+        }
+    }
+
+    private static class JsonBuilderWrapper extends BuilderWrapper implements Wrapper {
+
+        @Override
+        public <T> T unwrap(Class<T> type) {
+            return type.cast(JsonMapper.builder());
+        }
+    }
+
+    private static class YamlBuilderWrapper extends BuilderWrapper implements Wrapper {
+
+        @Override
+        public <T> T unwrap(Class<T> type) {
+            return type.cast(YAMLMapper.builder());
+        }
+    }
+
+    private static class XmlBuilderWrapper extends BuilderWrapper implements Wrapper {
+
+        @Override
+        public <T> T unwrap(Class<T> type) {
+            return type.cast(XmlMapper.builder());
+        }
     }
 }
