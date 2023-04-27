@@ -17,7 +17,7 @@
 
 package com.livk.provider.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RabbitControllerTest {
 
-    static String body = JacksonUtils.writeValueAsString(Map.of(
+    static String body = JsonMapperUtils.writeValueAsString(Map.of(
             "msg", "hello",
             "data", "By Livk"
     ));

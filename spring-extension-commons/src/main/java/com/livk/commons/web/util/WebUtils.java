@@ -19,7 +19,7 @@ package com.livk.commons.web.util;
 
 import com.google.common.collect.Lists;
 import com.livk.commons.collect.util.StreamUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -223,7 +223,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      * @param data     the data
      */
     public void out(HttpServletResponse response, Object data) {
-        out(response, JacksonUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
+        out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
     }
 
     /**

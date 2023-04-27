@@ -17,7 +17,7 @@
 
 package com.livk.sso.commons.util;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.spring.context.SpringContextHolder;
 import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Payload;
@@ -54,7 +54,7 @@ public class JwtUtils {
     public String generateToken(User userInfo) {
         JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).type(JOSEObjectType.JWT).build();
         Payload payload = new Payload(UUID.randomUUID().toString(), userInfo);
-        JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JacksonUtils.writeValueAsString(payload)));
+        JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JsonMapperUtils.writeValueAsString(payload)));
         RSASSASigner signer = new RSASSASigner(RSA_KEY);
         jwsObject.sign(signer);
         return jwsObject.serialize();
@@ -67,7 +67,7 @@ public class JwtUtils {
         RSASSAVerifier verifier = new RSASSAVerifier(RSA_KEY);
         if (jwsObject.verify(verifier)) {
             String json = jwsObject.getPayload().toString();
-            return JacksonUtils.readValue(json, Payload.class);
+            return JsonMapperUtils.readValue(json, Payload.class);
         }
         throw new RuntimeException("500");
     }

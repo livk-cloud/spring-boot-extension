@@ -23,7 +23,7 @@ import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.AnnotationUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
@@ -82,7 +82,7 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
 
     private Mono<Void> write(Object value, QRCode qrCode, ServerHttpResponse response) {
         setResponse(qrCode.type(), response);
-        String text = JacksonUtils.writeValueAsString(value);
+        String text = JsonMapperUtils.writeValueAsString(value);
         byte[] bytes = QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), qrCode.type());
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
         return response.writeWith(bufferFlux);

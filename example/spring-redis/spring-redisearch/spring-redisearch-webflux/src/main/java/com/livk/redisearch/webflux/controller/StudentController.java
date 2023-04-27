@@ -17,7 +17,7 @@
 
 package com.livk.redisearch.webflux.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
@@ -49,7 +49,7 @@ public class StudentController {
         RedisModulesReactiveCommands<String, String> search = connection.reactive();
         Flux<Student> flux = search.ftSearch(Student.INDEX, query)
                 .flatMapMany(Flux::fromIterable)
-                .map(document -> JacksonUtils.convertValue(document, Student.class));
+                .map(document -> JsonMapperUtils.convertValue(document, Student.class));
         return ResponseEntity.ok(flux);
     }
 }

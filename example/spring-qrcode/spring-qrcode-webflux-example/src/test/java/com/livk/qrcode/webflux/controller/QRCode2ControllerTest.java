@@ -20,7 +20,7 @@ package com.livk.qrcode.webflux.controller;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -53,7 +53,7 @@ class QRCode2ControllerTest {
 
     String text = "Hello World!";
 
-    String json = JacksonUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
+    String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
 
     @Test
     void text() throws IOException {

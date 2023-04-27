@@ -20,7 +20,7 @@ package com.livk.autoconfigure.qrcode.resolver;
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -56,7 +56,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
         QRCode qrCode = AnnotationUtils.getAnnotationElement(returnType, QRCode.class);
         Assert.notNull(response, "response not be null");
         Assert.notNull(qrCode, "excelReturn not be null");
-        String text = JacksonUtils.writeValueAsString(returnValue);
+        String text = JsonMapperUtils.writeValueAsString(returnValue);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             setResponse(qrCode.type(), response);
             QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), outputStream, qrCode.type());

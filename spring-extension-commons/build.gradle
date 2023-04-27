@@ -12,6 +12,8 @@ dependencies {
     optional "com.github.pagehelper:pagehelper"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.squareup.okhttp3:okhttp"
+    optional "com.fasterxml.jackson.dataformat:jackson-dataformat-xml"
+    optional "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
     api "org.springframework:spring-core"
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"

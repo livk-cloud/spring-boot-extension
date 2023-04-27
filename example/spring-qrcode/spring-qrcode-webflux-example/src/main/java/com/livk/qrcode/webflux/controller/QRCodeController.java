@@ -19,7 +19,7 @@ package com.livk.qrcode.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -51,12 +51,12 @@ public class QRCodeController {
     @QRCode
     @PostMapping("json")
     public Map<String, String> json(@RequestBody JsonNode node) {
-        return JacksonUtils.convertValueMap(node, String.class, String.class);
+        return JsonMapperUtils.convertValueMap(node, String.class, String.class);
     }
 
     @QRCode
     @PostMapping("/json/mono")
     public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
-        return Mono.just(JacksonUtils.convertValueMap(node, String.class, String.class));
+        return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
     }
 }

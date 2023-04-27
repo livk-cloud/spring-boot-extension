@@ -18,7 +18,7 @@
 package com.livk.env;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.YamlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -53,7 +53,7 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
             ClassPathResource resource = new ClassPathResource(source);
             if (resource.exists()) {
                 InputStream inputStream = resource.getInputStream();
-                Map<String, Object> map = JacksonUtils.readValueMap(inputStream, String.class, Object.class);
+                Map<String, Object> map = JsonMapperUtils.readValueMap(inputStream, String.class, Object.class);
                 Properties properties = YamlUtils.ymlMapToMap(map);
                 PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
                 propertySources.addLast(livkSource);

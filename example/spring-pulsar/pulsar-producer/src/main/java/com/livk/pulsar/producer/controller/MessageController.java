@@ -18,7 +18,7 @@
 package com.livk.pulsar.producer.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.pulsar.common.entity.PulsarMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.pulsar.client.api.MessageId;
@@ -56,6 +56,6 @@ public class MessageController {
         message.setData(jsonNode);
 
         MessageId messageId = pulsarTemplate.sendAsync(message.toJson(), Schema.STRING).get();
-        return ResponseEntity.ok(JacksonUtils.writeValueAsString(messageId));
+        return ResponseEntity.ok(JsonMapperUtils.writeValueAsString(messageId));
     }
 }

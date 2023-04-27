@@ -18,7 +18,7 @@
 package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.xdb.Searcher;
@@ -68,6 +68,6 @@ public class Ip2RegionSearch {
      * @return the string
      */
     public String searchAsJson(String ip) {
-        return JacksonUtils.writeValueAsString(this.searchAsInfo(ip));
+        return JsonMapperUtils.writeValueAsString(this.searchAsInfo(ip));
     }
 }

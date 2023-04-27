@@ -24,9 +24,9 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.livk.commons.bean.domain.Pair;
 import com.livk.commons.collect.util.StreamUtils;
+import com.livk.commons.jackson.support.JacksonSupport;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -34,17 +34,16 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * <p>
- * JacksonUtilsTest
+ * JsonMapperUtilsTest
  * </p>
  *
  * @author livk
  */
-class JacksonUtilsTest {
+class JsonMapperUtilsTest {
 
     @Language("json")
     static String json = """
@@ -57,62 +56,31 @@ class JacksonUtilsTest {
                             }""";
 
     @Test
-    void javaType() {
-        assertEquals(String.class, JacksonUtils.javaType(String.class).getRawClass());
-        assertEquals(Integer.class, JacksonUtils.javaType(Integer.class).getRawClass());
-        assertEquals(Long.class, JacksonUtils.javaType(Long.class).getRawClass());
-
-        JavaType javaType = JacksonUtils.javaType(Pair.class, String.class, Integer.class);
-        assertEquals(Pair.class, javaType.getRawClass());
-        assertEquals(String.class, javaType.getBindings().getBoundType(0).getRawClass());
-        assertEquals(Integer.class, javaType.getBindings().getBoundType(1).getRawClass());
-
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Pair.class, String.class, Integer.class);
-        JavaType type = JacksonUtils.javaType(resolvableType);
-        assertEquals(Pair.class, type.getRawClass());
-        assertEquals(String.class, type.getBindings().getBoundType(0).getRawClass());
-        assertEquals(Integer.class, type.getBindings().getBoundType(1).getRawClass());
-
-        assertEquals(String.class, JacksonUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
-        assertEquals(Integer.class, JacksonUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
-        assertEquals(Long.class, JacksonUtils.collectionType(Long.class).getBindings().getBoundType(0).getRawClass());
-
-        assertEquals(List.of(JacksonUtils.javaType(String.class), JacksonUtils.javaType(String.class)),
-                JacksonUtils.mapType(String.class, String.class).getBindings().getTypeParameters());
-        assertEquals(List.of(JacksonUtils.javaType(String.class), JacksonUtils.javaType(Integer.class)),
-                JacksonUtils.mapType(String.class, Integer.class).getBindings().getTypeParameters());
-        assertEquals(List.of(JacksonUtils.javaType(Integer.class), JacksonUtils.javaType(String.class)),
-                JacksonUtils.mapType(Integer.class, String.class).getBindings().getTypeParameters());
-        assertEquals(List.of(JacksonUtils.javaType(Integer.class), JacksonUtils.javaType(Integer.class)),
-                JacksonUtils.mapType(Integer.class, Integer.class).getBindings().getTypeParameters());
-    }
-
-    @Test
     void testReadValue() throws IOException {
 
 
-        JsonNode result1 = JacksonUtils.readValue(json, JsonNode.class);
+        JsonNode result1 = JsonMapperUtils.readValue(json, JsonNode.class);
         assertNotNull(result1);
         assertEquals("1", result1.get("c").asText());
         assertEquals("2", result1.get("a").asText());
         assertEquals(3, result1.get("b").get("c").asInt());
 
         InputStream inputStream = new ClassPathResource("input.json").getInputStream();
-        JsonNode result2 = JacksonUtils.readValue(inputStream, JsonNode.class);
+        JsonNode result2 = JsonMapperUtils.readValue(inputStream, JsonNode.class);
         assertNotNull(result2);
         assertEquals("1", result2.get("c").asText());
         assertEquals("2", result2.get("a").asText());
         assertEquals(3, result2.get("b").get("c").asInt());
 
-        JsonNode result3 = JacksonUtils.readValue(json, new TypeReference<>() {
+        JsonNode result3 = JsonMapperUtils.readValue(json, new TypeReference<>() {
         });
         assertNotNull(result3);
         assertEquals("1", result3.get("c").asText());
         assertEquals("2", result3.get("a").asText());
         assertEquals(3, result3.get("b").get("c").asInt());
 
-        JavaType javaType = JacksonUtils.javaType(JsonNode.class);
-        JsonNode result4 = JacksonUtils.readValue(json, javaType);
+        JavaType javaType = JacksonSupport.javaType(JsonNode.class);
+        JsonNode result4 = JsonMapperUtils.readValue(json, javaType);
         assertNotNull(result3);
         assertEquals("1", result4.get("c").asText());
         assertEquals("2", result4.get("a").asText());
@@ -121,9 +89,12 @@ class JacksonUtilsTest {
 
     @Test
     void testToJsonStr() {
-        String result = JacksonUtils.writeValueAsString(Map.of("username", "password"));
+        String result = JsonMapperUtils.writeValueAsString(Map.of("username", "password"));
         String json = "{\"username\":\"password\"}";
         assertEquals(json, result);
+
+        byte[] bytes = JsonMapperUtils.writeValueAsBytes(Map.of("username", "password"));
+        assertArrayEquals(json.getBytes(), bytes);
     }
 
     @Test
@@ -137,7 +108,7 @@ class JacksonUtilsTest {
                     "a": 1
                   }
                 ]""";
-        List<JsonNode> result = JacksonUtils.readValueList(json, JsonNode.class);
+        List<JsonNode> result = JsonMapperUtils.readValueList(json, JsonNode.class);
         assertNotNull(result);
         assertEquals(1, result.get(0).get("a").asInt());
         assertEquals(1, result.get(1).get("a").asInt());
@@ -146,13 +117,13 @@ class JacksonUtilsTest {
     @SuppressWarnings("unchecked")
     @Test
     void testToMap() throws IOException {
-        Map<String, Object> result = JacksonUtils.readValueMap(json, String.class, Object.class);
+        Map<String, Object> result = JsonMapperUtils.readValueMap(json, String.class, Object.class);
         assertNotNull(result);
         assertEquals("1", result.get("c"));
         assertEquals("2", result.get("a"));
         assertEquals(3, ((Map<String, Object>) result.get("b")).get("c"));
 
-        Map<String, Object> result1 = JacksonUtils.readValueMap(new ClassPathResource("input.json").getInputStream(), String.class, Object.class);
+        Map<String, Object> result1 = JsonMapperUtils.readValueMap(new ClassPathResource("input.json").getInputStream(), String.class, Object.class);
         assertNotNull(result1);
         assertEquals("1", result1.get("c"));
         assertEquals("2", result1.get("a"));
@@ -161,7 +132,7 @@ class JacksonUtilsTest {
 
     @Test
     void testReadTree() {
-        JsonNode result = JacksonUtils.readTree(json);
+        JsonNode result = JsonMapperUtils.readTree(json);
         assertNotNull(result);
         assertEquals("1", result.get("c").asText());
         assertEquals("2", result.get("a").asText());
@@ -171,7 +142,7 @@ class JacksonUtilsTest {
     @Test
     void objectToMap() {
         Pair<String, String> pair = Pair.of("username", "password");
-        Map<String, String> map = JacksonUtils.convertValueMap(pair, String.class, String.class);
+        Map<String, String> map = JsonMapperUtils.convertValueMap(pair, String.class, String.class);
         assertEquals(pair.toMap(), map);
     }
 
@@ -191,23 +162,23 @@ class JacksonUtilsTest {
                   ]
                 }
                 """;
-        JsonNode jsonNode = JacksonUtils.readTree(json);
+        JsonNode jsonNode = JsonMapperUtils.readTree(json);
         JsonNode dependencyArray = jsonNode.get("dependency");
 
         Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
         Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
-        MapType mapType = JacksonUtils.typeFactory().constructMapType(Map.class, String.class, String.class);
+        MapType mapType = JacksonSupport.mapType(String.class, String.class);
         List<JsonNode> jsonNodeList = StreamUtils.convert(dependencyArray.elements()).toList();
-        assertEquals(loggingDependency, JacksonUtils.convertValue(jsonNodeList.get(0), mapType));
-        assertEquals(jsonDependency, JacksonUtils.convertValue(jsonNodeList.get(1), mapType));
+        assertEquals(loggingDependency, JsonMapperUtils.convertValue(jsonNodeList.get(0), mapType));
+        assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = JacksonUtils.typeFactory().constructCollectionType(List.class, mapType);
-        assertEquals(dependencyList, JacksonUtils.convertValue(dependencyArray, collectionType));
+        CollectionType collectionType = JacksonSupport.typeFactory().constructCollectionType(List.class, mapType);
+        assertEquals(dependencyList, JsonMapperUtils.convertValue(dependencyArray, collectionType));
 
-        JavaType javaType = JacksonUtils.typeFactory().constructType(String.class);
+        JavaType javaType = JacksonSupport.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = JacksonUtils.typeFactory().constructMapType(Map.class, javaType, collectionType);
-        assertEquals(dependencyManagement, JacksonUtils.convertValue(jsonNode, constructMapType));
+        MapType constructMapType = JacksonSupport.typeFactory().constructMapType(Map.class, javaType, collectionType);
+        assertEquals(dependencyManagement, JsonMapperUtils.convertValue(jsonNode, constructMapType));
     }
 }

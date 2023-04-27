@@ -17,7 +17,7 @@
 
 package com.livk.rocket.consumer.listener;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,6 @@ public class TestExtMessageListener implements RocketMQListener<RocketDTO> {
         if (new Random(20).nextInt() % 20 == 0) {
             throw new RuntimeException("ext 消息重试");
         }
-        log.info("ext rocketMQ receive message:{}", JacksonUtils.writeValueAsString(dto));
+        log.info("ext rocketMQ receive message:{}", JsonMapperUtils.writeValueAsString(dto));
     }
 }
