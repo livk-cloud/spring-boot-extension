@@ -1,21 +1,36 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.livk.commons.jackson.support.JacksonFormat;
 import com.livk.commons.jackson.support.JacksonSupport;
-import com.livk.commons.jackson.support.JacksonType;
+import com.livk.commons.jackson.support.MapperFactory;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * The type Json mapper utils.
@@ -27,10 +42,10 @@ public class JsonMapperUtils {
 
     private static final JacksonSupport<JsonMapper> JSON;
 
+
     static {
-        Function<MapperBuilder<? extends ObjectMapper, ?>, MapperBuilder<? extends ObjectMapper, ?>> function =
-                mapperBuilder -> mapperBuilder.serializationInclusion(JsonInclude.Include.NON_NULL);
-        JSON = JacksonSupport.create(JacksonType.JSON, function);
+        JsonMapper.Builder builder = MapperFactory.builder(JacksonFormat.JSON);
+        JSON = JacksonSupport.create(builder.serializationInclusion(JsonInclude.Include.NON_NULL));
     }
 
     /**

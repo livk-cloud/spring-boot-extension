@@ -1,3 +1,20 @@
+/*
+ * Copyright 2021 spring-boot-extension the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,11 +39,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * The type Jackson support.
  *
+ * @param <M> the type parameter
  * @author livk
  */
 public class JacksonSupport<M extends ObjectMapper> {
@@ -41,6 +58,7 @@ public class JacksonSupport<M extends ObjectMapper> {
     /**
      * Create jackson support.
      *
+     * @param <M>    the type parameter
      * @param mapper the mapper
      * @return the jackson support
      */
@@ -51,26 +69,24 @@ public class JacksonSupport<M extends ObjectMapper> {
     /**
      * Create jackson support.
      *
-     * @param type the type
+     * @param <M>     the type parameter
+     * @param builder the builder
      * @return the jackson support
      */
-    @SuppressWarnings("unchecked")
-    public static <M extends ObjectMapper> JacksonSupport<M> create(JacksonType type) {
-        M objectMapper = (M) type.builder().build();
-        return new JacksonSupport<>(objectMapper);
+    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {
+        return create(builder.build());
     }
 
     /**
      * Create jackson support.
      *
-     * @param type the type
+     * @param <M>    the type parameter
+     * @param format the type
      * @return the jackson support
      */
-    @SuppressWarnings("unchecked")
-    public static <M extends ObjectMapper> JacksonSupport<M> create(JacksonType type,
-                                                                    Function<MapperBuilder<? extends ObjectMapper, ?>, MapperBuilder<? extends ObjectMapper, ?>> function) {
-        M objectMapper = (M) function.apply(type.builder()).build();
-        return new JacksonSupport<>(objectMapper);
+    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(JacksonFormat format) {
+        B builder = MapperFactory.builder(format);
+        return create(builder);
     }
 
     /**
