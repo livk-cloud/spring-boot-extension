@@ -20,6 +20,7 @@ package com.livk.commons.spring.spel;
 import com.livk.commons.spring.context.SpringContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -74,6 +75,10 @@ class ExpressionResolverTest {
 
         assertEquals("livk:livk",
                 resolver.evaluate("#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}", map));
+
+        Map<String, Object> envMap = Map.of("username", "livk", "env", SpringContextHolder.getBean(Environment.class));
+        assertEquals("livk:livk",
+                resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
     }
 
     @SuppressWarnings("unused")
