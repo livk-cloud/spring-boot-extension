@@ -13,7 +13,6 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author livk
@@ -49,12 +48,21 @@ public class SqlParserUtils {
             Statement statement = CCJSqlParserUtil.parse(sql);
             if (statement instanceof Select select) {
                 PlainSelect plain = (PlainSelect) select.getSelectBody();
-                return plain.getSelectItems().stream().map(Object::toString).collect(Collectors.toList());
+                return plain.getSelectItems()
+                        .stream()
+                        .map(Object::toString)
+                        .toList();
             } else if (statement instanceof Update update) {
-                return update.getUpdateSets().get(0).getColumns().stream().map(Column::getColumnName)
-                        .collect(Collectors.toList());
+                return update.getUpdateSets()
+                        .stream()
+                        .flatMap(updateSet -> updateSet.getColumns().stream())
+                        .map(Column::getColumnName)
+                        .toList();
             } else if (statement instanceof Insert insert) {
-                return insert.getColumns().stream().map(Column::getColumnName).collect(Collectors.toList());
+                return insert.getColumns()
+                        .stream()
+                        .map(Column::getColumnName)
+                        .toList();
             }
         } catch (JSQLParserException e) {
             e.printStackTrace();
