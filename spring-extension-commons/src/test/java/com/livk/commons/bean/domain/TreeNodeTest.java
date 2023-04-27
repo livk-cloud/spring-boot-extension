@@ -17,7 +17,7 @@
 
 package com.livk.commons.bean.domain;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -62,7 +62,7 @@ class TreeNodeTest {
         );
         root.setChildren(nodes);
         log.info("{}", root);
-        log.info("{}", JacksonUtils.writeValueAsString(root));
+        log.info("{}", JsonMapperUtils.writeValueAsString(root));
         assertNotNull(root);
     }
 
@@ -72,7 +72,7 @@ class TreeNodeTest {
         TreeNode<Long, String> node = new TreeNode<Long, String>().setId(7L).setNode("7").setPid(4L);
         root.addChild(node);
         log.info("{}", root);
-        log.info("{}", JacksonUtils.writeValueAsString(root));
+        log.info("{}", JsonMapperUtils.writeValueAsString(root));
     }
 
     @Order(4)

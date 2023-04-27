@@ -18,7 +18,7 @@
 package com.livk.autoconfigure.mybatis.type.postgresql;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
@@ -54,19 +54,19 @@ public class PostgresJsonTypeHandler implements TypeHandler<JsonNode> {
     @Override
     public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
         String json = rs.getString(columnName);
-        return JacksonUtils.readTree(json);
+        return JsonMapperUtils.readTree(json);
     }
 
     @Override
     public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
         String json = rs.getString(columnIndex);
-        return JacksonUtils.readTree(json);
+        return JsonMapperUtils.readTree(json);
     }
 
     @Override
     public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
         String json = cs.getString(columnIndex);
-        return JacksonUtils.readTree(json);
+        return JsonMapperUtils.readTree(json);
     }
 
 }

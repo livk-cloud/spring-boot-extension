@@ -17,7 +17,7 @@
 
 package com.livk.rocket.producer.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ class ExtRocketProducerTest {
     void sendMessage() throws Exception {
         mockMvc.perform(post("/api/ext/send/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(dto)))
+                        .content(JsonMapperUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
     }
@@ -66,7 +66,7 @@ class ExtRocketProducerTest {
     void sendAsyncMessage() throws Exception {
         mockMvc.perform(post("/api/ext/sendAsync/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(dto)))
+                        .content(JsonMapperUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
     }
@@ -75,7 +75,7 @@ class ExtRocketProducerTest {
     void sendOneMessage() throws Exception {
         mockMvc.perform(post("/api/ext/sendOne/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(dto)))
+                        .content(JsonMapperUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
     }
@@ -84,7 +84,7 @@ class ExtRocketProducerTest {
     void sendTransactionMessage() throws Exception {
         mockMvc.perform(post("/api/ext/sendTransaction/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(dto)))
+                        .content(JsonMapperUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(log());
     }
@@ -93,7 +93,7 @@ class ExtRocketProducerTest {
     void sendDelay() throws Exception {
         mockMvc.perform(post("/api/ext/sendDelay/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(dto)))
+                        .content(JsonMapperUtils.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -105,7 +105,7 @@ class ExtRocketProducerTest {
             rocketDTO.setBody("同步顺序消息" + i);
             mockMvc.perform(post("/api/ext/sendOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
                     .andExpect(status().isOk())
                     .andDo(print());
         }
@@ -118,7 +118,7 @@ class ExtRocketProducerTest {
             rocketDTO.setBody("异步顺序消息" + i);
             mockMvc.perform(post("/api/ext/sendAsyncOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
                     .andExpect(status().isOk())
                     .andDo(print());
         }
@@ -131,7 +131,7 @@ class ExtRocketProducerTest {
             rocketDTO.setBody("单向顺序消息" + i);
             mockMvc.perform(post("/api/ext/sendOneOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(JacksonUtils.writeValueAsString(rocketDTO)))
+                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
                     .andExpect(status().isOk())
                     .andDo(print());
         }

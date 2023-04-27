@@ -20,7 +20,7 @@ package com.livk.qrcode.mvc.controller;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -73,7 +73,7 @@ class QRCode2ControllerTest {
 
     @Test
     void json() throws Exception {
-        String json = JacksonUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
+        String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
         mockMvc.perform(post("/qrcode2/json")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

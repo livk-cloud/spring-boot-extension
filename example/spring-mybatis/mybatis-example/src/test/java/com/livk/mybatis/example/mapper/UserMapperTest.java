@@ -22,7 +22,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.bean.domain.PageInfo;
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.support.JacksonSupport;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -85,9 +86,9 @@ class UserMapperTest {
                 .doSelectPage(userMapper::list)) {
             PageInfo<User> result = new PageInfo<>(page);
             assertNotNull(result);
-            String json = JacksonUtils.writeValueAsString(result);
-            JavaType javaType = JacksonUtils.javaType(PageInfo.class, User.class);
-            PageInfo<User> customPage = JacksonUtils.readValue(json, javaType);
+            String json = JsonMapperUtils.writeValueAsString(result);
+            JavaType javaType = JacksonSupport.javaType(PageInfo.class, User.class);
+            PageInfo<User> customPage = JsonMapperUtils.readValue(json, javaType);
             assertNotNull(customPage);
         }
     }

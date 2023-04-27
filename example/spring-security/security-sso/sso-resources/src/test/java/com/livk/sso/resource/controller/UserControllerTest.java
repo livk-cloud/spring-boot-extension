@@ -18,7 +18,7 @@
 package com.livk.sso.resource.controller;
 
 import com.livk.commons.http.annotation.EnableHttpClient;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -65,8 +65,8 @@ class UserControllerTest {
         Map<String, String> body = new HashMap<>();
         body.put("username", "livk");
         body.put("password", "123456");
-        ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JacksonUtils.writeValueAsString(body), String.class);
-        token = "Bearer " + JacksonUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
+        ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JsonMapperUtils.writeValueAsString(body), String.class);
+        token = "Bearer " + JsonMapperUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
     }
 
     @Test

@@ -18,7 +18,7 @@
 package com.livk.redisearch.mvc;
 
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.RedisModulesClient;
@@ -71,12 +71,12 @@ public class RediSearchApp {
                         .setSex(randomNum == 0 ? "男" : "女")
                         .setDesc("是一个学生")
                         .setClassX((i + 1) + "班");
-                Map<String, String> body = JacksonUtils.convertValueMap(student, String.class, String.class);
+                Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
                 search.hmset("00" + i, body);
             }
             SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
             for (Document<String, String> document : result) {
-                Student bean = JacksonUtils.convertValue(document, Student.class);
+                Student bean = JsonMapperUtils.convertValue(document, Student.class);
                 log.info("{}", bean);
             }
         };

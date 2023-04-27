@@ -17,7 +17,7 @@
 
 package com.livk.pulsar.producer.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -54,7 +54,7 @@ class MessageControllerTest {
         Map<String, String> map = Map.of("username", "livk", "password", "123456");
         mockMvc.perform(post("/producer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(map)))
+                        .content(JsonMapperUtils.writeValueAsString(map)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

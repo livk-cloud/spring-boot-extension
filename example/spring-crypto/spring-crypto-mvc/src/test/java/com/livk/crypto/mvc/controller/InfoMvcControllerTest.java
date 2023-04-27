@@ -17,7 +17,7 @@
 
 package com.livk.crypto.mvc.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.AesSecurity;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ class InfoMvcControllerTest {
     void infoPost() throws Exception {
         String encoding = aesSecurity.print(123456L, Locale.CHINA);
         encoding = CryptoType.AES.wrapper(encoding);
-        String json = JacksonUtils.writeValueAsString(Map.of("variableId", encoding, "paramId", encoding));
+        String json = JsonMapperUtils.writeValueAsString(Map.of("variableId", encoding, "paramId", encoding));
         mockMvc.perform(post("/info")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

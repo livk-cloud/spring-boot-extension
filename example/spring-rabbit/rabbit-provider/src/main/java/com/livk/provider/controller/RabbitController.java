@@ -18,7 +18,7 @@
 package com.livk.provider.controller;
 
 import com.livk.amqp.entity.Message;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.provider.send.RabbitSend;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +54,7 @@ public class RabbitController {
 
     @PostMapping("sendMsgHeaders")
     public <T> void sendMsgHeaders(@RequestBody Message<T> message, @RequestParam String json) {
-        send.sendMsgHeaders(message, JacksonUtils.readValueMap(json, String.class, Object.class));
+        send.sendMsgHeaders(message, JsonMapperUtils.readValueMap(json, String.class, Object.class));
     }
 
 }

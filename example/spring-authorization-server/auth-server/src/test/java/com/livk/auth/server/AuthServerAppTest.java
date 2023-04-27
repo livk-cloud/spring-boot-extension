@@ -17,7 +17,7 @@
 
 package com.livk.auth.server;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.nimbusds.jose.util.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ class AuthServerAppTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
+        String accessToken = JsonMapperUtils.readTree(json).get("access_token").asText();
         assertNotNull(accessToken);
         assertFalse(accessToken.isBlank());
     }
@@ -95,7 +95,7 @@ class AuthServerAppTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        String accessToken = JacksonUtils.readTree(json).get("access_token").asText();
+        String accessToken = JsonMapperUtils.readTree(json).get("access_token").asText();
         assertNotNull(accessToken);
         assertFalse(accessToken.isBlank());
     }

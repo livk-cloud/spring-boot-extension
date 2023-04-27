@@ -19,7 +19,7 @@ package com.livk.excel.mvc.controller;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.excel.mvc.entity.Info;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +88,7 @@ class Info2ControllerTest {
                 .toList();
         mockMvc.perform(MockMvcRequestBuilders.post("/info/download")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(infos)))
+                        .content(JsonMapperUtils.writeValueAsString(infos)))
                 .andExpect(status().isOk())
                 .andDo(result -> {
                     ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());

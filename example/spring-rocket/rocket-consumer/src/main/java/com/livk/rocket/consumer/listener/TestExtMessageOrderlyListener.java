@@ -17,7 +17,7 @@
 
 package com.livk.rocket.consumer.listener;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +36,6 @@ public class TestExtMessageOrderlyListener implements RocketMQListener<RocketDTO
 
     @Override
     public void onMessage(RocketDTO dto) {
-        log.info("orderly ext rocketMQ receive message:{}", JacksonUtils.writeValueAsString(dto));
+        log.info("orderly ext rocketMQ receive message:{}", JsonMapperUtils.writeValueAsString(dto));
     }
 }

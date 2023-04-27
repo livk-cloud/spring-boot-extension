@@ -17,7 +17,7 @@
 
 package com.livk.redisearch.mvc.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
@@ -51,7 +51,7 @@ public class StudentController {
         RedisModulesCommands<String, String> search = connection.sync();
         SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
         List<Student> studentList = result.stream()
-                .map(document -> JacksonUtils.convertValue(document, Student.class))
+                .map(document -> JsonMapperUtils.convertValue(document, Student.class))
                 .toList();
         return ResponseEntity.ok(studentList);
     }
