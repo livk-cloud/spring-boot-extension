@@ -9,7 +9,7 @@ include::commons/aop.adoc[]
 
 include::commons/bean.adoc[]
 
-include::commons/cglib.adoc[
+include::commons/cglib.adoc[]
 
 include::commons/collect.adoc[]
 

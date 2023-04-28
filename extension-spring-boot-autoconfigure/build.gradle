@@ -1,6 +1,16 @@
 plugins {
     id "com.livk.common"
     id "com.livk.mvn.deployed"
+    alias(libs.plugins.asciidoctor.jvm)
+}
+
+asciidoctor {
+    baseDirFollowsSourceDir()
+    sourceDir file("./asciidoc")
+    sources {
+        include "extension-spring-boot-autoconfigure.adoc"
+    }
+    outputDir file("../docs")
 }
 
 description "extension spring boot autoconfigure"
