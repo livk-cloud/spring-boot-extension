@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.livk.commons.bean.GenericWrapper;
 import com.livk.commons.bean.Wrapper;
 
 /**
@@ -32,12 +33,13 @@ import com.livk.commons.bean.Wrapper;
 public class MapperFactory {
 
     /**
-     * Builder b.
+     * 根据{@link JacksonFormat}构建 {@link MapperBuilder}的子类
      *
-     * @param <M>    the type parameter
-     * @param <B>    the type parameter
+     * @param <M>    {@link ObjectMapper} 子类
+     * @param <B>    {@link MapperBuilder} 子类
      * @param format the format
-     * @return the b
+     * @return MapperBuilder
+     * @see JacksonFormat
      */
     @SuppressWarnings("unchecked")
     public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(JacksonFormat format) {
@@ -49,36 +51,41 @@ public class MapperFactory {
         return (B) wrapper.unwrap(MapperBuilder.class);
     }
 
+    /**
+     * 通用{@link MapperBuilder} 包装器,避免静态加载触发 {@link ClassNotFoundException}
+     *
+     * @param <M> {@link ObjectMapper} 子类
+     * @param <B> {@link MapperBuilder} 子类
+     * @see com.livk.commons.bean.GenericWrapper
+     * @see JsonMapper
+     * @see YAMLMapper
+     * @see XmlMapper
+     */
+    private static abstract class BuilderWrapper<M extends ObjectMapper, B extends MapperBuilder<M, B>> implements GenericWrapper<MapperBuilder<M, B>> {
 
-    private static abstract class BuilderWrapper implements Wrapper {
+    }
+
+    private static class JsonBuilderWrapper extends BuilderWrapper<JsonMapper, JsonMapper.Builder> implements Wrapper {
 
         @Override
-        public boolean isWrapperFor(Class<?> type) {
-            return MapperBuilder.class.isAssignableFrom(type);
+        public MapperBuilder<JsonMapper, JsonMapper.Builder> unwrap() {
+            return JsonMapper.builder();
         }
     }
 
-    private static class JsonBuilderWrapper extends BuilderWrapper implements Wrapper {
+    private static class YamlBuilderWrapper extends BuilderWrapper<YAMLMapper, YAMLMapper.Builder> implements Wrapper {
 
         @Override
-        public <T> T unwrap(Class<T> type) {
-            return type.cast(JsonMapper.builder());
+        public MapperBuilder<YAMLMapper, YAMLMapper.Builder> unwrap() {
+            return YAMLMapper.builder();
         }
     }
 
-    private static class YamlBuilderWrapper extends BuilderWrapper implements Wrapper {
+    private static class XmlBuilderWrapper extends BuilderWrapper<XmlMapper, XmlMapper.Builder> implements Wrapper {
 
         @Override
-        public <T> T unwrap(Class<T> type) {
-            return type.cast(YAMLMapper.builder());
-        }
-    }
-
-    private static class XmlBuilderWrapper extends BuilderWrapper implements Wrapper {
-
-        @Override
-        public <T> T unwrap(Class<T> type) {
-            return type.cast(XmlMapper.builder());
+        public MapperBuilder<XmlMapper, XmlMapper.Builder> unwrap() {
+            return XmlMapper.builder();
         }
     }
 }
