@@ -28,6 +28,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RedissonLimitApp {
     public static void main(String[] args) {
-        SpringLauncher.run(RedissonLimitApp.class, args);
+        SpringLauncher.run(args);
     }
 }

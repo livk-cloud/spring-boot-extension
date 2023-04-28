@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RedissonLockExample {
     public static void main(String[] args) {
-        SpringLauncher.run(RedissonLockExample.class, args);
+        SpringLauncher.run(args);
     }
 }

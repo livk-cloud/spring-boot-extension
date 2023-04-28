@@ -35,7 +35,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 public class KafkaConsumerApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(KafkaConsumerApp.class, args);
+        SpringLauncher.run(args);
     }
 
     @KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)

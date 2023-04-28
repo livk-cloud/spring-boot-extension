@@ -26,13 +26,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * </p>
  *
  * @author livk
- *
  */
 @SpringBootApplication
 public class AuthResourceApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(AuthResourceApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

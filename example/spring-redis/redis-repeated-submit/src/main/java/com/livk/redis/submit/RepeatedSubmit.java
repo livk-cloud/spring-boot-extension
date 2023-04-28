@@ -26,6 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RepeatedSubmit {
     public static void main(String[] args) {
-        SpringLauncher.run(RepeatedSubmit.class, args);
+        SpringLauncher.run(args);
     }
 }

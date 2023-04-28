@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MvcDocExample {
     public static void main(String[] args) {
-        SpringLauncher.run(MvcDocExample.class, args);
+        SpringLauncher.run(args);
     }
 }

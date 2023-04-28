@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RSocketClientApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(RSocketClientApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

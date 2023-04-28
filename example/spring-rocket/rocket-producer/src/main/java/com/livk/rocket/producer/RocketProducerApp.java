@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RocketProducerApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(RocketProducerApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

@@ -32,6 +32,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DynamicExample {
     public static void main(String[] args) {
-        SpringLauncher.run(DynamicExample.class, args);
+        SpringLauncher.run(args);
     }
 }

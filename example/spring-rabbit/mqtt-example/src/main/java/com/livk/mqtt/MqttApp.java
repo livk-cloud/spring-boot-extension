@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MqttApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MqttApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

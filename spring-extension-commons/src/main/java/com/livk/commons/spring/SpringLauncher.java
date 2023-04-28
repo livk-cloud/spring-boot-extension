@@ -17,18 +17,22 @@
 
 package com.livk.commons.spring;
 
+import com.livk.commons.bean.util.ClassUtils;
 import com.livk.commons.util.DateUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.SpringVersion;
+import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.core.env.Environment;
+import org.springframework.util.CollectionUtils;
 
 import java.io.PrintStream;
 import java.time.LocalDateTime;
@@ -43,14 +47,31 @@ public class SpringLauncher {
     private static SpringApplication application;
 
     /**
-     * Run configurable application context.
+     * Springboot主启动
+     * <p>
+     * 自动推到当前类Class
      *
-     * @param <T>         the type parameter
-     * @param targetClass the target class
-     * @param args        the args
+     * @param args the args
      * @return the configurable application context
      */
-    public static <T> ConfigurableApplicationContext run(Class<T> targetClass, String[] args) {
+    @SneakyThrows
+    public static ConfigurableApplicationContext run(String[] args) {
+        StackTraceElement lastElement = CollectionUtils.lastElement(Arrays.asList(Thread.currentThread().getStackTrace()));
+        Class<?> type = ClassUtils.forName(lastElement.getClassName(), Thread.currentThread().getContextClassLoader());
+        if (type.isAnnotationPresent(SpringBootApplication.class)) {
+            return run(type, args);
+        }
+        throw new AnnotationConfigurationException(lastElement.getClassName() + " 缺少@" + SpringBootApplication.class.getName() + "注解");
+    }
+
+    /**
+     * Springboot主启动
+     *
+     * @param targetClass the primary source to load
+     * @param args        the application arguments (usually passed from a Java main method)
+     * @return the configurable application context
+     */
+    public static ConfigurableApplicationContext run(Class<?> targetClass, String[] args) {
         application = new SpringApplicationBuilder(targetClass)
                 .banner(CloudBanner.create())
                 .bannerMode(Banner.Mode.CONSOLE)
@@ -84,20 +105,24 @@ public class SpringLauncher {
         public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
             if (environment.getProperty("spring.banner.enabled", Boolean.class, true)) {
                 out.println(banner);
-                int max = Arrays.stream(banner.split("\n")).mapToInt(String::length).max().orElse(0);
-                max = max % 2 == 0 ? max : max + 1;
-                Format format = Format.of(max, out);
-                format.accept(" Spring Version: " + SpringVersion.getVersion() + " ");
-                format.accept(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ");
-                format.accept(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ");
-                format.accept(" Current JDK Version: " + environment.getProperty("java.version") + " ");
-                format.accept(" Operating System: " + environment.getProperty("os.name") + " ");
-                out.flush();
+                int max = banner.lines().mapToInt(String::length).max().orElse(0);
+                new Format(max, out)
+                        .println(" Spring Version: " + SpringVersion.getVersion() + " ")
+                        .println(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ")
+                        .println(" Spring Boot Extension Version: " + getVersion() + " ")
+                        .println(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ")
+                        .println(" Current JDK Version: " + environment.getProperty("java.version") + " ")
+                        .println(" Operating System: " + environment.getProperty("os.name") + " ")
+                        .flush();
             }
+        }
+
+        private static String getVersion() {
+            Package pkg = SpringLauncher.class.getPackage();
+            return (pkg != null ? pkg.getImplementationVersion() : null);
         }
     }
 
-    @RequiredArgsConstructor(staticName = "of")
     private static class Format {
 
         private final static char ch = '*';
@@ -105,11 +130,23 @@ public class SpringLauncher {
         private final PrintStream out;
 
         /**
+         * Instantiates a new Format.
+         *
+         * @param max the max
+         * @param out the out
+         */
+        Format(int max, PrintStream out) {
+            n = max % 2 == 0 ? max : max + 1;
+            this.out = out;
+        }
+
+        /**
          * Accept.
          *
          * @param str the str
+         * @return the format
          */
-        public void accept(String str) {
+        public Format println(String str) {
             int length = str.length();
             if (length < n) {
                 int index = (n - length) >> 1;
@@ -117,6 +154,14 @@ public class SpringLauncher {
                 str = StringUtils.rightPad(str, n, ch);
             }
             out.println(str);
+            return this;
+        }
+
+        /**
+         * Flush.
+         */
+        public void flush() {
+            out.flush();
         }
     }
 }

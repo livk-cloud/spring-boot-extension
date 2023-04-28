@@ -40,7 +40,7 @@ import java.util.concurrent.Executors;
 public class MicrometerTraceExample {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MicrometerTraceExample.class, args);
+        SpringLauncher.run(args);
     }
 
     @GetMapping("home")

@@ -26,6 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WebSocketChatApp {
     public static void main(String[] args) {
-        SpringLauncher.run(WebSocketChatApp.class, args);
+        SpringLauncher.run(args);
     }
 }

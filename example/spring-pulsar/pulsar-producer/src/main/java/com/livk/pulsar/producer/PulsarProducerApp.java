@@ -33,7 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PulsarProducerApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(PulsarProducerApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

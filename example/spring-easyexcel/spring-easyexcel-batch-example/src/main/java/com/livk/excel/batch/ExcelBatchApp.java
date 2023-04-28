@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ExcelBatchApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(ExcelBatchApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

@@ -33,7 +33,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 public class ReactorApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(ReactorApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

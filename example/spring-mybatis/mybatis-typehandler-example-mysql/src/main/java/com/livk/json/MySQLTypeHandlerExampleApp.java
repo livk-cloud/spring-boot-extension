@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MySQLTypeHandlerExampleApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MySQLTypeHandlerExampleApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

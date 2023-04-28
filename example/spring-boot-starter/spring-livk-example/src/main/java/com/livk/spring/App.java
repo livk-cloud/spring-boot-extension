@@ -40,7 +40,7 @@ public class App {
 
     public static void main(String[] args) {
         System.setProperty("server.port", "9099");
-        SpringLauncher.run(App.class, args);
+        SpringLauncher.run(args);
     }
 
 }

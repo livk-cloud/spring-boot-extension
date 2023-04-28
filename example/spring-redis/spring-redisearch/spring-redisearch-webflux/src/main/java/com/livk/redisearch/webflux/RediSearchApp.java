@@ -46,7 +46,7 @@ import java.util.Random;
 @SpringBootApplication
 public class RediSearchApp {
     public static void main(String[] args) {
-        SpringLauncher.run(RediSearchApp.class, args);
+        SpringLauncher.run(args);
     }
 
     @Bean

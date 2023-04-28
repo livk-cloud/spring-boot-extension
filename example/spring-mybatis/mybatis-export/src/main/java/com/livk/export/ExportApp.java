@@ -26,6 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ExportApp {
     public static void main(String[] args) {
-        SpringLauncher.run(ExportApp.class, args);
+        SpringLauncher.run(args);
     }
 }

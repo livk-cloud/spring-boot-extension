@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MvcIp2RegionExample {
     public static void main(String[] args) {
-        SpringLauncher.run(MvcIp2RegionExample.class, args);
+        SpringLauncher.run(args);
     }
 }

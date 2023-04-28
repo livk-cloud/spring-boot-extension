@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WebfluxDocExample {
     public static void main(String[] args) {
-        SpringLauncher.run(WebfluxDocExample.class, args);
+        SpringLauncher.run(args);
     }
 }

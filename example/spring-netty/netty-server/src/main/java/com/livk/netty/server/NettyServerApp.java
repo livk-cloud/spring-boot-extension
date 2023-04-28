@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class NettyServerApp {
     public static void main(String[] args) {
-        SpringLauncher.run(NettyServerApp.class, args);
+        SpringLauncher.run(args);
     }
 
     @Bean(initMethod = "start", destroyMethod = "close")

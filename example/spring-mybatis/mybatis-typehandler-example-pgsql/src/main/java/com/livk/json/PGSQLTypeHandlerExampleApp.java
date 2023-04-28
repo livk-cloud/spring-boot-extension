@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PGSQLTypeHandlerExampleApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(PGSQLTypeHandlerExampleApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

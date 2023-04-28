@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class YauaaWebApp {
     public static void main(String[] args) {
-        SpringLauncher.run(YauaaWebApp.class, args);
+        SpringLauncher.run(args);
     }
 }

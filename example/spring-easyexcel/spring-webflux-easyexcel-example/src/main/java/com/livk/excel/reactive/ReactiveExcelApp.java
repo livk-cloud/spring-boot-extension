@@ -31,6 +31,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ReactiveExcelApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(ReactiveExcelApp.class, args);
+        SpringLauncher.run(args);
     }
 }
