@@ -1,0 +1,5 @@
+== spring-boot-extension-doc
+
+. link:extension-spring-boot-autoconfigure.html[自动装配文档(spring boot autoconfigure)] +
+. link:spring-auto-service.html[装配文件生成文档(auto service)] +
+. link:spring-extension-commons.html[通用包文档spring commons]
