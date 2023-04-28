@@ -70,6 +70,7 @@ public class JacksonSupport<M extends ObjectMapper> {
      * Create jackson support.
      *
      * @param <M>     the type parameter
+     * @param <B>     the type parameter
      * @param builder the builder
      * @return the jackson support
      */
@@ -81,6 +82,7 @@ public class JacksonSupport<M extends ObjectMapper> {
      * Create jackson support.
      *
      * @param <M>    the type parameter
+     * @param <B>    the type parameter
      * @param format the type
      * @return the jackson support
      */

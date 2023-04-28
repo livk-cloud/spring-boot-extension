@@ -62,6 +62,11 @@ public class OSSAutoConfiguration {
     @ConditionalOnClass(MinioClient.class)
     public static class MinioOSSAutoConfiguration {
 
+        /**
+         * Minio client factory minio client factory.
+         *
+         * @return the minio client factory
+         */
         @Bean
         public MinioClientFactory minioClientFactory(){
             return new MinioClientFactory();
@@ -86,6 +91,11 @@ public class OSSAutoConfiguration {
     @ConditionalOnClass(OSS.class)
     public static class AliyunOSSAutoConfiguration {
 
+        /**
+         * Aliyun client factory aliyun client factory.
+         *
+         * @return the aliyun client factory
+         */
         @Bean
         public AliyunClientFactory aliyunClientFactory(){
             return new AliyunClientFactory();
