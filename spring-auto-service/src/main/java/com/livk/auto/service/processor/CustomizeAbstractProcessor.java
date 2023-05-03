@@ -17,6 +17,8 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.common.collect.ListMultimap;
+
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
@@ -29,7 +31,6 @@ import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -160,9 +161,10 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      * @param provider     the provider
      * @param serviceImpl  the service
      */
-    protected void factoriesAdd(Map<String, Set<String>> factoriesMap, String provider, String serviceImpl) {
-        Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
-        providers.add(serviceImpl);
+    protected void factoriesAdd(ListMultimap<String, String> factoriesMap, String provider, String serviceImpl) {
+        if (!factoriesMap.containsEntry(provider,serviceImpl)) {
+            factoriesMap.put(provider, serviceImpl);
+        }
     }
 
     /**
