@@ -18,6 +18,9 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimaps;
 import com.livk.auto.service.annotation.SpringAutoService;
 
 import javax.annotation.processing.Processor;
@@ -29,8 +32,10 @@ import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,7 +55,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
     private static final String LOCATION = "META-INF/spring/%s.imports";
 
-    private final Map<String, Set<String>> importsMap = new ConcurrentHashMap<>();
+    private final ListMultimap<String, String> importsMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {

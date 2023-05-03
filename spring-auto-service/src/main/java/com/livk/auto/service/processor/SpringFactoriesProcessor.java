@@ -18,7 +18,9 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimaps;
 import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
@@ -33,9 +35,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -53,9 +52,9 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
 
-    private final Map<String, Set<String>> springFactoriesMap = new ConcurrentHashMap<>();
+    private final ListMultimap<String, String> springFactoriesMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
 
-    private final Map<String, Set<String>> aotFactoriesMap = new ConcurrentHashMap<>();
+    private final ListMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -68,18 +67,18 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         generateConfigFiles(aotFactoriesMap, AOT_LOCATION);
     }
 
-    private void generateConfigFiles(Map<String, Set<String>> factoriesMap, String location) {
+    private void generateConfigFiles(ListMultimap<String, String> factoriesMap, String location) {
         if (!factoriesMap.isEmpty()) {
             try {
                 FileObject resource = filer.getResource(out, "", location);
-                Map<String, Set<String>> map = this.read(resource);
-                Map<String, Set<String>> allImportMap = Stream.concat(map.entrySet().stream(),
-                                factoriesMap.entrySet().stream())
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Sets::union));
+                ListMultimap<String, String> allImportMap = this.read(resource);
+                for (Map.Entry<String, String> entry : factoriesMap.entries()) {
+                    super.factoriesAdd(allImportMap, entry.getKey(), entry.getValue());
+                }
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
 
-                this.writeFile(allImportMap, fileObject);
+                this.writeFile(allImportMap.asMap(), fileObject);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -124,10 +123,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * @param fileObject 文件信息
      * @return set className
      */
-    private Map<String, Set<String>> read(FileObject fileObject) {
+    private ListMultimap<String, String> read(FileObject fileObject) {
         try (BufferedReader reader = bufferedReader(fileObject)) {
             String line;
-            Map<String, Set<String>> providers = new HashMap<>();
+            ListMultimap<String, String> providers = ArrayListMultimap.create();
             String provider = null;
             while ((line = reader.readLine()) != null) {
                 if (line.isBlank()) {
@@ -138,13 +137,12 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                     continue;
                 }
                 if (provider != null) {
-                    providers.computeIfAbsent(provider, k -> new HashSet<>())
-                            .add(line.replaceAll(",\\\\", "").trim());
+                    providers.put(provider, line.replaceAll(",\\\\", "").trim());
                 }
             }
             return providers;
         } catch (IOException e) {
-            return Collections.emptyMap();
+            return ArrayListMultimap.create();
         }
     }
 
@@ -154,11 +152,11 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * @param allImportMap 供应商接口及实现类信息
      * @param fileObject   文件信息
      */
-    private void writeFile(Map<String, Set<String>> allImportMap, FileObject fileObject) {
+    private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) {
         try (BufferedWriter writer = bufferedWriter(fileObject)) {
-            for (Map.Entry<String, Set<String>> entry : allImportMap.entrySet()) {
+            for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
                 String providerInterface = entry.getKey();
-                Set<String> services = entry.getValue();
+                Collection<String> services = entry.getValue();
                 writer.write(providerInterface);
                 writer.write("=\\");
                 writer.newLine();
