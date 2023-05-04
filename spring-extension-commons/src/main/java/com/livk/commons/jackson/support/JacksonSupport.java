@@ -205,7 +205,7 @@ public class JacksonSupport<M extends ObjectMapper> {
         } else if (obj instanceof DataInput dataInput) {
             return mapper.readValue(dataInput, type);
         }
-        return mapper.convertValue(obj, type);
+        return convertValue(obj, type);
     }
 
     /**
@@ -272,7 +272,7 @@ public class JacksonSupport<M extends ObjectMapper> {
         } else if (obj instanceof byte[] bytes) {
             return mapper.readTree(bytes);
         }
-        return null;
+        return convertValue(obj, JsonNode.class);
     }
 
     /**
