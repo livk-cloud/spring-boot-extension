@@ -174,12 +174,18 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      * @return the string
      */
     protected String transform(String provider) {
-        for (int i = 0; i < provider.length() - 1; i++) {
-            if (provider.charAt(i) == '.' && provider.charAt(i + 1) >= 'A' && provider.charAt(i + 1) <= 'Z') {
-                return provider.substring(0, i) + "." + provider.substring(i + 1).replace(".", "$");
+        char[] providerCharArray = provider.toCharArray();
+        boolean flag = false;
+        for (int i = 0; i < providerCharArray.length - 1; i++) {
+            if (providerCharArray[i] == '.'){
+                if (flag){
+                    providerCharArray[i] = '$';
+                }else if(providerCharArray[i + 1] >= 'A' && providerCharArray[i + 1] <= 'Z'){
+                    flag = true;
+                }
             }
         }
-        return provider;
+        return new String(providerCharArray);
     }
 
     /**
