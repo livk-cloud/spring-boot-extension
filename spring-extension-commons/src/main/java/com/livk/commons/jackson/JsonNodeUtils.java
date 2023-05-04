@@ -17,6 +17,7 @@
 
 package com.livk.commons.jackson;
 
+import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -135,6 +136,8 @@ public class JsonNodeUtils {
      * @param jsonNode json
      * @param nodeName node
      * @return str node first
+     * @see JsonNode#at(String)
+     * @see JsonNode#at(JsonPointer)
      */
     public JsonNode findNodeFirst(JsonNode jsonNode, String nodeName) {
         if (jsonNode == null || !StringUtils.hasText(nodeName)) {
@@ -211,6 +214,8 @@ public class JsonNodeUtils {
      * @param jsonNode json
      * @param nodePath node(节点之间以.隔开)
      * @return node node
+     * @see JsonNode#at(String)
+     * @see JsonNode#at(JsonPointer)
      */
     public JsonNode findNode(JsonNode jsonNode, String nodePath) {
         if (jsonNode == null || !StringUtils.hasText(nodePath)) {
