@@ -182,6 +182,19 @@ public class JsonMapperUtils {
     }
 
     /**
+     * Convert value list list.
+     *
+     * @param <T>       the type parameter
+     * @param fromValue the fromValue
+     * @param type      the type
+     * @return the list
+     */
+    public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
+        CollectionType collectionType = JacksonSupport.collectionType(type);
+        return JSON.convertValue(fromValue, collectionType);
+    }
+
+    /**
      * Object to map map.
      *
      * @param <K>        the type parameter
