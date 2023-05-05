@@ -122,7 +122,7 @@ public class RedissonAutoConfiguration implements EnvironmentAware {
         } else {
             config = new Config();
             String prefix = REDIS_PROTOCOL_PREFIX;
-            if (redisProperties.isSsl()) {
+            if (redisProperties.getSsl().isEnabled()) {
                 prefix = REDISS_PROTOCOL_PREFIX;
             }
             config.useSingleServer()
