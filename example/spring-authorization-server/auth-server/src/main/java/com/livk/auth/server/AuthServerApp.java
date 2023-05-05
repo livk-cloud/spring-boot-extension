@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthServerApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(AuthServerApp.class, args);
+        SpringLauncher.run(args);
     }
 
     @GetMapping("hello")

@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ZooApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(ZooApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

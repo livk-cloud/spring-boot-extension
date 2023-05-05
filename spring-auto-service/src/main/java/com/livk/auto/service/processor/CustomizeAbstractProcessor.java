@@ -17,6 +17,8 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.common.collect.ListMultimap;
+
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
@@ -29,7 +31,6 @@ import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -160,9 +161,10 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      * @param provider     the provider
      * @param serviceImpl  the service
      */
-    protected void factoriesAdd(Map<String, Set<String>> factoriesMap, String provider, String serviceImpl) {
-        Set<String> providers = factoriesMap.computeIfAbsent(provider, k -> new HashSet<>());
-        providers.add(serviceImpl);
+    protected void factoriesAdd(ListMultimap<String, String> factoriesMap, String provider, String serviceImpl) {
+        if (!factoriesMap.containsEntry(provider,serviceImpl)) {
+            factoriesMap.put(provider, serviceImpl);
+        }
     }
 
     /**
@@ -172,20 +174,18 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      * @return the string
      */
     protected String transform(String provider) {
-        int count = 0;
-        int index = -1;
-        char[] array = provider.toCharArray();
-        StringBuilder builder = new StringBuilder(provider);
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == '.' && array[i + 1] >= 'A' && array[i + 1] <= 'Z') {
-                count++;
-                index = i;
+        char[] providerCharArray = provider.toCharArray();
+        boolean flag = false;
+        for (int i = 0; i < providerCharArray.length - 1; i++) {
+            if (providerCharArray[i] == '.'){
+                if (flag){
+                    providerCharArray[i] = '$';
+                }else if(providerCharArray[i + 1] >= 'A' && providerCharArray[i + 1] <= 'Z'){
+                    flag = true;
+                }
             }
         }
-        if (count > 1) {
-            builder.replace(index, index + 1, "$");
-        }
-        return builder.toString();
+        return new String(providerCharArray);
     }
 
     /**

@@ -33,7 +33,7 @@ import org.springframework.retry.annotation.EnableRetry;
 public class RetryApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(RetryApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

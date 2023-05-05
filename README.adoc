@@ -5,7 +5,7 @@ image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/
 image:https://img.shields.io/badge/Spring%20Framework-6.0.8-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring%20Boot-3.0.6-green[link="https://spring.io/projects/spring-boot"]
 
-image:https://img.shields.io/badge/Gradle-8.1-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Gradle-8.1.1-blue[link="https://gradle.org/"]
 image:https://img.shields.io/badge/Java-17.0.7-brightgreen[]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
@@ -40,7 +40,7 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:example/example.adoc[示例详情] +
-link:extension-spring-boot-autoconfigure/doc/extension-spring-boot-autoconfigure.adoc[自动装配拓展简单使用讲解] +
+link:asciidoc.adoc[项目文档] +
 link:gradle-idea.adoc[gradle idea配置指导] +
 
 https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"[QQ群 857146133]

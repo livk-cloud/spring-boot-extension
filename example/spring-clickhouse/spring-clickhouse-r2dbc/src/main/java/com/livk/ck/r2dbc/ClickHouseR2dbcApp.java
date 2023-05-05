@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Bean;
 })
 public class ClickHouseR2dbcApp {
     public static void main(String[] args) {
-        SpringLauncher.run(ClickHouseR2dbcApp.class, args);
+        SpringLauncher.run(args);
     }
 
     @Bean

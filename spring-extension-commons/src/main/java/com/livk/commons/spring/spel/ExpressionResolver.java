@@ -51,7 +51,7 @@ public interface ExpressionResolver {
      * @return the t
      */
     default <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType) {
-        EvaluationContext evaluationContext = EvaluationContextFactory.INSTANCE.eval(method, args);
+        EvaluationContext evaluationContext = contextFactory().eval(method, args);
         return evaluate(value, evaluationContext, returnType);
     }
 
@@ -77,7 +77,7 @@ public interface ExpressionResolver {
      * @return the t
      */
     default <T> T evaluate(String value, Map<String, ?> expandMap, Class<T> returnType) {
-        EvaluationContext evaluationContext = EvaluationContextFactory.INSTANCE.eval(expandMap);
+        EvaluationContext evaluationContext = contextFactory().eval(expandMap);
         return evaluate(value, evaluationContext, returnType);
     }
 
@@ -104,7 +104,7 @@ public interface ExpressionResolver {
      * @return the t
      */
     default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap, Class<T> returnType) {
-        EvaluationContext evaluationContext = EvaluationContextFactory.INSTANCE.eval(method, args, expandMap);
+        EvaluationContext evaluationContext = contextFactory().eval(method, args, expandMap);
         return evaluate(value, evaluationContext, returnType);
     }
 
@@ -119,5 +119,14 @@ public interface ExpressionResolver {
      */
     default String evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap) {
         return evaluate(value, method, args, expandMap, String.class);
+    }
+
+    /**
+     * Context factory evaluation context factory.
+     *
+     * @return the evaluation context factory
+     */
+    default EvaluationContextFactory contextFactory() {
+        return EvaluationContextFactory.INSTANCE;
     }
 }

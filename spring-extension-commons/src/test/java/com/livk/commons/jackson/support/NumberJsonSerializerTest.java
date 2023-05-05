@@ -19,7 +19,7 @@ package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.jackson.annotation.NumberJsonFormat;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
@@ -42,15 +42,15 @@ class NumberJsonSerializerTest {
         big.f = 0.333333f;
         big.count = BigDecimal.valueOf(0.333333);
         big.sunCount = BigDecimal.valueOf(0.333333);
-        String json = JacksonUtils.writeValueAsString(big);
-        Big bean = JacksonUtils.readValue(json, Big.class);
+        String json = JsonMapperUtils.writeValueAsString(big);
+        Big bean = JsonMapperUtils.readValue(json, Big.class);
         assertNotNull(bean);
         assertEquals(33L, bean.l);
         assertEquals(0.33d, bean.d);
         assertEquals(0.3f, bean.f);
         assertEquals(0.33d, bean.count.doubleValue());
         assertEquals(0.333d, bean.sunCount.doubleValue());
-        JsonNode jsonNode = JacksonUtils.readTree(json);
+        JsonNode jsonNode = JsonMapperUtils.readTree(json);
         assertEquals("0033", jsonNode.get(FieldFunc.getName(Big::getL)).asText());
         assertEquals(0.33d, jsonNode.get(FieldFunc.getName(Big::getD)).asDouble());
         assertEquals(0.3d, jsonNode.get(FieldFunc.getName(Big::getF)).asDouble());

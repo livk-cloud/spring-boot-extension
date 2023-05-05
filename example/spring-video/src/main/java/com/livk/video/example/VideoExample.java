@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VideoExample {
     public static void main(String[] args) {
-        SpringLauncher.run(VideoExample.class, args);
+        SpringLauncher.run(args);
     }
 }

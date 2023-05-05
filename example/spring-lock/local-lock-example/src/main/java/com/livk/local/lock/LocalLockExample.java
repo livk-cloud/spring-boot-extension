@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LocalLockExample {
     public static void main(String[] args) {
-        SpringLauncher.run(LocalLockExample.class, args);
+        SpringLauncher.run(args);
     }
 }

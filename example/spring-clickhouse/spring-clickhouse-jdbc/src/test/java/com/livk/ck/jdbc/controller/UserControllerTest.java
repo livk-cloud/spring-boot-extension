@@ -18,7 +18,7 @@
 package com.livk.ck.jdbc.controller;
 
 import com.livk.ck.jdbc.entity.User;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.DateUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -80,7 +80,7 @@ class UserControllerTest {
                 .setRegTime(new Date());
         mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(user)))
+                        .content(JsonMapperUtils.writeValueAsString(user)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));

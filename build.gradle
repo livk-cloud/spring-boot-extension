@@ -1,5 +1,18 @@
 plugins {
     id "com.livk.root"
+    alias(libs.plugins.asciidoctor.jvm)
+}
+
+asciidoctor {
+    baseDirFollowsSourceDir()
+    sourceDir file("./docs")
+    sources {
+        include "index.adoc"
+    }
+    outputDir file("./docs")
+    dependsOn(":extension-spring-boot-autoconfigure:asciidoctor")
+    dependsOn(":spring-auto-service:asciidoctor")
+    dependsOn(":spring-extension-commons:asciidoctor")
 }
 
 ext {

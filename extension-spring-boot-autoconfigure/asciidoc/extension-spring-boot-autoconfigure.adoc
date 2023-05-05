@@ -1,0 +1,36 @@
+= SpringBoot自动装配拓展
+:revdate: {docdate}
+:toc: right
+:Author: Livk
+
+:numbered:
+
+include::autoconfigure/curator.adoc[]
+
+include::autoconfigure/dynamic.adoc[]
+
+include::autoconfigure/excel.adoc[]
+
+include::autoconfigure/http.adoc[]
+
+include::autoconfigure/ip2region.adoc[]
+
+include::autoconfigure/limit.adoc[]
+
+include::autoconfigure/lock.adoc[]
+
+include::autoconfigure/mapstruct.adoc[]
+
+include::autoconfigure/mybatis.adoc[]
+
+include::autoconfigure/oss.adoc[]
+
+include::autoconfigure/qrcode.adoc[]
+
+include::autoconfigure/redis.adoc[]
+
+include::autoconfigure/redisearch.adoc[]
+
+include::autoconfigure/redisson.adoc[]
+
+include::autoconfigure/useragent.adoc[]

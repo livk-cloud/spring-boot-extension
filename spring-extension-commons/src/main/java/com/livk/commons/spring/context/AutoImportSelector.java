@@ -20,6 +20,7 @@ package com.livk.commons.spring.context;
 import com.livk.commons.bean.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import java.util.Set;
  */
 class AutoImportSelector extends AbstractImportSelector<AutoImport> {
 
+    @NonNull
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         Set<String> names = new HashSet<>();
@@ -40,7 +42,6 @@ class AutoImportSelector extends AbstractImportSelector<AutoImport> {
         }
         for (String annotationType : importingClassMetadata.getAnnotationTypes()) {
             try {
-                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                 Class<?> type = ClassUtils.forName(annotationType, classLoader);
                 if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
                     names.addAll(ImportCandidates.load(type, classLoader).getCandidates());

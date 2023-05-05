@@ -35,7 +35,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MybatisApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MybatisApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

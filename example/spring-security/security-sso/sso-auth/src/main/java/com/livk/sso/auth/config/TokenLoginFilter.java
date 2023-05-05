@@ -17,7 +17,7 @@
 
 package com.livk.sso.auth.config;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.web.util.WebUtils;
 import com.livk.sso.commons.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +56,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            User user = JacksonUtils.readValue(request.getInputStream(), User.class);
+            User user = JsonMapperUtils.readValue(request.getInputStream(), User.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
                     user.getAuthorities());
             return authenticationManager.authenticate(authenticationToken);

@@ -18,7 +18,7 @@
 package com.livk.json.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.json.entity.User;
 import com.livk.json.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class UserController {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin");
-        user.setDes(JacksonUtils.readValue(json, JsonNode.class));
+        user.setDes(JsonMapperUtils.readValue(json, JsonNode.class));
         return ResponseEntity.ok(userMapper.insert(user) != 0);
     }
 

@@ -18,7 +18,7 @@
 package com.livk.commons.bean.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 
@@ -67,21 +67,21 @@ class PairTest {
     @Test
     public void pairJsonSerializerTest() {
         String json = "{\"livk\":123456}";
-        String result = JacksonUtils.writeValueAsString(pair);
+        String result = JsonMapperUtils.writeValueAsString(pair);
         assertEquals(json, result);
     }
 
     @Test
     public void pairJsonDeserializerTest() {
 
-        Pair<String, Integer> empty = JacksonUtils.readValue("{}", new TypeReference<>() {
+        Pair<String, Integer> empty = JsonMapperUtils.readValue("{}", new TypeReference<>() {
         });
         assertNull(empty.key());
         assertNull(empty.value());
         assertEquals(Pair.EMPTY, empty);
 
         @Language("JSON") String json = "{\"livk\":123456}";
-        Pair<String, Integer> result = JacksonUtils.readValue(json, new TypeReference<>() {
+        Pair<String, Integer> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
         });
         assertEquals("livk", result.key());
         assertEquals(123456, result.value());
@@ -89,7 +89,7 @@ class PairTest {
 
         @Language("JSON") String json2 = """
                 {"livk": {"root": "username"}}""";
-        Pair<String, Pair<String, String>> result2 = JacksonUtils.readValue(json2, new TypeReference<>() {
+        Pair<String, Pair<String, String>> result2 = JsonMapperUtils.readValue(json2, new TypeReference<>() {
         });
         assertEquals("livk", result2.key());
         assertEquals("root", result2.value().key());
@@ -97,7 +97,7 @@ class PairTest {
 
         @Language("JSON") String json3 = """
                 {"livk":  [1,2,3]}""";
-        Pair<String, List<Integer>> result3 = JacksonUtils.readValue(json3, new TypeReference<>() {
+        Pair<String, List<Integer>> result3 = JsonMapperUtils.readValue(json3, new TypeReference<>() {
         });
         assertEquals("livk", result3.key());
         assertEquals(List.of(1, 2, 3), result3.value());
@@ -109,7 +109,7 @@ class PairTest {
                     "password": "root"
                   }
                 }""";
-        Pair<String, Map<String, String>> result4 = JacksonUtils.readValue(json4, new TypeReference<>() {
+        Pair<String, Map<String, String>> result4 = JsonMapperUtils.readValue(json4, new TypeReference<>() {
         });
         assertEquals("livk", result4.key());
         assertEquals(Map.of("username", "root", "password", "root"), result4.value());

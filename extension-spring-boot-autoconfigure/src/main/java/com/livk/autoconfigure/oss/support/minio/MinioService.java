@@ -17,7 +17,6 @@
 
 package com.livk.autoconfigure.oss.support.minio;
 
-import com.livk.autoconfigure.oss.OSSProperties;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import io.minio.*;
 import io.minio.http.Method;
@@ -50,15 +49,6 @@ public class MinioService extends AbstractService<MinioClient> {
                                               "  ]," +
                                               "  \"Version\": \"2012-10-17\"" +
                                               "}";
-
-    /**
-     * Instantiates a new Abstract oss service.
-     *
-     * @param properties the properties
-     */
-    public MinioService(OSSProperties properties) {
-        super(properties);
-    }
 
     @SneakyThrows
     @Override

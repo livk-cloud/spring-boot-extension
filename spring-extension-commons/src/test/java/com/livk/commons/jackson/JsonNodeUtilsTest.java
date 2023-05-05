@@ -46,7 +46,7 @@ class JsonNodeUtilsTest {
               }
             }""";
 
-    static final JsonNode node = JacksonUtils.readTree(json);
+    static final JsonNode node = JsonMapperUtils.readTree(json);
 
     @Test
     void findStringValue() {
@@ -70,7 +70,7 @@ class JsonNodeUtilsTest {
 
     @Test
     void getNodeFirst() {
-        JsonNode node = JacksonUtils.readTree("""
+        JsonNode node = JsonMapperUtils.readTree("""
                 {
                     "c": "1",
                     "a": "2",
@@ -84,7 +84,7 @@ class JsonNodeUtilsTest {
 
     @Test
     void getNodeFirstAll() {
-        JsonNode node = JacksonUtils.readTree("""
+        JsonNode node = JsonMapperUtils.readTree("""
                 {
                     "c": "1",
                     "a": "2",
@@ -99,7 +99,7 @@ class JsonNodeUtilsTest {
 
     @Test
     void getNode() {
-        JsonNode node = JacksonUtils.readTree("""
+        JsonNode node = JsonMapperUtils.readTree("""
                 {
                     "c": "1",
                     "a": "2",

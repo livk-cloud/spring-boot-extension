@@ -21,7 +21,9 @@ import com.aliyun.oss.OSS;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
+import com.livk.autoconfigure.oss.support.aliyun.AliyunClientFactory;
 import com.livk.autoconfigure.oss.support.aliyun.AliyunOSSService;
+import com.livk.autoconfigure.oss.support.minio.MinioClientFactory;
 import com.livk.autoconfigure.oss.support.minio.MinioService;
 import io.minio.MinioClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -61,15 +63,24 @@ public class OSSAutoConfiguration {
     public static class MinioOSSAutoConfiguration {
 
         /**
+         * Minio client factory minio client factory.
+         *
+         * @return the minio client factory
+         */
+        @Bean
+        public MinioClientFactory minioClientFactory(){
+            return new MinioClientFactory();
+        }
+
+        /**
          * Minio service minio service.
          *
-         * @param properties the properties
          * @return the minio service
          */
         @Bean(destroyMethod = "close")
         @ConditionalOnMissingBean(AbstractService.class)
-        public MinioService minioService(OSSProperties properties) {
-            return new MinioService(properties);
+        public MinioService minioService() {
+            return new MinioService();
         }
     }
 
@@ -81,15 +92,24 @@ public class OSSAutoConfiguration {
     public static class AliyunOSSAutoConfiguration {
 
         /**
+         * Aliyun client factory aliyun client factory.
+         *
+         * @return the aliyun client factory
+         */
+        @Bean
+        public AliyunClientFactory aliyunClientFactory(){
+            return new AliyunClientFactory();
+        }
+
+        /**
          * Minio service minio service.
          *
-         * @param properties the properties
          * @return the minio service
          */
         @Bean(destroyMethod = "close")
         @ConditionalOnMissingBean(AbstractService.class)
-        public AliyunOSSService aliyunOSSService(OSSProperties properties) {
-            return new AliyunOSSService(properties);
+        public AliyunOSSService aliyunOSSService() {
+            return new AliyunOSSService();
         }
     }
 }

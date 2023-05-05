@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MailApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MailApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

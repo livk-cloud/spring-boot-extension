@@ -31,6 +31,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SSOAuthApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(SSOAuthApp.class, args);
+        SpringLauncher.run(args);
     }
 }

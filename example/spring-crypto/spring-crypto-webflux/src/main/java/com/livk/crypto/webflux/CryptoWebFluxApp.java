@@ -26,6 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CryptoWebFluxApp {
     public static void main(String[] args) {
-        SpringLauncher.run(CryptoWebFluxApp.class, args);
+        SpringLauncher.run(args);
     }
 }

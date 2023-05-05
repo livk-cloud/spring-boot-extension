@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RabbitProviderApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(RabbitProviderApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

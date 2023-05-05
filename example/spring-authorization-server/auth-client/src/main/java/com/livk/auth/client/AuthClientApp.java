@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AuthClientApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(AuthClientApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

@@ -1,6 +1,16 @@
 plugins {
     id "com.livk.common"
     id "com.livk.mvn.deployed"
+    alias(libs.plugins.asciidoctor.jvm)
+}
+
+asciidoctor {
+    baseDirFollowsSourceDir()
+    sourceDir file("./asciidoc")
+    sources {
+        include "spring-extension-commons.adoc"
+    }
+    outputDir file("../docs")
 }
 
 description "spring commons packages"
@@ -15,6 +25,8 @@ dependencies {
     api "org.springframework:spring-core"
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    optional "com.fasterxml.jackson.dataformat:jackson-dataformat-xml"
+    optional "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
     api "org.apache.commons:commons-lang3"
     api "com.github.spotbugs:spotbugs-annotations"
     api "com.google.guava:guava"

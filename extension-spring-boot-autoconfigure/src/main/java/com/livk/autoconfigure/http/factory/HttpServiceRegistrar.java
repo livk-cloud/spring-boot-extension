@@ -73,23 +73,28 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, Reso
         for (String basePackage : packages) {
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidateComponent : candidateComponents) {
-                Class<?> clazz = ClassUtils.resolveClassName(Objects.requireNonNull(candidateComponent.getBeanClassName()), null);
+                Class<?> type = ClassUtils.resolveClassName(Objects.requireNonNull(candidateComponent.getBeanClassName()), resourceLoader.getClassLoader());
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-                builder.addPropertyValue("httpInterfaceType", clazz.getName());
+                builder.addPropertyValue("httpInterfaceType", type);
                 builder.addPropertyValue("beanFactory", beanFactory);
                 builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
                 AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-                beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, clazz.getName());
+                beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, type.getName());
 
-                Provider provider = AnnotationUtils.findAnnotation(clazz, Provider.class);
-                String beanName = Optional.ofNullable(provider)
-                        .map(Provider::value)
-                        .filter(StringUtils::hasText)
-                        .orElse(StringUtils.uncapitalize(clazz.getSimpleName()));
-                BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, clazz.getName(), new String[]{beanName});
+                String beanName = beanNameGenerator(type);
+
+                BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
                 BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
             }
         }
+    }
+
+    private String beanNameGenerator(Class<?> type) {
+        Provider provider = AnnotationUtils.findAnnotation(type, Provider.class);
+        return Optional.ofNullable(provider)
+                .map(Provider::value)
+                .filter(StringUtils::hasText)
+                .orElse(type.getPackageName() + "." + StringUtils.uncapitalize(type.getSimpleName()));
     }
 
     private ClassPathBeanDefinitionScanner getScanner(BeanDefinitionRegistry registry) {

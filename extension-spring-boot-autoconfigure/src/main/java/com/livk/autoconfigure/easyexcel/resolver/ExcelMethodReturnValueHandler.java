@@ -19,7 +19,7 @@ package com.livk.autoconfigure.easyexcel.resolver;
 
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.exception.ExcelExportException;
-import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelSupport;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -89,7 +89,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
     private void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
         this.setResponse(excelReturn, response);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
-            EasyExcelUtils.write(outputStream, excelModelClass, excelReturn.template(), result);
+            EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +102,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
      * @param response    response
      */
     private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
-        String fileName = EasyExcelUtils.fileName(excelReturn);
+        String fileName = EasyExcelSupport.fileName(excelReturn);
         String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
                 .orElse("application/vnd.ms-excel");
         response.setContentType(contentType);

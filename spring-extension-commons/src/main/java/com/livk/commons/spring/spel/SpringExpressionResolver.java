@@ -60,16 +60,6 @@ public class SpringExpressionResolver implements ExpressionResolver {
         this.expressionParser = new SpelExpressionParser(new SpelParserConfiguration(null, beanClassLoader));
     }
 
-    /**
-     * Instantiates a new Spring expression resolver.
-     *
-     * @param environment the environment
-     */
-    public SpringExpressionResolver(Environment environment) {
-        this();
-        this.environment = environment;
-    }
-
     @Override
     public <T> T evaluate(String value, EvaluationContext context, Class<T> returnType) {
         if (!StringUtils.hasLength(value)) {

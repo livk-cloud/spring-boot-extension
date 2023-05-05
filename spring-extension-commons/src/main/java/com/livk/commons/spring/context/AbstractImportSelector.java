@@ -18,7 +18,6 @@
 package com.livk.commons.spring.context;
 
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.EnvironmentAware;
@@ -27,6 +26,7 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -61,7 +61,7 @@ public abstract class AbstractImportSelector<T extends Annotation> implements De
      */
     protected ClassLoader classLoader;
 
-    @NotNull
+    @NonNull
     @Override
     public String[] selectImports(@Nullable AnnotationMetadata importingClassMetadata) {
         if (!isEnabled()) {

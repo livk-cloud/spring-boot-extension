@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RedissonApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(RedissonApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

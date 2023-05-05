@@ -30,6 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class QRCodeMvcExample {
     public static void main(String[] args) {
-        SpringLauncher.run(QRCodeMvcExample.class, args);
+        SpringLauncher.run(args);
     }
 }

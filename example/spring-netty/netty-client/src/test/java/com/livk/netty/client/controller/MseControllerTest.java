@@ -17,7 +17,7 @@
 
 package com.livk.netty.client.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ class MseControllerTest {
         client.post()
                 .uri("/msg")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(JacksonUtils.writeValueAsString(body))
+                .bodyValue(JsonMapperUtils.writeValueAsString(body))
                 .exchange()
                 .expectStatus()
                 .isOk();

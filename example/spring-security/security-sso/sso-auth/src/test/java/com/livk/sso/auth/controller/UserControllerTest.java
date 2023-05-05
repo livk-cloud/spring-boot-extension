@@ -17,7 +17,7 @@
 
 package com.livk.sso.auth.controller;
 
-import com.livk.commons.jackson.JacksonUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +57,12 @@ class UserControllerTest {
         body.put("password", "123456");
         MockHttpServletResponse response = mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JacksonUtils.writeValueAsString(body)))
+                        .content(JsonMapperUtils.writeValueAsString(body)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("code", "200").exists())
                 .andReturn().getResponse();
-        token = "Bearer " + JacksonUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
+        token = "Bearer " + JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
     }
 
 

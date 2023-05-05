@@ -31,12 +31,7 @@ public interface Wrapper {
      * @return the t
      */
     static <T> T tryUnwrap(Object obj, Class<T> type) {
-        if (obj instanceof Wrapper wrapper) {
-            if (wrapper.isWrapperFor(type)) {
-                return wrapper.unwrap(type);
-            }
-        }
-        return type.cast(obj);
+        return obj instanceof Wrapper wrapper && wrapper.isWrapperFor(type) ? wrapper.unwrap(type) : type.cast(obj);
     }
 
     /**

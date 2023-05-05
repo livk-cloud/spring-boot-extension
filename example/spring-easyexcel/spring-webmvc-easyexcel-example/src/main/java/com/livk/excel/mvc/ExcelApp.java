@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ExcelApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(ExcelApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

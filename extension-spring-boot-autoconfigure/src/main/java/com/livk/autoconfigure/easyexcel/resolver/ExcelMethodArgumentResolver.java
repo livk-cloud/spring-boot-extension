@@ -20,7 +20,8 @@ package com.livk.autoconfigure.easyexcel.resolver;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
-import com.livk.autoconfigure.easyexcel.utils.EasyExcelUtils;
+import com.livk.autoconfigure.easyexcel.utils.EasyExcelSupport;
+import com.livk.autoconfigure.easyexcel.utils.ExcelDataType;
 import com.livk.commons.bean.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -36,8 +37,6 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -64,15 +63,10 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
             ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
             HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
             InputStream in = getInputStream(request, excelParam.fileName());
-            if (Collection.class.isAssignableFrom(parameter.getParameterType())) {
-                Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-                EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
-                return listener.getCollectionData();
-            } else if (Map.class.isAssignableFrom(parameter.getParameterType())) {
-                Class<?> excelModelClass = ResolvableType.forMethodParameter(parameter).getGeneric(1).resolveGeneric(0);
-                EasyExcelUtils.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
-                return listener.getMapData();
-            }
+            ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
+            Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
+            EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
+            return listener.getData(dataType);
         }
         throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
     }

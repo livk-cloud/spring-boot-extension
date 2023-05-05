@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class QuartzApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(QuartzApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

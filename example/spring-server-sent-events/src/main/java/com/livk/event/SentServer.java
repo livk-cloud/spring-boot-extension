@@ -32,6 +32,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class SentServer {
     public static void main(String[] args) {
-        SpringLauncher.run(SentServer.class, args);
+        SpringLauncher.run(args);
     }
 }

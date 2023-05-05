@@ -26,6 +26,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class OssAliyunApp {
     public static void main(String[] args) {
-        SpringLauncher.run(OssAliyunApp.class, args);
+        SpringLauncher.run(args);
     }
 }

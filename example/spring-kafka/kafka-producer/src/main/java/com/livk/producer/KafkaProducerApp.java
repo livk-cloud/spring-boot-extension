@@ -33,7 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class KafkaProducerApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(KafkaProducerApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

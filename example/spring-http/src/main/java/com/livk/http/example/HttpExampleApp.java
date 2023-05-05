@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HttpExampleApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(HttpExampleApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }

@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MapstructExampleApp {
 
     public static void main(String[] args) {
-        SpringLauncher.run(MapstructExampleApp.class, args);
+        SpringLauncher.run(args);
     }
 
 }
