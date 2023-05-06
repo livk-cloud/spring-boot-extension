@@ -19,8 +19,6 @@ package com.livk.commons.bean;
 
 import org.springframework.core.GenericTypeResolver;
 
-import java.util.Objects;
-
 /**
  * The interface Delegating wrapper.
  *
@@ -43,7 +41,7 @@ public interface GenericWrapper<V> extends Wrapper {
     @Override
     default boolean isWrapperFor(Class<?> type) {
         Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), GenericWrapper.class);
-        return Objects.equals(typeArgument,type);
+        return typeArgument == null || type.equals(typeArgument);
     }
 
     @Override
