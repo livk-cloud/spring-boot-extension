@@ -31,6 +31,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
  * @author livk
  */
 @Slf4j
+@Deprecated(forRemoval = true)
 @RequiredArgsConstructor
 public class JacksonWrapper implements GenericWrapper<ObjectMapper> {
 
