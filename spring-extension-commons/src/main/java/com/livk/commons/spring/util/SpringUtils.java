@@ -18,11 +18,11 @@
 package com.livk.commons.spring.util;
 
 import com.livk.commons.spring.context.AnnotationMetadataResolver;
+import com.livk.commons.spring.env.SpringEnvBinder;
 import com.livk.commons.spring.spel.SpringExpressionResolver;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
@@ -68,7 +68,7 @@ public class SpringUtils {
      * @return map sub properties
      */
     public Map<String, String> getSubPropertiesMap(Environment environment, String keyPrefix) {
-        return bind(environment, keyPrefix, Bindable.mapOf(String.class, String.class))
+        return new SpringEnvBinder(environment).mapOf(keyPrefix, String.class, String.class)
                 .orElseGet(Collections::emptyMap);
     }
 
@@ -80,8 +80,7 @@ public class SpringUtils {
      * @return the sub properties
      */
     public Properties getSubProperties(Environment environment, String keyPrefix) {
-        return bind(environment, keyPrefix, Bindable.of(Properties.class))
-                .orElseGet(Properties::new);
+        return new SpringEnvBinder(environment).propertiesOf(keyPrefix).orElseGet(Properties::new);
     }
 
     /**
@@ -94,7 +93,7 @@ public class SpringUtils {
      * @return the bind result
      */
     public <T> BindResult<T> bind(Environment environment, String keyPrefix, Bindable<T> bindable) {
-        return Binder.get(environment).bind(keyPrefix, bindable);
+        return new SpringEnvBinder(environment).bind(keyPrefix, bindable);
     }
 
     /**
