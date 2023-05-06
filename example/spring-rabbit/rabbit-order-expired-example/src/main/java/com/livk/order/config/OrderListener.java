@@ -19,12 +19,12 @@ package com.livk.order.config;
 
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,7 +49,7 @@ public class OrderListener {
         log.info("【订单号】 - [{}]", order);
         TimeUnit.SECONDS.sleep(1);
         //是否支付
-        int i = RandomUtils.nextInt(1, 100);
+        int i = ThreadLocalRandom.current().nextInt(1, 100);
         if (i == 6) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             log.info("支付成功！");
