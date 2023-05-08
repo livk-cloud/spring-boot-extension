@@ -17,12 +17,8 @@
 
 package com.livk.auto.service.processor;
 
-import com.google.common.collect.ListMultimap;
-
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -32,7 +28,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -127,66 +122,6 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
      * @param roundEnv    roundEnv
      */
     protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
-
-
-    /**
-     * Gets annotation mirror attributes.
-     *
-     * @param <T>         the type parameter
-     * @param element     the element
-     * @param targetClass the target class
-     * @param key         the key
-     * @return the annotation mirror attributes
-     */
-    protected <T> Optional<String> getAnnotationMirrorAttributes(Element element, Class<T> targetClass, String key) {
-        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            TypeElement typeElement = (TypeElement) annotationMirror.getAnnotationType().asElement();
-            if (typeElement.getQualifiedName().contentEquals(targetClass.getCanonicalName())) {
-                Map<String, String> map = annotationMirror.getElementValues()
-                        .entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue() != null)
-                        .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
-                                entry -> entry.getValue().getValue().toString()));
-                return Optional.ofNullable(map.get(key));
-            }
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Factories add.
-     *
-     * @param factoriesMap the factories map
-     * @param provider     the provider
-     * @param serviceImpl  the service
-     */
-    protected void factoriesAdd(ListMultimap<String, String> factoriesMap, String provider, String serviceImpl) {
-        if (!factoriesMap.containsEntry(provider,serviceImpl)) {
-            factoriesMap.put(provider, serviceImpl);
-        }
-    }
-
-    /**
-     * 类字符串进行转换
-     *
-     * @param provider the provider
-     * @return the string
-     */
-    protected String transform(String provider) {
-        char[] providerCharArray = provider.toCharArray();
-        boolean flag = false;
-        for (int i = 0; i < providerCharArray.length - 1; i++) {
-            if (providerCharArray[i] == '.'){
-                if (flag){
-                    providerCharArray[i] = '$';
-                }else if(providerCharArray[i + 1] >= 'A' && providerCharArray[i + 1] <= 'Z'){
-                    flag = true;
-                }
-            }
-        }
-        return new String(providerCharArray);
-    }
 
     /**
      * buffered reader.
