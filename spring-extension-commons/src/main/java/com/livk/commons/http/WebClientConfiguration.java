@@ -27,6 +27,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -47,7 +48,7 @@ import java.util.function.Function;
  *
  * @author livk
  */
-@AutoConfiguration
+@AutoConfiguration(after = WebClientAutoConfiguration.class)
 @ConditionalOnClass(WebClient.class)
 @SpringAutoService(EnableWebClient.class)
 public class WebClientConfiguration {
@@ -71,17 +72,6 @@ public class WebClientConfiguration {
     @AutoConfiguration
     @ConditionalOnClass(HttpClient.class)
     public static class ReactorClientConfiguration {
-        /**
-         * Reactor resource factory reactor resource factory.
-         *
-         * @return the reactor resource factory
-         */
-        @Bean
-        public ReactorResourceFactory reactorResourceFactory() {
-            ReactorResourceFactory factory = new ReactorResourceFactory();
-            factory.setUseGlobalResources(false);
-            return factory;
-        }
 
         /**
          * Reactor client web client customizer web client customizer.
