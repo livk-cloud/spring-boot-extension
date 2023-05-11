@@ -19,37 +19,39 @@ package com.livk.commons.spring.context;
 
 import com.livk.commons.bean.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.lang.NonNull;
-import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
- * The type Auto import selector.
+ * 使用注解的方式代替 XXXImportSelector
+ * <p>
+ * 减少XXXImportSelector继承 {@link SpringAbstractImportSelector}却不重写方法
  *
  * @author livk
+ * @see AutoImport
  */
-class AutoImportSelector extends AbstractImportSelector<AutoImport> {
+class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 
-    @NonNull
     @Override
-    public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+    protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
         Set<String> names = new HashSet<>();
-        if (importingClassMetadata == null || annotationClass == null) {
-            return new String[0];
-        }
-        for (String annotationType : importingClassMetadata.getAnnotationTypes()) {
-            try {
-                Class<?> type = ClassUtils.forName(annotationType, classLoader);
-                if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
-                    names.addAll(ImportCandidates.load(type, classLoader).getCandidates());
+        if (annotationClass != null) {
+            for (String annotationType : metadata.getAnnotationTypes()) {
+                try {
+                    Class<?> type = ClassUtils.forName(annotationType, getBeanClassLoader());
+                    if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
+                        names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
+                    }
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
-        return StringUtils.toStringArray(names);
+        return new ArrayList<>(names);
     }
 }
