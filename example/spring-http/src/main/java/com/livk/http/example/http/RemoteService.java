@@ -17,7 +17,7 @@
 
 package com.livk.http.example.http;
 
-import com.livk.autoconfigure.http.annotation.Provider;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
 import org.springframework.web.service.annotation.GetExchange;
 
 /**
@@ -27,7 +27,7 @@ import org.springframework.web.service.annotation.GetExchange;
  *
  * @author livk
  */
-@Provider(url = "https://jwt.io/")
+@HttpProvider(url = "https://jwt.io/")
 public interface RemoteService {
 
     @GetExchange()
