@@ -34,13 +34,13 @@ import java.util.Map;
 
 /**
  * Jackson一些基本序列化与反序列化
- * 自定义Mapper，请注册{@link Wrapper}到IOC
  * <p>
- * 当前类设计存在语义不清
+ * 自定义Mapper，请注册{@link Wrapper}到IOC
  * <p>
  * 请使用{@link JsonMapperUtils}
  *
  * @see com.livk.commons.jackson.support.JacksonSupport
+ * @deprecated 当前类设计存在语义不清
  */
 @Slf4j
 @UtilityClass
