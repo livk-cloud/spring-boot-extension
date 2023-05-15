@@ -17,11 +17,9 @@
 
 package com.livk.commons.spring.context;
 
-import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.ObjectUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -30,6 +28,8 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -42,6 +42,7 @@ import java.util.Set;
  * The type Annotation metadata resolver.
  *
  * @author livk
+ * @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
  */
 public class AnnotationMetadataResolver {
 
@@ -77,24 +78,24 @@ public class AnnotationMetadataResolver {
      * @return set class
      */
     public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
+        TypeFilter typeFilter = new AnnotationTypeFilter(annotationType);
         Set<Class<?>> typeSet = new HashSet<>();
         if (ObjectUtils.isEmpty(packages)) {
             return typeSet;
         }
         for (String packageStr : packages) {
-            packageStr = packageStr.replace(".", "/");
+            packageStr = ClassUtils.convertClassNameToResourcePath(packageStr);
             try {
-                Resource[] resources = resolver.getResources("classpath*:" + packageStr + "/**/*.class");
+                Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + packageStr + "/**/*.class");
                 for (Resource resource : resources) {
                     MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-                    String className = metadataReader.getClassMetadata().getClassName();
-                    Class<?> type = ClassUtils.forName(className, resourceLoader.getClassLoader());
-                    if (AnnotationUtils.isAnnotationDeclaredLocally(annotationType, type) ||
-                        AnnotatedElementUtils.hasAnnotation(type, annotationType)) {
+                    if (typeFilter.match(metadataReader, metadataReaderFactory)) {
+                        String className = metadataReader.getClassMetadata().getClassName();
+                        Class<?> type = ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
                         typeSet.add(type);
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
