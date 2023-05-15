@@ -1,13 +1,13 @@
 plugins {
     id "com.livk.common"
-    id "com.google.protobuf" version("0.9.2")
+    id "com.google.protobuf" version("0.9.3")
 }
 
 dependencies {
     api "io.netty:netty-all:4.1.91.Final"
     api "com.google.protobuf:protobuf-java:3.22.2"
     testImplementation "org.springframework:spring-tx:6.0.8"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:${libs.versions.springBoot.get()}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${libs.versions.spring.boot.get()}"
 }
 
 compileJava {

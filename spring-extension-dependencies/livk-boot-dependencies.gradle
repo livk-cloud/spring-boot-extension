@@ -6,23 +6,37 @@ plugins {
 
 description "spring boot extension bom"
 
-def versionCatalog = rootProject.extensions
-        .getByType(VersionCatalogsExtension.class)
-        .named("libs")
-
-def bom = versionCatalog.libraryAliases
-        .findAll { it.endsWith("dependencies") || it.endsWith("bom") }
-def dependency = (versionCatalog.libraryAliases - bom)
-
-static Collection<String> dependencyManagement(Collection<String> dependencyNames, VersionCatalog versionCatalog) {
-    return dependencyNames.stream().map { versionCatalog.findLibrary(it).get().get().toString() }.toList()
-}
-
 dependencies {
     api platform(SpringBootPlugin.BOM_COORDINATES)
-    dependencyManagement(bom, versionCatalog).forEach { api(platform(it)) }
+    api platform(libs.springdoc.openapi.bom)
+    api platform(libs.spring.boot.admin.dependencies)
     constraints {
-        dependencyManagement(dependency, versionCatalog).forEach { api(it) }
+        api libs.bundles.pagehelper.all
+        api libs.bundles.mybatis.all
+        api libs.bundles.redisson.all
+        api libs.bundles.clickhouse.all
+        api libs.bundles.mapstruct.all
+        api libs.oauth2.authorization.server
+        api libs.guava
+        api libs.easyexcel
+        api libs.java.webSocket
+        api libs.zookeeper
+        api libs.spring.pulsar.starter
+        api libs.spotbugs.annotations
+        api libs.curator.recipes
+        api libs.ip2region
+        api libs.browscap.java
+        api libs.auto.service
+        api libs.yauaa
+        api libs.google.javase
+        api libs.nimbus.jose.jwt
+        api libs.rocketmq.boot.starter
+        api libs.jsqlparser
+        api libs.lettucemod
+        api libs.minio
+        api libs.dnsjava
+        api libs.snakeyaml
+        api libs.aliyun.oss
         api(project(":spring-extension-commons"))
         api(project(":spring-auto-service"))
         api(project(":extension-spring-boot-autoconfigure"))

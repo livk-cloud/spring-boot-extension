@@ -17,6 +17,7 @@
 
 package com.livk.commons.function;
 
+import com.livk.commons.bean.util.ClassUtils;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
 
@@ -88,8 +89,8 @@ public interface FieldFunc<T> extends Function<T, Object>, Serializable {
     @SneakyThrows
     static <T> Field get(FieldFunc<T> function) {
         SerializedLambda serializedLambda = serializedLambda(function);
-        String className = StringUtils.replace(serializedLambda.getImplClass(), "/", ".");
-        Class<?> type = Class.forName(className);
+        String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
+        Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
         return type.getDeclaredField(getName(function));
     }
 }
