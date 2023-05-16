@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.jackson;
+package com.livk.commons.jackson.util;
 
 import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -92,7 +92,7 @@ public class JsonNodeUtils {
      */
     public <T> T findValue(JsonNode jsonNode, String fieldName, TypeReference<T> valueTypeReference,
                            ObjectMapper mapper) {
-        JavaType javaType = mapper.getTypeFactory().constructType(valueTypeReference);
+        JavaType javaType = TypeFactoryUtils.javaType(valueTypeReference);
         return findValue(jsonNode, fieldName, javaType, mapper);
     }
 
@@ -107,7 +107,7 @@ public class JsonNodeUtils {
      * @return the t
      */
     public <T> T findValue(JsonNode jsonNode, String fieldName, Class<T> type, ObjectMapper mapper) {
-        JavaType javaType = mapper.getTypeFactory().constructType(type);
+        JavaType javaType = TypeFactoryUtils.javaType(type);
         return findValue(jsonNode, fieldName, javaType, mapper);
     }
 

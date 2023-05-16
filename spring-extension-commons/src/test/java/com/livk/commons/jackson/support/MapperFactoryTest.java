@@ -31,8 +31,8 @@ class MapperFactoryTest {
 
     @Test
     void builder() {
-        assertTrue(MapperFactory.builder(JacksonFormat.JSON).build() instanceof JsonMapper);
-        assertTrue(MapperFactory.builder(JacksonFormat.YAML).build() instanceof YAMLMapper);
-        assertTrue(MapperFactory.builder(JacksonFormat.XML).build() instanceof XmlMapper);
+        assertTrue(MapperFactory.builder(MapperFactory.JSON).build() instanceof JsonMapper);
+        assertTrue(MapperFactory.builder(MapperFactory.YAML).build() instanceof YAMLMapper);
+        assertTrue(MapperFactory.builder(MapperFactory.XML).build() instanceof XmlMapper);
     }
 }

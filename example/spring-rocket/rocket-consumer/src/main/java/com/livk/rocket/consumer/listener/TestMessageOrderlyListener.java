@@ -17,7 +17,7 @@
 
 package com.livk.rocket.consumer.listener;
 
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import lombok.extern.slf4j.Slf4j;

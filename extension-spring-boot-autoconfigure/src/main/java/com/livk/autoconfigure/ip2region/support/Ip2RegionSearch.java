@@ -18,7 +18,7 @@
 package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.xdb.Searcher;

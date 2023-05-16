@@ -18,7 +18,7 @@
 package com.livk.crypto.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JsonNodeUtils;
+import com.livk.commons.jackson.util.JsonNodeUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.PbeSecurity;
 import org.junit.jupiter.api.Test;

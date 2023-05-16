@@ -30,20 +30,34 @@ import com.livk.commons.bean.Wrapper;
  *
  * @author livk
  */
-public class MapperFactory {
+public enum MapperFactory {
 
     /**
-     * 根据{@link JacksonFormat}构建 {@link MapperBuilder}的子类
+     * Json jackson type.
+     */
+    JSON,
+
+    /**
+     * Yaml jackson type.
+     */
+    YAML,
+
+    /**
+     * Xml jackson type.
+     */
+    XML;
+
+    /**
+     * 根据{@link MapperFactory}构建 {@link MapperBuilder}的子类
      *
-     * @param <M>    {@link ObjectMapper} 子类
-     * @param <B>    {@link MapperBuilder} 子类
-     * @param format the format
+     * @param <M>     {@link ObjectMapper} 子类
+     * @param <B>     {@link MapperBuilder} 子类
+     * @param factory the format
      * @return MapperBuilder
-     * @see JacksonFormat
      */
     @SuppressWarnings("unchecked")
-    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(JacksonFormat format) {
-        Wrapper wrapper = switch (format) {
+    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(MapperFactory factory) {
+        Wrapper wrapper = switch (factory) {
             case JSON -> new JsonBuilderWrapper();
             case YAML -> new YamlBuilderWrapper();
             case XML -> new XmlBuilderWrapper();

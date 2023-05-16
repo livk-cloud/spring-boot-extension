@@ -62,6 +62,11 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
         super(registry, false, environment, resourceLoader);
     }
 
+    /**
+     * Register filters.
+     *
+     * @param annotationType the annotation type
+     */
     public void registerFilters(Class<? extends Annotation> annotationType) {
         addIncludeFilter(new AnnotationTypeFilter(annotationType));
     }

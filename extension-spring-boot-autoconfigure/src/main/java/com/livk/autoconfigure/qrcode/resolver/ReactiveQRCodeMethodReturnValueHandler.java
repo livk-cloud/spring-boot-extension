@@ -23,7 +23,7 @@ import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.AnnotationUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;

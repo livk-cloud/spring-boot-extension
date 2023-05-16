@@ -20,7 +20,7 @@ package com.livk.commons.web.multipart;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;

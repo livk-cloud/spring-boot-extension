@@ -17,7 +17,7 @@
 
 package com.livk.json.controller;
 
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.json.entity.User;
 import com.livk.json.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
