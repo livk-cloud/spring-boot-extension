@@ -26,7 +26,8 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.livk.commons.bean.domain.Pair;
 import com.livk.commons.collect.util.StreamUtils;
-import com.livk.commons.jackson.support.JacksonSupport;
+import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.util.TypeFactoryUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -47,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class JsonMapperUtilsTest {
 
-    static JavaType javaType = JacksonSupport.javaType(JsonNode.class);
+    static JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 
     @Language("json")
     static String json = """
@@ -410,18 +411,18 @@ class JsonMapperUtilsTest {
 
         Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
         Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
-        MapType mapType = JacksonSupport.mapType(String.class, String.class);
+        MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
         List<JsonNode> jsonNodeList = StreamUtils.convert(dependencyArray.elements()).toList();
         assertEquals(loggingDependency, JsonMapperUtils.convertValue(jsonNodeList.get(0), mapType));
         assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = JacksonSupport.typeFactory().constructCollectionType(List.class, mapType);
+        CollectionType collectionType = TypeFactoryUtils.instance().constructCollectionType(List.class, mapType);
         assertEquals(dependencyList, JsonMapperUtils.convertValue(dependencyArray, collectionType));
 
-        JavaType javaType = JacksonSupport.javaType(String.class);
+        JavaType javaType = TypeFactoryUtils.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = JacksonSupport.typeFactory().constructMapType(Map.class, javaType, collectionType);
+        MapType constructMapType = TypeFactoryUtils.instance().constructMapType(Map.class, javaType, collectionType);
         assertEquals(dependencyManagement, JsonMapperUtils.convertValue(jsonNode, constructMapType));
     }
 }

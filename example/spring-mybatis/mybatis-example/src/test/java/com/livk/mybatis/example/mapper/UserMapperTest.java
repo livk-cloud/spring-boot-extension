@@ -22,8 +22,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.livk.commons.bean.domain.PageInfo;
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.commons.jackson.support.JacksonSupport;
+import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.util.TypeFactoryUtils;
 import com.livk.mybatis.example.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -87,7 +87,7 @@ class UserMapperTest {
             PageInfo<User> result = new PageInfo<>(page);
             assertNotNull(result);
             String json = JsonMapperUtils.writeValueAsString(result);
-            JavaType javaType = JacksonSupport.javaType(PageInfo.class, User.class);
+            JavaType javaType = TypeFactoryUtils.javaType(PageInfo.class, User.class);
             PageInfo<User> customPage = JsonMapperUtils.readValue(json, javaType);
             assertNotNull(customPage);
         }

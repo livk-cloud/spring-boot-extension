@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JsonNodeUtils;
+import com.livk.commons.jackson.util.JsonNodeUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

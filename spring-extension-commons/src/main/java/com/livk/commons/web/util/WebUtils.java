@@ -19,7 +19,7 @@ package com.livk.commons.web.util;
 
 import com.google.common.collect.Lists;
 import com.livk.commons.collect.util.StreamUtils;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

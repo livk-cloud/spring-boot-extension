@@ -18,7 +18,7 @@
 package com.livk.env;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.YamlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

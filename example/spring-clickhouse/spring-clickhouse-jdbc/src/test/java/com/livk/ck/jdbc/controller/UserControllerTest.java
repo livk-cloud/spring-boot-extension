@@ -18,7 +18,7 @@
 package com.livk.ck.jdbc.controller;
 
 import com.livk.ck.jdbc.entity.User;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.DateUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
