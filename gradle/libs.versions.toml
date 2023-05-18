@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "3.0.6"
+spring-boot = "3.0.7"
 pagehelper = "5.3.2"
 pagehelper-starter = "1.4.6"
 oauth2-authorization-server = "1.0.2"
