@@ -33,6 +33,8 @@ import org.springframework.context.annotation.Bean;
 import java.util.Map;
 
 /**
+ * The type Curator health contributor auto configuration.
+ *
  * @author livk
  */
 @SpringAutoService
@@ -43,10 +45,19 @@ import java.util.Map;
 public class CuratorHealthContributorAutoConfiguration
         extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
 
+    /**
+     * Instantiates a new Curator health contributor auto configuration.
+     */
     public CuratorHealthContributorAutoConfiguration() {
         super(CuratorHealthIndicator::new);
     }
 
+    /**
+     * Curator health contributor health contributor.
+     *
+     * @param curatorFrameworkFactories the curator framework factories
+     * @return the health contributor
+     */
     @Bean
     @ConditionalOnMissingBean(name = {"curatorHealthIndicator", "curatorHealthContributor"})
     public HealthContributor curatorHealthContributor(Map<String, CuratorFramework> curatorFrameworkFactories) {
