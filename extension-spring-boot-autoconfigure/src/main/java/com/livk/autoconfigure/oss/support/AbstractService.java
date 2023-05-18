@@ -22,7 +22,6 @@ import com.livk.autoconfigure.oss.client.OSSClientFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.GenericApplicationContext;
@@ -52,8 +51,7 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations, Ap
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> client);
         if (applicationContext instanceof GenericApplicationContext context) {
             AbstractBeanDefinition beanDefinition = definitionBuilder.getBeanDefinition();
-            String beanName = BeanDefinitionReaderUtils.generateBeanName(beanDefinition, context);
-            context.registerBeanDefinition(beanName, beanDefinition);
+            context.registerBeanDefinition(factory.name(), beanDefinition);
         }
     }
 }
