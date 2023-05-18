@@ -417,12 +417,12 @@ class JsonMapperUtilsTest {
         assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = TypeFactoryUtils.instance().constructCollectionType(List.class, mapType);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
         assertEquals(dependencyList, JsonMapperUtils.convertValue(dependencyArray, collectionType));
 
         JavaType javaType = TypeFactoryUtils.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = TypeFactoryUtils.instance().constructMapType(Map.class, javaType, collectionType);
+        MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
         assertEquals(dependencyManagement, JsonMapperUtils.convertValue(jsonNode, constructMapType));
     }
 }

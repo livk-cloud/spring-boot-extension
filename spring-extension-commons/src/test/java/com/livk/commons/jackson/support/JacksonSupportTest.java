@@ -286,12 +286,12 @@ class JacksonSupportTest {
         assertEquals(jsonDependency, JSON.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = TypeFactoryUtils.instance().constructCollectionType(List.class, mapType);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
         assertEquals(dependencyList, JSON.convertValue(dependencyArray, collectionType));
 
         JavaType javaType = TypeFactoryUtils.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = TypeFactoryUtils.instance().constructMapType(Map.class, javaType, collectionType);
+        MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
         assertEquals(dependencyManagement, JSON.convertValue(jsonNode, constructMapType));
     }
 
@@ -316,12 +316,12 @@ class JacksonSupportTest {
         assertEquals(jsonDependency, YAML.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = TypeFactoryUtils.instance().constructCollectionType(List.class, mapType);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
         assertEquals(dependencyList, YAML.convertValue(dependencyArray, collectionType));
 
         JavaType javaType = TypeFactoryUtils.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = TypeFactoryUtils.instance().constructMapType(Map.class, javaType, collectionType);
+        MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
         assertEquals(dependencyManagement, YAML.convertValue(jsonNode, constructMapType));
     }
 
@@ -350,12 +350,12 @@ class JacksonSupportTest {
         assertEquals(jsonDependency, XML.convertValue(jsonNodeList.get(1), mapType));
 
         List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-        CollectionType collectionType = TypeFactoryUtils.instance().constructCollectionType(List.class, mapType);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
         assertEquals(dependencyList, XML.convertValue(dependencyArray, collectionType));
 
         JavaType javaType = TypeFactoryUtils.javaType(String.class);
         Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
-        MapType constructMapType = TypeFactoryUtils.instance().constructMapType(Map.class, javaType, collectionType);
+        MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
         assertEquals(dependencyManagement, XML.convertValue(jsonNode, constructMapType));
     }
 }
