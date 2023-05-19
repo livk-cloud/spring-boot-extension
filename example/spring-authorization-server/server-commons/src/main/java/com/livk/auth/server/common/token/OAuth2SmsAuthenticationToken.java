@@ -17,8 +17,8 @@
 
 package com.livk.auth.server.common.token;
 
+import com.livk.auth.server.common.constant.SecurityConstants;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.Map;
 import java.util.Set;
@@ -28,11 +28,10 @@ import java.util.Set;
  */
 public class OAuth2SmsAuthenticationToken extends OAuth2BaseAuthenticationToken {
 
-    public OAuth2SmsAuthenticationToken(AuthorizationGrantType authorizationGrantType,
-                                        Authentication clientPrincipal,
+    public OAuth2SmsAuthenticationToken(Authentication clientPrincipal,
                                         Set<String> scopes,
                                         Map<String, Object> additionalParameters) {
-        super(authorizationGrantType, clientPrincipal, scopes, additionalParameters);
+        super(SecurityConstants.GRANT_TYPE_SMS, clientPrincipal, scopes, additionalParameters);
     }
 
 }

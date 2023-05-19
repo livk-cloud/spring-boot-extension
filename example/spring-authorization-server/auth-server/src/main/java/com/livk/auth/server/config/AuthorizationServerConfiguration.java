@@ -77,8 +77,20 @@ public class AuthorizationServerConfiguration {
                                                                       UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(
-                        (tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
+
+        OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
+                authenticationManager, authorizationService, oAuth2TokenGenerator);
+
+        OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
+                authenticationManager, authorizationService, oAuth2TokenGenerator);
+
+        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer
+                .tokenEndpoint(
+                        (tokenEndpoint) -> tokenEndpoint
+                                .accessTokenRequestConverter(accessTokenRequestConverter())
+                                .authenticationProvider(passwordAuthenticationProvider)
+                                .authenticationProvider(smsAuthenticationProvider)
                                 .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
                                 .errorResponseHandler(new AuthenticationFailureEventHandler())
                 )
@@ -92,21 +104,12 @@ public class AuthorizationServerConfiguration {
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
         HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
 
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
-
-        OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
-
-        OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
         return http.securityMatcher(endpointsMatcher)
                 .authenticationManager(authenticationManager)
                 .securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
                 .authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
                 .csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
                 .authenticationProvider(userDetailsAuthenticationProvider)
-                .authenticationProvider(passwordAuthenticationProvider)
-                .authenticationProvider(smsAuthenticationProvider)
                 .build();
     }
 

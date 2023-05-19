@@ -56,7 +56,7 @@ public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticati
 
     @Override
     protected void checkClient(@NonNull RegisteredClient registeredClient) {
-        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.AUTHORIZATION_GRANT_TYPE_PASSWORD)) {
+        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.GRANT_TYPE_PASSWORD)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
     }
