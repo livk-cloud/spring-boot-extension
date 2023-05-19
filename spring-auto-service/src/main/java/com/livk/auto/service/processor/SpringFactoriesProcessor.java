@@ -18,10 +18,12 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringFactories;
+import com.livk.auto.service.util.ElementUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -52,9 +54,9 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
     private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
 
-    private final ListMultimap<String, String> springFactoriesMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
+    private final SetMultimap<String, String> springFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
-    private final ListMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
+    private final SetMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -67,13 +69,13 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
         generateConfigFiles(aotFactoriesMap, AOT_LOCATION);
     }
 
-    private void generateConfigFiles(ListMultimap<String, String> factoriesMap, String location) {
+    private void generateConfigFiles(Multimap<String, String> factoriesMap, String location) {
         if (!factoriesMap.isEmpty()) {
             try {
                 FileObject resource = filer.getResource(out, "", location);
-                ListMultimap<String, String> allImportMap = this.read(resource);
+                Multimap<String, String> allImportMap = this.read(resource);
                 for (Map.Entry<String, String> entry : factoriesMap.entries()) {
-                    super.factoriesAdd(allImportMap, entry.getKey(), entry.getValue());
+                    allImportMap.put(entry.getKey(), entry.getValue());
                 }
                 FileObject fileObject =
                         filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
@@ -89,28 +91,28 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
     protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
-            Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
-            String provider = super.transform(value.orElseGet(() -> fromInterface(element)));
+            Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+            String provider = ElementUtils.getBinaryName(value.orElseGet(() -> fromInterface(element)));
             if (provider == null || provider.isBlank()) {
                 throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
             }
             boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
-            String serviceImpl = super.transform(element.toString());
+            String serviceImpl = ElementUtils.getBinaryName((TypeElement) element);
             if (aot) {
-                super.factoriesAdd(aotFactoriesMap, provider, serviceImpl);
+                aotFactoriesMap.put(provider, serviceImpl);
             } else {
-                super.factoriesAdd(springFactoriesMap, provider, serviceImpl);
+                springFactoriesMap.put(provider, serviceImpl);
             }
         }
     }
 
-    private String fromInterface(Element element) {
+    private TypeElement fromInterface(Element element) {
         if (element instanceof TypeElement typeElement) {
             List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
             if (interfaces != null && interfaces.size() == 1) {
                 TypeMirror typeMirror = interfaces.get(0);
                 if (typeMirror instanceof DeclaredType declaredType) {
-                    return declaredType.asElement().toString();
+                    return (TypeElement) declaredType.asElement();
                 }
             }
         }
@@ -123,26 +125,19 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * @param fileObject 文件信息
      * @return set className
      */
-    private ListMultimap<String, String> read(FileObject fileObject) {
+    private Multimap<String, String> read(FileObject fileObject) {
         try (BufferedReader reader = bufferedReader(fileObject)) {
-            String line;
-            ListMultimap<String, String> providers = ArrayListMultimap.create();
-            String provider = null;
-            while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) {
-                    continue;
-                }
-                if (line.endsWith("=\\")) {
-                    provider = line.replaceAll("=\\\\", "");
-                    continue;
-                }
-                if (provider != null) {
-                    providers.put(provider, line.replaceAll(",\\\\", "").trim());
-                }
+            Properties properties = new Properties();
+            properties.load(reader);
+            Multimap<String, String> providers = LinkedHashMultimap.create();
+            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+                String factoryTypeName = ((String) entry.getKey()).trim();
+                String[] factoryImplementationNames = ((String) entry.getValue()).split(",");
+                providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
             }
             return providers;
         } catch (IOException e) {
-            return ArrayListMultimap.create();
+            return LinkedHashMultimap.create();
         }
     }
 
@@ -152,7 +147,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
      * @param allImportMap 供应商接口及实现类信息
      * @param fileObject   文件信息
      */
-    private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) {
+    private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) throws IOException {
         try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
                 String providerInterface = entry.getKey();
@@ -169,11 +164,10 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                     }
                     writer.newLine();
                 }
+                writer.newLine();
             }
             writer.newLine();
             writer.flush();
-        } catch (IOException ignored) {
-
         }
     }
 }

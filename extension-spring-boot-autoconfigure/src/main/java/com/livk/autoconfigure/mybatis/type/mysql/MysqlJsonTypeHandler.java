@@ -18,7 +18,7 @@
 package com.livk.autoconfigure.mybatis.type.mysql;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;

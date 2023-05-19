@@ -15,55 +15,39 @@
  *
  */
 
-package com.livk.commons.jackson;
+package com.livk.commons.jackson.util;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.bean.Wrapper;
-import lombok.SneakyThrows;
+import com.livk.commons.jackson.core.JacksonSupport;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ResolvableType;
 
-import java.io.DataInput;
-import java.io.File;
-import java.io.InputStream;
-import java.io.Reader;
-import java.lang.reflect.ParameterizedType;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Jackson一些基本序列化与反序列化
- * 自定义Mapper，请注册{@link Wrapper}到IOC
  * <p>
- * 当前类设计存在语义不清
+ * 自定义Mapper，请注册{@link Wrapper}到IOC
  * <p>
  * 请使用{@link JsonMapperUtils}
  *
- * @see com.livk.commons.jackson.support.JacksonSupport
+ * @author livk
+ * @see JacksonSupport
+ * @see TypeFactoryUtils
+ * @deprecated 当前类设计存在语义不清
  */
 @Slf4j
 @UtilityClass
 @Deprecated(forRemoval = true)
 public class JacksonUtils {
-
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = JacksonWrapper.unwrapOfContext();
-        MAPPER.registerModules(new JavaTimeModule());
-    }
 
     /**
      * 获取当前MAPPER的TypeFactory
@@ -71,7 +55,7 @@ public class JacksonUtils {
      * @return the type factory
      */
     public static TypeFactory typeFactory() {
-        return MAPPER.getTypeFactory();
+        return TypeFactoryUtils.instance();
     }
 
     /**
@@ -81,7 +65,7 @@ public class JacksonUtils {
      * @return the java type
      */
     public static JavaType javaType(Class<?> targetClass) {
-        return MAPPER.getTypeFactory().constructType(targetClass);
+        return TypeFactoryUtils.javaType(targetClass);
     }
 
     /**
@@ -92,7 +76,7 @@ public class JacksonUtils {
      * @return the java type
      */
     public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
-        return MAPPER.getTypeFactory().constructParametricType(targetClass, generics);
+        return TypeFactoryUtils.javaType(targetClass, generics);
     }
 
     /**
@@ -103,14 +87,7 @@ public class JacksonUtils {
      * @see ResolvableType
      */
     public static JavaType javaType(ResolvableType resolvableType) {
-        Class<?> rawClass = resolvableType.getRawClass();
-        if (resolvableType.getType() instanceof ParameterizedType parameterizedType) {
-            JavaType[] javaTypes = Arrays.stream(parameterizedType.getActualTypeArguments())
-                    .map(type -> javaType(ResolvableType.forType(type)))
-                    .toArray(JavaType[]::new);
-            return typeFactory().constructParametricType(rawClass, javaTypes);
-        }
-        return javaType(rawClass);
+        return TypeFactoryUtils.javaType(resolvableType);
     }
 
     /**
@@ -122,7 +99,7 @@ public class JacksonUtils {
      * @see CollectionType
      */
     public static <T> CollectionType collectionType(Class<T> targetClass) {
-        return MAPPER.getTypeFactory().constructCollectionType(Collection.class, targetClass);
+        return TypeFactoryUtils.collectionType(targetClass);
     }
 
     /**
@@ -136,7 +113,7 @@ public class JacksonUtils {
      * @see MapType
      */
     public static <K, V> MapType mapType(Class<K> keyClass, Class<V> valueClass) {
-        return MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
+        return TypeFactoryUtils.mapType(keyClass, valueClass);
     }
 
     /**
@@ -147,9 +124,9 @@ public class JacksonUtils {
      * @param type the type
      * @return the t
      */
-    @SneakyThrows
+
     public static <T> T readValue(Object obj, Class<T> type) {
-        return readValue(obj, javaType(type));
+        return JsonMapperUtils.readValue(obj, javaType(type));
     }
 
     /**
@@ -160,26 +137,9 @@ public class JacksonUtils {
      * @param type the type
      * @return the t
      */
-    @SneakyThrows
+
     public <T> T readValue(Object obj, JavaType type) {
-        if (obj instanceof JsonParser jsonParser) {
-            return MAPPER.readValue(jsonParser, type);
-        } else if (obj instanceof File file) {
-            return MAPPER.readValue(file, type);
-        } else if (obj instanceof URL url) {
-            return MAPPER.readValue(url, type);
-        } else if (obj instanceof String json) {
-            return MAPPER.readValue(json, type);
-        } else if (obj instanceof Reader reader) {
-            return MAPPER.readValue(reader, type);
-        } else if (obj instanceof InputStream inputStream) {
-            return MAPPER.readValue(inputStream, type);
-        } else if (obj instanceof byte[] bytes) {
-            return MAPPER.readValue(bytes, type);
-        } else if (obj instanceof DataInput dataInput) {
-            return MAPPER.readValue(dataInput, type);
-        }
-        return MAPPER.convertValue(obj, type);
+        return JsonMapperUtils.readValue(obj, type);
     }
 
     /**
@@ -190,9 +150,9 @@ public class JacksonUtils {
      * @param typeReference the type reference
      * @return the t
      */
-    @SneakyThrows
+
     public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
-        return readValue(obj, MAPPER.getTypeFactory().constructType(typeReference));
+        return JsonMapperUtils.readValue(obj, typeReference);
     }
 
     /**
@@ -201,12 +161,9 @@ public class JacksonUtils {
      * @param obj obj
      * @return json string
      */
-    @SneakyThrows
+
     public static String writeValueAsString(Object obj) {
-        if (obj instanceof String str) {
-            return str;
-        }
-        return MAPPER.writeValueAsString(obj);
+        return JsonMapperUtils.writeValueAsString(obj);
     }
 
     /**
@@ -215,12 +172,9 @@ public class JacksonUtils {
      * @param obj the obj
      * @return the byte [ ]
      */
-    @SneakyThrows
+
     public static byte[] writeValueAsBytes(Object obj) {
-        if (obj instanceof String str) {
-            return str.getBytes();
-        }
-        return MAPPER.writeValueAsBytes(obj);
+        return JsonMapperUtils.writeValueAsBytes(obj);
     }
 
     /**
@@ -233,10 +187,9 @@ public class JacksonUtils {
      * @param clazz 类型
      * @return the list
      */
-    @SneakyThrows
+
     public static <T> List<T> readValueList(Object obj, Class<T> clazz) {
-        CollectionType collectionType = collectionType(clazz);
-        return readValue(obj, collectionType);
+        return JsonMapperUtils.readValueList(obj, clazz);
     }
 
     /**
@@ -251,10 +204,9 @@ public class JacksonUtils {
      * @param valueClass V Class
      * @return the map
      */
-    @SneakyThrows
+
     public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = mapType(keyClass, valueClass);
-        return readValue(obj, mapType);
+        return JsonMapperUtils.readValueMap(obj, keyClass, valueClass);
     }
 
     /**
@@ -263,24 +215,9 @@ public class JacksonUtils {
      * @param obj the obj
      * @return the json node
      */
-    @SneakyThrows
+
     public JsonNode readTree(Object obj) {
-        if (obj instanceof JsonParser jsonParser) {
-            return MAPPER.readTree(jsonParser);
-        } else if (obj instanceof File file) {
-            return MAPPER.readTree(file);
-        } else if (obj instanceof URL url) {
-            return MAPPER.readTree(url);
-        } else if (obj instanceof String json) {
-            return MAPPER.readTree(json);
-        } else if (obj instanceof Reader reader) {
-            return MAPPER.readTree(reader);
-        } else if (obj instanceof InputStream inputStream) {
-            return MAPPER.readTree(inputStream);
-        } else if (obj instanceof byte[] bytes) {
-            return MAPPER.readTree(bytes);
-        }
-        return null;
+        return JsonMapperUtils.readTree(obj);
     }
 
     /**
@@ -292,7 +229,7 @@ public class JacksonUtils {
      * @return the object
      */
     public static <T> T convertValue(Object fromValue, Class<T> type) {
-        return MAPPER.convertValue(fromValue, type);
+        return JsonMapperUtils.convertValue(fromValue, type);
     }
 
     /**
@@ -304,7 +241,7 @@ public class JacksonUtils {
      * @return the t
      */
     public static <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
-        return MAPPER.convertValue(fromValue, typeReference);
+        return JsonMapperUtils.convertValue(fromValue, typeReference);
     }
 
     /**
@@ -316,7 +253,7 @@ public class JacksonUtils {
      * @return the object
      */
     public static <T> T convertValue(Object fromValue, JavaType javaType) {
-        return MAPPER.convertValue(fromValue, javaType);
+        return JsonMapperUtils.convertValue(fromValue, javaType);
     }
 
     /**
@@ -330,7 +267,6 @@ public class JacksonUtils {
      * @return the map
      */
     public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = mapType(keyClass, valueClass);
-        return MAPPER.convertValue(fromValue, mapType);
+        return JsonMapperUtils.convertValueMap(fromValue, keyClass, valueClass);
     }
 }

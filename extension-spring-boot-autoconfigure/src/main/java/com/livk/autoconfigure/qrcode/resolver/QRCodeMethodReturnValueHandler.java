@@ -20,7 +20,7 @@ package com.livk.autoconfigure.qrcode.resolver;
 import com.livk.autoconfigure.qrcode.annotation.QRCode;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

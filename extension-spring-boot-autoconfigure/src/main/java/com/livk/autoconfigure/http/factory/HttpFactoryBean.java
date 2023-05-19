@@ -17,10 +17,14 @@
 
 package com.livk.autoconfigure.http.factory;
 
+import com.livk.commons.bean.util.ClassUtils;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+
+import java.util.Objects;
 
 /**
  * <p>
@@ -32,18 +36,23 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Setter
 public class HttpFactoryBean implements FactoryBean<Object> {
 
-    private Class<?> httpInterfaceType;
+    private String httpInterfaceTypeName;
 
     private BeanFactory beanFactory;
+
+    private ResourceLoader resourceLoader;
 
     @Override
     public Object getObject() {
         HttpServiceProxyFactory proxyFactory = beanFactory.getBean(HttpServiceProxyFactory.class);
-        return proxyFactory.createClient(httpInterfaceType);
+        return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
     }
 
     @Override
     public Class<?> getObjectType() {
-        return httpInterfaceType;
+        if (resourceLoader == null) {
+            return null;
+        }
+        return ClassUtils.resolveClassName(httpInterfaceTypeName, resourceLoader.getClassLoader());
     }
 }

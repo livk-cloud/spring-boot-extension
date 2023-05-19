@@ -18,7 +18,7 @@
 package com.livk.redisearch.webflux;
 
 import com.livk.commons.function.FieldFunc;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.RedisModulesClient;

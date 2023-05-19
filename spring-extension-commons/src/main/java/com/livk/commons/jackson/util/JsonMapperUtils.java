@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.jackson;
+package com.livk.commons.jackson.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -23,8 +23,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.livk.commons.jackson.support.JacksonFormat;
-import com.livk.commons.jackson.support.JacksonSupport;
+import com.livk.commons.jackson.core.JacksonOperations;
+import com.livk.commons.jackson.core.JacksonSupport;
 import com.livk.commons.jackson.support.MapperFactory;
 import lombok.experimental.UtilityClass;
 
@@ -39,11 +39,11 @@ import java.util.Map;
 @UtilityClass
 public class JsonMapperUtils {
 
-    private static final JacksonSupport<JsonMapper> JSON;
+    private static final JacksonOperations JSON;
 
 
     static {
-        JsonMapper.Builder builder = MapperFactory.builder(JacksonFormat.JSON);
+        JsonMapper.Builder builder = MapperFactory.builder(MapperFactory.JSON);
         JSON = JacksonSupport.create(builder);
     }
 
@@ -114,7 +114,7 @@ public class JsonMapperUtils {
      * @return the list
      */
     public static <T> List<T> readValueList(Object obj, Class<T> type) {
-        CollectionType collectionType = JacksonSupport.collectionType(type);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(type);
         return JSON.readValue(obj, collectionType);
     }
 
@@ -131,7 +131,7 @@ public class JsonMapperUtils {
      * @return the map
      */
     public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = JacksonSupport.mapType(keyClass, valueClass);
+        MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
         return JSON.readValue(obj, mapType);
     }
 
@@ -190,7 +190,7 @@ public class JsonMapperUtils {
      * @return the list
      */
     public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
-        CollectionType collectionType = JacksonSupport.collectionType(type);
+        CollectionType collectionType = TypeFactoryUtils.collectionType(type);
         return JSON.convertValue(fromValue, collectionType);
     }
 
@@ -205,7 +205,7 @@ public class JsonMapperUtils {
      * @return the map
      */
     public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = JacksonSupport.mapType(keyClass, valueClass);
+        MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
         return JSON.convertValue(fromValue, mapType);
     }
 }

@@ -18,10 +18,11 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.auto.service.util.ElementUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -55,7 +56,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
     private static final String LOCATION = "META-INF/spring/%s.imports";
 
-    private final ListMultimap<String, String> importsMap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
+    private final SetMultimap<String, String> importsMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
     @Override
     protected Set<Class<?>> getSupportedAnnotation() {
@@ -85,11 +86,14 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
     protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
         for (Element element : elements) {
-            Optional<String> value = super.getAnnotationMirrorAttributes(element, SUPPORT_CLASS, "value");
-            String provider = super.transform(value.orElse(AUTOCONFIGURATION));
-            String serviceImpl = super.transform(element.toString());
-            super.factoriesAdd(importsMap, provider, serviceImpl);
+            Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+            String provider = ElementUtils.getBinaryName(value.orElse(AutoConfigurationElement()));
+            importsMap.put(provider, ElementUtils.getBinaryName((TypeElement) element));
         }
+    }
+
+    private TypeElement AutoConfigurationElement() {
+        return elements.getTypeElement(AUTOCONFIGURATION);
     }
 
     /**
@@ -114,15 +118,13 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
      * @param services   实现类信息
      * @param fileObject 文件信息
      */
-    private void writeFile(Collection<String> services, FileObject fileObject) {
+    private void writeFile(Collection<String> services, FileObject fileObject) throws IOException {
         try (BufferedWriter writer = bufferedWriter(fileObject)) {
             for (String service : services) {
                 writer.write(service);
                 writer.newLine();
             }
             writer.flush();
-        } catch (IOException ignored) {
-
         }
     }
 }

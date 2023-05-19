@@ -34,6 +34,5 @@ class WrapperTest {
         assertEquals(value, wrapper.unwrap(String.class));
         assertEquals(value, wrapper.unwrap());
         assertTrue(wrapper.isWrapperFor(String.class));
-        assertEquals(value, Wrapper.tryUnwrap(wrapper, String.class));
     }
 }

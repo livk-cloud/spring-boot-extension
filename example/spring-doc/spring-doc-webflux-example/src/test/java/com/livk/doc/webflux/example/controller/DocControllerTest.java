@@ -18,7 +18,7 @@
 package com.livk.doc.webflux.example.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.JsonNodeUtils;
+import com.livk.commons.jackson.util.JsonNodeUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;

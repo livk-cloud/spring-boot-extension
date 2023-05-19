@@ -19,8 +19,12 @@ package com.livk.commons.spring.context;
 
 import lombok.Setter;
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.Ordered;
@@ -35,20 +39,24 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
+ * 导入普通的{@link Configuration}或者一些需要加入IOC的组件
  * <p>
- * AbstractImportSelector
- * </p>
+ * 无法识别 {@link AutoConfigureAfter}和{@link AutoConfigureBefore}
+ * <p>
+ * 同时{@link AutoConfiguration}中仅仅识别{@link Configuration}
  *
- * @param <T> the type parameter
+ * @param <A> 注解泛型
  * @author livk
+ * @see SpringAbstractImportSelector
+ * @see DeferredImportSelector
  */
-public abstract class AbstractImportSelector<T extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
+public abstract class AbstractImportSelector<A extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
     /**
      * The Annotation class.
      */
     @SuppressWarnings("unchecked")
-    protected final Class<T> annotationClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
+    protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
     /**
      * The Environment.

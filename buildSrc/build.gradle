@@ -8,12 +8,8 @@ repositories {
     maven { url "https://maven.aliyun.com/repository/public" }
 }
 
-ext {
-    bootVersion = libs.versions.springBoot.get()
-}
-
 dependencies {
-    implementation "org.springframework.boot:spring-boot-gradle-plugin:$bootVersion"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:${libs.versions.spring.boot.get()}"
 }
 
 gradlePlugin {

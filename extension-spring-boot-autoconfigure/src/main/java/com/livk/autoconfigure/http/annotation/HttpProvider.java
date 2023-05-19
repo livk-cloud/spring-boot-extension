@@ -27,54 +27,68 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * {@link HttpExchange}的变体，将会被Spring加入Context
  * <p>
- * Provider
- * </p>
+ * 与{@link HttpExchange}共同使用会出现不可预知的错误
  *
  * @author livk
+ * @see HttpExchange
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 @HttpExchange
-public @interface Provider {
+public @interface HttpProvider {
 
     /**
-     * Value string.
+     * The value may indicate a suggestion for a logical component name,
+     * to be turned into a Spring bean in case of an autodetected component.
      *
-     * @return the string
+     * @return the suggested component name, if any (or empty String otherwise)
      */
     @AliasFor(annotation = Component.class, attribute = "value")
     String value() default "";
 
     /**
-     * Url string.
+     * The URL for the request, either a full URL or a path only that is relative
+     * to a URL declared in a type-level {@code @HttpExchange}, and/or a globally
+     * configured base URL.
+     * <p>By default, this is empty.
      *
-     * @return the string
+     * @return http url
      */
     @AliasFor(annotation = HttpExchange.class, attribute = "url")
     String url() default "";
 
     /**
-     * Method string.
+     * The HTTP method to use.
+     * <p>Supported at the type level as well as at the method level.
+     * When used at the type level, all method-level mappings inherit this value.
+     * <p>By default, this is empty.
      *
-     * @return the string
+     * @return http method
      */
     @AliasFor(annotation = HttpExchange.class, attribute = "method")
     String method() default "";
 
     /**
-     * Content type string.
+     * The media type for the {@code "Content-Type"} header.
+     * <p>Supported at the type level as well as at the method level, in which
+     * case the method-level values override type-level values.
+     * <p>By default, this is empty.
      *
-     * @return the string
+     * @return http contentType
      */
     @AliasFor(annotation = HttpExchange.class, attribute = "contentType")
     String contentType() default "";
 
     /**
-     * Accept string [ ].
+     * The media types for the {@code "Accept"} header.
+     * <p>Supported at the type level as well as at the method level, in which
+     * case the method-level values override type-level values.
+     * <p>By default, this is empty.
      *
-     * @return the string [ ]
+     * @return http accept
      */
     @AliasFor(annotation = HttpExchange.class, attribute = "accept")
     String[] accept() default {};

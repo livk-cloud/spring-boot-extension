@@ -18,7 +18,7 @@
 package com.livk.commons.bean.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.livk.commons.jackson.JsonMapperUtils;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 
