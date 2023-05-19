@@ -16,7 +16,6 @@ dependencies {
         api libs.bundles.redisson.all
         api libs.bundles.clickhouse.all
         api libs.bundles.mapstruct.all
-        api libs.oauth2.authorization.server
         api libs.guava
         api libs.easyexcel
         api libs.java.webSocket
