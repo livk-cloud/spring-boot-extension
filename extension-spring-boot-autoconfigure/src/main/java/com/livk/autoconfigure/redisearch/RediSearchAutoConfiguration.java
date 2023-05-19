@@ -77,7 +77,7 @@ public class RediSearchAutoConfiguration {
         if (timeout != null) {
             redisURI.setTimeout(timeout);
         }
-        redisURI.setSsl(properties.isSsl());
+        redisURI.setSsl(properties.getSsl().isEnabled());
         redisURI.setClientName(properties.getClientName());
         return RedisModulesClient.create(clientResources, redisURI);
     }

@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,28 +61,19 @@ public class WebSecurityConfig {
         tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
         TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManager);
-        return http.csrf()
-                .disable()
+        return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager)
-                .authorizeHttpRequests()
-                .requestMatchers("/user/query")
-                .hasAnyRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
+                .authorizeHttpRequests(registry -> registry.requestMatchers("/user/query")
+                        .hasAnyRole("ADMIN")
+                        .anyRequest()
+                        .authenticated())
                 .addFilterBefore(tokenLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(tokenVerifyFilter, BasicAuthenticationFilter.class)
-                .exceptionHandling()
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and()
-                .logout()
-                .logoutUrl("/oauth2/logout")
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler())
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .exceptionHandling(configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+                .logout(configurer -> configurer.logoutUrl("/oauth2/logout")
+                        .logoutSuccessHandler(new CustomLogoutSuccessHandler()))
+                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 

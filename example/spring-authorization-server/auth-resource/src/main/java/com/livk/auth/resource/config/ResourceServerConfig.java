@@ -17,6 +17,7 @@
 package com.livk.auth.resource.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,19 +29,20 @@ import org.springframework.security.web.SecurityFilterChain;
  * @since 0.0.1
  */
 @EnableWebSecurity
+@Configuration
 public class ResourceServerConfig {
 
     // @formatter:off
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/resource-livk/**")
-                .authorizeHttpRequests()
-                .requestMatchers("/resource-livk/**")
-                .access((authentication, object) -> new AuthorizationDecision(authentication.get().getAuthorities().contains((GrantedAuthority) () -> "livk.read")))
-                .and()
-                .oauth2ResourceServer()
-                .jwt();
-        return http.build();
+        return http.securityMatcher("/resource-livk/**")
+                                .authorizeHttpRequests(registry->
+                                        registry.requestMatchers("/resource-livk/**")
+                                        .access((authentication, object) -> new AuthorizationDecision(authentication.get().getAuthorities().contains((GrantedAuthority) () -> "livk.read"))))
+                .oauth2ResourceServer(configurer-> configurer.jwt(jwtConfigurer-> {
+
+        })).build();
+
     }
     // @formatter:on
 

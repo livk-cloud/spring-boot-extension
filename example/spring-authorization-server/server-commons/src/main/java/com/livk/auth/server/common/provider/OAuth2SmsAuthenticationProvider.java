@@ -54,7 +54,7 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
 
     @Override
     protected void checkClient(@NonNull RegisteredClient registeredClient) {
-        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.AUTHORIZATION_GRANT_TYPE_SMS)) {
+        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.GRANT_TYPE_SMS)) {
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
     }

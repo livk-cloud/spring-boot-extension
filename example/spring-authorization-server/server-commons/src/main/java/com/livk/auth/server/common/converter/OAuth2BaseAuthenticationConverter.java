@@ -21,7 +21,7 @@ package com.livk.auth.server.common.converter;
 import com.google.common.collect.Sets;
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.collect.util.StreamUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +30,7 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.util.MultiValueMap;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -48,21 +48,8 @@ import java.util.stream.Collectors;
  */
 public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthenticationToken> extends AuthenticationConverter {
 
-    /**
-     * 是否支持此convert
-     *
-     * @param grantType 授权类型
-     */
-    boolean support(String grantType);
+    RequestMatcher support();
 
-    /**
-     * 校验参数
-     *
-     * @param request 请求
-     */
-    default void checkParams(HttpServletRequest request) {
-
-    }
 
     /**
      * 构建具体类型的token
@@ -71,17 +58,12 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 
     @Override
     default Authentication convert(HttpServletRequest request) {
-
-        // grant_type (REQUIRED)
-        String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
-        if (!support(grantType)) {
+        if (!support().matches(request)) {
             return null;
         }
 
-        MultiValueMap<String, String> parameters = WebUtils.params(request);
-        // scope (OPTIONAL)
-        String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
-        if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
+        String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
+        if (StringUtils.hasText(scope) && request.getParameterValues(OAuth2ParameterNames.SCOPE).length != 1) {
             throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
         }
 
@@ -90,20 +72,16 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
             requestedScopes = Sets.newHashSet(StringUtils.delimitedListToStringArray(scope, " "));
         }
 
-        // 校验个性化参数
-        checkParams(request);
-
         // 获取当前已经认证的客户端信息
         Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
         Optional.ofNullable(clientPrincipal).orElseThrow(() ->
                 new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
         // 扩展信息
-        Map<String, Object> additionalParameters = parameters.keySet()
-                .stream()
+        Map<String, Object> additionalParameters = StreamUtils.convert(request.getParameterNames())
                 .filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE).negate()
                         .and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))
-                .collect(Collectors.toMap(Function.identity(), key -> parameters.get(key).get(0)));
+                .collect(Collectors.toMap(Function.identity(), request::getParameter));
 
         // 创建token
         return buildToken(clientPrincipal, requestedScopes, additionalParameters);

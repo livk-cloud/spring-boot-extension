@@ -77,19 +77,6 @@ public class AuthorizationServerConfiguration {
                                                                       UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer.tokenEndpoint(
-                        (tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
-                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                                .errorResponseHandler(new AuthenticationFailureEventHandler())
-                )
-                .authorizationEndpoint(authorizationEndpoint ->
-                        authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
-
-        http.apply(configurer);
-
-        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-        HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
-
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
         OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
@@ -98,17 +85,31 @@ public class AuthorizationServerConfiguration {
         OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
                 authenticationManager, authorizationService, oAuth2TokenGenerator);
 
+        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer
+                .tokenEndpoint(
+                        (tokenEndpoint) -> tokenEndpoint
+                                .accessTokenRequestConverter(accessTokenRequestConverter())
+                                .authenticationProvider(passwordAuthenticationProvider)
+                                .authenticationProvider(smsAuthenticationProvider)
+                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+                                .errorResponseHandler(new AuthenticationFailureEventHandler())
+                )
+                .authorizationEndpoint(authorizationEndpoint ->
+                        authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
+
+        http.apply(configurer);
+        http.apply(configurer.authorizationService(authorizationService));
+        http.apply(new FormIdentityLoginConfigurer());
+
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+        HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
+
         return http.securityMatcher(endpointsMatcher)
                 .authenticationManager(authenticationManager)
-                .securityContext().securityContextRepository(httpSessionSecurityContextRepository).and()
-                .authorizeHttpRequests().requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().and()
-                .authorizeHttpRequests().anyRequest().authenticated().and()
-                .csrf().ignoringRequestMatchers(endpointsMatcher).and()
-                .apply(configurer.authorizationService(authorizationService)).and()
-                .apply(new FormIdentityLoginConfigurer()).and()
+                .securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
+                .authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
+                .csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
                 .authenticationProvider(userDetailsAuthenticationProvider)
-                .authenticationProvider(passwordAuthenticationProvider)
-                .authenticationProvider(smsAuthenticationProvider)
                 .build();
     }
 

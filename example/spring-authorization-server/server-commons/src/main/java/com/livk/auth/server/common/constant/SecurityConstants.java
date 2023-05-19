@@ -34,10 +34,10 @@ public interface SecurityConstants {
      */
     String SMS = "sms";
 
-    AuthorizationGrantType AUTHORIZATION_GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
+    AuthorizationGrantType GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
     String PASSWORD = "password";
 
-    AuthorizationGrantType AUTHORIZATION_GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
+    AuthorizationGrantType GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
 
 
     /**
