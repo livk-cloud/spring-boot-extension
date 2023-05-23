@@ -17,9 +17,9 @@
 
 package com.livk.commons.spring.util;
 
+import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.commons.spring.context.AnnotationMetadataResolver;
 import com.livk.commons.spring.env.SpringEnvBinder;
-import com.livk.commons.spring.spel.SpringExpressionResolver;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;

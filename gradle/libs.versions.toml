@@ -31,6 +31,7 @@ minio = "8.5.2"
 dnsjava = "3.5.2"
 snakeyaml = "2.0"
 aliyun-oss = "3.16.3"
+aviator = "5.3.3"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -69,6 +70,7 @@ minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
+aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]

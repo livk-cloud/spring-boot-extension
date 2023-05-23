@@ -19,7 +19,7 @@ package com.livk.caffeine.aspect;
 
 import com.livk.caffeine.annotation.DoubleCache;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
-import com.livk.commons.spring.spel.SpringExpressionResolver;
+import com.livk.commons.expression.spring.SpringExpressionResolver;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

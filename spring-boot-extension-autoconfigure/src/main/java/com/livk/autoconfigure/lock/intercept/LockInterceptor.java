@@ -23,7 +23,7 @@ import com.livk.autoconfigure.lock.exception.LockException;
 import com.livk.autoconfigure.lock.exception.UnSupportLockException;
 import com.livk.autoconfigure.lock.support.DistributedLock;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
-import com.livk.commons.spring.spel.SpringExpressionResolver;
+import com.livk.commons.expression.spring.SpringExpressionResolver;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.ObjectProvider;

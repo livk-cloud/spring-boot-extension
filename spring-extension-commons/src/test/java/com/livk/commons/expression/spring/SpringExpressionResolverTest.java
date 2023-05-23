@@ -15,8 +15,9 @@
  *
  */
 
-package com.livk.commons.spring.spel;
+package com.livk.commons.expression.spring;
 
+import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.spring.context.SpringContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author livk
  */
 @SpringBootTest("spring.application.root.name=livk")
-class ExpressionResolverTest {
+class SpringExpressionResolverTest {
 
     private final static Object[] args = new Object[]{"livk"};
     private final static Map<String, String> map = Map.of("username", "livk");
@@ -40,7 +41,7 @@ class ExpressionResolverTest {
     final String springContextHolderName = SpringContextHolder.class.getName();
     private final Method method = this.getClass().getDeclaredMethod("parseMethod", String.class);
 
-    ExpressionResolverTest() throws NoSuchMethodException {
+    SpringExpressionResolverTest() throws NoSuchMethodException {
     }
 
     @Test
