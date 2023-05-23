@@ -15,34 +15,29 @@
  *
  */
 
-package com.livk.commons.spring.spel;
+package com.livk.commons.expression.spring;
 
-import lombok.Setter;
-import org.springframework.core.env.Environment;
-import org.springframework.expression.*;
+import com.livk.commons.expression.CacheExpressionResolver;
+import com.livk.commons.expression.ExpressionResolver;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.ParserContext;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.util.StringUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The type Spring expression resolver.
+ * 使用Spring EL实现的表达式解析器
  *
  * @author livk
+ * @see SpelExpressionParser
  */
-public class SpringExpressionResolver implements ExpressionResolver {
+public class SpringExpressionResolver extends CacheExpressionResolver<Expression> implements ExpressionResolver {
 
     private final ExpressionParser expressionParser;
 
-    private final Map<String, Expression> expressionCache = new ConcurrentHashMap<>(256);
-
     private final ParserContext beanExpressionParserContext = new TemplateParserContext();
-
-    @Setter
-    private Environment environment;
 
     /**
      * Instantiates a new Spring expression resolver.
@@ -61,27 +56,17 @@ public class SpringExpressionResolver implements ExpressionResolver {
     }
 
     @Override
-    public <T> T evaluate(String value, EvaluationContext context, Class<T> returnType) {
-        if (!StringUtils.hasLength(value)) {
-            return null;
-        }
-        try {
-            value = wrapIfNecessary(value);
-            if (environment != null) {
-                value = environment.resolvePlaceholders(value);
-            }
-            Expression expression = this.expressionCache.get(value);
-            if (expression == null) {
-                expression = this.expressionParser.parseExpression(value, this.beanExpressionParserContext);
-                this.expressionCache.put(value, expression);
-            }
-            return expression.getValue(context, returnType);
-        } catch (Throwable ex) {
-            throw new ExpressionException("Expression parsing failed", ex);
-        }
+    protected Expression compile(String value) {
+        return this.expressionParser.parseExpression(value, this.beanExpressionParserContext);
     }
 
-    private String wrapIfNecessary(String expression) {
+    @Override
+    protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
+        return expression.getValue(context, returnType);
+    }
+
+    @Override
+    protected String wrapIfNecessary(String expression) {
         if (!expression.contains("#")) {
             return expression;
         }

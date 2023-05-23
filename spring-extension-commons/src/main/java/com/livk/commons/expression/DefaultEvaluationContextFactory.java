@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.spring.spel;
+package com.livk.commons.expression;
 
 import org.springframework.context.expression.BeanExpressionContextAccessor;
 import org.springframework.context.expression.BeanFactoryAccessor;
@@ -35,9 +35,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The type Default evaluation context factory.
+ * EvaluationContextFactory默认实现
+ * <p>
+ * {@link StandardReflectionParameterNameDiscoverer}解析Method需添加编译参数
  *
  * @author livk
+ * @see StandardReflectionParameterNameDiscoverer
  */
 class DefaultEvaluationContextFactory implements EvaluationContextFactory {
 

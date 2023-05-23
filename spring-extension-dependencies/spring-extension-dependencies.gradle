@@ -36,6 +36,7 @@ dependencies {
         api libs.dnsjava
         api libs.snakeyaml
         api libs.aliyun.oss
+        api libs.aviator
         api(project(":spring-extension-commons"))
         api(project(":spring-auto-service"))
         api(project(":spring-boot-extension-autoconfigure"))

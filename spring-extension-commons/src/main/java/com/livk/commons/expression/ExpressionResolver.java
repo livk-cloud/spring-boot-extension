@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.spring.spel;
+package com.livk.commons.expression;
 
 import org.springframework.expression.EvaluationContext;
 
@@ -23,32 +23,34 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * The interface Expression resolver.
+ * 表达式通用解析器
  *
  * @author livk
+ * @see EvaluationContext
+ * @see EvaluationContextFactory
  */
 public interface ExpressionResolver {
 
     /**
-     * Evaluate t.
+     * 将表达式解析，并转成相对应的类型
      *
-     * @param <T>        the type parameter
-     * @param value      the value
-     * @param context    the context
-     * @param returnType the return type
-     * @return the t
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param context    解析上下文
+     * @param returnType 返回类型
+     * @return T
      */
     <T> T evaluate(String value, EvaluationContext context, Class<T> returnType);
 
     /**
-     * Evaluate t.
+     * 根据Method将表达式解析，并转成相对应的类型
      *
-     * @param <T>        the type parameter
-     * @param value      the value
-     * @param method     the method
-     * @param args       the args
-     * @param returnType the return type
-     * @return the t
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param method     method
+     * @param args       args
+     * @param returnType 返回类型
+     * @return T
      */
     default <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType) {
         EvaluationContext evaluationContext = contextFactory().eval(method, args);
@@ -56,25 +58,25 @@ public interface ExpressionResolver {
     }
 
     /**
-     * Evaluate string.
+     * 根据Method将表达式解析，并转成String
      *
-     * @param value  the value
-     * @param method the method
-     * @param args   the args
-     * @return the string
+     * @param value  表达式
+     * @param method method
+     * @param args   args
+     * @return string
      */
     default String evaluate(String value, Method method, Object[] args) {
         return evaluate(value, method, args, String.class);
     }
 
     /**
-     * Evaluate t.
+     * 根据Map环境信息将表达式解析，并转成相应的类型
      *
-     * @param <T>        the type parameter
-     * @param value      the value
-     * @param expandMap  the expand map
-     * @param returnType the return type
-     * @return the t
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param expandMap  解析上下文环境数据
+     * @param returnType 返回类型
+     * @return T
      */
     default <T> T evaluate(String value, Map<String, ?> expandMap, Class<T> returnType) {
         EvaluationContext evaluationContext = contextFactory().eval(expandMap);
@@ -82,26 +84,26 @@ public interface ExpressionResolver {
     }
 
     /**
-     * Evaluate string.
+     * 根据Map环境信息将表达式解析，并转成String
      *
-     * @param value     the value
-     * @param expandMap the expand map
-     * @return the string
+     * @param value     表达式
+     * @param expandMap 解析上下文环境数据
+     * @return string
      */
     default String evaluate(String value, Map<String, ?> expandMap) {
         return evaluate(value, expandMap, String.class);
     }
 
     /**
-     * Evaluate t.
+     * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
      *
-     * @param <T>        the type parameter
-     * @param value      the value
-     * @param method     the method
-     * @param args       the args
-     * @param expandMap  the expand map
-     * @param returnType the return type
-     * @return the t
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param method     method
+     * @param args       args
+     * @param expandMap  解析上下文环境数据
+     * @param returnType 返回类型
+     * @return T
      */
     default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap, Class<T> returnType) {
         EvaluationContext evaluationContext = contextFactory().eval(method, args, expandMap);
@@ -109,22 +111,24 @@ public interface ExpressionResolver {
     }
 
     /**
-     * Evaluate string.
+     * 根据Method和Map环境信息将表达式解析，并转成String
      *
-     * @param value     the value
-     * @param method    the method
-     * @param args      the args
-     * @param expandMap the expand map
-     * @return the string
+     * @param value     表达式
+     * @param method    method
+     * @param args      args
+     * @param expandMap 解析上下文环境数据
+     * @return string
      */
     default String evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap) {
         return evaluate(value, method, args, expandMap, String.class);
     }
 
     /**
-     * Context factory evaluation context factory.
+     * 提供相应的EvaluationContextFactory
+     * <p>
+     * 重写此方法提供解析工厂的替换
      *
-     * @return the evaluation context factory
+     * @return EvaluationContextFactory
      */
     default EvaluationContextFactory contextFactory() {
         return EvaluationContextFactory.INSTANCE;

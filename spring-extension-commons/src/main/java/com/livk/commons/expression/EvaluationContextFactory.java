@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.spring.spel;
+package com.livk.commons.expression;
 
 import org.springframework.expression.EvaluationContext;
 
@@ -23,45 +23,47 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * The interface Evaluation context factory.
+ * EvaluationContext构建工厂
  *
  * @author livk
+ * @see EvaluationContext
+ * @see org.springframework.expression.spel.support.StandardEvaluationContext
  */
 public interface EvaluationContextFactory {
 
     /**
-     * The constant INSTANCE.
+     * 提供默认实例
      */
     EvaluationContextFactory INSTANCE = new DefaultEvaluationContextFactory();
 
     /**
-     * Eval evaluation context.
+     * 将Method与对应参数解析成EvaluationContext
      *
-     * @param method the method
-     * @param args   the args
-     * @return the evaluation context
+     * @param method method
+     * @param args   args
+     * @return EvaluationContext
      */
     default EvaluationContext eval(Method method, Object[] args) {
         return eval(method, args, Map.of());
     }
 
     /**
-     * Eval evaluation context.
+     * 将Map解析成EvaluationContext
      *
-     * @param expandMap the expand map
-     * @return the evaluation context
+     * @param expandMap 环境参数
+     * @return EvaluationContext
      */
     default EvaluationContext eval(Map<String, ?> expandMap) {
         return eval(null, null, expandMap);
     }
 
     /**
-     * Eval evaluation context.
+     * 将Method与对应参数、Map解析成EvaluationContext
      *
-     * @param method    the method
-     * @param args      the args
-     * @param expandMap the expand map
-     * @return the evaluation context
+     * @param method    method
+     * @param args      args
+     * @param expandMap 环境参数
+     * @return EvaluationContext
      */
     EvaluationContext eval(Method method, Object[] args, Map<String, ?> expandMap);
 }

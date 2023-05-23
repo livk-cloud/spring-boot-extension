@@ -22,6 +22,7 @@ dependencies {
     optional "com.github.pagehelper:pagehelper"
     optional "jakarta.servlet:jakarta.servlet-api"
     optional "com.squareup.okhttp3:okhttp"
+    api "com.googlecode.aviator:aviator"
     api "org.springframework:spring-core"
     api "com.fasterxml.jackson.core:jackson-databind"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
