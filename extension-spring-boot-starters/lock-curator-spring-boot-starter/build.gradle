@@ -1,6 +1,0 @@
-description "lock curator spring boot starter"
-
-dependencies {
-    api project(":extension-spring-boot-starters:lock-local-spring-boot-starter")
-    api project(":extension-spring-boot-starters:curator-spring-boot-starter")
-}

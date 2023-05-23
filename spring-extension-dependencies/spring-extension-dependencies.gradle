@@ -38,8 +38,8 @@ dependencies {
         api libs.aliyun.oss
         api(project(":spring-extension-commons"))
         api(project(":spring-auto-service"))
-        api(project(":extension-spring-boot-autoconfigure"))
-        project(":extension-spring-boot-starters").subprojects {
+        api(project(":spring-boot-extension-autoconfigure"))
+        project(":spring-boot-extension-starters").subprojects {
             api(it)
         }
     }

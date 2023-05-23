@@ -1,6 +1,0 @@
-description "lock redis spring boot starter"
-
-dependencies {
-    api project(":extension-spring-boot-starters:lock-local-spring-boot-starter")
-    api project(":extension-spring-boot-starters:redisson-spring-boot-starter")
-}

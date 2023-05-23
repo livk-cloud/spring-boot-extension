@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(":extension-spring-boot-starters:lock-local-spring-boot-starter")
+    implementation project(":spring-boot-extension-starters:lock-local-spring-boot-starter")
     implementation "org.springframework.boot:spring-boot-starter-web"
 }

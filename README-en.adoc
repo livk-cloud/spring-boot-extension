@@ -29,7 +29,7 @@ Please raise an issue if necessary +
     |--buildSrc(Gradle custom plugin)
     |--example
     |--extension-spring-boot-autoconfigure(Spring boot automatic assembly)
-    |--extension-spring-boot-starters(starter bundle)
+    |--spring-boot-extension-starters(starter bundle)
     |--gradle/libs.versions.toml(gradle Catalog dependency management)
     |--spring-auto-service(SpringBoot automatic assembly file generator)
     |--spring-extension-commons(General Basic Toolkit)

@@ -10,13 +10,13 @@ asciidoctor {
         include "index.adoc"
     }
     outputDir file("./docs")
-    dependsOn(":extension-spring-boot-autoconfigure:asciidoctor")
+    dependsOn(":spring-boot-extension-autoconfigure:asciidoctor")
     dependsOn(":spring-auto-service:asciidoctor")
     dependsOn(":spring-extension-commons:asciidoctor")
 }
 
 ext {
-    root = Set.of(project(":extension-spring-boot-starters"))
+    root = Set.of(project(":spring-boot-extension-starters"))
     bom = Set.of(project(":spring-extension-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - (bom + root))
 }

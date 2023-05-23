@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api project(":extension-spring-boot-starters:redis-spring-boot-starter")
+    api project(":spring-boot-extension-starters:redis-spring-boot-starter")
     api "com.fasterxml.jackson.core:jackson-databind"
     api "org.apache.commons:commons-pool2"
 }

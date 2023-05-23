@@ -5,5 +5,5 @@ plugins {
 dependencies {
     implementation project(":example:spring-redis:redis-commons")
     implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation project(":extension-spring-boot-starters:redisearch-spring-boot-starter")
+    implementation project(":spring-boot-extension-starters:redisearch-spring-boot-starter")
 }

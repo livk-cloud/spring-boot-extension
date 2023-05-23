@@ -8,7 +8,7 @@ subprojects {
     apply plugin: "com.livk.mvn.deployed"
 
     dependencies {
-        api project(":extension-spring-boot-autoconfigure")
+        api project(":spring-boot-extension-autoconfigure")
         api "org.springframework.boot:spring-boot-starter"
     }
 }
