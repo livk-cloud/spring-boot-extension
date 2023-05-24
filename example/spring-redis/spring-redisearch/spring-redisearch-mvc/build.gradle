@@ -1,9 +1,0 @@
-plugins {
-    id "com.livk.service"
-}
-
-dependencies {
-    implementation project(":example:spring-redis:redis-commons")
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation project(":spring-boot-extension-starters:redisearch-spring-boot-starter")
-}
