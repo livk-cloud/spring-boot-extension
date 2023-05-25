@@ -20,9 +20,14 @@ package com.livk.commons.bean.util;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.util.ReflectionUtils;
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
+import java.beans.PropertyDescriptor;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -90,5 +95,26 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         }
         return ObjectUtils.anyChecked(field -> ReflectionUtils.getDeclaredFieldValue(field, source) == null,
                 source.getClass().getDeclaredFields());
+    }
+
+    /**
+     * 使用BeanWrapper将Bean转成Map
+     *
+     * @param source bean
+     * @return Map
+     * @see BeanWrapper
+     */
+    public static Map<String, Object> convert(Object source) {
+        BeanWrapper beanWrapper = new BeanWrapperImpl(source);
+        PropertyDescriptor[] descriptors = beanWrapper.getPropertyDescriptors();
+        Map<String, Object> map = new HashMap<>();
+        for (PropertyDescriptor descriptor : descriptors) {
+            if ("class".equals(descriptor.getName())) {
+                continue;
+            }
+            Object propertyValue = beanWrapper.getPropertyValue(descriptor.getName());
+            map.put(descriptor.getName(), propertyValue);
+        }
+        return map;
     }
 }

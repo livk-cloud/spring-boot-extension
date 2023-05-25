@@ -106,6 +106,31 @@ class QRCodeControllerTest {
     }
 
     @Test
+    void textCode() throws IOException {
+        client.get()
+                .uri(uriBuilder -> uriBuilder.path("/qrcode/entity")
+                        .queryParam("text", text)
+                        .build())
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(Resource.class)
+                .value(resource -> {
+                    try {
+                        FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        File outFile = new File("text." + PicType.JPG.name().toLowerCase());
+        try (FileInputStream inputStream = new FileInputStream(outFile)) {
+            assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+        }
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
+    }
+
+    @Test
     void json() throws IOException {
         client.post()
                 .uri("/qrcode/json")
@@ -148,6 +173,31 @@ class QRCodeControllerTest {
                     }
                 });
         File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
+        try (FileInputStream inputStream = new FileInputStream(outFile)) {
+            assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+        }
+        assertTrue(outFile.exists());
+        assertTrue(outFile.delete());
+    }
+
+    @Test
+    void jsonCode() throws IOException {
+        client.post()
+                .uri("/qrcode/entity/json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(json)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(Resource.class)
+                .value(resource -> {
+                    try {
+                        FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        File outFile = new File("json." + PicType.JPG.name().toLowerCase());
         try (FileInputStream inputStream = new FileInputStream(outFile)) {
             assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
         }

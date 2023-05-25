@@ -17,6 +17,7 @@
 
 package com.livk.autoconfigure.qrcode.annotation;
 
+import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 
 import java.lang.annotation.ElementType;
@@ -33,24 +34,40 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QRCode {
+public @interface ResponseQRCode {
 
     /**
-     * Width int.
+     * 二维码宽度
      *
      * @return the int
      */
     int width() default 400;
 
     /**
-     * Height int.
+     * 二维码高度
      *
      * @return the int
      */
     int height() default 400;
 
     /**
-     * Type pic type.
+     * On color int.
+     *
+     * @return the int
+     * @see MatrixToImageConfig#getPixelOnColor()
+     */
+    int onColor() default MatrixToImageConfig.BLACK;
+
+    /**
+     * Off color int.
+     *
+     * @return the int
+     * @see MatrixToImageConfig#getPixelOnColor()
+     */
+    int offColor() default MatrixToImageConfig.WHITE;
+
+    /**
+     * 图片类型
      *
      * @return the pic type
      */

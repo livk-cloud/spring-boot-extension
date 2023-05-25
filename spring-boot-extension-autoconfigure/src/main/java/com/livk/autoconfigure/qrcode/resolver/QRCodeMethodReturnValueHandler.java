@@ -17,14 +17,15 @@
 
 package com.livk.autoconfigure.qrcode.resolver;
 
-import com.livk.autoconfigure.qrcode.annotation.QRCode;
+import com.livk.autoconfigure.qrcode.annotation.ResponseQRCode;
 import com.livk.autoconfigure.qrcode.enums.PicType;
-import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.autoconfigure.qrcode.support.QRCodeGenerator;
+import com.livk.autoconfigure.qrcode.support.QRCodeGeneratorSupport;
 import com.livk.commons.util.AnnotationUtils;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -32,6 +33,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -41,11 +43,20 @@ import java.io.IOException;
  *
  * @author livk
  */
-public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport implements AsyncHandlerMethodReturnValueHandler {
+
+    /**
+     * Instantiates a new Qr code method return value handler.
+     *
+     * @param qrCodeGenerator the qr code generator
+     */
+    public QRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
+        super(qrCodeGenerator);
+    }
 
     @Override
     public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
     }
 
     @Override
@@ -53,13 +64,13 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
                                   NativeWebRequest webRequest) throws IOException {
         mavContainer.setRequestHandled(true);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        QRCode qrCode = AnnotationUtils.getAnnotationElement(returnType, QRCode.class);
         Assert.notNull(response, "response not be null");
-        Assert.notNull(qrCode, "excelReturn not be null");
-        String text = JsonMapperUtils.writeValueAsString(returnValue);
+        AnnotationAttributes attributes = createAttributes(returnValue, returnType, ResponseQRCode.class);
+        PicType type = attributes.getEnum("type");
+        BufferedImage bufferedImage = toBufferedImage(returnValue, attributes);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
-            setResponse(qrCode.type(), response);
-            QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), outputStream, qrCode.type());
+            setResponse(type, response);
+            write(bufferedImage, type.name(), outputStream);
         }
     }
 
@@ -70,7 +81,7 @@ public class QRCodeMethodReturnValueHandler implements AsyncHandlerMethodReturnV
 
     @Override
     public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
     }
 
 }

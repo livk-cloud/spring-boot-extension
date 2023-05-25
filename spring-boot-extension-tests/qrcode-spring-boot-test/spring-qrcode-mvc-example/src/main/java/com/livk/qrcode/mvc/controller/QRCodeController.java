@@ -18,7 +18,8 @@
 package com.livk.qrcode.mvc.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.autoconfigure.qrcode.annotation.QRCode;
+import com.livk.autoconfigure.qrcode.annotation.ResponseQRCode;
+import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,15 +36,28 @@ import java.util.Map;
 @RequestMapping("qrcode")
 public class QRCodeController {
 
-    @QRCode
+    @ResponseQRCode
     @GetMapping
     public String text(String text) {
         return text;
     }
 
-    @QRCode
+    @ResponseQRCode
     @PostMapping("json")
     public Map<String, String> json(@RequestBody JsonNode node) {
         return JsonMapperUtils.convertValueMap(node, String.class, String.class);
+    }
+
+    @ResponseQRCode
+    @GetMapping("entity")
+    public QRCodeEntity<String> textCode(String text) {
+        return QRCodeEntity.builder(text).build();
+    }
+
+    @ResponseQRCode
+    @PostMapping("/entity/json")
+    public QRCodeEntity<Map<String, String>> jsonCode(@RequestBody JsonNode node) {
+        Map<String, String> map = JsonMapperUtils.convertValueMap(node, String.class, String.class);
+        return QRCodeEntity.builder(map).build();
     }
 }

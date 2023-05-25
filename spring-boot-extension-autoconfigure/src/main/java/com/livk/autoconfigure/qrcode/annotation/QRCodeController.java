@@ -34,9 +34,9 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@QRCode
+@ResponseQRCode
 @Controller
-public @interface QRController {
+public @interface QRCodeController {
 
     /**
      * Value string.

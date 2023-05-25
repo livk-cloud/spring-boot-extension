@@ -18,17 +18,16 @@
 package com.livk.autoconfigure.qrcode.resolver;
 
 
-import com.livk.autoconfigure.qrcode.annotation.QRCode;
+import com.livk.autoconfigure.qrcode.annotation.ResponseQRCode;
+import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
-import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
+import com.livk.autoconfigure.qrcode.support.QRCodeGenerator;
+import com.livk.autoconfigure.qrcode.support.QRCodeGeneratorSupport;
 import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.AnnotationUtils;
-import org.springframework.core.Ordered;
-import org.springframework.core.ReactiveAdapter;
-import org.springframework.core.ReactiveAdapterRegistry;
-import org.springframework.core.ResolvableType;
+import org.springframework.core.*;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -51,20 +50,29 @@ import java.util.List;
  *
  * @author livk
  */
-public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHandler, Ordered {
+public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport implements HandlerResultHandler, Ordered {
 
     private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
+    /**
+     * Instantiates a new Reactive qr code method return value handler.
+     *
+     * @param qrCodeGenerator the qr code generator
+     */
+    public ReactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
+        super(qrCodeGenerator);
+    }
+
     @Override
     public boolean supports(@NonNull HandlerResult result) {
-        return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), QRCode.class);
+        return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQRCode.class) ||
+               result.getReturnType().isAssignableFrom(QRCodeEntity.class);
     }
 
     @NonNull
     @Override
     public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
         Object returnValue = result.getReturnValue();
-        QRCode qrCode = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(), QRCode.class);
         ServerHttpResponse response = exchange.getResponse();
         ResolvableType returnType = result.getReturnType();
         ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
@@ -72,18 +80,19 @@ public class ReactiveQRCodeMethodReturnValueHandler implements HandlerResultHand
             if (Mono.class.isAssignableFrom(returnType.toClass())) {
                 Mono<?> mono = (Mono<?>) returnValue;
                 Assert.notNull(mono, "mono not be null");
-                return mono.flatMap(o -> write(o, qrCode, response));
+                return mono.flatMap(o -> write(o, result.getReturnTypeSource(), response));
             }
         } else {
-            return write(returnValue, qrCode, response);
+            return write(returnValue, result.getReturnTypeSource(), response);
         }
         throw new QRCodeException("current type is not supported:" + returnType.toClass());
     }
 
-    private Mono<Void> write(Object value, QRCode qrCode, ServerHttpResponse response) {
-        setResponse(qrCode.type(), response);
-        String text = JsonMapperUtils.writeValueAsString(value);
-        byte[] bytes = QRCodeUtils.getQRCodeImage(text, qrCode.width(), qrCode.height(), qrCode.type());
+    private Mono<Void> write(Object value, MethodParameter parameter, ServerHttpResponse response) {
+        AnnotationAttributes attributes = createAttributes(value, parameter, ResponseQRCode.class);
+        PicType type = attributes.getEnum("type");
+        setResponse(type, response);
+        byte[] bytes = toByteArray(value, attributes);
         Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
         return response.writeWith(bufferFlux);
     }
