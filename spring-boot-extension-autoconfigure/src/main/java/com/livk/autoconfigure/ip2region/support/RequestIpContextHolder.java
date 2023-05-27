@@ -17,12 +17,8 @@
 
 package com.livk.autoconfigure.ip2region.support;
 
-import com.livk.commons.util.ObjectUtils;
-import com.livk.commons.web.util.WebUtils;
-import jakarta.servlet.http.HttpServletRequest;
+import com.livk.autoconfigure.ip2region.doamin.IpInfo;
 import org.springframework.core.NamedInheritableThreadLocal;
-import org.springframework.core.NamedThreadLocal;
-import org.springframework.util.StringUtils;
 
 import java.util.function.Supplier;
 
@@ -34,47 +30,19 @@ import java.util.function.Supplier;
  * @author livk
  */
 public class RequestIpContextHolder {
-    private static final ThreadLocal<String> context = new NamedThreadLocal<>("request ip context");
-
-    private static final ThreadLocal<String> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
+    private static final ThreadLocal<IpInfo> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
 
     /**
      * Set.
      *
-     * @param ip the ip
+     * @param ipInfo the ip
      */
-    public static void set(String ip) {
-        set(ip, false);
-    }
-
-    /**
-     * Set.
-     *
-     * @param ip          the ip
-     * @param inheritable the inheritable
-     */
-    public static void set(String ip, boolean inheritable) {
-        if (StringUtils.hasText(ip)) {
-            if (inheritable) {
-                inheritableContext.set(ip);
-                context.remove();
-            } else {
-                context.set(ip);
-                inheritableContext.remove();
-            }
+    public static void set(IpInfo ipInfo) {
+        if (ipInfo != null) {
+            inheritableContext.set(ipInfo);
         } else {
             remove();
         }
-    }
-
-    /**
-     * Set.
-     *
-     * @param request the request
-     */
-    public static void set(HttpServletRequest request) {
-        String ip = WebUtils.realIp(request);
-        set(ip);
     }
 
     /**
@@ -83,12 +51,12 @@ public class RequestIpContextHolder {
      * @param supplier the supplier
      * @return the string
      */
-    public synchronized static String computeIfAbsent(Supplier<String> supplier) {
-        String ip = get();
-        if (StringUtils.hasText(ip)) {
-            return ip;
+    public synchronized static IpInfo computeIfAbsent(Supplier<IpInfo> supplier) {
+        IpInfo ipInfo = get();
+        if (ipInfo != null) {
+            return ipInfo;
         }
-        String supplierIp = supplier.get();
+        IpInfo supplierIp = supplier.get();
         set(supplierIp);
         return supplierIp;
     }
@@ -98,19 +66,14 @@ public class RequestIpContextHolder {
      *
      * @return the string
      */
-    public static String get() {
-        String ip = context.get();
-        if (ObjectUtils.isEmpty(ip)) {
-            ip = inheritableContext.get();
-        }
-        return ip;
+    public static IpInfo get() {
+        return inheritableContext.get();
     }
 
     /**
      * Remove.
      */
     public static void remove() {
-        context.remove();
         inheritableContext.remove();
     }
 }

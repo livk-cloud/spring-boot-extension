@@ -18,8 +18,10 @@
 package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.autoconfigure.ip2region.annotation.RequestIp;
+import com.livk.autoconfigure.ip2region.doamin.IpInfo;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -35,7 +37,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author livk
  */
+@RequiredArgsConstructor
 public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final Ip2RegionSearch search;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(RequestIp.class);
@@ -43,15 +49,16 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (parameter.getParameterType().isAssignableFrom(String.class)) {
+        if (parameter.getParameterType().isAssignableFrom(IpInfo.class)) {
             return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
         }
         throw new RuntimeException("param not support " + parameter.getParameterType());
     }
 
-    private String parseIp(NativeWebRequest webRequest) {
+    private IpInfo parseIp(NativeWebRequest webRequest) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         Assert.notNull(request, "request not be null");
-        return WebUtils.realIp(request);
+        String ip = WebUtils.realIp(request);
+        return search.searchAsInfo(ip);
     }
 }

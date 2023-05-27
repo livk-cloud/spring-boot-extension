@@ -18,7 +18,6 @@
 package com.livk.autoconfigure.ip2region.doamin;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -30,36 +29,37 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@NoArgsConstructor
 public class IpInfo {
 
-    private String nation;
+    private final String ip;
 
-    private String area;
+    private final String nation;
 
-    private String province;
+    private final String area;
 
-    private String city;
+    private final String province;
 
-    private String operator;
+    private final String city;
 
-    private IpInfo(String info) {
-        String[] arr = info.split("\\|");
-        nation = checkData(arr[0]);
-        area = checkData(arr[1]);
-        province = checkData(arr[2]);
-        city = checkData(arr[3]);
-        operator = checkData(arr[4]);
-    }
+    private final String operator;
 
     /**
-     * Of ip info.
+     * 将字符串解析
+     * <p>
+     * 格式 IP|nation|area|province|city|operator
+     * <p>
+     * 如数据不存在则用0标识
      *
-     * @param info the info
-     * @return the ip info
+     * @param info ip相关字符串
      */
-    public static IpInfo of(String info) {
-        return new IpInfo(info);
+    public IpInfo(String info) {
+        String[] arr = info.split("\\|");
+        ip = checkData(arr[0]);
+        nation = checkData(arr[1]);
+        area = checkData(arr[2]);
+        province = checkData(arr[3]);
+        city = checkData(arr[4]);
+        operator = checkData(arr[5]);
     }
 
     private String checkData(String data) {

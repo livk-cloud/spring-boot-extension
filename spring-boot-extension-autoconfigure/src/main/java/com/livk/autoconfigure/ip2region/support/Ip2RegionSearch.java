@@ -58,7 +58,7 @@ public class Ip2RegionSearch {
      * @return the ip info
      */
     public IpInfo searchAsInfo(String ip) {
-        return IpInfo.of(this.searchAsString(ip));
+        return new IpInfo(ip + "|" + this.searchAsString(ip));
     }
 
     /**

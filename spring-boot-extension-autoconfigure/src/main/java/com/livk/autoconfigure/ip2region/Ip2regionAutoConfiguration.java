@@ -18,16 +18,18 @@
 package com.livk.autoconfigure.ip2region;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.ip2region.support.IPMethodArgumentResolver;
+import com.livk.autoconfigure.ip2region.filter.RequestIpFilter;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIPMethodArgumentResolver;
 import com.livk.commons.io.FileUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -63,12 +65,40 @@ public class Ip2regionAutoConfiguration {
      * The type Web mvc ip 2 region auto configuration.
      */
     @AutoConfiguration
+    @RequiredArgsConstructor
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public static class WebMvcIp2regionAutoConfiguration implements WebMvcConfigurer {
+
+        private final Ip2RegionSearch search;
+
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new IPMethodArgumentResolver());
-            resolvers.add(new RequestIPMethodArgumentResolver());
+            resolvers.add(new RequestIPMethodArgumentResolver(search));
+        }
+
+        /**
+         * Request ip bean factory processor request ip bean factory processor.
+         *
+         * @return the request ip bean factory processor
+         */
+        @Bean
+        public RequestIpBeanFactoryProcessor requestIpBeanFactoryProcessor() {
+            return new RequestIpBeanFactoryProcessor();
+        }
+
+        /**
+         * Ip filter filter registration bean filter registration bean.
+         *
+         * @return the filter registration bean
+         */
+        @Bean
+        public FilterRegistrationBean<RequestIpFilter> ipFilterFilterRegistrationBean() {
+            FilterRegistrationBean<RequestIpFilter> registrationBean = new FilterRegistrationBean<>();
+            registrationBean.setFilter(new RequestIpFilter(search));
+            registrationBean.addUrlPatterns("/*");
+            registrationBean.setName("requestIpFilter");
+            registrationBean.setOrder(1);
+            return registrationBean;
         }
     }
 }

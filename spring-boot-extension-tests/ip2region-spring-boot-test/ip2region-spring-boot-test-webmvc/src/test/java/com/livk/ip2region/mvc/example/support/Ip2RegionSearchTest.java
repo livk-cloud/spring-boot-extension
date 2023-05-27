@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * <p>
@@ -48,8 +49,12 @@ class Ip2RegionSearchTest {
     @Test
     void searchAsInfo() {
         IpInfo result = ip2RegionSearch.searchAsInfo("110.242.68.66");
-        IpInfo ipInfo = new IpInfo().setNation("中国").setProvince("河北省").setCity("保定市").setOperator("联通");
-        assertEquals(result, ipInfo);
+        assertEquals("110.242.68.66", result.getIp());
+        assertEquals("中国", result.getNation());
+        assertNull(result.getArea());
+        assertEquals("河北省", result.getProvince());
+        assertEquals("保定市", result.getCity());
+        assertEquals("联通", result.getOperator());
     }
 
     @Test
