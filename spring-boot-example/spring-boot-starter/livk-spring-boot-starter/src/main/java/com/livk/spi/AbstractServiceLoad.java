@@ -17,8 +17,7 @@
 
 package com.livk.spi;
 
-import com.livk.commons.spi.Loader;
-import com.livk.commons.spi.support.UniversalManager;
+import com.livk.commons.util.ProviderLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.GenericTypeResolver;
@@ -46,7 +45,7 @@ public abstract class AbstractServiceLoad<T> implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        servicesMap = Loader.load(getServiceClass(), UniversalManager.JDK_SERVICE).stream()
+        servicesMap = ProviderLoader.JDK_SERVICE.load(getServiceClass()).stream()
                 .collect(Collectors.toMap(this::getKey, Function.identity()));
         log.info("data:{}", servicesMap);
     }

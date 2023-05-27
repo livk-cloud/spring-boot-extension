@@ -15,29 +15,28 @@
  *
  */
 
-package com.livk.commons.spi;
+package com.livk.commons.util;
 
 import com.google.auto.service.AutoService;
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.commons.spi.support.UniversalManager;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ResolvableType;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * @author livk
  */
-class LoaderTest {
+class ProviderLoaderTest {
 
     @Test
     public void loadTest() {
-        assertEquals(List.of(Dog.class), Loader.load(Animal.class, UniversalManager.SPRING_FACTORY).stream().map(Object::getClass).toList());
-        assertEquals(List.of(Cat.class), Loader.load(Animal.class, UniversalManager.JDK_SERVICE).stream().map(Object::getClass).toList());
-        assertEquals(Set.of(Dog.class, Cat.class), Loader.load(Animal.class, UniversalManager.ALL).stream().map(Object::getClass).collect(Collectors.toSet()));
+        assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).get(0));
+        assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).get(0));
+
+        ResolvableType type = ResolvableType.forClass(Animal.class);
+        assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(type).get(0));
+        assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(type).get(0));
     }
 
     public interface Animal {
