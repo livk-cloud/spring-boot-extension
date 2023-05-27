@@ -17,14 +17,15 @@
 
 package com.livk.ip2region.mvc.example.support;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
+import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * <p>
@@ -60,8 +61,13 @@ class Ip2RegionSearchTest {
     @Test
     void searchAsJson() {
         String result = ip2RegionSearch.searchAsJson("110.242.68.66");
-        String json = "{\"nation\":\"中国\",\"area\":null,\"province\":\"河北省\",\"city\":\"保定市\",\"operator\":\"联通\"}";
-        assertEquals(result, json);
+        JsonNode jsonNode = JsonMapperUtils.readTree(result);
+        assertEquals("110.242.68.66", jsonNode.get("ip").asText());
+        assertEquals("中国", jsonNode.get("nation").asText());
+        assertTrue(jsonNode.has("area"));
+        assertEquals("河北省", jsonNode.get("province").asText());
+        assertEquals("保定市", jsonNode.get("city").asText());
+        assertEquals("联通", jsonNode.get("operator").asText());
     }
 }
 
