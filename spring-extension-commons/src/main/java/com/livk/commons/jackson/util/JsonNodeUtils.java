@@ -23,8 +23,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.commons.collect.util.StreamUtils;
+import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -140,7 +140,7 @@ public class JsonNodeUtils {
      * @see JsonNode#at(JsonPointer)
      */
     public JsonNode findNodeFirst(JsonNode jsonNode, String nodeName) {
-        if (jsonNode == null || !StringUtils.hasText(nodeName)) {
+        if (jsonNode == null || ObjectUtils.isEmpty(nodeName)) {
             return null;
         }
         if (jsonNode.isArray()) {
@@ -179,7 +179,7 @@ public class JsonNodeUtils {
      * @return list list
      */
     public List<JsonNode> findNodeAll(JsonNode jsonNode, String nodeName) {
-        if (jsonNode == null || !StringUtils.hasText(nodeName)) {
+        if (jsonNode == null || ObjectUtils.isEmpty(nodeName)) {
             return Collections.emptyList();
         }
         List<JsonNode> jsonNodeList = new ArrayList<>();
@@ -218,7 +218,7 @@ public class JsonNodeUtils {
      * @see JsonNode#at(JsonPointer)
      */
     public JsonNode findNode(JsonNode jsonNode, String nodePath) {
-        if (jsonNode == null || !StringUtils.hasText(nodePath)) {
+        if (jsonNode == null || ObjectUtils.isEmpty(nodePath)) {
             return null;
         }
         int index = nodePath.indexOf(".");

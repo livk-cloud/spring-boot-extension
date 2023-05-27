@@ -18,13 +18,13 @@
 package com.livk.sso.commons;
 
 import com.livk.commons.io.ResourceUtils;
+import com.livk.commons.util.ObjectUtils;
 import com.livk.sso.commons.util.RSAUtils;
 import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -47,7 +47,7 @@ public class RsaKeyProperties {
     public RsaKeyProperties(@Name("location") String location,
                             @Name("password") String password,
                             @Name("alias") String alias) {
-        if (!StringUtils.hasText(location)) {
+        if (ObjectUtils.isEmpty(location)) {
             location = DEFAULT_LOCATION;
         }
         Resource jksResource = ResourceUtils.getResource(location);

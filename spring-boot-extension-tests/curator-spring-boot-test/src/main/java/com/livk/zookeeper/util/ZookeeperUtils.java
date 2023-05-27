@@ -18,6 +18,7 @@
 package com.livk.zookeeper.util;
 
 import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -26,7 +27,6 @@ import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.zookeeper.CreateMode;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;

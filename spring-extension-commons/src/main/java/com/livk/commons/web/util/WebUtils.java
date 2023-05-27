@@ -191,16 +191,16 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public String realIp(HttpServletRequest request) {
         // 这个一般是Nginx反向代理设置的参数
         String ip = request.getHeader("X-Real-IP");
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Forwarded-For");
         }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         // 处理多IP的情况（只取第一个IP）

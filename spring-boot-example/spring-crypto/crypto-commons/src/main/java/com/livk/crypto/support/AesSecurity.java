@@ -17,11 +17,11 @@
 
 package com.livk.crypto.support;
 
+import com.livk.commons.util.ObjectUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.exception.MetadataIllegalException;
 import com.livk.crypto.parse.AbstractCryptoFormatter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -41,7 +41,7 @@ public class AesSecurity extends AbstractCryptoFormatter<Long> {
 
     public AesSecurity(Map<String, String> metadata) {
         String salt = metadata.get("salt");
-        if (!StringUtils.hasText(salt)) {
+        if (ObjectUtils.isEmpty(salt)) {
             throw new MetadataIllegalException("缺少salt的配置!", "请添加 'spring.crypto.metadata.salt' ");
         }
         try {

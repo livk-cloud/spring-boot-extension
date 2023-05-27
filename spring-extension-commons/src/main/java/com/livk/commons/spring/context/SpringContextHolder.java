@@ -51,9 +51,9 @@ import java.util.Map;
 public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
 
     @Getter
-    private static ApplicationContext applicationContext = null;
+    private volatile static ApplicationContext applicationContext = null;
 
-    private static BeanFactory beanFactory = null;
+    private volatile static BeanFactory beanFactory = null;
 
     /**
      * Spring事件发布

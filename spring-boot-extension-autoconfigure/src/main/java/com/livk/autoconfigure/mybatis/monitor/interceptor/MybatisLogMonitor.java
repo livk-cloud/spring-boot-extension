@@ -21,7 +21,7 @@ import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitorProperties;
 import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
 import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
 import com.livk.commons.spring.context.SpringContextHolder;
-import com.livk.commons.sqlparser.SqlParserUtils;
+import com.livk.commons.util.SqlParserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;

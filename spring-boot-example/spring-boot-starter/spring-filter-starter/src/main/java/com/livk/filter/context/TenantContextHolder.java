@@ -17,6 +17,7 @@
 
 package com.livk.filter.context;
 
+import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.core.NamedThreadLocal;
@@ -40,7 +41,7 @@ public class TenantContextHolder {
 
     public String getTenantId() {
         String tenantId = TENANT_ID.get();
-        if (!StringUtils.hasText(tenantId)) {
+        if (ObjectUtils.isEmpty(tenantId)) {
             tenantId = INHERITABLE_TENANT_ID.get();
         }
         return tenantId;

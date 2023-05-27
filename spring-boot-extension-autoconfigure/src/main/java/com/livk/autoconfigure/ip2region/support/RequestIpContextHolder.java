@@ -17,6 +17,7 @@
 
 package com.livk.autoconfigure.ip2region.support;
 
+import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.NamedInheritableThreadLocal;
@@ -99,7 +100,7 @@ public class RequestIpContextHolder {
      */
     public static String get() {
         String ip = context.get();
-        if (!StringUtils.hasText(ip)) {
+        if (ObjectUtils.isEmpty(ip)) {
             ip = inheritableContext.get();
         }
         return ip;

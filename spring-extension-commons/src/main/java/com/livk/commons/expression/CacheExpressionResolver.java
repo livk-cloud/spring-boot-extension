@@ -19,11 +19,11 @@ package com.livk.commons.expression;
 
 import com.livk.commons.expression.aviator.AviatorExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
+import com.livk.commons.util.ObjectUtils;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionException;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,7 +45,7 @@ public abstract class CacheExpressionResolver<EXPRESSION> implements ExpressionR
 
     @Override
     public <T> T evaluate(String value, EvaluationContext context, Class<T> returnType) {
-        if (!StringUtils.hasText(value)) {
+        if (ObjectUtils.isEmpty(value)) {
             return null;
         }
         try {

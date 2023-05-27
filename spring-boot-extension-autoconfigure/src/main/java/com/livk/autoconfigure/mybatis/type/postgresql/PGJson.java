@@ -17,8 +17,8 @@
 
 package com.livk.autoconfigure.mybatis.type.postgresql;
 
+import com.livk.commons.util.ObjectUtils;
 import org.postgresql.util.PGobject;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;

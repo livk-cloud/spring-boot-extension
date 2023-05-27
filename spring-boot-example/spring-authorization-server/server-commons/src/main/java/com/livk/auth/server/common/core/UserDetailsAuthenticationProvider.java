@@ -21,6 +21,7 @@ import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.core.exception.BadCaptchaException;
 import com.livk.auth.server.common.service.Oauth2UserDetailsService;
 import com.livk.auth.server.common.util.MessageSourceUtils;
+import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.web.util.WebUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -129,7 +129,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
         String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
         String clientId = paramMap.get(OAuth2ParameterNames.CLIENT_ID);
 
-        if (!StringUtils.hasText(clientId)) {
+        if (ObjectUtils.isEmpty(clientId)) {
             clientId = basicConvert.convert(WebUtils.request()).getName();
         }
 
