@@ -62,6 +62,16 @@ public class Ip2regionAutoConfiguration {
     }
 
     /**
+     * Request ip bean factory processor request ip bean factory processor.
+     *
+     * @return the request ip bean factory processor
+     */
+    @Bean
+    public RequestIpBeanFactoryProcessor requestIpBeanFactoryProcessor() {
+        return new RequestIpBeanFactoryProcessor();
+    }
+
+    /**
      * The type Web mvc ip 2 region auto configuration.
      */
     @AutoConfiguration
@@ -74,16 +84,6 @@ public class Ip2regionAutoConfiguration {
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
             resolvers.add(new RequestIPMethodArgumentResolver(search));
-        }
-
-        /**
-         * Request ip bean factory processor request ip bean factory processor.
-         *
-         * @return the request ip bean factory processor
-         */
-        @Bean
-        public RequestIpBeanFactoryProcessor requestIpBeanFactoryProcessor() {
-            return new RequestIpBeanFactoryProcessor();
         }
 
         /**
