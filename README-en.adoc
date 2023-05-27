@@ -27,18 +27,19 @@ Please raise an issue if necessary +
 ----
 |--spring-boot-example
     |--buildSrc(Gradle custom plugin)
-    |--example
-    |--extension-spring-boot-autoconfigure(Spring boot automatic assembly)
-    |--spring-boot-extension-starters(starter bundle)
     |--gradle/libs.versions.toml(gradle Catalog dependency management)
     |--spring-auto-service(SpringBoot automatic assembly file generator)
+    |--spring-boot-example
+    |--spring-boot-extension-autoconfigure(Spring boot automatic assembly)
+    |--spring-boot-extension-starters(starter bundle)
+    |--spring-boot-extension-tests(test bundle)
     |--spring-extension-commons(General Basic Toolkit)
     |--spring-extension-dependencies(Version Controlled BOMs)
 ----
 
 link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
-link:example/example.adoc[example details] +
+link:spring-boot-example/example.adoc[example details] +
 
 #Maven#
 

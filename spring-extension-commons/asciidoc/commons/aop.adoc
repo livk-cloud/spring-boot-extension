@@ -45,13 +45,3 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
     }
 }
 ----
-
-=== com.livk.commons.aop.AnnotationAutoPointcut
-
-根据注解获取到Pointcut
-
-=== com.livk.commons.aop.AnnotationClassOrMethodPointcut
-
-
-
-=== com.livk.commons.aop.AnnotationPointcutType

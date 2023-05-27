@@ -7,7 +7,7 @@ plugins {
 asciidoctor {
     sourceDir file("./")
     sources {
-        include "spring-auto-service.adoc"
+        include "${project.name}.adoc"
     }
     outputDir file("../docs")
     dependsOn("processResources", "compileJava")

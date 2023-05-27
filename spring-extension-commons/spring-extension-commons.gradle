@@ -8,7 +8,7 @@ asciidoctor {
     baseDirFollowsSourceDir()
     sourceDir file("./asciidoc")
     sources {
-        include "spring-extension-commons.adoc"
+        include "${project.name}.adoc"
     }
     outputDir file("../docs")
 }

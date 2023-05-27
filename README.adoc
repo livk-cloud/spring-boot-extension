@@ -29,19 +29,19 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
 ----
 |--spring-boot-example
     |--buildSrc(Gradle自定义插件)
-    |--example(示例项目)
     |--gradle/libs.versions.toml(gradle Catalog依赖管理)
     |--spring-auto-service(SpringBoot自动装配文件生成器)
+    |--spring-boot-example(示例项目)
     |--spring-boot-extension-autoconfigure(spring boot自动装配)
     |--spring-boot-extension-starters(starter集合包)
+    |--spring-boot-extension-tests(测试用例集合)
     |--spring-extension-commons(通用基础工具包)
     |--spring-extension-dependencies(版本控制 BOM)
 ----
 
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
-link:example/example.adoc[示例详情] +
-link:asciidoc.adoc[项目文档] +
+link:spring-boot-example/example.adoc[示例详情] +
 link:gradle-idea.adoc[gradle idea配置指导] +
 
 #Maven#
