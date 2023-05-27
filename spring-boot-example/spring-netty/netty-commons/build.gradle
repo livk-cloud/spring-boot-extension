@@ -10,6 +10,18 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test:${libs.versions.spring.boot.get()}"
 }
 
+compileJava {
+    dependsOn("generateProto")
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "src/main/protobuf"
+        }
+    }
+}
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.22.2"
