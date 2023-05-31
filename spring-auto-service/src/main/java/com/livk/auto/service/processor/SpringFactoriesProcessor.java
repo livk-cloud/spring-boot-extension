@@ -136,7 +136,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
                 providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
             }
             return providers;
-        } catch (IOException e) {
+        } catch (Exception e) {
             return LinkedHashMultimap.create();
         }
     }

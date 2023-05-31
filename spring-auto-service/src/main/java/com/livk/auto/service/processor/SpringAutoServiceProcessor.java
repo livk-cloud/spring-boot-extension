@@ -107,7 +107,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
             return reader.lines()
                     .map(String::trim)
                     .collect(Collectors.toUnmodifiableSet());
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
             return Collections.emptySet();
         }
     }
