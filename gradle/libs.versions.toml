@@ -32,6 +32,8 @@ dnsjava = "3.5.2"
 snakeyaml = "2.0"
 aliyun-oss = "3.16.3"
 aviator = "5.3.3"
+protobuf = "3.23.2"
+protobuf-plugins = "0.9.3"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -71,6 +73,7 @@ dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
+protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]
@@ -82,3 +85,4 @@ mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
+google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugins" }
