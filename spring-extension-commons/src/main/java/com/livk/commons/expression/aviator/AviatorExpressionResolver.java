@@ -17,15 +17,11 @@
 
 package com.livk.commons.expression.aviator;
 
-import com.google.common.collect.Maps;
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
 import com.livk.commons.expression.CacheExpressionResolver;
+import com.livk.commons.expression.Context;
 import com.livk.commons.expression.ExpressionResolver;
-import org.springframework.expression.EvaluationContext;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 使用<a href="https://github.com/killme2008/aviator">Aviator</a>实现的表达式解析器
@@ -41,19 +37,7 @@ public class AviatorExpressionResolver extends CacheExpressionResolver<Expressio
     }
 
     @Override
-    protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
-        return returnType.cast(this.execute(expression, context));
-    }
-
-    private Object execute(Expression expression, EvaluationContext context) {
-        List<String> variableNames = expression.getVariableNames();
-        HashMap<String, Object> env = Maps.newHashMapWithExpectedSize(variableNames.size());
-        for (String name : variableNames) {
-            Object lookup = context.lookupVariable(name);
-            if (lookup != null) {
-                env.put(name, lookup);
-            }
-        }
-        return expression.execute(env);
+    protected <T> T calculate(Expression expression, Context context, Class<T> returnType) {
+        return returnType.cast(expression.execute(context));
     }
 }

@@ -17,8 +17,13 @@
 
 package com.livk.commons.expression.spring;
 
-import com.livk.commons.expression.CacheExpressionResolver;
+import com.livk.commons.expression.Context;
+import com.livk.commons.expression.ConverterExpressionResolver;
 import com.livk.commons.expression.ExpressionResolver;
+import org.springframework.context.expression.BeanExpressionContextAccessor;
+import org.springframework.context.expression.BeanFactoryAccessor;
+import org.springframework.context.expression.EnvironmentAccessor;
+import org.springframework.context.expression.MapAccessor;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -26,6 +31,9 @@ import org.springframework.expression.ParserContext;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.SpelParserConfiguration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.expression.spel.support.StandardTypeConverter;
+import org.springframework.expression.spel.support.StandardTypeLocator;
 
 /**
  * 使用Spring EL实现的表达式解析器
@@ -33,7 +41,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  * @author livk
  * @see SpelExpressionParser
  */
-public class SpringExpressionResolver extends CacheExpressionResolver<Expression> implements ExpressionResolver {
+public class SpringExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression> implements ExpressionResolver {
 
     private final ExpressionParser expressionParser;
 
@@ -61,11 +69,6 @@ public class SpringExpressionResolver extends CacheExpressionResolver<Expression
     }
 
     @Override
-    protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
-        return expression.getValue(context, returnType);
-    }
-
-    @Override
     protected String wrapIfNecessary(String expression) {
         if (!expression.contains("#")) {
             return expression;
@@ -74,5 +77,23 @@ public class SpringExpressionResolver extends CacheExpressionResolver<Expression
             return "#{" + expression + "}";
         }
         return expression;
+    }
+
+    @Override
+    protected EvaluationContext transform(Context context) {
+        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+        evaluationContext.addPropertyAccessor(new BeanExpressionContextAccessor());
+        evaluationContext.addPropertyAccessor(new BeanFactoryAccessor());
+        evaluationContext.addPropertyAccessor(new MapAccessor());
+        evaluationContext.addPropertyAccessor(new EnvironmentAccessor());
+        evaluationContext.setTypeLocator(new StandardTypeLocator());
+        evaluationContext.setTypeConverter(new StandardTypeConverter());
+        evaluationContext.setVariables(context);
+        return evaluationContext;
+    }
+
+    @Override
+    protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
+        return expression.getValue(context, returnType);
     }
 }

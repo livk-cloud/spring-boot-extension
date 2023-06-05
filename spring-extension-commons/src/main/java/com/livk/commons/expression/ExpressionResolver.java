@@ -17,8 +17,6 @@
 
 package com.livk.commons.expression;
 
-import org.springframework.expression.EvaluationContext;
-
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -26,21 +24,31 @@ import java.util.Map;
  * 表达式通用解析器
  *
  * @author livk
- * @see EvaluationContext
- * @see EvaluationContextFactory
+ * @see Context
  */
 public interface ExpressionResolver {
 
     /**
-     * 将表达式解析，并转成相对应的类型
+     * 根据context信息将表达式解析，并转成相应的类型
      *
      * @param <T>        泛型
      * @param value      表达式
-     * @param context    解析上下文
+     * @param context    解析上下文环境数据
      * @param returnType 返回类型
      * @return T
      */
-    <T> T evaluate(String value, EvaluationContext context, Class<T> returnType);
+    <T> T evaluate(String value, Context context, Class<T> returnType);
+
+    /**
+     * 根据Map环境信息将表达式解析，并转成相应的类型
+     *
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param contextMap 解析上下文环境数据
+     * @param returnType 返回类型
+     * @return T
+     */
+    <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
 
     /**
      * 根据Method将表达式解析，并转成相对应的类型
@@ -52,10 +60,20 @@ public interface ExpressionResolver {
      * @param returnType 返回类型
      * @return T
      */
-    default <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType) {
-        EvaluationContext evaluationContext = contextFactory().eval(method, args);
-        return evaluate(value, evaluationContext, returnType);
-    }
+    <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
+
+    /**
+     * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
+     *
+     * @param <T>        泛型
+     * @param value      表达式
+     * @param method     method
+     * @param args       args
+     * @param contextMap 解析上下文环境数据
+     * @param returnType 返回类型
+     * @return T
+     */
+    <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType);
 
     /**
      * 根据Method将表达式解析，并转成String
@@ -70,67 +88,37 @@ public interface ExpressionResolver {
     }
 
     /**
-     * 根据Map环境信息将表达式解析，并转成相应的类型
+     * 根据context信息将表达式解析，并转成String
      *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param expandMap  解析上下文环境数据
-     * @param returnType 返回类型
-     * @return T
+     * @param value   表达式
+     * @param context 解析上下文环境数据
+     * @return string
      */
-    default <T> T evaluate(String value, Map<String, ?> expandMap, Class<T> returnType) {
-        EvaluationContext evaluationContext = contextFactory().eval(expandMap);
-        return evaluate(value, evaluationContext, returnType);
+    default String evaluate(String value, Context context) {
+        return evaluate(value, context, String.class);
     }
 
     /**
      * 根据Map环境信息将表达式解析，并转成String
      *
-     * @param value     表达式
-     * @param expandMap 解析上下文环境数据
+     * @param value      表达式
+     * @param contextMap 解析上下文环境数据
      * @return string
      */
-    default String evaluate(String value, Map<String, ?> expandMap) {
-        return evaluate(value, expandMap, String.class);
-    }
-
-    /**
-     * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
-     *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param method     method
-     * @param args       args
-     * @param expandMap  解析上下文环境数据
-     * @param returnType 返回类型
-     * @return T
-     */
-    default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap, Class<T> returnType) {
-        EvaluationContext evaluationContext = contextFactory().eval(method, args, expandMap);
-        return evaluate(value, evaluationContext, returnType);
+    default String evaluate(String value, Map<String, ?> contextMap) {
+        return evaluate(value, contextMap, String.class);
     }
 
     /**
      * 根据Method和Map环境信息将表达式解析，并转成String
      *
-     * @param value     表达式
-     * @param method    method
-     * @param args      args
-     * @param expandMap 解析上下文环境数据
+     * @param value      表达式
+     * @param method     method
+     * @param args       args
+     * @param contextMap 解析上下文环境数据
      * @return string
      */
-    default String evaluate(String value, Method method, Object[] args, Map<String, ?> expandMap) {
-        return evaluate(value, method, args, expandMap, String.class);
-    }
-
-    /**
-     * 提供相应的EvaluationContextFactory
-     * <p>
-     * 重写此方法提供解析工厂的替换
-     *
-     * @return EvaluationContextFactory
-     */
-    default EvaluationContextFactory contextFactory() {
-        return EvaluationContextFactory.INSTANCE;
+    default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
+        return evaluate(value, method, args, contextMap, String.class);
     }
 }

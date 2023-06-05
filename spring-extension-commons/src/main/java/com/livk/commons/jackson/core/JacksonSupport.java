@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.jackson.support.MapperFactory;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.DataInput;
@@ -40,6 +41,7 @@ import java.net.URL;
  */
 public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations {
 
+    @Getter
     private final M mapper;
 
     private JacksonSupport(M mapper) {

@@ -34,6 +34,8 @@ aliyun-oss = "3.16.3"
 aviator = "5.3.3"
 protobuf = "3.23.2"
 protobuf-plugins = "0.9.3"
+jexl3 = "3.3"
+mvel2 = "2.4.15.Final"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -74,6 +76,8 @@ snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" 
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
+commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
+mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]

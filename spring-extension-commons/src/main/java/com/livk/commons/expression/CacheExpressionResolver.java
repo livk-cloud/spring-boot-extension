@@ -17,12 +17,9 @@
 
 package com.livk.commons.expression;
 
-import com.livk.commons.expression.aviator.AviatorExpressionResolver;
-import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.commons.util.ObjectUtils;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionException;
 
 import java.util.Map;
@@ -33,10 +30,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <EXPRESSION> 表达式泛型
  * @author livk
- * @see AviatorExpressionResolver
- * @see SpringExpressionResolver
+ * @see com.livk.commons.expression.aviator.AviatorExpressionResolver
+ * @see Environment
  */
-public abstract class CacheExpressionResolver<EXPRESSION> implements ExpressionResolver {
+public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver implements ExpressionResolver {
 
     private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 
@@ -44,7 +41,7 @@ public abstract class CacheExpressionResolver<EXPRESSION> implements ExpressionR
     private Environment environment;
 
     @Override
-    public <T> T evaluate(String value, EvaluationContext context, Class<T> returnType) {
+    public <T> T evaluate(String value, Context context, Class<T> returnType) {
         if (ObjectUtils.isEmpty(value)) {
             return null;
         }
@@ -91,5 +88,5 @@ public abstract class CacheExpressionResolver<EXPRESSION> implements ExpressionR
      * @param returnType 返回类型
      * @return T
      */
-    protected abstract <T> T calculate(EXPRESSION expression, EvaluationContext context, Class<T> returnType);
+    protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType);
 }
