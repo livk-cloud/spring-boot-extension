@@ -35,31 +35,31 @@ import java.util.stream.Collectors;
  */
 public interface CryptoFormatter<T> extends Formatter<T> {
 
-    /**
-     * From context object provider.
-     *
-     * @return the object provider
-     */
-    static Map<Class<?>, List<CryptoFormatter<?>>> fromContext() {
-        ResolvableType resolvableType = ResolvableType.forClass(CryptoFormatter.class);
-        return SpringContextHolder.<CryptoFormatter<?>>getBeanProvider(resolvableType)
-                .orderedStream()
-                .collect(Collectors.groupingBy(CryptoFormatter::supportClass));
-    }
+	/**
+	 * From context object provider.
+	 *
+	 * @return the object provider
+	 */
+	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext() {
+		ResolvableType resolvableType = ResolvableType.forClass(CryptoFormatter.class);
+		return SpringContextHolder.<CryptoFormatter<?>>getBeanProvider(resolvableType)
+			.orderedStream()
+			.collect(Collectors.groupingBy(CryptoFormatter::supportClass));
+	}
 
-    /**
-     * Support class class.
-     *
-     * @return the class
-     */
-    default Class<?> supportClass() {
-        return GenericTypeResolver.resolveTypeArgument(this.getClass(), CryptoFormatter.class);
-    }
+	/**
+	 * Support class class.
+	 *
+	 * @return the class
+	 */
+	default Class<?> supportClass() {
+		return GenericTypeResolver.resolveTypeArgument(this.getClass(), CryptoFormatter.class);
+	}
 
-    /**
-     * Type crypto type.
-     *
-     * @return the crypto type
-     */
-    CryptoType type();
+	/**
+	 * Type crypto type.
+	 *
+	 * @return the crypto type
+	 */
+	CryptoType type();
 }

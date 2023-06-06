@@ -39,10 +39,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RateLimiterController {
 
-    @Limit(key = "livk:user", rate = 2, rateInterval = 30)
-    @GetMapping
-    public HttpEntity<Map<String, Object>> rate() {
-        return ResponseEntity.ok(Map.of("username", "root", "password", "123456"));
-    }
+	@Limit(key = "livk:user", rate = 2, rateInterval = 30)
+	@GetMapping
+	public HttpEntity<Map<String, Object>> rate() {
+		return ResponseEntity.ok(Map.of("username", "root", "password", "123456"));
+	}
 
 }

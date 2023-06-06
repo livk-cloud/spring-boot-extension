@@ -29,12 +29,12 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface AuthorMapper {
-    @Insert("insert into author(id_card_no, name, age) values (#{idCardNo},#{name},#{age})")
-    int save(Author author);
+	@Insert("insert into author(id_card_no, name, age) values (#{idCardNo},#{name},#{age})")
+	int save(Author author);
 
-    @Delete("truncate table author")
-    void clear();
+	@Delete("truncate table author")
+	void clear();
 
-    @Select("select * from author where id_card_no = #{authorIdCardNo}")
-    Author getByIdCardNo(@Param("authorIdCardNo") String authorIdCardNo);
+	@Select("select * from author where id_card_no = #{authorIdCardNo}")
+	Author getByIdCardNo(@Param("authorIdCardNo") String authorIdCardNo);
 }

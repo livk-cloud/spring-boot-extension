@@ -35,58 +35,58 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver implements ExpressionResolver {
 
-    private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
+	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 
-    @Setter
-    private Environment environment;
+	@Setter
+	private Environment environment;
 
-    @Override
-    public <T> T evaluate(String value, Context context, Class<T> returnType) {
-        if (ObjectUtils.isEmpty(value)) {
-            return null;
-        }
-        try {
-            value = wrapIfNecessary(value);
-            if (environment != null) {
-                value = environment.resolvePlaceholders(value);
-            }
-            EXPRESSION expression = this.expressionCache.get(value);
-            if (expression == null) {
-                expression = compile(value);
-                this.expressionCache.put(value, expression);
-            }
-            return calculate(expression, context, returnType);
-        } catch (Throwable ex) {
-            throw new ExpressionException("Expression parsing failed", ex);
-        }
-    }
+	@Override
+	public <T> T evaluate(String value, Context context, Class<T> returnType) {
+		if (ObjectUtils.isEmpty(value)) {
+			return null;
+		}
+		try {
+			value = wrapIfNecessary(value);
+			if (environment != null) {
+				value = environment.resolvePlaceholders(value);
+			}
+			EXPRESSION expression = this.expressionCache.get(value);
+			if (expression == null) {
+				expression = compile(value);
+				this.expressionCache.put(value, expression);
+			}
+			return calculate(expression, context, returnType);
+		} catch (Throwable ex) {
+			throw new ExpressionException("Expression parsing failed", ex);
+		}
+	}
 
-    /**
-     * 对表达式进行数据包装，如果有必要
-     *
-     * @param expression 表达式
-     * @return 包装后的表达式
-     */
-    protected String wrapIfNecessary(String expression) {
-        return expression;
-    }
+	/**
+	 * 对表达式进行数据包装，如果有必要
+	 *
+	 * @param expression 表达式
+	 * @return 包装后的表达式
+	 */
+	protected String wrapIfNecessary(String expression) {
+		return expression;
+	}
 
-    /**
-     * 对表达式进行处理生成EXPRESSION
-     *
-     * @param value 表达式
-     * @return EXPRESSION
-     */
-    protected abstract EXPRESSION compile(String value);
+	/**
+	 * 对表达式进行处理生成EXPRESSION
+	 *
+	 * @param value 表达式
+	 * @return EXPRESSION
+	 */
+	protected abstract EXPRESSION compile(String value);
 
-    /**
-     * 表达式计算
-     *
-     * @param <T>        泛型
-     * @param expression 表达式
-     * @param context    环境上下文
-     * @param returnType 返回类型
-     * @return T
-     */
-    protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType);
+	/**
+	 * 表达式计算
+	 *
+	 * @param <T>        泛型
+	 * @param expression 表达式
+	 * @param context    环境上下文
+	 * @param returnType 返回类型
+	 * @return T
+	 */
+	protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType);
 }

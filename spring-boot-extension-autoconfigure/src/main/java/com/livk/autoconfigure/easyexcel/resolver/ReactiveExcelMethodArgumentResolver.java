@@ -48,40 +48,40 @@ import java.util.Objects;
  */
 public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
+	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasMethodAnnotation(ExcelImport.class) &&
-               parameter.hasParameterAnnotation(ExcelParam.class);
-    }
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return parameter.hasMethodAnnotation(ExcelImport.class) &&
+			parameter.hasParameterAnnotation(ExcelParam.class);
+	}
 
-    @NonNull
-    @Override
-    public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
-        Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-        ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
-        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
-        ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
-        Mono<?> mono = Mono.empty();
-        if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
-            ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
-            ResolvableType genericType = ResolvableType.forMethodParameter(parameter);
-            if (parameter.getParameterType().equals(Mono.class)) {
-                genericType = genericType.getGeneric(0);
-            }
-            if (genericType.getRawClass() != null) {
+	@NonNull
+	@Override
+	public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
+		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
+		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+		ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
+		Mono<?> mono = Mono.empty();
+		if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
+			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
+			ResolvableType genericType = ResolvableType.forMethodParameter(parameter);
+			if (parameter.getParameterType().equals(Mono.class)) {
+				genericType = genericType.getGeneric(0);
+			}
+			if (genericType.getRawClass() != null) {
 
-                ExcelDataType dataType = Flux.class.isAssignableFrom(genericType.getRawClass()) ?
-                        ExcelDataType.COLLECTION : ExcelDataType.match(genericType.getRawClass());
-                Class<?> excelModelClass = dataType.getFunction().apply(genericType);
-                mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
-                        .map(Part::content)
-                        .flatMap(DataBufferUtils::transform)
-                        .doOnSuccess(in -> EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
-                        .map(in -> listener.getData(dataType));
-            }
-        }
-        return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
-    }
+				ExcelDataType dataType = Flux.class.isAssignableFrom(genericType.getRawClass()) ?
+					ExcelDataType.COLLECTION : ExcelDataType.match(genericType.getRawClass());
+				Class<?> excelModelClass = dataType.getFunction().apply(genericType);
+				mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
+					.map(Part::content)
+					.flatMap(DataBufferUtils::transform)
+					.doOnSuccess(in -> EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
+					.map(in -> listener.getData(dataType));
+			}
+		}
+		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+	}
 }

@@ -7,8 +7,8 @@ link:../../spring-http/http-example[http interface示例] +
 使用示例，在接口上添加 `@Provider` 或者 `@HttpExchange` +
 兼容reactor `Mono` `Flux` +
 使用方式类似于Feign, 被注解标准的接口需要在Spring包扫描下
-[source,java,indent=0]
 
+[source,java,indent=0]
 ----
 @Provider(url = "https://spring.io")
 public interface RemoteService {

@@ -5,8 +5,8 @@
 link:../../spring-mybatis/dynamic-datasource-example[示例] +
 
 主启动类添加 `@EnableDynamicDatasource`
-[source,java,indent=0]
 
+[source,java,indent=0]
 ----
 @EnableDynamicDatasource
 @SpringBootApplication
@@ -18,8 +18,8 @@ public class DynamicExample {
 ----
 
 yml配置
-[source,yaml,indent=0]
 
+[source,yaml,indent=0]
 ----
 spring:
   dynamic:
@@ -41,8 +41,8 @@ spring:
 
 使用示例，在类获取方法上添加注解 `@DynamicSource` 并填入数据源名称，数据源名称为yml配置的名称 +
 方法级注解优先级高于类级别
-[source,java,indent=0]
 
+[source,java,indent=0]
 ----
 @RestController
 @RequestMapping("user")

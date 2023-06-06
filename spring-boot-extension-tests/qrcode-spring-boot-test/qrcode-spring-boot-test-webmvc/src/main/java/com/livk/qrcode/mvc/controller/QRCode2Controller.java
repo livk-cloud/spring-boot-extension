@@ -38,13 +38,13 @@ import java.util.Map;
 @RequestMapping("qrcode2")
 public class QRCode2Controller {
 
-    @GetMapping
-    public String text(String text) {
-        return text;
-    }
+	@GetMapping
+	public String text(String text) {
+		return text;
+	}
 
-    @PostMapping("json")
-    public Map<String, String> json(@RequestBody JsonNode node) {
-        return JsonMapperUtils.convertValueMap(node, String.class, String.class);
-    }
+	@PostMapping("json")
+	public Map<String, String> json(@RequestBody JsonNode node) {
+		return JsonMapperUtils.convertValueMap(node, String.class, String.class);
+	}
 }

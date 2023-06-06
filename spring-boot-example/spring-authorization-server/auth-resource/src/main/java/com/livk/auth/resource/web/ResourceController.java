@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResourceController {
 
-    @GetMapping("/resource-livk")
-    public String[] getMessages() {
-        return new String[]{"livk", "livk-spring", "livk-cloud"};
-    }
+	@GetMapping("/resource-livk")
+	public String[] getMessages() {
+		return new String[]{"livk", "livk-spring", "livk-cloud"};
+	}
 
 }

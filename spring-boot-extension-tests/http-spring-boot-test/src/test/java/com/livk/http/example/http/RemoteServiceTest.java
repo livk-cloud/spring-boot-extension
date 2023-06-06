@@ -33,12 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class RemoteServiceTest {
 
-    @Autowired
-    RemoteService remoteService;
+	@Autowired
+	RemoteService remoteService;
 
-    @Test
-    void getTest() {
-        String result = remoteService.get();
-        assertNotNull(result);
-    }
+	@Test
+	void getTest() {
+		String result = remoteService.get();
+		assertNotNull(result);
+	}
 }

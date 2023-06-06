@@ -35,23 +35,23 @@ import org.springframework.security.core.GrantedAuthority;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role implements GrantedAuthority {
 
-    private Integer id;
+	private Integer id;
 
-    private String roleName;
+	private String roleName;
 
-    private String roleDescription;
+	private String roleDescription;
 
-    @JsonCreator
-    public static Role create(@JsonProperty("authority") String authority) {
-        Role role = new Role();
-        role.setRoleName(authority);
-        return role;
-    }
+	@JsonCreator
+	public static Role create(@JsonProperty("authority") String authority) {
+		Role role = new Role();
+		role.setRoleName(authority);
+		return role;
+	}
 
-    @JsonIgnore
-    @Override
-    public String getAuthority() {
-        return roleName;
-    }
+	@JsonIgnore
+	@Override
+	public String getAuthority() {
+		return roleName;
+	}
 
 }

@@ -40,10 +40,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuController {
 
-    private final MenuMapper menuMapper;
+	private final MenuMapper menuMapper;
 
-    @GetMapping
-    public HttpEntity<List<Menu>> list() {
-        return ResponseEntity.ok(menuMapper.list());
-    }
+	@GetMapping
+	public HttpEntity<List<Menu>> list() {
+		return ResponseEntity.ok(menuMapper.list());
+	}
 }

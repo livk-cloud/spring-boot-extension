@@ -32,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @SpringAutoService
 public class AnnoTest {
 
-    public void show() {
-        log.info("1");
-    }
+	public void show() {
+		log.info("1");
+	}
 
 }

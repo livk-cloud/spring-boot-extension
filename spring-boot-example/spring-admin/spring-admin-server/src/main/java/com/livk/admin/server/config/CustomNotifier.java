@@ -38,22 +38,22 @@ import reactor.core.publisher.Mono;
 @Component
 public class CustomNotifier extends AbstractEventNotifier {
 
-    protected CustomNotifier(InstanceRepository repository) {
-        super(repository);
-    }
+	protected CustomNotifier(InstanceRepository repository) {
+		super(repository);
+	}
 
-    @NonNull
-    @Override
-    protected Mono<Void> doNotify(@NonNull InstanceEvent event, @NonNull Instance instance) {
-        return Mono.fromRunnable(() -> {
-            if (event instanceof InstanceStatusChangedEvent statusChangedEvent) {
-                log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
-                        statusChangedEvent.getStatusInfo().getStatus());
-            } else {
-                log.info("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
-                        event.getType());
-            }
-        });
-    }
+	@NonNull
+	@Override
+	protected Mono<Void> doNotify(@NonNull InstanceEvent event, @NonNull Instance instance) {
+		return Mono.fromRunnable(() -> {
+			if (event instanceof InstanceStatusChangedEvent statusChangedEvent) {
+				log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
+					statusChangedEvent.getStatusInfo().getStatus());
+			} else {
+				log.info("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
+					event.getType());
+			}
+		});
+	}
 
 }

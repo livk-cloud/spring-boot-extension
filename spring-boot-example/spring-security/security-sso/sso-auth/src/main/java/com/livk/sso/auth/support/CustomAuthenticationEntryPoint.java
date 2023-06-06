@@ -33,10 +33,10 @@ import java.util.Map;
  */
 @Slf4j
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error("异常：{}", authException.getMessage());
-        authException.printStackTrace();
-        WebUtils.out(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", authException.getMessage()));
-    }
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+		log.error("异常：{}", authException.getMessage());
+		authException.printStackTrace();
+		WebUtils.out(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", authException.getMessage()));
+	}
 }

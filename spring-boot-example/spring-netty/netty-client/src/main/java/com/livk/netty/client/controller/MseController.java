@@ -40,15 +40,15 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class MseController {
 
-    private final NettyClient nettyClient;
+	private final NettyClient nettyClient;
 
-    @PostMapping
-    public HttpEntity<Void> send(@RequestBody JsonNode jsonNode) throws ExecutionException, InterruptedException {
-        NettyMessage.Message message = NettyMessage.Message.newBuilder()
-                .setType(NettyMessage.Message.MessageType.NORMAL)
-                .setContent(jsonNode.toString())
-                .setRequestId(UUID.randomUUID().toString()).build();
-        ChannelFuture future = nettyClient.sendMsg(message);
-        return ResponseEntity.ok(future.get());
-    }
+	@PostMapping
+	public HttpEntity<Void> send(@RequestBody JsonNode jsonNode) throws ExecutionException, InterruptedException {
+		NettyMessage.Message message = NettyMessage.Message.newBuilder()
+			.setType(NettyMessage.Message.MessageType.NORMAL)
+			.setContent(jsonNode.toString())
+			.setRequestId(UUID.randomUUID().toString()).build();
+		ChannelFuture future = nettyClient.sendMsg(message);
+		return ResponseEntity.ok(future.get());
+	}
 }

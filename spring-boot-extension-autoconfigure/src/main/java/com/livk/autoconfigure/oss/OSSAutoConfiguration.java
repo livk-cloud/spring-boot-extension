@@ -42,74 +42,74 @@ import org.springframework.context.annotation.Bean;
 @EnableConfigurationProperties(OSSProperties.class)
 public class OSSAutoConfiguration {
 
-    /**
-     * Oss template oss template.
-     *
-     * @param abstractService the abstract service
-     * @return the oss template
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(AbstractService.class)
-    public OSSTemplate ossTemplate(AbstractService<?> abstractService) {
-        return new OSSTemplate(abstractService);
-    }
+	/**
+	 * Oss template oss template.
+	 *
+	 * @param abstractService the abstract service
+	 * @return the oss template
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnBean(AbstractService.class)
+	public OSSTemplate ossTemplate(AbstractService<?> abstractService) {
+		return new OSSTemplate(abstractService);
+	}
 
-    /**
-     * The type Minio oss auto configuration.
-     */
-    @AutoConfiguration
-    @ConditionalOnClass(MinioClient.class)
-    public static class MinioOSSAutoConfiguration {
+	/**
+	 * The type Minio oss auto configuration.
+	 */
+	@AutoConfiguration
+	@ConditionalOnClass(MinioClient.class)
+	public static class MinioOSSAutoConfiguration {
 
-        /**
-         * Minio client factory minio client factory.
-         *
-         * @return the minio client factory
-         */
-        @Bean
-        public MinioClientFactory minioClientFactory(){
-            return new MinioClientFactory();
-        }
+		/**
+		 * Minio client factory minio client factory.
+		 *
+		 * @return the minio client factory
+		 */
+		@Bean
+		public MinioClientFactory minioClientFactory() {
+			return new MinioClientFactory();
+		}
 
-        /**
-         * Minio service minio service.
-         *
-         * @return the minio service
-         */
-        @Bean(destroyMethod = "close")
-        @ConditionalOnMissingBean(AbstractService.class)
-        public MinioService minioService() {
-            return new MinioService();
-        }
-    }
+		/**
+		 * Minio service minio service.
+		 *
+		 * @return the minio service
+		 */
+		@Bean(destroyMethod = "close")
+		@ConditionalOnMissingBean(AbstractService.class)
+		public MinioService minioService() {
+			return new MinioService();
+		}
+	}
 
-    /**
-     * The type Aliyun oss auto configuration.
-     */
-    @AutoConfiguration
-    @ConditionalOnClass(OSS.class)
-    public static class AliyunOSSAutoConfiguration {
+	/**
+	 * The type Aliyun oss auto configuration.
+	 */
+	@AutoConfiguration
+	@ConditionalOnClass(OSS.class)
+	public static class AliyunOSSAutoConfiguration {
 
-        /**
-         * Aliyun client factory aliyun client factory.
-         *
-         * @return the aliyun client factory
-         */
-        @Bean
-        public AliyunClientFactory aliyunClientFactory(){
-            return new AliyunClientFactory();
-        }
+		/**
+		 * Aliyun client factory aliyun client factory.
+		 *
+		 * @return the aliyun client factory
+		 */
+		@Bean
+		public AliyunClientFactory aliyunClientFactory() {
+			return new AliyunClientFactory();
+		}
 
-        /**
-         * Minio service minio service.
-         *
-         * @return the minio service
-         */
-        @Bean(destroyMethod = "close")
-        @ConditionalOnMissingBean(AbstractService.class)
-        public AliyunOSSService aliyunOSSService() {
-            return new AliyunOSSService();
-        }
-    }
+		/**
+		 * Minio service minio service.
+		 *
+		 * @return the minio service
+		 */
+		@Bean(destroyMethod = "close")
+		@ConditionalOnMissingBean(AbstractService.class)
+		public AliyunOSSService aliyunOSSService() {
+			return new AliyunOSSService();
+		}
+	}
 }

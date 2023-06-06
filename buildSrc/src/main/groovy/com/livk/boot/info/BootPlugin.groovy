@@ -38,22 +38,22 @@ import java.util.concurrent.TimeUnit
  *
  */
 abstract class BootPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(JavaPlugin.class)
-        project.pluginManager.apply(SpringBootPlugin.class)
-        project.extensions.getByType(SpringBootExtension.class)
-                .buildInfo {
-                    it.properties { build ->
-                        build.group.set(project.group.toString())
-                        build.version.set(project.version.toString())
-                        build.time.set(DateTimeFormatter.ISO_INSTANT.format(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))))
-                    }
-                }
-        def bootJar = project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME).get() as BootJar
-        bootJar.archiveBaseName.set(project.name)
-        bootJar.archiveFileName.set(bootJar.archiveBaseName.get() + "." + bootJar.archiveExtension.get())
-        bootJar.launchScript()
-        (project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).enabled = false
-    }
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlugin.class)
+		project.pluginManager.apply(SpringBootPlugin.class)
+		project.extensions.getByType(SpringBootExtension.class)
+			.buildInfo {
+				it.properties { build ->
+					build.group.set(project.group.toString())
+					build.version.set(project.version.toString())
+					build.time.set(DateTimeFormatter.ISO_INSTANT.format(Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))))
+				}
+			}
+		def bootJar = project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME).get() as BootJar
+		bootJar.archiveBaseName.set(project.name)
+		bootJar.archiveFileName.set(bootJar.archiveBaseName.get() + "." + bootJar.archiveExtension.get())
+		bootJar.launchScript()
+		(project.tasks.named(JavaPlugin.JAR_TASK_NAME).get() as Jar).enabled = false
+	}
 }

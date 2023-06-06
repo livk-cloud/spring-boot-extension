@@ -29,129 +29,129 @@ import java.awt.*;
  * @author livk
  */
 public record QRCodeEntity<T>(T content,
-                              int width,
-                              int height,
-                              MatrixToImageConfig config,
-                              PicType type) {
+							  int width,
+							  int height,
+							  MatrixToImageConfig config,
+							  PicType type) {
 
-    /**
-     * Builder qr code entity builder.
-     *
-     * @param <T>     the type parameter
-     * @param content the content
-     * @return the qr code entity builder
-     */
-    public static <T> QRCodeEntityBuilder<T> builder(T content) {
-        return new QRCodeEntityBuilder<>(content);
-    }
+	/**
+	 * Builder qr code entity builder.
+	 *
+	 * @param <T>     the type parameter
+	 * @param content the content
+	 * @return the qr code entity builder
+	 */
+	public static <T> QRCodeEntityBuilder<T> builder(T content) {
+		return new QRCodeEntityBuilder<>(content);
+	}
 
-    /**
-     * The type Qr code entity builder.
-     *
-     * @param <T> the type parameter
-     */
-    public static class QRCodeEntityBuilder<T> {
-        private final T content;
-        private Integer width = 400;
-        private Integer height = 400;
-        private int onColor = MatrixToImageConfig.BLACK;
-        private int offColor = MatrixToImageConfig.WHITE;
-        private PicType type = PicType.PNG;
+	/**
+	 * The type Qr code entity builder.
+	 *
+	 * @param <T> the type parameter
+	 */
+	public static class QRCodeEntityBuilder<T> {
+		private final T content;
+		private Integer width = 400;
+		private Integer height = 400;
+		private int onColor = MatrixToImageConfig.BLACK;
+		private int offColor = MatrixToImageConfig.WHITE;
+		private PicType type = PicType.PNG;
 
-        /**
-         * Instantiates a new Qr code entity builder.
-         *
-         * @param content the content
-         */
-        QRCodeEntityBuilder(T content) {
-            this.content = content;
-        }
+		/**
+		 * Instantiates a new Qr code entity builder.
+		 *
+		 * @param content the content
+		 */
+		QRCodeEntityBuilder(T content) {
+			this.content = content;
+		}
 
-        /**
-         * Width qr code entity builder.
-         *
-         * @param width the width
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> width(int width) {
-            this.width = width;
-            return this;
-        }
+		/**
+		 * Width qr code entity builder.
+		 *
+		 * @param width the width
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> width(int width) {
+			this.width = width;
+			return this;
+		}
 
-        /**
-         * Height qr code entity builder.
-         *
-         * @param height the height
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> height(int height) {
-            this.height = height;
-            return this;
-        }
+		/**
+		 * Height qr code entity builder.
+		 *
+		 * @param height the height
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> height(int height) {
+			this.height = height;
+			return this;
+		}
 
-        /**
-         * On color qr code entity builder.
-         *
-         * @param onColor the on color
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> onColor(int onColor) {
-            this.onColor = onColor;
-            return this;
-        }
+		/**
+		 * On color qr code entity builder.
+		 *
+		 * @param onColor the on color
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> onColor(int onColor) {
+			this.onColor = onColor;
+			return this;
+		}
 
-        /**
-         * On color qr code entity builder.
-         *
-         * @param color the color
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> onColor(Color color) {
-            this.onColor = color.getRGB();
-            return this;
-        }
+		/**
+		 * On color qr code entity builder.
+		 *
+		 * @param color the color
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> onColor(Color color) {
+			this.onColor = color.getRGB();
+			return this;
+		}
 
-        /**
-         * Off color qr code entity builder.
-         *
-         * @param offColor the off color
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> offColor(int offColor) {
-            this.offColor = offColor;
-            return this;
-        }
+		/**
+		 * Off color qr code entity builder.
+		 *
+		 * @param offColor the off color
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> offColor(int offColor) {
+			this.offColor = offColor;
+			return this;
+		}
 
-        /**
-         * Off color qr code entity builder.
-         *
-         * @param color the color
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> offColor(Color color) {
-            this.offColor = color.getRGB();
-            return this;
-        }
+		/**
+		 * Off color qr code entity builder.
+		 *
+		 * @param color the color
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> offColor(Color color) {
+			this.offColor = color.getRGB();
+			return this;
+		}
 
-        /**
-         * Type qr code entity builder.
-         *
-         * @param type the type
-         * @return the qr code entity builder
-         */
-        public QRCodeEntityBuilder<T> type(PicType type) {
-            this.type = type;
-            return this;
-        }
+		/**
+		 * Type qr code entity builder.
+		 *
+		 * @param type the type
+		 * @return the qr code entity builder
+		 */
+		public QRCodeEntityBuilder<T> type(PicType type) {
+			this.type = type;
+			return this;
+		}
 
-        /**
-         * Build qr code entity.
-         *
-         * @return the qr code entity
-         */
-        public QRCodeEntity<T> build() {
-            MatrixToImageConfig imageConfig = new MatrixToImageConfig(this.onColor, this.offColor);
-            return new QRCodeEntity<>(this.content, this.width, this.height, imageConfig, this.type);
-        }
-    }
+		/**
+		 * Build qr code entity.
+		 *
+		 * @return the qr code entity
+		 */
+		public QRCodeEntity<T> build() {
+			MatrixToImageConfig imageConfig = new MatrixToImageConfig(this.onColor, this.offColor);
+			return new QRCodeEntity<>(this.content, this.width, this.height, imageConfig, this.type);
+		}
+	}
 }

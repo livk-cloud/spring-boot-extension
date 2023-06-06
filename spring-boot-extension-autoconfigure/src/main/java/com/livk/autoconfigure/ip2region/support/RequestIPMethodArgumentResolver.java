@@ -40,25 +40,25 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final Ip2RegionSearch search;
+	private final Ip2RegionSearch search;
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(RequestIp.class);
-    }
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return parameter.hasParameterAnnotation(RequestIp.class);
+	}
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (parameter.getParameterType().isAssignableFrom(IpInfo.class)) {
-            return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
-        }
-        throw new RuntimeException("param not support " + parameter.getParameterType());
-    }
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		if (parameter.getParameterType().isAssignableFrom(IpInfo.class)) {
+			return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
+		}
+		throw new RuntimeException("param not support " + parameter.getParameterType());
+	}
 
-    private IpInfo parseIp(NativeWebRequest webRequest) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        Assert.notNull(request, "request not be null");
-        String ip = WebUtils.realIp(request);
-        return search.searchAsInfo(ip);
-    }
+	private IpInfo parseIp(NativeWebRequest webRequest) {
+		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+		Assert.notNull(request, "request not be null");
+		String ip = WebUtils.realIp(request);
+		return search.searchAsInfo(ip);
+	}
 }

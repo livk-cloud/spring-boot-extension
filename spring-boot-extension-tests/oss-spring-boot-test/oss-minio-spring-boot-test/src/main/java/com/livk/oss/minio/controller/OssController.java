@@ -42,22 +42,22 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class OssController {
 
-    public final OSSTemplate ossTemplate;
+	public final OSSTemplate ossTemplate;
 
-    @PostConstruct
-    public void init() {
-        ossTemplate.removeBucketAndObj("test");
-    }
+	@PostConstruct
+	public void init() {
+		ossTemplate.removeBucketAndObj("test");
+	}
 
-    @GetMapping("test")
-    public HttpEntity<String> test() throws IOException {
-        log.info("minioClient: {}", SpringContextHolder.getBean(MinioClient.class));
-        InputStream stream = new ClassPathResource("test.jpg").getInputStream();
-        ossTemplate.createBucket("test");
-        if (!ossTemplate.exist("test", "test.jpg")) {
-            ossTemplate.upload("test", "test.jpg", stream);
-        }
-        String url = ossTemplate.getExternalLink("test", "test.jpg");
-        return ResponseEntity.ok(url);
-    }
+	@GetMapping("test")
+	public HttpEntity<String> test() throws IOException {
+		log.info("minioClient: {}", SpringContextHolder.getBean(MinioClient.class));
+		InputStream stream = new ClassPathResource("test.jpg").getInputStream();
+		ossTemplate.createBucket("test");
+		if (!ossTemplate.exist("test", "test.jpg")) {
+			ossTemplate.upload("test", "test.jpg", stream);
+		}
+		String url = ossTemplate.getExternalLink("test", "test.jpg");
+		return ResponseEntity.ok(url);
+	}
 }

@@ -34,40 +34,40 @@ import org.lionsoul.ip2region.xdb.Searcher;
 @RequiredArgsConstructor
 public class Ip2RegionSearch {
 
-    private final Searcher searcher;
+	private final Searcher searcher;
 
-    /**
-     * Search as string.
-     *
-     * @param ip the ip
-     * @return the string
-     */
-    public String searchAsString(String ip) {
-        try {
-            return searcher.search(ip);
-        } catch (Exception e) {
-            log.error("Ip2Region Searcher fail! IP:{}", ip);
-            return "";
-        }
-    }
+	/**
+	 * Search as string.
+	 *
+	 * @param ip the ip
+	 * @return the string
+	 */
+	public String searchAsString(String ip) {
+		try {
+			return searcher.search(ip);
+		} catch (Exception e) {
+			log.error("Ip2Region Searcher fail! IP:{}", ip);
+			return "";
+		}
+	}
 
-    /**
-     * Search as info ip info.
-     *
-     * @param ip the ip
-     * @return the ip info
-     */
-    public IpInfo searchAsInfo(String ip) {
-        return new IpInfo(ip + "|" + this.searchAsString(ip));
-    }
+	/**
+	 * Search as info ip info.
+	 *
+	 * @param ip the ip
+	 * @return the ip info
+	 */
+	public IpInfo searchAsInfo(String ip) {
+		return new IpInfo(ip + "|" + this.searchAsString(ip));
+	}
 
-    /**
-     * Search as json string.
-     *
-     * @param ip the ip
-     * @return the string
-     */
-    public String searchAsJson(String ip) {
-        return JsonMapperUtils.writeValueAsString(this.searchAsInfo(ip));
-    }
+	/**
+	 * Search as json string.
+	 *
+	 * @param ip the ip
+	 * @return the string
+	 */
+	public String searchAsJson(String ip) {
+		return JsonMapperUtils.writeValueAsString(this.searchAsInfo(ip));
+	}
 }

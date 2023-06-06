@@ -32,72 +32,72 @@ import java.util.ServiceLoader;
  */
 public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
-    /**
-     * The constant JDK_SERVICE.
-     */
-    ProviderLoader JDK_SERVICE = new AbstractLoader.JdkServiceLoader();
+	/**
+	 * The constant JDK_SERVICE.
+	 */
+	ProviderLoader JDK_SERVICE = new AbstractLoader.JdkServiceLoader();
 
-    /**
-     * The constant SPRING_FACTORY.
-     */
-    ProviderLoader SPRING_FACTORY = new AbstractLoader.SpringFactoryLoader();
+	/**
+	 * The constant SPRING_FACTORY.
+	 */
+	ProviderLoader SPRING_FACTORY = new AbstractLoader.SpringFactoryLoader();
 
-    /**
-     * Load stream.
-     *
-     * @param <T>  the type parameter
-     * @param type the type
-     * @return the stream
-     */
-    <T> List<T> load(Class<T> type);
+	/**
+	 * Load stream.
+	 *
+	 * @param <T>  the type parameter
+	 * @param type the type
+	 * @return the stream
+	 */
+	<T> List<T> load(Class<T> type);
 
-    /**
-     * Load list.
-     *
-     * @param <T>            the type parameter
-     * @param resolvableType the resolvable type
-     * @return the list
-     */
-    default <T> List<T> load(ResolvableType resolvableType) {
-        Class<T> type = ClassUtils.toClass(resolvableType.getType());
-        return load(type);
-    }
+	/**
+	 * Load list.
+	 *
+	 * @param <T>            the type parameter
+	 * @param resolvableType the resolvable type
+	 * @return the list
+	 */
+	default <T> List<T> load(ResolvableType resolvableType) {
+		Class<T> type = ClassUtils.toClass(resolvableType.getType());
+		return load(type);
+	}
 
-    /**
-     * The type Abstract loader.
-     */
-    abstract non-sealed class AbstractLoader implements ProviderLoader {
+	/**
+	 * The type Abstract loader.
+	 */
+	abstract non-sealed class AbstractLoader implements ProviderLoader {
 
-        @Override
-        public <T> List<T> load(Class<T> type) {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            return load(type, classLoader);
-        }
+		@Override
+		public <T> List<T> load(Class<T> type) {
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			return load(type, classLoader);
+		}
 
-        /**
-         * Load list.
-         *
-         * @param <T>         the type parameter
-         * @param type        the type
-         * @param classLoader the class loader
-         * @return the list
-         */
-        protected abstract <T> List<T> load(Class<T> type, ClassLoader classLoader);
+		/**
+		 * Load list.
+		 *
+		 * @param <T>         the type parameter
+		 * @param type        the type
+		 * @param classLoader the class loader
+		 * @return the list
+		 */
+		protected abstract <T> List<T> load(Class<T> type, ClassLoader classLoader);
 
-        private static class JdkServiceLoader extends AbstractLoader {
+		private static class JdkServiceLoader extends AbstractLoader {
 
-            @Override
-            protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
-                return Lists.newArrayList(ServiceLoader.load(type, classLoader));
-            }
-        }
+			@Override
+			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
+				return Lists.newArrayList(ServiceLoader.load(type, classLoader));
+			}
+		}
 
-        private static class SpringFactoryLoader extends AbstractLoader {
+		private static class SpringFactoryLoader extends AbstractLoader {
 
-            @Override
-            protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
-                return SpringFactoriesLoader.loadFactories(type, classLoader);
-            }
-        }
-    }
+			@Override
+			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
+				return SpringFactoriesLoader.loadFactories(type, classLoader);
+			}
+		}
+	}
 }

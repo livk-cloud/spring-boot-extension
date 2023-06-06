@@ -43,28 +43,28 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookMapper bookMapper;
+	private final BookMapper bookMapper;
 
-    private final AuthorMapper authorMapper;
+	private final AuthorMapper authorMapper;
 
-    @QueryMapping
-    public Flux<Book> bookList() {
-        return Flux.fromIterable(bookMapper.list());
-    }
+	@QueryMapping
+	public Flux<Book> bookList() {
+		return Flux.fromIterable(bookMapper.list());
+	}
 
-    @QueryMapping
-    public Mono<Book> bookByIsbn(@Argument String isbn) {
-        return Mono.justOrEmpty(bookMapper.getByIsbn(isbn));
-    }
+	@QueryMapping
+	public Mono<Book> bookByIsbn(@Argument String isbn) {
+		return Mono.justOrEmpty(bookMapper.getByIsbn(isbn));
+	}
 
-    @SchemaMapping(typeName = "Book", field = "author")
-    public Mono<Author> getAuthor(Book book) {
-        return Mono.justOrEmpty(authorMapper.getByIdCardNo(book.getAuthorIdCardNo()));
-    }
+	@SchemaMapping(typeName = "Book", field = "author")
+	public Mono<Author> getAuthor(Book book) {
+		return Mono.justOrEmpty(authorMapper.getByIdCardNo(book.getAuthorIdCardNo()));
+	}
 
-    @MutationMapping
-    public Mono<Boolean> createBook(@Argument BookDTO dto) {
-        return Mono.justOrEmpty(bookMapper.save(BeanUtils.copy(dto, Book.class)) != 0);
-    }
+	@MutationMapping
+	public Mono<Boolean> createBook(@Argument BookDTO dto) {
+		return Mono.justOrEmpty(bookMapper.save(BeanUtils.copy(dto, Book.class)) != 0);
+	}
 }
 

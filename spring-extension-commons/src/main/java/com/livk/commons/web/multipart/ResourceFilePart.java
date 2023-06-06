@@ -41,55 +41,55 @@ import java.util.concurrent.Callable;
 @RequiredArgsConstructor
 public class ResourceFilePart implements FilePart {
 
-    private final HttpHeaders headers;
+	private final HttpHeaders headers;
 
-    private final Resource resource;
+	private final Resource resource;
 
-    /**
-     * Instantiates a new Resource file part.
-     *
-     * @param resource the resource
-     */
-    public ResourceFilePart(Resource resource) {
-        this(new HttpHeaders(), resource);
-    }
+	/**
+	 * Instantiates a new Resource file part.
+	 *
+	 * @param resource the resource
+	 */
+	public ResourceFilePart(Resource resource) {
+		this(new HttpHeaders(), resource);
+	}
 
-    @Override
-    public String filename() {
-        String name = headers().getContentDisposition().getName();
-        return StringUtils.hasText(name) ? name : resource.getFilename();
-    }
+	@Override
+	public String filename() {
+		String name = headers().getContentDisposition().getName();
+		return StringUtils.hasText(name) ? name : resource.getFilename();
+	}
 
-    @Override
-    public Mono<Void> transferTo(Path dest) {
-        return blockingOperation(() ->
-                Files.copy(resource.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING));
-    }
+	@Override
+	public Mono<Void> transferTo(Path dest) {
+		return blockingOperation(() ->
+			Files.copy(resource.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING));
+	}
 
-    private Mono<Void> blockingOperation(Callable<?> callable) {
-        return Mono.<Void>create(sink -> {
-            try {
-                callable.call();
-                sink.success();
-            } catch (Exception ex) {
-                sink.error(ex);
-            }
-        }).publishOn(Schedulers.boundedElastic());
-    }
+	private Mono<Void> blockingOperation(Callable<?> callable) {
+		return Mono.<Void>create(sink -> {
+			try {
+				callable.call();
+				sink.success();
+			} catch (Exception ex) {
+				sink.error(ex);
+			}
+		}).publishOn(Schedulers.boundedElastic());
+	}
 
-    @Override
-    public String name() {
-        return filename();
-    }
+	@Override
+	public String name() {
+		return filename();
+	}
 
-    @Override
-    public HttpHeaders headers() {
-        return headers;
-    }
+	@Override
+	public HttpHeaders headers() {
+		return headers;
+	}
 
-    @Override
-    public Flux<DataBuffer> content() {
-        return DataBufferUtils.read(resource, DataBufferUtils.DEFAULT_FACTORY, DataBufferUtils.BUFFER_SIZE)
-                .publishOn(Schedulers.boundedElastic());
-    }
+	@Override
+	public Flux<DataBuffer> content() {
+		return DataBufferUtils.read(resource, DataBufferUtils.DEFAULT_FACTORY, DataBufferUtils.BUFFER_SIZE)
+			.publishOn(Schedulers.boundedElastic());
+	}
 }

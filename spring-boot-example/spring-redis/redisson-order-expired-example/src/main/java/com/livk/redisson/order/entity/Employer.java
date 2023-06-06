@@ -35,13 +35,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employer {
-    private String name;
-    private int age;
-    private String wife;
-    private Double salary;
-    private String putTime;
+	private String name;
+	private int age;
+	private String wife;
+	private Double salary;
+	private String putTime;
 
-    public void setPutTime() {
-        this.putTime = DateUtils.format(LocalDateTime.now(), DateUtils.HMS);
-    }
+	public void setPutTime() {
+		this.putTime = DateUtils.format(LocalDateTime.now(), DateUtils.HMS);
+	}
 }

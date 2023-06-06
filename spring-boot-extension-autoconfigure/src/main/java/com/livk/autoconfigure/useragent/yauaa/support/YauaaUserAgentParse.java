@@ -38,15 +38,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class YauaaUserAgentParse implements HttpUserAgentParser {
 
-    private final UserAgentAnalyzer userAgentAnalyzer;
+	private final UserAgentAnalyzer userAgentAnalyzer;
 
-    @Override
-    public Wrapper parse(HttpHeaders headers) {
-        Map<String, String> headersConcat = headers.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> String.join(",", entry.getValue())));
-        UserAgent userAgent = userAgentAnalyzer.parse(headersConcat);
-        return GenericWrapper.of(userAgent);
-    }
+	@Override
+	public Wrapper parse(HttpHeaders headers) {
+		Map<String, String> headersConcat = headers.entrySet()
+			.stream()
+			.collect(Collectors.toMap(Map.Entry::getKey,
+				entry -> String.join(",", entry.getValue())));
+		UserAgent userAgent = userAgentAnalyzer.parse(headersConcat);
+		return GenericWrapper.of(userAgent);
+	}
 }

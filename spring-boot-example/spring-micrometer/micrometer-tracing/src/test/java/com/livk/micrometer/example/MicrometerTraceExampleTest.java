@@ -38,15 +38,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MicrometerTraceExampleTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void testHome() throws Exception {
-        mockMvc.perform(get("/home"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello World!"));
-    }
+	@Test
+	void testHome() throws Exception {
+		mockMvc.perform(get("/home"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().string("Hello World!"));
+	}
 }
 

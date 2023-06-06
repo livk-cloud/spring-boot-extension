@@ -33,17 +33,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClientHandlerInitializer extends ChannelInitializer<Channel> {
 
-    private final NettyClient nettyClient;
+	private final NettyClient nettyClient;
 
-    @Override
-    protected void initChannel(Channel ch) {
-        ch.pipeline()
-                .addLast(new IdleStateHandler(0, 10, 0))
-                .addLast(new ProtobufVarint32FrameDecoder())
-                .addLast(new ProtobufDecoder(NettyMessage.Message.getDefaultInstance()))
-                .addLast(new ProtobufVarint32LengthFieldPrepender())
-                .addLast(new ProtobufEncoder())
-                .addLast(new HeartbeatHandler(nettyClient))
-                .addLast(new NettyClientHandler());
-    }
+	@Override
+	protected void initChannel(Channel ch) {
+		ch.pipeline()
+			.addLast(new IdleStateHandler(0, 10, 0))
+			.addLast(new ProtobufVarint32FrameDecoder())
+			.addLast(new ProtobufDecoder(NettyMessage.Message.getDefaultInstance()))
+			.addLast(new ProtobufVarint32LengthFieldPrepender())
+			.addLast(new ProtobufEncoder())
+			.addLast(new HeartbeatHandler(nettyClient))
+			.addLast(new NettyClientHandler());
+	}
 }

@@ -24,16 +24,16 @@ import lombok.Getter;
  */
 public class MetadataIllegalException extends RuntimeException {
 
-    @Getter
-    private final String action;
+	@Getter
+	private final String action;
 
-    /**
-     * Instantiates a new Metadata illegal exception.
-     *
-     * @param message the message
-     */
-    public MetadataIllegalException(String message, String action) {
-        super(message);
-        this.action = action;
-    }
+	/**
+	 * Instantiates a new Metadata illegal exception.
+	 *
+	 * @param message the message
+	 */
+	public MetadataIllegalException(String message, String action) {
+		super(message);
+		this.action = action;
+	}
 }

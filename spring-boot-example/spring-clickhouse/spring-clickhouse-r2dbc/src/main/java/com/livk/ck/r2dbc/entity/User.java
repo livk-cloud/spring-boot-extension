@@ -39,16 +39,16 @@ import java.util.Date;
 @Table("user")
 public class User {
 
-    @Id
-    private Integer id;
+	@Id
+	private Integer id;
 
-    private String appId;
+	private String appId;
 
-    private String version;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date regTime;
+	private String version;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date regTime;
 
-    public static User collect(Row row, RowMetadata rowMetadata) {
-        return new User();
-    }
+	public static User collect(Row row, RowMetadata rowMetadata) {
+		return new User();
+	}
 }

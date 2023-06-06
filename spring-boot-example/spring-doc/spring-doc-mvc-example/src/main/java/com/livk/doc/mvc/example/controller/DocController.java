@@ -37,9 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("doc")
 public class DocController {
 
-    @GetMapping
-    @Operation(summary = "hello 你好")
-    public HttpEntity<String> get() {
-        return ResponseEntity.ok("hello world");
-    }
+	@GetMapping
+	@Operation(summary = "hello 你好")
+	public HttpEntity<String> get() {
+		return ResponseEntity.ok("hello world");
+	}
 }

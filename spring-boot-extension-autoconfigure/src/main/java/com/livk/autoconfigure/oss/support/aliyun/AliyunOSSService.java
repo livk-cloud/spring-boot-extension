@@ -36,85 +36,85 @@ import java.util.List;
  */
 public class AliyunOSSService extends AbstractService<OSS> {
 
-    @Override
-    public boolean exist(String bucketName) {
-        return client.doesBucketExist(bucketName);
-    }
+	@Override
+	public boolean exist(String bucketName) {
+		return client.doesBucketExist(bucketName);
+	}
 
-    @Override
-    public void createBucket(String bucketName) {
-        if (!client.doesBucketExist(bucketName)) {
-            client.createBucket((bucketName));
-            //设置cors
-            SetBucketCORSRequest request = new SetBucketCORSRequest(bucketName);
-            SetBucketCORSRequest.CORSRule rule = new SetBucketCORSRequest.CORSRule();
-            rule.addAllowedMethod("GET");
-            rule.addAllowedMethod("POST");
-            rule.addAllowedMethod("PUT");
-            rule.addAllowedMethod("DELETE");
-            rule.addAllowdOrigin("*");
-            request.addCorsRule(rule);
-            client.setBucketCORS(request);
-            client.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
-        }
-    }
+	@Override
+	public void createBucket(String bucketName) {
+		if (!client.doesBucketExist(bucketName)) {
+			client.createBucket((bucketName));
+			//设置cors
+			SetBucketCORSRequest request = new SetBucketCORSRequest(bucketName);
+			SetBucketCORSRequest.CORSRule rule = new SetBucketCORSRequest.CORSRule();
+			rule.addAllowedMethod("GET");
+			rule.addAllowedMethod("POST");
+			rule.addAllowedMethod("PUT");
+			rule.addAllowedMethod("DELETE");
+			rule.addAllowdOrigin("*");
+			request.addCorsRule(rule);
+			client.setBucketCORS(request);
+			client.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
+		}
+	}
 
-    @Override
-    public List<String> allBuckets() {
-        return client.listBuckets()
-                .stream()
-                .map(Bucket::getName)
-                .toList();
-    }
+	@Override
+	public List<String> allBuckets() {
+		return client.listBuckets()
+			.stream()
+			.map(Bucket::getName)
+			.toList();
+	}
 
-    @Override
-    public void removeObj(String bucketName) {
-        client.deleteBucket(bucketName);
-    }
+	@Override
+	public void removeObj(String bucketName) {
+		client.deleteBucket(bucketName);
+	}
 
-    @Override
-    public boolean exist(String bucketName, String fileName) {
-        client.doesObjectExist(bucketName, fileName);
-        return false;
-    }
+	@Override
+	public boolean exist(String bucketName, String fileName) {
+		client.doesObjectExist(bucketName, fileName);
+		return false;
+	}
 
-    @Override
-    public void upload(String bucketName, String fileName, InputStream inputStream) {
-        client.putObject(bucketName, fileName, inputStream);
-    }
+	@Override
+	public void upload(String bucketName, String fileName, InputStream inputStream) {
+		client.putObject(bucketName, fileName, inputStream);
+	}
 
-    @Override
-    public InputStream download(String bucketName, String fileName) {
-        return client.getObject(bucketName, fileName).getObjectContent();
-    }
+	@Override
+	public InputStream download(String bucketName, String fileName) {
+		return client.getObject(bucketName, fileName).getObjectContent();
+	}
 
-    @Override
-    public void removeObj(String bucketName, String fileName) {
-        client.deleteObject(bucketName, fileName);
-    }
+	@Override
+	public void removeObj(String bucketName, String fileName) {
+		client.deleteObject(bucketName, fileName);
+	}
 
-    @Override
-    public String getStrUrl(String bucketName, String fileName) {
-        return getStrUrl(bucketName, fileName, 7);
-    }
+	@Override
+	public String getStrUrl(String bucketName, String fileName) {
+		return getStrUrl(bucketName, fileName, 7);
+	}
 
-    @Override
-    public String getStrUrl(String bucketName, String fileName, int expires) {
-        LocalDateTime time = LocalDateTime.now().plusDays(expires);
-        return client.generatePresignedUrl(bucketName, fileName, DateUtils.date(time)).toString();
-    }
+	@Override
+	public String getStrUrl(String bucketName, String fileName, int expires) {
+		LocalDateTime time = LocalDateTime.now().plusDays(expires);
+		return client.generatePresignedUrl(bucketName, fileName, DateUtils.date(time)).toString();
+	}
 
-    @Override
-    public List<String> getAllObj(String bucketName) {
-        return client.listObjects(bucketName)
-                .getObjectSummaries()
-                .stream()
-                .map(OSSObjectSummary::getKey)
-                .toList();
-    }
+	@Override
+	public List<String> getAllObj(String bucketName) {
+		return client.listObjects(bucketName)
+			.getObjectSummaries()
+			.stream()
+			.map(OSSObjectSummary::getKey)
+			.toList();
+	}
 
-    @Override
-    public void close() throws Exception {
-        client.shutdown();
-    }
+	@Override
+	public void close() throws Exception {
+		client.shutdown();
+	}
 }

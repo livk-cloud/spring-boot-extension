@@ -30,8 +30,8 @@ import java.io.Serializable;
  */
 public class IpInfoObjectFactory implements ObjectFactory<RequestIpInfo>, Serializable {
 
-    @Override
-    public RequestIpInfo getObject() throws BeansException {
-        return RequestIpContextHolder::get;
-    }
+	@Override
+	public RequestIpInfo getObject() throws BeansException {
+		return RequestIpContextHolder::get;
+	}
 }

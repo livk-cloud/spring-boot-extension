@@ -36,20 +36,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
+	private final UserMapper userMapper;
 
-    @Override
-    public List<User> list() {
-        return userMapper.selectList();
-    }
+	@Override
+	public List<User> list() {
+		return userMapper.selectList();
+	}
 
-    @Override
-    public boolean remove(String regTime) {
-        return userMapper.delete(regTime) > 0;
-    }
+	@Override
+	public boolean remove(String regTime) {
+		return userMapper.delete(regTime) > 0;
+	}
 
-    @Override
-    public boolean save(User user) {
-        return userMapper.insert(user) > 0;
-    }
+	@Override
+	public boolean save(User user) {
+		return userMapper.insert(user) > 0;
+	}
 }

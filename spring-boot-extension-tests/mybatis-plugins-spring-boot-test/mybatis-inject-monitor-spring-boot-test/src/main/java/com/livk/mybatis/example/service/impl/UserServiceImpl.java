@@ -36,30 +36,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
+	private final UserMapper userMapper;
 
-    @Override
-    public User getById(Integer id) {
-        return userMapper.selectById(id);
-    }
+	@Override
+	public User getById(Integer id) {
+		return userMapper.selectById(id);
+	}
 
-    @Override
-    public boolean updateById(User user) {
-        return userMapper.updateById(user) > 0;
-    }
+	@Override
+	public boolean updateById(User user) {
+		return userMapper.updateById(user) > 0;
+	}
 
-    @Override
-    public boolean save(User user) {
-        return userMapper.insert(user) > 0;
-    }
+	@Override
+	public boolean save(User user) {
+		return userMapper.insert(user) > 0;
+	}
 
-    @Override
-    public boolean deleteById(Integer id) {
-        return userMapper.deleteById(id) > 0;
-    }
+	@Override
+	public boolean deleteById(Integer id) {
+		return userMapper.deleteById(id) > 0;
+	}
 
-    @Override
-    public List<User> list() {
-        return userMapper.list();
-    }
+	@Override
+	public List<User> list() {
+		return userMapper.list();
+	}
 }

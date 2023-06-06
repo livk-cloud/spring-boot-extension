@@ -33,11 +33,11 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 @Component
 public class VideoResourceHttpRequestHandler extends ResourceHttpRequestHandler {
 
-    public static final String ATTR = "VIDEO-FILE";
+	public static final String ATTR = "VIDEO-FILE";
 
-    @Override
-    protected Resource getResource(HttpServletRequest request) {
-        String location = (String) request.getAttribute(ATTR);
-        return ResourceUtils.getResource(location);
-    }
+	@Override
+	protected Resource getResource(HttpServletRequest request) {
+		String location = (String) request.getAttribute(ATTR);
+		return ResourceUtils.getResource(location);
+	}
 }

@@ -26,8 +26,8 @@ package com.livk.common.constant;
  */
 public interface KafkaConstant {
 
-    String TOPIC = "livk-topic";
+	String TOPIC = "livk-topic";
 
-    String NEW_TOPIC = "livk-new-topic";
+	String NEW_TOPIC = "livk-new-topic";
 
 }

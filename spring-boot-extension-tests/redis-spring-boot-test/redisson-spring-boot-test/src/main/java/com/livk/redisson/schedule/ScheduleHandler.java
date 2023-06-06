@@ -40,20 +40,20 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ScheduleHandler {
 
-    private final RedissonClient redissonClient;
+	private final RedissonClient redissonClient;
 
-    public void start() {
-        RScheduledExecutorService executorService = redissonClient.getExecutorService("livk");
-        executorService.registerWorkers(WorkerOptions.defaults().workers(12));
-        RScheduledFuture<?> future = executorService.scheduleAtFixedRate((Runnable & Serializable) () -> {
-            log.info("time:{}", System.currentTimeMillis());
-            try {
-                Thread.sleep(10000L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-        log.info("TaskId:{}", future.getTaskId());
+	public void start() {
+		RScheduledExecutorService executorService = redissonClient.getExecutorService("livk");
+		executorService.registerWorkers(WorkerOptions.defaults().workers(12));
+		RScheduledFuture<?> future = executorService.scheduleAtFixedRate((Runnable & Serializable) () -> {
+			log.info("time:{}", System.currentTimeMillis());
+			try {
+				Thread.sleep(10000L);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}, 0, 1, TimeUnit.SECONDS);
+		log.info("TaskId:{}", future.getTaskId());
 //        executorService.delete();
-    }
+	}
 }

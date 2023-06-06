@@ -29,54 +29,54 @@ import java.util.Map;
  */
 public abstract class AbstractExpressionResolver implements ExpressionResolver {
 
-    /**
-     * The Context resolver.
-     */
-    protected final ContextFactory contextFactory = getContextFactory();
+	/**
+	 * The Context resolver.
+	 */
+	protected final ContextFactory contextFactory = getContextFactory();
 
-    @Override
-    public final <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType) {
-        return evaluate(value, new Context(contextMap), returnType);
-    }
+	@Override
+	public final <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType) {
+		return evaluate(value, new Context(contextMap), returnType);
+	}
 
-    @Override
-    public final <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType) {
-        Map<String, Object> map = contextFactory.create(method, args);
-        return evaluate(value, map, returnType);
-    }
+	@Override
+	public final <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType) {
+		Map<String, Object> map = contextFactory.create(method, args);
+		return evaluate(value, map, returnType);
+	}
 
-    @Override
-    public final <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {
-        Map<String, Object> map = contextFactory.merge(method, args, contextMap);
-        return evaluate(value, map, returnType);
-    }
+	@Override
+	public final <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {
+		Map<String, Object> map = contextFactory.merge(method, args, contextMap);
+		return evaluate(value, map, returnType);
+	}
 
-    @Override
-    public final String evaluate(String value, Context context) {
-        return evaluate(value, context, String.class);
-    }
+	@Override
+	public final String evaluate(String value, Context context) {
+		return evaluate(value, context, String.class);
+	}
 
-    @Override
-    public final String evaluate(String value, Map<String, ?> contextMap) {
-        return evaluate(value, contextMap, String.class);
-    }
+	@Override
+	public final String evaluate(String value, Map<String, ?> contextMap) {
+		return evaluate(value, contextMap, String.class);
+	}
 
-    @Override
-    public final String evaluate(String value, Method method, Object[] args) {
-        return evaluate(value, method, args, String.class);
-    }
+	@Override
+	public final String evaluate(String value, Method method, Object[] args) {
+		return evaluate(value, method, args, String.class);
+	}
 
-    @Override
-    public final String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
-        return evaluate(value, method, args, contextMap, String.class);
-    }
+	@Override
+	public final String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
+		return evaluate(value, method, args, contextMap, String.class);
+	}
 
-    /**
-     * Gets context resolver.
-     *
-     * @return the context resolver
-     */
-    protected ContextFactory getContextFactory() {
-        return new DefaultContextFactory();
-    }
+	/**
+	 * Gets context resolver.
+	 *
+	 * @return the context resolver
+	 */
+	protected ContextFactory getContextFactory() {
+		return new DefaultContextFactory();
+	}
 }

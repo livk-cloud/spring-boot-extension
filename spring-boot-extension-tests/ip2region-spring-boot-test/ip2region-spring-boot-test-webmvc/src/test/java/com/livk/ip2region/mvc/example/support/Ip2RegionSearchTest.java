@@ -37,37 +37,37 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest("ip2region.enabled=true")
 class Ip2RegionSearchTest {
 
-    @Autowired
-    private Ip2RegionSearch ip2RegionSearch;
+	@Autowired
+	private Ip2RegionSearch ip2RegionSearch;
 
-    @Test
-    void searchAsString() {
-        String result = ip2RegionSearch.searchAsString("110.242.68.66");
-        String str = "中国|0|河北省|保定市|联通";
-        assertEquals(result, str);
-    }
+	@Test
+	void searchAsString() {
+		String result = ip2RegionSearch.searchAsString("110.242.68.66");
+		String str = "中国|0|河北省|保定市|联通";
+		assertEquals(result, str);
+	}
 
-    @Test
-    void searchAsInfo() {
-        IpInfo result = ip2RegionSearch.searchAsInfo("110.242.68.66");
-        assertEquals("110.242.68.66", result.getIp());
-        assertEquals("中国", result.getNation());
-        assertNull(result.getArea());
-        assertEquals("河北省", result.getProvince());
-        assertEquals("保定市", result.getCity());
-        assertEquals("联通", result.getOperator());
-    }
+	@Test
+	void searchAsInfo() {
+		IpInfo result = ip2RegionSearch.searchAsInfo("110.242.68.66");
+		assertEquals("110.242.68.66", result.getIp());
+		assertEquals("中国", result.getNation());
+		assertNull(result.getArea());
+		assertEquals("河北省", result.getProvince());
+		assertEquals("保定市", result.getCity());
+		assertEquals("联通", result.getOperator());
+	}
 
-    @Test
-    void searchAsJson() {
-        String result = ip2RegionSearch.searchAsJson("110.242.68.66");
-        JsonNode jsonNode = JsonMapperUtils.readTree(result);
-        assertEquals("110.242.68.66", jsonNode.get("ip").asText());
-        assertEquals("中国", jsonNode.get("nation").asText());
-        assertTrue(jsonNode.has("area"));
-        assertEquals("河北省", jsonNode.get("province").asText());
-        assertEquals("保定市", jsonNode.get("city").asText());
-        assertEquals("联通", jsonNode.get("operator").asText());
-    }
+	@Test
+	void searchAsJson() {
+		String result = ip2RegionSearch.searchAsJson("110.242.68.66");
+		JsonNode jsonNode = JsonMapperUtils.readTree(result);
+		assertEquals("110.242.68.66", jsonNode.get("ip").asText());
+		assertEquals("中国", jsonNode.get("nation").asText());
+		assertTrue(jsonNode.has("area"));
+		assertEquals("河北省", jsonNode.get("province").asText());
+		assertEquals("保定市", jsonNode.get("city").asText());
+		assertEquals("联通", jsonNode.get("operator").asText());
+	}
 }
 

@@ -32,5 +32,5 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
 
-    List<Menu> list();
+	List<Menu> list();
 }

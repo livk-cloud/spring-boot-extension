@@ -42,74 +42,73 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class AviatorExpressionResolverTest {
 
-    @Autowired
-    ApplicationContext applicationContext;
+	private final static Object[] args = new Object[]{"livk"};
+	private final static Map<String, String> map = Map.of("username", "livk");
+	final ExpressionResolver resolver = new AviatorExpressionResolver();
+	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	@Autowired
+	ApplicationContext applicationContext;
 
-    private final static Object[] args = new Object[]{"livk"};
-    private final static Map<String, String> map = Map.of("username", "livk");
-    final ExpressionResolver resolver = new AviatorExpressionResolver();
-    private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	AviatorExpressionResolverTest() throws NoSuchMethodException {
+	}
 
-    AviatorExpressionResolverTest() throws NoSuchMethodException {
-    }
+	@Test
+	void evaluate() {
+		assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
 
-    @Test
-    void evaluate() {
-        assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
+		assertEquals("livk", resolver.evaluate("#username", method, args));
 
-        assertEquals("livk", resolver.evaluate("#username", method, args));
+		assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
+		assertEquals("livk", resolver.evaluate("#username", map));
 
-        assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
-        assertEquals("livk", resolver.evaluate("#username", map));
+		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
+		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
-        assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
+		assertEquals("livk", resolver.evaluate("#username", method, args));
+		assertEquals("livk", resolver.evaluate("'livk'", method, args));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
-        assertEquals("livk", resolver.evaluate("#username", method, args));
-        assertEquals("livk", resolver.evaluate("'livk'", method, args));
+		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
+		assertEquals("livk123456", resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
-        assertEquals("livk123456", resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
+		assertEquals("livk", resolver.evaluate("#username", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
-        assertEquals("livk", resolver.evaluate("#username", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+		AviatorEvaluator.addFunctionLoader(new SpringContextFunctionLoader(applicationContext));
+		assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
+	}
 
-        AviatorEvaluator.addFunctionLoader(new SpringContextFunctionLoader(applicationContext));
-        assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
-    }
+	@SuppressWarnings("unused")
+	private void parseMethod(String username) {
+	}
 
-    @SuppressWarnings("unused")
-    private void parseMethod(String username) {
-    }
+	@Configuration
+	static class SpringConfig {
 
-    @Configuration
-    static class SpringConfig {
-
-        @Bean
-        public AddFunction springStrAdd() {
-            return new AddFunction();
-        }
-    }
+		@Bean
+		public AddFunction springStrAdd() {
+			return new AddFunction();
+		}
+	}
 
 
-    static class AddFunction extends AbstractFunction {
-        @Override
-        public String getName() {
-            return "add";
-        }
+	static class AddFunction extends AbstractFunction {
+		@Override
+		public String getName() {
+			return "add";
+		}
 
-        @Override
-        public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
-            String left = FunctionUtils.getStringValue(arg1, env);
-            String right = FunctionUtils.getStringValue(arg2, env);
-            return FunctionUtils.wrapReturn(left + right);
-        }
-    }
+		@Override
+		public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
+			String left = FunctionUtils.getStringValue(arg1, env);
+			String right = FunctionUtils.getStringValue(arg2, env);
+			return FunctionUtils.wrapReturn(left + right);
+		}
+	}
 }

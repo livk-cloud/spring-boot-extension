@@ -34,9 +34,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
 
-    @Override
-    public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-        MonitorSQLInfo info = event.info();
-        log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
-    }
+	@Override
+	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
+		MonitorSQLInfo info = event.info();
+		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
+	}
 }

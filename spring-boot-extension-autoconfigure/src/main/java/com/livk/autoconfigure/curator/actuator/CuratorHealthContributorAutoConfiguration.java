@@ -43,24 +43,24 @@ import java.util.Map;
 @ConditionalOnBean(CuratorFramework.class)
 @ConditionalOnEnabledHealthIndicator("curator")
 public class CuratorHealthContributorAutoConfiguration
-        extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
+	extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
 
-    /**
-     * Instantiates a new Curator health contributor auto configuration.
-     */
-    public CuratorHealthContributorAutoConfiguration() {
-        super(CuratorHealthIndicator::new);
-    }
+	/**
+	 * Instantiates a new Curator health contributor auto configuration.
+	 */
+	public CuratorHealthContributorAutoConfiguration() {
+		super(CuratorHealthIndicator::new);
+	}
 
-    /**
-     * Curator health contributor health contributor.
-     *
-     * @param curatorFrameworkFactories the curator framework factories
-     * @return the health contributor
-     */
-    @Bean
-    @ConditionalOnMissingBean(name = {"curatorHealthIndicator", "curatorHealthContributor"})
-    public HealthContributor curatorHealthContributor(Map<String, CuratorFramework> curatorFrameworkFactories) {
-        return createContributor(curatorFrameworkFactories);
-    }
+	/**
+	 * Curator health contributor health contributor.
+	 *
+	 * @param curatorFrameworkFactories the curator framework factories
+	 * @return the health contributor
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = {"curatorHealthIndicator", "curatorHealthContributor"})
+	public HealthContributor curatorHealthContributor(Map<String, CuratorFramework> curatorFrameworkFactories) {
+		return createContributor(curatorFrameworkFactories);
+	}
 }

@@ -42,33 +42,33 @@ import java.awt.image.BufferedImage;
 @Slf4j
 public class GoogleQRCodeGenerator implements QRCodeGenerator {
 
-    private final JacksonOperations jacksonOperations;
+	private final JacksonOperations jacksonOperations;
 
-    /**
-     * Instantiates a new Google qrcode generator.
-     *
-     * @param builder the builder
-     */
-    public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper mapper = builder.build();
-        jacksonOperations = JacksonSupport.create(mapper);
-    }
+	/**
+	 * Instantiates a new Google qrcode generator.
+	 *
+	 * @param builder the builder
+	 */
+	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
+		ObjectMapper mapper = builder.build();
+		jacksonOperations = JacksonSupport.create(mapper);
+	}
 
-    @Override
-    public <T> BufferedImage generateQRCode(QRCodeEntity<T> entity) {
-        return generateQRCode(jacksonOperations.writeValueAsString(entity.content()), entity.width(),
-                entity.height(), entity.config(), entity.type());
-    }
+	@Override
+	public <T> BufferedImage generateQRCode(QRCodeEntity<T> entity) {
+		return generateQRCode(jacksonOperations.writeValueAsString(entity.content()), entity.width(),
+			entity.height(), entity.config(), entity.type());
+	}
 
-    @Override
-    public BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type) {
-        try {
-            QRCodeWriter writer = new QRCodeWriter();
-            BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);
-            return MatrixToImageWriter.toBufferedImage(matrix, config);
-        } catch (WriterException e) {
-            log.error("{}", e.getMessage(), e);
-            throw new QRCodeException("生成二维码失败", e);
-        }
-    }
+	@Override
+	public BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type) {
+		try {
+			QRCodeWriter writer = new QRCodeWriter();
+			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);
+			return MatrixToImageWriter.toBufferedImage(matrix, config);
+		} catch (WriterException e) {
+			log.error("{}", e.getMessage(), e);
+			throw new QRCodeException("生成二维码失败", e);
+		}
+	}
 }

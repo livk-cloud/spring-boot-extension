@@ -28,10 +28,10 @@ import java.util.Set;
  */
 public class OAuth2SmsAuthenticationToken extends OAuth2BaseAuthenticationToken {
 
-    public OAuth2SmsAuthenticationToken(Authentication clientPrincipal,
-                                        Set<String> scopes,
-                                        Map<String, Object> additionalParameters) {
-        super(SecurityConstants.GRANT_TYPE_SMS, clientPrincipal, scopes, additionalParameters);
-    }
+	public OAuth2SmsAuthenticationToken(Authentication clientPrincipal,
+					    Set<String> scopes,
+					    Map<String, Object> additionalParameters) {
+		super(SecurityConstants.GRANT_TYPE_SMS, clientPrincipal, scopes, additionalParameters);
+	}
 
 }

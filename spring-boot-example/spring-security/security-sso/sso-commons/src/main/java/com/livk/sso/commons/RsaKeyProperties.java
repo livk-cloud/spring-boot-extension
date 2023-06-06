@@ -38,33 +38,33 @@ import java.io.IOException;
 @ConfigurationProperties(RsaKeyProperties.PREFIX)
 public class RsaKeyProperties {
 
-    public static final String PREFIX = "rsa.key.jks";
+	public static final String PREFIX = "rsa.key.jks";
 
-    private static final String DEFAULT_LOCATION = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "/jwt.jks";
+	private static final String DEFAULT_LOCATION = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "/jwt.jks";
 
-    private final RSAKey rsaKey;
+	private final RSAKey rsaKey;
 
-    public RsaKeyProperties(@Name("location") String location,
-                            @Name("password") String password,
-                            @Name("alias") String alias) {
-        if (ObjectUtils.isEmpty(location)) {
-            location = DEFAULT_LOCATION;
-        }
-        Resource jksResource = ResourceUtils.getResource(location);
-        if (!jksResource.exists()) {
-            try {
-                Resource[] resources = ResourceUtils.getResources(location);
-                if (resources != null) {
-                    jksResource = resources[0];
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        rsaKey = RSAUtils.rsaKey(jksResource, password, alias);
-    }
+	public RsaKeyProperties(@Name("location") String location,
+				@Name("password") String password,
+				@Name("alias") String alias) {
+		if (ObjectUtils.isEmpty(location)) {
+			location = DEFAULT_LOCATION;
+		}
+		Resource jksResource = ResourceUtils.getResource(location);
+		if (!jksResource.exists()) {
+			try {
+				Resource[] resources = ResourceUtils.getResources(location);
+				if (resources != null) {
+					jksResource = resources[0];
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		rsaKey = RSAUtils.rsaKey(jksResource, password, alias);
+	}
 
-    public RSAKey rsaKey() {
-        return rsaKey;
-    }
+	public RSAKey rsaKey() {
+		return rsaKey;
+	}
 }

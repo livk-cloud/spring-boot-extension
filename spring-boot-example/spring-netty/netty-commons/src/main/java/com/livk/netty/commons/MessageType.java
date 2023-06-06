@@ -22,6 +22,6 @@ package com.livk.netty.commons;
  */
 public interface MessageType {
 
-    byte HEARTBEAT_CLIENT = 1;
-    byte HEARTBEAT_SERVER = 2;
+	byte HEARTBEAT_CLIENT = 1;
+	byte HEARTBEAT_SERVER = 2;
 }

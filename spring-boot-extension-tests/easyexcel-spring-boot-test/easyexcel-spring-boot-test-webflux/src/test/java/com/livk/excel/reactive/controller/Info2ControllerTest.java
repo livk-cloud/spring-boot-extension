@@ -48,58 +48,58 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureWebTestClient(timeout = "15000")
 class Info2ControllerTest {
 
-    static MultipartBodyBuilder builder = new MultipartBodyBuilder();
-    @Autowired
-    WebTestClient client;
+	static MultipartBodyBuilder builder = new MultipartBodyBuilder();
+	@Autowired
+	WebTestClient client;
 
-    @BeforeAll
-    public static void before() {
-        builder.part("file", new ClassPathResource("outFile.xls"))
-                .filename("file");
-    }
+	@BeforeAll
+	public static void before() {
+		builder.part("file", new ClassPathResource("outFile.xls"))
+			.filename("file");
+	}
 
-    @Test
-    void uploadAndDownload() {
-        client.post()
-                .uri("/info/uploadAndDownload")
-                .bodyValue(builder.build())
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void uploadAndDownload() {
+		client.post()
+			.uri("/info/uploadAndDownload")
+			.bodyValue(builder.build())
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 
-    @Test
-    void download() {
-        List<Info> infos = LongStream.rangeClosed(1, 100)
-                .mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
-                .toList();
-        client.post()
-                .uri("/info/download")
-                .bodyValue(infos)
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void download() {
+		List<Info> infos = LongStream.rangeClosed(1, 100)
+			.mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
+			.toList();
+		client.post()
+			.uri("/info/download")
+			.bodyValue(infos)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 }

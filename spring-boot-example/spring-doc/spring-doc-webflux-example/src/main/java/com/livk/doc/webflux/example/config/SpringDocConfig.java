@@ -33,20 +33,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info().title("spring doc webflux api")
-                        .description("spring doc webflux api")
-                        .version("1.0.0"));
-    }
+	@Bean
+	public OpenAPI openAPI() {
+		return new OpenAPI()
+			.info(new Info().title("spring doc webflux api")
+				.description("spring doc webflux api")
+				.version("1.0.0"));
+	}
 
-    @Bean
-    public GroupedOpenApi openApi() {
-        return GroupedOpenApi.builder()
-                .group("open-api")
-                .packagesToScan("com.livk.doc.webflux.example")
-                .pathsToMatch("/**")
-                .build();
-    }
+	@Bean
+	public GroupedOpenApi openApi() {
+		return GroupedOpenApi.builder()
+			.group("open-api")
+			.packagesToScan("com.livk.doc.webflux.example")
+			.pathsToMatch("/**")
+			.build();
+	}
 }

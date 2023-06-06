@@ -30,20 +30,19 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author livk
- *
  */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UsersMapper usersMapper;
+	private final UsersMapper usersMapper;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username.equals("18664960000")) {
-            username = "livk";
-        }
-        return usersMapper.getOne(username);
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		if (username.equals("18664960000")) {
+			username = "livk";
+		}
+		return usersMapper.getOne(username);
+	}
 
 }

@@ -43,39 +43,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ShopControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Order(1)
-    @Test
-    void testBuyLocal() throws InterruptedException {
-        ExecutorService service = Executors.newFixedThreadPool(500);
-        CountDownLatch countDownLatch = new CountDownLatch(500);
-        for (int i = 0; i < 500; i++) {
-            service.submit(() -> {
-                try {
-                    mockMvc.perform(post("/shop/buy/local"))
-                            .andExpect(status().isOk());
-                    countDownLatch.countDown();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
-        countDownLatch.await();
-        service.shutdown();
-    }
+	@Order(1)
+	@Test
+	void testBuyLocal() throws InterruptedException {
+		ExecutorService service = Executors.newFixedThreadPool(500);
+		CountDownLatch countDownLatch = new CountDownLatch(500);
+		for (int i = 0; i < 500; i++) {
+			service.submit(() -> {
+				try {
+					mockMvc.perform(post("/shop/buy/local"))
+						.andExpect(status().isOk());
+					countDownLatch.countDown();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
+		}
+		countDownLatch.await();
+		service.shutdown();
+	}
 
-    @Order(2)
-    @Test
-    void testResult() throws Exception {
-        mockMvc.perform(get("/shop/result"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("local.buyCount", 500).exists())
-                .andExpect(jsonPath("local.buySucCount", 250).exists())
-                .andExpect(jsonPath("local.num", 0).exists());
-    }
+	@Order(2)
+	@Test
+	void testResult() throws Exception {
+		mockMvc.perform(get("/shop/result"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("local.buyCount", 500).exists())
+			.andExpect(jsonPath("local.buySucCount", 250).exists())
+			.andExpect(jsonPath("local.num", 0).exists());
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

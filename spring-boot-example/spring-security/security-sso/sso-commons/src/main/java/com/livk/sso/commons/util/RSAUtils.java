@@ -35,10 +35,10 @@ import java.security.interfaces.RSAPublicKey;
 @UtilityClass
 public class RSAUtils {
 
-    public RSAKey rsaKey(Resource resource, String password, String alise) {
-        KeyPair keyPair = new KeyStoreKeyFactory(resource, password.toCharArray()).getKeyPair(alise);
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return new RSAKey.Builder(publicKey).privateKey(privateKey).build();
-    }
+	public RSAKey rsaKey(Resource resource, String password, String alise) {
+		KeyPair keyPair = new KeyStoreKeyFactory(resource, password.toCharArray()).getKeyPair(alise);
+		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		return new RSAKey.Builder(publicKey).privateKey(privateKey).build();
+	}
 }

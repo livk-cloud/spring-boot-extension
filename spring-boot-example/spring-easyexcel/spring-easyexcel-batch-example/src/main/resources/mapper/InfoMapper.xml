@@ -19,11 +19,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.livk.excel.batch.mapper.InfoMapper">
 
-    <insert id="saveBatch">
-        insert into `info` (`phone`)
-        values
-        <foreach collection="list" separator="),(" item="item" open="(" close=")">
-            #{item.phone}
-        </foreach>
-    </insert>
+	<insert id="saveBatch">
+		insert into `info` (`phone`)
+		values
+		<foreach collection="list" separator="),(" item="item" open="(" close=")">
+			#{item.phone}
+		</foreach>
+	</insert>
 </mapper>

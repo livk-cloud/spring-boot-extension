@@ -29,37 +29,37 @@ import java.awt.image.BufferedImage;
  * @author livk
  */
 public interface QRCodeGenerator {
-    /**
-     * 生成二维码
-     *
-     * @param <T>          泛型
-     * @param entity 二维码实体
-     * @return BufferedImage
-     */
-    <T> BufferedImage generateQRCode(QRCodeEntity<T> entity);
+	/**
+	 * 生成二维码
+	 *
+	 * @param <T>    泛型
+	 * @param entity 二维码实体
+	 * @return BufferedImage
+	 */
+	<T> BufferedImage generateQRCode(QRCodeEntity<T> entity);
 
-    /**
-     * 生成二维码
-     *
-     * @param content 二维码内容
-     * @param width   二维码宽度
-     * @param height  二维码高度
-     * @param type    图片类型
-     * @return BufferedImage
-     */
-    default BufferedImage generateQRCode(String content, int width, int height, PicType type) {
-        return generateQRCode(content, width, height, new MatrixToImageConfig(), type);
-    }
+	/**
+	 * 生成二维码
+	 *
+	 * @param content 二维码内容
+	 * @param width   二维码宽度
+	 * @param height  二维码高度
+	 * @param type    图片类型
+	 * @return BufferedImage
+	 */
+	default BufferedImage generateQRCode(String content, int width, int height, PicType type) {
+		return generateQRCode(content, width, height, new MatrixToImageConfig(), type);
+	}
 
-    /**
-     * 生成二维码
-     *
-     * @param content 二维码内容
-     * @param width   二维码宽度
-     * @param height  二维码高度
-     * @param config  二维码颜色配置
-     * @param type    图片类型
-     * @return BufferedImage
-     */
-    BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type);
+	/**
+	 * 生成二维码
+	 *
+	 * @param content 二维码内容
+	 * @param width   二维码宽度
+	 * @param height  二维码高度
+	 * @param config  二维码颜色配置
+	 * @param type    图片类型
+	 * @return BufferedImage
+	 */
+	BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type);
 }

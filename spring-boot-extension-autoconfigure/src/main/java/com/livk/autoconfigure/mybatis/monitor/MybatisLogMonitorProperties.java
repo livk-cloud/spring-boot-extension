@@ -35,42 +35,42 @@ import java.util.Properties;
 @ConfigurationProperties(MybatisLogMonitorProperties.PREFIX)
 public class MybatisLogMonitorProperties {
 
-    /**
-     * The constant PREFIX.
-     */
-    public static final String PREFIX = "mybatis.log.monitor";
+	/**
+	 * The constant PREFIX.
+	 */
+	public static final String PREFIX = "mybatis.log.monitor";
 
-    private long timeOut = 1L;
+	private long timeOut = 1L;
 
-    private ChronoUnit unit = ChronoUnit.SECONDS;
+	private ChronoUnit unit = ChronoUnit.SECONDS;
 
-    /**
-     * Time out name string.
-     *
-     * @return the string
-     */
-    public static String timeOutName() {
-        return FieldFunc.getName(MybatisLogMonitorProperties::getTimeOut);
-    }
+	/**
+	 * Time out name string.
+	 *
+	 * @return the string
+	 */
+	public static String timeOutName() {
+		return FieldFunc.getName(MybatisLogMonitorProperties::getTimeOut);
+	}
 
-    /**
-     * Unit name string.
-     *
-     * @return the string
-     */
-    public static String unitName() {
-        return FieldFunc.getName(MybatisLogMonitorProperties::getUnit);
-    }
+	/**
+	 * Unit name string.
+	 *
+	 * @return the string
+	 */
+	public static String unitName() {
+		return FieldFunc.getName(MybatisLogMonitorProperties::getUnit);
+	}
 
-    /**
-     * Properties properties.
-     *
-     * @return the properties
-     */
-    public Properties properties() {
-        Properties properties = new Properties();
-        properties.put(timeOutName(), timeOut);
-        properties.put(unitName(), unit);
-        return properties;
-    }
+	/**
+	 * Properties properties.
+	 *
+	 * @return the properties
+	 */
+	public Properties properties() {
+		Properties properties = new Properties();
+		properties.put(timeOutName(), timeOut);
+		properties.put(unitName(), unit);
+		return properties;
+	}
 }

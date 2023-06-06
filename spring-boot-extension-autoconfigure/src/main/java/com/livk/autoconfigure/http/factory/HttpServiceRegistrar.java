@@ -44,19 +44,19 @@ import java.util.List;
 @Setter
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
 
-    private ResourceLoader resourceLoader;
+	private ResourceLoader resourceLoader;
 
-    private BeanFactory beanFactory;
+	private BeanFactory beanFactory;
 
-    private Environment environment;
+	private Environment environment;
 
-    @Override
-    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        List<String> packages = AutoConfigurationPackages.get(beanFactory);
-        ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment, resourceLoader);
-        scanner.registerFilters(HttpProvider.class);
-        scanner.setBeanFactory(beanFactory);
-        scanner.scan(StringUtils.toStringArray(packages));
-    }
+	@Override
+	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+		List<String> packages = AutoConfigurationPackages.get(beanFactory);
+		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment, resourceLoader);
+		scanner.registerFilters(HttpProvider.class);
+		scanner.setBeanFactory(beanFactory);
+		scanner.scan(StringUtils.toStringArray(packages));
+	}
 
 }

@@ -28,97 +28,97 @@ import java.util.Map;
  */
 public interface ExpressionResolver {
 
-    /**
-     * 根据context信息将表达式解析，并转成相应的类型
-     *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param context    解析上下文环境数据
-     * @param returnType 返回类型
-     * @return T
-     */
-    <T> T evaluate(String value, Context context, Class<T> returnType);
+	/**
+	 * 根据context信息将表达式解析，并转成相应的类型
+	 *
+	 * @param <T>        泛型
+	 * @param value      表达式
+	 * @param context    解析上下文环境数据
+	 * @param returnType 返回类型
+	 * @return T
+	 */
+	<T> T evaluate(String value, Context context, Class<T> returnType);
 
-    /**
-     * 根据Map环境信息将表达式解析，并转成相应的类型
-     *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param contextMap 解析上下文环境数据
-     * @param returnType 返回类型
-     * @return T
-     */
-    <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
+	/**
+	 * 根据Map环境信息将表达式解析，并转成相应的类型
+	 *
+	 * @param <T>        泛型
+	 * @param value      表达式
+	 * @param contextMap 解析上下文环境数据
+	 * @param returnType 返回类型
+	 * @return T
+	 */
+	<T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
 
-    /**
-     * 根据Method将表达式解析，并转成相对应的类型
-     *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param method     method
-     * @param args       args
-     * @param returnType 返回类型
-     * @return T
-     */
-    <T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
+	/**
+	 * 根据Method将表达式解析，并转成相对应的类型
+	 *
+	 * @param <T>        泛型
+	 * @param value      表达式
+	 * @param method     method
+	 * @param args       args
+	 * @param returnType 返回类型
+	 * @return T
+	 */
+	<T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
 
-    /**
-     * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
-     *
-     * @param <T>        泛型
-     * @param value      表达式
-     * @param method     method
-     * @param args       args
-     * @param contextMap 解析上下文环境数据
-     * @param returnType 返回类型
-     * @return T
-     */
-    <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType);
+	/**
+	 * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
+	 *
+	 * @param <T>        泛型
+	 * @param value      表达式
+	 * @param method     method
+	 * @param args       args
+	 * @param contextMap 解析上下文环境数据
+	 * @param returnType 返回类型
+	 * @return T
+	 */
+	<T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType);
 
-    /**
-     * 根据Method将表达式解析，并转成String
-     *
-     * @param value  表达式
-     * @param method method
-     * @param args   args
-     * @return string
-     */
-    default String evaluate(String value, Method method, Object[] args) {
-        return evaluate(value, method, args, String.class);
-    }
+	/**
+	 * 根据Method将表达式解析，并转成String
+	 *
+	 * @param value  表达式
+	 * @param method method
+	 * @param args   args
+	 * @return string
+	 */
+	default String evaluate(String value, Method method, Object[] args) {
+		return evaluate(value, method, args, String.class);
+	}
 
-    /**
-     * 根据context信息将表达式解析，并转成String
-     *
-     * @param value   表达式
-     * @param context 解析上下文环境数据
-     * @return string
-     */
-    default String evaluate(String value, Context context) {
-        return evaluate(value, context, String.class);
-    }
+	/**
+	 * 根据context信息将表达式解析，并转成String
+	 *
+	 * @param value   表达式
+	 * @param context 解析上下文环境数据
+	 * @return string
+	 */
+	default String evaluate(String value, Context context) {
+		return evaluate(value, context, String.class);
+	}
 
-    /**
-     * 根据Map环境信息将表达式解析，并转成String
-     *
-     * @param value      表达式
-     * @param contextMap 解析上下文环境数据
-     * @return string
-     */
-    default String evaluate(String value, Map<String, ?> contextMap) {
-        return evaluate(value, contextMap, String.class);
-    }
+	/**
+	 * 根据Map环境信息将表达式解析，并转成String
+	 *
+	 * @param value      表达式
+	 * @param contextMap 解析上下文环境数据
+	 * @return string
+	 */
+	default String evaluate(String value, Map<String, ?> contextMap) {
+		return evaluate(value, contextMap, String.class);
+	}
 
-    /**
-     * 根据Method和Map环境信息将表达式解析，并转成String
-     *
-     * @param value      表达式
-     * @param method     method
-     * @param args       args
-     * @param contextMap 解析上下文环境数据
-     * @return string
-     */
-    default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
-        return evaluate(value, method, args, contextMap, String.class);
-    }
+	/**
+	 * 根据Method和Map环境信息将表达式解析，并转成String
+	 *
+	 * @param value      表达式
+	 * @param method     method
+	 * @param args       args
+	 * @param contextMap 解析上下文环境数据
+	 * @return string
+	 */
+	default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
+		return evaluate(value, method, args, contextMap, String.class);
+	}
 }

@@ -45,58 +45,58 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class UserMapperTest {
-    @Autowired
-    UserMapper userMapper;
+	@Autowired
+	UserMapper userMapper;
 
-    Integer id = 10;
+	Integer id = 10;
 
 
-    @Order(1)
-    @Test
-    public void saveTest() {
-        User user = new User();
-        user.setId(id);
-        user.setUsername("livk");
-        int result = userMapper.insert(user);
-        assertEquals(1, result);
-    }
+	@Order(1)
+	@Test
+	public void saveTest() {
+		User user = new User();
+		user.setId(id);
+		user.setUsername("livk");
+		int result = userMapper.insert(user);
+		assertEquals(1, result);
+	}
 
-    @Order(2)
-    @Test
-    public void updateTest() {
-        User user = new User();
-        user.setId(id);
-        user.setUsername("livk https");
-        int result = userMapper.updateById(user);
-        assertEquals(1, result);
-    }
+	@Order(2)
+	@Test
+	public void updateTest() {
+		User user = new User();
+		user.setId(id);
+		user.setUsername("livk https");
+		int result = userMapper.updateById(user);
+		assertEquals(1, result);
+	}
 
-    @Order(3)
-    @Test
-    public void selectByIdTest() {
-        User result = userMapper.selectById(id);
-        assertNotNull(result);
-    }
+	@Order(3)
+	@Test
+	public void selectByIdTest() {
+		User result = userMapper.selectById(id);
+		assertNotNull(result);
+	}
 
-    @Order(4)
-    @Test
-    public void selectAllTest() {
-        try (Page<User> page = PageHelper.<User>startPage(1, 10)
-                .countColumn(FieldFunc.getName(User::getId))
-                .doSelectPage(userMapper::list)) {
-            PageInfo<User> result = new PageInfo<>(page);
-            assertNotNull(result);
-            String json = JsonMapperUtils.writeValueAsString(result);
-            JavaType javaType = TypeFactoryUtils.javaType(PageInfo.class, User.class);
-            PageInfo<User> customPage = JsonMapperUtils.readValue(json, javaType);
-            assertNotNull(customPage);
-        }
-    }
+	@Order(4)
+	@Test
+	public void selectAllTest() {
+		try (Page<User> page = PageHelper.<User>startPage(1, 10)
+			.countColumn(FieldFunc.getName(User::getId))
+			.doSelectPage(userMapper::list)) {
+			PageInfo<User> result = new PageInfo<>(page);
+			assertNotNull(result);
+			String json = JsonMapperUtils.writeValueAsString(result);
+			JavaType javaType = TypeFactoryUtils.javaType(PageInfo.class, User.class);
+			PageInfo<User> customPage = JsonMapperUtils.readValue(json, javaType);
+			assertNotNull(customPage);
+		}
+	}
 
-    @Order(5)
-    @Test
-    public void deleteTest() {
-        int result = userMapper.deleteById(id);
-        assertEquals(1, result);
-    }
+	@Order(5)
+	@Test
+	public void deleteTest() {
+		int result = userMapper.deleteById(id);
+		assertEquals(1, result);
+	}
 }

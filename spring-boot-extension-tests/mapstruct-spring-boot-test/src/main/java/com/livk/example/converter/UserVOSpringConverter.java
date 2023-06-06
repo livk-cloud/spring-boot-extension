@@ -37,10 +37,10 @@ import org.springframework.lang.Nullable;
 public interface UserVOSpringConverter extends Converter<UserVO, User> {
 
 
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
-    @Mapping(target = "type", source = "type", numberFormat = "#")
-    @Override
-    User convert(@Nullable UserVO source);
+	@Mapping(target = "password", ignore = true)
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "type", source = "type", numberFormat = "#")
+	@Override
+	User convert(@Nullable UserVO source);
 }

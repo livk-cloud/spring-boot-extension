@@ -41,14 +41,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserAgentFilter extends OncePerRequestFilter {
 
-    private final HttpUserAgentParser userAgentParse;
+	private final HttpUserAgentParser userAgentParse;
 
-    @Override
-    protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        HttpHeaders headers = WebUtils.headers(request);
-        Wrapper useragentWrapper = userAgentParse.parse(headers);
-        UserAgentContextHolder.setUserAgentContext(useragentWrapper);
-        filterChain.doFilter(request, response);
-        UserAgentContextHolder.cleanUserAgentContext();
-    }
+	@Override
+	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+		HttpHeaders headers = WebUtils.headers(request);
+		Wrapper useragentWrapper = userAgentParse.parse(headers);
+		UserAgentContextHolder.setUserAgentContext(useragentWrapper);
+		filterChain.doFilter(request, response);
+		UserAgentContextHolder.cleanUserAgentContext();
+	}
 }

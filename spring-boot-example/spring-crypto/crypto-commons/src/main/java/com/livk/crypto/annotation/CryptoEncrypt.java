@@ -35,10 +35,10 @@ import java.lang.annotation.Target;
 @JacksonAnnotationsInside
 @JsonSerialize(using = CryptoJsonSerializer.class)
 public @interface CryptoEncrypt {
-    /**
-     * Value crypto type.
-     *
-     * @return the crypto type
-     */
-    CryptoType value();
+	/**
+	 * Value crypto type.
+	 *
+	 * @return the crypto type
+	 */
+	CryptoType value();
 }

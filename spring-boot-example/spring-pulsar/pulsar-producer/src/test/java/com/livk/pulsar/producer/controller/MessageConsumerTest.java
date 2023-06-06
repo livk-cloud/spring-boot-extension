@@ -33,11 +33,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageConsumerTest {
 
-    @PulsarListener
-    public void receive(Message<String> message) {
-        String key = message.getKey();
-        String data = message.getValue();
-        String topic = message.getTopicName();
-        log.info("topic:{} key:{} data:{}", topic, key, data);
-    }
+	@PulsarListener
+	public void receive(Message<String> message) {
+		String key = message.getKey();
+		String data = message.getValue();
+		String topic = message.getTopicName();
+		log.info("topic:{} key:{} data:{}", topic, key, data);
+	}
 }

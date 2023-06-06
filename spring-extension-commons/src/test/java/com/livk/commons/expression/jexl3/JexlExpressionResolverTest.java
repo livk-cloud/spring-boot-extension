@@ -33,44 +33,44 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JexlExpressionResolverTest {
 
-    private final static Object[] args = new Object[]{"livk"};
-    private final static Map<String, String> map = Map.of("username", "livk");
-    final ExpressionResolver resolver = new AviatorExpressionResolver();
-    private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final static Object[] args = new Object[]{"livk"};
+	private final static Map<String, String> map = Map.of("username", "livk");
+	final ExpressionResolver resolver = new AviatorExpressionResolver();
+	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 
-    JexlExpressionResolverTest() throws NoSuchMethodException {
-    }
+	JexlExpressionResolverTest() throws NoSuchMethodException {
+	}
 
-    @Test
-    void evaluate() {
-        assertTrue(resolver.evaluate("'livk'==username", method, args, Boolean.class));
+	@Test
+	void evaluate() {
+		assertTrue(resolver.evaluate("'livk'==username", method, args, Boolean.class));
 
-        assertEquals("livk", resolver.evaluate("username", method, args));
+		assertEquals("livk", resolver.evaluate("username", method, args));
 
-        assertTrue(resolver.evaluate("'livk'==username", map, Boolean.class));
-        assertEquals("livk", resolver.evaluate("username", map));
+		assertTrue(resolver.evaluate("'livk'==username", map, Boolean.class));
+		assertEquals("livk", resolver.evaluate("username", map));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+username", method, args));
-        assertEquals("root:livk:123456", resolver.evaluate("'root:'+username+':'+password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk", resolver.evaluate("'root:'+username", method, args));
+		assertEquals("root:livk:123456", resolver.evaluate("'root:'+username+':'+password", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
+		assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+username", method, args));
-        assertEquals("livk", resolver.evaluate("username", method, args));
-        assertEquals("livk", resolver.evaluate("'livk'", method, args));
+		assertEquals("root:livk", resolver.evaluate("'root:'+username", method, args));
+		assertEquals("livk", resolver.evaluate("username", method, args));
+		assertEquals("livk", resolver.evaluate("'livk'", method, args));
 
-        assertEquals("root:livk:123456", resolver.evaluate("'root:'+username+':'+password", method, args, Map.of("password", "123456")));
-        assertEquals("livk123456", resolver.evaluate("username+password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456", resolver.evaluate("'root:'+username+':'+password", method, args, Map.of("password", "123456")));
+		assertEquals("livk123456", resolver.evaluate("username+password", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
-        assertEquals("livk", resolver.evaluate("username", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
-    }
+		assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
+		assertEquals("livk", resolver.evaluate("username", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
+	}
 
-    @SuppressWarnings("unused")
-    private void parseMethod(String username) {
-    }
+	@SuppressWarnings("unused")
+	private void parseMethod(String username) {
+	}
 }

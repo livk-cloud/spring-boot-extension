@@ -26,13 +26,13 @@ package com.livk.autoconfigure.mybatis.inject.enums;
  */
 public enum SqlFill {
 
-    /**
-     * Insert sql fill.
-     */
-    INSERT,
-    /**
-     * Insert update sql fill.
-     */
-    INSERT_UPDATE
+	/**
+	 * Insert sql fill.
+	 */
+	INSERT,
+	/**
+	 * Insert update sql fill.
+	 */
+	INSERT_UPDATE
 
 }

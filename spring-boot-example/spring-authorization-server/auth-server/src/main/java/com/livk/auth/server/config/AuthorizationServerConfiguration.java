@@ -69,73 +69,73 @@ import java.util.List;
 @Configuration
 public class AuthorizationServerConfiguration {
 
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
-                                                                      OAuth2AuthorizationService authorizationService,
-                                                                      OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-                                                                      UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+	@Bean
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
+									  OAuth2AuthorizationService authorizationService,
+									  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
+									  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
+		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
-        OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
+		OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
+			authenticationManager, authorizationService, oAuth2TokenGenerator);
 
-        OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
-                authenticationManager, authorizationService, oAuth2TokenGenerator);
+		OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
+			authenticationManager, authorizationService, oAuth2TokenGenerator);
 
-        OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer
-                .tokenEndpoint(
-                        (tokenEndpoint) -> tokenEndpoint
-                                .accessTokenRequestConverter(accessTokenRequestConverter())
-                                .authenticationProvider(passwordAuthenticationProvider)
-                                .authenticationProvider(smsAuthenticationProvider)
-                                .accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-                                .errorResponseHandler(new AuthenticationFailureEventHandler())
-                )
-                .authorizationEndpoint(authorizationEndpoint ->
-                        authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
+		OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer
+			.tokenEndpoint(
+				(tokenEndpoint) -> tokenEndpoint
+					.accessTokenRequestConverter(accessTokenRequestConverter())
+					.authenticationProvider(passwordAuthenticationProvider)
+					.authenticationProvider(smsAuthenticationProvider)
+					.accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+					.errorResponseHandler(new AuthenticationFailureEventHandler())
+			)
+			.authorizationEndpoint(authorizationEndpoint ->
+				authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
 
-        http.apply(configurer);
-        http.apply(configurer.authorizationService(authorizationService));
-        http.apply(new FormIdentityLoginConfigurer());
+		http.apply(configurer);
+		http.apply(configurer.authorizationService(authorizationService));
+		http.apply(new FormIdentityLoginConfigurer());
 
-        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-        HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
+		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+		HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
 
-        return http.securityMatcher(endpointsMatcher)
-                .authenticationManager(authenticationManager)
-                .securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
-                .authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
-                .csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
-                .authenticationProvider(userDetailsAuthenticationProvider)
-                .build();
-    }
+		return http.securityMatcher(endpointsMatcher)
+			.authenticationManager(authenticationManager)
+			.securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
+			.authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
+			.csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
+			.authenticationProvider(userDetailsAuthenticationProvider)
+			.build();
+	}
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
-                                                               UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(userDetailsService);
-        return provider;
-    }
+	@Bean
+	public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
+								   UserDetailsService userDetailsService) {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setPasswordEncoder(passwordEncoder);
+		provider.setUserDetailsService(userDetailsService);
+		return provider;
+	}
 
-    @Bean
-    public OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator(JWKSource<SecurityContext> jwkSource) {
-        JwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource);
-        JwtGenerator generator = new JwtGenerator(jwtEncoder);
-        generator.setJwtCustomizer(new OAuth2JwtTokenCustomizer());
-        return new DelegatingOAuth2TokenGenerator(generator, new OAuth2RefreshTokenGenerator());
-    }
+	@Bean
+	public OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator(JWKSource<SecurityContext> jwkSource) {
+		JwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource);
+		JwtGenerator generator = new JwtGenerator(jwtEncoder);
+		generator.setJwtCustomizer(new OAuth2JwtTokenCustomizer());
+		return new DelegatingOAuth2TokenGenerator(generator, new OAuth2RefreshTokenGenerator());
+	}
 
-    private AuthenticationConverter accessTokenRequestConverter() {
-        return new DelegatingAuthenticationConverter(List.of(
-                new OAuth2AuthorizationCodeAuthenticationConverter(),
-                new OAuth2ClientCredentialsAuthenticationConverter(),
-                new OAuth2RefreshTokenAuthenticationConverter(),
-                new OAuth2PasswordAuthenticationConverter(),
-                new OAuth2SmsAuthenticationConverter()));
-    }
+	private AuthenticationConverter accessTokenRequestConverter() {
+		return new DelegatingAuthenticationConverter(List.of(
+			new OAuth2AuthorizationCodeAuthenticationConverter(),
+			new OAuth2ClientCredentialsAuthenticationConverter(),
+			new OAuth2RefreshTokenAuthenticationConverter(),
+			new OAuth2PasswordAuthenticationConverter(),
+			new OAuth2SmsAuthenticationConverter()));
+	}
 }

@@ -37,18 +37,18 @@ import java.util.concurrent.locks.Lock;
 @RequiredArgsConstructor
 public class LockController {
 
-    private final LockRegistry lockRegistry;
+	private final LockRegistry lockRegistry;
 
-    @GetMapping
-    public void lock() {
-        Lock lock = lockRegistry.obtain("zookeeper");
-        if (lock.tryLock()) {
-            try {
-                log.info("is locked");
-            } finally {
-                lock.unlock();
-            }
-        }
-    }
+	@GetMapping
+	public void lock() {
+		Lock lock = lockRegistry.obtain("zookeeper");
+		if (lock.tryLock()) {
+			try {
+				log.info("is locked");
+			} finally {
+				lock.unlock();
+			}
+		}
+	}
 
 }

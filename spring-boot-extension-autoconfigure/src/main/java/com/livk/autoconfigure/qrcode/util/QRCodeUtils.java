@@ -39,27 +39,27 @@ import java.util.Map;
 @UtilityClass
 public class QRCodeUtils {
 
-    /**
-     * Parse qr code string.
-     *
-     * @param inputStream the input stream
-     * @return the string
-     */
-    public static String parseQRCode(InputStream inputStream) {
-        String content = null;
-        BufferedImage image;
-        try {
-            image = ImageIO.read(inputStream);
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            Binarizer binarizer = new HybridBinarizer(source);
-            BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
-            Map<DecodeHintType, Object> hints = new HashMap<>();
-            hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
-            Result result = new MultiFormatReader().decode(binaryBitmap, hints);//解码
-            content = result.getText();
-        } catch (IOException | NotFoundException e) {
-            e.printStackTrace();
-        }
-        return content;
-    }
+	/**
+	 * Parse qr code string.
+	 *
+	 * @param inputStream the input stream
+	 * @return the string
+	 */
+	public static String parseQRCode(InputStream inputStream) {
+		String content = null;
+		BufferedImage image;
+		try {
+			image = ImageIO.read(inputStream);
+			LuminanceSource source = new BufferedImageLuminanceSource(image);
+			Binarizer binarizer = new HybridBinarizer(source);
+			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+			Map<DecodeHintType, Object> hints = new HashMap<>();
+			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
+			Result result = new MultiFormatReader().decode(binaryBitmap, hints);//解码
+			content = result.getText();
+		} catch (IOException | NotFoundException e) {
+			e.printStackTrace();
+		}
+		return content;
+	}
 }

@@ -44,31 +44,31 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
-    private final OAuth2AuthorizationService authorizationService;
+	private final OAuth2AuthorizationService authorizationService;
 
-    @Override
-    public OAuth2AuthenticatedPrincipal introspect(String token) {
-        OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
+	@Override
+	public OAuth2AuthenticatedPrincipal introspect(String token) {
+		OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 
-        Optional<Oauth2UserDetailsService> optional = SpringContextHolder.getBeanProvider(Oauth2UserDetailsService.class)
-                .orderedStream()
-                .filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
-                        oldAuthorization.getAuthorizationGrantType().getValue()))
-                .max(Comparator.comparingInt(Ordered::getOrder));
+		Optional<Oauth2UserDetailsService> optional = SpringContextHolder.getBeanProvider(Oauth2UserDetailsService.class)
+			.orderedStream()
+			.filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
+				oldAuthorization.getAuthorizationGrantType().getValue()))
+			.max(Comparator.comparingInt(Ordered::getOrder));
 
-        UserDetails userDetails = null;
-        try {
-            Object principal = Objects.requireNonNull(oldAuthorization).getAttributes().get(Principal.class.getName());
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
-            Object tokenPrincipal = usernamePasswordAuthenticationToken.getPrincipal();
-            userDetails = optional.orElseThrow().loadUserByUser((Oauth2User) tokenPrincipal);
-        } catch (UsernameNotFoundException notFoundException) {
-            log.warn("用户不不存在 {}", notFoundException.getLocalizedMessage());
-            throw notFoundException;
-        } catch (Exception ex) {
-            log.error("资源服务器 introspect Token error {}", ex.getLocalizedMessage());
-        }
-        return (Oauth2User) userDetails;
-    }
+		UserDetails userDetails = null;
+		try {
+			Object principal = Objects.requireNonNull(oldAuthorization).getAttributes().get(Principal.class.getName());
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
+			Object tokenPrincipal = usernamePasswordAuthenticationToken.getPrincipal();
+			userDetails = optional.orElseThrow().loadUserByUser((Oauth2User) tokenPrincipal);
+		} catch (UsernameNotFoundException notFoundException) {
+			log.warn("用户不不存在 {}", notFoundException.getLocalizedMessage());
+			throw notFoundException;
+		} catch (Exception ex) {
+			log.error("资源服务器 introspect Token error {}", ex.getLocalizedMessage());
+		}
+		return (Oauth2User) userDetails;
+	}
 
 }

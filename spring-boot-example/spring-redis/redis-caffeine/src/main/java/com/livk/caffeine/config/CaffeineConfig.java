@@ -36,17 +36,17 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class CaffeineConfig {
 
-    @Bean
-    public Cache<String, Object> caffeineCache() {
-        return Caffeine.newBuilder()
-                .initialCapacity(128)
-                .maximumSize(1024)
-                .expireAfterWrite(60, TimeUnit.SECONDS)
-                .build();
-    }
+	@Bean
+	public Cache<String, Object> caffeineCache() {
+		return Caffeine.newBuilder()
+			.initialCapacity(128)
+			.maximumSize(1024)
+			.expireAfterWrite(60, TimeUnit.SECONDS)
+			.build();
+	}
 
-    @Bean
-    public CacheManager cacheManager(CacheHandler<Object> cacheHandler) {
-        return new RedisCaffeineManager(cacheHandler);
-    }
+	@Bean
+	public CacheManager cacheManager(CacheHandler<Object> cacheHandler) {
+		return new RedisCaffeineManager(cacheHandler);
+	}
 }

@@ -34,14 +34,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Student {
 
-    public static final String INDEX = "student";
+	public static final String INDEX = "student";
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("sex")
-    private String sex;
-    @JsonProperty("desc")
-    private String desc;
-    @JsonProperty("class")
-    private String classX;
+	@JsonProperty("name")
+	private String name;
+	@JsonProperty("sex")
+	private String sex;
+	@JsonProperty("desc")
+	private String desc;
+	@JsonProperty("class")
+	private String classX;
 }

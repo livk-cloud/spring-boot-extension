@@ -35,33 +35,33 @@ import java.util.stream.Collectors;
  */
 public class SpringAnnotationFormatterFactory implements AnnotationFormatterFactory<CryptoDecrypt> {
 
-    private final Map<Class<?>, List<CryptoFormatter<?>>> map;
+	private final Map<Class<?>, List<CryptoFormatter<?>>> map;
 
-    public SpringAnnotationFormatterFactory(ObjectProvider<CryptoFormatter<?>> cryptoFormatters) {
-        map = cryptoFormatters.orderedStream()
-                .collect(Collectors.groupingBy(CryptoFormatter::supportClass));
-    }
+	public SpringAnnotationFormatterFactory(ObjectProvider<CryptoFormatter<?>> cryptoFormatters) {
+		map = cryptoFormatters.orderedStream()
+			.collect(Collectors.groupingBy(CryptoFormatter::supportClass));
+	}
 
-    @Override
-    public Set<Class<?>> getFieldTypes() {
-        return map.keySet();
-    }
+	@Override
+	public Set<Class<?>> getFieldTypes() {
+		return map.keySet();
+	}
 
-    @Override
-    public Printer<?> getPrinter(CryptoDecrypt annotation, Class<?> fieldType) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public Printer<?> getPrinter(CryptoDecrypt annotation, Class<?> fieldType) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    public Parser<?> getParser(CryptoDecrypt annotation, Class<?> fieldType) {
-        return (text, locale) -> {
-            CryptoType type = CryptoType.match(text);
-            for (CryptoFormatter<?> parser : map.get(fieldType)) {
-                if (type.equals(parser.type())) {
-                    return parser.parse(type.unwrap(text), locale);
-                }
-            }
-            throw new FormatterNotFountException("fieldType:" + fieldType + " Parser NotFount!");
-        };
-    }
+	@Override
+	public Parser<?> getParser(CryptoDecrypt annotation, Class<?> fieldType) {
+		return (text, locale) -> {
+			CryptoType type = CryptoType.match(text);
+			for (CryptoFormatter<?> parser : map.get(fieldType)) {
+				if (type.equals(parser.type())) {
+					return parser.parse(type.unwrap(text), locale);
+				}
+			}
+			throw new FormatterNotFountException("fieldType:" + fieldType + " Parser NotFount!");
+		};
+	}
 }

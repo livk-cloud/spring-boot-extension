@@ -36,40 +36,40 @@ import java.util.Map;
 @JsonIgnoreProperties("password")
 public class Oauth2User extends User implements OAuth2AuthenticatedPrincipal {
 
-    @Serial
-    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+	@Serial
+	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-    /**
-     * 用户ID
-     */
-    private final Long id;
+	/**
+	 * 用户ID
+	 */
+	private final Long id;
 
-    /**
-     * 手机号
-     */
-    private final String mobile;
+	/**
+	 * 手机号
+	 */
+	private final String mobile;
 
-    public Oauth2User(Long id, String username, String password, String mobile, boolean enabled,
-                      boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
-                      Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.id = id;
-        this.mobile = mobile;
-    }
+	public Oauth2User(Long id, String username, String password, String mobile, boolean enabled,
+			  boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
+			  Collection<? extends GrantedAuthority> authorities) {
+		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+		this.id = id;
+		this.mobile = mobile;
+	}
 
-    /**
-     * Get the OAuth 2.0 token attributes
-     *
-     * @return the OAuth 2.0 token attributes
-     */
-    @Override
-    public Map<String, Object> getAttributes() {
-        return Maps.newHashMap();
-    }
+	/**
+	 * Get the OAuth 2.0 token attributes
+	 *
+	 * @return the OAuth 2.0 token attributes
+	 */
+	@Override
+	public Map<String, Object> getAttributes() {
+		return Maps.newHashMap();
+	}
 
-    @Override
-    public String getName() {
-        return this.getUsername();
-    }
+	@Override
+	public String getName() {
+		return this.getUsername();
+	}
 
 }

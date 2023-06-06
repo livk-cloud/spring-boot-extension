@@ -32,20 +32,20 @@ import org.apache.commons.jexl3.internal.Engine;
  */
 public class JexlExpressionResolver extends ConverterExpressionResolver<JexlContext, JexlExpression> {
 
-    private final JexlEngine engine = new Engine();
+	private final JexlEngine engine = new Engine();
 
-    @Override
-    protected JexlExpression compile(String value) {
-        return engine.createExpression(value);
-    }
+	@Override
+	protected JexlExpression compile(String value) {
+		return engine.createExpression(value);
+	}
 
-    @Override
-    protected JexlContext transform(Context context) {
-        return new MapContext(context);
-    }
+	@Override
+	protected JexlContext transform(Context context) {
+		return new MapContext(context);
+	}
 
-    @Override
-    protected <T> T calculate(JexlExpression expression, JexlContext context, Class<T> returnType) {
-        return returnType.cast(expression.evaluate(context));
-    }
+	@Override
+	protected <T> T calculate(JexlExpression expression, JexlContext context, Class<T> returnType) {
+		return returnType.cast(expression.evaluate(context));
+	}
 }

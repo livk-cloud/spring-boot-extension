@@ -42,27 +42,27 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class MybatisTypeHandlerAutoConfiguration {
 
-    /**
-     * Mysql sql session factory bean customizer sql session factory bean customizer.
-     *
-     * @return the sql session factory bean customizer
-     */
-    @Bean
-    @ConditionalOnClass(com.mysql.cj.jdbc.Driver.class)
-    public SqlSessionFactoryBeanCustomizer mysqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-        ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
-        return factoryBean -> factoryBean.setTypeHandlers(new MysqlJsonTypeHandler(mapper));
-    }
+	/**
+	 * Mysql sql session factory bean customizer sql session factory bean customizer.
+	 *
+	 * @return the sql session factory bean customizer
+	 */
+	@Bean
+	@ConditionalOnClass(com.mysql.cj.jdbc.Driver.class)
+	public SqlSessionFactoryBeanCustomizer mysqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+		ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+		return factoryBean -> factoryBean.setTypeHandlers(new MysqlJsonTypeHandler(mapper));
+	}
 
-    /**
-     * Postgresql sql session factory bean customizer sql session factory bean customizer.
-     *
-     * @return the sql session factory bean customizer
-     */
-    @Bean
-    @ConditionalOnClass(org.postgresql.Driver.class)
-    public SqlSessionFactoryBeanCustomizer postgresqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-        ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
-        return factoryBean -> factoryBean.setTypeHandlers(new PostgresJsonTypeHandler(mapper));
-    }
+	/**
+	 * Postgresql sql session factory bean customizer sql session factory bean customizer.
+	 *
+	 * @return the sql session factory bean customizer
+	 */
+	@Bean
+	@ConditionalOnClass(org.postgresql.Driver.class)
+	public SqlSessionFactoryBeanCustomizer postgresqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+		ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+		return factoryBean -> factoryBean.setTypeHandlers(new PostgresJsonTypeHandler(mapper));
+	}
 }

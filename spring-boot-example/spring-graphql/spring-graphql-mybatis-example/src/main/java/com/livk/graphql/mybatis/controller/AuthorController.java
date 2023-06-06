@@ -38,10 +38,10 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private final AuthorMapper authorMapper;
+	private final AuthorMapper authorMapper;
 
-    @MutationMapping
-    public Mono<Boolean> createAuthor(@Argument AuthorDTO dto) {
-        return Mono.justOrEmpty(authorMapper.save(BeanUtils.copy(dto, Author.class)) != 0);
-    }
+	@MutationMapping
+	public Mono<Boolean> createAuthor(@Argument AuthorDTO dto) {
+		return Mono.justOrEmpty(authorMapper.save(BeanUtils.copy(dto, Author.class)) != 0);
+	}
 }

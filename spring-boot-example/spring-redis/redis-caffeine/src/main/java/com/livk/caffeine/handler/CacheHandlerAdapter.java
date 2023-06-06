@@ -35,31 +35,31 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CacheHandlerAdapter implements CacheHandler<Object> {
 
-    private final UniversalRedisTemplate redisTemplate;
+	private final UniversalRedisTemplate redisTemplate;
 
-    private final Cache<String, Object> cache;
+	private final Cache<String, Object> cache;
 
-    @Override
-    public void put(String key, Object proceed) {
-        redisTemplate.opsForValue().set(key, proceed);
-        cache.put(key, proceed);
-    }
+	@Override
+	public void put(String key, Object proceed) {
+		redisTemplate.opsForValue().set(key, proceed);
+		cache.put(key, proceed);
+	}
 
-    @Override
-    public void delete(String key) {
-        cache.invalidate(key);
-        redisTemplate.delete(key);
-    }
+	@Override
+	public void delete(String key) {
+		cache.invalidate(key);
+		redisTemplate.delete(key);
+	}
 
-    @Override
-    public Object read(String key) {
-        return cache.get(key, s -> redisTemplate.opsForValue().get(s));
-    }
+	@Override
+	public Object read(String key) {
+		return cache.get(key, s -> redisTemplate.opsForValue().get(s));
+	}
 
-    @Override
-    public void clear() {
-        Set<String> keys = cache.asMap().keySet();
-        cache.invalidateAll();
-        redisTemplate.delete(keys);
-    }
+	@Override
+	public void clear() {
+		Set<String> keys = cache.asMap().keySet();
+		cache.invalidateAll();
+		redisTemplate.delete(keys);
+	}
 }

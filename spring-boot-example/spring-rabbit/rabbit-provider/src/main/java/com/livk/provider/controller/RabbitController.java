@@ -35,26 +35,26 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RabbitController {
 
-    private final RabbitSend send;
+	private final RabbitSend send;
 
-    @PostMapping("sendMsgDirect")
-    public <T> void sendMsgDirect(@RequestBody Message<T> message) {
-        send.sendMsgDirect(message);
-    }
+	@PostMapping("sendMsgDirect")
+	public <T> void sendMsgDirect(@RequestBody Message<T> message) {
+		send.sendMsgDirect(message);
+	}
 
-    @PostMapping("sendMsgFanout")
-    public <T> void sendMsgFanout(@RequestBody Message<T> message) {
-        send.sendMsgFanout(message);
-    }
+	@PostMapping("sendMsgFanout")
+	public <T> void sendMsgFanout(@RequestBody Message<T> message) {
+		send.sendMsgFanout(message);
+	}
 
-    @PostMapping("/sendMsgTopic/{key}")
-    public <T> void sendMsgTopic(@RequestBody Message<T> message, @PathVariable String key) {
-        send.sendMsgTopic(message, key);
-    }
+	@PostMapping("/sendMsgTopic/{key}")
+	public <T> void sendMsgTopic(@RequestBody Message<T> message, @PathVariable String key) {
+		send.sendMsgTopic(message, key);
+	}
 
-    @PostMapping("sendMsgHeaders")
-    public <T> void sendMsgHeaders(@RequestBody Message<T> message, @RequestParam String json) {
-        send.sendMsgHeaders(message, JsonMapperUtils.readValueMap(json, String.class, Object.class));
-    }
+	@PostMapping("sendMsgHeaders")
+	public <T> void sendMsgHeaders(@RequestBody Message<T> message, @RequestParam String json) {
+		send.sendMsgHeaders(message, JsonMapperUtils.readValueMap(json, String.class, Object.class));
+	}
 
 }

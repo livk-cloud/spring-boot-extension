@@ -35,48 +35,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FunctionType implements FunctionHandle<Object> {
 
-    /**
-     * The Default.
-     */
-    DEFAULT(new NullFunction()),
-    /**
-     * The Date.
-     */
-    DATE(new DateFunction()),
-    /**
-     * The Local date.
-     */
-    LOCAL_DATE(new LocalDateFunction()),
-    /**
-     * The Local date time.
-     */
-    LOCAL_DATE_TIME(new LocalDateTimeFunction()),
-    /**
-     * The Timestamp.
-     */
-    TIMESTAMP(new TimestampFunction());
+	/**
+	 * The Default.
+	 */
+	DEFAULT(new NullFunction()),
+	/**
+	 * The Date.
+	 */
+	DATE(new DateFunction()),
+	/**
+	 * The Local date.
+	 */
+	LOCAL_DATE(new LocalDateFunction()),
+	/**
+	 * The Local date time.
+	 */
+	LOCAL_DATE_TIME(new LocalDateTimeFunction()),
+	/**
+	 * The Timestamp.
+	 */
+	TIMESTAMP(new TimestampFunction());
 
-    private final FunctionHandle<?> function;
+	private final FunctionHandle<?> function;
 
-    @Override
-    public Object handler() {
-        return function.handler();
-    }
+	@Override
+	public Object handler() {
+		return function.handler();
+	}
 
-    /**
-     * Handler t.
-     *
-     * @param <T>         the type parameter
-     * @param targetClass the target class
-     * @return the t
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T handler(Class<T> targetClass) {
-        Object value = handler();
-        if (targetClass.isInstance(value)) {
-            return (T) value;
-        }
-        throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
-    }
+	/**
+	 * Handler t.
+	 *
+	 * @param <T>         the type parameter
+	 * @param targetClass the target class
+	 * @return the t
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T handler(Class<T> targetClass) {
+		Object value = handler();
+		if (targetClass.isInstance(value)) {
+			return (T) value;
+		}
+		throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
+	}
 
 }

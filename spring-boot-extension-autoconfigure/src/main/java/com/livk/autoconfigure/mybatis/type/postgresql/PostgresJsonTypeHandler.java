@@ -45,12 +45,12 @@ import java.sql.SQLException;
 @MappedTypes(JsonNode.class)
 public class PostgresJsonTypeHandler extends AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
-    public PostgresJsonTypeHandler(ObjectMapper mapper) {
-        super(JacksonSupport.create(mapper));
-    }
+	public PostgresJsonTypeHandler(ObjectMapper mapper) {
+		super(JacksonSupport.create(mapper));
+	}
 
-    @Override
-    protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
-        ps.setObject(i, PGJson.of(json));
-    }
+	@Override
+	protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
+		ps.setObject(i, PGJson.of(json));
+	}
 }

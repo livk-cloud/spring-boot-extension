@@ -28,7 +28,7 @@ import java.util.List;
 @Mapper
 public interface AuthorsMapper {
 
-    List<Authors> select();
+	List<Authors> select();
 
-    void insertBatch(List<Authors> authorsList);
+	void insertBatch(List<Authors> authorsList);
 }

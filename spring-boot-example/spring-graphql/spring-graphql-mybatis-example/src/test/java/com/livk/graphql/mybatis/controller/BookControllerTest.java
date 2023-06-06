@@ -46,181 +46,181 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookControllerTest {
 
-    @Autowired
-    WebTestClient webTestClient;
+	@Autowired
+	WebTestClient webTestClient;
 
-    @Value("${spring.graphql.path:/graphql}")
-    String graphqlPath;
+	@Value("${spring.graphql.path:/graphql}")
+	String graphqlPath;
 
-    @Autowired
-    BookMapper bookMapper;
+	@Autowired
+	BookMapper bookMapper;
 
-    @Autowired
-    AuthorMapper authorMapper;
+	@Autowired
+	AuthorMapper authorMapper;
 
-    WebGraphQlTester tester;
+	WebGraphQlTester tester;
 
-    @BeforeEach
-    public void init() {
-        WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
-        tester = HttpGraphQlTester.builder(builder).build();
-    }
+	@BeforeEach
+	public void init() {
+		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
+		tester = HttpGraphQlTester.builder(builder).build();
+	}
 
-    @Order(3)
-    @Test
-    @SuppressWarnings("rawtypes")
-    void list() {
-        //language=GraphQL
-        String document = """
-                query{
-                    bookList {
-                        title
-                        author {
-                            name
-                        }
-                    }
-                }""";
-        List<Map> result = tester.document(document)
-                .execute()
-                .path("bookList")
-                .entityList(Map.class)
-                .get();
-        assertNotNull(result);
+	@Order(3)
+	@Test
+	@SuppressWarnings("rawtypes")
+	void list() {
+		//language=GraphQL
+		String document = """
+			query{
+			    bookList {
+			        title
+			        author {
+			            name
+			        }
+			    }
+			}""";
+		List<Map> result = tester.document(document)
+			.execute()
+			.path("bookList")
+			.entityList(Map.class)
+			.get();
+		assertNotNull(result);
 
-        //language=GraphQL
-        String d1 = """
-                query{
-                  bookList {
-                    isbn
-                    title
-                    author {
-                      name
-                      age
-                    }
-                  }
-                }""";
-        List<Map> r1 = tester.document(d1)
-                .execute()
-                .path("bookList")
-                .entityList(Map.class)
-                .get();
-        assertNotNull(r1);
-    }
+		//language=GraphQL
+		String d1 = """
+			query{
+			  bookList {
+			    isbn
+			    title
+			    author {
+			      name
+			      age
+			    }
+			  }
+			}""";
+		List<Map> r1 = tester.document(d1)
+			.execute()
+			.path("bookList")
+			.entityList(Map.class)
+			.get();
+		assertNotNull(r1);
+	}
 
-    @Order(4)
-    @Test
-    @SuppressWarnings("rawtypes")
-    void bookByIsbn() {
-        //language=GraphQL
-        String document = """
-                query{
-                    bookByIsbn(isbn: "9787121377921"){
-                        isbn
-                        title
-                        author {
-                            name
-                            age
-                        }
-                    }
-                }""";
-        Map result = tester.document(document)
-                .execute()
-                .path("bookByIsbn")
-                .entity(Map.class)
-                .get();
-        assertNotNull(result);
-    }
+	@Order(4)
+	@Test
+	@SuppressWarnings("rawtypes")
+	void bookByIsbn() {
+		//language=GraphQL
+		String document = """
+			query{
+			    bookByIsbn(isbn: "9787121377921"){
+			        isbn
+			        title
+			        author {
+			            name
+			            age
+			        }
+			    }
+			}""";
+		Map result = tester.document(document)
+			.execute()
+			.path("bookByIsbn")
+			.entity(Map.class)
+			.get();
+		assertNotNull(result);
+	}
 
-    @Order(2)
-    @Test
-    void createBook() {
-        bookMapper.clear();
-        //language=GraphQL
-        String d1 = """
-                mutation{
-                    createBook(dto: {
-                        isbn: "9787121282089",
-                        title: "JavaEE开发的颠覆者：Spring Boot实战",
-                        pages: 524,
-                        authorIdCardNo: "341234567891234567"
-                    } )
-                }""";
-        //language=GraphQL
-        String d2 = """
-                mutation{
-                    createBook(dto: {
-                        isbn: "9787121377921",
-                        title: "从企业级开发到云原生微服务:Spring Boot实战",
-                        pages: 504,
-                        authorIdCardNo: "341234567891234567"
-                    } )
-                }""";
-        //language=GraphQL
-        String d3 = """
-                mutation{
-                    createBook(dto: {
-                        isbn: "9787121347962",
-                        title: "架构整洁之道",
-                        pages: 348,
-                        authorIdCardNo: "341234567891234568"
-                    } )
-                }""";
+	@Order(2)
+	@Test
+	void createBook() {
+		bookMapper.clear();
+		//language=GraphQL
+		String d1 = """
+			mutation{
+			    createBook(dto: {
+			        isbn: "9787121282089",
+			        title: "JavaEE开发的颠覆者：Spring Boot实战",
+			        pages: 524,
+			        authorIdCardNo: "341234567891234567"
+			    } )
+			}""";
+		//language=GraphQL
+		String d2 = """
+			mutation{
+			    createBook(dto: {
+			        isbn: "9787121377921",
+			        title: "从企业级开发到云原生微服务:Spring Boot实战",
+			        pages: 504,
+			        authorIdCardNo: "341234567891234567"
+			    } )
+			}""";
+		//language=GraphQL
+		String d3 = """
+			mutation{
+			    createBook(dto: {
+			        isbn: "9787121347962",
+			        title: "架构整洁之道",
+			        pages: 348,
+			        authorIdCardNo: "341234567891234568"
+			    } )
+			}""";
 
-        Boolean r1 = tester.document(d1)
-                .execute()
-                .path("createBook")
-                .entity(Boolean.class)
-                .get();
-        assertTrue(r1);
+		Boolean r1 = tester.document(d1)
+			.execute()
+			.path("createBook")
+			.entity(Boolean.class)
+			.get();
+		assertTrue(r1);
 
-        Boolean r2 = tester.document(d2)
-                .execute()
-                .path("createBook")
-                .entity(Boolean.class)
-                .get();
-        assertTrue(r2);
+		Boolean r2 = tester.document(d2)
+			.execute()
+			.path("createBook")
+			.entity(Boolean.class)
+			.get();
+		assertTrue(r2);
 
-        Boolean r3 = tester.document(d3)
-                .execute()
-                .path("createBook")
-                .entity(Boolean.class)
-                .get();
-        assertTrue(r3);
-    }
+		Boolean r3 = tester.document(d3)
+			.execute()
+			.path("createBook")
+			.entity(Boolean.class)
+			.get();
+		assertTrue(r3);
+	}
 
-    @Order(1)
-    @Test
-    void createAuthor() {
-        authorMapper.clear();
-        //language=GraphQL
-        String document = """
-                mutation{
-                    createAuthor(dto: {
-                        idCardNo: "341234567891234567",
-                        name: "汪云飞",
-                        age: 38
-                    })
-                }""";
-        Boolean result = tester.document(document)
-                .execute()
-                .path("createAuthor")
-                .entity(Boolean.class)
-                .get();
-        assertTrue(result);
-        //language=GraphQL
-        String d2 = """
-                mutation{
-                    createAuthor(dto: {
-                        idCardNo: "341234567891234568",
-                        name: "罗伯特C.马丁",
-                        age: 70 }
-                    )
-                }""";
-        Boolean result2 = tester.document(d2)
-                .execute()
-                .path("createAuthor")
-                .entity(Boolean.class)
-                .get();
-        assertTrue(result2);
-    }
+	@Order(1)
+	@Test
+	void createAuthor() {
+		authorMapper.clear();
+		//language=GraphQL
+		String document = """
+			mutation{
+			    createAuthor(dto: {
+			        idCardNo: "341234567891234567",
+			        name: "汪云飞",
+			        age: 38
+			    })
+			}""";
+		Boolean result = tester.document(document)
+			.execute()
+			.path("createAuthor")
+			.entity(Boolean.class)
+			.get();
+		assertTrue(result);
+		//language=GraphQL
+		String d2 = """
+			mutation{
+			    createAuthor(dto: {
+			        idCardNo: "341234567891234568",
+			        name: "罗伯特C.马丁",
+			        age: 70 }
+			    )
+			}""";
+		Boolean result2 = tester.document(d2)
+			.execute()
+			.path("createAuthor")
+			.entity(Boolean.class)
+			.get();
+		assertTrue(result2);
+	}
 }

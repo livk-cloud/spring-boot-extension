@@ -27,12 +27,12 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 public class NettyClientApp {
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 
-    @Bean(initMethod = "start", destroyMethod = "close")
-    public NettyClient nettyClient() {
-        return new NettyClient();
-    }
+	@Bean(initMethod = "start", destroyMethod = "close")
+	public NettyClient nettyClient() {
+		return new NettyClient();
+	}
 }

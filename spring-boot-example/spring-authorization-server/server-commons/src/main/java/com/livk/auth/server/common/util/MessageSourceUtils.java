@@ -29,15 +29,14 @@ import java.util.Locale;
  * </p>
  *
  * @author livk
- *
  */
 @UtilityClass
 public class MessageSourceUtils {
 
-    public MessageSource get() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.addBasenames("classpath:i18n/errors/messages");
-        messageSource.setDefaultLocale(Locale.CHINA);
-        return messageSource;
-    }
+	public MessageSource get() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.addBasenames("classpath:i18n/errors/messages");
+		messageSource.setDefaultLocale(Locale.CHINA);
+		return messageSource;
+	}
 }

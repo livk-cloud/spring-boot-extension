@@ -31,10 +31,10 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVO {
 
-    private String username;
+	private String username;
 
-    private String type;
+	private String type;
 
-    private String createTime;
+	private String createTime;
 
 }

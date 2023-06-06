@@ -40,13 +40,13 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class SqlDataInjectionAutoConfiguration {
 
-    /**
-     * Sql data injection configuration customizer configuration customizer.
-     *
-     * @return the configuration customizer
-     */
-    @Bean
-    public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
-        return configuration -> configuration.addInterceptor(new SqlDataInjection());
-    }
+	/**
+	 * Sql data injection configuration customizer configuration customizer.
+	 *
+	 * @return the configuration customizer
+	 */
+	@Bean
+	public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
+		return configuration -> configuration.addInterceptor(new SqlDataInjection());
+	}
 }

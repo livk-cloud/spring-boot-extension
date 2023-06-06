@@ -38,33 +38,33 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface SqlFunction {
 
-    /**
-     * <p>
-     * {@link SqlFunction#supplier()}
-     * </p>
-     * <p>
-     * {@link SqlFunction#time()}
-     * </p>
-     * <p>
-     * 两个必须指定一个，否则无法注入
-     * </p>
-     *
-     * @return the sql fill
-     */
-    SqlFill fill();
+	/**
+	 * <p>
+	 * {@link SqlFunction#supplier()}
+	 * </p>
+	 * <p>
+	 * {@link SqlFunction#time()}
+	 * </p>
+	 * <p>
+	 * 两个必须指定一个，否则无法注入
+	 * </p>
+	 *
+	 * @return the sql fill
+	 */
+	SqlFill fill();
 
-    /**
-     * 优先级低于{@link SqlFunction#time()}
-     *
-     * @return the class
-     */
-    Class<? extends FunctionHandle<?>> supplier() default NullFunction.class;
+	/**
+	 * 优先级低于{@link SqlFunction#time()}
+	 *
+	 * @return the class
+	 */
+	Class<? extends FunctionHandle<?>> supplier() default NullFunction.class;
 
-    /**
-     * 优先级高于 {@link SqlFunction#supplier()}
-     *
-     * @return the function enum
-     */
-    FunctionType time() default FunctionType.DEFAULT;
+	/**
+	 * 优先级高于 {@link SqlFunction#supplier()}
+	 *
+	 * @return the function enum
+	 */
+	FunctionType time() default FunctionType.DEFAULT;
 
 }

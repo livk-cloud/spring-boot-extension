@@ -44,23 +44,23 @@ import java.util.Properties;
 @SpringFactories
 public class DynamicEnvironment implements EnvironmentPostProcessor {
 
-    private static final String source = "env.json";
+	private static final String source = "env.json";
 
-    @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        MutablePropertySources propertySources = environment.getPropertySources();
-        try {
-            ClassPathResource resource = new ClassPathResource(source);
-            if (resource.exists()) {
-                InputStream inputStream = resource.getInputStream();
-                Map<String, Object> map = JsonMapperUtils.readValueMap(inputStream, String.class, Object.class);
-                Properties properties = YamlUtils.ymlMapToMap(map);
-                PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
-                propertySources.addLast(livkSource);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+		MutablePropertySources propertySources = environment.getPropertySources();
+		try {
+			ClassPathResource resource = new ClassPathResource(source);
+			if (resource.exists()) {
+				InputStream inputStream = resource.getInputStream();
+				Map<String, Object> map = JsonMapperUtils.readValueMap(inputStream, String.class, Object.class);
+				Properties properties = YamlUtils.ymlMapToMap(map);
+				PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
+				propertySources.addLast(livkSource);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

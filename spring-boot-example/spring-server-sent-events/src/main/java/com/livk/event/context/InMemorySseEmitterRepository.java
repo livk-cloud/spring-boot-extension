@@ -33,25 +33,25 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class InMemorySseEmitterRepository implements SseEmitterRepository<String> {
 
-    private static final Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
+	private static final Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 
-    @Override
-    public Map<String, SseEmitter> all() {
-        return sseEmitters;
-    }
+	@Override
+	public Map<String, SseEmitter> all() {
+		return sseEmitters;
+	}
 
-    @Override
-    public SseEmitter get(String id) {
-        return sseEmitters.get(id);
-    }
+	@Override
+	public SseEmitter get(String id) {
+		return sseEmitters.get(id);
+	}
 
-    @Override
-    public SseEmitter put(String id, SseEmitter sseEmitter) {
-        return sseEmitters.put(id, sseEmitter);
-    }
+	@Override
+	public SseEmitter put(String id, SseEmitter sseEmitter) {
+		return sseEmitters.put(id, sseEmitter);
+	}
 
-    @Override
-    public SseEmitter remove(String id) {
-        return sseEmitters.remove(id);
-    }
+	@Override
+	public SseEmitter remove(String id) {
+		return sseEmitters.remove(id);
+	}
 }

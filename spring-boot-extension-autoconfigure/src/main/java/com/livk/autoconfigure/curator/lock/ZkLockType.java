@@ -25,16 +25,16 @@ package com.livk.autoconfigure.curator.lock;
  * @author livk
  */
 public enum ZkLockType {
-    /**
-     * 普通锁
-     */
-    LOCK,
-    /**
-     * 读锁
-     */
-    READ,
-    /**
-     * 写锁
-     */
-    WRITE
+	/**
+	 * 普通锁
+	 */
+	LOCK,
+	/**
+	 * 读锁
+	 */
+	READ,
+	/**
+	 * 写锁
+	 */
+	WRITE
 }

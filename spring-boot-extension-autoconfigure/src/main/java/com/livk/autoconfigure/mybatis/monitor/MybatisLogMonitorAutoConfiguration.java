@@ -42,17 +42,17 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class MybatisLogMonitorAutoConfiguration {
 
-    /**
-     * Mybatis log monitor configuration customizer configuration customizer.
-     *
-     * @param monitorProperties the properties
-     * @return the configuration customizer
-     */
-    @Bean
-    public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(MybatisLogMonitorProperties monitorProperties) {
-        MybatisLogMonitor logMonitor = new MybatisLogMonitor();
-        logMonitor.setProperties(monitorProperties.properties());
-        return configuration ->
-                configuration.addInterceptor(logMonitor);
-    }
+	/**
+	 * Mybatis log monitor configuration customizer configuration customizer.
+	 *
+	 * @param monitorProperties the properties
+	 * @return the configuration customizer
+	 */
+	@Bean
+	public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(MybatisLogMonitorProperties monitorProperties) {
+		MybatisLogMonitor logMonitor = new MybatisLogMonitor();
+		logMonitor.setProperties(monitorProperties.properties());
+		return configuration ->
+			configuration.addInterceptor(logMonitor);
+	}
 }

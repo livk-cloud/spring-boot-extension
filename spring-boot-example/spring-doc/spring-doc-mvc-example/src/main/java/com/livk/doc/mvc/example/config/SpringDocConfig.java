@@ -33,20 +33,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info().title("spring doc webmvc api")
-                        .description("spring doc webmvc api")
-                        .version("1.0.0"));
-    }
+	@Bean
+	public OpenAPI openAPI() {
+		return new OpenAPI()
+			.info(new Info().title("spring doc webmvc api")
+				.description("spring doc webmvc api")
+				.version("1.0.0"));
+	}
 
-    @Bean
-    public GroupedOpenApi openApi() {
-        return GroupedOpenApi.builder()
-                .group("open-api")
-                .packagesToScan("com.livk.doc.mvc.example")
-                .pathsToMatch("/**")
-                .build();
-    }
+	@Bean
+	public GroupedOpenApi openApi() {
+		return GroupedOpenApi.builder()
+			.group("open-api")
+			.packagesToScan("com.livk.doc.mvc.example")
+			.pathsToMatch("/**")
+			.build();
+	}
 }

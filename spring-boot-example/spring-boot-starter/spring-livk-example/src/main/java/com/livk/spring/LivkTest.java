@@ -40,27 +40,27 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class LivkTest {
 
-    private final LivkDemo livkDemo;
+	private final LivkDemo livkDemo;
 
-    private final LivkTestDemo livkTestDemo;
+	private final LivkTestDemo livkTestDemo;
 
-    private final AnnoTest annoTest;
+	private final AnnoTest annoTest;
 
-    private final WebClient webClient;
+	private final WebClient webClient;
 
-    private final RestTemplate restTemplate;
+	private final RestTemplate restTemplate;
 
-    @Value("${spring.github.username}")
-    public String username;
+	@Value("${spring.github.username}")
+	public String username;
 
-    @PostConstruct
-    public void show() {
-        livkDemo.show();
-        livkTestDemo.show();
-        annoTest.show();
-        log.info(username);
-        log.info("restTemplate:{}", restTemplate);
-        log.info("webClient:{}", webClient);
-    }
+	@PostConstruct
+	public void show() {
+		livkDemo.show();
+		livkTestDemo.show();
+		annoTest.show();
+		log.info(username);
+		log.info("restTemplate:{}", restTemplate);
+		log.info("webClient:{}", webClient);
+	}
 
 }

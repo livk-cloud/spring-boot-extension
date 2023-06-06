@@ -36,16 +36,16 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ReactiveUserAgentFilter implements WebFilter {
 
-    private final HttpUserAgentParser userAgentParse;
+	private final HttpUserAgentParser userAgentParse;
 
-    @NonNull
-    @Override
-    public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
-                .contextWrite(ReactiveUserAgentContextHolder.clearContext())
-                .then());
-        HttpHeaders headers = exchange.getRequest().getHeaders();
-        return chain.filter(exchange)
-                .contextWrite(ReactiveUserAgentContextHolder.withContext(userAgentParse.parse(headers)));
-    }
+	@NonNull
+	@Override
+	public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
+			.contextWrite(ReactiveUserAgentContextHolder.clearContext())
+			.then());
+		HttpHeaders headers = exchange.getRequest().getHeaders();
+		return chain.filter(exchange)
+			.contextWrite(ReactiveUserAgentContextHolder.withContext(userAgentParse.parse(headers)));
+	}
 }

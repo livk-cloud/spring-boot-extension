@@ -30,50 +30,50 @@ import java.util.function.Supplier;
  * @author livk
  */
 public class RequestIpContextHolder {
-    private static final ThreadLocal<IpInfo> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
+	private static final ThreadLocal<IpInfo> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
 
-    /**
-     * Set.
-     *
-     * @param ipInfo the ip
-     */
-    public static void set(IpInfo ipInfo) {
-        if (ipInfo != null) {
-            inheritableContext.set(ipInfo);
-        } else {
-            remove();
-        }
-    }
+	/**
+	 * Set.
+	 *
+	 * @param ipInfo the ip
+	 */
+	public static void set(IpInfo ipInfo) {
+		if (ipInfo != null) {
+			inheritableContext.set(ipInfo);
+		} else {
+			remove();
+		}
+	}
 
-    /**
-     * Compute if absent string.
-     *
-     * @param supplier the supplier
-     * @return the string
-     */
-    public synchronized static IpInfo computeIfAbsent(Supplier<IpInfo> supplier) {
-        IpInfo ipInfo = get();
-        if (ipInfo != null) {
-            return ipInfo;
-        }
-        IpInfo supplierIp = supplier.get();
-        set(supplierIp);
-        return supplierIp;
-    }
+	/**
+	 * Compute if absent string.
+	 *
+	 * @param supplier the supplier
+	 * @return the string
+	 */
+	public synchronized static IpInfo computeIfAbsent(Supplier<IpInfo> supplier) {
+		IpInfo ipInfo = get();
+		if (ipInfo != null) {
+			return ipInfo;
+		}
+		IpInfo supplierIp = supplier.get();
+		set(supplierIp);
+		return supplierIp;
+	}
 
-    /**
-     * Get string.
-     *
-     * @return the string
-     */
-    public static IpInfo get() {
-        return inheritableContext.get();
-    }
+	/**
+	 * Get string.
+	 *
+	 * @return the string
+	 */
+	public static IpInfo get() {
+		return inheritableContext.get();
+	}
 
-    /**
-     * Remove.
-     */
-    public static void remove() {
-        inheritableContext.remove();
-    }
+	/**
+	 * Remove.
+	 */
+	public static void remove() {
+		inheritableContext.remove();
+	}
 }

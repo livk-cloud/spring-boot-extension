@@ -32,20 +32,20 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 @Slf4j
 public class QuartzScheduler extends QuartzJobBean {
 
-    private void before() {
-        log.info("before");
-    }
+	private void before() {
+		log.info("before");
+	}
 
-    @Override
-    protected void executeInternal(JobExecutionContext context) {
-        before();
-        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-        log.info("{}", jobDataMap.getString("user"));
-        after();
-    }
+	@Override
+	protected void executeInternal(JobExecutionContext context) {
+		before();
+		JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+		log.info("{}", jobDataMap.getString("user"));
+		after();
+	}
 
-    private void after() {
-        log.info("after");
-    }
+	private void after() {
+		log.info("after");
+	}
 
 }

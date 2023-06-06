@@ -39,19 +39,19 @@ import java.util.concurrent.Executors;
 @SpringBootApplication
 public class MicrometerTraceExample {
 
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 
-    @GetMapping("home")
-    public String home() {
-        log.info("home() has been called");
-        ExecutorService service = Executors.newFixedThreadPool(2);
-        ExecutorService wrap = ContextExecutorService.wrap(service);
-        for (int i = 0; i < 3; i++) {
-            wrap.execute(() -> log.info("home"));
-        }
-        service.shutdown();
-        return "Hello World!";
-    }
+	@GetMapping("home")
+	public String home() {
+		log.info("home() has been called");
+		ExecutorService service = Executors.newFixedThreadPool(2);
+		ExecutorService wrap = ContextExecutorService.wrap(service);
+		for (int i = 0; i < 3; i++) {
+			wrap.execute(() -> log.info("home"));
+		}
+		service.shutdown();
+		return "Hello World!";
+	}
 }

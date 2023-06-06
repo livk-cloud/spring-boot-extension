@@ -38,16 +38,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Info implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * id
-     */
-    @ExcelIgnore
-    private Long id;
+	/**
+	 * id
+	 */
+	@ExcelIgnore
+	private Long id;
 
-    @ExcelProperty(index = 0)
-    private String phone;
+	@ExcelProperty(index = 0)
+	private String phone;
 
 }

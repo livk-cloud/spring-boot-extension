@@ -35,20 +35,20 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedissonLimitExecutor extends ReentrantLimitExecutor implements LimitExecutor {
 
-    private final RedissonClient redissonClient;
+	private final RedissonClient redissonClient;
 
-    @Override
-    protected boolean reentrantTryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
-        if (StringUtils.hasText(compositeKey)) {
-            RRateLimiter rateLimiter = redissonClient.getRateLimiter(compositeKey);
-            try {
-                RateIntervalUnit unit = RateIntervalUnit.valueOf(rateIntervalUnit.name());
-                rateLimiter.trySetRate(RateType.OVERALL, rate, rateInterval, unit);
-                return rateLimiter.tryAcquire(1);
-            } catch (Exception e) {
-                throw new LimitException("un support TimeUnit " + rateIntervalUnit, e);
-            }
-        }
-        throw new LimitException("Composite key is null or empty");
-    }
+	@Override
+	protected boolean reentrantTryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
+		if (StringUtils.hasText(compositeKey)) {
+			RRateLimiter rateLimiter = redissonClient.getRateLimiter(compositeKey);
+			try {
+				RateIntervalUnit unit = RateIntervalUnit.valueOf(rateIntervalUnit.name());
+				rateLimiter.trySetRate(RateType.OVERALL, rate, rateInterval, unit);
+				return rateLimiter.tryAcquire(1);
+			} catch (Exception e) {
+				throw new LimitException("un support TimeUnit " + rateIntervalUnit, e);
+			}
+		}
+		throw new LimitException("Composite key is null or empty");
+	}
 }

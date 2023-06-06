@@ -35,14 +35,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class DocControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    public void test() throws Exception {
-        mockMvc.perform(get("/v3/api-docs"))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("openapi", "3.0.1").exists());
-    }
+	@Test
+	public void test() throws Exception {
+		mockMvc.perform(get("/v3/api-docs"))
+			.andDo(print())
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(jsonPath("openapi", "3.0.1").exists());
+	}
 }

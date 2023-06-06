@@ -36,17 +36,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @AutoConfigureMockMvc
 @SpringBootTest({
-        "logging.level.org.springframework.web.reactive.function.client.WebClient = debug"
+	"logging.level.org.springframework.web.reactive.function.client.WebClient = debug"
 })
 class HttpControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void getTest() throws Exception {
-        mockMvc.perform(get("/get"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Test
+	void getTest() throws Exception {
+		mockMvc.perform(get("/get"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 }

@@ -31,13 +31,13 @@ import org.gradle.api.tasks.bundling.Jar
  *
  */
 class RootPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(BasePlugin.class)
-        project.pluginManager.apply(CorePlugin.class)
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(BasePlugin.class)
+		project.pluginManager.apply(CorePlugin.class)
 
-        project.tasks.withType(Jar.class).configureEach {
-            it.enabled = false
-        }
-    }
+		project.tasks.withType(Jar.class).configureEach {
+			it.enabled = false
+		}
+	}
 }

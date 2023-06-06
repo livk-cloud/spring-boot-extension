@@ -36,55 +36,55 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest("spring.application.root.name=livk")
 class SpringExpressionResolverTest {
 
-    private final static Object[] args = new Object[]{"livk"};
-    private final static Map<String, String> map = Map.of("username", "livk");
-    final ExpressionResolver resolver = new SpringExpressionResolver();
-    final String springContextHolderName = SpringContextHolder.class.getName();
+	private final static Object[] args = new Object[]{"livk"};
+	private final static Map<String, String> map = Map.of("username", "livk");
+	final ExpressionResolver resolver = new SpringExpressionResolver();
+	final String springContextHolderName = SpringContextHolder.class.getName();
 
-    private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 
-    SpringExpressionResolverTest() throws NoSuchMethodException {
-    }
+	SpringExpressionResolverTest() throws NoSuchMethodException {
+	}
 
-    @Test
-    void evaluate() {
-        assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
-        assertEquals("livk", resolver.evaluate("#username", method, args));
+	@Test
+	void evaluate() {
+		assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
+		assertEquals("livk", resolver.evaluate("#username", method, args));
 
-        assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
-        assertEquals("livk", resolver.evaluate("#username", map));
+		assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
+		assertEquals("livk", resolver.evaluate("#username", map));
 
-        assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
-        assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
+		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate(("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"), map));
+		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate(("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"), map));
 
-        assertEquals("livk:livk",
-                resolver.evaluate("#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}", map));
+		assertEquals("livk:livk",
+			resolver.evaluate("#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}", map));
 
-        assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
-        assertEquals("livk", resolver.evaluate("#username", method, args));
-        assertEquals("livk", resolver.evaluate("livk", method, args));
+		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
+		assertEquals("livk", resolver.evaluate("#username", method, args));
+		assertEquals("livk", resolver.evaluate("livk", method, args));
 
-        assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
-        assertEquals("livk123456", resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
+		assertEquals("livk123456", resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
 
-        assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
-        assertEquals("livk", resolver.evaluate("#username", map));
-        assertEquals("livk:" + System.getProperty("user.dir"),
-                resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map));
+		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
+		assertEquals("livk", resolver.evaluate("#username", map));
+		assertEquals("livk:" + System.getProperty("user.dir"),
+			resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map));
 
-        assertEquals("livk:livk",
-                resolver.evaluate("#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}", map));
+		assertEquals("livk:livk",
+			resolver.evaluate("#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}", map));
 
-        Map<String, Object> envMap = Map.of("username", "livk", "env", SpringContextHolder.getBean(Environment.class));
-        assertEquals("livk:livk",
-                resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
-    }
+		Map<String, Object> envMap = Map.of("username", "livk", "env", SpringContextHolder.getBean(Environment.class));
+		assertEquals("livk:livk",
+			resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
+	}
 
-    @SuppressWarnings("unused")
-    private void parseMethod(String username) {
-    }
+	@SuppressWarnings("unused")
+	private void parseMethod(String username) {
+	}
 }

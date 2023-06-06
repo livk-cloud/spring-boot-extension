@@ -29,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class MapperFactoryTest {
 
-    @Test
-    void builder() {
-        assertTrue(MapperFactory.builder(MapperFactory.JSON).build() instanceof JsonMapper);
-        assertTrue(MapperFactory.builder(MapperFactory.YAML).build() instanceof YAMLMapper);
-        assertTrue(MapperFactory.builder(MapperFactory.XML).build() instanceof XmlMapper);
-    }
+	@Test
+	void builder() {
+		assertTrue(MapperFactory.builder(MapperFactory.JSON).build() instanceof JsonMapper);
+		assertTrue(MapperFactory.builder(MapperFactory.YAML).build() instanceof YAMLMapper);
+		assertTrue(MapperFactory.builder(MapperFactory.XML).build() instanceof XmlMapper);
+	}
 }

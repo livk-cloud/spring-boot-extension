@@ -26,9 +26,9 @@ package com.livk.caffeine.handler;
  */
 public interface CacheWriteHandler<T> {
 
-    void put(String key, T value);
+	void put(String key, T value);
 
-    void delete(String key);
+	void delete(String key);
 
-    void clear();
+	void clear();
 }

@@ -36,20 +36,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractServiceLoad<T> implements InitializingBean {
 
-    protected Map<String, T> servicesMap;
+	protected Map<String, T> servicesMap;
 
-    @SuppressWarnings("unchecked")
-    private Class<T> getServiceClass() {
-        return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractServiceLoad.class);
-    }
+	@SuppressWarnings("unchecked")
+	private Class<T> getServiceClass() {
+		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractServiceLoad.class);
+	}
 
-    @Override
-    public void afterPropertiesSet() {
-        servicesMap = ProviderLoader.JDK_SERVICE.load(getServiceClass()).stream()
-                .collect(Collectors.toMap(this::getKey, Function.identity()));
-        log.info("data:{}", servicesMap);
-    }
+	@Override
+	public void afterPropertiesSet() {
+		servicesMap = ProviderLoader.JDK_SERVICE.load(getServiceClass()).stream()
+			.collect(Collectors.toMap(this::getKey, Function.identity()));
+		log.info("data:{}", servicesMap);
+	}
 
-    protected abstract String getKey(T t);
+	protected abstract String getKey(T t);
 
 }

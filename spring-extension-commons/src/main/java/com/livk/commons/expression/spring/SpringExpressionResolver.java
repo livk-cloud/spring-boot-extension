@@ -43,57 +43,57 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
  */
 public class SpringExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression> implements ExpressionResolver {
 
-    private final ExpressionParser expressionParser;
+	private final ExpressionParser expressionParser;
 
-    private final ParserContext beanExpressionParserContext = new TemplateParserContext();
+	private final ParserContext beanExpressionParserContext = new TemplateParserContext();
 
-    /**
-     * Instantiates a new Spring expression resolver.
-     */
-    public SpringExpressionResolver() {
-        this.expressionParser = new SpelExpressionParser();
-    }
+	/**
+	 * Instantiates a new Spring expression resolver.
+	 */
+	public SpringExpressionResolver() {
+		this.expressionParser = new SpelExpressionParser();
+	}
 
-    /**
-     * Instantiates a new Spring expression resolver.
-     *
-     * @param beanClassLoader the bean class loader
-     */
-    public SpringExpressionResolver(ClassLoader beanClassLoader) {
-        this.expressionParser = new SpelExpressionParser(new SpelParserConfiguration(null, beanClassLoader));
-    }
+	/**
+	 * Instantiates a new Spring expression resolver.
+	 *
+	 * @param beanClassLoader the bean class loader
+	 */
+	public SpringExpressionResolver(ClassLoader beanClassLoader) {
+		this.expressionParser = new SpelExpressionParser(new SpelParserConfiguration(null, beanClassLoader));
+	}
 
-    @Override
-    protected Expression compile(String value) {
-        return this.expressionParser.parseExpression(value, this.beanExpressionParserContext);
-    }
+	@Override
+	protected Expression compile(String value) {
+		return this.expressionParser.parseExpression(value, this.beanExpressionParserContext);
+	}
 
-    @Override
-    protected String wrapIfNecessary(String expression) {
-        if (!expression.contains("#")) {
-            return expression;
-        }
-        if (!expression.contains("#{")) {
-            return "#{" + expression + "}";
-        }
-        return expression;
-    }
+	@Override
+	protected String wrapIfNecessary(String expression) {
+		if (!expression.contains("#")) {
+			return expression;
+		}
+		if (!expression.contains("#{")) {
+			return "#{" + expression + "}";
+		}
+		return expression;
+	}
 
-    @Override
-    protected EvaluationContext transform(Context context) {
-        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
-        evaluationContext.addPropertyAccessor(new BeanExpressionContextAccessor());
-        evaluationContext.addPropertyAccessor(new BeanFactoryAccessor());
-        evaluationContext.addPropertyAccessor(new MapAccessor());
-        evaluationContext.addPropertyAccessor(new EnvironmentAccessor());
-        evaluationContext.setTypeLocator(new StandardTypeLocator());
-        evaluationContext.setTypeConverter(new StandardTypeConverter());
-        evaluationContext.setVariables(context);
-        return evaluationContext;
-    }
+	@Override
+	protected EvaluationContext transform(Context context) {
+		StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+		evaluationContext.addPropertyAccessor(new BeanExpressionContextAccessor());
+		evaluationContext.addPropertyAccessor(new BeanFactoryAccessor());
+		evaluationContext.addPropertyAccessor(new MapAccessor());
+		evaluationContext.addPropertyAccessor(new EnvironmentAccessor());
+		evaluationContext.setTypeLocator(new StandardTypeLocator());
+		evaluationContext.setTypeConverter(new StandardTypeConverter());
+		evaluationContext.setVariables(context);
+		return evaluationContext;
+	}
 
-    @Override
-    protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
-        return expression.getValue(context, returnType);
-    }
+	@Override
+	protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
+		return expression.getValue(context, returnType);
+	}
 }

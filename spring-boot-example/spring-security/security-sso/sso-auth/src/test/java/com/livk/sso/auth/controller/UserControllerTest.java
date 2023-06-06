@@ -45,44 +45,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    String token;
+	String token;
 
-    @BeforeEach
-    public void init() throws Exception {
-        Map<String, String> body = new HashMap<>();
-        body.put("username", "livk");
-        body.put("password", "123456");
-        MockHttpServletResponse response = mockMvc.perform(post("/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(body)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("code", "200").exists())
-                .andReturn().getResponse();
-        token = "Bearer " + JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
-    }
+	@BeforeEach
+	public void init() throws Exception {
+		Map<String, String> body = new HashMap<>();
+		body.put("username", "livk");
+		body.put("password", "123456");
+		MockHttpServletResponse response = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(body)))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("code", "200").exists())
+			.andReturn().getResponse();
+		token = "Bearer " + JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
+	}
 
 
-    @Test
-    void testList() throws Exception {
-        mockMvc.perform(get("/user/list")
-                        .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("list"));
-    }
+	@Test
+	void testList() throws Exception {
+		mockMvc.perform(get("/user/list")
+				.header(HttpHeaders.AUTHORIZATION, token))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("list"));
+	}
 
-    @Test
-    void testUpdate() throws Exception {
-        mockMvc.perform(put("/user/update")
-                        .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("update"));
-    }
+	@Test
+	void testUpdate() throws Exception {
+		mockMvc.perform(put("/user/update")
+				.header(HttpHeaders.AUTHORIZATION, token))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("update"));
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

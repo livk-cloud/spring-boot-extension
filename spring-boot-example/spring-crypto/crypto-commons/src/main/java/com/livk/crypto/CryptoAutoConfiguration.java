@@ -41,41 +41,41 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableConfigurationProperties(CryptoProperties.class)
 public class CryptoAutoConfiguration {
 
-    @Bean
-    @ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "AES")
-    public AesSecurity aesSecurity(CryptoProperties properties) {
-        return new AesSecurity(properties.getMetadata());
-    }
+	@Bean
+	@ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "AES")
+	public AesSecurity aesSecurity(CryptoProperties properties) {
+		return new AesSecurity(properties.getMetadata());
+	}
 
-    @Bean
-    @ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "PBE")
-    public PbeSecurity pbeSecurity(CryptoProperties properties) {
-        return new PbeSecurity(properties.getMetadata());
-    }
+	@Bean
+	@ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "PBE")
+	public PbeSecurity pbeSecurity(CryptoProperties properties) {
+		return new PbeSecurity(properties.getMetadata());
+	}
 
-    @AutoConfiguration
-    @RequiredArgsConstructor
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public static class CryptoMvcAutoConfiguration implements WebMvcConfigurer {
+	@AutoConfiguration
+	@RequiredArgsConstructor
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	public static class CryptoMvcAutoConfiguration implements WebMvcConfigurer {
 
-        private final ObjectProvider<CryptoFormatter<?>> cryptoFormatters;
+		private final ObjectProvider<CryptoFormatter<?>> cryptoFormatters;
 
-        @Override
-        public void addFormatters(FormatterRegistry registry) {
-            registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
-        }
-    }
+		@Override
+		public void addFormatters(FormatterRegistry registry) {
+			registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
+		}
+	}
 
-    @AutoConfiguration
-    @RequiredArgsConstructor
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public static class CryptoWebfluxAutoConfiguration implements WebFluxConfigurer {
+	@AutoConfiguration
+	@RequiredArgsConstructor
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	public static class CryptoWebfluxAutoConfiguration implements WebFluxConfigurer {
 
-        private final ObjectProvider<CryptoFormatter<?>> cryptoFormatters;
+		private final ObjectProvider<CryptoFormatter<?>> cryptoFormatters;
 
-        @Override
-        public void addFormatters(FormatterRegistry registry) {
-            registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
-        }
-    }
+		@Override
+		public void addFormatters(FormatterRegistry registry) {
+			registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
+		}
+	}
 }

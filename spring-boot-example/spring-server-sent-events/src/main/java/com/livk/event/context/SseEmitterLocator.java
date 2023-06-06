@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public interface SseEmitterLocator<K> {
 
-    Map<K, SseEmitter> all();
+	Map<K, SseEmitter> all();
 
-    SseEmitter get(K id);
+	SseEmitter get(K id);
 }

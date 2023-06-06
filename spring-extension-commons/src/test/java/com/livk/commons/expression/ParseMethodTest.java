@@ -22,7 +22,7 @@ package com.livk.commons.expression;
  */
 public class ParseMethodTest {
 
-    @SuppressWarnings("unused")
-    private void parseMethod(String username) {
-    }
+	@SuppressWarnings("unused")
+	private void parseMethod(String username) {
+	}
 }

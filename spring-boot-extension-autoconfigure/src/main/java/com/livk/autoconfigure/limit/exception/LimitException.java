@@ -24,29 +24,29 @@ package com.livk.autoconfigure.limit.exception;
  */
 public class LimitException extends RuntimeException {
 
-    /**
-     * Instantiates a new Limit exception.
-     */
-    public LimitException() {
-        super();
-    }
+	/**
+	 * Instantiates a new Limit exception.
+	 */
+	public LimitException() {
+		super();
+	}
 
-    /**
-     * Instantiates a new Limit exception.
-     *
-     * @param message the message
-     */
-    public LimitException(String message) {
-        super(message);
-    }
+	/**
+	 * Instantiates a new Limit exception.
+	 *
+	 * @param message the message
+	 */
+	public LimitException(String message) {
+		super(message);
+	}
 
-    /**
-     * Instantiates a new Limit exception.
-     *
-     * @param message the message
-     * @param cause   the cause
-     */
-    public LimitException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Instantiates a new Limit exception.
+	 *
+	 * @param message the message
+	 * @param cause   the cause
+	 */
+	public LimitException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

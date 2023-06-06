@@ -47,43 +47,43 @@ import java.util.List;
 @ConditionalOnClass(EasyExcel.class)
 public class ExcelAutoConfiguration {
 
-    /**
-     * The type Excel web mvc auto configuration.
-     */
-    @AutoConfiguration
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public static class ExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
-        @Override
-        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new ExcelMethodArgumentResolver());
-        }
+	/**
+	 * The type Excel web mvc auto configuration.
+	 */
+	@AutoConfiguration
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	public static class ExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
+		@Override
+		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+			resolvers.add(new ExcelMethodArgumentResolver());
+		}
 
-        @Override
-        public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-            handlers.add(new ExcelMethodReturnValueHandler());
-        }
-    }
+		@Override
+		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+			handlers.add(new ExcelMethodReturnValueHandler());
+		}
+	}
 
-    /**
-     * The type Excel web flux auto configuration.
-     */
-    @AutoConfiguration
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
+	/**
+	 * The type Excel web flux auto configuration.
+	 */
+	@AutoConfiguration
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
 
-        /**
-         * Reactive excel method return value handler reactive excel method return value handler.
-         *
-         * @return the reactive excel method return value handler
-         */
-        @Bean
-        public ReactiveExcelMethodReturnValueHandler reactiveExcelMethodReturnValueHandler() {
-            return new ReactiveExcelMethodReturnValueHandler();
-        }
+		/**
+		 * Reactive excel method return value handler reactive excel method return value handler.
+		 *
+		 * @return the reactive excel method return value handler
+		 */
+		@Bean
+		public ReactiveExcelMethodReturnValueHandler reactiveExcelMethodReturnValueHandler() {
+			return new ReactiveExcelMethodReturnValueHandler();
+		}
 
-        @Override
-        public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-            configurer.addCustomResolver(new ReactiveExcelMethodArgumentResolver());
-        }
-    }
+		@Override
+		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
+			configurer.addCustomResolver(new ReactiveExcelMethodArgumentResolver());
+		}
+	}
 }

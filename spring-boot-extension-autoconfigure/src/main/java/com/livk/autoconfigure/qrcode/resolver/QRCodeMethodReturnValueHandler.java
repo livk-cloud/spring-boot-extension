@@ -45,43 +45,43 @@ import java.io.IOException;
  */
 public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport implements AsyncHandlerMethodReturnValueHandler {
 
-    /**
-     * Instantiates a new Qr code method return value handler.
-     *
-     * @param qrCodeGenerator the qr code generator
-     */
-    public QRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
-        super(qrCodeGenerator);
-    }
+	/**
+	 * Instantiates a new Qr code method return value handler.
+	 *
+	 * @param qrCodeGenerator the qr code generator
+	 */
+	public QRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
+		super(qrCodeGenerator);
+	}
 
-    @Override
-    public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
-    }
+	@Override
+	public boolean supportsReturnType(@NonNull MethodParameter returnType) {
+		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
+	}
 
-    @Override
-    public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest) throws IOException {
-        mavContainer.setRequestHandled(true);
-        HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        Assert.notNull(response, "response not be null");
-        AnnotationAttributes attributes = createAttributes(returnValue, returnType, ResponseQRCode.class);
-        PicType type = attributes.getEnum("type");
-        BufferedImage bufferedImage = toBufferedImage(returnValue, attributes);
-        try (ServletOutputStream outputStream = response.getOutputStream()) {
-            setResponse(type, response);
-            write(bufferedImage, type.name(), outputStream);
-        }
-    }
+	@Override
+	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
+								  NativeWebRequest webRequest) throws IOException {
+		mavContainer.setRequestHandled(true);
+		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+		Assert.notNull(response, "response not be null");
+		AnnotationAttributes attributes = createAttributes(returnValue, returnType, ResponseQRCode.class);
+		PicType type = attributes.getEnum("type");
+		BufferedImage bufferedImage = toBufferedImage(returnValue, attributes);
+		try (ServletOutputStream outputStream = response.getOutputStream()) {
+			setResponse(type, response);
+			write(bufferedImage, type.name(), outputStream);
+		}
+	}
 
-    private void setResponse(PicType type, HttpServletResponse response) {
-        response.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG_VALUE : MediaType.IMAGE_PNG_VALUE);
-        response.setCharacterEncoding("UTF-8");
-    }
+	private void setResponse(PicType type, HttpServletResponse response) {
+		response.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG_VALUE : MediaType.IMAGE_PNG_VALUE);
+		response.setCharacterEncoding("UTF-8");
+	}
 
-    @Override
-    public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
-    }
+	@Override
+	public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
+		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
+	}
 
 }

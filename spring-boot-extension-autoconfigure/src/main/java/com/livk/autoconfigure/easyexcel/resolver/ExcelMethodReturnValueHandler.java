@@ -47,72 +47,72 @@ import java.util.Map;
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
 
-    /**
-     * The constant UTF8.
-     */
-    public static final String UTF8 = "UTF-8";
+	/**
+	 * The constant UTF8.
+	 */
+	public static final String UTF8 = "UTF-8";
 
-    @Override
-    public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
-    }
+	@Override
+	public boolean supportsReturnType(@NonNull MethodParameter returnType) {
+		return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
+	}
 
-    @Override
-    public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest) {
-        mavContainer.setRequestHandled(true);
-        HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        ExcelReturn excelReturn = AnnotationUtils.getAnnotationElement(returnType, ExcelReturn.class);
-        Assert.notNull(response, "response not be null");
-        Assert.notNull(excelReturn, "excelReturn not be null");
-        if (returnValue instanceof Collection) {
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
-            this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
-        } else if (returnValue instanceof Map) {
-            @SuppressWarnings("unchecked")
-            Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
-            Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
-            this.write(excelReturn, response, excelModelClass, result);
-        } else {
-            throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
-        }
-    }
+	@Override
+	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
+								  NativeWebRequest webRequest) {
+		mavContainer.setRequestHandled(true);
+		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+		ExcelReturn excelReturn = AnnotationUtils.getAnnotationElement(returnType, ExcelReturn.class);
+		Assert.notNull(response, "response not be null");
+		Assert.notNull(excelReturn, "excelReturn not be null");
+		if (returnValue instanceof Collection) {
+			Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
+			this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
+		} else if (returnValue instanceof Map) {
+			@SuppressWarnings("unchecked")
+			Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
+			Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
+			this.write(excelReturn, response, excelModelClass, result);
+		} else {
+			throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+		}
+	}
 
-    /**
-     * Write.
-     *
-     * @param excelReturn     the excel return
-     * @param response        the response
-     * @param excelModelClass the excel model class
-     * @param result          the result
-     */
-    private void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
-        this.setResponse(excelReturn, response);
-        try (ServletOutputStream outputStream = response.getOutputStream()) {
-            EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Write.
+	 *
+	 * @param excelReturn     the excel return
+	 * @param response        the response
+	 * @param excelModelClass the excel model class
+	 * @param result          the result
+	 */
+	private void write(ExcelReturn excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+		this.setResponse(excelReturn, response);
+		try (ServletOutputStream outputStream = response.getOutputStream()) {
+			EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * set response
-     *
-     * @param excelReturn the excel return
-     * @param response    response
-     */
-    private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
-        String fileName = EasyExcelSupport.fileName(excelReturn);
-        String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
-                .orElse("application/vnd.ms-excel");
-        response.setContentType(contentType);
-        response.setCharacterEncoding(UTF8);
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
-    }
+	/**
+	 * set response
+	 *
+	 * @param excelReturn the excel return
+	 * @param response    response
+	 */
+	private void setResponse(ExcelReturn excelReturn, HttpServletResponse response) {
+		String fileName = EasyExcelSupport.fileName(excelReturn);
+		String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
+			.orElse("application/vnd.ms-excel");
+		response.setContentType(contentType);
+		response.setCharacterEncoding(UTF8);
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+	}
 
-    @Override
-    public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-        return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
-    }
+	@Override
+	public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
+		return AnnotationUtils.hasAnnotationElement(returnType, ExcelReturn.class);
+	}
 
 }

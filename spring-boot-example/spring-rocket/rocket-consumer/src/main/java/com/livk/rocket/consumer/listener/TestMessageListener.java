@@ -35,11 +35,11 @@ import java.util.Random;
 @RocketMQMessageListener(consumerGroup = "livk-consumer-group", topic = RocketConstant.LIVK_MESSAGE_TOPIC)
 public class TestMessageListener implements RocketMQListener<RocketDTO> {
 
-    @Override
-    public void onMessage(RocketDTO dto) {
-        if (new Random(20).nextInt() % 20 == 0) {
-            throw new RuntimeException("消息重试");
-        }
-        log.info("rocketMQ receive message：{}", JsonMapperUtils.writeValueAsString(dto));
-    }
+	@Override
+	public void onMessage(RocketDTO dto) {
+		if (new Random(20).nextInt() % 20 == 0) {
+			throw new RuntimeException("消息重试");
+		}
+		log.info("rocketMQ receive message：{}", JsonMapperUtils.writeValueAsString(dto));
+	}
 }

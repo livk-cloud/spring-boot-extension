@@ -37,19 +37,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authenticationManager(authenticationManager)
-                .authorizeHttpRequests(registry -> registry.requestMatchers("/user/query")
-                        .hasAnyRole("ADMIN")
-                        .anyRequest()
-                        .authenticated())
-                .addFilter(new TokenVerifyFilter(authenticationManager))
-                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
-    }
+		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
+		return http.csrf(AbstractHttpConfigurer::disable)
+			.authenticationManager(authenticationManager)
+			.authorizeHttpRequests(registry -> registry.requestMatchers("/user/query")
+				.hasAnyRole("ADMIN")
+				.anyRequest()
+				.authenticated())
+			.addFilter(new TokenVerifyFilter(authenticationManager))
+			.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.build();
+	}
 
 }

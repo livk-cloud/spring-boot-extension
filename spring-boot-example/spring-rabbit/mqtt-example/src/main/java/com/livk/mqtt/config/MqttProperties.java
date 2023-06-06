@@ -31,29 +31,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(MqttProperties.MQTT)
 public class MqttProperties {
 
-    public static final String MQTT = "spring.mqtt";
+	public static final String MQTT = "spring.mqtt";
 
-    private String username;
+	private String username;
 
-    private String password;
+	private String password;
 
-    private String url;
+	private String url;
 
-    private int connectTimeout = 10;
+	private int connectTimeout = 10;
 
-    private int keepAliveInterval = 20;
+	private int keepAliveInterval = 20;
 
-    private Meta sender;
+	private Meta sender;
 
-    private Meta receiver;
+	private Meta receiver;
 
-    @Data
-    public static class Meta {
+	@Data
+	public static class Meta {
 
-        private String clientId;
+		private String clientId;
 
-        private String defaultTopic;
+		private String defaultTopic;
 
-    }
+	}
 
 }

@@ -34,13 +34,13 @@ import java.util.Set;
  */
 @Getter
 public abstract class OAuth2BaseAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken {
-    private final Set<String> scopes;
+	private final Set<String> scopes;
 
-    public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType,
-                                         Authentication clientPrincipal,
-                                         @Nullable Set<String> scopes,
-                                         @Nullable Map<String, Object> additionalParameters) {
-        super(authorizationGrantType, clientPrincipal, additionalParameters);
-        this.scopes = scopes == null ? Set.of() : Collections.unmodifiableSet(scopes);
-    }
+	public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType,
+					     Authentication clientPrincipal,
+					     @Nullable Set<String> scopes,
+					     @Nullable Map<String, Object> additionalParameters) {
+		super(authorizationGrantType, clientPrincipal, additionalParameters);
+		this.scopes = scopes == null ? Set.of() : Collections.unmodifiableSet(scopes);
+	}
 }

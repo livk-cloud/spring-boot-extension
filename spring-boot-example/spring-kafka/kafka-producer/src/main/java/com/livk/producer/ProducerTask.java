@@ -40,29 +40,29 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class ProducerTask {
 
-    private final KafkaTemplate<Object, Object> kafkaTemplate;
+	private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    @Scheduled(cron = "0/10 * * * * ?")
-    public void producer() {
-        kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
-        // 异步获取结果
-        kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString())
-                .whenComplete((result, throwable) -> {
-                    if (throwable != null) {
-                        log.error("ex:{}", throwable.getMessage());
-                    } else {
-                        log.info("result:{}", result);
-                    }
-                });
+	@Scheduled(cron = "0/10 * * * * ?")
+	public void producer() {
+		kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
+		// 异步获取结果
+		kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString())
+			.whenComplete((result, throwable) -> {
+				if (throwable != null) {
+					log.error("ex:{}", throwable.getMessage());
+				} else {
+					log.info("result:{}", result);
+				}
+			});
 
-        // 同步获取结果
-        CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
-        try {
-            SendResult<Object, Object> result = future.get();
-            log.info("result:{}", result);
-        } catch (Exception e) {
-            log.error("ex:{}", e.getMessage());
-        }
-    }
+		// 同步获取结果
+		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
+		try {
+			SendResult<Object, Object> result = future.get();
+			log.info("result:{}", result);
+		} catch (Exception e) {
+			log.error("ex:{}", e.getMessage());
+		}
+	}
 
 }

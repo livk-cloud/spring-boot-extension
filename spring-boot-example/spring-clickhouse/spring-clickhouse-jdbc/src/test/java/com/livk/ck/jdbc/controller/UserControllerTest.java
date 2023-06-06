@@ -50,39 +50,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Order(2)
-    @Test
-    void testList() throws Exception {
-        mockMvc.perform(get("/user"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Order(2)
+	@Test
+	void testList() throws Exception {
+		mockMvc.perform(get("/user"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 
-    @Order(3)
-    @Test
-    void testRemove() throws Exception {
-        String format = DateUtils.format(LocalDateTime.now(), "yyyy-MM-dd");
-        mockMvc.perform(delete("/user/" + format))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
+	@Order(3)
+	@Test
+	void testRemove() throws Exception {
+		String format = DateUtils.format(LocalDateTime.now(), "yyyy-MM-dd");
+		mockMvc.perform(delete("/user/" + format))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(1)
-    @Test
-    void testSave() throws Exception {
-        User user = new User().setId(Integer.MAX_VALUE)
-                .setAppId("appId")
-                .setVersion("version")
-                .setRegTime(new Date());
-        mockMvc.perform(post("/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(user)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
+	@Order(1)
+	@Test
+	void testSave() throws Exception {
+		User user = new User().setId(Integer.MAX_VALUE)
+			.setAppId("appId")
+			.setVersion("version")
+			.setRegTime(new Date());
+		mockMvc.perform(post("/user")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(user)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().string("true"));
+	}
 }

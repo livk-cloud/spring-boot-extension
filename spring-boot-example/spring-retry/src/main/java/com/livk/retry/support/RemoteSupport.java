@@ -36,19 +36,19 @@ import java.time.LocalDateTime;
 @Component
 public class RemoteSupport {
 
-    @Retryable(retryFor = IllegalArgumentException.class, backoff = @Backoff(delay = 2000, multiplier = 1.5))
-    public String call(String username) {
-        if ("fail".equals(username)) {
-            log.info("Remote Fail time:{}", LocalDateTime.now());
-            throw new IllegalArgumentException("Fail RPC");
-        }
-        return "SUC";
-    }
+	@Retryable(retryFor = IllegalArgumentException.class, backoff = @Backoff(delay = 2000, multiplier = 1.5))
+	public String call(String username) {
+		if ("fail".equals(username)) {
+			log.info("Remote Fail time:{}", LocalDateTime.now());
+			throw new IllegalArgumentException("Fail RPC");
+		}
+		return "SUC";
+	}
 
-    @Recover
-    public String recover(IllegalArgumentException e) {
-        log.error("remote exception msg:{}", e.getMessage());
-        return "recover SUC";
-    }
+	@Recover
+	public String recover(IllegalArgumentException e) {
+		log.error("remote exception msg:{}", e.getMessage());
+		return "recover SUC";
+	}
 
 }

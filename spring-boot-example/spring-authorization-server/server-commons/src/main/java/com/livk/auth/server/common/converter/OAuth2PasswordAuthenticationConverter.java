@@ -35,15 +35,15 @@ import java.util.Set;
  */
 public class OAuth2PasswordAuthenticationConverter implements OAuth2BaseAuthenticationConverter<OAuth2PasswordAuthenticationToken> {
 
-    @Override
-    public RequestMatcher support() {
-        return request -> SecurityConstants.PASSWORD.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
-                          && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
-                          && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
-    }
+	@Override
+	public RequestMatcher support() {
+		return request -> SecurityConstants.PASSWORD.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
+			&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
+			&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
+	}
 
-    @Override
-    public OAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
-        return new OAuth2PasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
-    }
+	@Override
+	public OAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
+		return new OAuth2PasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
+	}
 }

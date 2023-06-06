@@ -38,34 +38,34 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CryptoJsonSerializer extends JsonSerializer<Object> implements ContextualSerializer {
 
-    private CryptoFormatter<Object> formatter;
+	private CryptoFormatter<Object> formatter;
 
-    @Override
-    public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        String text = formatter.print(value, Locale.CHINA);
-        CryptoType type = formatter.type();
-        gen.writeString(type.wrapper(text));
-    }
+	@Override
+	public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+		String text = formatter.print(value, Locale.CHINA);
+		CryptoType type = formatter.type();
+		gen.writeString(type.wrapper(text));
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        JavaType javaType = property.getType();
-        CryptoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((CryptoEncrypt.class)))
-                .orElse(property.getContextAnnotation(CryptoEncrypt.class));
-        Printer<?> printer = getPrinter(javaType.getRawClass(), encrypt.value());
-        if (printer != null) {
-            return new CryptoJsonSerializer((CryptoFormatter<Object>) printer);
-        }
-        return prov.findValueSerializer(javaType, property);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+		JavaType javaType = property.getType();
+		CryptoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((CryptoEncrypt.class)))
+			.orElse(property.getContextAnnotation(CryptoEncrypt.class));
+		Printer<?> printer = getPrinter(javaType.getRawClass(), encrypt.value());
+		if (printer != null) {
+			return new CryptoJsonSerializer((CryptoFormatter<Object>) printer);
+		}
+		return prov.findValueSerializer(javaType, property);
+	}
 
-    private CryptoFormatter<?> getPrinter(Class<?> rawClass, CryptoType type) {
-        for (CryptoFormatter<?> formatter : CryptoFormatter.fromContext().get(rawClass)) {
-            if (formatter.type().equals(type)) {
-                return formatter;
-            }
-        }
-        return null;
-    }
+	private CryptoFormatter<?> getPrinter(Class<?> rawClass, CryptoType type) {
+		for (CryptoFormatter<?> formatter : CryptoFormatter.fromContext().get(rawClass)) {
+			if (formatter.type().equals(type)) {
+				return formatter;
+			}
+		}
+		return null;
+	}
 }

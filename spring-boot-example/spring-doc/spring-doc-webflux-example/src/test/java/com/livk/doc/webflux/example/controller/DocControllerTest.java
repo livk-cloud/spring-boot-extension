@@ -34,19 +34,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureWebTestClient
 class DocControllerTest {
-    @Autowired
-    WebTestClient client;
+	@Autowired
+	WebTestClient client;
 
-    @Test
-    public void test() {
-        client.get()
-                .uri("/v3/api-docs")
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
-                .expectBody(JsonNode.class)
-                .value(jsonNode -> assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText()));
-    }
+	@Test
+	public void test() {
+		client.get()
+			.uri("/v3/api-docs")
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.contentType(MediaType.APPLICATION_JSON)
+			.expectBody(JsonNode.class)
+			.value(jsonNode -> assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText()));
+	}
 }

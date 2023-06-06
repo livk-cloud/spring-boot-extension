@@ -35,16 +35,16 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserConverter extends Converter<User, UserVO> {
 
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
-    @Mapping(target = "type", source = "type", numberFormat = "#")
-    @Override
-    User getSource(UserVO userVO);
+	@Mapping(target = "password", ignore = true)
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "type", source = "type", numberFormat = "#")
+	@Override
+	User getSource(UserVO userVO);
 
-    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
-    @Mapping(target = "type", source = "type", numberFormat = "#")
-    @Override
-    UserVO getTarget(User user);
+	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "type", source = "type", numberFormat = "#")
+	@Override
+	UserVO getTarget(User user);
 
 }

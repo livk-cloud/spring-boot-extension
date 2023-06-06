@@ -33,10 +33,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GenericMapstructService extends AbstractMapstructService implements MapstructRegistry {
 
-    private final ConverterRepository converterRepository;
+	private final ConverterRepository converterRepository;
 
-    @Override
-    public Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter) {
-        return converterRepository.computeIfAbsent(converterPair, converter);
-    }
+	@Override
+	public Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter) {
+		return converterRepository.computeIfAbsent(converterPair, converter);
+	}
 }

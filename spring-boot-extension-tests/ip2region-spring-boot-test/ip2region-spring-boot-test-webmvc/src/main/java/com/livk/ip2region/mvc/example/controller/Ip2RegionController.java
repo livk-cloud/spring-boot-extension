@@ -44,11 +44,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Ip2RegionController {
 
-    private final RequestIpInfo requestIpInfo;
+	private final RequestIpInfo requestIpInfo;
 
-    @PostMapping
-    public HttpEntity<List<IpInfo>> post(@RequestIp IpInfo ipInfo) {
-        log.info("ip:{}", RequestIpContextHolder.get());
-        return ResponseEntity.ok(List.of(ipInfo, requestIpInfo.currentIpInfo()));
-    }
+	@PostMapping
+	public HttpEntity<List<IpInfo>> post(@RequestIp IpInfo ipInfo) {
+		log.info("ip:{}", RequestIpContextHolder.get());
+		return ResponseEntity.ok(List.of(ipInfo, requestIpInfo.currentIpInfo()));
+	}
 }

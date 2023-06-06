@@ -32,14 +32,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = MqttApp.class)
 public class MqttTest {
 
-    @Autowired
-    MqttSender mqttSender;
+	@Autowired
+	MqttSender mqttSender;
 
-    @Test
-    public void test() {
-        for (int i = 0; i < 100; i++) {
-            mqttSender.sendToMqtt("hello" + (i + 1));
-        }
-    }
+	@Test
+	public void test() {
+		for (int i = 0; i < 100; i++) {
+			mqttSender.sendToMqtt("hello" + (i + 1));
+		}
+	}
 
 }

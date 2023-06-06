@@ -37,35 +37,35 @@ import org.springframework.context.ApplicationContextAware;
  */
 public abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {
 
-    /**
-     * The Application context.
-     */
-    private MapstructLocator mapstructLocator;
+	/**
+	 * The Application context.
+	 */
+	private MapstructLocator mapstructLocator;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <S, T> T convert(S source, Class<T> targetType) {
-        Class<S> sourceType = (Class<S>) source.getClass();
-        Converter<S, T> sourceConverter = this.getConverter(sourceType, targetType);
-        if (sourceConverter != null) {
-            return sourceConverter.getTarget(source);
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <S, T> T convert(S source, Class<T> targetType) {
+		Class<S> sourceType = (Class<S>) source.getClass();
+		Converter<S, T> sourceConverter = this.getConverter(sourceType, targetType);
+		if (sourceConverter != null) {
+			return sourceConverter.getTarget(source);
+		}
 
-        Converter<T, S> targetConverter = this.getConverter(targetType, sourceType);
-        if (targetConverter != null) {
-            return targetConverter.getSource(source);
-        }
-        throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
-    }
+		Converter<T, S> targetConverter = this.getConverter(targetType, sourceType);
+		if (targetConverter != null) {
+			return targetConverter.getSource(source);
+		}
+		throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
+	}
 
-    private <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
-        ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
-        return mapstructLocator.get(converterPair);
-    }
+	private <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
+		ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
+		return mapstructLocator.get(converterPair);
+	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
-        this.mapstructLocator = new PrioritizedMapstructLocator(this, mapstructLocators);
-    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
+		this.mapstructLocator = new PrioritizedMapstructLocator(this, mapstructLocators);
+	}
 }

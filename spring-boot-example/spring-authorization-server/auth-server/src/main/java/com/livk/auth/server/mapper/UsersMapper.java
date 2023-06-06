@@ -28,11 +28,10 @@ import org.apache.ibatis.annotations.Select;
  * </p>
  *
  * @author livk
- *
  */
 @Mapper
 public interface UsersMapper {
 
-    @Select("select * from users")
-    User getOne(@Param("username") String username);
+	@Select("select * from users")
+	User getOne(@Param("username") String username);
 }

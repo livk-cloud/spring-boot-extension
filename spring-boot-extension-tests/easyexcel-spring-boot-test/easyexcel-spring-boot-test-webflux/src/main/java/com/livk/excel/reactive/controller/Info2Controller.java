@@ -41,17 +41,17 @@ import java.util.stream.Collectors;
 @RequestMapping("info")
 public class Info2Controller {
 
-    @ExcelImport
-    @PostMapping("uploadAndDownload")
-    public Map<String, List<Info>> uploadAndDownload(@ExcelParam Map<String, List<Info>> mapData) {
-        return mapData.values().stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
-    }
+	@ExcelImport
+	@PostMapping("uploadAndDownload")
+	public Map<String, List<Info>> uploadAndDownload(@ExcelParam Map<String, List<Info>> mapData) {
+		return mapData.values().stream()
+			.flatMap(Collection::stream)
+			.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+	}
 
-    @PostMapping("download")
-    public Map<String, List<Info>> download(@RequestBody List<Info> dataExcels) {
-        return dataExcels.stream()
-                .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
-    }
+	@PostMapping("download")
+	public Map<String, List<Info>> download(@RequestBody List<Info> dataExcels) {
+		return dataExcels.stream()
+			.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+	}
 }

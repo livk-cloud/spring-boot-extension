@@ -31,29 +31,29 @@ import org.springframework.util.Assert;
  */
 public abstract class ConverterExpressionResolver<C, E> extends CacheExpressionResolver<E> {
 
-    @Override
-    protected final <T> T calculate(E expression, Context context, Class<T> returnType) {
-        C frameworkContext = transform(context);
-        Assert.notNull(frameworkContext, "frameworkContext not be null");
-        return calculate(expression, frameworkContext, returnType);
-    }
+	@Override
+	protected final <T> T calculate(E expression, Context context, Class<T> returnType) {
+		C frameworkContext = transform(context);
+		Assert.notNull(frameworkContext, "frameworkContext not be null");
+		return calculate(expression, frameworkContext, returnType);
+	}
 
-    /**
-     * Transform c.
-     *
-     * @param context the context
-     * @return the c
-     */
-    protected abstract C transform(Context context);
+	/**
+	 * Transform c.
+	 *
+	 * @param context the context
+	 * @return the c
+	 */
+	protected abstract C transform(Context context);
 
-    /**
-     * Calculate t.
-     *
-     * @param <T>        the type parameter
-     * @param expression the expression
-     * @param context    the context
-     * @param returnType the return type
-     * @return the t
-     */
-    protected abstract <T> T calculate(E expression, C context, Class<T> returnType);
+	/**
+	 * Calculate t.
+	 *
+	 * @param <T>        the type parameter
+	 * @param expression the expression
+	 * @param context    the context
+	 * @param returnType the return type
+	 * @return the t
+	 */
+	protected abstract <T> T calculate(E expression, C context, Class<T> returnType);
 }

@@ -40,72 +40,72 @@ import java.io.InputStream;
 @UtilityClass
 public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
 
-    /**
-     * The constant BUFFER_SIZE.
-     */
-    public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
+	/**
+	 * The constant BUFFER_SIZE.
+	 */
+	public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
 
-    /**
-     * The constant DEFAULT_FACTORY.
-     */
-    public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
+	/**
+	 * The constant DEFAULT_FACTORY.
+	 */
+	public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
 
-    /**
-     * Transform mono.
-     *
-     * @param dataBufferFlux the data buffer flux
-     * @return the mono
-     */
-    public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-        return join(dataBufferFlux).map(DataBuffer::asInputStream);
-    }
+	/**
+	 * Transform mono.
+	 *
+	 * @param dataBufferFlux the data buffer flux
+	 * @return the mono
+	 */
+	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
+		return join(dataBufferFlux).map(DataBuffer::asInputStream);
+	}
 
-    /**
-     * Transform flux.
-     *
-     * @param array the array
-     * @return the flux
-     */
-    public Flux<DataBuffer> transform(byte[] array) {
-        ByteArrayResource resource = new ByteArrayResource(array);
-        return read(resource, DEFAULT_FACTORY, BUFFER_SIZE);
-    }
+	/**
+	 * Transform flux.
+	 *
+	 * @param array the array
+	 * @return the flux
+	 */
+	public Flux<DataBuffer> transform(byte[] array) {
+		ByteArrayResource resource = new ByteArrayResource(array);
+		return read(resource, DEFAULT_FACTORY, BUFFER_SIZE);
+	}
 
-    /**
-     * Transform byte mono.
-     *
-     * @param bufferFlux the buffer flux
-     * @return the mono
-     */
-    public Mono<byte[]> transformByte(Flux<DataBuffer> bufferFlux) {
-        return DataBufferUtils.transform(bufferFlux)
-                .publishOn(Schedulers.boundedElastic())
-                .handle((inputStream, sink) -> {
-                    try {
-                        sink.next(inputStream.readAllBytes());
-                    } catch (IOException e) {
-                        sink.error(new RuntimeException(e));
-                    }
-                });
-    }
+	/**
+	 * Transform byte mono.
+	 *
+	 * @param bufferFlux the buffer flux
+	 * @return the mono
+	 */
+	public Mono<byte[]> transformByte(Flux<DataBuffer> bufferFlux) {
+		return DataBufferUtils.transform(bufferFlux)
+			.publishOn(Schedulers.boundedElastic())
+			.handle((inputStream, sink) -> {
+				try {
+					sink.next(inputStream.readAllBytes());
+				} catch (IOException e) {
+					sink.error(new RuntimeException(e));
+				}
+			});
+	}
 
-    /**
-     * Transform flux.
-     *
-     * @param inputStream the input stream
-     * @return the flux
-     */
-    public Flux<DataBuffer> transform(InputStream inputStream) {
-        return readInputStream(() -> inputStream, DEFAULT_FACTORY, BUFFER_SIZE);
-    }
+	/**
+	 * Transform flux.
+	 *
+	 * @param inputStream the input stream
+	 * @return the flux
+	 */
+	public Flux<DataBuffer> transform(InputStream inputStream) {
+		return readInputStream(() -> inputStream, DEFAULT_FACTORY, BUFFER_SIZE);
+	}
 
-    /**
-     * Transform flux.
-     *
-     * @param inputStreamMono the input stream mono
-     * @return the flux
-     */
-    public Flux<DataBuffer> transform(Mono<InputStream> inputStreamMono) {
-        return inputStreamMono.flatMapMany(DataBufferUtils::transform);
-    }
+	/**
+	 * Transform flux.
+	 *
+	 * @param inputStreamMono the input stream mono
+	 * @return the flux
+	 */
+	public Flux<DataBuffer> transform(Mono<InputStream> inputStreamMono) {
+		return inputStreamMono.flatMapMany(DataBufferUtils::transform);
+	}
 }

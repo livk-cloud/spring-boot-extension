@@ -37,36 +37,36 @@ import java.util.List;
 @SpringBootTest
 class AuthorsMapperTest {
 
-    @Autowired
-    SqlSessionFactory sqlSessionFactory;
+	@Autowired
+	SqlSessionFactory sqlSessionFactory;
 
-    @Test
-    void insert() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
-            AuthorsMapper mapper = sqlSession.getMapper(AuthorsMapper.class);
+	@Test
+	void insert() {
+		try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
+			AuthorsMapper mapper = sqlSession.getMapper(AuthorsMapper.class);
 
-            List<Authors> authorsList = new ArrayList<>();
-            for (int i = 0; i < 2000000; i++) {
-                Authors authors = new Authors();
-                authors.setFirstName("root" + i);
-                authors.setLastName("admin" + i);
-                authors.setEmail("1375632510@qq.com");
-                authors.setBirthdate(new Date());
-                authors.setAdded(new Date());
+			List<Authors> authorsList = new ArrayList<>();
+			for (int i = 0; i < 2000000; i++) {
+				Authors authors = new Authors();
+				authors.setFirstName("root" + i);
+				authors.setLastName("admin" + i);
+				authors.setEmail("1375632510@qq.com");
+				authors.setBirthdate(new Date());
+				authors.setAdded(new Date());
 
-                authorsList.add(authors);
+				authorsList.add(authors);
 
-                if (i > 0 && i % 1000 == 0) {
-                    mapper.insertBatch(authorsList);
-                    authorsList.clear();
-                }
-                if (i > 0 && i % 1000000 == 0) {
-                    sqlSession.commit();
-                    sqlSession.clearCache();
-                }
-            }
+				if (i > 0 && i % 1000 == 0) {
+					mapper.insertBatch(authorsList);
+					authorsList.clear();
+				}
+				if (i > 0 && i % 1000000 == 0) {
+					sqlSession.commit();
+					sqlSession.clearCache();
+				}
+			}
 
-            sqlSession.commit();
-        }
-    }
+			sqlSession.commit();
+		}
+	}
 }

@@ -30,9 +30,9 @@ import reactor.core.publisher.Mono;
  */
 public interface UserService {
 
-    Flux<User> list();
+	Flux<User> list();
 
-    Mono<Void> remove(Mono<Integer> id);
+	Mono<Void> remove(Mono<Integer> id);
 
-    Mono<Void> save(Mono<User> userMono);
+	Mono<Void> save(Mono<User> userMono);
 }

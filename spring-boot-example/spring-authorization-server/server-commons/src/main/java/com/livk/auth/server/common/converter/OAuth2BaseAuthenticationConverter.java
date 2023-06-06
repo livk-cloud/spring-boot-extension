@@ -48,44 +48,44 @@ import java.util.stream.Collectors;
  */
 public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthenticationToken> extends AuthenticationConverter {
 
-    RequestMatcher support();
+	RequestMatcher support();
 
 
-    /**
-     * 构建具体类型的token
-     */
-    T buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters);
+	/**
+	 * 构建具体类型的token
+	 */
+	T buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters);
 
-    @Override
-    default Authentication convert(HttpServletRequest request) {
-        if (!support().matches(request)) {
-            return null;
-        }
+	@Override
+	default Authentication convert(HttpServletRequest request) {
+		if (!support().matches(request)) {
+			return null;
+		}
 
-        String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
-        if (StringUtils.hasText(scope) && request.getParameterValues(OAuth2ParameterNames.SCOPE).length != 1) {
-            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
-        }
+		String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
+		if (StringUtils.hasText(scope) && request.getParameterValues(OAuth2ParameterNames.SCOPE).length != 1) {
+			throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
+		}
 
-        Set<String> requestedScopes = Collections.emptySet();
-        if (StringUtils.hasText(scope)) {
-            requestedScopes = Sets.newHashSet(StringUtils.delimitedListToStringArray(scope, " "));
-        }
+		Set<String> requestedScopes = Collections.emptySet();
+		if (StringUtils.hasText(scope)) {
+			requestedScopes = Sets.newHashSet(StringUtils.delimitedListToStringArray(scope, " "));
+		}
 
-        // 获取当前已经认证的客户端信息
-        Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
-        Optional.ofNullable(clientPrincipal).orElseThrow(() ->
-                new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
+		// 获取当前已经认证的客户端信息
+		Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
+		Optional.ofNullable(clientPrincipal).orElseThrow(() ->
+			new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
-        // 扩展信息
-        Map<String, Object> additionalParameters = StreamUtils.convert(request.getParameterNames())
-                .filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE).negate()
-                        .and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))
-                .collect(Collectors.toMap(Function.identity(), request::getParameter));
+		// 扩展信息
+		Map<String, Object> additionalParameters = StreamUtils.convert(request.getParameterNames())
+			.filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE).negate()
+				.and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))
+			.collect(Collectors.toMap(Function.identity(), request::getParameter));
 
-        // 创建token
-        return buildToken(clientPrincipal, requestedScopes, additionalParameters);
+		// 创建token
+		return buildToken(clientPrincipal, requestedScopes, additionalParameters);
 
-    }
+	}
 
 }

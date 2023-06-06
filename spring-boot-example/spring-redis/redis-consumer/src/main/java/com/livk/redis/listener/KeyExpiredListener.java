@@ -34,14 +34,14 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class KeyExpiredListener extends KeyspaceEventMessageListener {
 
-    public KeyExpiredListener(RedisMessageListenerContainer listenerContainer) {
-        super(listenerContainer);
-    }
+	public KeyExpiredListener(RedisMessageListenerContainer listenerContainer) {
+		super(listenerContainer);
+	}
 
-    @Override
-    protected void doHandleMessage(Message message) {
-        String key = new String(message.getBody(), StandardCharsets.UTF_8);
-        log.info("key:<{}>", key);
-    }
+	@Override
+	protected void doHandleMessage(Message message) {
+		String key = new String(message.getBody(), StandardCharsets.UTF_8);
+		log.info("key:<{}>", key);
+	}
 
 }

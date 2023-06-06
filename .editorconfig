@@ -1,0 +1,38 @@
+root = true
+
+[*.{java,kt,kts,groovy,xml,xsd}]
+charset = utf-8
+indent_size = 4
+indent_style = tab
+
+[*.{yaml,yml}]
+charset = utf-8
+indent_size = 2
+indent_style = space
+
+[*.ftl]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.sql]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+[*.adoc]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+[*.{js,html}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.sh]
+end_of_line = lf

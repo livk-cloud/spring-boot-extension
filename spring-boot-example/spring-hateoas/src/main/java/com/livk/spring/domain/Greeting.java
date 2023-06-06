@@ -37,8 +37,8 @@ import java.time.Instant;
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator)
 public class Greeting extends AbstractEntity<Greeting> {
 
-    @JsonProperty("content")
-    private final String contents;
+	@JsonProperty("content")
+	private final String contents;
 
-    private final Instant instant = Instant.now();
+	private final Instant instant = Instant.now();
 }

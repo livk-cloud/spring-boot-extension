@@ -30,15 +30,15 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
  */
 public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
 
-    @Override
-    protected void initChannel(Channel ch) throws Exception {
-        ch.pipeline()
-                //空闲检测
-                .addLast(new ServerIdleStateHandler())
-                .addLast(new ProtobufVarint32FrameDecoder())
-                .addLast(new ProtobufDecoder(NettyMessage.Message.getDefaultInstance()))
-                .addLast(new ProtobufVarint32LengthFieldPrepender())
-                .addLast(new ProtobufEncoder())
-                .addLast(new NettyServerHandler());
-    }
+	@Override
+	protected void initChannel(Channel ch) throws Exception {
+		ch.pipeline()
+			//空闲检测
+			.addLast(new ServerIdleStateHandler())
+			.addLast(new ProtobufVarint32FrameDecoder())
+			.addLast(new ProtobufDecoder(NettyMessage.Message.getDefaultInstance()))
+			.addLast(new ProtobufVarint32LengthFieldPrepender())
+			.addLast(new ProtobufEncoder())
+			.addLast(new NettyServerHandler());
+	}
 }

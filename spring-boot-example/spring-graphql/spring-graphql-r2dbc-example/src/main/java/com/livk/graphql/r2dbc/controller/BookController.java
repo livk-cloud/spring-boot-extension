@@ -43,28 +43,28 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookRepository bookRepository;
+	private final BookRepository bookRepository;
 
-    private final AuthorRepository authorRepository;
+	private final AuthorRepository authorRepository;
 
-    @QueryMapping
-    public Flux<Book> bookList() {
-        return bookRepository.findAll();
-    }
+	@QueryMapping
+	public Flux<Book> bookList() {
+		return bookRepository.findAll();
+	}
 
-    @QueryMapping
-    public Mono<Book> bookByIsbn(@Argument String isbn) {
-        return bookRepository.findByIsbn(isbn);
-    }
+	@QueryMapping
+	public Mono<Book> bookByIsbn(@Argument String isbn) {
+		return bookRepository.findByIsbn(isbn);
+	}
 
-    @SchemaMapping(typeName = "Book", field = "author")
-    public Mono<Author> getAuthor(Book book) {
-        return authorRepository.findByIdCardNo(book.getAuthorIdCardNo());
-    }
+	@SchemaMapping(typeName = "Book", field = "author")
+	public Mono<Author> getAuthor(Book book) {
+		return authorRepository.findByIdCardNo(book.getAuthorIdCardNo());
+	}
 
-    @MutationMapping
-    public Mono<Book> createBook(@Argument BookDTO dto) {
-        return bookRepository.save(BeanUtils.copy(dto, Book.class));
-    }
+	@MutationMapping
+	public Mono<Book> createBook(@Argument BookDTO dto) {
+		return bookRepository.save(BeanUtils.copy(dto, Book.class));
+	}
 }
 

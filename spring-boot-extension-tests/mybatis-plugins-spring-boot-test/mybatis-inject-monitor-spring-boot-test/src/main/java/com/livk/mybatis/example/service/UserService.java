@@ -29,13 +29,13 @@ import java.util.List;
  * @author livk
  */
 public interface UserService {
-    User getById(Integer id);
+	User getById(Integer id);
 
-    boolean updateById(User user);
+	boolean updateById(User user);
 
-    boolean save(User user);
+	boolean save(User user);
 
-    boolean deleteById(Integer id);
+	boolean deleteById(Integer id);
 
-    List<User> list();
+	List<User> list();
 }

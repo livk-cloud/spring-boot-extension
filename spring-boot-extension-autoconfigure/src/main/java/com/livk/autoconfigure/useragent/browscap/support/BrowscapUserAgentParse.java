@@ -35,12 +35,12 @@ import org.springframework.http.HttpHeaders;
 @RequiredArgsConstructor
 public class BrowscapUserAgentParse implements HttpUserAgentParser {
 
-    private final UserAgentParser userAgentParser;
+	private final UserAgentParser userAgentParser;
 
-    @Override
-    public Wrapper parse(HttpHeaders headers) {
-        String userAgent = headers.getFirst(HttpHeaders.USER_AGENT);
-        Capabilities capabilities = userAgentParser.parse(userAgent);
-        return GenericWrapper.of(capabilities);
-    }
+	@Override
+	public Wrapper parse(HttpHeaders headers) {
+		String userAgent = headers.getFirst(HttpHeaders.USER_AGENT);
+		Capabilities capabilities = userAgentParser.parse(userAgent);
+		return GenericWrapper.of(capabilities);
+	}
 }

@@ -42,31 +42,31 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(DynamicDatasourceProperties.class)
 public class DynamicAutoConfiguration {
 
-    /**
-     * Dynamic datasource dynamic datasource.
-     *
-     * @param datasourceProperties the datasource properties
-     * @return the dynamic datasource
-     */
-    @Bean
-    public DynamicDatasource dynamicDatasource(DynamicDatasourceProperties datasourceProperties) {
-        Map<Object, Object> datasourceMap = datasourceProperties.getDatasource()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().initializeDataSourceBuilder().build()));
-        DynamicDatasource dynamicDatasource = new DynamicDatasource();
-        dynamicDatasource.setTargetDataSources(datasourceMap);
-        dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimary()));
-        return dynamicDatasource;
-    }
+	/**
+	 * Dynamic datasource dynamic datasource.
+	 *
+	 * @param datasourceProperties the datasource properties
+	 * @return the dynamic datasource
+	 */
+	@Bean
+	public DynamicDatasource dynamicDatasource(DynamicDatasourceProperties datasourceProperties) {
+		Map<Object, Object> datasourceMap = datasourceProperties.getDatasource()
+			.entrySet()
+			.stream()
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().initializeDataSourceBuilder().build()));
+		DynamicDatasource dynamicDatasource = new DynamicDatasource();
+		dynamicDatasource.setTargetDataSources(datasourceMap);
+		dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimary()));
+		return dynamicDatasource;
+	}
 
-    /**
-     * Data source interceptor data source interceptor.
-     *
-     * @return the data source interceptor
-     */
-    @Bean
-    public DataSourceInterceptor dataSourceInterceptor() {
-        return new DataSourceInterceptor();
-    }
+	/**
+	 * Data source interceptor data source interceptor.
+	 *
+	 * @return the data source interceptor
+	 */
+	@Bean
+	public DataSourceInterceptor dataSourceInterceptor() {
+		return new DataSourceInterceptor();
+	}
 }

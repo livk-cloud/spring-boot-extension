@@ -36,24 +36,24 @@ import java.util.stream.Collectors;
 @Slf4j
 class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 
-    private final Map<String, OSSClientFactory<?>> factoryMap;
+	private final Map<String, OSSClientFactory<?>> factoryMap;
 
-    /**
-     * Instantiates a new Oss client factory pattern resolver.
-     */
-    public OSSClientFactoryPatternResolver(ApplicationContext applicationContext) {
-        factoryMap = applicationContext.<OSSClientFactory<?>>getBeanProvider(ResolvableType.forClass(OSSClientFactory.class))
-                .orderedStream()
-                .collect(Collectors.toMap(OSSClientFactory::name, Function.identity()));
-    }
+	/**
+	 * Instantiates a new Oss client factory pattern resolver.
+	 */
+	public OSSClientFactoryPatternResolver(ApplicationContext applicationContext) {
+		factoryMap = applicationContext.<OSSClientFactory<?>>getBeanProvider(ResolvableType.forClass(OSSClientFactory.class))
+			.orderedStream()
+			.collect(Collectors.toMap(OSSClientFactory::name, Function.identity()));
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> OSSClientFactory<T> loader(String prefix) {
-        if (factoryMap.containsKey(prefix)) {
-            return (OSSClientFactory<T>) factoryMap.get(prefix);
-        }
-        throw new OSSClientFactoryNotFoundException(prefix + " oss factory匹配失败,当前可用oss factory :" + factoryMap.keySet());
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> OSSClientFactory<T> loader(String prefix) {
+		if (factoryMap.containsKey(prefix)) {
+			return (OSSClientFactory<T>) factoryMap.get(prefix);
+		}
+		throw new OSSClientFactoryNotFoundException(prefix + " oss factory匹配失败,当前可用oss factory :" + factoryMap.keySet());
+	}
 
 }

@@ -31,13 +31,13 @@ import com.livk.commons.expression.ExpressionResolver;
  */
 public class AviatorExpressionResolver extends CacheExpressionResolver<Expression> implements ExpressionResolver {
 
-    @Override
-    protected Expression compile(String value) {
-        return AviatorEvaluator.compile(value);
-    }
+	@Override
+	protected Expression compile(String value) {
+		return AviatorEvaluator.compile(value);
+	}
 
-    @Override
-    protected <T> T calculate(Expression expression, Context context, Class<T> returnType) {
-        return returnType.cast(expression.execute(context));
-    }
+	@Override
+	protected <T> T calculate(Expression expression, Context context, Class<T> returnType) {
+		return returnType.cast(expression.execute(context));
+	}
 }

@@ -35,12 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class AuthServerApp {
 
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 
-    @GetMapping("hello")
-    public HttpEntity<String> hello() {
-        return ResponseEntity.ok("hello");
-    }
+	@GetMapping("hello")
+	public HttpEntity<String> hello() {
+		return ResponseEntity.ok("hello");
+	}
 }

@@ -35,21 +35,21 @@ import org.springframework.lang.NonNull;
 @RequiredArgsConstructor
 public class MyBatisBatchItemWriter<T> implements ItemWriter<T> {
 
-    private final SqlSessionFactory sqlSessionFactory;
+	private final SqlSessionFactory sqlSessionFactory;
 
-    private final String statementId;
+	private final String statementId;
 
-    @Override
-    public void write(@NonNull Chunk<? extends T> chunk) {
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
-        try {
-            for (T item : chunk.getItems()) {
-                sqlSession.update(statementId, item);
-            }
-            sqlSession.commit();
-        } catch (Exception e) {
-            sqlSession.rollback();
-        }
-        sqlSession.close();
-    }
+	@Override
+	public void write(@NonNull Chunk<? extends T> chunk) {
+		SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+		try {
+			for (T item : chunk.getItems()) {
+				sqlSession.update(statementId, item);
+			}
+			sqlSession.commit();
+		} catch (Exception e) {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+	}
 }

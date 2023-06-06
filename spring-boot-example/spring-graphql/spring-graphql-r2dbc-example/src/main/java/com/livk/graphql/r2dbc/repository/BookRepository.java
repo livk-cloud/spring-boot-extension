@@ -29,5 +29,5 @@ import reactor.core.publisher.Mono;
  * @author livk
  */
 public interface BookRepository extends R2dbcRepository<Book, Long> {
-    Mono<Book> findByIsbn(String isbn);
+	Mono<Book> findByIsbn(String isbn);
 }

@@ -44,12 +44,12 @@ import java.util.stream.Collectors;
 @RequestMapping("user-agent")
 public class UserAgentController {
 
-    @GetMapping
-    public Mono<HttpEntity<Map<String, Capabilities>>> get(@UserAgentInfo Mono<Capabilities> capabilities) {
-        return ReactiveUserAgentContextHolder.get()
-                .concatWith(capabilities.map(GenericWrapper::of))
-                .map(wrapper -> wrapper.unwrap(Capabilities.class))
-                .collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
-                .map(ResponseEntity::ok);
-    }
+	@GetMapping
+	public Mono<HttpEntity<Map<String, Capabilities>>> get(@UserAgentInfo Mono<Capabilities> capabilities) {
+		return ReactiveUserAgentContextHolder.get()
+			.concatWith(capabilities.map(GenericWrapper::of))
+			.map(wrapper -> wrapper.unwrap(Capabilities.class))
+			.collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
+			.map(ResponseEntity::ok);
+	}
 }

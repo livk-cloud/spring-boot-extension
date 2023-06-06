@@ -36,19 +36,19 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWebTestClient(timeout = "15000")
 class UserAgentControllerTest {
 
-    @Autowired
-    WebTestClient client;
+	@Autowired
+	WebTestClient client;
 
-    @Test
-    void getTest() {
-        client.get()
-                .uri("/user-agent")
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
-                .expectBody(JsonNode.class)
-                .value(System.out::println);
-    }
+	@Test
+	void getTest() {
+		client.get()
+			.uri("/user-agent")
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.contentType(MediaType.APPLICATION_JSON)
+			.expectBody(JsonNode.class)
+			.value(System.out::println);
+	}
 }

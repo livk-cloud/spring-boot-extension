@@ -29,9 +29,9 @@ import java.util.Map;
 @ConfigurationProperties(CryptoProperties.PREFIX)
 public class CryptoProperties {
 
-    public static final String PREFIX = "spring.crypto";
+	public static final String PREFIX = "spring.crypto";
 
-    private CryptoType type;
+	private CryptoType type;
 
-    private Map<String, String> metadata;
+	private Map<String, String> metadata;
 }

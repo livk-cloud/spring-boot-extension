@@ -34,54 +34,54 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class ElementUtils {
 
-    /**
-     * Gets annotation attributes.
-     *
-     * @param <T>         the type parameter
-     * @param element     the element
-     * @param targetClass the target class
-     * @param key         the key
-     * @return the annotation attributes
-     */
-    public <T> Optional<TypeElement> getAnnotationAttributes(Element element, Class<T> targetClass, String key) {
-        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
-            TypeMirror typeMirror = annotationMirror.getAnnotationType().asElement().asType();
-            if (typeMirror.toString().contentEquals(targetClass.getCanonicalName())) {
-                Map<String, AnnotationValue> elementValues = annotationMirror.getElementValues()
-                        .entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue() != null)
-                        .collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
-                                Map.Entry::getValue));
-                return Optional.ofNullable(elementValues.get(key))
-                        .map(annotationValue -> {
-                            DeclaredType declaredType = (DeclaredType) annotationValue.getValue();
-                            return (TypeElement) declaredType.asElement();
-                        });
-            }
-        }
-        throw new IllegalArgumentException(element + " not has annotation:" + targetClass);
-    }
+	/**
+	 * Gets annotation attributes.
+	 *
+	 * @param <T>         the type parameter
+	 * @param element     the element
+	 * @param targetClass the target class
+	 * @param key         the key
+	 * @return the annotation attributes
+	 */
+	public <T> Optional<TypeElement> getAnnotationAttributes(Element element, Class<T> targetClass, String key) {
+		for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+			TypeMirror typeMirror = annotationMirror.getAnnotationType().asElement().asType();
+			if (typeMirror.toString().contentEquals(targetClass.getCanonicalName())) {
+				Map<String, AnnotationValue> elementValues = annotationMirror.getElementValues()
+					.entrySet()
+					.stream()
+					.filter(entry -> entry.getValue() != null)
+					.collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
+						Map.Entry::getValue));
+				return Optional.ofNullable(elementValues.get(key))
+					.map(annotationValue -> {
+						DeclaredType declaredType = (DeclaredType) annotationValue.getValue();
+						return (TypeElement) declaredType.asElement();
+					});
+			}
+		}
+		throw new IllegalArgumentException(element + " not has annotation:" + targetClass);
+	}
 
-    /**
-     * Gets binary name.
-     *
-     * @param element the element
-     * @return the binary name
-     */
-    public String getBinaryName(TypeElement element) {
-        return getBinaryNameImpl(element, element.getSimpleName().toString());
-    }
+	/**
+	 * Gets binary name.
+	 *
+	 * @param element the element
+	 * @return the binary name
+	 */
+	public String getBinaryName(TypeElement element) {
+		return getBinaryNameImpl(element, element.getSimpleName().toString());
+	}
 
-    private String getBinaryNameImpl(TypeElement element, String className) {
-        Element enclosingElement = element.getEnclosingElement();
+	private String getBinaryNameImpl(TypeElement element, String className) {
+		Element enclosingElement = element.getEnclosingElement();
 
-        if (enclosingElement instanceof PackageElement pkg) {
-            if (pkg.isUnnamed()) {
-                return className;
-            }
-            return pkg.getQualifiedName() + "." + className;
-        }
-        return getBinaryNameImpl((TypeElement) enclosingElement, enclosingElement.getSimpleName() + "$" + className);
-    }
+		if (enclosingElement instanceof PackageElement pkg) {
+			if (pkg.isUnnamed()) {
+				return className;
+			}
+			return pkg.getQualifiedName() + "." + className;
+		}
+		return getBinaryNameImpl((TypeElement) enclosingElement, enclosingElement.getSimpleName() + "$" + className);
+	}
 }

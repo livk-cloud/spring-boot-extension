@@ -26,9 +26,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author livk
  */
 public class HeartbeatEncoder extends MessageToByteEncoder<ClientPackage> {
-    @Override
-    protected void encode(ChannelHandlerContext ctx, ClientPackage msg, ByteBuf out) throws Exception {
-        out.writeByte(msg.getVersion());
-        out.writeByte(msg.type());
-    }
+	@Override
+	protected void encode(ChannelHandlerContext ctx, ClientPackage msg, ByteBuf out) throws Exception {
+		out.writeByte(msg.getVersion());
+		out.writeByte(msg.type());
+	}
 }

@@ -40,100 +40,100 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RocketProducerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    RocketDTO dto = new RocketDTO();
+	RocketDTO dto = new RocketDTO();
 
-    @BeforeEach
-    public void init() {
-        String msg = "Java第一，老寇无敌。千秋万代，一统江湖。";
-        dto.setBody(msg);
-    }
+	@BeforeEach
+	public void init() {
+		String msg = "Java第一，老寇无敌。千秋万代，一统江湖。";
+		dto.setBody(msg);
+	}
 
 
-    @Test
-    void sendMessage() throws Exception {
-        mockMvc.perform(post("/api/send/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void sendMessage() throws Exception {
+		mockMvc.perform(post("/api/send/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(dto)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 
-    @Test
-    void sendAsyncMessage() throws Exception {
-        mockMvc.perform(post("/api/sendAsync/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void sendAsyncMessage() throws Exception {
+		mockMvc.perform(post("/api/sendAsync/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(dto)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 
-    @Test
-    void sendOneMessage() throws Exception {
-        mockMvc.perform(post("/api/sendOne/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void sendOneMessage() throws Exception {
+		mockMvc.perform(post("/api/sendOne/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(dto)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 
-    @Test
-    void sendTransactionMessage() throws Exception {
-        mockMvc.perform(post("/api/sendTransaction/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void sendTransactionMessage() throws Exception {
+		mockMvc.perform(post("/api/sendTransaction/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(dto)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 
-    @Test
-    void sendDelay() throws Exception {
-        mockMvc.perform(post("/api/sendDelay/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(dto)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void sendDelay() throws Exception {
+		mockMvc.perform(post("/api/sendDelay/{topic}", RocketConstant.LIVK_MESSAGE_TOPIC)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(dto)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 
-    @Test
-    void sendMessageOrderly() throws Exception {
-        for (int i = 1; i <= 6; i++) {
-            RocketDTO rocketDTO = new RocketDTO();
-            rocketDTO.setBody("同步顺序消息" + i);
-            mockMvc.perform(post("/api/sendOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
-                    .andExpect(status().isOk())
-                    .andDo(print());
-        }
-    }
+	@Test
+	void sendMessageOrderly() throws Exception {
+		for (int i = 1; i <= 6; i++) {
+			RocketDTO rocketDTO = new RocketDTO();
+			rocketDTO.setBody("同步顺序消息" + i);
+			mockMvc.perform(post("/api/sendOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
+				.andExpect(status().isOk())
+				.andDo(print());
+		}
+	}
 
-    @Test
-    void sendAsyncMessageOrderly() throws Exception {
-        for (int i = 1; i <= 6; i++) {
-            RocketDTO rocketDTO = new RocketDTO();
-            rocketDTO.setBody("异步顺序消息" + i);
-            mockMvc.perform(post("/api/sendAsyncOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
-                    .andExpect(status().isOk())
-                    .andDo(print());
-        }
-    }
+	@Test
+	void sendAsyncMessageOrderly() throws Exception {
+		for (int i = 1; i <= 6; i++) {
+			RocketDTO rocketDTO = new RocketDTO();
+			rocketDTO.setBody("异步顺序消息" + i);
+			mockMvc.perform(post("/api/sendAsyncOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
+				.andExpect(status().isOk())
+				.andDo(print());
+		}
+	}
 
-    @Test
-    void sendOneMessageOrderly() throws Exception {
-        for (int i = 1; i <= 6; i++) {
-            RocketDTO rocketDTO = new RocketDTO();
-            rocketDTO.setBody("单向顺序消息" + i);
-            mockMvc.perform(post("/api/sendOneOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(JsonMapperUtils.writeValueAsString(rocketDTO)))
-                    .andExpect(status().isOk())
-                    .andDo(print());
-        }
-    }
+	@Test
+	void sendOneMessageOrderly() throws Exception {
+		for (int i = 1; i <= 6; i++) {
+			RocketDTO rocketDTO = new RocketDTO();
+			rocketDTO.setBody("单向顺序消息" + i);
+			mockMvc.perform(post("/api/sendOneOrderly/{topic}", RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
+				.andExpect(status().isOk())
+				.andDo(print());
+		}
+	}
 
 }

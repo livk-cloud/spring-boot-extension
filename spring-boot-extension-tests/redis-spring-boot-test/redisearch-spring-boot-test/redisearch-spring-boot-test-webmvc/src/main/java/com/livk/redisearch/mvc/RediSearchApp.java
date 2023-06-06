@@ -45,40 +45,40 @@ import java.util.Random;
 @Slf4j
 @SpringBootApplication
 public class RediSearchApp {
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 
-    @Bean
-    @SuppressWarnings("unchecked")
-    public ApplicationRunner applicationRunner(RedisModulesClient redisModulesClient) {
-        return (args) -> {
-            StatefulRedisModulesConnection<String, String> connect = redisModulesClient.connect();
-            RedisModulesCommands<String, String> search = connect.sync();
+	@Bean
+	@SuppressWarnings("unchecked")
+	public ApplicationRunner applicationRunner(RedisModulesClient redisModulesClient) {
+		return (args) -> {
+			StatefulRedisModulesConnection<String, String> connect = redisModulesClient.connect();
+			RedisModulesCommands<String, String> search = connect.sync();
 
-            if (!search.ftList().contains(Student.INDEX)) {
-                search.ftCreate(Student.INDEX,
-                        Field.text(FieldFunc.getName(Student::getName)).weight(5.0).build(),
-                        Field.text(FieldFunc.getName(Student::getSex)).build(),
-                        Field.text(FieldFunc.getName(Student::getDesc)).build(),
-                        Field.tag("class").build());
-            }
-            Random random = new Random();
-            for (int i = 0; i < 10; i++) {
-                int randomNum = random.nextInt(2);
-                Student student = new Student()
-                        .setName("livk-" + i)
-                        .setSex(randomNum == 0 ? "男" : "女")
-                        .setDesc("是一个学生")
-                        .setClassX((i + 1) + "班");
-                Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
-                search.hmset("00" + i, body);
-            }
-            SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
-            for (Document<String, String> document : result) {
-                Student bean = JsonMapperUtils.convertValue(document, Student.class);
-                log.info("{}", bean);
-            }
-        };
-    }
+			if (!search.ftList().contains(Student.INDEX)) {
+				search.ftCreate(Student.INDEX,
+					Field.text(FieldFunc.getName(Student::getName)).weight(5.0).build(),
+					Field.text(FieldFunc.getName(Student::getSex)).build(),
+					Field.text(FieldFunc.getName(Student::getDesc)).build(),
+					Field.tag("class").build());
+			}
+			Random random = new Random();
+			for (int i = 0; i < 10; i++) {
+				int randomNum = random.nextInt(2);
+				Student student = new Student()
+					.setName("livk-" + i)
+					.setSex(randomNum == 0 ? "男" : "女")
+					.setDesc("是一个学生")
+					.setClassX((i + 1) + "班");
+				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
+				search.hmset("00" + i, body);
+			}
+			SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
+			for (Document<String, String> document : result) {
+				Student bean = JsonMapperUtils.convertValue(document, Student.class);
+				log.info("{}", bean);
+			}
+		};
+	}
 }

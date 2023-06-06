@@ -34,13 +34,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrationHttpMessageConverters extends HttpMessageConverters {
 
-    public RegistrationHttpMessageConverters(AdminServerProperties adminServerProperties) {
-        super(jacksonHttpMessageConverter(adminServerProperties));
-    }
+	public RegistrationHttpMessageConverters(AdminServerProperties adminServerProperties) {
+		super(jacksonHttpMessageConverter(adminServerProperties));
+	}
 
-    private static HttpMessageConverter<?> jacksonHttpMessageConverter(AdminServerProperties adminServerProperties) {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.getObjectMapper().registerModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()));
-        return converter;
-    }
+	private static HttpMessageConverter<?> jacksonHttpMessageConverter(AdminServerProperties adminServerProperties) {
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.getObjectMapper().registerModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()));
+		return converter;
+	}
 }

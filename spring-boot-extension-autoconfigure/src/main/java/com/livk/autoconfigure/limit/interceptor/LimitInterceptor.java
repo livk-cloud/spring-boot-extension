@@ -36,21 +36,21 @@ import org.springframework.beans.factory.ObjectProvider;
 @RequiredArgsConstructor
 public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limit> {
 
-    /**
-     * 执行器
-     */
-    private final ObjectProvider<LimitExecutor> provider;
+	/**
+	 * 执行器
+	 */
+	private final ObjectProvider<LimitExecutor> provider;
 
-    @Override
-    protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
-        LimitSupport limitSupport = LimitSupport.of(provider.getIfAvailable());
-        boolean status = limitSupport.exec(limit, invocation.getMethod(), invocation.getArguments());
-        if (status) {
-            return invocation.proceed();
-        } else {
-            throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate() +
-                                     " within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
-        }
-    }
+	@Override
+	protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
+		LimitSupport limitSupport = LimitSupport.of(provider.getIfAvailable());
+		boolean status = limitSupport.exec(limit, invocation.getMethod(), invocation.getArguments());
+		if (status) {
+			return invocation.proceed();
+		} else {
+			throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate() +
+				" within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
+		}
+	}
 
 }

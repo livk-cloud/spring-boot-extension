@@ -28,8 +28,8 @@ import java.io.Serializable;
  */
 public class StringCall implements Serializable, Runnable {
 
-    @Override
-    public void run() {
-        System.out.println("66666666666");
-    }
+	@Override
+	public void run() {
+		System.out.println("66666666666");
+	}
 }

@@ -36,9 +36,9 @@ import org.springframework.lang.Nullable;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserSpringConverter extends Converter<User, UserVO> {
 
-    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
-    @Mapping(target = "type", source = "type", numberFormat = "#")
-    @Override
-    UserVO convert(@Nullable User user);
+	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "type", source = "type", numberFormat = "#")
+	@Override
+	UserVO convert(@Nullable User user);
 
 }

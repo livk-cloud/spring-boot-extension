@@ -31,23 +31,23 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
  */
 public class OAuth2JwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
-    /**
-     * Customize the OAuth 2.0 Token attributes.
-     *
-     * @param context the context containing the OAuth 2.0 Token attributes
-     */
-    @Override
-    public void customize(JwtEncodingContext context) {
-        JwtClaimsSet.Builder claims = context.getClaims();
-        claims.claim(OAuth2ParameterNames.GRANT_TYPE, context.getAuthorizationGrantType().getValue());
-        claims.claim(OAuth2ParameterNames.CLIENT_ID, context.getAuthorizationGrant().getName());
+	/**
+	 * Customize the OAuth 2.0 Token attributes.
+	 *
+	 * @param context the context containing the OAuth 2.0 Token attributes
+	 */
+	@Override
+	public void customize(JwtEncodingContext context) {
+		JwtClaimsSet.Builder claims = context.getClaims();
+		claims.claim(OAuth2ParameterNames.GRANT_TYPE, context.getAuthorizationGrantType().getValue());
+		claims.claim(OAuth2ParameterNames.CLIENT_ID, context.getAuthorizationGrant().getName());
 
-        // 客户端模式不返回具体用户信息
-        if (AuthorizationGrantType.CLIENT_CREDENTIALS.equals(context.getAuthorizationGrantType())) {
-            return;
-        }
+		// 客户端模式不返回具体用户信息
+		if (AuthorizationGrantType.CLIENT_CREDENTIALS.equals(context.getAuthorizationGrantType())) {
+			return;
+		}
 
 //        Oauth2User oauth2User = (Oauth2User) context.getPrincipal().getPrincipal();
-        claims.claim(SecurityConstants.DETAILS_USER, context.getPrincipal().getPrincipal());
-    }
+		claims.claim(SecurityConstants.DETAILS_USER, context.getPrincipal().getPrincipal());
+	}
 }

@@ -31,9 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("json")
 public class JsonController {
 
-    @AutoRepeatedSubmit
-    @GetMapping
-    public HttpEntity<String> get() {
-        return ResponseEntity.ok("json");
-    }
+	@AutoRepeatedSubmit
+	@GetMapping
+	public HttpEntity<String> get() {
+		return ResponseEntity.ok("json");
+	}
 }

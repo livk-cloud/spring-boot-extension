@@ -26,18 +26,18 @@ package com.livk.caffeine.handler;
  */
 public interface CacheHandler<T> extends CacheReadHandler<T>, CacheWriteHandler<T> {
 
-    default T readAndPut(String key, T defaultValue) {
-        T t = this.read(key);
-        if (t == null) {
-            synchronized (this) {
-                t = this.read(key);
-                if (t == null) {
-                    t = defaultValue;
-                    this.put(key, t);
-                }
-            }
-        }
-        return t;
-    }
+	default T readAndPut(String key, T defaultValue) {
+		T t = this.read(key);
+		if (t == null) {
+			synchronized (this) {
+				t = this.read(key);
+				if (t == null) {
+					t = defaultValue;
+					this.put(key, t);
+				}
+			}
+		}
+		return t;
+	}
 
 }

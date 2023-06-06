@@ -33,13 +33,13 @@ import java.time.LocalDateTime;
 @Data
 public class PulsarMessage<T> implements Serializable {
 
-    private String msgId;
+	private String msgId;
 
-    private LocalDateTime sendTime;
+	private LocalDateTime sendTime;
 
-    private T data;
+	private T data;
 
-    public String toJson() {
-        return JsonMapperUtils.writeValueAsString(this);
-    }
+	public String toJson() {
+		return JsonMapperUtils.writeValueAsString(this);
+	}
 }

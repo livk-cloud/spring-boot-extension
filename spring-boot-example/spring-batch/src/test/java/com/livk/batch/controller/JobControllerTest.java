@@ -38,16 +38,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class JobControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 
-    @Test
-    void doJobTest() throws Exception {
-        jdbcTemplate.execute("truncate table sys_user");
-        mockMvc.perform(get("/doJob"))
-                .andExpect(status().isOk());
-    }
+	@Test
+	void doJobTest() throws Exception {
+		jdbcTemplate.execute("truncate table sys_user");
+		mockMvc.perform(get("/doJob"))
+			.andExpect(status().isOk());
+	}
 }

@@ -28,12 +28,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @UtilityClass
 public class SecurityContextUtils {
 
-    public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
+	public Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
 
-    public User getUser() {
-        Object principal = getAuthentication().getPrincipal();
-        return principal instanceof User user ? user : null;
-    }
+	public User getUser() {
+		Object principal = getAuthentication().getPrincipal();
+		return principal instanceof User user ? user : null;
+	}
 }

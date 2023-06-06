@@ -46,49 +46,49 @@ import java.util.List;
 @ConditionalOnClass(name = "com.google.zxing.common.BitMatrix")
 public class QRCodeAutoConfiguration {
 
-    /**
-     * Google qr code generator qr code generator.
-     *
-     * @param builder the builder
-     * @return the qr code generator
-     */
-    @Bean
-    public QRCodeGenerator googleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-        return new GoogleQRCodeGenerator(builder);
-    }
+	/**
+	 * Google qr code generator qr code generator.
+	 *
+	 * @param builder the builder
+	 * @return the qr code generator
+	 */
+	@Bean
+	public QRCodeGenerator googleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
+		return new GoogleQRCodeGenerator(builder);
+	}
 
-    /**
-     * The type Web mvc qr code auto configuration.
-     */
-    @AutoConfiguration
-    @RequiredArgsConstructor
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public static class WebMvcQRCodeAutoConfiguration implements WebMvcConfigurer {
+	/**
+	 * The type Web mvc qr code auto configuration.
+	 */
+	@AutoConfiguration
+	@RequiredArgsConstructor
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	public static class WebMvcQRCodeAutoConfiguration implements WebMvcConfigurer {
 
-        private final QRCodeGenerator qrCodeGenerator;
+		private final QRCodeGenerator qrCodeGenerator;
 
-        @Override
-        public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-            handlers.add(new QRCodeMethodReturnValueHandler(qrCodeGenerator));
-        }
-    }
+		@Override
+		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+			handlers.add(new QRCodeMethodReturnValueHandler(qrCodeGenerator));
+		}
+	}
 
-    /**
-     * The type Web flux qr code auto configuration.
-     */
-    @AutoConfiguration
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public static class WebFluxQRCodeAutoConfiguration implements WebFluxConfigurer {
+	/**
+	 * The type Web flux qr code auto configuration.
+	 */
+	@AutoConfiguration
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	public static class WebFluxQRCodeAutoConfiguration implements WebFluxConfigurer {
 
-        /**
-         * Reactive qr code method return value handler reactive qr code method return value handler.
-         *
-         * @param qrCodeGenerator the qr code generator
-         * @return the reactive qr code method return value handler
-         */
-        @Bean
-        public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
-            return new ReactiveQRCodeMethodReturnValueHandler(qrCodeGenerator);
-        }
-    }
+		/**
+		 * Reactive qr code method return value handler reactive qr code method return value handler.
+		 *
+		 * @param qrCodeGenerator the qr code generator
+		 * @return the reactive qr code method return value handler
+		 */
+		@Bean
+		public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
+			return new ReactiveQRCodeMethodReturnValueHandler(qrCodeGenerator);
+		}
+	}
 }

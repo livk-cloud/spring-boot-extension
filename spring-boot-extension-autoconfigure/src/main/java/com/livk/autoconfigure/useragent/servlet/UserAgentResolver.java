@@ -42,23 +42,23 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class UserAgentResolver implements HandlerMethodArgumentResolver {
 
-    private final HttpUserAgentParser userAgentParse;
+	private final HttpUserAgentParser userAgentParse;
 
-    @Override
-    public final boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserAgentInfo.class);
-    }
+	@Override
+	public final boolean supportsParameter(MethodParameter parameter) {
+		return parameter.hasParameterAnnotation(UserAgentInfo.class);
+	}
 
-    @Override
-    public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        Wrapper useragentWrapper = UserAgentContextHolder.getUserAgentContext();
-        if (useragentWrapper == null) {
-            HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-            Assert.notNull(request, "request not be null!");
-            HttpHeaders headers = WebUtils.headers(request);
-            useragentWrapper = userAgentParse.parse(headers);
-            UserAgentContextHolder.setUserAgentContext(useragentWrapper);
-        }
-        return useragentWrapper.unwrap(parameter.getParameterType());
-    }
+	@Override
+	public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		Wrapper useragentWrapper = UserAgentContextHolder.getUserAgentContext();
+		if (useragentWrapper == null) {
+			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+			Assert.notNull(request, "request not be null!");
+			HttpHeaders headers = WebUtils.headers(request);
+			useragentWrapper = userAgentParse.parse(headers);
+			UserAgentContextHolder.setUserAgentContext(useragentWrapper);
+		}
+		return useragentWrapper.unwrap(parameter.getParameterType());
+	}
 }

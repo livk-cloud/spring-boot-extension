@@ -34,38 +34,38 @@ import java.util.*;
  */
 class SpringAutoServiceProcessorTest {
 
-    @Test
-    public void test() {
-        compile(SpringContext.class, "org.springframework.boot.autoconfigure.AutoConfiguration");
-    }
+	@Test
+	public void test() {
+		compile(SpringContext.class, "org.springframework.boot.autoconfigure.AutoConfiguration");
+	}
 
-    @Test
-    public void test1() {
-        compile(SpringAutoContext.class, EnableAuto.class.getName());
-    }
+	@Test
+	public void test1() {
+		compile(SpringAutoContext.class, EnableAuto.class.getName());
+	}
 
-    private void compile(Class<?> type, String annotationName) {
-        SpringAutoServiceProcessor serviceProcessor = new SpringAutoServiceProcessor();
-        SourceFile sourceFile = SourceFile.forTestClass(type);
-        TestCompiler testCompiler = TestCompiler.forSystem()
-                .withProcessors(serviceProcessor)
-                .withSources(sourceFile);
-        testCompiler.compile(compiled -> {
-            try {
-                Enumeration<URL> resources = compiled.getClassLoader()
-                        .getResources("META-INF/spring/" + annotationName + ".imports");
-                List<String> configList = new ArrayList<>();
-                for (URL url : Collections.list(resources)) {
-                    InputStream inputStream = new UrlResource(url).getInputStream();
-                    String[] arr = new String(FileCopyUtils.copyToByteArray(inputStream)).split("\n");
-                    configList.addAll(Arrays.stream(arr).map(String::trim).toList());
-                }
-                Assertions.assertTrue(configList.contains(type.getName()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
+	private void compile(Class<?> type, String annotationName) {
+		SpringAutoServiceProcessor serviceProcessor = new SpringAutoServiceProcessor();
+		SourceFile sourceFile = SourceFile.forTestClass(type);
+		TestCompiler testCompiler = TestCompiler.forSystem()
+			.withProcessors(serviceProcessor)
+			.withSources(sourceFile);
+		testCompiler.compile(compiled -> {
+			try {
+				Enumeration<URL> resources = compiled.getClassLoader()
+					.getResources("META-INF/spring/" + annotationName + ".imports");
+				List<String> configList = new ArrayList<>();
+				for (URL url : Collections.list(resources)) {
+					InputStream inputStream = new UrlResource(url).getInputStream();
+					String[] arr = new String(FileCopyUtils.copyToByteArray(inputStream)).split("\n");
+					configList.addAll(Arrays.stream(arr).map(String::trim).toList());
+				}
+				Assertions.assertTrue(configList.contains(type.getName()));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
 
 
 }

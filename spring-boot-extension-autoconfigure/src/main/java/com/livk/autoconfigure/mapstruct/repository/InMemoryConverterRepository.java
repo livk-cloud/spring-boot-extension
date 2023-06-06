@@ -32,26 +32,26 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class InMemoryConverterRepository implements ConverterRepository {
 
-    private final Map<ConverterPair, Converter<?, ?>> converterMap = new ConcurrentHashMap<>();
+	private final Map<ConverterPair, Converter<?, ?>> converterMap = new ConcurrentHashMap<>();
 
-    @Override
-    public boolean contains(ConverterPair converterPair) {
-        return converterMap.containsKey(converterPair);
-    }
+	@Override
+	public boolean contains(ConverterPair converterPair) {
+		return converterMap.containsKey(converterPair);
+	}
 
-    @Override
-    public void put(ConverterPair converterPair, Converter<?, ?> converter) {
-        converterMap.put(converterPair, converter);
-    }
+	@Override
+	public void put(ConverterPair converterPair, Converter<?, ?> converter) {
+		converterMap.put(converterPair, converter);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <S, T> Converter<S, T> get(ConverterPair converterPair) {
-        return (Converter<S, T>) converterMap.get(converterPair);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <S, T> Converter<S, T> get(ConverterPair converterPair) {
+		return (Converter<S, T>) converterMap.get(converterPair);
+	}
 
-    @Override
-    public Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
-        return converterMap.computeIfAbsent(converterPair, pair -> converter);
-    }
+	@Override
+	public Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
+		return converterMap.computeIfAbsent(converterPair, pair -> converter);
+	}
 }

@@ -40,31 +40,31 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver {
 
-    private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
+	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
-    private final HttpUserAgentParser userAgentParse;
+	private final HttpUserAgentParser userAgentParse;
 
 
-    @Override
-    public final boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserAgentInfo.class);
-    }
+	@Override
+	public final boolean supportsParameter(MethodParameter parameter) {
+		return parameter.hasParameterAnnotation(UserAgentInfo.class);
+	}
 
-    @NonNull
-    @Override
-    public final Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext, ServerWebExchange exchange) {
-        Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-        ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+	@NonNull
+	@Override
+	public final Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext, ServerWebExchange exchange) {
+		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
+		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
-        Mono<Object> mono = ReactiveUserAgentContextHolder.get()
-                .switchIfEmpty(Mono.justOrEmpty(userAgentParse.parse(exchange.getRequest().getHeaders())))
-                .map(wrapper -> {
-                    if (adapter != null) {
-                        Class<?> type = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-                        return wrapper.unwrap(type);
-                    }
-                    return wrapper.unwrap(resolvedType);
-                });
-        return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
-    }
+		Mono<Object> mono = ReactiveUserAgentContextHolder.get()
+			.switchIfEmpty(Mono.justOrEmpty(userAgentParse.parse(exchange.getRequest().getHeaders())))
+			.map(wrapper -> {
+				if (adapter != null) {
+					Class<?> type = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
+					return wrapper.unwrap(type);
+				}
+				return wrapper.unwrap(resolvedType);
+			});
+		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+	}
 }

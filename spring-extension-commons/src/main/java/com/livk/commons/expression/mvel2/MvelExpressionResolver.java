@@ -31,19 +31,19 @@ import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
  */
 public class MvelExpressionResolver extends ConverterExpressionResolver<VariableResolverFactory, String> {
 
-    @Override
-    protected String compile(String value) {
-        return value;
-    }
+	@Override
+	protected String compile(String value) {
+		return value;
+	}
 
-    @Override
-    protected VariableResolverFactory transform(Context context) {
-        return new CachingMapVariableResolverFactory(context);
-    }
+	@Override
+	protected VariableResolverFactory transform(Context context) {
+		return new CachingMapVariableResolverFactory(context);
+	}
 
-    @Override
-    protected <T> T calculate(String expression, VariableResolverFactory context, Class<T> returnType) {
-        Object parse = new MVELInterpretedRuntime(expression, null, context).parse();
-        return DataConversion.convert(parse, returnType);
-    }
+	@Override
+	protected <T> T calculate(String expression, VariableResolverFactory context, Class<T> returnType) {
+		Object parse = new MVELInterpretedRuntime(expression, null, context).parse();
+		return DataConversion.convert(parse, returnType);
+	}
 }

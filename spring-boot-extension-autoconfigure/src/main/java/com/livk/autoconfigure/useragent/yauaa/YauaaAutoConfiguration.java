@@ -40,30 +40,30 @@ import org.springframework.context.annotation.Scope;
 @ImportAutoConfiguration(UserAgentAutoConfiguration.class)
 public class YauaaAutoConfiguration {
 
-    /**
-     * User agent analyzer user agent analyzer.
-     *
-     * @return the user agent analyzer
-     */
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public UserAgentAnalyzer userAgentAnalyzer() {
-        return UserAgentAnalyzer
-                .newBuilder()
-                .hideMatcherLoadStats()
-                .withCache(10000)
-                .build();
-    }
+	/**
+	 * User agent analyzer user agent analyzer.
+	 *
+	 * @return the user agent analyzer
+	 */
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public UserAgentAnalyzer userAgentAnalyzer() {
+		return UserAgentAnalyzer
+			.newBuilder()
+			.hideMatcherLoadStats()
+			.withCache(10000)
+			.build();
+	}
 
-    /**
-     * Yauaa user agent parse yauaa user agent parse.
-     *
-     * @param userAgentAnalyzer the user agent analyzer
-     * @return the yauaa user agent parse
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public YauaaUserAgentParse yauaaUserAgentParse(UserAgentAnalyzer userAgentAnalyzer) {
-        return new YauaaUserAgentParse(userAgentAnalyzer);
-    }
+	/**
+	 * Yauaa user agent parse yauaa user agent parse.
+	 *
+	 * @param userAgentAnalyzer the user agent analyzer
+	 * @return the yauaa user agent parse
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public YauaaUserAgentParse yauaaUserAgentParse(UserAgentAnalyzer userAgentAnalyzer) {
+		return new YauaaUserAgentParse(userAgentAnalyzer);
+	}
 }

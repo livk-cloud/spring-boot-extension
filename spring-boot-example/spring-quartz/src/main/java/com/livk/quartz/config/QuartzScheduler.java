@@ -35,63 +35,63 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class QuartzScheduler {
 
-    private final Scheduler scheduler;
+	private final Scheduler scheduler;
 
-    @PostConstruct
-    public void startJob() throws SchedulerException {
-        scheduler.start();
-    }
+	@PostConstruct
+	public void startJob() throws SchedulerException {
+		scheduler.start();
+	}
 
-    public boolean modifyJob(String name, String group, String time) throws SchedulerException {
-        Date date = null;
-        TriggerKey triggerKey = new TriggerKey(name, group);
-        Trigger trigger = scheduler.getTrigger(triggerKey);
-        if (trigger instanceof CronTrigger cronTrigger) {
-            String oldTime = cronTrigger.getCronExpression();
-            if (!oldTime.equalsIgnoreCase(time)) {
-                CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(time);
-                CronTrigger build = TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder)
-                        .build();
-                date = scheduler.rescheduleJob(triggerKey, build);
-            }
-        }
-        return date != null;
-    }
+	public boolean modifyJob(String name, String group, String time) throws SchedulerException {
+		Date date = null;
+		TriggerKey triggerKey = new TriggerKey(name, group);
+		Trigger trigger = scheduler.getTrigger(triggerKey);
+		if (trigger instanceof CronTrigger cronTrigger) {
+			String oldTime = cronTrigger.getCronExpression();
+			if (!oldTime.equalsIgnoreCase(time)) {
+				CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(time);
+				CronTrigger build = TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder)
+					.build();
+				date = scheduler.rescheduleJob(triggerKey, build);
+			}
+		}
+		return date != null;
+	}
 
-    public void pauseAllJob() throws SchedulerException {
-        scheduler.pauseAll();
-    }
+	public void pauseAllJob() throws SchedulerException {
+		scheduler.pauseAll();
+	}
 
-    public void pauseJob(String name, String group) throws SchedulerException {
-        JobKey jobKey = new JobKey(name, group);
-        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        if (jobDetail != null) {
-            scheduler.pauseJob(jobKey);
-        }
-    }
+	public void pauseJob(String name, String group) throws SchedulerException {
+		JobKey jobKey = new JobKey(name, group);
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+		if (jobDetail != null) {
+			scheduler.pauseJob(jobKey);
+		}
+	}
 
-    public void resumeAllJob() throws SchedulerException {
-        scheduler.resumeAll();
-    }
+	public void resumeAllJob() throws SchedulerException {
+		scheduler.resumeAll();
+	}
 
-    public void resumeJob(String name, String group) throws SchedulerException {
-        JobKey jobKey = new JobKey(name, group);
-        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        if (jobDetail != null) {
-            scheduler.resumeJob(jobKey);
-        }
-    }
+	public void resumeJob(String name, String group) throws SchedulerException {
+		JobKey jobKey = new JobKey(name, group);
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+		if (jobDetail != null) {
+			scheduler.resumeJob(jobKey);
+		}
+	}
 
-    public void deleteJob(String name, String group) throws SchedulerException {
-        JobKey jobKey = new JobKey(name, group);
-        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        if (jobDetail != null) {
-            scheduler.deleteJob(jobKey);
-        }
-    }
+	public void deleteJob(String name, String group) throws SchedulerException {
+		JobKey jobKey = new JobKey(name, group);
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+		if (jobDetail != null) {
+			scheduler.deleteJob(jobKey);
+		}
+	}
 
-    public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
-        scheduler.scheduleJob(jobDetail, trigger);
-    }
+	public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
+		scheduler.scheduleJob(jobDetail, trigger);
+	}
 
 }

@@ -33,32 +33,32 @@ import java.util.function.Predicate;
  */
 @RequiredArgsConstructor
 public enum ExcelDataType {
-    /**
-     * Collection excel data type.
-     */
-    COLLECTION(resolvableType -> resolvableType.resolveGeneric(0), Collection.class::isAssignableFrom),
-    /**
-     * Map excel data type.
-     */
-    MAP(resolvableType -> resolvableType.getGeneric(1).resolveGeneric(0), Map.class::isAssignableFrom);
+	/**
+	 * Collection excel data type.
+	 */
+	COLLECTION(resolvableType -> resolvableType.resolveGeneric(0), Collection.class::isAssignableFrom),
+	/**
+	 * Map excel data type.
+	 */
+	MAP(resolvableType -> resolvableType.getGeneric(1).resolveGeneric(0), Map.class::isAssignableFrom);
 
-    @Getter
-    private final Function<ResolvableType, Class<?>> function;
+	@Getter
+	private final Function<ResolvableType, Class<?>> function;
 
-    private final Predicate<Class<?>> assignableFrom;
+	private final Predicate<Class<?>> assignableFrom;
 
-    /**
-     * Match excel data type.
-     *
-     * @param type the type
-     * @return the excel data type
-     */
-    public static ExcelDataType match(Class<?> type) {
-        for (final ExcelDataType excelDataType : values()) {
-            if (excelDataType.assignableFrom.test(type)) {
-                return excelDataType;
-            }
-        }
-        throw new IllegalArgumentException();
-    }
+	/**
+	 * Match excel data type.
+	 *
+	 * @param type the type
+	 * @return the excel data type
+	 */
+	public static ExcelDataType match(Class<?> type) {
+		for (final ExcelDataType excelDataType : values()) {
+			if (excelDataType.assignableFrom.test(type)) {
+				return excelDataType;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
 }

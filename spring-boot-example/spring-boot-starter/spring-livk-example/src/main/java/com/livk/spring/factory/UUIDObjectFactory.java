@@ -33,8 +33,8 @@ import java.io.Serializable;
  */
 public class UUIDObjectFactory implements ObjectFactory<UUIDRequest>, Serializable {
 
-    @Override
-    public UUIDRequest getObject() throws BeansException {
-        return UUIDConTextHolder::get;
-    }
+	@Override
+	public UUIDRequest getObject() throws BeansException {
+		return UUIDConTextHolder::get;
+	}
 }

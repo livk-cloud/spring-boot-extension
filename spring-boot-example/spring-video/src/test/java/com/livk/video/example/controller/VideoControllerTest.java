@@ -42,19 +42,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class VideoControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void testVideo() throws Exception {
-        mockMvc.perform(get("/video"))
-                .andExpect(status().isOk())
-                .andDo(result -> {
-                    ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-                    FileUtils.download(in, "./test.mp4");
-                });
-        File video = new File("./test.mp4");
-        assertTrue(video.exists());
-        assertTrue(video.delete());
-    }
+	@Test
+	void testVideo() throws Exception {
+		mockMvc.perform(get("/video"))
+			.andExpect(status().isOk())
+			.andDo(result -> {
+				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+				FileUtils.download(in, "./test.mp4");
+			});
+		File video = new File("./test.mp4");
+		assertTrue(video.exists());
+		assertTrue(video.delete());
+	}
 }

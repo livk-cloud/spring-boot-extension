@@ -27,8 +27,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @author livk
  */
 public class RequestIpBeanFactoryProcessor implements BeanFactoryPostProcessor {
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        beanFactory.registerResolvableDependency(RequestIpInfo.class, new IpInfoObjectFactory());
-    }
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		beanFactory.registerResolvableDependency(RequestIpInfo.class, new IpInfoObjectFactory());
+	}
 }

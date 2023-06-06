@@ -33,11 +33,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DynamicSource {
 
-    /**
-     * Value string.
-     *
-     * @return the string
-     */
-    String value();
+	/**
+	 * Value string.
+	 *
+	 * @return the string
+	 */
+	String value();
 
 }

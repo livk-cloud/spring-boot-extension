@@ -40,38 +40,38 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping("{id}")
-    public HttpEntity<User> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(userService.getById(id));
-    }
+	@GetMapping("{id}")
+	public HttpEntity<User> getById(@PathVariable Integer id) {
+		return ResponseEntity.ok(userService.getById(id));
+	}
 
-    @PutMapping("{id}")
-    public HttpEntity<Boolean> updateById(@PathVariable Integer id,
-                                          @RequestBody User user) {
-        user.setId(id);
-        return ResponseEntity.ok(userService.updateById(user));
-    }
+	@PutMapping("{id}")
+	public HttpEntity<Boolean> updateById(@PathVariable Integer id,
+										  @RequestBody User user) {
+		user.setId(id);
+		return ResponseEntity.ok(userService.updateById(user));
+	}
 
-    @PostMapping
-    public HttpEntity<Boolean> save(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
-    }
+	@PostMapping
+	public HttpEntity<Boolean> save(@RequestBody User user) {
+		return ResponseEntity.ok(userService.save(user));
+	}
 
-    @DeleteMapping("{id}")
-    public HttpEntity<Boolean> deleteById(@PathVariable Integer id) {
-        return ResponseEntity.ok(userService.deleteById(id));
-    }
+	@DeleteMapping("{id}")
+	public HttpEntity<Boolean> deleteById(@PathVariable Integer id) {
+		return ResponseEntity.ok(userService.deleteById(id));
+	}
 
-    @GetMapping
-    public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
-                                           @RequestParam(defaultValue = "10") Integer pageSize) {
-        try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
-                .countColumn(FieldFunc.getName(User::getId))
-                .doSelectPage(userService::list)) {
-            PageInfo<User> result = new PageInfo<>(page);
-            return ResponseEntity.ok(result);
-        }
-    }
+	@GetMapping
+	public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
+										   @RequestParam(defaultValue = "10") Integer pageSize) {
+		try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
+			.countColumn(FieldFunc.getName(User::getId))
+			.doSelectPage(userService::list)) {
+			PageInfo<User> result = new PageInfo<>(page);
+			return ResponseEntity.ok(result);
+		}
+	}
 }

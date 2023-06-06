@@ -29,8 +29,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @author livk
  */
 public class UUIDBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        beanFactory.registerResolvableDependency(UUIDRequest.class, new UUIDObjectFactory());
-    }
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		beanFactory.registerResolvableDependency(UUIDRequest.class, new UUIDObjectFactory());
+	}
 }

@@ -33,21 +33,21 @@ import org.springframework.core.io.Resource;
 @ConfigurationProperties(Ip2RegionProperties.PREFIX)
 public class Ip2RegionProperties {
 
-    /**
-     * The constant PREFIX.
-     */
-    public static final String PREFIX = "ip2region";
+	/**
+	 * The constant PREFIX.
+	 */
+	public static final String PREFIX = "ip2region";
 
-    private Boolean enabled = false;
+	private Boolean enabled = false;
 
-    private String filePath = "classpath:ip/ip2region.xdb";
+	private String filePath = "classpath:ip/ip2region.xdb";
 
-    /**
-     * Get file resource resource [ ].
-     *
-     * @return the resource [ ]
-     */
-    public Resource getFileResource() {
-        return ResourceUtils.getResource(filePath);
-    }
+	/**
+	 * Get file resource resource [ ].
+	 *
+	 * @return the resource [ ]
+	 */
+	public Resource getFileResource() {
+		return ResourceUtils.getResource(filePath);
+	}
 }

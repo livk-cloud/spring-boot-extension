@@ -39,34 +39,34 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 public class LimitAutoConfiguration {
 
-    /**
-     * Limit interceptor limit interceptor.
-     *
-     * @param provider the provider
-     * @return the limit interceptor
-     */
-    @Bean
-    public LimitInterceptor limitInterceptor(ObjectProvider<LimitExecutor> provider) {
-        return new LimitInterceptor(provider);
-    }
+	/**
+	 * Limit interceptor limit interceptor.
+	 *
+	 * @param provider the provider
+	 * @return the limit interceptor
+	 */
+	@Bean
+	public LimitInterceptor limitInterceptor(ObjectProvider<LimitExecutor> provider) {
+		return new LimitInterceptor(provider);
+	}
 
-    /**
-     * The type Redisson limit configuration.
-     */
-    @ConditionalOnClass(RedissonClient.class)
-    @AutoConfiguration(after = {RedissonAutoConfiguration.class},
-            afterName = {"org.redisson.spring.starter.RedissonAutoConfiguration"})
-    public static class RedissonLimitConfiguration {
-        /**
-         * Redisson limit executor limit executor.
-         *
-         * @param redissonClient the redisson client
-         * @return the limit executor
-         */
-        @Bean
-        @ConditionalOnMissingBean
-        public LimitExecutor redissonLimitExecutor(RedissonClient redissonClient) {
-            return new RedissonLimitExecutor(redissonClient);
-        }
-    }
+	/**
+	 * The type Redisson limit configuration.
+	 */
+	@ConditionalOnClass(RedissonClient.class)
+	@AutoConfiguration(after = {RedissonAutoConfiguration.class},
+		afterName = {"org.redisson.spring.starter.RedissonAutoConfiguration"})
+	public static class RedissonLimitConfiguration {
+		/**
+		 * Redisson limit executor limit executor.
+		 *
+		 * @param redissonClient the redisson client
+		 * @return the limit executor
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		public LimitExecutor redissonLimitExecutor(RedissonClient redissonClient) {
+			return new RedissonLimitExecutor(redissonClient);
+		}
+	}
 }

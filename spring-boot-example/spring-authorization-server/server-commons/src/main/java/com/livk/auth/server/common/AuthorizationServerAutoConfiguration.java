@@ -31,15 +31,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * </p>
  *
  * @author livk
- *
  */
 @SpringAutoService
 @AutoConfiguration
 public class AuthorizationServerAutoConfiguration {
 
-    @Bean
-    public UserDetailsAuthenticationProvider userDetailsAuthenticationProvider(PasswordEncoder passwordEncoder,
-                                                                               ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices) {
-        return new UserDetailsAuthenticationProvider(passwordEncoder, oauth2UserDetailsServices);
-    }
+	@Bean
+	public UserDetailsAuthenticationProvider userDetailsAuthenticationProvider(PasswordEncoder passwordEncoder,
+										   ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices) {
+		return new UserDetailsAuthenticationProvider(passwordEncoder, oauth2UserDetailsServices);
+	}
 }

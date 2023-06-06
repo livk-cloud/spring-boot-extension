@@ -38,21 +38,21 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping
-    public HttpEntity<Flux<User>> users() {
-        return ResponseEntity.ok(userService.list());
-    }
+	@GetMapping
+	public HttpEntity<Flux<User>> users() {
+		return ResponseEntity.ok(userService.list());
+	}
 
-    @PostMapping
-    public HttpEntity<Mono<Void>> save(@RequestBody Mono<User> userMono) {
-        return ResponseEntity.ok(userService.save(userMono));
-    }
+	@PostMapping
+	public HttpEntity<Mono<Void>> save(@RequestBody Mono<User> userMono) {
+		return ResponseEntity.ok(userService.save(userMono));
+	}
 
-    @DeleteMapping("/{id}")
-    public HttpEntity<Mono<Void>> delete(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(userService.remove(Mono.just(id)));
-    }
+	@DeleteMapping("/{id}")
+	public HttpEntity<Mono<Void>> delete(@PathVariable("id") Integer id) {
+		return ResponseEntity.ok(userService.remove(Mono.just(id)));
+	}
 
 }

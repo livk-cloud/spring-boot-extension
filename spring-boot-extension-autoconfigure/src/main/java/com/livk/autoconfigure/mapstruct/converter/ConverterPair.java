@@ -33,24 +33,24 @@ import org.springframework.util.Assert;
 @ToString
 @EqualsAndHashCode
 public class ConverterPair {
-    private final Class<?> sourceType;
-    private final Class<?> targetType;
+	private final Class<?> sourceType;
+	private final Class<?> targetType;
 
-    private ConverterPair(Class<?> sourceType, Class<?> targetType) {
-        Assert.notNull(sourceType, "Source type must not be null");
-        Assert.notNull(targetType, "Target type must not be null");
-        this.sourceType = sourceType;
-        this.targetType = targetType;
-    }
+	private ConverterPair(Class<?> sourceType, Class<?> targetType) {
+		Assert.notNull(sourceType, "Source type must not be null");
+		Assert.notNull(targetType, "Target type must not be null");
+		this.sourceType = sourceType;
+		this.targetType = targetType;
+	}
 
-    /**
-     * Of converter pair.
-     *
-     * @param sourceType the source type
-     * @param targetType the target type
-     * @return the converter pair
-     */
-    public static ConverterPair of(Class<?> sourceType, Class<?> targetType) {
-        return new ConverterPair(sourceType, targetType);
-    }
+	/**
+	 * Of converter pair.
+	 *
+	 * @param sourceType the source type
+	 * @param targetType the target type
+	 * @return the converter pair
+	 */
+	public static ConverterPair of(Class<?> sourceType, Class<?> targetType) {
+		return new ConverterPair(sourceType, targetType);
+	}
 }

@@ -32,7 +32,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ResourceServerConfig {
 
-    // @formatter:off
+	// @formatter:off
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.securityMatcher("/resource-livk/**")

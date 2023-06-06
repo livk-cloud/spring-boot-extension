@@ -30,15 +30,15 @@ import org.springframework.boot.actuate.health.Health;
 @RequiredArgsConstructor
 public class CuratorHealthIndicator extends AbstractHealthIndicator {
 
-    private final CuratorFramework curatorFramework;
+	private final CuratorFramework curatorFramework;
 
-    @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
-        if (curatorFramework.getState() == CuratorFrameworkState.STARTED) {
-            ZooKeeper.States state = curatorFramework.getZookeeperClient().getZooKeeper().getState();
-            builder.withDetail("state", state).up();
-        } else {
-            builder.down();
-        }
-    }
+	@Override
+	protected void doHealthCheck(Health.Builder builder) throws Exception {
+		if (curatorFramework.getState() == CuratorFrameworkState.STARTED) {
+			ZooKeeper.States state = curatorFramework.getZookeeperClient().getZooKeeper().getState();
+			builder.withDetail("state", state).up();
+		} else {
+			builder.down();
+		}
+	}
 }

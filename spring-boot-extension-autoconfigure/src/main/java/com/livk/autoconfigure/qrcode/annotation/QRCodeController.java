@@ -38,11 +38,11 @@ import java.lang.annotation.Target;
 @Controller
 public @interface QRCodeController {
 
-    /**
-     * Value string.
-     *
-     * @return the string
-     */
-    @AliasFor(annotation = Controller.class)
-    String value() default "";
+	/**
+	 * Value string.
+	 *
+	 * @return the string
+	 */
+	@AliasFor(annotation = Controller.class)
+	String value() default "";
 }

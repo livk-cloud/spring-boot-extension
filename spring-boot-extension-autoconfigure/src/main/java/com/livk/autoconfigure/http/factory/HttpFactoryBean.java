@@ -36,23 +36,23 @@ import java.util.Objects;
 @Setter
 public class HttpFactoryBean implements FactoryBean<Object> {
 
-    private String httpInterfaceTypeName;
+	private String httpInterfaceTypeName;
 
-    private BeanFactory beanFactory;
+	private BeanFactory beanFactory;
 
-    private ResourceLoader resourceLoader;
+	private ResourceLoader resourceLoader;
 
-    @Override
-    public Object getObject() {
-        HttpServiceProxyFactory proxyFactory = beanFactory.getBean(HttpServiceProxyFactory.class);
-        return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
-    }
+	@Override
+	public Object getObject() {
+		HttpServiceProxyFactory proxyFactory = beanFactory.getBean(HttpServiceProxyFactory.class);
+		return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
+	}
 
-    @Override
-    public Class<?> getObjectType() {
-        if (resourceLoader == null) {
-            return null;
-        }
-        return ClassUtils.resolveClassName(httpInterfaceTypeName, resourceLoader.getClassLoader());
-    }
+	@Override
+	public Class<?> getObjectType() {
+		if (resourceLoader == null) {
+			return null;
+		}
+		return ClassUtils.resolveClassName(httpInterfaceTypeName, resourceLoader.getClassLoader());
+	}
 }

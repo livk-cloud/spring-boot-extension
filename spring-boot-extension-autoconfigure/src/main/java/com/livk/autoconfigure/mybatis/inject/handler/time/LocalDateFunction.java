@@ -30,9 +30,9 @@ import java.time.LocalDate;
  */
 public class LocalDateFunction implements FunctionHandle<LocalDate> {
 
-    @Override
-    public LocalDate handler() {
-        return LocalDate.now();
-    }
+	@Override
+	public LocalDate handler() {
+		return LocalDate.now();
+	}
 
 }

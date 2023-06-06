@@ -43,52 +43,52 @@ import java.util.Map;
 @Slf4j
 public class AuthenticationSuccessEventHandler implements AuthenticationSuccessHandler {
 
-    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
+	private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
 
-    /**
-     * Called when a user has been successfully authenticated.
-     *
-     * @param request        the request which caused the successful authentication
-     * @param response       the response
-     * @param authentication the <tt>Authentication</tt> object which was created during
-     *                       the authentication process.
-     */
-    @SneakyThrows
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	/**
+	 * Called when a user has been successfully authenticated.
+	 *
+	 * @param request        the request which caused the successful authentication
+	 * @param response       the response
+	 * @param authentication the <tt>Authentication</tt> object which was created during
+	 *                       the authentication process.
+	 */
+	@SneakyThrows
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
-        log.info("用户：{} 登录成功", authentication.getPrincipal());
+		log.info("用户：{} 登录成功", authentication.getPrincipal());
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 输出token
-        sendAccessTokenResponse(request, response, authentication);
-    }
+		// 输出token
+		sendAccessTokenResponse(request, response, authentication);
+	}
 
-    private void sendAccessTokenResponse(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+	private void sendAccessTokenResponse(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        OAuth2AccessTokenAuthenticationToken accessTokenAuthentication = (OAuth2AccessTokenAuthenticationToken) authentication;
+		OAuth2AccessTokenAuthenticationToken accessTokenAuthentication = (OAuth2AccessTokenAuthenticationToken) authentication;
 
-        OAuth2AccessToken accessToken = accessTokenAuthentication.getAccessToken();
-        OAuth2RefreshToken refreshToken = accessTokenAuthentication.getRefreshToken();
-        Map<String, Object> additionalParameters = accessTokenAuthentication.getAdditionalParameters();
+		OAuth2AccessToken accessToken = accessTokenAuthentication.getAccessToken();
+		OAuth2RefreshToken refreshToken = accessTokenAuthentication.getRefreshToken();
+		Map<String, Object> additionalParameters = accessTokenAuthentication.getAdditionalParameters();
 
-        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue()).tokenType(accessToken.getTokenType()).scopes(accessToken.getScopes());
-        if (accessToken.getIssuedAt() != null && accessToken.getExpiresAt() != null) {
-            builder.expiresIn(ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt()));
-        }
-        if (refreshToken != null) {
-            builder.refreshToken(refreshToken.getTokenValue());
-        }
-        if (!CollectionUtils.isEmpty(additionalParameters)) {
-            builder.additionalParameters(additionalParameters);
-        }
-        OAuth2AccessTokenResponse accessTokenResponse = builder.build();
-        ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
+		OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue()).tokenType(accessToken.getTokenType()).scopes(accessToken.getScopes());
+		if (accessToken.getIssuedAt() != null && accessToken.getExpiresAt() != null) {
+			builder.expiresIn(ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt()));
+		}
+		if (refreshToken != null) {
+			builder.refreshToken(refreshToken.getTokenValue());
+		}
+		if (!CollectionUtils.isEmpty(additionalParameters)) {
+			builder.additionalParameters(additionalParameters);
+		}
+		OAuth2AccessTokenResponse accessTokenResponse = builder.build();
+		ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
-        // 无状态 注意删除 context 上下文的信息
-        SecurityContextHolder.clearContext();
-        this.accessTokenHttpResponseConverter.write(accessTokenResponse, null, httpResponse);
-    }
+		// 无状态 注意删除 context 上下文的信息
+		SecurityContextHolder.clearContext();
+		this.accessTokenHttpResponseConverter.write(accessTokenResponse, null, httpResponse);
+	}
 
 }

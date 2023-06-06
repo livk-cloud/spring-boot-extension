@@ -32,21 +32,21 @@ import org.springframework.lang.Nullable;
  */
 public class SpringMapstructLocator implements MapstructLocator, ApplicationContextAware {
 
-    /**
-     * The Application context.
-     */
-    private ApplicationContext applicationContext;
+	/**
+	 * The Application context.
+	 */
+	private ApplicationContext applicationContext;
 
-    @Override
-    public <S, T> Converter<S, T> get(ConverterPair converterPair) {
-        Class<?> sourceType = converterPair.getSourceType();
-        Class<?> targetType = converterPair.getTargetType();
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Converter.class, sourceType, targetType);
-        return applicationContext.<Converter<S, T>>getBeanProvider(resolvableType).getIfUnique();
-    }
+	@Override
+	public <S, T> Converter<S, T> get(ConverterPair converterPair) {
+		Class<?> sourceType = converterPair.getSourceType();
+		Class<?> targetType = converterPair.getTargetType();
+		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Converter.class, sourceType, targetType);
+		return applicationContext.<Converter<S, T>>getBeanProvider(resolvableType).getIfUnique();
+	}
 
-    @Override
-    public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+	@Override
+	public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

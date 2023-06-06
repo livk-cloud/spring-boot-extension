@@ -41,24 +41,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserMapper userMapper;
+	private final UserMapper userMapper;
 
-    @PostMapping("user")
-    public HttpEntity<Boolean> save() {
-        String json = """
-                {
-                  "mark": "livk"
-                }""";
-        User user = new User();
-        user.setUsername("admin");
-        user.setPassword("admin");
-        user.setDes(JsonMapperUtils.readValue(json, JsonNode.class));
-        return ResponseEntity.ok(userMapper.insert(user) != 0);
-    }
+	@PostMapping("user")
+	public HttpEntity<Boolean> save() {
+		String json = """
+			{
+			  "mark": "livk"
+			}""";
+		User user = new User();
+		user.setUsername("admin");
+		user.setPassword("admin");
+		user.setDes(JsonMapperUtils.readValue(json, JsonNode.class));
+		return ResponseEntity.ok(userMapper.insert(user) != 0);
+	}
 
-    @GetMapping("user")
-    public HttpEntity<List<User>> users() {
-        return ResponseEntity.ok(userMapper.selectList());
-    }
+	@GetMapping("user")
+	public HttpEntity<List<User>> users() {
+		return ResponseEntity.ok(userMapper.selectList());
+	}
 
 }

@@ -37,16 +37,16 @@ import java.util.Locale;
 @AutoConfiguration(before = JacksonAutoConfiguration.class)
 public class JacksonConfiguration {
 
-    /**
-     * Java time customizer jackson 2 object mapper builder customizer.
-     *
-     * @return the jackson 2 object mapper builder customizer
-     */
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer javaTimeCustomizer() {
-        return builder -> {
-            builder.locale(Locale.CHINA);
-            builder.modules(new JavaTimeModule());
-        };
-    }
+	/**
+	 * Java time customizer jackson 2 object mapper builder customizer.
+	 *
+	 * @return the jackson 2 object mapper builder customizer
+	 */
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer javaTimeCustomizer() {
+		return builder -> {
+			builder.locale(Locale.CHINA);
+			builder.modules(new JavaTimeModule());
+		};
+	}
 }

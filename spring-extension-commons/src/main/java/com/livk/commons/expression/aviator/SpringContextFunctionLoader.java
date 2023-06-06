@@ -34,14 +34,14 @@ import org.springframework.context.ApplicationContext;
 @RequiredArgsConstructor
 public class SpringContextFunctionLoader implements FunctionLoader {
 
-    private final ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
 
-    @Override
-    public AviatorFunction onFunctionNotFound(String name) {
-        try {
-            return this.applicationContext.getBean(name, AviatorFunction.class);
-        } catch (NoSuchBeanDefinitionException e) {
-            return null;
-        }
-    }
+	@Override
+	public AviatorFunction onFunctionNotFound(String name) {
+		try {
+			return this.applicationContext.getBean(name, AviatorFunction.class);
+		} catch (NoSuchBeanDefinitionException e) {
+			return null;
+		}
+	}
 }

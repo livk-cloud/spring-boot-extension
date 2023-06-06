@@ -25,7 +25,7 @@ import lombok.Data;
 @Data
 public abstract class AbstractPackage {
 
-    protected Byte version = 1;
+	protected Byte version = 1;
 
-    public abstract Byte type();
+	public abstract Byte type();
 }

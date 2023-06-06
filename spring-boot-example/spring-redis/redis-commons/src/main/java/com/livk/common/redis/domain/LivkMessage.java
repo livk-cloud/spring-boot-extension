@@ -34,25 +34,25 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class LivkMessage<T> implements Serializable {
 
-    public static final String CHANNEL = "livk-topic";
+	public static final String CHANNEL = "livk-topic";
 
-    @Serial
-    private static final long serialVersionUID = 8632296967087444509L;
+	@Serial
+	private static final long serialVersionUID = 8632296967087444509L;
 
-    /**
-     * 公告信息id
-     */
-    private Long id;
+	/**
+	 * 公告信息id
+	 */
+	private Long id;
 
-    /**
-     * 公告内容
-     */
-    private String msg;
+	/**
+	 * 公告内容
+	 */
+	private String msg;
 
-    private T data;
+	private T data;
 
-    public static <T> LivkMessage<T> of() {
-        return new LivkMessage<>();
-    }
+	public static <T> LivkMessage<T> of() {
+		return new LivkMessage<>();
+	}
 
 }

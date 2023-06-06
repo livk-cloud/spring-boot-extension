@@ -28,9 +28,9 @@ import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
  */
 public class TimestampFunction implements FunctionHandle<Long> {
 
-    @Override
-    public Long handler() {
-        return System.currentTimeMillis();
-    }
+	@Override
+	public Long handler() {
+		return System.currentTimeMillis();
+	}
 
 }

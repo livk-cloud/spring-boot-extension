@@ -46,59 +46,59 @@ import java.util.List;
 @ConditionalOnProperty(prefix = Ip2RegionProperties.PREFIX, name = "enabled", havingValue = "true")
 public class Ip2regionAutoConfiguration {
 
-    /**
-     * Ip 2 region search ip 2 region search.
-     *
-     * @param properties the properties
-     * @return the ip 2 region search
-     */
-    @Bean
-    @SneakyThrows
-    public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
-        Resource resource = properties.getFileResource();
-        byte[] bytes = FileUtils.copyToByteArray(resource.getInputStream());
-        Searcher searcher = Searcher.newWithBuffer(bytes);
-        return new Ip2RegionSearch(searcher);
-    }
+	/**
+	 * Ip 2 region search ip 2 region search.
+	 *
+	 * @param properties the properties
+	 * @return the ip 2 region search
+	 */
+	@Bean
+	@SneakyThrows
+	public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
+		Resource resource = properties.getFileResource();
+		byte[] bytes = FileUtils.copyToByteArray(resource.getInputStream());
+		Searcher searcher = Searcher.newWithBuffer(bytes);
+		return new Ip2RegionSearch(searcher);
+	}
 
-    /**
-     * Request ip bean factory processor request ip bean factory processor.
-     *
-     * @return the request ip bean factory processor
-     */
-    @Bean
-    public RequestIpBeanFactoryProcessor requestIpBeanFactoryProcessor() {
-        return new RequestIpBeanFactoryProcessor();
-    }
+	/**
+	 * Request ip bean factory processor request ip bean factory processor.
+	 *
+	 * @return the request ip bean factory processor
+	 */
+	@Bean
+	public RequestIpBeanFactoryProcessor requestIpBeanFactoryProcessor() {
+		return new RequestIpBeanFactoryProcessor();
+	}
 
-    /**
-     * The type Web mvc ip 2 region auto configuration.
-     */
-    @AutoConfiguration
-    @RequiredArgsConstructor
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public static class WebMvcIp2regionAutoConfiguration implements WebMvcConfigurer {
+	/**
+	 * The type Web mvc ip 2 region auto configuration.
+	 */
+	@AutoConfiguration
+	@RequiredArgsConstructor
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	public static class WebMvcIp2regionAutoConfiguration implements WebMvcConfigurer {
 
-        private final Ip2RegionSearch search;
+		private final Ip2RegionSearch search;
 
-        @Override
-        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-            resolvers.add(new RequestIPMethodArgumentResolver(search));
-        }
+		@Override
+		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+			resolvers.add(new RequestIPMethodArgumentResolver(search));
+		}
 
-        /**
-         * Ip filter filter registration bean filter registration bean.
-         *
-         * @return the filter registration bean
-         */
-        @Bean
-        public FilterRegistrationBean<RequestIpFilter> ipFilterFilterRegistrationBean() {
-            FilterRegistrationBean<RequestIpFilter> registrationBean = new FilterRegistrationBean<>();
-            registrationBean.setFilter(new RequestIpFilter(search));
-            registrationBean.addUrlPatterns("/*");
-            registrationBean.setName("requestIpFilter");
-            registrationBean.setOrder(1);
-            return registrationBean;
-        }
-    }
+		/**
+		 * Ip filter filter registration bean filter registration bean.
+		 *
+		 * @return the filter registration bean
+		 */
+		@Bean
+		public FilterRegistrationBean<RequestIpFilter> ipFilterFilterRegistrationBean() {
+			FilterRegistrationBean<RequestIpFilter> registrationBean = new FilterRegistrationBean<>();
+			registrationBean.setFilter(new RequestIpFilter(search));
+			registrationBean.addUrlPatterns("/*");
+			registrationBean.setName("requestIpFilter");
+			registrationBean.setOrder(1);
+			return registrationBean;
+		}
+	}
 }

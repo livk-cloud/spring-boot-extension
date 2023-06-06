@@ -39,36 +39,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class UserControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void testList() throws Exception {
-        mockMvc.perform(get("/user"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("customize[0:2].username", "livk1", "livk2", "livk3").exists())
-                .andExpect(jsonPath("customize[0:2].type", "1", "2", "3").exists())
-                .andExpect(jsonPath("customize[0:2].createTime").exists())
-                .andExpect(jsonPath("spring[0:2].username", "livk1", "livk2", "livk3").exists())
-                .andExpect(jsonPath("spring[0:2].type", "1", "2", "3").exists())
-                .andExpect(jsonPath("spring[0:2].createTime").exists());
-    }
+	@Test
+	void testList() throws Exception {
+		mockMvc.perform(get("/user"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("customize[0:2].username", "livk1", "livk2", "livk3").exists())
+			.andExpect(jsonPath("customize[0:2].type", "1", "2", "3").exists())
+			.andExpect(jsonPath("customize[0:2].createTime").exists())
+			.andExpect(jsonPath("spring[0:2].username", "livk1", "livk2", "livk3").exists())
+			.andExpect(jsonPath("spring[0:2].type", "1", "2", "3").exists())
+			.andExpect(jsonPath("spring[0:2].createTime").exists());
+	}
 
-    @Test
-    void testGetById() throws Exception {
-        for (int i = 1; i <= 3; i++) {
-            mockMvc.perform(get("/user/{id}", i))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("customize.username", "livk" + i).exists())
-                    .andExpect(jsonPath("customize.type", i).exists())
-                    .andExpect(jsonPath("customize.createTime").exists())
-                    .andExpect(jsonPath("spring.username", "livk" + i).exists())
-                    .andExpect(jsonPath("spring.type", i).exists())
-                    .andExpect(jsonPath("spring.createTime").exists());
-        }
-    }
+	@Test
+	void testGetById() throws Exception {
+		for (int i = 1; i <= 3; i++) {
+			mockMvc.perform(get("/user/{id}", i))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("customize.username", "livk" + i).exists())
+				.andExpect(jsonPath("customize.type", i).exists())
+				.andExpect(jsonPath("customize.createTime").exists())
+				.andExpect(jsonPath("spring.username", "livk" + i).exists())
+				.andExpect(jsonPath("spring.type", i).exists())
+				.andExpect(jsonPath("spring.createTime").exists());
+		}
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

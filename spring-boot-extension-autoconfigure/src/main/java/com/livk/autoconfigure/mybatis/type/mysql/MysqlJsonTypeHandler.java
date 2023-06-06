@@ -39,14 +39,14 @@ import java.sql.SQLException;
 public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
 
-    public MysqlJsonTypeHandler(ObjectMapper mapper) {
-        super(JacksonSupport.create(mapper));
-    }
+	public MysqlJsonTypeHandler(ObjectMapper mapper) {
+		super(JacksonSupport.create(mapper));
+	}
 
-    @Override
-    protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
-        ps.setObject(i, json);
-    }
+	@Override
+	protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
+		ps.setObject(i, json);
+	}
 
 
 }

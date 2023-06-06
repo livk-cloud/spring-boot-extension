@@ -43,42 +43,42 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Order(1)
-    @Test
-    void testMysqlSave() throws Exception {
-        mockMvc.perform(post("/user/mysql"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
+	@Order(1)
+	@Test
+	void testMysqlSave() throws Exception {
+		mockMvc.perform(post("/user/mysql"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(2)
-    @Test
-    void testMysqlUser() throws Exception {
-        mockMvc.perform(get("/user/mysql"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Order(2)
+	@Test
+	void testMysqlUser() throws Exception {
+		mockMvc.perform(get("/user/mysql"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 
-    @Order(3)
-    @Test
-    void testPgsqlSave() throws Exception {
-        mockMvc.perform(post("/user/pgsql"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
+	@Order(3)
+	@Test
+	void testPgsqlSave() throws Exception {
+		mockMvc.perform(post("/user/pgsql"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(4)
-    @Test
-    void testPgsqlUser() throws Exception {
-        mockMvc.perform(get("/user/pgsql"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Order(4)
+	@Test
+	void testPgsqlUser() throws Exception {
+		mockMvc.perform(get("/user/pgsql"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

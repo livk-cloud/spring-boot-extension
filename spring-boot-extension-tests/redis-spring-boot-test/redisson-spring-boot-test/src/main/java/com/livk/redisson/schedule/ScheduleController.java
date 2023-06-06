@@ -36,11 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ScheduleController {
 
-    private final ScheduleHandler scheduleHandler;
+	private final ScheduleHandler scheduleHandler;
 
-    @GetMapping
-    public HttpEntity<String> handler() {
-        scheduleHandler.start();
-        return ResponseEntity.ok("ok");
-    }
+	@GetMapping
+	public HttpEntity<String> handler() {
+		scheduleHandler.start();
+		return ResponseEntity.ok("ok");
+	}
 }

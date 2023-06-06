@@ -30,8 +30,8 @@ import java.util.List;
  */
 public interface InfoService {
 
-    void insertBatch(List<Info> records);
+	void insertBatch(List<Info> records);
 
-    void insertBatchMultithreading(List<Info> records);
+	void insertBatchMultithreading(List<Info> records);
 
 }

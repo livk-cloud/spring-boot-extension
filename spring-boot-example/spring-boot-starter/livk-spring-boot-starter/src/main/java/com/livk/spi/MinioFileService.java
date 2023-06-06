@@ -31,19 +31,19 @@ import java.io.InputStream;
 @AutoService(FileService.class)
 public class MinioFileService implements FileService {
 
-    @Override
-    public void upload(InputStream inputStream) {
+	@Override
+	public void upload(InputStream inputStream) {
 
-    }
+	}
 
-    @Override
-    public byte[] download(final String filename) {
-        return new byte[0];
-    }
+	@Override
+	public byte[] download(final String filename) {
+		return new byte[0];
+	}
 
-    @Override
-    public String getType() {
-        return this.getClass().getTypeName();
-    }
+	@Override
+	public String getType() {
+		return this.getClass().getTypeName();
+	}
 
 }

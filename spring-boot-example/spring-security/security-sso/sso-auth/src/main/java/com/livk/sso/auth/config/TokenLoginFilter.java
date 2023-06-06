@@ -42,28 +42,28 @@ import java.util.Map;
  */
 public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
-            "POST");
+	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
+		"POST");
 
-    private final AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 
-    public TokenLoginFilter(AuthenticationManager authenticationManager) {
-        super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
-        this.authenticationManager = authenticationManager;
-    }
+	public TokenLoginFilter(AuthenticationManager authenticationManager) {
+		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
+		this.authenticationManager = authenticationManager;
+	}
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
-        try {
-            User user = JsonMapperUtils.readValue(request.getInputStream(), User.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
-                    user.getAuthorities());
-            return authenticationManager.authenticate(authenticationToken);
-        } catch (IOException e) {
-            Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
-            WebUtils.out(response, map);
-            throw new UsernameNotFoundException("用户名或者密码错误");
-        }
-    }
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+		throws AuthenticationException {
+		try {
+			User user = JsonMapperUtils.readValue(request.getInputStream(), User.class);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
+				user.getAuthorities());
+			return authenticationManager.authenticate(authenticationToken);
+		} catch (IOException e) {
+			Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
+			WebUtils.out(response, map);
+			throw new UsernameNotFoundException("用户名或者密码错误");
+		}
+	}
 }

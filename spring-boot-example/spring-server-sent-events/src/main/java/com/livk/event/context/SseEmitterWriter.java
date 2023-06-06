@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  */
 public interface SseEmitterWriter<K> {
 
-    SseEmitter put(K id, SseEmitter sseEmitter);
+	SseEmitter put(K id, SseEmitter sseEmitter);
 
-    SseEmitter remove(K id);
+	SseEmitter remove(K id);
 }

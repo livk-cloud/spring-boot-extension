@@ -28,26 +28,26 @@ import java.util.Map;
 @FunctionalInterface
 public interface ContextFactory {
 
-    /**
-     * Create context.
-     *
-     * @param method the method
-     * @param args   the args
-     * @return the context
-     */
-    Context create(Method method, Object[] args);
+	/**
+	 * Create context.
+	 *
+	 * @param method the method
+	 * @param args   the args
+	 * @return the context
+	 */
+	Context create(Method method, Object[] args);
 
-    /**
-     * Merge map.
-     *
-     * @param method    the method
-     * @param args      the args
-     * @param expandMap the expand map
-     * @return the map
-     */
-    default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
-        Context context = create(method, args);
-        context.putAll(expandMap, false);
-        return context;
-    }
+	/**
+	 * Merge map.
+	 *
+	 * @param method    the method
+	 * @param args      the args
+	 * @param expandMap the expand map
+	 * @return the map
+	 */
+	default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
+		Context context = create(method, args);
+		context.putAll(expandMap, false);
+		return context;
+	}
 }

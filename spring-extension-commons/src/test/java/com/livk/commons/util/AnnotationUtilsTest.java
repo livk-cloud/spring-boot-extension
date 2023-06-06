@@ -38,45 +38,45 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class AnnotationUtilsTest {
 
-    private final Method method = AnnotationTestClass.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = AnnotationTestClass.class.getDeclaredMethod("parseMethod", String.class);
 
-    private final MethodParameter methodParameter = new MethodParameter(method, 0);
+	private final MethodParameter methodParameter = new MethodParameter(method, 0);
 
-    AnnotationUtilsTest() throws NoSuchMethodException {
-    }
+	AnnotationUtilsTest() throws NoSuchMethodException {
+	}
 
-    @Test
-    void getAnnotationElement() {
-        assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, RequestMapping.class));
-        assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, Controller.class));
-        assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, RestController.class));
-        assertNull(AnnotationUtils.getAnnotationElement(methodParameter, RequestBody.class));
+	@Test
+	void getAnnotationElement() {
+		assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, RequestMapping.class));
+		assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, Controller.class));
+		assertNotNull(AnnotationUtils.getAnnotationElement(methodParameter, RestController.class));
+		assertNull(AnnotationUtils.getAnnotationElement(methodParameter, RequestBody.class));
 
-        assertNotNull(AnnotationUtils.getAnnotationElement(method, RequestMapping.class));
-        assertNotNull(AnnotationUtils.getAnnotationElement(method, Controller.class));
-        assertNotNull(AnnotationUtils.getAnnotationElement(method, RestController.class));
-        assertNull(AnnotationUtils.getAnnotationElement(method, RequestBody.class));
-    }
+		assertNotNull(AnnotationUtils.getAnnotationElement(method, RequestMapping.class));
+		assertNotNull(AnnotationUtils.getAnnotationElement(method, Controller.class));
+		assertNotNull(AnnotationUtils.getAnnotationElement(method, RestController.class));
+		assertNull(AnnotationUtils.getAnnotationElement(method, RequestBody.class));
+	}
 
-    @Test
-    void hasAnnotationElement() {
-        assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, RequestMapping.class));
-        assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, Controller.class));
-        assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, RestController.class));
-        assertFalse(AnnotationUtils.hasAnnotationElement(methodParameter, RequestBody.class));
+	@Test
+	void hasAnnotationElement() {
+		assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, RequestMapping.class));
+		assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, Controller.class));
+		assertTrue(AnnotationUtils.hasAnnotationElement(methodParameter, RestController.class));
+		assertFalse(AnnotationUtils.hasAnnotationElement(methodParameter, RequestBody.class));
 
-        assertTrue(AnnotationUtils.hasAnnotationElement(method, RequestMapping.class));
-        assertTrue(AnnotationUtils.hasAnnotationElement(method, Controller.class));
-        assertTrue(AnnotationUtils.hasAnnotationElement(method, RestController.class));
-        assertFalse(AnnotationUtils.hasAnnotationElement(method, RequestBody.class));
-    }
+		assertTrue(AnnotationUtils.hasAnnotationElement(method, RequestMapping.class));
+		assertTrue(AnnotationUtils.hasAnnotationElement(method, Controller.class));
+		assertTrue(AnnotationUtils.hasAnnotationElement(method, RestController.class));
+		assertFalse(AnnotationUtils.hasAnnotationElement(method, RequestBody.class));
+	}
 
-    @RestController
-    static class AnnotationTestClass {
+	@RestController
+	static class AnnotationTestClass {
 
-        @RequestMapping
-        @SuppressWarnings("unused")
-        private void parseMethod(String username) {
-        }
-    }
+		@RequestMapping
+		@SuppressWarnings("unused")
+		private void parseMethod(String username) {
+		}
+	}
 }

@@ -27,96 +27,96 @@ import com.livk.commons.jackson.util.TypeFactoryUtils;
  */
 public interface JacksonOperations {
 
-    /**
-     * Read value t.
-     *
-     * @param <T>  the type parameter
-     * @param obj  the obj
-     * @param type the type
-     * @return the t
-     */
-    default <T> T readValue(Object obj, Class<T> type) {
-        return readValue(obj, TypeFactoryUtils.javaType(type));
-    }
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param obj  the obj
+	 * @param type the type
+	 * @return the t
+	 */
+	default <T> T readValue(Object obj, Class<T> type) {
+		return readValue(obj, TypeFactoryUtils.javaType(type));
+	}
 
-    /**
-     * Read value t.
-     *
-     * @param <T>           the type parameter
-     * @param obj           the obj
-     * @param typeReference the type reference
-     * @return the t
-     */
-    default <T> T readValue(Object obj, TypeReference<T> typeReference) {
-        return readValue(obj, TypeFactoryUtils.javaType(typeReference));
-    }
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>           the type parameter
+	 * @param obj           the obj
+	 * @param typeReference the type reference
+	 * @return the t
+	 */
+	default <T> T readValue(Object obj, TypeReference<T> typeReference) {
+		return readValue(obj, TypeFactoryUtils.javaType(typeReference));
+	}
 
-    /**
-     * Read value t.
-     *
-     * @param <T>  the type parameter
-     * @param obj  the obj
-     * @param type the type
-     * @return the t
-     */
-    <T> T readValue(Object obj, JavaType type);
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param obj  the obj
+	 * @param type the type
+	 * @return the t
+	 */
+	<T> T readValue(Object obj, JavaType type);
 
-    /**
-     * json序列化
-     *
-     * @param obj obj
-     * @return json string
-     */
-    String writeValueAsString(Object obj);
+	/**
+	 * json序列化
+	 *
+	 * @param obj obj
+	 * @return json string
+	 */
+	String writeValueAsString(Object obj);
 
-    /**
-     * Write value as bytes byte [ ].
-     *
-     * @param obj the obj
-     * @return the byte [ ]
-     */
+	/**
+	 * Write value as bytes byte [ ].
+	 *
+	 * @param obj the obj
+	 * @return the byte [ ]
+	 */
 
-    byte[] writeValueAsBytes(Object obj);
+	byte[] writeValueAsBytes(Object obj);
 
-    /**
-     * 将json转化成JsonNode
-     *
-     * @param obj the obj
-     * @return the json node
-     */
-    JsonNode readTree(Object obj);
+	/**
+	 * 将json转化成JsonNode
+	 *
+	 * @param obj the obj
+	 * @return the json node
+	 */
+	JsonNode readTree(Object obj);
 
-    /**
-     * Convert object.
-     *
-     * @param <T>       the type parameter
-     * @param fromValue the  value
-     * @param type      the type
-     * @return the object
-     */
-    default <T> T convertValue(Object fromValue, Class<T> type) {
-        return convertValue(fromValue, TypeFactoryUtils.javaType(type));
-    }
+	/**
+	 * Convert object.
+	 *
+	 * @param <T>       the type parameter
+	 * @param fromValue the  value
+	 * @param type      the type
+	 * @return the object
+	 */
+	default <T> T convertValue(Object fromValue, Class<T> type) {
+		return convertValue(fromValue, TypeFactoryUtils.javaType(type));
+	}
 
-    /**
-     * Convert value t.
-     *
-     * @param <T>           the type parameter
-     * @param fromValue     the value
-     * @param typeReference the type reference
-     * @return the t
-     */
-    default <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
-        return convertValue(fromValue, TypeFactoryUtils.javaType(typeReference));
-    }
+	/**
+	 * Convert value t.
+	 *
+	 * @param <T>           the type parameter
+	 * @param fromValue     the value
+	 * @param typeReference the type reference
+	 * @return the t
+	 */
+	default <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
+		return convertValue(fromValue, TypeFactoryUtils.javaType(typeReference));
+	}
 
-    /**
-     * Convert object.
-     *
-     * @param <T>       the type parameter
-     * @param fromValue the  value
-     * @param javaType  the java type
-     * @return the object
-     */
-    <T> T convertValue(Object fromValue, JavaType javaType);
+	/**
+	 * Convert object.
+	 *
+	 * @param <T>       the type parameter
+	 * @param fromValue the  value
+	 * @param javaType  the java type
+	 * @return the object
+	 */
+	<T> T convertValue(Object fromValue, JavaType javaType);
 }

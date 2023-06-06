@@ -32,16 +32,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ObjectUtilsTest {
 
-    @Test
-    void testAllChecked() {
-        boolean result = ObjectUtils.allChecked(StringUtils::hasText, "1", "");
-        assertFalse(result);
-    }
+	@Test
+	void testAllChecked() {
+		boolean result = ObjectUtils.allChecked(StringUtils::hasText, "1", "");
+		assertFalse(result);
+	}
 
-    @Test
-    void testAnyChecked() {
-        boolean result = ObjectUtils.anyChecked(StringUtils::hasText, "1", "");
-        assertTrue(result);
-    }
+	@Test
+	void testAnyChecked() {
+		boolean result = ObjectUtils.anyChecked(StringUtils::hasText, "1", "");
+		assertTrue(result);
+	}
 }
 

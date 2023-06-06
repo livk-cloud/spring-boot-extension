@@ -31,11 +31,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Info {
-    @CryptoEncrypt(CryptoType.PBE)
-    @CryptoDecrypt
-    private Long variableId;
+	@CryptoEncrypt(CryptoType.PBE)
+	@CryptoDecrypt
+	private Long variableId;
 
-    @CryptoEncrypt(CryptoType.PBE)
-    @CryptoDecrypt
-    private Long paramId;
+	@CryptoEncrypt(CryptoType.PBE)
+	@CryptoDecrypt
+	private Long paramId;
 }

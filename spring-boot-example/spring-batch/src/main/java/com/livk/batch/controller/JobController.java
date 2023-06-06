@@ -38,14 +38,14 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JobController {
 
-    private final JobLauncher jobLauncher;
+	private final JobLauncher jobLauncher;
 
-    private final Job job;
+	private final Job job;
 
-    @SneakyThrows
-    @GetMapping("doJob")
-    public void doJob() {
-        jobLauncher.run(job, new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters());
-    }
+	@SneakyThrows
+	@GetMapping("doJob")
+	public void doJob() {
+		jobLauncher.run(job, new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters());
+	}
 
 }

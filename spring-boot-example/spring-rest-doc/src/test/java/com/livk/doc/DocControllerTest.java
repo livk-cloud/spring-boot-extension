@@ -50,37 +50,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 class DocControllerTest {
 
-    MockMvc mockMvc;
+	MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper mapper;
+	@Autowired
+	ObjectMapper mapper;
 
-    @BeforeEach
-    public void setMockMvc(WebApplicationContext webApplicationContext,
-                           RestDocumentationContextProvider provider) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
-                .build();
-    }
+	@BeforeEach
+	public void setMockMvc(WebApplicationContext webApplicationContext,
+			       RestDocumentationContextProvider provider) {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+			.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+			.build();
+	}
 
-    @Test
-    void testGet() throws Exception {
-        mockMvc.perform(get("/doc")
-                        .param("name", "world"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("hello world"))
-                .andDo(document("get"));
-    }
+	@Test
+	void testGet() throws Exception {
+		mockMvc.perform(get("/doc")
+				.param("name", "world"))
+			.andExpect(status().isOk())
+			.andExpect(content().string("hello world"))
+			.andDo(document("get"));
+	}
 
-    @Test
-    void testPost() throws Exception {
-        Map<String, String> map = Map.of("username", "livk", "password", "123456");
-        mockMvc.perform(post("/doc")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(map)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("livk"))
-                .andExpect(jsonPath("$.password").value("123456"))
-                .andDo(document("post"));
-    }
+	@Test
+	void testPost() throws Exception {
+		Map<String, String> map = Map.of("username", "livk", "password", "123456");
+		mockMvc.perform(post("/doc")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(map)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.username").value("livk"))
+			.andExpect(jsonPath("$.password").value("123456"))
+			.andDo(document("post"));
+	}
 }

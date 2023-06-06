@@ -35,21 +35,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RateLimiterControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void rate() throws Exception {
-        for (int i = 0; i < 2; i++) {
-            mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andDo(print())
-                    .andReturn();
-        }
+	@Test
+	void rate() throws Exception {
+		for (int i = 0; i < 2; i++) {
+			mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andReturn();
+		}
 
-        mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is5xxServerError())
-                .andDo(print())
-                .andReturn();
-    }
+		mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().is5xxServerError())
+			.andDo(print())
+			.andReturn();
+	}
 }

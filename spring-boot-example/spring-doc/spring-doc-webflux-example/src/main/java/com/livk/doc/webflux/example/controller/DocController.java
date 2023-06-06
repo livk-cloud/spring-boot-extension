@@ -38,9 +38,9 @@ import reactor.core.publisher.Mono;
 @RequestMapping("doc")
 public class DocController {
 
-    @GetMapping
-    @Operation(summary = "测试API")
-    public Mono<HttpEntity<String>> get() {
-        return Mono.just(ResponseEntity.ok("hello world"));
-    }
+	@GetMapping
+	@Operation(summary = "测试API")
+	public Mono<HttpEntity<String>> get() {
+		return Mono.just(ResponseEntity.ok("hello world"));
+	}
 }

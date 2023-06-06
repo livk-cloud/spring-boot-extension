@@ -35,58 +35,58 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedissonLock extends AbstractLockSupport<RLock> {
 
-    private final RedissonClient redissonClient;
+	private final RedissonClient redissonClient;
 
-    @Override
-    protected RLock getLock(LockType type, String key) {
-        return switch (type) {
-            case LOCK -> redissonClient.getLock(key);
-            case FAIR -> redissonClient.getFairLock(key);
-            case READ -> redissonClient.getReadWriteLock(key).readLock();
-            case WRITE -> redissonClient.getReadWriteLock(key).writeLock();
-        };
-    }
-
-
-    @Override
-    protected boolean unlock(String key, RLock lock) {
-        lock.unlock();
-        return !isLocked(lock);
-    }
+	@Override
+	protected RLock getLock(LockType type, String key) {
+		return switch (type) {
+			case LOCK -> redissonClient.getLock(key);
+			case FAIR -> redissonClient.getFairLock(key);
+			case READ -> redissonClient.getReadWriteLock(key).readLock();
+			case WRITE -> redissonClient.getReadWriteLock(key).writeLock();
+		};
+	}
 
 
-    @Override
-    protected boolean tryLockAsync(RLock lock, long leaseTime, long waitTime) throws Exception {
-        return lock.tryLockAsync(waitTime, leaseTime, TimeUnit.SECONDS).get();
-    }
+	@Override
+	protected boolean unlock(String key, RLock lock) {
+		lock.unlock();
+		return !isLocked(lock);
+	}
 
-    @Override
-    protected boolean tryLock(RLock lock, long leaseTime, long waitTime) throws Exception {
-        return lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
-    }
 
-    @Override
-    protected void lockAsync(RLock lock) throws Exception {
-        lock.lockAsync().get();
-    }
+	@Override
+	protected boolean tryLockAsync(RLock lock, long leaseTime, long waitTime) throws Exception {
+		return lock.tryLockAsync(waitTime, leaseTime, TimeUnit.SECONDS).get();
+	}
 
-    @Override
-    protected void lock(RLock lock) {
-        lock.lock();
-    }
+	@Override
+	protected boolean tryLock(RLock lock, long leaseTime, long waitTime) throws Exception {
+		return lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+	}
 
-    @Override
-    protected boolean isLocked(RLock lock) {
-        return lock.isLocked() && lock.isHeldByCurrentThread();
-    }
+	@Override
+	protected void lockAsync(RLock lock) throws Exception {
+		lock.lockAsync().get();
+	}
 
-    @Override
-    public LockScope scope() {
-        return LockScope.DISTRIBUTED_LOCK;
-    }
+	@Override
+	protected void lock(RLock lock) {
+		lock.lock();
+	}
 
-    @Override
-    protected boolean supportAsync() {
-        return true;
-    }
+	@Override
+	protected boolean isLocked(RLock lock) {
+		return lock.isLocked() && lock.isHeldByCurrentThread();
+	}
+
+	@Override
+	public LockScope scope() {
+		return LockScope.DISTRIBUTED_LOCK;
+	}
+
+	@Override
+	protected boolean supportAsync() {
+		return true;
+	}
 }

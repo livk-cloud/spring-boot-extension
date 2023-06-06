@@ -42,33 +42,33 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AutoConfigureWebTestClient(timeout = "15000")
 class GreetingControllerTest {
 
-    @Autowired
-    WebTestClient webTestClient;
+	@Autowired
+	WebTestClient webTestClient;
 
-    @Value("${spring.graphql.path:/graphql}")
-    String graphqlPath;
+	@Value("${spring.graphql.path:/graphql}")
+	String graphqlPath;
 
-    WebGraphQlTester tester;
+	WebGraphQlTester tester;
 
-    @BeforeEach
-    public void init() {
-        WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
-        tester = HttpGraphQlTester.builder(builder).build();
-    }
+	@BeforeEach
+	public void init() {
+		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
+		tester = HttpGraphQlTester.builder(builder).build();
+	}
 
-    @Test
-    @SuppressWarnings("rawtypes")
-    void greetings() {
-        //language=GraphQL
-        String document = """
-                subscription {
-                  greetings
-                }""";
-        Map result = tester.document(document)
-                .execute()
-                .path("upstreamPublisher")
-                .entity(Map.class)
-                .get();
-        assertNotNull(result);
-    }
+	@Test
+	@SuppressWarnings("rawtypes")
+	void greetings() {
+		//language=GraphQL
+		String document = """
+			subscription {
+			  greetings
+			}""";
+		Map result = tester.document(document)
+			.execute()
+			.path("upstreamPublisher")
+			.entity(Map.class)
+			.get();
+		assertNotNull(result);
+	}
 }

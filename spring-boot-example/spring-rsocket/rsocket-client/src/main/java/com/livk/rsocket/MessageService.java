@@ -33,15 +33,15 @@ import java.time.Duration;
  */
 public interface MessageService {
 
-    @RSocketExchange("request-response")
-    Mono<Message> requestResponse(Message request);
+	@RSocketExchange("request-response")
+	Mono<Message> requestResponse(Message request);
 
-    @RSocketExchange("fire-and-forget")
-    Mono<Void> fireAndForget(Message request);
+	@RSocketExchange("fire-and-forget")
+	Mono<Void> fireAndForget(Message request);
 
-    @RSocketExchange("stream")
-    Flux<Message> stream(Message request);
+	@RSocketExchange("stream")
+	Flux<Message> stream(Message request);
 
-    @RSocketExchange("channel")
-    Flux<Message> channel(Flux<Duration> settings);
+	@RSocketExchange("channel")
+	Flux<Message> channel(Flux<Duration> settings);
 }

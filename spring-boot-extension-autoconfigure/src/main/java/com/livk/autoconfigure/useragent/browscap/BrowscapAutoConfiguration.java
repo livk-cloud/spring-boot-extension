@@ -44,27 +44,27 @@ import java.util.Arrays;
 @ImportAutoConfiguration(UserAgentAutoConfiguration.class)
 public class BrowscapAutoConfiguration {
 
-    /**
-     * User agent parser user agent parser.
-     *
-     * @return the user agent parser
-     * @throws IOException    the io exception
-     * @throws ParseException the parse exception
-     */
-    @Bean
-    public UserAgentParser userAgentParser() throws IOException, ParseException {
-        return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
-    }
+	/**
+	 * User agent parser user agent parser.
+	 *
+	 * @return the user agent parser
+	 * @throws IOException    the io exception
+	 * @throws ParseException the parse exception
+	 */
+	@Bean
+	public UserAgentParser userAgentParser() throws IOException, ParseException {
+		return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
+	}
 
-    /**
-     * Browscap user agent parse browscap user agent parse.
-     *
-     * @param userAgentAnalyzer the user agent analyzer
-     * @return the browscap user agent parse
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public BrowscapUserAgentParse browscapUserAgentParse(UserAgentParser userAgentAnalyzer) {
-        return new BrowscapUserAgentParse(userAgentAnalyzer);
-    }
+	/**
+	 * Browscap user agent parse browscap user agent parse.
+	 *
+	 * @param userAgentAnalyzer the user agent analyzer
+	 * @return the browscap user agent parse
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public BrowscapUserAgentParse browscapUserAgentParse(UserAgentParser userAgentAnalyzer) {
+		return new BrowscapUserAgentParse(userAgentAnalyzer);
+	}
 }

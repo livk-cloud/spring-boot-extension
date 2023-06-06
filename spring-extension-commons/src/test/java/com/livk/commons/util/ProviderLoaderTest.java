@@ -29,27 +29,27 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 class ProviderLoaderTest {
 
-    @Test
-    public void loadTest() {
-        assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).get(0));
-        assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).get(0));
+	@Test
+	public void loadTest() {
+		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).get(0));
+		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).get(0));
 
-        ResolvableType type = ResolvableType.forClass(Animal.class);
-        assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(type).get(0));
-        assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(type).get(0));
-    }
+		ResolvableType type = ResolvableType.forClass(Animal.class);
+		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(type).get(0));
+		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(type).get(0));
+	}
 
-    public interface Animal {
+	public interface Animal {
 
-    }
+	}
 
-    @SpringFactories
-    public static class Dog implements Animal {
+	@SpringFactories
+	public static class Dog implements Animal {
 
-    }
+	}
 
-    @AutoService(Animal.class)
-    public static class Cat implements Animal {
+	@AutoService(Animal.class)
+	public static class Cat implements Animal {
 
-    }
+	}
 }

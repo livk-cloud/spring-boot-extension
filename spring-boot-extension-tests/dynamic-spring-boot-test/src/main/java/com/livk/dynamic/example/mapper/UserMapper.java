@@ -34,9 +34,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into ${table} (username,password) values (#{user.username},#{user.password})")
-    int insert(User user, String table);
+	@Insert("insert into ${table} (username,password) values (#{user.username},#{user.password})")
+	int insert(User user, String table);
 
-    @Select("select * from ${table}")
-    List<User> selectList(String table);
+	@Select("select * from ${table}")
+	List<User> selectList(String table);
 }

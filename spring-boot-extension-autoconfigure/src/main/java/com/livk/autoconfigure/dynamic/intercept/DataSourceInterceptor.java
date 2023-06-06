@@ -27,13 +27,13 @@ import org.aopalliance.intercept.MethodInvocation;
  */
 public class DataSourceInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DynamicSource> {
 
-    @Override
-    protected Object invoke(MethodInvocation invocation, DynamicSource dynamicSource) throws Throwable {
-        if (dynamicSource != null) {
-            DataSourceContextHolder.switchDataSource(dynamicSource.value());
-        }
-        Object proceed = invocation.proceed();
-        DataSourceContextHolder.clear();
-        return proceed;
-    }
+	@Override
+	protected Object invoke(MethodInvocation invocation, DynamicSource dynamicSource) throws Throwable {
+		if (dynamicSource != null) {
+			DataSourceContextHolder.switchDataSource(dynamicSource.value());
+		}
+		Object proceed = invocation.proceed();
+		DataSourceContextHolder.clear();
+		return proceed;
+	}
 }

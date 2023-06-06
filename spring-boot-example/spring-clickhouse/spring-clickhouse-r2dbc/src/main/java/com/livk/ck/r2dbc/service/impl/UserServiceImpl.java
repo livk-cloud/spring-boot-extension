@@ -36,20 +36,20 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    @Override
-    public Flux<User> list() {
-        return userRepository.findAll();
-    }
+	@Override
+	public Flux<User> list() {
+		return userRepository.findAll();
+	}
 
-    @Override
-    public Mono<Void> remove(Mono<Integer> id) {
-        return userRepository.deleteById(id);
-    }
+	@Override
+	public Mono<Void> remove(Mono<Integer> id) {
+		return userRepository.deleteById(id);
+	}
 
-    @Override
-    public Mono<Void> save(Mono<User> userMono) {
-        return userMono.flatMap(userRepository::save);
-    }
+	@Override
+	public Mono<Void> save(Mono<User> userMono) {
+		return userMono.flatMap(userRepository::save);
+	}
 }

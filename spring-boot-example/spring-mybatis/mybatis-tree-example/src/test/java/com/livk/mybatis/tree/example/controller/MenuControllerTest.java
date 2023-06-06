@@ -35,22 +35,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @SpringBootTest({
-        "spring.datasource.driver-class-name=org.h2.Driver",
-        "spring.datasource.url=jdbc:h2:mem:test",
-        "spring.sql.init.schema-locations=classpath:menu.sql",
-        "spring.sql.init.platform=h2",
-        "spring.sql.init.mode=embedded",
+	"spring.datasource.driver-class-name=org.h2.Driver",
+	"spring.datasource.url=jdbc:h2:mem:test",
+	"spring.sql.init.schema-locations=classpath:menu.sql",
+	"spring.sql.init.platform=h2",
+	"spring.sql.init.mode=embedded",
 })
 @AutoConfigureMockMvc
 class MenuControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void list() throws Exception {
-        mockMvc.perform(get("/menu"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Test
+	void list() throws Exception {
+		mockMvc.perform(get("/menu"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 }

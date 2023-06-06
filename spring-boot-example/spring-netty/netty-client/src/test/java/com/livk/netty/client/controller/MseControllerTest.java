@@ -35,21 +35,21 @@ import java.util.Map;
 @SpringBootTest
 @AutoConfigureWebTestClient
 class MseControllerTest {
-    @Autowired
-    WebTestClient client;
+	@Autowired
+	WebTestClient client;
 
 
-    @Test
-    void testSend() {
-        Map<String, String> body = Map.of("username", "root", "password", "root");
-        client.post()
-                .uri("/msg")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(JsonMapperUtils.writeValueAsString(body))
-                .exchange()
-                .expectStatus()
-                .isOk();
-    }
+	@Test
+	void testSend() {
+		Map<String, String> body = Map.of("username", "root", "password", "root");
+		client.post()
+			.uri("/msg")
+			.contentType(MediaType.APPLICATION_JSON)
+			.bodyValue(JsonMapperUtils.writeValueAsString(body))
+			.exchange()
+			.expectStatus()
+			.isOk();
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

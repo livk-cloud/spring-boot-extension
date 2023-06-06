@@ -35,13 +35,13 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RequestIpFilter extends OncePerRequestFilter {
 
-    private final Ip2RegionSearch search;
+	private final Ip2RegionSearch search;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String ip = WebUtils.realIp(request);
-        RequestIpContextHolder.set(search.searchAsInfo(ip));
-        filterChain.doFilter(request, response);
-        RequestIpContextHolder.remove();
-    }
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		String ip = WebUtils.realIp(request);
+		RequestIpContextHolder.set(search.searchAsInfo(ip));
+		filterChain.doFilter(request, response);
+		RequestIpContextHolder.remove();
+	}
 }

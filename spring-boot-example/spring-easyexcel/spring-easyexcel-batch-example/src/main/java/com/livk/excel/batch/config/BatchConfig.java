@@ -38,8 +38,8 @@ import java.util.List;
 @EnableBatchProcessing
 public class BatchConfig {
 
-    @Bean
-    public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
-        return new MyBatisBatchItemWriter<>(sqlSessionFactory, "com.livk.excel.batch.mapper.InfoMapper.saveBatch");
-    }
+	@Bean
+	public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
+		return new MyBatisBatchItemWriter<>(sqlSessionFactory, "com.livk.excel.batch.mapper.InfoMapper.saveBatch");
+	}
 }

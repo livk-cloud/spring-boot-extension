@@ -34,13 +34,13 @@ import org.springframework.kafka.annotation.KafkaListener;
 @SpringBootApplication
 public class KafkaConsumerApp {
 
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 
-    @KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)
-    public void consumer(String input) {
-        log.info("data:{}", input);
-    }
+	@KafkaListener(id = "livk-id", topics = KafkaConstant.TOPIC)
+	public void consumer(String input) {
+		log.info("data:{}", input);
+	}
 
 }

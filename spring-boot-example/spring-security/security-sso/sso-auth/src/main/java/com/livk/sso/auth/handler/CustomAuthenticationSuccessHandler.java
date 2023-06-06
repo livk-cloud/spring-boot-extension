@@ -33,12 +33,12 @@ import java.util.Map;
  */
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        String token = JwtUtils.generateToken(user);
-        log.info("登录成功user:{} token:{}", user, token);
-        Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-        WebUtils.out(response, map);
-    }
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		String token = JwtUtils.generateToken(user);
+		log.info("登录成功user:{} token:{}", user, token);
+		Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
+		WebUtils.out(response, map);
+	}
 }

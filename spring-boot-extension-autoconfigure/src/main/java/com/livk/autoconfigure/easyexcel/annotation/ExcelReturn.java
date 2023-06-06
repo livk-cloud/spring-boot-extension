@@ -46,50 +46,50 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelReturn {
 
-    /**
-     * File name string.
-     *
-     * @return the string
-     */
-    String fileName();
+	/**
+	 * File name string.
+	 *
+	 * @return the string
+	 */
+	String fileName();
 
-    /**
-     * Template path string.
-     *
-     * @return the string
-     */
-    String template() default "";
+	/**
+	 * Template path string.
+	 *
+	 * @return the string
+	 */
+	String template() default "";
 
-    /**
-     * Suffix suffix.
-     *
-     * @return the suffix
-     */
-    Suffix suffix() default Suffix.XLSM;
+	/**
+	 * Suffix suffix.
+	 *
+	 * @return the suffix
+	 */
+	Suffix suffix() default Suffix.XLSM;
 
-    /**
-     * The enum Suffix.
-     */
-    @Getter
-    @RequiredArgsConstructor
-    enum Suffix {
+	/**
+	 * The enum Suffix.
+	 */
+	@Getter
+	@RequiredArgsConstructor
+	enum Suffix {
 
-        /**
-         * Xls suffix.
-         */
-        XLS(".xls"),
+		/**
+		 * Xls suffix.
+		 */
+		XLS(".xls"),
 
-        /**
-         * Xlsx suffix.
-         */
-        XLSX(".xlsx"),
-        /**
-         * Xlsm suffix.
-         */
-        XLSM(".xlsm");
+		/**
+		 * Xlsx suffix.
+		 */
+		XLSX(".xlsx"),
+		/**
+		 * Xlsm suffix.
+		 */
+		XLSM(".xlsm");
 
-        private final String name;
+		private final String name;
 
-    }
+	}
 
 }

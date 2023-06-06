@@ -39,24 +39,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @SpringBootTest({
-        "spring.pulsar.client.service-url=pulsar://livk.com:6650",
-        "spring.pulsar.consumer.topics=livk-topic",
-        "spring.pulsar.consumer.subscription-name=consumer"
+	"spring.pulsar.client.service-url=pulsar://livk.com:6650",
+	"spring.pulsar.consumer.topics=livk-topic",
+	"spring.pulsar.consumer.subscription-name=consumer"
 })
 @AutoConfigureMockMvc
 class MessageControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
 
-    @Test
-    void testSend() throws Exception {
-        Map<String, String> map = Map.of("username", "livk", "password", "123456");
-        mockMvc.perform(post("/producer")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapperUtils.writeValueAsString(map)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void testSend() throws Exception {
+		Map<String, String> map = Map.of("username", "livk", "password", "123456");
+		mockMvc.perform(post("/producer")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(JsonMapperUtils.writeValueAsString(map)))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 }
 

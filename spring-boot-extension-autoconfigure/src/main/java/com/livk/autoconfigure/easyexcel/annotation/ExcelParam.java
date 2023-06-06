@@ -31,10 +31,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelParam {
 
-    /**
-     * Value string.
-     *
-     * @return the string
-     */
-    String fileName() default "file";
+	/**
+	 * Value string.
+	 *
+	 * @return the string
+	 */
+	String fileName() default "file";
 }

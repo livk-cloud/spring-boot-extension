@@ -31,33 +31,33 @@ import org.springframework.core.GenericTypeResolver;
  */
 public interface Converter<S, T> {
 
-    /**
-     * Gets source.
-     *
-     * @param t the t
-     * @return the source
-     */
-    S getSource(T t);
+	/**
+	 * Gets source.
+	 *
+	 * @param t the t
+	 * @return the source
+	 */
+	S getSource(T t);
 
-    /**
-     * Gets target.
-     *
-     * @param s the s
-     * @return the target
-     */
-    T getTarget(S s);
+	/**
+	 * Gets target.
+	 *
+	 * @param s the s
+	 * @return the target
+	 */
+	T getTarget(S s);
 
-    /**
-     * Type converter pair.
-     *
-     * @return the converter pair
-     */
-    default ConverterPair type() {
-        Class<?>[] types = GenericTypeResolver.resolveTypeArguments(this.getClass(), Converter.class);
-        if (ObjectUtils.isEmpty(types)) {
-            return null;
-        }
-        return ConverterPair.of(types[0], types[1]);
-    }
+	/**
+	 * Type converter pair.
+	 *
+	 * @return the converter pair
+	 */
+	default ConverterPair type() {
+		Class<?>[] types = GenericTypeResolver.resolveTypeArguments(this.getClass(), Converter.class);
+		if (ObjectUtils.isEmpty(types)) {
+			return null;
+		}
+		return ConverterPair.of(types[0], types[1]);
+	}
 
 }

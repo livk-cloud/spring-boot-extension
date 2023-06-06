@@ -45,69 +45,69 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    Integer id = 10;
+	Integer id = 10;
 
-    ObjectMapper mapper = JsonMapper.builder().build();
+	ObjectMapper mapper = JsonMapper.builder().build();
 
 
-    @Order(3)
-    @Test
-    void testGetById() throws Exception {
-        mockMvc.perform(get("/user/{id}", id))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("id", id).exists());
-    }
+	@Order(3)
+	@Test
+	void testGetById() throws Exception {
+		mockMvc.perform(get("/user/{id}", id))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("id", id).exists());
+	}
 
-    @Order(2)
-    @Test
-    void testUpdateById() throws Exception {
-        User user = new User();
-        user.setUsername("livk https");
-        mockMvc.perform(put("/user/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("true"));
-    }
+	@Order(2)
+	@Test
+	void testUpdateById() throws Exception {
+		User user = new User();
+		user.setUsername("livk https");
+		mockMvc.perform(put("/user/{id}", id)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(user)))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(1)
-    @Test
-    void testSave() throws Exception {
-        User user = new User();
-        user.setId(id);
-        user.setUsername("livk");
-        mockMvc.perform(post("/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("true"));
-    }
+	@Order(1)
+	@Test
+	void testSave() throws Exception {
+		User user = new User();
+		user.setId(id);
+		user.setUsername("livk");
+		mockMvc.perform(post("/user")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(user)))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(5)
-    @Test
-    void testDeleteById() throws Exception {
-        mockMvc.perform(delete("/user/{id}", id))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("true"));
-    }
+	@Order(5)
+	@Test
+	void testDeleteById() throws Exception {
+		mockMvc.perform(delete("/user/{id}", id))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("true"));
+	}
 
-    @Order(4)
-    @Test
-    void testList() throws Exception {
-        mockMvc.perform(get("/user"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("list.[*].id", id).exists())
-                .andExpect(jsonPath("pageNum", 1).exists())
-                .andExpect(jsonPath("pageSize", 10).exists());
-    }
+	@Order(4)
+	@Test
+	void testList() throws Exception {
+		mockMvc.perform(get("/user"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("list.[*].id", id).exists())
+			.andExpect(jsonPath("pageNum", 1).exists())
+			.andExpect(jsonPath("pageSize", 10).exists());
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

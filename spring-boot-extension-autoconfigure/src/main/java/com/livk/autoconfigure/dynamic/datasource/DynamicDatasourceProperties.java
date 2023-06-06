@@ -39,24 +39,24 @@ import java.util.Map;
 @ConfigurationProperties(DynamicDatasourceProperties.PREFIX)
 public class DynamicDatasourceProperties implements InitializingBean {
 
-    /**
-     * The constant PREFIX.
-     */
-    public static final String PREFIX = "spring.dynamic";
+	/**
+	 * The constant PREFIX.
+	 */
+	public static final String PREFIX = "spring.dynamic";
 
-    private Map<String, DataSourceProperties> datasource;
+	private Map<String, DataSourceProperties> datasource;
 
-    private String primary;
+	private String primary;
 
-    @Override
-    public void afterPropertiesSet() {
-        if (StringUtils.hasText(primary)) {
-            if (!datasource.containsKey(primary)) {
-                throw new PrimaryNotFountException(primary + "数据源不存在!\n当前数据源:" + datasource.keySet());
-            }
-        } else {
-            throw new PrimaryNotFountException("缺少primary数据源!");
-        }
-        log.info("当前主数据源:" + primary);
-    }
+	@Override
+	public void afterPropertiesSet() {
+		if (StringUtils.hasText(primary)) {
+			if (!datasource.containsKey(primary)) {
+				throw new PrimaryNotFountException(primary + "数据源不存在!\n当前数据源:" + datasource.keySet());
+			}
+		} else {
+			throw new PrimaryNotFountException("缺少primary数据源!");
+		}
+		log.info("当前主数据源:" + primary);
+	}
 }

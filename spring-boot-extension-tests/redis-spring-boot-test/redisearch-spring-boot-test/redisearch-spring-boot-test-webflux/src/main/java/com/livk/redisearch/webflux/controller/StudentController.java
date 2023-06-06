@@ -42,14 +42,14 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StatefulRedisModulesConnection<String, String> connection;
+	private final StatefulRedisModulesConnection<String, String> connection;
 
-    @GetMapping
-    public HttpEntity<Flux<Student>> list(@RequestParam(defaultValue = "*") String query) {
-        RedisModulesReactiveCommands<String, String> search = connection.reactive();
-        Flux<Student> flux = search.ftSearch(Student.INDEX, query)
-                .flatMapMany(Flux::fromIterable)
-                .map(document -> JsonMapperUtils.convertValue(document, Student.class));
-        return ResponseEntity.ok(flux);
-    }
+	@GetMapping
+	public HttpEntity<Flux<Student>> list(@RequestParam(defaultValue = "*") String query) {
+		RedisModulesReactiveCommands<String, String> search = connection.reactive();
+		Flux<Student> flux = search.ftSearch(Student.INDEX, query)
+			.flatMapMany(Flux::fromIterable)
+			.map(document -> JsonMapperUtils.convertValue(document, Student.class));
+		return ResponseEntity.ok(flux);
+	}
 }

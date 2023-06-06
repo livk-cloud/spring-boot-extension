@@ -33,8 +33,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Payload {
 
-    private String id;
+	private String id;
 
-    private User userInfo;
+	private User userInfo;
 
 }

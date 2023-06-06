@@ -40,51 +40,51 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureWebTestClient
 class InfoWebFluxControllerTest {
 
-    @Autowired
-    WebTestClient client;
+	@Autowired
+	WebTestClient client;
 
-    @Autowired
-    PbeSecurity pbeSecurity;
+	@Autowired
+	PbeSecurity pbeSecurity;
 
-    @Test
-    void infoGet() {
-        String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
-        String encoding = CryptoType.PBE.wrapper(encodingStr);
-        Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
-        client.get()
-                .uri(uriBuilder -> uriBuilder.path("/info/{id}")
-                        .queryParam("id", encoding)
-                        .build(encoding))
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
-                .expectBody(JsonNode.class)
-                .value(jsonNode -> {
-                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
-                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.variableId").asText());
-                });
-    }
+	@Test
+	void infoGet() {
+		String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+		String encoding = CryptoType.PBE.wrapper(encodingStr);
+		Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
+		client.get()
+			.uri(uriBuilder -> uriBuilder.path("/info/{id}")
+				.queryParam("id", encoding)
+				.build(encoding))
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.contentType(MediaType.APPLICATION_JSON)
+			.expectBody(JsonNode.class)
+			.value(jsonNode -> {
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.variableId").asText());
+			});
+	}
 
-    @Test
-    void infoPost() {
-        String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
-        String encoding = CryptoType.PBE.wrapper(encodingStr);
-        Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
-        client.post()
-                .uri("/info")
-                .bodyValue(body)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
-                .expectBody(JsonNode.class)
-                .value(jsonNode -> {
-                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
-                    assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.variableId").asText());
-                });
-    }
+	@Test
+	void infoPost() {
+		String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+		String encoding = CryptoType.PBE.wrapper(encodingStr);
+		Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
+		client.post()
+			.uri("/info")
+			.bodyValue(body)
+			.accept(MediaType.APPLICATION_JSON)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.contentType(MediaType.APPLICATION_JSON)
+			.expectBody(JsonNode.class)
+			.value(jsonNode -> {
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.variableId").asText());
+			});
+	}
 }

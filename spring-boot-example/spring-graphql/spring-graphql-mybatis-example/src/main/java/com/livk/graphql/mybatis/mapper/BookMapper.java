@@ -31,15 +31,15 @@ import java.util.List;
  */
 @Mapper
 public interface BookMapper {
-    @Select("select * from book")
-    List<Book> list();
+	@Select("select * from book")
+	List<Book> list();
 
-    @Select("select * from book where isbn = #{isbn}")
-    Book getByIsbn(@Param("isbn") String isbn);
+	@Select("select * from book where isbn = #{isbn}")
+	Book getByIsbn(@Param("isbn") String isbn);
 
-    @Delete("truncate table book")
-    void clear();
+	@Delete("truncate table book")
+	void clear();
 
-    @Insert("insert into book(isbn, title, pages, author_id_card_no) values (#{isbn},#{title},#{pages},#{authorIdCardNo})")
-    int save(Book book);
+	@Insert("insert into book(isbn, title, pages, author_id_card_no) values (#{isbn},#{title},#{pages},#{authorIdCardNo})")
+	int save(Book book);
 }

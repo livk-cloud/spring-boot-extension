@@ -43,40 +43,40 @@ import java.util.Properties;
  */
 @Slf4j
 @Intercepts({
-        @Signature(
-                type = StatementHandler.class,
-                method = "prepare",
-                args = {Connection.class, Integer.class}
-        )
+	@Signature(
+		type = StatementHandler.class,
+		method = "prepare",
+		args = {Connection.class, Integer.class}
+	)
 })
 @RequiredArgsConstructor
 public class MybatisLogMonitor implements Interceptor {
 
-    private Properties properties;
+	private Properties properties;
 
-    @Override
-    public Object intercept(Invocation invocation) throws Throwable {
-        long start = System.currentTimeMillis();
-        Object proceed = invocation.proceed();
-        long time = System.currentTimeMillis() - start;
-        String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
-        if (time > timeOut()) {
-            log.warn("{SQL超时 SQL:[{}],Time:[{}ms]}", sql, time);
-            MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
-            SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
-        }
-        return proceed;
-    }
+	@Override
+	public Object intercept(Invocation invocation) throws Throwable {
+		long start = System.currentTimeMillis();
+		Object proceed = invocation.proceed();
+		long time = System.currentTimeMillis() - start;
+		String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
+		if (time > timeOut()) {
+			log.warn("{SQL超时 SQL:[{}],Time:[{}ms]}", sql, time);
+			MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
+			SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
+		}
+		return proceed;
+	}
 
-    @Override
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
+	@Override
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
 
-    private long timeOut() {
-        return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName()))
-                       .getDuration()
-                       .toMillis() *
-               (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
-    }
+	private long timeOut() {
+		return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName()))
+			.getDuration()
+			.toMillis() *
+			(Long) properties.get(MybatisLogMonitorProperties.timeOutName());
+	}
 }

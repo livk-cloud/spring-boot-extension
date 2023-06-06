@@ -29,32 +29,32 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ContextFactoryTest {
 
-    private final static Map<String, String> map = Map.of("username", "livk");
+	private final static Map<String, String> map = Map.of("username", "livk");
 
-    private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 
-    ContextFactory contextFactory = new DefaultContextFactory();
+	ContextFactory contextFactory = new DefaultContextFactory();
 
-    ContextFactoryTest() throws NoSuchMethodException {
-    }
+	ContextFactoryTest() throws NoSuchMethodException {
+	}
 
-    @Test
-    void create() {
-        Context context = contextFactory.create(method, new String[]{"livk"});
-        assertEquals(map.size(), context.size());
-        assertEquals(map.keySet(), context.keySet());
-        assertEquals(map.entrySet(), context.entrySet());
-    }
+	@Test
+	void create() {
+		Context context = contextFactory.create(method, new String[]{"livk"});
+		assertEquals(map.size(), context.size());
+		assertEquals(map.keySet(), context.keySet());
+		assertEquals(map.entrySet(), context.entrySet());
+	}
 
-    @Test
-    void merge() {
-        Context context = contextFactory.merge(method, new String[]{"root"}, map);
-        assertEquals(1, context.size());
-        assertEquals(map.keySet(), context.keySet());
-        assertNotEquals(map.entrySet(), context.entrySet());
-        assertTrue(context.containsKey("username"));
-        assertTrue(context.containsValue("root"));
-        assertFalse(context.containsValue("livk"));
-        assertEquals("root", context.get("username"));
-    }
+	@Test
+	void merge() {
+		Context context = contextFactory.merge(method, new String[]{"root"}, map);
+		assertEquals(1, context.size());
+		assertEquals(map.keySet(), context.keySet());
+		assertNotEquals(map.entrySet(), context.entrySet());
+		assertTrue(context.containsKey("username"));
+		assertTrue(context.containsValue("root"));
+		assertFalse(context.containsValue("livk"));
+		assertEquals("root", context.get("username"));
+	}
 }

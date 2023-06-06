@@ -44,15 +44,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StatefulRedisModulesConnection<String, String> connection;
+	private final StatefulRedisModulesConnection<String, String> connection;
 
-    @GetMapping
-    public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
-        RedisModulesCommands<String, String> search = connection.sync();
-        SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
-        List<Student> studentList = result.stream()
-                .map(document -> JsonMapperUtils.convertValue(document, Student.class))
-                .toList();
-        return ResponseEntity.ok(studentList);
-    }
+	@GetMapping
+	public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
+		RedisModulesCommands<String, String> search = connection.sync();
+		SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
+		List<Student> studentList = result.stream()
+			.map(document -> JsonMapperUtils.convertValue(document, Student.class))
+			.toList();
+		return ResponseEntity.ok(studentList);
+	}
 }

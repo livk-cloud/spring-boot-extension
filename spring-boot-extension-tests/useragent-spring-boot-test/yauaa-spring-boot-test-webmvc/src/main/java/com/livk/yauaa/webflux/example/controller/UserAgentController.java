@@ -43,14 +43,14 @@ import java.util.stream.Stream;
 @RequestMapping("user-agent")
 public class UserAgentController {
 
-    @GetMapping
-    public HttpEntity<Map<String, Map<String, String>>> get(@UserAgentInfo UserAgent userAgent) {
-        Map<String, Map<String, String>> map = Stream.of(userAgent, UserAgentContextHolder.getUserAgentContext().unwrap(UserAgent.class))
-                .map(u -> u
-                        .getAvailableFieldNamesSorted()
-                        .stream()
-                        .collect(Collectors.toMap(Function.identity(), u::getValue)))
-                .collect(Collectors.toMap(stringStringMap -> UUID.randomUUID().toString(), Function.identity()));
-        return ResponseEntity.ok(map);
-    }
+	@GetMapping
+	public HttpEntity<Map<String, Map<String, String>>> get(@UserAgentInfo UserAgent userAgent) {
+		Map<String, Map<String, String>> map = Stream.of(userAgent, UserAgentContextHolder.getUserAgentContext().unwrap(UserAgent.class))
+			.map(u -> u
+				.getAvailableFieldNamesSorted()
+				.stream()
+				.collect(Collectors.toMap(Function.identity(), u::getValue)))
+			.collect(Collectors.toMap(stringStringMap -> UUID.randomUUID().toString(), Function.identity()));
+		return ResponseEntity.ok(map);
+	}
 }

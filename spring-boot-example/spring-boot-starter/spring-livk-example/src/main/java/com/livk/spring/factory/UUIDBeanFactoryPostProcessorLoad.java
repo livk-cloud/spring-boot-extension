@@ -28,8 +28,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 @AutoConfiguration
 @SpringFactories
 public class UUIDBeanFactoryPostProcessorLoad implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-    @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) {
-        applicationContext.addBeanFactoryPostProcessor(new UUIDBeanFactoryPostProcessor());
-    }
+	@Override
+	public void initialize(ConfigurableApplicationContext applicationContext) {
+		applicationContext.addBeanFactoryPostProcessor(new UUIDBeanFactoryPostProcessor());
+	}
 }

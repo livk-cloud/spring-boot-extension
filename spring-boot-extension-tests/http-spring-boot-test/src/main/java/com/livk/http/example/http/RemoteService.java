@@ -30,7 +30,7 @@ import org.springframework.web.service.annotation.GetExchange;
 @HttpProvider(url = "https://jwt.io/")
 public interface RemoteService {
 
-    @GetExchange()
-    String get();
+	@GetExchange()
+	String get();
 
 }

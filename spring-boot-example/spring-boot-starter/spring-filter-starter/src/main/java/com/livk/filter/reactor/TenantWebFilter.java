@@ -33,15 +33,15 @@ import reactor.core.publisher.Mono;
  */
 public class TenantWebFilter implements WebFilter {
 
-    @NonNull
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String tenantId = exchange.getRequest().getHeaders().getFirst(ReactiveTenantContextHolder.ATTRIBUTES);
-        exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
-                .contextWrite(ReactiveTenantContextHolder.clearContext())
-                .then());
-        return chain.filter(exchange)
-                .contextWrite(ReactiveTenantContextHolder.withContext(tenantId));
-    }
+	@NonNull
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		String tenantId = exchange.getRequest().getHeaders().getFirst(ReactiveTenantContextHolder.ATTRIBUTES);
+		exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
+			.contextWrite(ReactiveTenantContextHolder.clearContext())
+			.then());
+		return chain.filter(exchange)
+			.contextWrite(ReactiveTenantContextHolder.withContext(tenantId));
+	}
 
 }

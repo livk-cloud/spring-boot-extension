@@ -39,16 +39,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class Ip2RegionControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void post() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/ip"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("*.ip", "127.0.0.1").exists())
-                .andExpect(jsonPath("*.city", "内网IP").exists())
-                .andExpect(jsonPath("*.operator", "内网IP").exists());
-    }
+	@Test
+	void post() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/ip"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("*.ip", "127.0.0.1").exists())
+			.andExpect(jsonPath("*.city", "内网IP").exists())
+			.andExpect(jsonPath("*.operator", "内网IP").exists());
+	}
 }

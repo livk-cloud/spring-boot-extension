@@ -34,21 +34,21 @@ import java.util.UUID;
 @RequestMapping("cache")
 public class CacheController {
 
-    @DoubleCache(cacheName = "cache", key = "local")
-    @GetMapping
-    public String get() {
-        return UUID.randomUUID().toString();
-    }
+	@DoubleCache(cacheName = "cache", key = "local")
+	@GetMapping
+	public String get() {
+		return UUID.randomUUID().toString();
+	}
 
-    @DoubleCache(cacheName = "cache", key = "local", type = CacheType.PUT)
-    @PostMapping
-    public String put() {
-        return UUID.randomUUID().toString();
-    }
+	@DoubleCache(cacheName = "cache", key = "local", type = CacheType.PUT)
+	@PostMapping
+	public String put() {
+		return UUID.randomUUID().toString();
+	}
 
-    @DoubleCache(cacheName = "cache", key = "local", type = CacheType.DELETE)
-    @DeleteMapping
-    public String delete() {
-        return "over";
-    }
+	@DoubleCache(cacheName = "cache", key = "local", type = CacheType.DELETE)
+	@DeleteMapping
+	public String delete() {
+		return "over";
+	}
 }

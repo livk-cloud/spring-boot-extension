@@ -38,13 +38,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class UserAgentControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void getTest() throws Exception {
-        mockMvc.perform(get("/user-agent"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+	@Test
+	void getTest() throws Exception {
+		mockMvc.perform(get("/user-agent"))
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
 }

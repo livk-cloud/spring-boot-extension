@@ -48,110 +48,110 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureWebTestClient(timeout = "15000")
 class QRCode2ControllerTest {
 
-    @Autowired
-    WebTestClient client;
+	@Autowired
+	WebTestClient client;
 
-    String text = "Hello World!";
+	String text = "Hello World!";
 
-    String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
+	String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
 
-    @Test
-    void text() throws IOException {
-        client.get()
-                .uri(uriBuilder -> uriBuilder.path("/qrcode2")
-                        .queryParam("text", text)
-                        .build())
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("text." + PicType.JPG.name().toLowerCase());
-        try (FileInputStream inputStream = new FileInputStream(outFile)) {
-            assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
-        }
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void text() throws IOException {
+		client.get()
+			.uri(uriBuilder -> uriBuilder.path("/qrcode2")
+				.queryParam("text", text)
+				.build())
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
+		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+		}
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 
-    @Test
-    void textMono() throws IOException {
-        client.get()
-                .uri(uriBuilder -> uriBuilder.path("/qrcode2/mono")
-                        .queryParam("text", text)
-                        .build())
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
-        try (FileInputStream inputStream = new FileInputStream(outFile)) {
-            assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
-        }
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void textMono() throws IOException {
+		client.get()
+			.uri(uriBuilder -> uriBuilder.path("/qrcode2/mono")
+				.queryParam("text", text)
+				.build())
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
+		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+		}
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 
-    @Test
-    void json() throws IOException {
-        client.post()
-                .uri("/qrcode2/json")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("json." + PicType.JPG.name().toLowerCase());
-        try (FileInputStream inputStream = new FileInputStream(outFile)) {
-            assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
-        }
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void json() throws IOException {
+		client.post()
+			.uri("/qrcode2/json")
+			.contentType(MediaType.APPLICATION_JSON)
+			.bodyValue(json)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
+		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+		}
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 
-    @Test
-    void jsonMono() throws IOException {
-        client.post()
-                .uri("/qrcode2/json/mono")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .exchange()
-                .expectStatus()
-                .isOk()
-                .expectBody(Resource.class)
-                .value(resource -> {
-                    try {
-                        FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
-        try (FileInputStream inputStream = new FileInputStream(outFile)) {
-            assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
-        }
-        assertTrue(outFile.exists());
-        assertTrue(outFile.delete());
-    }
+	@Test
+	void jsonMono() throws IOException {
+		client.post()
+			.uri("/qrcode2/json/mono")
+			.contentType(MediaType.APPLICATION_JSON)
+			.bodyValue(json)
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectBody(Resource.class)
+			.value(resource -> {
+				try {
+					FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
+		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+		}
+		assertTrue(outFile.exists());
+		assertTrue(outFile.delete());
+	}
 }

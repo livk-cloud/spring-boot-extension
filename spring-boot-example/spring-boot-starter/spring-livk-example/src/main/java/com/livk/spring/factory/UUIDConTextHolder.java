@@ -30,17 +30,17 @@ import java.util.UUID;
  */
 @UtilityClass
 public class UUIDConTextHolder {
-    private static final ThreadLocal<UUID> UUID_CONTEXT = new ThreadLocal<>();
+	private static final ThreadLocal<UUID> UUID_CONTEXT = new ThreadLocal<>();
 
-    public UUID get() {
-        return UUID_CONTEXT.get();
-    }
+	public UUID get() {
+		return UUID_CONTEXT.get();
+	}
 
-    public void set() {
-        UUID_CONTEXT.set(UUID.randomUUID());
-    }
+	public void set() {
+		UUID_CONTEXT.set(UUID.randomUUID());
+	}
 
-    public void remove() {
-        UUID_CONTEXT.remove();
-    }
+	public void remove() {
+		UUID_CONTEXT.remove();
+	}
 }

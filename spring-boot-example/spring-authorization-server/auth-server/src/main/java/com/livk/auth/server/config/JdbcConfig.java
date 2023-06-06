@@ -44,51 +44,50 @@ import java.time.Duration;
  * </p>
  *
  * @author livk
- *
  */
 @Configuration
 public class JdbcConfig {
 
-    @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-        RegisteredClient client = RegisteredClient.withId("livk").clientId("livk-client")
-                .clientSecret(new BCryptPasswordEncoder().encode("secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .authorizationGrantType(SecurityConstants.GRANT_TYPE_PASSWORD)
-                .authorizationGrantType(SecurityConstants.GRANT_TYPE_SMS)
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/livk-client-oidc")
-                .redirectUri("http://127.0.0.1:8080/authorized")
-                .redirectUri("https://www.baidu.com")
-                .scope(OidcScopes.OPENID)
-                .scope("livk.read")
-                .scope("livk.write")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                        .accessTokenTimeToLive(Duration.ofHours(24L))
-                        .refreshTokenTimeToLive(Duration.ofHours(12L))
-                        .reuseRefreshTokens(true)
-                        .build())
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
-                .build();
-        JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcTemplate);
-        repository.save(client);
-        return repository;
-    }
+	@Bean
+	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+		RegisteredClient client = RegisteredClient.withId("livk").clientId("livk-client")
+			.clientSecret(new BCryptPasswordEncoder().encode("secret"))
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
+			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+			.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+			.authorizationGrantType(SecurityConstants.GRANT_TYPE_PASSWORD)
+			.authorizationGrantType(SecurityConstants.GRANT_TYPE_SMS)
+			.redirectUri("http://127.0.0.1:8080/login/oauth2/code/livk-client-oidc")
+			.redirectUri("http://127.0.0.1:8080/authorized")
+			.redirectUri("https://www.baidu.com")
+			.scope(OidcScopes.OPENID)
+			.scope("livk.read")
+			.scope("livk.write")
+			.tokenSettings(TokenSettings.builder()
+				.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+				.accessTokenTimeToLive(Duration.ofHours(24L))
+				.refreshTokenTimeToLive(Duration.ofHours(12L))
+				.reuseRefreshTokens(true)
+				.build())
+			.clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
+			.build();
+		JdbcRegisteredClientRepository repository = new JdbcRegisteredClientRepository(jdbcTemplate);
+		repository.save(client);
+		return repository;
+	}
 
-    @Bean
-    public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
-                                                           RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-    }
+	@Bean
+	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
+							       RegisteredClientRepository registeredClientRepository) {
+		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+	}
 
-    @Bean
-    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
-                                                                         RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
-    }
+	@Bean
+	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
+									     RegisteredClientRepository registeredClientRepository) {
+		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+	}
 }

@@ -31,9 +31,9 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> list();
+	List<User> list();
 
-    boolean remove(@Param("regTime") String regTime);
+	boolean remove(@Param("regTime") String regTime);
 
-    boolean save(User user);
+	boolean save(User user);
 }

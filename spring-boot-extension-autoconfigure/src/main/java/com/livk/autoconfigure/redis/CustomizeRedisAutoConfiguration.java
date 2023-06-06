@@ -44,39 +44,39 @@ import reactor.core.publisher.Flux;
 @AutoConfiguration(before = {RedisAutoConfiguration.class})
 public class CustomizeRedisAutoConfiguration {
 
-    /**
-     * Livk redis template universal redis template.
-     *
-     * @param redisConnectionFactory the redis connection factory
-     * @return the universal redis template
-     */
-    @Bean
-    public UniversalRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        return new UniversalRedisTemplate(redisConnectionFactory);
-    }
+	/**
+	 * Livk redis template universal redis template.
+	 *
+	 * @param redisConnectionFactory the redis connection factory
+	 * @return the universal redis template
+	 */
+	@Bean
+	public UniversalRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+		return new UniversalRedisTemplate(redisConnectionFactory);
+	}
 
 
-    /**
-     * The type Customize reactive redis auto configuration.
-     */
-    @AutoConfiguration(before = {RedisReactiveAutoConfiguration.class})
-    @ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
-    public static class CustomizeReactiveRedisAutoConfiguration {
+	/**
+	 * The type Customize reactive redis auto configuration.
+	 */
+	@AutoConfiguration(before = {RedisReactiveAutoConfiguration.class})
+	@ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
+	public static class CustomizeReactiveRedisAutoConfiguration {
 
-        /**
-         * Universal reactive redis template universal reactive redis template.
-         *
-         * @param redisConnectionFactory the redis connection factory
-         * @return the universal reactive redis template
-         */
-        @Bean
-        public UniversalReactiveRedisTemplate universalReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
-            RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
-                    <String, Object>newSerializationContext()
-                    .key(RedisSerializer.string()).value(JacksonSerializerUtils.json())
-                    .hashKey(RedisSerializer.string()).hashValue(JacksonSerializerUtils.json()).build();
-            return new UniversalReactiveRedisTemplate(redisConnectionFactory, serializationContext);
-        }
-    }
+		/**
+		 * Universal reactive redis template universal reactive redis template.
+		 *
+		 * @param redisConnectionFactory the redis connection factory
+		 * @return the universal reactive redis template
+		 */
+		@Bean
+		public UniversalReactiveRedisTemplate universalReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
+			RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
+				<String, Object>newSerializationContext()
+				.key(RedisSerializer.string()).value(JacksonSerializerUtils.json())
+				.hashKey(RedisSerializer.string()).hashValue(JacksonSerializerUtils.json()).build();
+			return new UniversalReactiveRedisTemplate(redisConnectionFactory, serializationContext);
+		}
+	}
 
 }

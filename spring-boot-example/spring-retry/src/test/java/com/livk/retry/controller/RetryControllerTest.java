@@ -39,14 +39,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RetryControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void retryTest() throws Exception {
-        mockMvc.perform(get("/retry"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("recover SUC"));
-    }
+	@Test
+	void retryTest() throws Exception {
+		mockMvc.perform(get("/retry"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("recover SUC"));
+	}
 }

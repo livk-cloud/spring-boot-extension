@@ -38,38 +38,38 @@ import java.util.concurrent.Callable;
 @Component
 public class CacheInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DoubleCache> {
 
-    private final Cache cache;
+	private final Cache cache;
 
-    private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+	private final SpringExpressionResolver resolver = new SpringExpressionResolver();
 
-    public CacheInterceptor(CacheManager cacheManager) {
-        this.cache = cacheManager.getCache("redis-caffeine");
-    }
+	public CacheInterceptor(CacheManager cacheManager) {
+		this.cache = cacheManager.getCache("redis-caffeine");
+	}
 
-    @Override
-    protected Object invoke(MethodInvocation invocation, DoubleCache doubleCache) throws Throwable {
-        Assert.notNull(doubleCache, "doubleCache is null");
-        String spELResult = resolver.evaluate(doubleCache.key(), invocation.getMethod(), invocation.getArguments());
-        String realKey = doubleCache.cacheName() + ":" + spELResult;
-        switch (doubleCache.type()) {
-            case FULL -> {
-                return cache.get(realKey, call(invocation.proceed()));
-            }
-            case PUT -> {
-                Object proceed = invocation.proceed();
-                cache.put(realKey, proceed);
-                return proceed;
-            }
-            case DELETE -> {
-                Object proceed = invocation.proceed();
-                cache.evict(realKey);
-                return proceed;
-            }
-        }
-        return invocation.proceed();
-    }
+	@Override
+	protected Object invoke(MethodInvocation invocation, DoubleCache doubleCache) throws Throwable {
+		Assert.notNull(doubleCache, "doubleCache is null");
+		String spELResult = resolver.evaluate(doubleCache.key(), invocation.getMethod(), invocation.getArguments());
+		String realKey = doubleCache.cacheName() + ":" + spELResult;
+		switch (doubleCache.type()) {
+			case FULL -> {
+				return cache.get(realKey, call(invocation.proceed()));
+			}
+			case PUT -> {
+				Object proceed = invocation.proceed();
+				cache.put(realKey, proceed);
+				return proceed;
+			}
+			case DELETE -> {
+				Object proceed = invocation.proceed();
+				cache.evict(realKey);
+				return proceed;
+			}
+		}
+		return invocation.proceed();
+	}
 
-    private Callable<Object> call(Object obj) {
-        return () -> obj;
-    }
+	private Callable<Object> call(Object obj) {
+		return () -> obj;
+	}
 }

@@ -24,5 +24,5 @@ import java.io.PrintWriter;
  */
 public interface AuthorsService {
 
-    void download(PrintWriter writer);
+	void download(PrintWriter writer);
 }

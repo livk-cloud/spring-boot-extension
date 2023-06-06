@@ -28,10 +28,10 @@ package com.livk.commons.function;
 @FunctionalInterface
 public interface Customizer<T> {
 
-    /**
-     * Customize.
-     *
-     * @param t the t
-     */
-    void customize(T t);
+	/**
+	 * Customize.
+	 *
+	 * @param t the t
+	 */
+	void customize(T t);
 }

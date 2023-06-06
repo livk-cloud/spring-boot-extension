@@ -39,173 +39,173 @@ import java.util.Map;
 @UtilityClass
 public class JsonMapperUtils {
 
-    private static final JacksonOperations JSON;
+	private static final JacksonOperations JSON;
 
 
-    static {
-        JsonMapper.Builder builder = MapperFactory.builder(MapperFactory.JSON);
-        JSON = JacksonSupport.create(builder);
-    }
+	static {
+		JsonMapper.Builder builder = MapperFactory.builder(MapperFactory.JSON);
+		JSON = JacksonSupport.create(builder);
+	}
 
-    /**
-     * Read value t.
-     *
-     * @param <T>  the type parameter
-     * @param obj  the obj
-     * @param type the type
-     * @return the t
-     */
-    public static <T> T readValue(Object obj, Class<T> type) {
-        return JSON.readValue(obj, type);
-    }
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param obj  the obj
+	 * @param type the type
+	 * @return the t
+	 */
+	public static <T> T readValue(Object obj, Class<T> type) {
+		return JSON.readValue(obj, type);
+	}
 
-    /**
-     * Read value t.
-     *
-     * @param <T>  the type parameter
-     * @param obj  the obj
-     * @param type the type
-     * @return the t
-     */
-    public static <T> T readValue(Object obj, JavaType type) {
-        return JSON.readValue(obj, type);
-    }
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param obj  the obj
+	 * @param type the type
+	 * @return the t
+	 */
+	public static <T> T readValue(Object obj, JavaType type) {
+		return JSON.readValue(obj, type);
+	}
 
-    /**
-     * Read value t.
-     *
-     * @param <T>           the type parameter
-     * @param obj           the obj
-     * @param typeReference the type reference
-     * @return the t
-     */
-    public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
-        return JSON.readValue(obj, typeReference);
-    }
+	/**
+	 * Read value t.
+	 *
+	 * @param <T>           the type parameter
+	 * @param obj           the obj
+	 * @param typeReference the type reference
+	 * @return the t
+	 */
+	public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
+		return JSON.readValue(obj, typeReference);
+	}
 
-    /**
-     * json序列化
-     *
-     * @param obj obj
-     * @return json string
-     */
-    public static String writeValueAsString(Object obj) {
-        return JSON.writeValueAsString(obj);
-    }
+	/**
+	 * json序列化
+	 *
+	 * @param obj obj
+	 * @return json string
+	 */
+	public static String writeValueAsString(Object obj) {
+		return JSON.writeValueAsString(obj);
+	}
 
-    /**
-     * Write value as bytes byte [ ].
-     *
-     * @param obj the obj
-     * @return the byte [ ]
-     */
-    public static byte[] writeValueAsBytes(Object obj) {
-        return JSON.writeValueAsBytes(obj);
-    }
+	/**
+	 * Write value as bytes byte [ ].
+	 *
+	 * @param obj the obj
+	 * @return the byte [ ]
+	 */
+	public static byte[] writeValueAsBytes(Object obj) {
+		return JSON.writeValueAsBytes(obj);
+	}
 
-    /**
-     * json反序列化成List
-     * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-     * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-     *
-     * @param <T>  泛型
-     * @param obj  the obj
-     * @param type 类型
-     * @return the list
-     */
-    public static <T> List<T> readValueList(Object obj, Class<T> type) {
-        CollectionType collectionType = TypeFactoryUtils.collectionType(type);
-        return JSON.readValue(obj, collectionType);
-    }
+	/**
+	 * json反序列化成List
+	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
+	 *
+	 * @param <T>  泛型
+	 * @param obj  the obj
+	 * @param type 类型
+	 * @return the list
+	 */
+	public static <T> List<T> readValueList(Object obj, Class<T> type) {
+		CollectionType collectionType = TypeFactoryUtils.collectionType(type);
+		return JSON.readValue(obj, collectionType);
+	}
 
-    /**
-     * json反序列化成Map
-     * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-     * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-     *
-     * @param <K>        the type parameter
-     * @param <V>        the type parameter
-     * @param obj        the obj
-     * @param keyClass   K Class
-     * @param valueClass V Class
-     * @return the map
-     */
-    public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
-        return JSON.readValue(obj, mapType);
-    }
+	/**
+	 * json反序列化成Map
+	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
+	 *
+	 * @param <K>        the type parameter
+	 * @param <V>        the type parameter
+	 * @param obj        the obj
+	 * @param keyClass   K Class
+	 * @param valueClass V Class
+	 * @return the map
+	 */
+	public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
+		MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
+		return JSON.readValue(obj, mapType);
+	}
 
-    /**
-     * 将json转化成JsonNode
-     *
-     * @param obj the obj
-     * @return the json node
-     */
-    public static JsonNode readTree(Object obj) {
-        return JSON.readTree(obj);
-    }
+	/**
+	 * 将json转化成JsonNode
+	 *
+	 * @param obj the obj
+	 * @return the json node
+	 */
+	public static JsonNode readTree(Object obj) {
+		return JSON.readTree(obj);
+	}
 
-    /**
-     * Convert object.
-     *
-     * @param <T>       the type parameter
-     * @param fromValue the  value
-     * @param type      the type
-     * @return the object
-     */
-    public static <T> T convertValue(Object fromValue, Class<T> type) {
-        return JSON.convertValue(fromValue, type);
-    }
+	/**
+	 * Convert object.
+	 *
+	 * @param <T>       the type parameter
+	 * @param fromValue the  value
+	 * @param type      the type
+	 * @return the object
+	 */
+	public static <T> T convertValue(Object fromValue, Class<T> type) {
+		return JSON.convertValue(fromValue, type);
+	}
 
-    /**
-     * Convert value t.
-     *
-     * @param <T>           the type parameter
-     * @param fromValue     the value
-     * @param typeReference the type reference
-     * @return the t
-     */
-    public static <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
-        return JSON.convertValue(fromValue, typeReference);
-    }
+	/**
+	 * Convert value t.
+	 *
+	 * @param <T>           the type parameter
+	 * @param fromValue     the value
+	 * @param typeReference the type reference
+	 * @return the t
+	 */
+	public static <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
+		return JSON.convertValue(fromValue, typeReference);
+	}
 
-    /**
-     * Convert object.
-     *
-     * @param <T>       the type parameter
-     * @param fromValue the  value
-     * @param javaType  the java type
-     * @return the object
-     */
-    public static <T> T convertValue(Object fromValue, JavaType javaType) {
-        return JSON.convertValue(fromValue, javaType);
-    }
+	/**
+	 * Convert object.
+	 *
+	 * @param <T>       the type parameter
+	 * @param fromValue the  value
+	 * @param javaType  the java type
+	 * @return the object
+	 */
+	public static <T> T convertValue(Object fromValue, JavaType javaType) {
+		return JSON.convertValue(fromValue, javaType);
+	}
 
-    /**
-     * Convert value list list.
-     *
-     * @param <T>       the type parameter
-     * @param fromValue the fromValue
-     * @param type      the type
-     * @return the list
-     */
-    public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
-        CollectionType collectionType = TypeFactoryUtils.collectionType(type);
-        return JSON.convertValue(fromValue, collectionType);
-    }
+	/**
+	 * Convert value list list.
+	 *
+	 * @param <T>       the type parameter
+	 * @param fromValue the fromValue
+	 * @param type      the type
+	 * @return the list
+	 */
+	public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
+		CollectionType collectionType = TypeFactoryUtils.collectionType(type);
+		return JSON.convertValue(fromValue, collectionType);
+	}
 
-    /**
-     * Object to map map.
-     *
-     * @param <K>        the type parameter
-     * @param <V>        the type parameter
-     * @param fromValue  the fromValue
-     * @param keyClass   the key class
-     * @param valueClass the value class
-     * @return the map
-     */
-    public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
-        MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
-        return JSON.convertValue(fromValue, mapType);
-    }
+	/**
+	 * Object to map map.
+	 *
+	 * @param <K>        the type parameter
+	 * @param <V>        the type parameter
+	 * @param fromValue  the fromValue
+	 * @param keyClass   the key class
+	 * @param valueClass the value class
+	 * @return the map
+	 */
+	public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
+		MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
+		return JSON.convertValue(fromValue, mapType);
+	}
 }

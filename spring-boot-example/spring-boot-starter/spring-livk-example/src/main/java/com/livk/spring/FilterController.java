@@ -39,17 +39,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FilterController {
 
-    private final UUIDRequest uuidRequest;
+	private final UUIDRequest uuidRequest;
 
-    @GetMapping("tenant")
-    public HttpEntity<String> tenant(@RequestHeader(TenantContextHolder.ATTRIBUTES) String tenant) {
-        log.info("tenant:{}", TenantContextHolder.getTenantId());
-        log.info("uuid:{}", uuidRequest.currentUUID().toString());
-        return ResponseEntity.ok(tenant);
-    }
+	@GetMapping("tenant")
+	public HttpEntity<String> tenant(@RequestHeader(TenantContextHolder.ATTRIBUTES) String tenant) {
+		log.info("tenant:{}", TenantContextHolder.getTenantId());
+		log.info("uuid:{}", uuidRequest.currentUUID().toString());
+		return ResponseEntity.ok(tenant);
+	}
 
-    @GetMapping("uuid")
-    public HttpEntity<String> uuid() {
-        return ResponseEntity.ok(uuidRequest.currentUUID().toString());
-    }
+	@GetMapping("uuid")
+	public HttpEntity<String> uuid() {
+		return ResponseEntity.ok(uuidRequest.currentUUID().toString());
+	}
 }

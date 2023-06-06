@@ -29,14 +29,14 @@ import com.livk.autoconfigure.oss.client.OSSClientFactory;
  * @author livk
  */
 public class AliyunClientFactory implements OSSClientFactory<OSS> {
-    @Override
-    public OSS instance(String endpoint, String accessKey, String secretKey) {
-        CredentialsProvider provider = new DefaultCredentialProvider(accessKey, secretKey);
-        return new OSSClientBuilder().build(endpoint, provider);
-    }
+	@Override
+	public OSS instance(String endpoint, String accessKey, String secretKey) {
+		CredentialsProvider provider = new DefaultCredentialProvider(accessKey, secretKey);
+		return new OSSClientBuilder().build(endpoint, provider);
+	}
 
-    @Override
-    public String name() {
-        return "aliyun";
-    }
+	@Override
+	public String name() {
+		return "aliyun";
+	}
 }

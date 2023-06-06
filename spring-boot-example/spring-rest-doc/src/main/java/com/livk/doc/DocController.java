@@ -39,15 +39,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DocController {
 
-    private final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
-    @GetMapping
-    public HttpEntity<String> get(@RequestParam String name) {
-        return ResponseEntity.ok("hello " + name);
-    }
+	@GetMapping
+	public HttpEntity<String> get(@RequestParam String name) {
+		return ResponseEntity.ok("hello " + name);
+	}
 
-    @PostMapping
-    public HttpEntity<JsonNode> post(@RequestBody Map<String, Object> data) throws JsonProcessingException {
-        return ResponseEntity.ok(objectMapper.readTree(objectMapper.writeValueAsString(data)));
-    }
+	@PostMapping
+	public HttpEntity<JsonNode> post(@RequestBody Map<String, Object> data) throws JsonProcessingException {
+		return ResponseEntity.ok(objectMapper.readTree(objectMapper.writeValueAsString(data)));
+	}
 }

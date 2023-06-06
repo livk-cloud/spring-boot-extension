@@ -37,33 +37,33 @@ import java.util.Map;
  */
 public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationProvider<OAuth2SmsAuthenticationToken> {
 
-    /**
-     * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
-     * provided parameters.
-     *
-     * @param authenticationManager
-     * @param authorizationService  the authorization service
-     * @param tokenGenerator        the token generator
-     * @since 0.2.3
-     */
-    public OAuth2SmsAuthenticationProvider(AuthenticationManager authenticationManager,
-                                           OAuth2AuthorizationService authorizationService,
-                                           OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
-        super(authenticationManager, authorizationService, tokenGenerator);
-    }
+	/**
+	 * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
+	 * provided parameters.
+	 *
+	 * @param authenticationManager
+	 * @param authorizationService  the authorization service
+	 * @param tokenGenerator        the token generator
+	 * @since 0.2.3
+	 */
+	public OAuth2SmsAuthenticationProvider(AuthenticationManager authenticationManager,
+					       OAuth2AuthorizationService authorizationService,
+					       OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+		super(authenticationManager, authorizationService, tokenGenerator);
+	}
 
-    @Override
-    protected void checkClient(@NonNull RegisteredClient registeredClient) {
-        if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.GRANT_TYPE_SMS)) {
-            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
-        }
-    }
+	@Override
+	protected void checkClient(@NonNull RegisteredClient registeredClient) {
+		if (!registeredClient.getAuthorizationGrantTypes().contains(SecurityConstants.GRANT_TYPE_SMS)) {
+			throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
+		}
+	}
 
-    @Override
-    protected UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
-        String mobile = (String) reqParameters.get(SecurityConstants.SMS_PARAMETER_NAME);
-        String code = (String) reqParameters.get(OAuth2ParameterNames.CODE);
-        return new UsernamePasswordAuthenticationToken(mobile, code);
-    }
+	@Override
+	protected UsernamePasswordAuthenticationToken assemble(Map<String, Object> reqParameters) {
+		String mobile = (String) reqParameters.get(SecurityConstants.SMS_PARAMETER_NAME);
+		String code = (String) reqParameters.get(OAuth2ParameterNames.CODE);
+		return new UsernamePasswordAuthenticationToken(mobile, code);
+	}
 
 }

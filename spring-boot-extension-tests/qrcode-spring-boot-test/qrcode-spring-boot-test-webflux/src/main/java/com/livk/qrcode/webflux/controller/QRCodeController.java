@@ -37,40 +37,40 @@ import java.util.Map;
 @RequestMapping("qrcode")
 public class QRCodeController {
 
-    @ResponseQRCode
-    @GetMapping
-    public String text(String text) {
-        return text;
-    }
+	@ResponseQRCode
+	@GetMapping
+	public String text(String text) {
+		return text;
+	}
 
-    @ResponseQRCode
-    @GetMapping("mono")
-    public Mono<String> textMono(String text) {
-        return Mono.just(text);
-    }
+	@ResponseQRCode
+	@GetMapping("mono")
+	public Mono<String> textMono(String text) {
+		return Mono.just(text);
+	}
 
-    @ResponseQRCode
-    @GetMapping("entity")
-    public QRCodeEntity<String> textCode(String text) {
-        return QRCodeEntity.builder(text).build();
-    }
+	@ResponseQRCode
+	@GetMapping("entity")
+	public QRCodeEntity<String> textCode(String text) {
+		return QRCodeEntity.builder(text).build();
+	}
 
-    @ResponseQRCode
-    @PostMapping("/entity/json")
-    public QRCodeEntity<Map<String, String>> jsonCode(@RequestBody JsonNode node) {
-        Map<String, String> map = JsonMapperUtils.convertValueMap(node, String.class, String.class);
-        return QRCodeEntity.builder(map).build();
-    }
+	@ResponseQRCode
+	@PostMapping("/entity/json")
+	public QRCodeEntity<Map<String, String>> jsonCode(@RequestBody JsonNode node) {
+		Map<String, String> map = JsonMapperUtils.convertValueMap(node, String.class, String.class);
+		return QRCodeEntity.builder(map).build();
+	}
 
-    @ResponseQRCode
-    @PostMapping("json")
-    public Map<String, String> json(@RequestBody JsonNode node) {
-        return JsonMapperUtils.convertValueMap(node, String.class, String.class);
-    }
+	@ResponseQRCode
+	@PostMapping("json")
+	public Map<String, String> json(@RequestBody JsonNode node) {
+		return JsonMapperUtils.convertValueMap(node, String.class, String.class);
+	}
 
-    @ResponseQRCode
-    @PostMapping("/json/mono")
-    public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
-        return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
-    }
+	@ResponseQRCode
+	@PostMapping("/json/mono")
+	public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
+		return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
+	}
 }

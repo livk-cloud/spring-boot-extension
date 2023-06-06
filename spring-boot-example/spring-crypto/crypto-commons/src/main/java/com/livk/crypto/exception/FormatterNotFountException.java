@@ -22,12 +22,12 @@ package com.livk.crypto.exception;
  */
 public class FormatterNotFountException extends RuntimeException {
 
-    /**
-     * Instantiates a new Formatter not fount exception.
-     *
-     * @param message the message
-     */
-    public FormatterNotFountException(String message) {
-        super(message);
-    }
+	/**
+	 * Instantiates a new Formatter not fount exception.
+	 *
+	 * @param message the message
+	 */
+	public FormatterNotFountException(String message) {
+		super(message);
+	}
 }

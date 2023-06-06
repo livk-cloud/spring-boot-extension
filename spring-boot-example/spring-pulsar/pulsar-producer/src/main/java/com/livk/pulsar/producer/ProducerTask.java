@@ -40,22 +40,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProducerTask {
 
-    private static final Snowflake SNOWFLAKE = new Snowflake();
-    private final PulsarTemplate<String> pulsarTemplate;
+	private static final Snowflake SNOWFLAKE = new Snowflake();
+	private final PulsarTemplate<String> pulsarTemplate;
 
-    @Scheduled(cron = "0/5 * * * * ?")
-    public void send() throws PulsarClientException {
-        PulsarMessage<String> message = new PulsarMessage<>();
-        message.setMsgId(UUID.randomUUID().toString());
-        message.setSendTime(LocalDateTime.now());
-        message.setData(String.valueOf(SNOWFLAKE.nextId()));
+	@Scheduled(cron = "0/5 * * * * ?")
+	public void send() throws PulsarClientException {
+		PulsarMessage<String> message = new PulsarMessage<>();
+		message.setMsgId(UUID.randomUUID().toString());
+		message.setSendTime(LocalDateTime.now());
+		message.setData(String.valueOf(SNOWFLAKE.nextId()));
 
-        pulsarTemplate.newMessage(message.toJson())
-                .withSchema(Schema.STRING)
-                .withMessageCustomizer(builder -> builder.key(UUID.randomUUID().toString().substring(0, 5)))
-                .sendAsync()
-                .handle((messageId, throwable) -> throwable == null)
-                .join();
-    }
+		pulsarTemplate.newMessage(message.toJson())
+			.withSchema(Schema.STRING)
+			.withMessageCustomizer(builder -> builder.key(UUID.randomUUID().toString().substring(0, 5)))
+			.sendAsync()
+			.handle((messageId, throwable) -> throwable == null)
+			.join();
+	}
 
 }

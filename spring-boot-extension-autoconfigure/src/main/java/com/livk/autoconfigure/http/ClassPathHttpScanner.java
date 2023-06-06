@@ -47,61 +47,60 @@ import java.util.Set;
 @Setter
 public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
-    private BeanFactory beanFactory;
+	private final BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+	private BeanFactory beanFactory;
 
-    private final BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+	/**
+	 * Instantiates a new Class path http scanner.
+	 *
+	 * @param registry       the registry
+	 * @param environment    the environment
+	 * @param resourceLoader the resource loader
+	 */
+	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment, ResourceLoader resourceLoader) {
+		super(registry, false, environment, resourceLoader);
+	}
 
-    /**
-     * Instantiates a new Class path http scanner.
-     *
-     * @param registry       the registry
-     * @param environment    the environment
-     * @param resourceLoader the resource loader
-     */
-    public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment, ResourceLoader resourceLoader) {
-        super(registry, false, environment, resourceLoader);
-    }
+	/**
+	 * Register filters.
+	 *
+	 * @param annotationType the annotation type
+	 */
+	public void registerFilters(Class<? extends Annotation> annotationType) {
+		addIncludeFilter(new AnnotationTypeFilter(annotationType));
+	}
 
-    /**
-     * Register filters.
-     *
-     * @param annotationType the annotation type
-     */
-    public void registerFilters(Class<? extends Annotation> annotationType) {
-        addIncludeFilter(new AnnotationTypeFilter(annotationType));
-    }
+	@Override
+	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+		return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
+	}
 
-    @Override
-    protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-        return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
-    }
+	@Override
+	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+		BeanDefinitionRegistry registry = super.getRegistry();
+		Assert.notNull(registry, "registry not be null");
+		Assert.notEmpty(basePackages, "At least one base package must be specified");
+		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
+		for (String basePackage : basePackages) {
+			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
+			for (BeanDefinition candidateComponent : candidateComponents) {
+				String beanClassName = candidateComponent.getBeanClassName();
+				BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
+				builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
+				builder.addPropertyValue("beanFactory", beanFactory);
+				builder.addPropertyValue("resourceLoader", getResourceLoader());
+				builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
-    @Override
-    protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
-        BeanDefinitionRegistry registry = super.getRegistry();
-        Assert.notNull(registry, "registry not be null");
-        Assert.notEmpty(basePackages, "At least one base package must be specified");
-        Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
-        for (String basePackage : basePackages) {
-            Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
-            for (BeanDefinition candidateComponent : candidateComponents) {
-                String beanClassName = candidateComponent.getBeanClassName();
-                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-                builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
-                builder.addPropertyValue("beanFactory", beanFactory);
-                builder.addPropertyValue("resourceLoader", getResourceLoader());
-                builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+				AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+				String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
+				if (checkCandidate(beanName, beanDefinition)) {
+					beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
-                AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-                String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
-                if (checkCandidate(beanName, beanDefinition)) {
-                    beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
-
-                    BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
-                    registerBeanDefinition(holder, registry);
-                }
-            }
-        }
-        return beanDefinitions;
-    }
+					BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
+					registerBeanDefinition(holder, registry);
+				}
+			}
+		}
+		return beanDefinitions;
+	}
 }

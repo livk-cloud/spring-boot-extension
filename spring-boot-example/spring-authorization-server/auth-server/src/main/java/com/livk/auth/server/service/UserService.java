@@ -25,7 +25,6 @@ import com.livk.auth.server.common.service.Oauth2UserDetailsService;
  * </p>
  *
  * @author livk
- *
  */
 public interface UserService extends Oauth2UserDetailsService {
 

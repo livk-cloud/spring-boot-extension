@@ -31,11 +31,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ScheduleHandlerTest {
 
-    @Autowired
-    ScheduleHandler scheduleHandler;
+	@Autowired
+	ScheduleHandler scheduleHandler;
 
-    @Test
-    void start() {
-        scheduleHandler.start();
-    }
+	@Test
+	void start() {
+		scheduleHandler.start();
+	}
 }

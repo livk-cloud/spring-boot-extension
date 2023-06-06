@@ -25,21 +25,21 @@ import org.springframework.context.ApplicationEvent;
  * @author livk
  */
 public class MonitorSQLTimeOutEvent extends ApplicationEvent {
-    /**
-     * Instantiates a new Monitor sql time out event.
-     *
-     * @param source the source
-     */
-    public MonitorSQLTimeOutEvent(MonitorSQLInfo source) {
-        super(source);
-    }
+	/**
+	 * Instantiates a new Monitor sql time out event.
+	 *
+	 * @param source the source
+	 */
+	public MonitorSQLTimeOutEvent(MonitorSQLInfo source) {
+		super(source);
+	}
 
-    /**
-     * Info monitor sql info.
-     *
-     * @return the monitor sql info
-     */
-    public MonitorSQLInfo info() {
-        return (MonitorSQLInfo) source;
-    }
+	/**
+	 * Info monitor sql info.
+	 *
+	 * @return the monitor sql info
+	 */
+	public MonitorSQLInfo info() {
+		return (MonitorSQLInfo) source;
+	}
 }

@@ -48,40 +48,40 @@ import java.util.Objects;
  */
 public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasMethodAnnotation(ExcelImport.class) &&
-               parameter.hasParameterAnnotation(ExcelParam.class);
-    }
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return parameter.hasMethodAnnotation(ExcelImport.class) &&
+			parameter.hasParameterAnnotation(ExcelParam.class);
+	}
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
-        ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
-        if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
-            ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
-            HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-            InputStream in = getInputStream(request, excelParam.fileName());
-            ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
-            Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
-            EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
-            return listener.getData(dataType);
-        }
-        throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
-    }
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+								  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
+		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
+		if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
+			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
+			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+			InputStream in = getInputStream(request, excelParam.fileName());
+			ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
+			Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
+			EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
+			return listener.getData(dataType);
+		}
+		throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
+	}
 
-    private InputStream getInputStream(HttpServletRequest request, String fileName) {
-        try {
-            if (request instanceof MultipartRequest multipartRequest) {
-                MultipartFile file = multipartRequest.getFile(fileName);
-                Assert.notNull(file, "file not be null");
-                return file.getInputStream();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	private InputStream getInputStream(HttpServletRequest request, String fileName) {
+		try {
+			if (request instanceof MultipartRequest multipartRequest) {
+				MultipartFile file = multipartRequest.getFile(fileName);
+				Assert.notNull(file, "file not be null");
+				return file.getInputStream();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

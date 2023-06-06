@@ -64,55 +64,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InfoController {
 
-    private final ItemWriter<List<Info>> writer;
+	private final ItemWriter<List<Info>> writer;
 
-    private final JobRepository jobRepository;
+	private final JobRepository jobRepository;
 
-    private final DataSourceTransactionManager dataSourceTransactionManager;
-    private final JobLauncher jobLauncher;
+	private final DataSourceTransactionManager dataSourceTransactionManager;
+	private final JobLauncher jobLauncher;
 
-    @ExcelImport(parse = InfoExcelListener.class)
-    @PostMapping("upload")
-    public HttpEntity<Void> upload(@ExcelParam List<Info> dataExcels) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        Step step = excelStep(dataExcels);
-        Job job = excelJob(step);
-        jobLauncher.run(job, new JobParametersBuilder()
-                .addDate("date", new Date())
-                .toJobParameters());
-        return ResponseEntity.ok(null);
-    }
+	@ExcelImport(parse = InfoExcelListener.class)
+	@PostMapping("upload")
+	public HttpEntity<Void> upload(@ExcelParam List<Info> dataExcels) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+		Step step = excelStep(dataExcels);
+		Job job = excelJob(step);
+		jobLauncher.run(job, new JobParametersBuilder()
+			.addDate("date", new Date())
+			.toJobParameters());
+		return ResponseEntity.ok(null);
+	}
 
-    @PostMapping("excel")
-    public HttpEntity<List<Info>> up(@RequestParam("file") MultipartFile file) throws IOException {
-        EasyExcelItemReader<Info> itemReader = new EasyExcelItemReader<>(file.getInputStream(), new TypeExcelMapReadListener<>() {
-        });
-        List<Info> list = new ArrayList<>();
-        while (true) {
-            Info o = itemReader.read();
-            if (o != null) {
-                o.setId(System.currentTimeMillis());
-                list.add(o);
-            } else {
-                break;
-            }
-        }
-        return ResponseEntity.ok(list);
-    }
+	@PostMapping("excel")
+	public HttpEntity<List<Info>> up(@RequestParam("file") MultipartFile file) throws IOException {
+		EasyExcelItemReader<Info> itemReader = new EasyExcelItemReader<>(file.getInputStream(), new TypeExcelMapReadListener<>() {
+		});
+		List<Info> list = new ArrayList<>();
+		while (true) {
+			Info o = itemReader.read();
+			if (o != null) {
+				o.setId(System.currentTimeMillis());
+				list.add(o);
+			} else {
+				break;
+			}
+		}
+		return ResponseEntity.ok(list);
+	}
 
-    private Step excelStep(List<Info> dataExcels) {
-        return new StepBuilder("excelStep", jobRepository)
-                .<List<Info>, List<Info>>chunk(new SimpleCompletionPolicy(), dataSourceTransactionManager)
-                .reader(new ListItemReader<>(Lists.partition(dataExcels, 1000)))
-                .writer(writer)
-                .faultTolerant()
-                .skipLimit(0)
-                .build();
-    }
+	private Step excelStep(List<Info> dataExcels) {
+		return new StepBuilder("excelStep", jobRepository)
+			.<List<Info>, List<Info>>chunk(new SimpleCompletionPolicy(), dataSourceTransactionManager)
+			.reader(new ListItemReader<>(Lists.partition(dataExcels, 1000)))
+			.writer(writer)
+			.faultTolerant()
+			.skipLimit(0)
+			.build();
+	}
 
-    public Job excelJob(Step step) {
-        return new JobBuilder("excelJob", jobRepository)
-                .start(step)
-                .listener(new JobListener())
-                .build();
-    }
+	public Job excelJob(Step step) {
+		return new JobBuilder("excelJob", jobRepository)
+			.start(step)
+			.listener(new JobListener())
+			.build();
+	}
 }

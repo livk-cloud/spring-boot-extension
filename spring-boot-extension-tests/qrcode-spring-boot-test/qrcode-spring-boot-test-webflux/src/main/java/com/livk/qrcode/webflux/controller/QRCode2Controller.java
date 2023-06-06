@@ -39,23 +39,23 @@ import java.util.Map;
 @RequestMapping("qrcode2")
 public class QRCode2Controller {
 
-    @GetMapping
-    public String text(String text) {
-        return text;
-    }
+	@GetMapping
+	public String text(String text) {
+		return text;
+	}
 
-    @GetMapping("mono")
-    public Mono<String> textMono(String text) {
-        return Mono.just(text);
-    }
+	@GetMapping("mono")
+	public Mono<String> textMono(String text) {
+		return Mono.just(text);
+	}
 
-    @PostMapping("json")
-    public Map<String, String> json(@RequestBody JsonNode node) {
-        return JsonMapperUtils.convertValueMap(node, String.class, String.class);
-    }
+	@PostMapping("json")
+	public Map<String, String> json(@RequestBody JsonNode node) {
+		return JsonMapperUtils.convertValueMap(node, String.class, String.class);
+	}
 
-    @PostMapping("/json/mono")
-    public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
-        return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
-    }
+	@PostMapping("/json/mono")
+	public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
+		return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
+	}
 }

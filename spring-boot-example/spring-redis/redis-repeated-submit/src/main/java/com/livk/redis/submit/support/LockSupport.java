@@ -29,17 +29,17 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class LockSupport {
 
-    private static final DistributedLock LOCK;
+	private static final DistributedLock LOCK;
 
-    static {
-        LOCK = SpringContextHolder.getBean(RedissonLock.class);
-    }
+	static {
+		LOCK = SpringContextHolder.getBean(RedissonLock.class);
+	}
 
-    public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
-        return LOCK.tryLock(type, key, leaseTime, waitTime, async);
-    }
+	public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
+		return LOCK.tryLock(type, key, leaseTime, waitTime, async);
+	}
 
-    public void unlock() {
-        LOCK.unlock();
-    }
+	public void unlock() {
+		LOCK.unlock();
+	}
 }

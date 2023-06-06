@@ -34,8 +34,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 @SpringAutoService(LivkImport.class)
 public class LivkAutoConfiguration {
 
-    @PostConstruct
-    public void init() {
-        log.info("{} is init", LivkAutoConfiguration.class);
-    }
+	@PostConstruct
+	public void init() {
+		log.info("{} is init", LivkAutoConfiguration.class);
+	}
 }

@@ -57,98 +57,98 @@ import java.util.Properties;
 @AutoConfiguration(before = RedisAutoConfiguration.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedissonAutoConfiguration implements EnvironmentAware {
-    private static final String REDISSON_CONFIG = "spring.redisson.config";
+	private static final String REDISSON_CONFIG = "spring.redisson.config";
 
-    private static final String REDIS_PROTOCOL_PREFIX = "redis://";
+	private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 
-    private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
+	private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-    private Environment environment;
+	private Environment environment;
 
-    /**
-     * Redisson reactive client.
-     *
-     * @param redisson the redisson
-     * @return the redisson reactive client
-     */
-    @Bean(destroyMethod = "shutdown")
-    @ConditionalOnBean(RedissonClient.class)
-    @ConditionalOnMissingBean(RedissonReactiveClient.class)
-    public RedissonReactiveClient redissonReactive(RedissonClient redisson) {
-        return redisson.reactive();
-    }
+	/**
+	 * Redisson reactive client.
+	 *
+	 * @param redisson the redisson
+	 * @return the redisson reactive client
+	 */
+	@Bean(destroyMethod = "shutdown")
+	@ConditionalOnBean(RedissonClient.class)
+	@ConditionalOnMissingBean(RedissonReactiveClient.class)
+	public RedissonReactiveClient redissonReactive(RedissonClient redisson) {
+		return redisson.reactive();
+	}
 
-    /**
-     * Redisson client redisson client.
-     *
-     * @param redisProperties   the redis properties
-     * @param configCustomizers the config customizers
-     * @return the redisson client
-     */
-    @Bean(destroyMethod = "shutdown")
-    @ConditionalOnMissingBean(RedissonClient.class)
-    public RedissonClient redissonClient(RedisProperties redisProperties,
-                                         ObjectProvider<ConfigCustomizer> configCustomizers) {
-        Properties redissonProperties = new SpringEnvBinder(environment).propertiesOf(REDISSON_CONFIG)
-                .orElseGet(Properties::new);
-        String redissonYaml = YamlUtils.toYml(redissonProperties).replaceAll("'", "");
-        Config config;
-        Duration duration = redisProperties.getTimeout();
-        int timeout = duration == null ? 10000 : (int) duration.toMillis();
-        if (StringUtils.hasText(redissonYaml)) {
-            try {
-                config = Config.fromYAML(redissonYaml);
-            } catch (IOException e) {
-                throw new RedisException(e);
-            }
-        } else if (redisProperties.getSentinel() != null) {
-            List<String> nodeList = redisProperties.getSentinel().getNodes();
-            String[] nodes = convert(nodeList);
-            config = new Config();
-            config.useSentinelServers()
-                    .setMasterName(redisProperties.getSentinel().getMaster())
-                    .addSentinelAddress(nodes)
-                    .setDatabase(redisProperties.getDatabase())
-                    .setConnectTimeout(timeout)
-                    .setPassword(redisProperties.getPassword());
-        } else if (redisProperties.getCluster() != null) {
-            List<String> nodeList = redisProperties.getCluster().getNodes();
-            String[] nodes = convert(nodeList);
-            config = new Config();
-            config.useClusterServers()
-                    .addNodeAddress(nodes)
-                    .setConnectTimeout(timeout)
-                    .setPassword(redisProperties.getPassword());
-        } else {
-            config = new Config();
-            String prefix = REDIS_PROTOCOL_PREFIX;
-            if (redisProperties.getSsl().isEnabled()) {
-                prefix = REDISS_PROTOCOL_PREFIX;
-            }
-            config.useSingleServer()
-                    .setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
-                    .setConnectTimeout(timeout)
-                    .setDatabase(redisProperties.getDatabase())
-                    .setPassword(redisProperties.getPassword());
-        }
-        configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
-        return Redisson.create(config);
-    }
+	/**
+	 * Redisson client redisson client.
+	 *
+	 * @param redisProperties   the redis properties
+	 * @param configCustomizers the config customizers
+	 * @return the redisson client
+	 */
+	@Bean(destroyMethod = "shutdown")
+	@ConditionalOnMissingBean(RedissonClient.class)
+	public RedissonClient redissonClient(RedisProperties redisProperties,
+										 ObjectProvider<ConfigCustomizer> configCustomizers) {
+		Properties redissonProperties = new SpringEnvBinder(environment).propertiesOf(REDISSON_CONFIG)
+			.orElseGet(Properties::new);
+		String redissonYaml = YamlUtils.toYml(redissonProperties).replaceAll("'", "");
+		Config config;
+		Duration duration = redisProperties.getTimeout();
+		int timeout = duration == null ? 10000 : (int) duration.toMillis();
+		if (StringUtils.hasText(redissonYaml)) {
+			try {
+				config = Config.fromYAML(redissonYaml);
+			} catch (IOException e) {
+				throw new RedisException(e);
+			}
+		} else if (redisProperties.getSentinel() != null) {
+			List<String> nodeList = redisProperties.getSentinel().getNodes();
+			String[] nodes = convert(nodeList);
+			config = new Config();
+			config.useSentinelServers()
+				.setMasterName(redisProperties.getSentinel().getMaster())
+				.addSentinelAddress(nodes)
+				.setDatabase(redisProperties.getDatabase())
+				.setConnectTimeout(timeout)
+				.setPassword(redisProperties.getPassword());
+		} else if (redisProperties.getCluster() != null) {
+			List<String> nodeList = redisProperties.getCluster().getNodes();
+			String[] nodes = convert(nodeList);
+			config = new Config();
+			config.useClusterServers()
+				.addNodeAddress(nodes)
+				.setConnectTimeout(timeout)
+				.setPassword(redisProperties.getPassword());
+		} else {
+			config = new Config();
+			String prefix = REDIS_PROTOCOL_PREFIX;
+			if (redisProperties.getSsl().isEnabled()) {
+				prefix = REDISS_PROTOCOL_PREFIX;
+			}
+			config.useSingleServer()
+				.setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
+				.setConnectTimeout(timeout)
+				.setDatabase(redisProperties.getDatabase())
+				.setPassword(redisProperties.getPassword());
+		}
+		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		return Redisson.create(config);
+	}
 
-    private String[] convert(List<String> nodesObject) {
-        List<String> nodes = new ArrayList<>(nodesObject.size());
-        for (String node : nodesObject) {
-            if (!node.startsWith(REDIS_PROTOCOL_PREFIX) && !node.startsWith(REDISS_PROTOCOL_PREFIX)) {
-                nodes.add(REDIS_PROTOCOL_PREFIX + node);
-            } else {
-                nodes.add(node);
-            }
-        }
-        return nodes.toArray(new String[0]);
-    }
+	private String[] convert(List<String> nodesObject) {
+		List<String> nodes = new ArrayList<>(nodesObject.size());
+		for (String node : nodesObject) {
+			if (!node.startsWith(REDIS_PROTOCOL_PREFIX) && !node.startsWith(REDISS_PROTOCOL_PREFIX)) {
+				nodes.add(REDIS_PROTOCOL_PREFIX + node);
+			} else {
+				nodes.add(node);
+			}
+		}
+		return nodes.toArray(new String[0]);
+	}
 
-    @Override
-    public void setEnvironment(@NonNull Environment environment) {
-        this.environment = environment;
-    }
+	@Override
+	public void setEnvironment(@NonNull Environment environment) {
+		this.environment = environment;
+	}
 }

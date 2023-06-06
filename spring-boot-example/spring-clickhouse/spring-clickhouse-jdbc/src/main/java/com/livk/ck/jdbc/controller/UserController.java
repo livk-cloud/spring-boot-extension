@@ -38,20 +38,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping
-    public HttpEntity<List<User>> list() {
-        return ResponseEntity.ok(userService.list());
-    }
+	@GetMapping
+	public HttpEntity<List<User>> list() {
+		return ResponseEntity.ok(userService.list());
+	}
 
-    @DeleteMapping("/{regTime}")
-    public HttpEntity<Boolean> remove(@PathVariable String regTime) {
-        return ResponseEntity.ok(userService.remove(regTime));
-    }
+	@DeleteMapping("/{regTime}")
+	public HttpEntity<Boolean> remove(@PathVariable String regTime) {
+		return ResponseEntity.ok(userService.remove(regTime));
+	}
 
-    @PostMapping
-    public HttpEntity<Boolean> save(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
-    }
+	@PostMapping
+	public HttpEntity<Boolean> save(@RequestBody User user) {
+		return ResponseEntity.ok(userService.save(user));
+	}
 }

@@ -25,20 +25,20 @@ package com.livk.autoconfigure.oss.client;
  */
 public interface OSSClientFactory<T> {
 
-    /**
-     * Instance t.
-     *
-     * @param endpoint  the endpoint
-     * @param accessKey the access key
-     * @param secretKey the secret key
-     * @return the t
-     */
-    T instance(String endpoint, String accessKey, String secretKey);
+	/**
+	 * Instance t.
+	 *
+	 * @param endpoint  the endpoint
+	 * @param accessKey the access key
+	 * @param secretKey the secret key
+	 * @return the t
+	 */
+	T instance(String endpoint, String accessKey, String secretKey);
 
-    /**
-     * Prefix string.
-     *
-     * @return the string
-     */
-    String name();
+	/**
+	 * Prefix string.
+	 *
+	 * @return the string
+	 */
+	String name();
 }

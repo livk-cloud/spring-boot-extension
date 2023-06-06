@@ -40,21 +40,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SentTask {
 
-    private final SseEmitterRepository<String> sseEmitterRepository;
+	private final SseEmitterRepository<String> sseEmitterRepository;
 
-    @Scheduled(cron = "0/10 * * * * ?")
-    public void push() {
-        for (Map.Entry<String, SseEmitter> sseEmitterEntry : sseEmitterRepository.all().entrySet()) {
-            SseEmitter sseEmitter = sseEmitterEntry.getValue();
-            try {
-                sseEmitter.send(SseEmitter.event()
-                        .data(DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS))
-                        .id(sseEmitterEntry.getKey()));
-            } catch (Exception e) {
-                log.error("推送异常:{}", e.getMessage());
-                sseEmitter.complete();
-                sseEmitterRepository.remove(sseEmitterEntry.getKey());
-            }
-        }
-    }
+	@Scheduled(cron = "0/10 * * * * ?")
+	public void push() {
+		for (Map.Entry<String, SseEmitter> sseEmitterEntry : sseEmitterRepository.all().entrySet()) {
+			SseEmitter sseEmitter = sseEmitterEntry.getValue();
+			try {
+				sseEmitter.send(SseEmitter.event()
+					.data(DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS))
+					.id(sseEmitterEntry.getKey()));
+			} catch (Exception e) {
+				log.error("推送异常:{}", e.getMessage());
+				sseEmitter.complete();
+				sseEmitterRepository.remove(sseEmitterEntry.getKey());
+			}
+		}
+	}
 }

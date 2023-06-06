@@ -39,24 +39,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class OssControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
 
-    @Test
-    void test() throws Exception {
-        String url = mockMvc.perform(get("/oss/test"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        try (InputStream stream = new URL(url).openStream()) {
-            FileUtils.download(stream, "./test.jpg");
-        }
-        File file = new File("./test.jpg");
-        assertTrue(file.exists());
-        assertTrue(file.delete());
-    }
+	@Test
+	void test() throws Exception {
+		String url = mockMvc.perform(get("/oss/test"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		try (InputStream stream = new URL(url).openStream()) {
+			FileUtils.download(stream, "./test.jpg");
+		}
+		File file = new File("./test.jpg");
+		assertTrue(file.exists());
+		assertTrue(file.delete());
+	}
 }
 

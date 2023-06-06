@@ -28,9 +28,9 @@ import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
  */
 public class VersionFunction implements FunctionHandle<Integer> {
 
-    @Override
-    public Integer handler() {
-        return 0;
-    }
+	@Override
+	public Integer handler() {
+		return 0;
+	}
 
 }

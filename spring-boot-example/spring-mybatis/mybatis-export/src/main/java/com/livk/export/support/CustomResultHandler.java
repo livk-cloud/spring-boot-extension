@@ -26,15 +26,15 @@ import org.apache.ibatis.session.ResultHandler;
  */
 public class CustomResultHandler implements ResultHandler<Authors> {
 
-    private final DownloadProcessor downloadProcessor;
+	private final DownloadProcessor downloadProcessor;
 
-    public CustomResultHandler(DownloadProcessor downloadProcessor) {
-        this.downloadProcessor = downloadProcessor;
-    }
+	public CustomResultHandler(DownloadProcessor downloadProcessor) {
+		this.downloadProcessor = downloadProcessor;
+	}
 
-    @Override
-    public void handleResult(ResultContext<? extends Authors> resultContext) {
-        Authors authors = resultContext.getResultObject();
-        downloadProcessor.processData(authors);
-    }
+	@Override
+	public void handleResult(ResultContext<? extends Authors> resultContext) {
+		Authors authors = resultContext.getResultObject();
+		downloadProcessor.processData(authors);
+	}
 }

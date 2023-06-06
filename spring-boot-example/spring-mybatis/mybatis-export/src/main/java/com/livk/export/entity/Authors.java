@@ -26,15 +26,15 @@ import java.util.Date;
  */
 @Data
 public class Authors {
-    private Integer id;
+	private Integer id;
 
-    private String firstName;
+	private String firstName;
 
-    private String lastName;
+	private String lastName;
 
-    private String email;
+	private String email;
 
-    private Date birthdate;
+	private Date birthdate;
 
-    private Date added;
+	private Date added;
 }

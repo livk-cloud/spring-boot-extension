@@ -25,12 +25,12 @@ package com.livk.autoconfigure.qrcode.enums;
  * @author livk
  */
 public enum PicType {
-    /**
-     * Png pic type.
-     */
-    PNG,
-    /**
-     * Jpg pic type.
-     */
-    JPG
+	/**
+	 * Png pic type.
+	 */
+	PNG,
+	/**
+	 * Jpg pic type.
+	 */
+	JPG
 }

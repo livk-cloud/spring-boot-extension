@@ -26,10 +26,10 @@ import com.livk.autoconfigure.ip2region.doamin.IpInfo;
  */
 public interface RequestIpInfo {
 
-    /**
-     * Current ip info
-     *
-     * @return the ip info
-     */
-    IpInfo currentIpInfo();
+	/**
+	 * Current ip info
+	 *
+	 * @return the ip info
+	 */
+	IpInfo currentIpInfo();
 }

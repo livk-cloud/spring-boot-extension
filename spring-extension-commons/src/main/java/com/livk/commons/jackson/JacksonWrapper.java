@@ -35,34 +35,34 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 @RequiredArgsConstructor
 public class JacksonWrapper implements GenericWrapper<ObjectMapper> {
 
-    /**
-     * The constant BEAN_NAME.
-     */
-    public static final String BEAN_NAME = "com.livk.commons.jackson.JacksonWrapper";
+	/**
+	 * The constant BEAN_NAME.
+	 */
+	public static final String BEAN_NAME = "com.livk.commons.jackson.JacksonWrapper";
 
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    /**
-     * Unwrap of context object mapper.
-     *
-     * @return the object mapper
-     */
-    public static ObjectMapper unwrapOfContext() {
-        GenericWrapper<ObjectMapper> wrapper = null;
-        try {
-            if (SpringContextHolder.getApplicationContext().containsBean(JacksonWrapper.BEAN_NAME)) {
-                wrapper = SpringContextHolder.getBean(JacksonWrapper.BEAN_NAME, JacksonWrapper.class);
-            } else {
-                throw new NoSuchBeanDefinitionException(JacksonWrapper.BEAN_NAME);
-            }
-        } catch (Exception e) {
-            log.debug("Building 'ObjectMapper'");
-        }
-        return wrapper == null ? JsonMapper.builder().build() : wrapper.unwrap();
-    }
+	/**
+	 * Unwrap of context object mapper.
+	 *
+	 * @return the object mapper
+	 */
+	public static ObjectMapper unwrapOfContext() {
+		GenericWrapper<ObjectMapper> wrapper = null;
+		try {
+			if (SpringContextHolder.getApplicationContext().containsBean(JacksonWrapper.BEAN_NAME)) {
+				wrapper = SpringContextHolder.getBean(JacksonWrapper.BEAN_NAME, JacksonWrapper.class);
+			} else {
+				throw new NoSuchBeanDefinitionException(JacksonWrapper.BEAN_NAME);
+			}
+		} catch (Exception e) {
+			log.debug("Building 'ObjectMapper'");
+		}
+		return wrapper == null ? JsonMapper.builder().build() : wrapper.unwrap();
+	}
 
-    @Override
-    public ObjectMapper unwrap() {
-        return mapper;
-    }
+	@Override
+	public ObjectMapper unwrap() {
+		return mapper;
+	}
 }

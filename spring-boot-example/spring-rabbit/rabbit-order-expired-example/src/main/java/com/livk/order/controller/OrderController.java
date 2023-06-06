@@ -43,20 +43,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final AmqpTemplate rabbitTemplate;
+	private final AmqpTemplate rabbitTemplate;
 
-    /**
-     * 模拟提交订单
-     *
-     * @return java.lang.Object
-     * @author nxq
-     */
-    @GetMapping
-    public HttpEntity<Map<String, String>> submit() {
-        String orderId = UUID.randomUUID().toString();
-        log.info("submit order {}", orderId);
-        this.rabbitTemplate.convertAndSend(RabbitConfig.orderExchange, RabbitConfig.routingKeyOrder, orderId);
-        return ResponseEntity.ok(Map.of("orderId", orderId));
-    }
+	/**
+	 * 模拟提交订单
+	 *
+	 * @return java.lang.Object
+	 * @author nxq
+	 */
+	@GetMapping
+	public HttpEntity<Map<String, String>> submit() {
+		String orderId = UUID.randomUUID().toString();
+		log.info("submit order {}", orderId);
+		this.rabbitTemplate.convertAndSend(RabbitConfig.orderExchange, RabbitConfig.routingKeyOrder, orderId);
+		return ResponseEntity.ok(Map.of("orderId", orderId));
+	}
 
 }

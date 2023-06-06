@@ -28,5 +28,5 @@ import java.util.UUID;
  */
 public interface UUIDRequest {
 
-    UUID currentUUID();
+	UUID currentUUID();
 }

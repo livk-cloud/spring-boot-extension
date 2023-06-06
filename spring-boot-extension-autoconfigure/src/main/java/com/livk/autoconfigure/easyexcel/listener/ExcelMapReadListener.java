@@ -32,40 +32,40 @@ import java.util.Map;
  */
 public interface ExcelMapReadListener<T> extends ReadListener<T> {
 
-    @Override
-    default void doAfterAllAnalysed(AnalysisContext context) {
+	@Override
+	default void doAfterAllAnalysed(AnalysisContext context) {
 
-    }
+	}
 
-    /**
-     * Get collection data collection.
-     *
-     * @return the collection
-     */
-    default Collection<T> getCollectionData() {
-        return getMapData().values()
-                .stream()
-                .flatMap(Collection::stream)
-                .toList();
-    }
+	/**
+	 * Get collection data collection.
+	 *
+	 * @return the collection
+	 */
+	default Collection<T> getCollectionData() {
+		return getMapData().values()
+			.stream()
+			.flatMap(Collection::stream)
+			.toList();
+	}
 
-    /**
-     * 获取数据集合
-     *
-     * @return collection collection data
-     */
-    Map<String, ? extends Collection<T>> getMapData();
+	/**
+	 * 获取数据集合
+	 *
+	 * @return collection collection data
+	 */
+	Map<String, ? extends Collection<T>> getMapData();
 
-    /**
-     * Get data object.
-     *
-     * @param type the type
-     * @return the object
-     */
-    default Object getData(ExcelDataType type) {
-        return switch (type) {
-            case MAP -> getMapData();
-            case COLLECTION -> getCollectionData();
-        };
-    }
+	/**
+	 * Get data object.
+	 *
+	 * @param type the type
+	 * @return the object
+	 */
+	default Object getData(ExcelDataType type) {
+		return switch (type) {
+			case MAP -> getMapData();
+			case COLLECTION -> getCollectionData();
+		};
+	}
 }

@@ -37,21 +37,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @Disabled("单独测试，性能损耗大")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-        useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
+	useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
 class WebSocketClientTestTest {
 
-    @Test
-    void testMain() {
-        String uri = "ws://127.0.0.1:8888/websocket/";
-        int threadNum = 1000;
-        ExecutorService service = Executors.newFixedThreadPool(threadNum);
-        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
-        for (int i = 0; i < threadNum; i++) {
-            String url = uri + "No" + i;
-            service.submit(new WebSocketClientTest(url, countDownLatch));
-            countDownLatch.countDown();
-        }
-        assertEquals(0, countDownLatch.getCount());
-    }
+	@Test
+	void testMain() {
+		String uri = "ws://127.0.0.1:8888/websocket/";
+		int threadNum = 1000;
+		ExecutorService service = Executors.newFixedThreadPool(threadNum);
+		CountDownLatch countDownLatch = new CountDownLatch(threadNum);
+		for (int i = 0; i < threadNum; i++) {
+			String url = uri + "No" + i;
+			service.submit(new WebSocketClientTest(url, countDownLatch));
+			countDownLatch.countDown();
+		}
+		assertEquals(0, countDownLatch.getCount());
+	}
 }
 

@@ -40,111 +40,111 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CuratorTemplate implements CuratorOperations {
 
-    private final CuratorFramework curatorFramework;
+	private final CuratorFramework curatorFramework;
 
-    @Override
-    public String createNode(String path, String data) throws Exception {
-        return curatorFramework.create().creatingParentsIfNeeded().forPath(path, data.getBytes());
-    }
+	@Override
+	public String createNode(String path, String data) throws Exception {
+		return curatorFramework.create().creatingParentsIfNeeded().forPath(path, data.getBytes());
+	}
 
-    @Override
-    public String createTypeNode(CreateMode nodeType, String path, String data) throws Exception {
-        return curatorFramework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data.getBytes());
-    }
+	@Override
+	public String createTypeNode(CreateMode nodeType, String path, String data) throws Exception {
+		return curatorFramework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data.getBytes());
+	}
 
-    @Override
-    public String createTypeSeqNode(CreateMode nodeType, String path, String data) throws Exception {
-        return curatorFramework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType).forPath(path, data.getBytes());
-    }
+	@Override
+	public String createTypeSeqNode(CreateMode nodeType, String path, String data) throws Exception {
+		return curatorFramework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType).forPath(path, data.getBytes());
+	}
 
-    @Override
-    public Stat setData(String path, String data) throws Exception {
-        return curatorFramework.setData().forPath(path, data.getBytes());
-    }
+	@Override
+	public Stat setData(String path, String data) throws Exception {
+		return curatorFramework.setData().forPath(path, data.getBytes());
+	}
 
-    @Override
-    public Stat setDataAsync(String path, String data, CuratorListener listener) throws Exception {
-        curatorFramework.getCuratorListenable().addListener(listener);
-        return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
-    }
+	@Override
+	public Stat setDataAsync(String path, String data, CuratorListener listener) throws Exception {
+		curatorFramework.getCuratorListenable().addListener(listener);
+		return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
+	}
 
-    /**
-     * Sets data async.
-     *
-     * @param path the path
-     * @param data the data
-     * @return the data async
-     * @throws Exception the exception
-     */
-    public Stat setDataAsync(String path, String data) throws Exception {
-        return setDataAsync(path, data, (client, event) -> {
+	/**
+	 * Sets data async.
+	 *
+	 * @param path the path
+	 * @param data the data
+	 * @return the data async
+	 * @throws Exception the exception
+	 */
+	public Stat setDataAsync(String path, String data) throws Exception {
+		return setDataAsync(path, data, (client, event) -> {
 
-        });
-    }
+		});
+	}
 
-    @Override
-    public void deleteNode(String path) throws Exception {
-        curatorFramework.delete().deletingChildrenIfNeeded().forPath(path);
-    }
+	@Override
+	public void deleteNode(String path) throws Exception {
+		curatorFramework.delete().deletingChildrenIfNeeded().forPath(path);
+	}
 
-    @Override
-    public List<String> watchedGetChildren(String path) throws Exception {
-        return curatorFramework.getChildren().watched().forPath(path);
-    }
+	@Override
+	public List<String> watchedGetChildren(String path) throws Exception {
+		return curatorFramework.getChildren().watched().forPath(path);
+	}
 
-    @Override
-    public List<String> watchedGetChildren(String path, Watcher watcher) throws Exception {
-        return curatorFramework.getChildren().usingWatcher(watcher).forPath(path);
-    }
+	@Override
+	public List<String> watchedGetChildren(String path, Watcher watcher) throws Exception {
+		return curatorFramework.getChildren().usingWatcher(watcher).forPath(path);
+	}
 
-    @Override
-    public InterProcessLock getLock(String path, ZkLockType type) {
-        return switch (type) {
-            case LOCK -> new InterProcessMutex(curatorFramework, path);
-            case READ -> new InterProcessReadWriteLock(curatorFramework, path).readLock();
-            case WRITE -> new InterProcessReadWriteLock(curatorFramework, path).writeLock();
-        };
-    }
+	@Override
+	public InterProcessLock getLock(String path, ZkLockType type) {
+		return switch (type) {
+			case LOCK -> new InterProcessMutex(curatorFramework, path);
+			case READ -> new InterProcessReadWriteLock(curatorFramework, path).readLock();
+			case WRITE -> new InterProcessReadWriteLock(curatorFramework, path).writeLock();
+		};
+	}
 
-    /**
-     * Gets lock.
-     *
-     * @param path the path
-     * @return the lock
-     */
-    public InterProcessLock getLock(String path) {
-        return getLock(path, ZkLockType.LOCK);
-    }
+	/**
+	 * Gets lock.
+	 *
+	 * @param path the path
+	 * @return the lock
+	 */
+	public InterProcessLock getLock(String path) {
+		return getLock(path, ZkLockType.LOCK);
+	}
 
-    /**
-     * Gets read lock.
-     *
-     * @param path the path
-     * @return the read lock
-     */
-    public InterProcessLock getReadLock(String path) {
-        return getLock(path, ZkLockType.READ);
-    }
+	/**
+	 * Gets read lock.
+	 *
+	 * @param path the path
+	 * @return the read lock
+	 */
+	public InterProcessLock getReadLock(String path) {
+		return getLock(path, ZkLockType.READ);
+	}
 
-    /**
-     * Gets write lock.
-     *
-     * @param path the path
-     * @return write lock
-     */
-    public InterProcessLock getWriteLock(String path) {
-        return getLock(path, ZkLockType.WRITE);
-    }
+	/**
+	 * Gets write lock.
+	 *
+	 * @param path the path
+	 * @return write lock
+	 */
+	public InterProcessLock getWriteLock(String path) {
+		return getLock(path, ZkLockType.WRITE);
+	}
 
-    @Override
-    public String getDistributedId(String path, String data) throws Exception {
-        String seqNode = this.createTypeSeqNode(CreateMode.EPHEMERAL_SEQUENTIAL, "/" + path, data);
-        System.out.println(seqNode);
-        int index = seqNode.lastIndexOf(path);
-        if (index >= 0) {
-            index += path.length();
-            return index <= seqNode.length() ? seqNode.substring(index) : "";
-        }
-        return seqNode;
-    }
+	@Override
+	public String getDistributedId(String path, String data) throws Exception {
+		String seqNode = this.createTypeSeqNode(CreateMode.EPHEMERAL_SEQUENTIAL, "/" + path, data);
+		System.out.println(seqNode);
+		int index = seqNode.lastIndexOf(path);
+		if (index >= 0) {
+			index += path.length();
+			return index <= seqNode.length() ? seqNode.substring(index) : "";
+		}
+		return seqNode;
+	}
 }

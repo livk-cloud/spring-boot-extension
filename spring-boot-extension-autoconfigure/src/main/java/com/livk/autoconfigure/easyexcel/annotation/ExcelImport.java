@@ -40,18 +40,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelImport {
 
-    /**
-     * Parse class.
-     *
-     * @return the class
-     */
-    Class<? extends ExcelMapReadListener<?>> parse() default DefaultExcelMapReadListener.class;
+	/**
+	 * Parse class.
+	 *
+	 * @return the class
+	 */
+	Class<? extends ExcelMapReadListener<?>> parse() default DefaultExcelMapReadListener.class;
 
-    /**
-     * Ignore empty row boolean.
-     *
-     * @return the boolean
-     */
-    boolean ignoreEmptyRow() default false;
+	/**
+	 * Ignore empty row boolean.
+	 *
+	 * @return the boolean
+	 */
+	boolean ignoreEmptyRow() default false;
 
 }

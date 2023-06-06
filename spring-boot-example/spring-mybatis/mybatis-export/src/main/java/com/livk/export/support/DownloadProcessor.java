@@ -27,10 +27,10 @@ import java.io.PrintWriter;
 @RequiredArgsConstructor
 public class DownloadProcessor {
 
-    private final PrintWriter writer;
+	private final PrintWriter writer;
 
-    public <E> void processData(E record) {
-        writer.write(record.toString());
-        writer.write("\n");
-    }
+	public <E> void processData(E record) {
+		writer.write(record.toString());
+		writer.write("\n");
+	}
 }

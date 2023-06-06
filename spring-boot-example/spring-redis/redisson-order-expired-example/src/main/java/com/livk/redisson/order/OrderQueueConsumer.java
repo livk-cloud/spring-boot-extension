@@ -41,28 +41,28 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class OrderQueueConsumer implements Runnable, InitializingBean {
 
-    private final RBlockingQueue<Employer> orderQueue;
+	private final RBlockingQueue<Employer> orderQueue;
 
-    public OrderQueueConsumer(RedissonClient redissonClient) {
-        this.orderQueue = redissonClient.getBlockingQueue("order_queue");
-    }
+	public OrderQueueConsumer(RedissonClient redissonClient) {
+		this.orderQueue = redissonClient.getBlockingQueue("order_queue");
+	}
 
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                Employer employer = orderQueue.take();
-                log.info("订单取消时间：{} ==订单生成时间:{}", DateUtils.format(LocalDateTime.now(), DateUtils.HMS), employer.getPutTime());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				Employer employer = orderQueue.take();
+				log.info("订单取消时间：{} ==订单生成时间:{}", DateUtils.format(LocalDateTime.now(), DateUtils.HMS), employer.getPutTime());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    public void afterPropertiesSet() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
-        executor.execute(this);
-    }
+	@Override
+	public void afterPropertiesSet() {
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
+		executor.execute(this);
+	}
 
 }

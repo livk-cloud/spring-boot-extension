@@ -34,12 +34,12 @@ import java.util.Date;
 @Accessors(chain = true)
 public class User {
 
-    private Integer id;
+	private Integer id;
 
-    private String appId;
+	private String appId;
 
-    private String version;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date regTime;
+	private String version;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date regTime;
 
 }

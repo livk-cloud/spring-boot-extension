@@ -28,7 +28,7 @@ import lombok.Data;
  */
 @Data
 public class AuthorDTO {
-    private String idCardNo;
-    private String name;
-    private Integer age;
+	private String idCardNo;
+	private String name;
+	private Integer age;
 }

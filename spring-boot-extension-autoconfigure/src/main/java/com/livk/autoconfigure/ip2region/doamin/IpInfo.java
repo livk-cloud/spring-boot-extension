@@ -31,38 +31,38 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class IpInfo {
 
-    private final String ip;
+	private final String ip;
 
-    private final String nation;
+	private final String nation;
 
-    private final String area;
+	private final String area;
 
-    private final String province;
+	private final String province;
 
-    private final String city;
+	private final String city;
 
-    private final String operator;
+	private final String operator;
 
-    /**
-     * 将字符串解析
-     * <p>
-     * 格式 IP|nation|area|province|city|operator
-     * <p>
-     * 如数据不存在则用0标识
-     *
-     * @param info ip相关字符串
-     */
-    public IpInfo(String info) {
-        String[] arr = info.split("\\|");
-        ip = checkData(arr[0]);
-        nation = checkData(arr[1]);
-        area = checkData(arr[2]);
-        province = checkData(arr[3]);
-        city = checkData(arr[4]);
-        operator = checkData(arr[5]);
-    }
+	/**
+	 * 将字符串解析
+	 * <p>
+	 * 格式 IP|nation|area|province|city|operator
+	 * <p>
+	 * 如数据不存在则用0标识
+	 *
+	 * @param info ip相关字符串
+	 */
+	public IpInfo(String info) {
+		String[] arr = info.split("\\|");
+		ip = checkData(arr[0]);
+		nation = checkData(arr[1]);
+		area = checkData(arr[2]);
+		province = checkData(arr[3]);
+		city = checkData(arr[4]);
+		operator = checkData(arr[5]);
+	}
 
-    private String checkData(String data) {
-        return "0".equals(data) ? null : data;
-    }
+	private String checkData(String data) {
+		return "0".equals(data) ? null : data;
+	}
 }

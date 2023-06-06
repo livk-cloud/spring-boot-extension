@@ -44,38 +44,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class FilterControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Autowired
-    Environment environment;
+	@Autowired
+	Environment environment;
 
-    @BeforeEach
-    public void init() throws Exception {
-        assertEquals("livk", environment.getProperty("spring.github.username"));
-        assertEquals("123456", environment.getProperty("spring.github.password"));
-    }
+	@BeforeEach
+	public void init() throws Exception {
+		assertEquals("livk", environment.getProperty("spring.github.username"));
+		assertEquals("123456", environment.getProperty("spring.github.password"));
+	}
 
-    @Test
-    void tenantTest() throws Exception {
-        mockMvc.perform(get("/tenant").header(TenantContextHolder.ATTRIBUTES, "livk"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("livk"));
-    }
+	@Test
+	void tenantTest() throws Exception {
+		mockMvc.perform(get("/tenant").header(TenantContextHolder.ATTRIBUTES, "livk"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(content().string("livk"));
+	}
 
-    @Test
-    void uuid() throws Exception {
-        String uuid1 = mockMvc.perform(get("/uuid"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn().getResponse().getContentAsString();
+	@Test
+	void uuid() throws Exception {
+		String uuid1 = mockMvc.perform(get("/uuid"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andReturn().getResponse().getContentAsString();
 
-        String uuid2 = mockMvc.perform(get("/uuid"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn().getResponse().getContentAsString();
+		String uuid2 = mockMvc.perform(get("/uuid"))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andReturn().getResponse().getContentAsString();
 
-        assertNotEquals(uuid1, uuid2);
-    }
+		assertNotEquals(uuid1, uuid2);
+	}
 }

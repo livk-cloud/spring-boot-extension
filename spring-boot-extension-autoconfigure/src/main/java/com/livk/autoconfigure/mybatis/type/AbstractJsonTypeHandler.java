@@ -39,53 +39,53 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
-    /**
-     * The Jackson operations.
-     */
-    protected final JacksonOperations jacksonOperations;
+	/**
+	 * The Jackson operations.
+	 */
+	protected final JacksonOperations jacksonOperations;
 
-    /**
-     * Instantiates a new Abstract json type handler.
-     *
-     * @param builder the builder
-     */
-    protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper mapper = builder.build();
-        jacksonOperations = JacksonSupport.create(mapper);
-    }
+	/**
+	 * Instantiates a new Abstract json type handler.
+	 *
+	 * @param builder the builder
+	 */
+	protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
+		ObjectMapper mapper = builder.build();
+		jacksonOperations = JacksonSupport.create(mapper);
+	}
 
-    @Override
-    public final void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
-        String json = parameter.toString();
-        setParameter(ps, i, json, jdbcType);
-    }
+	@Override
+	public final void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
+		String json = parameter.toString();
+		setParameter(ps, i, json, jdbcType);
+	}
 
-    /**
-     * Sets parameter.
-     *
-     * @param ps       the ps
-     * @param i        the
-     * @param json     the json
-     * @param jdbcType the jdbc type
-     * @throws SQLException the sql exception
-     */
-    protected abstract void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException;
+	/**
+	 * Sets parameter.
+	 *
+	 * @param ps       the ps
+	 * @param i        the
+	 * @param json     the json
+	 * @param jdbcType the jdbc type
+	 * @throws SQLException the sql exception
+	 */
+	protected abstract void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException;
 
-    @Override
-    public final JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return jacksonOperations.readTree(json);
-    }
+	@Override
+	public final JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
+		String json = rs.getString(columnName);
+		return jacksonOperations.readTree(json);
+	}
 
-    @Override
-    public final JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return jacksonOperations.readTree(json);
-    }
+	@Override
+	public final JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
+		String json = rs.getString(columnIndex);
+		return jacksonOperations.readTree(json);
+	}
 
-    @Override
-    public final JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
-        return jacksonOperations.readTree(json);
-    }
+	@Override
+	public final JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
+		String json = cs.getString(columnIndex);
+		return jacksonOperations.readTree(json);
+	}
 }

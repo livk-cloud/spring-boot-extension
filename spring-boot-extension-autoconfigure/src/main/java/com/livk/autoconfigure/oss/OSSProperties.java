@@ -33,57 +33,57 @@ import java.net.URI;
 @Data
 @ConfigurationProperties(OSSProperties.PREFIX)
 public class OSSProperties {
-    /**
-     * The constant PREFIX.
-     */
-    public static final String PREFIX = "spring.oss";
+	/**
+	 * The constant PREFIX.
+	 */
+	public static final String PREFIX = "spring.oss";
 
-    private String accessKey;
+	private String accessKey;
 
-    private String secretKey;
+	private String secretKey;
 
-    private String prefix;
+	private String prefix;
 
-    private String endpoint;
+	private String endpoint;
 
-    /**
-     * Instantiates a new Oss properties.
-     *
-     * @param url       the url
-     * @param accessKey the access key
-     * @param secretKey the secret key
-     */
-    public OSSProperties(@Name("url") URI url,
-                         @Name("accessKey") String accessKey,
-                         @Name("secretKey") String secretKey) {
-        Assert.notNull(url, "url not be blank");
-        Assert.hasText(accessKey, "accessKey not be blank");
-        Assert.hasText(secretKey, "secretKey not be blank");
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
-        this.prefix = prefix(url);
-        this.endpoint = endpoint(url);
-    }
+	/**
+	 * Instantiates a new Oss properties.
+	 *
+	 * @param url       the url
+	 * @param accessKey the access key
+	 * @param secretKey the secret key
+	 */
+	public OSSProperties(@Name("url") URI url,
+						 @Name("accessKey") String accessKey,
+						 @Name("secretKey") String secretKey) {
+		Assert.notNull(url, "url not be blank");
+		Assert.hasText(accessKey, "accessKey not be blank");
+		Assert.hasText(secretKey, "secretKey not be blank");
+		this.accessKey = accessKey;
+		this.secretKey = secretKey;
+		this.prefix = prefix(url);
+		this.endpoint = endpoint(url);
+	}
 
-    /**
-     * Endpoint string.
-     *
-     * @return the string
-     */
-    private String endpoint(URI url) {
-        return url.getSchemeSpecificPart();
-    }
+	/**
+	 * Endpoint string.
+	 *
+	 * @return the string
+	 */
+	private String endpoint(URI url) {
+		return url.getSchemeSpecificPart();
+	}
 
-    /**
-     * Gets prefix.
-     *
-     * @return the prefix
-     */
-    private String prefix(URI uri) {
-        String scheme = uri.getScheme();
-        if (StringUtils.hasText(scheme)) {
-            return scheme;
-        }
-        throw new RuntimeException("url缺少前缀!");
-    }
+	/**
+	 * Gets prefix.
+	 *
+	 * @return the prefix
+	 */
+	private String prefix(URI uri) {
+		String scheme = uri.getScheme();
+		if (StringUtils.hasText(scheme)) {
+			return scheme;
+		}
+		throw new RuntimeException("url缺少前缀!");
+	}
 }

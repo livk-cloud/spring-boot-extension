@@ -47,53 +47,53 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestTemplateConfiguration {
 
-    /**
-     * Rest template rest template.
-     *
-     * @param builder the builder
-     * @return the rest template
-     */
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+	/**
+	 * Rest template rest template.
+	 *
+	 * @param builder the builder
+	 * @return the rest template
+	 */
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
 
 
-    /**
-     * The type Ok http client configuration.
-     */
-    @Configuration(enforceUniqueMethods = false)
-    @ConditionalOnClass(OkHttpClient.class)
-    public static class OkHttpClientConfiguration {
-        /**
-         * Rest template customizer rest template customizer.
-         *
-         * @return the rest template customizer
-         */
-        @Bean
-        @ConditionalOnMissingBean(OkHttpClient.class)
-        public RestTemplateCustomizer restTemplateCustomizer() {
-            ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
-            OkHttpClient httpClient = new OkHttpClient().newBuilder()
-                    .connectionPool(pool)
-                    .connectTimeout(3, TimeUnit.SECONDS)
-                    .readTimeout(3, TimeUnit.SECONDS)
-                    .writeTimeout(3, TimeUnit.SECONDS)
-                    .hostnameVerifier((s, sslSession) -> true)
-                    .build();
-            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(httpClient));
-        }
+	/**
+	 * The type Ok http client configuration.
+	 */
+	@Configuration(enforceUniqueMethods = false)
+	@ConditionalOnClass(OkHttpClient.class)
+	public static class OkHttpClientConfiguration {
+		/**
+		 * Rest template customizer rest template customizer.
+		 *
+		 * @return the rest template customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean(OkHttpClient.class)
+		public RestTemplateCustomizer restTemplateCustomizer() {
+			ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
+			OkHttpClient httpClient = new OkHttpClient().newBuilder()
+				.connectionPool(pool)
+				.connectTimeout(3, TimeUnit.SECONDS)
+				.readTimeout(3, TimeUnit.SECONDS)
+				.writeTimeout(3, TimeUnit.SECONDS)
+				.hostnameVerifier((s, sslSession) -> true)
+				.build();
+			return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(httpClient));
+		}
 
-        /**
-         * Rest template customizer rest template customizer.
-         *
-         * @param okHttpClient the ok http client
-         * @return the rest template customizer
-         */
-        @Bean
-        @ConditionalOnBean(OkHttpClient.class)
-        public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
-            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
-        }
-    }
+		/**
+		 * Rest template customizer rest template customizer.
+		 *
+		 * @param okHttpClient the ok http client
+		 * @return the rest template customizer
+		 */
+		@Bean
+		@ConditionalOnBean(OkHttpClient.class)
+		public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
+			return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
+		}
+	}
 }

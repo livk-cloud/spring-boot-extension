@@ -46,35 +46,35 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class WebSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
+		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
-        TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManager);
-        tokenLoginFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
-        tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
+		TokenLoginFilter tokenLoginFilter = new TokenLoginFilter(authenticationManager);
+		tokenLoginFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
+		tokenLoginFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
-        TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManager);
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authenticationManager(authenticationManager)
-                .authorizeHttpRequests(registry -> registry.requestMatchers("/user/query")
-                        .hasAnyRole("ADMIN")
-                        .anyRequest()
-                        .authenticated())
-                .addFilterBefore(tokenLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(tokenVerifyFilter, BasicAuthenticationFilter.class)
-                .exceptionHandling(configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
-                .logout(configurer -> configurer.logoutUrl("/oauth2/logout")
-                        .logoutSuccessHandler(new CustomLogoutSuccessHandler()))
-                .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
-    }
+		TokenVerifyFilter tokenVerifyFilter = new TokenVerifyFilter(authenticationManager);
+		return http.csrf(AbstractHttpConfigurer::disable)
+			.authenticationManager(authenticationManager)
+			.authorizeHttpRequests(registry -> registry.requestMatchers("/user/query")
+				.hasAnyRole("ADMIN")
+				.anyRequest()
+				.authenticated())
+			.addFilterBefore(tokenLoginFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAfter(tokenVerifyFilter, BasicAuthenticationFilter.class)
+			.exceptionHandling(configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
+				.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+			.logout(configurer -> configurer.logoutUrl("/oauth2/logout")
+				.logoutSuccessHandler(new CustomLogoutSuccessHandler()))
+			.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.build();
+	}
 
 }

@@ -40,56 +40,56 @@ import java.lang.annotation.Target;
 @HttpExchange
 public @interface HttpProvider {
 
-    /**
-     * The value may indicate a suggestion for a logical component name,
-     * to be turned into a Spring bean in case of an autodetected component.
-     *
-     * @return the suggested component name, if any (or empty String otherwise)
-     */
-    @AliasFor(annotation = Component.class, attribute = "value")
-    String value() default "";
+	/**
+	 * The value may indicate a suggestion for a logical component name,
+	 * to be turned into a Spring bean in case of an autodetected component.
+	 *
+	 * @return the suggested component name, if any (or empty String otherwise)
+	 */
+	@AliasFor(annotation = Component.class, attribute = "value")
+	String value() default "";
 
-    /**
-     * The URL for the request, either a full URL or a path only that is relative
-     * to a URL declared in a type-level {@code @HttpExchange}, and/or a globally
-     * configured base URL.
-     * <p>By default, this is empty.
-     *
-     * @return http url
-     */
-    @AliasFor(annotation = HttpExchange.class, attribute = "url")
-    String url() default "";
+	/**
+	 * The URL for the request, either a full URL or a path only that is relative
+	 * to a URL declared in a type-level {@code @HttpExchange}, and/or a globally
+	 * configured base URL.
+	 * <p>By default, this is empty.
+	 *
+	 * @return http url
+	 */
+	@AliasFor(annotation = HttpExchange.class, attribute = "url")
+	String url() default "";
 
-    /**
-     * The HTTP method to use.
-     * <p>Supported at the type level as well as at the method level.
-     * When used at the type level, all method-level mappings inherit this value.
-     * <p>By default, this is empty.
-     *
-     * @return http method
-     */
-    @AliasFor(annotation = HttpExchange.class, attribute = "method")
-    String method() default "";
+	/**
+	 * The HTTP method to use.
+	 * <p>Supported at the type level as well as at the method level.
+	 * When used at the type level, all method-level mappings inherit this value.
+	 * <p>By default, this is empty.
+	 *
+	 * @return http method
+	 */
+	@AliasFor(annotation = HttpExchange.class, attribute = "method")
+	String method() default "";
 
-    /**
-     * The media type for the {@code "Content-Type"} header.
-     * <p>Supported at the type level as well as at the method level, in which
-     * case the method-level values override type-level values.
-     * <p>By default, this is empty.
-     *
-     * @return http contentType
-     */
-    @AliasFor(annotation = HttpExchange.class, attribute = "contentType")
-    String contentType() default "";
+	/**
+	 * The media type for the {@code "Content-Type"} header.
+	 * <p>Supported at the type level as well as at the method level, in which
+	 * case the method-level values override type-level values.
+	 * <p>By default, this is empty.
+	 *
+	 * @return http contentType
+	 */
+	@AliasFor(annotation = HttpExchange.class, attribute = "contentType")
+	String contentType() default "";
 
-    /**
-     * The media types for the {@code "Accept"} header.
-     * <p>Supported at the type level as well as at the method level, in which
-     * case the method-level values override type-level values.
-     * <p>By default, this is empty.
-     *
-     * @return http accept
-     */
-    @AliasFor(annotation = HttpExchange.class, attribute = "accept")
-    String[] accept() default {};
+	/**
+	 * The media types for the {@code "Accept"} header.
+	 * <p>Supported at the type level as well as at the method level, in which
+	 * case the method-level values override type-level values.
+	 * <p>By default, this is empty.
+	 *
+	 * @return http accept
+	 */
+	@AliasFor(annotation = HttpExchange.class, attribute = "accept")
+	String[] accept() default {};
 }

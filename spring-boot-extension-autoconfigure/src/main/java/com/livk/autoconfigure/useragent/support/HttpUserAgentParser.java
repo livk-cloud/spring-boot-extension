@@ -29,11 +29,11 @@ import org.springframework.http.HttpHeaders;
  */
 public interface HttpUserAgentParser {
 
-    /**
-     * Parse wrapper.
-     *
-     * @param headers the headers
-     * @return the wrapper
-     */
-    Wrapper parse(HttpHeaders headers);
+	/**
+	 * Parse wrapper.
+	 *
+	 * @param headers the headers
+	 * @return the wrapper
+	 */
+	Wrapper parse(HttpHeaders headers);
 }

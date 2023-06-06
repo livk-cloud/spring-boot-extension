@@ -46,70 +46,70 @@ import java.util.Set;
  */
 public class AnnotationMetadataResolver {
 
-    private final ResourceLoader resourceLoader;
+	private final ResourceLoader resourceLoader;
 
-    private final ResourcePatternResolver resolver;
+	private final ResourcePatternResolver resolver;
 
-    private final MetadataReaderFactory metadataReaderFactory;
+	private final MetadataReaderFactory metadataReaderFactory;
 
-    /**
-     * Instantiates a new Annotation metadata resolver.
-     *
-     * @param resourceLoader the resource loader
-     */
-    public AnnotationMetadataResolver(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-        this.resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-        this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
-    }
+	/**
+	 * Instantiates a new Annotation metadata resolver.
+	 *
+	 * @param resourceLoader the resource loader
+	 */
+	public AnnotationMetadataResolver(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
+		this.resolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+		this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
+	}
 
-    /**
-     * Instantiates a new Annotation metadata resolver.
-     */
-    public AnnotationMetadataResolver() {
-        this(new DefaultResourceLoader());
-    }
+	/**
+	 * Instantiates a new Annotation metadata resolver.
+	 */
+	public AnnotationMetadataResolver() {
+		this(new DefaultResourceLoader());
+	}
 
-    /**
-     * 获取被注解标注的class
-     *
-     * @param annotationType 注解
-     * @param packages       待扫描的包
-     * @return set class
-     */
-    public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
-        TypeFilter typeFilter = new AnnotationTypeFilter(annotationType);
-        Set<Class<?>> typeSet = new HashSet<>();
-        if (ObjectUtils.isEmpty(packages)) {
-            return typeSet;
-        }
-        for (String packageStr : packages) {
-            packageStr = ClassUtils.convertClassNameToResourcePath(packageStr);
-            try {
-                Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + packageStr + "/**/*.class");
-                for (Resource resource : resources) {
-                    MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-                    if (typeFilter.match(metadataReader, metadataReaderFactory)) {
-                        String className = metadataReader.getClassMetadata().getClassName();
-                        Class<?> type = ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
-                        typeSet.add(type);
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return typeSet;
-    }
+	/**
+	 * 获取被注解标注的class
+	 *
+	 * @param annotationType 注解
+	 * @param packages       待扫描的包
+	 * @return set class
+	 */
+	public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
+		TypeFilter typeFilter = new AnnotationTypeFilter(annotationType);
+		Set<Class<?>> typeSet = new HashSet<>();
+		if (ObjectUtils.isEmpty(packages)) {
+			return typeSet;
+		}
+		for (String packageStr : packages) {
+			packageStr = ClassUtils.convertClassNameToResourcePath(packageStr);
+			try {
+				Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + packageStr + "/**/*.class");
+				for (Resource resource : resources) {
+					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
+						String className = metadataReader.getClassMetadata().getClassName();
+						Class<?> type = ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
+						typeSet.add(type);
+					}
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return typeSet;
+	}
 
-    /**
-     * 获取被注解标注的class
-     *
-     * @param annotationType 注解
-     * @param beanFactory    springboot包扫描
-     * @return set class
-     */
-    public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
-        return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
-    }
+	/**
+	 * 获取被注解标注的class
+	 *
+	 * @param annotationType 注解
+	 * @param beanFactory    springboot包扫描
+	 * @return set class
+	 */
+	public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
+		return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
+	}
 }

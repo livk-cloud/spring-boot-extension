@@ -44,26 +44,26 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MailController {
 
-    private final MailTemplate mailTemplate;
+	private final MailTemplate mailTemplate;
 
-    @PostMapping("send")
-    public HttpEntity<Void> send() throws IOException, TemplateException {
-        // 定义个数据根节点
-        Map<String, Object> root = new HashMap<>();
-        // 往里面塞第一层节点
-        root.put("UserName", "Livk-Cloud");
+	@PostMapping("send")
+	public HttpEntity<Void> send() throws IOException, TemplateException {
+		// 定义个数据根节点
+		Map<String, Object> root = new HashMap<>();
+		// 往里面塞第一层节点
+		root.put("UserName", "Livk-Cloud");
 
-        String[] temp = new String[]{"dog", "cat", "tiger"};
-        List<String> pets = new ArrayList<>();
-        Collections.addAll(pets, temp);
-        // 往里面塞个List对象
-        root.put("pets", pets);
+		String[] temp = new String[]{"dog", "cat", "tiger"};
+		List<String> pets = new ArrayList<>();
+		Collections.addAll(pets, temp);
+		// 往里面塞个List对象
+		root.put("pets", pets);
 
-        Template template = mailTemplate.getConfiguration().getTemplate("hello.ftl");
-        String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
+		Template template = mailTemplate.getConfiguration().getTemplate("hello.ftl");
+		String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
 
-        mailTemplate.send(Pair.of("1375632510@qq.com", "I am Livk"), "This is subject 主题", text, root, "1375632510@qq.com");
-        return ResponseEntity.ok().build();
-    }
+		mailTemplate.send(Pair.of("1375632510@qq.com", "I am Livk"), "This is subject 主题", text, root, "1375632510@qq.com");
+		return ResponseEntity.ok().build();
+	}
 
 }
