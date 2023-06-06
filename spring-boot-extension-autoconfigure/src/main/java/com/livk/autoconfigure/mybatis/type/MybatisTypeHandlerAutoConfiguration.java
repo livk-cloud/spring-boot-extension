@@ -17,19 +17,22 @@
 
 package com.livk.autoconfigure.mybatis.type;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.mybatis.type.mysql.MysqlJsonTypeHandler;
 import com.livk.autoconfigure.mybatis.type.postgresql.PostgresJsonTypeHandler;
+import com.livk.commons.jackson.support.MapperFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SqlSessionFactoryBeanCustomizer;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 
 /**
  * <p>
- * MybatisTypeHanderAutoConfiguration
+ * MybatisTypeHandlerAutoConfiguration
  * </p>
  *
  * @author livk
@@ -46,8 +49,9 @@ public class MybatisTypeHandlerAutoConfiguration {
      */
     @Bean
     @ConditionalOnClass(com.mysql.cj.jdbc.Driver.class)
-    public SqlSessionFactoryBeanCustomizer mysqlSqlSessionFactoryBeanCustomizer() {
-        return factoryBean -> factoryBean.setTypeHandlers(new MysqlJsonTypeHandler());
+    public SqlSessionFactoryBeanCustomizer mysqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+        ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+        return factoryBean -> factoryBean.setTypeHandlers(new MysqlJsonTypeHandler(mapper));
     }
 
     /**
@@ -57,7 +61,8 @@ public class MybatisTypeHandlerAutoConfiguration {
      */
     @Bean
     @ConditionalOnClass(org.postgresql.Driver.class)
-    public SqlSessionFactoryBeanCustomizer postgresqlSqlSessionFactoryBeanCustomizer() {
-        return factoryBean -> factoryBean.setTypeHandlers(new PostgresJsonTypeHandler());
+    public SqlSessionFactoryBeanCustomizer postgresqlSqlSessionFactoryBeanCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+        ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+        return factoryBean -> factoryBean.setTypeHandlers(new PostgresJsonTypeHandler(mapper));
     }
 }

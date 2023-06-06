@@ -18,14 +18,14 @@
 package com.livk.autoconfigure.mybatis.type.mysql;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.livk.autoconfigure.mybatis.type.AbstractJsonTypeHandler;
+import com.livk.commons.jackson.core.JacksonSupport;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -36,30 +36,17 @@ import java.sql.SQLException;
  * @author livk
  */
 @MappedTypes(JsonNode.class)
-public class MysqlJsonTypeHandler implements TypeHandler<JsonNode> {
+public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
+
+
+    public MysqlJsonTypeHandler(ObjectMapper mapper) {
+        super(JacksonSupport.create(mapper));
+    }
 
     @Override
-    public void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
-        String json = parameter.toString();
+    protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
         ps.setObject(i, json);
     }
 
-    @Override
-    public JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return JsonMapperUtils.readTree(json);
-    }
-
-    @Override
-    public JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return JsonMapperUtils.readTree(json);
-    }
-
-    @Override
-    public JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
-        return JsonMapperUtils.readTree(json);
-    }
 
 }
