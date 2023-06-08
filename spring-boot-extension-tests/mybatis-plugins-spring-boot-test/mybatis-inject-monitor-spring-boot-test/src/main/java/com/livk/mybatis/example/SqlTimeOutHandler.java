@@ -17,8 +17,8 @@
 
 package com.livk.mybatis.example;
 
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
+import com.livk.autoconfigure.mybatisplugins.monitor.event.MonitorSQLInfo;
+import com.livk.autoconfigure.mybatisplugins.monitor.event.MonitorSQLTimeOutEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

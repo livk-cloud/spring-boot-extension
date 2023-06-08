@@ -15,27 +15,24 @@
  *
  */
 
-package com.livk.mybatis.example;
+package com.livk.autoconfigure.mybatisplugins.monitor.annotation;
 
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.livk.commons.spring.context.AutoImport;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <p>
- * MybatisApp
+ * EnableSqlMonitor
  * </p>
  *
  * @author livk
  */
-@EnableSqlMonitor
-@EnableSqlPlugin
-@SpringBootApplication
-public class MybatisApp {
-
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
-	}
-
+@AutoImport
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface EnableSqlMonitor {
 }

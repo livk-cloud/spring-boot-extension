@@ -15,27 +15,20 @@
  *
  */
 
-package com.livk.mybatis.example;
-
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.livk.autoconfigure.mybatisplugins.inject.handler;
 
 /**
  * <p>
- * MybatisApp
+ * NullFunction
  * </p>
  *
  * @author livk
  */
-@EnableSqlMonitor
-@EnableSqlPlugin
-@SpringBootApplication
-public class MybatisApp {
+public class NullFunction implements FunctionHandle<Object> {
 
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
+	@Override
+	public Object handler() {
+		return null;
 	}
 
 }

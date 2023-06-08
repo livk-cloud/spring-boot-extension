@@ -19,9 +19,9 @@ package com.livk.mybatis.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.livk.autoconfigure.mybatis.inject.annotation.SqlFunction;
-import com.livk.autoconfigure.mybatis.inject.enums.FunctionType;
-import com.livk.autoconfigure.mybatis.inject.enums.SqlFill;
+import com.livk.autoconfigure.mybatisplugins.inject.annotation.SqlFunction;
+import com.livk.autoconfigure.mybatisplugins.inject.enums.FunctionType;
+import com.livk.autoconfigure.mybatisplugins.inject.enums.SqlFill;
 import com.livk.commons.util.DateUtils;
 import com.livk.mybatis.example.handler.VersionFunction;
 import lombok.Data;

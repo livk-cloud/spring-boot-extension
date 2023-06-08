@@ -15,27 +15,24 @@
  *
  */
 
-package com.livk.mybatis.example;
-
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.livk.autoconfigure.mybatisplugins.inject.enums;
 
 /**
  * <p>
- * MybatisApp
+ * SqlFill
  * </p>
  *
  * @author livk
  */
-@EnableSqlMonitor
-@EnableSqlPlugin
-@SpringBootApplication
-public class MybatisApp {
+public enum SqlFill {
 
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
-	}
+	/**
+	 * Insert sql fill.
+	 */
+	INSERT,
+	/**
+	 * Insert update sql fill.
+	 */
+	INSERT_UPDATE
 
 }

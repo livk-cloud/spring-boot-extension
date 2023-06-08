@@ -17,7 +17,7 @@
 
 package com.livk.mybatis.example.handler;
 
-import com.livk.autoconfigure.mybatis.inject.handler.FunctionHandle;
+import com.livk.autoconfigure.mybatisplugins.inject.handler.FunctionHandle;
 
 /**
  * <p>

@@ -15,27 +15,31 @@
  *
  */
 
-package com.livk.mybatis.example;
+package com.livk.autoconfigure.mybatisplugins.monitor.event;
 
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEvent;
 
 /**
- * <p>
- * MybatisApp
- * </p>
+ * The type Monitor sql time out event.
  *
  * @author livk
  */
-@EnableSqlMonitor
-@EnableSqlPlugin
-@SpringBootApplication
-public class MybatisApp {
-
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
+public class MonitorSQLTimeOutEvent extends ApplicationEvent {
+	/**
+	 * Instantiates a new Monitor sql time out event.
+	 *
+	 * @param source the source
+	 */
+	public MonitorSQLTimeOutEvent(MonitorSQLInfo source) {
+		super(source);
 	}
 
+	/**
+	 * Info monitor sql info.
+	 *
+	 * @return the monitor sql info
+	 */
+	public MonitorSQLInfo info() {
+		return (MonitorSQLInfo) source;
+	}
 }

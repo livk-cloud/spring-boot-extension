@@ -15,27 +15,24 @@
  *
  */
 
-package com.livk.mybatis.example;
+package com.livk.autoconfigure.mybatisplugins.inject.handler.time;
 
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.livk.autoconfigure.mybatisplugins.inject.handler.FunctionHandle;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
- * MybatisApp
+ * LocalDateTimeFunction
  * </p>
  *
  * @author livk
  */
-@EnableSqlMonitor
-@EnableSqlPlugin
-@SpringBootApplication
-public class MybatisApp {
+public class LocalDateTimeFunction implements FunctionHandle<LocalDateTime> {
 
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
+	@Override
+	public LocalDateTime handler() {
+		return LocalDateTime.now();
 	}
 
 }
