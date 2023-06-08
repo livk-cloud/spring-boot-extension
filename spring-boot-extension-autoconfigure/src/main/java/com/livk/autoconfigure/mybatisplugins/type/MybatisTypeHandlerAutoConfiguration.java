@@ -45,6 +45,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 	/**
 	 * Mysql sql session factory bean customizer sql session factory bean customizer.
 	 *
+	 * @param mapperProvider the mapper provider
 	 * @return the sql session factory bean customizer
 	 */
 	@Bean
@@ -57,6 +58,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 	/**
 	 * Postgresql sql session factory bean customizer sql session factory bean customizer.
 	 *
+	 * @param mapperProvider the mapper provider
 	 * @return the sql session factory bean customizer
 	 */
 	@Bean

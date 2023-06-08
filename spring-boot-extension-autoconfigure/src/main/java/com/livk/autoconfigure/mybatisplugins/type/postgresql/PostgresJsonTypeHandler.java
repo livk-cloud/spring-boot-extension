@@ -45,6 +45,11 @@ import java.sql.SQLException;
 @MappedTypes(JsonNode.class)
 public class PostgresJsonTypeHandler extends AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
+	/**
+	 * Instantiates a new Postgres json type handler.
+	 *
+	 * @param mapper the mapper
+	 */
 	public PostgresJsonTypeHandler(ObjectMapper mapper) {
 		super(JacksonSupport.create(mapper));
 	}

@@ -38,7 +38,11 @@ import java.sql.SQLException;
 @MappedTypes(JsonNode.class)
 public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
-
+	/**
+	 * Instantiates a new Mysql json type handler.
+	 *
+	 * @param mapper the mapper
+	 */
 	public MysqlJsonTypeHandler(ObjectMapper mapper) {
 		super(JacksonSupport.create(mapper));
 	}
@@ -47,6 +51,5 @@ public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements Typ
 	protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
 		ps.setObject(i, json);
 	}
-
 
 }
