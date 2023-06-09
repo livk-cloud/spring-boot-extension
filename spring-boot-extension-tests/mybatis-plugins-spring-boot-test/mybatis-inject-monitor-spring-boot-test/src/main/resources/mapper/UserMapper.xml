@@ -55,7 +55,7 @@
 		SELECT
 		<include refid="Base_Column_List">
 		</include>
-		FROM user
+		FROM `user`
 		WHERE id = #{id}
 	</select>
 
@@ -96,7 +96,7 @@
 
 	<delete id="deleteById">
 		DELETE
-		FROM user
+		FROM `user`
 		WHERE id = #{id}
 	</delete>
 
@@ -104,6 +104,6 @@
 		SELECT
 		<include refid="Base_Column_List">
 		</include>
-		FROM user
+		FROM `user`
 	</select>
 </mapper>
