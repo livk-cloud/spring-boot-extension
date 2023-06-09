@@ -17,7 +17,6 @@
 
 package com.livk.autoconfigure.useragent;
 
-import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentResolver;
 import com.livk.autoconfigure.useragent.servlet.UserAgentFilter;
@@ -37,7 +36,6 @@ import java.util.List;
 /**
  * The type User agent auto configuration.
  */
-@SpringAutoService
 @AutoConfiguration
 public class UserAgentAutoConfiguration {
 
