@@ -1,7 +1,4 @@
-= spring extension commons
-:revdate: {docdate}
-:toc: right
-:Author: Livk
+=== spring extension commons
 
 :numbered:
 
@@ -13,6 +10,8 @@ include::commons/cglib.adoc[]
 
 include::commons/collect.adoc[]
 
+include::commons/expression.adoc[]
+
 include::commons/function.adoc[]
 
 include::commons/http.adoc[]
@@ -22,8 +21,6 @@ include::commons/io.adoc[]
 include::commons/jackson.adoc[]
 
 include::commons/spring.adoc[]
-
-include::commons/sqlparser.adoc[]
 
 include::commons/util.adoc[]
 

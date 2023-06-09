@@ -1,5 +1,5 @@
 [[lock-spring-boot-starter]]
-== 本地锁与分布式锁
+==== 本地锁与分布式锁
 
 使用方式: +
 link:../../spring-lock/local-lock-example[lock示例] +

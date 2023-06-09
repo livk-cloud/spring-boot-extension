@@ -1,5 +1,5 @@
 [[dynamic-spring-boot-starter]]
-== 动态数据源
+==== 动态数据源
 
 使用方式 +
 link:../../spring-mybatis/dynamic-datasource-example[示例] +

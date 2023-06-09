@@ -1,5 +1,5 @@
 [[spring-auto-service]]
-=== spring boot自动装配文件生成
+=== spring boot装配文件自动生成
 
 ==== 依赖引入
 

@@ -1,0 +1,32 @@
+=== 依赖相关
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>spring-extension-dependencies</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
+}
+----
+
+嵌入Spring Boot、Spring Boot Admin、Springdoc OpenApi
+
+=== 支持的Java版本
+仅支持JDK17及其以上版本

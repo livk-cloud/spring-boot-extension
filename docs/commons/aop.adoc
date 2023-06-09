@@ -1,7 +1,7 @@
 [[aop]]
-== aop
+==== aop
 
-=== com.livk.commons.aop.AnnotationAbstractPointcutAdvisor
+===== com.livk.commons.aop.AnnotationAbstractPointcutAdvisor
 
 使用注解处理AOP的通用切点及表达式
 
@@ -24,7 +24,7 @@ public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock>{
 
 将注解作为泛型，自动获取到注解信息
 
-=== com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor
+===== com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor
 
 AnnotationAbstractPointcutAdvisor定制化拓展
 

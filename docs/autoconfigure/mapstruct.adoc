@@ -1,5 +1,5 @@
 [[mapstruct-spring-boot-starter]]
-== 本地锁与分布式锁
+==== Mapstruct
 
 使用方式: +
 link:../../spring-mapstruct/mapstruct-example[mapstruct示例] +
