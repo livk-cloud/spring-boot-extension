@@ -17,7 +17,7 @@
 
 package com.livk.autoconfigure.useragent.reactive;
 
-import com.livk.commons.bean.Wrapper;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
@@ -37,7 +37,7 @@ public class ReactiveUserAgentContextHolder {
 	 *
 	 * @return the mono
 	 */
-	public static Mono<Wrapper> get() {
+	public static Mono<UserAgent> get() {
 		return Mono.deferContextual(Mono::just)
 			.cast(Context.class)
 			.filter(ReactiveUserAgentContextHolder::hasContext)
@@ -48,8 +48,8 @@ public class ReactiveUserAgentContextHolder {
 		return context.hasKey(USER_AGENT_KEY);
 	}
 
-	private static Mono<Wrapper> getContext(Context context) {
-		return context.<Mono<Wrapper>>get(USER_AGENT_KEY);
+	private static Mono<UserAgent> getContext(Context context) {
+		return context.<Mono<UserAgent>>get(USER_AGENT_KEY);
 	}
 
 	/**
@@ -67,17 +67,17 @@ public class ReactiveUserAgentContextHolder {
 	 * @param useragentWrapper the useragent wrapper
 	 * @return the context
 	 */
-	public static Context withContext(Mono<? extends Wrapper> useragentWrapper) {
+	public static Context withContext(Mono<? extends UserAgent> useragentWrapper) {
 		return Context.of(USER_AGENT_KEY, useragentWrapper);
 	}
 
 	/**
 	 * With context context.
 	 *
-	 * @param useragentWrapper the useragent wrapper
+	 * @param userAgent the useragent wrapper
 	 * @return the context
 	 */
-	public static Context withContext(Wrapper useragentWrapper) {
-		return withContext(Mono.just(useragentWrapper));
+	public static Context withContext(UserAgent userAgent) {
+		return withContext(Mono.just(userAgent));
 	}
 }

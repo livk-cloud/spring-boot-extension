@@ -15,25 +15,25 @@
  *
  */
 
-package com.livk.autoconfigure.useragent.support;
+package com.livk.autoconfigure.useragent;
 
-import com.livk.commons.bean.Wrapper;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
+import com.livk.commons.spring.context.SpringContextHolder;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 
 /**
- * <p>
- * UserAgentParse
- * </p>
- *
  * @author livk
  */
-public interface HttpUserAgentParser {
+public class UserAgentHelper {
 
-	/**
-	 * Parse wrapper.
-	 *
-	 * @param headers the headers
-	 * @return the wrapper
-	 */
-	Wrapper parse(HttpHeaders headers);
+	private static final ConversionService conversionService;
+
+	static {
+		conversionService = SpringContextHolder.getBean(ConversionService.class);
+	}
+
+	public static UserAgent convert(HttpHeaders headers) {
+		return conversionService.convert(headers, UserAgent.class);
+	}
 }

@@ -17,9 +17,9 @@
 
 package com.livk.autoconfigure.useragent.reactive;
 
+import com.livk.autoconfigure.useragent.UserAgentHelper;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
-import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import lombok.RequiredArgsConstructor;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
@@ -37,12 +37,9 @@ import reactor.core.publisher.Mono;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver {
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
-
-	private final HttpUserAgentParser userAgentParse;
 
 
 	@Override
@@ -56,15 +53,8 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
-		Mono<Object> mono = ReactiveUserAgentContextHolder.get()
-			.switchIfEmpty(Mono.justOrEmpty(userAgentParse.parse(exchange.getRequest().getHeaders())))
-			.map(wrapper -> {
-				if (adapter != null) {
-					Class<?> type = ResolvableType.forMethodParameter(parameter).resolveGeneric(0);
-					return wrapper.unwrap(type);
-				}
-				return wrapper.unwrap(resolvedType);
-			});
+		Mono<UserAgent> mono = ReactiveUserAgentContextHolder.get()
+			.switchIfEmpty(Mono.justOrEmpty(UserAgentHelper.convert(exchange.getRequest().getHeaders())));
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
 	}
 }

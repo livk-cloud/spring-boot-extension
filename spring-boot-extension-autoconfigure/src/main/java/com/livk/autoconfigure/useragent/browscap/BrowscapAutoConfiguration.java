@@ -23,7 +23,6 @@ import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.UserAgentAutoConfiguration;
-import com.livk.autoconfigure.useragent.browscap.support.BrowscapUserAgentParse;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -64,7 +63,7 @@ public class BrowscapAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public BrowscapUserAgentParse browscapUserAgentParse(UserAgentParser userAgentAnalyzer) {
-		return new BrowscapUserAgentParse(userAgentAnalyzer);
+	public BrowscapUserAgentConverter browscapUserAgentConverter(UserAgentParser userAgentAnalyzer) {
+		return new BrowscapUserAgentConverter(userAgentAnalyzer);
 	}
 }

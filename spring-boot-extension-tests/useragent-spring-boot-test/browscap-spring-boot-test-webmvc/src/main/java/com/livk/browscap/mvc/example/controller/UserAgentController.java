@@ -17,8 +17,8 @@
 
 package com.livk.browscap.mvc.example.controller;
 
-import com.blueconic.browscap.Capabilities;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import com.livk.autoconfigure.useragent.servlet.UserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +41,9 @@ import java.util.UUID;
 public class UserAgentController {
 
 	@GetMapping
-	public HttpEntity<Map<String, Capabilities>> get(@UserAgentInfo Capabilities capabilities) {
-		Map<String, Capabilities> map = Map.of(UUID.randomUUID().toString(), capabilities,
-			UUID.randomUUID().toString(), UserAgentContextHolder.getUserAgentContext().unwrap(Capabilities.class));
+	public HttpEntity<Map<String, UserAgent>> get(@UserAgentInfo UserAgent userAgent) {
+		Map<String, UserAgent> map = Map.of(UUID.randomUUID().toString(), userAgent,
+			UUID.randomUUID().toString(), UserAgentContextHolder.getUserAgentContext());
 		return ResponseEntity.ok(map);
 	}
 }

@@ -17,14 +17,13 @@
 
 package com.livk.autoconfigure.useragent.servlet;
 
-import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.Wrapper;
+import com.livk.autoconfigure.useragent.UserAgentHelper;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,16 +37,13 @@ import java.io.IOException;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class UserAgentFilter extends OncePerRequestFilter {
-
-	private final HttpUserAgentParser userAgentParse;
 
 	@Override
 	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 		HttpHeaders headers = WebUtils.headers(request);
-		Wrapper useragentWrapper = userAgentParse.parse(headers);
-		UserAgentContextHolder.setUserAgentContext(useragentWrapper);
+		UserAgent userAgent = UserAgentHelper.convert(headers);
+		UserAgentContextHolder.setUserAgentContext(userAgent);
 		filterChain.doFilter(request, response);
 		UserAgentContextHolder.cleanUserAgentContext();
 	}

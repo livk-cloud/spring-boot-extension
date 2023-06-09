@@ -17,12 +17,11 @@
 
 package com.livk.autoconfigure.useragent.servlet;
 
+import com.livk.autoconfigure.useragent.UserAgentHelper;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
-import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import com.livk.commons.bean.Wrapper;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
@@ -39,10 +38,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class UserAgentResolver implements HandlerMethodArgumentResolver {
-
-	private final HttpUserAgentParser userAgentParse;
 
 	@Override
 	public final boolean supportsParameter(MethodParameter parameter) {
@@ -51,14 +47,14 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
 	public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-		Wrapper useragentWrapper = UserAgentContextHolder.getUserAgentContext();
-		if (useragentWrapper == null) {
+		UserAgent agentContext = UserAgentContextHolder.getUserAgentContext();
+		if (agentContext == null) {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 			Assert.notNull(request, "request not be null!");
 			HttpHeaders headers = WebUtils.headers(request);
-			useragentWrapper = userAgentParse.parse(headers);
-			UserAgentContextHolder.setUserAgentContext(useragentWrapper);
+			agentContext = UserAgentHelper.convert(headers);
+			UserAgentContextHolder.setUserAgentContext(agentContext);
 		}
-		return useragentWrapper.unwrap(parameter.getParameterType());
+		return agentContext;
 	}
 }

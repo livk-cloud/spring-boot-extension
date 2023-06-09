@@ -20,7 +20,6 @@ package com.livk.browscap.webflux.example.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -39,8 +38,6 @@ class UserAgentControllerTest {
 
 	@Autowired
 	WebTestClient client;
-	@Value("${server.port:8080}")
-	private int port;
 
 	@Test
 	void getTest() {

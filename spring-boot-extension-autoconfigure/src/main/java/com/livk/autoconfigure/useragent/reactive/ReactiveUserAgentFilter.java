@@ -17,8 +17,7 @@
 
 package com.livk.autoconfigure.useragent.reactive;
 
-import com.livk.autoconfigure.useragent.support.HttpUserAgentParser;
-import lombok.RequiredArgsConstructor;
+import com.livk.autoconfigure.useragent.UserAgentHelper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
@@ -33,10 +32,7 @@ import reactor.core.publisher.Mono;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class ReactiveUserAgentFilter implements WebFilter {
-
-	private final HttpUserAgentParser userAgentParse;
 
 	@NonNull
 	@Override
@@ -46,6 +42,6 @@ public class ReactiveUserAgentFilter implements WebFilter {
 			.then());
 		HttpHeaders headers = exchange.getRequest().getHeaders();
 		return chain.filter(exchange)
-			.contextWrite(ReactiveUserAgentContextHolder.withContext(userAgentParse.parse(headers)));
+			.contextWrite(ReactiveUserAgentContextHolder.withContext(UserAgentHelper.convert(headers)));
 	}
 }

@@ -19,7 +19,6 @@ package com.livk.autoconfigure.useragent.yauaa;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.useragent.UserAgentAutoConfiguration;
-import com.livk.autoconfigure.useragent.yauaa.support.YauaaUserAgentParse;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -63,7 +62,7 @@ public class YauaaAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public YauaaUserAgentParse yauaaUserAgentParse(UserAgentAnalyzer userAgentAnalyzer) {
-		return new YauaaUserAgentParse(userAgentAnalyzer);
+	public YauaaUserAgentConverter yauaaUserAgentConverter(UserAgentAnalyzer userAgentAnalyzer) {
+		return new YauaaUserAgentConverter(userAgentAnalyzer);
 	}
 }

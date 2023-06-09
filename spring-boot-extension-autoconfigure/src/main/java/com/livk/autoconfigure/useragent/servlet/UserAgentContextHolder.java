@@ -17,9 +17,8 @@
 
 package com.livk.autoconfigure.useragent.servlet;
 
-import com.livk.commons.bean.Wrapper;
+import com.livk.autoconfigure.useragent.domain.UserAgent;
 import org.springframework.core.NamedInheritableThreadLocal;
-import org.springframework.core.NamedThreadLocal;
 
 /**
  * The type User agent context holder.
@@ -28,28 +27,16 @@ import org.springframework.core.NamedThreadLocal;
  */
 public class UserAgentContextHolder {
 
-	private static final ThreadLocal<Wrapper> context = new NamedThreadLocal<>("useragent context");
 
-	private static final ThreadLocal<Wrapper> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
+	private static final ThreadLocal<UserAgent> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
 
 	/**
 	 * Sets user agent context.
 	 *
-	 * @param useragentWrapper the useragent wrapper
-	 * @param inheritable      the inheritable
+	 * @param userAgent the useragent wrapper
 	 */
-	public static void setUserAgentContext(Wrapper useragentWrapper, boolean inheritable) {
-		if (useragentWrapper != null) {
-			if (inheritable) {
-				inheritableContext.set(useragentWrapper);
-				context.remove();
-			} else {
-				context.set(useragentWrapper);
-				inheritableContext.remove();
-			}
-		} else {
-			cleanUserAgentContext();
-		}
+	public static void setUserAgentContext(UserAgent userAgent) {
+		inheritableContext.set(userAgent);
 	}
 
 	/**
@@ -57,28 +44,14 @@ public class UserAgentContextHolder {
 	 *
 	 * @return the user agent context
 	 */
-	public static Wrapper getUserAgentContext() {
-		Wrapper useragentWrapper = context.get();
-		if (useragentWrapper == null) {
-			useragentWrapper = inheritableContext.get();
-		}
-		return useragentWrapper;
-	}
-
-	/**
-	 * Sets user agent context.
-	 *
-	 * @param useragentWrapper the useragent wrapper
-	 */
-	public static void setUserAgentContext(Wrapper useragentWrapper) {
-		setUserAgentContext(useragentWrapper, false);
+	public static UserAgent getUserAgentContext() {
+		return inheritableContext.get();
 	}
 
 	/**
 	 * Clean user agent context.
 	 */
 	public static void cleanUserAgentContext() {
-		context.remove();
 		inheritableContext.remove();
 	}
 }
