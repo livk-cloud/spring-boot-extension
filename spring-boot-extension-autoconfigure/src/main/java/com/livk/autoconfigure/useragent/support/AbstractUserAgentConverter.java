@@ -22,6 +22,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 
 /**
+ * The type Abstract user agent converter.
+ *
+ * @param <T> the type parameter
  * @author livk
  */
 public abstract class AbstractUserAgentConverter<T> implements UserAgentConverter {
@@ -42,21 +45,75 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 			.build();
 	}
 
+	/**
+	 * Create t.
+	 *
+	 * @param headers the headers
+	 * @return the t
+	 */
 	protected abstract T create(HttpHeaders headers);
 
+	/**
+	 * Browser string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String browser(T t);
 
+	/**
+	 * Browser type string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String browserType(T t);
 
+	/**
+	 * Browser version string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String browserVersion(T t);
 
+	/**
+	 * Os string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String os(T t);
 
+	/**
+	 * Os version string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String osVersion(T t);
 
+	/**
+	 * Device type string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String deviceType(T t);
 
+	/**
+	 * Device name string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String deviceName(T t);
 
+	/**
+	 * Device brand string.
+	 *
+	 * @param t the t
+	 * @return the string
+	 */
 	protected abstract String deviceBrand(T t);
 }

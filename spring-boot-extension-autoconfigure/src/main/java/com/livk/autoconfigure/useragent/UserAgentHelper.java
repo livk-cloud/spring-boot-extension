@@ -23,6 +23,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 
 /**
+ * The type User agent helper.
+ *
  * @author livk
  */
 public class UserAgentHelper {
@@ -33,6 +35,12 @@ public class UserAgentHelper {
 		conversionService = SpringContextHolder.getBean(ConversionService.class);
 	}
 
+	/**
+	 * Convert user agent.
+	 *
+	 * @param headers the headers
+	 * @return the user agent
+	 */
 	public static UserAgent convert(HttpHeaders headers) {
 		return conversionService.convert(headers, UserAgent.class);
 	}
