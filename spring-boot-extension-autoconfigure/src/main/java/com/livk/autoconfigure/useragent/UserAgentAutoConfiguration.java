@@ -17,80 +17,92 @@
 
 package com.livk.autoconfigure.useragent;
 
-import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentFilter;
-import com.livk.autoconfigure.useragent.reactive.ReactiveUserAgentResolver;
-import com.livk.autoconfigure.useragent.servlet.UserAgentFilter;
-import com.livk.autoconfigure.useragent.servlet.UserAgentResolver;
-import lombok.RequiredArgsConstructor;
+import com.blueconic.browscap.BrowsCapField;
+import com.blueconic.browscap.ParseException;
+import com.blueconic.browscap.UserAgentParser;
+import com.blueconic.browscap.UserAgentService;
+import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.autoconfigure.useragent.browscap.BrowscapUserAgentConverter;
+import com.livk.autoconfigure.useragent.yauaa.YauaaUserAgentConverter;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.Scope;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * The type User agent auto configuration.
  */
-@AutoConfiguration
+@SpringAutoService
+@AutoConfiguration(before = UserAgentConfiguration.class)
+@ImportAutoConfiguration(UserAgentConfiguration.class)
 public class UserAgentAutoConfiguration {
 
-	/**
-	 * The type User agent mvc auto configuration.
-	 */
-	@AutoConfiguration
-	@RequiredArgsConstructor
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-	public static class UserAgentMvcAutoConfiguration implements WebMvcConfigurer {
 
+	@AutoConfiguration
+	@ConditionalOnClass(UserAgentParser.class)
+	public static class BrowscapAutoConfiguration {
 
 		/**
-		 * Filter registration bean filter registration bean.
+		 * User agent parser user agent parser.
 		 *
-		 * @return the filter registration bean
+		 * @return the user agent parser
+		 * @throws IOException    the io exception
+		 * @throws ParseException the parse exception
 		 */
 		@Bean
-		public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
-			FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
-			registrationBean.setFilter(new UserAgentFilter());
-			registrationBean.addUrlPatterns("/*");
-			registrationBean.setName("userAgentFilter");
-			registrationBean.setOrder(1);
-			return registrationBean;
+		public UserAgentParser userAgentParser() throws IOException, ParseException {
+			return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
 		}
 
-		@Override
-		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-			resolvers.add(new UserAgentResolver());
+		/**
+		 * Browscap user agent parse browscap user agent parse.
+		 *
+		 * @param userAgentAnalyzer the user agent analyzer
+		 * @return the browscap user agent parse
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		public BrowscapUserAgentConverter browscapUserAgentConverter(UserAgentParser userAgentAnalyzer) {
+			return new BrowscapUserAgentConverter(userAgentAnalyzer);
 		}
 	}
 
-	/**
-	 * The type User agent reactive auto configuration.
-	 */
 	@AutoConfiguration
-	@RequiredArgsConstructor
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-	public static class UserAgentReactiveAutoConfiguration implements WebFluxConfigurer {
-
+	@ConditionalOnClass(UserAgentAnalyzer.class)
+	public static class YauaaAutoConfiguration {
 
 		/**
-		 * Reactive user agent filter reactive user agent filter.
+		 * User agent analyzer user agent analyzer.
 		 *
-		 * @return the reactive user agent filter
+		 * @return the user agent analyzer
 		 */
 		@Bean
-		public ReactiveUserAgentFilter reactiveUserAgentFilter() {
-			return new ReactiveUserAgentFilter();
+		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+		public UserAgentAnalyzer userAgentAnalyzer() {
+			return UserAgentAnalyzer
+				.newBuilder()
+				.hideMatcherLoadStats()
+				.withCache(10000)
+				.build();
 		}
 
-		@Override
-		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-			configurer.addCustomResolver(new ReactiveUserAgentResolver());
+		/**
+		 * Yauaa user agent parse yauaa user agent parse.
+		 *
+		 * @param userAgentAnalyzer the user agent analyzer
+		 * @return the yauaa user agent parse
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		public YauaaUserAgentConverter yauaaUserAgentConverter(UserAgentAnalyzer userAgentAnalyzer) {
+			return new YauaaUserAgentConverter(userAgentAnalyzer);
 		}
 	}
 }
