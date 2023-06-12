@@ -30,3 +30,7 @@ com.livk.oss.minio.controller.OssControllerTest
 com.livk.rocket.producer.controller.RocketProducerTest
 com.livk.rocket.producer.controller.ExtRocketProducerTest
 com.livk.crypto.mvc.controller.InfoMvcControllerTest
+com.livk.proto.amqp.controller.UserControllerTest
+com.livk.proto.kafka.controller.UserControllerTest
+com.livk.proto.pulsar.controller.UserControllerTest
+com.livk.proto.rocketmq.controller.UserControllerTest

@@ -1,0 +1,6 @@
+spring:
+  pulsar:
+    client:
+      service-url: pulsar://livk.com:6650
+server:
+  port: 9878

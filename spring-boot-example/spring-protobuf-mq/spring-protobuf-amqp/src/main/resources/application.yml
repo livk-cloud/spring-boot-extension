@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    host: livk.com
+    username: admin
+    password: admin
+server:
+  port: 9877

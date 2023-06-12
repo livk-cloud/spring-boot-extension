@@ -1,0 +1,9 @@
+server:
+  port: 9879
+
+rocketmq:
+  name-server: livk.com:9876
+  producer:
+    group: producer-group
+  consumer:
+    group: consumer-group

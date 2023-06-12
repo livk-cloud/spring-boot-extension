@@ -1,0 +1,40 @@
+plugins {
+    id "com.livk.common"
+    alias libs.plugins.google.protobuf
+}
+
+dependencies {
+    api project(":spring-extension-commons")
+    api "com.google.protobuf:protobuf-java"
+    api "io.github.livk-cloud:mapstruct-spring-boot-starter"
+    annotationProcessor "org.mapstruct:mapstruct-processor"
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "src/main/protobuf"
+        }
+    }
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.23.2"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.53.0"
+        }
+    }
+
+    generateProtoTasks {
+        ofSourceSet("main").configureEach {
+            plugins {
+                grpc {}
+            }
+        }
+    }
+}
