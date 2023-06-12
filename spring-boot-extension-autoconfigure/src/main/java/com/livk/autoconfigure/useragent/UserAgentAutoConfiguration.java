@@ -45,6 +45,9 @@ import java.util.Arrays;
 public class UserAgentAutoConfiguration {
 
 
+	/**
+	 * The type Browscap auto configuration.
+	 */
 	@AutoConfiguration
 	@ConditionalOnClass(UserAgentParser.class)
 	public static class BrowscapAutoConfiguration {
@@ -74,6 +77,9 @@ public class UserAgentAutoConfiguration {
 		}
 	}
 
+	/**
+	 * The type Yauaa auto configuration.
+	 */
 	@AutoConfiguration
 	@ConditionalOnClass(UserAgentAnalyzer.class)
 	public static class YauaaAutoConfiguration {
