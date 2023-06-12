@@ -27,7 +27,7 @@ import org.springframework.web.service.annotation.GetExchange;
  *
  * @author livk
  */
-@HttpProvider(url = "https://jwt.io/")
+@HttpProvider(url = "http://localhost:${server.port:8080}/rpc")
 public interface RemoteService {
 
 	@GetExchange()
