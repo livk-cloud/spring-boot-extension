@@ -1,6 +1,6 @@
 plugins {
     id "com.livk.common"
-    alias(libs.plugins.google.protobuf)
+    alias libs.plugins.google.protobuf
 }
 
 dependencies {
