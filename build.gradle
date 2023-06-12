@@ -24,8 +24,8 @@ configure(gradleModuleProjects) {
     dependencies {
         management platform(project(":spring-extension-dependencies"))
         compileProcessor "org.projectlombok:lombok"
-        compileProcessor "org.springframework.boot:spring-boot-configuration-processor"
-        compileProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
         testImplementation "org.springframework:spring-tx"
         testImplementation "org.springframework.boot:spring-boot-starter-test"
     }
