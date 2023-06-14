@@ -39,13 +39,13 @@ class FileUtilsTest {
 	@Test
 	void download() throws IOException {
 		InputStream inputStream = new ByteArrayInputStream("livk".getBytes());
-		FileUtils.download(inputStream, "username.txt");
-		assertTrue(new File("username.txt").delete());
+		FileUtils.download(inputStream, "./username.txt");
+		assertTrue(new File("./username.txt").delete());
 	}
 
 	@Test
 	void createNewFile() throws IOException {
-		File file = new File("file.txt");
+		File file = new File("./file.txt");
 		assertTrue(FileUtils.createNewFile(file));
 		assertTrue(file.delete());
 	}
