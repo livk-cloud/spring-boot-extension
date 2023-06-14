@@ -8,10 +8,10 @@ com.livk.graphql.r2dbc.controller.BookControllerTest
 com.livk.graphql.r2dbc.controller.GreetingControllerTest
 com.livk.curator.lock.ShopControllerTest
 com.livk.redisson.lock.ShopControllerTest
-com.livk.dynamic.example.controller.UserControllerTest
-com.livk.mybatis.example.mapper.UserMapperTest
-com.livk.mybatis.example.service.UserServiceTest
-com.livk.mybatis.example.controller.UserControllerTest
+com.livk.dynamic.controller.UserControllerTest
+com.livk.mybatis.mapper.UserMapperTest
+com.livk.mybatis.service.UserServiceTest
+com.livk.mybatis.controller.UserControllerTest
 com.livk.mysql.json.controller.UserControllerTest
 com.livk.postgres.json.controller.UserControllerTest
 com.livk.mqtt.MqttTest
@@ -19,7 +19,7 @@ com.livk.provider.controller.RabbitControllerTest
 com.livk.redisson.limit.controller.RateLimiterControllerTest
 com.livk.redisson.schedule.ScheduleHandlerTest
 com.livk.sso.auth.controller.UserControllerTest
-com.livk.video.example.controller.VideoControllerTest
+com.livk.video.controller.VideoControllerTest
 com.livk.caffeine.controller.CacheControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
 com.livk.commons.io.FileUtilsTest
@@ -34,3 +34,4 @@ com.livk.proto.amqp.controller.UserControllerTest
 com.livk.proto.kafka.controller.UserControllerTest
 com.livk.proto.pulsar.controller.UserControllerTest
 com.livk.proto.rocketmq.controller.UserControllerTest
+com.livk.curator.CuratorAppTest

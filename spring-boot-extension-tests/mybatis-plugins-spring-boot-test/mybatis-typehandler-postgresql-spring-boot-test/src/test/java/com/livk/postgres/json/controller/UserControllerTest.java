@@ -17,7 +17,7 @@
 
 package com.livk.postgres.json.controller;
 
-import com.livk.json.PGSQLTypeHandlerExampleApp;
+import com.livk.postgres.json.PGSQLTypeHandlerExampleApp;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
