@@ -56,3 +56,22 @@ Content-Disposition: form-data; name="code"
 --WebAppBoundary--
 
 ###
+# http://localhost:9000/oauth2/authorize?client_id=livk-client&client_secret=secret&response_type=code&redirect_uri=https://www.baidu.com
+POST http://localhost:9000/oauth2/token
+Authorization: Basic bGl2ay1jbGllbnQ6c2VjcmV0
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="grant_type"
+
+authorization_code
+
+--WebAppBoundary
+Content-Disposition: form-data; name="code"
+
+qk5FvL8ds5ZbiARA75qCLOwqEIn88S7cGw1Vb3vbUZZaJDj7LmsDd_5voA7F2oC0XBZkUtschgNTcYgOjikMoLwOfk9bonUsTrvnC5Ofgra_JRzw7NwDoD-GxT5HIzq_
+
+--WebAppBoundary
+Content-Disposition: form-data; name="redirect_uri"
+
+https://www.baidu.com
