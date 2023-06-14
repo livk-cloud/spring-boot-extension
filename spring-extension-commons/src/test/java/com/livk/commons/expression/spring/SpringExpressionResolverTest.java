@@ -83,8 +83,4 @@ class SpringExpressionResolverTest {
 		assertEquals("livk:livk",
 			resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
 	}
-
-	@SuppressWarnings("unused")
-	private void parseMethod(String username) {
-	}
 }

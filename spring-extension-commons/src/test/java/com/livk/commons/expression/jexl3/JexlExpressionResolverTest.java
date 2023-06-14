@@ -69,8 +69,4 @@ class JexlExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 			resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
 	}
-
-	@SuppressWarnings("unused")
-	private void parseMethod(String username) {
-	}
 }

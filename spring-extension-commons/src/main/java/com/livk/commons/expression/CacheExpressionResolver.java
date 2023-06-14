@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see com.livk.commons.expression.aviator.AviatorExpressionResolver
  * @see Environment
  */
-public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver implements ExpressionResolver {
+public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver  {
 
 	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 
@@ -65,7 +65,7 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 	 * 对表达式进行数据包装，如果有必要
 	 *
 	 * @param expression 表达式
-	 * @return 包装后的表达式
+	 * @return 包装后的表达式 string
 	 */
 	protected String wrapIfNecessary(String expression) {
 		return expression;
@@ -75,9 +75,10 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 	 * 对表达式进行处理生成EXPRESSION
 	 *
 	 * @param value 表达式
-	 * @return EXPRESSION
+	 * @return EXPRESSION expression
+	 * @throws Throwable the throwable
 	 */
-	protected abstract EXPRESSION compile(String value);
+	protected abstract EXPRESSION compile(String value) throws Throwable;
 
 	/**
 	 * 表达式计算
@@ -87,6 +88,7 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 	 * @param context    环境上下文
 	 * @param returnType 返回类型
 	 * @return T
+	 * @throws Throwable the throwable
 	 */
-	protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType);
+	protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType) throws Throwable;
 }

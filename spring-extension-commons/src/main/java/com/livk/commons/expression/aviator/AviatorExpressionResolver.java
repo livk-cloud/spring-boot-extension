@@ -21,7 +21,6 @@ import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
 import com.livk.commons.expression.CacheExpressionResolver;
 import com.livk.commons.expression.Context;
-import com.livk.commons.expression.ExpressionResolver;
 
 /**
  * 使用<a href="https://github.com/killme2008/aviator">Aviator</a>实现的表达式解析器
@@ -29,7 +28,7 @@ import com.livk.commons.expression.ExpressionResolver;
  * @author livk
  * @see AviatorEvaluator
  */
-public class AviatorExpressionResolver extends CacheExpressionResolver<Expression> implements ExpressionResolver {
+public class AviatorExpressionResolver extends CacheExpressionResolver<Expression> {
 
 	@Override
 	protected Expression compile(String value) {

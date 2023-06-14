@@ -84,10 +84,6 @@ class AviatorExpressionResolverTest {
 		assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
 	}
 
-	@SuppressWarnings("unused")
-	private void parseMethod(String username) {
-	}
-
 	@Configuration
 	static class SpringConfig {
 
