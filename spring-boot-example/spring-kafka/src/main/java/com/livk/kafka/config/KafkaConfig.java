@@ -15,28 +15,20 @@
  *
  */
 
-package com.livk.common.config;
+package com.livk.kafka.config;
 
-import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.common.constant.KafkaConstant;
+import com.livk.kafka.KafkaConstant;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
 /**
- * <p>
- * KafkaConfig
- * </p>
- *
  * @author livk
  */
-@SpringAutoService
-@AutoConfiguration(after = KafkaAutoConfiguration.class)
-public class KafkaConfiguration {
-
+@Configuration
+public class KafkaConfig {
 	@Bean
 	public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
 		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties());

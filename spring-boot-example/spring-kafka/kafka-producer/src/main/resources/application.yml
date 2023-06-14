@@ -1,7 +1,0 @@
-spring:
-  kafka:
-    bootstrap-servers: livk.com:9092
-    producer:
-      bootstrap-servers: ${spring.kafka.bootstrap-servers}
-server:
-  port: 9866

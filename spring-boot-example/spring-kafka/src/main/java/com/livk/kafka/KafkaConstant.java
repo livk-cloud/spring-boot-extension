@@ -15,25 +15,19 @@
  *
  */
 
-package com.livk.producer;
-
-import com.livk.commons.spring.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+package com.livk.kafka;
 
 /**
  * <p>
- * KafkaProducerApp
+ * KafkaConstant
  * </p>
  *
  * @author livk
  */
-@EnableScheduling
-@SpringBootApplication
-public class KafkaProducerApp {
+public interface KafkaConstant {
 
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
-	}
+	String TOPIC = "livk-topic";
+
+	String NEW_TOPIC = "livk-new-topic";
 
 }

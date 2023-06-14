@@ -15,34 +15,32 @@
  *
  */
 
-package com.livk.producer;
+package com.livk.kafka.controller;
 
-import com.livk.common.constant.KafkaConstant;
+import com.livk.kafka.KafkaConstant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * <p>
- * ProducerTask
- * </p>
- *
  * @author livk
  */
 @Slf4j
-@Component
+@RestController
+@RequestMapping("kafka")
 @RequiredArgsConstructor
-public class ProducerTask {
+public class ProducerController {
 
 	private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-	@Scheduled(cron = "0/10 * * * * ?")
+	@GetMapping("send")
 	public void producer() {
 		kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
 		// 异步获取结果
@@ -54,7 +52,6 @@ public class ProducerTask {
 					log.info("result:{}", result);
 				}
 			});
-
 		// 同步获取结果
 		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
 		try {
@@ -64,5 +61,4 @@ public class ProducerTask {
 			log.error("ex:{}", e.getMessage());
 		}
 	}
-
 }
