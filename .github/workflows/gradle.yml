@@ -39,6 +39,25 @@ jobs:
           - 6380:6379
           - 8001:8001
 
+      zookeeper:
+        image: zookeeper
+        ports:
+          - 2181:2181
+
+      rabbitmq:
+        image: rabbitmq
+        env:
+          RABBITMQ_DEFAULT_USER: admin
+          RABBITMQ_DEFAULT_PASS: admin
+        ports:
+            - 5672:5672
+            - 15672:15672
+
+      pulsar:
+        image: apachepulsar/pulsar-standalone
+        ports:
+            - 6650:6650
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
