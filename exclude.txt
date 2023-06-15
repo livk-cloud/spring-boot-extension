@@ -19,10 +19,8 @@ com.livk.provider.controller.RabbitControllerTest
 com.livk.redisson.limit.controller.RateLimiterControllerTest
 com.livk.redisson.schedule.ScheduleHandlerTest
 com.livk.sso.auth.controller.UserControllerTest
-com.livk.video.controller.VideoControllerTest
 com.livk.caffeine.controller.CacheControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
-com.livk.commons.io.FileUtilsTest
 com.livk.redisearch.mvc.controller.StudentControllerTest
 com.livk.redisearch.webflux.controller.StudentControllerTest
 com.livk.oss.aliyun.controller.OssControllerTest
