@@ -7,7 +7,6 @@ com.livk.graphql.mybatis.controller.GreetingControllerTest
 com.livk.graphql.r2dbc.controller.BookControllerTest
 com.livk.graphql.r2dbc.controller.GreetingControllerTest
 com.livk.curator.lock.ShopControllerTest
-com.livk.redisson.lock.ShopControllerTest
 com.livk.dynamic.controller.UserControllerTest
 com.livk.mybatisplugins.mapper.UserMapperTest
 com.livk.mybatisplugins.service.UserServiceTest
@@ -16,7 +15,6 @@ com.livk.mysql.json.controller.UserControllerTest
 com.livk.postgres.json.controller.UserControllerTest
 com.livk.mqtt.MqttTest
 com.livk.provider.controller.RabbitControllerTest
-com.livk.redisson.limit.controller.RateLimiterControllerTest
 com.livk.sso.auth.controller.UserControllerTest
 com.livk.pulsar.producer.controller.MessageControllerTest
 com.livk.oss.aliyun.controller.OssControllerTest
