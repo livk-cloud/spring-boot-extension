@@ -32,7 +32,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.SpringVersion;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.core.env.Environment;
-import org.springframework.util.CollectionUtils;
 
 import java.io.PrintStream;
 import java.time.LocalDateTime;
@@ -56,12 +55,14 @@ public class SpringLauncher {
 	 */
 	@SneakyThrows
 	public static ConfigurableApplicationContext run(String[] args) {
-		StackTraceElement lastElement = CollectionUtils.lastElement(Arrays.asList(Thread.currentThread().getStackTrace()));
-		Class<?> type = ClassUtils.forName(lastElement.getClassName(), Thread.currentThread().getContextClassLoader());
-		if (type.isAnnotationPresent(SpringBootApplication.class)) {
-			return run(type, args);
-		}
-		throw new AnnotationConfigurationException(lastElement.getClassName() + " 缺少@" + SpringBootApplication.class.getName() + "注解");
+		Class<?> mainClass = Arrays.stream(Thread.currentThread().getStackTrace())
+			.map(StackTraceElement::getClassName)
+			.filter(StringUtils::isNotBlank)
+			.map(name -> ClassUtils.resolveClassName(name, Thread.currentThread().getContextClassLoader()))
+			.filter(type -> type.isAnnotationPresent(SpringBootApplication.class))
+			.findFirst()
+			.orElseThrow(() -> new AnnotationConfigurationException(" 缺少@" + SpringBootApplication.class.getName() + "注解"));
+		return run(mainClass, args);
 	}
 
 	/**
