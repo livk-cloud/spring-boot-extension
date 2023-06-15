@@ -21,7 +21,28 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-cmd "redis-cli config set requirepass 123456"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      redis-stack:
+        image: redis/redis-stack
+        ports:
+          - 6380:6379
+          - 8001:8001
+
     steps:
+      - name: Set up host
+        run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
+
       - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3

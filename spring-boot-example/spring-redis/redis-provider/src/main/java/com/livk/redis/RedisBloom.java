@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.redisson.bloom.support;
+package com.livk.redis;
 
 import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
