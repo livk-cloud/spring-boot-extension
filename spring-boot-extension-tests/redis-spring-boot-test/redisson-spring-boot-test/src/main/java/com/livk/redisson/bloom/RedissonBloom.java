@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.redisson.bloom.support;
+package com.livk.redisson.bloom;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

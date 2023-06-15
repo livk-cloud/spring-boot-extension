@@ -15,7 +15,7 @@
  *
  */
 
-create table user
+create table if not exists user
 (
     id       bigint auto_increment
         primary key,

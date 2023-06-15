@@ -21,7 +21,47 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-cmd "redis-cli config set requirepass 123456"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      redis-stack:
+        image: redis/redis-stack
+        ports:
+          - 6380:6379
+          - 8001:8001
+
+      zookeeper:
+        image: zookeeper
+        ports:
+          - 2181:2181
+
+      rabbitmq:
+        image: rabbitmq
+        env:
+          RABBITMQ_DEFAULT_USER: admin
+          RABBITMQ_DEFAULT_PASS: admin
+        ports:
+            - 5672:5672
+            - 15672:15672
+
+      pulsar:
+        image: apachepulsar/pulsar-standalone
+        ports:
+            - 6650:6650
+
     steps:
+      - name: Set up host
+        run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
+
       - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3

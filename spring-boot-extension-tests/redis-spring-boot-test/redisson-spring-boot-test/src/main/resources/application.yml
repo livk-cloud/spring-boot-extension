@@ -1,14 +1,9 @@
 spring:
-  data:
-    redis:
-      host: livk.com
-      password: 123456
-      port: 6379
   redisson:
     config:
       singleServerConfig:
-        address: "redis://livk.com:6379"
-        password: "123456"
+        address: redis://livk.com:6379
+        password: 123456
         database: 7
         idleConnectionTimeout: 10000
         connectTimeout: 10000
