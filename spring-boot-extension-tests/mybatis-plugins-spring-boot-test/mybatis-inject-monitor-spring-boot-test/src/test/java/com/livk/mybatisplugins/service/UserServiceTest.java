@@ -19,8 +19,8 @@ package com.livk.mybatisplugins.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.livk.commons.bean.BeanLambdaFunc;
 import com.livk.commons.bean.domain.PageInfo;
-import com.livk.commons.function.FieldFunc;
 import com.livk.mybatisplugins.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -86,7 +86,7 @@ class UserServiceTest {
 	@Test
 	void list() {
 		try (Page<User> page = PageHelper.<User>startPage(1, 10)
-			.countColumn(FieldFunc.getName(User::getId))
+			.countColumn(BeanLambdaFunc.fieldName(User::getId))
 			.doSelectPage(userService::list)) {
 			PageInfo<User> result = new PageInfo<>(page);
 			assertNotNull(result);

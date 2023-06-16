@@ -17,7 +17,7 @@
 
 package com.livk.redisearch.mvc;
 
-import com.livk.commons.function.FieldFunc;
+import com.livk.commons.bean.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.mvc.entity.Student;
@@ -58,9 +58,9 @@ public class RediSearchApp {
 
 			if (!search.ftList().contains(Student.INDEX)) {
 				search.ftCreate(Student.INDEX,
-					Field.text(FieldFunc.getName(Student::getName)).weight(5.0).build(),
-					Field.text(FieldFunc.getName(Student::getSex)).build(),
-					Field.text(FieldFunc.getName(Student::getDesc)).build(),
+					Field.text(BeanLambdaFunc.fieldName(Student::getName)).weight(5.0).build(),
+					Field.text(BeanLambdaFunc.fieldName(Student::getSex)).build(),
+					Field.text(BeanLambdaFunc.fieldName(Student::getDesc)).build(),
 					Field.tag("class").build());
 			}
 			Random random = new Random();

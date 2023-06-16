@@ -19,6 +19,7 @@ package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -56,9 +57,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return the read methods
 	 */
 	public Set<Method> getReadMethods(Class<?> targetClass) {
-		Field[] fields = targetClass.getDeclaredFields();
-		return Arrays.stream(fields)
-			.map(field -> getReadMethod(targetClass, field))
+		return Arrays.stream(new BeanWrapperImpl(targetClass).getPropertyDescriptors())
+			.map(PropertyDescriptor::getReadMethod)
 			.filter(Objects::nonNull)
 			.collect(Collectors.toSet());
 	}
@@ -87,9 +87,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return the write methods
 	 */
 	public Set<Method> getWriteMethods(Class<?> targetClass) {
-		Field[] fields = targetClass.getDeclaredFields();
-		return Arrays.stream(fields)
-			.map(field -> getWriteMethod(targetClass, field))
+		return Arrays.stream(new BeanWrapperImpl(targetClass).getPropertyDescriptors())
+			.map(PropertyDescriptor::getWriteMethod)
 			.filter(Objects::nonNull)
 			.collect(Collectors.toSet());
 	}
@@ -121,7 +120,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 		List<Field> allFields = new ArrayList<>();
 		Class<?> currentClass = targetClass;
 		while (currentClass != null) {
-			final Field[] declaredFields = currentClass.getDeclaredFields();
+			Field[] declaredFields = currentClass.getDeclaredFields();
 			Collections.addAll(allFields, declaredFields);
 			currentClass = currentClass.getSuperclass();
 		}

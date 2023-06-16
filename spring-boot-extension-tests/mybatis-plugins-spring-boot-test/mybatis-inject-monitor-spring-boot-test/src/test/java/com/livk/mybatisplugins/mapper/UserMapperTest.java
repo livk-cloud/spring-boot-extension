@@ -20,8 +20,8 @@ package com.livk.mybatisplugins.mapper;
 import com.fasterxml.jackson.databind.JavaType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.livk.commons.bean.BeanLambdaFunc;
 import com.livk.commons.bean.domain.PageInfo;
-import com.livk.commons.function.FieldFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
 import com.livk.mybatisplugins.entity.User;
@@ -82,7 +82,7 @@ class UserMapperTest {
 	@Test
 	public void selectAllTest() {
 		try (Page<User> page = PageHelper.<User>startPage(1, 10)
-			.countColumn(FieldFunc.getName(User::getId))
+			.countColumn(BeanLambdaFunc.fieldName(User::getId))
 			.doSelectPage(userMapper::list)) {
 			PageInfo<User> result = new PageInfo<>(page);
 			assertNotNull(result);

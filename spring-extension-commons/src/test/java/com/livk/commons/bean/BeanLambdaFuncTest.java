@@ -15,39 +15,46 @@
  *
  */
 
-package com.livk.commons.function;
+package com.livk.commons.bean;
 
-import com.livk.commons.bean.domain.Pair;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author livk
  */
-class FieldFuncTest {
+class BeanLambdaFuncTest {
 
 	final Field field1 = Maker.class.getDeclaredField("no");
 	final Field field2 = Maker.class.getDeclaredField("username");
 
-	FieldFuncTest() throws NoSuchFieldException {
+	final Method method1 = Maker.class.getMethod("getNo");
+	final Method method2 = Maker.class.getMethod("getUsername");
+
+	BeanLambdaFuncTest() throws NoSuchFieldException, NoSuchMethodException {
 	}
 
 	@Test
-	void get() {
-		assertEquals("key", FieldFunc.<Pair<String, String>>getName(Pair::key));
-		assertEquals("value", FieldFunc.<Pair<String, String>>getName(Pair::value));
-		assertEquals(field1.getName(), FieldFunc.getName(Maker::getNo));
-		assertEquals(field2.getName(), FieldFunc.getName(Maker::getUsername));
+	void method() {
+		assertEquals(method1.getName(), BeanLambdaFunc.methodName(Maker::getNo));
+		assertEquals(method2.getName(), BeanLambdaFunc.methodName(Maker::getUsername));
+
+		assertEquals(method1, BeanLambdaFunc.method(Maker::getNo));
+		assertEquals(method2, BeanLambdaFunc.method(Maker::getUsername));
 	}
 
 	@Test
-	void getField() {
-		assertEquals(field1, FieldFunc.get(Maker::getNo));
-		assertEquals(field2, FieldFunc.get(Maker::getUsername));
+	void field() {
+		assertEquals(field1.getName(), BeanLambdaFunc.fieldName(Maker::getNo));
+		assertEquals(field2.getName(), BeanLambdaFunc.fieldName(Maker::getUsername));
+
+		assertEquals(field1, BeanLambdaFunc.field(Maker::getNo));
+		assertEquals(field2, BeanLambdaFunc.field(Maker::getUsername));
 	}
 
 	@Data

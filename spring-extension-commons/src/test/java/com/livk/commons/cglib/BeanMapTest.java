@@ -17,7 +17,7 @@
 
 package com.livk.commons.cglib;
 
-import com.livk.commons.function.FieldFunc;
+import com.livk.commons.bean.BeanLambdaFunc;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.junit.jupiter.api.Test;
@@ -43,15 +43,15 @@ class BeanMapTest {
 			.setBeans(list);
 
 		BeanMap beanMap = BeanMap.create(bean);
-		assertEquals(0L, beanMap.get(FieldFunc.getName(Bean::getId)));
-		assertEquals("livk", beanMap.get(FieldFunc.getName(Bean::getUsername)));
-		assertEquals(Set.of(list), Set.of(beanMap.get(FieldFunc.getName(Bean::getBeans))));
+		assertEquals(0L, beanMap.get(BeanLambdaFunc.fieldName(Bean::getId)));
+		assertEquals("livk", beanMap.get(BeanLambdaFunc.fieldName(Bean::getUsername)));
+		assertEquals(Set.of(list), Set.of(beanMap.get(BeanLambdaFunc.fieldName(Bean::getBeans))));
 
-		assertEquals(1L, beanMap.get(list.get(0), FieldFunc.getName(Bean::getId)));
+		assertEquals(1L, beanMap.get(list.get(0), BeanLambdaFunc.fieldName(Bean::getId)));
 
-		assertEquals(Long.class, beanMap.getPropertyType(FieldFunc.getName(Bean::getId)));
-		assertEquals(String.class, beanMap.getPropertyType(FieldFunc.getName(Bean::getUsername)));
-		assertEquals(List.class, beanMap.getPropertyType(FieldFunc.getName(Bean::getBeans)));
+		assertEquals(Long.class, beanMap.getPropertyType(BeanLambdaFunc.fieldName(Bean::getId)));
+		assertEquals(String.class, beanMap.getPropertyType(BeanLambdaFunc.fieldName(Bean::getUsername)));
+		assertEquals(List.class, beanMap.getPropertyType(BeanLambdaFunc.fieldName(Bean::getBeans)));
 	}
 
 	@Data

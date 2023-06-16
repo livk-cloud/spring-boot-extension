@@ -19,8 +19,8 @@ package com.livk.mybatisplugins.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.livk.commons.bean.BeanLambdaFunc;
 import com.livk.commons.bean.domain.PageInfo;
-import com.livk.commons.function.FieldFunc;
 import com.livk.mybatisplugins.entity.User;
 import com.livk.mybatisplugins.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +68,7 @@ public class UserController {
 	public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
 										   @RequestParam(defaultValue = "10") Integer pageSize) {
 		try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
-			.countColumn(FieldFunc.getName(User::getId))
+			.countColumn(BeanLambdaFunc.fieldName(User::getId))
 			.doSelectPage(userService::list)) {
 			PageInfo<User> result = new PageInfo<>(page);
 			return ResponseEntity.ok(result);
