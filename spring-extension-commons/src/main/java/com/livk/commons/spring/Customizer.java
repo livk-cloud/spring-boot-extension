@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.function;
+package com.livk.commons.spring;
 
 /**
  * <p>

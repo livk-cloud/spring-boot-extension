@@ -17,7 +17,7 @@
 
 package com.livk.autoconfigure.http.customizer;
 
-import com.livk.commons.function.Customizer;
+import com.livk.commons.spring.Customizer;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
