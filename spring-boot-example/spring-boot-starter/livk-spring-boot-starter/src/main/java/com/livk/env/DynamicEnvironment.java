@@ -54,7 +54,7 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
 			if (resource.exists()) {
 				InputStream inputStream = resource.getInputStream();
 				Map<String, Object> map = JsonMapperUtils.readValueMap(inputStream, String.class, Object.class);
-				Properties properties = YamlUtils.ymlMapToMap(map);
+				Properties properties = YamlUtils.convertYamlToMap(map);
 				PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
 				propertySources.addLast(livkSource);
 			}
