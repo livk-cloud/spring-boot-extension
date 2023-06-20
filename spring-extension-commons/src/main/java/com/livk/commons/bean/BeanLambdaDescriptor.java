@@ -18,11 +18,11 @@
 package com.livk.commons.bean;
 
 import com.livk.commons.bean.domain.Pair;
+import com.livk.commons.bean.util.BeanUtils;
 import com.livk.commons.bean.util.ClassUtils;
 import com.livk.commons.util.ReflectionUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.invoke.SerializedLambda;
@@ -75,12 +75,13 @@ class BeanLambdaDescriptor {
 	}
 
 	private void initField() {
-		PropertyDescriptor[] propertyDescriptors = new BeanWrapperImpl(type).getPropertyDescriptors();
+		PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(type);
 		for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
 			if (propertyDescriptor.getReadMethod().equals(method)) {
 				this.propertyDescriptor = propertyDescriptor;
 				String fieldName = propertyDescriptor.getName();
-				this.field = ReflectionUtils.findField(type, fieldName);
+				Class<?> fieldType = propertyDescriptor.getPropertyType();
+				this.field = ReflectionUtils.findField(type, fieldName, fieldType);
 			}
 		}
 	}

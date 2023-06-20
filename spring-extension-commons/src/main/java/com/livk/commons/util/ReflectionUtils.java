@@ -17,9 +17,9 @@
 
 package com.livk.commons.util;
 
+import com.livk.commons.bean.util.BeanUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -57,7 +57,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return the read methods
 	 */
 	public Set<Method> getReadMethods(Class<?> targetClass) {
-		return Arrays.stream(new BeanWrapperImpl(targetClass).getPropertyDescriptors())
+		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
 			.map(PropertyDescriptor::getReadMethod)
 			.filter(method -> !method.getName().equals("getClass"))
 			.collect(Collectors.toSet());
@@ -87,7 +87,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return the write methods
 	 */
 	public Set<Method> getWriteMethods(Class<?> targetClass) {
-		return Arrays.stream(new BeanWrapperImpl(targetClass).getPropertyDescriptors())
+		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
 			.map(PropertyDescriptor::getWriteMethod)
 			.filter(Objects::nonNull)
 			.collect(Collectors.toSet());
