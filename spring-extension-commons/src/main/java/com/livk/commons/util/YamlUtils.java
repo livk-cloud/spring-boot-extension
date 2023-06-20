@@ -18,12 +18,12 @@
 package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ public class YamlUtils {
 		if (CollectionUtils.isEmpty(map)) {
 			return "";
 		}
-		Map<String, Object> yamlMap = toYmlMap(map);
+		Map<String, Object> yamlMap = convertMapToYaml(map);
 		return YAML.dumpAsMap(yamlMap);
 	}
 
@@ -58,54 +58,92 @@ public class YamlUtils {
 	 * @return yml map
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> toYmlMap(Map<?, ?> map) {
-		Map<String, Object> result = new HashMap<>();
+	public static Map<String, Object> convertMapToYaml(Map<?, ?> map) {
+		Map<String, Object> yamlMap = new LinkedHashMap<>();
 		for (Map.Entry<?, ?> entry : map.entrySet()) {
-			String key = String.valueOf(entry.getKey());
-			Object value = map.get(key);
-			String[] keys = key.split("\\.");
-
-			Map<String, Object> cursor = result;
-			for (int i = 0; i < keys.length; i++) {
-				String k = keys[i];
-				if (cursor.containsKey(k)) {
-					// 检查下一级Map中是否存在该键
-					cursor = (Map<String, Object>) cursor.get(k);
-				} else if (i == keys.length - 1) {
-					cursor.put(k, value);
+			String[] keys = entry.getKey().toString().split("\\.");
+			Map<String, Object> tempMap = yamlMap;
+			for (int i = 0; i < keys.length - 1; i++) {
+				String key = keys[i];
+				if (key.contains("[")) {
+					int index = index(key);
+					key = key.substring(0, key.indexOf("["));
+					tempMap.putIfAbsent(key, new ArrayList<>());
+					List<Object> list = (List<Object>) tempMap.get(key);
+					while (list.size() <= index) {
+						list.add(new LinkedHashMap<>());
+					}
+					tempMap = (Map<String, Object>) list.get(index);
 				} else {
-					Map<String, Object> next = new HashMap<>();
-					cursor.put(k, next);
-					cursor = next;
+					tempMap.putIfAbsent(key, new LinkedHashMap<>());
+					tempMap = (Map<String, Object>) tempMap.get(key);
 				}
 			}
+			String lastKey = keys[keys.length - 1];
+			if (lastKey.contains("[")) {
+				int index = index(lastKey);
+				lastKey = lastKey.substring(0, lastKey.indexOf("["));
+				tempMap.putIfAbsent(lastKey, new ArrayList<>());
+				List<Object> list = (List<Object>) tempMap.get(lastKey);
+				while (list.size() <= index) {
+					list.add(null);
+				}
+				list.set(index, entry.getValue());
+			} else {
+				tempMap.put(keys[keys.length - 1], entry.getValue());
+			}
 		}
-		return result;
+		return yamlMap;
+	}
+
+	private static Integer index(String key) {
+		return Integer.parseInt(key.substring(key.indexOf("[") + 1, key.indexOf("]")));
 	}
 
 	/**
 	 * example Map.of("a",Map.of("b",Map.of("c","1"))) -> Map.of(" a.b.c ", " 1 ")
+	 * <p>
+	 * {@see org.springframework.beans.factory.config.YamlProcessor#getFlattenedMap(java.util.Map)}
 	 *
-	 * @param map the map
+	 * @param source the map
 	 * @return the map
 	 */
-	@SuppressWarnings("unchecked")
-	public Properties ymlMapToMap(Map<String, Object> map) {
+	public static Properties convertYamlToMap(Map<String, Object> source) {
 		Properties result = new Properties();
-		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			String key = entry.getKey();
-			Object value = entry.getValue();
-			if (value instanceof Map) {
-				Map<String, Object> childMap = (Map<String, Object>) value;
-				Properties childResult = ymlMapToMap(childMap);
-				for (Map.Entry<Object, Object> childEntry : childResult.entrySet()) {
-					result.put(key + "." + childEntry.getKey(), childEntry.getValue());
+		buildFlattenedMap(result, source, null);
+		return result;
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void buildFlattenedMap(Properties result, Map<String, Object> source, @Nullable String path) {
+		source.forEach((key, value) -> {
+			if (StringUtils.hasText(path)) {
+				if (key.startsWith("[")) {
+					key = path + key;
+				} else {
+					key = path + '.' + key;
+				}
+			}
+			if (value instanceof String) {
+				result.put(key, value);
+			} else if (value instanceof Map map) {
+				// Need a compound key
+				buildFlattenedMap(result, map, key);
+			} else if (value instanceof Collection collection) {
+				// Need a compound key
+				if (collection.isEmpty()) {
+					result.put(key, "");
+				} else {
+					int count = 0;
+					for (Object object : collection) {
+						buildFlattenedMap(result, Collections.singletonMap(
+							"[" + (count++) + "]", object), key);
+					}
 				}
 			} else {
-				result.put(key, value);
+				result.put(key, (value != null ? value : ""));
 			}
-		}
-		return result;
+		});
 	}
 }
 
