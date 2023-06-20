@@ -52,7 +52,7 @@ public class Ip2regionAutoConfiguration {
 	 * @param properties the properties
 	 * @return the ip 2 region search
 	 */
-	@Bean
+	@Bean(destroyMethod = "close")
 	@SneakyThrows
 	public Ip2RegionSearch ip2RegionSearch(Ip2RegionProperties properties) {
 		Resource resource = properties.getFileResource();

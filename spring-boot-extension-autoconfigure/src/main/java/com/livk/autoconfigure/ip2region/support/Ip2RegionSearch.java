@@ -32,7 +32,7 @@ import org.lionsoul.ip2region.xdb.Searcher;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class Ip2RegionSearch {
+public class Ip2RegionSearch implements AutoCloseable {
 
 	private final Searcher searcher;
 
@@ -69,5 +69,10 @@ public class Ip2RegionSearch {
 	 */
 	public String searchAsJson(String ip) {
 		return JsonMapperUtils.writeValueAsString(this.searchAsInfo(ip));
+	}
+
+	@Override
+	public void close() throws Exception {
+		searcher.close();
 	}
 }
