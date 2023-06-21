@@ -50,13 +50,26 @@ jobs:
           RABBITMQ_DEFAULT_USER: admin
           RABBITMQ_DEFAULT_PASS: admin
         ports:
-            - 5672:5672
-            - 15672:15672
+          - 5672:5672
+          - 15672:15672
+          - 15675:15675
+          - 1883:1883
+        options: >-
+          --health-cmd "rabbitmq-plugins enable rabbitmq_mqtt"
+          --health-cmd "rabbitmq-plugins enable rabbitmq_web_mqtt"
 
       pulsar:
         image: apachepulsar/pulsar-standalone
         ports:
-            - 6650:6650
+          - 6650:6650
+
+      minio:
+        image: bitnami/minio
+        env:
+          MINIO_ROOT_USER: admin
+          MINIO_ROOT_PASSWORD: 1375632510
+        ports:
+          - 9010:9000
 
     steps:
       - name: Set up host
