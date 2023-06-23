@@ -1,9 +1,9 @@
 [versions]
-spring-boot = "3.1.0"
+spring-boot = "3.0.8"
 pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
 mybatis = "3.5.13"
-spring-mybatis = "3.0.2"
+spring-mybatis = "3.0.1"
 guava = "32.0.1-jre"
 easyexcel = "3.3.2"
 java-web-socket = "1.5.3"
