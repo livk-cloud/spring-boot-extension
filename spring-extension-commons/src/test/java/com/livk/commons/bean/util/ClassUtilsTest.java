@@ -30,9 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class ClassUtilsTest {
 
-    @Test
-    void toClassTest() {
-        Class<String> result = ClassUtils.toClass(String.class);
-        assertEquals(String.class, result);
-    }
+	@Test
+	void toClassTest() {
+		Class<String> result = ClassUtils.toClass(String.class);
+		assertEquals(String.class, result);
+	}
 }

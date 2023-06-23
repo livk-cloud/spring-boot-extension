@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://livk.com:3306/oauth
+    username: root
+    password: 123456
+  sql:
+    init:
+      schema-locations: classpath:data.sql
+      mode: always
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+rsa:
+  key:
+    jks:
+      password: 123456
+      alias: jwt
+server:
+  port: 9987

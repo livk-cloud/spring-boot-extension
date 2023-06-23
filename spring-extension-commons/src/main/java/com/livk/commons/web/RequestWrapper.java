@@ -43,208 +43,208 @@ import java.util.*;
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
 
-    private final HttpHeaders headers = new HttpHeaders();
+	private final HttpHeaders headers = new HttpHeaders();
 
-    private final Map<String, String[]> parameter = new LinkedHashMap<>(16);
+	private final Map<String, String[]> parameter = new LinkedHashMap<>(16);
 
-    private String body;
+	private String body;
 
-    private boolean bodyReviseStatus = false;
+	private boolean bodyReviseStatus = false;
 
-    /**
-     * Instantiates a new Request wrapper.
-     *
-     * @param request the request
-     */
-    public RequestWrapper(HttpServletRequest request) {
-        super(request);
-        headers.putAll(WebUtils.headers(request));
-        parameter.putAll(request.getParameterMap());
-    }
+	/**
+	 * Instantiates a new Request wrapper.
+	 *
+	 * @param request the request
+	 */
+	public RequestWrapper(HttpServletRequest request) {
+		super(request);
+		headers.putAll(WebUtils.headers(request));
+		parameter.putAll(request.getParameterMap());
+	}
 
-    /**
-     * Sets body.
-     *
-     * @param body the body
-     */
-    public void setBody(String body) {
-        bodyReviseStatus = true;
-        this.body = body;
-    }
+	/**
+	 * Sets body.
+	 *
+	 * @param body the body
+	 */
+	public void setBody(String body) {
+		bodyReviseStatus = true;
+		this.body = body;
+	}
 
-    /**
-     * Add header.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    public void addHeader(String name, String value) {
-        headers.add(name, value);
-    }
+	/**
+	 * Add header.
+	 *
+	 * @param name  the name
+	 * @param value the value
+	 */
+	public void addHeader(String name, String value) {
+		headers.add(name, value);
+	}
 
-    /**
-     * Put parameter.
-     *
-     * @param name   the name
-     * @param values the values
-     */
-    public void putParameter(String name, String[] values) {
-        parameter.merge(name, values, StreamUtils::concatDistinct);
-    }
+	/**
+	 * Put parameter.
+	 *
+	 * @param name   the name
+	 * @param values the values
+	 */
+	public void putParameter(String name, String[] values) {
+		parameter.merge(name, values, StreamUtils::concatDistinct);
+	}
 
-    /**
-     * Put parameter.
-     *
-     * @param name  the name
-     * @param value the value
-     */
-    public void putParameter(String name, String value) {
-        putParameter(name, new String[]{value});
-    }
+	/**
+	 * Put parameter.
+	 *
+	 * @param name  the name
+	 * @param value the value
+	 */
+	public void putParameter(String name, String value) {
+		putParameter(name, new String[]{value});
+	}
 
-    @Override
-    public ServletInputStream getInputStream() throws IOException {
-        return bodyReviseStatus ? new RequestServletInputStream(getRequest(), body) : super.getInputStream();
-    }
+	@Override
+	public ServletInputStream getInputStream() throws IOException {
+		return bodyReviseStatus ? new RequestServletInputStream(getRequest(), body) : super.getInputStream();
+	}
 
-    @SneakyThrows
-    @Override
-    public int getContentLength() {
-        return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLength();
-    }
+	@SneakyThrows
+	@Override
+	public int getContentLength() {
+		return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLength();
+	}
 
-    @SneakyThrows
-    @Override
-    public long getContentLengthLong() {
-        return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLengthLong();
-    }
+	@SneakyThrows
+	@Override
+	public long getContentLengthLong() {
+		return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLengthLong();
+	}
 
-    @Override
-    public String getContentType() {
-        return bodyReviseStatus ? MediaType.APPLICATION_JSON_VALUE : super.getContentType();
-    }
+	@Override
+	public String getContentType() {
+		return bodyReviseStatus ? MediaType.APPLICATION_JSON_VALUE : super.getContentType();
+	}
 
-    @Override
-    public String getParameter(String name) {
-        String[] values = getParameterValues(name);
-        return ObjectUtils.isEmpty(values) ? null : values[0];
-    }
+	@Override
+	public String getParameter(String name) {
+		String[] values = getParameterValues(name);
+		return ObjectUtils.isEmpty(values) ? null : values[0];
+	}
 
-    @Override
-    public Map<String, String[]> getParameterMap() {
-        return parameter;
-    }
+	@Override
+	public Map<String, String[]> getParameterMap() {
+		return parameter;
+	}
 
-    @Override
-    public Enumeration<String> getParameterNames() {
-        return Collections.enumeration(parameter.keySet());
-    }
+	@Override
+	public Enumeration<String> getParameterNames() {
+		return Collections.enumeration(parameter.keySet());
+	}
 
-    @Override
-    public String[] getParameterValues(String name) {
-        return parameter.get(name);
-    }
+	@Override
+	public String[] getParameterValues(String name) {
+		return parameter.get(name);
+	}
 
-    @Override
-    public String getHeader(String name) {
-        if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
-            return getContentType();
-        }
-        return headers.getFirst(name);
-    }
+	@Override
+	public String getHeader(String name) {
+		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
+			return getContentType();
+		}
+		return headers.getFirst(name);
+	}
 
-    @Override
-    public Enumeration<String> getHeaderNames() {
-        Set<String> headerNames = headers.keySet();
-        if (bodyReviseStatus) {
-            headerNames.add(HttpHeaders.CONTENT_TYPE);
-        }
-        return Collections.enumeration(headers.keySet());
-    }
+	@Override
+	public Enumeration<String> getHeaderNames() {
+		Set<String> headerNames = headers.keySet();
+		if (bodyReviseStatus) {
+			headerNames.add(HttpHeaders.CONTENT_TYPE);
+		}
+		return Collections.enumeration(headers.keySet());
+	}
 
-    @Override
-    public Enumeration<String> getHeaders(String name) {
-        Set<String> headerValues = new HashSet<>();
-        if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
-            headerValues.add(getContentType());
-        }
-        List<String> list = headers.get(name);
-        if (!CollectionUtils.isEmpty(list)) {
-            headerValues.addAll(list);
-        }
-        return Collections.enumeration(headerValues);
-    }
+	@Override
+	public Enumeration<String> getHeaders(String name) {
+		Set<String> headerValues = new HashSet<>();
+		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
+			headerValues.add(getContentType());
+		}
+		List<String> list = headers.get(name);
+		if (!CollectionUtils.isEmpty(list)) {
+			headerValues.addAll(list);
+		}
+		return Collections.enumeration(headerValues);
+	}
 
-    private static class RequestServletInputStream extends ServletInputStream {
+	private static class RequestServletInputStream extends ServletInputStream {
 
-        private final InputStream in;
+		private final InputStream in;
 
-        /**
-         * Instantiates a new Request servlet input stream.
-         *
-         * @param request the request
-         * @param json    the json
-         * @throws UnsupportedEncodingException the unsupported encoding exception
-         */
-        public RequestServletInputStream(ServletRequest request, String json) throws UnsupportedEncodingException {
-            in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
-        }
+		/**
+		 * Instantiates a new Request servlet input stream.
+		 *
+		 * @param request the request
+		 * @param json    the json
+		 * @throws UnsupportedEncodingException the unsupported encoding exception
+		 */
+		public RequestServletInputStream(ServletRequest request, String json) throws UnsupportedEncodingException {
+			in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
+		}
 
-        @Override
-        public boolean isFinished() {
-            return false;
-        }
+		@Override
+		public boolean isFinished() {
+			return false;
+		}
 
-        @Override
-        public boolean isReady() {
-            return false;
-        }
+		@Override
+		public boolean isReady() {
+			return false;
+		}
 
-        @Override
-        public void setReadListener(ReadListener listener) {
-            try {
-                listener.onDataAvailable();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+		@Override
+		public void setReadListener(ReadListener listener) {
+			try {
+				listener.onDataAvailable();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
-        @Override
-        public int read() throws IOException {
-            return in.read();
-        }
+		@Override
+		public int read() throws IOException {
+			return in.read();
+		}
 
-    }
+	}
 
-    private static class HeaderEnumeration implements Enumeration<String> {
+	private static class HeaderEnumeration implements Enumeration<String> {
 
-        private final String contentType;
+		private final String contentType;
 
-        private boolean hasMoreElements = false;
+		private boolean hasMoreElements = false;
 
-        /**
-         * Instantiates a new Header enumeration.
-         *
-         * @param contentType the content type
-         */
-        public HeaderEnumeration(String contentType) {
-            this.contentType = contentType;
-        }
+		/**
+		 * Instantiates a new Header enumeration.
+		 *
+		 * @param contentType the content type
+		 */
+		public HeaderEnumeration(String contentType) {
+			this.contentType = contentType;
+		}
 
-        @Override
-        public boolean hasMoreElements() {
-            return !hasMoreElements;
-        }
+		@Override
+		public boolean hasMoreElements() {
+			return !hasMoreElements;
+		}
 
-        @Override
-        public String nextElement() {
-            if (hasMoreElements) {
-                throw new NoSuchElementException();
-            } else {
-                hasMoreElements = true;
-                return contentType;
-            }
-        }
+		@Override
+		public String nextElement() {
+			if (hasMoreElements) {
+				throw new NoSuchElementException();
+			} else {
+				hasMoreElements = true;
+				return contentType;
+			}
+		}
 
-    }
+	}
 }

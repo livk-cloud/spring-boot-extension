@@ -1,0 +1,11 @@
+server:
+  port: 10001
+
+rocketmq:
+  ext:
+    producer:
+      group: livk-ext-producer-group
+    name-server: laokou.org:9876
+  producer:
+    group: livk-producer-group
+  name-server: laokou.org:9876

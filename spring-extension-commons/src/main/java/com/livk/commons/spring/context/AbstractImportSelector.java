@@ -52,50 +52,50 @@ import java.util.List;
  */
 public abstract class AbstractImportSelector<A extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
-    /**
-     * The Annotation class.
-     */
-    @SuppressWarnings("unchecked")
-    protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
+	/**
+	 * The Annotation class.
+	 */
+	@SuppressWarnings("unchecked")
+	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
 
-    /**
-     * The Environment.
-     */
-    @Setter
-    protected Environment environment;
+	/**
+	 * The Environment.
+	 */
+	@Setter
+	protected Environment environment;
 
-    /**
-     * The Class loader.
-     */
-    protected ClassLoader classLoader;
+	/**
+	 * The Class loader.
+	 */
+	protected ClassLoader classLoader;
 
-    @NonNull
-    @Override
-    public String[] selectImports(@Nullable AnnotationMetadata importingClassMetadata) {
-        if (!isEnabled()) {
-            return new String[0];
-        }
-        Assert.notNull(annotationClass, "annotation Class not be null");
-        List<String> names = ImportCandidates.load(annotationClass, classLoader).getCandidates();
-        return StringUtils.toStringArray(names);
-    }
+	@NonNull
+	@Override
+	public String[] selectImports(@Nullable AnnotationMetadata importingClassMetadata) {
+		if (!isEnabled()) {
+			return new String[0];
+		}
+		Assert.notNull(annotationClass, "annotation Class not be null");
+		List<String> names = ImportCandidates.load(annotationClass, classLoader).getCandidates();
+		return StringUtils.toStringArray(names);
+	}
 
-    /**
-     * Is enabled boolean.
-     *
-     * @return the boolean
-     */
-    protected boolean isEnabled() {
-        return true;
-    }
+	/**
+	 * Is enabled boolean.
+	 *
+	 * @return the boolean
+	 */
+	protected boolean isEnabled() {
+		return true;
+	}
 
-    @Override
-    public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE;
-    }
+	@Override
+	public int getOrder() {
+		return Ordered.HIGHEST_PRECEDENCE;
+	}
 
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
+	@Override
+	public void setBeanClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
 }

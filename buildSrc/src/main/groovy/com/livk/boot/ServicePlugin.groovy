@@ -31,10 +31,10 @@ import org.gradle.api.plugins.JavaPlugin
  *
  */
 class ServicePlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(JavaPlugin.class)
-        project.pluginManager.apply(ModulePlugin.class)
-        project.pluginManager.apply(BootPlugin.class)
-    }
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlugin.class)
+		project.pluginManager.apply(ModulePlugin.class)
+		project.pluginManager.apply(BootPlugin.class)
+	}
 }

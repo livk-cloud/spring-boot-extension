@@ -32,11 +32,11 @@ import org.gradle.api.plugins.JavaPlatformPlugin
  *
  */
 class BomPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(JavaPlatformPlugin.class)
-        project.pluginManager.apply(DeployedPlugin.class)
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlatformPlugin.class)
+		project.pluginManager.apply(DeployedPlugin.class)
 
-        project.extensions.getByType(JavaPlatformExtension.class).allowDependencies()
-    }
+		project.extensions.getByType(JavaPlatformExtension.class).allowDependencies()
+	}
 }

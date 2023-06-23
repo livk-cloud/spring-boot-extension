@@ -41,134 +41,134 @@ import java.util.Set;
  */
 public class SpringEnvBinder {
 
-    private final Environment environment;
+	private final Environment environment;
 
-    private final ConfigurableConversionService conversionService;
+	private final ConfigurableConversionService conversionService;
 
-    /**
-     * Instantiates a new Spring env binder.
-     *
-     * @param environment       the environment
-     * @param conversionService the conversion service
-     */
-    public SpringEnvBinder(Environment environment, ConfigurableConversionService conversionService) {
-        this.environment = environment;
-        this.conversionService = conversionService;
-    }
+	/**
+	 * Instantiates a new Spring env binder.
+	 *
+	 * @param environment       the environment
+	 * @param conversionService the conversion service
+	 */
+	public SpringEnvBinder(Environment environment, ConfigurableConversionService conversionService) {
+		this.environment = environment;
+		this.conversionService = conversionService;
+	}
 
-    /**
-     * Instantiates a new Spring env binder.
-     *
-     * @param environment the environment
-     */
-    public SpringEnvBinder(Environment environment) {
-        this(environment, new DefaultConversionService());
-    }
+	/**
+	 * Instantiates a new Spring env binder.
+	 *
+	 * @param environment the environment
+	 */
+	public SpringEnvBinder(Environment environment) {
+		this(environment, new DefaultConversionService());
+	}
 
-    /**
-     * Add converter spring env binder.
-     *
-     * @param converter the converter
-     * @return the spring env binder
-     */
-    public SpringEnvBinder addConverter(Converter<?, ?> converter) {
-        conversionService.addConverter(converter);
-        return this;
-    }
+	/**
+	 * Add converter spring env binder.
+	 *
+	 * @param converter the converter
+	 * @return the spring env binder
+	 */
+	public SpringEnvBinder addConverter(Converter<?, ?> converter) {
+		conversionService.addConverter(converter);
+		return this;
+	}
 
-    /**
-     * Binder binder.
-     *
-     * @return the binder
-     */
-    public Binder binder() {
-        Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
-        PropertySourcesPlaceholdersResolver placeholdersResolver = new PropertySourcesPlaceholdersResolver(environment);
-        return new Binder(sources, placeholdersResolver, conversionService,
-                null, null, null);
-    }
+	/**
+	 * Binder binder.
+	 *
+	 * @return the binder
+	 */
+	public Binder binder() {
+		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
+		PropertySourcesPlaceholdersResolver placeholdersResolver = new PropertySourcesPlaceholdersResolver(environment);
+		return new Binder(sources, placeholdersResolver, conversionService,
+			null, null, null);
+	}
 
-    /**
-     * Of bind result.
-     *
-     * @param <T>  the type parameter
-     * @param name the name
-     * @param type the type
-     * @return the bind result
-     */
-    public <T> BindResult<T> of(String name, ResolvableType type) {
-        return bind(name, Bindable.of(type));
-    }
+	/**
+	 * Of bind result.
+	 *
+	 * @param <T>  the type parameter
+	 * @param name the name
+	 * @param type the type
+	 * @return the bind result
+	 */
+	public <T> BindResult<T> of(String name, ResolvableType type) {
+		return bind(name, Bindable.of(type));
+	}
 
-    /**
-     * List of bind result.
-     *
-     * @param <E>  the type parameter
-     * @param name the name
-     * @param type the type
-     * @return the bind result
-     */
-    public <E> BindResult<List<E>> listOf(String name, Class<E> type) {
-        return bind(name, Bindable.listOf(type));
-    }
+	/**
+	 * List of bind result.
+	 *
+	 * @param <E>  the type parameter
+	 * @param name the name
+	 * @param type the type
+	 * @return the bind result
+	 */
+	public <E> BindResult<List<E>> listOf(String name, Class<E> type) {
+		return bind(name, Bindable.listOf(type));
+	}
 
-    /**
-     * Sets of.
-     *
-     * @param <E>  the type parameter
-     * @param name the name
-     * @param type the type
-     * @return the of
-     */
-    public <E> BindResult<Set<E>> setOf(String name, Class<E> type) {
-        return bind(name, Bindable.setOf(type));
-    }
+	/**
+	 * Sets of.
+	 *
+	 * @param <E>  the type parameter
+	 * @param name the name
+	 * @param type the type
+	 * @return the of
+	 */
+	public <E> BindResult<Set<E>> setOf(String name, Class<E> type) {
+		return bind(name, Bindable.setOf(type));
+	}
 
-    /**
-     * Map of bind result.
-     *
-     * @param <K>   the type parameter
-     * @param <V>   the type parameter
-     * @param name  the name
-     * @param kType the k type
-     * @param vType the v type
-     * @return the bind result
-     */
-    public <K, V> BindResult<Map<K, V>> mapOf(String name, Class<K> kType, Class<V> vType) {
-        return bind(name, Bindable.mapOf(kType, vType));
-    }
+	/**
+	 * Map of bind result.
+	 *
+	 * @param <K>   the type parameter
+	 * @param <V>   the type parameter
+	 * @param name  the name
+	 * @param kType the k type
+	 * @param vType the v type
+	 * @return the bind result
+	 */
+	public <K, V> BindResult<Map<K, V>> mapOf(String name, Class<K> kType, Class<V> vType) {
+		return bind(name, Bindable.mapOf(kType, vType));
+	}
 
-    /**
-     * Properties of bind result.
-     *
-     * @param name the name
-     * @return the bind result
-     */
-    public BindResult<Properties> propertiesOf(String name) {
-        return bind(name, Properties.class);
-    }
+	/**
+	 * Properties of bind result.
+	 *
+	 * @param name the name
+	 * @return the bind result
+	 */
+	public BindResult<Properties> propertiesOf(String name) {
+		return bind(name, Properties.class);
+	}
 
-    /**
-     * Bind bind result.
-     *
-     * @param <T>      the type parameter
-     * @param name     the key prefix
-     * @param bindable the bindable
-     * @return the bind result
-     */
-    public <T> BindResult<T> bind(String name, Bindable<T> bindable) {
-        return binder().bind(name, bindable);
-    }
+	/**
+	 * Bind bind result.
+	 *
+	 * @param <T>      the type parameter
+	 * @param name     the key prefix
+	 * @param bindable the bindable
+	 * @return the bind result
+	 */
+	public <T> BindResult<T> bind(String name, Bindable<T> bindable) {
+		return binder().bind(name, bindable);
+	}
 
-    /**
-     * Bind bind result.
-     *
-     * @param <T>  the type parameter
-     * @param name the key prefix
-     * @param type the bindable
-     * @return the bind result
-     */
-    public <T> BindResult<T> bind(String name, Class<T> type) {
-        return binder().bind(name, type);
-    }
+	/**
+	 * Bind bind result.
+	 *
+	 * @param <T>  the type parameter
+	 * @param name the key prefix
+	 * @param type the bindable
+	 * @return the bind result
+	 */
+	public <T> BindResult<T> bind(String name, Class<T> type) {
+		return binder().bind(name, type);
+	}
 }

@@ -40,108 +40,108 @@ import java.util.stream.Collectors;
  */
 abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
-    /**
-     * The Filer.
-     */
-    protected Filer filer;
+	/**
+	 * The Filer.
+	 */
+	protected Filer filer;
 
-    /**
-     * The Elements.
-     */
-    protected Elements elements;
+	/**
+	 * The Elements.
+	 */
+	protected Elements elements;
 
-    /**
-     * The Messager.
-     */
-    protected Messager messager;
+	/**
+	 * The Messager.
+	 */
+	protected Messager messager;
 
-    /**
-     * The Options.
-     */
-    protected Map<String, String> options;
+	/**
+	 * The Options.
+	 */
+	protected Map<String, String> options;
 
-    /**
-     * The Types.
-     */
-    protected Types types;
+	/**
+	 * The Types.
+	 */
+	protected Types types;
 
-    /**
-     * The Out.
-     */
-    protected StandardLocation out;
+	/**
+	 * The Out.
+	 */
+	protected StandardLocation out;
 
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        out = StandardLocation.CLASS_OUTPUT;
-        filer = processingEnv.getFiler();
-        elements = processingEnv.getElementUtils();
-        messager = processingEnv.getMessager();
-        options = processingEnv.getOptions();
-        types = processingEnv.getTypeUtils();
-    }
+	@Override
+	public synchronized void init(ProcessingEnvironment processingEnv) {
+		super.init(processingEnv);
+		out = StandardLocation.CLASS_OUTPUT;
+		filer = processingEnv.getFiler();
+		elements = processingEnv.getElementUtils();
+		messager = processingEnv.getMessager();
+		options = processingEnv.getOptions();
+		types = processingEnv.getTypeUtils();
+	}
 
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
-    }
+	@Override
+	public SourceVersion getSupportedSourceVersion() {
+		return SourceVersion.latest();
+	}
 
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return getSupportedAnnotation().stream()
-                .map(Class::getName)
-                .collect(Collectors.toSet());
-    }
+	@Override
+	public Set<String> getSupportedAnnotationTypes() {
+		return getSupportedAnnotation().stream()
+			.map(Class::getName)
+			.collect(Collectors.toSet());
+	}
 
-    /**
-     * Set supported annotations
-     *
-     * @return Set class
-     */
-    protected abstract Set<Class<?>> getSupportedAnnotation();
+	/**
+	 * Set supported annotations
+	 *
+	 * @return Set class
+	 */
+	protected abstract Set<Class<?>> getSupportedAnnotation();
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if (roundEnv.processingOver()) {
-            generateConfigFiles();
-        } else {
-            processAnnotations(annotations, roundEnv);
-        }
-        return false;
-    }
+	@Override
+	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+		if (roundEnv.processingOver()) {
+			generateConfigFiles();
+		} else {
+			processAnnotations(annotations, roundEnv);
+		}
+		return false;
+	}
 
-    /**
-     * 生成文件
-     */
-    protected abstract void generateConfigFiles();
+	/**
+	 * 生成文件
+	 */
+	protected abstract void generateConfigFiles();
 
-    /**
-     * 处理注解
-     *
-     * @param annotations annotations
-     * @param roundEnv    roundEnv
-     */
-    protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
+	/**
+	 * 处理注解
+	 *
+	 * @param annotations annotations
+	 * @param roundEnv    roundEnv
+	 */
+	protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
-    /**
-     * buffered reader.
-     *
-     * @param fileObject the file object
-     * @return the buffered reader
-     * @throws IOException the io exception
-     */
-    protected BufferedReader bufferedReader(FileObject fileObject) throws IOException {
-        return new BufferedReader(fileObject.openReader(true));
-    }
+	/**
+	 * buffered reader.
+	 *
+	 * @param fileObject the file object
+	 * @return the buffered reader
+	 * @throws IOException the io exception
+	 */
+	protected BufferedReader bufferedReader(FileObject fileObject) throws IOException {
+		return new BufferedReader(fileObject.openReader(true));
+	}
 
-    /**
-     * buffered writer.
-     *
-     * @param fileObject the file object
-     * @return the buffered writer
-     * @throws IOException the io exception
-     */
-    protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
-        return new BufferedWriter(fileObject.openWriter());
-    }
+	/**
+	 * buffered writer.
+	 *
+	 * @param fileObject the file object
+	 * @return the buffered writer
+	 * @throws IOException the io exception
+	 */
+	protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
+		return new BufferedWriter(fileObject.openWriter());
+	}
 }

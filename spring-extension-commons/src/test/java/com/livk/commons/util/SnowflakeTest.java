@@ -38,23 +38,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class SnowflakeTest {
 
-    static final Snowflake SNOWFLAKE = new Snowflake();
+	static final Snowflake SNOWFLAKE = new Snowflake();
 
-    @Test
-    void nextId() throws InterruptedException {
-        int num = 10000;
-        List<Long> list = new CopyOnWriteArrayList<>();
-        ExecutorService service = Executors.newFixedThreadPool(1000);
-        CountDownLatch countDownLatch = new CountDownLatch(num);
-        for (int i = 0; i < num; i++) {
-            service.submit(() -> {
-                list.add(SNOWFLAKE.nextId());
-                countDownLatch.countDown();
-            });
-        }
-        countDownLatch.await();
-        service.shutdown();
-        Set<Long> set = new HashSet<>(list);
-        assertEquals(set.size(), list.size());
-    }
+	@Test
+	void nextId() throws InterruptedException {
+		int num = 10000;
+		List<Long> list = new CopyOnWriteArrayList<>();
+		ExecutorService service = Executors.newFixedThreadPool(1000);
+		CountDownLatch countDownLatch = new CountDownLatch(num);
+		for (int i = 0; i < num; i++) {
+			service.submit(() -> {
+				list.add(SNOWFLAKE.nextId());
+				countDownLatch.countDown();
+			});
+		}
+		countDownLatch.await();
+		service.shutdown();
+		Set<Long> set = new HashSet<>(list);
+		assertEquals(set.size(), list.size());
+	}
 }

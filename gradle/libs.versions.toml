@@ -1,14 +1,13 @@
 [versions]
-spring-boot = "3.0.7"
-pagehelper = "5.3.2"
-pagehelper-starter = "1.4.6"
-oauth2-authorization-server = "1.0.2"
+spring-boot = "3.1.0"
+pagehelper = "5.3.3"
+pagehelper-starter = "1.4.7"
 mybatis = "3.5.13"
-spring-mybatis = "3.0.1"
-guava = "31.1-jre"
-easyexcel = "3.3.1"
+spring-mybatis = "3.0.2"
+guava = "32.0.1-jre"
+easyexcel = "3.3.2"
 java-web-socket = "1.5.3"
-redisson = "3.21.1"
+redisson = "3.21.3"
 zookeeper = "3.8.1"
 clickhouse = "0.4.6"
 spring-pulsar = "0.2.0"
@@ -19,26 +18,30 @@ curator = "5.5.0"
 ip2region = "2.7.0"
 asciidoctor-jvm = "3.3.2"
 browscap-java = "1.4.0"
-auto-service = "1.0.1"
-yauaa = "7.19.1"
+auto-service = "1.1.1"
+yauaa = "7.20.0"
 springdoc = "2.1.0"
 google-javase = "3.5.1"
 spring-admin = "3.0.4"
 nimbusds-jwt = "9.31"
 rocket-starter = "2.2.3"
 jsqlparser = "4.6"
-lettucemod = "3.5.0"
-minio = "8.5.2"
+lettucemod = "3.5.1"
+minio = "8.5.3"
 dnsjava = "3.5.2"
 snakeyaml = "2.0"
 aliyun-oss = "3.16.3"
+aviator = "5.3.3"
+protobuf = "3.23.2"
+protobuf-plugins = "0.9.3"
+jexl3 = "3.3"
+mvel2 = "2.4.15.Final"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
 springdoc-openapi-bom = { group = "org.springdoc", name = "springdoc-openapi", version.ref = "springdoc" }
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper-starter" }
-oauth2-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "oauth2-authorization-server" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyexcel" }
 mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "spring-mybatis" }
@@ -71,6 +74,10 @@ minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
+aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
+protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
+commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
+mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]
@@ -82,3 +89,4 @@ mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
+google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugins" }

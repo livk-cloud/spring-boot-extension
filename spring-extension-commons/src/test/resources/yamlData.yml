@@ -1,0 +1,7 @@
+spring:
+  redis:
+    host: livk.com
+    port: 5672
+  env:
+    - 1
+    - 2

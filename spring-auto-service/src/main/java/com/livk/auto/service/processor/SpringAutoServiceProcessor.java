@@ -50,81 +50,81 @@ import java.util.stream.Stream;
 @AutoService(Processor.class)
 public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
-    private static final Class<SpringAutoService> SUPPORT_CLASS = SpringAutoService.class;
+	private static final Class<SpringAutoService> SUPPORT_CLASS = SpringAutoService.class;
 
-    private static final String AUTOCONFIGURATION = "org.springframework.boot.autoconfigure.AutoConfiguration";
+	private static final String AUTOCONFIGURATION = "org.springframework.boot.autoconfigure.AutoConfiguration";
 
-    private static final String LOCATION = "META-INF/spring/%s.imports";
+	private static final String LOCATION = "META-INF/spring/%s.imports";
 
-    private final SetMultimap<String, String> importsMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> importsMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
-    @Override
-    protected Set<Class<?>> getSupportedAnnotation() {
-        return Set.of(SUPPORT_CLASS);
-    }
+	@Override
+	protected Set<Class<?>> getSupportedAnnotation() {
+		return Set.of(SUPPORT_CLASS);
+	}
 
-    @Override
-    protected void generateConfigFiles() {
-        for (String providerInterface : importsMap.keySet()) {
-            String resourceFile = String.format(LOCATION, providerInterface);
-            try {
-                FileObject resource = filer.getResource(out, "", resourceFile);
-                Set<String> exitImports = this.read(resource);
-                Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
-                        .collect(Collectors.toSet());
-                FileObject fileObject =
-                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
+	@Override
+	protected void generateConfigFiles() {
+		for (String providerInterface : importsMap.keySet()) {
+			String resourceFile = String.format(LOCATION, providerInterface);
+			try {
+				FileObject resource = filer.getResource(out, "", resourceFile);
+				Set<String> exitImports = this.read(resource);
+				Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
+					.collect(Collectors.toSet());
+				FileObject fileObject =
+					filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
 
-                this.writeFile(allImports, fileObject);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+				this.writeFile(allImports, fileObject);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
-    @Override
-    protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
-        for (Element element : elements) {
-            Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-            String provider = ElementUtils.getBinaryName(value.orElse(AutoConfigurationElement()));
-            importsMap.put(provider, ElementUtils.getBinaryName((TypeElement) element));
-        }
-    }
+	@Override
+	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
+		for (Element element : elements) {
+			Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			String provider = ElementUtils.getBinaryName(value.orElse(AutoConfigurationElement()));
+			importsMap.put(provider, ElementUtils.getBinaryName((TypeElement) element));
+		}
+	}
 
-    private TypeElement AutoConfigurationElement() {
-        return elements.getTypeElement(AUTOCONFIGURATION);
-    }
+	private TypeElement AutoConfigurationElement() {
+		return elements.getTypeElement(AUTOCONFIGURATION);
+	}
 
-    /**
-     * 从文件读取配置
-     *
-     * @param fileObject 文件信息
-     * @return set className
-     */
-    private Set<String> read(FileObject fileObject) {
-        try (BufferedReader reader = bufferedReader(fileObject)) {
-            return reader.lines()
-                    .map(String::trim)
-                    .collect(Collectors.toUnmodifiableSet());
-        } catch (IOException ignored) {
-            return Collections.emptySet();
-        }
-    }
+	/**
+	 * 从文件读取配置
+	 *
+	 * @param fileObject 文件信息
+	 * @return set className
+	 */
+	private Set<String> read(FileObject fileObject) {
+		try (BufferedReader reader = bufferedReader(fileObject)) {
+			return reader.lines()
+				.map(String::trim)
+				.collect(Collectors.toUnmodifiableSet());
+		} catch (Exception ignored) {
+			return Collections.emptySet();
+		}
+	}
 
-    /**
-     * 将配置信息写入到文件
-     *
-     * @param services   实现类信息
-     * @param fileObject 文件信息
-     */
-    private void writeFile(Collection<String> services, FileObject fileObject) throws IOException {
-        try (BufferedWriter writer = bufferedWriter(fileObject)) {
-            for (String service : services) {
-                writer.write(service);
-                writer.newLine();
-            }
-            writer.flush();
-        }
-    }
+	/**
+	 * 将配置信息写入到文件
+	 *
+	 * @param services   实现类信息
+	 * @param fileObject 文件信息
+	 */
+	private void writeFile(Collection<String> services, FileObject fileObject) throws IOException {
+		try (BufferedWriter writer = bufferedWriter(fileObject)) {
+			for (String service : services) {
+				writer.write(service);
+				writer.newLine();
+			}
+			writer.flush();
+		}
+	}
 }

@@ -39,101 +39,101 @@ import java.util.zip.GZIPOutputStream;
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
-    /**
-     * Download.
-     *
-     * @param stream   the stream
-     * @param filePath the file path
-     * @throws IOException the io exception
-     */
-    public void download(InputStream stream, String filePath) throws IOException {
-        File file = new File(filePath);
-        if (file.exists() || createNewFile(file)) {
-            try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-                FileChannel channel = fileOutputStream.getChannel();
-                ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
-                ByteBuffer buffer = ByteBuffer.allocate(1024);
-                while (readableByteChannel.read(buffer) != -1) {
-                    buffer.flip();
-                    channel.write(buffer);
-                    buffer.clear();
-                }
-            }
-        } else {
-            throw new IOException();
-        }
-    }
+	/**
+	 * Download.
+	 *
+	 * @param stream   the stream
+	 * @param filePath the file path
+	 * @throws IOException the io exception
+	 */
+	public void download(InputStream stream, String filePath) throws IOException {
+		File file = new File(filePath);
+		if (file.exists() || createNewFile(file)) {
+			try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+				FileChannel channel = fileOutputStream.getChannel();
+				ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
+				ByteBuffer buffer = ByteBuffer.allocate(1024);
+				while (readableByteChannel.read(buffer) != -1) {
+					buffer.flip();
+					channel.write(buffer);
+					buffer.clear();
+				}
+			}
+		} else {
+			throw new IOException();
+		}
+	}
 
-    /**
-     * Create new file boolean.
-     *
-     * @param file the file
-     * @return the boolean
-     * @throws IOException the io exception
-     */
-    public boolean createNewFile(File file) throws IOException {
-        boolean flag = true;
-        File parentFile = file.getParentFile();
-        if (parentFile != null && !parentFile.exists()) {
-            flag = parentFile.mkdirs();
-        }
-        return flag && file.createNewFile();
-    }
+	/**
+	 * Create new file boolean.
+	 *
+	 * @param file the file
+	 * @return the boolean
+	 * @throws IOException the io exception
+	 */
+	public boolean createNewFile(File file) throws IOException {
+		boolean flag = true;
+		File parentFile = file.getParentFile();
+		if (parentFile != null && !parentFile.exists()) {
+			flag = parentFile.mkdirs();
+		}
+		return flag && file.createNewFile();
+	}
 
-    /**
-     * Read string.
-     *
-     * @param file the file
-     * @return the string
-     * @throws IOException the io exception
-     */
-    public String read(File file) throws IOException {
-        try (FileReader fileReader = new FileReader(file);
-             BufferedReader reader = new BufferedReader(fileReader)) {
-            return reader.lines().collect(Collectors.joining("\n"));
-        }
-    }
+	/**
+	 * Read string.
+	 *
+	 * @param file the file
+	 * @return the string
+	 * @throws IOException the io exception
+	 */
+	public String read(File file) throws IOException {
+		try (FileReader fileReader = new FileReader(file);
+		     BufferedReader reader = new BufferedReader(fileReader)) {
+			return reader.lines().collect(Collectors.joining("\n"));
+		}
+	}
 
-    /**
-     * Gets part values.
-     *
-     * @param name     the name
-     * @param exchange the exchange
-     * @return the part values
-     */
-    public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-        return exchange.getMultipartData()
-                .mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
-    }
+	/**
+	 * Gets part values.
+	 *
+	 * @param name     the name
+	 * @param exchange the exchange
+	 * @return the part values
+	 */
+	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
+		return exchange.getMultipartData()
+			.mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
+	}
 
 
-    /**
-     * Gzip compress.
-     *
-     * @param bytes        the bytes
-     * @param outputStream the output stream
-     */
-    public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
-        if (!ObjectUtils.isEmpty(bytes)) {
-            try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
-                stream.write(bytes);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+	/**
+	 * Gzip compress.
+	 *
+	 * @param bytes        the bytes
+	 * @param outputStream the output stream
+	 */
+	public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
+		if (!ObjectUtils.isEmpty(bytes)) {
+			try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
+				stream.write(bytes);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
-    /**
-     * Gzip decompress byte [ ].
-     *
-     * @param inputStream the input stream
-     * @return the byte [ ]
-     */
-    public static byte[] gzipDecompress(InputStream inputStream) {
-        try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
-            return FileUtils.copyToByteArray(stream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	/**
+	 * Gzip decompress byte [ ].
+	 *
+	 * @param inputStream the input stream
+	 * @return the byte [ ]
+	 */
+	public static byte[] gzipDecompress(InputStream inputStream) {
+		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
+			return FileUtils.copyToByteArray(stream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -31,17 +31,17 @@ import java.lang.annotation.Annotation;
  */
 public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation> extends AnnotationAbstractPointcutAdvisor<A> {
 
-    @Override
-    public Pointcut getPointcut() {
-        return pointcutType().getPointcut(annotationType);
-    }
+	@Override
+	public Pointcut getPointcut() {
+		return pointcutType().getPointcut(annotationType);
+	}
 
-    /**
-     * <p>用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}</p>
-     *
-     * @return the annotation pointcut type
-     */
-    protected AnnotationPointcutType pointcutType() {
-        return AnnotationPointcutType.AUTO;
-    }
+	/**
+	 * <p>用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}</p>
+	 *
+	 * @return the annotation pointcut type
+	 */
+	protected AnnotationPointcutType pointcutType() {
+		return AnnotationPointcutType.AUTO;
+	}
 }

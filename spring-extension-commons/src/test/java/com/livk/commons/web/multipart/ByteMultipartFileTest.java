@@ -33,14 +33,14 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author livk
  */
 class ByteMultipartFileTest {
-    @Test
-    public void test() throws IOException {
-        byte[] bytes = "Test String".getBytes();
-        MultipartFile multipartFile = new ByteMultipartFile("test", bytes);
-        assertFalse(multipartFile.isEmpty());
-        assertArrayEquals(bytes, multipartFile.getBytes());
-        assertEquals(bytes.length, multipartFile.getSize());
-        assertEquals("test", multipartFile.getName());
-        assertTrue(multipartFile.getInputStream() instanceof ByteArrayInputStream);
-    }
+	@Test
+	public void test() throws IOException {
+		byte[] bytes = "Test String".getBytes();
+		MultipartFile multipartFile = new ByteMultipartFile("test", bytes);
+		assertFalse(multipartFile.isEmpty());
+		assertArrayEquals(bytes, multipartFile.getBytes());
+		assertEquals(bytes.length, multipartFile.getSize());
+		assertEquals("test", multipartFile.getName());
+		assertTrue(multipartFile.getInputStream() instanceof ByteArrayInputStream);
+	}
 }

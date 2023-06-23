@@ -18,7 +18,11 @@
 package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,24 +37,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class YamlUtilsTest {
 
-    Map<String, String> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", "5672");
+	Resource yml = new ClassPathResource("yamlData.yml");
 
-    @Test
-    void mapToYmlTest() {
-        String yml = """
-                spring:
-                  redis:
-                    port: '5672'
-                    host: livk.com
-                    """;
-        String result = YamlUtils.toYml(map);
-        assertEquals(yml, result);
-    }
+	Map<String, Object> map = Map.of(
+		"spring.redis.host", "livk.com",
+		"spring.redis.port", 5672,
+		"spring.env[0]", 1,
+		"spring.env[1]", 2
+	);
 
-    @Test
-    public void mapToMapTest() {
-        Map<String, Object> ymlMap = YamlUtils.toYmlMap(map);
-        Properties result = YamlUtils.ymlMapToMap(ymlMap);
-        assertEquals(map, result);
-    }
+	@Test
+	void convertMapToYaml() throws IOException {
+		Map<String, Object> load = new Yaml().load(yml.getInputStream());
+		Map<String, Object> result = YamlUtils.convertMapToYaml(map);
+		assertEquals(load, result);
+	}
+
+	@Test
+	public void convertYamlToMap() throws IOException {
+		Map<String, Object> load = new Yaml().load(yml.getInputStream());
+		Properties result = YamlUtils.convertYamlToMap(load);
+		assertEquals(map, result);
+	}
 }

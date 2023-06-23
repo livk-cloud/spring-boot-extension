@@ -39,39 +39,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class AnnotationMetadataResolverTest {
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+	@Autowired
+	private ResourceLoader resourceLoader;
 
-    @Autowired
-    private BeanFactory beanFactory;
+	@Autowired
+	private BeanFactory beanFactory;
 
-    @Test
-    void find() {
-        AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(resourceLoader);
+	@Test
+	void find() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(resourceLoader);
 
-        assertEquals(Set.of(A.class, TestController.class),
-                resolver.find(TestAnnotation.class, "com.livk.commons.spring.context"));
+		assertEquals(Set.of(A.class, TestController.class),
+			resolver.find(TestAnnotation.class, "com.livk.commons.spring.context"));
 
-        assertEquals(Set.of(A.class, TestController.class),
-                resolver.find(TestAnnotation.class, beanFactory));
-    }
+		assertEquals(Set.of(A.class, TestController.class),
+			resolver.find(TestAnnotation.class, beanFactory));
+	}
 
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface TestAnnotation {
-    }
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface TestAnnotation {
+	}
 
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @TestAnnotation
-    @Controller
-    @interface TestController {
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@TestAnnotation
+	@Controller
+	@interface TestController {
 
-        @AliasFor(annotation = Controller.class)
-        String value() default "";
-    }
+		@AliasFor(annotation = Controller.class)
+		String value() default "";
+	}
 
-    @TestController
-    static class A {
-    }
+	@TestController
+	static class A {
+	}
 }

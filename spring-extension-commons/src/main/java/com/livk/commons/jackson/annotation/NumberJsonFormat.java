@@ -37,17 +37,17 @@ import java.lang.annotation.Target;
 @JsonSerialize(using = NumberJsonSerializer.class)
 public @interface NumberJsonFormat {
 
-    /**
-     * Pattern string.
-     *
-     * @return the string
-     */
-    String pattern() default "#0.00";
+	/**
+	 * Pattern string.
+	 *
+	 * @return the string
+	 */
+	String pattern() default "#0.00";
 
-    /**
-     * Simple type support boolean.
-     *
-     * @return the boolean
-     */
-    boolean simpleTypeSupport() default true;
+	/**
+	 * Simple type support boolean.
+	 *
+	 * @return the boolean
+	 */
+	boolean simpleTypeSupport() default true;
 }

@@ -31,18 +31,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class ResourceUtilsTest {
 
-    @Test
-    void getResource() throws IOException {
-        String fileName = "input.json";
-        Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
+	@Test
+	void getResource() throws IOException {
+		String fileName = "input.json";
+		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
 
-        File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
+		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
 
-        assertEquals(file, resource.getFile());
+		assertEquals(file, resource.getFile());
 
-        Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + fileName);
-        for (Resource resourceObj : resources) {
-            assertEquals(file, resourceObj.getFile());
-        }
-    }
+		Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + fileName);
+		for (Resource resourceObj : resources) {
+			assertEquals(file, resourceObj.getFile());
+		}
+	}
 }

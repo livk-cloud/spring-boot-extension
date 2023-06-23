@@ -1,0 +1,7 @@
+server:
+  port: 10002
+
+rocketmq:
+  producer:
+    group: livk-producer-group
+  name-server: laokou.org:9876

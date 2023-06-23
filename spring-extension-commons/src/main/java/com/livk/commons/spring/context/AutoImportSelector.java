@@ -37,21 +37,21 @@ import java.util.Set;
  */
 class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 
-    @Override
-    protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-        Set<String> names = new HashSet<>();
-        if (annotationClass != null) {
-            for (String annotationType : metadata.getAnnotationTypes()) {
-                try {
-                    Class<?> type = ClassUtils.forName(annotationType, getBeanClassLoader());
-                    if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
-                        names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
-                    }
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return new ArrayList<>(names);
-    }
+	@Override
+	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+		Set<String> names = new HashSet<>();
+		if (annotationClass != null) {
+			for (String annotationType : metadata.getAnnotationTypes()) {
+				try {
+					Class<?> type = ClassUtils.forName(annotationType, getBeanClassLoader());
+					if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
+						names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
+					}
+				} catch (ClassNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+		return new ArrayList<>(names);
+	}
 }

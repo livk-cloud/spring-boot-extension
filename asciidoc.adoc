@@ -1,5 +1,0 @@
-== spring-boot-extension-doc
-
-. link:extension-spring-boot-autoconfigure/asciidoc/extension-spring-boot-autoconfigure.adoc[自动装配文档(spring boot autoconfigure)] +
-. link:spring-auto-service/spring-auto-service.adoc[装配文件生成文档(auto service)] +
-. link:spring-extension-commons/asciidoc/spring-extension-commons.adoc[通用包文档spring commons]

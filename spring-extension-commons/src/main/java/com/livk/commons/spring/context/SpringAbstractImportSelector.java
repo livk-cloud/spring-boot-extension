@@ -47,36 +47,36 @@ import java.util.Set;
  */
 public abstract class SpringAbstractImportSelector<A extends Annotation> extends AutoConfigurationImportSelector implements DeferredImportSelector {
 
-    /**
-     * The Annotation class.
-     */
-    @SuppressWarnings("unchecked")
-    protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), SpringAbstractImportSelector.class);
+	/**
+	 * The Annotation class.
+	 */
+	@SuppressWarnings("unchecked")
+	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), SpringAbstractImportSelector.class);
 
-    @Override
-    protected Class<?> getAnnotationClass() {
-        return annotationClass;
-    }
+	@Override
+	protected Class<?> getAnnotationClass() {
+		return annotationClass;
+	}
 
-    @Override
-    protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-        Assert.notNull(annotationClass, "annotation Class not be null");
-        List<String> configurations = ImportCandidates.load(annotationClass, getBeanClassLoader())
-                .getCandidates();
-        Assert.notEmpty(configurations,
-                "No auto configuration classes found in "
-                + "META-INF/spring/" + annotationClass.getName() + ".imports. If you "
-                + "are using a custom packaging, make sure that file is correct.");
-        return configurations;
-    }
+	@Override
+	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+		Assert.notNull(annotationClass, "annotation Class not be null");
+		List<String> configurations = ImportCandidates.load(annotationClass, getBeanClassLoader())
+			.getCandidates();
+		Assert.notEmpty(configurations,
+			"No auto configuration classes found in "
+				+ "META-INF/spring/" + annotationClass.getName() + ".imports. If you "
+				+ "are using a custom packaging, make sure that file is correct.");
+		return configurations;
+	}
 
-    @Override
-    protected List<String> getExcludeAutoConfigurationsProperty() {
-        return Collections.emptyList();
-    }
+	@Override
+	protected List<String> getExcludeAutoConfigurationsProperty() {
+		return Collections.emptyList();
+	}
 
-    @Override
-    protected Set<String> getExclusions(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-        return Collections.emptySet();
-    }
+	@Override
+	protected Set<String> getExclusions(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+		return Collections.emptySet();
+	}
 }

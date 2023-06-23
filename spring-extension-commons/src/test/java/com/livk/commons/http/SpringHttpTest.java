@@ -37,17 +37,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnableWebClient
 public class SpringHttpTest {
 
-    @Autowired
-    RestTemplate restTemplate;
+	@Autowired
+	RestTemplate restTemplate;
 
-    @Autowired
-    WebClient webClient;
+	@Autowired
+	WebClient webClient;
 
-    @Test
-    public void test() {
-        assertNotNull(restTemplate);
-        assertNotNull(webClient);
-        assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
-        assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
-    }
+	@Test
+	public void test() {
+		assertNotNull(restTemplate);
+		assertNotNull(webClient);
+		assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
+		assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
+	}
 }

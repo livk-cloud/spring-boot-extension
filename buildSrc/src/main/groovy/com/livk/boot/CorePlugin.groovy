@@ -33,12 +33,12 @@ import org.gradle.api.Project
  * @author livk
  */
 class CorePlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(DeleteExpand.class)
-        project.pluginManager.apply(ManagementPlugin.class)
-        project.pluginManager.apply(OptionalPlugin.class)
-        project.pluginManager.apply(CompileProcessorPlugin.class)
-        project.pluginManager.apply(ManifestPlugin.class)
-    }
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(DeleteExpand.class)
+		project.pluginManager.apply(ManagementPlugin.class)
+		project.pluginManager.apply(OptionalPlugin.class)
+		project.pluginManager.apply(CompileProcessorPlugin.class)
+		project.pluginManager.apply(ManifestPlugin.class)
+	}
 }

@@ -22,32 +22,32 @@ package com.livk.commons.bean;
  */
 public interface Wrapper {
 
-    /**
-     * Unwrap t.
-     *
-     * @param <T>  the type parameter
-     * @param type the type
-     * @return the t
-     */
-    default <T> T unwrap(Class<T> type) {
-        if (isWrapperFor(type)) {
-            return type.cast(unwrap());
-        }
-        throw new ClassCastException("cannot be converted to " + type);
-    }
+	/**
+	 * Unwrap t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param type the type
+	 * @return the t
+	 */
+	default <T> T unwrap(Class<T> type) {
+		if (isWrapperFor(type)) {
+			return type.cast(unwrap());
+		}
+		throw new ClassCastException("cannot be converted to " + type);
+	}
 
-    /**
-     * Is wrapper for boolean.
-     *
-     * @param type the type
-     * @return the boolean
-     */
-    boolean isWrapperFor(Class<?> type);
+	/**
+	 * Is wrapper for boolean.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
+	boolean isWrapperFor(Class<?> type);
 
-    /**
-     * Unwrap object.
-     *
-     * @return the object
-     */
-    Object unwrap();
+	/**
+	 * Unwrap object.
+	 *
+	 * @return the object
+	 */
+	Object unwrap();
 }

@@ -27,27 +27,27 @@ import org.springframework.core.GenericTypeResolver;
  */
 public interface GenericWrapper<T> extends Wrapper {
 
-    /**
-     * Of delegating wrapper.
-     *
-     * @param <T>      the type parameter
-     * @param delegate the value
-     * @return the delegating wrapper
-     */
-    static <T> GenericWrapper<T> of(T delegate) {
-        return new RecordWrapper<>(delegate);
-    }
+	/**
+	 * Of delegating wrapper.
+	 *
+	 * @param <T>      the type parameter
+	 * @param delegate the value
+	 * @return the delegating wrapper
+	 */
+	static <T> GenericWrapper<T> of(T delegate) {
+		return new RecordWrapper<>(delegate);
+	}
 
-    @Override
-    default boolean isWrapperFor(Class<?> type) {
-        Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), GenericWrapper.class);
-        return typeArgument == null || type.equals(typeArgument);
-    }
+	@Override
+	default boolean isWrapperFor(Class<?> type) {
+		Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), GenericWrapper.class);
+		return typeArgument == null || type.equals(typeArgument);
+	}
 
-    /**
-     * Unwrap t.
-     *
-     * @return the t
-     */
-    T unwrap();
+	/**
+	 * Unwrap t.
+	 *
+	 * @return the t
+	 */
+	T unwrap();
 }

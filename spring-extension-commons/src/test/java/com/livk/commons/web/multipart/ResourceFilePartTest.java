@@ -39,33 +39,33 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author livk
  */
 class ResourceFilePartTest {
-    @Test
-    public void test() throws IOException {
-        ClassPathResource resource = new ClassPathResource("input.json");
-        ResourceFilePart part = new ResourceFilePart(resource);
-        assertEquals("input.json", part.filename());
-        assertEquals("input.json", part.name());
-        assertEquals(new HttpHeaders(), part.headers());
+	@Test
+	public void test() throws IOException {
+		ClassPathResource resource = new ClassPathResource("input.json");
+		ResourceFilePart part = new ResourceFilePart(resource);
+		assertEquals("input.json", part.filename());
+		assertEquals("input.json", part.name());
+		assertEquals(new HttpHeaders(), part.headers());
 
-        File file = new File(System.getProperty("user.dir") + "/input.json");
-        StepVerifier.create(part.transferTo(file))
-                .verifyComplete();
+		File file = new File(System.getProperty("user.dir") + "/input.json");
+		StepVerifier.create(part.transferTo(file))
+			.verifyComplete();
 
-        ByteArrayInputStream stream = new ByteArrayInputStream(FileUtils.copyToByteArray(file));
+		ByteArrayInputStream stream = new ByteArrayInputStream(FileUtils.copyToByteArray(file));
 
-        JsonNode jsonNode = JsonMapperUtils.readValue(resource.getInputStream(), JsonNode.class);
+		JsonNode jsonNode = JsonMapperUtils.readValue(resource.getInputStream(), JsonNode.class);
 
-        JsonNode newFileNode = JsonMapperUtils.readValue(stream, JsonNode.class);
+		JsonNode newFileNode = JsonMapperUtils.readValue(stream, JsonNode.class);
 
-        assertEquals(jsonNode, newFileNode);
-        assertTrue(file.delete());
+		assertEquals(jsonNode, newFileNode);
+		assertTrue(file.delete());
 
-        Mono<JsonNode> mono = DataBufferUtils.transformByte(part.content())
-                .publishOn(Schedulers.boundedElastic())
-                .map(String::new)
-                .map(JsonMapperUtils::readTree);
-        StepVerifier.create(mono)
-                .expectNext(jsonNode)
-                .verifyComplete();
-    }
+		Mono<JsonNode> mono = DataBufferUtils.transformByte(part.content())
+			.publishOn(Schedulers.boundedElastic())
+			.map(String::new)
+			.map(JsonMapperUtils::readTree);
+		StepVerifier.create(mono)
+			.expectNext(jsonNode)
+			.verifyComplete();
+	}
 }

@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    bootstrap-servers: livk.com:9092
+    producer:
+      value-serializer: com.livk.proto.kafka.converter.UserKafkaProtobufConverter
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+    consumer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      value-deserializer: com.livk.proto.kafka.converter.UserKafkaProtobufConverter
+
+server:
+  port: 9876

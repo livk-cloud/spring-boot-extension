@@ -38,117 +38,117 @@ import java.util.Map;
 @UtilityClass
 public class TypeFactoryUtils {
 
-    /**
-     * 获取TypeFactory
-     *
-     * @return TypeFactory
-     */
-    public static TypeFactory instance() {
-        return TypeFactory.defaultInstance();
-    }
+	/**
+	 * 获取TypeFactory
+	 *
+	 * @return TypeFactory
+	 */
+	public static TypeFactory instance() {
+		return TypeFactory.defaultInstance();
+	}
 
-    /**
-     * 构建一个JavaType
-     *
-     * @param targetClass the target class
-     * @return JavaType
-     */
-    public static JavaType javaType(Class<?> targetClass) {
-        return instance().constructType(targetClass);
-    }
+	/**
+	 * 构建一个JavaType
+	 *
+	 * @param targetClass the target class
+	 * @return JavaType
+	 */
+	public static JavaType javaType(Class<?> targetClass) {
+		return instance().constructType(targetClass);
+	}
 
-    /**
-     * 构建一个含有泛型的JavaType
-     *
-     * @param targetClass the target class
-     * @param generics    the generics
-     * @return JavaType
-     */
-    public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
-        return instance().constructParametricType(targetClass, generics);
-    }
+	/**
+	 * 构建一个含有泛型的JavaType
+	 *
+	 * @param targetClass the target class
+	 * @param generics    the generics
+	 * @return JavaType
+	 */
+	public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
+		return instance().constructParametricType(targetClass, generics);
+	}
 
-    /**
-     * 构建一个含有泛型的JavaType
-     *
-     * @param targetClass the target class
-     * @param generics    the generics
-     * @return JavaType
-     */
-    public static JavaType javaType(Class<?> targetClass, JavaType... generics) {
-        return instance().constructParametricType(targetClass, generics);
-    }
+	/**
+	 * 构建一个含有泛型的JavaType
+	 *
+	 * @param targetClass the target class
+	 * @param generics    the generics
+	 * @return JavaType
+	 */
+	public static JavaType javaType(Class<?> targetClass, JavaType... generics) {
+		return instance().constructParametricType(targetClass, generics);
+	}
 
-    /**
-     * Java type java type.
-     *
-     * @param typeReference the type reference
-     * @return JavaType
-     */
-    public static JavaType javaType(TypeReference<?> typeReference) {
-        return instance().constructType(typeReference);
-    }
+	/**
+	 * Java type java type.
+	 *
+	 * @param typeReference the type reference
+	 * @return JavaType
+	 */
+	public static JavaType javaType(TypeReference<?> typeReference) {
+		return instance().constructType(typeReference);
+	}
 
-    /**
-     * ResolvableType转成Jackson JavaType
-     *
-     * @param resolvableType the resolvable type
-     * @return JavaTypee
-     * @see ResolvableType
-     */
-    public static JavaType javaType(ResolvableType resolvableType) {
-        Class<?> rawClass = resolvableType.getRawClass();
-        if (resolvableType.getType() instanceof ParameterizedType parameterizedType) {
-            JavaType[] javaTypes = Arrays.stream(parameterizedType.getActualTypeArguments())
-                    .map(type -> javaType(ResolvableType.forType(type)))
-                    .toArray(JavaType[]::new);
-            return instance().constructParametricType(rawClass, javaTypes);
-        }
-        return javaType(rawClass);
-    }
+	/**
+	 * ResolvableType转成Jackson JavaType
+	 *
+	 * @param resolvableType the resolvable type
+	 * @return JavaTypee
+	 * @see ResolvableType
+	 */
+	public static JavaType javaType(ResolvableType resolvableType) {
+		Class<?> rawClass = resolvableType.getRawClass();
+		if (resolvableType.getType() instanceof ParameterizedType parameterizedType) {
+			JavaType[] javaTypes = Arrays.stream(parameterizedType.getActualTypeArguments())
+				.map(type -> javaType(ResolvableType.forType(type)))
+				.toArray(JavaType[]::new);
+			return instance().constructParametricType(rawClass, javaTypes);
+		}
+		return javaType(rawClass);
+	}
 
-    /**
-     * 构建一个CollectionType
-     *
-     * @param <T>  the type parameter
-     * @param type the target class
-     * @return CollectionType
-     */
-    public static <T> CollectionType collectionType(Class<T> type) {
-        return instance().constructCollectionType(Collection.class, type);
-    }
+	/**
+	 * 构建一个CollectionType
+	 *
+	 * @param <T>  the type parameter
+	 * @param type the target class
+	 * @return CollectionType
+	 */
+	public static <T> CollectionType collectionType(Class<T> type) {
+		return instance().constructCollectionType(Collection.class, type);
+	}
 
-    /**
-     * 构建一个CollectionType
-     *
-     * @param javaType the java type
-     * @return CollectionType
-     */
-    public static CollectionType collectionType(JavaType javaType) {
-        return instance().constructCollectionType(Collection.class, javaType);
-    }
+	/**
+	 * 构建一个CollectionType
+	 *
+	 * @param javaType the java type
+	 * @return CollectionType
+	 */
+	public static CollectionType collectionType(JavaType javaType) {
+		return instance().constructCollectionType(Collection.class, javaType);
+	}
 
-    /**
-     * 构建一个MapType
-     *
-     * @param <K>        the type parameter
-     * @param <V>        the type parameter
-     * @param keyClass   the key class
-     * @param valueClass the value class
-     * @return MapType
-     */
-    public static <K, V> MapType mapType(Class<K> keyClass, Class<V> valueClass) {
-        return instance().constructMapType(Map.class, keyClass, valueClass);
-    }
+	/**
+	 * 构建一个MapType
+	 *
+	 * @param <K>        the type parameter
+	 * @param <V>        the type parameter
+	 * @param keyClass   the key class
+	 * @param valueClass the value class
+	 * @return MapType
+	 */
+	public static <K, V> MapType mapType(Class<K> keyClass, Class<V> valueClass) {
+		return instance().constructMapType(Map.class, keyClass, valueClass);
+	}
 
-    /**
-     * 构建一个MapType
-     *
-     * @param kType the k type
-     * @param vType the v type
-     * @return MapType
-     */
-    public static MapType mapType(JavaType kType, JavaType vType) {
-        return instance().constructMapType(Map.class, kType, vType);
-    }
+	/**
+	 * 构建一个MapType
+	 *
+	 * @param kType the k type
+	 * @param vType the v type
+	 * @return MapType
+	 */
+	public static MapType mapType(JavaType kType, JavaType vType) {
+		return instance().constructMapType(Map.class, kType, vType);
+	}
 }

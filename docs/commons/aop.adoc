@@ -1,0 +1,47 @@
+[[aop]]
+==== aop
+
+===== com.livk.commons.aop.AnnotationAbstractPointcutAdvisor
+
+使用注解处理AOP的通用切点及表达式
+
+使用示例
+
+[source,java,indent=0]
+----
+public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock>{
+    @Override
+    protected Object invoke(MethodInvocation invocation, OnLock onLock){
+        //AOP处理等同于org.aspectj.lang.annotation.Around
+    }
+
+    @Override
+    public Pointcut getPointcut(){
+        //实现切入点
+    }
+}
+----
+
+将注解作为泛型，自动获取到注解信息
+
+===== com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor
+
+AnnotationAbstractPointcutAdvisor定制化拓展
+
+使用示例
+
+[source,java,indent=0]
+----
+public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLock>{
+    @Override
+    protected Object invoke(MethodInvocation invocation, OnLock onLock){
+        //
+    }
+
+    @Override
+    protected AnnotationPointcutType pointcutType() {
+        //默认实现
+        return AnnotationPointcutType.AUTO;
+    }
+}
+----

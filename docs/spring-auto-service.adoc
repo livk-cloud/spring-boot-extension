@@ -1,0 +1,117 @@
+[[spring-auto-service]]
+=== spring boot装配文件自动生成
+
+==== 依赖引入
+
+*Maven*
+
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-auto-service</artifactId>
+    <version>${version}</version>
+    <scope>provided</scope>
+</dependency>
+----
+
+*Gradle-Groovy*
+
+[source,groovy,indent=0]
+----
+dependencies {
+    //自定义插件，等同于如下两个依赖引用
+    compileProcessor project(":spring-auto-service")
+
+    compileOnly project(":spring-auto-service")
+    annotationProcessor project(":spring-auto-service")
+}
+----
+
+*Gradle-Kotlin*
+
+[source,kotlin,indent=0]
+----
+dependencies {
+    //自定义插件，等同于如下两个依赖引用
+    compileProcessor(project(":spring-auto-service"))
+
+    compileOnly(project(":spring-auto-service"))
+    annotationProcessor(project(":spring-auto-service"))
+}
+----
+
+==== @SpringAutoService使用示例
+
+[source,java,indent=0]
+----
+@Component
+@SpringAutoService
+public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
+
+}
+----
+
+生成文件 META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+
+[source,txt,indent=0]
+----
+com.livk.commons.spring.context.SpringContextHolder
+----
+
+[source,java,indent=0]
+----
+@AutoConfiguration
+@ConditionalOnClass(WebClient.class)
+@SpringAutoService(com.livk.commons.http.annotation.EnableWebClient.class)
+public class WebClientConfiguration {
+
+}
+----
+
+生成文件 META-INF/spring/com.livk.commons.http.annotation.EnableWebClient.imports
+
+[source,txt,indent=0]
+----
+com.livk.commons.http.WebClientConfiguration
+----
+
+==== @SpringFactories 使用示例
+
+@SpringFactories支持生成aot.factories原理基本同下，只需指定属性aot=true
+
+指定接口为spring.factories的Key
+
+[source,java,indent=0]
+----
+@SpringFactories(org.springframework.boot.env.EnvironmentPostProcessor)
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+----
+
+生成文件 META-INF/spring.factories
+
+[source,properties,indent=0]
+----
+org.springframework.boot.env.EnvironmentPostProcessor=\
+	com.livk.commons.spring.TraceEnvironmentPostProcessor
+----
+
+当前类如果仅仅只有一个接口，可以不指定，自动生成
+
+[source,java,indent=0]
+----
+@SpringFactories
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+----
+
+生成文件 META-INF/spring.factories
+
+[source,properties,indent=0]
+----
+org.springframework.boot.env.EnvironmentPostProcessor=\
+	com.livk.commons.spring.TraceEnvironmentPostProcessor
+----

@@ -1,6 +1,6 @@
 plugins {
     id "com.livk.root"
-    alias(libs.plugins.asciidoctor.jvm)
+    alias libs.plugins.asciidoctor.jvm
 }
 
 asciidoctor {
@@ -10,13 +10,10 @@ asciidoctor {
         include "index.adoc"
     }
     outputDir file("./docs")
-    dependsOn(":extension-spring-boot-autoconfigure:asciidoctor")
-    dependsOn(":spring-auto-service:asciidoctor")
-    dependsOn(":spring-extension-commons:asciidoctor")
 }
 
 ext {
-    root = Set.of(project(":extension-spring-boot-starters"))
+    root = Set.of(project(":spring-boot-extension-starters"))
     bom = Set.of(project(":spring-extension-dependencies"))
     gradleModuleProjects = (subprojects.findAll { it.buildFile.exists() } - (bom + root))
 }
@@ -27,8 +24,8 @@ configure(gradleModuleProjects) {
     dependencies {
         management platform(project(":spring-extension-dependencies"))
         compileProcessor "org.projectlombok:lombok"
-        compileProcessor "org.springframework.boot:spring-boot-configuration-processor"
-        compileProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
         testImplementation "org.springframework:spring-tx"
         testImplementation "org.springframework.boot:spring-boot-starter-test"
     }

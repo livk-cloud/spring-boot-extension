@@ -32,74 +32,74 @@ import com.livk.commons.bean.Wrapper;
  */
 public enum MapperFactory {
 
-    /**
-     * Json jackson type.
-     */
-    JSON,
+	/**
+	 * Json jackson type.
+	 */
+	JSON,
 
-    /**
-     * Yaml jackson type.
-     */
-    YAML,
+	/**
+	 * Yaml jackson type.
+	 */
+	YAML,
 
-    /**
-     * Xml jackson type.
-     */
-    XML;
+	/**
+	 * Xml jackson type.
+	 */
+	XML;
 
-    /**
-     * 根据{@link MapperFactory}构建 {@link MapperBuilder}的子类
-     *
-     * @param <M>     {@link ObjectMapper} 子类
-     * @param <B>     {@link MapperBuilder} 子类
-     * @param factory the format
-     * @return MapperBuilder
-     */
-    @SuppressWarnings("unchecked")
-    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(MapperFactory factory) {
-        Wrapper wrapper = switch (factory) {
-            case JSON -> new JsonBuilderWrapper();
-            case YAML -> new YamlBuilderWrapper();
-            case XML -> new XmlBuilderWrapper();
-        };
-        return (B) wrapper.unwrap(MapperBuilder.class);
-    }
+	/**
+	 * 根据{@link MapperFactory}构建 {@link MapperBuilder}的子类
+	 *
+	 * @param <M>     {@link ObjectMapper} 子类
+	 * @param <B>     {@link MapperBuilder} 子类
+	 * @param factory the format
+	 * @return MapperBuilder
+	 */
+	@SuppressWarnings("unchecked")
+	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(MapperFactory factory) {
+		Wrapper wrapper = switch (factory) {
+			case JSON -> new JsonBuilderWrapper();
+			case YAML -> new YamlBuilderWrapper();
+			case XML -> new XmlBuilderWrapper();
+		};
+		return (B) wrapper.unwrap(MapperBuilder.class);
+	}
 
-    /**
-     * 通用{@link MapperBuilder} 包装器,避免静态加载触发 {@link ClassNotFoundException}
-     *
-     * @param <M> {@link ObjectMapper} 子类
-     * @param <B> {@link MapperBuilder} 子类
-     * @see com.livk.commons.bean.GenericWrapper
-     * @see JsonMapper
-     * @see YAMLMapper
-     * @see XmlMapper
-     */
-    private static abstract class BuilderWrapper<M extends ObjectMapper, B extends MapperBuilder<M, B>> implements GenericWrapper<MapperBuilder<M, B>> {
+	/**
+	 * 通用{@link MapperBuilder} 包装器,避免静态加载触发 {@link ClassNotFoundException}
+	 *
+	 * @param <M> {@link ObjectMapper} 子类
+	 * @param <B> {@link MapperBuilder} 子类
+	 * @see com.livk.commons.bean.GenericWrapper
+	 * @see JsonMapper
+	 * @see YAMLMapper
+	 * @see XmlMapper
+	 */
+	private static abstract class BuilderWrapper<M extends ObjectMapper, B extends MapperBuilder<M, B>> implements GenericWrapper<MapperBuilder<M, B>> {
 
-    }
+	}
 
-    private static class JsonBuilderWrapper extends BuilderWrapper<JsonMapper, JsonMapper.Builder> implements Wrapper {
+	private static class JsonBuilderWrapper extends BuilderWrapper<JsonMapper, JsonMapper.Builder> implements Wrapper {
 
-        @Override
-        public MapperBuilder<JsonMapper, JsonMapper.Builder> unwrap() {
-            return JsonMapper.builder();
-        }
-    }
+		@Override
+		public MapperBuilder<JsonMapper, JsonMapper.Builder> unwrap() {
+			return JsonMapper.builder();
+		}
+	}
 
-    private static class YamlBuilderWrapper extends BuilderWrapper<YAMLMapper, YAMLMapper.Builder> implements Wrapper {
+	private static class YamlBuilderWrapper extends BuilderWrapper<YAMLMapper, YAMLMapper.Builder> implements Wrapper {
 
-        @Override
-        public MapperBuilder<YAMLMapper, YAMLMapper.Builder> unwrap() {
-            return YAMLMapper.builder();
-        }
-    }
+		@Override
+		public MapperBuilder<YAMLMapper, YAMLMapper.Builder> unwrap() {
+			return YAMLMapper.builder();
+		}
+	}
 
-    private static class XmlBuilderWrapper extends BuilderWrapper<XmlMapper, XmlMapper.Builder> implements Wrapper {
+	private static class XmlBuilderWrapper extends BuilderWrapper<XmlMapper, XmlMapper.Builder> implements Wrapper {
 
-        @Override
-        public MapperBuilder<XmlMapper, XmlMapper.Builder> unwrap() {
-            return XmlMapper.builder();
-        }
-    }
+		@Override
+		public MapperBuilder<XmlMapper, XmlMapper.Builder> unwrap() {
+			return XmlMapper.builder();
+		}
+	}
 }

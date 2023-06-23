@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.jackson.support.MapperFactory;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.DataInput;
@@ -40,113 +41,114 @@ import java.net.URL;
  */
 public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations {
 
-    private final M mapper;
+	@Getter
+	private final M mapper;
 
-    private JacksonSupport(M mapper) {
-        this.mapper = mapper;
-        this.mapper.registerModules(new JavaTimeModule());
-    }
+	private JacksonSupport(M mapper) {
+		this.mapper = mapper;
+		this.mapper.registerModules(new JavaTimeModule());
+	}
 
-    /**
-     * Create jackson support.
-     *
-     * @param <M>    the type parameter
-     * @param mapper the mapper
-     * @return the jackson support
-     */
-    public static <M extends ObjectMapper> JacksonSupport<M> create(M mapper) {
-        return new JacksonSupport<>(mapper);
-    }
+	/**
+	 * Create jackson support.
+	 *
+	 * @param <M>    the type parameter
+	 * @param mapper the mapper
+	 * @return the jackson support
+	 */
+	public static <M extends ObjectMapper> JacksonSupport<M> create(M mapper) {
+		return new JacksonSupport<>(mapper);
+	}
 
-    /**
-     * Create jackson support.
-     *
-     * @param <M>     the type parameter
-     * @param <B>     the type parameter
-     * @param builder the builder
-     * @return the jackson support
-     */
-    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {
-        return create(builder.build());
-    }
+	/**
+	 * Create jackson support.
+	 *
+	 * @param <M>     the type parameter
+	 * @param <B>     the type parameter
+	 * @param builder the builder
+	 * @return the jackson support
+	 */
+	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {
+		return create(builder.build());
+	}
 
-    /**
-     * Create jackson support.
-     *
-     * @param <M>    the type parameter
-     * @param <B>    the type parameter
-     * @param factory the type
-     * @return the jackson support
-     */
-    public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(MapperFactory factory) {
-        B builder = MapperFactory.builder(factory);
-        return create(builder);
-    }
+	/**
+	 * Create jackson support.
+	 *
+	 * @param <M>     the type parameter
+	 * @param <B>     the type parameter
+	 * @param factory the type
+	 * @return the jackson support
+	 */
+	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(MapperFactory factory) {
+		B builder = MapperFactory.builder(factory);
+		return create(builder);
+	}
 
-    @SneakyThrows
-    @Override
-    public <T> T readValue(Object obj, JavaType type) {
-        if (obj instanceof JsonParser jsonParser) {
-            return mapper.readValue(jsonParser, type);
-        } else if (obj instanceof File file) {
-            return mapper.readValue(file, type);
-        } else if (obj instanceof URL url) {
-            return mapper.readValue(url, type);
-        } else if (obj instanceof String json) {
-            return mapper.readValue(json, type);
-        } else if (obj instanceof Reader reader) {
-            return mapper.readValue(reader, type);
-        } else if (obj instanceof InputStream inputStream) {
-            return mapper.readValue(inputStream, type);
-        } else if (obj instanceof byte[] bytes) {
-            return mapper.readValue(bytes, type);
-        } else if (obj instanceof DataInput dataInput) {
-            return mapper.readValue(dataInput, type);
-        }
-        return convertValue(obj, type);
-    }
+	@SneakyThrows
+	@Override
+	public <T> T readValue(Object obj, JavaType type) {
+		if (obj instanceof JsonParser jsonParser) {
+			return mapper.readValue(jsonParser, type);
+		} else if (obj instanceof File file) {
+			return mapper.readValue(file, type);
+		} else if (obj instanceof URL url) {
+			return mapper.readValue(url, type);
+		} else if (obj instanceof String json) {
+			return mapper.readValue(json, type);
+		} else if (obj instanceof Reader reader) {
+			return mapper.readValue(reader, type);
+		} else if (obj instanceof InputStream inputStream) {
+			return mapper.readValue(inputStream, type);
+		} else if (obj instanceof byte[] bytes) {
+			return mapper.readValue(bytes, type);
+		} else if (obj instanceof DataInput dataInput) {
+			return mapper.readValue(dataInput, type);
+		}
+		return convertValue(obj, type);
+	}
 
-    @SneakyThrows
-    @Override
-    public String writeValueAsString(Object obj) {
-        if (obj instanceof String str) {
-            return str;
-        }
-        return mapper.writeValueAsString(obj);
-    }
+	@SneakyThrows
+	@Override
+	public String writeValueAsString(Object obj) {
+		if (obj instanceof String str) {
+			return str;
+		}
+		return mapper.writeValueAsString(obj);
+	}
 
-    @SneakyThrows
-    @Override
-    public byte[] writeValueAsBytes(Object obj) {
-        if (obj instanceof String str) {
-            return str.getBytes();
-        }
-        return mapper.writeValueAsBytes(obj);
-    }
+	@SneakyThrows
+	@Override
+	public byte[] writeValueAsBytes(Object obj) {
+		if (obj instanceof String str) {
+			return str.getBytes();
+		}
+		return mapper.writeValueAsBytes(obj);
+	}
 
-    @SneakyThrows
-    @Override
-    public JsonNode readTree(Object obj) {
-        if (obj instanceof JsonParser jsonParser) {
-            return mapper.readTree(jsonParser);
-        } else if (obj instanceof File file) {
-            return mapper.readTree(file);
-        } else if (obj instanceof URL url) {
-            return mapper.readTree(url);
-        } else if (obj instanceof String json) {
-            return mapper.readTree(json);
-        } else if (obj instanceof Reader reader) {
-            return mapper.readTree(reader);
-        } else if (obj instanceof InputStream inputStream) {
-            return mapper.readTree(inputStream);
-        } else if (obj instanceof byte[] bytes) {
-            return mapper.readTree(bytes);
-        }
-        return convertValue(obj, JsonNode.class);
-    }
+	@SneakyThrows
+	@Override
+	public JsonNode readTree(Object obj) {
+		if (obj instanceof JsonParser jsonParser) {
+			return mapper.readTree(jsonParser);
+		} else if (obj instanceof File file) {
+			return mapper.readTree(file);
+		} else if (obj instanceof URL url) {
+			return mapper.readTree(url);
+		} else if (obj instanceof String json) {
+			return mapper.readTree(json);
+		} else if (obj instanceof Reader reader) {
+			return mapper.readTree(reader);
+		} else if (obj instanceof InputStream inputStream) {
+			return mapper.readTree(inputStream);
+		} else if (obj instanceof byte[] bytes) {
+			return mapper.readTree(bytes);
+		}
+		return convertValue(obj, JsonNode.class);
+	}
 
-    @Override
-    public <T> T convertValue(Object fromValue, JavaType javaType) {
-        return mapper.convertValue(fromValue, javaType);
-    }
+	@Override
+	public <T> T convertValue(Object fromValue, JavaType javaType) {
+		return mapper.convertValue(fromValue, javaType);
+	}
 }

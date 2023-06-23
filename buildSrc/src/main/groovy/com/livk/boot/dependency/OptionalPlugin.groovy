@@ -32,19 +32,19 @@ import org.gradle.api.plugins.JavaPluginExtension
  */
 abstract class OptionalPlugin implements Plugin<Project> {
 
-    public static final String OPTIONAL = "optional"
+	public static final String OPTIONAL = "optional"
 
-    @Override
-    void apply(Project project) {
-        def configurations = project.configurations
-        def optional = configurations.create(OPTIONAL)
-        optional.canBeConsumed = false
-        optional.canBeResolved = false
-        project.getPlugins().withType(JavaPlugin.class).every {
-            project.extensions.getByType(JavaPluginExtension.class).sourceSets.every { sourceSet ->
-                configurations.named(sourceSet.getCompileClasspathConfigurationName()).get().extendsFrom(optional)
-                configurations.named(sourceSet.getRuntimeClasspathConfigurationName()).get().extendsFrom(optional)
-            }
-        }
-    }
+	@Override
+	void apply(Project project) {
+		def configurations = project.configurations
+		def optional = configurations.create(OPTIONAL)
+		optional.canBeConsumed = false
+		optional.canBeResolved = false
+		project.getPlugins().withType(JavaPlugin.class).every {
+			project.extensions.getByType(JavaPluginExtension.class).sourceSets.every { sourceSet ->
+				configurations.named(sourceSet.getCompileClasspathConfigurationName()).get().extendsFrom(optional)
+				configurations.named(sourceSet.getRuntimeClasspathConfigurationName()).get().extendsFrom(optional)
+			}
+		}
+	}
 }

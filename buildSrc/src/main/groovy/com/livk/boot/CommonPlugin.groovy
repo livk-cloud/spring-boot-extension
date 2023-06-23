@@ -31,10 +31,10 @@ import org.gradle.api.plugins.JavaLibraryPlugin
  *
  */
 class CommonPlugin implements Plugin<Project> {
-    @Override
-    void apply(Project project) {
-        project.pluginManager.apply(JavaLibraryPlugin.class)
-        project.pluginManager.apply(ModulePlugin.class)
-        project.pluginManager.apply(ResourcesPlugin.class)
-    }
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaLibraryPlugin.class)
+		project.pluginManager.apply(ModulePlugin.class)
+		project.pluginManager.apply(ResourcesPlugin.class)
+	}
 }

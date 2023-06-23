@@ -1,0 +1,37 @@
+[[example-details]]
+== Example Details
+
+link:spring-admin[Spring Boot Admin示例] +
+link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
+link:spring-batch[Spring整合Spring Batch] +
+link:spring-boot-starter[Spring自定义Starter] +
+link:spring-clickhouse/spring-clickhouse-jdbc[Spring整合ClickHouse-jdbc] +
+link:spring-clickhouse/spring-clickhouse-r2dbc[Spring整合ClickHouse-r2dbc] +
+link:spring-doc/spring-doc-mvc[spring mvc整合Spring doc] +
+link:spring-doc/spring-doc-webflux[spring webflux整合spring doc] +
+link:spring-easyexcel/spring-easyexcel-batch[spring batch整合Excel自定义注解实现导入和导出] +
+link:spring-graphql/spring-graphql-mybatis[graphql整合Mybatis] +
+link:spring-graphql/spring-graphql-r2dbc[graphql整合Postgres R2dbc] +
+link:spring-hateoas[spring整合hateoas实现restful风格返回] +
+link:spring-kafka[spring整合kafka] +
+link:spring-mail[spring发送Email] +
+link:spring-micrometer[spring整合micrometer trace] +
+link:spring-mybatis/mybatis-tree[spring整合mybatis实现SQL查询树形结构] +
+link:spring-netty[spring整合netty] +
+link:spring-pulsar[spring整合Pulsar] +
+link:spring-quartz[spring整合Quartz] +
+link:spring-r2dbc[Spring整合R2DBC] +
+link:spring-rabbit/rabbitmq-mqtt[Spring整合Rabbit mqtt] +
+link:spring-rabbit/rabbitmq-order-expired[Rabbit处理订单过期取消] +
+link:spring-rabbit[Spring整合Rabbit] +
+link:spring-redis/redis-lua[Spring整合Redis lua] +
+link:spring-redis/redis-caffeine[Spring整合Redis caffeine] +
+link:spring-redis/redisson-order-expired[redisson处理订单过期取消] +
+link:spring-rest-doc[Spring整合restDoc] +
+link:spring-retry[Spring整合Retry] +
+link:spring-rsocket[Spring整合rsocket] +
+link:spring-security/security-sso[Spring整合security SSO] +
+link:spring-server-sent-events[Spring整合SSE] +
+link:spring-video[Spring webmvc传输视频文件] +
+link:spring-websocket[Spring整合Websocket] +
+link:spring-zookeeper[Spring整合Zookeeper] +

@@ -1,0 +1,85 @@
+[[dynamic-spring-boot-starter]]
+==== 动态数据源
+
+使用方式 +
+link:../../spring-mybatis/dynamic-datasource-example[示例] +
+
+主启动类添加 `@EnableDynamicDatasource`
+
+[source,java,indent=0]
+----
+@EnableDynamicDatasource
+@SpringBootApplication
+public class DynamicExample {
+    public static void main(String[] args) {
+        LivkSpring.run(DynamicExample.class, args);
+    }
+}
+----
+
+yml配置
+
+[source,yaml,indent=0]
+----
+spring:
+  dynamic:
+    datasource:
+      mysql:
+        url: jdbc:mysql://livk.com:3306/mybatis
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.cj.jdbc.Driver
+#        是否主数据源
+        primary: true
+      pgsql:
+        url: jdbc:postgresql://livk.com:5432/mybatis
+        username: postgres
+        password: 123456
+        driver-class-name: org.postgresql.Driver
+
+----
+
+使用示例，在类获取方法上添加注解 `@DynamicSource` 并填入数据源名称，数据源名称为yml配置的名称 +
+方法级注解优先级高于类级别
+
+[source,java,indent=0]
+----
+@RestController
+@RequestMapping("user")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserMapper userMapper;
+
+    @DynamicSource("mysql")
+    @PostMapping("mysql")
+    public HttpEntity<Boolean> mysqlSave() {
+        User user = new User();
+        user.setUsername("root");
+        user.setPassword("123456");
+        return ResponseEntity.ok(userMapper.insert(user, "user") != 0);
+    }
+
+    @DynamicSource("mysql")
+    @GetMapping("mysql")
+    public HttpEntity<List<User>> mysqlUser() {
+        return ResponseEntity.ok(userMapper.selectList("user"));
+    }
+
+    @DynamicSource("pgsql")
+    @PostMapping("pgsql")
+    public HttpEntity<Boolean> pgsqlSave() {
+        User user = new User();
+        user.setUsername("postgres");
+        user.setPassword("123456");
+        return ResponseEntity.ok(userMapper.insert(user, "\"user\"") != 0);
+    }
+
+    @DynamicSource("pgsql")
+    @GetMapping("pgsql")
+    public HttpEntity<List<User>> pgsqlUser() {
+        return ResponseEntity.ok(userMapper.selectList("\"user\""));
+    }
+
+}
+----

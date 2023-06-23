@@ -27,12 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class WrapperTest {
 
-    @Test
-    void test() {
-        String value = "livk";
-        GenericWrapper<String> wrapper = GenericWrapper.of(value);
-        assertEquals(value, wrapper.unwrap(String.class));
-        assertEquals(value, wrapper.unwrap());
-        assertTrue(wrapper.isWrapperFor(String.class));
-    }
+	@Test
+	void test() {
+		String value = "livk";
+		GenericWrapper<String> wrapper = GenericWrapper.of(value);
+		assertEquals(value, wrapper.unwrap(String.class));
+		assertEquals(value, wrapper.unwrap());
+		assertTrue(wrapper.isWrapperFor(String.class));
+	}
 }

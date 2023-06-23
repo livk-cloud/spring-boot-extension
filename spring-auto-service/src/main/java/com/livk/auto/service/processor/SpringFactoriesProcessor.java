@@ -48,126 +48,126 @@ import java.util.*;
 @AutoService(Processor.class)
 public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
-    private static final Class<SpringFactories> SUPPORT_CLASS = SpringFactories.class;
+	private static final Class<SpringFactories> SUPPORT_CLASS = SpringFactories.class;
 
-    private static final String SPRING_LOCATION = "META-INF/spring.factories";
+	private static final String SPRING_LOCATION = "META-INF/spring.factories";
 
-    private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
+	private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
 
-    private final SetMultimap<String, String> springFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> springFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
-    private final SetMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
 
-    @Override
-    protected Set<Class<?>> getSupportedAnnotation() {
-        return Set.of(SUPPORT_CLASS);
-    }
+	@Override
+	protected Set<Class<?>> getSupportedAnnotation() {
+		return Set.of(SUPPORT_CLASS);
+	}
 
-    @Override
-    protected void generateConfigFiles() {
-        generateConfigFiles(springFactoriesMap, SPRING_LOCATION);
-        generateConfigFiles(aotFactoriesMap, AOT_LOCATION);
-    }
+	@Override
+	protected void generateConfigFiles() {
+		generateConfigFiles(springFactoriesMap, SPRING_LOCATION);
+		generateConfigFiles(aotFactoriesMap, AOT_LOCATION);
+	}
 
-    private void generateConfigFiles(Multimap<String, String> factoriesMap, String location) {
-        if (!factoriesMap.isEmpty()) {
-            try {
-                FileObject resource = filer.getResource(out, "", location);
-                Multimap<String, String> allImportMap = this.read(resource);
-                for (Map.Entry<String, String> entry : factoriesMap.entries()) {
-                    allImportMap.put(entry.getKey(), entry.getValue());
-                }
-                FileObject fileObject =
-                        filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
+	private void generateConfigFiles(Multimap<String, String> factoriesMap, String location) {
+		if (!factoriesMap.isEmpty()) {
+			try {
+				FileObject resource = filer.getResource(out, "", location);
+				Multimap<String, String> allImportMap = this.read(resource);
+				for (Map.Entry<String, String> entry : factoriesMap.entries()) {
+					allImportMap.put(entry.getKey(), entry.getValue());
+				}
+				FileObject fileObject =
+					filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
 
-                this.writeFile(allImportMap.asMap(), fileObject);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+				this.writeFile(allImportMap.asMap(), fileObject);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
-    @Override
-    protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
-        for (Element element : elements) {
-            Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-            String provider = ElementUtils.getBinaryName(value.orElseGet(() -> fromInterface(element)));
-            if (provider == null || provider.isBlank()) {
-                throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
-            }
-            boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
-            String serviceImpl = ElementUtils.getBinaryName((TypeElement) element);
-            if (aot) {
-                aotFactoriesMap.put(provider, serviceImpl);
-            } else {
-                springFactoriesMap.put(provider, serviceImpl);
-            }
-        }
-    }
+	@Override
+	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
+		for (Element element : elements) {
+			Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			String provider = ElementUtils.getBinaryName(value.orElseGet(() -> fromInterface(element)));
+			if (provider == null || provider.isBlank()) {
+				throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
+			}
+			boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
+			String serviceImpl = ElementUtils.getBinaryName((TypeElement) element);
+			if (aot) {
+				aotFactoriesMap.put(provider, serviceImpl);
+			} else {
+				springFactoriesMap.put(provider, serviceImpl);
+			}
+		}
+	}
 
-    private TypeElement fromInterface(Element element) {
-        if (element instanceof TypeElement typeElement) {
-            List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
-            if (interfaces != null && interfaces.size() == 1) {
-                TypeMirror typeMirror = interfaces.get(0);
-                if (typeMirror instanceof DeclaredType declaredType) {
-                    return (TypeElement) declaredType.asElement();
-                }
-            }
-        }
-        return null;
-    }
+	private TypeElement fromInterface(Element element) {
+		if (element instanceof TypeElement typeElement) {
+			List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
+			if (interfaces != null && interfaces.size() == 1) {
+				TypeMirror typeMirror = interfaces.get(0);
+				if (typeMirror instanceof DeclaredType declaredType) {
+					return (TypeElement) declaredType.asElement();
+				}
+			}
+		}
+		return null;
+	}
 
-    /**
-     * 从文件读取某个接口的配置
-     *
-     * @param fileObject 文件信息
-     * @return set className
-     */
-    private Multimap<String, String> read(FileObject fileObject) {
-        try (BufferedReader reader = bufferedReader(fileObject)) {
-            Properties properties = new Properties();
-            properties.load(reader);
-            Multimap<String, String> providers = LinkedHashMultimap.create();
-            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                String factoryTypeName = ((String) entry.getKey()).trim();
-                String[] factoryImplementationNames = ((String) entry.getValue()).split(",");
-                providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
-            }
-            return providers;
-        } catch (IOException e) {
-            return LinkedHashMultimap.create();
-        }
-    }
+	/**
+	 * 从文件读取某个接口的配置
+	 *
+	 * @param fileObject 文件信息
+	 * @return set className
+	 */
+	private Multimap<String, String> read(FileObject fileObject) {
+		try (BufferedReader reader = bufferedReader(fileObject)) {
+			Properties properties = new Properties();
+			properties.load(reader);
+			Multimap<String, String> providers = LinkedHashMultimap.create();
+			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+				String factoryTypeName = ((String) entry.getKey()).trim();
+				String[] factoryImplementationNames = ((String) entry.getValue()).split(",");
+				providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
+			}
+			return providers;
+		} catch (Exception e) {
+			return LinkedHashMultimap.create();
+		}
+	}
 
-    /**
-     * 将配置信息写入到文件
-     *
-     * @param allImportMap 供应商接口及实现类信息
-     * @param fileObject   文件信息
-     */
-    private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) throws IOException {
-        try (BufferedWriter writer = bufferedWriter(fileObject)) {
-            for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
-                String providerInterface = entry.getKey();
-                Collection<String> services = entry.getValue();
-                writer.write(providerInterface);
-                writer.write("=\\");
-                writer.newLine();
-                String[] serviceArrays = services.toArray(String[]::new);
-                for (int i = 0; i < serviceArrays.length; i++) {
-                    writer.write("\t");
-                    writer.write(serviceArrays[i]);
-                    if (i != serviceArrays.length - 1) {
-                        writer.write(",\\");
-                    }
-                    writer.newLine();
-                }
-                writer.newLine();
-            }
-            writer.newLine();
-            writer.flush();
-        }
-    }
+	/**
+	 * 将配置信息写入到文件
+	 *
+	 * @param allImportMap 供应商接口及实现类信息
+	 * @param fileObject   文件信息
+	 */
+	private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) throws IOException {
+		try (BufferedWriter writer = bufferedWriter(fileObject)) {
+			for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
+				String providerInterface = entry.getKey();
+				Collection<String> services = entry.getValue();
+				writer.write(providerInterface);
+				writer.write("=\\");
+				writer.newLine();
+				String[] serviceArrays = services.toArray(String[]::new);
+				for (int i = 0; i < serviceArrays.length; i++) {
+					writer.write("\t");
+					writer.write(serviceArrays[i]);
+					if (i != serviceArrays.length - 1) {
+						writer.write(",\\");
+					}
+					writer.newLine();
+				}
+				writer.newLine();
+			}
+			writer.newLine();
+			writer.flush();
+		}
+	}
 }

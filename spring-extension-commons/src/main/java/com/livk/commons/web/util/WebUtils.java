@@ -50,197 +50,197 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
-    private static final String UNKNOWN = "unknown";
+	private static final String UNKNOWN = "unknown";
 
-    private static final String HTTP_IP_SPLIT = ",";
+	private static final String HTTP_IP_SPLIT = ",";
 
-    /**
-     * Servlet request attributes servlet request attributes.
-     *
-     * @return the servlet request attributes
-     */
-    public ServletRequestAttributes servletRequestAttributes() {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-        Assert.notNull(servletRequestAttributes, "attributes not null!");
-        return servletRequestAttributes;
-    }
+	/**
+	 * Servlet request attributes servlet request attributes.
+	 *
+	 * @return the servlet request attributes
+	 */
+	public ServletRequestAttributes servletRequestAttributes() {
+		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+		Assert.notNull(servletRequestAttributes, "attributes not null!");
+		return servletRequestAttributes;
+	}
 
-    /**
-     * Request http servlet request.
-     *
-     * @return the http servlet request
-     */
-    public HttpServletRequest request() {
-        return servletRequestAttributes().getRequest();
-    }
+	/**
+	 * Request http servlet request.
+	 *
+	 * @return the http servlet request
+	 */
+	public HttpServletRequest request() {
+		return servletRequestAttributes().getRequest();
+	}
 
-    /**
-     * Response http servlet response.
-     *
-     * @return the http servlet response
-     */
-    public HttpServletResponse response() {
-        return servletRequestAttributes().getResponse();
-    }
+	/**
+	 * Response http servlet response.
+	 *
+	 * @return the http servlet response
+	 */
+	public HttpServletResponse response() {
+		return servletRequestAttributes().getResponse();
+	}
 
-    /**
-     * Session http session.
-     *
-     * @param request the request
-     * @return the http session
-     */
-    public HttpSession session(HttpServletRequest request) {
-        return request.getSession();
-    }
+	/**
+	 * Session http session.
+	 *
+	 * @param request the request
+	 * @return the http session
+	 */
+	public HttpSession session(HttpServletRequest request) {
+		return request.getSession();
+	}
 
-    /**
-     * Header string.
-     *
-     * @param headerName the header name
-     * @return the string
-     */
-    public String header(String headerName) {
-        return request().getHeader(headerName);
-    }
+	/**
+	 * Header string.
+	 *
+	 * @param headerName the header name
+	 * @return the string
+	 */
+	public String header(String headerName) {
+		return request().getHeader(headerName);
+	}
 
-    /**
-     * Headers http headers.
-     *
-     * @param request the request
-     * @return the http headers
-     */
-    public HttpHeaders headers(HttpServletRequest request) {
-        LinkedCaseInsensitiveMap<List<String>> insensitiveMap = new LinkedCaseInsensitiveMap<>();
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
-            insensitiveMap.put(headerName, Collections.list(headers));
-        }
-        return new HttpHeaders(CollectionUtils.toMultiValueMap(insensitiveMap));
-    }
+	/**
+	 * Headers http headers.
+	 *
+	 * @param request the request
+	 * @return the http headers
+	 */
+	public HttpHeaders headers(HttpServletRequest request) {
+		LinkedCaseInsensitiveMap<List<String>> insensitiveMap = new LinkedCaseInsensitiveMap<>();
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String headerName = headerNames.nextElement();
+			Enumeration<String> headers = request.getHeaders(headerName);
+			insensitiveMap.put(headerName, Collections.list(headers));
+		}
+		return new HttpHeaders(CollectionUtils.toMultiValueMap(insensitiveMap));
+	}
 
-    /**
-     * Attributes map.
-     *
-     * @param request the request
-     * @return the map
-     */
-    public Map<String, Object> attributes(HttpServletRequest request) {
-        return StreamUtils.convert(request.getHeaderNames())
-                .collect(Collectors.toMap(Function.identity(), request::getAttribute));
-    }
+	/**
+	 * Attributes map.
+	 *
+	 * @param request the request
+	 * @return the map
+	 */
+	public Map<String, Object> attributes(HttpServletRequest request) {
+		return StreamUtils.convert(request.getHeaderNames())
+			.collect(Collectors.toMap(Function.identity(), request::getAttribute));
+	}
 
-    /**
-     * Parameter string.
-     *
-     * @param name the name
-     * @return the string
-     */
-    public String parameter(String name) {
-        return request().getParameter(name);
-    }
+	/**
+	 * Parameter string.
+	 *
+	 * @param name the name
+	 * @return the string
+	 */
+	public String parameter(String name) {
+		return request().getParameter(name);
+	}
 
-    /**
-     * Param map map.
-     *
-     * @param request   the request
-     * @param delimiter the delimiter
-     * @return the map
-     */
-    public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
-        return request.getParameterMap()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> String.join(delimiter, entry.getValue())));
-    }
+	/**
+	 * Param map map.
+	 *
+	 * @param request   the request
+	 * @param delimiter the delimiter
+	 * @return the map
+	 */
+	public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
+		return request.getParameterMap()
+			.entrySet()
+			.stream()
+			.collect(Collectors.toMap(Map.Entry::getKey,
+				entry -> String.join(delimiter, entry.getValue())));
+	}
 
-    /**
-     * Param map map.
-     *
-     * @param delimiter the delimiter
-     * @return the map
-     */
-    public Map<String, String> paramMap(CharSequence delimiter) {
-        return paramMap(request(), delimiter);
-    }
+	/**
+	 * Param map map.
+	 *
+	 * @param delimiter the delimiter
+	 * @return the map
+	 */
+	public Map<String, String> paramMap(CharSequence delimiter) {
+		return paramMap(request(), delimiter);
+	}
 
-    /**
-     * Params multi value map.
-     *
-     * @param request the request
-     * @return the multi value map
-     */
-    public MultiValueMap<String, String> params(HttpServletRequest request) {
-        Map<String, List<String>> map = request.getParameterMap()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> Lists.newArrayList(entry.getValue())));
-        return new LinkedMultiValueMap<>(map);
-    }
+	/**
+	 * Params multi value map.
+	 *
+	 * @param request the request
+	 * @return the multi value map
+	 */
+	public MultiValueMap<String, String> params(HttpServletRequest request) {
+		Map<String, List<String>> map = request.getParameterMap()
+			.entrySet()
+			.stream()
+			.collect(Collectors.toMap(Map.Entry::getKey,
+				entry -> Lists.newArrayList(entry.getValue())));
+		return new LinkedMultiValueMap<>(map);
+	}
 
-    /**
-     * Real ip string.
-     *
-     * @param request the request
-     * @return the string
-     */
-    public String realIp(HttpServletRequest request) {
-        // 这个一般是Nginx反向代理设置的参数
-        String ip = request.getHeader("X-Real-IP");
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Forwarded-For");
-        }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        // 处理多IP的情况（只取第一个IP）
-        return ip != null && ip.contains(HTTP_IP_SPLIT) ? ip.split(HTTP_IP_SPLIT)[0] : ip;
-    }
+	/**
+	 * Real ip string.
+	 *
+	 * @param request the request
+	 * @return the string
+	 */
+	public String realIp(HttpServletRequest request) {
+		// 这个一般是Nginx反向代理设置的参数
+		String ip = request.getHeader("X-Real-IP");
+		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeader("X-Forwarded-For");
+		}
+		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		// 处理多IP的情况（只取第一个IP）
+		return ip != null && ip.contains(HTTP_IP_SPLIT) ? ip.split(HTTP_IP_SPLIT)[0] : ip;
+	}
 
-    /**
-     * Out.
-     *
-     * @param data the data
-     */
-    public void out(Object data) {
-        out(response(), data);
-    }
+	/**
+	 * Out.
+	 *
+	 * @param data the data
+	 */
+	public void out(Object data) {
+		out(response(), data);
+	}
 
-    /**
-     * Out.
-     *
-     * @param response the response
-     * @param data     the data
-     */
-    public void out(HttpServletResponse response, Object data) {
-        out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
-    }
+	/**
+	 * Out.
+	 *
+	 * @param response the response
+	 * @param data     the data
+	 */
+	public void out(HttpServletResponse response, Object data) {
+		out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
+	}
 
-    /**
-     * 根据response写入返回值
-     *
-     * @param response    response
-     * @param message     写入的信息
-     * @param contentType contentType {@link MediaType}
-     */
-    public void out(HttpServletResponse response, String message, String contentType) {
-        response.setContentType(contentType);
-        response.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.print(message);
-            out.flush();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
+	/**
+	 * 根据response写入返回值
+	 *
+	 * @param response    response
+	 * @param message     写入的信息
+	 * @param contentType contentType {@link MediaType}
+	 */
+	public void out(HttpServletResponse response, String message, String contentType) {
+		response.setContentType(contentType);
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(message);
+			out.flush();
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+	}
 }
