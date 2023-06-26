@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api project(":spring-extension-commons")
     api "com.google.protobuf:protobuf-java"
+    api "org.springframework:spring-web"
     api project(":spring-boot-extension-starters:mapstruct-spring-boot-starter")
     annotationProcessor "org.mapstruct:mapstruct-processor"
     //google protobuf插件使用的依赖申明方式是implementation或者compileOnly
@@ -28,7 +29,7 @@ protobuf {
 
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.53.0"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.56.0"
         }
     }
 
