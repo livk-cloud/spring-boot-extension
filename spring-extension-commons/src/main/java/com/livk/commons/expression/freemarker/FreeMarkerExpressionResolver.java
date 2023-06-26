@@ -22,6 +22,7 @@ import com.livk.commons.expression.Context;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -29,15 +30,22 @@ import java.io.StringWriter;
 /**
  * @author livk
  */
+@RequiredArgsConstructor
 public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Template> {
 
-	private static final Configuration CONFIGURATION = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+	private static final Configuration DEFAULT_CONFIG = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 	private static final String TEMPLATE_NAME = "template";
 
+	private final Configuration configuration;
+
+	public FreeMarkerExpressionResolver() {
+		this(DEFAULT_CONFIG);
+	}
+
 	@Override
 	protected Template compile(String value) throws IOException {
-		return new Template(TEMPLATE_NAME, value, CONFIGURATION);
+		return new Template(TEMPLATE_NAME, value, configuration);
 	}
 
 	@Override
