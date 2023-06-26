@@ -15,27 +15,14 @@
  *
  */
 
-package com.livk.proto.rocketmq;
+package com.livk.proto;
 
-import com.livk.proto.ConsumerCheck;
-import com.livk.proto.User;
-import com.livk.proto.rocketmq.config.RocketMqConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
 
 /**
  * @author livk
  */
-@Slf4j
-@Component
-@RocketMQMessageListener(consumerGroup = "${rocketmq.consumer.group}", topic = RocketMqConfig.TOPIC_NAME)
-public class RocketMqConsumer implements RocketMQListener<User> {
+public interface ProtobufSend<V> {
 
-	@Override
-	public void onMessage(User message) {
-		log.info("data:{}", message);
-		ConsumerCheck.success();
-	}
+	void send(String key, V data) throws IOException;
 }

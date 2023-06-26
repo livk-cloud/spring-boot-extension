@@ -1,5 +1,6 @@
 package com.livk.proto.amqp;
 
+import com.livk.proto.ConsumerCheck;
 import com.livk.proto.User;
 import com.livk.proto.amqp.config.AmqpConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -18,5 +19,6 @@ public class AmqpConsumer {
     @RabbitListener(queuesToDeclare = @Queue(AmqpConfig.TOPIC_NAME))
     public void consumer(@Payload User user) {
         log.info(" : {}", user);
+		ConsumerCheck.success();
     }
 }

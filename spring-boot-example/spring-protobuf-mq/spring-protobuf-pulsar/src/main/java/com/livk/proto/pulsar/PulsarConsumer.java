@@ -17,6 +17,7 @@
 
 package com.livk.proto.pulsar;
 
+import com.livk.proto.ConsumerCheck;
 import com.livk.proto.User;
 import com.livk.proto.pulsar.config.PulsarConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +38,6 @@ public class PulsarConsumer {
 		User data = message.getValue();
 		String topic = message.getTopicName();
 		log.info("topic:{} key:{} data:{}", topic, key, data);
+		ConsumerCheck.success();
 	}
 }

@@ -15,27 +15,25 @@
  *
  */
 
-package com.livk.proto.rocketmq;
+package com.livk.proto.kafka;
 
-import com.livk.proto.ConsumerCheck;
+import com.livk.proto.ProtobufSend;
 import com.livk.proto.User;
-import com.livk.proto.rocketmq.config.RocketMqConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
+import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 /**
  * @author livk
  */
-@Slf4j
 @Component
-@RocketMQMessageListener(consumerGroup = "${rocketmq.consumer.group}", topic = RocketMqConfig.TOPIC_NAME)
-public class RocketMqConsumer implements RocketMQListener<User> {
+@RequiredArgsConstructor
+public class KafkaSend implements ProtobufSend<User> {
+
+	private final KafkaTemplate<String, User> kafkaTemplate;
 
 	@Override
-	public void onMessage(User message) {
-		log.info("data:{}", message);
-		ConsumerCheck.success();
+	public void send(String key, User data) {
+		kafkaTemplate.send(key, data);
 	}
 }

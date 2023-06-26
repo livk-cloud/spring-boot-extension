@@ -1,5 +1,6 @@
 package com.livk.proto.kafka;
 
+import com.livk.proto.ConsumerCheck;
 import com.livk.proto.User;
 import com.livk.proto.kafka.config.KafkaConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -18,5 +19,6 @@ public class KafkaConsumer {
     public void consumer(ConsumerRecord<String, User> record) {
         log.info("topic[{}],offset[{}],partition[{}],key[{}],val[{}]",
                 record.topic(), record.offset(), record.partition(), record.key(), record.value());
+		ConsumerCheck.success();
     }
 }
