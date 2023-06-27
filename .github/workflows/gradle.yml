@@ -75,7 +75,6 @@ jobs:
         image: bitnami/kafka
         env:
           KAFKA_KRAFT_CLUSTER_ID: 0
-          KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
           ALLOW_PLAINTEXT_LISTENER: yes
         ports:
           - 9092:9092
