@@ -75,7 +75,7 @@ jobs:
         image: xuchengen/rocketmq
         options: >-
           --hostname rocketmq
-          --net=host
+          --net host
 
     steps:
       - name: Set up host
