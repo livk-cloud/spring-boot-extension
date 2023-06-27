@@ -71,6 +71,12 @@ jobs:
         ports:
           - 9010:9000
 
+      rocketmq:
+        image: xuchengen/rocketmq
+        options: >-
+          --hostname rocketmq
+          --net=host
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
