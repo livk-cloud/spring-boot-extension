@@ -73,6 +73,14 @@ jobs:
 
       rocketmq:
         image: xuchengen/rocketmq
+        env:
+          NAMESRV_XMS: 128m
+          NAMESRV_XMX: 256m
+          NAMESRV_XMN: 64m
+          BROKER_XMS: 256m
+          BROKER_XMX: 256m
+          BROKER_XMN: 64m
+          BROKER_MDM: 256m
         options: >-
           --hostname rocketmq
           --net host
