@@ -71,6 +71,15 @@ jobs:
         ports:
           - 9010:9000
 
+      kafka:
+        image: bitnami/kafka
+        env:
+          KAFKA_KRAFT_CLUSTER_ID: 0
+          KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+          ALLOW_PLAINTEXT_LISTENER: yes
+        ports:
+          - 9092:9092
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
