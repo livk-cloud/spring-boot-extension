@@ -1,5 +1,3 @@
-com.livk.sso.auth.controller.UserControllerTest
 com.livk.rocket.producer.controller.RocketProducerTest
 com.livk.rocket.producer.controller.ExtRocketProducerTest
-com.livk.crypto.mvc.controller.InfoMvcControllerTest
 com.livk.proto.rocketmq.controller.UserControllerTest
