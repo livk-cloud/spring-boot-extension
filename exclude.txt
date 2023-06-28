@@ -1,5 +1,3 @@
-com.livk.mysql.json.controller.UserControllerTest
-com.livk.postgres.json.controller.UserControllerTest
 com.livk.sso.auth.controller.UserControllerTest
 com.livk.rocket.producer.controller.RocketProducerTest
 com.livk.rocket.producer.controller.ExtRocketProducerTest
