@@ -1,7 +1,3 @@
-com.livk.graphql.mybatis.controller.BookControllerTest
-com.livk.graphql.mybatis.controller.GreetingControllerTest
-com.livk.graphql.r2dbc.controller.BookControllerTest
-com.livk.graphql.r2dbc.controller.GreetingControllerTest
 com.livk.dynamic.controller.UserControllerTest
 com.livk.mybatisplugins.mapper.UserMapperTest
 com.livk.mybatisplugins.service.UserServiceTest

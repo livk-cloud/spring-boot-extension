@@ -78,6 +78,14 @@ jobs:
           - 19000:9000
           - 19009:9009
 
+      postgresql:
+        image: gradescope/postgresql-multiple-databases
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_MULTIPLE_DATABASES: graphql
+          POSTGRES_PASSWORD: 123456
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
