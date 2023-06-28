@@ -38,11 +38,11 @@ public class InfoController {
 		return Map.of("body", info);
 	}
 
-	@GetMapping("/{id}")
-	public Map<String, Info> info(@PathVariable("id") @CryptoDecrypt Long variableId,
-				      @RequestParam("id") @CryptoDecrypt Long paramId) {
-		log.info("PathVariable:{}", variableId);
+	@GetMapping
+	public Map<String, Info> info(@RequestHeader("id") @CryptoDecrypt Long headerId,
+								  @RequestParam("id") @CryptoDecrypt Long paramId) {
+		log.info("RequestHeader:{}", headerId);
 		log.info("RequestParam:{}", paramId);
-		return Map.of("id", new Info(variableId, paramId));
+		return Map.of("id", new Info(headerId, paramId));
 	}
 }

@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class Info {
 	@CryptoEncrypt(CryptoType.PBE)
 	@CryptoDecrypt
-	private Long variableId;
+	private Long headerId;
 
 	@CryptoEncrypt(CryptoType.PBE)
 	@CryptoDecrypt
