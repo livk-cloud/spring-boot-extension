@@ -83,8 +83,15 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_MULTIPLE_DATABASES: graphql
+          POSTGRES_MULTIPLE_DATABASES: graphql,mybatis
           POSTGRES_PASSWORD: 123456
+
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+        ports:
+          - 3306:3306
 
     steps:
       - name: Set up host

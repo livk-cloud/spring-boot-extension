@@ -1,4 +1,3 @@
-com.livk.dynamic.controller.UserControllerTest
 com.livk.mybatisplugins.mapper.UserMapperTest
 com.livk.mybatisplugins.service.UserServiceTest
 com.livk.mybatisplugins.controller.UserControllerTest
