@@ -71,6 +71,13 @@ jobs:
         ports:
           - 9010:9000
 
+      click-house:
+        image: clickhouse/clickhouse-server
+        ports:
+          - 18123:8123
+          - 19000:9000
+          - 19009:9009
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
