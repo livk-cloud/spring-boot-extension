@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 /**
+ * 使用FreeMarker实现的表达式解析器
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -39,6 +41,9 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Templa
 
 	private final Configuration configuration;
 
+	/**
+	 * Instantiates a new Free marker expression resolver.
+	 */
 	public FreeMarkerExpressionResolver() {
 		this(DEFAULT_CONFIG);
 	}

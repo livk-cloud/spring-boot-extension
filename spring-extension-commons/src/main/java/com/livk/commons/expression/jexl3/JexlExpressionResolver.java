@@ -40,6 +40,9 @@ public class JexlExpressionResolver extends ConverterExpressionResolver<JexlCont
 
 	private final JexlEngine engine;
 
+	/**
+	 * Instantiates a new Jexl expression resolver.
+	 */
 	public JexlExpressionResolver() {
 		this(Optional.ofNullable(JexlEngine.getThreadEngine()).orElse(DEFAULT_ENGINE));
 	}
