@@ -71,6 +71,28 @@ jobs:
         ports:
           - 9010:9000
 
+      click-house:
+        image: clickhouse/clickhouse-server
+        ports:
+          - 18123:8123
+          - 19000:9000
+          - 19009:9009
+
+      postgresql:
+        image: gradescope/postgresql-multiple-databases
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_MULTIPLE_DATABASES: graphql,mybatis,mybatis_type
+          POSTGRES_PASSWORD: 123456
+
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+        ports:
+          - 3306:3306
+
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts

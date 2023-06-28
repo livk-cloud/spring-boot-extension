@@ -15,27 +15,17 @@
  *
  */
 
-package com.livk.crypto.webflux.entity;
+-- auto-generated definition
+create table sys_user
+(
+    id          bigint auto_increment
+        primary key,
+    user_name   varchar(55)  null,
+    sex         tinyint      null,
+    age         int          null,
+    address     varchar(255) null,
+    status      tinyint      null,
+    create_time datetime     null,
+    update_time datetime     null
+);
 
-import com.livk.crypto.CryptoType;
-import com.livk.crypto.annotation.CryptoDecrypt;
-import com.livk.crypto.annotation.CryptoEncrypt;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-/**
- * @author livk
- */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Info {
-	@CryptoEncrypt(CryptoType.PBE)
-	@CryptoDecrypt
-	private Long headerId;
-
-	@CryptoEncrypt(CryptoType.PBE)
-	@CryptoDecrypt
-	private Long paramId;
-}

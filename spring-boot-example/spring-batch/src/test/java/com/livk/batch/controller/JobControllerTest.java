@@ -24,6 +24,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,7 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest
+@SpringBootTest({
+	"spring.datasource.driver-class-name=org.h2.Driver",
+	"spring.datasource.url=jdbc:h2:mem:test",
+	"spring.sql.init.schema-locations=classpath*:/org/springframework/batch/core/schema-h2.sql",
+	"spring.sql.init.platform=h2",
+	"spring.sql.init.mode=embedded"
+})
 @AutoConfigureMockMvc
 class JobControllerTest {
 
@@ -46,8 +55,12 @@ class JobControllerTest {
 
 	@Test
 	void doJobTest() throws Exception {
-		jdbcTemplate.execute("truncate table sys_user");
 		mockMvc.perform(get("/doJob"))
 			.andExpect(status().isOk());
+		List<String> names = jdbcTemplate.queryForList("select * from sys_user")
+			.stream()
+			.map(map -> map.get("user_name").toString())
+			.toList();
+		assertLinesMatch(List.of("张三", "李四", "王雪", "孙云", "赵柳", "孙雪"), names);
 	}
 }

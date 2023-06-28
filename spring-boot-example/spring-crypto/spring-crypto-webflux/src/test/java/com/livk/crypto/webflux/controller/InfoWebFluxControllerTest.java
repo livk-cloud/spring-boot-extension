@@ -48,13 +48,13 @@ class InfoWebFluxControllerTest {
 
 	@Test
 	void infoGet() {
-		String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+		String encodingStr = pbeSecurity.print(654321L, Locale.CHINA);
 		String encoding = CryptoType.PBE.wrapper(encodingStr);
-		Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/info/{id}")
+			.uri(uriBuilder -> uriBuilder.path("/info")
 				.queryParam("id", encoding)
-				.build(encoding))
+				.build())
+			.header("id",encoding)
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -63,15 +63,15 @@ class InfoWebFluxControllerTest {
 			.expectBody(JsonNode.class)
 			.value(jsonNode -> {
 				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.variableId").asText());
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.headerId").asText());
 			});
 	}
 
 	@Test
 	void infoPost() {
-		String encodingStr = pbeSecurity.print(123456L, Locale.CHINA);
+		String encodingStr = pbeSecurity.print(654321L, Locale.CHINA);
 		String encoding = CryptoType.PBE.wrapper(encodingStr);
-		Map<String, String> body = Map.of("variableId", encoding, "paramId", encoding);
+		Map<String, String> body = Map.of("headerId", encoding, "paramId", encoding);
 		client.post()
 			.uri("/info")
 			.bodyValue(body)
@@ -84,7 +84,7 @@ class InfoWebFluxControllerTest {
 			.expectBody(JsonNode.class)
 			.value(jsonNode -> {
 				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.variableId").asText());
+				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.headerId").asText());
 			});
 	}
 }

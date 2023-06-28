@@ -9,4 +9,5 @@ dependencies {
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "com.mysql:mysql-connector-j"
     testImplementation "org.springframework.graphql:spring-graphql-test"
+    testImplementation "com.h2database:h2"
 }

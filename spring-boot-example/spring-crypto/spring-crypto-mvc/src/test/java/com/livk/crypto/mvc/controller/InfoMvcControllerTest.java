@@ -51,27 +51,28 @@ class InfoMvcControllerTest {
 
 	@Test
 	void infoGet() throws Exception {
-		String encoding = aesSecurity.print(123456L, Locale.CHINA);
+		String encoding = aesSecurity.print(654321L, Locale.CHINA);
 		encoding = CryptoType.AES.wrapper(encoding);
-		mockMvc.perform(get("/info/{id}", encoding)
-				.param("id", encoding))
+		mockMvc.perform(get("/info")
+				.param("id", encoding)
+				.header("id", encoding))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("id.paramId", encoding).exists())
-			.andExpect(jsonPath("id.variableId", encoding).exists());
+			.andExpect(jsonPath("id.headerId", encoding).exists());
 	}
 
 	@Test
 	void infoPost() throws Exception {
-		String encoding = aesSecurity.print(123456L, Locale.CHINA);
+		String encoding = aesSecurity.print(654321L, Locale.CHINA);
 		encoding = CryptoType.AES.wrapper(encoding);
-		String json = JsonMapperUtils.writeValueAsString(Map.of("variableId", encoding, "paramId", encoding));
+		String json = JsonMapperUtils.writeValueAsString(Map.of("headerId", encoding, "paramId", encoding));
 		mockMvc.perform(post("/info")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("body.paramId", encoding).exists())
-			.andExpect(jsonPath("body.variableId", encoding).exists());
+			.andExpect(jsonPath("body.headerId", encoding).exists());
 	}
 }

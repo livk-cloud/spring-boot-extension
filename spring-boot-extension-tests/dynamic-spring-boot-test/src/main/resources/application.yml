@@ -2,7 +2,7 @@ spring:
   dynamic:
     datasource:
       mysql:
-        url: jdbc:mysql://livk.com:3306/mybatis
+        url: jdbc:mysql://livk.com:3306/mybatis?createDatabaseIfNotExist=true
         username: root
         password: 123456
         driver-class-name: com.mysql.cj.jdbc.Driver

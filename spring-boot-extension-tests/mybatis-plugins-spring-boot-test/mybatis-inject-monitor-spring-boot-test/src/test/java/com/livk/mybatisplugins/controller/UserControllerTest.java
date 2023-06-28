@@ -42,7 +42,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest
+@SpringBootTest({
+	"spring.datasource.driver-class-name=org.h2.Driver",
+	"spring.datasource.url=jdbc:h2:mem:test",
+	"spring.sql.init.platform=h2",
+	"spring.sql.init.mode=embedded"
+})
 @AutoConfigureMockMvc
 class UserControllerTest {
 	@Autowired

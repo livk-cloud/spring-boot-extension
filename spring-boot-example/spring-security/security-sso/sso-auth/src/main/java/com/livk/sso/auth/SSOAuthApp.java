@@ -18,7 +18,11 @@
 package com.livk.sso.auth;
 
 import com.livk.commons.spring.SpringLauncher;
+import com.livk.sso.auth.mapper.UserMapper;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * <p>
@@ -32,5 +36,16 @@ public class SSOAuthApp {
 
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
+	}
+
+	@Bean
+	public ApplicationRunner applicationRunner(UserMapper userMapper,
+											   JdbcTemplate jdbcTemplate) {
+		return args -> {
+			if (userMapper.getByUserName("livk") == null) {
+				jdbcTemplate.execute("INSERT INTO users (id, username, password)\n" +
+									 "VALUES (1, 'livk', '$2a$10$LepUx6I/1y0Pc614ZqSK6eXvoMbNDjdjAKqV/GQ4C97b0pw/kiuBC')");
+			}
+		};
 	}
 }
