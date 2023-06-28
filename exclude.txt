@@ -1,4 +1,3 @@
-com.livk.auth.server.AuthServerAppTest
 com.livk.batch.controller.JobControllerTest
 com.livk.ck.jdbc.controller.UserControllerTest
 com.livk.ck.r2dbc.controller.UserControllerTest

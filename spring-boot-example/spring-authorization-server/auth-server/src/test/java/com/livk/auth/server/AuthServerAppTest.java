@@ -43,7 +43,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest
+@SpringBootTest({
+	"spring.datasource.driver-class-name=org.h2.Driver",
+	"spring.datasource.url=jdbc:h2:mem:test",
+	"spring.sql.init.schema-locations[0]=classpath*:/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql",
+	"spring.sql.init.schema-locations[1]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql",
+	"spring.sql.init.schema-locations[2]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql",
+	"spring.sql.init.platform=h2",
+	"spring.sql.init.mode=embedded"
+})
 @AutoConfigureMockMvc
 class AuthServerAppTest {
 

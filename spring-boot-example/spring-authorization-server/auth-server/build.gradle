@@ -9,4 +9,5 @@ dependencies {
     implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter"
     implementation "com.mysql:mysql-connector-j"
     implementation "org.springframework.security:spring-security-oauth2-authorization-server"
+    testImplementation "com.h2database:h2"
 }
