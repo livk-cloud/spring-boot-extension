@@ -41,7 +41,7 @@ public interface GenericWrapper<T> extends Wrapper {
 	@Override
 	default boolean isWrapperFor(Class<?> type) {
 		Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), GenericWrapper.class);
-		return typeArgument == null || type.equals(typeArgument);
+		return typeArgument == null || type.isAssignableFrom(typeArgument);
 	}
 
 	/**
