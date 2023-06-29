@@ -6,17 +6,9 @@ include::commons/aop.adoc[]
 
 include::commons/bean.adoc[]
 
-include::commons/cglib.adoc[]
-
-include::commons/collect.adoc[]
-
 include::commons/expression.adoc[]
 
-include::commons/function.adoc[]
-
 include::commons/http.adoc[]
-
-include::commons/io.adoc[]
 
 include::commons/jackson.adoc[]
 

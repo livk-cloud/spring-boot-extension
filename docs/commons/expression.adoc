@@ -1,0 +1,73 @@
+[[expression]]
+==== expression
+
+===== AbstractExpressionResolver
+
+ExpressionResolver抽象实现 +
+将Map或者Method等信息转成Context +
+
+使用示例:
+
+[source,java,indent=0]
+----
+public class MyExpressionResolver extends AbstractExpressionResolver {
+	@Override
+	public <T> T evaluate(String value, Context context, Class<T> returnType) {
+		//TODO:解析表达式
+	}
+
+	//重写次方式用于调整Context的解析
+	@Override
+	protected ContextFactory getContextFactory() {
+		return super.getContextFactory();
+	}
+}
+----
+
+===== CacheExpressionResolver
+
+用于对表达式解析进行缓存构建 +
+同时添加spring-environment的支持 +
+
+使用示例:
+
+[source,java,indent=0]
+----
+public class MyExpressionResolver extends CacheExpressionResolver<Expression> {
+  //将表达式转成不同组件的表达式类
+	@Override
+	protected Expression compile(String value) throws Throwable {
+		return null;
+	}
+
+  //根据组件的表达式进行计算
+	@Override
+	protected <T> T calculate(Expression expression, Context context, Class<T> returnType) throws Throwable {
+		return null;
+	}
+}
+----
+
+===== ConverterExpressionResolver
+
+用于适配不同的解析工具 +
+将Context转成相对于的上下文环境 +
+
+[source,java,indent=0]
+----
+public class MyExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression> {
+  //将上下文转成组件的上下文
+	@Override
+	protected EvaluationContext transform(Context context) {
+		return null;
+	}
+}
+----
+
+===== 内置ExpressionResolver
+
+. SpringExpressionResolver---根据SpringEL表达式进行解析 +
+. AviatorExpressionResolver--根据Aviator表达式进行解析(需要重新引入jar) +
+. FreeMarkerExpressionResolver--根据FreeMarker表达式进行解析(需要重新引入jar)  +
+. JexlExpressionResolver--根据Apache Commons Jexl3表达式进行解析(需要重新引入jar)  +
+. MvelExpressionResolver--根据Mvel 2表达式进行解析(需要重新引入jar)  +

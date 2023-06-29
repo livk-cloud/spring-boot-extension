@@ -442,8 +442,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>spring-boot-extension-doc</h1>
 <div class="details">
 <span id="author" class="author">Livk</span><br>
-<span id="revnumber">version 1.1.1-SNAPSHOT,</span>
-<span id="revdate">2023-06-08</span>
+<span id="revnumber">version 1.1.2-SNAPSHOT,</span>
+<span id="revdate">2023-06-27</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -685,7 +685,7 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 <div class="sect3">
 <h4 id="aop">4.2.1. aop</h4>
 <div class="sect4">
-<h5 id="_com_livk_commons_aop_annotationabstractpointcutadvisor">com.livk.commons.aop.AnnotationAbstractPointcutAdvisor</h5>
+<h5 id="_annotationabstractpointcutadvisor">AnnotationAbstractPointcutAdvisor</h5>
 <div class="paragraph">
 <p>使用注解处理AOP的通用切点及表达式</p>
 </div>
@@ -712,9 +712,9 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 </div>
 </div>
 <div class="sect4">
-<h5 id="_com_livk_commons_aop_annotationabstractpointcuttypeadvisor">com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor</h5>
+<h5 id="_annotationabstractpointcuttypeadvisor">AnnotationAbstractPointcutTypeAdvisor</h5>
 <div class="paragraph">
-<p>AnnotationAbstractPointcutAdvisor定制化拓展</p>
+<p>定制化拓展</p>
 </div>
 <div class="paragraph">
 <p>使用示例</p>
@@ -736,13 +736,164 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 </div>
 </div>
 </div>
+<div class="sect4">
+<h5 id="_annotationpointcuttype">AnnotationPointcutType</h5>
+<div class="paragraph">
+<p>提供四种可选方案</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>TYPE基于类级别的拦截等价于(@Around(@within(Annotation)))</p>
+</li>
+<li>
+<p>METHOD基于方法级别的拦截等价于(@Around(@annotation(Annotation)))</p>
+</li>
+<li>
+<p>TYPE_OR_METHOD基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))</p>
+</li>
+<li>
+<p>AUTO根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="bean">4.2.2. bean</h4>
+<div class="sect4">
+<h5 id="_beanlambdafunc">BeanLambdaFunc</h5>
+<div class="paragraph">
+<p>根据lambda解析Field和Method</p>
+</div>
+<div class="paragraph">
+<p>使用示例:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import java.lang.reflect.Field;import java.lang.reflect.Method;
 
+public class Main{
+    public static void main(String[] args){
+      String methodName = BeanLambdaFunc.methodName(Maker::getNo);
+      Method method = BeanLambdaFunc.method(Maker::getNo);
+      String fieldName = BeanLambdaFunc.fieldName(Maker::getNo);
+      Field field = BeanLambdaFunc.field(Maker::getNo);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_pair">pair</h5>
+<div class="paragraph">
+<p>一个便捷的KV键值对</p>
+</div>
+<div class="paragraph">
+<p>jackson序列化({K:V},反序列化同理，类似于Map)<br>
+可直接转Map、Map.Entity<br>
+同时设置map和flatMap进行转换</p>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="spring">4.2.3. spring</h4>
+<h4 id="expression">4.2.3. expression</h4>
+<div class="sect4">
+<h5 id="_abstractexpressionresolver">AbstractExpressionResolver</h5>
+<div class="paragraph">
+<p>ExpressionResolver抽象实现<br>
+将Map或者Method等信息转成Context<br></p>
+</div>
+<div class="paragraph">
+<p>使用示例:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends AbstractExpressionResolver {
+	@Override
+	public &lt;T&gt; T evaluate(String value, Context context, Class&lt;T&gt; returnType) {
+		//TODO:解析表达式
+	}
+
+	//重写次方式用于调整Context的解析
+	@Override
+	protected ContextFactory getContextFactory() {
+		return super.getContextFactory();
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_cacheexpressionresolver">CacheExpressionResolver</h5>
+<div class="paragraph">
+<p>用于对表达式解析进行缓存构建<br>
+同时添加spring-environment的支持<br></p>
+</div>
+<div class="paragraph">
+<p>使用示例:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends CacheExpressionResolver&lt;Expression&gt; {
+  //将表达式转成不同组件的表达式类
+	@Override
+	protected Expression compile(String value) throws Throwable {
+		return null;
+	}
+
+  //根据组件的表达式进行计算
+	@Override
+	protected &lt;T&gt; T calculate(Expression expression, Context context, Class&lt;T&gt; returnType) throws Throwable {
+		return null;
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_converterexpressionresolver">ConverterExpressionResolver</h5>
+<div class="paragraph">
+<p>用于适配不同的解析工具<br>
+将Context转成相对于的上下文环境<br></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends ConverterExpressionResolver&lt;EvaluationContext, Expression&gt; {
+  //将上下文转成组件的上下文
+	@Override
+	protected EvaluationContext transform(Context context) {
+		return null;
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_内置expressionresolver">内置ExpressionResolver</h5>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>SpringExpressionResolver---根据SpringEL表达式进行解析<br></p>
+</li>
+<li>
+<p>AviatorExpressionResolver&#8212;&#8203;根据Aviator表达式进行解析(需要重新引入jar)<br></p>
+</li>
+<li>
+<p>FreeMarkerExpressionResolver&#8212;&#8203;根据FreeMarker表达式进行解析(需要重新引入jar) <br></p>
+</li>
+<li>
+<p>JexlExpressionResolver&#8212;&#8203;根据Apache Commons Jexl3表达式进行解析(需要重新引入jar) <br></p>
+</li>
+<li>
+<p>MvelExpressionResolver&#8212;&#8203;根据Mvel 2表达式进行解析(需要重新引入jar) <br></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="spring">4.2.4. spring</h4>
 
 </div>
 </div>
@@ -1142,8 +1293,8 @@ public class UserController {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.1.1-SNAPSHOT<br>
-Last updated 2023-06-08 16:33:08 +0800
+Version 1.1.2-SNAPSHOT<br>
+Last updated 2023-06-27 14:18:34 +0800
 </div>
 </div>
 </body>

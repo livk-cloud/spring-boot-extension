@@ -1,7 +1,7 @@
 [[aop]]
 ==== aop
 
-===== com.livk.commons.aop.AnnotationAbstractPointcutAdvisor
+===== AnnotationAbstractPointcutAdvisor
 
 使用注解处理AOP的通用切点及表达式
 
@@ -24,9 +24,9 @@ public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock>{
 
 将注解作为泛型，自动获取到注解信息
 
-===== com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor
+===== AnnotationAbstractPointcutTypeAdvisor
 
-AnnotationAbstractPointcutAdvisor定制化拓展
+定制化拓展
 
 使用示例
 
@@ -45,3 +45,12 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
     }
 }
 ----
+
+===== AnnotationPointcutType
+
+提供四种可选方案
+
+. TYPE基于类级别的拦截等价于(@Around(@within(Annotation)))
+. METHOD基于方法级别的拦截等价于(@Around(@annotation(Annotation)))
+. TYPE_OR_METHOD基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))
+. AUTO根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)

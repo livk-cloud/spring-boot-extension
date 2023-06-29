@@ -1,3 +1,31 @@
 [[bean]]
 ==== bean
 
+===== BeanLambdaFunc
+
+根据lambda解析Field和Method
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      String methodName = BeanLambdaFunc.methodName(Maker::getNo);
+      Method method = BeanLambdaFunc.method(Maker::getNo);
+      String fieldName = BeanLambdaFunc.fieldName(Maker::getNo);
+      Field field = BeanLambdaFunc.field(Maker::getNo);
+    }
+}
+----
+
+===== pair
+
+一个便捷的KV键值对
+
+jackson序列化({K:V},反序列化同理，类似于Map) +
+可直接转Map、Map.Entity +
+同时设置map和flatMap进行转换
+
