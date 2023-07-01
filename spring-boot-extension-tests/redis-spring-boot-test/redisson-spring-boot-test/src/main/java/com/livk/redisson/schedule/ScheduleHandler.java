@@ -48,12 +48,11 @@ public class ScheduleHandler {
 		RScheduledFuture<?> future = executorService.scheduleAtFixedRate((Runnable & Serializable) () -> {
 			log.info("time:{}", System.currentTimeMillis());
 			try {
-				Thread.sleep(10000L);
+				Thread.sleep(100L);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 		}, 0, 1, TimeUnit.SECONDS);
 		log.info("TaskId:{}", future.getTaskId());
-//        executorService.delete();
 	}
 }
