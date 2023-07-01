@@ -148,13 +148,15 @@ public class SpringLauncher {
 		 * @return the format
 		 */
 		public Format println(String str) {
-			int length = str.length();
-			if (length < n) {
-				int index = (n - length) >> 1;
-				str = StringUtils.leftPad(str, length + index, ch);
-				str = StringUtils.rightPad(str, n, ch);
+			if (!str.contains("null")) {
+				int length = str.length();
+				if (length < n) {
+					int index = (n - length) >> 1;
+					str = StringUtils.leftPad(str, length + index, ch);
+					str = StringUtils.rightPad(str, n, ch);
+				}
+				out.println(str);
 			}
-			out.println(str);
 			return this;
 		}
 
