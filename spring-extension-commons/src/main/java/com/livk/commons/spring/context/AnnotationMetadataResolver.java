@@ -18,6 +18,7 @@
 package com.livk.commons.spring.context;
 
 import com.livk.commons.util.ObjectUtils;
+import lombok.Getter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The type Annotation metadata resolver.
@@ -46,6 +48,7 @@ import java.util.Set;
  */
 public class AnnotationMetadataResolver {
 
+	@Getter
 	private final ResourceLoader resourceLoader;
 
 	private final ResourcePatternResolver resolver;
@@ -79,9 +82,39 @@ public class AnnotationMetadataResolver {
 	 */
 	public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
 		TypeFilter typeFilter = new AnnotationTypeFilter(annotationType);
-		Set<Class<?>> typeSet = new HashSet<>();
+		return find(typeFilter, packages);
+	}
+
+	/**
+	 * 获取被满足条件的的class
+	 *
+	 * @param typeFilter type匹配器
+	 * @param packages   待扫描的包
+	 * @return set class
+	 */
+	public Set<Class<?>> find(TypeFilter typeFilter, String... packages) {
+		Function<MetadataReader, Class<?>> function = metadataReader -> {
+			String className = metadataReader.getClassMetadata().getClassName();
+			return ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
+		};
+		return find(typeFilter, function, packages);
+	}
+
+	/**
+	 * 获取被注解标注的class
+	 *
+	 * @param annotationType 注解
+	 * @param beanFactory    beanFactory
+	 * @return set class
+	 */
+	public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
+		return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
+	}
+
+	private <E> Set<E> find(TypeFilter typeFilter, Function<MetadataReader, E> function, String... packages) {
+		Set<E> result = new HashSet<>();
 		if (ObjectUtils.isEmpty(packages)) {
-			return typeSet;
+			return result;
 		}
 		for (String packageStr : packages) {
 			packageStr = ClassUtils.convertClassNameToResourcePath(packageStr);
@@ -90,26 +123,13 @@ public class AnnotationMetadataResolver {
 				for (Resource resource : resources) {
 					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
 					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
-						String className = metadataReader.getClassMetadata().getClassName();
-						Class<?> type = ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
-						typeSet.add(type);
+						result.add(function.apply(metadataReader));
 					}
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		return typeSet;
-	}
-
-	/**
-	 * 获取被注解标注的class
-	 *
-	 * @param annotationType 注解
-	 * @param beanFactory    springboot包扫描
-	 * @return set class
-	 */
-	public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
-		return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
+		return result;
 	}
 }
