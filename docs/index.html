@@ -771,7 +771,8 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import java.lang.reflect.Field;import java.lang.reflect.Method;
+<pre class="highlight"><code class="language-java" data-lang="java">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class Main{
     public static void main(String[] args){
@@ -815,7 +816,7 @@ public class Main{
 		//TODO:解析表达式
 	}
 
-	//重写次方式用于调整Context的解析
+	//重写此方法用于调整Context的解析
 	@Override
 	protected ContextFactory getContextFactory() {
 		return super.getContextFactory();
@@ -874,26 +875,30 @@ public class Main{
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>SpringExpressionResolver---根据SpringEL表达式进行解析<br></p>
+<p>SpringExpressionResolver &#8594; 根据SpringEL表达式进行解析<br></p>
 </li>
 <li>
-<p>AviatorExpressionResolver&#8212;&#8203;根据Aviator表达式进行解析(需要重新引入jar)<br></p>
+<p>AviatorExpressionResolver &#8594; 根据Aviator表达式进行解析(需要重新引入jar)<br></p>
 </li>
 <li>
-<p>FreeMarkerExpressionResolver&#8212;&#8203;根据FreeMarker表达式进行解析(需要重新引入jar) <br></p>
+<p>FreeMarkerExpressionResolver &#8594; 根据FreeMarker表达式进行解析(需要重新引入jar) <br></p>
 </li>
 <li>
-<p>JexlExpressionResolver&#8212;&#8203;根据Apache Commons Jexl3表达式进行解析(需要重新引入jar) <br></p>
+<p>JexlExpressionResolver &#8594; 根据Apache Commons Jexl3表达式进行解析(需要重新引入jar) <br></p>
 </li>
 <li>
-<p>MvelExpressionResolver&#8212;&#8203;根据Mvel 2表达式进行解析(需要重新引入jar) <br></p>
+<p>MvelExpressionResolver &#8594; 根据Mvel 2表达式进行解析(需要重新引入jar) <br></p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="spring">4.2.4. spring</h4>
+<h4 id="http">4.2.4. http</h4>
+
+</div>
+<div class="sect3">
+<h4 id="spring">4.2.5. spring</h4>
 
 </div>
 </div>

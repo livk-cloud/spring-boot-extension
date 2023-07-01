@@ -16,7 +16,7 @@ public class MyExpressionResolver extends AbstractExpressionResolver {
 		//TODO:解析表达式
 	}
 
-	//重写次方式用于调整Context的解析
+	//重写此方法用于调整Context的解析
 	@Override
 	protected ContextFactory getContextFactory() {
 		return super.getContextFactory();
@@ -66,8 +66,8 @@ public class MyExpressionResolver extends ConverterExpressionResolver<Evaluation
 
 ===== 内置ExpressionResolver
 
-. SpringExpressionResolver---根据SpringEL表达式进行解析 +
-. AviatorExpressionResolver--根据Aviator表达式进行解析(需要重新引入jar) +
-. FreeMarkerExpressionResolver--根据FreeMarker表达式进行解析(需要重新引入jar)  +
-. JexlExpressionResolver--根据Apache Commons Jexl3表达式进行解析(需要重新引入jar)  +
-. MvelExpressionResolver--根据Mvel 2表达式进行解析(需要重新引入jar)  +
+. SpringExpressionResolver -> 根据SpringEL表达式进行解析 +
+. AviatorExpressionResolver -> 根据Aviator表达式进行解析(需要重新引入jar) +
+. FreeMarkerExpressionResolver -> 根据FreeMarker表达式进行解析(需要重新引入jar)  +
+. JexlExpressionResolver -> 根据Apache Commons Jexl3表达式进行解析(需要重新引入jar)  +
+. MvelExpressionResolver -> 根据Mvel 2表达式进行解析(需要重新引入jar)  +
