@@ -1,5 +1,6 @@
 [versions]
 spring-boot = "3.1.1"
+kotlin = "1.8.22"
 pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
 mybatis = "3.5.13"
@@ -88,5 +89,6 @@ mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugins" }
