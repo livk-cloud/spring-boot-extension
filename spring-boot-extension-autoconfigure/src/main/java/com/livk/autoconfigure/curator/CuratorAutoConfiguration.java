@@ -20,13 +20,14 @@ package com.livk.autoconfigure.curator;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.support.CuratorTemplate;
 import org.apache.curator.RetryPolicy;
+import org.apache.curator.drivers.TracerDriver;
+import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -41,29 +42,43 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 @ConditionalOnClass(CuratorFramework.class)
 @EnableConfigurationProperties(CuratorProperties.class)
+@ConditionalOnProperty(value = "spring.zookeeper.curator.enabled", matchIfMissing = true)
 public class CuratorAutoConfiguration {
 
 	/**
-	 * Curator framework
+	 * Curator framework curator framework.
 	 *
-	 * @param curatorProperties                  the curator properties
+	 * @param properties                         the properties
+	 * @param retryPolicy                        the retry policy
 	 * @param curatorFrameworkBuilderCustomizers the curator framework builder customizers
+	 * @param ensembleProviders                  the ensemble providers
+	 * @param tracerDrivers                      the tracer drivers
 	 * @return the curator framework
+	 * @throws Exception the exception
 	 */
-	@ConditionalOnMissingBean
-	@Bean(initMethod = "start", destroyMethod = "close")
-	public CuratorFramework curatorFramework(CuratorProperties curatorProperties,
-											 ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers) {
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(curatorProperties.getBaseSleepTime(),
-			curatorProperties.getMaxRetries());
-		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-			.connectString(curatorProperties.getServers())
-			.connectionTimeoutMs(curatorProperties.getConnectionTimeout())
-			.sessionTimeoutMs(curatorProperties.getSessionTimeout())
-			.retryPolicy(retryPolicy);
-		curatorFrameworkBuilderCustomizers.orderedStream().forEach(customizer -> customizer.customize(builder));
-		return builder.build();
-	}
+	@Bean(destroyMethod = "close")
+    @ConditionalOnMissingBean
+    public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
+                                             ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
+                                             ObjectProvider<EnsembleProvider> ensembleProviders,
+                                             ObjectProvider<TracerDriver> tracerDrivers) throws Exception {
+        return CuratorFactory.curatorFramework(properties, retryPolicy,
+                curatorFrameworkBuilderCustomizers::orderedStream,
+                ensembleProviders::getIfAvailable,
+                tracerDrivers::getIfAvailable);
+    }
+
+	/**
+	 * Exponential backoff retry policy.
+	 *
+	 * @param properties the properties
+	 * @return the retry policy
+	 */
+	@Bean
+    @ConditionalOnMissingBean
+    public RetryPolicy exponentialBackoffRetry(CuratorProperties properties) {
+        return CuratorFactory.retryPolicy(properties);
+    }
 
 	/**
 	 * Curator template curator template.
@@ -72,8 +87,8 @@ public class CuratorAutoConfiguration {
 	 * @return the curator template
 	 */
 	@Bean
-	@ConditionalOnMissingBean
-	public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
-		return new CuratorTemplate(curatorFramework);
-	}
+    @ConditionalOnMissingBean
+    public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
+        return new CuratorTemplate(curatorFramework);
+    }
 }

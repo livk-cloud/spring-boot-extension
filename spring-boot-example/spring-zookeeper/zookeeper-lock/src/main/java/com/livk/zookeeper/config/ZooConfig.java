@@ -32,13 +32,7 @@ import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
  * @author livk
  */
 @Configuration
-@EnableConfigurationProperties(ZookeeperProperties.class)
 public class ZooConfig {
-
-	@Bean
-	public CuratorFramework curatorFramework(ZookeeperProperties properties) {
-		return new CuratorFrameworkFactoryBean(properties.getAddress()).getObject();
-	}
 
 	@Bean
 	public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework curatorFramework) {
