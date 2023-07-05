@@ -26,7 +26,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
  *
  * @author livk
  */
-public class UniversalReactiveRedisTemplate extends ReactiveRedisTemplate<String, Object> {
+public class ReactiveRedisOps extends ReactiveRedisTemplate<String, Object> {
 
 	/**
 	 * Instantiates a new Universal reactive redis template.
@@ -34,8 +34,8 @@ public class UniversalReactiveRedisTemplate extends ReactiveRedisTemplate<String
 	 * @param connectionFactory    the connection factory
 	 * @param serializationContext the serialization context
 	 */
-	public UniversalReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory,
-										  RedisSerializationContext<String, Object> serializationContext) {
+	public ReactiveRedisOps(ReactiveRedisConnectionFactory connectionFactory,
+							RedisSerializationContext<String, Object> serializationContext) {
 		this(connectionFactory, serializationContext, false);
 	}
 
@@ -46,8 +46,8 @@ public class UniversalReactiveRedisTemplate extends ReactiveRedisTemplate<String
 	 * @param serializationContext the serialization context
 	 * @param exposeConnection     the expose connection
 	 */
-	public UniversalReactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory,
-										  RedisSerializationContext<String, Object> serializationContext, boolean exposeConnection) {
+	public ReactiveRedisOps(ReactiveRedisConnectionFactory connectionFactory,
+							RedisSerializationContext<String, Object> serializationContext, boolean exposeConnection) {
 		super(connectionFactory, serializationContext, exposeConnection);
 	}
 

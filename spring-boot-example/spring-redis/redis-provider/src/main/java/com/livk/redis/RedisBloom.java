@@ -17,7 +17,7 @@
 
 package com.livk.redis;
 
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +45,8 @@ public class RedisBloom {
 
 	private final ValueOperations<String, Object> forValue;
 
-	public RedisBloom(UniversalRedisTemplate livkRedisTemplate) {
-		this.forValue = livkRedisTemplate.opsForValue();
+	public RedisBloom(RedisOps redisOps) {
+		this.forValue = redisOps.opsForValue();
 	}
 
 	public void addKey(String data) {

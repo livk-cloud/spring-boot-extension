@@ -27,12 +27,12 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  *
  * @author livk
  */
-public class UniversalRedisTemplate extends RedisTemplate<String, Object> {
+public class RedisOps extends RedisTemplate<String, Object> {
 
 	/**
 	 * Instantiates a new Universal redis template.
 	 */
-	public UniversalRedisTemplate() {
+	public RedisOps() {
 		RedisSerializer<Object> serializer = JacksonSerializerUtils.json();
 		this.setKeySerializer(RedisSerializer.string());
 		this.setHashKeySerializer(RedisSerializer.string());
@@ -45,7 +45,7 @@ public class UniversalRedisTemplate extends RedisTemplate<String, Object> {
 	 *
 	 * @param redisConnectionFactory the redis connection factory
 	 */
-	public UniversalRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+	public RedisOps(RedisConnectionFactory redisConnectionFactory) {
 		this();
 		this.setConnectionFactory(redisConnectionFactory);
 		this.afterPropertiesSet();

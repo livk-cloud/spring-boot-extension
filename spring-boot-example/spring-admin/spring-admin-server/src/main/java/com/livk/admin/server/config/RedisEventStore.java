@@ -17,7 +17,7 @@
 
 package com.livk.admin.server.config;
 
-import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.ConcurrentMapEventStore;
@@ -43,9 +43,9 @@ public class RedisEventStore extends ConcurrentMapEventStore {
 
 	private final ReactiveHashOperations<String, String, List<InstanceEvent>> hashOperations;
 
-	public RedisEventStore(UniversalReactiveRedisTemplate reactiveRedisTemplate) {
+	public RedisEventStore(ReactiveRedisOps reactiveRedisOps) {
 		super(100, new ConcurrentHashMap<>());
-		hashOperations = reactiveRedisTemplate.opsForHash();
+		hashOperations = reactiveRedisOps.opsForHash();
 	}
 
 	@NonNull
