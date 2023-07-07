@@ -17,7 +17,7 @@
 
 package com.livk.caffeine.controller;
 
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ class CacheControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
-	UniversalRedisTemplate redisTemplate;
+    RedisOps redisOps;
 
 
 	@Test
@@ -104,13 +104,13 @@ class CacheControllerTest {
 	@Test
 	public void test() {
 		ScanOptions options = ScanOptions.scanOptions().match("*").count(100).build();
-		try (Cursor<String> cursor = redisTemplate.scan(options)) {
+		try (Cursor<String> cursor = redisOps.scan(options)) {
 			while (cursor.hasNext()) {
 				log.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
 			}
 		}
 
-		try (Cursor<String> scan = redisTemplate.scan(options)) {
+		try (Cursor<String> scan = redisOps.scan(options)) {
 			Set<String> keys = scan.stream().limit(1).collect(Collectors.toSet());
 			log.info("keys:{}", keys);
 			assertEquals(1, keys.size());

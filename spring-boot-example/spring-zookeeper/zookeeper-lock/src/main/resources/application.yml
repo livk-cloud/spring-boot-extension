@@ -1,3 +1,4 @@
 spring:
   zookeeper:
-    host: livk.com
+    curator:
+      connect-string: livk.com:2181

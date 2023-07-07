@@ -17,7 +17,7 @@
 
 package com.livk.redis.controller;
 
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -40,14 +40,14 @@ public class BuyController {
 
 	private final LuaStock luaStock;
 
-	private final UniversalRedisTemplate livkRedisTemplate;
+	private final RedisOps redisOps;
 
 	@PostConstruct
 	public void init() {
-		if (Boolean.TRUE.equals(livkRedisTemplate.hasKey("livk"))) {
-			livkRedisTemplate.delete("livk");
+		if (Boolean.TRUE.equals(redisOps.hasKey("livk"))) {
+			redisOps.delete("livk");
 		}
-		livkRedisTemplate.opsForValue().set("livk", 1);
+		redisOps.opsForValue().set("livk", 1);
 	}
 
 	@PostMapping("buy")
@@ -57,7 +57,7 @@ public class BuyController {
 
 	@PostMapping("put")
 	public void put() {
-		ValueOperations<String, Object> value = livkRedisTemplate.opsForValue();
+		ValueOperations<String, Object> value = redisOps.opsForValue();
 		if ((Integer) value.get("livk") > 0) {
 			value.decrement("livk");
 		}

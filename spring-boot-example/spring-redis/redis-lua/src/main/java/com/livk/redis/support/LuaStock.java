@@ -17,7 +17,7 @@
 
 package com.livk.redis.support;
 
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -37,11 +37,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LuaStock {
 
-	private final UniversalRedisTemplate livkRedisTemplate;
+	private final RedisOps redisOps;
 
 	public String buy(Integer num) {
 		RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("good.lua"), Long.class);
-		Long result = livkRedisTemplate.execute(redisScript, List.of("stock"), num);
+		Long result = redisOps.execute(redisScript, List.of("stock"), num);
 		Assert.notNull(result, "RedisScript Result is Null!");
 		if (0 == result) {
 			return "没了";

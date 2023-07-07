@@ -17,7 +17,7 @@
 
 package com.livk.redis.submit.support;
 
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.redis.core.ValueOperations;
@@ -34,11 +34,11 @@ public class RedisSupport {
 
 	private static final ValueOperations<String, Object> OPERATIONS;
 
-	private static final UniversalRedisTemplate REDIS_TEMPLATE;
+	private static final RedisOps REDIS_OPS;
 
 	static {
-		REDIS_TEMPLATE = SpringContextHolder.getBean(UniversalRedisTemplate.class);
-		OPERATIONS = REDIS_TEMPLATE.opsForValue();
+		REDIS_OPS = SpringContextHolder.getBean(RedisOps.class);
+		OPERATIONS = REDIS_OPS.opsForValue();
 	}
 
 
@@ -61,6 +61,6 @@ public class RedisSupport {
 	 * @return boolean boolean
 	 */
 	public boolean exists(String key) {
-		return Boolean.TRUE.equals(REDIS_TEMPLATE.hasKey(key));
+		return Boolean.TRUE.equals(REDIS_OPS.hasKey(key));
 	}
 }

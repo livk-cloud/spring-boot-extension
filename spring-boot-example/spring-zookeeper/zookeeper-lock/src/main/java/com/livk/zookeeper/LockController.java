@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.locks.Lock;
@@ -33,21 +35,27 @@ import java.util.concurrent.locks.Lock;
  * @author livk
  */
 @Slf4j
-@RestController("lock")
+@RequestMapping("lock")
+@RestController
 @RequiredArgsConstructor
 public class LockController {
 
 	private final LockRegistry lockRegistry;
 
 	@GetMapping
-	public void lock() {
+	public void lock(@RequestParam Integer id) throws InterruptedException {
 		Lock lock = lockRegistry.obtain("zookeeper");
-		if (lock.tryLock()) {
-			try {
-				log.info("is locked");
-			} finally {
-				lock.unlock();
-			}
+		while (!lock.tryLock()) {
+			//获取不到锁直接空转
+			Thread.sleep(100);
+		}
+		try {
+			log.info("{} is locked", id);
+			Thread.sleep(1000);
+		} catch (InterruptedException ignored) {
+
+		} finally {
+			lock.unlock();
 		}
 	}
 

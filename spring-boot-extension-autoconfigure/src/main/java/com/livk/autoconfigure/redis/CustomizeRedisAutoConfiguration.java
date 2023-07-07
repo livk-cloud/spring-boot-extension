@@ -18,8 +18,8 @@
 package com.livk.autoconfigure.redis;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.redis.supprot.UniversalReactiveRedisTemplate;
-import com.livk.autoconfigure.redis.supprot.UniversalRedisTemplate;
+import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
+import com.livk.autoconfigure.redis.supprot.RedisOps;
 import com.livk.autoconfigure.redis.util.JacksonSerializerUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -51,8 +51,8 @@ public class CustomizeRedisAutoConfiguration {
 	 * @return the universal redis template
 	 */
 	@Bean
-	public UniversalRedisTemplate livkRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-		return new UniversalRedisTemplate(redisConnectionFactory);
+	public RedisOps redisOps(RedisConnectionFactory redisConnectionFactory) {
+		return new RedisOps(redisConnectionFactory);
 	}
 
 
@@ -70,12 +70,12 @@ public class CustomizeRedisAutoConfiguration {
 		 * @return the universal reactive redis template
 		 */
 		@Bean
-		public UniversalReactiveRedisTemplate universalReactiveRedisTemplate(ReactiveRedisConnectionFactory redisConnectionFactory) {
+		public ReactiveRedisOps reactiveRedisOps(ReactiveRedisConnectionFactory redisConnectionFactory) {
 			RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
 				<String, Object>newSerializationContext()
 				.key(RedisSerializer.string()).value(JacksonSerializerUtils.json())
 				.hashKey(RedisSerializer.string()).hashValue(JacksonSerializerUtils.json()).build();
-			return new UniversalReactiveRedisTemplate(redisConnectionFactory, serializationContext);
+			return new ReactiveRedisOps(redisConnectionFactory, serializationContext);
 		}
 	}
 

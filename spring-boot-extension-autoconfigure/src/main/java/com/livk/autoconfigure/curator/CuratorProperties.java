@@ -19,6 +19,11 @@ package com.livk.autoconfigure.curator;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -37,28 +42,55 @@ public class CuratorProperties {
 	public static final String PREFIX = "spring.zookeeper.curator";
 
 	/**
-	 * zk连接集群，多个用逗号隔开
+	 * Connection string to the Zookeeper cluster.
 	 */
-	private String servers = "localhost:2181";
+	private String connectString = "localhost:2181";
 
 	/**
-	 * 会话超时时间
+	 * Is Zookeeper enabled.
 	 */
-	private int sessionTimeout = 60000;
+	private boolean enabled = true;
 
 	/**
-	 * 连接超时时间
+	 * Initial amount of time to wait between retries.
 	 */
-	private int connectionTimeout = 15000;
+	private Integer baseSleepTimeMs = 50;
 
 	/**
-	 * 初始重试等待时间(毫秒)
+	 * Max number of times to retry.
 	 */
-	private int baseSleepTime = 1000;
+	private Integer maxRetries = 10;
 
 	/**
-	 * 重试最大次数
+	 * Max time in ms to sleep on each retry.
 	 */
-	private int maxRetries = 10;
+	private Integer maxSleepMs = 500;
+
+	/**
+	 * Wait time to block on connection to Zookeeper.
+	 */
+	private Integer blockUntilConnectedWait = 10;
+
+	/**
+	 * The unit of time related to blocking on connection to Zookeeper.
+	 */
+	private TimeUnit blockUntilConnectedUnit = TimeUnit.SECONDS;
+
+	/**
+	 * The configured/negotiated session timeout in milliseconds. Please refer to
+	 * <a href='https://cwiki.apache.org/confluence/display/CURATOR/TN14'>Curator's Tech
+	 * Note 14</a> to understand how Curator implements connection sessions.
+	 *
+	 * @see <a href='https://cwiki.apache.org/confluence/display/CURATOR/TN14'>Curator's
+	 * Tech Note 14</a>
+	 */
+	@DurationUnit(ChronoUnit.MILLIS)
+	private Duration sessionTimeout = Duration.of(60 * 1000, ChronoUnit.MILLIS);
+
+	/**
+	 * The configured connection timeout in milliseconds.
+	 */
+	@DurationUnit(ChronoUnit.MILLIS)
+	private Duration connectionTimeout = Duration.of(15 * 1000, ChronoUnit.MILLIS);
 
 }

@@ -20,7 +20,6 @@ package com.livk.autoconfigure.curator.actuator;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
-import org.apache.zookeeper.ZooKeeper;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -30,15 +29,23 @@ import org.springframework.boot.actuate.health.Health;
 @RequiredArgsConstructor
 public class CuratorHealthIndicator extends AbstractHealthIndicator {
 
-	private final CuratorFramework curatorFramework;
+    private final CuratorFramework curatorFramework;
 
-	@Override
-	protected void doHealthCheck(Health.Builder builder) throws Exception {
-		if (curatorFramework.getState() == CuratorFrameworkState.STARTED) {
-			ZooKeeper.States state = curatorFramework.getZookeeperClient().getZooKeeper().getState();
-			builder.withDetail("state", state).up();
-		} else {
-			builder.down();
-		}
-	}
+    @Override
+    protected void doHealthCheck(Health.Builder builder) {
+        try {
+            CuratorFrameworkState state = curatorFramework.getState();
+            if (state != CuratorFrameworkState.STARTED) {
+                builder.down().withDetail("error", "Client not started");
+            } else if (curatorFramework.checkExists().forPath("/") == null) {
+                builder.down().withDetail("error", "Root for namespace does not exist");
+            } else {
+                builder.up();
+            }
+            builder.withDetail("connectionString", curatorFramework.getZookeeperClient().getCurrentConnectionString())
+                    .withDetail("state", state);
+        } catch (Exception e) {
+            builder.down(e);
+        }
+    }
 }
