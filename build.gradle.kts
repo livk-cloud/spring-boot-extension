@@ -36,13 +36,10 @@ configure(gradleModuleProjects) {
 
 	tasks.withType(Test::class.java) {
 		val exclude = System.getProperty("exclude")
-		if (exclude != null) {
-			if (exclude.toBoolean()) {
-				val reader = BufferedReader(FileReader("./exclude.txt"))
-				val lines: List<String> = reader.readLines().map { it.replace(".", "/") + ".class" }
-				println(lines)
-				exclude(lines)
-			}
+		if (exclude != null && exclude.toBoolean()) {
+			val reader = BufferedReader(FileReader("./exclude.txt"))
+			val lines: List<String> = reader.readLines().map { it.replace(".", "/") + ".class" }
+			exclude(lines)
 		}
 	}
 }
