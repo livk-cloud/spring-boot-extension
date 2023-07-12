@@ -34,7 +34,7 @@ configure(gradleModuleProjects) {
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 	}
 
-	tasks.withType(Test::class.java) {
+	tasks.withType<Test> {
 		val exclude = System.getProperty("exclude")
 		if (exclude != null && exclude.toBoolean()) {
 			val reader = BufferedReader(FileReader("./exclude.txt"))
