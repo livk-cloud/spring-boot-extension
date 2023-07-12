@@ -7,6 +7,7 @@ description = "spring commons packages"
 
 dependencies {
 	optional("org.springframework:spring-webflux")
+	optional("org.springframework:spring-tx")
 	optional("io.projectreactor.netty:reactor-netty-http")
 	optional("org.springframework.boot:spring-boot-starter")
 	optional("com.github.pagehelper:pagehelper")
@@ -16,14 +17,14 @@ dependencies {
 	optional("org.apache.commons:commons-jexl3")
 	optional("org.mvel:mvel2")
 	optional("org.freemarker:freemarker")
-	api("org.springframework:spring-core")
-	api("com.fasterxml.jackson.core:jackson-databind")
-	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	optional("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 	optional("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 	api("org.apache.commons:commons-lang3")
 	api("com.github.spotbugs:spotbugs-annotations")
 	api("com.google.guava:guava")
+	api("org.springframework:spring-core")
+	api("com.fasterxml.jackson.core:jackson-databind")
+	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	compileProcessor(project(":spring-auto-service"))
 	testImplementation("io.projectreactor:reactor-test")
 }
