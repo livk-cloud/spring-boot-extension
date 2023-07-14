@@ -17,7 +17,6 @@
 
 package com.livk.commons.beans;
 
-import com.livk.commons.util.GenericWrapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
