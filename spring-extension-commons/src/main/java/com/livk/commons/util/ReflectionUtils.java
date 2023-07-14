@@ -17,7 +17,6 @@
 
 package com.livk.commons.util;
 
-import com.livk.commons.bean.util.BeanUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 

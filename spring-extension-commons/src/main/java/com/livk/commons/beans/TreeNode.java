@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.bean.domain;
+package com.livk.commons.beans;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

@@ -19,7 +19,7 @@ package com.livk.autoconfigure.qrcode.support;
 
 import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
-import com.livk.commons.bean.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.AnnotationUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

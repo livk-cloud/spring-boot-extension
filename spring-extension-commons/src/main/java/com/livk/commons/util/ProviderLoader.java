@@ -18,7 +18,6 @@
 package com.livk.commons.util;
 
 import com.google.common.collect.Lists;
-import com.livk.commons.bean.util.ClassUtils;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 

@@ -17,7 +17,7 @@
 
 package com.livk.commons.spring.context;
 
-import com.livk.commons.bean.util.ClassUtils;
+import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
@@ -42,13 +42,9 @@ class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 		Set<String> names = new HashSet<>();
 		if (annotationClass != null) {
 			for (String annotationType : metadata.getAnnotationTypes()) {
-				try {
-					Class<?> type = ClassUtils.forName(annotationType, getBeanClassLoader());
-					if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
-						names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
-					}
-				} catch (ClassNotFoundException e) {
-					throw new RuntimeException(e);
+				Class<?> type = ClassUtils.resolveClassName(annotationType, getBeanClassLoader());
+				if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
+					names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
 				}
 			}
 		}

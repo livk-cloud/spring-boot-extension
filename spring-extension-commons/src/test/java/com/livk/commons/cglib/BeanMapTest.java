@@ -17,7 +17,7 @@
 
 package com.livk.commons.cglib;
 
-import com.livk.commons.bean.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambdaFunc;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.junit.jupiter.api.Test;

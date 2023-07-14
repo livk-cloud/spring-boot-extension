@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.livk.commons.bean.Wrapper;
 import com.livk.commons.jackson.core.JacksonSupport;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ import java.util.Map;
 /**
  * Jackson一些基本序列化与反序列化
  * <p>
- * 自定义Mapper，请注册{@link Wrapper}到IOC
+ * 自定义Mapper，请注册{@link com.livk.commons.beans.Wrapper}到IOC
  * <p>
  * 请使用{@link JsonMapperUtils}
  *

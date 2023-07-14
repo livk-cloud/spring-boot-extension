@@ -17,7 +17,7 @@
 
 package com.livk.commons.spring;
 
-import com.livk.commons.bean.util.ClassUtils;
+import com.livk.commons.util.ClassUtils;
 import com.livk.commons.util.DateUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

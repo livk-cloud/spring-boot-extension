@@ -17,7 +17,7 @@
 
 package com.livk.redisearch.mvc;
 
-import com.livk.commons.bean.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.mvc.entity.Student;

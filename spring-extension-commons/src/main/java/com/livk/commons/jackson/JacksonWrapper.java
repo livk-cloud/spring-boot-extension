@@ -19,7 +19,7 @@ package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.livk.commons.bean.GenericWrapper;
+import com.livk.commons.beans.GenericWrapper;
 import com.livk.commons.spring.context.SpringContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

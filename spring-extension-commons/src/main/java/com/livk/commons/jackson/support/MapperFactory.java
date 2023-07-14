@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.livk.commons.bean.GenericWrapper;
-import com.livk.commons.bean.Wrapper;
+import com.livk.commons.beans.GenericWrapper;
+import com.livk.commons.beans.Wrapper;
 
 /**
  * The type Mapper factory.
@@ -70,7 +70,7 @@ public enum MapperFactory {
 	 *
 	 * @param <M> {@link ObjectMapper} 子类
 	 * @param <B> {@link MapperBuilder} 子类
-	 * @see com.livk.commons.bean.GenericWrapper
+	 * @see GenericWrapper
 	 * @see JsonMapper
 	 * @see YAMLMapper
 	 * @see XmlMapper

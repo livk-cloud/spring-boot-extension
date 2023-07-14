@@ -17,7 +17,7 @@
 
 package com.livk.mybatis.tree.entity;
 
-import com.livk.commons.bean.domain.TreeNode;
+import com.livk.commons.beans.TreeNode;
 
 /**
  * <p>

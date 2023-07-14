@@ -215,36 +215,4 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		}
 
 	}
-
-	private static class HeaderEnumeration implements Enumeration<String> {
-
-		private final String contentType;
-
-		private boolean hasMoreElements = false;
-
-		/**
-		 * Instantiates a new Header enumeration.
-		 *
-		 * @param contentType the content type
-		 */
-		public HeaderEnumeration(String contentType) {
-			this.contentType = contentType;
-		}
-
-		@Override
-		public boolean hasMoreElements() {
-			return !hasMoreElements;
-		}
-
-		@Override
-		public String nextElement() {
-			if (hasMoreElements) {
-				throw new NoSuchElementException();
-			} else {
-				hasMoreElements = true;
-				return contentType;
-			}
-		}
-
-	}
 }

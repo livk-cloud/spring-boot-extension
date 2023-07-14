@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.bean.domain;
+package com.livk.mybatisplugins.entity;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
-import com.livk.commons.bean.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonNodeUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

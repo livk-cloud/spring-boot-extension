@@ -17,7 +17,7 @@
 
 package com.livk.batch.support;
 
-import com.livk.commons.bean.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.file.LineMapper;

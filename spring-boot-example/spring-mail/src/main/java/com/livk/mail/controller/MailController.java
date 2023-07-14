@@ -17,7 +17,7 @@
 
 package com.livk.mail.controller;
 
-import com.livk.commons.bean.domain.Pair;
+import com.livk.commons.util.Pair;
 import com.livk.mail.support.MailTemplate;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

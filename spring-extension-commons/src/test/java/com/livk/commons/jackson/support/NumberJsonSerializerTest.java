@@ -18,7 +18,7 @@
 package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.bean.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.annotation.NumberJsonFormat;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import lombok.Getter;

@@ -18,8 +18,7 @@
 package com.livk.commons.expression;
 
 import com.google.common.collect.Maps;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.NonNull;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -77,7 +76,7 @@ public class Context implements Map<String, Object> {
 		return variables.get(key);
 	}
 
-	@Nullable
+	@NonNull
 	@Override
 	public Object put(String key, Object value) {
 		return put(key, value, false);
@@ -106,7 +105,7 @@ public class Context implements Map<String, Object> {
 	}
 
 	@Override
-	public void putAll(@NotNull Map<? extends String, ?> m) {
+	public void putAll(@NonNull Map<? extends String, ?> m) {
 
 	}
 
@@ -133,19 +132,19 @@ public class Context implements Map<String, Object> {
 		variables.clear();
 	}
 
-	@NotNull
+	@NonNull
 	@Override
 	public Set<String> keySet() {
 		return variables.keySet();
 	}
 
-	@NotNull
+	@NonNull
 	@Override
 	public Collection<Object> values() {
 		return variables.values();
 	}
 
-	@NotNull
+	@NonNull
 	@Override
 	public Set<Entry<String, Object>> entrySet() {
 		return variables.entrySet();

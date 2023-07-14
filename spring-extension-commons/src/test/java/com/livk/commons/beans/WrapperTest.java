@@ -15,24 +15,25 @@
  *
  */
 
-package com.livk.commons.bean.util;
+package com.livk.commons.beans;
 
+import com.livk.commons.util.GenericWrapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * <p>
- * ClassUtilsTest
- * </p>
- *
  * @author livk
  */
-class ClassUtilsTest {
+class WrapperTest {
 
 	@Test
-	void toClassTest() {
-		Class<String> result = ClassUtils.toClass(String.class);
-		assertEquals(String.class, result);
+	void test() {
+		String value = "livk";
+		GenericWrapper<String> wrapper = GenericWrapper.of(value);
+		assertEquals(value, wrapper.unwrap(String.class));
+		assertEquals(value, wrapper.unwrap());
+		assertTrue(wrapper.isWrapperFor(String.class));
 	}
 }

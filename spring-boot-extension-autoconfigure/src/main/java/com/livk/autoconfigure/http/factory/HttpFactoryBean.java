@@ -17,7 +17,7 @@
 
 package com.livk.autoconfigure.http.factory;
 
-import com.livk.commons.bean.util.ClassUtils;
+import com.livk.commons.util.ClassUtils;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.FactoryBean;

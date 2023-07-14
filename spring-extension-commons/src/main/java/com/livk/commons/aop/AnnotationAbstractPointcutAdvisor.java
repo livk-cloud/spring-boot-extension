@@ -20,11 +20,10 @@ package com.livk.commons.aop;
 import com.livk.commons.util.AnnotationUtils;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -45,9 +44,9 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	protected final Class<A> annotationType = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AnnotationAbstractPointcutAdvisor.class);
 
 
-	@Nullable
+	@NonNull
 	@Override
-	public Object invoke(@NotNull MethodInvocation invocation) throws Throwable {
+	public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
 		Method method = invocation.getMethod();
 		A annotation = AnnotationUtils.findAnnotation(method, annotationType);
 		if (annotation == null && invocation.getThis() != null) {
@@ -67,10 +66,11 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	protected abstract Object invoke(MethodInvocation invocation, A annotation) throws Throwable;
 
 	@Override
-	public boolean implementsInterface(Class<?> intf) {
+	public boolean implementsInterface(@NonNull Class<?> intf) {
 		return annotationType != null && annotationType.isAssignableFrom(intf);
 	}
 
+	@NonNull
 	@Override
 	public Advice getAdvice() {
 		return this;

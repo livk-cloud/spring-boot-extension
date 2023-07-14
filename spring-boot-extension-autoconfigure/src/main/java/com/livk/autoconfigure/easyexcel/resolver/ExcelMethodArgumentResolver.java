@@ -22,7 +22,7 @@ import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
 import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
 import com.livk.autoconfigure.easyexcel.utils.EasyExcelSupport;
 import com.livk.autoconfigure.easyexcel.utils.ExcelDataType;
-import com.livk.commons.bean.util.BeanUtils;
+import com.livk.commons.util.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;

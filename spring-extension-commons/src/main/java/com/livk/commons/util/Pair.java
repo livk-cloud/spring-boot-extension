@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.bean.domain;
+package com.livk.commons.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;

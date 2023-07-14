@@ -15,8 +15,9 @@
  *
  */
 
-package com.livk.commons.bean.domain;
+package com.livk.commons.beans;
 
+import com.livk.commons.beans.TreeNode;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;

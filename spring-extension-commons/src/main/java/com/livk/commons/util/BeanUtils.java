@@ -15,10 +15,8 @@
  *
  */
 
-package com.livk.commons.bean.util;
+package com.livk.commons.util;
 
-import com.livk.commons.util.ObjectUtils;
-import com.livk.commons.util.ReflectionUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.bean;
+package com.livk.commons.beans;
 
 import lombok.Data;
 import org.junit.jupiter.api.Test;

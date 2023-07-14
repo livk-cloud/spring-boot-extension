@@ -15,11 +15,11 @@
  *
  */
 
-package com.livk.commons.bean;
+package com.livk.commons.beans;
 
-import com.livk.commons.bean.domain.Pair;
-import com.livk.commons.bean.util.BeanUtils;
-import com.livk.commons.bean.util.ClassUtils;
+import com.livk.commons.util.BeanUtils;
+import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.Pair;
 import com.livk.commons.util.ReflectionUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;

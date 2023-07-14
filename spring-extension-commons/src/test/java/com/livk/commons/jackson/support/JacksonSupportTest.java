@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.livk.commons.bean.domain.Pair;
+import com.livk.commons.util.Pair;
 import com.livk.commons.collect.util.StreamUtils;
 import com.livk.commons.jackson.core.JacksonSupport;
 import com.livk.commons.jackson.util.TypeFactoryUtils;

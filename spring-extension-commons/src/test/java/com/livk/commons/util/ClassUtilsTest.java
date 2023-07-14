@@ -15,14 +15,25 @@
  *
  */
 
-package com.livk.commons.bean;
+package com.livk.commons.util;
+
+import com.livk.commons.util.ClassUtils;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * The type Record wrapper.
+ * <p>
+ * ClassUtilsTest
+ * </p>
  *
- * @param <V> the type parameter
  * @author livk
  */
-record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {
+class ClassUtilsTest {
 
+	@Test
+	void toClassTest() {
+		Class<String> result = ClassUtils.toClass(String.class);
+		assertEquals(String.class, result);
+	}
 }

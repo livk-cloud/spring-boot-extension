@@ -15,24 +15,39 @@
  *
  */
 
-package com.livk.commons.bean;
-
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package com.livk.commons.beans;
 
 /**
- * @author livk
+ * The interface Wrapper.
  */
-class WrapperTest {
+public interface Wrapper {
 
-	@Test
-	void test() {
-		String value = "livk";
-		GenericWrapper<String> wrapper = GenericWrapper.of(value);
-		assertEquals(value, wrapper.unwrap(String.class));
-		assertEquals(value, wrapper.unwrap());
-		assertTrue(wrapper.isWrapperFor(String.class));
+	/**
+	 * Unwrap t.
+	 *
+	 * @param <T>  the type parameter
+	 * @param type the type
+	 * @return the t
+	 */
+	default <T> T unwrap(Class<T> type) {
+		if (isWrapperFor(type)) {
+			return type.cast(unwrap());
+		}
+		throw new ClassCastException("cannot be converted to " + type);
 	}
+
+	/**
+	 * Is wrapper for boolean.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
+	boolean isWrapperFor(Class<?> type);
+
+	/**
+	 * Unwrap object.
+	 *
+	 * @return the object
+	 */
+	Object unwrap();
 }

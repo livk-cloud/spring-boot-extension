@@ -51,6 +51,7 @@ public class YamlUtils {
 		return YAML.dumpAsMap(yamlMap);
 	}
 
+
 	/**
 	 * example Map.of(" a.b.c ", " 1 ") -> Map.of("a",Map.of("b",Map.of("c","1")))
 	 *
