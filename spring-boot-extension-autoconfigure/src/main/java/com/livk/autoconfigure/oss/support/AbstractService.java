@@ -34,7 +34,6 @@ import org.springframework.core.ResolvableType;
  */
 public abstract non-sealed class AbstractService<T> implements OSSOperations, ApplicationContextAware {
 
-
 	/**
 	 * The Client.
 	 */
@@ -47,9 +46,9 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations, Ap
 		OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
 		this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey());
 
-		ResolvableType resolvableType = ResolvableType.forInstance(client);
-		BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> client);
 		if (applicationContext instanceof GenericApplicationContext context) {
+			ResolvableType resolvableType = ResolvableType.forInstance(client);
+			BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> client);
 			AbstractBeanDefinition beanDefinition = definitionBuilder.getBeanDefinition();
 			context.registerBeanDefinition(factory.name(), beanDefinition);
 		}
