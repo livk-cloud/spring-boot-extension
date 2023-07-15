@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.beans;
+package com.livk.commons.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
