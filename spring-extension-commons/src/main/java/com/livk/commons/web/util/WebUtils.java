@@ -18,7 +18,7 @@
 package com.livk.commons.web.util;
 
 import com.google.common.collect.Lists;
-import com.livk.commons.collect.util.StreamUtils;
+import com.livk.commons.collect.BaseStreamUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -128,7 +128,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return the map
 	 */
 	public Map<String, Object> attributes(HttpServletRequest request) {
-		return StreamUtils.convert(request.getHeaderNames())
+		return BaseStreamUtils.convert(request.getHeaderNames())
 			.collect(Collectors.toMap(Function.identity(), request::getAttribute));
 	}
 

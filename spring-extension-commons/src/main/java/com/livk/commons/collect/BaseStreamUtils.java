@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.collect.util;
+package com.livk.commons.collect;
 
 import com.livk.commons.collect.EnumerationSpliterator;
 import com.livk.commons.util.ObjectUtils;
@@ -35,7 +35,7 @@ import java.util.stream.*;
  * @author livk
  */
 @UtilityClass
-public class StreamUtils {
+public class BaseStreamUtils {
 
 	/**
 	 * Concat map.

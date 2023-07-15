@@ -17,7 +17,7 @@
 
 package com.livk.commons.web;
 
-import com.livk.commons.collect.util.StreamUtils;
+import com.livk.commons.collect.BaseStreamUtils;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.ReadListener;
@@ -89,7 +89,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param values the values
 	 */
 	public void putParameter(String name, String[] values) {
-		parameter.merge(name, values, StreamUtils::concatDistinct);
+		parameter.merge(name, values, BaseStreamUtils::concatDistinct);
 	}
 
 	/**
