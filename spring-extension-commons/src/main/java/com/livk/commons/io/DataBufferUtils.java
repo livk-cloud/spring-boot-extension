@@ -19,6 +19,7 @@ package com.livk.commons.io;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -96,7 +97,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(InputStream inputStream) {
-		return readInputStream(() -> inputStream, DEFAULT_FACTORY, BUFFER_SIZE);
+		return read(new InputStreamResource(inputStream), DEFAULT_FACTORY, BUFFER_SIZE);
 	}
 
 	/**
