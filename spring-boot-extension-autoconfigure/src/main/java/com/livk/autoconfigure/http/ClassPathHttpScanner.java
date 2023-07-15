@@ -18,8 +18,6 @@
 package com.livk.autoconfigure.http;
 
 import com.livk.autoconfigure.http.factory.HttpFactoryBean;
-import lombok.Setter;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -31,7 +29,6 @@ import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 
@@ -44,21 +41,18 @@ import java.util.Set;
  *
  * @author livk
  */
-@Setter
 public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	private final BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
-	private BeanFactory beanFactory;
 
 	/**
 	 * Instantiates a new Class path http scanner.
 	 *
-	 * @param registry       the registry
-	 * @param environment    the environment
-	 * @param resourceLoader the resource loader
+	 * @param registry    the registry
+	 * @param environment the environment
 	 */
-	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment, ResourceLoader resourceLoader) {
-		super(registry, false, environment, resourceLoader);
+	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment) {
+		super(registry, false, environment);
 	}
 
 	/**
@@ -87,8 +81,6 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 				String beanClassName = candidateComponent.getBeanClassName();
 				BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
 				builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
-				builder.addPropertyValue("beanFactory", beanFactory);
-				builder.addPropertyValue("resourceLoader", getResourceLoader());
 				builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 				AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();

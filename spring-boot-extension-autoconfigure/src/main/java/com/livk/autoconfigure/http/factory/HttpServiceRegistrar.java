@@ -19,6 +19,7 @@ package com.livk.autoconfigure.http.factory;
 
 import com.livk.autoconfigure.http.ClassPathHttpScanner;
 import com.livk.autoconfigure.http.annotation.HttpProvider;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -41,21 +42,18 @@ import java.util.List;
  *
  * @author livk
  */
-@Setter
-public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware {
+@RequiredArgsConstructor
+public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {
 
-	private ResourceLoader resourceLoader;
+	private final BeanFactory beanFactory;
 
-	private BeanFactory beanFactory;
-
-	private Environment environment;
+	private final Environment environment;
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		List<String> packages = AutoConfigurationPackages.get(beanFactory);
-		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment, resourceLoader);
+		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment);
 		scanner.registerFilters(HttpProvider.class);
-		scanner.setBeanFactory(beanFactory);
 		scanner.scan(StringUtils.toStringArray(packages));
 	}
 

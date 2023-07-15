@@ -33,9 +33,4 @@ public class HttpInterfaceApp {
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
-
-	@Bean
-	public HttpServiceProxyFactoryCustomizer httpServiceProxyFactoryCustomizer(ConfigurableBeanFactory beanFactory) {
-		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
-	}
 }

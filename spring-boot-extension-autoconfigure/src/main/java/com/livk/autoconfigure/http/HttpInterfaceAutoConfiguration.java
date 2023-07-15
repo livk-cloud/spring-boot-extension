@@ -23,6 +23,8 @@ import com.livk.autoconfigure.http.factory.HttpServiceRegistrar;
 import com.livk.commons.http.WebClientConfiguration;
 import com.livk.commons.http.annotation.EnableWebClient;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -71,5 +73,10 @@ public class HttpInterfaceAutoConfiguration {
 		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient));
 		customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
 		return builder.build();
+	}
+
+	@Bean
+	public HttpServiceProxyFactoryCustomizer httpServiceProxyFactoryEmbeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
+		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
 	}
 }

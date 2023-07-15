@@ -20,10 +20,14 @@ package com.livk.autoconfigure.http.factory;
 import com.livk.commons.util.ClassUtils;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -34,7 +38,7 @@ import java.util.Objects;
  * @author livk
  */
 @Setter
-public class HttpFactoryBean implements FactoryBean<Object> {
+public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, ResourceLoaderAware {
 
 	private String httpInterfaceTypeName;
 
@@ -50,9 +54,10 @@ public class HttpFactoryBean implements FactoryBean<Object> {
 
 	@Override
 	public Class<?> getObjectType() {
-		if (resourceLoader == null) {
-			return null;
+		if (StringUtils.hasText(httpInterfaceTypeName)) {
+			ClassLoader classLoader = resourceLoader == null ? ClassUtils.getDefaultClassLoader() : resourceLoader.getClassLoader();
+			return ClassUtils.resolveClassName(httpInterfaceTypeName, classLoader);
 		}
-		return ClassUtils.resolveClassName(httpInterfaceTypeName, resourceLoader.getClassLoader());
+		return null;
 	}
 }
