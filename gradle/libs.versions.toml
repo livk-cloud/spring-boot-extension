@@ -34,7 +34,7 @@ snakeyaml = "2.0"
 aliyun-oss = "3.17.0"
 aviator = "5.3.3"
 protobuf = "3.23.4"
-protobuf-plugins = "0.9.3"
+protobuf-plugins = "0.9.4"
 jexl3 = "3.3"
 mvel2 = "2.5.0.Final"
 
