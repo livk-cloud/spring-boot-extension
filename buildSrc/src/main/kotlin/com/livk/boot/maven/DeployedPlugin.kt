@@ -82,7 +82,11 @@ abstract class DeployedPlugin : Plugin<Project> {
 		}
 		publication.pom { pom ->
 			pom.name.set(project.name)
-			pom.description.set(project.description)
+			var projectDescription = project.description
+				if (projectDescription.isNullOrBlank()) {
+					projectDescription = project.name.replace("-", " ")
+				}
+			pom.description.set(projectDescription)
 			pom.url.set("https://github.com/livk-cloud/" + project.rootProject.name + "/tree/main/" + projectUrl(project) + "/")
 			pom.licenses { licenses ->
 				licenses.license { license ->
