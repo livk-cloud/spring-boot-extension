@@ -75,8 +75,14 @@ public class HttpInterfaceAutoConfiguration {
 		return builder.build();
 	}
 
+	/**
+	 * 添加SpringEL解析
+	 *
+	 * @param beanFactory bean factory
+	 * @return HttpServiceProxyFactoryCustomizer
+	 */
 	@Bean
-	public HttpServiceProxyFactoryCustomizer httpServiceProxyFactoryEmbeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
+	public HttpServiceProxyFactoryCustomizer embeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
 		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
 	}
 }
