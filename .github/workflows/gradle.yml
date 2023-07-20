@@ -108,3 +108,9 @@ jobs:
         with:
           arguments: cleanAll build -D exclude=true
           gradle-version: current
+
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
