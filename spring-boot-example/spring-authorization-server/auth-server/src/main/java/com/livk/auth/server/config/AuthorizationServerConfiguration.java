@@ -35,6 +35,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -72,9 +73,9 @@ public class AuthorizationServerConfiguration {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
-									  OAuth2AuthorizationService authorizationService,
-									  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-									  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
+																	  OAuth2AuthorizationService authorizationService,
+																	  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
+																	  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
@@ -85,21 +86,19 @@ public class AuthorizationServerConfiguration {
 		OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
 			authenticationManager, authorizationService, oAuth2TokenGenerator);
 
-		OAuth2AuthorizationServerConfigurer configurer = authorizationServerConfigurer
-			.tokenEndpoint(
-				(tokenEndpoint) -> tokenEndpoint
-					.accessTokenRequestConverter(accessTokenRequestConverter())
-					.authenticationProvider(passwordAuthenticationProvider)
-					.authenticationProvider(smsAuthenticationProvider)
-					.accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-					.errorResponseHandler(new AuthenticationFailureEventHandler())
-			)
-			.authorizationEndpoint(authorizationEndpoint ->
-				authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI));
-
-		http.apply(configurer);
-		http.apply(configurer.authorizationService(authorizationService));
-		http.apply(new FormIdentityLoginConfigurer());
+		http.with(authorizationServerConfigurer, configurer -> configurer
+				.tokenEndpoint(
+					(tokenEndpoint) -> tokenEndpoint
+						.accessTokenRequestConverter(accessTokenRequestConverter())
+						.authenticationProvider(passwordAuthenticationProvider)
+						.authenticationProvider(smsAuthenticationProvider)
+						.accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+						.errorResponseHandler(new AuthenticationFailureEventHandler())
+				)
+				.authorizationEndpoint(authorizationEndpoint ->
+					authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI))
+				.authorizationService(authorizationService))
+			.with(new FormIdentityLoginConfigurer(), Customizer.withDefaults());
 
 		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 		HttpSessionSecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
@@ -115,7 +114,7 @@ public class AuthorizationServerConfiguration {
 
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
-								   UserDetailsService userDetailsService) {
+															   UserDetailsService userDetailsService) {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(userDetailsService);
