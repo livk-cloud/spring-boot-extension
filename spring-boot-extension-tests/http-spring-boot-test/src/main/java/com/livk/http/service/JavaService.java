@@ -17,28 +17,22 @@
 
 package com.livk.http.service;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.livk.autoconfigure.http.adapter.AdapterType;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
+import org.springframework.web.service.annotation.GetExchange;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Map;
 
 /**
  * <p>
- * RemoteServiceTest
+ * RemoteService
  * </p>
  *
  * @author livk
  */
-@SpringBootTest
-class RemoteServiceTest {
+@HttpProvider(type = AdapterType.REST_TEMPLATE, url = "http://localhost:${server.port:8080}/rpc")
+public interface JavaService {
+	@GetExchange("java")
+	Map<String, String> java();
 
-	@Autowired
-    RemoteService remoteService;
-
-	@Test
-	void getTest() {
-		String result = remoteService.get();
-		assertNotNull(result);
-	}
 }

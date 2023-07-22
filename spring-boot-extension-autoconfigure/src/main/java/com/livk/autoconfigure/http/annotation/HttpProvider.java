@@ -17,6 +17,7 @@
 
 package com.livk.autoconfigure.http.annotation;
 
+import com.livk.autoconfigure.http.adapter.AdapterType;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -39,6 +40,14 @@ import java.lang.annotation.Target;
 @Component
 @HttpExchange
 public @interface HttpProvider {
+
+	/**
+	 * 指定适配器模式
+	 *
+	 * @return AdapterType
+	 * @see AdapterType
+	 */
+	AdapterType type() default AdapterType.AUTO;
 
 	/**
 	 * The value may indicate a suggestion for a logical component name,

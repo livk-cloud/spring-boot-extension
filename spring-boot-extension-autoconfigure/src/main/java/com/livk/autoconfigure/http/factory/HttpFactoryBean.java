@@ -17,6 +17,9 @@
 
 package com.livk.autoconfigure.http.factory;
 
+import com.livk.autoconfigure.http.adapter.AdapterFactory;
+import com.livk.autoconfigure.http.adapter.BeanFactoryHttpExchangeAdapter;
+import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.commons.util.ClassUtils;
 import lombok.Setter;
 import org.springframework.beans.factory.BeanFactory;
@@ -25,9 +28,9 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
+import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -46,9 +49,16 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, R
 
 	private ResourceLoader resourceLoader;
 
+	private AdapterFactory<? extends HttpExchangeAdapter> adapterFactory;
+
 	@Override
 	public Object getObject() {
-		HttpServiceProxyFactory proxyFactory = beanFactory.getBean(HttpServiceProxyFactory.class);
+		HttpExchangeAdapter adapter = new BeanFactoryHttpExchangeAdapter(adapterFactory, beanFactory);
+		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builderFor(adapter);
+		beanFactory.getBeanProvider(HttpServiceProxyFactoryCustomizer.class)
+			.orderedStream()
+			.forEach(customizer -> customizer.customize(builder));
+		HttpServiceProxyFactory proxyFactory = builder.build();
 		return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
 	}
 

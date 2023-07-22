@@ -17,7 +17,11 @@
 
 package com.livk.autoconfigure.http;
 
+import com.livk.autoconfigure.http.adapter.AdapterFactory;
+import com.livk.autoconfigure.http.adapter.AdapterType;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
 import com.livk.autoconfigure.http.factory.HttpFactoryBean;
+import com.livk.commons.util.AnnotationUtils;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -28,9 +32,12 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
+import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
@@ -78,18 +85,24 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		for (String basePackage : basePackages) {
 			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
 			for (BeanDefinition candidateComponent : candidateComponents) {
-				String beanClassName = candidateComponent.getBeanClassName();
-				BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-				builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
-				builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
+					AnnotationAttributes attributes = AnnotationUtils.attributesFor(scannedGenericBeanDefinition.getMetadata(), HttpProvider.class);
+					AdapterType type = attributes.getEnum("type");
+					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = AdapterType.builder(type);
+					String beanClassName = candidateComponent.getBeanClassName();
+					BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
+					builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
+					builder.addPropertyValue("adapterFactory", adapterFactory);
+					builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
-				AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-				String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
-				if (checkCandidate(beanName, beanDefinition)) {
-					beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
+					AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+					String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
+					if (checkCandidate(beanName, beanDefinition)) {
+						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
-					BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
-					registerBeanDefinition(holder, registry);
+						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
+						registerBeanDefinition(holder, registry);
+					}
 				}
 			}
 		}
