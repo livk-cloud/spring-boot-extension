@@ -4,7 +4,7 @@ plugins {
 	com.livk.bom
 }
 
-description = "spring boot extension bom"
+description = "spring boot extension dependencies"
 
 dependencies {
 	api(platform(SpringBootPlugin.BOM_COORDINATES))
@@ -19,7 +19,6 @@ dependencies {
 		api(libs.guava)
 		api(libs.easyexcel)
 		api(libs.java.webSocket)
-		api(libs.zookeeper)
 		api(libs.spring.pulsar.starter)
 		api(libs.spotbugs.annotations)
 		api(libs.curator.recipes)
