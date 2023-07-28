@@ -39,6 +39,7 @@ dependencies {
 		api(libs.protobuf.java)
 		api(libs.commons.jexl3)
 		api(libs.mvel2)
+		api(libs.disruptor)
 		api(project(":spring-extension-commons"))
 		api(project(":spring-auto-service"))
 		api(project(":spring-boot-extension-autoconfigure"))

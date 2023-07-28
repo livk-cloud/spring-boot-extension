@@ -30,12 +30,13 @@ lettucemod = "3.6.3"
 minio = "8.5.4"
 dnsjava = "3.5.2"
 snakeyaml = "2.0"
-aliyun-oss = "3.17.0"
+aliyun-oss = "3.17.1"
 aviator = "5.3.3"
 protobuf = "3.23.4"
 protobuf-plugins = "0.9.4"
 jexl3 = "3.3"
 mvel2 = "2.5.0.Final"
+disruptor = "3.4.4"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -77,6 +78,7 @@ aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "a
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
+disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]
