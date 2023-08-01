@@ -17,7 +17,6 @@
 
 package com.livk.autoconfigure.redis.util;
 
-import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -51,20 +50,8 @@ public class JacksonSerializerUtils {
 	 * @return the redis serializer
 	 */
 	public <T> RedisSerializer<T> json(Class<T> targetClass) {
-		return json(targetClass, new JavaTimeModule());
-	}
-
-	/**
-	 * Json redis serializer.
-	 *
-	 * @param <T>         the type parameter
-	 * @param targetClass the target class
-	 * @param modules     the modules
-	 * @return the redis serializer
-	 */
-	public <T> RedisSerializer<T> json(Class<T> targetClass, Module... modules) {
 		ObjectMapper mapper = JsonMapper.builder().build();
-		mapper.registerModules(modules);
+		mapper.registerModules(new JavaTimeModule());
 		return json(targetClass, mapper);
 	}
 
