@@ -29,21 +29,39 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * The type Class path disruptor scanner.
+ *
  * @author livk
  */
 public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 	private final BeanNameGenerator beanNameGenerator;
 
+	/**
+	 * Instantiates a new Class path disruptor scanner.
+	 *
+	 * @param registry the registry
+	 */
 	public ClassPathDisruptorScanner(BeanDefinitionRegistry registry) {
 		this(registry, new DefaultBeanNameGenerator());
 	}
 
+	/**
+	 * Instantiates a new Class path disruptor scanner.
+	 *
+	 * @param registry          the registry
+	 * @param beanNameGenerator the bean name generator
+	 */
 	public ClassPathDisruptorScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 		super(registry, false);
 		this.beanNameGenerator = beanNameGenerator;
 	}
 
+	/**
+	 * Register filters.
+	 *
+	 * @param annotationType the annotation type
+	 */
 	public void registerFilters(Class<? extends Annotation> annotationType) {
 		addIncludeFilter(new AnnotationTypeFilter(annotationType));
 	}

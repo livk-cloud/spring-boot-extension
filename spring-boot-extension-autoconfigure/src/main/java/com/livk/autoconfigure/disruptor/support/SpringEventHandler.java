@@ -8,6 +8,9 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 
 /**
+ * The type Spring event handler.
+ *
+ * @param <T> the type parameter
  * @author livk
  */
 @RequiredArgsConstructor
@@ -15,7 +18,13 @@ public class SpringEventHandler<T> implements EventHandler<DisruptorEventWrapper
 
     private final ObjectProvider<DisruptorEventConsumer<T>> disruptorEventConsumers;
 
-    public SpringEventHandler(BeanFactory beanFactory, Class<T> type) {
+	/**
+	 * Instantiates a new Spring event handler.
+	 *
+	 * @param beanFactory the bean factory
+	 * @param type        the type
+	 */
+	public SpringEventHandler(BeanFactory beanFactory, Class<T> type) {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
         this.disruptorEventConsumers = beanFactory.getBeanProvider(resolvableType);
     }

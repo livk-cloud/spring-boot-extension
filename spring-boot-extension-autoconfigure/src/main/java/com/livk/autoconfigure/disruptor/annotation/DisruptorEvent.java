@@ -12,23 +12,60 @@ import java.lang.annotation.Target;
 import java.util.concurrent.ThreadFactory;
 
 /**
+ * The interface Disruptor event.
+ *
  * @author livk
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DisruptorEvent {
 
-    String value() default "";
+	/**
+	 * Value string.
+	 *
+	 * @return the string
+	 */
+	String value() default "";
 
-    int bufferSize() default 1024 * 256;
+	/**
+	 * Buffer size int.
+	 *
+	 * @return the int
+	 */
+	int bufferSize() default 1024 * 256;
 
-    ProducerType type() default ProducerType.SINGLE;
+	/**
+	 * Type producer type.
+	 *
+	 * @return the producer type
+	 */
+	ProducerType type() default ProducerType.SINGLE;
 
-    Class<? extends ThreadFactory> threadFactory() default DisruptorThreadFactory.class;
+	/**
+	 * Thread factory class.
+	 *
+	 * @return the class
+	 */
+	Class<? extends ThreadFactory> threadFactory() default DisruptorThreadFactory.class;
 
-    String threadFactoryBeanName() default "";
+	/**
+	 * Thread factory bean name string.
+	 *
+	 * @return the string
+	 */
+	String threadFactoryBeanName() default "";
 
-    Class<? extends WaitStrategy> strategy() default BlockingWaitStrategy.class;
+	/**
+	 * Strategy class.
+	 *
+	 * @return the class
+	 */
+	Class<? extends WaitStrategy> strategy() default BlockingWaitStrategy.class;
 
-    String strategyBeanName() default "";
+	/**
+	 * Strategy bean name string.
+	 *
+	 * @return the string
+	 */
+	String strategyBeanName() default "";
 }
