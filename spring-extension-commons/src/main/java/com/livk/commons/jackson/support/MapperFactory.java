@@ -50,13 +50,12 @@ public enum MapperFactory {
 	/**
 	 * 根据{@link MapperFactory}构建 {@link MapperBuilder}的子类
 	 *
-	 * @param <M>     {@link ObjectMapper} 子类
 	 * @param <B>     {@link MapperBuilder} 子类
 	 * @param factory the format
 	 * @return MapperBuilder
 	 */
 	@SuppressWarnings("unchecked")
-	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> B builder(MapperFactory factory) {
+	public static <B extends MapperBuilder<? extends ObjectMapper, B>> B builder(MapperFactory factory) {
 		Wrapper wrapper = switch (factory) {
 			case JSON -> new JsonBuilderWrapper();
 			case YAML -> new YamlBuilderWrapper();
@@ -68,37 +67,37 @@ public enum MapperFactory {
 	/**
 	 * 通用{@link MapperBuilder} 包装器,避免静态加载触发 {@link ClassNotFoundException}
 	 *
-	 * @param <M> {@link ObjectMapper} 子类
 	 * @param <B> {@link MapperBuilder} 子类
 	 * @see GenericWrapper
 	 * @see JsonMapper
 	 * @see YAMLMapper
 	 * @see XmlMapper
 	 */
-	private static abstract class BuilderWrapper<M extends ObjectMapper, B extends MapperBuilder<M, B>> implements GenericWrapper<MapperBuilder<M, B>> {
+	private static abstract class BuilderWrapper<B extends MapperBuilder<? extends ObjectMapper, B>> implements GenericWrapper<B> {
 
 	}
 
-	private static class JsonBuilderWrapper extends BuilderWrapper<JsonMapper, JsonMapper.Builder> implements Wrapper {
+	private static class JsonBuilderWrapper extends BuilderWrapper<JsonMapper.Builder> implements Wrapper {
+
 
 		@Override
-		public MapperBuilder<JsonMapper, JsonMapper.Builder> unwrap() {
+		public JsonMapper.Builder unwrap() {
 			return JsonMapper.builder();
 		}
 	}
 
-	private static class YamlBuilderWrapper extends BuilderWrapper<YAMLMapper, YAMLMapper.Builder> implements Wrapper {
+	private static class YamlBuilderWrapper extends BuilderWrapper<YAMLMapper.Builder> implements Wrapper {
 
 		@Override
-		public MapperBuilder<YAMLMapper, YAMLMapper.Builder> unwrap() {
+		public YAMLMapper.Builder unwrap() {
 			return YAMLMapper.builder();
 		}
 	}
 
-	private static class XmlBuilderWrapper extends BuilderWrapper<XmlMapper, XmlMapper.Builder> implements Wrapper {
+	private static class XmlBuilderWrapper extends BuilderWrapper<XmlMapper.Builder> implements Wrapper {
 
 		@Override
-		public MapperBuilder<XmlMapper, XmlMapper.Builder> unwrap() {
+		public XmlMapper.Builder unwrap() {
 			return XmlMapper.builder();
 		}
 	}
