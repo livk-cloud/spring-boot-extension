@@ -22,7 +22,9 @@ import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
 import com.livk.autoconfigure.redis.supprot.RedisOps;
 import com.livk.autoconfigure.redis.util.JacksonSerializerUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +53,7 @@ public class CustomizeRedisAutoConfiguration {
 	 * @return the universal redis template
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public RedisOps redisOps(RedisConnectionFactory redisConnectionFactory) {
 		return new RedisOps(redisConnectionFactory);
 	}
@@ -70,6 +73,7 @@ public class CustomizeRedisAutoConfiguration {
 		 * @return the universal reactive redis template
 		 */
 		@Bean
+		@ConditionalOnMissingBean
 		public ReactiveRedisOps reactiveRedisOps(ReactiveRedisConnectionFactory redisConnectionFactory) {
 			RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
 				<String, Object>newSerializationContext()
