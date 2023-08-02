@@ -23,7 +23,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * <p>
@@ -34,8 +41,6 @@ import java.util.*;
  */
 @UtilityClass
 public class YamlUtils {
-
-	private static final Yaml YAML = new Yaml();
 
 	/**
 	 * {example Map.of(" a.b.c ", " 1 ") -> YAML}
@@ -48,7 +53,7 @@ public class YamlUtils {
 			return "";
 		}
 		Map<String, Object> yamlMap = convertMapToYaml(map);
-		return YAML.dumpAsMap(yamlMap);
+		return new Yaml().dumpAsMap(yamlMap);
 	}
 
 
@@ -61,8 +66,8 @@ public class YamlUtils {
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> convertMapToYaml(Map<?, ?> map) {
 		Map<String, Object> yamlMap = new LinkedHashMap<>();
-		for (Map.Entry<?, ?> entry : map.entrySet()) {
-			String[] keys = entry.getKey().toString().split("\\.");
+		for (Map.Entry<String, Object> entry : envTransform(map).entrySet()) {
+			String[] keys = entry.getKey().split("\\.");
 			Map<String, Object> tempMap = yamlMap;
 			for (int i = 0; i < keys.length - 1; i++) {
 				String key = keys[i];
@@ -95,6 +100,24 @@ public class YamlUtils {
 			}
 		}
 		return yamlMap;
+	}
+
+	private static Map<String, Object> envTransform(Map<?, ?> map) {
+		Map<String, Object> result = new HashMap<>();
+		for (Map.Entry<?, ?> entry : map.entrySet()) {
+			StringBuilder builder = new StringBuilder();
+			String[] keys = entry.getKey().toString().split("\\.");
+			for (String key : keys) {
+				if (org.apache.commons.lang3.StringUtils.isNumeric(key)) {
+					builder.append("[").append(key).append("]");
+				} else {
+					builder.append(".").append(key);
+				}
+			}
+			builder.deleteCharAt(0);
+			result.put(builder.toString(), entry.getValue());
+		}
+		return result;
 	}
 
 	private static Integer index(String key) {
