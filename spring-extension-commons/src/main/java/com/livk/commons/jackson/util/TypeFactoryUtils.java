@@ -93,7 +93,7 @@ public class TypeFactoryUtils {
 	 * ResolvableType转成Jackson JavaType
 	 *
 	 * @param resolvableType the resolvable type
-	 * @return JavaTypee
+	 * @return JavaType
 	 * @see ResolvableType
 	 */
 	public static JavaType javaType(ResolvableType resolvableType) {

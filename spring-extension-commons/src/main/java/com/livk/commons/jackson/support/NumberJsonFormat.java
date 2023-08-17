@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,10 @@
  *
  */
 
-package com.livk.commons.jackson.annotation;
+package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.livk.commons.jackson.support.NumberJsonSerializer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -46,11 +46,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class JacksonSupportTest {
 
-	static final JacksonSupport<JsonMapper> JSON = JacksonSupport.create(MapperFactory.JSON);
+	static final JacksonSupport<JsonMapper> JSON = JacksonSupport.create(new JsonMapper());
 
-	static final JacksonSupport<YAMLMapper> YAML = JacksonSupport.create(MapperFactory.YAML);
+	static final JacksonSupport<YAMLMapper> YAML = JacksonSupport.create(new YAMLMapper());
 
-	static final JacksonSupport<XmlMapper> XML = JacksonSupport.create(MapperFactory.XML);
+	static final JacksonSupport<XmlMapper> XML = JacksonSupport.create(new XmlMapper());
 
 	@Language("json")
 	static String json = """

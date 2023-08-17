@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.jackson.support.MapperFactory;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -70,19 +69,6 @@ public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations
 	 */
 	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {
 		return create(builder.build());
-	}
-
-	/**
-	 * Create jackson support.
-	 *
-	 * @param <M>     the type parameter
-	 * @param <B>     the type parameter
-	 * @param factory the type
-	 * @return the jackson support
-	 */
-	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(MapperFactory factory) {
-		B builder = MapperFactory.builder(factory);
-		return create(builder);
 	}
 
 	@SneakyThrows

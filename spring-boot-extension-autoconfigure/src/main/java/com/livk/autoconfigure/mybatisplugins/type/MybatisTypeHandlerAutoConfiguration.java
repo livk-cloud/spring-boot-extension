@@ -18,10 +18,10 @@
 package com.livk.autoconfigure.mybatisplugins.type;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.mybatisplugins.type.mysql.MysqlJsonTypeHandler;
 import com.livk.autoconfigure.mybatisplugins.type.postgresql.PostgresJsonTypeHandler;
-import com.livk.commons.jackson.support.MapperFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
@@ -51,9 +51,9 @@ public class MybatisTypeHandlerAutoConfiguration {
 	@Bean
 	@ConditionalOnClass(com.mysql.cj.jdbc.Driver.class)
 	public ConfigurationCustomizer mysqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-		ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+		ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
 		return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
-    }
+	}
 
 
 	/**
@@ -65,7 +65,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 	@Bean
 	@ConditionalOnClass(org.postgresql.Driver.class)
 	public ConfigurationCustomizer postgresqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-		ObjectMapper mapper = mapperProvider.getIfUnique(() -> MapperFactory.builder(MapperFactory.JSON).build());
+		ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
 		return configuration -> configuration.getTypeHandlerRegistry().register(new PostgresJsonTypeHandler(mapper));
 	}
 }

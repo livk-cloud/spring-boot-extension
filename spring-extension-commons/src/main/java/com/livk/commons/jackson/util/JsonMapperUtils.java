@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.livk.commons.jackson.core.JacksonOperations;
 import com.livk.commons.jackson.core.JacksonSupport;
-import com.livk.commons.jackson.support.MapperFactory;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -43,8 +42,7 @@ public class JsonMapperUtils {
 
 
 	static {
-		JsonMapper.Builder builder = MapperFactory.builder(MapperFactory.JSON);
-		JSON = JacksonSupport.create(builder);
+		JSON = JacksonSupport.create(new JsonMapper());
 	}
 
 	/**
