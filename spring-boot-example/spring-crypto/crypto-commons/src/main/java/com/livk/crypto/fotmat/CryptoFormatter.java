@@ -15,15 +15,18 @@
  *
  */
 
-package com.livk.crypto.parse;
+package com.livk.crypto.fotmat;
 
 import com.livk.commons.spring.context.SpringContextHolder;
 import com.livk.crypto.CryptoType;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.ResolvableType;
 import org.springframework.format.Formatter;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,20 +44,39 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 	 * @return the object provider
 	 */
 	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext() {
+		return fromContext(SpringContextHolder.getApplicationContext());
+	}
+
+	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext(BeanFactory beanFactory) {
 		ResolvableType resolvableType = ResolvableType.forClass(CryptoFormatter.class);
-		return SpringContextHolder.<CryptoFormatter<?>>getBeanProvider(resolvableType)
+		return beanFactory.<CryptoFormatter<?>>getBeanProvider(resolvableType)
 			.orderedStream()
 			.collect(Collectors.groupingBy(CryptoFormatter::supportClass));
 	}
 
+
+	@Override
+	default T parse(String text, Locale locale) throws ParseException {
+		return parse(text);
+	}
+
+	@Override
+	default String print(T object, Locale locale) {
+		return format(object);
+	}
+
 	/**
-	 * Support class class.
+	 * Support class.
 	 *
 	 * @return the class
 	 */
 	default Class<?> supportClass() {
 		return GenericTypeResolver.resolveTypeArgument(this.getClass(), CryptoFormatter.class);
 	}
+
+	String format(T value);
+
+	T parse(String text) throws ParseException;
 
 	/**
 	 * Type crypto type.

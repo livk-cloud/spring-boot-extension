@@ -22,13 +22,11 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.CryptoEncrypt;
-import com.livk.crypto.parse.CryptoFormatter;
+import com.livk.crypto.fotmat.CryptoFormatter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.format.Printer;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -42,7 +40,7 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
 
 	@Override
 	public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-		String text = formatter.print(value, Locale.CHINA);
+		String text = formatter.format(value);
 		CryptoType type = formatter.type();
 		gen.writeString(type.wrapper(text));
 	}
@@ -53,14 +51,14 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
 		JavaType javaType = property.getType();
 		CryptoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((CryptoEncrypt.class)))
 			.orElse(property.getContextAnnotation(CryptoEncrypt.class));
-		Printer<?> printer = getPrinter(javaType.getRawClass(), encrypt.value());
+		CryptoFormatter<?> printer = getCryptoFormatter(javaType.getRawClass(), encrypt.value());
 		if (printer != null) {
 			return new CryptoJsonSerializer((CryptoFormatter<Object>) printer);
 		}
 		return prov.findValueSerializer(javaType, property);
 	}
 
-	private CryptoFormatter<?> getPrinter(Class<?> rawClass, CryptoType type) {
+	private CryptoFormatter<?> getCryptoFormatter(Class<?> rawClass, CryptoType type) {
 		for (CryptoFormatter<?> formatter : CryptoFormatter.fromContext().get(rawClass)) {
 			if (formatter.type().equals(type)) {
 				return formatter;
