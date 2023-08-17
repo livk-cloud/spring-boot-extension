@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,7 @@
 package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.http.annotation.EnableHttpClient;
+import com.livk.commons.http.annotation.EnableRestTemplate;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * @author livk
  */
 @AutoConfiguration
-@SpringAutoService(EnableHttpClient.class)
+@SpringAutoService(EnableRestTemplate.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestTemplateConfiguration {
 

@@ -15,11 +15,11 @@
  *
  */
 
-package com.livk.crypto.parse;
+package com.livk.crypto.fotmat;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.Base64;
-import java.util.Locale;
 
 /**
  * The type Abstract crypto formatter.
@@ -31,18 +31,18 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	protected static final byte[] EMPTY = new byte[0];
 
 	@Override
-	public T parse(String text, Locale locale) {
+	public final String format(T value) {
+		String convert = convert(value);
+		byte[] encrypt = encrypt(convert.getBytes(StandardCharsets.UTF_8));
+		return Base64.getEncoder().encodeToString(encrypt);
+	}
+
+	@Override
+	public final T parse(String text) throws ParseException {
 		byte[] decode = Base64.getDecoder().decode(text);
 		byte[] decrypt = decrypt(decode);
 		String result = new String(decrypt, StandardCharsets.UTF_8);
 		return convert(result);
-	}
-
-	@Override
-	public String print(T value, Locale locale) {
-		String convert = convert(value);
-		byte[] encrypt = encrypt(convert.getBytes(StandardCharsets.UTF_8));
-		return Base64.getEncoder().encodeToString(encrypt);
 	}
 
 	/**

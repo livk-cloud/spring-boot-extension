@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.crypto.parse;
+package com.livk.crypto.fotmat;
 
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.annotation.CryptoDecrypt;

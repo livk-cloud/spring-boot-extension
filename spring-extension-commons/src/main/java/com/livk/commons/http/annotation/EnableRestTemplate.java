@@ -26,16 +26,16 @@ import java.lang.annotation.Target;
  * <p>
  * 用于生成配置文件
  * <p>
- * {@code @SpringAutoService(EnableWebClient.class)}
+ * {@code @SpringAutoService(EnableRestTemplate.class)}
  * <p>
- * {@link HttpClientType#WEB_CLIENT}
+ * {@link HttpClientType#REST_TEMPLATE}
  *
  * @author livk
  * @see EnableHttpClient
- * @see com.livk.commons.http.WebClientConfiguration
+ * @see com.livk.commons.http.RestTemplateConfiguration
  */
 @Target(ElementType.TYPE_PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnableWebClient {
+public @interface EnableRestTemplate {
 
 }
