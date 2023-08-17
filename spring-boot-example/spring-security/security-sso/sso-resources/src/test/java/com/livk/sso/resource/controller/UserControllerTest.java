@@ -18,6 +18,7 @@
 package com.livk.sso.resource.controller;
 
 import com.livk.commons.http.annotation.EnableHttpClient;
+import com.livk.commons.http.annotation.HttpClientType;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -47,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @Disabled("需要启动授权服务器")
-@EnableHttpClient
+@EnableHttpClient(HttpClientType.REST_TEMPLATE)
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {

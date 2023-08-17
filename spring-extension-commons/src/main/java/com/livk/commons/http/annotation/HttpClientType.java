@@ -17,25 +17,34 @@
 
 package com.livk.commons.http.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.RequiredArgsConstructor;
+
+import java.lang.annotation.Annotation;
 
 /**
- * <p>
- * 用于生成配置文件
- * <p>
- * {@code @SpringAutoService(EnableWebClient.class)}
- * <p>
- * {@link HttpClientType#WEB_CLIENT}
+ * The enum Http client type.
  *
  * @author livk
- * @see EnableHttpClient
- * @see com.livk.commons.http.WebClientConfiguration
  */
-@Target(ElementType.TYPE_PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface EnableWebClient {
+@RequiredArgsConstructor
+public enum HttpClientType {
+	/**
+	 * Rest template http client type.
+	 */
+	REST_TEMPLATE(EnableRestTemplate.class),
+	/**
+	 * Web client http client type.
+	 */
+	WEB_CLIENT(EnableWebClient.class);
 
+    private final Class<? extends Annotation> annotationType;
+
+	/**
+	 * Annotation type class.
+	 *
+	 * @return the class
+	 */
+	public Class<? extends Annotation> annotationType() {
+        return annotationType;
+    }
 }
