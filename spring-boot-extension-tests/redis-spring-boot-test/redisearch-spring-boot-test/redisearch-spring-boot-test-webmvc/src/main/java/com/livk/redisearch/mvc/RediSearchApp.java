@@ -21,7 +21,6 @@ import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.mvc.entity.Student;
-import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.lettucemod.search.Document;
@@ -51,9 +50,8 @@ public class RediSearchApp {
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public ApplicationRunner applicationRunner(RedisModulesClient redisModulesClient) {
+	public ApplicationRunner applicationRunner(StatefulRedisModulesConnection<String, String> connect) {
 		return (args) -> {
-			StatefulRedisModulesConnection<String, String> connect = redisModulesClient.connect();
 			RedisModulesCommands<String, String> search = connect.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
