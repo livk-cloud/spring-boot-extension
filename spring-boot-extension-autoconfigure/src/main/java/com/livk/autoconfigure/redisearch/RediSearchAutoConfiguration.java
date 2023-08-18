@@ -19,11 +19,13 @@ package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.redisearch.codec.JdkRedisCodec;
+import com.livk.autoconfigure.redisearch.customizer.ClientOptionsBuilderCustomizer;
 import com.livk.autoconfigure.redisearch.customizer.ClientResourcesBuilderCustomizer;
 import com.livk.autoconfigure.redisearch.customizer.ClusterClientOptionsBuilderCustomizer;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.cluster.RedisModulesClusterClient;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.resource.ClientResources;
@@ -69,14 +71,20 @@ public class RediSearchAutoConfiguration {
 	 *
 	 * @param clientResources the client resources
 	 * @param properties      the properties
+	 * @param providers       the providers
 	 * @return the redis modules client
 	 */
 	@Bean(destroyMethod = "close")
 	@ConditionalOnProperty(name = "spring.redisearch.cluster.enabled", havingValue = "false", matchIfMissing = true)
 	public RedisModulesClient redisModulesClient(ClientResources clientResources,
-												 RediSearchProperties properties) {
+												 RediSearchProperties properties,
+												 ObjectProvider<ClientOptionsBuilderCustomizer> providers) {
 		RedisURI redisURI = RediSearchSupport.create(properties);
-        return RedisModulesClient.create(clientResources, redisURI);
+		RedisModulesClient client = RedisModulesClient.create(clientResources, redisURI);
+		ClientOptions.Builder builder = client.getOptions().mutate();
+		providers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		client.setOptions(builder.build());
+		return client;
 	}
 
 	/**
@@ -94,7 +102,7 @@ public class RediSearchAutoConfiguration {
 															   ObjectProvider<ClusterClientOptionsBuilderCustomizer> providers) {
 		List<RedisURI> redisURIList = RediSearchSupport.createCluster(properties);
 		RedisModulesClusterClient clusterClient = RedisModulesClusterClient.create(clientResources, redisURIList);
-		ClusterClientOptions.Builder builder = ClusterClientOptions.builder();
+		ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
 		if (properties.getCluster().getMaxRedirects() != null) {
 			builder.maxRedirects(properties.getCluster().getMaxRedirects());
 		}
