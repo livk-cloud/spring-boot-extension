@@ -2,7 +2,7 @@ spring:
   redisson:
     config:
       single-server-config:
-        address: redis://127.0.0.1:6379
+        address: redis://livk.com:6379
         password: 123456
         database: 7
         idleConnectionTimeout: 10000
