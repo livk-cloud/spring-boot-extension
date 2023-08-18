@@ -51,9 +51,8 @@ public class RediSearchApp {
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public ApplicationRunner applicationRunner(RedisModulesClient redisModulesClient) {
+	public ApplicationRunner applicationRunner(StatefulRedisModulesConnection<String, String> connect) {
 		return (args) -> {
-			StatefulRedisModulesConnection<String, String> connect = redisModulesClient.connect();
 			RedisModulesCommands<String, String> search = connect.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
