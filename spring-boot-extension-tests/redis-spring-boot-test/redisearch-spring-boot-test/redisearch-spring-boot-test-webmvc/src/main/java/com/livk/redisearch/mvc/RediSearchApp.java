@@ -69,6 +69,7 @@ public class RediSearchApp {
 					.setSex(randomNum == 0 ? "男" : "女")
 					.setDesc("是一个学生")
 					.setClassX((i + 1) + "班");
+				log.info("{}", student);
 				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
 				search.hmset("00" + i, body);
 			}
