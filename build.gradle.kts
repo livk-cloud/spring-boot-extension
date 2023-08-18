@@ -7,14 +7,26 @@ plugins {
 	alias(libs.plugins.asciidoctor.jvm)
 }
 
+configurations {
+	create("asciidoctorExtensions")
+}
+
+dependencies {
+	add("asciidoctorExtensions", "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.6")
+}
+
 tasks {
 	"asciidoctor"(AsciidoctorTask::class) {
+		configurations("asciidoctorExtensions")
 		baseDirFollowsSourceDir()
 		sourceDir(file("./docs"))
 		sources {
 			include("index.adoc")
 		}
 		setOutputDir(file("./docs"))
+		outputOptions {
+			backends("spring-html")
+		}
 	}
 }
 
