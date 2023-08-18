@@ -12,7 +12,7 @@ configurations {
 }
 
 dependencies {
-	add("asciidoctorExtensions", "io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.6")
+	add("asciidoctorExtensions", libs.spring.asciidoctor)
 }
 
 tasks {
