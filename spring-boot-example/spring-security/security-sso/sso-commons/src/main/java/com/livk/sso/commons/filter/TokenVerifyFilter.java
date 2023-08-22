@@ -58,11 +58,11 @@ public class TokenVerifyFilter extends BasicAuthenticationFilter {
 				chain.doFilter(request, response);
 			} else {
 				Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
-				WebUtils.out(response, map);
+				WebUtils.outJson(response, map);
 			}
 		} else {
 			Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "请登录！");
-			WebUtils.out(response, map);
+			WebUtils.outJson(response, map);
 		}
 	}
 

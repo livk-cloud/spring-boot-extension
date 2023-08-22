@@ -41,26 +41,26 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 		if (handler instanceof HandlerMethod handlerMethod) {
 			AutoRepeatedSubmit methodAnnotation = handlerMethod.getMethodAnnotation(AutoRepeatedSubmit.class);
 			if (methodAnnotation != null) {
-				String token = WebUtils.header(HttpHeaders.AUTHORIZATION);
+				String token = WebUtils.request().getHeader(HttpHeaders.AUTHORIZATION);
 				if (StringUtils.hasText(token)) {
 					try {
 						if (LockSupport.tryLock(LockType.LOCK, token, 3, 3, false)) {
 							if (RedisSupport.exists(token)) {
-								WebUtils.out("重复提交3s后重试");
+								WebUtils.outJson(response, "重复提交3s后重试");
 								return false;
 							} else {
 								RedisSupport.setEx(token, true, 3L);
 								return true;
 							}
 						} else {
-							WebUtils.out("重复提交3s后重试");
+							WebUtils.outJson(response, "重复提交3s后重试");
 							return false;
 						}
 					} finally {
 						LockSupport.unlock();
 					}
 				}
-				WebUtils.out("丢失Token");
+				WebUtils.outJson(response, "丢失Token");
 				return false;
 			}
 		}

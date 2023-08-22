@@ -38,6 +38,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		log.info("退出");
 		SecurityContextHolder.getContextHolderStrategy().clearContext();
-		WebUtils.out(response, Map.of("code", HttpServletResponse.SC_OK, "msg", "exit successfully"));
+		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_OK, "msg", "exit successfully"));
 	}
 }

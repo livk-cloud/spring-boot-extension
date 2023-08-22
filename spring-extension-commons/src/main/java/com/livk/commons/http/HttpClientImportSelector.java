@@ -37,6 +37,17 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 
 	@Override
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+		HttpClientType[] types = getValue(attributes);
+		List<String> names = new ArrayList<>();
+		for (HttpClientType type : types) {
+			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader()).getCandidates();
+			names.addAll(configurations);
+		}
+		return names;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T getValue(AnnotationAttributes attributes) {
 		Object value = attributes.get("value");
 		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray() &&
 			HttpClientType[].class.getComponentType().isInstance(value)) {
@@ -44,12 +55,6 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 			Array.set(array, 0, value);
 			value = array;
 		}
-		HttpClientType[] types = (HttpClientType[]) value;
-		List<String> names = new ArrayList<>();
-		for (HttpClientType type : types) {
-			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader()).getCandidates();
-			names.addAll(configurations);
-		}
-		return names;
+		return (T) value;
 	}
 }

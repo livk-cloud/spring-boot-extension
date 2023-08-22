@@ -95,16 +95,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Header string.
-	 *
-	 * @param headerName the header name
-	 * @return the string
-	 */
-	public String header(String headerName) {
-		return request().getHeader(headerName);
-	}
-
-	/**
 	 * Headers http headers.
 	 *
 	 * @param request the request
@@ -133,16 +123,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Parameter string.
-	 *
-	 * @param name the name
-	 * @return the string
-	 */
-	public String parameter(String name) {
-		return request().getParameter(name);
-	}
-
-	/**
 	 * Param map map.
 	 *
 	 * @param request   the request
@@ -155,16 +135,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 			.stream()
 			.collect(Collectors.toMap(Map.Entry::getKey,
 				entry -> String.join(delimiter, entry.getValue())));
-	}
-
-	/**
-	 * Param map map.
-	 *
-	 * @param delimiter the delimiter
-	 * @return the map
-	 */
-	public Map<String, String> paramMap(CharSequence delimiter) {
-		return paramMap(request(), delimiter);
 	}
 
 	/**
@@ -210,19 +180,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	/**
 	 * Out.
 	 *
-	 * @param data the data
-	 */
-	public void out(Object data) {
-		out(response(), data);
-	}
-
-	/**
-	 * Out.
-	 *
 	 * @param response the response
 	 * @param data     the data
 	 */
-	public void out(HttpServletResponse response, Object data) {
+	public void outJson(HttpServletResponse response, Object data) {
 		out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
 	}
 

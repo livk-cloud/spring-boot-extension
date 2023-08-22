@@ -86,7 +86,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
-		String grantType = WebUtils.parameter(OAuth2ParameterNames.GRANT_TYPE);
+		String grantType = WebUtils.request().getParameter(OAuth2ParameterNames.GRANT_TYPE);
 
 		if (authentication.getCredentials() == null) {
 			this.logger.debug("Failed to authenticate since no credentials provided");
@@ -120,7 +120,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 	protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) {
 		prepareTimingAttackProtection();
 
-		Map<String, String> paramMap = WebUtils.paramMap(",");
+		Map<String, String> paramMap = WebUtils.paramMap(WebUtils.request(), ",");
 		String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
 		String clientId = paramMap.get(OAuth2ParameterNames.CLIENT_ID);
 
@@ -153,7 +153,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 	@Override
 	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
 		boolean upgradeEncoding = this.userDetailsPasswordService != null
-			&& this.passwordEncoder.upgradeEncoding(user.getPassword());
+								  && this.passwordEncoder.upgradeEncoding(user.getPassword());
 		if (upgradeEncoding) {
 			String presentedPassword = authentication.getCredentials().toString();
 			String newPassword = this.passwordEncoder.encode(presentedPassword);
