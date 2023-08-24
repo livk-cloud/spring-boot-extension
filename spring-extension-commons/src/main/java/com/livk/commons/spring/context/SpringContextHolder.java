@@ -31,7 +31,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.Ordered;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.Order;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -48,6 +50,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @SpringAutoService
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
 
 	@Getter

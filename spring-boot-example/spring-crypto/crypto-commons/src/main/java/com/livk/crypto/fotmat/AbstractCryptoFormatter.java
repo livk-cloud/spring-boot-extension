@@ -38,7 +38,7 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	}
 
 	@Override
-	public final T parse(String text) throws ParseException {
+	public final T parse(String text) {
 		byte[] decode = Base64.getDecoder().decode(text);
 		byte[] decrypt = decrypt(decode);
 		String result = new String(decrypt, StandardCharsets.UTF_8);
