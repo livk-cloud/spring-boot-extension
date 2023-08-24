@@ -139,7 +139,6 @@ public class RediSearchAutoConfiguration {
 		 * @return the generic object pool
 		 */
 		@Bean(destroyMethod = "close")
-		@ConditionalOnMissingBean
 		public GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool(RedisModulesClient redisModulesClient,
 																										 GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config) {
 			return RediSearchSupport.pool(redisModulesClient::connect, config);
@@ -154,7 +153,6 @@ public class RediSearchAutoConfiguration {
 		 * @return the generic object pool
 		 */
 		@Bean(destroyMethod = "close")
-		@ConditionalOnMissingBean
 		public GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool(RedisModulesClient redisModulesClient,
 																								   GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> config) {
 			return RediSearchSupport.pool(() -> redisModulesClient.connect(new JdkRedisCodec()), config);
@@ -176,7 +174,6 @@ public class RediSearchAutoConfiguration {
 		 * @return the generic object pool
 		 */
 		@Bean(destroyMethod = "close")
-		@ConditionalOnMissingBean
 		public GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool(RedisModulesClusterClient redisModulesClusterClient,
 																										 GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config) {
 			return RediSearchSupport.pool(redisModulesClusterClient::connect, config);
@@ -190,7 +187,6 @@ public class RediSearchAutoConfiguration {
 		 * @return the generic object pool
 		 */
 		@Bean(destroyMethod = "close")
-		@ConditionalOnMissingBean
 		public GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool(RedisModulesClusterClient redisModulesClusterClient,
 																								   GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> config) {
 			return RediSearchSupport.pool(() -> redisModulesClusterClient.connect(new JdkRedisCodec()), config);
