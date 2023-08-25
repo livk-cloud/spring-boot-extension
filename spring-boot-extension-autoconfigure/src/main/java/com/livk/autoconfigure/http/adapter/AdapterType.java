@@ -55,10 +55,8 @@ public enum AdapterType {
 
 		@Override
 		public RestTemplateAdapter create(BeanFactory beanFactory) {
-			RestTemplate restTemplate = beanFactory.getBeanProvider(RestTemplate.class).getIfAvailable();
-			if (restTemplate == null) {
-				restTemplate = beanFactory.getBean(RestTemplateBuilder.class).build();
-			}
+			RestTemplate restTemplate = beanFactory.getBeanProvider(RestTemplate.class)
+				.getIfAvailable(()->beanFactory.getBean(RestTemplateBuilder.class).build());
 			return RestTemplateAdapter.create(restTemplate);
 		}
 	}
@@ -67,10 +65,8 @@ public enum AdapterType {
 
 		@Override
 		public WebClientAdapter create(BeanFactory beanFactory) {
-			WebClient webClient = beanFactory.getBeanProvider(WebClient.class).getIfAvailable();
-			if (webClient == null) {
-				webClient = beanFactory.getBean(WebClient.Builder.class).build();
-			}
+			WebClient webClient = beanFactory.getBeanProvider(WebClient.class)
+				.getIfAvailable(() -> beanFactory.getBean(WebClient.Builder.class).build());
 			return WebClientAdapter.forClient(webClient);
 		}
 	}
@@ -79,10 +75,8 @@ public enum AdapterType {
 
 		@Override
 		public RestClientAdapter create(BeanFactory beanFactory) {
-			RestClient restClient = beanFactory.getBeanProvider(RestClient.class).getIfAvailable();
-			if (restClient == null) {
-				restClient = beanFactory.getBean(RestClient.Builder.class).build();
-			}
+			RestClient restClient = beanFactory.getBeanProvider(RestClient.class)
+				.getIfAvailable(()->beanFactory.getBean(RestClient.Builder.class).build());
 			return RestClientAdapter.create(restClient);
 		}
 	}
