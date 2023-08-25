@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
 	api(project(":spring-extension-commons"))
-	api("com.google.protobuf:protobuf-java")
+	api(libs.protobuf.java)
 	api("org.springframework:spring-web")
 	api(project(":spring-boot-extension-starters:mapstruct-spring-boot-starter"))
 	annotationProcessor("org.mapstruct:mapstruct-processor")

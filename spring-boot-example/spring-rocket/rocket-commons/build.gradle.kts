@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
 	api(project(":spring-extension-commons"))
-	api("org.apache.rocketmq:rocketmq-spring-boot-starter")
+	api(libs.rocketmq.boot.starter)
 }

@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
 	api("io.netty:netty-all")
-	api("com.google.protobuf:protobuf-java")
+	api(libs.protobuf.java)
 	//google protobuf插件使用的依赖申明方式是implementation或者compileOnly
 	implementation(platform(project(":spring-extension-dependencies")))
 }
