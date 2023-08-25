@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "3.2.0-M1"
+spring-boot = "3.2.0-M2"
 kotlin = "1.9.10"
 pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
@@ -29,7 +29,6 @@ jsqlparser = "4.6"
 lettucemod = "3.6.3"
 minio = "8.5.5"
 dnsjava = "3.5.2"
-snakeyaml = "2.1"
 aliyun-oss = "3.17.1"
 aviator = "5.3.3"
 protobuf = "3.24.1"
@@ -73,7 +72,6 @@ jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
-snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }

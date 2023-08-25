@@ -33,7 +33,6 @@ dependencies {
 		api(libs.lettucemod)
 		api(libs.minio)
 		api(libs.dnsjava)
-		api(libs.snakeyaml)
 		api(libs.aliyun.oss)
 		api(libs.aviator)
 		api(libs.protobuf.java)
