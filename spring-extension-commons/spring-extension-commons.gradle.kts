@@ -17,8 +17,6 @@ dependencies {
 	optional("org.apache.commons:commons-jexl3")
 	optional("org.mvel:mvel2")
 	optional("org.freemarker:freemarker")
-	optional("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
-	optional("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 	api("org.apache.commons:commons-lang3")
 	api("com.github.spotbugs:spotbugs-annotations")
 	api("com.google.guava:guava")
@@ -27,4 +25,6 @@ dependencies {
 	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	compileProcessor(project(":spring-auto-service"))
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
 }
