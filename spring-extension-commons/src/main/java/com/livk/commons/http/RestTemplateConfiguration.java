@@ -19,6 +19,7 @@ package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableRestTemplate;
+import com.livk.commons.http.support.OkHttpClientHttpRequestFactory;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -26,12 +27,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
@@ -75,13 +74,12 @@ public class RestTemplateConfiguration {
         @ConditionalOnMissingBean(OkHttpClient.class)
         public RestTemplateCustomizer restTemplateCustomizer() {
             ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
-            OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
-                    .connectTimeout(3, TimeUnit.SECONDS)
-                    .readTimeout(3, TimeUnit.SECONDS)
-                    .writeTimeout(3, TimeUnit.SECONDS);
-            PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-            map.from(pool).to(builder::setConnectionPool$okhttp);
-            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(builder.build()));
+			OkHttpClientHttpRequestFactory requestFactory = new OkHttpClientHttpRequestFactory()
+				.connectionPool(pool)
+				.connectTimeout(3, TimeUnit.SECONDS)
+				.readTimeout(3, TimeUnit.SECONDS)
+				.writeTimeout(3, TimeUnit.SECONDS);
+			return restTemplate -> restTemplate.setRequestFactory(requestFactory);
         }
 
         /**
@@ -93,7 +91,7 @@ public class RestTemplateConfiguration {
         @Bean
         @ConditionalOnBean(OkHttpClient.class)
         public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
-            return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
+            return restTemplate -> restTemplate.setRequestFactory(new OkHttpClientHttpRequestFactory(okHttpClient));
         }
     }
 }
