@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,8 +17,6 @@
 
 package com.livk.commons.http.annotation;
 
-import com.livk.commons.spring.context.AutoImport;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,13 +24,17 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * EnableWebClient
- * </p>
+ * 用于生成配置文件
+ * <p>
+ * {@code @SpringAutoService(EnableWebClient.class)}
+ * <p>
+ * {@link HttpClientType#WEB_CLIENT}
  *
  * @author livk
+ * @see EnableHttpClient
+ * @see com.livk.commons.http.WebClientConfiguration
  */
-@AutoImport
-@Target(ElementType.TYPE)
+@Target(ElementType.TYPE_PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnableWebClient {
 

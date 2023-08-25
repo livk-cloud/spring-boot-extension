@@ -1,7 +1,7 @@
 spring:
   redisson:
     config:
-      singleServerConfig:
+      single-server-config:
         address: redis://livk.com:6379
         password: 123456
         database: 7

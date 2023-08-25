@@ -18,23 +18,30 @@
 package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.autoconfigure.redisearch.codec.JdkRedisCodec;
+import com.livk.autoconfigure.redisearch.customizer.ClientOptionsBuilderCustomizer;
+import com.livk.autoconfigure.redisearch.customizer.ClientResourcesBuilderCustomizer;
+import com.livk.autoconfigure.redisearch.customizer.ClusterClientOptionsBuilderCustomizer;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
-import io.lettuce.core.RedisCredentials;
-import io.lettuce.core.RedisCredentialsProvider;
+import com.redis.lettucemod.cluster.RedisModulesClusterClient;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.resource.ClientResources;
-import io.lettuce.core.resource.DefaultClientResources;
-import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-import java.time.Duration;
+import java.util.List;
 
 /**
  * The type RediSearch autoconfiguration.
@@ -42,97 +49,147 @@ import java.time.Duration;
  * @author livk
  */
 @SpringAutoService
-@AutoConfiguration
+@Configuration(proxyBeanMethods = false, enforceUniqueMethods = false)
 @ConditionalOnClass(RedisModulesClient.class)
-@EnableConfigurationProperties(RedisProperties.class)
+@EnableConfigurationProperties(RediSearchProperties.class)
 public class RediSearchAutoConfiguration {
 
 	/**
 	 * Client resources client resources.
 	 *
+	 * @param providers the providers
 	 * @return the client resources
 	 */
 	@Bean(destroyMethod = "shutdown")
-	public ClientResources clientResources() {
-		return DefaultClientResources.create();
+	public ClientResources clientResources(ObjectProvider<ClientResourcesBuilderCustomizer> providers) {
+		ClientResources.Builder builder = ClientResources.builder();
+		providers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		return builder.build();
 	}
 
 	/**
-	 * Client redis modules client.
+	 * Redis modules client redis modules client.
 	 *
 	 * @param clientResources the client resources
 	 * @param properties      the properties
+	 * @param providers       the providers
 	 * @return the redis modules client
 	 */
-	@Bean(destroyMethod = "shutdown")
-	public RedisModulesClient client(ClientResources clientResources,
-									 RedisProperties properties) {
-		RedisURI redisURI = new RedisURI();
-		redisURI.setHost(properties.getHost());
-		redisURI.setPort(properties.getPort());
-		redisURI.setCredentialsProvider(RedisCredentialsProvider.from(
-			() -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
-		redisURI.setDatabase(properties.getDatabase());
-		Duration timeout = properties.getTimeout();
-		if (timeout != null) {
-			redisURI.setTimeout(timeout);
-		}
-		redisURI.setSsl(properties.getSsl().isEnabled());
-		redisURI.setClientName(properties.getClientName());
-		return RedisModulesClient.create(clientResources, redisURI);
+	@Bean(destroyMethod = "close")
+	@ConditionalOnProperty(name = "spring.redisearch.cluster.enabled", havingValue = "false", matchIfMissing = true)
+	public RedisModulesClient redisModulesClient(ClientResources clientResources,
+												 RediSearchProperties properties,
+												 ObjectProvider<ClientOptionsBuilderCustomizer> providers) {
+		RedisURI redisURI = RediSearchSupport.create(properties);
+		RedisModulesClient client = RedisModulesClient.create(clientResources, redisURI);
+		ClientOptions.Builder builder = client.getOptions().mutate();
+		providers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		client.setOptions(builder.build());
+		return client;
 	}
 
 	/**
-	 * Connection stateful redis modules connection.
+	 * Redis modules cluster client redis modules cluster client.
 	 *
-	 * @param redisModulesClient the redis modules client
-	 * @return the stateful redis modules connection
+	 * @param clientResources the client resources
+	 * @param properties      the properties
+	 * @param providers       the providers
+	 * @return the redis modules cluster client
 	 */
-	@Bean(name = "redisModulesConnection", destroyMethod = "close")
-	public StatefulRedisModulesConnection<String, String> connection(RedisModulesClient redisModulesClient) {
-		return redisModulesClient.connect();
+	@Bean(destroyMethod = "close")
+	@ConditionalOnProperty(name = "spring.redisearch.cluster.enabled", havingValue = "true")
+	public RedisModulesClusterClient redisModulesClusterClient(ClientResources clientResources,
+															   RediSearchProperties properties,
+															   ObjectProvider<ClusterClientOptionsBuilderCustomizer> providers) {
+		List<RedisURI> redisURIList = RediSearchSupport.createCluster(properties);
+		RedisModulesClusterClient clusterClient = RedisModulesClusterClient.create(clientResources, redisURIList);
+		ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
+		if (properties.getCluster().getMaxRedirects() != null) {
+			builder.maxRedirects(properties.getCluster().getMaxRedirects());
+		}
+		providers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		clusterClient.setOptions(builder.build());
+		return clusterClient;
 	}
 
 	/**
 	 * Pool config generic object pool config.
 	 *
-	 * @param redisProperties the redis properties
+	 * @param properties the properties
 	 * @return the generic object pool config
 	 */
-	@Bean(name = "redisModulesConnectionPoolConfig")
-	public GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> poolConfig(RedisProperties redisProperties) {
-		GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config = new GenericObjectPoolConfig<>();
-		config.setJmxEnabled(false);
-		RedisProperties.Pool lettucePool = redisProperties.getLettuce().getPool();
-		RedisProperties.Pool jedisPool = redisProperties.getJedis().getPool();
-		if (lettucePool != null) {
-			config.setMaxTotal(lettucePool.getMaxActive());
-			config.setMaxIdle(lettucePool.getMaxIdle());
-			config.setMinIdle(lettucePool.getMinIdle());
-			if (lettucePool.getMaxWait() != null) {
-				config.setMaxWait(lettucePool.getMaxWait());
-			}
-		} else if (jedisPool != null) {
-			config.setMaxTotal(jedisPool.getMaxActive());
-			config.setMaxIdle(jedisPool.getMaxIdle());
-			config.setMinIdle(jedisPool.getMinIdle());
-			if (jedisPool.getMaxWait() != null) {
-				config.setMaxWait(jedisPool.getMaxWait());
-			}
-		}
-		return config;
+	@Bean
+	@ConditionalOnMissingBean
+	public GenericObjectPoolConfig<?> poolConfig(RediSearchProperties properties) {
+		return RediSearchSupport.withPoolConfig(properties);
 	}
 
 	/**
-	 * Pool generic object pool.
-	 *
-	 * @param client the client
-	 * @param config the config
-	 * @return the generic object pool
+	 * The type Redi search pool configuration.
 	 */
-	@Bean(name = "redisModulesConnectionPool", destroyMethod = "close")
-	public GenericObjectPool<StatefulRedisModulesConnection<String, String>> pool(RedisModulesClient client,
-																				  GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config) {
-		return ConnectionPoolSupport.createGenericObjectPool(client::connect, config);
+	@AutoConfiguration
+	@Import(StatefulConnectionConfiguration.class)
+	@ConditionalOnProperty(name = "spring.redisearch.cluster.enabled", havingValue = "false", matchIfMissing = true)
+	public static class RediSearchPoolConfiguration {
+		/**
+		 * String generic object pool generic object pool.
+		 *
+		 * @param redisModulesClient the redis modules client
+		 * @param config             the config
+		 * @return the generic object pool
+		 */
+		@Bean(destroyMethod = "close")
+		public GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool(RedisModulesClient redisModulesClient,
+																										 GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config) {
+			return RediSearchSupport.pool(redisModulesClient::connect, config);
+		}
+
+
+		/**
+		 * Generic object pool generic object pool.
+		 *
+		 * @param redisModulesClient the redis modules client
+		 * @param config             the config
+		 * @return the generic object pool
+		 */
+		@Bean(destroyMethod = "close")
+		public GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool(RedisModulesClient redisModulesClient,
+																								   GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> config) {
+			return RediSearchSupport.pool(() -> redisModulesClient.connect(new JdkRedisCodec()), config);
+		}
+	}
+
+	/**
+	 * The type Redi search cluster pool configuration.
+	 */
+	@AutoConfiguration
+	@Import(StatefulConnectionConfiguration.class)
+	@ConditionalOnProperty(name = "spring.redisearch.cluster.enabled", havingValue = "true")
+	public static class RediSearchClusterPoolConfiguration {
+		/**
+		 * String generic object pool generic object pool.
+		 *
+		 * @param redisModulesClusterClient the redis modules cluster client
+		 * @param config                    the config
+		 * @return the generic object pool
+		 */
+		@Bean(destroyMethod = "close")
+		public GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool(RedisModulesClusterClient redisModulesClusterClient,
+																										 GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> config) {
+			return RediSearchSupport.pool(redisModulesClusterClient::connect, config);
+		}
+
+		/**
+		 * Generic object pool generic object pool.
+		 *
+		 * @param redisModulesClusterClient the redis modules cluster client
+		 * @param config                    the config
+		 * @return the generic object pool
+		 */
+		@Bean(destroyMethod = "close")
+		public GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool(RedisModulesClusterClient redisModulesClusterClient,
+																								   GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> config) {
+			return RediSearchSupport.pool(() -> redisModulesClusterClient.connect(new JdkRedisCodec()), config);
+		}
 	}
 }

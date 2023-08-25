@@ -1,15 +1,14 @@
 [versions]
 spring-boot = "3.2.0-M1"
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
 mybatis = "3.5.13"
 spring-mybatis = "3.0.2"
-guava = "32.1.1-jre"
+guava = "32.1.2-jre"
 easyexcel = "3.3.2"
-java-web-socket = "1.5.3"
-redisson = "3.23.0"
-zookeeper = "3.8.1"
+java-web-socket = "1.5.4"
+redisson = "3.23.3"
 clickhouse = "0.4.6"
 spring-pulsar = "0.2.0"
 spotbugs-annotations = "4.7.3"
@@ -18,25 +17,27 @@ mapstruct-lombok = "0.2.0"
 curator = "5.5.0"
 ip2region = "2.7.0"
 asciidoctor-jvm = "3.3.2"
-browscap-java = "1.4.0"
+browscap-java = "1.4.1"
 auto-service = "1.1.1"
-yauaa = "7.20.0"
-springdoc = "2.1.0"
-google-javase = "3.5.1"
-spring-admin = "3.1.2"
+yauaa = "7.22.0"
+springdoc = "2.2.0"
+google-javase = "3.5.2"
+spring-admin = "3.1.5"
 nimbusds-jwt = "9.31"
 rocket-starter = "2.2.3"
 jsqlparser = "4.6"
-lettucemod = "3.6.1"
-minio = "8.5.4"
+lettucemod = "3.6.3"
+minio = "8.5.5"
 dnsjava = "3.5.2"
-snakeyaml = "2.0"
-aliyun-oss = "3.17.0"
+snakeyaml = "2.1"
+aliyun-oss = "3.17.1"
 aviator = "5.3.3"
-protobuf = "3.23.4"
+protobuf = "3.24.1"
 protobuf-plugins = "0.9.4"
 jexl3 = "3.3"
 mvel2 = "2.5.0.Final"
+disruptor = "3.4.4"
+spring-asciidoctor = "0.0.7"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -52,7 +53,6 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "java-web-socket" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
 clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
@@ -79,6 +79,8 @@ aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "a
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
+disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
+spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 
 [bundles]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]

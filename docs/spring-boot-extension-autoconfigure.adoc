@@ -1,36 +1,35 @@
 === SpringBoot自动装配拓展
-:revdate: {docdate}
-:toc: right
-:Author: Livk
 
-:numbered:
+:basedir: autoconfigure
 
-include::autoconfigure/curator.adoc[]
+使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置
 
-include::autoconfigure/dynamic.adoc[]
+include::{basedir}/curator.adoc[]
 
-include::autoconfigure/excel.adoc[]
+include::{basedir}/dynamic.adoc[]
 
-include::autoconfigure/http.adoc[]
+include::{basedir}/excel.adoc[]
 
-include::autoconfigure/ip2region.adoc[]
+include::{basedir}/http.adoc[]
 
-include::autoconfigure/limit.adoc[]
+include::{basedir}/ip2region.adoc[]
 
-include::autoconfigure/lock.adoc[]
+include::{basedir}/limit.adoc[]
 
-include::autoconfigure/mapstruct.adoc[]
+include::{basedir}/lock.adoc[]
 
-include::autoconfigure/mybatis.adoc[]
+include::{basedir}/mapstruct.adoc[]
 
-include::autoconfigure/oss.adoc[]
+include::{basedir}/mybatis.adoc[]
 
-include::autoconfigure/qrcode.adoc[]
+include::{basedir}/oss.adoc[]
 
-include::autoconfigure/redis.adoc[]
+include::{basedir}/qrcode.adoc[]
 
-include::autoconfigure/redisearch.adoc[]
+include::{basedir}/redis.adoc[]
 
-include::autoconfigure/redisson.adoc[]
+include::{basedir}/redisearch.adoc[]
 
-include::autoconfigure/useragent.adoc[]
+include::{basedir}/redisson.adoc[]
+
+include::{basedir}/useragent.adoc[]

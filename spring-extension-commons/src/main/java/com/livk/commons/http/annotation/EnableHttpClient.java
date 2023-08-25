@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,8 @@
 
 package com.livk.commons.http.annotation;
 
-import com.livk.commons.spring.context.AutoImport;
+import com.livk.commons.http.HttpClientImportSelector;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,15 +26,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * EnableHttpClient
- * </p>
+ * The interface Enable http client.
  *
  * @author livk
  */
-@AutoImport
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Import(HttpClientImportSelector.class)
 public @interface EnableHttpClient {
-
+	/**
+	 * Value http client type [ ].
+	 *
+	 * @return the http client type [ ]
+	 */
+	HttpClientType[] value();
 }

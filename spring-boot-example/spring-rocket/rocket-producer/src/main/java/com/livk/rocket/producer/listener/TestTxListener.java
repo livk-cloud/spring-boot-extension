@@ -43,7 +43,7 @@ public class TestTxListener implements RocketMQLocalTransactionListener {
 	 */
 	@Override
 	public RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object arg) {
-		String transactionId = msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID).toString();
+		String transactionId = msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID, String.class);
 		log.info("执行本地事务 => 事务id：{}", transactionId);
 		// 这里测试一下事务状态回查，mq默认是一分钟查询，可以在broker设置
 		// 状态未知时，才会触发回查
@@ -69,7 +69,7 @@ public class TestTxListener implements RocketMQLocalTransactionListener {
 	 */
 	@Override
 	public RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
-		String transactionId = msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID).toString();
+		String transactionId = msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID, String.class);
 		log.info("检查本地事务 => 事务id：{}", transactionId);
 		// 从事务表查询，有事务记录则提交事务
 		if (selectTransaction(transactionId)) {

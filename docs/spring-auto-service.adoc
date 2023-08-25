@@ -1,7 +1,7 @@
 [[spring-auto-service]]
 === spring boot装配文件自动生成
 
-==== 依赖引入
+根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories
 
 *Maven*
 

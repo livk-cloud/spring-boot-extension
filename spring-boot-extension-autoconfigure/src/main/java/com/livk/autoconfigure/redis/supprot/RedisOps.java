@@ -32,8 +32,7 @@ public class RedisOps extends RedisTemplate<String, Object> {
 	/**
 	 * Instantiates a new Universal redis template.
 	 */
-	public RedisOps() {
-		RedisSerializer<Object> serializer = JacksonSerializerUtils.json();
+	private RedisOps(RedisSerializer<?> serializer) {
 		this.setKeySerializer(RedisSerializer.string());
 		this.setHashKeySerializer(RedisSerializer.string());
 		this.setValueSerializer(serializer);
@@ -44,11 +43,21 @@ public class RedisOps extends RedisTemplate<String, Object> {
 	 * Instantiates a new Universal redis template.
 	 *
 	 * @param redisConnectionFactory the redis connection factory
+	 * @param serializer             the serializer
 	 */
-	public RedisOps(RedisConnectionFactory redisConnectionFactory) {
-		this();
+	public RedisOps(RedisConnectionFactory redisConnectionFactory, RedisSerializer<?> serializer) {
+		this(serializer);
 		this.setConnectionFactory(redisConnectionFactory);
 		this.afterPropertiesSet();
+	}
+
+	/**
+	 * Instantiates a new Redis ops.
+	 *
+	 * @param redisConnectionFactory the redis connection factory
+	 */
+	public RedisOps(RedisConnectionFactory redisConnectionFactory) {
+		this(redisConnectionFactory, JacksonSerializerUtils.json());
 	}
 
 }

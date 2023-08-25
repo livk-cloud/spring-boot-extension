@@ -30,6 +30,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * The type Rocket producer.
+ *
  * @author laokou
  */
 @RestController
@@ -88,8 +90,8 @@ public class RocketProducer {
 	/**
 	 * 事务消息
 	 *
-	 * @param topic
-	 * @param dto
+	 * @param topic the topic
+	 * @param dto   the dto
 	 */
 	@PostMapping("/sendTransaction/{topic}")
 	public void sendTransactionMessage(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {
@@ -100,8 +102,8 @@ public class RocketProducer {
 	/**
 	 * 延迟消息
 	 *
-	 * @param topic
-	 * @param dto
+	 * @param topic the topic
+	 * @param dto   the dto
 	 */
 	@PostMapping("/sendDelay/{topic}")
 	public void sendDelay(@PathVariable("topic") String topic, @RequestBody RocketDTO dto) {

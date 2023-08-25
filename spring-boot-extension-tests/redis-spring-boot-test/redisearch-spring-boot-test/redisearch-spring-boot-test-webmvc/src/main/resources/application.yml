@@ -1,5 +1,4 @@
 spring:
-  data:
-    redis:
-      host: livk.com
-      port: 6380
+  redisearch:
+    host: livk.com
+    port: 6380

@@ -39,6 +39,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		String token = JwtUtils.generateToken(user);
 		log.info("登录成功user:{} token:{}", user, token);
 		Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-		WebUtils.out(response, map);
+		WebUtils.outJson(response, map);
 	}
 }

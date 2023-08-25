@@ -35,6 +35,7 @@ dependencies {
 	optional("org.apache.commons:commons-pool2")
 	optional("io.minio:minio")
 	optional("com.aliyun.oss:aliyun-sdk-oss")
+	optional("com.lmax:disruptor")
 	compileProcessor(project(":spring-auto-service"))
 }
 

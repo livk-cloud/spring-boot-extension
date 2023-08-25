@@ -1,19 +1,21 @@
 === spring extension commons
 
-:numbered:
+:basedir: commons
 
-include::commons/aop.adoc[]
+提供一些通用、工具类方便开发
 
-include::commons/bean.adoc[]
+include::{basedir}/aop.adoc[]
 
-include::commons/expression.adoc[]
+include::{basedir}/bean.adoc[]
 
-include::commons/http.adoc[]
+include::{basedir}/expression.adoc[]
 
-include::commons/jackson.adoc[]
+include::{basedir}/http.adoc[]
 
-include::commons/spring.adoc[]
+include::{basedir}/jackson.adoc[]
 
-include::commons/util.adoc[]
+include::{basedir}/spring.adoc[]
 
-include::commons/web.adoc[]
+include::{basedir}/util.adoc[]
+
+include::{basedir}/web.adoc[]

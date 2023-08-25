@@ -1,19 +1,15 @@
 [[spring-boot-extension-doc]]
 = spring-boot-extension-doc
 :revdate: {docdate}
-:toc: right
+:toc: left
 :Author: Livk
 :doctype: book
+:toclevels: 4
+:tabsize: 4
 
 :numbered:
 
 提供spring boot扩展包,包含自动装配、starter、一些工具类等。
-
-== 快捷跳转链接 ==
-
-<<spring-auto-service,装配文件生成文档(auto service)>>根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories +
-<<_spring-extension-commons,通用包文档(spring commons)>>提供一些通用、工具类方便开发 +
-<<_spring-boot-extension-autoconfigure,自动装配文档(spring boot autoconfigure)>>使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置 +
 
 == 关于 ==
 

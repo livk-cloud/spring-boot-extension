@@ -59,7 +59,7 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
 				propertySources.addLast(livkSource);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("error:{}", e.getMessage(), e);
 		}
 	}
 

@@ -58,7 +58,7 @@ public class VideoController {
 			Map<String, Serializable> map = Map.of("msg", "视频资源不存在", "status", HttpServletResponse.SC_NOT_FOUND);
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-			WebUtils.out(response, map);
+			WebUtils.outJson(response, map);
 		}
 	}
 }
