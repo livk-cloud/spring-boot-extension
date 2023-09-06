@@ -17,8 +17,8 @@
 
 package com.livk.commons.util;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
@@ -30,6 +30,7 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author livk
@@ -43,15 +44,11 @@ public class SqlParserUtils {
 	 * @param sql the sql
 	 * @return the list
 	 */
-	public List<String> parseTable(String sql) {
-		try {
-			Statement statement = CCJSqlParserUtil.parse(sql);
-			TablesNamesFinder namesFinder = new TablesNamesFinder();
-			return namesFinder.getTableList(statement);
-		} catch (JSQLParserException e) {
-			e.printStackTrace();
-		}
-		return Collections.emptyList();
+	@SneakyThrows
+	public Set<String> parseTable(String sql) {
+		Statement statement = CCJSqlParserUtil.parse(sql);
+		TablesNamesFinder namesFinder = new TablesNamesFinder();
+		return namesFinder.getTables(statement);
 	}
 
 	/**
@@ -60,31 +57,29 @@ public class SqlParserUtils {
 	 * @param sql the sql
 	 * @return the params
 	 */
+	@SneakyThrows
 	public List<String> getParams(String sql) {
-		try {
-			Statement statement = CCJSqlParserUtil.parse(sql);
-			if (statement instanceof Select select) {
-				PlainSelect plain = (PlainSelect) select.getSelectBody();
-				return plain.getSelectItems()
-					.stream()
-					.map(Object::toString)
-					.toList();
-			} else if (statement instanceof Update update) {
-				return update.getUpdateSets()
-					.stream()
-					.flatMap(updateSet -> updateSet.getColumns().stream())
-					.map(Column::getColumnName)
-					.toList();
-			} else if (statement instanceof Insert insert) {
-				return insert.getColumns()
-					.stream()
-					.map(Column::getColumnName)
-					.toList();
-			}
-		} catch (JSQLParserException e) {
-			e.printStackTrace();
+		Statement statement = CCJSqlParserUtil.parse(sql);
+		if (statement instanceof Select select) {
+			PlainSelect plain = select.getPlainSelect();
+			return plain.getSelectItems()
+				.stream()
+				.map(Object::toString)
+				.toList();
+		} else if (statement instanceof Update update) {
+			return update.getUpdateSets()
+				.stream()
+				.flatMap(updateSet -> updateSet.getColumns().stream())
+				.map(Column::getColumnName)
+				.toList();
+		} else if (statement instanceof Insert insert) {
+			return insert.getColumns()
+				.stream()
+				.map(Column::getColumnName)
+				.toList();
+		} else {
+			return Collections.emptyList();
 		}
-		return Collections.emptyList();
 	}
 
 	/**
@@ -93,11 +88,8 @@ public class SqlParserUtils {
 	 * @param sql the sql
 	 * @return the string
 	 */
+	@SneakyThrows
 	public String formatSql(String sql) {
-		try {
-			return CCJSqlParserUtil.parse(sql).toString();
-		} catch (JSQLParserException e) {
-			return sql;
-		}
+		return CCJSqlParserUtil.parse(sql).toString();
 	}
 }
