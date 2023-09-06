@@ -17,12 +17,8 @@
 
 package com.livk.http;
 
-import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.commons.spring.SpringLauncher;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 /**
  * @author livk

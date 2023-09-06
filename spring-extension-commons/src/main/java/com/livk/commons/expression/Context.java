@@ -106,7 +106,7 @@ public class Context implements Map<String, Object> {
 
 	@Override
 	public void putAll(@NonNull Map<? extends String, ?> m) {
-
+		variables.putAll(m);
 	}
 
 	/**
