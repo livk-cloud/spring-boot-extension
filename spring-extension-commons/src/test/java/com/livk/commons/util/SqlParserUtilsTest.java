@@ -32,15 +32,15 @@ class SqlParserUtilsTest {
 
 	@Test
 	void parseTable() {
-		assertEquals(Set.of("user"),
+		assertLinesMatch(List.of("user"),
 			SqlParserUtils.parseTable("select * from user"));
-		assertEquals(Set.of("user", "account"),
+		assertLinesMatch(List.of("user", "account"),
 			SqlParserUtils.parseTable("select * from user u left join account a on u.id = a.user_id"));
-		assertEquals(Set.of("user"),
+		assertLinesMatch(List.of("user"),
 			SqlParserUtils.parseTable("insert into user values (1,'root','root')"));
-		assertEquals(Set.of("user"),
+		assertLinesMatch(List.of("user"),
 			SqlParserUtils.parseTable("update user set username = 'root' where id = 1"));
-		assertEquals(Set.of("user"),
+		assertLinesMatch(List.of("user"),
 			SqlParserUtils.parseTable("delete from user where id = 1"));
 	}
 

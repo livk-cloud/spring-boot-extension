@@ -19,7 +19,6 @@ package com.livk.commons.util;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
@@ -31,8 +30,6 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author livk
@@ -60,27 +57,27 @@ public class SqlParserUtils {
 	 * @return the params
 	 */
 	@SneakyThrows
-	public Set<String> getParams(String sql) {
+	public List<String> getParams(String sql) {
 		Statement statement = CCJSqlParserUtil.parse(sql);
 		if (statement instanceof Select select) {
 			PlainSelect plain = (PlainSelect) select.getSelectBody();
 			return plain.getSelectItems()
 				.stream()
 				.map(Object::toString)
-				.collect(Collectors.toSet());
+				.toList();
 		} else if (statement instanceof Update update) {
 			return update.getUpdateSets()
 				.stream()
 				.flatMap(updateSet -> updateSet.getColumns().stream())
 				.map(Column::getColumnName)
-				.collect(Collectors.toSet());
+				.toList();
 		} else if (statement instanceof Insert insert) {
 			return insert.getColumns()
 				.stream()
 				.map(Column::getColumnName)
-				.collect(Collectors.toSet());
+				.toList();
 		}
-		return Collections.emptySet();
+		return Collections.emptyList();
 	}
 
 	/**
