@@ -68,7 +68,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 	abstract non-sealed class AbstractLoader implements ProviderLoader {
 
 		@Override
-		public <T> List<T> load(Class<T> type) {
+		public final <T> List<T> load(Class<T> type) {
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			return load(type, classLoader);
 		}

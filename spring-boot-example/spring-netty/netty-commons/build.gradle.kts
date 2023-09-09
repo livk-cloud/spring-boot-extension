@@ -23,12 +23,12 @@ sourceSets {
 
 protobuf {
 	protoc {
-		artifact = "com.google.protobuf:protoc:3.24.2"
+		artifact = "com.google.protobuf:protoc:3.24.3"
 	}
 
 	plugins {
 		id("grpc") {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.57.2"
+			artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
 		}
 	}
 
