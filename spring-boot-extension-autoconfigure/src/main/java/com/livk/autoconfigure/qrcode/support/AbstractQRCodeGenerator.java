@@ -22,6 +22,8 @@ import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
 import java.awt.image.BufferedImage;
 
 /**
+ * The type Abstract qr code generator.
+ *
  * @author livk
  */
 public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
@@ -32,5 +34,11 @@ public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
 			entity.height(), entity.config(), entity.type());
 	}
 
+	/**
+	 * Convert string.
+	 *
+	 * @param content the content
+	 * @return the string
+	 */
 	protected abstract String convert(Object content);
 }

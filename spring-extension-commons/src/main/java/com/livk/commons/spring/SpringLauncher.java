@@ -116,7 +116,7 @@ public class SpringLauncher {
 					.println(" Spring Version: " + SpringVersion.getVersion() + " ")
 					.println(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ")
 					.println(" Spring Boot Extension Version: " + getVersion() + " ")
-					.println(" Current time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ")
+					.println(" Current Time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ")
 					.println(" Current JDK Version: " + environment.getProperty("java.version") + " ")
 					.println(" Operating System: " + environment.getProperty("os.name") + " ")
 					.flush();

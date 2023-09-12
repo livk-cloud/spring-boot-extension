@@ -66,3 +66,7 @@ dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
 }
 ----
+
+== 其他支持
+
+link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - 感谢JetBrains对 spring-boot-extension项目的支持
