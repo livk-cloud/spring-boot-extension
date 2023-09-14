@@ -18,17 +18,12 @@
 package com.livk.autoconfigure.http.factory;
 
 import com.livk.commons.util.ClassUtils;
-import lombok.Setter;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.StringUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * <p>
@@ -37,27 +32,30 @@ import java.util.Objects;
  *
  * @author livk
  */
-@Setter
-public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, ResourceLoaderAware {
-
-	private String httpInterfaceTypeName;
+public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	private BeanFactory beanFactory;
 
-	private ResourceLoader resourceLoader;
+
+	private Class<?> type;
+
+	public void setType(String httpInterfaceTypeName) {
+		type = ClassUtils.resolveClassName(httpInterfaceTypeName);
+	}
 
 	@Override
 	public Object getObject() {
 		HttpServiceProxyFactory proxyFactory = beanFactory.getBean(HttpServiceProxyFactory.class);
-		return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
+		return proxyFactory.createClient(type);
 	}
 
 	@Override
 	public Class<?> getObjectType() {
-		if (StringUtils.hasText(httpInterfaceTypeName)) {
-			ClassLoader classLoader = resourceLoader == null ? ClassUtils.getDefaultClassLoader() : resourceLoader.getClassLoader();
-			return ClassUtils.resolveClassName(httpInterfaceTypeName, classLoader);
-		}
-		return null;
+		return type;
+	}
+
+	@Override
+	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
 	}
 }

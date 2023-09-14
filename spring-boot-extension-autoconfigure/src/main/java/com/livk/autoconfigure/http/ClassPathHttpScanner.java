@@ -80,7 +80,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 			for (BeanDefinition candidateComponent : candidateComponents) {
 				String beanClassName = candidateComponent.getBeanClassName();
 				BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-				builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
+				builder.addPropertyValue("type", beanClassName);
 				builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 				AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
