@@ -20,6 +20,7 @@ package com.livk.batch.support;
 import com.livk.commons.util.BeanUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -62,31 +63,28 @@ public class CsvLineMapper<T> implements LineMapper<T> {
 		return instance;
 	}
 
+	@SneakyThrows
 	private void set(T t, String field, String valueStr) {
-		try {
-			Object value;
-			Class<?> targetClass = t.getClass();
-			Field declaredField = targetClass.getDeclaredField(field);
-			Class<?> type = declaredField.getType();
-			if (Integer.class.equals(type)) {
-				value = Integer.parseInt(valueStr);
-			} else if (Long.class.equals(type)) {
-				value = Long.parseLong(valueStr);
-			} else if (Float.class.equals(type)) {
-				value = Float.parseFloat(valueStr);
-			} else if (Double.class.equals(type)) {
-				value = Double.parseDouble(valueStr);
-			} else if (Boolean.class.equals(type)) {
-				value = Boolean.parseBoolean(valueStr);
-			} else {
-				value = valueStr;
-			}
-			field = StringUtils.capitalize(field);
-			Method method = targetClass.getMethod("set" + field, type);
-			method.invoke(t, value);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Object value;
+		Class<?> targetClass = t.getClass();
+		Field declaredField = targetClass.getDeclaredField(field);
+		Class<?> type = declaredField.getType();
+		if (Integer.class.equals(type)) {
+			value = Integer.parseInt(valueStr);
+		} else if (Long.class.equals(type)) {
+			value = Long.parseLong(valueStr);
+		} else if (Float.class.equals(type)) {
+			value = Float.parseFloat(valueStr);
+		} else if (Double.class.equals(type)) {
+			value = Double.parseDouble(valueStr);
+		} else if (Boolean.class.equals(type)) {
+			value = Boolean.parseBoolean(valueStr);
+		} else {
+			value = valueStr;
 		}
+		field = StringUtils.capitalize(field);
+		Method method = targetClass.getMethod("set" + field, type);
+		method.invoke(t, value);
 	}
 
 	@RequiredArgsConstructor(access = AccessLevel.PRIVATE)

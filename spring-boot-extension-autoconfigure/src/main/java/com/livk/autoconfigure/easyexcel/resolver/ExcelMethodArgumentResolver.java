@@ -51,12 +51,12 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasMethodAnnotation(ExcelImport.class) &&
-			parameter.hasParameterAnnotation(ExcelParam.class);
+			   parameter.hasParameterAnnotation(ExcelParam.class);
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-								  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+								  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		ExcelImport excelImport = parameter.getMethodAnnotation(ExcelImport.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
@@ -71,15 +71,11 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 		throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
 	}
 
-	private InputStream getInputStream(HttpServletRequest request, String fileName) {
-		try {
-			if (request instanceof MultipartRequest multipartRequest) {
-				MultipartFile file = multipartRequest.getFile(fileName);
-				Assert.notNull(file, "file not be null");
-				return file.getInputStream();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+	private InputStream getInputStream(HttpServletRequest request, String fileName) throws IOException {
+		if (request instanceof MultipartRequest multipartRequest) {
+			MultipartFile file = multipartRequest.getFile(fileName);
+			Assert.notNull(file, "file not be null");
+			return file.getInputStream();
 		}
 		return null;
 	}

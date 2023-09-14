@@ -35,8 +35,7 @@ import java.util.Map;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-		log.error("异常：{}", authException.getMessage());
-		authException.printStackTrace();
+		log.error("异常：{}", authException.getMessage(), authException);
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", authException.getMessage()));
 	}
 }

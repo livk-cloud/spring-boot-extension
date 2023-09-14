@@ -202,11 +202,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		@Override
 		public void setReadListener(ReadListener listener) {
-			try {
-				listener.onDataAvailable();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
 		}
 
 		@Override

@@ -22,6 +22,7 @@ import com.livk.excel.mvc.entity.Info;
 import com.livk.excel.mvc.mapper.InfoMapper;
 import com.livk.excel.mvc.service.InfoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -38,6 +39,7 @@ import java.util.function.Function;
  *
  * @author livk
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InfoServiceImpl implements InfoService {
@@ -54,7 +56,7 @@ public class InfoServiceImpl implements InfoService {
 			try {
 				infoMapper.insertBatch(infos);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("msg:{}", e.getMessage(), e);
 				sqlSession.rollback();
 				break;
 			}

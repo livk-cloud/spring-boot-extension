@@ -35,8 +35,7 @@ import java.util.Map;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		log.error("exception:{}", accessDeniedException.getMessage());
-		accessDeniedException.printStackTrace();
+		log.error("exception:{}", accessDeniedException.getMessage(), accessDeniedException);
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", accessDeniedException.getMessage()));
 	}
 }
