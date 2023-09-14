@@ -20,6 +20,7 @@ package com.livk.autoconfigure.qrcode.util;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import com.livk.autoconfigure.qrcode.exception.QRCodeException;
 import lombok.experimental.UtilityClass;
 
 import javax.imageio.ImageIO;
@@ -58,7 +59,7 @@ public class QRCodeUtils {
 			Result result = new MultiFormatReader().decode(binaryBitmap, hints);//解码
 			content = result.getText();
 		} catch (IOException | NotFoundException e) {
-			e.printStackTrace();
+			throw new QRCodeException(e);
 		}
 		return content;
 	}

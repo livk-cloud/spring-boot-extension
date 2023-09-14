@@ -25,8 +25,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.util.*;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -201,7 +204,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 			out.print(message);
 			out.flush();
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		}
 	}
 }
