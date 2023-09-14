@@ -41,7 +41,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 * @return the string
 	 */
 	static <T> String methodName(BeanLambdaFunc<T> function) {
-		return method(function).getName();
+		return BeanLambdaDescriptor.create(function).getMethodName();
 	}
 
 	/**
@@ -64,8 +64,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 */
 	@SneakyThrows
 	static <T> String fieldName(BeanLambdaFunc<T> function) {
-		Field field = field(function);
-		return field == null ? null : field.getName();
+		return BeanLambdaDescriptor.create(function).getFieldName();
 	}
 
 	/**
