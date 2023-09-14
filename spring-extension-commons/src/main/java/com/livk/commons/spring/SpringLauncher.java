@@ -58,7 +58,7 @@ public class SpringLauncher {
 		Class<?> mainClass = Arrays.stream(Thread.currentThread().getStackTrace())
 			.map(StackTraceElement::getClassName)
 			.filter(StringUtils::isNotBlank)
-			.map(name -> ClassUtils.resolveClassName(name, Thread.currentThread().getContextClassLoader()))
+			.map(ClassUtils::resolveClassName)
 			.filter(type -> type.isAnnotationPresent(SpringBootApplication.class))
 			.findFirst()
 			.orElseThrow(() -> new AnnotationConfigurationException(" 缺少@" + SpringBootApplication.class.getName() + "注解"));

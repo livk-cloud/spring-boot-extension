@@ -17,7 +17,6 @@
 
 package com.livk.commons.util;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.ParameterizedType;
@@ -53,4 +52,24 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 		}
 	}
 
+
+	/**
+	 * Resolve class name class.
+	 *
+	 * @param className the class name
+	 * @return the class
+	 */
+	public static Class<?> resolveClassName(String className) {
+		return resolveClassName(className, getDefaultClassLoader());
+	}
+
+	/**
+	 * Is present boolean.
+	 *
+	 * @param className the class name
+	 * @return the boolean
+	 */
+	public static boolean isPresent(String className){
+		return isPresent(className, getDefaultClassLoader());
+	}
 }
