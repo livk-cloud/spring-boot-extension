@@ -34,8 +34,9 @@ import java.lang.annotation.Target;
  * @see EnableHttpClient
  * @see com.livk.commons.http.RestTemplateConfiguration
  */
-@Target(ElementType.TYPE_PARAMETER)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@EnableHttpClient(HttpClientType.REST_TEMPLATE)
 public @interface EnableRestTemplate {
 
 }

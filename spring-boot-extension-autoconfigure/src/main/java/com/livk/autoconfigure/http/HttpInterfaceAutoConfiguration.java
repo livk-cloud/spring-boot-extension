@@ -21,8 +21,7 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.autoconfigure.http.factory.HttpServiceRegistrar;
 import com.livk.commons.http.WebClientConfiguration;
-import com.livk.commons.http.annotation.EnableHttpClient;
-import com.livk.commons.http.annotation.HttpClientType;
+import com.livk.commons.http.annotation.EnableWebClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
@@ -42,7 +41,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  *
  * @author livk
  */
-@EnableHttpClient(HttpClientType.WEB_CLIENT)
+@EnableWebClient
 @AutoConfiguration(after = WebClientConfiguration.class)
 @SpringAutoService
 @Import(HttpServiceRegistrar.class)
