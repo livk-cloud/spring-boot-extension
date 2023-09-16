@@ -39,7 +39,9 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
 	 * @param predicate the predicate
 	 * @param ts        the ts
 	 * @return the boolean
+	 * @see Predicates
 	 */
+	@Deprecated(since = "1.1.4", forRemoval = true)
 	@SafeVarargs
 	public <T> boolean allChecked(Predicate<T> predicate, T... ts) {
 		return !ObjectUtils.isEmpty(ts) && Stream.of(ts).allMatch(predicate);
@@ -52,7 +54,9 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
 	 * @param predicate the predicate
 	 * @param ts        the ts
 	 * @return the boolean
+	 * @see Predicates
 	 */
+	@Deprecated(since = "1.1.4", forRemoval = true)
 	@SafeVarargs
 	public <T> boolean anyChecked(Predicate<T> predicate, T... ts) {
 		return !ObjectUtils.isEmpty(ts) && Stream.of(ts).anyMatch(predicate);
