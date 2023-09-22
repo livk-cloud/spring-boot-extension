@@ -18,7 +18,6 @@ dependencies {
 		api(libs.bundles.mapstruct.all)
 		api(libs.guava)
 		api(libs.easyexcel)
-		api(libs.spring.pulsar.starter)
 		api(libs.spotbugs.annotations)
 		api(libs.curator.recipes)
 		api(libs.ip2region)

@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "3.2.0-M2"
+spring-boot = "3.2.0-M3"
 kotlin = "1.9.10"
 pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
@@ -10,7 +10,6 @@ easyexcel = "3.3.2"
 java-web-socket = "1.5.4"
 redisson = "3.23.5"
 clickhouse = "0.4.6"
-spring-pulsar = "0.2.0"
 spotbugs-annotations = "4.7.3"
 mapstruct = "1.5.5.Final"
 mapstruct-lombok = "0.2.0"
@@ -55,7 +54,6 @@ redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson"
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
 clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
-spring-pulsar-starter = { group = "org.springframework.pulsar", name = "spring-pulsar-spring-boot-starter", version.ref = "spring-pulsar" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
