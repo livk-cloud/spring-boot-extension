@@ -67,7 +67,7 @@ public enum AdapterType {
 		public WebClientAdapter create(BeanFactory beanFactory) {
 			WebClient webClient = beanFactory.getBeanProvider(WebClient.class)
 				.getIfAvailable(() -> beanFactory.getBean(WebClient.Builder.class).build());
-			return WebClientAdapter.forClient(webClient);
+			return WebClientAdapter.create(webClient);
 		}
 	}
 
