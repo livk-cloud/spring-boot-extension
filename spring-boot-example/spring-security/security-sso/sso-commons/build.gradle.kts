@@ -5,7 +5,7 @@ plugins {
 dependencies {
 	api(project(":spring-extension-commons"))
 	api("org.springframework.boot:spring-boot-autoconfigure")
-	api("com.nimbusds:nimbus-jose-jwt")
+	api(libs.nimbus.jose.jwt)
 	optional("org.springframework:spring-core")
 	optional("org.springframework.security:spring-security-core")
 	optional("org.springframework.security:spring-security-web")

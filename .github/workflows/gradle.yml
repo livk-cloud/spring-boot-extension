@@ -69,7 +69,7 @@ jobs:
           MINIO_ROOT_USER: admin
           MINIO_ROOT_PASSWORD: 1375632510
         ports:
-          - 9010:9000
+          - 9000:9000
 
       click-house:
         image: clickhouse/clickhouse-server

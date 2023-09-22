@@ -22,18 +22,14 @@ import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.web.util.WebUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
-import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StreamUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -47,7 +43,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	private final Map<String, String[]> parameter = new LinkedHashMap<>(16);
 
-	private String body;
+	private byte[] body;
 
 	private boolean bodyReviseStatus = false;
 
@@ -55,11 +51,13 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * Instantiates a new Request wrapper.
 	 *
 	 * @param request the request
+	 * @throws IOException the io exception
 	 */
-	public RequestWrapper(HttpServletRequest request) {
+	public RequestWrapper(HttpServletRequest request) throws IOException {
 		super(request);
 		headers.putAll(WebUtils.headers(request));
 		parameter.putAll(request.getParameterMap());
+		body = StreamUtils.copyToByteArray(request.getInputStream());
 	}
 
 	/**
@@ -67,7 +65,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 *
 	 * @param body the body
 	 */
-	public void setBody(String body) {
+	public void setBody(byte[] body) {
 		bodyReviseStatus = true;
 		this.body = body;
 	}
@@ -104,19 +102,22 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		return bodyReviseStatus ? new RequestServletInputStream(getRequest(), body) : super.getInputStream();
+		return new ByteArrayServletInputStream(body);
 	}
 
-	@SneakyThrows
+	@Override
+	public BufferedReader getReader() {
+		return new BufferedReader(new ByteArrayReader(body));
+	}
+
 	@Override
 	public int getContentLength() {
-		return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLength();
+		return bodyReviseStatus ? body.length : super.getContentLength();
 	}
 
-	@SneakyThrows
 	@Override
 	public long getContentLengthLong() {
-		return bodyReviseStatus ? body.getBytes(getRequest().getCharacterEncoding()).length : super.getContentLengthLong();
+		return bodyReviseStatus ? body.length : super.getContentLengthLong();
 	}
 
 	@Override
@@ -175,19 +176,29 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		return Collections.enumeration(headerValues);
 	}
 
-	private static class RequestServletInputStream extends ServletInputStream {
+	private static class ByteArrayReader extends InputStreamReader {
+
+		/**
+		 * Instantiates a new Byte array reader.
+		 *
+		 * @param bytes the bytes
+		 */
+		public ByteArrayReader(byte[] bytes) {
+			super(new ByteArrayInputStream(bytes));
+		}
+	}
+
+	private static class ByteArrayServletInputStream extends ServletInputStream {
 
 		private final InputStream in;
 
 		/**
 		 * Instantiates a new Request servlet input stream.
 		 *
-		 * @param request the request
-		 * @param json    the json
-		 * @throws UnsupportedEncodingException the unsupported encoding exception
+		 * @param body the json
 		 */
-		public RequestServletInputStream(ServletRequest request, String json) throws UnsupportedEncodingException {
-			in = new ByteArrayInputStream(json.getBytes(request.getCharacterEncoding()));
+		public ByteArrayServletInputStream(byte[] body) {
+			in = new ByteArrayInputStream(body);
 		}
 
 		@Override
@@ -202,11 +213,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		@Override
 		public void setReadListener(ReadListener listener) {
-			try {
-				listener.onDataAvailable();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			throw new UnsupportedOperationException();
 		}
 
 		@Override

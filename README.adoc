@@ -40,7 +40,6 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:spring-boot-example/example.adoc[示例详情] +
-link:gradle-idea.adoc[gradle idea配置指导] +
 
 #Maven#
 
@@ -67,3 +66,7 @@ dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
 }
 ----
+
+== 其他支持
+
+link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - 感谢JetBrains对 spring-boot-extension项目的支持

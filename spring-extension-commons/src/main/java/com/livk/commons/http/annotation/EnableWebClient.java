@@ -34,8 +34,9 @@ import java.lang.annotation.Target;
  * @see EnableHttpClient
  * @see com.livk.commons.http.WebClientConfiguration
  */
-@Target(ElementType.TYPE_PARAMETER)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@EnableHttpClient(HttpClientType.WEB_CLIENT)
 public @interface EnableWebClient {
 
 }

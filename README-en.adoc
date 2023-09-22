@@ -64,3 +64,7 @@ dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
 }
 ----
+
+== Additional Support
+
+link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - Thanks a lot for supporting spring-boot-extension project.

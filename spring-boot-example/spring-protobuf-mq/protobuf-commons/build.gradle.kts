@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
 	api(project(":spring-extension-commons"))
-	api("com.google.protobuf:protobuf-java")
+	api(libs.protobuf.java)
 	api("org.springframework:spring-web")
 	api(project(":spring-boot-extension-starters:mapstruct-spring-boot-starter"))
 	annotationProcessor("org.mapstruct:mapstruct-processor")
@@ -26,12 +26,12 @@ sourceSets {
 
 protobuf {
 	protoc {
-		artifact = "com.google.protobuf:protoc:3.24.1"
+		artifact = "com.google.protobuf:protoc:3.24.3"
 	}
 
 	plugins {
 		id("grpc") {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.57.2"
+			artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
 		}
 	}
 

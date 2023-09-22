@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
 	api("io.netty:netty-all")
-	api("com.google.protobuf:protobuf-java")
+	api(libs.protobuf.java)
 	//google protobuf插件使用的依赖申明方式是implementation或者compileOnly
 	implementation(platform(project(":spring-extension-dependencies")))
 }
@@ -23,12 +23,12 @@ sourceSets {
 
 protobuf {
 	protoc {
-		artifact = "com.google.protobuf:protoc:3.24.1"
+		artifact = "com.google.protobuf:protoc:3.24.3"
 	}
 
 	plugins {
 		id("grpc") {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.57.2"
+			artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
 		}
 	}
 

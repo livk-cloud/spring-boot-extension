@@ -151,15 +151,15 @@ public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
     @SuppressWarnings("unchecked")
     private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), ConfigBaseConverter.class);
 
+	private static final JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
+
     @Override
     public T convert(@NonNull String source) {
-        JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
         return support.readValue(source, type);
     }
 
-    private YAMLMapper createMapper() {
+    private static YAMLMapper createMapper() {
         YAMLMapper mapper = new YAMLMapper();
-
         mapper.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class);
         mapper.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class);
         mapper.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class);

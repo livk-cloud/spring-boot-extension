@@ -68,7 +68,7 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 		} else if (elementTypeHashSet.contains(ElementType.METHOD)) {
 			return METHOD.annotationAutoPointcut.getPointcut(annotationType);
 		} else {
-			throw new IllegalArgumentException("annotation:" + annotationType + "Missing " + Target.class + " TYPE or METHOD information");
+			throw new IllegalArgumentException("annotation:" + annotationType + " Missing " + Target.class + " TYPE or METHOD information");
 		}
 	});
 

@@ -40,7 +40,7 @@ import java.awt.image.BufferedImage;
  * @author livk
  */
 @Slf4j
-public class GoogleQRCodeGenerator implements QRCodeGenerator {
+public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QRCodeGenerator {
 
 	private final JacksonOperations jacksonOperations;
 
@@ -50,14 +50,12 @@ public class GoogleQRCodeGenerator implements QRCodeGenerator {
 	 * @param builder the builder
 	 */
 	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		ObjectMapper mapper = builder.build();
-		jacksonOperations = JacksonSupport.create(mapper);
+		jacksonOperations = JacksonSupport.create(builder.build());
 	}
 
 	@Override
-	public <T> BufferedImage generateQRCode(QRCodeEntity<T> entity) {
-		return generateQRCode(jacksonOperations.writeValueAsString(entity.content()), entity.width(),
-			entity.height(), entity.config(), entity.type());
+	protected String convert(Object content) {
+		return jacksonOperations.writeValueAsString(content);
 	}
 
 	@Override

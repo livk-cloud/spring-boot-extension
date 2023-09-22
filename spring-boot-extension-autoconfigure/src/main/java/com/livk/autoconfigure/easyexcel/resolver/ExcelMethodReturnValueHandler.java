@@ -26,10 +26,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -91,7 +93,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 		try (ServletOutputStream outputStream = response.getOutputStream()) {
 			EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 

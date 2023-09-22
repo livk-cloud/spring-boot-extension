@@ -39,7 +39,7 @@ public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-		if (ClassUtils.isPresent("com.github.pagehelper.PageInterceptor", Thread.currentThread().getContextClassLoader())) {
+		if (ClassUtils.isPresent("com.github.pagehelper.PageInterceptor")) {
 			Boolean pageHelperBannerEnable = environment.getProperty(PAGEHELPER_BANNER, Boolean.class, false);
 			System.setProperty(PAGEHELPER_BANNER, pageHelperBannerEnable.toString());
 		}

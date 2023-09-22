@@ -48,10 +48,14 @@ import java.util.Map;
  * @author livk
  */
 @Slf4j
-@Component
 @SpringAutoService
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@Component(SpringContextHolder.BEAN_NAME)
 public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
+	/**
+	 * SpringContextHolder bean name
+	 */
+	public static final String BEAN_NAME = "com.livk.commons.spring.context.SpringContextHolder";
 
 	@Getter
 	private volatile static ApplicationContext applicationContext = null;

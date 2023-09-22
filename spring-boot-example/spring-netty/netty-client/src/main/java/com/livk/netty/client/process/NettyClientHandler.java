@@ -35,7 +35,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<NettyMessage
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		cause.printStackTrace();
+		log.info("error msg：{}", cause.getMessage(), cause);
 		ctx.close();
 	}
 }

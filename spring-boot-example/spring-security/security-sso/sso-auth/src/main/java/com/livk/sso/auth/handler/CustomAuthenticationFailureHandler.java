@@ -35,8 +35,7 @@ import java.util.Map;
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		log.error("异常：{}", exception.getMessage());
-		exception.printStackTrace();
+		log.error("异常：{}", exception.getMessage(), exception);
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_BAD_REQUEST, "msg",
 			"login failed, username or password is incorrect"));
 	}

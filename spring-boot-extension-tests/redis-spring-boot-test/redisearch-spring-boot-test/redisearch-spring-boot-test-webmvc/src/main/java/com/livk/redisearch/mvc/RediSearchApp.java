@@ -21,7 +21,6 @@ import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.spring.SpringLauncher;
 import com.livk.redisearch.mvc.entity.Student;
-import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.lettucemod.search.Document;

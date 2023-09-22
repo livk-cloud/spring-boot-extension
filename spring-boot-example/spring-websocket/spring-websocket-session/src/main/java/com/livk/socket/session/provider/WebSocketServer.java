@@ -77,25 +77,20 @@ public class WebSocketServer {
 					item.sendMessage(message);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("websocket 发送异常", e);
 			}
 		}
 	}
 
 	@OnOpen
-	public void onOpen(Session session, @PathParam(value = "sid") String sid) {
+	public void onOpen(Session session, @PathParam(value = "sid") String sid) throws IOException {
 		this.session = session;
 		websocketSet.add(this); // 加入set中
 		addOnlineCount(); // 在线数加1
 		this.sid = sid;
 		log.info("有新窗口开始监听:" + sid + ",当前在线人数为" + getOnlineCount());
 		log.info("cid ---->>>{}", sid);
-
-		try {
-			sendMessage("连接成功");
-		} catch (IOException e) {
-			log.error("websocket IO异常");
-		}
+		sendMessage("连接成功");
 	}
 
 	/**
@@ -114,15 +109,11 @@ public class WebSocketServer {
 	 * @param message 客户端发送过来的消息
 	 */
 	@OnMessage
-	public void onMessage(String message, Session session) {
+	public void onMessage(String message, Session session) throws IOException {
 		log.info("收到来自窗口" + sid + "的信息:" + message);
 		// 群发消息
 		for (WebSocketServer item : websocketSet) {
-			try {
-				item.sendMessage(message);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			item.sendMessage(message);
 		}
 	}
 
@@ -132,8 +123,7 @@ public class WebSocketServer {
 	 */
 	@OnError
 	public void onError(Session session, Throwable error) {
-		log.error("websocket发生错误");
-		error.printStackTrace();
+		log.error("websocket发生错误", error);
 	}
 
 	/**

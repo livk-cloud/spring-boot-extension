@@ -15,16 +15,30 @@
  *
  */
 
-package com.livk.commons.util;
+package com.livk.autoconfigure.qrcode.support;
+
+import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
+
+import java.awt.image.BufferedImage;
 
 /**
- * <p>
- * ObjectUtilsTest
- * </p>
+ * The type Abstract qr code generator.
  *
  * @author livk
  */
-class ObjectUtilsTest {
+public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
 
+	@Override
+	public final BufferedImage generateQRCode(QRCodeEntity<?> entity) {
+		return generateQRCode(convert(entity.content()), entity.width(),
+			entity.height(), entity.config(), entity.type());
+	}
+
+	/**
+	 * Convert string.
+	 *
+	 * @param content the content
+	 * @return the string
+	 */
+	protected abstract String convert(Object content);
 }
-
