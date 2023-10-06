@@ -26,7 +26,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.util.*;
 import org.springframework.web.ErrorResponseException;
@@ -36,10 +35,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -121,7 +117,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return the map
 	 */
 	public Map<String, Object> attributes(HttpServletRequest request) {
-		return BaseStreamUtils.convert(request.getHeaderNames())
+		return BaseStreamUtils.convert(request.getAttributeNames())
 			.collect(Collectors.toMap(Function.identity(), request::getAttribute));
 	}
 
