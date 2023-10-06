@@ -39,6 +39,11 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	private Class<?> type;
 
+	/**
+	 * Sets type.
+	 *
+	 * @param httpInterfaceTypeName the http interface type name
+	 */
 	public void setType(String httpInterfaceTypeName) {
 		type = ClassUtils.resolveClassName(httpInterfaceTypeName);
 	}
