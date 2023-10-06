@@ -25,6 +25,7 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,16 +42,24 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
 	private static final String PROPERTY_SOURCE_NAME = "traceProperties";
 
+	private static final String PROBABILITY_KEY = "management.tracing.sampling.probability";
+
+	private static final String LEVEL_KEY = "logging.pattern.level";
+
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		if (application.getWebApplicationType() == WebApplicationType.SERVLET) {
 			if (isPresent() && Boolean.parseBoolean(environment.getProperty("management.tracing.enabled", "true"))) {
 				Map<String, Object> map = new HashMap<>();
-				if (!environment.containsProperty("management.tracing.sampling.probability")) {
-					map.put("management.tracing.sampling.probability", 1.0);
+				if (!environment.containsProperty(PROBABILITY_KEY)) {
+					map.put(PROBABILITY_KEY, 1.0);
 				}
-				if (!environment.containsProperty("logging.pattern.level")) {
-					map.put("logging.pattern.level", "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]");
+				if (!environment.containsProperty(LEVEL_KEY)) {
+					if (StringUtils.hasText(environment.getProperty("spring.application.name"))) {
+						map.put(LEVEL_KEY, "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]");
+					} else {
+						map.put(LEVEL_KEY, "%5p [%X{traceId:-},%X{spanId:-}]");
+					}
 				}
 				MutablePropertySources propertySources = environment.getPropertySources();
 				if (!propertySources.contains(PROPERTY_SOURCE_NAME) && !map.isEmpty()) {
@@ -63,7 +72,7 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
 	private boolean isPresent() {
 		return ClassUtils.isPresent("org.springframework.boot.actuate.autoconfigure.tracing.OpenTelemetryAutoConfiguration")
-			&& ClassUtils.isPresent("io.micrometer.tracing.Tracer")
-			&& ClassUtils.isPresent("io.micrometer.tracing.otel.bridge.OtelTracer");
+			   && ClassUtils.isPresent("io.micrometer.tracing.Tracer")
+			   && ClassUtils.isPresent("io.micrometer.tracing.otel.bridge.OtelTracer");
 	}
 }
