@@ -17,8 +17,11 @@
 
 package com.livk.commons.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -28,14 +31,10 @@ import java.util.stream.Stream;
  * @param <T> the type parameter
  * @author livk
  */
+@RequiredArgsConstructor(staticName = "create")
 public class Predicates<T> {
 
-	private final T[] dataArray;
-
-	private Predicates(T[] dataArray) {
-		Assert.notEmpty(dataArray, "dataArray must not be null or empty");
-		this.dataArray = dataArray;
-	}
+	private final Stream<T> dataStream;
 
 	/**
 	 * Create predicates.
@@ -46,7 +45,21 @@ public class Predicates<T> {
 	 */
 	@SafeVarargs
 	public static <T> Predicates<T> create(T... dataArray) {
-		return new Predicates<>(dataArray);
+		Assert.notEmpty(dataArray, "dataArray must not be null or empty");
+		return new Predicates<>(Arrays.stream(dataArray));
+	}
+
+
+
+	/**
+	 * Map predicates.
+	 *
+	 * @param <R>      the type parameter
+	 * @param function the function
+	 * @return the predicates
+	 */
+	public <R> Predicates<R> map(Function<T, R> function) {
+		return new Predicates<>(dataStream.map(function));
 	}
 
 	/**
@@ -56,7 +69,7 @@ public class Predicates<T> {
 	 * @return the boolean
 	 */
 	public boolean allChecked(Predicate<T> predicate) {
-		return Stream.of(dataArray).allMatch(predicate);
+		return dataStream.allMatch(predicate);
 	}
 
 	/**
@@ -66,7 +79,7 @@ public class Predicates<T> {
 	 * @return the boolean
 	 */
 	public boolean anyChecked(Predicate<T> predicate) {
-		return Stream.of(dataArray).anyMatch(predicate);
+		return dataStream.anyMatch(predicate);
 	}
 
 	/**
@@ -76,6 +89,6 @@ public class Predicates<T> {
 	 * @return the boolean
 	 */
 	public boolean noneMatch(Predicate<T> predicate) {
-		return Stream.of(dataArray).noneMatch(predicate);
+		return dataStream.noneMatch(predicate);
 	}
 }
