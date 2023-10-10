@@ -21,7 +21,6 @@ import com.livk.mqtt.config.MqttSenderConfig;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Component;
  *
  * @author livk
  */
-@Component
 @MessagingGateway(defaultRequestChannel = MqttSenderConfig.CHANNEL_NAME_OUT)
 public interface MqttSender {
 
