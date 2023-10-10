@@ -35,6 +35,9 @@ import java.util.function.Supplier;
 @UtilityClass
 public class ContextSnapshots {
 
+	/**
+	 * The constant CONTEXT_SNAPSHOT_FACTORY.
+	 */
 	public static final ContextSnapshotFactory CONTEXT_SNAPSHOT_FACTORY = ContextSnapshotFactory.builder()
 		.contextRegistry(ContextRegistry.getInstance()).clearMissing(false)
 		.captureKeyPredicate(key -> true)
