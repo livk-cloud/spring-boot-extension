@@ -58,7 +58,6 @@ configure(gradleModuleProjects) {
 
 allprojects {
 	repositories {
-		maven("https://plugins.gradle.org/m2/")
 		maven("https://repo.spring.io/release")
 		maven("https://maven.aliyun.com/repository/public")
 		maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
