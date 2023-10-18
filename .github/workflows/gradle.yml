@@ -104,7 +104,7 @@ jobs:
           java-version: 17
           distribution: 'temurin'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2.7.1
+        uses: gradle/gradle-build-action@v2.9.0
         with:
           arguments: cleanAll build -D exclude=true
           gradle-version: current
