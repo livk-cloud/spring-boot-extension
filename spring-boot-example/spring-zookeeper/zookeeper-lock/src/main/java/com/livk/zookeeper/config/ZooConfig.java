@@ -18,10 +18,8 @@
 package com.livk.zookeeper.config;
 
 import org.apache.curator.framework.CuratorFramework;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.zookeeper.config.CuratorFrameworkFactoryBean;
 import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 
 /**
@@ -36,7 +34,7 @@ public class ZooConfig {
 
 	@Bean
 	public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework curatorFramework) {
-		return new ZookeeperLockRegistry(curatorFramework, "/zookeeper-lock");
+		return new ZookeeperLockRegistry(curatorFramework);
 	}
 
 }

@@ -1,4 +1,4 @@
 spring:
   zookeeper:
     curator:
-      servers: livk.com:2181
+      connectString: livk.com:2181

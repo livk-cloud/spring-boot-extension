@@ -8,9 +8,9 @@ description = "spring boot extension dependencies"
 
 dependencies {
 	api(platform(SpringBootPlugin.BOM_COORDINATES))
-	api(platform(libs.springdoc.openapi.bom))
 	api(platform(libs.spring.boot.admin.dependencies))
 	constraints {
+		api(libs.bundles.springdoc.openapi.all)
 		api(libs.bundles.pagehelper.all)
 		api(libs.bundles.mybatis.all)
 		api(libs.bundles.redisson.all)

@@ -17,10 +17,8 @@
 
 package com.livk.micrometer.tracing;
 
+import com.livk.commons.micrometer.ContextSnapshots;
 import com.livk.commons.spring.SpringLauncher;
-import io.micrometer.context.ContextExecutorService;
-import io.micrometer.context.ContextRegistry;
-import io.micrometer.context.ContextSnapshotFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,16 +46,11 @@ public class MicrometerTraceApp {
 	@GetMapping("home")
 	public String home() {
 		log.info("home() has been called");
-		ExecutorService service = Executors.newFixedThreadPool(2);
-		ContextSnapshotFactory contextSnapshotFactory = ContextSnapshotFactory.builder()
-			.contextRegistry(ContextRegistry.getInstance()).clearMissing(false)
-			.captureKeyPredicate(key -> true)
-			.build();
-		ExecutorService wrap = ContextExecutorService.wrap(service, contextSnapshotFactory::captureAll);
+		ExecutorService wrap = ContextSnapshots.wrap(Executors.newFixedThreadPool(2));
 		for (int i = 0; i < 3; i++) {
 			wrap.execute(() -> log.info("home"));
 		}
-		service.shutdown();
+		wrap.shutdown();
 		return "Hello World!";
 	}
 }

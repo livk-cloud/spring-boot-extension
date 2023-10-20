@@ -5,12 +5,12 @@ pagehelper = "5.3.3"
 pagehelper-starter = "1.4.7"
 mybatis = "3.5.13"
 spring-mybatis = "3.0.2"
-guava = "32.1.2-jre"
+guava = "32.1.3-jre"
 easyexcel = "3.3.2"
 java-web-socket = "1.5.4"
-redisson = "3.23.5"
-clickhouse = "0.4.6"
-spotbugs-annotations = "4.7.3"
+redisson = "3.24.1"
+clickhouse = "0.5.0"
+spotbugs-annotations = "4.8.0"
 mapstruct = "1.5.5.Final"
 mapstruct-lombok = "0.2.0"
 curator = "5.5.0"
@@ -21,43 +21,60 @@ auto-service = "1.1.1"
 yauaa = "7.22.0"
 springdoc = "2.2.0"
 google-javase = "3.5.2"
-spring-admin = "3.1.6"
+spring-admin = "3.1.7"
 nimbusds-jwt = "9.35"
 rocket-starter = "2.2.3"
 jsqlparser = "4.6"
 lettucemod = "3.7.3"
-minio = "8.5.5"
+minio = "8.5.6"
 dnsjava = "3.5.2"
 aliyun-oss = "3.17.1"
-aviator = "5.3.3"
+aviator = "5.4.1"
 protobuf = "3.24.3"
 protobuf-plugins = "0.9.4"
 jexl3 = "3.3"
 mvel2 = "2.5.0.Final"
-disruptor = "3.4.4"
+disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
-springdoc-openapi-bom = { group = "org.springdoc", name = "springdoc-openapi", version.ref = "springdoc" }
+
+#springdoc-openapi-all
+openapi-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version.ref = "springdoc" }
+openapi-webflux-api = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-api", version.ref = "springdoc" }
+openapi-webflux-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
+openapi-webmvc-api = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
+openapi-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+
+#pagehelper-all
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper-starter" }
-guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
-easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyexcel" }
+
+#mybatis-all
 mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "spring-mybatis" }
 mybatis-autoconfigure = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-autoconfigure", version.ref = "spring-mybatis" }
 mybatis-spring = { group = "org.mybatis", name = "mybatis-spring", version.ref = "spring-mybatis" }
 mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
-java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "java-web-socket" }
+
+#redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
+
+#clickhouse-all
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
 clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
-spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
+
+#mapstruct-all
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstruct-lombok" }
+
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+easyexcel = { group = "com.alibaba", name = "easyexcel", version.ref = "easyexcel" }
+java-webSocket = { group = "org.java-websocket", name = "Java-WebSocket", version.ref = "java-web-socket" }
+spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 curator-recipes = { group = "org.apache.curator", name = "curator-recipes", version.ref = "curator" }
 ip2region = { group = "org.lionsoul", name = "ip2region", version.ref = "ip2region" }
 browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref = "browscap-java" }
@@ -79,6 +96,7 @@ disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" 
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 
 [bundles]
+springdoc-openapi-all = ["openapi-common", "openapi-webflux-api", "openapi-webflux-ui", "openapi-webmvc-api", "openapi-webmvc-ui"]
 pagehelper-all = ["pagehelper", "pagehelper-starter"]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter"]

@@ -77,9 +77,7 @@ public class CuratorTemplate implements CuratorOperations {
 	 * @throws Exception the exception
 	 */
 	public Stat setDataAsync(String path, String data) throws Exception {
-		return setDataAsync(path, data, (client, event) -> {
-
-		});
+		return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
 	}
 
 	@Override

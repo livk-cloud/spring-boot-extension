@@ -1,14 +1,11 @@
 pluginManagement {
 	repositories {
 		gradlePluginPortal()
-		maven("https://plugins.gradle.org/m2/")
-		maven("https://repo.spring.io/release")
-		maven("https://maven.aliyun.com/repository/public")
 	}
 }
 
 plugins {
-	id("com.gradle.enterprise") version ("3.15")
+	id("com.gradle.enterprise") version ("3.15.1")
 }
 
 gradleEnterprise {

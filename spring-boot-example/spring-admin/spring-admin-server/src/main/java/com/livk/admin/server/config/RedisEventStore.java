@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,32 +20,51 @@ package com.livk.admin.server.config;
 import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
-import de.codecentric.boot.admin.server.eventstore.ConcurrentMapEventStore;
+import de.codecentric.boot.admin.server.eventstore.InstanceEventPublisher;
+import de.codecentric.boot.admin.server.eventstore.InstanceEventStore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+
+import static java.util.Comparator.comparing;
 
 /**
- * <p>
- * RedisEventStore
- * </p>
- *
  * @author livk
  */
+@Slf4j
 @Component
-public class RedisEventStore extends ConcurrentMapEventStore {
+public class RedisEventStore extends InstanceEventPublisher implements InstanceEventStore {
 
 	private static final String INSTANCE_EVENT_KEY = "Event";
 
+	private static final Comparator<InstanceEvent> byTimestampAndIdAndVersion = comparing(InstanceEvent::getTimestamp)
+		.thenComparing(InstanceEvent::getInstance)
+		.thenComparing(InstanceEvent::getVersion);
 	private final ReactiveHashOperations<String, String, List<InstanceEvent>> hashOperations;
 
-	public RedisEventStore(ReactiveRedisOps reactiveRedisOps) {
-		super(100, new ConcurrentHashMap<>());
-		hashOperations = reactiveRedisOps.opsForHash();
+	public RedisEventStore(ReactiveRedisOps redisOps) {
+		this.hashOperations = redisOps.opsForHash();
+	}
+
+	@NonNull
+	@Override
+	public Flux<InstanceEvent> findAll() {
+		return hashOperations.values(INSTANCE_EVENT_KEY)
+			.flatMapIterable(Function.identity())
+			.sort(byTimestampAndIdAndVersion);
+	}
+
+	@NonNull
+	@Override
+	public Flux<InstanceEvent> find(@NonNull InstanceId id) {
+		return hashOperations.get(INSTANCE_EVENT_KEY, id).flatMapMany(Flux::fromIterable);
 	}
 
 	@NonNull
@@ -59,7 +78,6 @@ public class RedisEventStore extends ConcurrentMapEventStore {
 			throw new IllegalArgumentException("events must only refer to the same instance.");
 		}
 		return hashOperations.put(INSTANCE_EVENT_KEY, id.getValue(), events)
-			.flatMap(bool -> super.append(events).then(Mono.fromRunnable(() -> this.publish(events))));
+			.then(Mono.fromRunnable(() -> this.publish(events)));
 	}
-
 }

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.Getter;
+import com.livk.commons.beans.GenericWrapper;
 import lombok.SneakyThrows;
 
 import java.io.DataInput;
@@ -38,9 +38,8 @@ import java.net.URL;
  * @param <M> the type parameter
  * @author livk
  */
-public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations {
+public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations, GenericWrapper<M> {
 
-	@Getter
 	private final M mapper;
 
 	private JacksonSupport(M mapper) {
@@ -136,5 +135,15 @@ public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations
 	@Override
 	public <T> T convertValue(Object fromValue, JavaType javaType) {
 		return mapper.convertValue(fromValue, javaType);
+	}
+
+	@Override
+	public boolean isWrapperFor(Class<?> type) {
+		return type.isInstance(mapper);
+	}
+
+	@Override
+	public M unwrap() {
+		return mapper;
 	}
 }

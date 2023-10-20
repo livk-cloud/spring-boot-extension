@@ -4,10 +4,9 @@ plugins {
 }
 
 repositories {
-	maven { setUrl("https://repo.spring.io/milestone") }
-	maven { setUrl("https://plugins.gradle.org/m2/") }
-	maven { setUrl("https://repo.spring.io/release") }
-	maven { setUrl("https://maven.aliyun.com/repository/public") }
+	maven("https://repo.spring.io/milestone")
+	maven("https://repo.spring.io/release")
+	maven("https://maven.aliyun.com/repository/public")
 }
 
 dependencies {
