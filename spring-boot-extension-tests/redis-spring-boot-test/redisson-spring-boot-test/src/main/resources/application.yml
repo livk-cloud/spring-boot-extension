@@ -10,6 +10,7 @@ spring:
         timeout: 3000
         retryAttempts: 3
         retryInterval: 1500
+        subscriptionTimeout: 10000
         subscriptionsPerConnection: 5
         subscriptionConnectionMinimumIdleSize: 1
         subscriptionConnectionPoolSize: 50
