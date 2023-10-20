@@ -17,11 +17,14 @@
 
 package com.livk.amqp.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.auto.service.annotation.SpringAutoService;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -95,4 +98,8 @@ public class TopicConfig {
 		return BindingBuilder.bind(topicExchangeQueueC()).to(rabbitmqDemoTopicExchange()).with("rabbit.#");
 	}
 
+	@Bean
+	public MessageConverter messageConverter(ObjectMapper objectMapper) {
+		return new Jackson2JsonMessageConverter(objectMapper, "com.livk.amqp.entity");
+	}
 }
