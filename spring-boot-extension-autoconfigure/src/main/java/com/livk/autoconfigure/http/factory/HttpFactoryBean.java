@@ -17,13 +17,19 @@
 
 package com.livk.autoconfigure.http.factory;
 
+import com.livk.autoconfigure.http.adapter.AdapterFactory;
+import com.livk.autoconfigure.http.adapter.BeanFactoryHttpExchangeAdapter;
+import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
 import com.livk.commons.util.ClassUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.lang.NonNull;
+import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+
+import java.util.Objects;
 
 /**
  * <p>
@@ -48,6 +54,15 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 	 */
 	public void setType(String httpInterfaceTypeName) {
 		type = ClassUtils.resolveClassName(httpInterfaceTypeName);
+	}
+
+	/**
+	 * Sets adapter factory.
+	 *
+	 * @param adapterFactory the adapter factory
+	 */
+	public void setAdapterFactory(AdapterFactory<? extends HttpExchangeAdapter> adapterFactory) {
+		this.adapterFactory = adapterFactory;
 	}
 
 	@Override
