@@ -31,7 +31,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 public class KafkaConfig {
 	@Bean
 	public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
-		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties());
+		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties(null));
 		admin.setFatalIfBrokerNotAvailable(true);
 		return admin;
 	}
