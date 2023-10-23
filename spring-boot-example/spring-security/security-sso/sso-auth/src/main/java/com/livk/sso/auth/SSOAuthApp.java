@@ -17,7 +17,7 @@
 
 package com.livk.sso.auth;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import com.livk.sso.auth.mapper.UserMapper;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

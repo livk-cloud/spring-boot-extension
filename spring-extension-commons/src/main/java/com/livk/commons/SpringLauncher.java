@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.commons.spring;
+package com.livk.commons;
 
 import com.livk.commons.util.ClassUtils;
 import com.livk.commons.util.DateUtils;
@@ -81,6 +81,16 @@ public class SpringLauncher {
 	}
 
 	/**
+	 * Gets version.
+	 *
+	 * @return the version
+	 */
+	public static String getVersion() {
+		Package pkg = SpringLauncher.class.getPackage();
+		return (pkg != null ? pkg.getImplementationVersion() : null);
+	}
+
+	/**
 	 * Application spring application.
 	 *
 	 * @return the spring application
@@ -101,11 +111,6 @@ public class SpringLauncher {
 			░████████░██  ░░██   ░██░░██   ░░██████  ███░░██████ ░░██████░░██████
 			░░░░░░░░ ░░    ░░    ░░  ░░     ░░░░░░  ░░░  ░░░░░░   ░░░░░░  ░░░░░░
 			""";
-
-		private static String getVersion() {
-			Package pkg = SpringLauncher.class.getPackage();
-			return (pkg != null ? pkg.getImplementationVersion() : null);
-		}
 
 		@Override
 		public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {

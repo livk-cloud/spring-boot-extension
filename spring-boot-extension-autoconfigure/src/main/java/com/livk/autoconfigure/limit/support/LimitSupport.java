@@ -19,7 +19,7 @@ package com.livk.autoconfigure.limit.support;
 
 import com.livk.autoconfigure.limit.annotation.Limit;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;

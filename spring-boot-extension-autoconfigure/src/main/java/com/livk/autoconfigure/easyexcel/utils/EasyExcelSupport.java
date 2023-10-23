@@ -28,7 +28,7 @@ import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.livk.commons.util.BaseStreamUtils;
 import com.livk.commons.io.ResourceUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

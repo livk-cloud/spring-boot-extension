@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,10 @@
  *
  */
 
-package com.livk.commons.web.util;
+package com.livk.commons.util;
 
 import com.google.common.collect.Lists;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.livk.commons.util.BaseStreamUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +28,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.*;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -160,13 +161,13 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	public String realIp(HttpServletRequest request) {
 		// 这个一般是Nginx反向代理设置的参数
 		String ip = request.getHeader("X-Real-IP");
-		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("X-Forwarded-For");
 		}
-		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("Proxy-Client-IP");
 		}
-		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("WL-Proxy-Client-IP");
 		}
 		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {

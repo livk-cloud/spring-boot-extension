@@ -18,7 +18,7 @@
 package com.livk.sso.auth.config;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import com.livk.sso.commons.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

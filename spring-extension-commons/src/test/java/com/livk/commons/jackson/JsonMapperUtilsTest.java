@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.livk.commons.util.Pair;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.livk.commons.util.BaseStreamUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
 import org.intellij.lang.annotations.Language;

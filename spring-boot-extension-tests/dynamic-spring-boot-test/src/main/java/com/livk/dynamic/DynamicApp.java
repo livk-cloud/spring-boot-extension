@@ -18,7 +18,7 @@
 package com.livk.dynamic;
 
 import com.livk.autoconfigure.dynamic.annotation.EnableDynamicDatasource;
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

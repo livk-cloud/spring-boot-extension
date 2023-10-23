@@ -19,7 +19,7 @@ package com.livk.autoconfigure.ip2region.filter;
 
 import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.autoconfigure.ip2region.support.RequestIpContextHolder;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

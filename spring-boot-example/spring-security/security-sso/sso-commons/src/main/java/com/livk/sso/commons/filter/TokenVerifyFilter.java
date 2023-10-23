@@ -17,7 +17,7 @@
 
 package com.livk.sso.commons.filter;
 
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;

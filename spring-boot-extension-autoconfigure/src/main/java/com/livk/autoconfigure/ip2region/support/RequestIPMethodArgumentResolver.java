@@ -19,7 +19,7 @@ package com.livk.autoconfigure.ip2region.support;
 
 import com.livk.autoconfigure.ip2region.annotation.RequestIp;
 import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

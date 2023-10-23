@@ -17,9 +17,9 @@
 
 package com.livk.commons.web;
 
-import com.livk.commons.collect.BaseStreamUtils;
+import com.livk.commons.util.BaseStreamUtils;
 import com.livk.commons.util.ObjectUtils;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;

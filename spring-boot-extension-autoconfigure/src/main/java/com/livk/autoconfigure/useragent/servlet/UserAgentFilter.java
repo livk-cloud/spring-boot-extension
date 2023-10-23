@@ -19,7 +19,7 @@ package com.livk.autoconfigure.useragent.servlet;
 
 import com.livk.autoconfigure.useragent.UserAgentHelper;
 import com.livk.autoconfigure.useragent.domain.UserAgent;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

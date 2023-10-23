@@ -20,7 +20,7 @@ package com.livk.autoconfigure.useragent.servlet;
 import com.livk.autoconfigure.useragent.UserAgentHelper;
 import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
 import com.livk.autoconfigure.useragent.domain.UserAgent;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;

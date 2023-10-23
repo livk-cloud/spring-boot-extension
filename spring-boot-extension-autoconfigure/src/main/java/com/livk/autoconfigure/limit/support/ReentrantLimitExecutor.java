@@ -17,7 +17,7 @@
 
 package com.livk.autoconfigure.limit.support;
 
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.concurrent.TimeUnit;

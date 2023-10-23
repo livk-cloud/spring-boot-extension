@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.livk.commons.util.BaseStreamUtils;
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 
