@@ -34,7 +34,7 @@ import java.util.Map;
 @Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) {
 		log.error("exception:{}", accessDeniedException.getMessage(), accessDeniedException);
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", accessDeniedException.getMessage()));
 	}
