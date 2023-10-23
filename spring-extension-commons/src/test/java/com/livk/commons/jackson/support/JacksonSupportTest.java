@@ -190,8 +190,8 @@ class JacksonSupportTest {
 		assertEquals("2", result2.get("a").asText());
 		assertEquals(3, result2.get("b").get("c").asInt());
 
-		JsonNode result3 = XML.readValue(xml, new TypeReference<JsonNode>() {
-		});
+		JsonNode result3 = XML.readValue(xml, new TypeReference<>() {
+        });
 		assertNotNull(result3);
 		assertEquals("1", result3.get("c").asText());
 		assertEquals("2", result3.get("a").asText());

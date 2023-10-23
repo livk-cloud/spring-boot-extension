@@ -25,8 +25,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -38,7 +40,9 @@ public class RequestIpFilter extends OncePerRequestFilter {
 	private final Ip2RegionSearch search;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(@Nonnull HttpServletRequest request,
+									@NonNull HttpServletResponse response,
+									FilterChain filterChain) throws ServletException, IOException {
 		String ip = WebUtils.realIp(request);
 		RequestIpContextHolder.set(search.searchAsInfo(ip));
 		filterChain.doFilter(request, response);
