@@ -20,10 +20,12 @@ package com.livk.autoconfigure.redisson;
 import com.livk.auto.service.annotation.SpringAutoService;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -82,9 +84,16 @@ public class RedissonAutoConfiguration {
      * @return the redisson client
      */
     @Bean
+	@ConditionalOnMissingBean
     public RedissonClient redissonClient(ConfigProperties configProperties,
                                          RedisProperties redisProperties,
                                          ObjectProvider<ConfigCustomizer> configCustomizers) {
         return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
     }
+
+	@Bean
+	@ConditionalOnMissingBean
+	public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
+		return new RedissonConnectionFactory(redisson);
+	}
 }

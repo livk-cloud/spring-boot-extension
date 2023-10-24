@@ -18,6 +18,7 @@ dependencies {
 	optional("org.lionsoul:ip2region")
 	optional("dnsjava:dnsjava")
 	optional("org.redisson:redisson")
+	optional("org.redisson:redisson-spring-data-31")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
 	optional("org.aspectj:aspectjweaver")
