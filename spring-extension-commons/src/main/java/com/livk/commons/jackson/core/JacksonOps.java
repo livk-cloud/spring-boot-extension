@@ -20,12 +20,11 @@ package com.livk.commons.jackson.core;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.TypeFactoryUtils;
 
 /**
  * @author livk
  */
-public interface JacksonOperations {
+public interface JacksonOps {
 
 	/**
 	 * Read value t.
@@ -35,9 +34,7 @@ public interface JacksonOperations {
 	 * @param type the type
 	 * @return the t
 	 */
-	default <T> T readValue(Object obj, Class<T> type) {
-		return readValue(obj, TypeFactoryUtils.javaType(type));
-	}
+	<T> T readValue(Object obj, Class<T> type);
 
 	/**
 	 * Read value t.
@@ -47,9 +44,7 @@ public interface JacksonOperations {
 	 * @param typeReference the type reference
 	 * @return the t
 	 */
-	default <T> T readValue(Object obj, TypeReference<T> typeReference) {
-		return readValue(obj, TypeFactoryUtils.javaType(typeReference));
-	}
+	<T> T readValue(Object obj, TypeReference<T> typeReference);
 
 	/**
 	 * Read value t.
@@ -94,9 +89,7 @@ public interface JacksonOperations {
 	 * @param type      the type
 	 * @return the object
 	 */
-	default <T> T convertValue(Object fromValue, Class<T> type) {
-		return convertValue(fromValue, TypeFactoryUtils.javaType(type));
-	}
+	<T> T convertValue(Object fromValue, Class<T> type);
 
 	/**
 	 * Convert value t.
@@ -106,9 +99,7 @@ public interface JacksonOperations {
 	 * @param typeReference the type reference
 	 * @return the t
 	 */
-	default <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
-		return convertValue(fromValue, TypeFactoryUtils.javaType(typeReference));
-	}
+	<T> T convertValue(Object fromValue, TypeReference<T> typeReference);
 
 	/**
 	 * Convert object.

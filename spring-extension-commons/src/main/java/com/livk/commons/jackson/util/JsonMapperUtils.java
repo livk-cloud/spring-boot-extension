@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.livk.commons.jackson.core.JacksonOperations;
 import com.livk.commons.jackson.core.JacksonSupport;
 import lombok.experimental.UtilityClass;
 
@@ -38,7 +37,7 @@ import java.util.Map;
 @UtilityClass
 public class JsonMapperUtils {
 
-	private static final JacksonOperations JSON;
+	private static final JacksonSupport<JsonMapper> JSON;
 
 
 	static {

@@ -17,17 +17,15 @@
 
 package com.livk.autoconfigure.qrcode.support;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.livk.autoconfigure.qrcode.entity.QRCodeEntity;
 import com.livk.autoconfigure.qrcode.enums.PicType;
 import com.livk.autoconfigure.qrcode.exception.QRCodeException;
-import com.livk.commons.jackson.core.JacksonOperations;
+import com.livk.commons.jackson.core.JacksonOps;
 import com.livk.commons.jackson.core.JacksonSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -42,7 +40,7 @@ import java.awt.image.BufferedImage;
 @Slf4j
 public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QRCodeGenerator {
 
-	private final JacksonOperations jacksonOperations;
+	private final JacksonOps jacksonOps;
 
 	/**
 	 * Instantiates a new Google qrcode generator.
@@ -50,12 +48,12 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 	 * @param builder the builder
 	 */
 	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		jacksonOperations = JacksonSupport.create(builder.build());
+		jacksonOps = JacksonSupport.create(builder.build());
 	}
 
 	@Override
 	protected String convert(Object content) {
-		return jacksonOperations.writeValueAsString(content);
+		return jacksonOps.writeValueAsString(content);
 	}
 
 	@Override

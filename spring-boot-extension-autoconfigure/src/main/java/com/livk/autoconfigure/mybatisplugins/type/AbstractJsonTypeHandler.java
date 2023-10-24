@@ -19,7 +19,7 @@ package com.livk.autoconfigure.mybatisplugins.type;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.jackson.core.JacksonOperations;
+import com.livk.commons.jackson.core.JacksonOps;
 import com.livk.commons.jackson.core.JacksonSupport;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.type.JdbcType;
@@ -42,7 +42,7 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	/**
 	 * The Jackson operations.
 	 */
-	protected final JacksonOperations jacksonOperations;
+	protected final JacksonOps jacksonOps;
 
 	/**
 	 * Instantiates a new Abstract json type handler.
@@ -51,7 +51,7 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	 */
 	protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
 		ObjectMapper mapper = builder.build();
-		jacksonOperations = JacksonSupport.create(mapper);
+		jacksonOps = JacksonSupport.create(mapper);
 	}
 
 	@Override
@@ -74,18 +74,18 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	@Override
 	public final JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
 		String json = rs.getString(columnName);
-		return jacksonOperations.readTree(json);
+		return jacksonOps.readTree(json);
 	}
 
 	@Override
 	public final JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
 		String json = rs.getString(columnIndex);
-		return jacksonOperations.readTree(json);
+		return jacksonOps.readTree(json);
 	}
 
 	@Override
 	public final JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
 		String json = cs.getString(columnIndex);
-		return jacksonOperations.readTree(json);
+		return jacksonOps.readTree(json);
 	}
 }

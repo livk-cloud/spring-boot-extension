@@ -38,11 +38,12 @@ import java.net.URL;
  * @param <M> the type parameter
  * @author livk
  */
-public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations, GenericWrapper<M> {
+public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps implements JacksonOps, GenericWrapper<M> {
 
 	private final M mapper;
 
 	private JacksonSupport(M mapper) {
+		super(mapper.getTypeFactory());
 		this.mapper = mapper;
 		this.mapper.registerModules(new JavaTimeModule());
 	}
@@ -90,7 +91,7 @@ public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations
 		} else if (obj instanceof DataInput dataInput) {
 			return mapper.readValue(dataInput, type);
 		}
-		return convertValue(obj, type);
+		throw new UnsupportedOperationException("Unsupported type: " + obj.getClass().getName());
 	}
 
 	@SneakyThrows
@@ -129,7 +130,7 @@ public class JacksonSupport<M extends ObjectMapper> implements JacksonOperations
 		} else if (obj instanceof byte[] bytes) {
 			return mapper.readTree(bytes);
 		}
-		return convertValue(obj, JsonNode.class);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
