@@ -1,18 +1,19 @@
 spring:
   redisson:
     config:
-      singleServerConfig:
-        address: "redis://livk.com:6379"
-        password: "123456"
+      single-server-config:
+        address: redis://livk.com:6379
+        password: 123456
         database: 7
         idleConnectionTimeout: 10000
         connectTimeout: 10000
         timeout: 3000
         retryAttempts: 3
         retryInterval: 1500
-        subscriptionsPerConnection: 5
+        subscriptionTimeout: 15000
+        subscriptionsPerConnection: 10
         subscriptionConnectionMinimumIdleSize: 1
-        subscriptionConnectionPoolSize: 50
+        subscriptionConnectionPoolSize: 100
         connectionMinimumIdleSize: 32
         connectionPoolSize: 64
         dnsMonitoringInterval: 5000
@@ -20,7 +21,3 @@ spring:
       nettyThreads: 0
       codec: '!org.redisson.codec.JsonJacksonCodec { }'
       transportMode: "NIO"
-  data:
-    redis:
-      host: livk.com
-      password: 123456

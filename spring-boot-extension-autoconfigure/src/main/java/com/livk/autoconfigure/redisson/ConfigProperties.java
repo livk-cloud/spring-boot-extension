@@ -448,6 +448,7 @@ public class ConfigProperties {
 
 		private int timeout = 3000;
 
+		private int subscriptionTimeout = 7500;
 
 		private int retryAttempts = 3;
 
