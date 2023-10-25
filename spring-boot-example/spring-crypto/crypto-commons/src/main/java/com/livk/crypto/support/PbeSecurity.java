@@ -63,27 +63,17 @@ public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 
 
 	@Override
-	protected byte[] decrypt(byte[] decode) {
-		try {
-			Cipher cipher = Cipher.getInstance(CIPHER_NAME);
-			cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParameterSpec);
-			return cipher.doFinal(decode);
-		} catch (Exception e) {
-			log.error("decrypt error:{}", e.getMessage());
-			return EMPTY;
-		}
+	protected byte[] decrypt(byte[] decode) throws Exception {
+		Cipher cipher = Cipher.getInstance(CIPHER_NAME);
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParameterSpec);
+		return cipher.doFinal(decode);
 	}
 
 	@Override
-	protected byte[] encrypt(byte[] encode) {
-		try {
-			Cipher cipher = Cipher.getInstance(CIPHER_NAME);
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParameterSpec);
-			return cipher.doFinal(encode);
-		} catch (Exception e) {
-			log.error("encrypt error:{}", e.getMessage());
-			return EMPTY;
-		}
+	protected byte[] encrypt(byte[] encode) throws Exception {
+		Cipher cipher = Cipher.getInstance(CIPHER_NAME);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParameterSpec);
+		return cipher.doFinal(encode);
 	}
 
 	@Override
