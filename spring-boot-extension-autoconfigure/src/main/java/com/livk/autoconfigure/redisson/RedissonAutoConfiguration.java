@@ -44,13 +44,13 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 @EnableConfigurationProperties({ConfigProperties.class, RedisProperties.class})
 public class RedissonAutoConfiguration {
 
-    /**
-     * Codec converter bean factory post processor bean factory post processor.
-     *
-     * @param baseConverters the base converters
-     * @return the bean factory post processor
-     */
-    @Bean
+	/**
+	 * Codec converter bean factory post processor bean factory post processor.
+	 *
+	 * @param baseConverters the base converters
+	 * @return the bean factory post processor
+	 */
+	@Bean
     public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
         return beanFactory -> {
             ConversionService conversionService = beanFactory.getConversionService();
@@ -75,15 +75,15 @@ public class RedissonAutoConfiguration {
         };
     }
 
-    /**
-     * Redisson client redisson client.
-     *
-     * @param configProperties  the config properties
-     * @param redisProperties   the redis properties
-     * @param configCustomizers the config customizers
-     * @return the redisson client
-     */
-    @Bean
+	/**
+	 * Redisson client redisson client.
+	 *
+	 * @param configProperties  the config properties
+	 * @param redisProperties   the redis properties
+	 * @param configCustomizers the config customizers
+	 * @return the redisson client
+	 */
+	@Bean
 	@ConditionalOnMissingBean
     public RedissonClient redissonClient(ConfigProperties configProperties,
                                          RedisProperties redisProperties,
@@ -91,6 +91,12 @@ public class RedissonAutoConfiguration {
         return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
     }
 
+	/**
+	 * Redisson connection factory redisson connection factory.
+	 *
+	 * @param redisson the redisson
+	 * @return the redisson connection factory
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
