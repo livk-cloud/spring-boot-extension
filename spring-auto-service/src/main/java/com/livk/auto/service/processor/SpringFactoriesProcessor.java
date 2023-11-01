@@ -23,7 +23,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.auto.service.util.ElementUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -91,13 +90,13 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
 		for (Element element : elements) {
-			Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-			String provider = ElementUtils.getBinaryName(value.orElseGet(() -> fromInterface(element)));
+			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			String provider = TypeElements.getBinaryName(value.orElseGet(() -> fromInterface(element)));
 			if (provider == null || provider.isBlank()) {
 				throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
 			}
 			boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
-			String serviceImpl = ElementUtils.getBinaryName((TypeElement) element);
+			String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
 			if (aot) {
 				aotFactoriesMap.put(provider, serviceImpl);
 			} else {

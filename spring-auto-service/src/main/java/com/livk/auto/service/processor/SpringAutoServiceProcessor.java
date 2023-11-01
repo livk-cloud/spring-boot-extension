@@ -22,7 +22,6 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.auto.service.util.ElementUtils;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -86,9 +85,9 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
 		for (Element element : elements) {
-			Optional<TypeElement> value = ElementUtils.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-			String provider = ElementUtils.getBinaryName(value.orElse(AutoConfigurationElement()));
-			importsMap.put(provider, ElementUtils.getBinaryName((TypeElement) element));
+			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			String provider = TypeElements.getBinaryName(value.orElse(AutoConfigurationElement()));
+			importsMap.put(provider, TypeElements.getBinaryName((TypeElement) element));
 		}
 	}
 
