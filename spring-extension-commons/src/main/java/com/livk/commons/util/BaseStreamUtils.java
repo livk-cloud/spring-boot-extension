@@ -17,6 +17,7 @@
 
 package com.livk.commons.util;
 
+import com.google.common.collect.Streams;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;
@@ -167,15 +168,16 @@ public class BaseStreamUtils {
 
 	/**
 	 * Convert stream.
+	 * {@use com.google.common.collect.Streams#stream(java.util.Iterator)}
 	 *
 	 * @param <T>      the type parameter
 	 * @param iterator the iterator
 	 * @return the stream
+	 * @see com.google.common.collect.Streams#stream(java.util.Iterator)
 	 */
+	@Deprecated(forRemoval = true)
 	public <T> Stream<T> convert(Iterator<T> iterator) {
-		return StreamSupport.stream(
-			Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
-			false);
+		return Streams.stream(iterator);
 	}
 
 	/**

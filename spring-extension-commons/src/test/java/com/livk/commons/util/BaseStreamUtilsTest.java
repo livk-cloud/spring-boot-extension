@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -100,16 +99,6 @@ class BaseStreamUtilsTest {
 			.filter(BaseStreamUtils.distinct(User::id))
 			.toList();
 		assertEquals(users, List.of(new User(1, "1"), new User(2, "2")));
-	}
-
-	@Test
-	void convert() {
-		List<Integer> list = List.of(1, 2, 3);
-		List<Integer> result1 = BaseStreamUtils.convert(list.iterator()).toList();
-		assertIterableEquals(List.of(1, 2, 3), result1);
-
-		List<Integer> result2 = BaseStreamUtils.convert(new Vector<>(list).elements()).toList();
-		assertIterableEquals(List.of(1, 2, 3), result2);
 	}
 
 	@Test

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.util.BaseStreamUtils;
+import com.google.common.collect.Streams;
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 
@@ -225,7 +225,7 @@ public class JsonNodeUtils {
 		if (jsonNode.isArray()) {
 			int range = Integer.parseInt(nodePath.substring(0, index));
 			Iterator<JsonNode> elements = jsonNode.elements();
-			JsonNode node = BaseStreamUtils.convert(elements).toList().get(range);
+			JsonNode node = Streams.stream(elements).toList().get(range);
 			return findNode(node, nodePath.substring(index + 1));
 		} else {
 			Iterator<String> iterator = jsonNode.fieldNames();
