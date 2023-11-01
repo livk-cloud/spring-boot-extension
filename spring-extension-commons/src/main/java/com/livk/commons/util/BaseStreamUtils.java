@@ -168,7 +168,10 @@ public class BaseStreamUtils {
 
 	/**
 	 * Convert stream.
-	 * {@use com.google.common.collect.Streams#stream(java.util.Iterator)}
+	 * <p>
+	 * Deprecated
+	 * <p>
+	 * use {@link com.google.common.collect.Streams#stream(java.util.Iterator)}
 	 *
 	 * @param <T>      the type parameter
 	 * @param iterator the iterator
