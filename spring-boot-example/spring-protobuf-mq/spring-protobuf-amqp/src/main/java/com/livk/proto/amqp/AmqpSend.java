@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 public class AmqpSend implements ProtobufSend<User> {
 
 	private final RabbitTemplate rabbitTemplate;
+
 	@Override
 	public void send(String key, User data) {
 		rabbitTemplate.convertAndSend(key, data);

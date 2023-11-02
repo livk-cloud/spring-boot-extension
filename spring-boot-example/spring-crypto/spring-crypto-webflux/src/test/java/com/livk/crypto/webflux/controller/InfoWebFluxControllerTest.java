@@ -54,7 +54,7 @@ class InfoWebFluxControllerTest {
 			.uri(uriBuilder -> uriBuilder.path("/info")
 				.queryParam("id", encoding)
 				.build())
-			.header("id",encoding)
+			.header("id", encoding)
 			.exchange()
 			.expectStatus()
 			.isOk()

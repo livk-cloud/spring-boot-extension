@@ -18,21 +18,21 @@ import java.util.List;
 @Component
 public class RocketMQMessageConverterBeanPostProcessor implements BeanPostProcessor {
 
-    @Override
-    public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
-        if (bean instanceof RocketMQMessageConverter rocketMQMessageConverter) {
-            try {
-                Field field = RocketMQMessageConverter.class.getDeclaredField("messageConverter");
-                field.setAccessible(true);
-                CompositeMessageConverter compositeMessageConverter = (CompositeMessageConverter) field.get(rocketMQMessageConverter);
-                List<MessageConverter> converters = compositeMessageConverter.getConverters();
-                converters.add(new UserProtobufMessageConverter());
-                field.set(rocketMQMessageConverter, compositeMessageConverter);
-                return rocketMQMessageConverter;
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {
+	@Override
+	public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
+		if (bean instanceof RocketMQMessageConverter rocketMQMessageConverter) {
+			try {
+				Field field = RocketMQMessageConverter.class.getDeclaredField("messageConverter");
+				field.setAccessible(true);
+				CompositeMessageConverter compositeMessageConverter = (CompositeMessageConverter) field.get(rocketMQMessageConverter);
+				List<MessageConverter> converters = compositeMessageConverter.getConverters();
+				converters.add(new UserProtobufMessageConverter());
+				field.set(rocketMQMessageConverter, compositeMessageConverter);
+				return rocketMQMessageConverter;
+			} catch (NoSuchFieldException | IllegalAccessException ignored) {
 
-            }
-        }
-        return bean;
-    }
+			}
+		}
+		return bean;
+	}
 }

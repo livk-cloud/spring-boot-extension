@@ -26,11 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RestAppTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Autowired
-    Jackson2ObjectMapperBuilder builder;
+	@Autowired
+	Jackson2ObjectMapperBuilder builder;
 
 	@Order(2)
 	@Test

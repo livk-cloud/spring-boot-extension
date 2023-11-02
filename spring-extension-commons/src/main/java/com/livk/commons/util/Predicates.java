@@ -50,7 +50,6 @@ public class Predicates<T> {
 	}
 
 
-
 	/**
 	 * Map predicates.
 	 *

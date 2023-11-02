@@ -47,8 +47,8 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
 	 * @since 0.2.3
 	 */
 	public OAuth2SmsAuthenticationProvider(AuthenticationManager authenticationManager,
-					       OAuth2AuthorizationService authorizationService,
-					       OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+										   OAuth2AuthorizationService authorizationService,
+										   OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
 		super(authenticationManager, authorizationService, tokenGenerator);
 	}
 

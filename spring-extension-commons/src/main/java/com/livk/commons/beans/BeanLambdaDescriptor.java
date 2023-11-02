@@ -47,6 +47,12 @@ class BeanLambdaDescriptor {
 
 	private PropertyDescriptor propertyDescriptor;
 
+	private BeanLambdaDescriptor(Class<?> type, String methodName) {
+		this.type = type;
+		this.methodName = methodName;
+		initField();
+	}
+
 	/**
 	 * Create bean lambda descriptor.
 	 *
@@ -62,12 +68,6 @@ class BeanLambdaDescriptor {
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className);
 		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()), pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
-	}
-
-	private BeanLambdaDescriptor(Class<?> type, String methodName) {
-		this.type = type;
-		this.methodName = methodName;
-		initField();
 	}
 
 	private void initField() {

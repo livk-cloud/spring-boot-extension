@@ -18,7 +18,7 @@
 package com.livk.autoconfigure.curator;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.curator.support.CuratorTemplate;
+import com.livk.core.curator.CuratorTemplate;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;
@@ -57,16 +57,16 @@ public class CuratorAutoConfiguration {
 	 * @throws Exception the exception
 	 */
 	@Bean(destroyMethod = "close")
-    @ConditionalOnMissingBean
-    public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
-                                             ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
-                                             ObjectProvider<EnsembleProvider> ensembleProviders,
-                                             ObjectProvider<TracerDriver> tracerDrivers) throws Exception {
-        return CuratorFactory.curatorFramework(properties, retryPolicy,
-                curatorFrameworkBuilderCustomizers::orderedStream,
-                ensembleProviders::getIfAvailable,
-                tracerDrivers::getIfAvailable);
-    }
+	@ConditionalOnMissingBean
+	public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
+											 ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
+											 ObjectProvider<EnsembleProvider> ensembleProviders,
+											 ObjectProvider<TracerDriver> tracerDrivers) throws Exception {
+		return CuratorFactory.curatorFramework(properties, retryPolicy,
+			curatorFrameworkBuilderCustomizers::orderedStream,
+			ensembleProviders::getIfAvailable,
+			tracerDrivers::getIfAvailable);
+	}
 
 	/**
 	 * Exponential backoff retry policy.
@@ -75,10 +75,10 @@ public class CuratorAutoConfiguration {
 	 * @return the retry policy
 	 */
 	@Bean
-    @ConditionalOnMissingBean
-    public RetryPolicy exponentialBackoffRetry(CuratorProperties properties) {
-        return CuratorFactory.retryPolicy(properties);
-    }
+	@ConditionalOnMissingBean
+	public RetryPolicy exponentialBackoffRetry(CuratorProperties properties) {
+		return CuratorFactory.retryPolicy(properties);
+	}
 
 	/**
 	 * Curator template curator template.
@@ -87,8 +87,8 @@ public class CuratorAutoConfiguration {
 	 * @return the curator template
 	 */
 	@Bean
-    @ConditionalOnMissingBean
-    public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
-        return new CuratorTemplate(curatorFramework);
-    }
+	@ConditionalOnMissingBean
+	public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
+		return new CuratorTemplate(curatorFramework);
+	}
 }

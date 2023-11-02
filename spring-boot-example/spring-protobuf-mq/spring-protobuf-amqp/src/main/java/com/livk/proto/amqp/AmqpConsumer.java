@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AmqpConsumer {
 
-    @RabbitListener(queuesToDeclare = @Queue(AmqpConfig.TOPIC_NAME))
-    public void consumer(@Payload User user) {
-        log.info(" : {}", user);
+	@RabbitListener(queuesToDeclare = @Queue(AmqpConfig.TOPIC_NAME))
+	public void consumer(@Payload User user) {
+		log.info(" : {}", user);
 		ConsumerCheck.success();
-    }
+	}
 }

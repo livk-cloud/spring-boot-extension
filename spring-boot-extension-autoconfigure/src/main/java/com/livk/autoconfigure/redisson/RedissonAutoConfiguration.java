@@ -51,29 +51,29 @@ public class RedissonAutoConfiguration {
 	 * @return the bean factory post processor
 	 */
 	@Bean
-    public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
-        return beanFactory -> {
-            ConversionService conversionService = beanFactory.getConversionService();
-            if (conversionService instanceof ConverterRegistry converterRegistry) {
-                converterRegistry.addConverter(new ConfigBaseConverter.ConfigConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.AddressResolverGroupFactoryConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.CodecConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.RedissonNodeInitializerConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.LoadBalancerConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.NatMapperConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.NameMapperConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.NettyHookConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.CredentialsResolverConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.EventLoopGroupConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.ConnectionListenerConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.ExecutorServiceConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.KeyManagerFactoryConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.TrustManagerFactoryConverter());
-                converterRegistry.addConverter(new ConfigBaseConverter.CommandMapperConverter());
-                baseConverters.orderedStream().forEach(converterRegistry::addConverter);
-            }
-        };
-    }
+	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
+		return beanFactory -> {
+			ConversionService conversionService = beanFactory.getConversionService();
+			if (conversionService instanceof ConverterRegistry converterRegistry) {
+				converterRegistry.addConverter(new ConfigBaseConverter.ConfigConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.AddressResolverGroupFactoryConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.CodecConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.RedissonNodeInitializerConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.LoadBalancerConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.NatMapperConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.NameMapperConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.NettyHookConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.CredentialsResolverConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.EventLoopGroupConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.ConnectionListenerConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.ExecutorServiceConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.KeyManagerFactoryConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.TrustManagerFactoryConverter());
+				converterRegistry.addConverter(new ConfigBaseConverter.CommandMapperConverter());
+				baseConverters.orderedStream().forEach(converterRegistry::addConverter);
+			}
+		};
+	}
 
 	/**
 	 * Redisson client redisson client.
@@ -85,11 +85,11 @@ public class RedissonAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-    public RedissonClient redissonClient(ConfigProperties configProperties,
-                                         RedisProperties redisProperties,
-                                         ObjectProvider<ConfigCustomizer> configCustomizers) {
-        return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
-    }
+	public RedissonClient redissonClient(ConfigProperties configProperties,
+										 RedisProperties redisProperties,
+										 ObjectProvider<ConfigCustomizer> configCustomizers) {
+		return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
+	}
 
 	/**
 	 * Redisson connection factory redisson connection factory.

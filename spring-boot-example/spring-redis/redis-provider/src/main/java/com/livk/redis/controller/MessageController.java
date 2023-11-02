@@ -17,8 +17,8 @@
 
 package com.livk.redis.controller;
 
-import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
 import com.livk.common.redis.domain.LivkMessage;
+import com.livk.core.redis.ReactiveRedisOps;
 import com.livk.redis.entity.Person;
 import com.livk.redis.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class MessageController {
 
 	@PostMapping("/redis/{id}")
 	public Mono<Void> send(@PathVariable("id") Long id, @RequestParam("msg") String msg,
-			       @RequestBody Map<String, Object> data) {
+						   @RequestBody Map<String, Object> data) {
 		return reactiveRedisOps
 			.convertAndSend(LivkMessage.CHANNEL, LivkMessage.of().setId(id).setMsg(msg).setData(data))
 			.flatMap(n -> Mono.empty());

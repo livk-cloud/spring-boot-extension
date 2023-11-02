@@ -49,8 +49,8 @@ public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticati
 	 * @since 0.2.3
 	 */
 	public OAuth2PasswordAuthenticationProvider(AuthenticationManager authenticationManager,
-						    OAuth2AuthorizationService authorizationService,
-						    OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+												OAuth2AuthorizationService authorizationService,
+												OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
 		super(authenticationManager, authorizationService, tokenGenerator);
 	}
 

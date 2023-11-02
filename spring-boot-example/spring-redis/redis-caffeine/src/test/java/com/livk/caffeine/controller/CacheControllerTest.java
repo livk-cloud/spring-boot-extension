@@ -17,7 +17,7 @@
 
 package com.livk.caffeine.controller;
 
-import com.livk.autoconfigure.redis.supprot.RedisOps;
+import com.livk.core.redis.RedisOps;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ class CacheControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
-    RedisOps redisOps;
+	RedisOps redisOps;
 
 
 	@Test

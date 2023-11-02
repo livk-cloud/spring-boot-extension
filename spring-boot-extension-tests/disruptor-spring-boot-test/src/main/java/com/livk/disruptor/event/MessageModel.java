@@ -1,6 +1,6 @@
 package com.livk.disruptor.event;
 
-import com.livk.autoconfigure.disruptor.annotation.DisruptorEvent;
+import com.livk.core.disruptor.annotation.DisruptorEvent;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,5 +11,5 @@ import lombok.Data;
 @Builder
 @DisruptorEvent("messageDisruptorAuto")
 public class MessageModel {
-    private String message;
+	private String message;
 }

@@ -42,34 +42,6 @@ public class WebSocketClientTest implements Runnable {
 
 	private final CountDownLatch countDownLatch;
 
-	@Override
-	public void run() {
-		try {
-			getClient(uri);
-			countDownLatch.await();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void getClient(String uri) throws URISyntaxException {
-		WebSocketClient webSocketClient = getWebSocketClient(uri);
-		while (webSocketClient.getReadyState().ordinal() == 0) {
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				log.warn("延迟操作出现问题，但并不影响功能");
-			}
-			log.info("连接中.......");
-		}
-		if (webSocketClient.getReadyState().ordinal() == 1) {
-			return;
-		}
-		if (!(webSocketClient.getReadyState().ordinal() == 1 || webSocketClient.getReadyState().ordinal() == 0)) {
-			log.info(uri + "连接失败.......");
-		}
-	}
-
 	private static WebSocketClient getWebSocketClient(String uri) throws URISyntaxException {
 		WebSocketClient webSocketClient = new WebSocketClient(new URI(uri)) {
 
@@ -96,5 +68,33 @@ public class WebSocketClientTest implements Runnable {
 		webSocketClient.addHeader(HttpHeaders.AUTHORIZATION, "livk123");
 		webSocketClient.connect();
 		return webSocketClient;
+	}
+
+	@Override
+	public void run() {
+		try {
+			getClient(uri);
+			countDownLatch.await();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void getClient(String uri) throws URISyntaxException {
+		WebSocketClient webSocketClient = getWebSocketClient(uri);
+		while (webSocketClient.getReadyState().ordinal() == 0) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				log.warn("延迟操作出现问题，但并不影响功能");
+			}
+			log.info("连接中.......");
+		}
+		if (webSocketClient.getReadyState().ordinal() == 1) {
+			return;
+		}
+		if (!(webSocketClient.getReadyState().ordinal() == 1 || webSocketClient.getReadyState().ordinal() == 0)) {
+			log.info(uri + "连接失败.......");
+		}
 	}
 }

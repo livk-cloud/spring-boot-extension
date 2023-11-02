@@ -32,11 +32,7 @@ import org.redisson.api.RedissonNodeInitializer;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
 import org.redisson.codec.ReferenceCodecProvider;
-import org.redisson.config.BaseMasterSlaveServersConfig;
-import org.redisson.config.CommandMapper;
-import org.redisson.config.Config;
-import org.redisson.config.ConfigSupport;
-import org.redisson.config.CredentialsResolver;
+import org.redisson.config.*;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -57,131 +53,129 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 
-    /**
-     * The type Config converter.
-     */
-    public static class ConfigConverter extends ConfigBaseConverter<Config> {
-    }
-
-    /**
-     * The type Address resolver group factory converter.
-     */
-    public static class AddressResolverGroupFactoryConverter extends ConfigBaseConverter<AddressResolverGroupFactory> {
-    }
-
-    /**
-     * The type Codec converter.
-     */
-    public static class CodecConverter extends ConfigBaseConverter<Codec> {
-    }
-
-    /**
-     * The type Redisson node initializer converter.
-     */
-    public static class RedissonNodeInitializerConverter extends ConfigBaseConverter<RedissonNodeInitializer> {
-    }
-
-    /**
-     * The type Load balancer converter.
-     */
-    public static class LoadBalancerConverter extends ConfigBaseConverter<LoadBalancer> {
-    }
-
-    /**
-     * The type Nat mapper converter.
-     */
-    public static class NatMapperConverter extends ConfigBaseConverter<NatMapper> {
-    }
-
-    /**
-     * The type Name mapper converter.
-     */
-    public static class NameMapperConverter extends ConfigBaseConverter<NameMapper> {
-    }
-
-    /**
-     * The type Netty hook converter.
-     */
-    public static class NettyHookConverter extends ConfigBaseConverter<NettyHook> {
-    }
-
-    /**
-     * The type Credentials resolver converter.
-     */
-    public static class CredentialsResolverConverter extends ConfigBaseConverter<CredentialsResolver> {
-    }
-
-    /**
-     * The type Event loop group converter.
-     */
-    public static class EventLoopGroupConverter extends ConfigBaseConverter<EventLoopGroup> {
-    }
-
-    /**
-     * The type Connection listener converter.
-     */
-    public static class ConnectionListenerConverter extends ConfigBaseConverter<ConnectionListener> {
-    }
-
-    /**
-     * The type Executor service converter.
-     */
-    public static class ExecutorServiceConverter extends ConfigBaseConverter<ExecutorService> {
-    }
-
-    /**
-     * The type Key manager factory converter.
-     */
-    public static class KeyManagerFactoryConverter extends ConfigBaseConverter<KeyManagerFactory> {
-    }
-
-    /**
-     * The type Trust manager factory converter.
-     */
-    public static class TrustManagerFactoryConverter extends ConfigBaseConverter<TrustManagerFactory> {
-    }
-
-    /**
-     * The type Command mapper converter.
-     */
-    public static class CommandMapperConverter extends ConfigBaseConverter<CommandMapper> {
-    }
-
-
-    @SuppressWarnings("unchecked")
-    private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), ConfigBaseConverter.class);
-
 	private static final JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
+	@SuppressWarnings("unchecked")
+	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), ConfigBaseConverter.class);
 
-    @Override
-    public T convert(@NonNull String source) {
-        return support.readValue(source, type);
-    }
+	private static YAMLMapper createMapper() {
+		YAMLMapper mapper = new YAMLMapper();
+		mapper.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class);
+		mapper.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class);
+		mapper.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(Codec.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(LoadBalancer.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(NatMapper.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(NameMapper.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(NettyHook.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(CredentialsResolver.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(EventLoopGroup.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(ConnectionListener.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(ExecutorService.class, ConfigSupport.ClassMixIn.class);
+		mapper.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
+		mapper.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
+		mapper.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class);
+		FilterProvider filterProvider = new SimpleFilterProvider()
+			.addFilter("classFilter", SimpleBeanPropertyFilter.filterOutAllExcept());
+		mapper.setFilterProvider(filterProvider);
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		return mapper;
+	}
 
-    private static YAMLMapper createMapper() {
-        YAMLMapper mapper = new YAMLMapper();
-        mapper.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class);
-        mapper.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class);
-        mapper.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(Codec.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(LoadBalancer.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(NatMapper.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(NameMapper.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(NettyHook.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(CredentialsResolver.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(EventLoopGroup.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(ConnectionListener.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(ExecutorService.class, ConfigSupport.ClassMixIn.class);
-        mapper.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
-        mapper.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
-        mapper.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class);
-        FilterProvider filterProvider = new SimpleFilterProvider()
-                .addFilter("classFilter", SimpleBeanPropertyFilter.filterOutAllExcept());
-        mapper.setFilterProvider(filterProvider);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        return mapper;
-    }
+	@Override
+	public T convert(@NonNull String source) {
+		return support.readValue(source, type);
+	}
+
+	/**
+	 * The type Config converter.
+	 */
+	public static class ConfigConverter extends ConfigBaseConverter<Config> {
+	}
+
+	/**
+	 * The type Address resolver group factory converter.
+	 */
+	public static class AddressResolverGroupFactoryConverter extends ConfigBaseConverter<AddressResolverGroupFactory> {
+	}
+
+	/**
+	 * The type Codec converter.
+	 */
+	public static class CodecConverter extends ConfigBaseConverter<Codec> {
+	}
+
+	/**
+	 * The type Redisson node initializer converter.
+	 */
+	public static class RedissonNodeInitializerConverter extends ConfigBaseConverter<RedissonNodeInitializer> {
+	}
+
+	/**
+	 * The type Load balancer converter.
+	 */
+	public static class LoadBalancerConverter extends ConfigBaseConverter<LoadBalancer> {
+	}
+
+	/**
+	 * The type Nat mapper converter.
+	 */
+	public static class NatMapperConverter extends ConfigBaseConverter<NatMapper> {
+	}
+
+	/**
+	 * The type Name mapper converter.
+	 */
+	public static class NameMapperConverter extends ConfigBaseConverter<NameMapper> {
+	}
+
+	/**
+	 * The type Netty hook converter.
+	 */
+	public static class NettyHookConverter extends ConfigBaseConverter<NettyHook> {
+	}
+
+	/**
+	 * The type Credentials resolver converter.
+	 */
+	public static class CredentialsResolverConverter extends ConfigBaseConverter<CredentialsResolver> {
+	}
+
+	/**
+	 * The type Event loop group converter.
+	 */
+	public static class EventLoopGroupConverter extends ConfigBaseConverter<EventLoopGroup> {
+	}
+
+	/**
+	 * The type Connection listener converter.
+	 */
+	public static class ConnectionListenerConverter extends ConfigBaseConverter<ConnectionListener> {
+	}
+
+	/**
+	 * The type Executor service converter.
+	 */
+	public static class ExecutorServiceConverter extends ConfigBaseConverter<ExecutorService> {
+	}
+
+	/**
+	 * The type Key manager factory converter.
+	 */
+	public static class KeyManagerFactoryConverter extends ConfigBaseConverter<KeyManagerFactory> {
+	}
+
+	/**
+	 * The type Trust manager factory converter.
+	 */
+	public static class TrustManagerFactoryConverter extends ConfigBaseConverter<TrustManagerFactory> {
+	}
+
+	/**
+	 * The type Command mapper converter.
+	 */
+	public static class CommandMapperConverter extends ConfigBaseConverter<CommandMapper> {
+	}
 }

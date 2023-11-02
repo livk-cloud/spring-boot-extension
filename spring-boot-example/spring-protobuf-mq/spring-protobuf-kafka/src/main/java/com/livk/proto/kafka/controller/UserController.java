@@ -25,6 +25,6 @@ public class UserController extends BaseUserController {
 
 	@Override
 	protected User create(int i) {
-		return  new User(100L + i, "kafka", "serializer@kafka.com", current.nextInt(0, 2));
+		return new User(100L + i, "kafka", "serializer@kafka.com", current.nextInt(0, 2));
 	}
 }

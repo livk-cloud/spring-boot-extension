@@ -17,8 +17,8 @@
 
 package com.livk.mapstruct.converter;
 
-import com.livk.autoconfigure.mapstruct.converter.Converter;
 import com.livk.commons.util.DateUtils;
+import com.livk.core.mapstruct.converter.Converter;
 import com.livk.mapstruct.entity.User;
 import com.livk.mapstruct.entity.UserVO;
 import org.mapstruct.Mapper;

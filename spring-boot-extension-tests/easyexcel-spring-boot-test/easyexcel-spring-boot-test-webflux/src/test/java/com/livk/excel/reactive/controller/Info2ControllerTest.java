@@ -17,8 +17,8 @@
 
 package com.livk.excel.reactive.controller;
 
-import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.commons.io.FileUtils;
+import com.livk.core.easyexcel.annotation.ResponseExcel;
 import com.livk.excel.reactive.entity.Info;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,12 +69,12 @@ class Info2ControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
+					FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
-		File outFile = new File("./infoUploadDownLoad" + ExcelReturn.Suffix.XLSM.getName());
+		File outFile = new File("./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
@@ -93,12 +93,12 @@ class Info2ControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+					FileUtils.download(resource.getInputStream(), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
-		File outFile = new File("./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}

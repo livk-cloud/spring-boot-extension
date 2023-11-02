@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface DisruptorMqService {
 
-    void send(String message);
+	void send(String message);
 
-    void batch(List<String> messages);
+	void batch(List<String> messages);
 }

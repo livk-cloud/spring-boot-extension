@@ -17,7 +17,7 @@
 
 package com.livk.redisson.limit;
 
-import com.livk.autoconfigure.limit.annotation.EnableLimit;
+import com.livk.autoconfigure.limit.EnableLimit;
 import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

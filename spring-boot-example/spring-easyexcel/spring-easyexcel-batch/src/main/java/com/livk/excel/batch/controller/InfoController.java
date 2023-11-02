@@ -18,9 +18,9 @@
 package com.livk.excel.batch.controller;
 
 import com.google.common.collect.Lists;
-import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
-import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
-import com.livk.autoconfigure.easyexcel.listener.TypeExcelMapReadListener;
+import com.livk.core.easyexcel.annotation.ExcelParam;
+import com.livk.core.easyexcel.annotation.RequestExcel;
+import com.livk.core.easyexcel.listener.TypeExcelMapReadListener;
 import com.livk.excel.batch.entity.Info;
 import com.livk.excel.batch.listener.InfoExcelListener;
 import com.livk.excel.batch.listener.JobListener;
@@ -71,7 +71,7 @@ public class InfoController {
 	private final DataSourceTransactionManager dataSourceTransactionManager;
 	private final JobLauncher jobLauncher;
 
-	@ExcelImport(parse = InfoExcelListener.class)
+	@RequestExcel(parse = InfoExcelListener.class)
 	@PostMapping("upload")
 	public HttpEntity<Void> upload(@ExcelParam List<Info> dataExcels) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 		Step step = excelStep(dataExcels);

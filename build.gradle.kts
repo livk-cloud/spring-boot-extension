@@ -1,6 +1,4 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
-import java.io.BufferedReader
-import java.io.FileReader
 
 plugins {
 	com.livk.root
@@ -31,8 +29,8 @@ tasks {
 }
 
 val root = setOf(project(":spring-boot-extension-starters"))
-val bom = setOf(project(":spring-extension-dependencies"))
-val gradleModuleProjects = (subprojects.filter { it.buildFile.exists() } - (bom + root))
+val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
+val gradleModuleProjects = subprojects.filter { it.buildFile.exists() } - (bom + root)
 
 configure(gradleModuleProjects) {
 	apply(plugin = "com.livk.module")
@@ -44,15 +42,6 @@ configure(gradleModuleProjects) {
 		annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 		testImplementation("org.springframework:spring-tx")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
-	}
-
-	tasks.withType<Test> {
-		val exclude = System.getProperty("exclude")
-		if (exclude != null && exclude.toBoolean()) {
-			val reader = BufferedReader(FileReader("./exclude.txt"))
-			val lines: List<String> = reader.readLines().map { it.replace(".", "/") + ".class" }
-			exclude(lines)
-		}
 	}
 }
 

@@ -30,30 +30,30 @@ import org.apache.pulsar.shade.io.netty.buffer.ByteBufUtil;
  */
 public class UserProtobufSchema extends AbstractSchema<User> {
 
-    private final UserConverter userConverter = UserConverter.INSTANCE;
+	private final UserConverter userConverter = UserConverter.INSTANCE;
 
-    @Override
-    public User decode(ByteBuf byteBuf) {
-        byte[] bytes = ByteBufUtil.getBytes(byteBuf);
-        return decode(bytes);
-    }
+	@Override
+	public User decode(ByteBuf byteBuf) {
+		byte[] bytes = ByteBufUtil.getBytes(byteBuf);
+		return decode(bytes);
+	}
 
-    @Override
-    public User decode(byte[] bytes) {
-        return userConverter.convert(bytes);
-    }
+	@Override
+	public User decode(byte[] bytes) {
+		return userConverter.convert(bytes);
+	}
 
-    @Override
-    public byte[] encode(User message) {
-        return userConverter.convert(message);
-    }
+	@Override
+	public byte[] encode(User message) {
+		return userConverter.convert(message);
+	}
 
-    @Override
-    public SchemaInfo getSchemaInfo() {
-        return SchemaInfo.builder()
-                .name("protobuf")
-                .type(SchemaType.BYTES)
-                .schema(new byte[0])
-                .build();
-    }
+	@Override
+	public SchemaInfo getSchemaInfo() {
+		return SchemaInfo.builder()
+			.name("protobuf")
+			.type(SchemaType.BYTES)
+			.schema(new byte[0])
+			.build();
+	}
 }

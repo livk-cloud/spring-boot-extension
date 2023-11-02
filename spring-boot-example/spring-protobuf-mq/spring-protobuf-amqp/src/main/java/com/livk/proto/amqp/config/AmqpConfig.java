@@ -13,16 +13,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmqpConfig {
 
-    public static final String TOPIC_NAME = "amqp-protobuf";
+	public static final String TOPIC_NAME = "amqp-protobuf";
 
-    @Bean
-    public MessageConverter protobufMessageConverter() {
-        return new UserAmqpProtobufMessageConverter(new SimpleMessageConverter());
-    }
+	@Bean
+	public MessageConverter protobufMessageConverter() {
+		return new UserAmqpProtobufMessageConverter(new SimpleMessageConverter());
+	}
 
-    @Bean
-    public Queue directQueue() {
-        return new Queue(TOPIC_NAME, true, false, false);
-    }
+	@Bean
+	public Queue directQueue() {
+		return new Queue(TOPIC_NAME, true, false, false);
+	}
 
 }

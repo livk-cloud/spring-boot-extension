@@ -29,9 +29,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public abstract class BaseUserController {
 
-	private final ProtobufSend<User> protobufSend;
-
 	protected final ThreadLocalRandom current = ThreadLocalRandom.current();
+	private final ProtobufSend<User> protobufSend;
 
 	@GetMapping("send")
 	public void send() throws Exception {
@@ -39,7 +38,7 @@ public abstract class BaseUserController {
 			User user = create(i);
 			protobufSend.send(key(), user);
 		}
-		while (!ConsumerCheck.isSuccess()){
+		while (!ConsumerCheck.isSuccess()) {
 			TimeUnit.MILLISECONDS.sleep(100);
 		}
 	}

@@ -18,7 +18,7 @@
 package com.livk.excel.batch.support;
 
 import com.alibaba.excel.EasyExcel;
-import com.livk.autoconfigure.easyexcel.listener.ExcelMapReadListener;
+import com.livk.core.easyexcel.listener.ExcelMapReadListener;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.core.GenericTypeResolver;
 

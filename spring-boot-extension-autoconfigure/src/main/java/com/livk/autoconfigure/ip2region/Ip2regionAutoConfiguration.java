@@ -18,10 +18,11 @@
 package com.livk.autoconfigure.ip2region;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.ip2region.filter.RequestIpFilter;
-import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
-import com.livk.autoconfigure.ip2region.support.RequestIPMethodArgumentResolver;
 import com.livk.commons.io.FileUtils;
+import com.livk.core.ip2region.Ip2RegionSearch;
+import com.livk.core.ip2region.RequestIpBeanFactoryProcessor;
+import com.livk.core.ip2region.filter.RequestIpFilter;
+import com.livk.core.ip2region.support.RequestIPMethodArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.lionsoul.ip2region.xdb.Searcher;

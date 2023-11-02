@@ -17,7 +17,7 @@
 
 package com.livk.mapstruct.controller;
 
-import com.livk.autoconfigure.mapstruct.converter.MapstructService;
+import com.livk.core.mapstruct.converter.MapstructService;
 import com.livk.mapstruct.entity.User;
 import com.livk.mapstruct.entity.UserVO;
 import lombok.RequiredArgsConstructor;

@@ -18,9 +18,9 @@
 package com.livk.ip2region.mvc.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.autoconfigure.ip2region.support.Ip2RegionSearch;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.core.ip2region.Ip2RegionSearch;
+import com.livk.core.ip2region.doamin.IpInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

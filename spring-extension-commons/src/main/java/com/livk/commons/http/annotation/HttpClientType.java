@@ -37,7 +37,7 @@ public enum HttpClientType {
 	 */
 	WEB_CLIENT(EnableWebClient.class);
 
-    private final Class<? extends Annotation> annotationType;
+	private final Class<? extends Annotation> annotationType;
 
 	/**
 	 * Annotation type class.
@@ -45,6 +45,6 @@ public enum HttpClientType {
 	 * @return the class
 	 */
 	public Class<? extends Annotation> annotationType() {
-        return annotationType;
-    }
+		return annotationType;
+	}
 }

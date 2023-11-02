@@ -17,9 +17,9 @@
 
 package com.livk.browscap.mvc.controller;
 
-import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
-import com.livk.autoconfigure.useragent.domain.UserAgent;
-import com.livk.autoconfigure.useragent.servlet.UserAgentContextHolder;
+import com.livk.core.useragent.annotation.UserAgentInfo;
+import com.livk.core.useragent.domain.UserAgent;
+import com.livk.core.useragent.servlet.UserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

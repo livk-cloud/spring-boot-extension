@@ -16,12 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class UserControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void send() throws Exception {
-        mockMvc.perform(get("/user/send"))
-                .andExpect(status().isOk());
-    }
+	@Test
+	void send() throws Exception {
+		mockMvc.perform(get("/user/send"))
+			.andExpect(status().isOk());
+	}
 }

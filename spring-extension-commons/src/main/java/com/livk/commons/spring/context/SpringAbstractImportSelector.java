@@ -65,8 +65,8 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 			.getCandidates();
 		Assert.notEmpty(configurations,
 			"No auto configuration classes found in "
-				+ "META-INF/spring/" + annotationClass.getName() + ".imports. If you "
-				+ "are using a custom packaging, make sure that file is correct.");
+			+ "META-INF/spring/" + annotationClass.getName() + ".imports. If you "
+			+ "are using a custom packaging, make sure that file is correct.");
 		return configurations;
 	}
 

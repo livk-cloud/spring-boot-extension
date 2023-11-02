@@ -17,7 +17,7 @@
 
 package com.livk.redisson.limit.controller;
 
-import com.livk.autoconfigure.limit.exception.LimitException;
+import com.livk.core.limit.exception.LimitException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

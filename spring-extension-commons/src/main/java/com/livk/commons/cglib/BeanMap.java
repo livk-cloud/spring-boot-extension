@@ -223,7 +223,7 @@ public abstract class BeanMap implements Map<String, Object> {
 		for (Object key : keySet()) {
 			Object value = get(key);
 			code += ((key == null) ? 0 : key.hashCode()) ^
-				((value == null) ? 0 : value.hashCode());
+					((value == null) ? 0 : value.hashCode());
 		}
 		return code;
 	}

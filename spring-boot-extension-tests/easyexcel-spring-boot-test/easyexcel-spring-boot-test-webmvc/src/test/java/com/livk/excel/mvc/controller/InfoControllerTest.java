@@ -17,8 +17,8 @@
 
 package com.livk.excel.mvc.controller;
 
-import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.commons.io.FileUtils;
+import com.livk.core.easyexcel.annotation.ResponseExcel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -78,9 +78,9 @@ class InfoControllerTest {
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./uploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+				FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 			});
-		File outFile = new File("./uploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+		File outFile = new File("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}

@@ -72,9 +72,9 @@ public class AuthorizationServerConfiguration {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
-									  OAuth2AuthorizationService authorizationService,
-									  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-									  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
+																	  OAuth2AuthorizationService authorizationService,
+																	  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
+																	  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
@@ -115,7 +115,7 @@ public class AuthorizationServerConfiguration {
 
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
-								   UserDetailsService userDetailsService) {
+															   UserDetailsService userDetailsService) {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(userDetailsService);

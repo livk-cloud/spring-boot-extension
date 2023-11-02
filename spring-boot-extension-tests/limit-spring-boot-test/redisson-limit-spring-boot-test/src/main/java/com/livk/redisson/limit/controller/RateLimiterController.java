@@ -17,7 +17,7 @@
 
 package com.livk.redisson.limit.controller;
 
-import com.livk.autoconfigure.limit.annotation.Limit;
+import com.livk.core.limit.annotation.Limit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

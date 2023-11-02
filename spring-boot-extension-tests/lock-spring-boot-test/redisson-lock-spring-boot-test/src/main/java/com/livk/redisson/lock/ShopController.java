@@ -17,8 +17,8 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.autoconfigure.lock.annotation.OnLock;
-import com.livk.autoconfigure.lock.constant.LockScope;
+import com.livk.core.lock.LockScope;
+import com.livk.core.lock.annotation.OnLock;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;

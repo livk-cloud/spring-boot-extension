@@ -17,9 +17,9 @@
 
 package com.livk.excel.reactive.controller;
 
-import com.livk.autoconfigure.easyexcel.annotation.ExcelController;
-import com.livk.autoconfigure.easyexcel.annotation.ExcelImport;
-import com.livk.autoconfigure.easyexcel.annotation.ExcelParam;
+import com.livk.core.easyexcel.annotation.ExcelController;
+import com.livk.core.easyexcel.annotation.ExcelParam;
+import com.livk.core.easyexcel.annotation.RequestExcel;
 import com.livk.excel.reactive.entity.Info;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @RequestMapping("info")
 public class Info2Controller {
 
-	@ExcelImport
+	@RequestExcel
 	@PostMapping("uploadAndDownload")
 	public Map<String, List<Info>> uploadAndDownload(@ExcelParam Map<String, List<Info>> mapData) {
 		return mapData.values().stream()

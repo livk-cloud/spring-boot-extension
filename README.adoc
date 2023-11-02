@@ -33,8 +33,10 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
     |--spring-boot-extension-autoconfigure(spring boot自动装配)
     |--spring-boot-extension-starters(starter集合包)
     |--spring-boot-extension-tests(测试用例集合)
+    |--spring-extension-bom(BOM)
     |--spring-extension-commons(通用基础工具包)
-    |--spring-extension-dependencies(版本控制 BOM)
+    |--spring-extension-core(拓展核心包)
+    |--spring-extension-dependencies(依赖版本管理)
 ----
 
 link:gradle.properties[项目信息] +

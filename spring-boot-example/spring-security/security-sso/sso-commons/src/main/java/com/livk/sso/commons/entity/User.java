@@ -54,10 +54,10 @@ public class User implements UserDetails {
 
 	@JsonCreator
 	public static User create(@JsonProperty("id") Long id,
-				  @JsonProperty("username") String username,
-				  @JsonProperty("password") String password,
-				  @JsonProperty("status") Integer status,
-				  @JsonProperty("roles") List<Role> roles) {
+							  @JsonProperty("username") String username,
+							  @JsonProperty("password") String password,
+							  @JsonProperty("status") Integer status,
+							  @JsonProperty("roles") List<Role> roles) {
 		return new User().setId(id)
 			.setUsername(username)
 			.setPassword(password)

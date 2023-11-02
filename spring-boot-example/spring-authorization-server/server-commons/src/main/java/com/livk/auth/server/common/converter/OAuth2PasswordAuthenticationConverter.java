@@ -38,8 +38,8 @@ public class OAuth2PasswordAuthenticationConverter implements OAuth2BaseAuthenti
 	@Override
 	public RequestMatcher support() {
 		return request -> SecurityConstants.PASSWORD.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
-			&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
-			&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
+						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
+						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
 	}
 
 	@Override

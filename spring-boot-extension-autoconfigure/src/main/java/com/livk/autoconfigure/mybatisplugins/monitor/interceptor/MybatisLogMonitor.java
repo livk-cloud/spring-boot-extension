@@ -75,8 +75,8 @@ public class MybatisLogMonitor implements Interceptor {
 
 	private long timeOut() {
 		return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName()))
-			.getDuration()
-			.toMillis() *
-			(Long) properties.get(MybatisLogMonitorProperties.timeOutName());
+				   .getDuration()
+				   .toMillis() *
+			   (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
 	}
 }

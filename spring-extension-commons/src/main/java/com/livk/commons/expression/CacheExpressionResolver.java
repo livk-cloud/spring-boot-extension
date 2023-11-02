@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see com.livk.commons.expression.aviator.AviatorExpressionResolver
  * @see Environment
  */
-public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver  {
+public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver {
 
 	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 

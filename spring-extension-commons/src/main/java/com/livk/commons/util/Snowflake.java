@@ -118,7 +118,7 @@ public class Snowflake {
 			} else {
 				byte[] mac = network.getHardwareAddress();
 				id = ((0x000000FF & (long) mac[mac.length - 1])
-					| (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
+					  | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
 				id = id % (MAX_DATACENTER_ID + 1);
 			}
 		} catch (Exception e) {
@@ -149,8 +149,8 @@ public class Snowflake {
 		lastTimestamp = timestamp;
 
 		return ((timestamp - TIME_START_BASE) << TIMESTAMP_LEFT_SHIFT)
-			| (datacenterId << DATACENTER_ID_SHIFT)
-			| (workerId << WORKER_ID_SHIFT) | sequence;
+			   | (datacenterId << DATACENTER_ID_SHIFT)
+			   | (workerId << WORKER_ID_SHIFT) | sequence;
 	}
 
 	private long tilNextMillis(long lastTimestamp) {

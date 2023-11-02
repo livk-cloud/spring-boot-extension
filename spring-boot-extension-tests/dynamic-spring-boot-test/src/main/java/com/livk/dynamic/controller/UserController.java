@@ -17,7 +17,7 @@
 
 package com.livk.dynamic.controller;
 
-import com.livk.autoconfigure.dynamic.annotation.DynamicSource;
+import com.livk.core.dynamic.annotation.DynamicSource;
 import com.livk.dynamic.entity.User;
 import com.livk.dynamic.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;

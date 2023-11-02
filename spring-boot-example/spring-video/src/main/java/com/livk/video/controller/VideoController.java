@@ -48,8 +48,8 @@ public class VideoController {
 
 	@GetMapping
 	public void video(HttpServletRequest request,
-			  HttpServletResponse response,
-			  @RequestParam(defaultValue = "test") String videoName) throws Exception {
+					  HttpServletResponse response,
+					  @RequestParam(defaultValue = "test") String videoName) throws Exception {
 		//查询视频是否存在
 		if ("test".equals(videoName)) {
 			request.setAttribute(VideoResourceHttpRequestHandler.ATTR, "classpath:" + videoName + VIDEO_SUFFIX);
