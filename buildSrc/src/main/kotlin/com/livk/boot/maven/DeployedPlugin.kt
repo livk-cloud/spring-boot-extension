@@ -93,7 +93,7 @@ abstract class DeployedPlugin : Plugin<Project> {
 			pom.developers { developers ->
 				developers.developer { developer ->
 					developer.name.set("livk")
-					developer.email.set("1375632510@qq.com")
+					developer.email.set("livk.cloud@gmail.com")
 				}
 			}
 			pom.scm { scm ->

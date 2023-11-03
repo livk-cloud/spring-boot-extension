@@ -80,7 +80,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
 		Class<?> containingClass = methodParameter.getContainingClass();
 		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass) ||
-			methodParameter.hasMethodAnnotation(annotationClass));
+				methodParameter.hasMethodAnnotation(annotationClass));
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
 		return method.isAnnotationPresent(annotationClass) ||
-			AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
+			   AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
 	}
 
 	/**

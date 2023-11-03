@@ -17,7 +17,7 @@
 
 package com.livk.redis;
 
-import com.livk.autoconfigure.redis.supprot.RedisOps;
+import com.livk.core.redis.RedisOps;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.livk.rest;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class RestApp {
-    public static void main(String[] args) {
-        SpringLauncher.run(args);
-    }
+	public static void main(String[] args) {
+		SpringLauncher.run(args);
+	}
 }

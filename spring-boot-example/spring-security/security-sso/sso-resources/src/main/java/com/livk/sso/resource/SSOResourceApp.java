@@ -17,7 +17,7 @@
 
 package com.livk.sso.resource;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

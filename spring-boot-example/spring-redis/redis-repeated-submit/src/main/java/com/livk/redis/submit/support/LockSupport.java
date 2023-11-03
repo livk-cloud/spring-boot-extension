@@ -17,10 +17,10 @@
 
 package com.livk.redis.submit.support;
 
-import com.livk.autoconfigure.lock.constant.LockType;
-import com.livk.autoconfigure.lock.support.DistributedLock;
-import com.livk.autoconfigure.lock.support.RedissonLock;
 import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.core.lock.DistributedLock;
+import com.livk.core.lock.LockType;
+import com.livk.core.lock.support.RedissonLock;
 import lombok.experimental.UtilityClass;
 
 /**

@@ -57,7 +57,7 @@ public class SentController {
 
 	@PostMapping("/push/{id}")
 	public HttpEntity<Boolean> push(@PathVariable String id,
-					@RequestBody JsonNode content) throws IOException {
+									@RequestBody JsonNode content) throws IOException {
 		log.info("{}", content);
 		SseEmitter sseEmitter = sseEmitterRepository.get(id);
 		if (sseEmitter == null) {

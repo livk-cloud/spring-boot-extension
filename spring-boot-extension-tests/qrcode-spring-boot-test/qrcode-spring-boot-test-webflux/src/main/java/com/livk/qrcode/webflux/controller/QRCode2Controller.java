@@ -18,8 +18,8 @@
 package com.livk.qrcode.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.autoconfigure.qrcode.annotation.QRCodeController;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.core.qrcode.annotation.QRCodeController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

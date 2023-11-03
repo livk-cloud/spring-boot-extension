@@ -12,25 +12,25 @@ import java.util.Map;
  */
 public class UserKafkaProtobufConverter implements Deserializer<User>, Serializer<User> {
 
-    private final UserConverter converter = UserConverter.INSTANCE;
+	private final UserConverter converter = UserConverter.INSTANCE;
 
-    @Override
-    public User deserialize(String topic, byte[] data) {
-        return converter.convert(data);
-    }
+	@Override
+	public User deserialize(String topic, byte[] data) {
+		return converter.convert(data);
+	}
 
-    @Override
-    public byte[] serialize(String topic, User data) {
-        return converter.convert(data);
-    }
+	@Override
+	public byte[] serialize(String topic, User data) {
+		return converter.convert(data);
+	}
 
-    @Override
-    public void configure(Map<String, ?> configs, boolean isKey) {
+	@Override
+	public void configure(Map<String, ?> configs, boolean isKey) {
 
-    }
+	}
 
-    @Override
-    public void close() {
+	@Override
+	public void close() {
 
-    }
+	}
 }

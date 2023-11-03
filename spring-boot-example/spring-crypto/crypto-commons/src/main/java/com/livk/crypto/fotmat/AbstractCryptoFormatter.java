@@ -17,8 +17,10 @@
 
 package com.livk.crypto.fotmat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.Base64;
 
 /**
@@ -26,23 +28,36 @@ import java.util.Base64;
  *
  * @param <T> the type parameter
  */
+
 public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
+
+	protected static final Logger LOG = LoggerFactory.getLogger(CryptoFormatter.class);
 
 	protected static final byte[] EMPTY = new byte[0];
 
 	@Override
 	public final String format(T value) {
-		String convert = convert(value);
-		byte[] encrypt = encrypt(convert.getBytes(StandardCharsets.UTF_8));
-		return Base64.getEncoder().encodeToString(encrypt);
+		try {
+			String convert = convert(value);
+			byte[] encrypt = encrypt(convert.getBytes(StandardCharsets.UTF_8));
+			return Base64.getEncoder().encodeToString(encrypt);
+		} catch (Exception e) {
+			LOG.error("format error:{}", e.getMessage());
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public final T parse(String text) {
-		byte[] decode = Base64.getDecoder().decode(text);
-		byte[] decrypt = decrypt(decode);
-		String result = new String(decrypt, StandardCharsets.UTF_8);
-		return convert(result);
+		try {
+			byte[] decode = Base64.getDecoder().decode(text);
+			byte[] decrypt = decrypt(decode);
+			String result = new String(decrypt, StandardCharsets.UTF_8);
+			return convert(result);
+		} catch (Exception e) {
+			LOG.error("parse error:{}", e.getMessage());
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -51,7 +66,7 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	 * @param bytes the bytes
 	 * @return the byte [ ]
 	 */
-	protected abstract byte[] decrypt(byte[] bytes);
+	protected abstract byte[] decrypt(byte[] bytes) throws Exception;
 
 	/**
 	 * Encrypt byte [ ].
@@ -59,7 +74,7 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	 * @param bytes the bytes
 	 * @return the byte [ ]
 	 */
-	protected abstract byte[] encrypt(byte[] bytes);
+	protected abstract byte[] encrypt(byte[] bytes) throws Exception;
 
 	/**
 	 * Convert t.
@@ -67,7 +82,7 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	 * @param decryptValue the decrypt value
 	 * @return the t
 	 */
-	protected abstract T convert(String decryptValue);
+	protected abstract T convert(String decryptValue) throws Exception;
 
 	/**
 	 * Convert string.
@@ -75,5 +90,5 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	 * @param encryptValue the encrypt value
 	 * @return the string
 	 */
-	protected abstract String convert(T encryptValue);
+	protected abstract String convert(T encryptValue) throws Exception;
 }

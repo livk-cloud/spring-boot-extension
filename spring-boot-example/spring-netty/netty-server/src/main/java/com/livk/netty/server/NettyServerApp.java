@@ -17,7 +17,7 @@
 
 package com.livk.netty.server;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import com.livk.netty.server.process.NettyServer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

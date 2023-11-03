@@ -45,8 +45,8 @@ public class RsaKeyProperties {
 	private final RSAKey rsaKey;
 
 	public RsaKeyProperties(@Name("location") String location,
-				@Name("password") String password,
-				@Name("alias") String alias) {
+							@Name("password") String password,
+							@Name("alias") String alias) {
 		if (ObjectUtils.isEmpty(location)) {
 			location = DEFAULT_LOCATION;
 		}

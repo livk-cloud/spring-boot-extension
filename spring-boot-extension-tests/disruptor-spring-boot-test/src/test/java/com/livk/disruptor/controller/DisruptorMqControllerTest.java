@@ -17,20 +17,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class DisruptorMqControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
-    @Test
-    void send() throws Exception {
-        mockMvc.perform(post("/msg"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Test
+	void send() throws Exception {
+		mockMvc.perform(post("/msg"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 
-    @Test
-    void sendBatch() throws Exception {
-        mockMvc.perform(post("/msg/batch"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+	@Test
+	void sendBatch() throws Exception {
+		mockMvc.perform(post("/msg/batch"))
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
 }

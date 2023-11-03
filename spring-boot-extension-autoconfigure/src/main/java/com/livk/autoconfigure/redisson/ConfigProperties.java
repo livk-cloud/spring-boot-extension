@@ -26,20 +26,7 @@ import org.redisson.api.NatMapper;
 import org.redisson.client.DefaultCredentialsResolver;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
-import org.redisson.config.BaseConfig;
-import org.redisson.config.BaseMasterSlaveServersConfig;
-import org.redisson.config.ClusterServersConfig;
-import org.redisson.config.CommandMapper;
-import org.redisson.config.Config;
-import org.redisson.config.CredentialsResolver;
-import org.redisson.config.MasterSlaveServersConfig;
-import org.redisson.config.ReadMode;
-import org.redisson.config.ReplicatedServersConfig;
-import org.redisson.config.SentinelServersConfig;
-import org.redisson.config.SingleServerConfig;
-import org.redisson.config.SslProvider;
-import org.redisson.config.SubscriptionMode;
-import org.redisson.config.TransportMode;
+import org.redisson.config.*;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -448,6 +435,7 @@ public class ConfigProperties {
 
 		private int timeout = 3000;
 
+		private int subscriptionTimeout = 7500;
 
 		private int retryAttempts = 3;
 

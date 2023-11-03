@@ -17,8 +17,8 @@
 
 package com.livk.redis.submit;
 
-import com.livk.autoconfigure.lock.constant.LockType;
-import com.livk.commons.web.util.WebUtils;
+import com.livk.commons.util.WebUtils;
+import com.livk.core.lock.LockType;
 import com.livk.redis.submit.annotation.AutoRepeatedSubmit;
 import com.livk.redis.submit.support.LockSupport;
 import com.livk.redis.submit.support.RedisSupport;
@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -37,7 +38,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+	public boolean preHandle(@NonNull HttpServletRequest request,
+							 @NonNull HttpServletResponse response,
+							 @NonNull Object handler) {
 		if (handler instanceof HandlerMethod handlerMethod) {
 			AutoRepeatedSubmit methodAnnotation = handlerMethod.getMethodAnnotation(AutoRepeatedSubmit.class);
 			if (methodAnnotation != null) {

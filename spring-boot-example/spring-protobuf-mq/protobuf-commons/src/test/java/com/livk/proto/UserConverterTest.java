@@ -10,15 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class UserConverterTest {
 
-    static final UserConverter converter = UserConverter.INSTANCE;
+	static final UserConverter converter = UserConverter.INSTANCE;
 
-    @Test
-    void convert() {
-        User user = new User(1L, "root", "123456@gmail.com", 0);
+	@Test
+	void convert() {
+		User user = new User(1L, "root", "123456@gmail.com", 0);
 
-        byte[] bytes = converter.convert(user);
-        assertNotNull(bytes);
-        assertFalse(ObjectUtils.isEmpty(bytes));
-        assertEquals(user, converter.convert(bytes));
-    }
+		byte[] bytes = converter.convert(user);
+		assertNotNull(bytes);
+		assertFalse(ObjectUtils.isEmpty(bytes));
+		assertEquals(user, converter.convert(bytes));
+	}
 }

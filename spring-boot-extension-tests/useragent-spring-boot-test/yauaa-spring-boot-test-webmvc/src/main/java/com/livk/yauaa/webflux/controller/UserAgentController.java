@@ -17,9 +17,9 @@
 
 package com.livk.yauaa.webflux.controller;
 
-import com.livk.autoconfigure.useragent.annotation.UserAgentInfo;
-import com.livk.autoconfigure.useragent.domain.UserAgent;
-import com.livk.autoconfigure.useragent.servlet.UserAgentContextHolder;
+import com.livk.core.useragent.annotation.UserAgentInfo;
+import com.livk.core.useragent.domain.UserAgent;
+import com.livk.core.useragent.servlet.UserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +41,7 @@ import java.util.UUID;
 public class UserAgentController {
 
 	@GetMapping
-	public HttpEntity<Map<String, com.livk.autoconfigure.useragent.domain.UserAgent>> get(@UserAgentInfo com.livk.autoconfigure.useragent.domain.UserAgent userAgent) {
+	public HttpEntity<Map<String, UserAgent>> get(@UserAgentInfo UserAgent userAgent) {
 		Map<String, UserAgent> map = Map.of(UUID.randomUUID().toString(), userAgent,
 			UUID.randomUUID().toString(), UserAgentContextHolder.getUserAgentContext());
 		return ResponseEntity.ok(map);

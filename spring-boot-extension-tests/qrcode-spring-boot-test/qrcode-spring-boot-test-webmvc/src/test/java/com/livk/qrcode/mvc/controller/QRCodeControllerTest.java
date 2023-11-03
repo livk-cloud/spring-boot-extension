@@ -17,10 +17,10 @@
 
 package com.livk.qrcode.mvc.controller;
 
-import com.livk.autoconfigure.qrcode.enums.PicType;
-import com.livk.autoconfigure.qrcode.util.QRCodeUtils;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.core.qrcode.PicType;
+import com.livk.core.qrcode.QRCodeUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

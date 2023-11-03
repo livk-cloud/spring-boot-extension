@@ -18,10 +18,8 @@
 package com.livk.autoconfigure.dynamic;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.dynamic.annotation.EnableDynamicDatasource;
-import com.livk.autoconfigure.dynamic.datasource.DynamicDatasource;
-import com.livk.autoconfigure.dynamic.datasource.DynamicDatasourceProperties;
-import com.livk.autoconfigure.dynamic.intercept.DataSourceInterceptor;
+import com.livk.core.dynamic.DynamicDatasource;
+import com.livk.core.dynamic.intercept.DataSourceInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

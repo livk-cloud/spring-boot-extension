@@ -8,6 +8,7 @@ description = "spring boot extension dependencies"
 
 dependencies {
 	api(platform(SpringBootPlugin.BOM_COORDINATES))
+	api(platform(project(":spring-extension-bom")))
 	api(platform(libs.spring.boot.admin.dependencies))
 	constraints {
 		api(libs.bundles.springdoc.openapi.all)
@@ -34,11 +35,5 @@ dependencies {
 		api(libs.commons.jexl3)
 		api(libs.mvel2)
 		api(libs.disruptor)
-		api(project(":spring-extension-commons"))
-		api(project(":spring-auto-service"))
-		api(project(":spring-boot-extension-autoconfigure"))
-		project(":spring-boot-extension-starters").dependencyProject.subprojects {
-			api(this)
-		}
 	}
 }

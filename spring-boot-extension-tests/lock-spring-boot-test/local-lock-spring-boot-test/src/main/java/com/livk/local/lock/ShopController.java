@@ -17,8 +17,8 @@
 
 package com.livk.local.lock;
 
-import com.livk.autoconfigure.lock.annotation.OnLock;
-import com.livk.autoconfigure.lock.constant.LockScope;
+import com.livk.core.lock.LockScope;
+import com.livk.core.lock.annotation.OnLock;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -30,22 +30,22 @@ import org.springframework.messaging.support.GenericMessage;
  */
 public class UserProtobufMessageConverter implements MessageConverter {
 
-    private final UserConverter userConverter = UserConverter.INSTANCE;
+	private final UserConverter userConverter = UserConverter.INSTANCE;
 
-    @Override
-    public Object fromMessage(Message<?> message, @NonNull Class<?> targetClass) {
-        if (message.getPayload() instanceof byte[] bytes && User.class.equals(targetClass)) {
-            return userConverter.convert(bytes);
-        }
-        return null;
-    }
+	@Override
+	public Object fromMessage(Message<?> message, @NonNull Class<?> targetClass) {
+		if (message.getPayload() instanceof byte[] bytes && User.class.equals(targetClass)) {
+			return userConverter.convert(bytes);
+		}
+		return null;
+	}
 
-    @Override
-    public Message<?> toMessage(@NonNull Object payload, MessageHeaders headers) {
-        if (payload instanceof User user) {
-            byte[] bytes = userConverter.convert(user);
-            return new GenericMessage<>(bytes, headers);
-        }
-        return null;
-    }
+	@Override
+	public Message<?> toMessage(@NonNull Object payload, MessageHeaders headers) {
+		if (payload instanceof User user) {
+			byte[] bytes = userConverter.convert(user);
+			return new GenericMessage<>(bytes, headers);
+		}
+		return null;
+	}
 }

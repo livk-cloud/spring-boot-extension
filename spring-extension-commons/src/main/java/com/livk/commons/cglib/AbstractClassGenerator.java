@@ -330,8 +330,8 @@ abstract class AbstractClassGenerator<T> implements ClassGenerator {
 			ClassLoader classLoader = data.getClassLoader();
 			if (classLoader == null) {
 				throw new IllegalStateException("ClassLoader is null while trying to define class " +
-					getClassName() + ". It seems that the loader has been expired from a weak reference somehow. " +
-					"Please file an issue at cglib's issue tracker.");
+												getClassName() + ". It seems that the loader has been expired from a weak reference somehow. " +
+												"Please file an issue at cglib's issue tracker.");
 			}
 			synchronized (classLoader) {
 				String name = generateClassName(data.getUniqueNamePredicate());
@@ -353,7 +353,7 @@ abstract class AbstractClassGenerator<T> implements ClassGenerator {
 			// SPRING PATCH BEGIN
 			if (imageCode) {
 				throw new UnsupportedOperationException("CGLIB runtime enhancement not supported on native image. " +
-					"Make sure to include a pre-generated class on the classpath instead: " + getClassName());
+														"Make sure to include a pre-generated class on the classpath instead: " + getClassName());
 			}
 			// SPRING PATCH END
 			byte[] b = strategy.generate(this);

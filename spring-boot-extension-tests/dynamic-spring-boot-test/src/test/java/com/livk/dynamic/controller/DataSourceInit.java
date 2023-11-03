@@ -17,7 +17,7 @@
 
 package com.livk.dynamic.controller;
 
-import com.livk.autoconfigure.dynamic.datasource.DataSourceContextHolder;
+import com.livk.core.dynamic.DataSourceContextHolder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +42,7 @@ public class DataSourceInit implements InitializingBean {
 
 	@Value("classpath:pgsql.sql")
 	private Resource initPgsql;
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		DataSourceContextHolder.switchDataSource("mysql");

@@ -21,20 +21,20 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class DisruptorMqController {
 
-    private final DisruptorMqService disruptorMqService;
+	private final DisruptorMqService disruptorMqService;
 
-    @PostMapping
-    public HttpEntity<Void> send() {
-        disruptorMqService.send("消息到了，Hello world!");
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping
+	public HttpEntity<Void> send() {
+		disruptorMqService.send("消息到了，Hello world!");
+		return ResponseEntity.ok().build();
+	}
 
-    @PostMapping("batch")
-    public HttpEntity<Void> sendBatch() {
-        List<String> messages = IntStream.range(1, 10)
-                .mapToObj(value -> "消息到了," + value + "，Hello world!----producer")
-                .toList();
-        disruptorMqService.batch(messages);
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping("batch")
+	public HttpEntity<Void> sendBatch() {
+		List<String> messages = IntStream.range(1, 10)
+			.mapToObj(value -> "消息到了," + value + "，Hello world!----producer")
+			.toList();
+		disruptorMqService.batch(messages);
+		return ResponseEntity.ok().build();
+	}
 }

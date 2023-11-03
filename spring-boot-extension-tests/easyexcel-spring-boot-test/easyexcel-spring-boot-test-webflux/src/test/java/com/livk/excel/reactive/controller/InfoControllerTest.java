@@ -18,8 +18,8 @@
 package com.livk.excel.reactive.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.commons.io.FileUtils;
+import com.livk.core.easyexcel.annotation.ResponseExcel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,12 +91,12 @@ class InfoControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
+					FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
-		File outFile = new File("./uploadDownLoad" + ExcelReturn.Suffix.XLS.getName());
+		File outFile = new File("./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
@@ -112,12 +112,12 @@ class InfoControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
+					FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
-		File outFile = new File("./uploadDownLoadMono" + ExcelReturn.Suffix.XLS.getName());
+		File outFile = new File("./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
@@ -133,12 +133,12 @@ class InfoControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
+					FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
-		File outFile = new File("./uploadDownLoadFlux" + ExcelReturn.Suffix.XLS.getName());
+		File outFile = new File("./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}

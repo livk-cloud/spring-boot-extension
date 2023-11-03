@@ -17,7 +17,6 @@
 
 package com.livk.commons;
 
-import com.livk.commons.spring.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

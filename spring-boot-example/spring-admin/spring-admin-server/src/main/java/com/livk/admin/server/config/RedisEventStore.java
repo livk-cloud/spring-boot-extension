@@ -17,7 +17,7 @@
 
 package com.livk.admin.server.config;
 
-import com.livk.autoconfigure.redis.supprot.ReactiveRedisOps;
+import com.livk.core.redis.ReactiveRedisOps;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.InstanceEventPublisher;

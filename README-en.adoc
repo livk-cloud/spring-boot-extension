@@ -31,8 +31,10 @@ Please raise an issue if necessary +
     |--spring-boot-extension-autoconfigure(Spring boot automatic assembly)
     |--spring-boot-extension-starters(starter bundle)
     |--spring-boot-extension-tests(test bundle)
+    |--spring-extension-bom(BOM)
     |--spring-extension-commons(General Basic Toolkit)
-    |--spring-extension-dependencies(Version Controlled BOMs)
+    |--spring-extension-core(Expand the core)
+    |--spring-extension-dependencies(Depends on versioning)
 ----
 
 link:gradle.properties[Project information] +

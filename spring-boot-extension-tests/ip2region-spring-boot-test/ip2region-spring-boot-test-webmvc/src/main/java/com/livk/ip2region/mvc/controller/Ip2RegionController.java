@@ -17,10 +17,10 @@
 
 package com.livk.ip2region.mvc.controller;
 
-import com.livk.autoconfigure.ip2region.annotation.RequestIp;
-import com.livk.autoconfigure.ip2region.doamin.IpInfo;
-import com.livk.autoconfigure.ip2region.factory.RequestIpInfo;
-import com.livk.autoconfigure.ip2region.support.RequestIpContextHolder;
+import com.livk.core.ip2region.annotation.RequestIp;
+import com.livk.core.ip2region.doamin.IpInfo;
+import com.livk.core.ip2region.factory.RequestIpInfo;
+import com.livk.core.ip2region.support.RequestIpContextHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

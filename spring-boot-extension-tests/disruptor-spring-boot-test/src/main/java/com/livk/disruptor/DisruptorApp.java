@@ -1,7 +1,7 @@
 package com.livk.disruptor;
 
-import com.livk.autoconfigure.disruptor.annotation.EnableDisruptor;
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
+import com.livk.core.disruptor.EnableDisruptor;
 import com.livk.disruptor.event.MessageModel;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

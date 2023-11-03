@@ -7,6 +7,7 @@ description = "extension spring boot autoconfigure"
 
 dependencies {
 	api(project(":spring-extension-commons"))
+	api(project(":spring-extension-core"))
 	api("org.springframework.boot:spring-boot-autoconfigure")
 	optional("org.springframework.boot:spring-boot-actuator-autoconfigure")
 	optional("org.springframework:spring-jdbc")
@@ -18,6 +19,7 @@ dependencies {
 	optional("org.lionsoul:ip2region")
 	optional("dnsjava:dnsjava")
 	optional("org.redisson:redisson")
+	optional("org.redisson:redisson-spring-data-31")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
 	optional("org.aspectj:aspectjweaver")

@@ -57,7 +57,7 @@ class DocControllerTest {
 
 	@BeforeEach
 	public void setMockMvc(WebApplicationContext webApplicationContext,
-			       RestDocumentationContextProvider provider) {
+						   RestDocumentationContextProvider provider) {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
 			.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
 			.build();

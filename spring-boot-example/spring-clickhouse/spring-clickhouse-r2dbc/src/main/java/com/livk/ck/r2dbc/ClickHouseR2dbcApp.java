@@ -17,7 +17,7 @@
 
 package com.livk.ck.r2dbc;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;

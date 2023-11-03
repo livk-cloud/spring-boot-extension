@@ -17,7 +17,7 @@
 
 package com.livk.excel.batch.listener;
 
-import com.livk.autoconfigure.easyexcel.listener.TypeExcelMapReadListener;
+import com.livk.core.easyexcel.listener.TypeExcelMapReadListener;
 import com.livk.excel.batch.entity.Info;
 
 /**

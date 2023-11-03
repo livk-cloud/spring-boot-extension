@@ -25,10 +25,10 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.livk.commons.util.Pair;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.google.common.collect.Streams;
 import com.livk.commons.jackson.core.JacksonSupport;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
+import com.livk.commons.util.Pair;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ResolvableType;
@@ -190,7 +190,7 @@ class JacksonSupportTest {
 		assertEquals("2", result2.get("a").asText());
 		assertEquals(3, result2.get("b").get("c").asInt());
 
-		JsonNode result3 = XML.readValue(xml, new TypeReference<JsonNode>() {
+		JsonNode result3 = XML.readValue(xml, new TypeReference<>() {
 		});
 		assertNotNull(result3);
 		assertEquals("1", result3.get("c").asText());
@@ -281,7 +281,7 @@ class JacksonSupportTest {
 		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = BaseStreamUtils.convert(dependencyArray.elements()).toList();
+		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, JSON.convertValue(jsonNodeList.get(0), mapType));
 		assertEquals(jsonDependency, JSON.convertValue(jsonNodeList.get(1), mapType));
 
@@ -311,7 +311,7 @@ class JacksonSupportTest {
 		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = BaseStreamUtils.convert(dependencyArray.elements()).toList();
+		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, YAML.convertValue(jsonNodeList.get(0), mapType));
 		assertEquals(jsonDependency, YAML.convertValue(jsonNodeList.get(1), mapType));
 
@@ -345,7 +345,7 @@ class JacksonSupportTest {
 		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = BaseStreamUtils.convert(dependencyArray.elements()).toList();
+		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, XML.convertValue(jsonNodeList.get(0), mapType));
 		assertEquals(jsonDependency, XML.convertValue(jsonNodeList.get(1), mapType));
 

@@ -17,9 +17,9 @@
 
 package com.livk.excel.mvc.controller;
 
-import com.livk.autoconfigure.easyexcel.annotation.ExcelReturn;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.core.easyexcel.annotation.ResponseExcel;
 import com.livk.excel.mvc.entity.Info;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +74,9 @@ class Info2ControllerTest {
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./infoUploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+				FileUtils.download(in, "./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 			});
-		File outFile = new File("./infoUploadAndDownloadMock" + ExcelReturn.Suffix.XLSM.getName());
+		File outFile = new File("./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
@@ -92,9 +92,9 @@ class Info2ControllerTest {
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+				FileUtils.download(in, "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 			});
-		File outFile = new File("./infoDownload" + ExcelReturn.Suffix.XLSM.getName());
+		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}

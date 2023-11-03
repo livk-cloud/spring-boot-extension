@@ -17,7 +17,7 @@
 
 package com.livk.excel.reactive.listener;
 
-import com.livk.autoconfigure.easyexcel.listener.TypeExcelMapReadListener;
+import com.livk.core.easyexcel.listener.TypeExcelMapReadListener;
 import com.livk.excel.reactive.entity.Info;
 
 /**

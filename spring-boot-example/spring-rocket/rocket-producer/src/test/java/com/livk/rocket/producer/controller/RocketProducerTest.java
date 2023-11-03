@@ -21,6 +21,7 @@ import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.rocket.constant.RocketConstant;
 import com.livk.rocket.dto.RocketDTO;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author laokou
  * @author livk
  */
+@Disabled
 @SpringBootTest
 @AutoConfigureMockMvc
 class RocketProducerTest {

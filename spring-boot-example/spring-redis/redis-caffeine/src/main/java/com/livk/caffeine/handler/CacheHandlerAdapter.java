@@ -18,7 +18,7 @@
 package com.livk.caffeine.handler;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.livk.autoconfigure.redis.supprot.RedisOps;
+import com.livk.core.redis.RedisOps;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

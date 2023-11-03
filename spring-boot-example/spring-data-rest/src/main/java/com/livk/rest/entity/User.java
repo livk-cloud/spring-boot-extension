@@ -11,14 +11,14 @@ import java.io.Serializable;
 @Data
 @Entity(name = "`user`")
 public class User implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String username;
+	private String username;
 
-    private String password;
+	private String password;
 
-    @Column(length = 20)
-    private Integer age;
+	@Column(length = 20)
+	private Integer age;
 }

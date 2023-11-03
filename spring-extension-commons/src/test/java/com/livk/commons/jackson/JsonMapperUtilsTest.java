@@ -24,10 +24,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.livk.commons.util.Pair;
-import com.livk.commons.collect.BaseStreamUtils;
+import com.google.common.collect.Streams;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
+import com.livk.commons.util.Pair;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -412,7 +412,7 @@ class JsonMapperUtilsTest {
 		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = BaseStreamUtils.convert(dependencyArray.elements()).toList();
+		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, JsonMapperUtils.convertValue(jsonNodeList.get(0), mapType));
 		assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
 

@@ -89,7 +89,7 @@ public class FileUtils extends FileCopyUtils {
 	 */
 	public String read(File file) throws IOException {
 		try (FileReader fileReader = new FileReader(file);
-		     BufferedReader reader = new BufferedReader(fileReader)) {
+			 BufferedReader reader = new BufferedReader(fileReader)) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		}
 	}

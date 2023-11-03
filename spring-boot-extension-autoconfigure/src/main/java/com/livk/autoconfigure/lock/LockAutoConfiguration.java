@@ -19,12 +19,12 @@ package com.livk.autoconfigure.lock;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
-import com.livk.autoconfigure.lock.intercept.LockInterceptor;
-import com.livk.autoconfigure.lock.support.CuratorLock;
-import com.livk.autoconfigure.lock.support.DistributedLock;
-import com.livk.autoconfigure.lock.support.LocalLock;
-import com.livk.autoconfigure.lock.support.RedissonLock;
 import com.livk.autoconfigure.redisson.RedissonAutoConfiguration;
+import com.livk.core.lock.DistributedLock;
+import com.livk.core.lock.intercept.LockInterceptor;
+import com.livk.core.lock.support.CuratorLock;
+import com.livk.core.lock.support.LocalLock;
+import com.livk.core.lock.support.RedissonLock;
 import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;

@@ -93,14 +93,14 @@ public class BatchConfig {
 		writer.setDataSource(dataSource);
 		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
 		writer.setSql("insert into sys_user(user_name, sex, age, address, status, create_time ,update_time) " +
-			"values (:userName, :sex, :age, :address, :status, :createTime, :updateTime)");
+					  "values (:userName, :sex, :age, :address, :status, :createTime, :updateTime)");
 		return writer;
 	}
 
 	@Bean
 	public Step csvStep(JobRepository jobRepository,
-			    DataSource dataSource,
-			    DataSourceTransactionManager dataSourceTransactionManager) {
+						DataSource dataSource,
+						DataSourceTransactionManager dataSourceTransactionManager) {
 		return new StepBuilder("csvStep", jobRepository)
 			.<User, User>chunk(5, dataSourceTransactionManager)
 			.reader(reader())
@@ -120,7 +120,7 @@ public class BatchConfig {
 
 	@Bean
 	public Job csvJob(JobRepository jobRepository, Step step,
-			  JobCompletionListener listener) {
+					  JobCompletionListener listener) {
 		return new JobBuilder("csvJob", jobRepository)
 			.start(step)
 			.listener(listener)

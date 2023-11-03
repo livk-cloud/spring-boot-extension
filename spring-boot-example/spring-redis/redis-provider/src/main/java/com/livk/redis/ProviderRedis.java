@@ -17,7 +17,7 @@
 
 package com.livk.redis;
 
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;

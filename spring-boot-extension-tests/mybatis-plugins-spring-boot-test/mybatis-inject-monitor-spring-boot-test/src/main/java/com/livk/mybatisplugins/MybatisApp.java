@@ -17,9 +17,9 @@
 
 package com.livk.mybatisplugins;
 
-import com.livk.autoconfigure.mybatisplugins.inject.annotation.EnableSqlPlugin;
+import com.livk.autoconfigure.mybatisplugins.inject.EnableSqlPlugin;
 import com.livk.autoconfigure.mybatisplugins.monitor.annotation.EnableSqlMonitor;
-import com.livk.commons.spring.SpringLauncher;
+import com.livk.commons.SpringLauncher;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

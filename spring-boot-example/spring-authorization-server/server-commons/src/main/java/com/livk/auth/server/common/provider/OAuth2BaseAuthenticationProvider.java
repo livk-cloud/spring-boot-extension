@@ -73,8 +73,8 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 	 * @since 0.2.3
 	 */
 	protected OAuth2BaseAuthenticationProvider(AuthenticationManager authenticationManager,
-						   OAuth2AuthorizationService authorizationService,
-						   OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+											   OAuth2AuthorizationService authorizationService,
+											   OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
 		Assert.notNull(authorizationService, "authorizationService cannot be null");
 		Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
 		this.authenticationManager = authenticationManager;
@@ -219,7 +219,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 	 * @return {@link OAuth2AuthenticationException}
 	 */
 	private OAuth2AuthenticationException oAuth2AuthenticationException(Authentication authentication,
-									    AuthenticationException authenticationException) {
+																		AuthenticationException authenticationException) {
 		if (authenticationException instanceof UsernameNotFoundException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USERNAME_NOT_FOUND,
 				this.messages.getMessage("JdbcDaoImpl.notFound", new Object[]{authentication.getName()}, "Username {0} not found"), ""));

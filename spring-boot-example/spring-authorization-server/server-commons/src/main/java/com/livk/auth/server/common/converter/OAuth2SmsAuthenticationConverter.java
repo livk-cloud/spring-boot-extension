@@ -37,8 +37,8 @@ public class OAuth2SmsAuthenticationConverter implements OAuth2BaseAuthenticatio
 	@Override
 	public RequestMatcher support() {
 		return request -> SecurityConstants.SMS.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
-			&& StringUtils.hasText(request.getParameter(SecurityConstants.SMS_PARAMETER_NAME))
-			&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.CODE));
+						  && StringUtils.hasText(request.getParameter(SecurityConstants.SMS_PARAMETER_NAME))
+						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.CODE));
 	}
 
 	@Override

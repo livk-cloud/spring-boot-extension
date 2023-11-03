@@ -41,7 +41,7 @@ public class TenantHandlerInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-				    @NonNull Object handler, Exception ex) {
+								@NonNull Object handler, Exception ex) {
 		TenantContextHolder.remove();
 	}
 

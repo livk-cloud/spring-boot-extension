@@ -30,46 +30,37 @@ import java.util.List;
 @ConfigurationProperties(prefix = "spring.redisearch")
 public class RediSearchProperties {
 
+	private final Boolean ssl = false;
+	private final Pool pool = new Pool();
 	/**
 	 * Database index used by the connection factory.
 	 */
 	private int database = 0;
-
 	/**
 	 * Redis server host.
 	 */
 	private String host = "localhost";
-
 	/**
 	 * Login username of the redis server.
 	 */
 	private String username;
-
 	/**
 	 * Login password of the redis server.
 	 */
 	private String password;
-
 	/**
 	 * Redis server port.
 	 */
 	private int port = 6379;
-
 	/**
 	 * timeout.
 	 */
 	private Duration timeout;
-
 	/**
 	 * Client name to be set on connections with CLIENT SETNAME.
 	 */
 	private String clientName;
-
 	private Cluster cluster;
-
-	private final Boolean ssl = false;
-
-	private final Pool pool = new Pool();
 
 	/**
 	 * Pool properties.

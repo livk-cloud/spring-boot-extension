@@ -19,7 +19,7 @@ package com.livk.auth.server.common.provider;
 
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2SmsAuthenticationToken;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -47,8 +47,8 @@ public class OAuth2SmsAuthenticationProvider extends OAuth2BaseAuthenticationPro
 	 * @since 0.2.3
 	 */
 	public OAuth2SmsAuthenticationProvider(AuthenticationManager authenticationManager,
-					       OAuth2AuthorizationService authorizationService,
-					       OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+										   OAuth2AuthorizationService authorizationService,
+										   OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
 		super(authenticationManager, authorizationService, tokenGenerator);
 	}
 
