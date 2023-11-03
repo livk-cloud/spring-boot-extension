@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.core.http.factory;
+package com.livk.autoconfigure.http.factory;
 
 import com.livk.autoconfigure.http.adapter.AdapterFactory;
 import com.livk.autoconfigure.http.adapter.BeanFactoryHttpExchangeAdapter;

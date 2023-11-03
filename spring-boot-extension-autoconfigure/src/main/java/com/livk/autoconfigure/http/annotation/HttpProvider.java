@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.core.http.annotation;
+package com.livk.autoconfigure.http.annotation;
 
 import com.livk.autoconfigure.http.adapter.AdapterType;
 import org.springframework.core.annotation.AliasFor;

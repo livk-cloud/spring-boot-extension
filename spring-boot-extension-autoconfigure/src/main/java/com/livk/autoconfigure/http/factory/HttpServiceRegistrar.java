@@ -17,8 +17,8 @@
 
 package com.livk.autoconfigure.http.factory;
 
-import com.livk.core.http.ClassPathHttpScanner;
-import com.livk.core.http.annotation.HttpProvider;
+import com.livk.autoconfigure.http.ClassPathHttpScanner;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
