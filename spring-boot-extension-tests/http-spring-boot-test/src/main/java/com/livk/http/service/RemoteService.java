@@ -17,7 +17,7 @@
 
 package com.livk.http.service;
 
-import com.livk.core.http.annotation.HttpProvider;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
 import org.springframework.web.service.annotation.GetExchange;
 
 /**

@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.core.http.factory;
+package com.livk.autoconfigure.http.factory;
 
 import com.livk.commons.util.ClassUtils;
 import org.springframework.beans.BeansException;

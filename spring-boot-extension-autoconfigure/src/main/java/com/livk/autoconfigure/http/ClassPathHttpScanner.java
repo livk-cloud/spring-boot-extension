@@ -15,9 +15,9 @@
  *
  */
 
-package com.livk.core.http;
+package com.livk.autoconfigure.http;
 
-import com.livk.core.http.factory.HttpFactoryBean;
+import com.livk.autoconfigure.http.factory.HttpFactoryBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;

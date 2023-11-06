@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.core.http.annotation;
+package com.livk.autoconfigure.http.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
