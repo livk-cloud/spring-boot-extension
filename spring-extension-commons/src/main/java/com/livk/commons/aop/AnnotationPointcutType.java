@@ -56,7 +56,7 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 	/**
 	 * 自动识别，根据注解上的元注解信息
 	 *
-	 * @see Target
+	 * @see Target#value()
 	 */
 	AUTO(annotationType -> {
 		Target target = annotationType.getAnnotation(Target.class);
