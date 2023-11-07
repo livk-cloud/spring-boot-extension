@@ -55,21 +55,7 @@ public class RedissonAutoConfiguration {
 		return beanFactory -> {
 			ConversionService conversionService = beanFactory.getConversionService();
 			if (conversionService instanceof ConverterRegistry converterRegistry) {
-				converterRegistry.addConverter(new ConfigBaseConverter.ConfigConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.AddressResolverGroupFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CodecConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.RedissonNodeInitializerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.LoadBalancerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NatMapperConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NameMapperConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NettyHookConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CredentialsResolverConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.EventLoopGroupConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.ConnectionListenerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.ExecutorServiceConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.KeyManagerFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.TrustManagerFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CommandMapperConverter());
+				ByteBuddyProxySupport.proxyConverters().forEach(converterRegistry::addConverter);
 				baseConverters.orderedStream().forEach(converterRegistry::addConverter);
 			}
 		};
@@ -99,6 +85,7 @@ public class RedissonAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnClass(RedissonConnectionFactory.class)
 	public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
 		return new RedissonConnectionFactory(redisson);
 	}
