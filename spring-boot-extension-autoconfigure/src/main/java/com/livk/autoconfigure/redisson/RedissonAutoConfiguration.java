@@ -55,7 +55,7 @@ public class RedissonAutoConfiguration {
 		return beanFactory -> {
 			ConversionService conversionService = beanFactory.getConversionService();
 			if (conversionService instanceof ConverterRegistry converterRegistry) {
-				ByteBuddyProxySupport.proxyConverters().forEach(converterRegistry::addConverter);
+				ByteBuddySupport.makeConverters().forEach(converterRegistry::addConverter);
 				baseConverters.orderedStream().forEach(converterRegistry::addConverter);
 			}
 		};
@@ -69,7 +69,7 @@ public class RedissonAutoConfiguration {
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client
 	 */
-	@Bean
+	@Bean(destroyMethod = "shutdown")
 	@ConditionalOnMissingBean
 	public RedissonClient redissonClient(ConfigProperties configProperties,
 										 RedisProperties redisProperties,
