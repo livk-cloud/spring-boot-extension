@@ -20,7 +20,6 @@ package com.livk.commons.spring;
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -31,7 +30,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
  *
  * @author livk
  */
-@AutoConfiguration
 @SpringFactories
 public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 
