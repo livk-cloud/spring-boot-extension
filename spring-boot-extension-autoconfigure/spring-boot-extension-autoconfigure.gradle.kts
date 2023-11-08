@@ -6,8 +6,7 @@ plugins {
 description = "extension spring boot autoconfigure"
 
 dependencies {
-	api(project(":spring-extension-commons"))
-	api(project(":spring-extension-core"))
+	api(project(":spring-extension-context"))
 	api("org.springframework.boot:spring-boot-autoconfigure")
 	optional("org.springframework.boot:spring-boot-actuator-autoconfigure")
 	optional("org.springframework:spring-jdbc")

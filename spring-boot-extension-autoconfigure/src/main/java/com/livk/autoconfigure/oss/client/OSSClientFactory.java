@@ -31,6 +31,7 @@ public interface OSSClientFactory<T> {
 	 * @param endpoint  the endpoint
 	 * @param accessKey the access key
 	 * @param secretKey the secret key
+	 * @param region    the region
 	 * @return the t
 	 */
 	T instance(String endpoint, String accessKey, String secretKey, String region);

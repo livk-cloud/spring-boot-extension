@@ -54,6 +54,7 @@ public class OSSProperties {
 	 * @param url       the url
 	 * @param accessKey the access key
 	 * @param secretKey the secret key
+	 * @param region    the region
 	 */
 	public OSSProperties(@Name("url") URI url,
 						 @Name("accessKey") String accessKey,

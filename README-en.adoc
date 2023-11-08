@@ -33,7 +33,7 @@ Please raise an issue if necessary +
     |--spring-boot-extension-tests(test bundle)
     |--spring-extension-bom(BOM)
     |--spring-extension-commons(General Basic Toolkit)
-    |--spring-extension-core(Expand the core)
+    |--spring-extension-context(Expand the core)
     |--spring-extension-dependencies(Depends on versioning)
 ----
 
