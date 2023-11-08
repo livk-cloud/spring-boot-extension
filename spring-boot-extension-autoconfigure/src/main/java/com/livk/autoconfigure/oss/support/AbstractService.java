@@ -42,9 +42,9 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations, Ap
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		OSSProperties properties = applicationContext.getBean(OSSProperties.class);
-		OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver(applicationContext);
+		OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
 		OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
-		this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey());
+		this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey(), properties.getRegion());
 
 		if (applicationContext instanceof GenericApplicationContext context) {
 			ResolvableType resolvableType = ResolvableType.forInstance(client);

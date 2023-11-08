@@ -28,10 +28,11 @@ import io.minio.MinioClient;
 public class MinioClientFactory implements OSSClientFactory<MinioClient> {
 
 	@Override
-	public MinioClient instance(String endpoint, String accessKey, String secretKey) {
+	public MinioClient instance(String endpoint, String accessKey, String secretKey, String region) {
 		return new MinioClient.Builder()
 			.endpoint(endpoint)
 			.credentials(accessKey, secretKey)
+			.region(region)
 			.build();
 	}
 

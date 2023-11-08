@@ -46,6 +46,8 @@ public class OSSProperties {
 
 	private String endpoint;
 
+	private String region;
+
 	/**
 	 * Instantiates a new Oss properties.
 	 *
@@ -55,7 +57,8 @@ public class OSSProperties {
 	 */
 	public OSSProperties(@Name("url") URI url,
 						 @Name("accessKey") String accessKey,
-						 @Name("secretKey") String secretKey) {
+						 @Name("secretKey") String secretKey,
+						 @Name("region") String region) {
 		Assert.notNull(url, "url not be blank");
 		Assert.hasText(accessKey, "accessKey not be blank");
 		Assert.hasText(secretKey, "secretKey not be blank");
@@ -63,6 +66,7 @@ public class OSSProperties {
 		this.secretKey = secretKey;
 		this.prefix = prefix(url);
 		this.endpoint = endpoint(url);
+		this.region = region;
 	}
 
 	/**

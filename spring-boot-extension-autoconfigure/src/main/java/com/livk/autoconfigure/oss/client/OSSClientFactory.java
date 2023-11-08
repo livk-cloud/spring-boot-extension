@@ -33,7 +33,7 @@ public interface OSSClientFactory<T> {
 	 * @param secretKey the secret key
 	 * @return the t
 	 */
-	T instance(String endpoint, String accessKey, String secretKey);
+	T instance(String endpoint, String accessKey, String secretKey, String region);
 
 	/**
 	 * Prefix string.
