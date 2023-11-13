@@ -41,6 +41,8 @@ link:gradle.properties[Project information] +
 link:gradle/libs.versions.toml[version control] +
 link:spring-boot-example/example.adoc[example details] +
 
+Project-related version control +
+
 #Maven#
 
 [source,xml,indent=0]
@@ -64,6 +66,34 @@ link:spring-boot-example/example.adoc[example details] +
 ----
 dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
+}
+----
+
+Use only the dependencies of the current project +
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>spring-extension-bom</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
 }
 ----
 

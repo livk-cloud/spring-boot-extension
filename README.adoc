@@ -43,6 +43,8 @@ link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:spring-boot-example/example.adoc[示例详情] +
 
+项目相关版本控制 +
+
 #Maven#
 
 [source,xml,indent=0]
@@ -66,6 +68,34 @@ link:spring-boot-example/example.adoc[示例详情] +
 ----
 dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
+}
+----
+
+仅使用当前项目的依赖相关 +
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>spring-extension-bom</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
 }
 ----
 
