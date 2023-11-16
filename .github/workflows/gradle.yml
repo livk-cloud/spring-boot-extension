@@ -106,5 +106,5 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.9.0
         with:
-          arguments: cleanAll build
+          arguments: clean build
           gradle-version: current
