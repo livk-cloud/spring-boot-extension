@@ -30,6 +30,7 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
@@ -69,8 +70,9 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
 	}
 
+	@NonNull
 	@Override
-	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+	protected Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
 		BeanDefinitionRegistry registry = super.getRegistry();
 		Assert.notNull(registry, "registry not be null");
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
@@ -89,6 +91,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 					beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
 					BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
+					beanDefinitions.add(holder);
 					registerBeanDefinition(holder, registry);
 				}
 			}

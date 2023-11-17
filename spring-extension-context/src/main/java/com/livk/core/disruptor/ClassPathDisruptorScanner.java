@@ -85,6 +85,7 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 	@NonNull
 	@Override
 	protected Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
+		Set<BeanDefinitionHolder> definitionHolders = new LinkedHashSet<>();
 		BeanDefinitionRegistry registry = super.getRegistry();
 		Assert.notNull(registry, "registry not be null");
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
@@ -110,12 +111,13 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
 						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
+						definitionHolders.add(holder);
 						registerBeanDefinition(holder, registry);
 					}
 				}
 			}
 		}
 
-		return new LinkedHashSet<>();
+		return definitionHolders;
 	}
 }
