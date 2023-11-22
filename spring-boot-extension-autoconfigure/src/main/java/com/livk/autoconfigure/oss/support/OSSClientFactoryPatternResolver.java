@@ -64,7 +64,8 @@ class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 		if (log.isDebugEnabled()) {
 			log.debug("oss factory匹配失败, 加载Spring SPI");
 		}
-		List<OSSClientFactoryLoader> factoryLoaders = SpringFactoriesLoader.loadFactories(OSSClientFactoryLoader.class, ClassUtils.getDefaultClassLoader());
+		List<OSSClientFactoryLoader> factoryLoaders = SpringFactoriesLoader.loadFactories(OSSClientFactoryLoader.class,
+				ClassUtils.getDefaultClassLoader());
 		for (OSSClientFactoryLoader factoryLoader : factoryLoaders) {
 			OSSClientFactory<T> clientFactory = factoryLoader.loader(prefix);
 			if (clientFactory != null) {

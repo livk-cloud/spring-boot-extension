@@ -41,27 +41,27 @@ public class RabbitConfig {
 
 	public final static String orderQueue = "order_queue";
 
-	//交换机名称
+	// 交换机名称
 	public final static String orderExchange = "order_exchange";
 
 	// routingKey
 	public final static String routingKeyOrder = "routing_key_order";
 
-	//死信消息队列名称
+	// 死信消息队列名称
 	public final static String dealQueueOrder = "deal_queue_order";
 
-	//死信交换机名称
+	// 死信交换机名称
 	public final static String dealExchangeOrder = "deal_exchange_order";
 
-	//死信 routingKey
+	// 死信 routingKey
 	public final static String deadRoutingKeyOrder = "dead_routing_key_order";
 
 	public final static String MESSAGE_TTL = "x-message-ttl";
 
-	//死信队列 交换机标识符
+	// 死信队列 交换机标识符
 	public static final String DEAD_LETTER_QUEUE_KEY = "x-dead-letter-exchange";
 
-	//死信队列交换机绑定键标识符
+	// 死信队列交换机绑定键标识符
 	public static final String DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
 
 	@Bean
@@ -97,4 +97,5 @@ public class RabbitConfig {
 	public Binding bindingDeadExchange() {
 		return BindingBuilder.bind(deadQueueOrder()).to(deadExchangeOrder()).with(deadRoutingKeyOrder);
 	}
+
 }

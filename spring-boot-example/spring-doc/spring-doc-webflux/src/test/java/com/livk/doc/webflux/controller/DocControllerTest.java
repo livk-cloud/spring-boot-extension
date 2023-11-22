@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureWebTestClient
 class DocControllerTest {
+
 	@Autowired
 	WebTestClient client;
 
@@ -49,4 +50,5 @@ class DocControllerTest {
 			.expectBody(JsonNode.class)
 			.value(jsonNode -> assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText()));
 	}
+
 }

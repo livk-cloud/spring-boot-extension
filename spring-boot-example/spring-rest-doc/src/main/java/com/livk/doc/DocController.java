@@ -50,4 +50,5 @@ public class DocController {
 	public HttpEntity<JsonNode> post(@RequestBody Map<String, Object> data) throws JsonProcessingException {
 		return ResponseEntity.ok(objectMapper.readTree(objectMapper.writeValueAsString(data)));
 	}
+
 }

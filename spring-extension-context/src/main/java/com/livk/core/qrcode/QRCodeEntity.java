@@ -27,16 +27,11 @@ import java.awt.*;
  * @param <T> the type parameter
  * @author livk
  */
-public record QRCodeEntity<T>(T content,
-							  int width,
-							  int height,
-							  MatrixToImageConfig config,
-							  PicType type) {
+public record QRCodeEntity<T>(T content, int width, int height, MatrixToImageConfig config, PicType type) {
 
 	/**
 	 * Builder qr code entity builder.
-	 *
-	 * @param <T>     the type parameter
+	 * @param <T> the type parameter
 	 * @param content the content
 	 * @return the qr code entity builder
 	 */
@@ -50,16 +45,21 @@ public record QRCodeEntity<T>(T content,
 	 * @param <T> the type parameter
 	 */
 	public static class QRCodeEntityBuilder<T> {
+
 		private final T content;
+
 		private Integer width = 400;
+
 		private Integer height = 400;
+
 		private int onColor = MatrixToImageConfig.BLACK;
+
 		private int offColor = MatrixToImageConfig.WHITE;
+
 		private PicType type = PicType.PNG;
 
 		/**
 		 * Instantiates a new Qr code entity builder.
-		 *
 		 * @param content the content
 		 */
 		QRCodeEntityBuilder(T content) {
@@ -68,7 +68,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Width qr code entity builder.
-		 *
 		 * @param width the width
 		 * @return the qr code entity builder
 		 */
@@ -79,7 +78,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Height qr code entity builder.
-		 *
 		 * @param height the height
 		 * @return the qr code entity builder
 		 */
@@ -90,7 +88,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * On color qr code entity builder.
-		 *
 		 * @param onColor the on color
 		 * @return the qr code entity builder
 		 */
@@ -101,7 +98,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * On color qr code entity builder.
-		 *
 		 * @param color the color
 		 * @return the qr code entity builder
 		 */
@@ -112,7 +108,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Off color qr code entity builder.
-		 *
 		 * @param offColor the off color
 		 * @return the qr code entity builder
 		 */
@@ -123,7 +118,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Off color qr code entity builder.
-		 *
 		 * @param color the color
 		 * @return the qr code entity builder
 		 */
@@ -134,7 +128,6 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Type qr code entity builder.
-		 *
 		 * @param type the type
 		 * @return the qr code entity builder
 		 */
@@ -145,12 +138,12 @@ public record QRCodeEntity<T>(T content,
 
 		/**
 		 * Build qr code entity.
-		 *
 		 * @return the qr code entity
 		 */
 		public QRCodeEntity<T> build() {
 			MatrixToImageConfig imageConfig = new MatrixToImageConfig(this.onColor, this.offColor);
 			return new QRCodeEntity<>(this.content, this.width, this.height, imageConfig, this.type);
 		}
+
 	}
 }

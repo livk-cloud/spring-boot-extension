@@ -35,4 +35,5 @@ public class UserAmqpProtobufMessageConverter extends AbstractMessageConverter {
 	public Object fromMessage(Message message) throws MessageConversionException {
 		return userConverter.convert(message.getBody());
 	}
+
 }

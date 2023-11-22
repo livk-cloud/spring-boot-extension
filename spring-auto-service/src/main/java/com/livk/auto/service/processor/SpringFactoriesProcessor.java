@@ -53,9 +53,11 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
 	private static final String AOT_LOCATION = "META-INF/spring/aot.factories";
 
-	private final SetMultimap<String, String> springFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> springFactoriesMap = Multimaps
+		.synchronizedSetMultimap(LinkedHashMultimap.create());
 
-	private final SetMultimap<String, String> aotFactoriesMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> aotFactoriesMap = Multimaps
+		.synchronizedSetMultimap(LinkedHashMultimap.create());
 
 	@Override
 	protected Set<Class<?>> getSupportedAnnotation() {
@@ -76,11 +78,11 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 				for (Map.Entry<String, String> entry : factoriesMap.entries()) {
 					allImportMap.put(entry.getKey(), entry.getValue());
 				}
-				FileObject fileObject =
-					filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
+				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
 
 				this.writeFile(allImportMap.asMap(), fileObject);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -99,7 +101,8 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 			String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
 			if (aot) {
 				aotFactoriesMap.put(provider, serviceImpl);
-			} else {
+			}
+			else {
 				springFactoriesMap.put(provider, serviceImpl);
 			}
 		}
@@ -120,7 +123,6 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 
 	/**
 	 * 从文件读取某个接口的配置
-	 *
 	 * @param fileObject 文件信息
 	 * @return set className
 	 */
@@ -135,18 +137,19 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 				providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
 			}
 			return providers;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return LinkedHashMultimap.create();
 		}
 	}
 
 	/**
 	 * 将配置信息写入到文件
-	 *
 	 * @param allImportMap 供应商接口及实现类信息
-	 * @param fileObject   文件信息
+	 * @param fileObject 文件信息
 	 */
-	private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject) throws IOException {
+	private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject)
+			throws IOException {
 		try (BufferedWriter writer = bufferedWriter(fileObject)) {
 			for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
 				String providerInterface = entry.getKey();
@@ -169,4 +172,5 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 			writer.flush();
 		}
 	}
+
 }

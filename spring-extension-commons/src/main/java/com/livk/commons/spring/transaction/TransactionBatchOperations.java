@@ -49,12 +49,10 @@ public class TransactionBatchOperations {
 
 	/**
 	 * 创建TransactionBatchOperations
-	 *
 	 * @param transactionTemplate the transaction template
-	 * @param executor            the executor
+	 * @param executor the executor
 	 */
-	public TransactionBatchOperations(TransactionTemplate transactionTemplate,
-									  Executor executor) {
+	public TransactionBatchOperations(TransactionTemplate transactionTemplate, Executor executor) {
 		this(transactionTemplate);
 		this.executor = executor;
 	}
@@ -63,10 +61,9 @@ public class TransactionBatchOperations {
 	 * 批量执行
 	 * <p>
 	 * 使用默认数量{@link #DEFAULT_NUM}
-	 *
-	 * @param <T>      泛型
+	 * @param <T> 泛型
 	 * @param dataList 带操作的数据
-	 * @param ops      执行过程
+	 * @param ops 执行过程
 	 */
 	public <T> void executeBatch(List<T> dataList, Consumer<List<T>> ops) {
 		executeBatch(dataList, DEFAULT_NUM, ops);
@@ -74,30 +71,30 @@ public class TransactionBatchOperations {
 
 	/**
 	 * 批量执行
-	 *
-	 * @param <T>      泛型
+	 * @param <T> 泛型
 	 * @param dataList 带操作的数据
 	 * @param batchNum 批次数量
-	 * @param ops      执行过程
+	 * @param ops 执行过程
 	 */
 	public <T> void executeBatch(List<T> dataList, int batchNum, Consumer<List<T>> ops) {
 		List<List<T>> partition = Lists.partition(dataList, batchNum);
 		AtomicBoolean rollback = new AtomicBoolean(false);
 		List<CompletableFuture<Void>> futures = new ArrayList<>(partition.size());
 		partition.forEach(item -> {
-			CompletableFuture<Void> future = execute(() ->
-				transactionTemplate.execute(status -> {
-					try {
-						ops.accept(item);
-					} catch (Exception e) {
-						rollback.compareAndSet(false, true);
-					} finally {
-						if (rollback.get()) {
-							status.setRollbackOnly();
-						}
+			CompletableFuture<Void> future = execute(() -> transactionTemplate.execute(status -> {
+				try {
+					ops.accept(item);
+				}
+				catch (Exception e) {
+					rollback.compareAndSet(false, true);
+				}
+				finally {
+					if (rollback.get()) {
+						status.setRollbackOnly();
 					}
-					return true;
-				}));
+				}
+				return true;
+			}));
 			futures.add(future);
 		});
 		CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0])).join();
@@ -109,8 +106,10 @@ public class TransactionBatchOperations {
 	private CompletableFuture<Void> execute(Runnable runnable) {
 		if (executor == null) {
 			return CompletableFuture.runAsync(runnable);
-		} else {
+		}
+		else {
 			return CompletableFuture.runAsync(runnable, executor);
 		}
 	}
+
 }

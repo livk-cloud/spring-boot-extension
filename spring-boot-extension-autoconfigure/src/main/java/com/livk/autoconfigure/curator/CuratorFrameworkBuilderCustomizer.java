@@ -29,4 +29,5 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
  */
 @FunctionalInterface
 public interface CuratorFrameworkBuilderCustomizer extends Customizer<CuratorFrameworkFactory.Builder> {
+
 }

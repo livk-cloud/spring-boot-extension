@@ -36,4 +36,5 @@ public class KafkaSend implements ProtobufSend<User> {
 	public void send(String key, User data) {
 		kafkaTemplate.send(key, data);
 	}
+
 }

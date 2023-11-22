@@ -35,10 +35,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<NettyMessage
 	protected void channelRead0(ChannelHandlerContext ctx, NettyMessage.Message msg) throws Exception {
 		if (msg.getType().equals(NettyMessage.Message.MessageType.HEARTBEAT_CLIENT)) {
 			log.info("收到客户端发来的心跳消息：{}", msg);
-			//回应pong
+			// 回应pong
 			ctx.writeAndFlush(new ServerPackage());
-		} else if (msg.getType().equals(NettyMessage.Message.MessageType.NORMAL)) {
+		}
+		else if (msg.getType().equals(NettyMessage.Message.MessageType.NORMAL)) {
 			log.info("收到客户端的业务消息：{}", msg);
 		}
 	}
+
 }

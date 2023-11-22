@@ -34,10 +34,9 @@ public interface MapstructService {
 
 	/**
 	 * Convert t.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param source     the source
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param source the source
 	 * @param targetType the target class
 	 * @return the t
 	 */
@@ -45,10 +44,9 @@ public interface MapstructService {
 
 	/**
 	 * Convert stream.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param sources    the sources
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param sources the sources
 	 * @param targetType the target class
 	 * @return the stream
 	 */
@@ -61,10 +59,9 @@ public interface MapstructService {
 
 	/**
 	 * Convert list.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param sources    the sources
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param sources the sources
 	 * @param targetType the target class
 	 * @return the list
 	 */
@@ -74,10 +71,9 @@ public interface MapstructService {
 
 	/**
 	 * Convert unmodifiable list.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param sources    the sources
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param sources the sources
 	 * @param targetType the target class
 	 * @return the list
 	 */
@@ -87,10 +83,9 @@ public interface MapstructService {
 
 	/**
 	 * Convert set.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param sources    the sources
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param sources the sources
 	 * @param targetType the target class
 	 * @return the set
 	 */
@@ -100,14 +95,14 @@ public interface MapstructService {
 
 	/**
 	 * Convert unmodifiable set.
-	 *
-	 * @param <S>        the type parameter
-	 * @param <T>        the type parameter
-	 * @param sources    the sources
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
+	 * @param sources the sources
 	 * @param targetType the target class
 	 * @return the set
 	 */
 	default <S, T> Set<T> convertUnmodifiableSet(Collection<S> sources, Class<T> targetType) {
 		return convert(sources, targetType).collect(Collectors.toUnmodifiableSet());
 	}
+
 }

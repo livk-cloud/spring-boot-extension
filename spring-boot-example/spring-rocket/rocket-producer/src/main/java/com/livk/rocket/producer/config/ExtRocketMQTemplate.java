@@ -25,11 +25,9 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
  *
  * @author laokou
  */
-@ExtRocketMQTemplateConfiguration(
-	group = "${rocketmq.ext.producer.group:livk-ext-producer-group}",
-	nameServer = "${rocketmq.ext.name-server:laokou.org:9876}",
-	retryTimesWhenSendFailed = 2,
-	retryTimesWhenSendAsyncFailed = 2
-)
+@ExtRocketMQTemplateConfiguration(group = "${rocketmq.ext.producer.group:livk-ext-producer-group}",
+		nameServer = "${rocketmq.ext.name-server:laokou.org:9876}", retryTimesWhenSendFailed = 2,
+		retryTimesWhenSendAsyncFailed = 2)
 public class ExtRocketMQTemplate extends RocketMQTemplate {
+
 }

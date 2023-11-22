@@ -34,4 +34,5 @@ public class CryptoProperties {
 	private CryptoType type;
 
 	private Map<String, String> metadata;
+
 }

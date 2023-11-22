@@ -49,7 +49,6 @@ public class Ip2regionAutoConfiguration {
 
 	/**
 	 * Ip 2 region search ip 2 region search.
-	 *
 	 * @param properties the properties
 	 * @return the ip 2 region search
 	 */
@@ -64,7 +63,6 @@ public class Ip2regionAutoConfiguration {
 
 	/**
 	 * Request ip bean factory processor request ip bean factory processor.
-	 *
 	 * @return the request ip bean factory processor
 	 */
 	@Bean
@@ -89,7 +87,6 @@ public class Ip2regionAutoConfiguration {
 
 		/**
 		 * Ip filter filter registration bean filter registration bean.
-		 *
 		 * @return the filter registration bean
 		 */
 		@Bean
@@ -101,5 +98,7 @@ public class Ip2regionAutoConfiguration {
 			registrationBean.setOrder(1);
 			return registrationBean;
 		}
+
 	}
+
 }

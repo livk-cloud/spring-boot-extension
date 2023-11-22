@@ -42,4 +42,5 @@ public class TestExtMessageListener implements RocketMQListener<RocketDTO> {
 		}
 		log.info("ext rocketMQ receive message:{}", JsonMapperUtils.writeValueAsString(dto));
 	}
+
 }

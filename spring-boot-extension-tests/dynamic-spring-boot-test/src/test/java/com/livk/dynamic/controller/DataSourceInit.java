@@ -51,4 +51,5 @@ public class DataSourceInit implements InitializingBean {
 		ScriptUtils.executeSqlScript(applicationContext.getBean(DataSource.class).getConnection(), initPgsql);
 		DataSourceContextHolder.clear();
 	}
+
 }

@@ -51,18 +51,22 @@ public class PageInfo<T> implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 总数
 	 */
 	private final long total;
+
 	/**
 	 * 当前分页数据
 	 */
 	private final List<T> list;
+
 	/**
 	 * 页数
 	 */
 	private int pageNum;
+
 	/**
 	 * 数量
 	 */
@@ -70,7 +74,6 @@ public class PageInfo<T> implements Serializable {
 
 	/**
 	 * {@link Page}
-	 *
 	 * @param list list or page
 	 */
 	public PageInfo(List<T> list) {
@@ -79,10 +82,9 @@ public class PageInfo<T> implements Serializable {
 
 	/**
 	 * 构建分页实体，同时使用{@link Function}转换list
-	 *
-	 * @param list     the list
+	 * @param list the list
 	 * @param function the function
-	 * @param <R>      r
+	 * @param <R> r
 	 */
 	public <R> PageInfo(List<R> list, Function<List<R>, List<T>> function) {
 		if (list instanceof Page<R> page) {
@@ -90,7 +92,8 @@ public class PageInfo<T> implements Serializable {
 			this.pageNum = page.getPageNum();
 			this.pageSize = page.getPageSize();
 			this.total = page.getTotal();
-		} else {
+		}
+		else {
 			this.total = list.size();
 			this.list = function.apply(list);
 		}
@@ -98,11 +101,10 @@ public class PageInfo<T> implements Serializable {
 
 	/**
 	 * 用于Jackson反序列化构建
-	 *
-	 * @param list     the list
-	 * @param pageNum  the page num
+	 * @param list the list
+	 * @param pageNum the page num
 	 * @param pageSize the page size
-	 * @param total    the total
+	 * @param total the total
 	 */
 	PageInfo(List<T> list, int pageNum, int pageSize, long total) {
 		this.list = list;
@@ -114,7 +116,8 @@ public class PageInfo<T> implements Serializable {
 	/**
 	 * {@link PageInfo} 反序列化器
 	 */
-	static class PageInfoJsonDeserializer extends StdScalarDeserializer<PageInfo<Object>> implements ContextualDeserializer {
+	static class PageInfoJsonDeserializer extends StdScalarDeserializer<PageInfo<Object>>
+			implements ContextualDeserializer {
 
 		private JavaType javaType;
 
@@ -145,5 +148,7 @@ public class PageInfo<T> implements Serializable {
 			javaType = bindings.getBoundType(0);
 			return this;
 		}
+
 	}
+
 }

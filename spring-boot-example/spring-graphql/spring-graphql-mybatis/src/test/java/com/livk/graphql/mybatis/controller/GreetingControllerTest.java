@@ -38,12 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author livk
  */
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureWebTestClient(timeout = "15000")
 class GreetingControllerTest {
 
@@ -64,16 +60,13 @@ class GreetingControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void greetings() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			subscription {
-			  greetings
-			}""";
-		Map result = tester.document(document)
-			.execute()
-			.path("upstreamPublisher")
-			.entity(Map.class)
-			.get();
+				subscription {
+				  greetings
+				}""";
+		Map result = tester.document(document).execute().path("upstreamPublisher").entity(Map.class).get();
 		assertNotNull(result);
 	}
+
 }

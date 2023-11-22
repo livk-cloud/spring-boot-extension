@@ -25,6 +25,7 @@ package com.livk.core.lock.exception;
  * @author livk
  */
 public class LockException extends RuntimeException {
+
 	/**
 	 * Instantiates a new Lock exception.
 	 */
@@ -34,7 +35,6 @@ public class LockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Lock exception.
-	 *
 	 * @param message the message
 	 */
 	public LockException(String message) {
@@ -43,9 +43,8 @@ public class LockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Lock exception.
-	 *
 	 * @param message the message
-	 * @param cause   the cause
+	 * @param cause the cause
 	 */
 	public LockException(String message, Throwable cause) {
 		super(message, cause);
@@ -53,7 +52,6 @@ public class LockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Lock exception.
-	 *
 	 * @param cause the cause
 	 */
 	public LockException(Throwable cause) {
@@ -62,14 +60,13 @@ public class LockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Lock exception.
-	 *
-	 * @param message            the message
-	 * @param cause              the cause
-	 * @param enableSuppression  the enable suppression
+	 * @param message the message
+	 * @param cause the cause
+	 * @param enableSuppression the enable suppression
 	 * @param writableStackTrace the writable stack trace
 	 */
-	protected LockException(String message, Throwable cause, boolean enableSuppression,
-							boolean writableStackTrace) {
+	protected LockException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
+
 }

@@ -33,6 +33,7 @@ import java.util.function.Predicate;
  */
 @RequiredArgsConstructor
 public enum ExcelDataType {
+
 	/**
 	 * Collection excel data type.
 	 */
@@ -49,7 +50,6 @@ public enum ExcelDataType {
 
 	/**
 	 * Match excel data type.
-	 *
 	 * @param type the type
 	 * @return the excel data type
 	 */
@@ -61,4 +61,5 @@ public enum ExcelDataType {
 		}
 		throw new IllegalArgumentException();
 	}
+
 }

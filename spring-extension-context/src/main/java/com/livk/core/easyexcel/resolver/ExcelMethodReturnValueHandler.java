@@ -60,8 +60,8 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 	}
 
 	@Override
-	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
-								  NativeWebRequest webRequest) {
+	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType,
+			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) {
 		mavContainer.setRequestHandled(true);
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 		ResponseExcel excelReturn = AnnotationUtils.getAnnotationElement(returnType, ResponseExcel.class);
@@ -70,42 +70,45 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 		if (returnValue instanceof Collection) {
 			Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
 			this.write(excelReturn, response, excelModelClass, Map.of("sheet", (Collection<?>) returnValue));
-		} else if (returnValue instanceof Map) {
+		}
+		else if (returnValue instanceof Map) {
 			@SuppressWarnings("unchecked")
 			Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
 			Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).getGeneric(1).resolveGeneric(0);
 			this.write(excelReturn, response, excelModelClass, result);
-		} else {
+		}
+		else {
 			throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
 		}
 	}
 
 	/**
 	 * Write.
-	 *
-	 * @param excelReturn     the excel return
-	 * @param response        the response
+	 * @param excelReturn the excel return
+	 * @param response the response
 	 * @param excelModelClass the excel model class
-	 * @param result          the result
+	 * @param result the result
 	 */
-	private void write(ResponseExcel excelReturn, HttpServletResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+	private void write(ResponseExcel excelReturn, HttpServletResponse response, Class<?> excelModelClass,
+			Map<String, Collection<?>> result) {
 		this.setResponse(excelReturn, response);
 		try (ServletOutputStream outputStream = response.getOutputStream()) {
 			EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 
 	/**
 	 * set response
-	 *
 	 * @param excelReturn the excel return
-	 * @param response    response
+	 * @param response response
 	 */
 	private void setResponse(ResponseExcel excelReturn, HttpServletResponse response) {
 		String fileName = EasyExcelSupport.fileName(excelReturn);
-		String contentType = MediaTypeFactory.getMediaType(fileName).map(MediaType::toString)
+		String contentType = MediaTypeFactory.getMediaType(fileName)
+			.map(MediaType::toString)
 			.orElse("application/vnd.ms-excel");
 		response.setContentType(contentType);
 		response.setCharacterEncoding(UTF8);

@@ -41,7 +41,7 @@ public class RedisBloom {
 	/**
 	 * 准备自定义哈希算法需要用到的质数，因为一条数据需要hash计算5次 且5次的结果要不一样
 	 */
-	private static final int[] primeNums = new int[]{17, 19, 29, 31, 37};
+	private static final int[] primeNums = new int[] { 17, 19, 29, 31, 37 };
 
 	private final ValueOperations<String, Object> forValue;
 

@@ -45,8 +45,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
 	/**
 	 * 根据type加载对应的实例
-	 *
-	 * @param <T>  type parameter
+	 * @param <T> type parameter
 	 * @param type type
 	 * @return list
 	 */
@@ -54,8 +53,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
 	/**
 	 * 根据resolvableType加载对应的实例
-	 *
-	 * @param <T>            type parameter
+	 * @param <T> type parameter
 	 * @param resolvableType resolvable type
 	 * @return list
 	 */
@@ -77,9 +75,8 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
 		/**
 		 * 根据type加载对应的实例
-		 *
-		 * @param <T>         type parameter
-		 * @param type        type
+		 * @param <T> type parameter
+		 * @param type type
 		 * @param classLoader classLoader
 		 * @return list
 		 */
@@ -91,6 +88,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return Lists.newArrayList(ServiceLoader.load(type, classLoader));
 			}
+
 		}
 
 		private static class SpringFactoryLoader extends AbstractLoader {
@@ -99,6 +97,9 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return SpringFactoriesLoader.loadFactories(type, classLoader);
 			}
+
 		}
+
 	}
+
 }

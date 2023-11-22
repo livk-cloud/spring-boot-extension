@@ -48,8 +48,7 @@ public class UserController {
 	}
 
 	@PutMapping("{id}")
-	public HttpEntity<Boolean> updateById(@PathVariable Integer id,
-										  @RequestBody User user) {
+	public HttpEntity<Boolean> updateById(@PathVariable Integer id, @RequestBody User user) {
 		user.setId(id);
 		return ResponseEntity.ok(userService.updateById(user));
 	}
@@ -66,7 +65,7 @@ public class UserController {
 
 	@GetMapping
 	public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
-										   @RequestParam(defaultValue = "10") Integer pageSize) {
+			@RequestParam(defaultValue = "10") Integer pageSize) {
 		try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
 			.countColumn(BeanLambdaFunc.fieldName(User::getId))
 			.doSelectPage(userService::list)) {
@@ -74,4 +73,5 @@ public class UserController {
 			return ResponseEntity.ok(result);
 		}
 	}
+
 }

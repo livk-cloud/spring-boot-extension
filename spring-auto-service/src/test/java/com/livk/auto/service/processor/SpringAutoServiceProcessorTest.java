@@ -47,9 +47,7 @@ class SpringAutoServiceProcessorTest {
 	private void compile(Class<?> type, String annotationName) {
 		SpringAutoServiceProcessor serviceProcessor = new SpringAutoServiceProcessor();
 		SourceFile sourceFile = SourceFile.forTestClass(type);
-		TestCompiler testCompiler = TestCompiler.forSystem()
-			.withProcessors(serviceProcessor)
-			.withSources(sourceFile);
+		TestCompiler testCompiler = TestCompiler.forSystem().withProcessors(serviceProcessor).withSources(sourceFile);
 		testCompiler.compile(compiled -> {
 			try {
 				Enumeration<URL> resources = compiled.getClassLoader()
@@ -61,11 +59,11 @@ class SpringAutoServiceProcessorTest {
 					configList.addAll(Arrays.stream(arr).map(String::trim).toList());
 				}
 				Assertions.assertTrue(configList.contains(type.getName()));
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		});
 	}
-
 
 }

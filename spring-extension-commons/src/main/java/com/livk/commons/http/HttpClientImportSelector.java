@@ -43,7 +43,8 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 		HttpClientType[] types = getValue(attributes);
 		List<String> names = new ArrayList<>();
 		for (HttpClientType type : types) {
-			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader()).getCandidates();
+			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader())
+				.getCandidates();
 			names.addAll(configurations);
 		}
 		return names;
@@ -51,12 +52,13 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 
 	private HttpClientType[] getValue(AnnotationAttributes attributes) {
 		Object value = attributes.get("value");
-		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray() &&
-			HttpClientType[].class.getComponentType().isInstance(value)) {
+		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray()
+				&& HttpClientType[].class.getComponentType().isInstance(value)) {
 			Object array = Array.newInstance(HttpClientType[].class.getComponentType(), 1);
 			Array.set(array, 0, value);
 			value = array;
 		}
 		return (HttpClientType[]) value;
 	}
+
 }

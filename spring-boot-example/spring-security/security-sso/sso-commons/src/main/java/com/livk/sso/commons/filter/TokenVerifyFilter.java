@@ -45,22 +45,24 @@ public class TokenVerifyFilter extends BasicAuthenticationFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-		throws IOException, ServletException {
+			throws IOException, ServletException {
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (authorization != null && authorization.startsWith("Bearer ")) {
 			String token = authorization.replaceFirst("Bearer ", "");
 			Payload payload = JwtUtils.parse(token);
 			User user = payload.getUserInfo();
 			if (user != null) {
-				UsernamePasswordAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user,
-					"", user.getAuthorities());
+				UsernamePasswordAuthenticationToken authenticated = UsernamePasswordAuthenticationToken
+					.authenticated(user, "", user.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authenticated);
 				chain.doFilter(request, response);
-			} else {
+			}
+			else {
 				Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "缺少用户信息");
 				WebUtils.outJson(response, map);
 			}
-		} else {
+		}
+		else {
 			Map<String, Object> map = Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", "请登录！");
 			WebUtils.outJson(response, map);
 		}

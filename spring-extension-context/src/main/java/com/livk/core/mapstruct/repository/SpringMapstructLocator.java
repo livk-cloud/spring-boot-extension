@@ -49,4 +49,5 @@ public class SpringMapstructLocator implements MapstructLocator, ApplicationCont
 	public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
+
 }

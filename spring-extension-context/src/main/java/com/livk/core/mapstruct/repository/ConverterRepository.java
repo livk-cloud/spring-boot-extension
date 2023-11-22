@@ -31,7 +31,6 @@ public interface ConverterRepository extends MapstructLocator {
 
 	/**
 	 * Contains boolean.
-	 *
 	 * @param sourceType the source type
 	 * @param targetType the target type
 	 * @return the boolean
@@ -42,7 +41,6 @@ public interface ConverterRepository extends MapstructLocator {
 
 	/**
 	 * Contains boolean.
-	 *
 	 * @param converterPair the converter pair
 	 * @return the boolean
 	 */
@@ -50,17 +48,15 @@ public interface ConverterRepository extends MapstructLocator {
 
 	/**
 	 * Put.
-	 *
 	 * @param converterPair the converter pair
-	 * @param converter     the converter
+	 * @param converter the converter
 	 */
 	void put(ConverterPair converterPair, Converter<?, ?> converter);
 
 	/**
 	 * Compute if absent.
-	 *
 	 * @param converterPair the converter pair
-	 * @param converter     the converter
+	 * @param converter the converter
 	 * @return the converter
 	 */
 	Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter);

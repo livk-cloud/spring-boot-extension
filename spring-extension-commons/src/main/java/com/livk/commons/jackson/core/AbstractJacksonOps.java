@@ -39,7 +39,6 @@ public abstract class AbstractJacksonOps implements JacksonOps {
 		this(TypeFactoryUtils.instance());
 	}
 
-
 	public final <T> T readValue(Object obj, Class<T> type) {
 		return readValue(obj, typeFactory.constructType(type));
 	}
@@ -48,13 +47,12 @@ public abstract class AbstractJacksonOps implements JacksonOps {
 		return readValue(obj, typeFactory.constructType(typeReference));
 	}
 
-
 	public final <T> T convertValue(Object fromValue, Class<T> type) {
 		return convertValue(fromValue, typeFactory.constructType(type));
 	}
 
-
 	public final <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
 		return convertValue(fromValue, typeFactory.constructType(typeReference));
 	}
+
 }

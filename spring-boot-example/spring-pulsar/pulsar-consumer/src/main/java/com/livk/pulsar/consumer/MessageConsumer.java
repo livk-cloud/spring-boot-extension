@@ -40,4 +40,5 @@ public class MessageConsumer {
 		String topic = message.getTopicName();
 		log.info("topic:{} key:{} data:{}", topic, key, data);
 	}
+
 }

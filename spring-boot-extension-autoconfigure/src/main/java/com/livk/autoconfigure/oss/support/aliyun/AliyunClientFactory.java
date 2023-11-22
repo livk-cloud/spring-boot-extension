@@ -33,15 +33,12 @@ public class AliyunClientFactory implements OSSClientFactory<OSS> {
 	@Override
 	public OSS instance(String endpoint, String accessKey, String secretKey, String region) {
 		CredentialsProvider provider = new DefaultCredentialProvider(accessKey, secretKey);
-		return OSSClientBuilder.create()
-			.endpoint(endpoint)
-			.credentialsProvider(provider)
-			.region(region)
-			.build();
+		return OSSClientBuilder.create().endpoint(endpoint).credentialsProvider(provider).region(region).build();
 	}
 
 	@Override
 	public String name() {
 		return "aliyun";
 	}
+
 }

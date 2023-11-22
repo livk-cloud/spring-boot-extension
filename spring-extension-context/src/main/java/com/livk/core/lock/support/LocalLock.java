@@ -68,7 +68,8 @@ public class LocalLock extends AbstractLockSupport<Lock> {
 	protected boolean isLocked(Lock lock) {
 		if (lock instanceof ReentrantLock reentrantLock) {
 			return reentrantLock.isLocked() && reentrantLock.isHeldByCurrentThread();
-		} else if (lock instanceof ReentrantReadWriteLock.WriteLock writeLock) {
+		}
+		else if (lock instanceof ReentrantReadWriteLock.WriteLock writeLock) {
 			return writeLock.getHoldCount() != 0 && writeLock.isHeldByCurrentThread();
 		}
 		return false;
@@ -78,4 +79,5 @@ public class LocalLock extends AbstractLockSupport<Lock> {
 	public LockScope scope() {
 		return LockScope.STANDALONE_LOCK;
 	}
+
 }

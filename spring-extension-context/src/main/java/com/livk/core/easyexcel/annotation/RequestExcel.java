@@ -26,13 +26,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>在Mvc的环境下支持{@link java.util.Collection}</p>
- * <p>{example List}</p>
- * <p>在Reactive的环境下支持
- * {@link java.util.Collection}、</p>
- * <p>{@link reactor.core.publisher.Mono}</p>
- * <p>{example List}</p>
- * <p>{example Mono List }</p>
+ * <p>
+ * 在Mvc的环境下支持{@link java.util.Collection}
+ * </p>
+ * <p>
+ * {example List}
+ * </p>
+ * <p>
+ * 在Reactive的环境下支持 {@link java.util.Collection}、
+ * </p>
+ * <p>
+ * {@link reactor.core.publisher.Mono}
+ * </p>
+ * <p>
+ * {example List}
+ * </p>
+ * <p>
+ * {example Mono List }
+ * </p>
  *
  * @author livk
  */
@@ -42,14 +53,12 @@ public @interface RequestExcel {
 
 	/**
 	 * Parse class.
-	 *
 	 * @return the class
 	 */
 	Class<? extends ExcelMapReadListener<?>> parse() default DefaultExcelMapReadListener.class;
 
 	/**
 	 * Ignore empty row boolean.
-	 *
 	 * @return the boolean
 	 */
 	boolean ignoreEmptyRow() default false;

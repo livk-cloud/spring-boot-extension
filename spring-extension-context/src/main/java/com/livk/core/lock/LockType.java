@@ -25,6 +25,7 @@ package com.livk.core.lock;
  * @author livk
  */
 public enum LockType {
+
 	/**
 	 * 普通锁
 	 */
@@ -41,4 +42,5 @@ public enum LockType {
 	 * 写锁
 	 */
 	WRITE
+
 }

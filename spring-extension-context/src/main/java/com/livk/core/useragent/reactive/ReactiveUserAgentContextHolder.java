@@ -34,7 +34,6 @@ public class ReactiveUserAgentContextHolder {
 
 	/**
 	 * Get mono.
-	 *
 	 * @return the mono
 	 */
 	public static Mono<UserAgent> get() {
@@ -54,7 +53,6 @@ public class ReactiveUserAgentContextHolder {
 
 	/**
 	 * Clear context function.
-	 *
 	 * @return the function
 	 */
 	public static Function<Context, Context> clearContext() {
@@ -63,7 +61,6 @@ public class ReactiveUserAgentContextHolder {
 
 	/**
 	 * With context context.
-	 *
 	 * @param useragentWrapper the useragent wrapper
 	 * @return the context
 	 */
@@ -73,11 +70,11 @@ public class ReactiveUserAgentContextHolder {
 
 	/**
 	 * With context context.
-	 *
 	 * @param userAgent the useragent wrapper
 	 * @return the context
 	 */
 	public static Context withContext(UserAgent userAgent) {
 		return withContext(Mono.just(userAgent));
 	}
+
 }

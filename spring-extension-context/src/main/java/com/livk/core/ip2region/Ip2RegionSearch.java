@@ -38,14 +38,14 @@ public class Ip2RegionSearch implements AutoCloseable {
 
 	/**
 	 * Search as string.
-	 *
 	 * @param ip the ip
 	 * @return the string
 	 */
 	public String searchAsString(String ip) {
 		try {
 			return searcher.search(ip);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Ip2Region Searcher fail! IP:{}", ip);
 			return "";
 		}
@@ -53,7 +53,6 @@ public class Ip2RegionSearch implements AutoCloseable {
 
 	/**
 	 * Search as info ip info.
-	 *
 	 * @param ip the ip
 	 * @return the ip info
 	 */
@@ -63,7 +62,6 @@ public class Ip2RegionSearch implements AutoCloseable {
 
 	/**
 	 * Search as json string.
-	 *
 	 * @param ip the ip
 	 * @return the string
 	 */
@@ -75,4 +73,5 @@ public class Ip2RegionSearch implements AutoCloseable {
 	public void close() throws Exception {
 		searcher.close();
 	}
+
 }

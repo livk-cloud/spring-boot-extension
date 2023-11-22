@@ -29,7 +29,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class GraphqlR2dbcExample {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

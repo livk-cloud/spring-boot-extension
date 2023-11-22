@@ -50,8 +50,8 @@ public class Oauth2User extends User implements OAuth2AuthenticatedPrincipal {
 	private final String mobile;
 
 	public Oauth2User(Long id, String username, String password, String mobile, boolean enabled,
-					  boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
-					  Collection<? extends GrantedAuthority> authorities) {
+			boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
+			Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
 		this.mobile = mobile;
@@ -59,7 +59,6 @@ public class Oauth2User extends User implements OAuth2AuthenticatedPrincipal {
 
 	/**
 	 * Get the OAuth 2.0 token attributes
-	 *
 	 * @return the OAuth 2.0 token attributes
 	 */
 	@Override

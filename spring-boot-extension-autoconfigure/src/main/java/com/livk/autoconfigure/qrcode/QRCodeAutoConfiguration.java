@@ -48,7 +48,6 @@ public class QRCodeAutoConfiguration {
 
 	/**
 	 * Google qr code generator qr code generator.
-	 *
 	 * @param builder the builder
 	 * @return the qr code generator
 	 */
@@ -71,6 +70,7 @@ public class QRCodeAutoConfiguration {
 		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
 			handlers.add(new QRCodeMethodReturnValueHandler(qrCodeGenerator));
 		}
+
 	}
 
 	/**
@@ -81,14 +81,17 @@ public class QRCodeAutoConfiguration {
 	public static class WebFluxQRCodeAutoConfiguration implements WebFluxConfigurer {
 
 		/**
-		 * Reactive qr code method return value handler reactive qr code method return value handler.
-		 *
+		 * Reactive qr code method return value handler reactive qr code method return
+		 * value handler.
 		 * @param qrCodeGenerator the qr code generator
 		 * @return the reactive qr code method return value handler
 		 */
 		@Bean
-		public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
+		public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler(
+				QRCodeGenerator qrCodeGenerator) {
 			return new ReactiveQRCodeMethodReturnValueHandler(qrCodeGenerator);
 		}
+
 	}
+
 }

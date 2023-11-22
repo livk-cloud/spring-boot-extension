@@ -60,4 +60,5 @@ public class OssController {
 		String url = ossTemplate.getExternalLink("test", "test.jpg");
 		return ResponseEntity.ok(url);
 	}
+
 }

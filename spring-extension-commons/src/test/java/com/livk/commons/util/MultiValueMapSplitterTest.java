@@ -40,4 +40,5 @@ class MultiValueMapSplitterTest {
 
 		assertEquals(CollectionUtils.toMultiValueMap(map), valueMap);
 	}
+
 }

@@ -33,7 +33,9 @@ import org.springframework.util.Assert;
 @ToString
 @EqualsAndHashCode
 public class ConverterPair {
+
 	private final Class<?> sourceType;
+
 	private final Class<?> targetType;
 
 	private ConverterPair(Class<?> sourceType, Class<?> targetType) {
@@ -45,7 +47,6 @@ public class ConverterPair {
 
 	/**
 	 * Of converter pair.
-	 *
 	 * @param sourceType the source type
 	 * @param targetType the target type
 	 * @return the converter pair
@@ -53,4 +54,5 @@ public class ConverterPair {
 	public static ConverterPair of(Class<?> sourceType, Class<?> targetType) {
 		return new ConverterPair(sourceType, targetType);
 	}
+
 }

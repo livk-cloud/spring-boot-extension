@@ -43,8 +43,7 @@ class UserAgentControllerTest {
 
 	@Test
 	void getTest() throws Exception {
-		mockMvc.perform(get("/user-agent"))
-			.andExpect(status().isOk())
-			.andDo(print());
+		mockMvc.perform(get("/user-agent")).andExpect(status().isOk()).andDo(print());
 	}
+
 }

@@ -33,16 +33,19 @@ import java.util.List;
 class PrioritizedMapstructLocator implements MapstructLocator {
 
 	private final MapstructRegistry mapstructRegistry;
+
 	private final List<MapstructLocator> mapstructLocators = new ArrayList<>();
+
 	private ConverterRepository converterRepository;
 
 	public PrioritizedMapstructLocator(MapstructRegistry mapstructRegistry,
-									   ObjectProvider<MapstructLocator> mapstructLocatorObjectProvider) {
+			ObjectProvider<MapstructLocator> mapstructLocatorObjectProvider) {
 		this.mapstructRegistry = mapstructRegistry;
 		for (MapstructLocator mapstructLocator : mapstructLocatorObjectProvider.orderedStream().toList()) {
 			if (mapstructLocator instanceof ConverterRepository repository) {
 				this.converterRepository = repository;
-			} else {
+			}
+			else {
 				mapstructLocators.add(mapstructLocator);
 			}
 		}
@@ -62,4 +65,5 @@ class PrioritizedMapstructLocator implements MapstructLocator {
 		}
 		return converter;
 	}
+
 }

@@ -37,4 +37,5 @@ public class CustomResultHandler implements ResultHandler<Authors> {
 		Authors authors = resultContext.getResultObject();
 		downloadProcessor.processData(authors);
 	}
+
 }

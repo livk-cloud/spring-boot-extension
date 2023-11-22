@@ -50,13 +50,12 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasMethodAnnotation(RequestExcel.class) &&
-			   parameter.hasParameterAnnotation(ExcelParam.class);
+		return parameter.hasMethodAnnotation(RequestExcel.class) && parameter.hasParameterAnnotation(ExcelParam.class);
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-								  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+			@NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		RequestExcel excelImport = parameter.getMethodAnnotation(RequestExcel.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {

@@ -26,8 +26,7 @@ public interface Wrapper {
 	 * 根据类型获取相关实例
 	 * <p>
 	 * 如果无法进行转换则抛出异常{@link ClassCastException}
-	 *
-	 * @param <T>  相关泛型
+	 * @param <T> 相关泛型
 	 * @param type 类信息
 	 * @return 相关实例
 	 */
@@ -40,7 +39,6 @@ public interface Wrapper {
 
 	/**
 	 * 判断是否可以进行转换
-	 *
 	 * @param type 类信息
 	 * @return bool
 	 */
@@ -48,8 +46,8 @@ public interface Wrapper {
 
 	/**
 	 * 解析获取相关实例
-	 *
 	 * @return 相关实例
 	 */
 	Object unwrap();
+
 }

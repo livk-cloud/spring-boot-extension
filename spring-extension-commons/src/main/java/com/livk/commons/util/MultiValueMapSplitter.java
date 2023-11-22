@@ -42,7 +42,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class MultiValueMapSplitter {
 
 	private static final String INVALID_ENTRY_MESSAGE = "Chunk [%s] is not a valid entry";
+
 	private final Splitter outerSplitter;
+
 	private final Splitter entrySplitter;
 
 	private MultiValueMapSplitter(Splitter outerSplitter, Splitter entrySplitter) {
@@ -52,7 +54,6 @@ public final class MultiValueMapSplitter {
 
 	/**
 	 * 静态构造器
-	 *
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -63,7 +64,6 @@ public final class MultiValueMapSplitter {
 
 	/**
 	 * 静态构造器
-	 *
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -74,7 +74,6 @@ public final class MultiValueMapSplitter {
 
 	/**
 	 * 静态构造器
-	 *
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -85,10 +84,10 @@ public final class MultiValueMapSplitter {
 
 	/**
 	 * 拆分CharSequence成一个MultiValueMap
-	 *
 	 * @param sequence the sequence
 	 * @return the multi value map
-	 * @throws IllegalArgumentException if the specified sequence does not split into valid map                                  entries, or if there are duplicate keys
+	 * @throws IllegalArgumentException if the specified sequence does not split into
+	 * valid map entries, or if there are duplicate keys
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -106,4 +105,5 @@ public final class MultiValueMapSplitter {
 		}
 		return CollectionUtils.unmodifiableMultiValueMap(map);
 	}
+
 }

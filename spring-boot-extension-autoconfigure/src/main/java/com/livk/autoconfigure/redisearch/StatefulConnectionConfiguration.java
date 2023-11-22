@@ -32,25 +32,27 @@ public class StatefulConnectionConfiguration {
 
 	/**
 	 * String connection stateful redis modules connection.
-	 *
 	 * @param stringGenericObjectPool the string generic object pool
 	 * @return the stateful redis modules connection
 	 * @throws Exception the exception
 	 */
 	@Bean(destroyMethod = "close")
-	public StatefulRedisModulesConnection<String, String> stringConnection(GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool) throws Exception {
+	public StatefulRedisModulesConnection<String, String> stringConnection(
+			GenericObjectPool<StatefulRedisModulesConnection<String, String>> stringGenericObjectPool)
+			throws Exception {
 		return stringGenericObjectPool.getFactory().makeObject().getObject();
 	}
 
 	/**
 	 * Connection stateful redis modules connection.
-	 *
 	 * @param genericObjectPool the generic object pool
 	 * @return the stateful redis modules connection
 	 * @throws Exception the exception
 	 */
 	@Bean(destroyMethod = "close")
-	public StatefulRedisModulesConnection<String, Object> connection(GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool) throws Exception {
+	public StatefulRedisModulesConnection<String, Object> connection(
+			GenericObjectPool<StatefulRedisModulesConnection<String, Object>> genericObjectPool) throws Exception {
 		return genericObjectPool.getFactory().makeObject().getObject();
 	}
+
 }

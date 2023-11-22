@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableDisruptor(basePackageClasses = MessageModel.class)
 @SpringBootApplication
 public class DisruptorApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

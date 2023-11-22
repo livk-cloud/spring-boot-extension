@@ -33,10 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author livk
  */
 @SpringBootTest("spring.main.web-application-type=servlet")
-@EnableHttpClient({
-	HttpClientType.REST_TEMPLATE,
-	HttpClientType.WEB_CLIENT
-})
+@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT })
 public class SpringHttpTest {
 
 	@Autowired
@@ -52,4 +49,5 @@ public class SpringHttpTest {
 		assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
 		assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
 	}
+
 }

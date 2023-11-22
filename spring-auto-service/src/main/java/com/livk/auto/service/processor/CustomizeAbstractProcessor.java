@@ -88,14 +88,11 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
-		return getSupportedAnnotation().stream()
-			.map(Class::getName)
-			.collect(Collectors.toSet());
+		return getSupportedAnnotation().stream().map(Class::getName).collect(Collectors.toSet());
 	}
 
 	/**
 	 * Set supported annotations
-	 *
 	 * @return Set class
 	 */
 	protected abstract Set<Class<?>> getSupportedAnnotation();
@@ -104,7 +101,8 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		if (roundEnv.processingOver()) {
 			generateConfigFiles();
-		} else {
+		}
+		else {
 			processAnnotations(annotations, roundEnv);
 		}
 		return false;
@@ -117,15 +115,13 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	/**
 	 * 处理注解
-	 *
 	 * @param annotations annotations
-	 * @param roundEnv    roundEnv
+	 * @param roundEnv roundEnv
 	 */
 	protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
 	/**
 	 * buffered reader.
-	 *
 	 * @param fileObject the file object
 	 * @return the buffered reader
 	 * @throws IOException the io exception
@@ -136,7 +132,6 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	/**
 	 * buffered writer.
-	 *
 	 * @param fileObject the file object
 	 * @return the buffered writer
 	 * @throws IOException the io exception
@@ -144,4 +139,5 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
 		return new BufferedWriter(fileObject.openWriter());
 	}
+
 }

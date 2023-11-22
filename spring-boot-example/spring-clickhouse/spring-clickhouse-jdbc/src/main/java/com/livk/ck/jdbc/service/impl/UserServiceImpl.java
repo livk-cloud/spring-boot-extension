@@ -52,4 +52,5 @@ public class UserServiceImpl implements UserService {
 	public boolean save(User user) {
 		return userMapper.insert(user) > 0;
 	}
+
 }

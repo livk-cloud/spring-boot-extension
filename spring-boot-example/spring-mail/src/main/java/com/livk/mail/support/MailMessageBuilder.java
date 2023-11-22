@@ -37,6 +37,7 @@ import java.io.UnsupportedEncodingException;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MailMessageBuilder {
+
 	private MimeMessageHelper mimeMessageHelper;
 
 	public static MailMessageBuilder builder(JavaMailSender javaMailSender) {
@@ -44,7 +45,8 @@ public class MailMessageBuilder {
 			MailMessageBuilder builder = new MailMessageBuilder();
 			builder.mimeMessageHelper = new MimeMessageHelper(javaMailSender.createMimeMessage(), true);
 			return builder;
-		} catch (MessagingException e) {
+		}
+		catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -53,7 +55,8 @@ public class MailMessageBuilder {
 		try {
 			mimeMessageHelper.setFrom(from.key(), from.value());
 			return this;
-		} catch (MessagingException | UnsupportedEncodingException e) {
+		}
+		catch (MessagingException | UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -65,7 +68,8 @@ public class MailMessageBuilder {
 		try {
 			mimeMessageHelper.setTo(to);
 			return this;
-		} catch (MessagingException e) {
+		}
+		catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -74,7 +78,8 @@ public class MailMessageBuilder {
 		try {
 			mimeMessageHelper.setSubject(subject);
 			return this;
-		} catch (MessagingException e) {
+		}
+		catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -83,7 +88,8 @@ public class MailMessageBuilder {
 		try {
 			mimeMessageHelper.setText(text, isHtml);
 			return this;
-		} catch (MessagingException e) {
+		}
+		catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -94,7 +100,8 @@ public class MailMessageBuilder {
 				mimeMessageHelper.addAttachment(file.getName(), file);
 			}
 			return this;
-		} catch (MessagingException e) {
+		}
+		catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -102,4 +109,5 @@ public class MailMessageBuilder {
 	public MimeMessage build() {
 		return mimeMessageHelper.getMimeMessage();
 	}
+
 }

@@ -35,8 +35,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 
 	/**
 	 * 获取方法名称
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param function BeanLambdaFunc表达式
 	 * @return methodName
 	 */
@@ -46,8 +45,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 
 	/**
 	 * 获取方法
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param function BeanLambdaFunc表达式
 	 * @return method
 	 */
@@ -57,8 +55,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 
 	/**
 	 * 获取字段名称
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param function BeanLambdaFunc表达式
 	 * @return fieldName
 	 */
@@ -69,8 +66,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 
 	/**
 	 * 获取字段
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param function BeanLambdaFunc表达式
 	 * @return field
 	 */
@@ -78,4 +74,5 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	static <T> Field field(BeanLambdaFunc<T> function) {
 		return BeanLambdaDescriptor.create(function).getField();
 	}
+
 }

@@ -38,20 +38,16 @@ class SpringFactoriesProcessorTest {
 
 	@Test
 	public void test() {
-		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class,
-			SpringFactoryServiceImpl.class.getName());
+		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class, SpringFactoryServiceImpl.class.getName());
 	}
 
 	private void compile(Class<?> type, Class<?> factoryClass, String factoryClassImplName) {
 		SpringFactoriesProcessor serviceProcessor = new SpringFactoriesProcessor();
 		SourceFile sourceFile = SourceFile.forTestClass(type);
-		TestCompiler testCompiler = TestCompiler.forSystem()
-			.withProcessors(serviceProcessor)
-			.withSources(sourceFile);
+		TestCompiler testCompiler = TestCompiler.forSystem().withProcessors(serviceProcessor).withSources(sourceFile);
 		testCompiler.compile(compiled -> {
 			try {
-				Enumeration<URL> resources = compiled.getClassLoader()
-					.getResources("META-INF/spring.factories");
+				Enumeration<URL> resources = compiled.getClassLoader().getResources("META-INF/spring.factories");
 				Properties pro = new Properties();
 				for (URL url : Collections.list(resources)) {
 					InputStream inputStream = new UrlResource(url).getInputStream();
@@ -61,9 +57,11 @@ class SpringFactoriesProcessorTest {
 				}
 				Assertions.assertTrue(pro.containsKey(factoryClass.getName()));
 				Assertions.assertEquals(factoryClassImplName, pro.get(factoryClass.getName()));
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		});
 	}
+
 }

@@ -31,5 +31,7 @@ import java.util.List;
  */
 @Mapper
 public interface InfoMapper {
+
 	void saveBatch(List<Info> infos);
+
 }

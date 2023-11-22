@@ -43,9 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ShopControllerTest {
+
 	@Autowired
 	MockMvc mockMvc;
-
 
 	@Order(1)
 	@Test
@@ -55,10 +55,10 @@ class ShopControllerTest {
 		for (int i = 0; i < 10; i++) {
 			service.submit(() -> {
 				try {
-					mockMvc.perform(post("/shop/buy/distributed"))
-						.andExpect(status().isOk());
+					mockMvc.perform(post("/shop/buy/distributed")).andExpect(status().isOk());
 					countDownLatch.countDown();
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -77,6 +77,8 @@ class ShopControllerTest {
 			.andExpect(jsonPath("redisson.buySucCount", 10).exists())
 			.andExpect(jsonPath("redisson.num", 480).exists());
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

@@ -46,9 +46,9 @@ public class UserController {
 	@PostMapping("user")
 	public HttpEntity<Boolean> save() {
 		String json = """
-			{
-			  "mark": "livk"
-			}""";
+				{
+				  "mark": "livk"
+				}""";
 		User user = new User();
 		user.setUsername("admin");
 		user.setPassword("admin");

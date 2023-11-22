@@ -51,7 +51,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * 构建一个RequestWrapper
-	 *
 	 * @param request the request
 	 * @throws IOException the io exception
 	 */
@@ -64,7 +63,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * 设置request body
-	 *
 	 * @param body the body
 	 */
 	public void setBody(byte[] body) {
@@ -74,8 +72,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * 添加http header
-	 *
-	 * @param name  the name
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void addHeader(String name, String value) {
@@ -84,8 +81,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * 添加http parameter.
-	 *
-	 * @param name   the name
+	 * @param name the name
 	 * @param values the values
 	 */
 	public void putParameter(String name, String[] values) {
@@ -94,12 +90,11 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * 添加http parameter.
-	 *
-	 * @param name  the name
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void putParameter(String name, String value) {
-		putParameter(name, new String[]{value});
+		putParameter(name, new String[] { value });
 	}
 
 	@Override
@@ -182,12 +177,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		/**
 		 * 创建ByteArrayReader
-		 *
 		 * @param bytes the bytes
 		 */
 		public ByteArrayReader(byte[] bytes) {
 			super(new ByteArrayInputStream(bytes));
 		}
+
 	}
 
 	private static class ByteArrayServletInputStream extends ServletInputStream {
@@ -196,7 +191,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		/**
 		 * 创建ByteArrayServletInputStream
-		 *
 		 * @param body the json
 		 */
 		public ByteArrayServletInputStream(byte[] body) {
@@ -224,4 +218,5 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		}
 
 	}
+
 }

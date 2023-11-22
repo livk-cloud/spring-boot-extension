@@ -41,9 +41,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 基于BeanUtils的复制
-	 *
-	 * @param <T>         类型
-	 * @param source      目标源
+	 * @param <T> 类型
+	 * @param source 目标源
 	 * @param targetClass 需复制的结果类型
 	 * @return result t
 	 */
@@ -53,9 +52,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 基于BeanUtils的复制
-	 *
-	 * @param <T>      类型
-	 * @param source   目标源
+	 * @param <T> 类型
+	 * @param source 目标源
 	 * @param supplier 供应商
 	 * @return result t
 	 */
@@ -72,9 +70,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * list类型复制
-	 *
-	 * @param <T>         类型
-	 * @param sourceList  目标list
+	 * @param <T> 类型
+	 * @param sourceList 目标list
 	 * @param targetClass class类型
 	 * @return result list
 	 */
@@ -84,7 +81,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 判断当前类是否为NULL,同时判定当前类所有的Field是否为NULL
-	 *
 	 * @param source 目标
 	 * @return boolean
 	 */
@@ -98,7 +94,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
 	 * 使用BeanWrapper将Bean转成Map
-	 *
 	 * @param source bean
 	 * @return Map
 	 * @see BeanWrapper
@@ -116,4 +111,5 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 		}
 		return map;
 	}
+
 }

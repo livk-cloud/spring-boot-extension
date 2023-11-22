@@ -43,4 +43,5 @@ public class DocController {
 	public Mono<HttpEntity<String>> get() {
 		return Mono.just(ResponseEntity.ok("hello world"));
 	}
+
 }

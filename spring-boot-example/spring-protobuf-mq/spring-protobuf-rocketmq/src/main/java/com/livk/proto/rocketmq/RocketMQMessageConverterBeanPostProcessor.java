@@ -18,7 +18,8 @@ import java.util.List;
 public class RocketMQMessageConverterBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
-	public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
+	public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName)
+			throws BeansException {
 		if (bean instanceof RocketMQMessageConverter rocketMQMessageConverter) {
 			MessageConverter messageConverter = rocketMQMessageConverter.getMessageConverter();
 			if (messageConverter instanceof CompositeMessageConverter compositeMessageConverter) {
@@ -29,4 +30,5 @@ public class RocketMQMessageConverterBeanPostProcessor implements BeanPostProces
 		}
 		return bean;
 	}
+
 }

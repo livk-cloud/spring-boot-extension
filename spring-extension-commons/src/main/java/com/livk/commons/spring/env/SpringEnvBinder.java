@@ -52,8 +52,7 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构造方法
-	 *
-	 * @param environment       the environment
+	 * @param environment the environment
 	 * @param conversionService the conversion service
 	 */
 	public SpringEnvBinder(Environment environment, ConfigurableConversionService conversionService) {
@@ -63,7 +62,6 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构造方法
-	 *
 	 * @param environment the environment
 	 */
 	public SpringEnvBinder(Environment environment) {
@@ -72,7 +70,6 @@ public class SpringEnvBinder {
 
 	/**
 	 * 添加Converter
-	 *
 	 * @param converter the converter
 	 * @return the spring env binder
 	 */
@@ -83,7 +80,6 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建Binder
-	 *
 	 * @return the binder
 	 */
 	public Binder binder() {
@@ -94,8 +90,7 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult,返回类型与ResolvableType相关
-	 *
-	 * @param <T>  泛型
+	 * @param <T> 泛型
 	 * @param name 要绑定的配置属性名称
 	 * @param type 类型相关
 	 * @return bind result
@@ -106,8 +101,7 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult,返回数据为List
-	 *
-	 * @param <E>  泛型
+	 * @param <E> 泛型
 	 * @param name 要绑定的配置属性名称
 	 * @param type 泛型类型
 	 * @return bind result
@@ -118,8 +112,7 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult,返回数据为Set
-	 *
-	 * @param <E>  泛型
+	 * @param <E> 泛型
 	 * @param name 要绑定的配置属性名称
 	 * @param type 泛型类型
 	 * @return bind result
@@ -130,10 +123,9 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult,返回数据为Map
-	 *
-	 * @param <K>   Key泛型
-	 * @param <V>   Value泛型
-	 * @param name  要绑定的配置属性名称
+	 * @param <K> Key泛型
+	 * @param <V> Value泛型
+	 * @param name 要绑定的配置属性名称
 	 * @param kType Key类型
 	 * @param vType Value类型
 	 * @return bind result
@@ -144,7 +136,6 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult,返回数据为Properties
-	 *
 	 * @param name 要绑定的配置属性名称
 	 * @return bind result
 	 */
@@ -154,9 +145,8 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult
-	 *
-	 * @param <T>      泛型
-	 * @param name     要绑定的配置属性名称
+	 * @param <T> 泛型
+	 * @param name 要绑定的配置属性名称
 	 * @param bindable bindable
 	 * @return bind result
 	 */
@@ -166,8 +156,7 @@ public class SpringEnvBinder {
 
 	/**
 	 * 构建BindResult
-	 *
-	 * @param <T>  泛型
+	 * @param <T> 泛型
 	 * @param name 要绑定的配置属性名称
 	 * @param type 返回数据类型
 	 * @return bind result
@@ -175,4 +164,5 @@ public class SpringEnvBinder {
 	public <T> BindResult<T> bind(String name, Class<T> type) {
 		return binder().bind(name, type);
 	}
+
 }

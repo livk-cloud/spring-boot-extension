@@ -41,11 +41,12 @@ public class ReactiveUserAgentFilter implements WebFilter {
 	@NonNull
 	@Override
 	public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		exchange.getResponse().beforeCommit(() -> Mono.deferContextual(Mono::just)
-			.contextWrite(ReactiveUserAgentContextHolder.clearContext())
-			.then());
+		exchange.getResponse()
+			.beforeCommit(() -> Mono.deferContextual(Mono::just)
+				.contextWrite(ReactiveUserAgentContextHolder.clearContext())
+				.then());
 		HttpHeaders headers = exchange.getRequest().getHeaders();
-		return chain.filter(exchange)
-			.contextWrite(ReactiveUserAgentContextHolder.withContext(helper.convert(headers)));
+		return chain.filter(exchange).contextWrite(ReactiveUserAgentContextHolder.withContext(helper.convert(headers)));
 	}
+
 }

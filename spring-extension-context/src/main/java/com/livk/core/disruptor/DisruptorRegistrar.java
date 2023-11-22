@@ -39,12 +39,12 @@ public class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
 
 	@Override
 	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
-										@NonNull BeanDefinitionRegistry registry,
-										@NonNull BeanNameGenerator beanNameGenerator) {
+			@NonNull BeanDefinitionRegistry registry, @NonNull BeanNameGenerator beanNameGenerator) {
 		AnnotationAttributes attributes = AnnotationUtils.attributesFor(importingClassMetadata, EnableDisruptor.class);
 		String[] basePackages = getBasePackages(attributes);
 		if (ObjectUtils.isEmpty(basePackages)) {
-			throw new DisruptorRegistrarException(EnableDisruptor.class.getName() + " required basePackages or basePackageClasses");
+			throw new DisruptorRegistrarException(
+					EnableDisruptor.class.getName() + " required basePackages or basePackageClasses");
 		}
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(registry, beanNameGenerator);
 		scanner.registerFilters(DisruptorEvent.class);
@@ -62,4 +62,5 @@ public class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
 		}
 		return basePackages;
 	}
+
 }

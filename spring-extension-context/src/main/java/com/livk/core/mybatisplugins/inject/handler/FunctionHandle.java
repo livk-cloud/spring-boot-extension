@@ -31,18 +31,17 @@ public interface FunctionHandle<T> {
 
 	/**
 	 * Handler t.
-	 *
 	 * @return the t
 	 */
 	T handler();
 
 	/**
 	 * Gets type.
-	 *
 	 * @return the type
 	 */
 	@SuppressWarnings("unchecked")
 	default Class<T> getType() {
 		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), FunctionHandle.class);
 	}
+
 }

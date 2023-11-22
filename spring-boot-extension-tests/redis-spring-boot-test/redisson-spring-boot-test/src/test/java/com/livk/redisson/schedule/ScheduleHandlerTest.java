@@ -38,4 +38,5 @@ class ScheduleHandlerTest {
 	void start() {
 		scheduleHandler.start();
 	}
+
 }

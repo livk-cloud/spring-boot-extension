@@ -47,7 +47,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Create t.
-	 *
 	 * @param headers the headers
 	 * @return the t
 	 */
@@ -55,7 +54,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Browser string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -63,7 +61,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Browser type string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -71,7 +68,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Browser version string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -79,7 +75,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Os string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -87,7 +82,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Os version string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -95,7 +89,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Device type string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -103,7 +96,6 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Device name string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
@@ -111,9 +103,9 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Device brand string.
-	 *
 	 * @param t the t
 	 * @return the string
 	 */
 	protected abstract String deviceBrand(T t);
+
 }

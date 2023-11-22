@@ -31,11 +31,13 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RocketMQMessageListener(consumerGroup = "livk-consumer-group-3", topic = RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC, consumeMode = ConsumeMode.ORDERLY)
+@RocketMQMessageListener(consumerGroup = "livk-consumer-group-3", topic = RocketConstant.LIVK_MESSAGE_ORDERLY_TOPIC,
+		consumeMode = ConsumeMode.ORDERLY)
 public class TestMessageOrderlyListener implements RocketMQListener<RocketDTO> {
 
 	@Override
 	public void onMessage(RocketDTO dto) {
 		log.info("orderly rocketMQ receive message：{}", JsonMapperUtils.writeValueAsString(dto));
 	}
+
 }

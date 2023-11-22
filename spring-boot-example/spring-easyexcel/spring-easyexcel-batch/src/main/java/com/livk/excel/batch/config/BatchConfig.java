@@ -42,4 +42,5 @@ public class BatchConfig {
 	public ItemWriter<List<Info>> writer(SqlSessionFactory sqlSessionFactory) {
 		return new MyBatisBatchItemWriter<>(sqlSessionFactory, "com.livk.excel.batch.mapper.InfoMapper.saveBatch");
 	}
+
 }

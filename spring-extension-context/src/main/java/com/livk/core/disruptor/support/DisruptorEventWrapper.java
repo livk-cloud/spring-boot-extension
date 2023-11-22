@@ -31,7 +31,6 @@ public class DisruptorEventWrapper<V> implements GenericWrapper<V> {
 
 	/**
 	 * Wrap.
-	 *
 	 * @param unwrap the unwrap
 	 */
 	public void wrap(V unwrap) {
@@ -44,4 +43,5 @@ public class DisruptorEventWrapper<V> implements GenericWrapper<V> {
 	public V unwrap() {
 		return real;
 	}
+
 }

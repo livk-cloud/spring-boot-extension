@@ -89,8 +89,11 @@ class ReflectionUtilsTest {
 
 	@Data
 	static class Maker {
+
 		private Integer no;
 
 		private String username;
+
 	}
+
 }

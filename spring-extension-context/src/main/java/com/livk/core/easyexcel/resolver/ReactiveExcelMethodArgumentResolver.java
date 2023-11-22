@@ -52,13 +52,13 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.hasMethodAnnotation(RequestExcel.class) &&
-			   parameter.hasParameterAnnotation(ExcelParam.class);
+		return parameter.hasMethodAnnotation(RequestExcel.class) && parameter.hasParameterAnnotation(ExcelParam.class);
 	}
 
 	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
+	public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext,
+			@NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 		RequestExcel excelImport = parameter.getMethodAnnotation(RequestExcel.class);
@@ -72,16 +72,18 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 			}
 			if (genericType.getRawClass() != null) {
 
-				ExcelDataType dataType = Flux.class.isAssignableFrom(genericType.getRawClass()) ?
-					ExcelDataType.COLLECTION : ExcelDataType.match(genericType.getRawClass());
+				ExcelDataType dataType = Flux.class.isAssignableFrom(genericType.getRawClass())
+						? ExcelDataType.COLLECTION : ExcelDataType.match(genericType.getRawClass());
 				Class<?> excelModelClass = dataType.getFunction().apply(genericType);
 				mono = FileUtils.getPartValues(excelParam.fileName(), exchange)
 					.map(Part::content)
 					.flatMap(DataBufferUtils::transform)
-					.doOnSuccess(in -> EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
+					.doOnSuccess(
+							in -> EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow()))
 					.map(in -> listener.getData(dataType));
 			}
 		}
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
 	}
+
 }

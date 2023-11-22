@@ -60,4 +60,5 @@ public class QRCodeController {
 		Map<String, String> map = JsonMapperUtils.convertValueMap(node, String.class, String.class);
 		return QRCodeEntity.builder(map).build();
 	}
+
 }

@@ -34,4 +34,5 @@ public class IpInfoObjectFactory implements ObjectFactory<RequestIpInfo>, Serial
 	public RequestIpInfo getObject() throws BeansException {
 		return RequestIpContextHolder::get;
 	}
+
 }

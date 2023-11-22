@@ -39,4 +39,5 @@ public class GenericMapstructService extends AbstractMapstructService implements
 	public Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter) {
 		return converterRepository.computeIfAbsent(converterPair, converter);
 	}
+
 }

@@ -10,4 +10,5 @@ public interface DisruptorMqService {
 	void send(String message);
 
 	void batch(List<String> messages);
+
 }

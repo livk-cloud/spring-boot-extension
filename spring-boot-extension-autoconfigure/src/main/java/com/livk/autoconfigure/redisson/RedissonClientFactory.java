@@ -41,17 +41,14 @@ public class RedissonClientFactory {
 
 	/**
 	 * Create redisson client.
-	 *
-	 * @param properties        the properties
-	 * @param redisProperties   the redis properties
+	 * @param properties the properties
+	 * @param redisProperties the redis properties
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client
 	 */
-	public static RedissonClient create(ConfigProperties properties,
-										RedisProperties redisProperties,
-										ObjectProvider<ConfigCustomizer> configCustomizers) {
-		Config config = Optional.<Config>ofNullable(properties.getConfig())
-			.orElse(createConfig(redisProperties));
+	public static RedissonClient create(ConfigProperties properties, RedisProperties redisProperties,
+			ObjectProvider<ConfigCustomizer> configCustomizers) {
+		Config config = Optional.<Config>ofNullable(properties.getConfig()).orElse(createConfig(redisProperties));
 		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
 		return Redisson.create(config);
 	}
@@ -70,7 +67,8 @@ public class RedissonClientFactory {
 				.setDatabase(redisProperties.getDatabase())
 				.setConnectTimeout(timeout)
 				.setPassword(redisProperties.getPassword());
-		} else if (redisProperties.getCluster() != null) {
+		}
+		else if (redisProperties.getCluster() != null) {
 			List<String> nodeList = redisProperties.getCluster().getNodes();
 			String[] nodes = convert(nodeList);
 			config = new Config();
@@ -78,7 +76,8 @@ public class RedissonClientFactory {
 				.addNodeAddress(nodes)
 				.setConnectTimeout(timeout)
 				.setPassword(redisProperties.getPassword());
-		} else {
+		}
+		else {
 			config = new Config();
 			String prefix = REDIS_PROTOCOL_PREFIX;
 			if (redisProperties.getSsl().isEnabled()) {
@@ -98,10 +97,12 @@ public class RedissonClientFactory {
 		for (String node : nodesObject) {
 			if (!node.startsWith(REDIS_PROTOCOL_PREFIX) && !node.startsWith(REDISS_PROTOCOL_PREFIX)) {
 				nodes.add(REDIS_PROTOCOL_PREFIX + node);
-			} else {
+			}
+			else {
 				nodes.add(node);
 			}
 		}
 		return nodes.toArray(new String[0]);
 	}
+
 }

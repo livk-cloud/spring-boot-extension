@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * @author livk
  */
 
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AutoRepeatedSubmit {
 

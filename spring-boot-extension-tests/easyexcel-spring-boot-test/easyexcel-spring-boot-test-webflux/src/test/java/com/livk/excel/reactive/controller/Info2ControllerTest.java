@@ -49,13 +49,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class Info2ControllerTest {
 
 	static MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
 	@Autowired
 	WebTestClient client;
 
 	@BeforeAll
 	public static void before() {
-		builder.part("file", new ClassPathResource("outFile.xls"))
-			.filename("file");
+		builder.part("file", new ClassPathResource("outFile.xls")).filename("file");
 	}
 
 	@Test
@@ -69,8 +69,10 @@ class Info2ControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
-				} catch (IOException e) {
+					FileUtils.download(resource.getInputStream(),
+							"./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -93,8 +95,10 @@ class Info2ControllerTest {
 			.expectBody(Resource.class)
 			.value(resource -> {
 				try {
-					FileUtils.download(resource.getInputStream(), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-				} catch (IOException e) {
+					FileUtils.download(resource.getInputStream(),
+							"./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -102,4 +106,5 @@ class Info2ControllerTest {
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
+
 }

@@ -33,4 +33,5 @@ public class DownloadProcessor {
 		writer.write(record.toString());
 		writer.write("\n");
 	}
+
 }

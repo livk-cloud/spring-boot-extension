@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-gradle-plugin:${libs.versions.spring.boot.get()}")
+	implementation("io.spring.javaformat:spring-javaformat-gradle-plugin:${libs.versions.spring.javaformat.get()}")
 }
 
 gradlePlugin {

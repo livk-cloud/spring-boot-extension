@@ -33,4 +33,5 @@ public class ConsumerCheck {
 	static boolean isSuccess() {
 		return STATUS.get();
 	}
+
 }

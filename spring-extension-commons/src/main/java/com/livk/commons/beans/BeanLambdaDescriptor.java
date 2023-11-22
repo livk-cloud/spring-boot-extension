@@ -57,8 +57,7 @@ class BeanLambdaDescriptor {
 	 * 静态构建根据{@link BeanLambdaDescriptor}
 	 * <p>
 	 * 使用缓存避免无效加载
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param function BeanLambdaFunc表达式
 	 * @return BeanLambdaDescriptor
 	 */
@@ -69,7 +68,8 @@ class BeanLambdaDescriptor {
 		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className);
-		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()), pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
+		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()),
+				pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
 	}
 
 	private void initField() {
@@ -98,4 +98,5 @@ class BeanLambdaDescriptor {
 	public Method getMethod() {
 		return ReflectionUtils.findMethod(type, methodName);
 	}
+
 }

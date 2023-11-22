@@ -45,7 +45,8 @@ public class LuaStock {
 		Assert.notNull(result, "RedisScript Result is Null!");
 		if (0 == result) {
 			return "没了";
-		} else if (2 == result) {
+		}
+		else if (2 == result) {
 			return "抢到了";
 		}
 		return "";

@@ -50,7 +50,8 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 	}
 
 	@Override
-	public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public final Object resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
+			@NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		UserAgent agentContext = UserAgentContextHolder.getUserAgentContext();
 		if (agentContext == null) {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
@@ -61,4 +62,5 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 		}
 		return agentContext;
 	}
+
 }

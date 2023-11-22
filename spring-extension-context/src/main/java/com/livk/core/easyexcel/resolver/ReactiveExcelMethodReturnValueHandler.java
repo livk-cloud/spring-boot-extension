@@ -54,6 +54,7 @@ import java.util.function.Function;
  * @author livk
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
+
 	/**
 	 * The constant EXCEL_MEDIA_TYPE.
 	 */
@@ -76,7 +77,8 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 		if (returnValue == null) {
 			return Mono.empty();
 		}
-		ResponseExcel excelReturn = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(), ResponseExcel.class);
+		ResponseExcel excelReturn = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(),
+				ResponseExcel.class);
 		ServerHttpResponse response = exchange.getResponse();
 		ResolvableType returnType = result.getReturnType();
 		ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
@@ -87,30 +89,39 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 				Flux<?> flux = (Flux<?>) returnValue;
 				Mono<Map<String, Collection<?>>> mono = flux.collectList().map(defaultFunction);
 				return this.write(excelReturn, response, excelModelClass, mono);
-			} else if (Mono.class.isAssignableFrom(returnType.toClass())) {
+			}
+			else if (Mono.class.isAssignableFrom(returnType.toClass())) {
 				if (Collection.class.isAssignableFrom(genericType.toClass())) {
 					Class<?> excelModelClass = genericType.resolveGeneric(0);
 					Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) returnValue).map(defaultFunction);
 					return this.write(excelReturn, response, excelModelClass, mono);
-				} else if (Map.class.isAssignableFrom(genericType.toClass())) {
+				}
+				else if (Map.class.isAssignableFrom(genericType.toClass())) {
 					Class<?> excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
 					Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) returnValue;
 					return this.write(excelReturn, response, excelModelClass, mono);
-				} else {
+				}
+				else {
 					throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
 				}
-			} else {
-				throw new ExcelExportException("the return class is not reactor.core.publisher.Flux or reactor.core.publisher.Mono");
 			}
-		} else {
+			else {
+				throw new ExcelExportException(
+						"the return class is not reactor.core.publisher.Flux or reactor.core.publisher.Mono");
+			}
+		}
+		else {
 			if (Collection.class.isAssignableFrom(returnType.toClass())) {
 				Class<?> excelModelClass = returnType.resolveGeneric(0);
-				return this.write(excelReturn, response, excelModelClass, defaultFunction.apply((Collection<?>) returnValue));
-			} else if (Map.class.isAssignableFrom(returnType.toClass())) {
+				return this.write(excelReturn, response, excelModelClass,
+						defaultFunction.apply((Collection<?>) returnValue));
+			}
+			else if (Map.class.isAssignableFrom(returnType.toClass())) {
 				Map<String, Collection<?>> map = (Map<String, Collection<?>>) returnValue;
 				Class<?> excelModelClass = returnType.getGeneric(1).resolveGeneric(0);
 				return this.write(excelReturn, response, excelModelClass, map);
-			} else {
+			}
+			else {
 				throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
 			}
 		}
@@ -118,28 +129,27 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 
 	/**
 	 * Write mono.
-	 *
-	 * @param excelReturn     the excel return
-	 * @param response        the response
+	 * @param excelReturn the excel return
+	 * @param response the response
 	 * @param excelModelClass the excel model class
-	 * @param result          the result
+	 * @param result the result
 	 * @return the mono
 	 */
-	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Mono<Map<String, Collection<?>>> result) {
+	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass,
+			Mono<Map<String, Collection<?>>> result) {
 		return result.flatMap(r -> this.write(excelReturn, response, excelModelClass, r));
 	}
 
-
 	/**
 	 * Write mono.
-	 *
-	 * @param excelReturn     the excel return
-	 * @param response        the response
+	 * @param excelReturn the excel return
+	 * @param response the response
 	 * @param excelModelClass the excel model class
-	 * @param result          the result
+	 * @param result the result
 	 * @return the mono
 	 */
-	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass, Map<String, Collection<?>> result) {
+	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass,
+			Map<String, Collection<?>> result) {
 		this.setResponse(excelReturn, response);
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
@@ -149,8 +159,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 
 	private void setResponse(ResponseExcel excelReturn, ServerHttpResponse response) {
 		String fileName = EasyExcelSupport.fileName(excelReturn);
-		MediaType mediaType = MediaTypeFactory.getMediaType(fileName)
-			.orElse(EXCEL_MEDIA_TYPE);
+		MediaType mediaType = MediaTypeFactory.getMediaType(fileName).orElse(EXCEL_MEDIA_TYPE);
 		HttpHeaders headers = response.getHeaders();
 		headers.setContentType(mediaType);
 		headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
@@ -160,7 +169,8 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 
 	@Override
 	public int getOrder() {
-		//提高优先级，不然会被@ResponseBody优先处理掉
+		// 提高优先级，不然会被@ResponseBody优先处理掉
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
+
 }

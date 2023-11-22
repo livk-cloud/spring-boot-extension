@@ -44,26 +44,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
+
 	@Autowired
 	MockMvc mockMvc;
-
 
 	@Order(1)
 	@Test
 	void testSave() throws Exception {
-		mockMvc.perform(post("/user"))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(content().string("true"));
+		mockMvc.perform(post("/user")).andDo(print()).andExpect(status().isOk()).andExpect(content().string("true"));
 	}
 
 	@Order(2)
 	@Test
 	void testUsers() throws Exception {
-		mockMvc.perform(get("/user"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/user")).andDo(print()).andExpect(status().isOk());
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

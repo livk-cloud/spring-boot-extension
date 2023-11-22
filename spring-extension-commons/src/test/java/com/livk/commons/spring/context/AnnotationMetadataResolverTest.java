@@ -50,15 +50,15 @@ class AnnotationMetadataResolverTest {
 		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(resourceLoader);
 
 		assertEquals(Set.of(A.class, TestController.class),
-			resolver.find(TestAnnotation.class, "com.livk.commons.spring.context"));
+				resolver.find(TestAnnotation.class, "com.livk.commons.spring.context"));
 
-		assertEquals(Set.of(A.class, TestController.class),
-			resolver.find(TestAnnotation.class, beanFactory));
+		assertEquals(Set.of(A.class, TestController.class), resolver.find(TestAnnotation.class, beanFactory));
 	}
 
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface TestAnnotation {
+
 	}
 
 	@Target(ElementType.TYPE)
@@ -69,9 +69,12 @@ class AnnotationMetadataResolverTest {
 
 		@AliasFor(annotation = Controller.class)
 		String value() default "";
+
 	}
 
 	@TestController
 	static class A {
+
 	}
+
 }

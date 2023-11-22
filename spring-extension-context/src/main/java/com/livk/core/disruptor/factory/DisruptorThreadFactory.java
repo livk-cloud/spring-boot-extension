@@ -26,10 +26,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author livk
  */
 public class DisruptorThreadFactory implements ThreadFactory {
+
 	private static final AtomicLong index = new AtomicLong(1);
 
 	@Override
 	public Thread newThread(@NonNull Runnable r) {
 		return new Thread(r, "disruptor-" + index.getAndIncrement());
 	}
+
 }

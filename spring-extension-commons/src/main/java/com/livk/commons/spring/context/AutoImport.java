@@ -33,4 +33,5 @@ import java.lang.annotation.*;
 @Documented
 @Import(AutoImportSelector.class)
 public @interface AutoImport {
+
 }

@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MicrometerTraceAppTest {
+
 	@Autowired
 	MockMvc mockMvc;
 
@@ -48,5 +49,5 @@ class MicrometerTraceAppTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string("Hello World!"));
 	}
-}
 
+}

@@ -52,4 +52,5 @@ public class FilterController {
 	public HttpEntity<String> uuid() {
 		return ResponseEntity.ok(uuidRequest.currentUUID().toString());
 	}
+
 }

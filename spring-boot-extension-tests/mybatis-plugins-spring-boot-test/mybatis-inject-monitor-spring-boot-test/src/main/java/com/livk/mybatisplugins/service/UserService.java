@@ -29,6 +29,7 @@ import java.util.List;
  * @author livk
  */
 public interface UserService {
+
 	User getById(Integer id);
 
 	boolean updateById(User user);
@@ -38,4 +39,5 @@ public interface UserService {
 	boolean deleteById(Integer id);
 
 	List<User> list();
+
 }

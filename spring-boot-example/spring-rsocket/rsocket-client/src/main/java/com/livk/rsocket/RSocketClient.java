@@ -65,8 +65,7 @@ public class RSocketClient {
 
 	@GetMapping("fire-and-forget")
 	public Mono<String> fireAndForget() {
-		return this.rsocketRequester
-			.route("fire-and-forget")
+		return this.rsocketRequester.route("fire-and-forget")
 			.data(new Message("客户端", "服务器"))
 			.send()
 			.flatMap(unused -> Mono.just("fire and forget"));
@@ -84,8 +83,7 @@ public class RSocketClient {
 		Mono<Duration> setting3 = Mono.just(Duration.ofSeconds(5)).delayElement(Duration.ofSeconds(15));
 		Flux<Duration> settings = Flux.concat(setting1, setting2, setting3)
 			.doOnNext(d -> log.info("客户端channel发送消息 {}", d.getSeconds()));
-		return settings.collectList()
-			.flatMap(durations -> Mono.just("channel"));
+		return settings.collectList().flatMap(durations -> Mono.just("channel"));
 	}
 
 }

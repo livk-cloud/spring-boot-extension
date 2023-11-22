@@ -44,27 +44,27 @@ import java.util.Set;
 @Deprecated(forRemoval = true)
 @UtilityClass
 public class SpringUtils {
+
 	private static final SpringExpressionResolver RESOLVER = new SpringExpressionResolver();
 
 	/**
 	 * 获取被注解标注的class
-	 *
 	 * @param annotationType annotation
 	 * @param resourceLoader resourceLoader
-	 * @param packages       待扫描的包
+	 * @param packages 待扫描的包
 	 * @return set class
 	 */
-	public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationType,
-											  ResourceLoader resourceLoader, String... packages) {
+	public Set<Class<?>> findByAnnotationType(Class<? extends Annotation> annotationType, ResourceLoader resourceLoader,
+			String... packages) {
 		Assert.notNull(annotationType, "annotation not null");
 		return new AnnotationMetadataResolver(resourceLoader).find(annotationType, packages);
 	}
 
 	/**
-	 * {example env= "spring.data.redisson.host=127.0.0.1" keyPrefix="spring.data" result=Map.of("redisson.host","127.0.0.1")}
-	 *
+	 * {example env= "spring.data.redisson.host=127.0.0.1" keyPrefix="spring.data"
+	 * result=Map.of("redisson.host","127.0.0.1")}
 	 * @param environment env
-	 * @param keyPrefix   prefix
+	 * @param keyPrefix prefix
 	 * @return map sub properties
 	 */
 	public Map<String, String> getSubPropertiesMap(Environment environment, String keyPrefix) {
@@ -74,9 +74,8 @@ public class SpringUtils {
 
 	/**
 	 * Gets sub properties.
-	 *
 	 * @param environment the environment
-	 * @param keyPrefix   the key prefix
+	 * @param keyPrefix the key prefix
 	 * @return the sub properties
 	 */
 	public Properties getSubProperties(Environment environment, String keyPrefix) {
@@ -85,11 +84,10 @@ public class SpringUtils {
 
 	/**
 	 * Bind bind result.
-	 *
-	 * @param <T>         the type parameter
+	 * @param <T> the type parameter
 	 * @param environment the environment
-	 * @param keyPrefix   the key prefix
-	 * @param bindable    the bindable
+	 * @param keyPrefix the key prefix
+	 * @param bindable the bindable
 	 * @return the bind result
 	 */
 	public <T> BindResult<T> bind(Environment environment, String keyPrefix, Bindable<T> bindable) {
@@ -97,29 +95,26 @@ public class SpringUtils {
 	}
 
 	/**
-	 * 解析SpEL表达式
-	 * 非模板表达式: #username
-	 * 模板表达式:"livk:#{#username}"
-	 *
-	 * @param <T>         类型
-	 * @param method      方法
-	 * @param args        方法参数
-	 * @param condition   表达式
+	 * 解析SpEL表达式 非模板表达式: #username 模板表达式:"livk:#{#username}"
+	 * @param <T> 类型
+	 * @param method 方法
+	 * @param args 方法参数
+	 * @param condition 表达式
 	 * @param returnClass 返回类型
-	 * @param expandMap   拓展数据
+	 * @param expandMap 拓展数据
 	 * @return T
 	 */
-	public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass, Map<String, ?> expandMap) {
+	public <T> T parseSpEL(Method method, Object[] args, String condition, Class<T> returnClass,
+			Map<String, ?> expandMap) {
 		return RESOLVER.evaluate(condition, method, args, expandMap, returnClass);
 	}
 
 	/**
 	 * 解析SpEL表达式
-	 *
-	 * @param <T>         类型
-	 * @param method      方法
-	 * @param args        方法参数
-	 * @param condition   表达式
+	 * @param <T> 类型
+	 * @param method 方法
+	 * @param args 方法参数
+	 * @param condition 表达式
 	 * @param returnClass 返回类型
 	 * @return T
 	 */
@@ -129,10 +124,9 @@ public class SpringUtils {
 
 	/**
 	 * 解析SpEL表达式
-	 *
-	 * @param <T>         类型
-	 * @param variables   需要填充的数据
-	 * @param condition   表达式
+	 * @param <T> 类型
+	 * @param variables 需要填充的数据
+	 * @param condition 表达式
 	 * @param returnClass 返回类型
 	 * @return T
 	 */
@@ -141,12 +135,9 @@ public class SpringUtils {
 	}
 
 	/**
-	 * 解析SpEL表达式
-	 * 非模板表达式: #username
-	 * 模板表达式:"livk:#{#username}"
-	 *
-	 * @param method    方法
-	 * @param args      方法参数
+	 * 解析SpEL表达式 非模板表达式: #username 模板表达式:"livk:#{#username}"
+	 * @param method 方法
+	 * @param args 方法参数
 	 * @param condition 表达式
 	 * @return string string
 	 */
@@ -156,7 +147,6 @@ public class SpringUtils {
 
 	/**
 	 * 解析SpEL表达式
-	 *
 	 * @param variables 需要填充的数据
 	 * @param condition 表达式
 	 * @return string string
@@ -167,9 +157,8 @@ public class SpringUtils {
 
 	/**
 	 * 解析SpEL表达式
-	 *
-	 * @param method    方法
-	 * @param args      方法参数
+	 * @param method 方法
+	 * @param args 方法参数
 	 * @param condition 表达式
 	 * @param expandMap 需要填充的数据
 	 * @return the string
@@ -177,4 +166,5 @@ public class SpringUtils {
 	public String parseSpEL(Method method, Object[] args, String condition, Map<String, ?> expandMap) {
 		return parseSpEL(method, args, condition, String.class, expandMap);
 	}
+
 }

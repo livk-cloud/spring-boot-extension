@@ -39,9 +39,9 @@ public class EasyExcelItemReader<T> implements ItemReader<T> {
 
 	@SuppressWarnings("unchecked")
 	public EasyExcelItemReader(InputStream inputStream, ExcelMapReadListener<T> excelReadListener) {
-		Class<T> targetClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(excelReadListener.getClass(), ExcelMapReadListener.class);
-		EasyExcel.read(inputStream, targetClass, excelReadListener)
-			.sheet().doRead();
+		Class<T> targetClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(excelReadListener.getClass(),
+				ExcelMapReadListener.class);
+		EasyExcel.read(inputStream, targetClass, excelReadListener).sheet().doRead();
 		data = new ArrayList<>(excelReadListener.getCollectionData());
 	}
 
@@ -52,4 +52,5 @@ public class EasyExcelItemReader<T> implements ItemReader<T> {
 		}
 		return null;
 	}
+
 }

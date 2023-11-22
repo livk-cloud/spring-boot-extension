@@ -50,13 +50,15 @@ import java.util.List;
  * @see SpringAbstractImportSelector
  * @see DeferredImportSelector
  */
-public abstract class AbstractImportSelector<A extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
+public abstract class AbstractImportSelector<A extends Annotation>
+		implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
 	/**
 	 * 注解类型
 	 */
 	@SuppressWarnings("unchecked")
-	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
+	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+			AbstractImportSelector.class);
 
 	/**
 	 * The Environment.
@@ -82,7 +84,6 @@ public abstract class AbstractImportSelector<A extends Annotation> implements De
 
 	/**
 	 * 是否启用
-	 *
 	 * @return the boolean
 	 */
 	protected boolean isEnabled() {
@@ -98,4 +99,5 @@ public abstract class AbstractImportSelector<A extends Annotation> implements De
 	public void setBeanClassLoader(@NonNull ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
+
 }

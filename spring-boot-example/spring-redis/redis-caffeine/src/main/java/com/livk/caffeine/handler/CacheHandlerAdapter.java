@@ -62,4 +62,5 @@ public class CacheHandlerAdapter implements CacheHandler<Object> {
 		cache.invalidateAll();
 		redisOps.delete(keys);
 	}
+
 }

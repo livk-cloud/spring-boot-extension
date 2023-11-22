@@ -51,4 +51,5 @@ class Ip2RegionControllerTest {
 			.andExpect(jsonPath("*.city", "内网IP").exists())
 			.andExpect(jsonPath("*.operator", "内网IP").exists());
 	}
+
 }

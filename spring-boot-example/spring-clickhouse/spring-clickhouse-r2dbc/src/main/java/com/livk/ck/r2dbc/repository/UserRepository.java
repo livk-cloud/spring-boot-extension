@@ -44,31 +44,32 @@ public class UserRepository {
 	}
 
 	public Flux<User> findAll() {
-		return mono.flatMapMany(connection ->
-				connection.createStatement("select id, app_id, version, reg_time from user").execute())
+		return mono.flatMapMany(
+				connection -> connection.createStatement("select id, app_id, version, reg_time from user").execute())
 			.flatMap(result -> result.map(User::collect));
 	}
 
 	public Mono<Void> deleteById(Mono<Integer> id) {
-		return id.flatMap(i ->
-			mono.flatMapMany(connection ->
-				connection.createStatement("alter table user delete where id=:id")
-					.bind("id", i)
-					.execute()
-			).then()
-		);
+		return id.flatMap(
+				i -> mono
+					.flatMapMany(connection -> connection.createStatement("alter table user delete where id=:id")
+						.bind("id", i)
+						.execute())
+					.then());
 	}
 
 	public Mono<Void> save(User user) {
 		SimpleDateFormat formatter = new SimpleDateFormat(DateUtils.YMD);
 		String time = formatter.format(user.getRegTime());
-		return mono.flatMapMany(connection ->
-			connection.createStatement("insert into user values (:id,:appId,:version,:regTime)")
-				.bind("id", user.getId())
-				.bind("appId", user.getAppId())
-				.bind("version", user.getVersion())
-				.bind("regTime", time)
-				.execute()
-		).then();
+		return mono
+			.flatMapMany(
+					connection -> connection.createStatement("insert into user values (:id,:appId,:version,:regTime)")
+						.bind("id", user.getId())
+						.bind("appId", user.getAppId())
+						.bind("version", user.getVersion())
+						.bind("regTime", time)
+						.execute())
+			.then();
 	}
+
 }

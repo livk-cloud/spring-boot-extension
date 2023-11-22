@@ -40,7 +40,7 @@ class ContextFactoryTest {
 
 	@Test
 	void create() {
-		Context context = contextFactory.create(method, new String[]{"livk"});
+		Context context = contextFactory.create(method, new String[] { "livk" });
 		assertEquals(map.size(), context.size());
 		assertEquals(map.keySet(), context.keySet());
 		assertEquals(map.entrySet(), context.entrySet());
@@ -48,7 +48,7 @@ class ContextFactoryTest {
 
 	@Test
 	void merge() {
-		Context context = contextFactory.merge(method, new String[]{"root"}, map);
+		Context context = contextFactory.merge(method, new String[] { "root" }, map);
 		assertEquals(1, context.size());
 		assertEquals(map.keySet(), context.keySet());
 		assertNotEquals(map.entrySet(), context.entrySet());
@@ -57,4 +57,5 @@ class ContextFactoryTest {
 		assertFalse(context.containsValue("livk"));
 		assertEquals("root", context.get("username"));
 	}
+
 }

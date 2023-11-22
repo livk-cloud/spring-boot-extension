@@ -31,8 +31,12 @@ import org.springframework.data.redis.core.RedisHash;
 @Data
 @RedisHash("people")
 public class Person {
+
 	@Id
 	private String id;
+
 	private String username;
+
 	private String address;
+
 }

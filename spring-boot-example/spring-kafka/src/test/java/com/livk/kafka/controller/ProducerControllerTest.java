@@ -41,8 +41,7 @@ class ProducerControllerTest {
 
 	@Test
 	void producer() throws Exception {
-		mockMvc.perform(get("/kafka/send"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/kafka/send")).andDo(print()).andExpect(status().isOk());
 	}
+
 }

@@ -54,12 +54,12 @@ public class JwtUtils {
 	public String generateToken(User userInfo) {
 		JWSHeader jwsHeader = new JWSHeader.Builder(JWSAlgorithm.RS256).type(JOSEObjectType.JWT).build();
 		Payload payload = new Payload(UUID.randomUUID().toString(), userInfo);
-		JWSObject jwsObject = new JWSObject(jwsHeader, new com.nimbusds.jose.Payload(JsonMapperUtils.writeValueAsString(payload)));
+		JWSObject jwsObject = new JWSObject(jwsHeader,
+				new com.nimbusds.jose.Payload(JsonMapperUtils.writeValueAsString(payload)));
 		RSASSASigner signer = new RSASSASigner(RSA_KEY);
 		jwsObject.sign(signer);
 		return jwsObject.serialize();
 	}
-
 
 	@SneakyThrows
 	public Payload parse(String token) {
@@ -71,4 +71,5 @@ public class JwtUtils {
 		}
 		throw new RuntimeException("500");
 	}
+
 }

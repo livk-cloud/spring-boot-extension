@@ -47,30 +47,27 @@ public class CuratorAutoConfiguration {
 
 	/**
 	 * Curator framework curator framework.
-	 *
-	 * @param properties                         the properties
-	 * @param retryPolicy                        the retry policy
+	 * @param properties the properties
+	 * @param retryPolicy the retry policy
 	 * @param curatorFrameworkBuilderCustomizers the curator framework builder customizers
-	 * @param ensembleProviders                  the ensemble providers
-	 * @param tracerDrivers                      the tracer drivers
+	 * @param ensembleProviders the ensemble providers
+	 * @param tracerDrivers the tracer drivers
 	 * @return the curator framework
 	 * @throws Exception the exception
 	 */
 	@Bean(destroyMethod = "close")
 	@ConditionalOnMissingBean
 	public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
-											 ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
-											 ObjectProvider<EnsembleProvider> ensembleProviders,
-											 ObjectProvider<TracerDriver> tracerDrivers) throws Exception {
+			ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
+			ObjectProvider<EnsembleProvider> ensembleProviders, ObjectProvider<TracerDriver> tracerDrivers)
+			throws Exception {
 		return CuratorFactory.curatorFramework(properties, retryPolicy,
-			curatorFrameworkBuilderCustomizers::orderedStream,
-			ensembleProviders::getIfAvailable,
-			tracerDrivers::getIfAvailable);
+				curatorFrameworkBuilderCustomizers::orderedStream, ensembleProviders::getIfAvailable,
+				tracerDrivers::getIfAvailable);
 	}
 
 	/**
 	 * Exponential backoff retry policy.
-	 *
 	 * @param properties the properties
 	 * @return the retry policy
 	 */
@@ -82,7 +79,6 @@ public class CuratorAutoConfiguration {
 
 	/**
 	 * Curator template curator template.
-	 *
 	 * @param curatorFramework the curator framework
 	 * @return the curator template
 	 */
@@ -91,4 +87,5 @@ public class CuratorAutoConfiguration {
 	public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
 		return new CuratorTemplate(curatorFramework);
 	}
+
 }

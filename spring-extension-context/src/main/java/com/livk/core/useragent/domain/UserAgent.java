@@ -22,18 +22,11 @@ package com.livk.core.useragent.domain;
  *
  * @author livk
  */
-public record UserAgent(String userAgentStr,
-						String browser,
-						String browserType,
-						String browserVersion,
-						String os,
-						String osVersion,
-						String deviceType,
-						String deviceName,
-						String deviceBrand) {
+public record UserAgent(String userAgentStr, String browser, String browserType, String browserVersion, String os,
+		String osVersion, String deviceType, String deviceName, String deviceBrand) {
+
 	/**
 	 * Builder user agent builder.
-	 *
 	 * @param userAgentStr the user agent str
 	 * @return the user agent builder
 	 */
@@ -45,12 +38,19 @@ public record UserAgent(String userAgentStr,
 	 * The type User agent builder.
 	 */
 	public static class UserAgentBuilder {
+
 		private final String userAgentStr;
+
 		private String browser;
+
 		private String browserType;
+
 		private String browserVersion;
+
 		private String os;
+
 		private String osVersion;
+
 		private String deviceType;
 
 		private String deviceName;
@@ -59,7 +59,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Instantiates a new User agent builder.
-		 *
 		 * @param userAgentStr the user agent str
 		 */
 		UserAgentBuilder(String userAgentStr) {
@@ -68,7 +67,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Browser user agent builder.
-		 *
 		 * @param browser the browser
 		 * @return the user agent builder
 		 */
@@ -79,7 +77,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Browser type user agent builder.
-		 *
 		 * @param browserType the browser type
 		 * @return the user agent builder
 		 */
@@ -90,7 +87,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Browser version user agent builder.
-		 *
 		 * @param browserVersion the browser version
 		 * @return the user agent builder
 		 */
@@ -101,7 +97,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Os user agent builder.
-		 *
 		 * @param os the os
 		 * @return the user agent builder
 		 */
@@ -112,7 +107,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Os version user agent builder.
-		 *
 		 * @param osVersion the os version
 		 * @return the user agent builder
 		 */
@@ -123,7 +117,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Device type user agent builder.
-		 *
 		 * @param deviceType the device type
 		 * @return the user agent builder
 		 */
@@ -134,7 +127,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Device name user agent builder.
-		 *
 		 * @param deviceName the device name
 		 * @return the user agent builder
 		 */
@@ -145,7 +137,6 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Device brand user agent builder.
-		 *
 		 * @param deviceName the device name
 		 * @return the user agent builder
 		 */
@@ -156,12 +147,12 @@ public record UserAgent(String userAgentStr,
 
 		/**
 		 * Build user agent.
-		 *
 		 * @return the user agent
 		 */
 		public UserAgent build() {
-			return new UserAgent(userAgentStr, browser, browserType, browserVersion,
-				os, osVersion, deviceType, deviceName, deviceBrand);
+			return new UserAgent(userAgentStr, browser, browserType, browserVersion, os, osVersion, deviceType,
+					deviceName, deviceBrand);
 		}
+
 	}
 }

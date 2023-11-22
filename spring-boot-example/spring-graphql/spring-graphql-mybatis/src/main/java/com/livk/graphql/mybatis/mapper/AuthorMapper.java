@@ -29,6 +29,7 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface AuthorMapper {
+
 	@Insert("insert into author(id_card_no, name, age) values (#{idCardNo},#{name},#{age})")
 	int save(Author author);
 
@@ -37,4 +38,5 @@ public interface AuthorMapper {
 
 	@Select("select * from author where id_card_no = #{authorIdCardNo}")
 	Author getByIdCardNo(@Param("authorIdCardNo") String authorIdCardNo);
+
 }

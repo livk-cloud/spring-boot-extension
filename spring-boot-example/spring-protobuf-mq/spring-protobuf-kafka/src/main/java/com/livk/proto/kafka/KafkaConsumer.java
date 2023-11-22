@@ -17,8 +17,9 @@ public class KafkaConsumer {
 
 	@KafkaListener(id = "consumer", topics = KafkaConfig.TOPIC_NAME)
 	public void consumer(ConsumerRecord<String, User> record) {
-		log.info("topic[{}],offset[{}],partition[{}],key[{}],val[{}]",
-			record.topic(), record.offset(), record.partition(), record.key(), record.value());
+		log.info("topic[{}],offset[{}],partition[{}],key[{}],val[{}]", record.topic(), record.offset(),
+				record.partition(), record.key(), record.value());
 		ConsumerCheck.success();
 	}
+
 }

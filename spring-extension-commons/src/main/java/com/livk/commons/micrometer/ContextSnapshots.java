@@ -41,14 +41,13 @@ public class ContextSnapshots {
 	 * 构建一个ContextSnapshotFactory
 	 */
 	public static final ContextSnapshotFactory CONTEXT_SNAPSHOT_FACTORY = ContextSnapshotFactory.builder()
-		.contextRegistry(ContextRegistry.getInstance()).clearMissing(false)
+		.contextRegistry(ContextRegistry.getInstance())
+		.clearMissing(false)
 		.captureKeyPredicate(key -> true)
 		.build();
 
-
 	/**
 	 * 创建一个Supplier ContextSnapshot
-	 *
 	 * @return Supplier
 	 */
 	public static Supplier<ContextSnapshot> supplier() {
@@ -57,7 +56,6 @@ public class ContextSnapshots {
 
 	/**
 	 * 创建一个ContextSnapshot
-	 *
 	 * @return ContextSnapshot
 	 */
 	public static ContextSnapshot contextSnapshot() {
@@ -66,7 +64,6 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装runnable
-	 *
 	 * @param runnable 待包装的Runnable
 	 * @return Runnable
 	 */
@@ -76,8 +73,7 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装Callable
-	 *
-	 * @param <T>      泛型
+	 * @param <T> 泛型
 	 * @param callable 待包装的Callable
 	 * @return Callable
 	 */
@@ -87,8 +83,7 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装Consumer
-	 *
-	 * @param <T>      泛型
+	 * @param <T> 泛型
 	 * @param consumer 待包装的Consumer
 	 * @return Consumer
 	 */
@@ -98,7 +93,6 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装Executor
-	 *
 	 * @param executor 待包装的Executor
 	 * @return Executor
 	 */
@@ -108,7 +102,6 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装ExecutorService
-	 *
 	 * @param service 待包装的ExecutorService
 	 * @return ExecutorService
 	 */
@@ -118,11 +111,11 @@ public class ContextSnapshots {
 
 	/**
 	 * 使用ContextSnapshot包装ScheduledExecutorService
-	 *
 	 * @param service 待包装的ScheduledExecutorService
 	 * @return ScheduledExecutorService
 	 */
 	public static ScheduledExecutorService wrap(ScheduledExecutorService service) {
 		return ContextScheduledExecutorService.wrap(service, supplier());
 	}
+
 }

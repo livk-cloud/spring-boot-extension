@@ -56,11 +56,11 @@ public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(CIPHER_NAME);
 			secretKey = secretKeyFactory.generateSecret(keySpec);
 			pbeParameterSpec = new PBEParameterSpec(salt.getBytes(), 1000);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 	@Override
 	protected byte[] decrypt(byte[] decode) throws Exception {
@@ -90,4 +90,5 @@ public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 	public CryptoType type() {
 		return CryptoType.PBE;
 	}
+
 }

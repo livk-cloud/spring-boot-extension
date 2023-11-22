@@ -29,11 +29,11 @@ public class MetadataIllegalException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Metadata illegal exception.
-	 *
 	 * @param message the message
 	 */
 	public MetadataIllegalException(String message, String action) {
 		super(message);
 		this.action = action;
 	}
+
 }

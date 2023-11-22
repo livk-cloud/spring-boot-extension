@@ -37,9 +37,8 @@ public class SpringEventHandler<T> implements EventHandler<DisruptorEventWrapper
 
 	/**
 	 * Instantiates a new Spring event handler.
-	 *
 	 * @param beanFactory the bean factory
-	 * @param type        the type
+	 * @param type the type
 	 */
 	public SpringEventHandler(BeanFactory beanFactory, Class<T> type) {
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
@@ -52,4 +51,5 @@ public class SpringEventHandler<T> implements EventHandler<DisruptorEventWrapper
 			disruptorEventConsumer.onEvent(wrapper.unwrap(), sequence, endOfBatch);
 		}
 	}
+
 }

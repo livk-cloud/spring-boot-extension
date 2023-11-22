@@ -27,7 +27,9 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 
 /**
- * <p>sso 退出功能 ，根据客户端传入跳转</p>
+ * <p>
+ * sso 退出功能 ，根据客户端传入跳转
+ * </p>
  *
  * @author livk
  */
@@ -37,7 +39,7 @@ public class SsoLogoutSuccessHandler implements LogoutSuccessHandler {
 
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-		throws IOException {
+			throws IOException {
 		if (response == null) {
 			return;
 		}
@@ -46,7 +48,8 @@ public class SsoLogoutSuccessHandler implements LogoutSuccessHandler {
 		String redirectUrl = request.getParameter(REDIRECT_URL);
 		if (StringUtils.hasText(redirectUrl)) {
 			response.sendRedirect(redirectUrl);
-		} else if (StringUtils.hasText(request.getHeader(HttpHeaders.REFERER))) {
+		}
+		else if (StringUtils.hasText(request.getHeader(HttpHeaders.REFERER))) {
 			// 默认跳转referer 地址
 			String referer = request.getHeader(HttpHeaders.REFERER);
 			response.sendRedirect(referer);

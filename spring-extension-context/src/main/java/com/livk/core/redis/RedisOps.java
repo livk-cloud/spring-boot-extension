@@ -40,9 +40,8 @@ public class RedisOps extends RedisTemplate<String, Object> {
 
 	/**
 	 * Instantiates a new Universal redis template.
-	 *
 	 * @param redisConnectionFactory the redis connection factory
-	 * @param serializer             the serializer
+	 * @param serializer the serializer
 	 */
 	public RedisOps(RedisConnectionFactory redisConnectionFactory, RedisSerializer<?> serializer) {
 		this(serializer);
@@ -52,7 +51,6 @@ public class RedisOps extends RedisTemplate<String, Object> {
 
 	/**
 	 * Instantiates a new Redis ops.
-	 *
 	 * @param redisConnectionFactory the redis connection factory
 	 */
 	public RedisOps(RedisConnectionFactory redisConnectionFactory) {

@@ -28,8 +28,13 @@ import lombok.Data;
  */
 @Data
 public class BookDTO {
+
 	private String isbn;
+
 	private String title;
+
 	private Integer pages;
+
 	private String authorIdCardNo;
+
 }

@@ -45,7 +45,6 @@ class PGJson extends PGobject {
 
 	/**
 	 * Instantiates a new Pg json.
-	 *
 	 * @param pGobject the p gobject
 	 * @throws SQLException the sql exception
 	 */
@@ -57,7 +56,6 @@ class PGJson extends PGobject {
 
 	/**
 	 * Of pg json.
-	 *
 	 * @param json the json
 	 * @return the pg json
 	 * @throws SQLException the sql exception
@@ -68,7 +66,6 @@ class PGJson extends PGobject {
 
 	/**
 	 * Of pg json.
-	 *
 	 * @param pGobject the p gobject
 	 * @return the pg json
 	 * @throws SQLException the sql exception

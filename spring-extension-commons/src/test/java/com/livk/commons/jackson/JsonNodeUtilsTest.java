@@ -38,14 +38,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JsonNodeUtilsTest {
 
 	static final String json = """
-		{
-		  "username": "root",
-		  "password": "root",
-		  "info": {
-		    "name": "livk",
-		    "email": "1375632510@qq.com"
-		  }
-		}""";
+			{
+			  "username": "root",
+			  "password": "root",
+			  "info": {
+			    "name": "livk",
+			    "email": "1375632510@qq.com"
+			  }
+			}""";
 
 	static final JsonNode node = JsonMapperUtils.readTree(json);
 
@@ -57,8 +57,8 @@ class JsonNodeUtilsTest {
 
 	@Test
 	void findValue() {
-		Map<String, Object> map = JsonNodeUtils.findValue(node, "info",
-			JsonNodeUtils.STRING_OBJECT_MAP, JsonMapper.builder().build());
+		Map<String, Object> map = JsonNodeUtils.findValue(node, "info", JsonNodeUtils.STRING_OBJECT_MAP,
+				JsonMapper.builder().build());
 		assertEquals(Map.of("name", "livk", "email", "1375632510@qq.com"), map);
 	}
 
@@ -72,13 +72,13 @@ class JsonNodeUtilsTest {
 	@Test
 	void getNodeFirst() {
 		JsonNode node = JsonMapperUtils.readTree("""
-			{
-			    "c": "1",
-			    "a": "2",
-			    "b": {
-			        "c": 3
-			    }
-			}""");
+				{
+				    "c": "1",
+				    "a": "2",
+				    "b": {
+				        "c": 3
+				    }
+				}""");
 		assertEquals("1", JsonNodeUtils.findNodeFirst(node, "c").asText());
 		assertEquals("2", JsonNodeUtils.findNodeFirst(node, "a").asText());
 	}
@@ -86,42 +86,44 @@ class JsonNodeUtilsTest {
 	@Test
 	void getNodeFirstAll() {
 		JsonNode node = JsonMapperUtils.readTree("""
-			{
-			    "c": "1",
-			    "a": "2",
-			    "b": {
-			        "c": "3",
-			        "a": "4"
-			    }
-			}""");
-		assertArrayEquals(new String[]{"1", "3"}, JsonNodeUtils.findNodeAll(node, "c").stream().map(JsonNode::asText).toArray(String[]::new));
-		assertArrayEquals(new String[]{"2", "4"}, JsonNodeUtils.findNodeAll(node, "a").stream().map(JsonNode::asText).toArray(String[]::new));
+				{
+				    "c": "1",
+				    "a": "2",
+				    "b": {
+				        "c": "3",
+				        "a": "4"
+				    }
+				}""");
+		assertArrayEquals(new String[] { "1", "3" },
+				JsonNodeUtils.findNodeAll(node, "c").stream().map(JsonNode::asText).toArray(String[]::new));
+		assertArrayEquals(new String[] { "2", "4" },
+				JsonNodeUtils.findNodeAll(node, "a").stream().map(JsonNode::asText).toArray(String[]::new));
 	}
 
 	@Test
 	void getNode() {
 		JsonNode node = JsonMapperUtils.readTree("""
-			{
-			    "c": "1",
-			    "a": "2",
-			    "b": {
-			        "c": "3",
-			        "d": {
-			            "ab": "6"
-			        }
-			    },
-			    "f": [
-			        {
-			            "a": "7"
-			        },
-			        {
-			            "a": "8"
-			        },
-			        {
-			            "a": "9"
-			        }
-			    ]
-			}""");
+				{
+				    "c": "1",
+				    "a": "2",
+				    "b": {
+				        "c": "3",
+				        "d": {
+				            "ab": "6"
+				        }
+				    },
+				    "f": [
+				        {
+				            "a": "7"
+				        },
+				        {
+				            "a": "8"
+				        },
+				        {
+				            "a": "9"
+				        }
+				    ]
+				}""");
 		assertEquals("1", JsonNodeUtils.findNode(node, "c").asText());
 		assertEquals("2", JsonNodeUtils.findNode(node, "a").asText());
 		assertEquals("3", JsonNodeUtils.findNode(node, "b.c").asText());
@@ -130,4 +132,5 @@ class JsonNodeUtilsTest {
 		assertEquals("8", JsonNodeUtils.findNode(node, "f.1.a").asText());
 		assertEquals("9", JsonNodeUtils.findNode(node, "f.2.a").asText());
 	}
+
 }

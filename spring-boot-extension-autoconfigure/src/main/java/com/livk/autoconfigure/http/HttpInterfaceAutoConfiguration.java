@@ -50,7 +50,6 @@ public class HttpInterfaceAutoConfiguration {
 
 	/**
 	 * Web client web client.
-	 *
 	 * @param builder the builder
 	 * @return the web client
 	 */
@@ -62,22 +61,21 @@ public class HttpInterfaceAutoConfiguration {
 
 	/**
 	 * Http service proxy factory http service proxy factory.
-	 *
-	 * @param webClient   the web client
+	 * @param webClient the web client
 	 * @param customizers the customizers
 	 * @return the http service proxy factory
 	 */
 	@Bean
 	public HttpServiceProxyFactory httpServiceProxyFactory(WebClient webClient,
-														   ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers) {
-		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient));
+			ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers) {
+		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory
+			.builder(WebClientAdapter.forClient(webClient));
 		customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
 		return builder.build();
 	}
 
 	/**
 	 * 添加SpringEL解析
-	 *
 	 * @param beanFactory bean factory
 	 * @return HttpServiceProxyFactoryCustomizer
 	 */
@@ -85,4 +83,5 @@ public class HttpInterfaceAutoConfiguration {
 	public HttpServiceProxyFactoryCustomizer embeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
 		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
 	}
+
 }

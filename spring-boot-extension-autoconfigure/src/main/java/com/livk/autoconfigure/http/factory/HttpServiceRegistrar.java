@@ -47,7 +47,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {
 
 	@Override
 	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
-										@NonNull BeanDefinitionRegistry registry) {
+			@NonNull BeanDefinitionRegistry registry) {
 		List<String> packages = AutoConfigurationPackages.get(beanFactory);
 		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment);
 		scanner.registerFilters(HttpProvider.class);

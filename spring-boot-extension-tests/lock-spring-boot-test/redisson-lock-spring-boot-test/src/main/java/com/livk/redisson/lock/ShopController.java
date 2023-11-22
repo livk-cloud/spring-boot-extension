@@ -45,6 +45,7 @@ import java.util.Map;
 public class ShopController {
 
 	private final HashOperations<Object, Object, Object> forHash;
+
 	private final RedisTemplate<Object, Object> redisTemplate;
 
 	public ShopController(RedisTemplate<Object, Object> redisTemplate) {
@@ -65,7 +66,9 @@ public class ShopController {
 	@OnLock(key = "shop:lock", scope = LockScope.DISTRIBUTED_LOCK)
 	public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam(defaultValue = "2") Integer count) {
 		RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("script/buy.lua"), Long.class);
-		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(), new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"), String.valueOf(count));
+		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(),
+				new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"),
+				String.valueOf(count));
 		if (result != null && result == 1) {
 			return ResponseEntity.ok(Map.of("code", "200", "msg", "购买成功，数量：" + count));
 		}
@@ -77,4 +80,5 @@ public class ShopController {
 		Map<Object, Object> distributed = forHash.entries("shop");
 		return ResponseEntity.ok(Map.of("redisson", distributed));
 	}
+
 }

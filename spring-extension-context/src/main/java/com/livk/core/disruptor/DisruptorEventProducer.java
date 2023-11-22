@@ -36,7 +36,6 @@ public class DisruptorEventProducer<T> {
 
 	/**
 	 * Instantiates a new Disruptor event producer.
-	 *
 	 * @param disruptor the disruptor
 	 */
 	public DisruptorEventProducer(SpringDisruptor<T> disruptor) {
@@ -45,7 +44,6 @@ public class DisruptorEventProducer<T> {
 
 	/**
 	 * Send.
-	 *
 	 * @param data the data
 	 */
 	public final void send(T data) {
@@ -53,14 +51,14 @@ public class DisruptorEventProducer<T> {
 		try {
 			DisruptorEventWrapper<T> event = ringBuffer.get(sequence);
 			event.wrap(data);
-		} finally {
+		}
+		finally {
 			ringBuffer.publish(sequence);
 		}
 	}
 
 	/**
 	 * Send batch.
-	 *
 	 * @param dataList the data list
 	 */
 	public final void sendBatch(List<T> dataList) {
@@ -71,18 +69,19 @@ public class DisruptorEventProducer<T> {
 			for (int i = 0; i < dataList.size(); i++) {
 				ringBuffer.get(i + lo).wrap(dataList.get(i));
 			}
-		} finally {
+		}
+		finally {
 			ringBuffer.publish(lo, hi);
 		}
 	}
 
 	/**
 	 * Send batch.
-	 *
 	 * @param dataArray the data array
 	 */
 	@SafeVarargs
 	public final void sendBatch(T... dataArray) {
 		sendBatch(Arrays.asList(dataArray));
 	}
+
 }

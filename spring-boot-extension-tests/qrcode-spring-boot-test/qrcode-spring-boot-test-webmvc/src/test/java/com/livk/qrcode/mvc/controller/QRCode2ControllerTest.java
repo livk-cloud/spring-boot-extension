@@ -56,13 +56,10 @@ class QRCode2ControllerTest {
 	@Test
 	void text() throws Exception {
 		String text = "Hello World!";
-		mockMvc.perform(get("/qrcode2")
-				.param("text", text))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./text." + PicType.JPG.name().toLowerCase());
-			});
+		mockMvc.perform(get("/qrcode2").param("text", text)).andExpect(status().isOk()).andDo(result -> {
+			ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+			FileUtils.download(in, "./text." + PicType.JPG.name().toLowerCase());
+		});
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
 			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
@@ -74,9 +71,7 @@ class QRCode2ControllerTest {
 	@Test
 	void json() throws Exception {
 		String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
-		mockMvc.perform(post("/qrcode2/json")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
+		mockMvc.perform(post("/qrcode2/json").contentType(MediaType.APPLICATION_JSON).content(json))
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
@@ -89,4 +84,5 @@ class QRCode2ControllerTest {
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
+
 }

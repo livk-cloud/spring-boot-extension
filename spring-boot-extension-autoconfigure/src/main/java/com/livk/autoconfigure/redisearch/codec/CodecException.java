@@ -24,7 +24,6 @@ public class CodecException extends RuntimeException {
 
 	/**
 	 * Constructs a new {@link CodecException} instance.
-	 *
 	 * @param msg the detail message.
 	 */
 	public CodecException(String msg) {
@@ -33,12 +32,11 @@ public class CodecException extends RuntimeException {
 
 	/**
 	 * Constructs a new {@link CodecException} instance.
-	 *
-	 * @param msg   the detail message.
+	 * @param msg the detail message.
 	 * @param cause the nested exception.
 	 */
 	public CodecException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
-}
 
+}

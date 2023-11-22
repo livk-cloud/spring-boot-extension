@@ -36,7 +36,6 @@ public class TestTxListener implements RocketMQLocalTransactionListener {
 
 	/**
 	 * 监听发送half消息，执行本地事务
-	 *
 	 * @param msg
 	 * @param arg
 	 * @return
@@ -63,7 +62,6 @@ public class TestTxListener implements RocketMQLocalTransactionListener {
 
 	/**
 	 * 本地事务检查，检查本地事务是否成功
-	 *
 	 * @param msg
 	 * @return
 	 */

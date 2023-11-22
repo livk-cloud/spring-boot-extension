@@ -47,17 +47,18 @@ public abstract class QRCodeGeneratorSupport {
 
 	/**
 	 * Create attributes annotation attributes.
-	 *
-	 * @param returnValue     the return value
-	 * @param parameter       the parameter
+	 * @param returnValue the return value
+	 * @param parameter the parameter
 	 * @param annotationClass the annotation class
 	 * @return the annotation attributes
 	 */
-	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter, Class<? extends Annotation> annotationClass) {
+	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter,
+			Class<? extends Annotation> annotationClass) {
 		if (returnValue instanceof QRCodeEntity<?> entity) {
 			Map<String, Object> map = BeanUtils.convert(entity);
 			return AnnotationAttributes.fromMap(map);
-		} else {
+		}
+		else {
 			Annotation annotation = AnnotationUtils.getAnnotationElement(parameter, annotationClass);
 			return AnnotationUtils.getAnnotationAttributes(parameter.getMethod(), annotation);
 		}
@@ -65,15 +66,15 @@ public abstract class QRCodeGeneratorSupport {
 
 	/**
 	 * To buffered image.
-	 *
 	 * @param returnValue the return value
-	 * @param attributes  the attributes
+	 * @param attributes the attributes
 	 * @return the buffered image
 	 */
 	protected BufferedImage toBufferedImage(Object returnValue, AnnotationAttributes attributes) {
 		if (returnValue instanceof QRCodeEntity<?> entity) {
 			return qrCodeGenerator.generateQRCode(entity);
-		} else {
+		}
+		else {
 			QRCodeEntity<?> entity = QRCodeEntity.builder(returnValue)
 				.height(attributes.getNumber("width").intValue())
 				.width(attributes.getNumber("height").intValue())
@@ -87,9 +88,8 @@ public abstract class QRCodeGeneratorSupport {
 
 	/**
 	 * To byte array.
-	 *
 	 * @param returnValue the return value
-	 * @param attributes  the attributes
+	 * @param attributes the attributes
 	 * @return the byte [ ]
 	 */
 	protected byte[] toByteArray(Object returnValue, AnnotationAttributes attributes) {
@@ -102,16 +102,17 @@ public abstract class QRCodeGeneratorSupport {
 
 	/**
 	 * Write.
-	 *
 	 * @param bufferedImage the buffered image
-	 * @param formatName    the format name
-	 * @param stream        the stream
+	 * @param formatName the format name
+	 * @param stream the stream
 	 */
 	protected void write(BufferedImage bufferedImage, String formatName, OutputStream stream) {
 		try {
 			ImageIO.write(bufferedImage, formatName, stream);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new QRCodeException("二维码写入失败", e);
 		}
 	}
+
 }

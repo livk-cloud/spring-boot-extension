@@ -35,8 +35,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("shop")
 public class ShopController {
+
 	private Integer num = 500;
+
 	private int buyCount = 0;
+
 	private int buySucCount = 0;
 
 	@PostMapping("/buy/local")
@@ -48,7 +51,8 @@ public class ShopController {
 			buySucCount++;
 			Map<String, Integer> msg = Map.of("购买成功数量", count, "总计购买次数", buyCount, "购买成功次数", buySucCount);
 			return ResponseEntity.ok(Map.of("code", "200", "msg", msg));
-		} else {
+		}
+		else {
 			return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));
 		}
 	}
@@ -65,4 +69,5 @@ public class ShopController {
 		Map<String, Integer> local = Map.of("num", num, "buyCount", buyCount, "buySucCount", buySucCount);
 		return ResponseEntity.ok(Map.of("local", local));
 	}
+
 }

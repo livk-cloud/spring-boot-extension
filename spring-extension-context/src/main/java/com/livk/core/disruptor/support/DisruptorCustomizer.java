@@ -23,4 +23,5 @@ import com.livk.commons.spring.Customizer;
  * @author livk
  */
 public interface DisruptorCustomizer<T> extends Customizer<SpringDisruptor<T>> {
+
 }

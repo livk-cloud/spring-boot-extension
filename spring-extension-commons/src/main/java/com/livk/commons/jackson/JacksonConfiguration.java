@@ -39,7 +39,6 @@ public class JacksonConfiguration {
 
 	/**
 	 * 自定义JacksonBuilder的配置
-	 *
 	 * @return the jackson 2 object mapper builder customizer
 	 */
 	@Bean
@@ -49,4 +48,5 @@ public class JacksonConfiguration {
 			builder.modules(new JavaTimeModule());
 		};
 	}
+
 }

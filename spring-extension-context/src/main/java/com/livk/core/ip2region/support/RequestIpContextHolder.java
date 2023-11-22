@@ -30,24 +30,25 @@ import java.util.function.Supplier;
  * @author livk
  */
 public class RequestIpContextHolder {
-	private static final ThreadLocal<IpInfo> inheritableContext = new NamedInheritableThreadLocal<>("inheritable request ip context");
+
+	private static final ThreadLocal<IpInfo> inheritableContext = new NamedInheritableThreadLocal<>(
+			"inheritable request ip context");
 
 	/**
 	 * Set.
-	 *
 	 * @param ipInfo the ip
 	 */
 	public static void set(IpInfo ipInfo) {
 		if (ipInfo != null) {
 			inheritableContext.set(ipInfo);
-		} else {
+		}
+		else {
 			remove();
 		}
 	}
 
 	/**
 	 * Compute if absent string.
-	 *
 	 * @param supplier the supplier
 	 * @return the string
 	 */
@@ -63,7 +64,6 @@ public class RequestIpContextHolder {
 
 	/**
 	 * Get string.
-	 *
 	 * @return the string
 	 */
 	public static IpInfo get() {
@@ -76,4 +76,5 @@ public class RequestIpContextHolder {
 	public static void remove() {
 		inheritableContext.remove();
 	}
+
 }

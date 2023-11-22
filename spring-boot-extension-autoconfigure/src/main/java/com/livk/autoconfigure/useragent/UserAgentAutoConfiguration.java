@@ -44,7 +44,6 @@ import java.util.Arrays;
 @ImportAutoConfiguration(UserAgentConfiguration.class)
 public class UserAgentAutoConfiguration {
 
-
 	/**
 	 * The type Browscap auto configuration.
 	 */
@@ -54,9 +53,8 @@ public class UserAgentAutoConfiguration {
 
 		/**
 		 * User agent parser user agent parser.
-		 *
 		 * @return the user agent parser
-		 * @throws IOException    the io exception
+		 * @throws IOException the io exception
 		 * @throws ParseException the parse exception
 		 */
 		@Bean
@@ -66,7 +64,6 @@ public class UserAgentAutoConfiguration {
 
 		/**
 		 * Browscap user agent parse browscap user agent parse.
-		 *
 		 * @param userAgentAnalyzer the user agent analyzer
 		 * @return the browscap user agent parse
 		 */
@@ -75,6 +72,7 @@ public class UserAgentAutoConfiguration {
 		public BrowscapUserAgentConverter browscapUserAgentConverter(UserAgentParser userAgentAnalyzer) {
 			return new BrowscapUserAgentConverter(userAgentAnalyzer);
 		}
+
 	}
 
 	/**
@@ -86,22 +84,16 @@ public class UserAgentAutoConfiguration {
 
 		/**
 		 * User agent analyzer user agent analyzer.
-		 *
 		 * @return the user agent analyzer
 		 */
 		@Bean
 		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 		public UserAgentAnalyzer userAgentAnalyzer() {
-			return UserAgentAnalyzer
-				.newBuilder()
-				.hideMatcherLoadStats()
-				.withCache(10000)
-				.build();
+			return UserAgentAnalyzer.newBuilder().hideMatcherLoadStats().withCache(10000).build();
 		}
 
 		/**
 		 * Yauaa user agent parse yauaa user agent parse.
-		 *
 		 * @param userAgentAnalyzer the user agent analyzer
 		 * @return the yauaa user agent parse
 		 */
@@ -110,5 +102,7 @@ public class UserAgentAutoConfiguration {
 		public YauaaUserAgentConverter yauaaUserAgentConverter(UserAgentAnalyzer userAgentAnalyzer) {
 			return new YauaaUserAgentConverter(userAgentAnalyzer);
 		}
+
 	}
+
 }

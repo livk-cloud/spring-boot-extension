@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Controller
 @ResponseExcel(fileName = "out")
@@ -40,9 +40,9 @@ public @interface ExcelController {
 
 	/**
 	 * Value string.
-	 *
 	 * @return the string
 	 */
 	@AliasFor(annotation = Controller.class)
 	String value() default "";
+
 }

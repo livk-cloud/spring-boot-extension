@@ -44,4 +44,5 @@ public interface MessageService {
 
 	@RSocketExchange("channel")
 	Flux<Message> channel(Flux<Duration> settings);
+
 }

@@ -44,7 +44,6 @@ public class JacksonWrapper implements GenericWrapper<ObjectMapper> {
 
 	/**
 	 * Unwrap of context object mapper.
-	 *
 	 * @return the object mapper
 	 */
 	public static ObjectMapper unwrapOfContext() {
@@ -52,10 +51,12 @@ public class JacksonWrapper implements GenericWrapper<ObjectMapper> {
 		try {
 			if (SpringContextHolder.getApplicationContext().containsBean(JacksonWrapper.BEAN_NAME)) {
 				wrapper = SpringContextHolder.getBean(JacksonWrapper.BEAN_NAME, JacksonWrapper.class);
-			} else {
+			}
+			else {
 				throw new NoSuchBeanDefinitionException(JacksonWrapper.BEAN_NAME);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.debug("Building 'ObjectMapper'");
 		}
 		return wrapper == null ? JsonMapper.builder().build() : wrapper.unwrap();
@@ -65,4 +66,5 @@ public class JacksonWrapper implements GenericWrapper<ObjectMapper> {
 	public ObjectMapper unwrap() {
 		return mapper;
 	}
+
 }

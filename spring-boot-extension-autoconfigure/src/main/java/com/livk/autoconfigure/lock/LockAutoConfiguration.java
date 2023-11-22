@@ -47,7 +47,6 @@ public class LockAutoConfiguration {
 
 	/**
 	 * Lock aspect lock aspect.
-	 *
 	 * @param distributedLockProvider the distributed lock provider
 	 * @return the lock aspect
 	 */
@@ -59,7 +58,6 @@ public class LockAutoConfiguration {
 
 	/**
 	 * Local lock distributed lock.
-	 *
 	 * @return the distributed lock
 	 */
 	@Bean
@@ -72,11 +70,11 @@ public class LockAutoConfiguration {
 	 */
 	@ConditionalOnClass(RedissonClient.class)
 	@AutoConfiguration(after = RedissonAutoConfiguration.class,
-		afterName = {"org.redisson.spring.starter.RedissonAutoConfiguration"})
+			afterName = { "org.redisson.spring.starter.RedissonAutoConfiguration" })
 	public static class RedissonLockAutoConfiguration {
+
 		/**
 		 * Redisson lock distributed lock.
-		 *
 		 * @param redissonClient the redisson client
 		 * @return the distributed lock
 		 */
@@ -84,6 +82,7 @@ public class LockAutoConfiguration {
 		public DistributedLock redissonLock(RedissonClient redissonClient) {
 			return new RedissonLock(redissonClient);
 		}
+
 	}
 
 	/**
@@ -92,9 +91,9 @@ public class LockAutoConfiguration {
 	@ConditionalOnClass(CuratorFramework.class)
 	@AutoConfiguration(after = CuratorAutoConfiguration.class)
 	public static class CuratorLockAutoConfiguration {
+
 		/**
 		 * Redisson lock distributed lock.
-		 *
 		 * @param curatorFramework the curator framework
 		 * @return the distributed lock
 		 */
@@ -102,5 +101,7 @@ public class LockAutoConfiguration {
 		public DistributedLock redissonLock(CuratorFramework curatorFramework) {
 			return new CuratorLock(curatorFramework);
 		}
+
 	}
+
 }

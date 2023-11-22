@@ -33,6 +33,7 @@ import java.net.URI;
 @Data
 @ConfigurationProperties(OSSProperties.PREFIX)
 public class OSSProperties {
+
 	/**
 	 * The constant PREFIX.
 	 */
@@ -50,16 +51,13 @@ public class OSSProperties {
 
 	/**
 	 * Instantiates a new Oss properties.
-	 *
-	 * @param url       the url
+	 * @param url the url
 	 * @param accessKey the access key
 	 * @param secretKey the secret key
-	 * @param region    the region
+	 * @param region the region
 	 */
-	public OSSProperties(@Name("url") URI url,
-						 @Name("accessKey") String accessKey,
-						 @Name("secretKey") String secretKey,
-						 @Name("region") String region) {
+	public OSSProperties(@Name("url") URI url, @Name("accessKey") String accessKey, @Name("secretKey") String secretKey,
+			@Name("region") String region) {
 		Assert.notNull(url, "url not be blank");
 		Assert.hasText(accessKey, "accessKey not be blank");
 		Assert.hasText(secretKey, "secretKey not be blank");
@@ -72,7 +70,6 @@ public class OSSProperties {
 
 	/**
 	 * Endpoint string.
-	 *
 	 * @return the string
 	 */
 	private String endpoint(URI url) {
@@ -81,7 +78,6 @@ public class OSSProperties {
 
 	/**
 	 * Gets prefix.
-	 *
 	 * @return the prefix
 	 */
 	private String prefix(URI uri) {
@@ -91,4 +87,5 @@ public class OSSProperties {
 		}
 		throw new RuntimeException("url缺少前缀!");
 	}
+
 }

@@ -33,4 +33,5 @@ public interface SseEmitterLocator<K> {
 	Map<K, SseEmitter> all();
 
 	SseEmitter get(K id);
+
 }

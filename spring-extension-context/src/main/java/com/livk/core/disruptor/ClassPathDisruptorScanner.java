@@ -50,7 +50,6 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Instantiates a new Class path disruptor scanner.
-	 *
 	 * @param registry the registry
 	 */
 	public ClassPathDisruptorScanner(BeanDefinitionRegistry registry) {
@@ -59,8 +58,7 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Instantiates a new Class path disruptor scanner.
-	 *
-	 * @param registry          the registry
+	 * @param registry the registry
 	 * @param beanNameGenerator the bean name generator
 	 */
 	public ClassPathDisruptorScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
@@ -70,7 +68,6 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Register filters.
-	 *
 	 * @param annotationType the annotation type
 	 */
 	public void registerFilters(Class<? extends Annotation> annotationType) {
@@ -98,15 +95,18 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 					AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, DisruptorEvent.class);
 					String beanClassName = candidateComponent.getBeanClassName();
 					Assert.notNull(beanClassName, "beanClassName not be null");
-					Class<?> type = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
-					BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DisruptorFactoryBean.class);
+					Class<?> type = ClassUtils.resolveClassName(beanClassName,
+							super.getResourceLoader().getClassLoader());
+					BeanDefinitionBuilder builder = BeanDefinitionBuilder
+						.genericBeanDefinition(DisruptorFactoryBean.class);
 					builder.addPropertyValue("attributes", attributes);
 					builder.addPropertyValue("type", type);
 					builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 					AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
 					String name = attributes.getString("value");
-					String beanName = StringUtils.hasText(name) ? name : beanNameGenerator.generateBeanName(beanDefinition, registry);
+					String beanName = StringUtils.hasText(name) ? name
+							: beanNameGenerator.generateBeanName(beanDefinition, registry);
 					if (checkCandidate(beanName, beanDefinition)) {
 						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
 
@@ -120,4 +120,5 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 		return definitionHolders;
 	}
+
 }

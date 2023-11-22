@@ -45,7 +45,6 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 
 	private final UserAgentHelper helper;
 
-
 	@Override
 	public final boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(UserAgentInfo.class);
@@ -53,7 +52,8 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 
 	@NonNull
 	@Override
-	public final Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext, ServerWebExchange exchange) {
+	public final Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
+			@NonNull BindingContext bindingContext, ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
@@ -61,4 +61,5 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 			.switchIfEmpty(Mono.justOrEmpty(helper.convert(exchange.getRequest().getHeaders())));
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
 	}
+
 }

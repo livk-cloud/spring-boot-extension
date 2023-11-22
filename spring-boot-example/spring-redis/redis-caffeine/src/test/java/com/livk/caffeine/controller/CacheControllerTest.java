@@ -48,12 +48,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class CacheControllerTest {
+
 	@Autowired
 	MockMvc mockMvc;
 
 	@Autowired
 	RedisOps redisOps;
-
 
 	@Test
 	void testGet() throws Exception {
@@ -61,14 +61,18 @@ class CacheControllerTest {
 		String uuid = mockMvc.perform(get("/cache"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andReturn().getResponse().getContentAsString();
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
 		result.add(uuid);
 		for (int i = 0; i < 3; i++) {
 			String newUUID = mockMvc.perform(get("/cache"))
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(content().string(uuid))
-				.andReturn().getResponse().getContentAsString();
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 			result.add(newUUID);
 		}
 		assertEquals(result.size(), 1);
@@ -81,13 +85,17 @@ class CacheControllerTest {
 			String uuid = mockMvc.perform(post("/cache"))
 				.andExpect(status().isOk())
 				.andDo(print())
-				.andReturn().getResponse().getContentAsString();
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 			result.add(uuid);
 			String newUUID = mockMvc.perform(get("/cache"))
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(content().string(uuid))
-				.andReturn().getResponse().getContentAsString();
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 			result.add(newUUID);
 		}
 		assertEquals(result.size(), 3);
@@ -95,10 +103,7 @@ class CacheControllerTest {
 
 	@Test
 	void testDelete() throws Exception {
-		mockMvc.perform(delete("/cache"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(content().string("over"));
+		mockMvc.perform(delete("/cache")).andExpect(status().isOk()).andDo(print()).andExpect(content().string("over"));
 	}
 
 	@Test
@@ -116,6 +121,8 @@ class CacheControllerTest {
 			assertEquals(1, keys.size());
 		}
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

@@ -38,8 +38,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 
 	/**
 	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
-	 *
-	 * @param <A>             annotation泛型
+	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
 	 * @return annotation annotation element
@@ -55,9 +54,8 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 
 	/**
 	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
-	 *
-	 * @param <A>             annotation泛型
-	 * @param method          method
+	 * @param <A> annotation泛型
+	 * @param method method
 	 * @param annotationClass annotation
 	 * @return annotation annotation element
 	 */
@@ -71,35 +69,33 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 
 	/**
 	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
-	 *
-	 * @param <A>             annotation泛型
+	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
 	 * @return bool boolean
 	 */
-	public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
+	public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter,
+			Class<A> annotationClass) {
 		Class<?> containingClass = methodParameter.getContainingClass();
-		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass) ||
-				methodParameter.hasMethodAnnotation(annotationClass));
+		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass)
+				|| methodParameter.hasMethodAnnotation(annotationClass));
 	}
 
 	/**
 	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
-	 *
-	 * @param <A>             annotation泛型
-	 * @param method          method
+	 * @param <A> annotation泛型
+	 * @param method method
 	 * @param annotationClass annotation
 	 * @return bool boolean
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
-		return method.isAnnotationPresent(annotationClass) ||
-			   AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
+		return method.isAnnotationPresent(annotationClass)
+				|| AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
 	}
 
 	/**
 	 * 构建AnnotationAttributes
-	 *
-	 * @param metadata            the metadata
+	 * @param metadata the metadata
 	 * @param annotationClassName the annotation class name
 	 * @return the annotation attributes
 	 */
@@ -109,13 +105,14 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 
 	/**
 	 * 构建AnnotationAttributes
-	 *
-	 * @param <A>             注解类型
-	 * @param metadata        the metadata
+	 * @param <A> 注解类型
+	 * @param metadata the metadata
 	 * @param annotationClass the annotation class
 	 * @return the annotation attributes
 	 */
-	public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, Class<A> annotationClass) {
+	public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata,
+			Class<A> annotationClass) {
 		return attributesFor(metadata, annotationClass.getName());
 	}
+
 }

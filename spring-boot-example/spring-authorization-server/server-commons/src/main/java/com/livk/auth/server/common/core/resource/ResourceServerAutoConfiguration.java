@@ -34,7 +34,6 @@ public class ResourceServerAutoConfiguration {
 
 	/**
 	 * 资源服务器toke内省处理器
-	 *
 	 * @param authorizationService token 存储实现
 	 * @return TokenIntrospector
 	 */

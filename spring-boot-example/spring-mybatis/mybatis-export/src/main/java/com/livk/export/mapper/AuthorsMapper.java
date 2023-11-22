@@ -31,4 +31,5 @@ public interface AuthorsMapper {
 	List<Authors> select();
 
 	void insertBatch(List<Authors> authorsList);
+
 }

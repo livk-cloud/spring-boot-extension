@@ -31,15 +31,15 @@ public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
 
 	@Override
 	public final BufferedImage generateQRCode(QRCodeEntity<?> entity) {
-		return generateQRCode(convert(entity.content()), entity.width(),
-			entity.height(), entity.config(), entity.type());
+		return generateQRCode(convert(entity.content()), entity.width(), entity.height(), entity.config(),
+				entity.type());
 	}
 
 	/**
 	 * Convert string.
-	 *
 	 * @param content the content
 	 * @return the string
 	 */
 	protected abstract String convert(Object content);
+
 }

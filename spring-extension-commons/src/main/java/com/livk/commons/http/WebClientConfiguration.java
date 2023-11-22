@@ -56,7 +56,6 @@ public class WebClientConfiguration {
 	/**
 	 * spring官方建议使用{@link WebClient} <a href=
 	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
-	 *
 	 * @param builder the web client builder
 	 * @return WebClient web client
 	 */
@@ -75,25 +74,24 @@ public class WebClientConfiguration {
 
 		/**
 		 * Reactor client配置
-		 *
 		 * @param reactorResourceFactory ReactorResourceFactory
 		 * @return WebClientCustomizer
 		 */
 		@Bean
 		public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
-			Function<HttpClient, HttpClient> function = httpClient ->
-				httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
-					.wiretap(WebClient.class.getName(), LogLevel.DEBUG,
-						AdvancedByteBufFormat.TEXTUAL, StandardCharsets.UTF_8)
-					.responseTimeout(Duration.ofSeconds(15))
-					.secure(sslContextSpec -> sslContextSpec.sslContext(
-						DefaultSslContextSpec.forClient().configure(builder ->
-							builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
-					.doOnConnected(connection ->
-						connection.addHandlerLast(new ReadTimeoutHandler(20))
-							.addHandlerLast(new WriteTimeoutHandler(20)));
+			Function<HttpClient, HttpClient> function = httpClient -> httpClient
+				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
+				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
+						StandardCharsets.UTF_8)
+				.responseTimeout(Duration.ofSeconds(15))
+				.secure(sslContextSpec -> sslContextSpec.sslContext(DefaultSslContextSpec.forClient()
+					.configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
+				.doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(20))
+					.addHandlerLast(new WriteTimeoutHandler(20)));
 			ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
 			return webClientBuilder -> webClientBuilder.clientConnector(connector);
 		}
+
 	}
+
 }

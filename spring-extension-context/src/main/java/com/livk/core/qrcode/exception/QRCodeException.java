@@ -28,9 +28,9 @@ import lombok.Getter;
  */
 @Getter
 public class QRCodeException extends RuntimeException {
+
 	/**
 	 * Instantiates a new Qr code exception.
-	 *
 	 * @param message the message
 	 */
 	public QRCodeException(String message) {
@@ -39,9 +39,8 @@ public class QRCodeException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Qr code exception.
-	 *
 	 * @param message the message
-	 * @param cause   the cause
+	 * @param cause the cause
 	 */
 	public QRCodeException(String message, Throwable cause) {
 		super(message, cause);
@@ -49,10 +48,10 @@ public class QRCodeException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Qr code exception.
-	 *
 	 * @param cause the cause
 	 */
 	public QRCodeException(Throwable cause) {
 		super(cause);
 	}
+
 }

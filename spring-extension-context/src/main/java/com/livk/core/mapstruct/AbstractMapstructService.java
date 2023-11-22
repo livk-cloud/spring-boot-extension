@@ -68,4 +68,5 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
 		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
 		this.mapstructLocator = new PrioritizedMapstructLocator(this, mapstructLocators);
 	}
+
 }

@@ -25,4 +25,5 @@ package com.livk.event.context;
  * @author livk
  */
 public interface SseEmitterRepository<K> extends SseEmitterLocator<K>, SseEmitterWriter<K> {
+
 }

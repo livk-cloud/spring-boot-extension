@@ -25,4 +25,5 @@ import java.io.IOException;
 public interface ProtobufSend<V> {
 
 	void send(String key, V data) throws IOException;
+
 }

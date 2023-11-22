@@ -52,7 +52,8 @@ public class UserController {
 	@Bean
 	public RouterFunction<ServerResponse> userList() {
 		return RouterFunctions.route()
-			.GET("/stream/user", request -> ServerResponse.ok().body(userService.list(), User.class)).build();
+			.GET("/stream/user", request -> ServerResponse.ok().body(userService.list(), User.class))
+			.build();
 	}
 
 	@GetMapping("/{id}")

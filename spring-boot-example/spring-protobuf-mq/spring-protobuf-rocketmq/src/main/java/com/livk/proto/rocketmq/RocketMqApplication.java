@@ -12,4 +12,5 @@ public class RocketMqApplication {
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

@@ -64,6 +64,7 @@ public class CryptoAutoConfiguration {
 		public void addFormatters(FormatterRegistry registry) {
 			registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
 		}
+
 	}
 
 	@AutoConfiguration
@@ -77,5 +78,7 @@ public class CryptoAutoConfiguration {
 		public void addFormatters(FormatterRegistry registry) {
 			registry.addFormatterForFieldAnnotation(new SpringAnnotationFormatterFactory(cryptoFormatters));
 		}
+
 	}
+
 }

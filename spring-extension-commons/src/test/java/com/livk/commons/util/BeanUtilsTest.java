@@ -38,8 +38,7 @@ class BeanUtilsTest {
 
 	static SourceBean bean = new SourceBean("source", 10);
 
-	static List<SourceBean> beanList = List.of(new SourceBean("source", 10),
-		new SourceBean("target", 9));
+	static List<SourceBean> beanList = List.of(new SourceBean("source", 10), new SourceBean("target", 9));
 
 	@Test
 	void copy() {
@@ -58,8 +57,7 @@ class BeanUtilsTest {
 	@Test
 	void copyList() {
 		List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
-		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10),
-			new TargetBean("target", 9));
+		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10), new TargetBean("target", 9));
 		assertEquals(result, targetBeans);
 	}
 
@@ -76,7 +74,11 @@ class BeanUtilsTest {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	static class TargetBean {
+
 		private String beanName;
+
 		private Integer beanNo;
+
 	}
+
 }

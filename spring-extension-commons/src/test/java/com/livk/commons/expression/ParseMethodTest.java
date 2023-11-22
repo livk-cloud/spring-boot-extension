@@ -25,4 +25,5 @@ public class ParseMethodTest {
 	@SuppressWarnings("unused")
 	private void parseMethod(String username) {
 	}
+
 }

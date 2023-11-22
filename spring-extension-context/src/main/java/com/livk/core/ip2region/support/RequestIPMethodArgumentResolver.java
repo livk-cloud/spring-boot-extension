@@ -49,7 +49,8 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+			@NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		if (parameter.getParameterType().isAssignableFrom(IpInfo.class)) {
 			return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
 		}
@@ -62,4 +63,5 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
 		String ip = WebUtils.realIp(request);
 		return search.searchAsInfo(ip);
 	}
+
 }

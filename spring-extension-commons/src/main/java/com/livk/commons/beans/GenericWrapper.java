@@ -29,8 +29,7 @@ public interface GenericWrapper<T> extends Wrapper {
 
 	/**
 	 * 构建一个GenericWrapper包装器
-	 *
-	 * @param <T>      相关泛型
+	 * @param <T> 相关泛型
 	 * @param delegate the value
 	 * @return the delegating wrapper
 	 */
@@ -46,8 +45,8 @@ public interface GenericWrapper<T> extends Wrapper {
 
 	/**
 	 * 解析成泛型相关实例
-	 *
 	 * @return 带有泛型的相关实例
 	 */
 	T unwrap();
+
 }

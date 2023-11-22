@@ -48,8 +48,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Instantiates a new Class path http scanner.
-	 *
-	 * @param registry    the registry
+	 * @param registry the registry
 	 * @param environment the environment
 	 */
 	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment) {
@@ -58,7 +57,6 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Register filters.
-	 *
 	 * @param annotationType the annotation type
 	 */
 	public void registerFilters(Class<? extends Annotation> annotationType) {
@@ -98,4 +96,5 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		}
 		return beanDefinitions;
 	}
+
 }

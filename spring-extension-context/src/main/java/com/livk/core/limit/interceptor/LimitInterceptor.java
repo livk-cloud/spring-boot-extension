@@ -47,9 +47,10 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
 		boolean status = limitSupport.exec(limit, invocation.getMethod(), invocation.getArguments());
 		if (status) {
 			return invocation.proceed();
-		} else {
-			throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate() +
-									 " within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
+		}
+		else {
+			throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate()
+					+ " within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
 		}
 	}
 

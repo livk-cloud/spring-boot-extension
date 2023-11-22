@@ -39,10 +39,9 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 给field设置accessible为true,并且设置一个值
-	 *
-	 * @param field     field
+	 * @param field field
 	 * @param parameter parameter
-	 * @param value     value
+	 * @param value value
 	 */
 	public void setFieldAndAccessible(Field field, Object parameter, Object value) {
 		field.setAccessible(true);
@@ -51,7 +50,6 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个类的所有的Get方法
-	 *
 	 * @param targetClass class
 	 * @return read methods
 	 */
@@ -64,16 +62,16 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个类的Field Get方法
-	 *
 	 * @param targetClass class
-	 * @param field       field
+	 * @param field field
 	 * @return read method
 	 */
 	public Method getReadMethod(Class<?> targetClass, Field field) {
 		try {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getReadMethod();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("获取字段get方法失败 message: {}", e.getMessage(), e);
 			return null;
 		}
@@ -81,7 +79,6 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个类的所有的Set方法
-	 *
 	 * @param targetClass target class
 	 * @return write methods
 	 */
@@ -94,16 +91,16 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个类的Field Set方法
-	 *
 	 * @param targetClass class
-	 * @param field       field
+	 * @param field field
 	 * @return method
 	 */
 	public Method getWriteMethod(Class<?> targetClass, Field field) {
 		try {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getWriteMethod();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("获取字段set方法失败 message: {}", e.getMessage(), e);
 			return null;
 		}
@@ -111,7 +108,6 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个类的所有Field,包括所有的父类
-	 *
 	 * @param targetClass class
 	 * @return fields
 	 */
@@ -128,8 +124,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
 	 * 获取一个私有属性的值
-	 *
-	 * @param field  field
+	 * @param field field
 	 * @param target target
 	 * @return declared field value
 	 */
@@ -137,4 +132,5 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 		field.setAccessible(true);
 		return ReflectionUtils.getField(field, target);
 	}
+
 }

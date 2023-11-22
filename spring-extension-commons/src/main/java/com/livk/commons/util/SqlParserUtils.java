@@ -42,7 +42,6 @@ public class SqlParserUtils {
 
 	/**
 	 * 解析一个SQL,获取到所有的表
-	 *
 	 * @param sql sql
 	 * @return table list
 	 */
@@ -55,7 +54,6 @@ public class SqlParserUtils {
 
 	/**
 	 * 获取一个SQL的所有param
-	 *
 	 * @param sql sql
 	 * @return params
 	 */
@@ -64,33 +62,29 @@ public class SqlParserUtils {
 		Statement statement = CCJSqlParserUtil.parse(sql);
 		if (statement instanceof Select select) {
 			PlainSelect plain = (PlainSelect) select.getSelectBody();
-			return plain.getSelectItems()
-				.stream()
-				.map(Object::toString)
-				.toList();
-		} else if (statement instanceof Update update) {
+			return plain.getSelectItems().stream().map(Object::toString).toList();
+		}
+		else if (statement instanceof Update update) {
 			return update.getUpdateSets()
 				.stream()
 				.flatMap(updateSet -> updateSet.getColumns().stream())
 				.map(Column::getColumnName)
 				.toList();
-		} else if (statement instanceof Insert insert) {
-			return insert.getColumns()
-				.stream()
-				.map(Column::getColumnName)
-				.toList();
+		}
+		else if (statement instanceof Insert insert) {
+			return insert.getColumns().stream().map(Column::getColumnName).toList();
 		}
 		return Collections.emptyList();
 	}
 
 	/**
 	 * 格式化SQL
-	 *
-	 * @param sql  sql
+	 * @param sql sql
 	 * @return format sql
 	 */
 	@SneakyThrows
 	public String formatSql(String sql) {
 		return CCJSqlParserUtil.parse(sql).toString();
 	}
+
 }

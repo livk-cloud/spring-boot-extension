@@ -56,7 +56,8 @@ public class RSocketController {
 	@MessageMapping("channel")
 	Flux<Message> channel(final Flux<Duration> settings) {
 		return settings.doOnNext(setting -> log.info("发射间隔为 {} 秒.", setting.getSeconds()))
-			.switchMap(setting -> Flux.interval(setting).map(index -> new Message("服务端", "客户端", index))).log();
+			.switchMap(setting -> Flux.interval(setting).map(index -> new Message("服务端", "客户端", index)))
+			.log();
 	}
 
 }

@@ -28,8 +28,8 @@ public interface RequestIpInfo {
 
 	/**
 	 * Current ip info
-	 *
 	 * @return the ip info
 	 */
 	IpInfo currentIpInfo();
+
 }

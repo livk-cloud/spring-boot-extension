@@ -73,4 +73,5 @@ public class QRCodeController {
 	public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
 		return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));
 	}
+
 }

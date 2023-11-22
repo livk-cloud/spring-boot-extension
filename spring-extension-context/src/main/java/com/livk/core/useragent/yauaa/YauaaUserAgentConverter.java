@@ -38,8 +38,7 @@ public class YauaaUserAgentConverter extends AbstractUserAgentConverter<UserAgen
 	protected UserAgent create(HttpHeaders headers) {
 		Map<String, String> headersConcat = headers.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey,
-				entry -> String.join(",", entry.getValue())));
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(",", entry.getValue())));
 		return userAgentAnalyzer.parse(headersConcat);
 	}
 
@@ -82,4 +81,5 @@ public class YauaaUserAgentConverter extends AbstractUserAgentConverter<UserAgen
 	protected String deviceBrand(UserAgent userAgent) {
 		return userAgent.getValue(UserAgent.DEVICE_BRAND);
 	}
+
 }

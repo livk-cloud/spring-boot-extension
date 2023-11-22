@@ -1,5 +1,6 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
+import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common
@@ -22,6 +23,10 @@ sourceSets {
 			srcDir("src/main/protobuf")
 		}
 	}
+}
+
+tasks.withType<CheckFormat> {
+	exclude("com/livk/proto/gen")
 }
 
 protobuf {

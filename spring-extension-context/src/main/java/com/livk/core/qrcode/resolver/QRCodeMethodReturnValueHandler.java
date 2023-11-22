@@ -43,11 +43,11 @@ import java.io.IOException;
  *
  * @author livk
  */
-public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport implements AsyncHandlerMethodReturnValueHandler {
+public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
+		implements AsyncHandlerMethodReturnValueHandler {
 
 	/**
 	 * Instantiates a new Qr code method return value handler.
-	 *
 	 * @param qrCodeGenerator the qr code generator
 	 */
 	public QRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
@@ -60,8 +60,8 @@ public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport imple
 	}
 
 	@Override
-	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType, ModelAndViewContainer mavContainer,
-								  NativeWebRequest webRequest) throws IOException {
+	public void handleReturnValue(Object returnValue, @NonNull MethodParameter returnType,
+			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws IOException {
 		mavContainer.setRequestHandled(true);
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 		Assert.notNull(response, "response not be null");

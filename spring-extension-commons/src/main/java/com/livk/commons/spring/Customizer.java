@@ -28,8 +28,8 @@ public interface Customizer<T> {
 
 	/**
 	 * 执行回调过程
-	 *
 	 * @param t 待执行数据
 	 */
 	void customize(T t);
+
 }

@@ -29,11 +29,11 @@ public interface MapstructLocator {
 
 	/**
 	 * Get converter.
-	 *
-	 * @param <S>           the type parameter
-	 * @param <T>           the type parameter
+	 * @param <S> the type parameter
+	 * @param <T> the type parameter
 	 * @param converterPair the converter pair
 	 * @return the converter
 	 */
 	<S, T> Converter<S, T> get(ConverterPair converterPair);
+
 }

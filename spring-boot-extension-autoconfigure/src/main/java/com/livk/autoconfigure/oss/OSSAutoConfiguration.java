@@ -42,7 +42,6 @@ public class OSSAutoConfiguration {
 
 	/**
 	 * Oss template oss template.
-	 *
 	 * @param abstractService the abstract service
 	 * @return the oss template
 	 */
@@ -62,7 +61,6 @@ public class OSSAutoConfiguration {
 
 		/**
 		 * Minio service minio service.
-		 *
 		 * @return the minio service
 		 */
 		@Bean(destroyMethod = "close")
@@ -70,6 +68,7 @@ public class OSSAutoConfiguration {
 		public MinioService minioService() {
 			return new MinioService();
 		}
+
 	}
 
 	/**
@@ -81,7 +80,6 @@ public class OSSAutoConfiguration {
 
 		/**
 		 * Minio service minio service.
-		 *
 		 * @return the minio service
 		 */
 		@Bean(destroyMethod = "close")
@@ -89,5 +87,7 @@ public class OSSAutoConfiguration {
 		public AliyunOSSService aliyunOSSService() {
 			return new AliyunOSSService();
 		}
+
 	}
+
 }

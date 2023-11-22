@@ -32,18 +32,16 @@ public interface ContextFactory {
 
 	/**
 	 * 根据方法与参数创建上下文
-	 *
 	 * @param method the method
-	 * @param args   the args
+	 * @param args the args
 	 * @return the context
 	 */
 	Context create(Method method, Object[] args);
 
 	/**
 	 * 合并上下文
-	 *
-	 * @param method    the method
-	 * @param args      the args
+	 * @param method the method
+	 * @param args the args
 	 * @param expandMap the expand map
 	 * @return the map
 	 */
@@ -52,4 +50,5 @@ public interface ContextFactory {
 		context.putAll(expandMap, false);
 		return context;
 	}
+
 }

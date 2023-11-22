@@ -66,5 +66,5 @@ public class BookController {
 	public Mono<Book> createBook(@Argument BookDTO dto) {
 		return bookRepository.save(BeanUtils.copy(dto, Book.class));
 	}
-}
 
+}

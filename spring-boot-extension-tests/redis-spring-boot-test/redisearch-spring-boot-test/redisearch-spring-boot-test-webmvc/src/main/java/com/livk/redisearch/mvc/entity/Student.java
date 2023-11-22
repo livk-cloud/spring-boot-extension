@@ -38,10 +38,14 @@ public class Student {
 
 	@JsonProperty("name")
 	private String name;
+
 	@JsonProperty("sex")
 	private String sex;
+
 	@JsonProperty("desc")
 	private String desc;
+
 	@JsonProperty("class")
 	private String classX;
+
 }

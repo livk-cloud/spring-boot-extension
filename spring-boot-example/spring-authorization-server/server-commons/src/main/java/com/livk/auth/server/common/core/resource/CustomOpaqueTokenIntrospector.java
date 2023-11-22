@@ -50,10 +50,11 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 	public OAuth2AuthenticatedPrincipal introspect(String token) {
 		OAuth2Authorization oldAuthorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 
-		Optional<Oauth2UserDetailsService> optional = SpringContextHolder.getBeanProvider(Oauth2UserDetailsService.class)
+		Optional<Oauth2UserDetailsService> optional = SpringContextHolder
+			.getBeanProvider(Oauth2UserDetailsService.class)
 			.orderedStream()
 			.filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
-				oldAuthorization.getAuthorizationGrantType().getValue()))
+					oldAuthorization.getAuthorizationGrantType().getValue()))
 			.max(Comparator.comparingInt(Ordered::getOrder));
 
 		UserDetails userDetails = null;
@@ -62,10 +63,12 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
 			Object tokenPrincipal = usernamePasswordAuthenticationToken.getPrincipal();
 			userDetails = optional.orElseThrow().loadUserByUser((Oauth2User) tokenPrincipal);
-		} catch (UsernameNotFoundException notFoundException) {
+		}
+		catch (UsernameNotFoundException notFoundException) {
 			log.warn("用户不不存在 {}", notFoundException.getLocalizedMessage());
 			throw notFoundException;
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("资源服务器 introspect Token error {}", ex.getLocalizedMessage());
 		}
 		return (Oauth2User) userDetails;

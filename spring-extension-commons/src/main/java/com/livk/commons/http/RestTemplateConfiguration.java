@@ -53,7 +53,6 @@ public class RestTemplateConfiguration {
 
 	/**
 	 * 注入RestTemplate
-	 *
 	 * @param builder the builder
 	 * @return the rest template
 	 */
@@ -62,16 +61,15 @@ public class RestTemplateConfiguration {
 		return builder.build();
 	}
 
-
 	/**
 	 * okhttp配置相关
 	 */
 	@Configuration(enforceUniqueMethods = false)
 	@ConditionalOnClass(OkHttpClient.class)
 	public static class OkHttpClientConfiguration {
+
 		/**
 		 * 自定义okhttp相关配置
-		 *
 		 * @return the rest template customizer
 		 */
 		@Bean
@@ -89,7 +87,6 @@ public class RestTemplateConfiguration {
 
 		/**
 		 * 从Spring IOC获取okhttp相关配置装配
-		 *
 		 * @param okHttpClient the ok http client
 		 * @return the rest template customizer
 		 */
@@ -98,5 +95,7 @@ public class RestTemplateConfiguration {
 		public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
 			return restTemplate -> restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(okHttpClient));
 		}
+
 	}
+
 }

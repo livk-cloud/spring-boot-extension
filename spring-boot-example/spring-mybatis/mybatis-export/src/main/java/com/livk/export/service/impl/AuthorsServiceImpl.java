@@ -41,4 +41,5 @@ public class AuthorsServiceImpl implements AuthorsService {
 		sqlSessionTemplate.select("com.livk.export.mapper.AuthorsMapper.select", customResultHandler);
 		writer.flush();
 	}
+
 }

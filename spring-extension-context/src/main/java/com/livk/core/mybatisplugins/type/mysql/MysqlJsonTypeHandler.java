@@ -40,7 +40,6 @@ public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements Typ
 
 	/**
 	 * Instantiates a new Mysql json type handler.
-	 *
 	 * @param mapper the mapper
 	 */
 	public MysqlJsonTypeHandler(ObjectMapper mapper) {

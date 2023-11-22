@@ -17,7 +17,6 @@
 
 package com.livk.core.qrcode.resolver;
 
-
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.core.qrcode.PicType;
@@ -50,13 +49,13 @@ import java.util.List;
  *
  * @author livk
  */
-public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport implements HandlerResultHandler, Ordered {
+public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
+		implements HandlerResultHandler, Ordered {
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
 	/**
 	 * Instantiates a new Reactive qr code method return value handler.
-	 *
 	 * @param qrCodeGenerator the qr code generator
 	 */
 	public ReactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
@@ -65,8 +64,8 @@ public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSuppo
 
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
-		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQRCode.class) ||
-			   result.getReturnType().isAssignableFrom(QRCodeEntity.class);
+		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQRCode.class)
+				|| result.getReturnType().isAssignableFrom(QRCodeEntity.class);
 	}
 
 	@NonNull
@@ -82,7 +81,8 @@ public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSuppo
 				Assert.notNull(mono, "mono not be null");
 				return mono.flatMap(o -> write(o, result.getReturnTypeSource(), response));
 			}
-		} else {
+		}
+		else {
 			return write(returnValue, result.getReturnTypeSource(), response);
 		}
 		throw new QRCodeException("current type is not supported:" + returnType.toClass());
@@ -105,7 +105,8 @@ public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSuppo
 
 	@Override
 	public int getOrder() {
-		//提高优先级，不然会被@ResponseBody优先处理掉
+		// 提高优先级，不然会被@ResponseBody优先处理掉
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
+
 }

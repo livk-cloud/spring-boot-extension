@@ -45,8 +45,7 @@ public class FileUtils extends FileCopyUtils {
 	 * 文件下载
 	 * <p>
 	 * 路径不存在则自动创建
-	 *
-	 * @param stream   the stream
+	 * @param stream the stream
 	 * @param filePath 文件路径
 	 * @throws IOException the io exception
 	 */
@@ -63,7 +62,8 @@ public class FileUtils extends FileCopyUtils {
 					buffer.clear();
 				}
 			}
-		} else {
+		}
+		else {
 			throw new IOException();
 		}
 	}
@@ -72,7 +72,6 @@ public class FileUtils extends FileCopyUtils {
 	 * 创建文件
 	 * <p>
 	 * 路径不存在则自动创建
-	 *
 	 * @param file the file
 	 * @return the boolean
 	 * @throws IOException the io exception
@@ -88,44 +87,39 @@ public class FileUtils extends FileCopyUtils {
 
 	/**
 	 * 读取文件转成String
-	 *
 	 * @param file the file
 	 * @return the string
 	 * @throws IOException the io exception
 	 */
 	public String read(File file) throws IOException {
-		try (FileReader fileReader = new FileReader(file);
-			 BufferedReader reader = new BufferedReader(fileReader)) {
+		try (FileReader fileReader = new FileReader(file); BufferedReader reader = new BufferedReader(fileReader)) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		}
 	}
 
 	/**
 	 * 从ServerWebExchange读取文件转成Mono Part
-	 *
-	 * @param name     文件参数
+	 * @param name 文件参数
 	 * @param exchange the exchange
 	 * @return the part values
 	 */
 	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-		return exchange.getMultipartData()
-			.mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
+		return exchange.getMultipartData().mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
 	}
-
 
 	/**
 	 * 使用GZip进行压缩
 	 * <p>
 	 * 把数据压缩至OutputStream
-	 *
-	 * @param bytes        待压缩数据
+	 * @param bytes 待压缩数据
 	 * @param outputStream 输出流
 	 */
 	public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
 		if (!ObjectUtils.isEmpty(bytes)) {
 			try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
 				stream.write(bytes);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -133,15 +127,16 @@ public class FileUtils extends FileCopyUtils {
 
 	/**
 	 * 使用GZip进行解压缩
-	 *
 	 * @param inputStream 输入流
 	 * @return byte[]
 	 */
 	public static byte[] gzipDecompress(InputStream inputStream) {
 		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
 			return FileUtils.copyToByteArray(stream);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

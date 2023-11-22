@@ -34,10 +34,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HttpClientImportSelector.class)
 public @interface EnableHttpClient {
+
 	/**
 	 * 声明客户端类型
-	 *
 	 * @return the http client type [ ]
 	 */
 	HttpClientType[] value();
+
 }

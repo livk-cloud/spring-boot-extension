@@ -21,4 +21,5 @@ class UserConverterTest {
 		assertFalse(ObjectUtils.isEmpty(bytes));
 		assertEquals(user, converter.convert(bytes));
 	}
+
 }

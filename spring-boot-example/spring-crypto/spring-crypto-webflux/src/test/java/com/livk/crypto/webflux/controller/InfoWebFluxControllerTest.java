@@ -51,9 +51,7 @@ class InfoWebFluxControllerTest {
 		String encodingStr = pbeSecurity.print(654321L, Locale.CHINA);
 		String encoding = CryptoType.PBE.wrapper(encodingStr);
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/info")
-				.queryParam("id", encoding)
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/info").queryParam("id", encoding).build())
 			.header("id", encoding)
 			.exchange()
 			.expectStatus()
@@ -87,4 +85,5 @@ class InfoWebFluxControllerTest {
 				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.headerId").asText());
 			});
 	}
+
 }

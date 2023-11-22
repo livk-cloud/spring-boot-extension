@@ -38,15 +38,13 @@ public class LimitSupport {
 	 */
 	private final SpringExpressionResolver resolver = new SpringExpressionResolver();
 
-
 	private final LimitExecutor limitExecutor;
 
 	/**
 	 * Exec boolean.
-	 *
-	 * @param limit  the limit
+	 * @param limit the limit
 	 * @param method the method
-	 * @param args   the args
+	 * @param args the args
 	 * @return the boolean
 	 */
 	public boolean exec(Limit limit, Method method, Object[] args) {
@@ -61,4 +59,5 @@ public class LimitSupport {
 		}
 		return limitExecutor.tryAccess(spELKey, rate, rateInterval, rateIntervalUnit);
 	}
+
 }

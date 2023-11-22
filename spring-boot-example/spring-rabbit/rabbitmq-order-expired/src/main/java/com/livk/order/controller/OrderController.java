@@ -47,7 +47,6 @@ public class OrderController {
 
 	/**
 	 * 模拟提交订单
-	 *
 	 * @return java.lang.Object
 	 * @author nxq
 	 */

@@ -17,7 +17,6 @@
 
 package com.livk.auth.server.common.converter;
 
-
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2PasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,21 +28,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>密码认证转换器</p>
+ * <p>
+ * 密码认证转换器
+ * </p>
  *
  * @author livk
  */
-public class OAuth2PasswordAuthenticationConverter implements OAuth2BaseAuthenticationConverter<OAuth2PasswordAuthenticationToken> {
+public class OAuth2PasswordAuthenticationConverter
+		implements OAuth2BaseAuthenticationConverter<OAuth2PasswordAuthenticationToken> {
 
 	@Override
 	public RequestMatcher support() {
 		return request -> SecurityConstants.PASSWORD.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
-						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
-						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
+				&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.USERNAME))
+				&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.PASSWORD));
 	}
 
 	@Override
-	public OAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
+	public OAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes,
+			Map<String, Object> additionalParameters) {
 		return new OAuth2PasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
 	}
+
 }

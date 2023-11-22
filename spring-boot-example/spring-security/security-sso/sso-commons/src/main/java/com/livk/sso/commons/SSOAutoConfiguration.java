@@ -32,4 +32,5 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @AutoConfiguration
 @EnableConfigurationProperties(RsaKeyProperties.class)
 public class SSOAutoConfiguration {
+
 }

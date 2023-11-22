@@ -46,10 +46,12 @@ public class RedissonLimitExecutor extends ReentrantLimitExecutor implements Lim
 				RateIntervalUnit unit = RateIntervalUnit.valueOf(rateIntervalUnit.name());
 				rateLimiter.trySetRate(RateType.OVERALL, rate, rateInterval, unit);
 				return rateLimiter.tryAcquire(1);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new LimitException("un support TimeUnit " + rateIntervalUnit, e);
 			}
 		}
 		throw new LimitException("Composite key is null or empty");
 	}
+
 }

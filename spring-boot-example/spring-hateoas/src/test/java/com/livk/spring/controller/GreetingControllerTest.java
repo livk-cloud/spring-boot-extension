@@ -37,4 +37,5 @@ class GreetingControllerTest {
 				assertEquals("hello,World!", JsonNodeUtils.findNode(jsonNode, "content").asText());
 			});
 	}
+
 }

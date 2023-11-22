@@ -49,7 +49,6 @@ public class IpInfo {
 	 * 格式 IP|nation|area|province|city|operator
 	 * <p>
 	 * 如数据不存在则用0标识
-	 *
 	 * @param info ip相关字符串
 	 */
 	public IpInfo(String info) {
@@ -65,4 +64,5 @@ public class IpInfo {
 	private String checkData(String data) {
 		return "0".equals(data) ? null : data;
 	}
+
 }

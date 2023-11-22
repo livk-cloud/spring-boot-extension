@@ -74,4 +74,5 @@ class FileUtilsTest {
 		JsonNode result = JsonMapperUtils.readTree(file);
 		assertEquals(result, JsonMapperUtils.readTree(json));
 	}
+
 }

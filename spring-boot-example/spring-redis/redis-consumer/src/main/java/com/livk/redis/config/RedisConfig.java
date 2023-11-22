@@ -51,14 +51,15 @@ public class RedisConfig {
 	@Bean
 	@SuppressWarnings("rawtypes")
 	public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
-		ReactiveRedisConnectionFactory connectionFactory) {
+			ReactiveRedisConnectionFactory connectionFactory) {
 		ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
 		RedisSerializer<LivkMessage> serializer = JacksonSerializerUtils.json(LivkMessage.class);
 		container
 			.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),
-				RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
-				RedisSerializationContext.SerializationPair.fromSerializer(serializer))
-			.map(ReactiveSubscription.Message::getMessage).subscribe(obj -> log.info("message:{}", obj));
+					RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()),
+					RedisSerializationContext.SerializationPair.fromSerializer(serializer))
+			.map(ReactiveSubscription.Message::getMessage)
+			.subscribe(obj -> log.info("message:{}", obj));
 		return container;
 	}
 

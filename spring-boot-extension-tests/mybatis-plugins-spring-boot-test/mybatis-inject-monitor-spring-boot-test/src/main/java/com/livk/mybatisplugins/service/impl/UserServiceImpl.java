@@ -62,4 +62,5 @@ public class UserServiceImpl implements UserService {
 	public List<User> list() {
 		return userMapper.list();
 	}
+
 }

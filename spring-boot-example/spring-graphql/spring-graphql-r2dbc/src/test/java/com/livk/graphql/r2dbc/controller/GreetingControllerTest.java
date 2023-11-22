@@ -59,16 +59,13 @@ class GreetingControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void greetings() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			subscription {
-			  greetings
-			}""";
-		Map result = tester.document(document)
-			.execute()
-			.path("upstreamPublisher")
-			.entity(Map.class)
-			.get();
+				subscription {
+				  greetings
+				}""";
+		Map result = tester.document(document).execute().path("upstreamPublisher").entity(Map.class).get();
 		assertNotNull(result);
 	}
+
 }

@@ -54,8 +54,10 @@ import java.util.concurrent.ExecutorService;
 public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 
 	private static final JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
+
 	@SuppressWarnings("unchecked")
-	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), ConfigBaseConverter.class);
+	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+			ConfigBaseConverter.class);
 
 	private static YAMLMapper createMapper() {
 		YAMLMapper mapper = new YAMLMapper();
@@ -76,8 +78,8 @@ public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 		mapper.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
 		mapper.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
 		mapper.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class);
-		FilterProvider filterProvider = new SimpleFilterProvider()
-			.addFilter("classFilter", SimpleBeanPropertyFilter.filterOutAllExcept());
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
+				SimpleBeanPropertyFilter.filterOutAllExcept());
 		mapper.setFilterProvider(filterProvider);
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -88,4 +90,5 @@ public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 	public T convert(@NonNull String source) {
 		return support.readValue(source, type);
 	}
+
 }

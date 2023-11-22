@@ -17,7 +17,6 @@
 
 package com.livk.autoconfigure.redisearch.codec;
 
-
 import org.springframework.core.ConfigurableObjectInputStream;
 
 import java.io.*;
@@ -39,7 +38,6 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 
 	/**
 	 * Instantiates a new Jdk redis codec.
-	 *
 	 * @param classLoader the class loader
 	 */
 	public JdkRedisCodec(ClassLoader classLoader) {
@@ -49,8 +47,8 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 	@Override
 	protected byte[] serialize(Object value) throws CodecException {
 		if (!(value instanceof Serializable)) {
-			throw new IllegalArgumentException(getClass().getSimpleName() + " requires a Serializable payload " +
-											   "but received an object of type [" + value.getClass().getName() + "]");
+			throw new IllegalArgumentException(getClass().getSimpleName() + " requires a Serializable payload "
+					+ "but received an object of type [" + value.getClass().getName() + "]");
 		}
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
@@ -58,7 +56,8 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 			objectOutputStream.writeObject(value);
 			objectOutputStream.flush();
 			return out.toByteArray();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new CodecException("Cannot serialize", e);
 		}
 	}
@@ -69,8 +68,10 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 		try {
 			ObjectInputStream objectInputStream = new ConfigurableObjectInputStream(inputStream, this.classLoader);
 			return objectInputStream.readObject();
-		} catch (IOException | ClassNotFoundException e) {
+		}
+		catch (IOException | ClassNotFoundException e) {
 			throw new CodecException("Cannot deserialize", e);
 		}
 	}
+
 }

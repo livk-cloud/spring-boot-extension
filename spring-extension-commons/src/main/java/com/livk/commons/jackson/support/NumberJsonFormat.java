@@ -39,15 +39,14 @@ public @interface NumberJsonFormat {
 
 	/**
 	 * 序列化表达式
-	 *
 	 * @return the string
 	 */
 	String pattern() default "#0.00";
 
 	/**
 	 * 是否支持基础类型
-	 *
 	 * @return the boolean
 	 */
 	boolean simpleTypeSupport() default true;
+
 }

@@ -31,7 +31,6 @@ public class PrimaryNotFountException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Primary not fount exception.
-	 *
 	 * @param message the message
 	 */
 	public PrimaryNotFountException(String message) {
@@ -40,9 +39,8 @@ public class PrimaryNotFountException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Primary not fount exception.
-	 *
 	 * @param message the message
-	 * @param cause   the cause
+	 * @param cause the cause
 	 */
 	public PrimaryNotFountException(String message, Throwable cause) {
 		super(message, cause);
@@ -50,7 +48,6 @@ public class PrimaryNotFountException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Primary not fount exception.
-	 *
 	 * @param cause the cause
 	 */
 	public PrimaryNotFountException(Throwable cause) {
@@ -59,14 +56,13 @@ public class PrimaryNotFountException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Primary not fount exception.
-	 *
-	 * @param message            the message
-	 * @param cause              the cause
-	 * @param enableSuppression  the enable suppression
+	 * @param message the message
+	 * @param cause the cause
+	 * @param enableSuppression the enable suppression
 	 * @param writableStackTrace the writable stack trace
 	 */
 	protected PrimaryNotFountException(String message, Throwable cause, boolean enableSuppression,
-									   boolean writableStackTrace) {
+			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
