@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * @author livk
  */
 @UtilityClass
-public class RediSearchSupport {
+final class RediSearchSupport {
 
 	/**
 	 * Create cluster list.
