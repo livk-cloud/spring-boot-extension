@@ -25,7 +25,7 @@ import java.util.Date;
 
 /**
  * <p>
- * DateUtils
+ * 日期相关工具类
  * </p>
  *
  * @author livk
@@ -34,17 +34,17 @@ import java.util.Date;
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
-	 * The constant YMD.
+	 * YMD.
 	 */
 	public static final String YMD = "yyyy-MM-dd";
 
 	/**
-	 * The constant HMS.
+	 * HMS.
 	 */
 	public static final String HMS = "HH:mm:ss";
 
 	/**
-	 * The constant YMD_HMS.
+	 * YMD_HMS.
 	 */
 	public static final String YMD_HMS = YMD + " " + HMS;
 

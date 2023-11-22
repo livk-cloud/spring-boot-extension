@@ -29,9 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Http client import selector.
+ * Http相关配置Selector进行IOC注入
+ * <p>
+ * 根据{@link EnableHttpClient}注解的value值加载对应的配置数据
  *
  * @author livk
+ * @see EnableHttpClient
  */
 public class HttpClientImportSelector extends SpringAbstractImportSelector<EnableHttpClient> {
 
@@ -46,8 +49,7 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 		return names;
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T getValue(AnnotationAttributes attributes) {
+	private HttpClientType[] getValue(AnnotationAttributes attributes) {
 		Object value = attributes.get("value");
 		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray() &&
 			HttpClientType[].class.getComponentType().isInstance(value)) {
@@ -55,6 +57,6 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 			Array.set(array, 0, value);
 			value = array;
 		}
-		return (T) value;
+		return (HttpClientType[]) value;
 	}
 }

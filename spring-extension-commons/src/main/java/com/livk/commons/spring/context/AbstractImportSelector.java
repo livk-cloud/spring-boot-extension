@@ -53,7 +53,7 @@ import java.util.List;
 public abstract class AbstractImportSelector<A extends Annotation> implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
 	/**
-	 * The Annotation class.
+	 * 注解类型
 	 */
 	@SuppressWarnings("unchecked")
 	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractImportSelector.class);
@@ -81,7 +81,7 @@ public abstract class AbstractImportSelector<A extends Annotation> implements De
 	}
 
 	/**
-	 * Is enabled boolean.
+	 * 是否启用
 	 *
 	 * @return the boolean
 	 */
@@ -95,7 +95,7 @@ public abstract class AbstractImportSelector<A extends Annotation> implements De
 	}
 
 	@Override
-	public void setBeanClassLoader(ClassLoader classLoader) {
+	public void setBeanClassLoader(@NonNull ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 }

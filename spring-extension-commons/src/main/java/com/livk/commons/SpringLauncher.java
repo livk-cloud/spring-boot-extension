@@ -38,20 +38,22 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
- * The type Spring launcher.
+ * 自定义Spring启动器
+ * <p>
+ * 内嵌Banner图、以及各种版本
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpringLauncher {
 
-	private static SpringApplication application;
+	private volatile static SpringApplication application;
 
 	/**
 	 * Springboot主启动
 	 * <p>
-	 * 自动推到当前类Class
+	 * 自动推导当前类Class
 	 *
-	 * @param args the args
-	 * @return the configurable application context
+	 * @param args main方法参数
+	 * @return ConfigurableApplicationContext
 	 */
 	@SneakyThrows
 	public static ConfigurableApplicationContext run(String[] args) {
@@ -68,9 +70,9 @@ public class SpringLauncher {
 	/**
 	 * Springboot主启动
 	 *
-	 * @param targetClass the primary source to load
-	 * @param args        the application arguments (usually passed from a Java main method)
-	 * @return the configurable application context
+	 * @param targetClass 主启动类class
+	 * @param args        main方法参数
+	 * @return ConfigurableApplicationContext
 	 */
 	public static ConfigurableApplicationContext run(Class<?> targetClass, String[] args) {
 		application = new SpringApplicationBuilder(targetClass)
@@ -81,7 +83,7 @@ public class SpringLauncher {
 	}
 
 	/**
-	 * Gets version.
+	 * 获取当前包版本
 	 *
 	 * @return the version
 	 */
@@ -91,9 +93,9 @@ public class SpringLauncher {
 	}
 
 	/**
-	 * Application spring application.
+	 * 获取到SpringApplication
 	 *
-	 * @return the spring application
+	 * @return SpringApplication
 	 */
 	public static SpringApplication application() {
 		return application;
@@ -136,7 +138,7 @@ public class SpringLauncher {
 		private final PrintStream out;
 
 		/**
-		 * Instantiates a new Format.
+		 * 构建Format
 		 *
 		 * @param max the max
 		 * @param out the out
@@ -147,7 +149,8 @@ public class SpringLauncher {
 		}
 
 		/**
-		 * Accept.
+		 * 输出字符串
+		 * 前后使用*补全
 		 *
 		 * @param str the str
 		 * @return the format
@@ -166,7 +169,7 @@ public class SpringLauncher {
 		}
 
 		/**
-		 * Flush.
+		 * 刷新输出
 		 */
 		public void flush() {
 			out.flush();

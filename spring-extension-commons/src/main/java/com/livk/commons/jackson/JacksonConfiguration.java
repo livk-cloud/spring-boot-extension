@@ -38,7 +38,7 @@ import java.util.Locale;
 public class JacksonConfiguration {
 
 	/**
-	 * Java time customizer jackson 2 object mapper builder customizer.
+	 * 自定义JacksonBuilder的配置
 	 *
 	 * @return the jackson 2 object mapper builder customizer
 	 */

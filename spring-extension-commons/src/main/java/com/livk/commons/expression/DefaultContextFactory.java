@@ -29,8 +29,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link Context}默认解析工厂
+ * <p>
+ * 使用spring StandardReflectionParameterNameDiscoverer进行解析
  *
  * @author livk
+ * @see StandardReflectionParameterNameDiscoverer
  */
 class DefaultContextFactory implements ContextFactory {
 

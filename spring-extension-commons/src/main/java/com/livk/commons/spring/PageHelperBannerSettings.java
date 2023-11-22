@@ -25,7 +25,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
  * <p>
- * OtherBannerHandler
+ * 用于移除默认PageHelper Banner图的相关设置
  * </p>
  *
  * @author livk

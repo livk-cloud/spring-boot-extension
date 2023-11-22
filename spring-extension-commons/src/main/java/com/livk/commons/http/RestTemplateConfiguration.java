@@ -38,8 +38,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * HttpConfiguration
+ * RestTemplate相关配置
  * </p>
+ * 仅在SERVLET环境下生效
+ * <p>
+ * REACTIVE环境下请使用{@link org.springframework.web.reactive.function.client.WebClient}
  *
  * @author livk
  */
@@ -49,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 public class RestTemplateConfiguration {
 
 	/**
-	 * Rest template rest template.
+	 * 注入RestTemplate
 	 *
 	 * @param builder the builder
 	 * @return the rest template
@@ -61,13 +64,13 @@ public class RestTemplateConfiguration {
 
 
 	/**
-	 * The type Ok http client configuration.
+	 * okhttp配置相关
 	 */
 	@Configuration(enforceUniqueMethods = false)
 	@ConditionalOnClass(OkHttpClient.class)
 	public static class OkHttpClientConfiguration {
 		/**
-		 * Rest template customizer rest template customizer.
+		 * 自定义okhttp相关配置
 		 *
 		 * @return the rest template customizer
 		 */
@@ -85,7 +88,7 @@ public class RestTemplateConfiguration {
 		}
 
 		/**
-		 * Rest template customizer rest template customizer.
+		 * 从Spring IOC获取okhttp相关配置装配
 		 *
 		 * @param okHttpClient the ok http client
 		 * @return the rest template customizer

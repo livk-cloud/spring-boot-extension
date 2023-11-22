@@ -41,7 +41,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * The type Annotation metadata resolver.
+ * 包解析根据Annotation进行class获取
  *
  * @author livk
  * @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider

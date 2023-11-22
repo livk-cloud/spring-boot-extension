@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * StringUtils
+ * 常用Object相关工具类
  * </p>
  *
  * @author livk

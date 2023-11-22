@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 
 /**
- * The interface Field function.
+ * 用于使用lambda获取相关字段已经方法
  *
  * @param <T> the type parameter
  * @author livk
@@ -34,33 +34,33 @@ import java.util.function.Function;
 public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 
 	/**
-	 * Method name
+	 * 获取方法名称
 	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the string
+	 * @param <T>      相关泛型
+	 * @param function BeanLambdaFunc表达式
+	 * @return methodName
 	 */
 	static <T> String methodName(BeanLambdaFunc<T> function) {
 		return BeanLambdaDescriptor.create(function).getMethodName();
 	}
 
 	/**
-	 * Method
+	 * 获取方法
 	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the method
+	 * @param <T>      相关泛型
+	 * @param function BeanLambdaFunc表达式
+	 * @return method
 	 */
 	static <T> Method method(BeanLambdaFunc<T> function) {
 		return BeanLambdaDescriptor.create(function).getMethod();
 	}
 
 	/**
-	 * Gets field name.
+	 * 获取字段名称
 	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the field name
+	 * @param <T>      相关泛型
+	 * @param function BeanLambdaFunc表达式
+	 * @return fieldName
 	 */
 	@SneakyThrows
 	static <T> String fieldName(BeanLambdaFunc<T> function) {
@@ -68,11 +68,11 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	}
 
 	/**
-	 * Gets field.
+	 * 获取字段
 	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the field
+	 * @param <T>      相关泛型
+	 * @param function BeanLambdaFunc表达式
+	 * @return field
 	 */
 	@SneakyThrows
 	static <T> Field field(BeanLambdaFunc<T> function) {

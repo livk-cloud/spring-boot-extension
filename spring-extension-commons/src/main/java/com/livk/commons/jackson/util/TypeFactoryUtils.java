@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The type Type factory utils.
+ * TypeFactory工具类
  *
  * @author livk
  */
@@ -80,7 +80,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * Java type java type.
+	 * TypeReference转JavaType
 	 *
 	 * @param typeReference the type reference
 	 * @return JavaType

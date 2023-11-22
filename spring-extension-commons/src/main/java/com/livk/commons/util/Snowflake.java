@@ -26,7 +26,7 @@ import java.net.NetworkInterface;
 
 /**
  * <p>
- * Snowflake
+ * 雪花算法生成器
  * </p>
  *
  * @author livk
@@ -60,14 +60,14 @@ public class Snowflake {
 	private long sequence = 0L;
 
 	/**
-	 * Instantiates a new Snowflake.
+	 * 构建一个默认的生成器
 	 */
 	public Snowflake() {
 		this(-1, -1);
 	}
 
 	/**
-	 * Instantiates a new Snowflake.
+	 * 构建一个的生成器
 	 *
 	 * @param workerId     Working machine ID
 	 * @param datacenterId Serial number

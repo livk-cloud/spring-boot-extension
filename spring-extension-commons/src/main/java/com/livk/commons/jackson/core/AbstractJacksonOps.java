@@ -23,7 +23,7 @@ import com.livk.commons.jackson.util.TypeFactoryUtils;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The type Abstract jackson operations.
+ * Jackson相关操作抽象类
  *
  * @author livk
  */
@@ -33,56 +33,27 @@ public abstract class AbstractJacksonOps implements JacksonOps {
 	private final TypeFactory typeFactory;
 
 	/**
-	 * Instantiates a new Abstract jackson operations.
+	 * 无参构造
 	 */
 	public AbstractJacksonOps() {
 		this(TypeFactoryUtils.instance());
 	}
 
-	/**
-	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
-	 * @param type the type
-	 * @return the t
-	 */
+
 	public final <T> T readValue(Object obj, Class<T> type) {
 		return readValue(obj, typeFactory.constructType(type));
 	}
 
-	/**
-	 * Read value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param obj           the obj
-	 * @param typeReference the type reference
-	 * @return the t
-	 */
 	public final <T> T readValue(Object obj, TypeReference<T> typeReference) {
 		return readValue(obj, typeFactory.constructType(typeReference));
 	}
 
-	/**
-	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param type      the type
-	 * @return the object
-	 */
+
 	public final <T> T convertValue(Object fromValue, Class<T> type) {
 		return convertValue(fromValue, typeFactory.constructType(type));
 	}
 
-	/**
-	 * Convert value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param fromValue     the value
-	 * @param typeReference the type reference
-	 * @return the t
-	 */
+
 	public final <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
 		return convertValue(fromValue, typeFactory.constructType(typeReference));
 	}

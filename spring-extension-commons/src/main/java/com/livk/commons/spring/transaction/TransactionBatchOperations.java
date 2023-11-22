@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
- * The type Transaction batch operations.
+ * Spring事务批量操作
  *
  * @author livk
  */
@@ -38,7 +38,7 @@ import java.util.function.Consumer;
 public class TransactionBatchOperations {
 
 	/**
-	 * The constant DEFAULT_NUM.
+	 * 默认操作SQL数量
 	 */
 	public static final Integer DEFAULT_NUM = 1000;
 
@@ -48,7 +48,7 @@ public class TransactionBatchOperations {
 	private Executor executor;
 
 	/**
-	 * Instantiates a new Transaction batch operations.
+	 * 创建TransactionBatchOperations
 	 *
 	 * @param transactionTemplate the transaction template
 	 * @param executor            the executor
@@ -60,25 +60,27 @@ public class TransactionBatchOperations {
 	}
 
 	/**
-	 * Insert batch.
+	 * 批量执行
+	 * <p>
+	 * 使用默认数量{@link #DEFAULT_NUM}
 	 *
-	 * @param <T>      the type parameter
-	 * @param dataList the data list
-	 * @param ops      the ops
+	 * @param <T>      泛型
+	 * @param dataList 带操作的数据
+	 * @param ops      执行过程
 	 */
-	public <T> void insertBatch(List<T> dataList, Consumer<List<T>> ops) {
-		insertBatch(dataList, DEFAULT_NUM, ops);
+	public <T> void executeBatch(List<T> dataList, Consumer<List<T>> ops) {
+		executeBatch(dataList, DEFAULT_NUM, ops);
 	}
 
 	/**
-	 * Insert batch.
+	 * 批量执行
 	 *
-	 * @param <T>      the type parameter
-	 * @param dataList the data list
-	 * @param batchNum the batch num
-	 * @param ops      the ops
+	 * @param <T>      泛型
+	 * @param dataList 带操作的数据
+	 * @param batchNum 批次数量
+	 * @param ops      执行过程
 	 */
-	public <T> void insertBatch(List<T> dataList, int batchNum, Consumer<List<T>> ops) {
+	public <T> void executeBatch(List<T> dataList, int batchNum, Consumer<List<T>> ops) {
 		List<List<T>> partition = Lists.partition(dataList, batchNum);
 		AtomicBoolean rollback = new AtomicBoolean(false);
 		List<CompletableFuture<Void>> futures = new ArrayList<>(partition.size());

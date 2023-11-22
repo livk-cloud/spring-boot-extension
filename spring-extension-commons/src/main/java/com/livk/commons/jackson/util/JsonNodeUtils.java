@@ -51,7 +51,7 @@ public class JsonNodeUtils {
 	};
 
 	/**
-	 * Find string value string.
+	 * 查找某个节点，转成string
 	 *
 	 * @param jsonNode  the json node
 	 * @param fieldName the field name
@@ -66,7 +66,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * Find object node json node.
+	 * 查找某个节点
 	 *
 	 * @param jsonNode  the json node
 	 * @param fieldName the field name
@@ -81,7 +81,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * Find value t.
+	 * 查找某个节点
 	 *
 	 * @param <T>                the type parameter
 	 * @param jsonNode           the json node
@@ -97,7 +97,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * Find value t.
+	 * 查找某个节点
 	 *
 	 * @param <T>       the type parameter
 	 * @param jsonNode  the json node
@@ -112,7 +112,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * Find value.
+	 * 查找某个节点
 	 *
 	 * @param <T>       the type parameter
 	 * @param jsonNode  the json node
@@ -176,7 +176,7 @@ public class JsonNodeUtils {
 	 *
 	 * @param jsonNode json
 	 * @param nodeName name
-	 * @return list list
+	 * @return list
 	 */
 	public List<JsonNode> findNodeAll(JsonNode jsonNode, String nodeName) {
 		if (jsonNode == null || ObjectUtils.isEmpty(nodeName)) {

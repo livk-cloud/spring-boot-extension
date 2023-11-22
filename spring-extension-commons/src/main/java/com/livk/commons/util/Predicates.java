@@ -31,6 +31,7 @@ import java.util.stream.Stream;
  * @param <T> the type parameter
  * @author livk
  */
+@Deprecated(since = "1.1.6", forRemoval = true)
 @RequiredArgsConstructor(staticName = "create")
 public class Predicates<T> {
 

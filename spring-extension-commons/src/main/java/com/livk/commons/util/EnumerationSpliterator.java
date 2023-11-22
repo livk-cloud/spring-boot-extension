@@ -25,33 +25,28 @@ import java.util.function.Consumer;
 
 /**
  * <p>
- * EnumerationSpliterator
+ * 用于Enumeration转换Stream
  * </p>
  *
  * @param <T> the type parameter
  * @author livk
+ * @see BaseStreamUtils#convert(Enumeration)
  */
-public class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T> {
+final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T> {
 
 	private final Enumeration<T> enumeration;
 
-	/**
-	 * Instantiates a new Enumeration spliterator.
-	 *
-	 * @param enumeration               the enumeration
-	 * @param additionalCharacteristics the additional characteristics
-	 */
-	protected EnumerationSpliterator(Enumeration<T> enumeration, int additionalCharacteristics) {
+	private EnumerationSpliterator(Enumeration<T> enumeration, int additionalCharacteristics) {
 		super(Long.MAX_VALUE, additionalCharacteristics);
 		this.enumeration = enumeration;
 	}
 
 	/**
-	 * Spliterator unknown size spliterator.
+	 * 根据Enumeration构造Spliterator
 	 *
-	 * @param <T>         the type parameter
-	 * @param enumeration the enumeration
-	 * @return the spliterator
+	 * @param <T>         type parameter
+	 * @param enumeration enumeration
+	 * @return spliterator
 	 */
 	public static <T> Spliterator<T> spliteratorUnknownSize(Enumeration<T> enumeration) {
 		return new EnumerationSpliterator<>(Objects.requireNonNull(enumeration), Spliterator.ORDERED);

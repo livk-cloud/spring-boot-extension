@@ -28,15 +28,17 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * The type Context snapshots.
+ * ContextSnapshot相关工具
  *
  * @author livk
+ * @see ContextSnapshot
+ * @see ContextSnapshotFactory
  */
 @UtilityClass
 public class ContextSnapshots {
 
 	/**
-	 * The constant CONTEXT_SNAPSHOT_FACTORY.
+	 * 构建一个ContextSnapshotFactory
 	 */
 	public static final ContextSnapshotFactory CONTEXT_SNAPSHOT_FACTORY = ContextSnapshotFactory.builder()
 		.contextRegistry(ContextRegistry.getInstance()).clearMissing(false)
@@ -45,80 +47,80 @@ public class ContextSnapshots {
 
 
 	/**
-	 * Supplier supplier.
+	 * 创建一个Supplier ContextSnapshot
 	 *
-	 * @return the supplier
+	 * @return Supplier
 	 */
 	public static Supplier<ContextSnapshot> supplier() {
 		return CONTEXT_SNAPSHOT_FACTORY::captureAll;
 	}
 
 	/**
-	 * Context snapshot context snapshot.
+	 * 创建一个ContextSnapshot
 	 *
-	 * @return the context snapshot
+	 * @return ContextSnapshot
 	 */
 	public static ContextSnapshot contextSnapshot() {
 		return CONTEXT_SNAPSHOT_FACTORY.captureAll();
 	}
 
 	/**
-	 * Wrap runnable.
+	 * 使用ContextSnapshot包装runnable
 	 *
-	 * @param runnable the runnable
-	 * @return the runnable
+	 * @param runnable 待包装的Runnable
+	 * @return Runnable
 	 */
 	public static Runnable wrap(Runnable runnable) {
 		return contextSnapshot().wrap(runnable);
 	}
 
 	/**
-	 * Wrap callable.
+	 * 使用ContextSnapshot包装Callable
 	 *
-	 * @param <T>      the type parameter
-	 * @param callable the callable
-	 * @return the callable
+	 * @param <T>      泛型
+	 * @param callable 待包装的Callable
+	 * @return Callable
 	 */
 	public static <T> Callable<T> wrap(Callable<T> callable) {
 		return contextSnapshot().wrap(callable);
 	}
 
 	/**
-	 * Wrap consumer.
+	 * 使用ContextSnapshot包装Consumer
 	 *
-	 * @param <T>      the type parameter
-	 * @param consumer the consumer
-	 * @return the consumer
+	 * @param <T>      泛型
+	 * @param consumer 待包装的Consumer
+	 * @return Consumer
 	 */
 	public static <T> Consumer<T> wrap(Consumer<T> consumer) {
 		return contextSnapshot().wrap(consumer);
 	}
 
 	/**
-	 * Wrap executor.
+	 * 使用ContextSnapshot包装Executor
 	 *
-	 * @param executor the executor
-	 * @return the executor
+	 * @param executor 待包装的Executor
+	 * @return Executor
 	 */
 	public static Executor wrap(Executor executor) {
 		return contextSnapshot().wrapExecutor(executor);
 	}
 
 	/**
-	 * Wrap executor service.
+	 * 使用ContextSnapshot包装ExecutorService
 	 *
-	 * @param service the service
-	 * @return the executor service
+	 * @param service 待包装的ExecutorService
+	 * @return ExecutorService
 	 */
 	public static ExecutorService wrap(ExecutorService service) {
 		return ContextExecutorService.wrap(service, supplier());
 	}
 
 	/**
-	 * Wrap scheduled executor service.
+	 * 使用ContextSnapshot包装ScheduledExecutorService
 	 *
-	 * @param service the service
-	 * @return the scheduled executor service
+	 * @param service 待包装的ScheduledExecutorService
+	 * @return ScheduledExecutorService
 	 */
 	public static ScheduledExecutorService wrap(ScheduledExecutorService service) {
 		return ContextScheduledExecutorService.wrap(service, supplier());

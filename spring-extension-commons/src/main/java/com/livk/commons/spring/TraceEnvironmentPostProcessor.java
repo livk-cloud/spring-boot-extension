@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * <p>
- * TraceEnvironmentPostProcessor
+ * 用于设置trace日志格式
  * </p>
  *
  * @author livk

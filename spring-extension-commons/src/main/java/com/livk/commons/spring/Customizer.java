@@ -18,9 +18,7 @@
 package com.livk.commons.spring;
 
 /**
- * <p>
- * Customizer
- * </p>
+ * 自定义回调接口
  *
  * @param <T> the type parameter
  * @author livk
@@ -29,9 +27,9 @@ package com.livk.commons.spring;
 public interface Customizer<T> {
 
 	/**
-	 * Customize.
+	 * 执行回调过程
 	 *
-	 * @param t the t
+	 * @param t 待执行数据
 	 */
 	void customize(T t);
 }

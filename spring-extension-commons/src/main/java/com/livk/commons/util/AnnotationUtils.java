@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 
 /**
  * <p>
- * AnnotationUtils
+ * Annotation工具类
  * </p>
  *
  * @author livk
@@ -97,7 +97,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	}
 
 	/**
-	 * Attributes for annotation attributes.
+	 * 构建AnnotationAttributes
 	 *
 	 * @param metadata            the metadata
 	 * @param annotationClassName the annotation class name
@@ -108,9 +108,9 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	}
 
 	/**
-	 * Attributes for annotation attributes.
+	 * 构建AnnotationAttributes
 	 *
-	 * @param <A>             the type parameter
+	 * @param <A>             注解类型
 	 * @param metadata        the metadata
 	 * @param annotationClass the annotation class
 	 * @return the annotation attributes

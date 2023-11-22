@@ -17,18 +17,16 @@
 
 package com.livk.commons.expression.aviator;
 
-import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethodTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -46,8 +44,6 @@ class AviatorExpressionResolverTest {
 	private final static Map<String, String> map = Map.of("username", "livk");
 	final ExpressionResolver resolver = new AviatorExpressionResolver();
 	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
-	@Autowired
-	ApplicationContext applicationContext;
 
 	AviatorExpressionResolverTest() throws NoSuchMethodException {
 	}
@@ -80,16 +76,20 @@ class AviatorExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 			resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-		AviatorEvaluator.addFunctionLoader(new SpringContextFunctionLoader(applicationContext));
 		assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class SpringConfig {
 
 		@Bean
 		public AddFunction springStrAdd() {
 			return new AddFunction();
+		}
+
+		@Bean
+		public SpringContextFunctionLoader springContextFunctionLoader(ApplicationContext applicationContext) {
+			return new SpringContextFunctionLoader(applicationContext);
 		}
 	}
 

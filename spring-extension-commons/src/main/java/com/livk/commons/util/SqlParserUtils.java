@@ -32,16 +32,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * SqlParser相关工具类
+ *
  * @author livk
+ * @see CCJSqlParserUtil
  */
 @UtilityClass
 public class SqlParserUtils {
 
 	/**
-	 * Parse table list.
+	 * 解析一个SQL,获取到所有的表
 	 *
-	 * @param sql the sql
-	 * @return the list
+	 * @param sql sql
+	 * @return table list
 	 */
 	@SneakyThrows
 	public List<String> parseTable(String sql) {
@@ -51,10 +54,10 @@ public class SqlParserUtils {
 	}
 
 	/**
-	 * Gets params.
+	 * 获取一个SQL的所有param
 	 *
-	 * @param sql the sql
-	 * @return the params
+	 * @param sql sql
+	 * @return params
 	 */
 	@SneakyThrows
 	public List<String> getParams(String sql) {
@@ -81,10 +84,10 @@ public class SqlParserUtils {
 	}
 
 	/**
-	 * Format sql string.
+	 * 格式化SQL
 	 *
-	 * @param sql the sql
-	 * @return the string
+	 * @param sql  sql
+	 * @return format sql
 	 */
 	@SneakyThrows
 	public String formatSql(String sql) {

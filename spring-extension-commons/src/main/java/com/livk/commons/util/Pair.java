@@ -39,11 +39,11 @@ import java.util.function.Function;
 
 /**
  * <p>
- * Pair
+ * 通用键值对
  * </p>
  *
- * @param <K> the type parameter
- * @param <V> the type parameter
+ * @param <K> key type parameter
+ * @param <V> value type parameter
  * @author livk
  */
 @EqualsAndHashCode
@@ -53,110 +53,113 @@ import java.util.function.Function;
 public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
-	 * The constant EMPTY.
+	 * 默认的空Pair
 	 */
 	public static final Pair<?, ?> EMPTY = Pair.of(null, null);
 	@Serial
 	private static final long serialVersionUID = -2303547536834226401L;
+
 	/**
 	 * key
 	 */
 	private final K key;
+
 	/**
 	 * value
 	 */
 	private final V value;
 
 	/**
-	 * Of pair.
+	 * 静态构造Map.Entry转Pair
 	 *
-	 * @param <K>   the type parameter
-	 * @param <V>   the type parameter
-	 * @param entry the entry
-	 * @return the pair
+	 * @param <K>   key type parameter
+	 * @param <V>   value type parameter
+	 * @param entry entry
+	 * @return pair
 	 */
 	public static <K, V> Pair<K, V> of(Map.Entry<K, V> entry) {
 		return of(entry.getKey(), entry.getValue());
 	}
 
 	/**
-	 * Get Key.
+	 * 获取Key
 	 *
-	 * @return the k
+	 * @return key
 	 */
 	public K key() {
 		return key;
 	}
 
 	/**
-	 * Get Value
+	 * 获取value
 	 *
-	 * @return the v
+	 * @return value
 	 */
 	public V value() {
 		return value;
 	}
 
 	/**
-	 * To map map.
+	 * 转成Map
 	 *
 	 * @return the map
+	 * @see Map#of(Object, Object)
 	 */
 	public Map<K, V> toMap() {
 		return Map.of(key, value);
 	}
 
 	/**
-	 * To entry map . entry.
+	 * 转成Map.Entry
 	 *
-	 * @return the map . entry
+	 * @return entry
 	 */
 	public Map.Entry<K, V> toEntry() {
 		return Map.entry(key, value);
 	}
 
 	/**
-	 * Map pair.
+	 * 进行map转换
 	 *
-	 * @param <S>           the type parameter
-	 * @param <U>           the type parameter
-	 * @param keyFunction   the key function
-	 * @param valueFunction the value function
-	 * @return the pair
+	 * @param <S>           key转换后type
+	 * @param <U>           value转换后type
+	 * @param keyFunction   key function
+	 * @param valueFunction value function
+	 * @return pair
 	 */
 	public <S, U> Pair<S, U> map(Function<K, S> keyFunction, Function<V, U> valueFunction) {
 		return of(keyFunction.apply(key), valueFunction.apply(value));
 	}
 
 	/**
-	 * Key map pair.
+	 * Key进行map转换
 	 *
-	 * @param <S>         the type parameter
-	 * @param keyFunction the key function
-	 * @return the pair
+	 * @param <S>         key转换后type
+	 * @param keyFunction key function
+	 * @return pair
 	 */
 	public <S> Pair<S, V> keyMap(Function<K, S> keyFunction) {
 		return map(keyFunction, Function.identity());
 	}
 
 	/**
-	 * Value map pair.
+	 * Value进行map转换
 	 *
-	 * @param <U>           the type parameter
-	 * @param valueFunction the value function
-	 * @return the pair
+	 * @param <U>           value转换后type
+	 * @param valueFunction value function
+	 * @return pair
 	 */
 	public <U> Pair<K, U> valueMap(Function<V, U> valueFunction) {
 		return map(Function.identity(), valueFunction);
 	}
 
 	/**
-	 * Flat map pair.
+	 * 进行flatmap转换
 	 *
-	 * @param <S>        the type parameter
-	 * @param <U>        the type parameter
-	 * @param biFunction the bi function
-	 * @return the pair
+	 * @param <S>        key转换后type
+	 * @param <U>        value转换后type
+	 * @param biFunction bi function
+	 * @return pair
 	 */
 	public <S, U> Pair<S, U> flatMap(BiFunction<K, V, Pair<S, U>> biFunction) {
 		return biFunction.apply(key, value);
@@ -178,14 +181,14 @@ public class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * The type Pair json serializer.
+	 * Pair Jackson序列化工具
 	 */
 	static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> implements ContextualSerializer {
 
 		private JsonSerializer<Object> keySerializer;
 
 		/**
-		 * Instantiates a new Pair json serializer.
+		 * 构造器
 		 */
 		protected PairJsonSerializer() {
 			super(Pair.class, false);
@@ -207,7 +210,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * The type Pair json deserializer.
+	 * Pair Jackson反序列化工具
 	 */
 	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> implements ContextualDeserializer {
 
@@ -215,7 +218,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 		private JavaType valueType;
 
 		/**
-		 * Instantiates a new Pair json deserializer.
+		 * 构造器
 		 */
 		protected PairJsonDeserializer() {
 			super(Pair.class);

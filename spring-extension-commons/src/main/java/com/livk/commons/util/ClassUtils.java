@@ -25,7 +25,7 @@ import java.lang.reflect.TypeVariable;
 
 /**
  * <p>
- * ClassUtils
+ * class相关工具类
  * </p>
  *
  * @author livk
@@ -34,11 +34,11 @@ import java.lang.reflect.TypeVariable;
 public class ClassUtils extends org.springframework.util.ClassUtils {
 
 	/**
-	 * To class.
+	 * 将Type安全的转成Class
 	 *
-	 * @param <T>  the type parameter
-	 * @param type the type
-	 * @return the class
+	 * @param <T>  type parameter
+	 * @param type type
+	 * @return class
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> toClass(Type type) {
@@ -54,20 +54,20 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 
 
 	/**
-	 * Resolve class name class.
+	 * 将class全类名转成class
 	 *
-	 * @param className the class name
-	 * @return the class
+	 * @param className class name
+	 * @return class
 	 */
 	public static Class<?> resolveClassName(String className) {
 		return resolveClassName(className, getDefaultClassLoader());
 	}
 
 	/**
-	 * Is present boolean.
+	 * 判定当前类是否被加载
 	 *
-	 * @param className the class name
-	 * @return the boolean
+	 * @param className class name
+	 * @return boolean
 	 */
 	public static boolean isPresent(String className) {
 		return isPresent(className, getDefaultClassLoader());

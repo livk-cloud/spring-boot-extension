@@ -33,9 +33,9 @@ import java.io.Reader;
 import java.net.URL;
 
 /**
- * The type Jackson support.
+ * Jackson操作默认实现
  *
- * @param <M> the type parameter
+ * @param <M> ObjectMapper类型
  * @author livk
  */
 public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps implements JacksonOps, GenericWrapper<M> {
@@ -49,10 +49,10 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 	}
 
 	/**
-	 * Create jackson support.
+	 * 静态构造
 	 *
-	 * @param <M>    the type parameter
-	 * @param mapper the mapper
+	 * @param <M>    ObjectMapper类型
+	 * @param mapper ObjectMapper实例
 	 * @return the jackson support
 	 */
 	public static <M extends ObjectMapper> JacksonSupport<M> create(M mapper) {
@@ -60,11 +60,11 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 	}
 
 	/**
-	 * Create jackson support.
+	 * 静态构造
 	 *
-	 * @param <M>     the type parameter
-	 * @param <B>     the type parameter
-	 * @param builder the builder
+	 * @param <M>     ObjectMapper类型
+	 * @param <B>     ObjectMapper.Builder类型
+	 * @param builder ObjectMapper.Builder实例
 	 * @return the jackson support
 	 */
 	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {

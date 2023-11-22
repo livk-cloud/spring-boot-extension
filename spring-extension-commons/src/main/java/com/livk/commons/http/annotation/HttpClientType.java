@@ -22,25 +22,25 @@ import lombok.RequiredArgsConstructor;
 import java.lang.annotation.Annotation;
 
 /**
- * The enum Http client type.
+ * http客户端类型
  *
  * @author livk
  */
 @RequiredArgsConstructor
 public enum HttpClientType {
 	/**
-	 * Rest template http client type.
+	 * RestTemplate
 	 */
 	REST_TEMPLATE(EnableRestTemplate.class),
 	/**
-	 * Web client http client type.
+	 * WebClient
 	 */
 	WEB_CLIENT(EnableWebClient.class);
 
 	private final Class<? extends Annotation> annotationType;
 
 	/**
-	 * Annotation type class.
+	 * 返回相关注解
 	 *
 	 * @return the class
 	 */

@@ -18,6 +18,7 @@
 package com.livk.commons.aop;
 
 import org.springframework.aop.Pointcut;
+import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 
@@ -31,6 +32,7 @@ import java.lang.annotation.Annotation;
  */
 public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation> extends AnnotationAbstractPointcutAdvisor<A> {
 
+	@NonNull
 	@Override
 	public Pointcut getPointcut() {
 		return pointcutType().getPointcut(annotationType);

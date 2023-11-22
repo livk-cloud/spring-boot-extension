@@ -32,9 +32,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type Number json serializer.
+ * NumberJsonFormat序列化处理
  *
  * @author livk
+ * @see NumberJsonFormat
  */
 @AllArgsConstructor
 @NoArgsConstructor

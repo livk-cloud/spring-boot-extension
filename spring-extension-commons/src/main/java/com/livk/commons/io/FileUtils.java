@@ -34,16 +34,20 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * The type File utils.
+ * 文件相关工具类
+ *
+ * @author livk
  */
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
 	/**
-	 * Download.
+	 * 文件下载
+	 * <p>
+	 * 路径不存在则自动创建
 	 *
 	 * @param stream   the stream
-	 * @param filePath the file path
+	 * @param filePath 文件路径
 	 * @throws IOException the io exception
 	 */
 	public void download(InputStream stream, String filePath) throws IOException {
@@ -65,7 +69,9 @@ public class FileUtils extends FileCopyUtils {
 	}
 
 	/**
-	 * Create new file boolean.
+	 * 创建文件
+	 * <p>
+	 * 路径不存在则自动创建
 	 *
 	 * @param file the file
 	 * @return the boolean
@@ -81,7 +87,7 @@ public class FileUtils extends FileCopyUtils {
 	}
 
 	/**
-	 * Read string.
+	 * 读取文件转成String
 	 *
 	 * @param file the file
 	 * @return the string
@@ -95,9 +101,9 @@ public class FileUtils extends FileCopyUtils {
 	}
 
 	/**
-	 * Gets part values.
+	 * 从ServerWebExchange读取文件转成Mono Part
 	 *
-	 * @param name     the name
+	 * @param name     文件参数
 	 * @param exchange the exchange
 	 * @return the part values
 	 */
@@ -108,10 +114,12 @@ public class FileUtils extends FileCopyUtils {
 
 
 	/**
-	 * Gzip compress.
+	 * 使用GZip进行压缩
+	 * <p>
+	 * 把数据压缩至OutputStream
 	 *
-	 * @param bytes        the bytes
-	 * @param outputStream the output stream
+	 * @param bytes        待压缩数据
+	 * @param outputStream 输出流
 	 */
 	public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
 		if (!ObjectUtils.isEmpty(bytes)) {
@@ -124,10 +132,10 @@ public class FileUtils extends FileCopyUtils {
 	}
 
 	/**
-	 * Gzip decompress byte [ ].
+	 * 使用GZip进行解压缩
 	 *
-	 * @param inputStream the input stream
-	 * @return the byte [ ]
+	 * @param inputStream 输入流
+	 * @return byte[]
 	 */
 	public static byte[] gzipDecompress(InputStream inputStream) {
 		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {

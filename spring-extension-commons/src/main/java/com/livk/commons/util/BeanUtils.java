@@ -27,10 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * <p>
- * BeanUtils
+ * Bean相关操作工具类
  * </p>
  *
  * @author livk
@@ -82,17 +83,17 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * Is field null boolean.
+	 * 判断当前类是否为NULL,同时判定当前类所有的Field是否为NULL
 	 *
-	 * @param source the source
-	 * @return the boolean
+	 * @param source 目标
+	 * @return boolean
 	 */
 	public static boolean isFieldNull(Object source) {
 		if (source == null) {
 			return true;
 		}
-		return Predicates.create(source.getClass().getDeclaredFields())
-			.anyChecked(field -> ReflectionUtils.getDeclaredFieldValue(field, source) == null);
+		return Stream.of(source.getClass().getDeclaredFields())
+			.anyMatch(field -> ReflectionUtils.getDeclaredFieldValue(field, source) == null);
 	}
 
 	/**

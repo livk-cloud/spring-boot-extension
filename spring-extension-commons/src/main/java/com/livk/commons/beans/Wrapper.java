@@ -18,16 +18,18 @@
 package com.livk.commons.beans;
 
 /**
- * The interface Wrapper.
+ * 通用包装器
  */
 public interface Wrapper {
 
 	/**
-	 * Unwrap t.
+	 * 根据类型获取相关实例
+	 * <p>
+	 * 如果无法进行转换则抛出异常{@link ClassCastException}
 	 *
-	 * @param <T>  the type parameter
-	 * @param type the type
-	 * @return the t
+	 * @param <T>  相关泛型
+	 * @param type 类信息
+	 * @return 相关实例
 	 */
 	default <T> T unwrap(Class<T> type) {
 		if (isWrapperFor(type)) {
@@ -37,17 +39,17 @@ public interface Wrapper {
 	}
 
 	/**
-	 * Is wrapper for boolean.
+	 * 判断是否可以进行转换
 	 *
-	 * @param type the type
-	 * @return the boolean
+	 * @param type 类信息
+	 * @return bool
 	 */
 	boolean isWrapperFor(Class<?> type);
 
 	/**
-	 * Unwrap object.
+	 * 解析获取相关实例
 	 *
-	 * @return the object
+	 * @return 相关实例
 	 */
 	Object unwrap();
 }

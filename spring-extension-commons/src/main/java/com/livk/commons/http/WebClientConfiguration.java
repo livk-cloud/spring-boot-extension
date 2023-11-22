@@ -43,7 +43,7 @@ import java.util.function.Function;
 
 /**
  * <p>
- * WebClientConfig
+ * WebClient相关装配
  * </p>
  *
  * @author livk
@@ -67,17 +67,17 @@ public class WebClientConfiguration {
 	}
 
 	/**
-	 * The type Reactor client configuration.
+	 * Reactor client配置
 	 */
 	@AutoConfiguration
 	@ConditionalOnClass(HttpClient.class)
 	public static class ReactorClientConfiguration {
 
 		/**
-		 * Reactor client web client customizer web client customizer.
+		 * Reactor client配置
 		 *
-		 * @param reactorResourceFactory the reactor resource factory
-		 * @return the web client customizer
+		 * @param reactorResourceFactory ReactorResourceFactory
+		 * @return WebClientCustomizer
 		 */
 		@Bean
 		public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {

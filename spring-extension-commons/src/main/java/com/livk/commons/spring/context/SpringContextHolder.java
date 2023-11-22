@@ -42,7 +42,7 @@ import java.util.Map;
 
 /**
  * <p>
- * SpringContextHolder
+ * spring context静态操作工具
  * </p>
  *
  * @author livk
@@ -72,11 +72,11 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * Gets bean.
+	 * 根据BeanName获取Bean
 	 *
-	 * @param <T>  the type parameter
-	 * @param name the name
-	 * @return the bean
+	 * @param <T>  泛型
+	 * @param name BeanName
+	 * @return spring bean
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(String name) {
@@ -84,91 +84,99 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * Gets bean.
+	 * 根据Bean Type获取Bean
 	 *
-	 * @param <T>       the type parameter
-	 * @param typeClass the type class
-	 * @return the bean
+	 * @param <T>       泛型
+	 * @param typeClass 类型
+	 * @return spring bean
 	 */
 	public static <T> T getBean(Class<T> typeClass) {
 		return getBeanFactory().getBean(typeClass);
 	}
 
 	/**
-	 * Gets bean.
+	 * 根据BeanName和Bean Type获取Bean
 	 *
-	 * @param <T>       the type parameter
-	 * @param name      the name
-	 * @param typeClass the type class
-	 * @return the bean
+	 * @param <T>       泛型
+	 * @param name      BeanName
+	 * @param typeClass 类型
+	 * @return spring bean
 	 */
 	public static <T> T getBean(String name, Class<T> typeClass) {
 		return getBeanFactory().getBean(name, typeClass);
 	}
 
 	/**
-	 * Gets bean provider.
+	 * 根据Bean Type获取到ObjectFactory
+	 * <p>
+	 * 可用于延时加载
 	 *
-	 * @param <T>       the type parameter
-	 * @param typeClass the type class
-	 * @return the bean provider
+	 * @param <T>       泛型
+	 * @param typeClass 类型
+	 * @return spring bean provider
 	 */
 	public static <T> ObjectProvider<T> getBeanProvider(Class<T> typeClass) {
 		return getBeanFactory().getBeanProvider(typeClass);
 	}
 
 	/**
-	 * Gets bean provider.
+	 * 根据ResolvableType获取到ObjectFactory
+	 * <p>
+	 * 可用于延时加载
 	 *
-	 * @param <T>            the type parameter
-	 * @param resolvableType the resolvable type
-	 * @return the bean provider
+	 * @param <T>            泛型
+	 * @param resolvableType 类型相关
+	 * @return spring bean provider
 	 */
 	public static <T> ObjectProvider<T> getBeanProvider(ResolvableType resolvableType) {
 		return getBeanFactory().getBeanProvider(resolvableType);
 	}
 
 	/**
-	 * Gets beans of type.
+	 * 根据Bean Type获取到map
+	 * <p>
+	 * key为BeanName, value为对应的spring bean
 	 *
-	 * @param <T>       the type parameter
-	 * @param typeClass the type class
-	 * @return the beans of type
+	 * @param <T>       泛型
+	 * @param typeClass 类型
+	 * @return spring bean map
 	 */
 	public static <T> Map<String, T> getBeansOfType(Class<T> typeClass) {
 		return getBeanFactory().getBeansOfType(typeClass);
 	}
 
 	/**
-	 * Gets property.
+	 * 根据key获取到相关的环境信息
 	 *
-	 * @param key the key
-	 * @return the property
+	 * @param key key
+	 * @return string
 	 */
 	public static String getProperty(String key) {
 		return getProperty(key, String.class);
 	}
 
 	/**
-	 * Gets property.
+	 * 根据key获取到相关的环境信息,并转化成对应的类型
 	 *
-	 * @param <T>          the type parameter
-	 * @param key          the key
-	 * @param requiredType the required type
-	 * @return the property
+	 * @param <T>          泛型
+	 * @param key          key
+	 * @param requiredType 返回类型
+	 * @return value
 	 */
 	public static <T> T getProperty(String key, Class<T> requiredType) {
 		return applicationContext.getEnvironment().getProperty(key, requiredType);
 	}
 
 	/**
-	 * Gets property.
+	 * 根据key获取到相关的环境信息,并转化成对应的类型
+	 * <p>
+	 * 如果没有相关的key，则返回defaultValue
 	 *
-	 * @param <T>          the type parameter
-	 * @param key          the key
-	 * @param requiredType the required type
-	 * @param defaultValue the default value
-	 * @return the property
+	 * @param <T>          泛型
+	 * @param key          key
+	 * @param requiredType 返回类型
+	 * @param defaultValue 默认的返回数据
+	 * @return value
 	 */
 	public static <T> T getProperty(String key, Class<T> requiredType, T defaultValue) {
 		return applicationContext.getEnvironment().getProperty(key, requiredType, defaultValue);
@@ -177,8 +185,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	/**
 	 * 解析文本占位符${**}
 	 *
-	 * @param text the String to resolve
-	 * @return the string
+	 * @param text string
+	 * @return value
 	 */
 	public static String resolvePlaceholders(String text) {
 		return applicationContext.getEnvironment().resolvePlaceholders(text);
@@ -198,10 +206,10 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * Register bean.
+	 * 注册bean
 	 *
-	 * @param beanDefinition the bean definition
-	 * @param beanName       the bean name
+	 * @param beanDefinition bean定义
+	 * @param beanName       BeanName
 	 */
 	public static void registerBean(BeanDefinition beanDefinition, String beanName) {
 		if (beanFactory instanceof DefaultListableBeanFactory defaultBeanFactory) {

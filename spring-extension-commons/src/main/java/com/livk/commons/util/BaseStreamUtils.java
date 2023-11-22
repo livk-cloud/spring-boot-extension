@@ -28,7 +28,7 @@ import java.util.stream.*;
 
 /**
  * <p>
- * StreamUtils
+ * Stream工具类
  * </p>
  *
  * @author livk
@@ -37,12 +37,12 @@ import java.util.stream.*;
 public class BaseStreamUtils {
 
 	/**
-	 * Concat map.
+	 * 合并Map,key相同的则合并成List
 	 *
-	 * @param <K>  the type parameter
-	 * @param <V>  the type parameter
-	 * @param maps the maps
-	 * @return the map
+	 * @param <K>  key type parameter
+	 * @param <V>  value type parameter
+	 * @param maps maps
+	 * @return map
 	 */
 	@SafeVarargs
 	public <K, V> Map<K, List<V>> concat(Map<K, V>... maps) {
@@ -58,11 +58,11 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat stream.
+	 * 合并数组
 	 *
-	 * @param <T> the type parameter
+	 * @param <T> type parameter
 	 * @param ts  the ts
-	 * @return the stream
+	 * @return stream
 	 */
 	@SafeVarargs
 	public <T> Stream<T> concat(T[]... ts) {
@@ -75,11 +75,11 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat string [ ].
+	 * 合并string数组
 	 *
 	 * @param distinct 是否去重
 	 * @param strArr   str[]
-	 * @return the string [ ]
+	 * @return string []
 	 */
 	public String[] concat(boolean distinct, String[]... strArr) {
 		Stream<String> concat = concat(strArr);
@@ -90,20 +90,20 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat distinct string [ ].
+	 * 合并string数组并去重
 	 *
 	 * @param strArr str[]
-	 * @return the string [ ]
+	 * @return string []
 	 */
 	public String[] concatDistinct(String[]... strArr) {
 		return concat(true, strArr);
 	}
 
 	/**
-	 * Concat int [ ].
+	 * 合并int数组
 	 *
-	 * @param intArray the int array
-	 * @return the int [ ]
+	 * @param intArray int array
+	 * @return int []
 	 */
 	public int[] concat(int[]... intArray) {
 		if (ObjectUtils.isEmpty(intArray)) {
@@ -113,10 +113,10 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat long [ ].
+	 * 合并long数组
 	 *
-	 * @param longArray the long array
-	 * @return the long [ ]
+	 * @param longArray long array
+	 * @return long []
 	 */
 	public long[] concat(long[]... longArray) {
 		if (ObjectUtils.isEmpty(longArray)) {
@@ -126,10 +126,10 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat double [ ].
+	 * 合并double数组
 	 *
-	 * @param doubleArray the double array
-	 * @return the double [ ]
+	 * @param doubleArray double array
+	 * @return double []
 	 */
 	public double[] concat(double[]... doubleArray) {
 		if (ObjectUtils.isEmpty(doubleArray)) {
@@ -140,13 +140,13 @@ public class BaseStreamUtils {
 
 
 	/**
-	 * Zip stream.
+	 * 通过function合并多个Stream
 	 *
-	 * @param <T>        the type parameter
-	 * @param <R>        the type parameter
-	 * @param combinator the combinator
-	 * @param streams    the streams
-	 * @return the stream
+	 * @param <T>        转换前泛型
+	 * @param <R>        转换后泛型
+	 * @param combinator 转换Function
+	 * @param streams    待转换Stream
+	 * @return 合并后的Stream
 	 */
 	@SafeVarargs
 	public <T, R> Stream<R> zip(Function<Stream<T>, Stream<R>> combinator, Stream<T>... streams) {
@@ -155,11 +155,11 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Distinct predicate.
+	 * 根据某个条件进行去重
 	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the predicate
+	 * @param <T>      type parameter
+	 * @param function 去重条件
+	 * @return predicate
 	 */
 	public <T> Predicate<T> distinct(Function<? super T, ?> function) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
@@ -184,11 +184,11 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Convert stream.
+	 * Enumeration转化成Stream
 	 *
-	 * @param <T>         the type parameter
-	 * @param enumeration the enumeration
-	 * @return the stream
+	 * @param <T>         type parameter
+	 * @param enumeration enumeration
+	 * @return stream
 	 */
 	public <T> Stream<T> convert(Enumeration<T> enumeration) {
 		return StreamSupport.stream(
@@ -197,13 +197,13 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Map with index function.
+	 * Stream.map()产生出index序号
 	 *
-	 * @param <T>        the type parameter
-	 * @param <R>        the type parameter
-	 * @param initValue  the init value
-	 * @param biFunction the bi function
-	 * @return the function
+	 * @param <T>        type parameter
+	 * @param <R>        type parameter
+	 * @param initValue  初始值
+	 * @param biFunction bi function
+	 * @return function
 	 */
 	public <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
@@ -211,12 +211,12 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * For each with index consumer.
+	 * Foreach中产生index序号
 	 *
-	 * @param <T>        the type parameter
-	 * @param initValue  the init value
-	 * @param biConsumer the bi consumer
-	 * @return the consumer
+	 * @param <T>        type parameter
+	 * @param initValue  初始值
+	 * @param biConsumer bi consumer
+	 * @return consumer
 	 */
 	public <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);

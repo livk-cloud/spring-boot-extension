@@ -45,7 +45,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	private final PrintWriter writer;
 
 	/**
-	 * Instantiates a new Response wrapper.
+	 * 创建ResponseWrapper
 	 *
 	 * @param response the response
 	 * @throws IOException the io exception
@@ -79,9 +79,9 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * Get response data byte [ ].
+	 * 获取response body
 	 *
-	 * @return the byte [ ]
+	 * @return the byte []
 	 * @throws IOException the io exception
 	 */
 	public byte[] getResponseData() throws IOException {
@@ -94,7 +94,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 		private final ByteArrayOutputStream stream;
 
 		/**
-		 * Instantiates a new Wrapper output stream.
+		 * 创建WrapperOutputStream
 		 *
 		 * @param stream the stream
 		 */

@@ -18,31 +18,26 @@
 package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author livk
  */
-class PredicatesTest {
+class MultiValueMapSplitterTest {
 
 	@Test
-	void allChecked() {
-		assertFalse(Predicates.create("1", "").allChecked(StringUtils::hasText));
-		assertTrue(Predicates.create("1", "2").allChecked(StringUtils::hasText));
-	}
+	void split() {
+		String param = "names=admin&names=root&password=123456";
+		MultiValueMap<String, String> valueMap = MultiValueMapSplitter.of("&", "=").split(param);
 
-	@Test
-	void anyChecked() {
-		assertTrue(Predicates.create("1", "").anyChecked(StringUtils::hasText));
-		assertFalse(Predicates.create(" ", " ").anyChecked(StringUtils::hasText));
-	}
+		Map<String, List<String>> map = Map.of("names", List.of("admin", "root"), "password", List.of("123456"));
 
-	@Test
-	void noneMatch() {
-		assertFalse(Predicates.create("1", "").noneMatch(StringUtils::hasText));
-		assertTrue(Predicates.create(" ", " ").noneMatch(StringUtils::hasText));
+		assertEquals(CollectionUtils.toMultiValueMap(map), valueMap);
 	}
 }

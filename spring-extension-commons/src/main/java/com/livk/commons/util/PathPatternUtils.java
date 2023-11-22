@@ -27,10 +27,13 @@ import java.net.URI;
 
 /**
  * The type Path pattern utils.
+ * <p>
+ * 基本上没有使用
  *
  * @author livk
  */
 @UtilityClass
+@Deprecated(since = "1.1.6", forRemoval = true)
 public class PathPatternUtils {
 
 	/**
