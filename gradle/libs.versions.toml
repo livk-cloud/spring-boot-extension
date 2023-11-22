@@ -32,7 +32,8 @@ dnsjava = "3.5.3"
 snakeyaml = "2.2"
 aliyun-oss = "3.17.2"
 aviator = "5.4.1"
-protobuf = "3.24.3"
+protobuf-java = "3.25.1"
+grpc-java = "1.59.0"
 protobuf-plugins = "0.9.4"
 jexl3 = "3.3"
 mvel2 = "2.5.0.Final"
@@ -94,7 +95,9 @@ dnsjava = { group = "dnsjava", name = "dnsjava", version.ref = "dnsjava" }
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
-protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
+protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf-java" }
+protobuf-java-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf-java" }
+grpc-java = { group = "io.grpc", name = "protoc-gen-grpc-java", version.ref = "grpc-java" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
