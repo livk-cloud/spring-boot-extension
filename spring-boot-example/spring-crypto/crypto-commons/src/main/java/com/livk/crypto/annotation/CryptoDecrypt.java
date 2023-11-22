@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Target({ ElementType.PARAMETER, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonDeserialize(using = CryptoJsonDeserializer.class)

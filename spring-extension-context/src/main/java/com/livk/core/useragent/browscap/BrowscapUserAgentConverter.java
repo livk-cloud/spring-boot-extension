@@ -77,4 +77,5 @@ public class BrowscapUserAgentConverter extends AbstractUserAgentConverter<Capab
 	protected String deviceBrand(Capabilities capabilities) {
 		return capabilities.getValue(BrowsCapField.DEVICE_BRAND_NAME);
 	}
+
 }

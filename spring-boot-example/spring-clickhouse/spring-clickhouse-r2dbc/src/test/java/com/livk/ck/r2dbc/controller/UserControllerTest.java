@@ -43,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @AutoConfigureWebTestClient(timeout = "15000")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
+
 	@Autowired
 	WebTestClient client;
 
@@ -61,26 +62,14 @@ class UserControllerTest {
 	@Order(1)
 	@Test
 	void testSave() {
-		User user = new User().setId(Integer.MAX_VALUE)
-			.setAppId("appId")
-			.setVersion("version")
-			.setRegTime(new Date());
-		client.post()
-			.uri("/user")
-			.bodyValue(user)
-			.accept(MediaType.APPLICATION_JSON)
-			.exchange()
-			.expectStatus()
-			.isOk();
+		User user = new User().setId(Integer.MAX_VALUE).setAppId("appId").setVersion("version").setRegTime(new Date());
+		client.post().uri("/user").bodyValue(user).accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk();
 	}
 
 	@Order(3)
 	@Test
 	void testDelete() {
-		client.delete()
-			.uri("/user/{id}", Integer.MAX_VALUE)
-			.exchange()
-			.expectStatus()
-			.isOk();
+		client.delete().uri("/user/{id}", Integer.MAX_VALUE).exchange().expectStatus().isOk();
 	}
+
 }

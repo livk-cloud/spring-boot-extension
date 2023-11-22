@@ -42,4 +42,5 @@ public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 			System.setProperty(PAGEHELPER_BANNER, pageHelperBannerEnable.toString());
 		}
 	}
+
 }

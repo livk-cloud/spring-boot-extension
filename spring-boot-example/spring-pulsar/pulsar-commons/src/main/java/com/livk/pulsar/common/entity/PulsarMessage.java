@@ -42,4 +42,5 @@ public class PulsarMessage<T> implements Serializable {
 	public String toJson() {
 		return JsonMapperUtils.writeValueAsString(this);
 	}
+
 }

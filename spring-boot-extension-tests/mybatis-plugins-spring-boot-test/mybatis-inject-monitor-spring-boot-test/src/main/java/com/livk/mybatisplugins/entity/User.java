@@ -58,4 +58,5 @@ public class User implements Serializable {
 	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
 	@SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionType.DATE)
 	private Date updateTime;
+
 }

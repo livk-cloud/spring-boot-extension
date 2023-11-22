@@ -38,7 +38,8 @@ import java.net.URL;
  * @param <M> ObjectMapper类型
  * @author livk
  */
-public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps implements JacksonOps, GenericWrapper<M> {
+public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps
+		implements JacksonOps, GenericWrapper<M> {
 
 	private final M mapper;
 
@@ -50,8 +51,7 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 
 	/**
 	 * 静态构造
-	 *
-	 * @param <M>    ObjectMapper类型
+	 * @param <M> ObjectMapper类型
 	 * @param mapper ObjectMapper实例
 	 * @return the jackson support
 	 */
@@ -61,9 +61,8 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 
 	/**
 	 * 静态构造
-	 *
-	 * @param <M>     ObjectMapper类型
-	 * @param <B>     ObjectMapper.Builder类型
+	 * @param <M> ObjectMapper类型
+	 * @param <B> ObjectMapper.Builder类型
 	 * @param builder ObjectMapper.Builder实例
 	 * @return the jackson support
 	 */
@@ -76,19 +75,26 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 	public <T> T readValue(Object obj, JavaType type) {
 		if (obj instanceof JsonParser jsonParser) {
 			return mapper.readValue(jsonParser, type);
-		} else if (obj instanceof File file) {
+		}
+		else if (obj instanceof File file) {
 			return mapper.readValue(file, type);
-		} else if (obj instanceof URL url) {
+		}
+		else if (obj instanceof URL url) {
 			return mapper.readValue(url, type);
-		} else if (obj instanceof String json) {
+		}
+		else if (obj instanceof String json) {
 			return mapper.readValue(json, type);
-		} else if (obj instanceof Reader reader) {
+		}
+		else if (obj instanceof Reader reader) {
 			return mapper.readValue(reader, type);
-		} else if (obj instanceof InputStream inputStream) {
+		}
+		else if (obj instanceof InputStream inputStream) {
 			return mapper.readValue(inputStream, type);
-		} else if (obj instanceof byte[] bytes) {
+		}
+		else if (obj instanceof byte[] bytes) {
 			return mapper.readValue(bytes, type);
-		} else if (obj instanceof DataInput dataInput) {
+		}
+		else if (obj instanceof DataInput dataInput) {
 			return mapper.readValue(dataInput, type);
 		}
 		throw new UnsupportedOperationException("Unsupported type: " + obj.getClass().getName());
@@ -117,17 +123,23 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 	public JsonNode readTree(Object obj) {
 		if (obj instanceof JsonParser jsonParser) {
 			return mapper.readTree(jsonParser);
-		} else if (obj instanceof File file) {
+		}
+		else if (obj instanceof File file) {
 			return mapper.readTree(file);
-		} else if (obj instanceof URL url) {
+		}
+		else if (obj instanceof URL url) {
 			return mapper.readTree(url);
-		} else if (obj instanceof String json) {
+		}
+		else if (obj instanceof String json) {
 			return mapper.readTree(json);
-		} else if (obj instanceof Reader reader) {
+		}
+		else if (obj instanceof Reader reader) {
 			return mapper.readTree(reader);
-		} else if (obj instanceof InputStream inputStream) {
+		}
+		else if (obj instanceof InputStream inputStream) {
 			return mapper.readTree(inputStream);
-		} else if (obj instanceof byte[] bytes) {
+		}
+		else if (obj instanceof byte[] bytes) {
 			return mapper.readTree(bytes);
 		}
 		throw new UnsupportedOperationException();
@@ -147,4 +159,5 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps i
 	public M unwrap() {
 		return mapper;
 	}
+
 }

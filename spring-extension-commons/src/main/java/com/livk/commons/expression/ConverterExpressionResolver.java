@@ -40,7 +40,6 @@ public abstract class ConverterExpressionResolver<C, E> extends CacheExpressionR
 
 	/**
 	 * 从Context装换成框架的上下文
-	 *
 	 * @param context context
 	 * @return the c
 	 */
@@ -48,12 +47,12 @@ public abstract class ConverterExpressionResolver<C, E> extends CacheExpressionR
 
 	/**
 	 * 对表达式进行计算
-	 *
-	 * @param <T>        泛型
+	 * @param <T> 泛型
 	 * @param expression 表达式
-	 * @param context    上下文
+	 * @param context 上下文
 	 * @param returnType 返回类型
 	 * @return 计算结果相关实例
 	 */
 	protected abstract <T> T calculate(E expression, C context, Class<T> returnType);
+
 }

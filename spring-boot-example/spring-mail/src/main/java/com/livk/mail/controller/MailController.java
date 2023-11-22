@@ -53,7 +53,7 @@ public class MailController {
 		// 往里面塞第一层节点
 		root.put("UserName", "Livk-Cloud");
 
-		String[] temp = new String[]{"dog", "cat", "tiger"};
+		String[] temp = new String[] { "dog", "cat", "tiger" };
 		List<String> pets = new ArrayList<>();
 		Collections.addAll(pets, temp);
 		// 往里面塞个List对象
@@ -62,7 +62,8 @@ public class MailController {
 		Template template = mailTemplate.getConfiguration().getTemplate("hello.ftl");
 		String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
 
-		mailTemplate.send(Pair.of("1375632510@qq.com", "I am Livk"), "This is subject 主题", text, root, "1375632510@qq.com");
+		mailTemplate.send(Pair.of("1375632510@qq.com", "I am Livk"), "This is subject 主题", text, root,
+				"1375632510@qq.com");
 		return ResponseEntity.ok().build();
 	}
 

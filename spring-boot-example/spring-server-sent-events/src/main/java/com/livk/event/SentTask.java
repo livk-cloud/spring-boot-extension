@@ -50,11 +50,13 @@ public class SentTask {
 				sseEmitter.send(SseEmitter.event()
 					.data(DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS))
 					.id(sseEmitterEntry.getKey()));
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.error("推送异常:{}", e.getMessage());
 				sseEmitter.complete();
 				sseEmitterRepository.remove(sseEmitterEntry.getKey());
 			}
 		}
 	}
+
 }

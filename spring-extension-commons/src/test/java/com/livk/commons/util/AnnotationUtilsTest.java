@@ -28,7 +28,6 @@ import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
  * <p>
  * AnnotationUtilsTest
@@ -78,5 +77,7 @@ class AnnotationUtilsTest {
 		@SuppressWarnings("unused")
 		private void parseMethod(String username) {
 		}
+
 	}
+
 }

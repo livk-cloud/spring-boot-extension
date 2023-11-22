@@ -43,4 +43,5 @@ public class ScheduleController {
 		scheduleHandler.start();
 		return ResponseEntity.ok("ok");
 	}
+
 }

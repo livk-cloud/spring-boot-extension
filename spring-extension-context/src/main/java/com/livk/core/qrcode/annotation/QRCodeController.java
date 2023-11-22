@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @ResponseQRCode
 @Controller
@@ -40,9 +40,9 @@ public @interface QRCodeController {
 
 	/**
 	 * Value string.
-	 *
 	 * @return the string
 	 */
 	@AliasFor(annotation = Controller.class)
 	String value() default "";
+
 }

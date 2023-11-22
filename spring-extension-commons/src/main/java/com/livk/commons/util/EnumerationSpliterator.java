@@ -43,8 +43,7 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 
 	/**
 	 * 根据Enumeration构造Spliterator
-	 *
-	 * @param <T>         type parameter
+	 * @param <T> type parameter
 	 * @param enumeration enumeration
 	 * @return spliterator
 	 */
@@ -67,4 +66,5 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 			action.accept(enumeration.nextElement());
 		}
 	}
+
 }

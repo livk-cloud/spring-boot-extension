@@ -30,7 +30,8 @@ import java.lang.annotation.Annotation;
  * @see AnnotationPointcutType
  * @see AnnotationAbstractPointcutAdvisor
  */
-public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation> extends AnnotationAbstractPointcutAdvisor<A> {
+public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation>
+		extends AnnotationAbstractPointcutAdvisor<A> {
 
 	@NonNull
 	@Override
@@ -39,11 +40,13 @@ public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation
 	}
 
 	/**
-	 * <p>用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}</p>
-	 *
+	 * <p>
+	 * 用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}
+	 * </p>
 	 * @return the annotation pointcut type
 	 */
 	protected AnnotationPointcutType pointcutType() {
 		return AnnotationPointcutType.AUTO;
 	}
+
 }

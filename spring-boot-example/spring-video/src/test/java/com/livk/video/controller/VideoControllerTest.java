@@ -47,14 +47,13 @@ class VideoControllerTest {
 
 	@Test
 	void testVideo() throws Exception {
-		mockMvc.perform(get("/video"))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./test.mp4");
-			});
+		mockMvc.perform(get("/video")).andExpect(status().isOk()).andDo(result -> {
+			ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+			FileUtils.download(in, "./test.mp4");
+		});
 		File video = new File("./test.mp4");
 		assertTrue(video.exists());
 		assertTrue(video.delete());
 	}
+
 }

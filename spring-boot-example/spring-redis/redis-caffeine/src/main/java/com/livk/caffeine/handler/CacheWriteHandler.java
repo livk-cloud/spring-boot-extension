@@ -31,4 +31,5 @@ public interface CacheWriteHandler<T> {
 	void delete(String key);
 
 	void clear();
+
 }

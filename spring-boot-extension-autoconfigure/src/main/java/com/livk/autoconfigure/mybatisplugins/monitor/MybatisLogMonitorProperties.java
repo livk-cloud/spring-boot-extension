@@ -46,7 +46,6 @@ public class MybatisLogMonitorProperties {
 
 	/**
 	 * Time out name string.
-	 *
 	 * @return the string
 	 */
 	public static String timeOutName() {
@@ -55,7 +54,6 @@ public class MybatisLogMonitorProperties {
 
 	/**
 	 * Unit name string.
-	 *
 	 * @return the string
 	 */
 	public static String unitName() {
@@ -64,7 +62,6 @@ public class MybatisLogMonitorProperties {
 
 	/**
 	 * Properties properties.
-	 *
 	 * @return the properties
 	 */
 	public Properties properties() {
@@ -73,4 +70,5 @@ public class MybatisLogMonitorProperties {
 		properties.put(unitName(), unit);
 		return properties;
 	}
+
 }

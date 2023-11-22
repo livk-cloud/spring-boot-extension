@@ -33,7 +33,6 @@ public interface Converter<S, T> {
 
 	/**
 	 * Gets source.
-	 *
 	 * @param t the t
 	 * @return the source
 	 */
@@ -41,7 +40,6 @@ public interface Converter<S, T> {
 
 	/**
 	 * Gets target.
-	 *
 	 * @param s the s
 	 * @return the target
 	 */
@@ -49,7 +47,6 @@ public interface Converter<S, T> {
 
 	/**
 	 * Type converter pair.
-	 *
 	 * @return the converter pair
 	 */
 	default ConverterPair type() {

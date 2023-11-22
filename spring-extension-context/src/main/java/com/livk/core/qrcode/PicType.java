@@ -25,6 +25,7 @@ package com.livk.core.qrcode;
  * @author livk
  */
 public enum PicType {
+
 	/**
 	 * Png pic type.
 	 */
@@ -33,4 +34,5 @@ public enum PicType {
 	 * Jpg pic type.
 	 */
 	JPG
+
 }

@@ -50,4 +50,5 @@ class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 		}
 		return new ArrayList<>(names);
 	}
+
 }

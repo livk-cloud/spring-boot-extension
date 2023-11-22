@@ -61,4 +61,5 @@ public abstract class ReactiveTenantContextHolder {
 			.filter(ReactiveTenantContextHolder::hasContext)
 			.flatMap(ReactiveTenantContextHolder::getContext);
 	}
+
 }

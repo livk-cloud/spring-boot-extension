@@ -39,12 +39,11 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringAutoService
 @AutoConfiguration
-@ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
 public class MybatisTypeHandlerAutoConfiguration {
 
 	/**
 	 * Mysql configuration customizer.
-	 *
 	 * @param mapperProvider the mapper provider
 	 * @return the configuration customizer
 	 */
@@ -55,10 +54,8 @@ public class MybatisTypeHandlerAutoConfiguration {
 		return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
 	}
 
-
 	/**
 	 * Postgresql configuration customizer.
-	 *
 	 * @param mapperProvider the mapper provider
 	 * @return the configuration customizer
 	 */
@@ -68,4 +65,5 @@ public class MybatisTypeHandlerAutoConfiguration {
 		ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
 		return configuration -> configuration.getTypeHandlerRegistry().register(new PostgresJsonTypeHandler(mapper));
 	}
+
 }

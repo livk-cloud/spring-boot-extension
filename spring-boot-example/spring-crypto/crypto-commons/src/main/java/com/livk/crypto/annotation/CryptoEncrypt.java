@@ -30,15 +30,16 @@ import java.lang.annotation.Target;
 /**
  * @author livk
  */
-@Target({ElementType.FIELD})
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @JacksonAnnotationsInside
 @JsonSerialize(using = CryptoJsonSerializer.class)
 public @interface CryptoEncrypt {
+
 	/**
 	 * Value crypto type.
-	 *
 	 * @return the crypto type
 	 */
 	CryptoType value();
+
 }

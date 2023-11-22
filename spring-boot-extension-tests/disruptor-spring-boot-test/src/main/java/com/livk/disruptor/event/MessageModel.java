@@ -11,5 +11,7 @@ import lombok.Data;
 @Builder
 @DisruptorEvent("messageDisruptorAuto")
 public class MessageModel {
+
 	private String message;
+
 }

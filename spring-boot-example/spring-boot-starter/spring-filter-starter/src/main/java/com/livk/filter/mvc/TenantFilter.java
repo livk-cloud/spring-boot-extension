@@ -43,7 +43,7 @@ public class TenantFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-		throws IOException, ServletException {
+			throws IOException, ServletException {
 		TenantContextHolder.setTenantId(((HttpServletRequest) request).getHeader(TenantContextHolder.ATTRIBUTES));
 		HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper((HttpServletRequest) request);
 		chain.doFilter(requestWrapper, response);

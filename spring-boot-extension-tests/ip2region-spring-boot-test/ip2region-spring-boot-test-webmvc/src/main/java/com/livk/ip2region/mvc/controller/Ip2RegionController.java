@@ -51,4 +51,5 @@ public class Ip2RegionController {
 		log.info("ip:{}", RequestIpContextHolder.get());
 		return ResponseEntity.ok(List.of(ipInfo, requestIpInfo.currentIpInfo()));
 	}
+
 }

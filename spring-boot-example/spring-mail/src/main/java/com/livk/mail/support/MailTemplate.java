@@ -42,20 +42,21 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class MailTemplate {
+
 	@Getter
 	private final Configuration configuration;
+
 	@Getter
 	private final JavaMailSender javaMailSender;
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to      目标地址
-	 * @param from    发送地址
+	 * @param to 目标地址
+	 * @param from 发送地址
 	 * @param subject 主题
-	 * @param text    内容
-	 * @param isHtml  是否为Html
-	 * @param file    是否需要携带文件，不携带则为Null
+	 * @param text 内容
+	 * @param isHtml 是否为Html
+	 * @param file 是否需要携带文件，不携带则为Null
 	 */
 	public void send(Pair<String, String> from, String subject, String text, boolean isHtml, File file, String... to) {
 		try {
@@ -67,7 +68,8 @@ public class MailTemplate {
 				.file(file)
 				.build();
 			this.send(mimeMessage);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("send email error:{}", e.getMessage());
 		}
 	}
@@ -75,19 +77,19 @@ public class MailTemplate {
 	public void send(MimeMessage mimeMessage) {
 		try {
 			javaMailSender.send(mimeMessage);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("send email error:{}", e.getMessage());
 		}
 	}
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to      目标地址
-	 * @param from    发送地址
+	 * @param to 目标地址
+	 * @param from 发送地址
 	 * @param subject 主题
-	 * @param text    内容
-	 * @param isHtml  是否为Html
+	 * @param text 内容
+	 * @param isHtml 是否为Html
 	 */
 	public void send(Pair<String, String> from, String subject, String text, boolean isHtml, String... to) {
 		send(from, subject, text, isHtml, null, to);
@@ -95,12 +97,11 @@ public class MailTemplate {
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to      目标地址
-	 * @param from    发送地址
+	 * @param to 目标地址
+	 * @param from 发送地址
 	 * @param subject 主题
-	 * @param text    内容
-	 * @param file    是否需要携带文件，不携带则为Null
+	 * @param text 内容
+	 * @param file 是否需要携带文件，不携带则为Null
 	 */
 	public void send(Pair<String, String> from, String subject, String text, File file, String... to) {
 		send(from, subject, text, false, file, to);
@@ -108,11 +109,10 @@ public class MailTemplate {
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to      目标地址
-	 * @param from    发送地址
+	 * @param to 目标地址
+	 * @param from 发送地址
 	 * @param subject 主题
-	 * @param text    内容
+	 * @param text 内容
 	 */
 	public void send(Pair<String, String> from, String subject, String text, String... to) {
 		send(from, subject, text, false, null, to);
@@ -120,34 +120,36 @@ public class MailTemplate {
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to       目标地址
-	 * @param from     发送地址
-	 * @param subject  主题
+	 * @param to 目标地址
+	 * @param from 发送地址
+	 * @param subject 主题
 	 * @param template 模板
-	 * @param data     模板填充内容
-	 * @param file     是否需要携带文件，不携带则为Null
+	 * @param data 模板填充内容
+	 * @param file 是否需要携带文件，不携带则为Null
 	 */
-	public void send(Pair<String, String> from, String subject, String template, Map<String, Object> data, File file, String... to) {
+	public void send(Pair<String, String> from, String subject, String template, Map<String, Object> data, File file,
+			String... to) {
 		try {
 			Template tem = configuration.getTemplate(template);
 			String templateStr = FreeMarkerTemplateUtils.processTemplateIntoString(tem, data);
 			send(from, subject, templateStr, true, file, to);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("send email error:{}", e.getMessage());
 		}
 	}
 
 	/**
 	 * 发送邮件
-	 *
-	 * @param to       目标地址
-	 * @param from     发送地址
-	 * @param subject  主题
+	 * @param to 目标地址
+	 * @param from 发送地址
+	 * @param subject 主题
 	 * @param template 模板
-	 * @param data     模板填充内容
+	 * @param data 模板填充内容
 	 */
-	public void send(Pair<String, String> from, String subject, String template, Map<String, Object> data, String... to) {
+	public void send(Pair<String, String> from, String subject, String template, Map<String, Object> data,
+			String... to) {
 		send(from, subject, template, data, null, to);
 	}
+
 }

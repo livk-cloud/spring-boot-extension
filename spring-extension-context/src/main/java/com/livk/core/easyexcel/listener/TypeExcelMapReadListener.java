@@ -42,4 +42,5 @@ public abstract class TypeExcelMapReadListener<T> implements ExcelMapReadListene
 		Collection<T> infos = mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
 		infos.add(data);
 	}
+
 }

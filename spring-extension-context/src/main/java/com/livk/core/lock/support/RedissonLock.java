@@ -47,13 +47,11 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 		};
 	}
 
-
 	@Override
 	protected boolean unlock(String key, RLock lock) {
 		lock.unlock();
 		return !isLocked(lock);
 	}
-
 
 	@Override
 	protected boolean tryLockAsync(RLock lock, long leaseTime, long waitTime) throws Exception {
@@ -89,4 +87,5 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	protected boolean supportAsync() {
 		return true;
 	}
+
 }

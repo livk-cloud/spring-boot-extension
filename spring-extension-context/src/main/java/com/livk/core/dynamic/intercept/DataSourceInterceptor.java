@@ -36,4 +36,5 @@ public class DataSourceInterceptor extends AnnotationAbstractPointcutTypeAdvisor
 		DataSourceContextHolder.clear();
 		return proceed;
 	}
+
 }

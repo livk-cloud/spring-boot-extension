@@ -37,13 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.schema-locations=classpath*:/org/springframework/batch/core/schema-h2.sql",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.schema-locations=classpath*:/org/springframework/batch/core/schema-h2.sql",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureMockMvc
 class JobControllerTest {
 
@@ -55,12 +51,12 @@ class JobControllerTest {
 
 	@Test
 	void doJobTest() throws Exception {
-		mockMvc.perform(get("/doJob"))
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/doJob")).andExpect(status().isOk());
 		List<String> names = jdbcTemplate.queryForList("select * from sys_user")
 			.stream()
 			.map(map -> map.get("user_name").toString())
 			.toList();
 		assertLinesMatch(List.of("张三", "李四", "王雪", "孙云", "赵柳", "孙雪"), names);
 	}
+
 }

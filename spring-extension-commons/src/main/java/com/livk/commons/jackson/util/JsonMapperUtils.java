@@ -39,16 +39,14 @@ public class JsonMapperUtils {
 
 	private static final JacksonSupport<JsonMapper> JSON;
 
-
 	static {
 		JSON = JacksonSupport.create(new JsonMapper());
 	}
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>  泛型
-	 * @param obj  待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param type 返回相关类型
 	 * @return 相关实例
 	 */
@@ -58,9 +56,8 @@ public class JsonMapperUtils {
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>  泛型
-	 * @param obj  待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param type 相关类型
 	 * @return 相关实例
 	 */
@@ -70,9 +67,8 @@ public class JsonMapperUtils {
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>           泛型
-	 * @param obj           待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param typeReference TypeReference包装的类型
 	 * @return 相关实例
 	 */
@@ -82,7 +78,6 @@ public class JsonMapperUtils {
 
 	/**
 	 * obj序列化成string
-	 *
 	 * @param obj obj
 	 * @return json string
 	 */
@@ -92,7 +87,6 @@ public class JsonMapperUtils {
 
 	/**
 	 * obj序列化成byte[]
-	 *
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
@@ -102,11 +96,12 @@ public class JsonMapperUtils {
 
 	/**
 	 * json反序列化成List
-	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-	 *
-	 * @param <T>  泛型
-	 * @param obj  the obj
+	 * <p>
+	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonSupport#convertValue(Object, JavaType)}
+	 * @param <T> 泛型
+	 * @param obj the obj
 	 * @param type 类型
 	 * @return the list
 	 */
@@ -117,13 +112,14 @@ public class JsonMapperUtils {
 
 	/**
 	 * json反序列化成Map
-	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param obj        the obj
-	 * @param keyClass   K Class
+	 * <p>
+	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonSupport#convertValue(Object, JavaType)}
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param obj the obj
+	 * @param keyClass K Class
 	 * @param valueClass V Class
 	 * @return the map
 	 */
@@ -134,7 +130,6 @@ public class JsonMapperUtils {
 
 	/**
 	 * obj读取数据转化成JsonNode
-	 *
 	 * @param obj the obj
 	 * @return the json node
 	 */
@@ -144,10 +139,9 @@ public class JsonMapperUtils {
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
-	 * @param type      返回类型
+	 * @param type 返回类型
 	 * @return 相关实例
 	 */
 	public static <T> T convertValue(Object fromValue, Class<T> type) {
@@ -156,9 +150,8 @@ public class JsonMapperUtils {
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>           泛型
-	 * @param fromValue     待转换数据
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
 	 * @param typeReference the type reference
 	 * @return 相关实例
 	 */
@@ -168,10 +161,9 @@ public class JsonMapperUtils {
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
-	 * @param javaType  相关类型
+	 * @param javaType 相关类型
 	 * @return 相关实例
 	 */
 	public static <T> T convertValue(Object fromValue, JavaType javaType) {
@@ -180,10 +172,9 @@ public class JsonMapperUtils {
 
 	/**
 	 * jackson数据转换List
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
-	 * @param type      返回类型
+	 * @param type 返回类型
 	 * @return List
 	 */
 	public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
@@ -193,11 +184,10 @@ public class JsonMapperUtils {
 
 	/**
 	 * jackson数据转换Map
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param fromValue  the fromValue
-	 * @param keyClass   the key class
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param fromValue the fromValue
+	 * @param keyClass the key class
 	 * @param valueClass the value class
 	 * @return MAP
 	 */
@@ -205,4 +195,5 @@ public class JsonMapperUtils {
 		MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
 		return JSON.convertValue(fromValue, mapType);
 	}
+
 }

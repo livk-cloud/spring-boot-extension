@@ -28,7 +28,6 @@ public class UnSupportLockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Un support lock exception.
-	 *
 	 * @param message the message
 	 */
 	public UnSupportLockException(String message) {
@@ -37,11 +36,11 @@ public class UnSupportLockException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Un support lock exception.
-	 *
 	 * @param message the message
-	 * @param cause   the cause
+	 * @param cause the cause
 	 */
 	public UnSupportLockException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
 }

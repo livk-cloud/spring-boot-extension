@@ -71,15 +71,20 @@ public class CsvLineMapper<T> implements LineMapper<T> {
 		Class<?> type = declaredField.getType();
 		if (Integer.class.equals(type)) {
 			value = Integer.parseInt(valueStr);
-		} else if (Long.class.equals(type)) {
+		}
+		else if (Long.class.equals(type)) {
 			value = Long.parseLong(valueStr);
-		} else if (Float.class.equals(type)) {
+		}
+		else if (Float.class.equals(type)) {
 			value = Float.parseFloat(valueStr);
-		} else if (Double.class.equals(type)) {
+		}
+		else if (Double.class.equals(type)) {
 			value = Double.parseDouble(valueStr);
-		} else if (Boolean.class.equals(type)) {
+		}
+		else if (Boolean.class.equals(type)) {
 			value = Boolean.parseBoolean(valueStr);
-		} else {
+		}
+		else {
 			value = valueStr;
 		}
 		field = StringUtils.capitalize(field);
@@ -89,6 +94,7 @@ public class CsvLineMapper<T> implements LineMapper<T> {
 
 	@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class Builder<T> {
+
 		private final Class<T> targetClass;
 
 		private String[] fields;
@@ -111,5 +117,7 @@ public class CsvLineMapper<T> implements LineMapper<T> {
 			Assert.notNull(delimiter, "delimiter not null");
 			return new CsvLineMapper<>(targetClass, fields, delimiter);
 		}
+
 	}
+
 }

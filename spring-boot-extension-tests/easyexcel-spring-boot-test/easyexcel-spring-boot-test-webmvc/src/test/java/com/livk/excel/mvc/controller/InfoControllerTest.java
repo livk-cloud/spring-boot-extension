@@ -46,11 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @AutoConfigureMockMvc
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.mode=never"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.mode=never" })
 class InfoControllerTest {
 
 	@Autowired
@@ -58,30 +55,26 @@ class InfoControllerTest {
 
 	ClassPathResource resource = new ClassPathResource("outFile.xls");
 
-	MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
+	MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE,
+			resource.getInputStream());
 
 	InfoControllerTest() throws IOException {
 	}
 
 	@Test
 	void uploadList() throws Exception {
-		mockMvc.perform(multipart(POST, "/uploadList")
-				.file(file))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(multipart(POST, "/uploadList").file(file)).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(POST, "/uploadAndDownload")
-				.file(file))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-			});
+		mockMvc.perform(multipart(POST, "/uploadAndDownload").file(file)).andExpect(status().isOk()).andDo(result -> {
+			ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+			FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
+		});
 		File outFile = new File("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
+
 }

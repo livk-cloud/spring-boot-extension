@@ -31,8 +31,13 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <p>类注解或者方法注解的切点</p>
- * <p>参考 {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}</p>
+ * <p>
+ * 类注解或者方法注解的切点
+ * </p>
+ * <p>
+ * 参考
+ * {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}
+ * </p>
  *
  * @author livk
  */
@@ -44,7 +49,6 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 	 * 构造方法
 	 * <p>
 	 * 用于类或者方法切点
-	 *
 	 * @param annotationType 注解类型
 	 */
 	public AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
@@ -76,7 +80,6 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		 * 构造方法
 		 * <p>
 		 * 用于匹配的ClassFilter
-		 *
 		 * @param annotationType 注解类型
 		 */
 		AnnotationClassOrMethodFilter(Class<? extends Annotation> annotationType) {
@@ -97,7 +100,6 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 
 		/**
 		 * 构造方法
-		 *
 		 * @param annotationType 注解类型
 		 */
 		public AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
@@ -106,7 +108,6 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 
 		/**
 		 * 判断类是否包含注解
-		 *
 		 * @param clazz 类信息
 		 * @return boolean
 		 */
@@ -125,4 +126,5 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		}
 
 	}
+
 }

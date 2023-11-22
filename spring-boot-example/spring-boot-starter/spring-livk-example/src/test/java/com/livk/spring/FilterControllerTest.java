@@ -69,13 +69,18 @@ class FilterControllerTest {
 		String uuid1 = mockMvc.perform(get("/uuid"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andReturn().getResponse().getContentAsString();
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
 
 		String uuid2 = mockMvc.perform(get("/uuid"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andReturn().getResponse().getContentAsString();
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
 
 		assertNotEquals(uuid1, uuid2);
 	}
+
 }

@@ -36,4 +36,5 @@ public class AmqpSend implements ProtobufSend<User> {
 	public void send(String key, User data) {
 		rabbitTemplate.convertAndSend(key, data);
 	}
+
 }

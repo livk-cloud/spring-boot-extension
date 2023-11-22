@@ -80,38 +80,43 @@ class PairTest {
 		assertNull(empty.value());
 		assertEquals(Pair.EMPTY, empty);
 
-		@Language("JSON") String json = "{\"livk\":123456}";
+		@Language("JSON")
+		String json = "{\"livk\":123456}";
 		Pair<String, Integer> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
 		assertEquals("livk", result.key());
 		assertEquals(123456, result.value());
 		assertEquals(pair, result);
 
-		@Language("JSON") String json2 = """
-			{"livk": {"root": "username"}}""";
+		@Language("JSON")
+		String json2 = """
+				{"livk": {"root": "username"}}""";
 		Pair<String, Pair<String, String>> result2 = JsonMapperUtils.readValue(json2, new TypeReference<>() {
 		});
 		assertEquals("livk", result2.key());
 		assertEquals("root", result2.value().key());
 		assertEquals("username", result2.value().value());
 
-		@Language("JSON") String json3 = """
-			{"livk":  [1,2,3]}""";
+		@Language("JSON")
+		String json3 = """
+				{"livk":  [1,2,3]}""";
 		Pair<String, List<Integer>> result3 = JsonMapperUtils.readValue(json3, new TypeReference<>() {
 		});
 		assertEquals("livk", result3.key());
 		assertEquals(List.of(1, 2, 3), result3.value());
 
-		@Language("JSON") String json4 = """
-			{
-			  "livk": {
-			    "username": "root",
-			    "password": "root"
-			  }
-			}""";
+		@Language("JSON")
+		String json4 = """
+				{
+				  "livk": {
+				    "username": "root",
+				    "password": "root"
+				  }
+				}""";
 		Pair<String, Map<String, String>> result4 = JsonMapperUtils.readValue(json4, new TypeReference<>() {
 		});
 		assertEquals("livk", result4.key());
 		assertEquals(Map.of("username", "root", "password", "root"), result4.value());
 	}
+
 }

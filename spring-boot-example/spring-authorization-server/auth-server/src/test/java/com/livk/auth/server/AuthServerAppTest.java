@@ -43,15 +43,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.schema-locations[0]=classpath*:/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql",
-	"spring.sql.init.schema-locations[1]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql",
-	"spring.sql.init.schema-locations[2]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.schema-locations[0]=classpath*:/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql",
+		"spring.sql.init.schema-locations[1]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql",
+		"spring.sql.init.schema-locations[2]=classpath*:/org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureMockMvc
 class AuthServerAppTest {
 
@@ -65,7 +61,8 @@ class AuthServerAppTest {
 		params.set("username", "livk");
 		params.set("password", "123456");
 		params.set("scope", "livk.read");
-		String json = mockMvc.perform(post("/oauth2/token")
+		String json = mockMvc
+			.perform(post("/oauth2/token")
 				.header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
 				.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
 				.params(params))
@@ -90,7 +87,8 @@ class AuthServerAppTest {
 		params.set("mobile", "18664960000");
 		params.set("code", "123456");
 		params.set("scope", "livk.read");
-		String json = mockMvc.perform(post("/oauth2/token")
+		String json = mockMvc
+			.perform(post("/oauth2/token")
 				.header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.encode("livk-client:secret"))
 				.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
 				.params(params))
@@ -107,4 +105,5 @@ class AuthServerAppTest {
 		assertNotNull(accessToken);
 		assertFalse(accessToken.isBlank());
 	}
+
 }

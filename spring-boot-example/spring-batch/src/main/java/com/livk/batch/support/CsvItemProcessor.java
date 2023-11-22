@@ -44,14 +44,16 @@ public class CsvItemProcessor implements ItemProcessor<User, User> {
 			validator.validate(item);
 			if (item.getSex().equals("男")) {
 				item.setSex("1");
-			} else {
+			}
+			else {
 				item.setSex("2");
 			}
 			item.setStatus(1);
 			item.setCreateTime(new Date());
 			item.setUpdateTime(new Date());
 			return item;
-		} catch (ValidationException e) {
+		}
+		catch (ValidationException e) {
 			return null;
 		}
 	}

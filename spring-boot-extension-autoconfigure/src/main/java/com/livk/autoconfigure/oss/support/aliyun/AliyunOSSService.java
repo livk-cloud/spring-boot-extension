@@ -45,7 +45,7 @@ public class AliyunOSSService extends AbstractService<OSS> {
 	public void createBucket(String bucketName) {
 		if (!client.doesBucketExist(bucketName)) {
 			client.createBucket((bucketName));
-			//设置cors
+			// 设置cors
 			SetBucketCORSRequest request = new SetBucketCORSRequest(bucketName);
 			SetBucketCORSRequest.CORSRule rule = new SetBucketCORSRequest.CORSRule();
 			rule.addAllowedMethod("GET");
@@ -61,10 +61,7 @@ public class AliyunOSSService extends AbstractService<OSS> {
 
 	@Override
 	public List<String> allBuckets() {
-		return client.listBuckets()
-			.stream()
-			.map(Bucket::getName)
-			.toList();
+		return client.listBuckets().stream().map(Bucket::getName).toList();
 	}
 
 	@Override
@@ -106,15 +103,12 @@ public class AliyunOSSService extends AbstractService<OSS> {
 
 	@Override
 	public List<String> getAllObj(String bucketName) {
-		return client.listObjects(bucketName)
-			.getObjectSummaries()
-			.stream()
-			.map(OSSObjectSummary::getKey)
-			.toList();
+		return client.listObjects(bucketName).getObjectSummaries().stream().map(OSSObjectSummary::getKey).toList();
 	}
 
 	@Override
 	public void close() throws Exception {
 		client.shutdown();
 	}
+
 }

@@ -55,4 +55,5 @@ public class WebSocketEventListener {
 			messagingTemplate.convertAndSend("/topic/public", chatMessage);
 		}
 	}
+
 }

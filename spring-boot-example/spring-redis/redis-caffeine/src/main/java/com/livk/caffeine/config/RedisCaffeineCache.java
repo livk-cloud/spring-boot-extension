@@ -56,8 +56,7 @@ public class RedisCaffeineCache extends AbstractValueAdaptingCache {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T get(Object key, Callable<T> valueLoader) {
-		return (T) fromStoreValue(this.cacheHandler.readAndPut(key.toString(),
-			supplier(valueLoader).get()));
+		return (T) fromStoreValue(this.cacheHandler.readAndPut(key.toString(), supplier(valueLoader).get()));
 	}
 
 	@Override
@@ -79,9 +78,11 @@ public class RedisCaffeineCache extends AbstractValueAdaptingCache {
 		return () -> {
 			try {
 				return callable.call();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		};
 	}
+
 }

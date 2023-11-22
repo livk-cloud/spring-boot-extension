@@ -46,7 +46,6 @@ public class UserAgentConfiguration {
 
 	/**
 	 * User agent helper user agent helper.
-	 *
 	 * @param applicationContext the application context
 	 * @return the user agent helper
 	 */
@@ -65,10 +64,8 @@ public class UserAgentConfiguration {
 
 		private final UserAgentHelper userAgentHelper;
 
-
 		/**
 		 * Filter registration bean filter registration bean.
-		 *
 		 * @return the filter registration bean
 		 */
 		@Bean
@@ -85,6 +82,7 @@ public class UserAgentConfiguration {
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 			resolvers.add(new UserAgentResolver(userAgentHelper));
 		}
+
 	}
 
 	/**
@@ -97,10 +95,8 @@ public class UserAgentConfiguration {
 
 		private final UserAgentHelper userAgentHelper;
 
-
 		/**
 		 * Reactive user agent filter reactive user agent filter.
-		 *
 		 * @return the reactive user agent filter
 		 */
 		@Bean
@@ -112,5 +108,7 @@ public class UserAgentConfiguration {
 		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
 			configurer.addCustomResolver(new ReactiveUserAgentResolver(userAgentHelper));
 		}
+
 	}
+
 }

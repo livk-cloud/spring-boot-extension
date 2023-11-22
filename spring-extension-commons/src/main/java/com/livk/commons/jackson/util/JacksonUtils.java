@@ -50,7 +50,6 @@ public class JacksonUtils {
 
 	/**
 	 * 获取当前MAPPER的TypeFactory
-	 *
 	 * @return the type factory
 	 */
 	public static TypeFactory typeFactory() {
@@ -59,7 +58,6 @@ public class JacksonUtils {
 
 	/**
 	 * 构建一个JavaType
-	 *
 	 * @param targetClass the target class
 	 * @return the java type
 	 */
@@ -69,9 +67,8 @@ public class JacksonUtils {
 
 	/**
 	 * 构建一个含有泛型的JavaType
-	 *
 	 * @param targetClass the target class
-	 * @param generics    the generics
+	 * @param generics the generics
 	 * @return the java type
 	 */
 	public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
@@ -80,7 +77,6 @@ public class JacksonUtils {
 
 	/**
 	 * ResolvableType转成Jackson JavaType
-	 *
 	 * @param resolvableType the resolvable type
 	 * @return the java type
 	 * @see ResolvableType
@@ -91,8 +87,7 @@ public class JacksonUtils {
 
 	/**
 	 * 构建一个CollectionType
-	 *
-	 * @param <T>         the type parameter
+	 * @param <T> the type parameter
 	 * @param targetClass the target class
 	 * @return the java type
 	 * @see CollectionType
@@ -103,10 +98,9 @@ public class JacksonUtils {
 
 	/**
 	 * 构建一个MapType
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param keyClass   the key class
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param keyClass the key class
 	 * @param valueClass the value class
 	 * @return the java type
 	 * @see MapType
@@ -117,9 +111,8 @@ public class JacksonUtils {
 
 	/**
 	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
+	 * @param <T> the type parameter
+	 * @param obj the obj
 	 * @param type the type
 	 * @return the t
 	 */
@@ -130,9 +123,8 @@ public class JacksonUtils {
 
 	/**
 	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
+	 * @param <T> the type parameter
+	 * @param obj the obj
 	 * @param type the type
 	 * @return the t
 	 */
@@ -143,9 +135,8 @@ public class JacksonUtils {
 
 	/**
 	 * Read value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param obj           the obj
+	 * @param <T> the type parameter
+	 * @param obj the obj
 	 * @param typeReference the type reference
 	 * @return the t
 	 */
@@ -156,7 +147,6 @@ public class JacksonUtils {
 
 	/**
 	 * json序列化
-	 *
 	 * @param obj obj
 	 * @return json string
 	 */
@@ -167,7 +157,6 @@ public class JacksonUtils {
 
 	/**
 	 * Write value as bytes byte [ ].
-	 *
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
@@ -178,11 +167,12 @@ public class JacksonUtils {
 
 	/**
 	 * json反序列化成List
-	 * <p>也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
-	 *
-	 * @param <T>   泛型
-	 * @param obj   the obj
+	 * <p>
+	 * 也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonUtils#convertValue(Object, JavaType)}
+	 * @param <T> 泛型
+	 * @param obj the obj
 	 * @param clazz 类型
 	 * @return the list
 	 */
@@ -193,13 +183,14 @@ public class JacksonUtils {
 
 	/**
 	 * json反序列化成Map
-	 * <p>也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonUtils#convertValue(Object, JavaType)}
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param obj        the obj
-	 * @param keyClass   K Class
+	 * <p>
+	 * 也可以看看{@link JacksonUtils#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonUtils#convertValue(Object, JavaType)}
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param obj the obj
+	 * @param keyClass K Class
 	 * @param valueClass V Class
 	 * @return the map
 	 */
@@ -210,7 +201,6 @@ public class JacksonUtils {
 
 	/**
 	 * 将json转化成JsonNode
-	 *
 	 * @param obj the obj
 	 * @return the json node
 	 */
@@ -221,10 +211,9 @@ public class JacksonUtils {
 
 	/**
 	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param type      the type
+	 * @param <T> the type parameter
+	 * @param fromValue the value
+	 * @param type the type
 	 * @return the object
 	 */
 	public static <T> T convertValue(Object fromValue, Class<T> type) {
@@ -233,9 +222,8 @@ public class JacksonUtils {
 
 	/**
 	 * Convert value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param fromValue     the value
+	 * @param <T> the type parameter
+	 * @param fromValue the value
 	 * @param typeReference the type reference
 	 * @return the t
 	 */
@@ -245,10 +233,9 @@ public class JacksonUtils {
 
 	/**
 	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param javaType  the java type
+	 * @param <T> the type parameter
+	 * @param fromValue the value
+	 * @param javaType the java type
 	 * @return the object
 	 */
 	public static <T> T convertValue(Object fromValue, JavaType javaType) {
@@ -257,15 +244,15 @@ public class JacksonUtils {
 
 	/**
 	 * Object to map map.
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param fromValue  the fromValue
-	 * @param keyClass   the key class
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param fromValue the fromValue
+	 * @param keyClass the key class
 	 * @param valueClass the value class
 	 * @return the map
 	 */
 	public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
 		return JsonMapperUtils.convertValueMap(fromValue, keyClass, valueClass);
 	}
+
 }

@@ -31,38 +31,35 @@ class SqlParserUtilsTest {
 
 	@Test
 	void parseTable() {
-		assertLinesMatch(List.of("user"),
-			SqlParserUtils.parseTable("select * from user"));
+		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("select * from user"));
 		assertLinesMatch(List.of("user", "account"),
-			SqlParserUtils.parseTable("select * from user u left join account a on u.id = a.user_id"));
-		assertLinesMatch(List.of("user"),
-			SqlParserUtils.parseTable("insert into user values (1,'root','root')"));
-		assertLinesMatch(List.of("user"),
-			SqlParserUtils.parseTable("update user set username = 'root' where id = 1"));
-		assertLinesMatch(List.of("user"),
-			SqlParserUtils.parseTable("delete from user where id = 1"));
+				SqlParserUtils.parseTable("select * from user u left join account a on u.id = a.user_id"));
+		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("insert into user values (1,'root','root')"));
+		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("update user set username = 'root' where id = 1"));
+		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("delete from user where id = 1"));
 	}
 
 	@Test
 	void getParams() {
 		assertLinesMatch(List.of("id", "username", "password"),
-			SqlParserUtils.getParams("select id,username,password from user"));
-		assertLinesMatch(List.of("u.id", "u.username", "a.account_name"),
-			SqlParserUtils.getParams("select u.id,u.username,a.account_name from user u left join account a on u.id = a.user_id"));
+				SqlParserUtils.getParams("select id,username,password from user"));
+		assertLinesMatch(List.of("u.id", "u.username", "a.account_name"), SqlParserUtils
+			.getParams("select u.id,u.username,a.account_name from user u left join account a on u.id = a.user_id"));
 		assertLinesMatch(List.of("id", "username", "password"),
-			SqlParserUtils.getParams("insert into user (id,username,password) values (1,'root','root')"));
+				SqlParserUtils.getParams("insert into user (id,username,password) values (1,'root','root')"));
 		assertLinesMatch(List.of("username"),
-			SqlParserUtils.getParams("update user set username = 'root' where id = 1"));
+				SqlParserUtils.getParams("update user set username = 'root' where id = 1"));
 	}
 
 	@Test
 	void formatSql() {
 		String sql = """
-			SELECT *
-			FROM user_account AS ua
-			LEFT JOIN user_info AS ui ON ua.user_id = ui.id
-			WHERE ui.id = 1""";
+				SELECT *
+				FROM user_account AS ua
+				LEFT JOIN user_info AS ui ON ua.user_id = ui.id
+				WHERE ui.id = 1""";
 		String formatSQL = "SELECT * FROM user_account AS ua LEFT JOIN user_info AS ui ON ua.user_id = ui.id WHERE ui.id = 1";
 		assertEquals(formatSQL, SqlParserUtils.formatSql(sql));
 	}
+
 }

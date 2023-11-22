@@ -14,4 +14,5 @@ public class KafkaApplication {
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

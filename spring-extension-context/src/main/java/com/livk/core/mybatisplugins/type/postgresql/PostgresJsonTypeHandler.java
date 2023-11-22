@@ -47,7 +47,6 @@ public class PostgresJsonTypeHandler extends AbstractJsonTypeHandler implements 
 
 	/**
 	 * Instantiates a new Postgres json type handler.
-	 *
 	 * @param mapper the mapper
 	 */
 	public PostgresJsonTypeHandler(ObjectMapper mapper) {
@@ -58,4 +57,5 @@ public class PostgresJsonTypeHandler extends AbstractJsonTypeHandler implements 
 	protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
 		ps.setObject(i, PGJson.of(json));
 	}
+
 }

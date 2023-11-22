@@ -26,4 +26,5 @@ import io.lettuce.core.resource.ClientResources;
  * @author livk
  */
 public interface ClientResourcesBuilderCustomizer extends Customizer<ClientResources.Builder> {
+
 }

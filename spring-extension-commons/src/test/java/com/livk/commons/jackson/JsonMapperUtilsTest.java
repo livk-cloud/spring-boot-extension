@@ -52,13 +52,13 @@ class JsonMapperUtilsTest {
 
 	@Language("json")
 	static String json = """
-		{
-		                    "c": "1",
-		                    "a": "2",
-		                    "b": {
-		                        "c": 3
-		                    }
-		                }""";
+			{
+			                    "c": "1",
+			                    "a": "2",
+			                    "b": {
+			                        "c": 3
+			                    }
+			                }""";
 
 	@Test
 	void readValue$JsonParser() throws IOException {
@@ -284,15 +284,16 @@ class JsonMapperUtilsTest {
 
 	@Test
 	void readValueList() {
-		@Language("json") String json = """
-			[
-			  {
-			    "a": 1
-			  },
-			  {
-			    "a": 1
-			  }
-			]""";
+		@Language("json")
+		String json = """
+				[
+				  {
+				    "a": 1
+				  },
+				  {
+				    "a": 1
+				  }
+				]""";
 		List<JsonNode> result = JsonMapperUtils.readValueList(json, JsonNode.class);
 		assertNotNull(result);
 		assertEquals(1, result.get(0).get("a").asInt());
@@ -308,7 +309,8 @@ class JsonMapperUtilsTest {
 		assertEquals("2", result.get("a"));
 		assertEquals(3, ((Map<String, Object>) result.get("b")).get("c"));
 
-		Map<String, Object> result1 = JsonMapperUtils.readValueMap(new ClassPathResource("input.json").getInputStream(), String.class, Object.class);
+		Map<String, Object> result1 = JsonMapperUtils.readValueMap(new ClassPathResource("input.json").getInputStream(),
+				String.class, Object.class);
 		assertNotNull(result1);
 		assertEquals("1", result1.get("c"));
 		assertEquals("2", result1.get("a"));
@@ -392,25 +394,28 @@ class JsonMapperUtilsTest {
 
 	@Test
 	void convert() {
-		@Language("json") String json = """
-			{
-			  "dependency": [
-			    {
-			      "groupId": "org.springframework.boot",
-			      "artifactId": "spring-boot-starter-logging"
-			    },
-			    {
-			      "groupId": "org.springframework.boot",
-			      "artifactId": "spring-boot-starter-json"
-			    }
-			  ]
-			}
-			""";
+		@Language("json")
+		String json = """
+				{
+				  "dependency": [
+				    {
+				      "groupId": "org.springframework.boot",
+				      "artifactId": "spring-boot-starter-logging"
+				    },
+				    {
+				      "groupId": "org.springframework.boot",
+				      "artifactId": "spring-boot-starter-json"
+				    }
+				  ]
+				}
+				""";
 		JsonNode jsonNode = JsonMapperUtils.readTree(json);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
-		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
-		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
+		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-logging");
+		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, JsonMapperUtils.convertValue(jsonNodeList.get(0), mapType));
@@ -425,4 +430,5 @@ class JsonMapperUtilsTest {
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
 		assertEquals(dependencyManagement, JsonMapperUtils.convertValue(jsonNode, constructMapType));
 	}
+
 }

@@ -47,8 +47,10 @@ public class MseController {
 		NettyMessage.Message message = NettyMessage.Message.newBuilder()
 			.setType(NettyMessage.Message.MessageType.NORMAL)
 			.setContent(jsonNode.toString())
-			.setRequestId(UUID.randomUUID().toString()).build();
+			.setRequestId(UUID.randomUUID().toString())
+			.build();
 		ChannelFuture future = nettyClient.sendMsg(message);
 		return ResponseEntity.ok(future.get());
 	}
+
 }

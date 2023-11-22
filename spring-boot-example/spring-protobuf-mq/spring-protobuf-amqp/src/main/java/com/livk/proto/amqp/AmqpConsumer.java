@@ -21,4 +21,5 @@ public class AmqpConsumer {
 		log.info(" : {}", user);
 		ConsumerCheck.success();
 	}
+
 }

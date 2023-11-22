@@ -36,7 +36,8 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author livk
  */
-public class DisruptorFactoryBean<T> implements FactoryBean<SpringDisruptor<T>>, BeanFactoryAware, InitializingBean, DisposableBean {
+public class DisruptorFactoryBean<T>
+		implements FactoryBean<SpringDisruptor<T>>, BeanFactoryAware, InitializingBean, DisposableBean {
 
 	@Setter
 	private AnnotationAttributes attributes;
@@ -57,7 +58,6 @@ public class DisruptorFactoryBean<T> implements FactoryBean<SpringDisruptor<T>>,
 	public Class<?> getObjectType() {
 		return SpringDisruptor.class;
 	}
-
 
 	@Override
 	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
@@ -89,7 +89,8 @@ public class DisruptorFactoryBean<T> implements FactoryBean<SpringDisruptor<T>>,
 		SpringEventHandler<T> springEventHandler = new SpringEventHandler<>(beanFactory, type);
 		int bufferSize = attributes.getNumber("bufferSize").intValue();
 		ProducerType producerType = attributes.getEnum("type");
-		disruptor = new SpringDisruptor<>(factory, bufferSize, createThreadFactory(), producerType, createWaitStrategy());
+		disruptor = new SpringDisruptor<>(factory, bufferSize, createThreadFactory(), producerType,
+				createWaitStrategy());
 		disruptor.handleEventsWith(springEventHandler);
 		beanFactory.<DisruptorCustomizer<T>>getBeanProvider(disruptorCustomizerType)
 			.forEach(customizer -> customizer.customize(disruptor));
@@ -100,4 +101,5 @@ public class DisruptorFactoryBean<T> implements FactoryBean<SpringDisruptor<T>>,
 	public void destroy() {
 		disruptor.shutdown();
 	}
+
 }

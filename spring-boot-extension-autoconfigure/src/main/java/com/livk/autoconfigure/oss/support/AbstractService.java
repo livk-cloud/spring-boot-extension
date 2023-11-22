@@ -44,13 +44,16 @@ public abstract non-sealed class AbstractService<T> implements OSSOperations, Ap
 		OSSProperties properties = applicationContext.getBean(OSSProperties.class);
 		OSSClientFactoryPatternResolver resolver = new OSSClientFactoryPatternResolver();
 		OSSClientFactory<T> factory = resolver.loader(properties.getPrefix());
-		this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey(), properties.getRegion());
+		this.client = factory.instance(properties.getEndpoint(), properties.getAccessKey(), properties.getSecretKey(),
+				properties.getRegion());
 
 		if (applicationContext instanceof GenericApplicationContext context) {
 			ResolvableType resolvableType = ResolvableType.forInstance(client);
-			BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType, () -> client);
+			BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(resolvableType,
+					() -> client);
 			AbstractBeanDefinition beanDefinition = definitionBuilder.getBeanDefinition();
 			context.registerBeanDefinition(factory.name(), beanDefinition);
 		}
 	}
+
 }

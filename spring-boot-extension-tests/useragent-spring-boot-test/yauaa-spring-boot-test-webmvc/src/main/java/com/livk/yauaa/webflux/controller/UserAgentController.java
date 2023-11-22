@@ -42,8 +42,9 @@ public class UserAgentController {
 
 	@GetMapping
 	public HttpEntity<Map<String, UserAgent>> get(@UserAgentInfo UserAgent userAgent) {
-		Map<String, UserAgent> map = Map.of(UUID.randomUUID().toString(), userAgent,
-			UUID.randomUUID().toString(), UserAgentContextHolder.getUserAgentContext());
+		Map<String, UserAgent> map = Map.of(UUID.randomUUID().toString(), userAgent, UUID.randomUUID().toString(),
+				UserAgentContextHolder.getUserAgentContext());
 		return ResponseEntity.ok(map);
 	}
+
 }

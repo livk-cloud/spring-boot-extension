@@ -71,40 +71,32 @@ class BookControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void list() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			query{
-			    bookList {
-			        title
-			        author {
-			            name
-			        }
-			    }
-			}""";
-		List<Map> result = tester.document(document)
-			.execute()
-			.path("bookList")
-			.entityList(Map.class)
-			.get();
+				query{
+				    bookList {
+				        title
+				        author {
+				            name
+				        }
+				    }
+				}""";
+		List<Map> result = tester.document(document).execute().path("bookList").entityList(Map.class).get();
 		assertNotNull(result);
 
-		//language=GraphQL
+		// language=GraphQL
 		String d1 = """
-			query{
-			  bookList {
-			    isbn
-			    title
-			    author {
-			      name
-			      age
-			    }
-			  }
-			}""";
-		List<Map> r1 = tester.document(d1)
-			.execute()
-			.path("bookList")
-			.entityList(Map.class)
-			.get();
+				query{
+				  bookList {
+				    isbn
+				    title
+				    author {
+				      name
+				      age
+				    }
+				  }
+				}""";
+		List<Map> r1 = tester.document(d1).execute().path("bookList").entityList(Map.class).get();
 		assertNotNull(r1);
 	}
 
@@ -112,23 +104,19 @@ class BookControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void bookByIsbn() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			query{
-			    bookByIsbn(isbn: "9787121377921"){
-			        isbn
-			        title
-			        author {
-			            name
-			            age
-			        }
-			    }
-			}""";
-		Map result = tester.document(document)
-			.execute()
-			.path("bookByIsbn")
-			.entity(Map.class)
-			.get();
+				query{
+				    bookByIsbn(isbn: "9787121377921"){
+				        isbn
+				        title
+				        author {
+				            name
+				            age
+				        }
+				    }
+				}""";
+		Map result = tester.document(document).execute().path("bookByIsbn").entity(Map.class).get();
 		assertNotNull(result);
 	}
 
@@ -136,56 +124,44 @@ class BookControllerTest {
 	@Test
 	void createBook() {
 		bookRepository.deleteAll().subscribe();
-		//language=GraphQL
+		// language=GraphQL
 		String d1 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121282089",
-			        title: "JavaEE开发的颠覆者：Spring Boot实战",
-			        pages: 524,
-			        authorIdCardNo: "341234567891234567"
-			    } ){ title pages }
-			}""";
-		//language=GraphQL
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121282089",
+				        title: "JavaEE开发的颠覆者：Spring Boot实战",
+				        pages: 524,
+				        authorIdCardNo: "341234567891234567"
+				    } ){ title pages }
+				}""";
+		// language=GraphQL
 		String d2 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121377921",
-			        title: "从企业级开发到云原生微服务:Spring Boot实战",
-			        pages: 504,
-			        authorIdCardNo: "341234567891234567"
-			    } ){ title pages }
-			}""";
-		//language=GraphQL
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121377921",
+				        title: "从企业级开发到云原生微服务:Spring Boot实战",
+				        pages: 504,
+				        authorIdCardNo: "341234567891234567"
+				    } ){ title pages }
+				}""";
+		// language=GraphQL
 		String d3 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121347962",
-			        title: "架构整洁之道",
-			        pages: 348,
-			        authorIdCardNo: "341234567891234568"
-			    } ){ title pages }
-			}""";
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121347962",
+				        title: "架构整洁之道",
+				        pages: 348,
+				        authorIdCardNo: "341234567891234568"
+				    } ){ title pages }
+				}""";
 
-		Book r1 = tester.document(d1)
-			.execute()
-			.path("createBook")
-			.entity(Book.class)
-			.get();
+		Book r1 = tester.document(d1).execute().path("createBook").entity(Book.class).get();
 		assertNotNull(r1);
 
-		Book r2 = tester.document(d2)
-			.execute()
-			.path("createBook")
-			.entity(Book.class)
-			.get();
+		Book r2 = tester.document(d2).execute().path("createBook").entity(Book.class).get();
 		assertNotNull(r2);
 
-		Book r3 = tester.document(d3)
-			.execute()
-			.path("createBook")
-			.entity(Book.class)
-			.get();
+		Book r3 = tester.document(d3).execute().path("createBook").entity(Book.class).get();
 		assertNotNull(r3);
 	}
 
@@ -193,35 +169,28 @@ class BookControllerTest {
 	@Test
 	void createAuthor() {
 		authorRepository.deleteAll().subscribe();
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			mutation{
-			    createAuthor(dto: {
-			        idCardNo: "341234567891234567",
-			        name: "汪云飞",
-			        age: 38
-			    }){name age}
-			}""";
-		Author result = tester.document(document)
-			.execute()
-			.path("createAuthor")
-			.entity(Author.class)
-			.get();
+				mutation{
+				    createAuthor(dto: {
+				        idCardNo: "341234567891234567",
+				        name: "汪云飞",
+				        age: 38
+				    }){name age}
+				}""";
+		Author result = tester.document(document).execute().path("createAuthor").entity(Author.class).get();
 		assertNotNull(result);
-		//language=GraphQL
+		// language=GraphQL
 		String d2 = """
-			mutation{
-			    createAuthor(dto: {
-			        idCardNo: "341234567891234568",
-			        name: "罗伯特C.马丁",
-			        age: 70
-			    }){name age}
-			}""";
-		Author result2 = tester.document(d2)
-			.execute()
-			.path("createAuthor")
-			.entity(Author.class)
-			.get();
+				mutation{
+				    createAuthor(dto: {
+				        idCardNo: "341234567891234568",
+				        name: "罗伯特C.马丁",
+				        age: 70
+				    }){name age}
+				}""";
+		Author result2 = tester.document(d2).execute().path("createAuthor").entity(Author.class).get();
 		assertNotNull(result2);
 	}
+
 }

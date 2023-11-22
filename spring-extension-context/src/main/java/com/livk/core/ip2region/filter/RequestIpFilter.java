@@ -39,12 +39,12 @@ public class RequestIpFilter extends OncePerRequestFilter {
 	private final Ip2RegionSearch search;
 
 	@Override
-	protected void doFilterInternal(@NonNull HttpServletRequest request,
-									@NonNull HttpServletResponse response,
-									FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+			FilterChain filterChain) throws ServletException, IOException {
 		String ip = WebUtils.realIp(request);
 		RequestIpContextHolder.set(search.searchAsInfo(ip));
 		filterChain.doFilter(request, response);
 		RequestIpContextHolder.remove();
 	}
+
 }

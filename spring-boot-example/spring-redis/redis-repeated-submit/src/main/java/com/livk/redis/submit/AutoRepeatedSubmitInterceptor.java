@@ -38,9 +38,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(@NonNull HttpServletRequest request,
-							 @NonNull HttpServletResponse response,
-							 @NonNull Object handler) {
+	public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+			@NonNull Object handler) {
 		if (handler instanceof HandlerMethod handlerMethod) {
 			AutoRepeatedSubmit methodAnnotation = handlerMethod.getMethodAnnotation(AutoRepeatedSubmit.class);
 			if (methodAnnotation != null) {
@@ -51,15 +50,18 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 							if (RedisSupport.exists(token)) {
 								WebUtils.outJson(response, "重复提交3s后重试");
 								return false;
-							} else {
+							}
+							else {
 								RedisSupport.setEx(token, true, 3L);
 								return true;
 							}
-						} else {
+						}
+						else {
 							WebUtils.outJson(response, "重复提交3s后重试");
 							return false;
 						}
-					} finally {
+					}
+					finally {
 						LockSupport.unlock();
 					}
 				}
@@ -67,7 +69,8 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 				return false;
 			}
 		}
-		//必须返回true,否则会被拦截一切请求
+		// 必须返回true,否则会被拦截一切请求
 		return true;
 	}
+
 }

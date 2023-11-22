@@ -36,4 +36,5 @@ public interface UserService {
 	boolean remove(@Param("regTime") String regTime);
 
 	boolean save(User user);
+
 }

@@ -56,9 +56,7 @@ class UserControllerTest {
 	@Order(2)
 	@Test
 	void testList() throws Exception {
-		mockMvc.perform(get("/user"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/user")).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Order(3)
@@ -74,15 +72,13 @@ class UserControllerTest {
 	@Order(1)
 	@Test
 	void testSave() throws Exception {
-		User user = new User().setId(Integer.MAX_VALUE)
-			.setAppId("appId")
-			.setVersion("version")
-			.setRegTime(new Date());
-		mockMvc.perform(post("/user")
-				.contentType(MediaType.APPLICATION_JSON)
+		User user = new User().setId(Integer.MAX_VALUE).setAppId("appId").setVersion("version").setRegTime(new Date());
+		mockMvc
+			.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(user)))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().string("true"));
 	}
+
 }

@@ -46,4 +46,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 			.setSystemLogin("admin")
 			.setSystemPasscode("admin");
 	}
+
 }

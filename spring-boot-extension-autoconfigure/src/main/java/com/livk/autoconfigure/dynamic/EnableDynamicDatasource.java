@@ -33,6 +33,7 @@ import java.lang.annotation.Target;
  */
 @AutoImport
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface EnableDynamicDatasource {
+
 }

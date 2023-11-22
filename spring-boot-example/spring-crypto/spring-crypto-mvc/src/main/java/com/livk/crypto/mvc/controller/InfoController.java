@@ -40,9 +40,10 @@ public class InfoController {
 
 	@GetMapping
 	public Map<String, Info> info(@RequestHeader("id") @CryptoDecrypt Long headerId,
-								  @RequestParam("id") @CryptoDecrypt Long paramId) {
+			@RequestParam("id") @CryptoDecrypt Long paramId) {
 		log.info("RequestHeader:{}", headerId);
 		log.info("RequestParam:{}", paramId);
 		return Map.of("id", new Info(headerId, paramId));
 	}
+
 }

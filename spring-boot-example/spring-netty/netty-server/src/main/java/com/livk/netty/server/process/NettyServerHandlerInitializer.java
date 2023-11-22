@@ -33,7 +33,7 @@ public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
 	@Override
 	protected void initChannel(Channel ch) throws Exception {
 		ch.pipeline()
-			//空闲检测
+			// 空闲检测
 			.addLast(new ServerIdleStateHandler())
 			.addLast(new ProtobufVarint32FrameDecoder())
 			.addLast(new ProtobufDecoder(NettyMessage.Message.getDefaultInstance()))
@@ -41,4 +41,5 @@ public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
 			.addLast(new ProtobufEncoder())
 			.addLast(new NettyServerHandler());
 	}
+
 }

@@ -36,8 +36,9 @@ public class TenantContextHolder {
 	public final static String ATTRIBUTES = "tenant";
 
 	private final static ThreadLocal<String> TENANT_ID = new NamedThreadLocal<>("tenant context");
-	private final static ThreadLocal<String> INHERITABLE_TENANT_ID = new NamedInheritableThreadLocal<>("inheritable tenant ip context");
 
+	private final static ThreadLocal<String> INHERITABLE_TENANT_ID = new NamedInheritableThreadLocal<>(
+			"inheritable tenant ip context");
 
 	public String getTenantId() {
 		String tenantId = TENANT_ID.get();
@@ -56,11 +57,13 @@ public class TenantContextHolder {
 			if (inheritable) {
 				INHERITABLE_TENANT_ID.set(tenantId);
 				TENANT_ID.remove();
-			} else {
+			}
+			else {
 				TENANT_ID.set(tenantId);
 				INHERITABLE_TENANT_ID.remove();
 			}
-		} else {
+		}
+		else {
 			remove();
 		}
 	}

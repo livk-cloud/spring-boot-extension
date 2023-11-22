@@ -51,15 +51,14 @@ public class EasyExcelSupport {
 
 	/**
 	 * Read.
-	 *
-	 * @param in              the in
+	 * @param in the in
 	 * @param excelModelClass the excel model class
-	 * @param listener        the listener
-	 * @param ignoreEmptyRow  the ignore empty row
+	 * @param listener the listener
+	 * @param ignoreEmptyRow the ignore empty row
 	 */
-	public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener, Boolean ignoreEmptyRow) {
-		try (ExcelReader excelReader = EasyExcel.read(in, listener)
-			.ignoreEmptyRow(ignoreEmptyRow).build()) {
+	public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener,
+			Boolean ignoreEmptyRow) {
+		try (ExcelReader excelReader = EasyExcel.read(in, listener).ignoreEmptyRow(ignoreEmptyRow).build()) {
 			List<ReadSheet> readSheets = excelReader.excelExecutor()
 				.sheetList()
 				.stream()
@@ -74,13 +73,13 @@ public class EasyExcelSupport {
 
 	/**
 	 * Write.
-	 *
-	 * @param outputStream    the output stream
+	 * @param outputStream the output stream
 	 * @param excelModelClass the excel model class
-	 * @param location        the location
-	 * @param result          the result
+	 * @param location the location
+	 * @param result the result
 	 */
-	public void write(OutputStream outputStream, Class<?> excelModelClass, String location, Map<String, ? extends Collection<?>> result) {
+	public void write(OutputStream outputStream, Class<?> excelModelClass, String location,
+			Map<String, ? extends Collection<?>> result) {
 		ExcelWriterBuilder builder = EasyExcel.write(outputStream);
 		if (StringUtils.hasText(location)) {
 			try {
@@ -88,7 +87,8 @@ public class EasyExcelSupport {
 				builder.withTemplate(file);
 				templateWrite(builder, result);
 				return;
-			} catch (FileNotFoundException e) {
+			}
+			catch (FileNotFoundException e) {
 				log.info("EasyExcel使用模板错误:{}", e.getMessage(), e);
 			}
 		}
@@ -112,7 +112,8 @@ public class EasyExcelSupport {
 				WriteSheet writeSheet = EasyExcel.writerSheet(index, entry.getKey())
 					.registerWriteHandler(new SheetWriteHandler() {
 						@Override
-						public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
+						public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder,
+								WriteSheetHolder writeSheetHolder) {
 							writeWorkbookHolder.getCachedWorkbook().setSheetName(index, entry.getKey());
 						}
 					})
@@ -125,7 +126,6 @@ public class EasyExcelSupport {
 
 	/**
 	 * File name string.
-	 *
 	 * @param excelReturn the excel return
 	 * @return the string
 	 */
@@ -135,9 +135,11 @@ public class EasyExcelSupport {
 		if (StringUtils.hasText(template)) {
 			int index = template.lastIndexOf('.');
 			suffix = template.substring(index);
-		} else {
+		}
+		else {
 			suffix = excelReturn.suffix().getName();
 		}
 		return excelReturn.fileName().concat(suffix);
 	}
+
 }

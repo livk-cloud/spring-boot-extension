@@ -47,6 +47,7 @@ public class RedisEventStore extends InstanceEventPublisher implements InstanceE
 	private static final Comparator<InstanceEvent> byTimestampAndIdAndVersion = comparing(InstanceEvent::getTimestamp)
 		.thenComparing(InstanceEvent::getInstance)
 		.thenComparing(InstanceEvent::getVersion);
+
 	private final ReactiveHashOperations<String, String, List<InstanceEvent>> hashOperations;
 
 	public RedisEventStore(ReactiveRedisOps redisOps) {
@@ -80,4 +81,5 @@ public class RedisEventStore extends InstanceEventPublisher implements InstanceE
 		return hashOperations.put(INSTANCE_EVENT_KEY, id.getValue(), events)
 			.then(Mono.fromRunnable(() -> this.publish(events)));
 	}
+
 }

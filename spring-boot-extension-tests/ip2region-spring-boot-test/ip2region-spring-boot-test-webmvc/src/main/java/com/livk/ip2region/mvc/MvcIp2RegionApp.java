@@ -25,7 +25,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class MvcIp2RegionApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

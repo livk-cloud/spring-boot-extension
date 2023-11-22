@@ -42,12 +42,11 @@ import reactor.core.publisher.Flux;
  */
 @SpringAutoService
 @ConditionalOnClass(RedisOperations.class)
-@AutoConfiguration(before = {RedisAutoConfiguration.class})
+@AutoConfiguration(before = { RedisAutoConfiguration.class })
 public class CustomizeRedisAutoConfiguration {
 
 	/**
 	 * Livk redis template universal redis template.
-	 *
 	 * @param redisConnectionFactory the redis connection factory
 	 * @return the universal redis template
 	 */
@@ -57,29 +56,31 @@ public class CustomizeRedisAutoConfiguration {
 		return new RedisOps(redisConnectionFactory);
 	}
 
-
 	/**
 	 * The type Customize reactive redis auto configuration.
 	 */
-	@AutoConfiguration(before = {RedisReactiveAutoConfiguration.class})
-	@ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
+	@AutoConfiguration(before = { RedisReactiveAutoConfiguration.class })
+	@ConditionalOnClass({ ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class })
 	public static class CustomizeReactiveRedisAutoConfiguration {
 
 		/**
 		 * Universal reactive redis template universal reactive redis template.
-		 *
 		 * @param redisConnectionFactory the redis connection factory
 		 * @return the universal reactive redis template
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		public ReactiveRedisOps reactiveRedisOps(ReactiveRedisConnectionFactory redisConnectionFactory) {
-			RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
-				<String, Object>newSerializationContext()
-				.key(RedisSerializer.string()).value(JacksonSerializerUtils.json())
-				.hashKey(RedisSerializer.string()).hashValue(JacksonSerializerUtils.json()).build();
+			RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext
+				.<String, Object>newSerializationContext()
+				.key(RedisSerializer.string())
+				.value(JacksonSerializerUtils.json())
+				.hashKey(RedisSerializer.string())
+				.hashValue(JacksonSerializerUtils.json())
+				.build();
 			return new ReactiveRedisOps(redisConnectionFactory, serializationContext);
 		}
+
 	}
 
 }

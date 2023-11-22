@@ -36,4 +36,5 @@ public class JsonController {
 	public HttpEntity<String> get() {
 		return ResponseEntity.ok("json");
 	}
+
 }

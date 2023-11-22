@@ -35,14 +35,14 @@ import java.lang.reflect.Method;
  * @author livk
  */
 public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> extends AbstractPointcutAdvisor
-	implements IntroductionInterceptor {
+		implements IntroductionInterceptor {
 
 	/**
 	 * 切点注解类型
 	 */
 	@SuppressWarnings("unchecked")
-	protected final Class<A> annotationType = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AnnotationAbstractPointcutAdvisor.class);
-
+	protected final Class<A> annotationType = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+			AnnotationAbstractPointcutAdvisor.class);
 
 	@NonNull
 	@Override
@@ -57,7 +57,6 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 
 	/**
 	 * 执行拦截的方法
-	 *
 	 * @param invocation 方法相关信息
 	 * @param annotation 注解信息
 	 * @return 方法返回结果
@@ -75,4 +74,5 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	public Advice getAdvice() {
 		return this;
 	}
+
 }

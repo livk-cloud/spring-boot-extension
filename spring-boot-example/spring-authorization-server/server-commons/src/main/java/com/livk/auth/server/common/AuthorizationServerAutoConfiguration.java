@@ -38,7 +38,8 @@ public class AuthorizationServerAutoConfiguration {
 
 	@Bean
 	public UserDetailsAuthenticationProvider userDetailsAuthenticationProvider(PasswordEncoder passwordEncoder,
-																			   ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices) {
+			ObjectProvider<Oauth2UserDetailsService> oauth2UserDetailsServices) {
 		return new UserDetailsAuthenticationProvider(passwordEncoder, oauth2UserDetailsServices);
 	}
+
 }

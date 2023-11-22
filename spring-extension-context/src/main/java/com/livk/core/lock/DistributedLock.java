@@ -30,21 +30,19 @@ public interface DistributedLock extends Ordered {
 
 	/**
 	 * Try lock boolean.
-	 *
-	 * @param type      the type
-	 * @param key       the key
+	 * @param type the type
+	 * @param key the key
 	 * @param leaseTime the lease time
-	 * @param waitTime  the wait time
-	 * @param async     the async
+	 * @param waitTime the wait time
+	 * @param async the async
 	 * @return the boolean
 	 */
 	boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async);
 
 	/**
 	 * Lock.
-	 *
-	 * @param type  the type
-	 * @param key   the key
+	 * @param type the type
+	 * @param key the key
 	 * @param async the async
 	 */
 	void lock(LockType type, String key, boolean async);
@@ -56,7 +54,6 @@ public interface DistributedLock extends Ordered {
 
 	/**
 	 * Scope lock scope.
-	 *
 	 * @return the lock scope
 	 */
 	LockScope scope();
@@ -65,4 +62,5 @@ public interface DistributedLock extends Ordered {
 	default int getOrder() {
 		return 0;
 	}
+
 }

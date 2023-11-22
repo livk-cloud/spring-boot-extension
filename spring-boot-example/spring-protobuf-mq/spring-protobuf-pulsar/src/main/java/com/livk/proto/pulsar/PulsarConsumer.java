@@ -40,4 +40,5 @@ public class PulsarConsumer {
 		log.info("topic:{} key:{} data:{}", topic, key, data);
 		ConsumerCheck.success();
 	}
+
 }

@@ -30,9 +30,8 @@ public interface JacksonOps {
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>  泛型
-	 * @param obj  待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param type 返回相关类型
 	 * @return 相关实例
 	 */
@@ -40,9 +39,8 @@ public interface JacksonOps {
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>           泛型
-	 * @param obj           待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param typeReference TypeReference包装的类型
 	 * @return 相关实例
 	 */
@@ -50,9 +48,8 @@ public interface JacksonOps {
 
 	/**
 	 * 从obj读取json数据转成相应实体类
-	 *
-	 * @param <T>  泛型
-	 * @param obj  待读取的数据
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
 	 * @param type 相关类型
 	 * @return 相关实例
 	 */
@@ -60,7 +57,6 @@ public interface JacksonOps {
 
 	/**
 	 * obj序列化成string
-	 *
 	 * @param obj obj
 	 * @return json string
 	 */
@@ -68,7 +64,6 @@ public interface JacksonOps {
 
 	/**
 	 * obj序列化成byte[]
-	 *
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
@@ -76,7 +71,6 @@ public interface JacksonOps {
 
 	/**
 	 * obj读取数据转化成JsonNode
-	 *
 	 * @param obj the obj
 	 * @return the json node
 	 */
@@ -84,19 +78,17 @@ public interface JacksonOps {
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
-	 * @param type      返回类型
+	 * @param type 返回类型
 	 * @return 相关实例
 	 */
 	<T> T convertValue(Object fromValue, Class<T> type);
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>           泛型
-	 * @param fromValue     待转换数据
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
 	 * @param typeReference the type reference
 	 * @return 相关实例
 	 */
@@ -104,11 +96,11 @@ public interface JacksonOps {
 
 	/**
 	 * jackson数据转换
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
-	 * @param javaType  相关类型
+	 * @param javaType 相关类型
 	 * @return 相关实例
 	 */
 	<T> T convertValue(Object fromValue, JavaType javaType);
+
 }

@@ -38,6 +38,7 @@ import org.springframework.util.Assert;
  */
 @RequiredArgsConstructor
 public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLock> {
+
 	/**
 	 * lock的实现类集合
 	 */
@@ -64,10 +65,12 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
 				return invocation.proceed();
 			}
 			throw new LockException("获取锁失败!");
-		} finally {
+		}
+		finally {
 			if (isLock) {
 				distributedLock.unlock();
 			}
 		}
 	}
+
 }

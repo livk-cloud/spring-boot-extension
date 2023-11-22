@@ -53,7 +53,6 @@ public class MessageController {
 			.createClient(MessageService.class);
 	}
 
-
 	@GetMapping("request-response")
 	public Mono<Message> requestResponse() {
 		return messageService.requestResponse(new Message("客户端", "服务器"));
@@ -61,8 +60,7 @@ public class MessageController {
 
 	@GetMapping("fire-and-forget")
 	public Mono<String> fireAndForget() {
-		return messageService.fireAndForget(new Message("客户端", "服务器"))
-			.flatMap(unused -> Mono.just("fire and forget"));
+		return messageService.fireAndForget(new Message("客户端", "服务器")).flatMap(unused -> Mono.just("fire and forget"));
 	}
 
 	@GetMapping("stream")
@@ -84,4 +82,5 @@ public class MessageController {
 			.map(messages -> messages.stream().map(Message::toString).collect(Collectors.toList()))
 			.map(list -> String.join(",", list));
 	}
+
 }

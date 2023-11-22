@@ -24,15 +24,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>密码授权token信息</p>
+ * <p>
+ * 密码授权token信息
+ * </p>
  *
  * @author livk
  */
 public class OAuth2PasswordAuthenticationToken extends OAuth2BaseAuthenticationToken {
 
-	public OAuth2PasswordAuthenticationToken(Authentication clientPrincipal,
-											 Set<String> scopes,
-											 Map<String, Object> additionalParameters) {
+	public OAuth2PasswordAuthenticationToken(Authentication clientPrincipal, Set<String> scopes,
+			Map<String, Object> additionalParameters) {
 		super(SecurityConstants.GRANT_TYPE_PASSWORD, clientPrincipal, scopes, additionalParameters);
 	}
+
 }

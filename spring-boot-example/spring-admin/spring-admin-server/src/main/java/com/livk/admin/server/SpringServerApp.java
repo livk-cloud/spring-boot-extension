@@ -31,7 +31,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAdminServer
 @SpringBootApplication
 public class SpringServerApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

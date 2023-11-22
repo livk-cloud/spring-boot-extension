@@ -50,14 +50,14 @@ public class WebSocketServer {
 
 	/**
 	 * 异步推送消息
-	 *
 	 * @param message
 	 */
 	public static void sendWholeAsyncMessage(String message) {
 		for (WebSocketServer item : websocketSet) {
 			try {
 				item.session.getAsyncRemote().sendText(message);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.error("websocket异步发送消息异常{0}", e);
 			}
 		}
@@ -73,10 +73,12 @@ public class WebSocketServer {
 				// 这里可以设定只推送给这个sid的，为null则全部推送
 				if (sid == null) {
 					item.sendMessage(message);
-				} else if (item.sid.equals(sid)) {
+				}
+				else if (item.sid.equals(sid)) {
 					item.sendMessage(message);
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				log.error("websocket 发送异常", e);
 			}
 		}
@@ -105,7 +107,6 @@ public class WebSocketServer {
 
 	/**
 	 * 收到客户端消息后调用的方法
-	 *
 	 * @param message 客户端发送过来的消息
 	 */
 	@OnMessage

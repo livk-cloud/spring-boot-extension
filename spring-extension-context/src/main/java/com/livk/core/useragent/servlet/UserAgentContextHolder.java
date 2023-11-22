@@ -27,12 +27,11 @@ import org.springframework.core.NamedInheritableThreadLocal;
  */
 public class UserAgentContextHolder {
 
-
-	private static final ThreadLocal<UserAgent> inheritableContext = new NamedInheritableThreadLocal<>("inheritable useragent context");
+	private static final ThreadLocal<UserAgent> inheritableContext = new NamedInheritableThreadLocal<>(
+			"inheritable useragent context");
 
 	/**
 	 * Gets user agent context.
-	 *
 	 * @return the user agent context
 	 */
 	public static UserAgent getUserAgentContext() {
@@ -41,7 +40,6 @@ public class UserAgentContextHolder {
 
 	/**
 	 * Sets user agent context.
-	 *
 	 * @param userAgent the useragent wrapper
 	 */
 	public static void setUserAgentContext(UserAgent userAgent) {
@@ -54,4 +52,5 @@ public class UserAgentContextHolder {
 	public static void cleanUserAgentContext() {
 		inheritableContext.remove();
 	}
+
 }

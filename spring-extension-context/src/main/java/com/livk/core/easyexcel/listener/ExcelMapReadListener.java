@@ -39,26 +39,20 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 
 	/**
 	 * Get collection data collection.
-	 *
 	 * @return the collection
 	 */
 	default Collection<T> getCollectionData() {
-		return getMapData().values()
-			.stream()
-			.flatMap(Collection::stream)
-			.toList();
+		return getMapData().values().stream().flatMap(Collection::stream).toList();
 	}
 
 	/**
 	 * 获取数据集合
-	 *
 	 * @return collection collection data
 	 */
 	Map<String, ? extends Collection<T>> getMapData();
 
 	/**
 	 * Get data object.
-	 *
 	 * @param type the type
 	 * @return the object
 	 */
@@ -68,4 +62,5 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 			case COLLECTION -> getCollectionData();
 		};
 	}
+
 }

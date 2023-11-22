@@ -49,10 +49,12 @@ public class ScheduleHandler {
 			log.info("time:{}", System.currentTimeMillis());
 			try {
 				Thread.sleep(100L);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 		}, 0, 1, TimeUnit.SECONDS);
 		log.info("TaskId:{}", future.getTaskId());
 	}
+
 }

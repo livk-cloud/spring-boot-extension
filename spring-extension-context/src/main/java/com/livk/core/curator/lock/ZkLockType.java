@@ -25,6 +25,7 @@ package com.livk.core.curator.lock;
  * @author livk
  */
 public enum ZkLockType {
+
 	/**
 	 * 普通锁
 	 */
@@ -37,4 +38,5 @@ public enum ZkLockType {
 	 * 写锁
 	 */
 	WRITE
+
 }

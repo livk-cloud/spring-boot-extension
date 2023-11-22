@@ -31,9 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BeanLambdaFuncTest {
 
 	final Field field1 = Maker.class.getDeclaredField("no");
+
 	final Field field2 = Maker.class.getDeclaredField("username");
 
 	final Method method1 = Maker.class.getMethod("getNo");
+
 	final Method method2 = Maker.class.getMethod("getUsername");
 
 	BeanLambdaFuncTest() throws NoSuchFieldException, NoSuchMethodException {
@@ -59,8 +61,11 @@ class BeanLambdaFuncTest {
 
 	@Data
 	static class Maker {
+
 		private Integer no;
 
 		private String username;
+
 	}
+
 }

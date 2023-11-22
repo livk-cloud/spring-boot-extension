@@ -35,46 +35,41 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OnLock {
+
 	/**
 	 * 锁名称
-	 *
 	 * @return the string
 	 */
 	String key();
 
 	/**
 	 * Type lock type.
-	 *
 	 * @return the lock type
 	 */
 	LockType type() default LockType.LOCK;
 
 	/**
 	 * Lease time long.
-	 *
 	 * @return the long
 	 */
 	long leaseTime() default 10;
 
 	/**
 	 * Wait time long.
-	 *
 	 * @return the long
 	 */
 	long waitTime() default 3;
 
 	/**
-	 * scope为{@link LockScope#STANDALONE_LOCK}
-	 * async强制为false
-	 *
+	 * scope为{@link LockScope#STANDALONE_LOCK} async强制为false
 	 * @return the boolean
 	 */
 	boolean async() default false;
 
 	/**
 	 * Scope lock scope.
-	 *
 	 * @return the lock scope
 	 */
 	LockScope scope();
+
 }

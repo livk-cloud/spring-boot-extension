@@ -46,4 +46,5 @@ public class ClientHandlerInitializer extends ChannelInitializer<Channel> {
 			.addLast(new HeartbeatHandler(nettyClient))
 			.addLast(new NettyClientHandler());
 	}
+
 }

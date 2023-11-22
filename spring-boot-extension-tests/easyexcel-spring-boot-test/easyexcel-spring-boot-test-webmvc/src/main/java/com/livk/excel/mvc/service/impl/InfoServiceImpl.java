@@ -55,7 +55,8 @@ public class InfoServiceImpl implements InfoService {
 		for (List<Info> infos : partition) {
 			try {
 				infoMapper.insertBatch(infos);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.error("msg:{}", e.getMessage(), e);
 				sqlSession.rollback();
 				break;
@@ -72,24 +73,23 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	public void insertBatchMultithreading(List<Info> records) {
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 20,
-			0L, TimeUnit.MILLISECONDS,
-			new LinkedBlockingQueue<>());
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 20, 0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<>());
 		SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
 		InfoMapper infoMapper = sqlSession.getMapper(InfoMapper.class);
 		List<List<Info>> partition = Lists.partition(records, (int) Math.pow(1000, 2));
-		List<Callable<Integer>> callables = partition.stream()
-			.map((Function<List<Info>, Callable<Integer>>) infos -> {
-				List<List<Info>> lists = Lists.partition(infos, 1000);
-				for (List<Info> list : lists) {
-					try {
-						infoMapper.insertBatch(list);
-					} catch (Exception e) {
-						return () -> 0;
-					}
+		List<Callable<Integer>> callables = partition.stream().map((Function<List<Info>, Callable<Integer>>) infos -> {
+			List<List<Info>> lists = Lists.partition(infos, 1000);
+			for (List<Info> list : lists) {
+				try {
+					infoMapper.insertBatch(list);
 				}
-				return () -> 1;
-			}).toList();
+				catch (Exception e) {
+					return () -> 0;
+				}
+			}
+			return () -> 1;
+		}).toList();
 		try {
 			List<Future<Integer>> futures = executor.invokeAll(callables);
 			for (Future<Integer> future : futures) {
@@ -98,11 +98,13 @@ public class InfoServiceImpl implements InfoService {
 					break;
 				}
 			}
-		} catch (InterruptedException | ExecutionException e) {
+		}
+		catch (InterruptedException | ExecutionException e) {
 			throw new RuntimeException(e);
 		}
 		sqlSession.commit();
 		sqlSession.clearCache();
 		sqlSession.close();
 	}
+
 }

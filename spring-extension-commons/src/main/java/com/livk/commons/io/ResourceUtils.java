@@ -38,7 +38,6 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 
 	/**
 	 * 获取单个资源
-	 *
 	 * @param location 资源地址
 	 * @return the resource
 	 */
@@ -48,7 +47,6 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 
 	/**
 	 * 获取多个资源
-	 *
 	 * @param location 资源地址
 	 * @return the resource[]
 	 * @throws IOException the io exception
@@ -56,4 +54,5 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	public Resource[] getResources(String location) throws IOException {
 		return resourceResolver.getResources(location);
 	}
+
 }

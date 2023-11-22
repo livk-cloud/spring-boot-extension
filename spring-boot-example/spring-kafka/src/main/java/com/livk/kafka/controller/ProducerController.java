@@ -44,21 +44,24 @@ public class ProducerController {
 	public void producer() {
 		kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
 		// 异步获取结果
-		kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString())
-			.whenComplete((result, throwable) -> {
-				if (throwable != null) {
-					log.error("ex:{}", throwable.getMessage());
-				} else {
-					log.info("result:{}", result);
-				}
-			});
+		kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString()).whenComplete((result, throwable) -> {
+			if (throwable != null) {
+				log.error("ex:{}", throwable.getMessage());
+			}
+			else {
+				log.info("result:{}", result);
+			}
+		});
 		// 同步获取结果
-		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString());
+		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC,
+				UUID.randomUUID().toString());
 		try {
 			SendResult<Object, Object> result = future.get();
 			log.info("result:{}", result);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("ex:{}", e.getMessage());
 		}
 	}
+
 }

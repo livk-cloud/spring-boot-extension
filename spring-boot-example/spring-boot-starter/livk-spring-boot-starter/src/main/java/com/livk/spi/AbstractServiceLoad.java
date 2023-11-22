@@ -45,7 +45,8 @@ public abstract class AbstractServiceLoad<T> implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		servicesMap = ProviderLoader.JDK_SERVICE.load(getServiceClass()).stream()
+		servicesMap = ProviderLoader.JDK_SERVICE.load(getServiceClass())
+			.stream()
 			.collect(Collectors.toMap(this::getKey, Function.identity()));
 		log.info("data:{}", servicesMap);
 	}

@@ -65,8 +65,7 @@ public enum FunctionType implements FunctionHandle<Object> {
 
 	/**
 	 * Handler t.
-	 *
-	 * @param <T>         the type parameter
+	 * @param <T> the type parameter
 	 * @param targetClass the target class
 	 * @return the t
 	 */

@@ -31,7 +31,6 @@ public class ExcelExportException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Excel export exception.
-	 *
 	 * @param message the message
 	 */
 	public ExcelExportException(String message) {
@@ -40,9 +39,8 @@ public class ExcelExportException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Excel export exception.
-	 *
 	 * @param message the message
-	 * @param cause   the cause
+	 * @param cause the cause
 	 */
 	public ExcelExportException(String message, Throwable cause) {
 		super(message, cause);
@@ -50,7 +48,6 @@ public class ExcelExportException extends RuntimeException {
 
 	/**
 	 * Instantiates a new Excel export exception.
-	 *
 	 * @param cause the cause
 	 */
 	public ExcelExportException(Throwable cause) {

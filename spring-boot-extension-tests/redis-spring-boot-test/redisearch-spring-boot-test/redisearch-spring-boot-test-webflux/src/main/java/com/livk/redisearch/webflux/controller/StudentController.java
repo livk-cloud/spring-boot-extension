@@ -52,4 +52,5 @@ public class StudentController {
 			.map(document -> JsonMapperUtils.convertValue(document, Student.class));
 		return ResponseEntity.ok(flux);
 	}
+
 }

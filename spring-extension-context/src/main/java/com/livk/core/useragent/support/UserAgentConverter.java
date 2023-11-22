@@ -30,4 +30,5 @@ public interface UserAgentConverter extends Converter<HttpHeaders, UserAgent> {
 	default <U> Converter<HttpHeaders, U> andThen(Converter<? super UserAgent, ? extends U> after) {
 		throw new UnsupportedOperationException();
 	}
+
 }

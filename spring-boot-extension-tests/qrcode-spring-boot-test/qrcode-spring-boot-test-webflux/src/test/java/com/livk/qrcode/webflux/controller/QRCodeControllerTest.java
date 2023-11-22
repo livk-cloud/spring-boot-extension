@@ -58,9 +58,7 @@ class QRCodeControllerTest {
 	@Test
 	void text() throws IOException {
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/qrcode")
-				.queryParam("text", text)
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/qrcode").queryParam("text", text).build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -68,7 +66,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -83,9 +82,7 @@ class QRCodeControllerTest {
 	@Test
 	void textMono() throws IOException {
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/qrcode/mono")
-				.queryParam("text", text)
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/qrcode/mono").queryParam("text", text).build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -93,7 +90,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -108,9 +106,7 @@ class QRCodeControllerTest {
 	@Test
 	void textCode() throws IOException {
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/qrcode/entity")
-				.queryParam("text", text)
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/qrcode/entity").queryParam("text", text).build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -118,7 +114,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -143,7 +140,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -168,7 +166,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -193,7 +192,8 @@ class QRCodeControllerTest {
 			.value(resource -> {
 				try {
 					FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -204,4 +204,5 @@ class QRCodeControllerTest {
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
+
 }

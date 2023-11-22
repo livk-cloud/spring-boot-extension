@@ -28,21 +28,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>短信登录转换器</p>
+ * <p>
+ * 短信登录转换器
+ * </p>
  *
  * @author kevin
  */
-public class OAuth2SmsAuthenticationConverter implements OAuth2BaseAuthenticationConverter<OAuth2SmsAuthenticationToken> {
+public class OAuth2SmsAuthenticationConverter
+		implements OAuth2BaseAuthenticationConverter<OAuth2SmsAuthenticationToken> {
 
 	@Override
 	public RequestMatcher support() {
 		return request -> SecurityConstants.SMS.equals(request.getParameter(OAuth2ParameterNames.GRANT_TYPE))
-						  && StringUtils.hasText(request.getParameter(SecurityConstants.SMS_PARAMETER_NAME))
-						  && StringUtils.hasText(request.getParameter(OAuth2ParameterNames.CODE));
+				&& StringUtils.hasText(request.getParameter(SecurityConstants.SMS_PARAMETER_NAME))
+				&& StringUtils.hasText(request.getParameter(OAuth2ParameterNames.CODE));
 	}
 
 	@Override
-	public OAuth2SmsAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes, Map<String, Object> additionalParameters) {
+	public OAuth2SmsAuthenticationToken buildToken(Authentication clientPrincipal, Set<String> requestedScopes,
+			Map<String, Object> additionalParameters) {
 		return new OAuth2SmsAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
 	}
+
 }

@@ -28,6 +28,7 @@ import java.lang.annotation.Annotation;
  */
 @RequiredArgsConstructor
 public enum HttpClientType {
+
 	/**
 	 * RestTemplate
 	 */
@@ -41,10 +42,10 @@ public enum HttpClientType {
 
 	/**
 	 * 返回相关注解
-	 *
 	 * @return the class
 	 */
 	public Class<? extends Annotation> annotationType() {
 		return annotationType;
 	}
+
 }

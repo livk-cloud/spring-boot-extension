@@ -32,27 +32,24 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ResponseQRCode {
 
 	/**
 	 * 二维码宽度
-	 *
 	 * @return the int
 	 */
 	int width() default 400;
 
 	/**
 	 * 二维码高度
-	 *
 	 * @return the int
 	 */
 	int height() default 400;
 
 	/**
 	 * On color int.
-	 *
 	 * @return the int
 	 * @see MatrixToImageConfig#getPixelOnColor()
 	 */
@@ -60,7 +57,6 @@ public @interface ResponseQRCode {
 
 	/**
 	 * Off color int.
-	 *
 	 * @return the int
 	 * @see MatrixToImageConfig#getPixelOnColor()
 	 */
@@ -68,8 +64,8 @@ public @interface ResponseQRCode {
 
 	/**
 	 * 图片类型
-	 *
 	 * @return the pic type
 	 */
 	PicType type() default PicType.JPG;
+
 }

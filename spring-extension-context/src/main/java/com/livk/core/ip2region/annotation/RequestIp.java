@@ -29,7 +29,8 @@ import java.lang.annotation.Target;
  *
  * @author livk
  */
-@Target({ElementType.PARAMETER})
+@Target({ ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestIp {
+
 }

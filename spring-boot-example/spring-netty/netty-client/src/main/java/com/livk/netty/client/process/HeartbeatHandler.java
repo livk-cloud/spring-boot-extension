@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequiredArgsConstructor
 public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
+
 	private final NettyClient nettyClient;
 
 	@Override
@@ -45,10 +46,12 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
 				NettyMessage.Message heartbeat = NettyMessage.Message.newBuilder()
 					.setType(NettyMessage.Message.MessageType.HEARTBEAT_CLIENT)
 					.setRequestId(UUID.randomUUID().toString())
-					.setContent("heartbeat").build();
+					.setContent("heartbeat")
+					.build();
 				ctx.writeAndFlush(heartbeat).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
 			}
-		} else {
+		}
+		else {
 			super.userEventTriggered(ctx, evt);
 		}
 	}
@@ -65,4 +68,5 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
 		log.error("message：{}", cause.getMessage(), cause);
 		ctx.channel().close();
 	}
+
 }

@@ -28,19 +28,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>自定义授权模式抽象</p>
+ * <p>
+ * 自定义授权模式抽象
+ * </p>
  *
  * @author livk
  */
 @Getter
 public abstract class OAuth2BaseAuthenticationToken extends OAuth2AuthorizationGrantAuthenticationToken {
+
 	private final Set<String> scopes;
 
-	public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType,
-										 Authentication clientPrincipal,
-										 @Nullable Set<String> scopes,
-										 @Nullable Map<String, Object> additionalParameters) {
+	public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType, Authentication clientPrincipal,
+			@Nullable Set<String> scopes, @Nullable Map<String, Object> additionalParameters) {
 		super(authorizationGrantType, clientPrincipal, additionalParameters);
 		this.scopes = scopes == null ? Set.of() : Collections.unmodifiableSet(scopes);
 	}
+
 }

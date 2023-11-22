@@ -43,4 +43,5 @@ public class AuthServerApp {
 	public HttpEntity<String> hello() {
 		return ResponseEntity.ok("hello");
 	}
+
 }

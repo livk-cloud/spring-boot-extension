@@ -41,7 +41,8 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
  * @author livk
  * @see SpelExpressionParser
  */
-public class SpringExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression> implements ExpressionResolver {
+public class SpringExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression>
+		implements ExpressionResolver {
 
 	private final ExpressionParser expressionParser;
 
@@ -56,7 +57,6 @@ public class SpringExpressionResolver extends ConverterExpressionResolver<Evalua
 
 	/**
 	 * Instantiates a new Spring expression resolver.
-	 *
 	 * @param beanClassLoader the bean class loader
 	 */
 	public SpringExpressionResolver(ClassLoader beanClassLoader) {
@@ -96,4 +96,5 @@ public class SpringExpressionResolver extends ConverterExpressionResolver<Evalua
 	protected <T> T calculate(Expression expression, EvaluationContext context, Class<T> returnType) {
 		return expression.getValue(context, returnType);
 	}
+
 }

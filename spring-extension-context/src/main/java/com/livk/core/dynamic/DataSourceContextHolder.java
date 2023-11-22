@@ -30,15 +30,13 @@ import org.springframework.util.StringUtils;
  */
 public class DataSourceContextHolder {
 
-	private static final ThreadLocal<String> datasourceHolder =
-		new NamedThreadLocal<>("datasource context");
+	private static final ThreadLocal<String> datasourceHolder = new NamedThreadLocal<>("datasource context");
 
-	private static final ThreadLocal<String> inheritableDatasourceHolder =
-		new NamedInheritableThreadLocal<>("inheritable datasource context");
+	private static final ThreadLocal<String> inheritableDatasourceHolder = new NamedInheritableThreadLocal<>(
+			"inheritable datasource context");
 
 	/**
 	 * Switch data source.
-	 *
 	 * @param datasource the datasource
 	 */
 	public static void switchDataSource(String datasource) {
@@ -47,8 +45,7 @@ public class DataSourceContextHolder {
 
 	/**
 	 * Switch data source.
-	 *
-	 * @param datasource  the datasource
+	 * @param datasource the datasource
 	 * @param inheritable the inheritable
 	 */
 	public static void switchDataSource(String datasource, boolean inheritable) {
@@ -56,18 +53,19 @@ public class DataSourceContextHolder {
 			if (inheritable) {
 				inheritableDatasourceHolder.set(datasource);
 				datasourceHolder.remove();
-			} else {
+			}
+			else {
 				datasourceHolder.set(datasource);
 				inheritableDatasourceHolder.remove();
 			}
-		} else {
+		}
+		else {
 			clear();
 		}
 	}
 
 	/**
 	 * Get data source.
-	 *
 	 * @return the data source
 	 */
 	public static String getDataSource() {

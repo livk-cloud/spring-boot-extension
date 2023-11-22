@@ -28,4 +28,5 @@ public class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper
 	public DisruptorEventWrapper<T> newInstance() {
 		return new DisruptorEventWrapper<>();
 	}
+
 }

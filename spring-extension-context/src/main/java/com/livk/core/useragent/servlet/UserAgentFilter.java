@@ -44,11 +44,13 @@ public class UserAgentFilter extends OncePerRequestFilter {
 	private final UserAgentHelper helper;
 
 	@Override
-	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+			FilterChain filterChain) throws IOException, ServletException {
 		HttpHeaders headers = WebUtils.headers(request);
 		UserAgent userAgent = helper.convert(headers);
 		UserAgentContextHolder.setUserAgentContext(userAgent);
 		filterChain.doFilter(request, response);
 		UserAgentContextHolder.cleanUserAgentContext();
 	}
+
 }

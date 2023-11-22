@@ -48,15 +48,16 @@ public class TreeNode<I, T> {
 	private I id;
 
 	private T node;
+
 	private I pid;
+
 	private List<TreeNode<I, T>> children;
 
 	/**
 	 * 创建一个root树形节点
-	 *
-	 * @param <I>  树形节点ID相关type
-	 * @param <T>  树形节点数据相关type
-	 * @param id   id
+	 * @param <I> 树形节点ID相关type
+	 * @param <T> 树形节点数据相关type
+	 * @param id id
 	 * @param node node
 	 * @return tree node
 	 */
@@ -66,7 +67,6 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 添加一个子节点,出现相同ID则无法添加
-	 *
 	 * @param treeNo TreeNode
 	 * @return boolean
 	 */
@@ -87,13 +87,10 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 设置子节点,会根据父子关系进行自动匹配
-	 *
 	 * @param nodes TreeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
-		List<TreeNode<I, T>> treeNodeList = nodes.stream()
-			.filter(node -> id.equals(node.pid))
-			.toList();
+		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();
 		if (!CollectionUtils.isEmpty(treeNodeList)) {
 			children = new ArrayList<>();
 			children.addAll(treeNodeList);
@@ -103,7 +100,6 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 根据ID查找一个节点
-	 *
 	 * @param id id
 	 * @return tree node
 	 */
@@ -121,4 +117,5 @@ public class TreeNode<I, T> {
 		}
 		return null;
 	}
+
 }

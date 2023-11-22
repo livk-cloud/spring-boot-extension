@@ -38,7 +38,7 @@ class UserControllerTest {
 
 	@Test
 	void send() throws Exception {
-		mockMvc.perform(get("/user/send"))
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/user/send")).andExpect(status().isOk());
 	}
+
 }

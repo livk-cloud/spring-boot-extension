@@ -52,6 +52,7 @@ import java.util.Map;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component(SpringContextHolder.BEAN_NAME)
 public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
+
 	/**
 	 * SpringContextHolder bean name
 	 */
@@ -64,7 +65,6 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * Spring事件发布
-	 *
 	 * @param event 事件
 	 */
 	public static void publishEvent(ApplicationEvent event) {
@@ -73,8 +73,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 根据BeanName获取Bean
-	 *
-	 * @param <T>  泛型
+	 * @param <T> 泛型
 	 * @param name BeanName
 	 * @return spring bean
 	 */
@@ -85,8 +84,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 根据Bean Type获取Bean
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean
 	 */
@@ -96,9 +94,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 根据BeanName和Bean Type获取Bean
-	 *
-	 * @param <T>       泛型
-	 * @param name      BeanName
+	 * @param <T> 泛型
+	 * @param name BeanName
 	 * @param typeClass 类型
 	 * @return spring bean
 	 */
@@ -110,8 +107,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * 根据Bean Type获取到ObjectFactory
 	 * <p>
 	 * 可用于延时加载
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean provider
 	 */
@@ -123,8 +119,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * 根据ResolvableType获取到ObjectFactory
 	 * <p>
 	 * 可用于延时加载
-	 *
-	 * @param <T>            泛型
+	 * @param <T> 泛型
 	 * @param resolvableType 类型相关
 	 * @return spring bean provider
 	 */
@@ -136,8 +131,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * 根据Bean Type获取到map
 	 * <p>
 	 * key为BeanName, value为对应的spring bean
-	 *
-	 * @param <T>       泛型
+	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean map
 	 */
@@ -147,7 +141,6 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 根据key获取到相关的环境信息
-	 *
 	 * @param key key
 	 * @return string
 	 */
@@ -157,9 +150,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 根据key获取到相关的环境信息,并转化成对应的类型
-	 *
-	 * @param <T>          泛型
-	 * @param key          key
+	 * @param <T> 泛型
+	 * @param key key
 	 * @param requiredType 返回类型
 	 * @return value
 	 */
@@ -171,9 +163,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * 根据key获取到相关的环境信息,并转化成对应的类型
 	 * <p>
 	 * 如果没有相关的key，则返回defaultValue
-	 *
-	 * @param <T>          泛型
-	 * @param key          key
+	 * @param <T> 泛型
+	 * @param key key
 	 * @param requiredType 返回类型
 	 * @param defaultValue 默认的返回数据
 	 * @return value
@@ -184,7 +175,6 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 解析文本占位符${**}
-	 *
 	 * @param text string
 	 * @return value
 	 */
@@ -194,9 +184,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 注册bean
-	 *
-	 * @param <T>      bean类型
-	 * @param bean     bean实例
+	 * @param <T> bean类型
+	 * @param bean bean实例
 	 * @param beanName beanName可为空，为空会自动生成
 	 */
 	public static <T> void registerBean(T bean, String beanName) {
@@ -207,28 +196,30 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	/**
 	 * 注册bean
-	 *
 	 * @param beanDefinition bean定义
-	 * @param beanName       BeanName
+	 * @param beanName BeanName
 	 */
 	public static void registerBean(BeanDefinition beanDefinition, String beanName) {
 		if (beanFactory instanceof DefaultListableBeanFactory defaultBeanFactory) {
 			registerBean(defaultBeanFactory, beanDefinition, beanName);
-		} else if (applicationContext instanceof GenericApplicationContext context) {
+		}
+		else if (applicationContext instanceof GenericApplicationContext context) {
 			registerBean(context, beanDefinition, beanName);
-		} else {
+		}
+		else {
 			log.error("bean register fail name: {} instantClass: {}", beanName, beanDefinition.getResolvableType());
 		}
 	}
 
 	private static void registerBean(BeanDefinitionRegistry registry, BeanDefinition beanDefinition, String beanName) {
-		beanName = StringUtils.hasText(beanName) ? beanName :
-			BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
+		beanName = StringUtils.hasText(beanName) ? beanName
+				: BeanDefinitionReaderUtils.generateBeanName(beanDefinition, registry);
 		registry.registerBeanDefinition(beanName, beanDefinition);
 	}
 
 	private static ListableBeanFactory getBeanFactory() {
-		return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory : applicationContext;
+		return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory
+				: applicationContext;
 	}
 
 	@Override
@@ -237,7 +228,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	@Override
-	public synchronized void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
+	public synchronized void setApplicationContext(@Nullable ApplicationContext applicationContext)
+			throws BeansException {
 		SpringContextHolder.applicationContext = applicationContext;
 	}
 
@@ -246,4 +238,5 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 		SpringContextHolder.applicationContext = null;
 		SpringContextHolder.beanFactory = null;
 	}
+
 }

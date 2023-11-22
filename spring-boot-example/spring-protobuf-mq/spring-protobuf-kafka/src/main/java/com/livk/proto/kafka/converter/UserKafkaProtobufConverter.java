@@ -33,4 +33,5 @@ public class UserKafkaProtobufConverter implements Deserializer<User>, Serialize
 	public void close() {
 
 	}
+
 }

@@ -34,4 +34,5 @@ public interface UsersMapper {
 
 	@Select("select * from users")
 	User getOne(@Param("username") String username);
+
 }

@@ -32,6 +32,7 @@ import com.livk.core.lock.exception.UnSupportLockException;
  * @author livk
  */
 public abstract class AbstractLockSupport<T> implements DistributedLock {
+
 	/**
 	 * The Thread local.
 	 */
@@ -41,14 +42,14 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
 		T lock = getLock(type, key);
 		try {
-			boolean isLocked = supportAsync() && async ?
-				tryLockAsync(lock, leaseTime, waitTime) :
-				tryLock(lock, waitTime, leaseTime);
+			boolean isLocked = supportAsync() && async ? tryLockAsync(lock, leaseTime, waitTime)
+					: tryLock(lock, waitTime, leaseTime);
 			if (isLocked) {
 				threadLocal.set(Pair.of(key, lock));
 			}
 			return isLocked;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			threadLocal.remove();
 			throw new LockException(e);
 		}
@@ -60,11 +61,13 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 		try {
 			if (supportAsync() && async) {
 				lockAsync(lock);
-			} else {
+			}
+			else {
 				lock(lock);
 			}
 			threadLocal.set(Pair.of(key, lock));
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			threadLocal.remove();
 			throw new LockException(e);
 		}
@@ -82,20 +85,17 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 		}
 	}
 
-
 	/**
 	 * Gets lock.
-	 *
 	 * @param type the type
-	 * @param key  the key
+	 * @param key the key
 	 * @return the lock
 	 */
 	protected abstract T getLock(LockType type, String key);
 
 	/**
 	 * Unlock.
-	 *
-	 * @param key  the key
+	 * @param key the key
 	 * @param lock the lock
 	 * @return the boolean
 	 */
@@ -103,10 +103,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Try lock async boolean.
-	 *
-	 * @param lock      the lock
+	 * @param lock the lock
 	 * @param leaseTime the lease time
-	 * @param waitTime  the wait time
+	 * @param waitTime the wait time
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
@@ -116,10 +115,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Try lock boolean.
-	 *
-	 * @param lock      the lock
+	 * @param lock the lock
 	 * @param leaseTime the lease time
-	 * @param waitTime  the wait time
+	 * @param waitTime the wait time
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
@@ -127,7 +125,6 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Lock async.
-	 *
 	 * @param lock the lock
 	 * @throws Exception the exception
 	 */
@@ -137,7 +134,6 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Lock.
-	 *
 	 * @param lock the lock
 	 * @throws Exception the exception
 	 */
@@ -145,7 +141,6 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Is locked boolean.
-	 *
 	 * @param lock the lock
 	 * @return the boolean
 	 */
@@ -153,10 +148,10 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Support async boolean.
-	 *
 	 * @return the boolean
 	 */
 	protected boolean supportAsync() {
 		return false;
 	}
+
 }

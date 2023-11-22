@@ -30,6 +30,7 @@ import java.util.UUID;
  */
 @UtilityClass
 public class UUIDConTextHolder {
+
 	private static final ThreadLocal<UUID> UUID_CONTEXT = new ThreadLocal<>();
 
 	public UUID get() {
@@ -43,4 +44,5 @@ public class UUIDConTextHolder {
 	public void remove() {
 		UUID_CONTEXT.remove();
 	}
+
 }

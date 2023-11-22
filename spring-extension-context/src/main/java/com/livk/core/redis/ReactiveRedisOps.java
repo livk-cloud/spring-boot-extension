@@ -30,24 +30,22 @@ public class ReactiveRedisOps extends ReactiveRedisTemplate<String, Object> {
 
 	/**
 	 * Instantiates a new Universal reactive redis template.
-	 *
-	 * @param connectionFactory    the connection factory
+	 * @param connectionFactory the connection factory
 	 * @param serializationContext the serialization context
 	 */
 	public ReactiveRedisOps(ReactiveRedisConnectionFactory connectionFactory,
-							RedisSerializationContext<String, Object> serializationContext) {
+			RedisSerializationContext<String, Object> serializationContext) {
 		this(connectionFactory, serializationContext, false);
 	}
 
 	/**
 	 * Instantiates a new Universal reactive redis template.
-	 *
-	 * @param connectionFactory    the connection factory
+	 * @param connectionFactory the connection factory
 	 * @param serializationContext the serialization context
-	 * @param exposeConnection     the expose connection
+	 * @param exposeConnection the expose connection
 	 */
 	public ReactiveRedisOps(ReactiveRedisConnectionFactory connectionFactory,
-							RedisSerializationContext<String, Object> serializationContext, boolean exposeConnection) {
+			RedisSerializationContext<String, Object> serializationContext, boolean exposeConnection) {
 		super(connectionFactory, serializationContext, exposeConnection);
 	}
 

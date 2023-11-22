@@ -46,7 +46,6 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 
 	/**
 	 * Instantiates a new Abstract json type handler.
-	 *
 	 * @param builder the builder
 	 */
 	protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
@@ -55,21 +54,22 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	}
 
 	@Override
-	public final void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType) throws SQLException {
+	public final void setParameter(PreparedStatement ps, int i, JsonNode parameter, JdbcType jdbcType)
+			throws SQLException {
 		String json = parameter.toString();
 		setParameter(ps, i, json, jdbcType);
 	}
 
 	/**
 	 * Sets parameter.
-	 *
-	 * @param ps       the ps
-	 * @param i        the
-	 * @param json     the json
+	 * @param ps the ps
+	 * @param i the
+	 * @param json the json
 	 * @param jdbcType the jdbc type
 	 * @throws SQLException the sql exception
 	 */
-	protected abstract void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException;
+	protected abstract void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType)
+			throws SQLException;
 
 	@Override
 	public final JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
@@ -88,4 +88,5 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 		String json = cs.getString(columnIndex);
 		return jacksonOps.readTree(json);
 	}
+
 }

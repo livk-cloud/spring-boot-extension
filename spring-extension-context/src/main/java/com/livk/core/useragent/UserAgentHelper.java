@@ -37,7 +37,6 @@ public class UserAgentHelper {
 
 	/**
 	 * Convert user agent.
-	 *
 	 * @param headers the headers
 	 * @return the user agent
 	 */
@@ -51,4 +50,5 @@ public class UserAgentHelper {
 		}
 		return conversionService.convert(headers, UserAgent.class);
 	}
+
 }

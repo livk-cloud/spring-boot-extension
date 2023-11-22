@@ -45,7 +45,8 @@ public class JobCompletionListener implements JobExecutionListener {
 	public void afterJob(JobExecution jobExecution) {
 		if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
 			log.info("任务id={}结束于{}", jobExecution.getJobId(), jobExecution.getEndTime());
-		} else {
+		}
+		else {
 			log.info("任务id={}执行异常状态={}", jobExecution.getJobId(), jobExecution.getStatus());
 		}
 	}

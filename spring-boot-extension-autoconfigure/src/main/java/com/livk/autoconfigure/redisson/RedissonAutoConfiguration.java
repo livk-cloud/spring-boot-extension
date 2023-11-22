@@ -41,17 +41,17 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 @SpringAutoService
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
-@EnableConfigurationProperties({ConfigProperties.class, RedisProperties.class})
+@EnableConfigurationProperties({ ConfigProperties.class, RedisProperties.class })
 public class RedissonAutoConfiguration {
 
 	/**
 	 * Codec converter bean factory post processor bean factory post processor.
-	 *
 	 * @param baseConverters the base converters
 	 * @return the bean factory post processor
 	 */
 	@Bean
-	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
+	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(
+			ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
 		return beanFactory -> {
 			ConversionService conversionService = beanFactory.getConversionService();
 			if (conversionService instanceof ConverterRegistry converterRegistry) {
@@ -63,23 +63,20 @@ public class RedissonAutoConfiguration {
 
 	/**
 	 * Redisson client redisson client.
-	 *
-	 * @param configProperties  the config properties
-	 * @param redisProperties   the redis properties
+	 * @param configProperties the config properties
+	 * @param redisProperties the redis properties
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client
 	 */
 	@Bean(destroyMethod = "shutdown")
 	@ConditionalOnMissingBean
-	public RedissonClient redissonClient(ConfigProperties configProperties,
-										 RedisProperties redisProperties,
-										 ObjectProvider<ConfigCustomizer> configCustomizers) {
+	public RedissonClient redissonClient(ConfigProperties configProperties, RedisProperties redisProperties,
+			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
 	}
 
 	/**
 	 * Redisson connection factory redisson connection factory.
-	 *
 	 * @param redisson the redisson
 	 * @return the redisson connection factory
 	 */
@@ -89,4 +86,5 @@ public class RedissonAutoConfiguration {
 	public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
 		return new RedissonConnectionFactory(redisson);
 	}
+
 }

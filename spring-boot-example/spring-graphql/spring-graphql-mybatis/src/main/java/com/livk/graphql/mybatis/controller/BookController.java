@@ -66,5 +66,5 @@ public class BookController {
 	public Mono<Boolean> createBook(@Argument BookDTO dto) {
 		return Mono.justOrEmpty(bookMapper.save(BeanUtils.copy(dto, Book.class)) != 0);
 	}
-}
 
+}

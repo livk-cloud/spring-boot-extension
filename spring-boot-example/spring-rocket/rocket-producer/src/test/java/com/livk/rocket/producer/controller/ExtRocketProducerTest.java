@@ -54,10 +54,10 @@ class ExtRocketProducerTest {
 		dto.setBody(msg);
 	}
 
-
 	@Test
 	void sendMessage() throws Exception {
-		mockMvc.perform(post("/api/ext/send/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
+		mockMvc
+			.perform(post("/api/ext/send/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(dto)))
 			.andExpect(status().isOk())
@@ -66,7 +66,8 @@ class ExtRocketProducerTest {
 
 	@Test
 	void sendAsyncMessage() throws Exception {
-		mockMvc.perform(post("/api/ext/sendAsync/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
+		mockMvc
+			.perform(post("/api/ext/sendAsync/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(dto)))
 			.andExpect(status().isOk())
@@ -75,7 +76,8 @@ class ExtRocketProducerTest {
 
 	@Test
 	void sendOneMessage() throws Exception {
-		mockMvc.perform(post("/api/ext/sendOne/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
+		mockMvc
+			.perform(post("/api/ext/sendOne/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(dto)))
 			.andExpect(status().isOk())
@@ -84,7 +86,8 @@ class ExtRocketProducerTest {
 
 	@Test
 	void sendTransactionMessage() throws Exception {
-		mockMvc.perform(post("/api/ext/sendTransaction/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
+		mockMvc
+			.perform(post("/api/ext/sendTransaction/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(dto)))
 			.andExpect(status().isOk())
@@ -93,7 +96,8 @@ class ExtRocketProducerTest {
 
 	@Test
 	void sendDelay() throws Exception {
-		mockMvc.perform(post("/api/ext/sendDelay/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
+		mockMvc
+			.perform(post("/api/ext/sendDelay/{topic}", RocketConstant.LIVK_EXT_MESSAGE_TOPIC)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(dto)))
 			.andExpect(status().isOk())
@@ -105,7 +109,8 @@ class ExtRocketProducerTest {
 		for (int i = 1; i <= 6; i++) {
 			RocketDTO rocketDTO = new RocketDTO();
 			rocketDTO.setBody("同步顺序消息" + i);
-			mockMvc.perform(post("/api/ext/sendOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+			mockMvc
+				.perform(post("/api/ext/sendOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
 				.andExpect(status().isOk())
@@ -118,7 +123,8 @@ class ExtRocketProducerTest {
 		for (int i = 1; i <= 6; i++) {
 			RocketDTO rocketDTO = new RocketDTO();
 			rocketDTO.setBody("异步顺序消息" + i);
-			mockMvc.perform(post("/api/ext/sendAsyncOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+			mockMvc
+				.perform(post("/api/ext/sendAsyncOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
 				.andExpect(status().isOk())
@@ -131,7 +137,8 @@ class ExtRocketProducerTest {
 		for (int i = 1; i <= 6; i++) {
 			RocketDTO rocketDTO = new RocketDTO();
 			rocketDTO.setBody("单向顺序消息" + i);
-			mockMvc.perform(post("/api/ext/sendOneOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
+			mockMvc
+				.perform(post("/api/ext/sendOneOrderly/{topic}", RocketConstant.LIVK_EXT_MESSAGE_ORDERLY_TOPIC)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(JsonMapperUtils.writeValueAsString(rocketDTO)))
 				.andExpect(status().isOk())

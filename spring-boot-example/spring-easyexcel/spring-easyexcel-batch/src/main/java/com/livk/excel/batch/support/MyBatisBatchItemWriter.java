@@ -47,9 +47,11 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T> {
 				sqlSession.update(statementId, item);
 			}
 			sqlSession.commit();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			sqlSession.rollback();
 		}
 		sqlSession.close();
 	}
+
 }

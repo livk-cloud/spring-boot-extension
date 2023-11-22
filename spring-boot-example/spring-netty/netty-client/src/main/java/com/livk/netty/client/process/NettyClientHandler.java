@@ -38,4 +38,5 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<NettyMessage
 		log.info("error msg：{}", cause.getMessage(), cause);
 		ctx.close();
 	}
+
 }

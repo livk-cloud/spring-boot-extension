@@ -45,7 +45,6 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 
 	/**
 	 * Instantiates a new Google qrcode generator.
-	 *
 	 * @param builder the builder
 	 */
 	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
@@ -58,14 +57,17 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 	}
 
 	@Override
-	public BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type) {
+	public BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config,
+			PicType type) {
 		try {
 			QRCodeWriter writer = new QRCodeWriter();
 			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);
 			return MatrixToImageWriter.toBufferedImage(matrix, config);
-		} catch (WriterException e) {
+		}
+		catch (WriterException e) {
 			log.error("{}", e.getMessage(), e);
 			throw new QRCodeException("生成二维码失败", e);
 		}
 	}
+
 }

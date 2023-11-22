@@ -56,6 +56,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 	 * 默认的空Pair
 	 */
 	public static final Pair<?, ?> EMPTY = Pair.of(null, null);
+
 	@Serial
 	private static final long serialVersionUID = -2303547536834226401L;
 
@@ -71,9 +72,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 静态构造Map.Entry转Pair
-	 *
-	 * @param <K>   key type parameter
-	 * @param <V>   value type parameter
+	 * @param <K> key type parameter
+	 * @param <V> value type parameter
 	 * @param entry entry
 	 * @return pair
 	 */
@@ -83,7 +83,6 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 获取Key
-	 *
 	 * @return key
 	 */
 	public K key() {
@@ -92,7 +91,6 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 获取value
-	 *
 	 * @return value
 	 */
 	public V value() {
@@ -101,7 +99,6 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 转成Map
-	 *
 	 * @return the map
 	 * @see Map#of(Object, Object)
 	 */
@@ -111,7 +108,6 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 转成Map.Entry
-	 *
 	 * @return entry
 	 */
 	public Map.Entry<K, V> toEntry() {
@@ -120,10 +116,9 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 进行map转换
-	 *
-	 * @param <S>           key转换后type
-	 * @param <U>           value转换后type
-	 * @param keyFunction   key function
+	 * @param <S> key转换后type
+	 * @param <U> value转换后type
+	 * @param keyFunction key function
 	 * @param valueFunction value function
 	 * @return pair
 	 */
@@ -133,8 +128,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * Key进行map转换
-	 *
-	 * @param <S>         key转换后type
+	 * @param <S> key转换后type
 	 * @param keyFunction key function
 	 * @return pair
 	 */
@@ -144,8 +138,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * Value进行map转换
-	 *
-	 * @param <U>           value转换后type
+	 * @param <U> value转换后type
 	 * @param valueFunction value function
 	 * @return pair
 	 */
@@ -155,9 +148,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 进行flatmap转换
-	 *
-	 * @param <S>        key转换后type
-	 * @param <U>        value转换后type
+	 * @param <S> key转换后type
+	 * @param <U> value转换后type
 	 * @param biFunction bi function
 	 * @return pair
 	 */
@@ -170,7 +162,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
 	public Pair<K, V> clone() {
 		try {
 			return (Pair<K, V>) super.clone();
-		} catch (CloneNotSupportedException e) {
+		}
+		catch (CloneNotSupportedException e) {
 			throw new AssertionError();
 		}
 	}
@@ -195,7 +188,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
 		}
 
 		@Override
-		public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializerProvider provider) throws IOException {
+		public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializerProvider provider)
+				throws IOException {
 			gen.writeStartObject(pair);
 			keySerializer.serialize(pair.key(), gen, provider);
 			gen.writeObject(pair.value());
@@ -203,18 +197,22 @@ public class Pair<K, V> implements Serializable, Cloneable {
 		}
 
 		@Override
-		public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+		public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
+				throws JsonMappingException {
 			keySerializer = prov.findKeySerializer(Object.class, property);
 			return this;
 		}
+
 	}
 
 	/**
 	 * Pair Jackson反序列化工具
 	 */
-	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> implements ContextualDeserializer {
+	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>>
+			implements ContextualDeserializer {
 
 		private KeyDeserializer keyDeserializer;
+
 		private JavaType valueType;
 
 		/**
@@ -234,7 +232,8 @@ public class Pair<K, V> implements Serializable, Cloneable {
 		}
 
 		@Override
-		public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+		public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property)
+				throws JsonMappingException {
 			JavaType contextualType = context.getContextualType();
 			TypeBindings bindings = contextualType.getBindings();
 			JavaType keyType = bindings.getBoundType(0);
@@ -242,5 +241,7 @@ public class Pair<K, V> implements Serializable, Cloneable {
 			keyDeserializer = context.findKeyDeserializer(keyType, property);
 			return this;
 		}
+
 	}
+
 }

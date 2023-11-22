@@ -40,7 +40,6 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 
 	/**
 	 * From context object provider.
-	 *
 	 * @return the object provider
 	 */
 	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext() {
@@ -54,7 +53,6 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 			.collect(Collectors.groupingBy(CryptoFormatter::supportClass));
 	}
 
-
 	@Override
 	default T parse(String text, Locale locale) throws ParseException {
 		return parse(text);
@@ -67,7 +65,6 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 
 	/**
 	 * Support class.
-	 *
 	 * @return the class
 	 */
 	default Class<?> supportClass() {
@@ -80,8 +77,8 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 
 	/**
 	 * Type crypto type.
-	 *
 	 * @return the crypto type
 	 */
 	CryptoType type();
+
 }

@@ -54,7 +54,11 @@ public class CuratorTemplate implements CuratorOperations {
 
 	@Override
 	public String createTypeSeqNode(CreateMode nodeType, String path, String data) throws Exception {
-		return curatorFramework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType).forPath(path, data.getBytes());
+		return curatorFramework.create()
+			.creatingParentsIfNeeded()
+			.withProtection()
+			.withMode(nodeType)
+			.forPath(path, data.getBytes());
 	}
 
 	@Override
@@ -70,7 +74,6 @@ public class CuratorTemplate implements CuratorOperations {
 
 	/**
 	 * Sets data async.
-	 *
 	 * @param path the path
 	 * @param data the data
 	 * @return the data async
@@ -106,7 +109,6 @@ public class CuratorTemplate implements CuratorOperations {
 
 	/**
 	 * Gets lock.
-	 *
 	 * @param path the path
 	 * @return the lock
 	 */
@@ -116,7 +118,6 @@ public class CuratorTemplate implements CuratorOperations {
 
 	/**
 	 * Gets read lock.
-	 *
 	 * @param path the path
 	 * @return the read lock
 	 */
@@ -126,7 +127,6 @@ public class CuratorTemplate implements CuratorOperations {
 
 	/**
 	 * Gets write lock.
-	 *
 	 * @param path the path
 	 * @return write lock
 	 */
@@ -145,4 +145,5 @@ public class CuratorTemplate implements CuratorOperations {
 		}
 		return seqNode;
 	}
+
 }

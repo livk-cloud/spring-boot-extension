@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @WebMvcTest
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
+@ExtendWith({ SpringExtension.class, RestDocumentationExtension.class })
 class DocControllerTest {
 
 	MockMvc mockMvc;
@@ -56,8 +56,7 @@ class DocControllerTest {
 	ObjectMapper mapper;
 
 	@BeforeEach
-	public void setMockMvc(WebApplicationContext webApplicationContext,
-						   RestDocumentationContextProvider provider) {
+	public void setMockMvc(WebApplicationContext webApplicationContext, RestDocumentationContextProvider provider) {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
 			.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
 			.build();
@@ -65,8 +64,7 @@ class DocControllerTest {
 
 	@Test
 	void testGet() throws Exception {
-		mockMvc.perform(get("/doc")
-				.param("name", "world"))
+		mockMvc.perform(get("/doc").param("name", "world"))
 			.andExpect(status().isOk())
 			.andExpect(content().string("hello world"))
 			.andDo(document("get"));
@@ -75,12 +73,11 @@ class DocControllerTest {
 	@Test
 	void testPost() throws Exception {
 		Map<String, String> map = Map.of("username", "livk", "password", "123456");
-		mockMvc.perform(post("/doc")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsString(map)))
+		mockMvc.perform(post("/doc").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(map)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.username").value("livk"))
 			.andExpect(jsonPath("$.password").value("123456"))
 			.andDo(document("post"));
 	}
+
 }

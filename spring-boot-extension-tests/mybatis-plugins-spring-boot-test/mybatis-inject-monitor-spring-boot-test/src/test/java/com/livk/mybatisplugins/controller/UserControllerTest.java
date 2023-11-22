@@ -42,21 +42,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureMockMvc
 class UserControllerTest {
+
 	@Autowired
 	MockMvc mockMvc;
 
 	Integer id = 10;
 
 	ObjectMapper mapper = JsonMapper.builder().build();
-
 
 	@Order(3)
 	@Test
@@ -72,8 +68,8 @@ class UserControllerTest {
 	void testUpdateById() throws Exception {
 		User user = new User();
 		user.setUsername("livk https");
-		mockMvc.perform(put("/user/{id}", id)
-				.contentType(MediaType.APPLICATION_JSON)
+		mockMvc
+			.perform(put("/user/{id}", id).contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(user)))
 			.andExpect(status().isOk())
 			.andDo(print())
@@ -86,9 +82,7 @@ class UserControllerTest {
 		User user = new User();
 		user.setId(id);
 		user.setUsername("livk");
-		mockMvc.perform(post("/user")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsString(user)))
+		mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(user)))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("true"));
@@ -113,6 +107,8 @@ class UserControllerTest {
 			.andExpect(jsonPath("pageNum", 1).exists())
 			.andExpect(jsonPath("pageSize", 10).exists());
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

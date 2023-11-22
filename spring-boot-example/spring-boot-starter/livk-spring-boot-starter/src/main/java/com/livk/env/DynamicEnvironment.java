@@ -58,7 +58,8 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
 				PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
 				propertySources.addLast(livkSource);
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.error("error:{}", e.getMessage(), e);
 		}
 	}

@@ -31,16 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author livk
  */
 class BeanMapTest {
+
 	@Test
 	public void test() {
-		List<Bean> list = List.of(
-			new Bean().setId(1L).setUsername("root"),
-			new Bean().setId(2L).setUsername("root"),
-			new Bean().setId(3L).setUsername("root")
-		);
-		Bean bean = new Bean().setId(0L)
-			.setUsername("livk")
-			.setBeans(list);
+		List<Bean> list = List.of(new Bean().setId(1L).setUsername("root"), new Bean().setId(2L).setUsername("root"),
+				new Bean().setId(3L).setUsername("root"));
+		Bean bean = new Bean().setId(0L).setUsername("livk").setBeans(list);
 
 		BeanMap beanMap = BeanMap.create(bean);
 		assertEquals(0L, beanMap.get(BeanLambdaFunc.fieldName(Bean::getId)));
@@ -57,10 +53,13 @@ class BeanMapTest {
 	@Data
 	@Accessors(chain = true)
 	static class Bean {
+
 		private Long id;
 
 		private String username;
 
 		private List<Bean> beans;
+
 	}
+
 }

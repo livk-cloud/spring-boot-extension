@@ -38,8 +38,7 @@ public class SpringAnnotationFormatterFactory implements AnnotationFormatterFact
 	private final Map<Class<?>, List<CryptoFormatter<?>>> map;
 
 	public SpringAnnotationFormatterFactory(ObjectProvider<CryptoFormatter<?>> cryptoFormatters) {
-		map = cryptoFormatters.orderedStream()
-			.collect(Collectors.groupingBy(CryptoFormatter::supportClass));
+		map = cryptoFormatters.orderedStream().collect(Collectors.groupingBy(CryptoFormatter::supportClass));
 	}
 
 	@Override
@@ -64,4 +63,5 @@ public class SpringAnnotationFormatterFactory implements AnnotationFormatterFact
 			throw new FormatterNotFountException("fieldType:" + fieldType + " Parser NotFount!");
 		};
 	}
+
 }

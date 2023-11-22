@@ -102,4 +102,5 @@ public class TopicConfig {
 	public MessageConverter messageConverter(ObjectMapper objectMapper) {
 		return new Jackson2JsonMessageConverter(objectMapper, "com.livk.amqp.entity");
 	}
+
 }

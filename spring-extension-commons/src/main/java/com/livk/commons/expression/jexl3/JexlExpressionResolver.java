@@ -61,4 +61,5 @@ public class JexlExpressionResolver extends ConverterExpressionResolver<JexlCont
 	protected <T> T calculate(JexlExpression expression, JexlContext context, Class<T> returnType) {
 		return returnType.cast(expression.evaluate(context));
 	}
+
 }

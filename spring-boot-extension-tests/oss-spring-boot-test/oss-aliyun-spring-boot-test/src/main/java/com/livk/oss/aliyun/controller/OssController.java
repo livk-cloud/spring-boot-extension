@@ -62,4 +62,5 @@ public class OssController {
 		String url = ossTemplate.getExternalLink("livk-cloud", "test.jpg");
 		return ResponseEntity.ok(url);
 	}
+
 }

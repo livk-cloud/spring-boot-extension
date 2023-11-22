@@ -25,6 +25,7 @@ package com.livk.core.lock;
  * @author livk
  */
 public enum LockScope {
+
 	/**
 	 * 本地锁
 	 */
@@ -33,4 +34,5 @@ public enum LockScope {
 	 * 分布式锁
 	 */
 	DISTRIBUTED_LOCK
+
 }

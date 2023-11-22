@@ -26,7 +26,6 @@ public interface Oauth2UserDetailsService extends UserDetailsService, Ordered {
 
 	/**
 	 * 是否支持此客户端校验
-	 *
 	 * @param clientId 目标客户端
 	 * @return true/false
 	 */
@@ -36,7 +35,6 @@ public interface Oauth2UserDetailsService extends UserDetailsService, Ordered {
 
 	/**
 	 * 排序值 默认取最大的
-	 *
 	 * @return 排序值
 	 */
 	default int getOrder() {
@@ -45,7 +43,6 @@ public interface Oauth2UserDetailsService extends UserDetailsService, Ordered {
 
 	/**
 	 * 通过用户实体查询
-	 *
 	 * @param Oauth2User user
 	 * @return
 	 */

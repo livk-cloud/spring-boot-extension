@@ -21,4 +21,5 @@ package com.livk.auto.service.processor;
  * @author livk
  */
 public interface SpringFactoryService {
+
 }

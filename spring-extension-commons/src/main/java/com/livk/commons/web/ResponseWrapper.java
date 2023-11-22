@@ -46,7 +46,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * 创建ResponseWrapper
-	 *
 	 * @param response the response
 	 * @throws IOException the io exception
 	 */
@@ -80,7 +79,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * 获取response body
-	 *
 	 * @return the byte []
 	 * @throws IOException the io exception
 	 */
@@ -95,7 +93,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 		/**
 		 * 创建WrapperOutputStream
-		 *
 		 * @param stream the stream
 		 */
 		public WrapperOutputStream(ByteArrayOutputStream stream) {

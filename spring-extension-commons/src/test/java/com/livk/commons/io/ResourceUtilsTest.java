@@ -45,4 +45,5 @@ class ResourceUtilsTest {
 			assertEquals(file, resourceObj.getFile());
 		}
 	}
+
 }

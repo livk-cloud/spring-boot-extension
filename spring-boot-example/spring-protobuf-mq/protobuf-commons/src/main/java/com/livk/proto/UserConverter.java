@@ -17,7 +17,8 @@ public interface UserConverter extends Converter<User, UserProto.User> {
 		try {
 			UserProto.User user = UserProto.User.parseFrom(bytes);
 			return getSource(user);
-		} catch (InvalidProtocolBufferException e) {
+		}
+		catch (InvalidProtocolBufferException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -40,7 +40,9 @@ public class RegistrationHttpMessageConverters extends HttpMessageConverters {
 
 	private static HttpMessageConverter<?> jacksonHttpMessageConverter(AdminServerProperties adminServerProperties) {
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.getObjectMapper().registerModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()));
+		converter.getObjectMapper()
+			.registerModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()));
 		return converter;
 	}
+
 }

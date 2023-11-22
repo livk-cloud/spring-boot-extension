@@ -42,4 +42,5 @@ public class DocController {
 	public HttpEntity<String> get() {
 		return ResponseEntity.ok("hello world");
 	}
+
 }

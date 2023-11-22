@@ -39,13 +39,13 @@ public class SSOAuthApp {
 	}
 
 	@Bean
-	public ApplicationRunner applicationRunner(UserMapper userMapper,
-											   JdbcTemplate jdbcTemplate) {
+	public ApplicationRunner applicationRunner(UserMapper userMapper, JdbcTemplate jdbcTemplate) {
 		return args -> {
 			if (userMapper.getByUserName("livk") == null) {
-				jdbcTemplate.execute("INSERT INTO users (id, username, password)\n" +
-									 "VALUES (1, 'livk', '$2a$10$LepUx6I/1y0Pc614ZqSK6eXvoMbNDjdjAKqV/GQ4C97b0pw/kiuBC')");
+				jdbcTemplate.execute("INSERT INTO users (id, username, password)\n"
+						+ "VALUES (1, 'livk', '$2a$10$LepUx6I/1y0Pc614ZqSK6eXvoMbNDjdjAKqV/GQ4C97b0pw/kiuBC')");
 			}
 		};
 	}
+
 }

@@ -45,15 +45,15 @@ public class AuthenticationFailureEventHandler implements AuthenticationFailureH
 
 	/**
 	 * Called when an authentication attempt fails.
-	 *
-	 * @param request   the request during which the authentication attempt occurred.
-	 * @param response  the response.
+	 * @param request the request during which the authentication attempt occurred.
+	 * @param response the response.
 	 * @param exception the exception which was thrown to reject the authentication
-	 *                  request.
+	 * request.
 	 */
 	@Override
 	@SneakyThrows
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) {
 
 		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
 
@@ -69,7 +69,8 @@ public class AuthenticationFailureEventHandler implements AuthenticationFailureH
 		sendErrorResponse(request, response, exception);
 	}
 
-	private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+	private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) throws IOException {
 
 		OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
 
@@ -77,7 +78,8 @@ public class AuthenticationFailureEventHandler implements AuthenticationFailureH
 
 		httpResponse.setStatusCode(HttpStatus.BAD_REQUEST);
 
-		this.errorHttpResponseConverter.write(ResponseEntity.status(403).body(error.getDescription()), MediaType.APPLICATION_JSON, httpResponse);
+		this.errorHttpResponseConverter.write(ResponseEntity.status(403).body(error.getDescription()),
+				MediaType.APPLICATION_JSON, httpResponse);
 	}
 
 }

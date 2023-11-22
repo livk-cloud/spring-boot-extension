@@ -44,4 +44,5 @@ public class PulsarSend implements ProtobufSend<User> {
 			.handle((messageId, throwable) -> throwable == null)
 			.join();
 	}
+
 }

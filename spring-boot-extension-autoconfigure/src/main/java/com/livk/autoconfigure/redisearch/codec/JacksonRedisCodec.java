@@ -38,7 +38,6 @@ public class JacksonRedisCodec<T> extends AbstractRedisCodec<T> {
 
 	/**
 	 * Creates a new {@link JacksonRedisCodec} for the given target {@link Class}.
-	 *
 	 * @param type must not be {@literal null}.
 	 */
 	public JacksonRedisCodec(Class<T> type) {
@@ -47,7 +46,6 @@ public class JacksonRedisCodec<T> extends AbstractRedisCodec<T> {
 
 	/**
 	 * Creates a new {@link JacksonRedisCodec} for the given target {@link JavaType}.
-	 *
 	 * @param javaType must not be {@literal null}.
 	 */
 	public JacksonRedisCodec(JavaType javaType) {
@@ -56,9 +54,8 @@ public class JacksonRedisCodec<T> extends AbstractRedisCodec<T> {
 
 	/**
 	 * Creates a new {@link JacksonRedisCodec} for the given target {@link Class}.
-	 *
 	 * @param mapper must not be {@literal null}.
-	 * @param type   must not be {@literal null}.
+	 * @param type must not be {@literal null}.
 	 * @since 3.0
 	 */
 	public JacksonRedisCodec(ObjectMapper mapper, Class<T> type) {
@@ -76,7 +73,8 @@ public class JacksonRedisCodec<T> extends AbstractRedisCodec<T> {
 	protected byte[] serialize(T value) throws CodecException {
 		try {
 			return this.mapper.writeValueAsBytes(value);
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new CodecException("Could not write JSON: " + ex.getMessage(), ex);
 		}
 	}
@@ -85,8 +83,10 @@ public class JacksonRedisCodec<T> extends AbstractRedisCodec<T> {
 	protected T deserialize(byte[] bytes) throws CodecException {
 		try {
 			return this.mapper.readValue(bytes, javaType);
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new CodecException("Could not read JSON: " + ex.getMessage(), ex);
 		}
 	}
+
 }

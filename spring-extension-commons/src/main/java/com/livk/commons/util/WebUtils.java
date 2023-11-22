@@ -64,7 +64,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 获取当前线程的request
-	 *
 	 * @return http servlet request
 	 */
 	public HttpServletRequest request() {
@@ -73,7 +72,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 获取当前线程的response.
-	 *
 	 * @return http servlet response
 	 */
 	public HttpServletResponse response() {
@@ -82,7 +80,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 将request header转成HttpHeaders
-	 *
 	 * @param request request
 	 * @return http headers
 	 */
@@ -99,7 +96,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 获取当前request所有的attributes
-	 *
 	 * @param request request
 	 * @return attributes
 	 */
@@ -110,8 +106,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 解析request的param,并使用delimiter连接相同key的数据
-	 *
-	 * @param request   request
+	 * @param request request
 	 * @param delimiter 连接符
 	 * @return map
 	 */
@@ -119,13 +114,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		return request.getParameterMap()
 			.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey,
-				entry -> String.join(delimiter, entry.getValue())));
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
 	}
 
 	/**
 	 * 解析request的param转成MultiValueMap
-	 *
 	 * @param request request
 	 * @return MultiValueMap
 	 */
@@ -133,14 +126,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		Map<String, List<String>> map = request.getParameterMap()
 			.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey,
-				entry -> Lists.newArrayList(entry.getValue())));
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> Lists.newArrayList(entry.getValue())));
 		return new LinkedMultiValueMap<>(map);
 	}
 
 	/**
 	 * 解析request获取真实IP
-	 *
 	 * @param request request
 	 * @return ip
 	 */
@@ -165,9 +156,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 以JSON的格式写出数据到response
-	 *
 	 * @param response response
-	 * @param data     需要写出的数据
+	 * @param data 需要写出的数据
 	 * @see JsonMapperUtils
 	 */
 	public void outJson(HttpServletResponse response, Object data) {
@@ -176,9 +166,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 根据response写入返回值
-	 *
-	 * @param response    response
-	 * @param message     写入的信息
+	 * @param response response
+	 * @param message 写入的信息
 	 * @param contentType contentType {@link MediaType}
 	 */
 	public void out(HttpServletResponse response, String message, String contentType) {
@@ -187,8 +176,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		try (PrintWriter out = response.getWriter()) {
 			out.print(message);
 			out.flush();
-		} catch (IOException exception) {
+		}
+		catch (IOException exception) {
 			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		}
 	}
+
 }

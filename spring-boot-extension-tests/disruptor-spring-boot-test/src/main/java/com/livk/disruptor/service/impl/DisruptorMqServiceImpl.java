@@ -30,13 +30,12 @@ public class DisruptorMqServiceImpl implements DisruptorMqService {
 
 	@Override
 	public void batch(List<String> messages) {
-		List<MessageModel> messageModels = messages.stream()
-			.map(this::toMessageModel)
-			.toList();
+		List<MessageModel> messageModels = messages.stream().map(this::toMessageModel).toList();
 		producer.sendBatch(messageModels);
 	}
 
 	private MessageModel toMessageModel(String message) {
 		return MessageModel.builder().message(message).build();
 	}
+
 }

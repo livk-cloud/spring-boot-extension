@@ -37,4 +37,5 @@ public class DisruptorMqController {
 		disruptorMqService.batch(messages);
 		return ResponseEntity.ok().build();
 	}
+
 }

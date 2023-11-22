@@ -52,4 +52,5 @@ public class UserServiceImpl implements UserService {
 	public Mono<Void> save(Mono<User> userMono) {
 		return userMono.flatMap(userRepository::save);
 	}
+
 }

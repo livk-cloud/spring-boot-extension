@@ -17,7 +17,6 @@
 
 package com.livk.auth.server.common.converter;
 
-
 import com.google.common.collect.Sets;
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
@@ -42,14 +41,16 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * <p>自定义模式认证转换器</p>
+ * <p>
+ * 自定义模式认证转换器
+ * </p>
  *
  * @author livk
  */
-public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthenticationToken> extends AuthenticationConverter {
+public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthenticationToken>
+		extends AuthenticationConverter {
 
 	RequestMatcher support();
-
 
 	/**
 	 * 构建具体类型的token
@@ -64,7 +65,8 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 
 		String scope = request.getParameter(OAuth2ParameterNames.SCOPE);
 		if (StringUtils.hasText(scope) && request.getParameterValues(OAuth2ParameterNames.SCOPE).length != 1) {
-			throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
+			throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST,
+					OAuth2ParameterNames.SCOPE, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI));
 		}
 
 		Set<String> requestedScopes = Collections.emptySet();
@@ -74,12 +76,14 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 
 		// 获取当前已经认证的客户端信息
 		Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
-		Optional.ofNullable(clientPrincipal).orElseThrow(() ->
-			new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
+		Optional.ofNullable(clientPrincipal)
+			.orElseThrow(() -> new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST,
+					OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
 		// 扩展信息
 		Map<String, Object> additionalParameters = BaseStreamUtils.convert(request.getParameterNames())
-			.filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE).negate()
+			.filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE)
+				.negate()
 				.and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))
 			.collect(Collectors.toMap(Function.identity(), request::getParameter));
 

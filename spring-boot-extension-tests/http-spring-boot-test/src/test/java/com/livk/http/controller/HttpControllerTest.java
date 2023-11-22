@@ -38,9 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @AutoConfigureMockMvc
-@SpringBootTest(value = {
-	"logging.level.org.springframework.web.reactive.function.client.WebClient = debug"
-}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(value = { "logging.level.org.springframework.web.reactive.function.client.WebClient = debug" },
+		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class HttpControllerTest {
 
 	@Autowired
@@ -55,4 +54,5 @@ class HttpControllerTest {
 			.andExpect(jsonPath("spring-version", SpringVersion.getVersion()).exists())
 			.andExpect(jsonPath("java-version", System.getProperty("java.version")).exists());
 	}
+
 }

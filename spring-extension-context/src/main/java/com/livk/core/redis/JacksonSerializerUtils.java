@@ -32,10 +32,9 @@ public class JacksonSerializerUtils {
 
 	/**
 	 * Json redis serializer.
-	 *
-	 * @param <T>         the type parameter
+	 * @param <T> the type parameter
 	 * @param targetClass the target class
-	 * @param mapper      the mapper
+	 * @param mapper the mapper
 	 * @return the redis serializer
 	 */
 	public <T> RedisSerializer<T> json(Class<T> targetClass, ObjectMapper mapper) {
@@ -44,8 +43,7 @@ public class JacksonSerializerUtils {
 
 	/**
 	 * Json redis serializer.
-	 *
-	 * @param <T>         the type parameter
+	 * @param <T> the type parameter
 	 * @param targetClass the target class
 	 * @return the redis serializer
 	 */
@@ -57,7 +55,6 @@ public class JacksonSerializerUtils {
 
 	/**
 	 * Json redis serializer.
-	 *
 	 * @return the redis serializer
 	 */
 	public RedisSerializer<Object> json() {

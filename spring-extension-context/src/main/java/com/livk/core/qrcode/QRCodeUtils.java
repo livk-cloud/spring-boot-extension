@@ -42,7 +42,6 @@ public class QRCodeUtils {
 
 	/**
 	 * Parse qr code string.
-	 *
 	 * @param inputStream the input stream
 	 * @return the string
 	 */
@@ -56,11 +55,13 @@ public class QRCodeUtils {
 			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
 			Map<DecodeHintType, Object> hints = new HashMap<>();
 			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
-			Result result = new MultiFormatReader().decode(binaryBitmap, hints);//解码
+			Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 解码
 			content = result.getText();
-		} catch (IOException | NotFoundException e) {
+		}
+		catch (IOException | NotFoundException e) {
 			throw new QRCodeException(e);
 		}
 		return content;
 	}
+
 }

@@ -40,13 +40,7 @@ import java.util.List;
  *
  * @author livk
  */
-@Intercepts({
-	@Signature(
-		type = Executor.class,
-		method = "update",
-		args = {MappedStatement.class, Object.class}
-	)
-})
+@Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
 public class SqlDataInjection implements Interceptor {
 
 	@Override
@@ -63,9 +57,9 @@ public class SqlDataInjection implements Interceptor {
 					if (value == null) {
 						continue;
 					}
-					//insert或者update并且SqlFill.INSERT_UPDATE
-					if (SqlCommandType.INSERT.equals(sqlCommandType) ||
-						sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
+					// insert或者update并且SqlFill.INSERT_UPDATE
+					if (SqlCommandType.INSERT.equals(sqlCommandType)
+							|| sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
 						Method writeMethod = ReflectionUtils.getWriteMethod(parameter.getClass(), field);
 						writeMethod.invoke(parameter, value);
 					}

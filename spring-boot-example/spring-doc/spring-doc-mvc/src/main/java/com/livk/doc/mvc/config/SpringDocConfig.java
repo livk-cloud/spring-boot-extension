@@ -37,9 +37,7 @@ public class SpringDocConfig {
 	@Bean
 	public OpenAPI openAPI() {
 		return new OpenAPI()
-			.info(new Info().title("spring doc webmvc api")
-				.description("spring doc webmvc api")
-				.version("1.0.0"));
+			.info(new Info().title("spring doc webmvc api").description("spring doc webmvc api").version("1.0.0"));
 	}
 
 	@Bean
@@ -50,4 +48,5 @@ public class SpringDocConfig {
 			.pathsToMatch("/**")
 			.build();
 	}
+
 }

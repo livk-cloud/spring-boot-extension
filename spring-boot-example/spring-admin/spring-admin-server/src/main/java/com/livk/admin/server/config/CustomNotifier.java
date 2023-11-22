@@ -48,10 +48,11 @@ public class CustomNotifier extends AbstractEventNotifier {
 		return Mono.fromRunnable(() -> {
 			if (event instanceof InstanceStatusChangedEvent statusChangedEvent) {
 				log.info("Instance {} ({}) is {}", instance.getRegistration().getName(), event.getInstance(),
-					statusChangedEvent.getStatusInfo().getStatus());
-			} else {
+						statusChangedEvent.getStatusInfo().getStatus());
+			}
+			else {
 				log.info("Instance {} ({}) {}", instance.getRegistration().getName(), event.getInstance(),
-					event.getType());
+						event.getType());
 			}
 		});
 	}

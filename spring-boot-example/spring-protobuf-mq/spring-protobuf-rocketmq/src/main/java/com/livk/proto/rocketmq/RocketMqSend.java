@@ -36,4 +36,5 @@ public class RocketMqSend implements ProtobufSend<User> {
 	public void send(String key, User data) {
 		rocketMQTemplate.convertAndSend(key, data);
 	}
+
 }

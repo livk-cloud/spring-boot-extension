@@ -39,4 +39,5 @@ public interface UserMapper {
 
 	@Select("select * from ${table}")
 	List<User> selectList(String table);
+
 }

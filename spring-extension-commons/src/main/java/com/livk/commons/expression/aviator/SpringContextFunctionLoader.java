@@ -43,7 +43,8 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 	public AviatorFunction onFunctionNotFound(String name) {
 		try {
 			return this.applicationContext.getBean(name, AviatorFunction.class);
-		} catch (NoSuchBeanDefinitionException e) {
+		}
+		catch (NoSuchBeanDefinitionException e) {
 			return null;
 		}
 	}
@@ -57,4 +58,5 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 	public void destroy() {
 		AviatorEvaluator.removeFunctionLoader(this);
 	}
+
 }

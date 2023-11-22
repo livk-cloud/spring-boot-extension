@@ -12,4 +12,5 @@ public class PulsarApplication {
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

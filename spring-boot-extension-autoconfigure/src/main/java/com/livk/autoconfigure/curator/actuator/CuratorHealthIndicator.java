@@ -37,15 +37,19 @@ public class CuratorHealthIndicator extends AbstractHealthIndicator {
 			CuratorFrameworkState state = curatorFramework.getState();
 			if (state != CuratorFrameworkState.STARTED) {
 				builder.down().withDetail("error", "Client not started");
-			} else if (curatorFramework.checkExists().forPath("/") == null) {
+			}
+			else if (curatorFramework.checkExists().forPath("/") == null) {
 				builder.down().withDetail("error", "Root for namespace does not exist");
-			} else {
+			}
+			else {
 				builder.up();
 			}
 			builder.withDetail("connectionString", curatorFramework.getZookeeperClient().getCurrentConnectionString())
 				.withDetail("state", state);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			builder.down(e);
 		}
 	}
+
 }
