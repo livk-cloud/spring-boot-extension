@@ -25,6 +25,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestClient;
 
 /**
+ * <p>
+ * RestClientConfiguration
+ * </p>
+ *
  * @author livk
  */
 @AutoConfiguration
@@ -36,4 +40,5 @@ public class RestClientConfiguration {
 	public RestClient restClient(RestClient.Builder builder) {
 		return builder.build();
 	}
+
 }

@@ -54,8 +54,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Instantiates a new Class path http scanner.
-	 *
-	 * @param registry    the registry
+	 * @param registry the registry
 	 * @param environment the environment
 	 */
 	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment) {
@@ -64,7 +63,6 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Register filters.
-	 *
 	 * @param annotationType the annotation type
 	 */
 	public void registerFilters(Class<? extends Annotation> annotationType) {
@@ -86,7 +84,8 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
 			for (BeanDefinition candidateComponent : candidateComponents) {
 				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
-					AnnotationAttributes attributes = AnnotationUtils.attributesFor(scannedGenericBeanDefinition.getMetadata(), HttpProvider.class);
+					AnnotationAttributes attributes = AnnotationUtils
+						.attributesFor(scannedGenericBeanDefinition.getMetadata(), HttpProvider.class);
 					AdapterType type = attributes.getEnum("type");
 					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = AdapterType.builder(type);
 					String beanClassName = candidateComponent.getBeanClassName();
@@ -108,4 +107,5 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		}
 		return beanDefinitions;
 	}
+
 }

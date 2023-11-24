@@ -81,7 +81,7 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 	private fun addCompile(javaCompile: JavaCompile) {
 		javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
 		javaCompile.options.encoding = UTF_8
-		javaCompile.sourceCompatibility = JavaVersion.VERSION_17.toString()
-		javaCompile.targetCompatibility = JavaVersion.VERSION_17.toString()
+		javaCompile.sourceCompatibility = JavaVersion.VERSION_21.toString()
+		javaCompile.targetCompatibility = JavaVersion.VERSION_21.toString()
 	}
 }

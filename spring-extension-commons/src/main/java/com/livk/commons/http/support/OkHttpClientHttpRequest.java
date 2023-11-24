@@ -42,8 +42,7 @@ import java.net.URI;
  * @author livk
  */
 @RequiredArgsConstructor
-class OkHttpClientHttpRequest extends AbstractClientHttpRequest
-	implements StreamingHttpOutputMessage {
+class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements StreamingHttpOutputMessage {
 
 	private final OkHttpClient client;
 
@@ -54,7 +53,6 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest
 	private Body body;
 
 	private FastByteArrayOutputStream bodyStream;
-
 
 	@NonNull
 	@Override
@@ -92,15 +90,16 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest
 		RequestBody requestBody;
 		if (body != null) {
 			requestBody = new BodyRequestBody(headers, body);
-		} else if (okhttp3.internal.http.HttpMethod.requiresRequestBody(getMethod().name())) {
+		}
+		else if (okhttp3.internal.http.HttpMethod.requiresRequestBody(getMethod().name())) {
 			String header = headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			MediaType contentType = (header != null) ? MediaType.parse(header) : null;
 			requestBody = RequestBody.create(new byte[0], contentType);
-		} else {
+		}
+		else {
 			requestBody = null;
 		}
-		Request.Builder builder = new Request.Builder()
-			.url(this.uri.toURL());
+		Request.Builder builder = new Request.Builder().url(this.uri.toURL());
 		builder.method(this.method.name(), requestBody);
 		headers.forEach((headerName, headerValues) -> {
 			for (String headerValue : headerValues) {
@@ -119,7 +118,6 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest
 
 		private final Body body;
 
-
 		@Override
 		public long contentLength() {
 			return this.headers.getContentLength();
@@ -131,7 +129,8 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest
 			String contentType = this.headers.getFirst(HttpHeaders.CONTENT_TYPE);
 			if (StringUtils.hasText(contentType)) {
 				return MediaType.parse(contentType);
-			} else {
+			}
+			else {
 				return null;
 			}
 		}
@@ -145,7 +144,7 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest
 		public boolean isOneShot() {
 			return true;
 		}
-	}
 
+	}
 
 }

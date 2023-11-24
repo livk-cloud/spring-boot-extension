@@ -35,4 +35,5 @@ public interface SpringBootService {
 
 	@GetExchange("spring-boot")
 	Map<String, String> springBoot();
+
 }

@@ -36,7 +36,6 @@ public class BeanFactoryHttpExchangeAdapter implements HttpExchangeAdapter {
 		adapter = factory.create(beanFactory);
 	}
 
-
 	@Override
 	public boolean supportsRequestAttributes() {
 		return adapter.supportsRequestAttributes();
@@ -54,7 +53,8 @@ public class BeanFactoryHttpExchangeAdapter implements HttpExchangeAdapter {
 	}
 
 	@Override
-	public <T> T exchangeForBody(@NonNull HttpRequestValues requestValues, @NonNull ParameterizedTypeReference<T> bodyType) {
+	public <T> T exchangeForBody(@NonNull HttpRequestValues requestValues,
+			@NonNull ParameterizedTypeReference<T> bodyType) {
 		return adapter.exchangeForBody(requestValues, bodyType);
 	}
 
@@ -66,7 +66,9 @@ public class BeanFactoryHttpExchangeAdapter implements HttpExchangeAdapter {
 
 	@NonNull
 	@Override
-	public <T> ResponseEntity<T> exchangeForEntity(@NonNull HttpRequestValues requestValues, @NonNull ParameterizedTypeReference<T> bodyType) {
+	public <T> ResponseEntity<T> exchangeForEntity(@NonNull HttpRequestValues requestValues,
+			@NonNull ParameterizedTypeReference<T> bodyType) {
 		return adapter.exchangeForEntity(requestValues, bodyType);
 	}
+
 }

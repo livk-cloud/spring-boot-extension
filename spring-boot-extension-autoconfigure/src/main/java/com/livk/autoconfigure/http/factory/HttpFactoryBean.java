@@ -56,7 +56,6 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	/**
 	 * Sets adapter factory.
-	 *
 	 * @param adapterFactory the adapter factory
 	 */
 	public void setAdapterFactory(AdapterFactory<? extends HttpExchangeAdapter> adapterFactory) {

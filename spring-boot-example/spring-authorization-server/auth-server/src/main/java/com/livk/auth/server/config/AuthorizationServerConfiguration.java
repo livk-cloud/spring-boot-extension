@@ -73,31 +73,27 @@ public class AuthorizationServerConfiguration {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
-																	  OAuth2AuthorizationService authorizationService,
-																	  OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
-																	  UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
+			OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<OAuth2Token> oAuth2TokenGenerator,
+			UserDetailsAuthenticationProvider userDetailsAuthenticationProvider) throws Exception {
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class).build();
 
 		OAuth2PasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2PasswordAuthenticationProvider(
-			authenticationManager, authorizationService, oAuth2TokenGenerator);
+				authenticationManager, authorizationService, oAuth2TokenGenerator);
 
 		OAuth2SmsAuthenticationProvider smsAuthenticationProvider = new OAuth2SmsAuthenticationProvider(
-			authenticationManager, authorizationService, oAuth2TokenGenerator);
+				authenticationManager, authorizationService, oAuth2TokenGenerator);
 
 		http.with(authorizationServerConfigurer, configurer -> configurer
-				.tokenEndpoint(
-					(tokenEndpoint) -> tokenEndpoint
-						.accessTokenRequestConverter(accessTokenRequestConverter())
-						.authenticationProvider(passwordAuthenticationProvider)
-						.authenticationProvider(smsAuthenticationProvider)
-						.accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
-						.errorResponseHandler(new AuthenticationFailureEventHandler())
-				)
-				.authorizationEndpoint(authorizationEndpoint ->
-					authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI))
-				.authorizationService(authorizationService))
+			.tokenEndpoint((tokenEndpoint) -> tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter())
+				.authenticationProvider(passwordAuthenticationProvider)
+				.authenticationProvider(smsAuthenticationProvider)
+				.accessTokenResponseHandler(new AuthenticationSuccessEventHandler())
+				.errorResponseHandler(new AuthenticationFailureEventHandler()))
+			.authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
+				.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI))
+			.authorizationService(authorizationService))
 			.with(new FormIdentityLoginConfigurer(), Customizer.withDefaults());
 
 		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
@@ -105,8 +101,12 @@ public class AuthorizationServerConfiguration {
 
 		return http.securityMatcher(endpointsMatcher)
 			.authenticationManager(authenticationManager)
-			.securityContext(contextConfigurer -> contextConfigurer.securityContextRepository(httpSessionSecurityContextRepository))
-			.authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error").permitAll().anyRequest().authenticated())
+			.securityContext(contextConfigurer -> contextConfigurer
+				.securityContextRepository(httpSessionSecurityContextRepository))
+			.authorizeHttpRequests(registry -> registry.requestMatchers("/auth/**", "/actuator/**", "/css/**", "/error")
+				.permitAll()
+				.anyRequest()
+				.authenticated())
 			.csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(endpointsMatcher))
 			.authenticationProvider(userDetailsAuthenticationProvider)
 			.build();
@@ -114,7 +114,7 @@ public class AuthorizationServerConfiguration {
 
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
-															   UserDetailsService userDetailsService) {
+			UserDetailsService userDetailsService) {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(userDetailsService);
@@ -130,11 +130,9 @@ public class AuthorizationServerConfiguration {
 	}
 
 	private AuthenticationConverter accessTokenRequestConverter() {
-		return new DelegatingAuthenticationConverter(List.of(
-			new OAuth2AuthorizationCodeAuthenticationConverter(),
-			new OAuth2ClientCredentialsAuthenticationConverter(),
-			new OAuth2RefreshTokenAuthenticationConverter(),
-			new OAuth2PasswordAuthenticationConverter(),
-			new OAuth2SmsAuthenticationConverter()));
+		return new DelegatingAuthenticationConverter(List.of(new OAuth2AuthorizationCodeAuthenticationConverter(),
+				new OAuth2ClientCredentialsAuthenticationConverter(), new OAuth2RefreshTokenAuthenticationConverter(),
+				new OAuth2PasswordAuthenticationConverter(), new OAuth2SmsAuthenticationConverter()));
 	}
+
 }

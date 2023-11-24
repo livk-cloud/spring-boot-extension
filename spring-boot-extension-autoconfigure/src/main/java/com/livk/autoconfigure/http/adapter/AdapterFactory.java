@@ -26,4 +26,5 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
 public interface AdapterFactory<H extends HttpExchangeAdapter> {
 
 	H create(BeanFactory beanFactory);
+
 }

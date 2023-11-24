@@ -46,7 +46,9 @@ import java.util.Objects;
 public class HttpController {
 
 	private final SpringBootService bootService;
+
 	private final SpringService springService;
+
 	private final JavaService javaService;
 
 	@GetMapping("get")
@@ -72,4 +74,5 @@ public class HttpController {
 	public Map<String, String> java() {
 		return Map.of("java-version", System.getProperty("java.version"));
 	}
+
 }

@@ -42,8 +42,8 @@ public enum AdapterType {
 	REST_CLIENT,
 
 	/**
-	 * 适配器模式自动检测，出现多个情况，默认顺序为
-	 * {@link WebClient} > {@link RestClient} > {@link RestTemplate}
+	 * 适配器模式自动检测，出现多个情况，默认顺序为 {@link WebClient} > {@link RestClient} >
+	 * {@link RestTemplate}
 	 */
 	AUTO;
 
@@ -57,16 +57,17 @@ public enum AdapterType {
 				ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 				if (ClassUtils.isPresent("org.springframework.web.reactive.function.client.WebClient", classLoader)) {
 					yield (T) new WebClientAdapterWrapper();
-				} else if (ClassUtils.isPresent("org.springframework.web.client.RestClient", classLoader)) {
+				}
+				else if (ClassUtils.isPresent("org.springframework.web.client.RestClient", classLoader)) {
 					yield (T) new RestClientAdapterWrapper();
-				} else if (ClassUtils.isPresent("org.springframework.web.client.RestTemplate", classLoader)) {
+				}
+				else if (ClassUtils.isPresent("org.springframework.web.client.RestTemplate", classLoader)) {
 					yield (T) new RestTemplateAdapterWrapper();
 				}
 				throw new UnsupportedOperationException("缺少构建HttpExchangeAdapter的类信息");
 			}
 		};
 	}
-
 
 	private static class RestTemplateAdapterWrapper implements AdapterFactory<RestTemplateAdapter> {
 
@@ -76,6 +77,7 @@ public enum AdapterType {
 				.getIfAvailable(() -> beanFactory.getBean(RestTemplateBuilder.class).build());
 			return RestTemplateAdapter.create(restTemplate);
 		}
+
 	}
 
 	private static class WebClientAdapterWrapper implements AdapterFactory<WebClientAdapter> {
@@ -86,6 +88,7 @@ public enum AdapterType {
 				.getIfAvailable(() -> beanFactory.getBean(WebClient.Builder.class).build());
 			return WebClientAdapter.create(webClient);
 		}
+
 	}
 
 	private static class RestClientAdapterWrapper implements AdapterFactory<RestClientAdapter> {
@@ -96,5 +99,7 @@ public enum AdapterType {
 				.getIfAvailable(() -> beanFactory.getBean(RestClient.Builder.class).build());
 			return RestClientAdapter.create(restClient);
 		}
+
 	}
+
 }

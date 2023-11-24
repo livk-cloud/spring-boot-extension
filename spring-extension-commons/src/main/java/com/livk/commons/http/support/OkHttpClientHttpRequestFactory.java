@@ -43,7 +43,6 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 
 	private final boolean defaultClient;
 
-
 	/**
 	 * Create a factory with a default {@link OkHttpClient} instance.
 	 */
@@ -54,7 +53,6 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 
 	/**
 	 * Create a factory with the given {@link OkHttpClient} instance.
-	 *
 	 * @param client the client to use
 	 */
 	public OkHttpClientHttpRequestFactory(OkHttpClient client) {
@@ -63,100 +61,80 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 		this.defaultClient = false;
 	}
 
-
 	/**
-	 * Set the underlying read timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying read timeout in milliseconds. A value of 0 specifies an infinite
+	 * timeout.
 	 * @param readTimeout the read timeout
-	 * @param unit        the unit
+	 * @param unit the unit
 	 * @return the ok http client http request factory
 	 */
 	public OkHttpClientHttpRequestFactory readTimeout(long readTimeout, TimeUnit unit) {
-		this.client = this.client.newBuilder()
-			.readTimeout(readTimeout, unit)
-			.build();
+		this.client = this.client.newBuilder().readTimeout(readTimeout, unit).build();
 		return this;
 	}
 
 	/**
-	 * Set the underlying read timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying read timeout in milliseconds. A value of 0 specifies an infinite
+	 * timeout.
 	 * @param readTimeout the read timeout
 	 * @return the ok http client http request factory
 	 * @since 6.1
 	 */
 	public OkHttpClientHttpRequestFactory readTimeout(Duration readTimeout) {
-		this.client = this.client.newBuilder()
-			.readTimeout(readTimeout)
-			.build();
+		this.client = this.client.newBuilder().readTimeout(readTimeout).build();
 		return this;
 	}
 
 	/**
-	 * Set the underlying write timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying write timeout in milliseconds. A value of 0 specifies an
+	 * infinite timeout.
 	 * @param writeTimeout the write timeout
-	 * @param unit         the unit
+	 * @param unit the unit
 	 * @return the ok http client http request factory
 	 */
 	public OkHttpClientHttpRequestFactory writeTimeout(long writeTimeout, TimeUnit unit) {
-		this.client = this.client.newBuilder()
-			.writeTimeout(writeTimeout, unit)
-			.build();
+		this.client = this.client.newBuilder().writeTimeout(writeTimeout, unit).build();
 		return this;
 	}
 
 	/**
-	 * Set the underlying write timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying write timeout in milliseconds. A value of 0 specifies an
+	 * infinite timeout.
 	 * @param writeTimeout the write timeout
 	 * @return the ok http client http request factory
 	 * @since 6.1
 	 */
 	public OkHttpClientHttpRequestFactory writeTimeout(Duration writeTimeout) {
-		this.client = this.client.newBuilder()
-			.writeTimeout(writeTimeout)
-			.build();
+		this.client = this.client.newBuilder().writeTimeout(writeTimeout).build();
 		return this;
 	}
 
 	/**
-	 * Set the underlying connect timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying connect timeout in milliseconds. A value of 0 specifies an
+	 * infinite timeout.
 	 * @param connectTimeout the connect timeout
-	 * @param unit           the unit
+	 * @param unit the unit
 	 * @return the ok http client http request factory
 	 */
 	public OkHttpClientHttpRequestFactory connectTimeout(long connectTimeout, TimeUnit unit) {
-		this.client = this.client.newBuilder()
-			.connectTimeout(connectTimeout, unit)
-			.build();
+		this.client = this.client.newBuilder().connectTimeout(connectTimeout, unit).build();
 		return this;
 	}
 
 	/**
-	 * Set the underlying connect timeout in milliseconds.
-	 * A value of 0 specifies an infinite timeout.
-	 *
+	 * Set the underlying connect timeout in milliseconds. A value of 0 specifies an
+	 * infinite timeout.
 	 * @param connectTimeout the connect timeout
 	 * @return the ok http client http request factory
 	 * @since 6.1
 	 */
 	public OkHttpClientHttpRequestFactory connectTimeout(Duration connectTimeout) {
-		this.client = this.client.newBuilder()
-			.connectTimeout(connectTimeout)
-			.build();
+		this.client = this.client.newBuilder().connectTimeout(connectTimeout).build();
 		return this;
 	}
 
 	/**
 	 * Connection pool ok http client http request factory.
-	 *
 	 * @param connectionPool the connection pool
 	 * @return the ok http client http request factory
 	 */
@@ -172,7 +150,6 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 	public ClientHttpRequest createRequest(@NonNull URI uri, @NonNull HttpMethod httpMethod) {
 		return new OkHttpClientHttpRequest(this.client, uri, httpMethod);
 	}
-
 
 	@Override
 	public void destroy() throws IOException {

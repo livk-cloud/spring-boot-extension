@@ -41,17 +41,14 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 	@Nullable
 	private volatile HttpHeaders headers;
 
-
 	/**
 	 * Instantiates a new Ok http client http response.
-	 *
 	 * @param response the response
 	 */
 	public OkHttpClientHttpResponse(Response response) {
 		Assert.notNull(response, "Response must not be null");
 		this.response = response;
 	}
-
 
 	@NonNull
 	@Override

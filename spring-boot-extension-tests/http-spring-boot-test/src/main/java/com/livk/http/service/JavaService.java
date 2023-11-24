@@ -32,6 +32,7 @@ import java.util.Map;
  */
 @HttpProvider(type = AdapterType.REST_TEMPLATE, url = "http://localhost:${server.port:8080}/rpc")
 public interface JavaService {
+
 	@GetExchange("java")
 	Map<String, String> java();
 
