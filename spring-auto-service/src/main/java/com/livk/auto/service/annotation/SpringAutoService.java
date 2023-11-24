@@ -30,10 +30,12 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface SpringAutoService {
+
 	/**
-	 * Annotation for automatic assembly, default org.springframework.boot.autoconfigure.AutoConfiguration
-	 *
+	 * Annotation for automatic assembly, default
+	 * org.springframework.boot.autoconfigure.AutoConfiguration
 	 * @return class
 	 */
 	Class<? extends Annotation> value() default Annotation.class;
+
 }

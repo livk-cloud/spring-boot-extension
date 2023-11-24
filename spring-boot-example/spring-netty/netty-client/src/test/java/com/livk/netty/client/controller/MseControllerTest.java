@@ -35,9 +35,9 @@ import java.util.Map;
 @SpringBootTest
 @AutoConfigureWebTestClient
 class MseControllerTest {
+
 	@Autowired
 	WebTestClient client;
-
 
 	@Test
 	void testSend() {
@@ -50,6 +50,8 @@ class MseControllerTest {
 			.expectStatus()
 			.isOk();
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

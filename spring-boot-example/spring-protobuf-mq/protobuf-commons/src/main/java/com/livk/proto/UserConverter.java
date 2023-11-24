@@ -2,6 +2,7 @@ package com.livk.proto;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.livk.core.mapstruct.converter.Converter;
+import com.livk.proto.gen.UserProto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -17,7 +18,8 @@ public interface UserConverter extends Converter<User, UserProto.User> {
 		try {
 			UserProto.User user = UserProto.User.parseFrom(bytes);
 			return getSource(user);
-		} catch (InvalidProtocolBufferException e) {
+		}
+		catch (InvalidProtocolBufferException e) {
 			throw new RuntimeException(e);
 		}
 	}

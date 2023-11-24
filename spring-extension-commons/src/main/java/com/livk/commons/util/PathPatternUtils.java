@@ -27,17 +27,19 @@ import java.net.URI;
 
 /**
  * The type Path pattern utils.
+ * <p>
+ * 基本上没有使用
  *
  * @author livk
  */
 @UtilityClass
+@Deprecated(since = "1.1.6", forRemoval = true)
 public class PathPatternUtils {
 
 	/**
 	 * Matches boolean.
-	 *
 	 * @param pathPattern the path pattern
-	 * @param uri         the uri
+	 * @param uri the uri
 	 * @param contextPath the context path
 	 * @return the boolean
 	 */
@@ -48,9 +50,8 @@ public class PathPatternUtils {
 
 	/**
 	 * Matches boolean.
-	 *
 	 * @param pathPattern the path pattern
-	 * @param uri         the uri
+	 * @param uri the uri
 	 * @return the boolean
 	 */
 	public boolean matches(String pathPattern, String uri) {
@@ -59,14 +60,14 @@ public class PathPatternUtils {
 
 	/**
 	 * Matches boolean.
-	 *
 	 * @param pathPattern the path pattern
-	 * @param uri         the uri
-	 * @param properties  the properties
+	 * @param uri the uri
+	 * @param properties the properties
 	 * @return the boolean
 	 */
 	public boolean matches(String pathPattern, String uri, ServerProperties properties) {
 		String contextPath = properties.getServlet().getContextPath();
 		return matches(pathPattern, uri, contextPath);
 	}
+
 }

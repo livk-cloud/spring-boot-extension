@@ -36,19 +36,10 @@ import java.util.stream.Collectors;
  */
 public class MinioService extends AbstractService<MinioClient> {
 
-	private static final String POLICY_JSON = "{" +
-											  "  \"Statement\": [" +
-											  "    {" +
-											  "      \"Action\": \"s3:GetObject\"," +
-											  "      \"Effect\": \"Allow\"," +
-											  "      \"Principal\": \"*\"," +
-											  "      \"Resource\": [" +
-											  "        \"arn:aws:s3:::${bucketName}/*\"" +
-											  "      ]" +
-											  "    }" +
-											  "  ]," +
-											  "  \"Version\": \"2012-10-17\"" +
-											  "}";
+	private static final String POLICY_JSON = "{" + "  \"Statement\": [" + "    {"
+			+ "      \"Action\": \"s3:GetObject\"," + "      \"Effect\": \"Allow\"," + "      \"Principal\": \"*\","
+			+ "      \"Resource\": [" + "        \"arn:aws:s3:::${bucketName}/*\"" + "      ]" + "    }" + "  ],"
+			+ "  \"Version\": \"2012-10-17\"" + "}";
 
 	@SneakyThrows
 	@Override
@@ -61,22 +52,16 @@ public class MinioService extends AbstractService<MinioClient> {
 	public void createBucket(String bucketName) {
 		if (!this.exist(bucketName)) {
 			client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-			//设置桶策略
+			// 设置桶策略
 			String config = POLICY_JSON.replaceAll("\\$\\{bucketName}", bucketName);
-			client.setBucketPolicy(SetBucketPolicyArgs.builder()
-				.bucket(bucketName)
-				.config(config)
-				.build());
+			client.setBucketPolicy(SetBucketPolicyArgs.builder().bucket(bucketName).config(config).build());
 		}
 	}
 
 	@SneakyThrows
 	@Override
 	public List<String> allBuckets() {
-		return client.listBuckets()
-			.stream()
-			.map(Bucket::name)
-			.collect(Collectors.toList());
+		return client.listBuckets().stream().map(Bucket::name).collect(Collectors.toList());
 	}
 
 	@SneakyThrows
@@ -88,11 +73,9 @@ public class MinioService extends AbstractService<MinioClient> {
 	@Override
 	public boolean exist(String bucketName, String fileName) {
 		try {
-			return client.statObject(StatObjectArgs.builder()
-				.bucket(bucketName)
-				.object(fileName)
-				.build()) != null;
-		} catch (Exception e) {
+			return client.statObject(StatObjectArgs.builder().bucket(bucketName).object(fileName).build()) != null;
+		}
+		catch (Exception e) {
 			return false;
 		}
 	}
@@ -110,29 +93,20 @@ public class MinioService extends AbstractService<MinioClient> {
 	@SneakyThrows
 	@Override
 	public InputStream download(String bucketName, String fileName) {
-		return client.getObject(GetObjectArgs.builder()
-			.bucket(bucketName)
-			.object(fileName)
-			.build());
+		return client.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileName).build());
 	}
 
 	@SneakyThrows
 	@Override
 	public void removeObj(String bucketName, String fileName) {
-		client.removeObject(RemoveObjectArgs.builder()
-			.bucket(bucketName)
-			.object(fileName)
-			.build());
+		client.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build());
 	}
 
 	@SneakyThrows
 	@Override
 	public String getStrUrl(String bucketName, String fileName) {
-		return client.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
-			.bucket(bucketName)
-			.object(fileName)
-			.method(Method.GET)
-			.build());
+		return client.getPresignedObjectUrl(
+				GetPresignedObjectUrlArgs.builder().bucket(bucketName).object(fileName).method(Method.GET).build());
 	}
 
 	@SneakyThrows
@@ -149,9 +123,7 @@ public class MinioService extends AbstractService<MinioClient> {
 	@SneakyThrows
 	@Override
 	public List<String> getAllObj(String bucketName) {
-		Iterable<Result<Item>> results = client.listObjects(ListObjectsArgs.builder()
-			.bucket(bucketName)
-			.build());
+		Iterable<Result<Item>> results = client.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
 		List<String> list = new ArrayList<>();
 		for (Result<Item> result : results) {
 			list.add(result.get().objectName());
@@ -163,4 +135,5 @@ public class MinioService extends AbstractService<MinioClient> {
 	public void close() {
 		client = null;
 	}
+
 }

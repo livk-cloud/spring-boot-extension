@@ -40,7 +40,6 @@ public class LimitAutoConfiguration {
 
 	/**
 	 * Limit interceptor limit interceptor.
-	 *
 	 * @param provider the provider
 	 * @return the limit interceptor
 	 */
@@ -53,12 +52,12 @@ public class LimitAutoConfiguration {
 	 * The type Redisson limit configuration.
 	 */
 	@ConditionalOnClass(RedissonClient.class)
-	@AutoConfiguration(after = {RedissonAutoConfiguration.class},
-		afterName = {"org.redisson.spring.starter.RedissonAutoConfiguration"})
+	@AutoConfiguration(after = { RedissonAutoConfiguration.class },
+			afterName = { "org.redisson.spring.starter.RedissonAutoConfiguration" })
 	public static class RedissonLimitConfiguration {
+
 		/**
 		 * Redisson limit executor limit executor.
-		 *
 		 * @param redissonClient the redisson client
 		 * @return the limit executor
 		 */
@@ -67,5 +66,7 @@ public class LimitAutoConfiguration {
 		public LimitExecutor redissonLimitExecutor(RedissonClient redissonClient) {
 			return new RedissonLimitExecutor(redissonClient);
 		}
+
 	}
+
 }

@@ -72,61 +72,49 @@ public class ConfigProperties {
 
 		/**
 		 * Instantiates a new Redisson config.
-		 *
-		 * @param clusterServersConfig         the cluster servers config
-		 * @param replicatedServersConfig      the replicated servers config
-		 * @param singleServerConfig           the single server config
-		 * @param sentinelServersConfig        the sentinel connection config
-		 * @param masterSlaveServersConfig     the master slave connection config
-		 * @param nettyHook                    the netty hook
-		 * @param codec                        the codec
-		 * @param redissonReferenceEnabled     the redisson reference enabled
-		 * @param threads                      the threads
-		 * @param transportMode                the transport mode
-		 * @param nettyThreads                 the netty threads
-		 * @param executor                     the executor
-		 * @param eventLoopGroup               the event loop group
-		 * @param lockWatchdogTimeout          the lock watchdog timeout
-		 * @param checkLockSyncedSlaves        the check lock synced slaves
-		 * @param keepPubSubOrder              the keep pub sub order
-		 * @param addressResolverGroupFactory  the address resolver group factory
-		 * @param useScriptCache               the use script cache
-		 * @param minCleanUpDelay              the min clean up delay
-		 * @param maxCleanUpDelay              the max clean up delay
-		 * @param cleanUpKeysAmount            the clean up keys amount
-		 * @param useThreadClassLoader         the use thread class loader
+		 * @param clusterServersConfig the cluster servers config
+		 * @param replicatedServersConfig the replicated servers config
+		 * @param singleServerConfig the single server config
+		 * @param sentinelServersConfig the sentinel connection config
+		 * @param masterSlaveServersConfig the master slave connection config
+		 * @param nettyHook the netty hook
+		 * @param codec the codec
+		 * @param redissonReferenceEnabled the redisson reference enabled
+		 * @param threads the threads
+		 * @param transportMode the transport mode
+		 * @param nettyThreads the netty threads
+		 * @param executor the executor
+		 * @param eventLoopGroup the event loop group
+		 * @param lockWatchdogTimeout the lock watchdog timeout
+		 * @param checkLockSyncedSlaves the check lock synced slaves
+		 * @param keepPubSubOrder the keep pub sub order
+		 * @param addressResolverGroupFactory the address resolver group factory
+		 * @param useScriptCache the use script cache
+		 * @param minCleanUpDelay the min clean up delay
+		 * @param maxCleanUpDelay the max clean up delay
+		 * @param cleanUpKeysAmount the clean up keys amount
+		 * @param useThreadClassLoader the use thread class loader
 		 * @param reliableTopicWatchdogTimeout the reliable topic watchdog timeout
-		 * @param connectionListener           the connection listener
-		 * @param lazyInitialization           the lazy initialization
-		 * @param slavesSyncTimeout            the slaves sync timeout
+		 * @param connectionListener the connection listener
+		 * @param lazyInitialization the lazy initialization
+		 * @param slavesSyncTimeout the slaves sync timeout
 		 */
 		@ConstructorBinding
-		public RedissonConfig(ClusterServers clusterServersConfig,
-							  ReplicatedServers replicatedServersConfig,
-							  SingleServer singleServerConfig,
-							  SentinelServers sentinelServersConfig,
-							  MasterSlaveServers masterSlaveServersConfig,
-							  @DefaultValue("!<org.redisson.client.DefaultNettyHook> {}") NettyHook nettyHook,
-							  Codec codec,
-							  @DefaultValue("true") Boolean redissonReferenceEnabled,
-							  @DefaultValue("16") Integer threads,
-							  @DefaultValue("NIO") TransportMode transportMode,
-							  @DefaultValue("32") Integer nettyThreads,
-							  ExecutorService executor,
-							  EventLoopGroup eventLoopGroup,
-							  @DefaultValue("30000") Long lockWatchdogTimeout,
-							  @DefaultValue("true") Boolean checkLockSyncedSlaves,
-							  @DefaultValue("true") Boolean keepPubSubOrder,
-							  @DefaultValue("!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}") AddressResolverGroupFactory addressResolverGroupFactory,
-							  @DefaultValue("false") Boolean useScriptCache,
-							  @DefaultValue("5") Integer minCleanUpDelay,
-							  @DefaultValue("1800") Integer maxCleanUpDelay,
-							  @DefaultValue("100") Integer cleanUpKeysAmount,
-							  @DefaultValue("true") Boolean useThreadClassLoader,
-							  @DefaultValue("600000") Long reliableTopicWatchdogTimeout,
-							  ConnectionListener connectionListener,
-							  Boolean lazyInitialization,
-							  @DefaultValue("1000") Long slavesSyncTimeout) {
+		public RedissonConfig(ClusterServers clusterServersConfig, ReplicatedServers replicatedServersConfig,
+				SingleServer singleServerConfig, SentinelServers sentinelServersConfig,
+				MasterSlaveServers masterSlaveServersConfig,
+				@DefaultValue("!<org.redisson.client.DefaultNettyHook> {}") NettyHook nettyHook, Codec codec,
+				@DefaultValue("true") Boolean redissonReferenceEnabled, @DefaultValue("16") Integer threads,
+				@DefaultValue("NIO") TransportMode transportMode, @DefaultValue("32") Integer nettyThreads,
+				ExecutorService executor, EventLoopGroup eventLoopGroup,
+				@DefaultValue("30000") Long lockWatchdogTimeout, @DefaultValue("true") Boolean checkLockSyncedSlaves,
+				@DefaultValue("true") Boolean keepPubSubOrder,
+				@DefaultValue("!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}") AddressResolverGroupFactory addressResolverGroupFactory,
+				@DefaultValue("false") Boolean useScriptCache, @DefaultValue("5") Integer minCleanUpDelay,
+				@DefaultValue("1800") Integer maxCleanUpDelay, @DefaultValue("100") Integer cleanUpKeysAmount,
+				@DefaultValue("true") Boolean useThreadClassLoader,
+				@DefaultValue("600000") Long reliableTopicWatchdogTimeout, ConnectionListener connectionListener,
+				Boolean lazyInitialization, @DefaultValue("1000") Long slavesSyncTimeout) {
 			setConfig(clusterServersConfig, super::setClusterServersConfig);
 			setConfig(replicatedServersConfig, super::setReplicatedServersConfig);
 			setConfig(singleServerConfig, super::setSingleServerConfig);
@@ -166,6 +154,7 @@ public class ConfigProperties {
 				consumer.accept(t);
 			}
 		}
+
 	}
 
 	/**
@@ -174,7 +163,6 @@ public class ConfigProperties {
 	@EqualsAndHashCode(callSuper = true)
 	@Data
 	public static class ClusterServers extends BaseMasterSlaveServers<ClusterServersConfig> {
-
 
 		private NatMapper natMapper = NatMapper.direct();
 
@@ -190,8 +178,8 @@ public class ConfigProperties {
 
 		private int scanInterval = 5000;
 
-
 		private boolean checkSlotsCoverage = true;
+
 	}
 
 	/**
@@ -215,8 +203,8 @@ public class ConfigProperties {
 
 		private int scanInterval = 5000;
 
-
 		private boolean checkSlotsCoverage = true;
+
 	}
 
 	/**
@@ -244,8 +232,8 @@ public class ConfigProperties {
 
 		private int database = 0;
 
-
 		private boolean monitorIPChanges = false;
+
 	}
 
 	/**
@@ -255,18 +243,13 @@ public class ConfigProperties {
 	@Data
 	public static class SentinelServers extends BaseMasterSlaveServers<SentinelServersConfig> {
 
-
 		private List<String> sentinelAddresses = new ArrayList<>();
-
 
 		private NatMapper natMapper = NatMapper.direct();
 
-
 		private String masterName;
 
-
 		private String sentinelUsername;
-
 
 		private String sentinelPassword;
 
@@ -282,14 +265,12 @@ public class ConfigProperties {
 
 		private int scanInterval = 1000;
 
-
 		private boolean checkSentinelsList = true;
-
 
 		private boolean checkSlaveStatusWithSyncing = true;
 
-
 		private boolean sentinelsDiscovery = true;
+
 	}
 
 	/**
@@ -298,6 +279,7 @@ public class ConfigProperties {
 	@EqualsAndHashCode(callSuper = true)
 	@Data
 	public static class SingleServer extends Base<SingleServerConfig> {
+
 		/**
 		 * Redis server address
 		 */
@@ -339,6 +321,7 @@ public class ConfigProperties {
 		 */
 
 		private long dnsMonitoringInterval = 5000;
+
 	}
 
 	/**
@@ -364,9 +347,7 @@ public class ConfigProperties {
 
 		private int slaveConnectionPoolSize = 64;
 
-
 		private int failedSlaveReconnectionInterval = 3000;
-
 
 		private int failedSlaveCheckInterval = 180000;
 
@@ -382,26 +363,26 @@ public class ConfigProperties {
 
 		private int masterConnectionPoolSize = 64;
 
-
 		private ReadMode readMode = ReadMode.SLAVE;
-
 
 		private SubscriptionMode subscriptionMode = SubscriptionMode.MASTER;
 
 		/**
-		 * Redis 'slave' node minimum idle subscription (pub/sub) connection amount for <b>each</b> slave node
+		 * Redis 'slave' node minimum idle subscription (pub/sub) connection amount for
+		 * <b>each</b> slave node
 		 */
 
 		private int subscriptionConnectionMinimumIdleSize = 1;
 
 		/**
-		 * Redis 'slave' node maximum subscription (pub/sub) connection pool size for <b>each</b> slave node
+		 * Redis 'slave' node maximum subscription (pub/sub) connection pool size for
+		 * <b>each</b> slave node
 		 */
 
 		private int subscriptionConnectionPoolSize = 50;
 
-
 		private long dnsMonitoringInterval = 5000;
+
 	}
 
 	/**
@@ -413,24 +394,22 @@ public class ConfigProperties {
 	public static abstract class Base<T extends BaseConfig<T>> {
 
 		/**
-		 * If pooled connection not used for a <code>timeout</code> time
-		 * and current connections amount bigger than minimum idle connections pool size,
-		 * then it will closed and removed from pool.
-		 * Value in milliseconds.
+		 * If pooled connection not used for a <code>timeout</code> time and current
+		 * connections amount bigger than minimum idle connections pool size, then it will
+		 * closed and removed from pool. Value in milliseconds.
 		 */
 
 		private int idleConnectionTimeout = 10000;
 
 		/**
-		 * Timeout during connecting to any Redis server.
-		 * Value in milliseconds.
+		 * Timeout during connecting to any Redis server. Value in milliseconds.
 		 */
 
 		private int connectTimeout = 10000;
 
 		/**
-		 * Redis server response timeout. Starts to countdown when Redis command was succesfully sent.
-		 * Value in milliseconds.
+		 * Redis server response timeout. Starts to countdown when Redis command was
+		 * succesfully sent. Value in milliseconds.
 		 */
 
 		private int timeout = 3000;
@@ -438,7 +417,6 @@ public class ConfigProperties {
 		private int subscriptionTimeout = 7500;
 
 		private int retryAttempts = 3;
-
 
 		private int retryInterval = 1500;
 
@@ -448,9 +426,7 @@ public class ConfigProperties {
 
 		private String password;
 
-
 		private String username;
-
 
 		private CredentialsResolver credentialsResolver = new DefaultCredentialsResolver();
 
@@ -466,39 +442,27 @@ public class ConfigProperties {
 
 		private String clientName;
 
-
 		private boolean sslEnableEndpointIdentification = true;
-
 
 		private SslProvider sslProvider = SslProvider.JDK;
 
-
 		private URL sslTruststore;
-
 
 		private String sslTruststorePassword;
 
-
 		private URL sslKeystore;
-
 
 		private String sslKeystorePassword;
 
-
 		private String[] sslProtocols;
-
 
 		private String[] sslCiphers;
 
-
 		private TrustManagerFactory sslTrustManagerFactory;
-
 
 		private KeyManagerFactory sslKeyManagerFactory;
 
-
 		private int pingConnectionInterval = 30000;
-
 
 		private boolean keepAlive;
 
@@ -510,7 +474,6 @@ public class ConfigProperties {
 
 		/**
 		 * Convert t.
-		 *
 		 * @return the t
 		 */
 		@SuppressWarnings("unchecked")
@@ -519,5 +482,7 @@ public class ConfigProperties {
 			Assert.notNull(type, "type must not be null");
 			return BeanUtils.copy(this, type);
 		}
+
 	}
+
 }

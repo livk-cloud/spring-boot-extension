@@ -22,9 +22,8 @@ import org.redisson.config.Config;
 
 /**
  * <p>
- * Customize the RedissonClient configuration.
- * *
- * * @param configuration the {@link Config} to customize
+ * Customize the RedissonClient configuration. * * @param configuration the {@link Config}
+ * to customize
  * </p>
  *
  * @author livk

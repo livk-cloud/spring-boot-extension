@@ -28,9 +28,15 @@ import lombok.Data;
  */
 @Data
 public class Book {
+
 	private Long id;
+
 	private String isbn;
+
 	private String title;
+
 	private Integer pages;
+
 	private String authorIdCardNo;
+
 }

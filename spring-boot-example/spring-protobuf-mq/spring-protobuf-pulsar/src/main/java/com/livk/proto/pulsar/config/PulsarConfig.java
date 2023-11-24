@@ -31,10 +31,13 @@ public class PulsarConfig {
 	public static final String TOPIC_NAME = "pulsar-protobuf";
 
 	/**
-	 * <a href="https://docs.spring.io/spring-pulsar/docs/current-SNAPSHOT/reference/html/#_custom_schema_mapping_2">Spring Pulsar</a>
+	 * <a href=
+	 * "https://docs.spring.io/spring-pulsar/docs/current-SNAPSHOT/reference/html/#_custom_schema_mapping_2">Spring
+	 * Pulsar</a>
 	 */
 	@Bean
 	public SchemaResolver.SchemaResolverCustomizer<DefaultSchemaResolver> schemaResolverCustomizer() {
 		return schemaResolver -> schemaResolver.addCustomSchemaMapping(User.class, new UserProtobufSchema());
 	}
+
 }

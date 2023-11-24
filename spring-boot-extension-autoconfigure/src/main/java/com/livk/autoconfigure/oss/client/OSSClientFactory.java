@@ -27,18 +27,18 @@ public interface OSSClientFactory<T> {
 
 	/**
 	 * Instance t.
-	 *
-	 * @param endpoint  the endpoint
+	 * @param endpoint the endpoint
 	 * @param accessKey the access key
 	 * @param secretKey the secret key
+	 * @param region the region
 	 * @return the t
 	 */
-	T instance(String endpoint, String accessKey, String secretKey);
+	T instance(String endpoint, String accessKey, String secretKey, String region);
 
 	/**
 	 * Prefix string.
-	 *
 	 * @return the string
 	 */
 	String name();
+
 }

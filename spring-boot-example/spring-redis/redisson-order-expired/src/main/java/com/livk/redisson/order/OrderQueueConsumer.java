@@ -52,8 +52,10 @@ public class OrderQueueConsumer implements Runnable, InitializingBean {
 		while (true) {
 			try {
 				Employer employer = orderQueue.take();
-				log.info("订单取消时间：{} ==订单生成时间:{}", DateUtils.format(LocalDateTime.now(), DateUtils.HMS), employer.getPutTime());
-			} catch (InterruptedException e) {
+				log.info("订单取消时间：{} ==订单生成时间:{}", DateUtils.format(LocalDateTime.now(), DateUtils.HMS),
+						employer.getPutTime());
+			}
+			catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 		}

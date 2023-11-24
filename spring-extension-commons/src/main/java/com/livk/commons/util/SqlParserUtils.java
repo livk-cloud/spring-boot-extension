@@ -32,16 +32,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * SqlParser相关工具类
+ *
  * @author livk
+ * @see CCJSqlParserUtil
  */
 @UtilityClass
 public class SqlParserUtils {
 
 	/**
-	 * Parse table list.
-	 *
-	 * @param sql the sql
-	 * @return the list
+	 * 解析一个SQL,获取到所有的表
+	 * @param sql sql
+	 * @return table list
 	 */
 	@SneakyThrows
 	public List<String> parseTable(String sql) {
@@ -51,43 +53,38 @@ public class SqlParserUtils {
 	}
 
 	/**
-	 * Gets params.
-	 *
-	 * @param sql the sql
-	 * @return the params
+	 * 获取一个SQL的所有param
+	 * @param sql sql
+	 * @return params
 	 */
 	@SneakyThrows
 	public List<String> getParams(String sql) {
 		Statement statement = CCJSqlParserUtil.parse(sql);
 		if (statement instanceof Select select) {
 			PlainSelect plain = (PlainSelect) select.getSelectBody();
-			return plain.getSelectItems()
-				.stream()
-				.map(Object::toString)
-				.toList();
-		} else if (statement instanceof Update update) {
+			return plain.getSelectItems().stream().map(Object::toString).toList();
+		}
+		else if (statement instanceof Update update) {
 			return update.getUpdateSets()
 				.stream()
 				.flatMap(updateSet -> updateSet.getColumns().stream())
 				.map(Column::getColumnName)
 				.toList();
-		} else if (statement instanceof Insert insert) {
-			return insert.getColumns()
-				.stream()
-				.map(Column::getColumnName)
-				.toList();
+		}
+		else if (statement instanceof Insert insert) {
+			return insert.getColumns().stream().map(Column::getColumnName).toList();
 		}
 		return Collections.emptyList();
 	}
 
 	/**
-	 * Format sql string.
-	 *
-	 * @param sql the sql
-	 * @return the string
+	 * 格式化SQL
+	 * @param sql sql
+	 * @return format sql
 	 */
 	@SneakyThrows
 	public String formatSql(String sql) {
 		return CCJSqlParserUtil.parse(sql).toString();
 	}
+
 }

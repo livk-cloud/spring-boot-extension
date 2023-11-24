@@ -47,7 +47,8 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
+			throws JsonMappingException {
 		JavaType javaType = property.getType();
 		CryptoEncrypt encrypt = Optional.ofNullable(property.getAnnotation((CryptoEncrypt.class)))
 			.orElse(property.getContextAnnotation(CryptoEncrypt.class));
@@ -66,4 +67,5 @@ public class CryptoJsonSerializer extends JsonSerializer<Object> implements Cont
 		}
 		return null;
 	}
+
 }

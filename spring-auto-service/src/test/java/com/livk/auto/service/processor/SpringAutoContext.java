@@ -24,4 +24,5 @@ import com.livk.auto.service.annotation.SpringAutoService;
  */
 @SpringAutoService(EnableAuto.class)
 public class SpringAutoContext {
+
 }

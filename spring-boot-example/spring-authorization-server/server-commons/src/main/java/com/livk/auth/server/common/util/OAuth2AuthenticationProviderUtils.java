@@ -33,7 +33,8 @@ import org.springframework.security.oauth2.server.authorization.authentication.O
 @UtilityClass
 public class OAuth2AuthenticationProviderUtils {
 
-	public static OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(Authentication authentication) {
+	public static OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(
+			Authentication authentication) {
 		OAuth2ClientAuthenticationToken clientPrincipal = null;
 		if (OAuth2ClientAuthenticationToken.class.isAssignableFrom(authentication.getPrincipal().getClass())) {
 			clientPrincipal = (OAuth2ClientAuthenticationToken) authentication.getPrincipal();
@@ -44,8 +45,7 @@ public class OAuth2AuthenticationProviderUtils {
 		throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_CLIENT);
 	}
 
-	public static <T extends OAuth2Token> OAuth2Authorization invalidate(
-		OAuth2Authorization authorization, T token) {
+	public static <T extends OAuth2Token> OAuth2Authorization invalidate(OAuth2Authorization authorization, T token) {
 
 		// @formatter:off
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.from(authorization)
@@ -72,4 +72,5 @@ public class OAuth2AuthenticationProviderUtils {
 
 		return authorizationBuilder.build();
 	}
+
 }

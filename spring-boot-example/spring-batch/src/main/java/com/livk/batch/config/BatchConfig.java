@@ -56,29 +56,27 @@ public class BatchConfig {
 		FlatFileItemReader<User> reader = new FlatFileItemReader<>();
 		reader.setLinesToSkip(1);
 		reader.setResource(new ClassPathResource("data.csv"));
-		reader.setLineMapper(CsvLineMapper.builder(User.class)
-			.delimiter("\t")
-			.fields("userName", "sex", "age", "address")
-			.build());
-//		reader.setLineMapper(new DefaultLineMapper<>() {
-//			{
-//				setLineTokenizer(new DelimitedLineTokenizer() {
-//					{
-//						// 配置了四行文件
-//						setNames("userName", "sex", "age", "address");
-//						// 配置列于列之间的间隔符,会通过间隔符对每一行进行切分
-//						setDelimiter("\t");
-//					}
-//				});
-//
-//				// 设置要映射的实体类属性
-//				setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {
-//					{
-//						setTargetType(User.class);
-//					}
-//				});
-//			}
-//		});
+		reader.setLineMapper(
+				CsvLineMapper.builder(User.class).delimiter("\t").fields("userName", "sex", "age", "address").build());
+		// reader.setLineMapper(new DefaultLineMapper<>() {
+		// {
+		// setLineTokenizer(new DelimitedLineTokenizer() {
+		// {
+		// // 配置了四行文件
+		// setNames("userName", "sex", "age", "address");
+		// // 配置列于列之间的间隔符,会通过间隔符对每一行进行切分
+		// setDelimiter("\t");
+		// }
+		// });
+		//
+		// // 设置要映射的实体类属性
+		// setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {
+		// {
+		// setTargetType(User.class);
+		// }
+		// });
+		// }
+		// });
 		return reader;
 	}
 
@@ -92,17 +90,15 @@ public class BatchConfig {
 		JdbcBatchItemWriter<User> writer = new JdbcBatchItemWriter<>();
 		writer.setDataSource(dataSource);
 		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-		writer.setSql("insert into sys_user(user_name, sex, age, address, status, create_time ,update_time) " +
-					  "values (:userName, :sex, :age, :address, :status, :createTime, :updateTime)");
+		writer.setSql("insert into sys_user(user_name, sex, age, address, status, create_time ,update_time) "
+				+ "values (:userName, :sex, :age, :address, :status, :createTime, :updateTime)");
 		return writer;
 	}
 
 	@Bean
-	public Step csvStep(JobRepository jobRepository,
-						DataSource dataSource,
-						DataSourceTransactionManager dataSourceTransactionManager) {
-		return new StepBuilder("csvStep", jobRepository)
-			.<User, User>chunk(5, dataSourceTransactionManager)
+	public Step csvStep(JobRepository jobRepository, DataSource dataSource,
+			DataSourceTransactionManager dataSourceTransactionManager) {
+		return new StepBuilder("csvStep", jobRepository).<User, User>chunk(5, dataSourceTransactionManager)
 			.reader(reader())
 			.listener(new JobReadListener())
 			.processor(processor())
@@ -119,12 +115,8 @@ public class BatchConfig {
 	}
 
 	@Bean
-	public Job csvJob(JobRepository jobRepository, Step step,
-					  JobCompletionListener listener) {
-		return new JobBuilder("csvJob", jobRepository)
-			.start(step)
-			.listener(listener)
-			.build();
+	public Job csvJob(JobRepository jobRepository, Step step, JobCompletionListener listener) {
+		return new JobBuilder("csvJob", jobRepository).start(step).listener(listener).build();
 	}
 
 	@Bean
@@ -134,4 +126,5 @@ public class BatchConfig {
 		jobLauncher.setJobRepository(jobRepository);
 		return jobLauncher;
 	}
+
 }

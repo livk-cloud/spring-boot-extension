@@ -52,13 +52,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Mono<Void> save(Mono<User> userMono) {
-		return userMono.flatMap(user -> userRepository.save(user).flatMap(
-			u1 -> Objects.nonNull(u1.id()) ? Mono.empty() : Mono.defer(() -> Mono.error(new RuntimeException()))));
+		return userMono.flatMap(user -> userRepository.save(user)
+			.flatMap(u1 -> Objects.nonNull(u1.id()) ? Mono.empty()
+					: Mono.defer(() -> Mono.error(new RuntimeException()))));
 	}
 
 	@Override
 	public Mono<Void> updateById(Mono<Long> id, Mono<User> userMono) {
-		return userMono.flatMap(monoUser -> userRepository.findById(id)
+		return userMono
+			.flatMap(monoUser -> userRepository.findById(id)
 				.switchIfEmpty(Mono.error(new RuntimeException("Id Not Found!")))
 				.flatMap(user -> userRepository.save(new User(user.id(), monoUser.username(), monoUser.password()))))
 			.flatMap(mono -> Mono.empty());

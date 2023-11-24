@@ -27,17 +27,19 @@ import java.util.*;
 
 /**
  * <p>
- * YamlUtils
+ * YAML相关工具类
  * </p>
  *
  * @author livk
+ * @see Yaml
  */
 @UtilityClass
 public class YamlUtils {
 
 	/**
+	 * properties map转 yaml
+	 * <p>
 	 * {example Map.of(" a.b.c ", " 1 ") -> YAML}
-	 *
 	 * @param map properties key map
 	 * @return yml str
 	 */
@@ -49,10 +51,10 @@ public class YamlUtils {
 		return new Yaml().dumpAsMap(yamlMap);
 	}
 
-
 	/**
+	 * properties map转 yaml map
+	 * <p>
 	 * example Map.of(" a.b.c ", " 1 ") -> Map.of("a",Map.of("b",Map.of("c","1")))
-	 *
 	 * @param map properties key map
 	 * @return yml map
 	 */
@@ -73,7 +75,8 @@ public class YamlUtils {
 						list.add(new LinkedHashMap<>());
 					}
 					tempMap = (Map<String, Object>) list.get(index);
-				} else {
+				}
+				else {
 					tempMap.putIfAbsent(key, new LinkedHashMap<>());
 					tempMap = (Map<String, Object>) tempMap.get(key);
 				}
@@ -88,7 +91,8 @@ public class YamlUtils {
 					list.add(null);
 				}
 				list.set(index, entry.getValue());
-			} else {
+			}
+			else {
 				tempMap.put(keys[keys.length - 1], entry.getValue());
 			}
 		}
@@ -103,7 +107,8 @@ public class YamlUtils {
 			for (String key : keys) {
 				if (org.apache.commons.lang3.StringUtils.isNumeric(key)) {
 					builder.append("[").append(key).append("]");
-				} else {
+				}
+				else {
 					builder.append(".").append(key);
 				}
 			}
@@ -118,10 +123,10 @@ public class YamlUtils {
 	}
 
 	/**
-	 * example Map.of("a",Map.of("b",Map.of("c","1"))) -> Map.of(" a.b.c ", " 1 ")
+	 * yaml map转 properties map example Map.of("a",Map.of("b",Map.of("c","1"))) ->
+	 * Map.of(" a.b.c ", " 1 ")
 	 * <p>
 	 * {@see org.springframework.beans.factory.config.YamlProcessor#getFlattenedMap(java.util.Map)}
-	 *
 	 * @param source the map
 	 * @return the map
 	 */
@@ -131,36 +136,40 @@ public class YamlUtils {
 		return result;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void buildFlattenedMap(Properties result, Map<String, Object> source, @Nullable String path) {
 		source.forEach((key, value) -> {
 			if (StringUtils.hasText(path)) {
 				if (key.startsWith("[")) {
 					key = path + key;
-				} else {
+				}
+				else {
 					key = path + '.' + key;
 				}
 			}
 			if (value instanceof String) {
 				result.put(key, value);
-			} else if (value instanceof Map map) {
+			}
+			else if (value instanceof Map map) {
 				// Need a compound key
 				buildFlattenedMap(result, map, key);
-			} else if (value instanceof Collection collection) {
+			}
+			else if (value instanceof Collection collection) {
 				// Need a compound key
 				if (collection.isEmpty()) {
 					result.put(key, "");
-				} else {
+				}
+				else {
 					int count = 0;
 					for (Object object : collection) {
-						buildFlattenedMap(result, Collections.singletonMap(
-							"[" + (count++) + "]", object), key);
+						buildFlattenedMap(result, Collections.singletonMap("[" + (count++) + "]", object), key);
 					}
 				}
-			} else {
+			}
+			else {
 				result.put(key, (value != null ? value : ""));
 			}
 		});
 	}
-}
 
+}

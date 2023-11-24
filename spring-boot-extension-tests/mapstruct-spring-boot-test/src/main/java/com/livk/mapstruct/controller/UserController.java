@@ -47,9 +47,9 @@ import java.util.Objects;
 public class UserController {
 
 	public static final List<User> USERS = List.of(
-		new User().setId(1).setUsername("livk1").setPassword("123456").setType(1).setCreateTime(new Date()),
-		new User().setId(2).setUsername("livk2").setPassword("123456").setType(2).setCreateTime(new Date()),
-		new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
+			new User().setId(1).setUsername("livk1").setPassword("123456").setType(1).setCreateTime(new Date()),
+			new User().setId(2).setUsername("livk2").setPassword("123456").setType(2).setCreateTime(new Date()),
+			new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
 
 	// 自定义双向转换
 	private final MapstructService service;
@@ -59,19 +59,18 @@ public class UserController {
 
 	@GetMapping
 	public HttpEntity<Map<String, List<UserVO>>> list() {
-		List<UserVO> userVOS = USERS.stream().map(user -> conversionService.convert(user, UserVO.class))
-			.filter(Objects::nonNull).toList();
-		return ResponseEntity
-			.ok(Map.of("spring", userVOS,
-				"customize", service.convert(USERS, UserVO.class).toList()));
+		List<UserVO> userVOS = USERS.stream()
+			.map(user -> conversionService.convert(user, UserVO.class))
+			.filter(Objects::nonNull)
+			.toList();
+		return ResponseEntity.ok(Map.of("spring", userVOS, "customize", service.convert(USERS, UserVO.class).toList()));
 	}
 
 	@GetMapping("/{id}")
 	public HttpEntity<Map<String, UserVO>> getById(@PathVariable Integer id) {
 		User u = USERS.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(new User());
 		UserVO userVOSpring = conversionService.convert(u, UserVO.class);
-		return ResponseEntity.ok(Map.of("customize", service.convert(u, UserVO.class),
-			"spring", userVOSpring));
+		return ResponseEntity.ok(Map.of("customize", service.convert(u, UserVO.class), "spring", userVOSpring));
 	}
 
 }

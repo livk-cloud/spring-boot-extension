@@ -26,4 +26,5 @@ import io.lettuce.core.cluster.ClusterClientOptions;
  * @author livk
  */
 public interface ClusterClientOptionsBuilderCustomizer extends Customizer<ClusterClientOptions.Builder> {
+
 }

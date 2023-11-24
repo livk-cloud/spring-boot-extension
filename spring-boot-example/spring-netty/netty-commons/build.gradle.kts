@@ -1,5 +1,6 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
+import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common
@@ -13,6 +14,10 @@ dependencies {
 	implementation(platform(project(":spring-extension-dependencies")))
 }
 
+tasks.withType<CheckFormat> {
+	exclude("com/livk/netty/commons/protobuf")
+}
+
 sourceSets {
 	main {
 		proto {
@@ -23,12 +28,12 @@ sourceSets {
 
 protobuf {
 	protoc {
-		artifact = "com.google.protobuf:protoc:3.24.4"
+		artifact = libs.protobuf.java.protoc.get().toString()
 	}
 
 	plugins {
 		id("grpc") {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
+			artifact = libs.grpc.java.get().toString()
 		}
 	}
 

@@ -37,39 +37,25 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 /**
  * @author livk
  */
-@SpringBootTest({
-	"com.livk.of.code = 200",
-	"com.livk.of.msg = root",
-	"com.livk.of.data = 666",
-	"com.livk.of.int = 1",
-	"com.livk.of.str = 1",
+@SpringBootTest({ "com.livk.of.code = 200", "com.livk.of.msg = root", "com.livk.of.data = 666", "com.livk.of.int = 1",
+		"com.livk.of.str = 1",
 
-	"com.livk.list.int[0] = 1",
-	"com.livk.list.int[1] = 1",
-	"com.livk.list.str[0] = 1",
-	"com.livk.list.str[1] = 1",
+		"com.livk.list.int[0] = 1", "com.livk.list.int[1] = 1", "com.livk.list.str[0] = 1", "com.livk.list.str[1] = 1",
 
-	"com.livk.set.int[0] = 1",
-	"com.livk.set.int[1] = 2",
-	"com.livk.set.str[0] = 1",
-	"com.livk.set.str[1] = 2",
+		"com.livk.set.int[0] = 1", "com.livk.set.int[1] = 2", "com.livk.set.str[0] = 1", "com.livk.set.str[1] = 2",
 
-	"com.livk.map.int.a = 1",
-	"com.livk.map.int.b = 2",
-	"com.livk.map.str.a = 1",
-	"com.livk.map.str.b = 2",
+		"com.livk.map.int.a = 1", "com.livk.map.int.b = 2", "com.livk.map.str.a = 1", "com.livk.map.str.b = 2",
 
-	"com.livk.pro.str.a = 1",
-	"com.livk.pro.str.b = 2",
+		"com.livk.pro.str.a = 1", "com.livk.pro.str.b = 2",
 
-	"com.livk.bind.code = 200",
-	"com.livk.bind.msg = root",
-})
+		"com.livk.bind.code = 200", "com.livk.bind.msg = root", })
 class SpringEnvBinderTest {
 
 	final static String SUFFIX = "com.livk.";
+
 	@Autowired
 	Environment environment;
+
 	SpringEnvBinder binder;
 
 	@BeforeEach
@@ -122,18 +108,23 @@ class SpringEnvBinderTest {
 	@Data
 	@Accessors(chain = true)
 	private static class EntityResult<T> {
+
 		private Integer code;
 
 		private String msg;
 
 		private T data;
+
 	}
 
 	@Data
 	@Accessors(chain = true)
 	private static class Result {
+
 		private Integer code;
 
 		private String msg;
+
 	}
+
 }

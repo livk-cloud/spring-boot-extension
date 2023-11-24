@@ -54,13 +54,13 @@ public class InfoController {
 	@RequestExcel(parse = InfoExcelListener.class)
 	@PostMapping("upload")
 	public HttpEntity<Boolean> upload(@ExcelParam List<Info> dataExcels,
-									  @RequestParam(defaultValue = "false") Boolean async,
-									  @RequestParam(defaultValue = "1") Integer multiple) {
+			@RequestParam(defaultValue = "false") Boolean async, @RequestParam(defaultValue = "1") Integer multiple) {
 		List<Info> infos = this.multiple(dataExcels, multiple);
 		log.info("size:{},async:{},multiple:{}", infos.size(), async, multiple);
 		if (async) {
 			infoService.insertBatchMultithreading(infos);
-		} else {
+		}
+		else {
 			infoService.insertBatch(infos);
 		}
 		return ResponseEntity.ok(Boolean.TRUE);
@@ -94,4 +94,5 @@ public class InfoController {
 		return dataExcels.stream()
 			.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
 	}
+
 }

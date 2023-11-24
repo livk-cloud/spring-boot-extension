@@ -44,9 +44,8 @@ public class RsaKeyProperties {
 
 	private final RSAKey rsaKey;
 
-	public RsaKeyProperties(@Name("location") String location,
-							@Name("password") String password,
-							@Name("alias") String alias) {
+	public RsaKeyProperties(@Name("location") String location, @Name("password") String password,
+			@Name("alias") String alias) {
 		if (ObjectUtils.isEmpty(location)) {
 			location = DEFAULT_LOCATION;
 		}
@@ -57,7 +56,8 @@ public class RsaKeyProperties {
 				if (resources != null) {
 					jksResource = resources[0];
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -67,4 +67,5 @@ public class RsaKeyProperties {
 	public RSAKey rsaKey() {
 		return rsaKey;
 	}
+
 }

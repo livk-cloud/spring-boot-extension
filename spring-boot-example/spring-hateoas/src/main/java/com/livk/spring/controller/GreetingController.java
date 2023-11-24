@@ -40,10 +40,10 @@ public class GreetingController {
 
 	@GetMapping("/greeting")
 	public Mono<HttpEntity<Greeting>> greeting(
-		@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
 		Greeting greeting = new Greeting(String.format(TEMPLATE, name));
-		greeting.add(
-			WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).greeting(name)).withSelfRel());
+		greeting
+			.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).greeting(name)).withSelfRel());
 		return Mono.just(ResponseEntity.ok(greeting));
 	}
 

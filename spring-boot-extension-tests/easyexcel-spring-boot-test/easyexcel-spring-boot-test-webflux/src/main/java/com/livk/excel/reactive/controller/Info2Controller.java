@@ -44,7 +44,8 @@ public class Info2Controller {
 	@RequestExcel
 	@PostMapping("uploadAndDownload")
 	public Map<String, List<Info>> uploadAndDownload(@ExcelParam Map<String, List<Info>> mapData) {
-		return mapData.values().stream()
+		return mapData.values()
+			.stream()
 			.flatMap(Collection::stream)
 			.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
 	}
@@ -54,4 +55,5 @@ public class Info2Controller {
 		return dataExcels.stream()
 			.collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
 	}
+
 }

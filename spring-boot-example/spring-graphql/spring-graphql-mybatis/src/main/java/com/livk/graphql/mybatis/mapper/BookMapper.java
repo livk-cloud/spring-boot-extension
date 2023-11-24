@@ -31,6 +31,7 @@ import java.util.List;
  */
 @Mapper
 public interface BookMapper {
+
 	@Select("select * from book")
 	List<Book> list();
 
@@ -42,4 +43,5 @@ public interface BookMapper {
 
 	@Insert("insert into book(isbn, title, pages, author_id_card_no) values (#{isbn},#{title},#{pages},#{authorIdCardNo})")
 	int save(Book book);
+
 }

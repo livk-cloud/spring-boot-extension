@@ -55,7 +55,8 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	private static final String LOCATION = "META-INF/spring/%s.imports";
 
-	private final SetMultimap<String, String> importsMap = Multimaps.synchronizedSetMultimap(LinkedHashMultimap.create());
+	private final SetMultimap<String, String> importsMap = Multimaps
+		.synchronizedSetMultimap(LinkedHashMultimap.create());
 
 	@Override
 	protected Set<Class<?>> getSupportedAnnotation() {
@@ -71,11 +72,11 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 				Set<String> exitImports = this.read(resource);
 				Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
 					.collect(Collectors.toSet());
-				FileObject fileObject =
-					filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
+				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
 
 				this.writeFile(allImports, fileObject);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -97,24 +98,21 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	/**
 	 * 从文件读取配置
-	 *
 	 * @param fileObject 文件信息
 	 * @return set className
 	 */
 	private Set<String> read(FileObject fileObject) {
 		try (BufferedReader reader = bufferedReader(fileObject)) {
-			return reader.lines()
-				.map(String::trim)
-				.collect(Collectors.toUnmodifiableSet());
-		} catch (Exception ignored) {
+			return reader.lines().map(String::trim).collect(Collectors.toUnmodifiableSet());
+		}
+		catch (Exception ignored) {
 			return Collections.emptySet();
 		}
 	}
 
 	/**
 	 * 将配置信息写入到文件
-	 *
-	 * @param services   实现类信息
+	 * @param services 实现类信息
 	 * @param fileObject 文件信息
 	 */
 	private void writeFile(Collection<String> services, FileObject fileObject) throws IOException {
@@ -126,4 +124,5 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 			writer.flush();
 		}
 	}
+
 }

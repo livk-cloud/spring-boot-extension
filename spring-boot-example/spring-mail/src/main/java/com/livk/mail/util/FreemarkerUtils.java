@@ -37,7 +37,8 @@ import java.util.Map;
 @UtilityClass
 public class FreemarkerUtils extends FreeMarkerTemplateUtils {
 
-	private static final Configuration CONFIGURATION = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+	private static final Configuration CONFIGURATION = new Configuration(
+			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 	private static final String TEMPLATE_NAME = "template";
 
@@ -49,9 +50,11 @@ public class FreemarkerUtils extends FreeMarkerTemplateUtils {
 		try (StringReader reader = new StringReader(freemarker)) {
 			Template template = new Template(templateName, reader, CONFIGURATION);
 			return processTemplateIntoString(template, model);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("{}", e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
+
 }

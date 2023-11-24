@@ -33,9 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
  */
 class FreeMarkerExpressionResolverTest {
 
-	private final static Object[] args = new Object[]{"livk"};
+	private final static Object[] args = new Object[] { "livk" };
+
 	private final static Map<String, String> map = Map.of("username", "livk");
+
 	final ExpressionResolver resolver = new FreeMarkerExpressionResolver();
+
 	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 
 	FreeMarkerExpressionResolverTest() throws NoSuchMethodException {
@@ -49,7 +52,8 @@ class FreeMarkerExpressionResolverTest {
 		assertEquals("livk", resolver.evaluate("${username}", map));
 
 		assertEquals("root:livk", resolver.evaluate("root:${username}", method, args));
-		assertEquals("root:livk:123456", resolver.evaluate("root:${username}:${password}", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456",
+				resolver.evaluate("root:${username}:${password}", method, args, Map.of("password", "123456")));
 
 		assertEquals("root:livk", resolver.evaluate("root:${username}", map));
 
@@ -57,12 +61,15 @@ class FreeMarkerExpressionResolverTest {
 		assertEquals("livk", resolver.evaluate("${username}", method, args));
 		assertEquals("livk", resolver.evaluate("livk", method, args));
 
-		assertEquals("root:livk:123456", resolver.evaluate("root:${username}:${password}", method, args, Map.of("password", "123456")));
-		assertEquals("livk123456", resolver.evaluate("${username}${password}", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456",
+				resolver.evaluate("root:${username}:${password}", method, args, Map.of("password", "123456")));
+		assertEquals("livk123456",
+				resolver.evaluate("${username}${password}", method, args, Map.of("password", "123456")));
 
 		assertEquals("root:livk", resolver.evaluate("root:${username}", map));
 		assertEquals("livk", resolver.evaluate("${username}", map));
 
 		assertThrowsExactly(ExpressionException.class, () -> resolver.evaluate("${username}", map, Integer.class));
 	}
+
 }

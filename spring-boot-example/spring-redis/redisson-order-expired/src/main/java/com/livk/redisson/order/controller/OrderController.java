@@ -57,9 +57,9 @@ public class OrderController implements DisposableBean {
 		}
 	}
 
-
 	@Override
 	public void destroy() {
 		delayedQueue.destroy();
 	}
+
 }

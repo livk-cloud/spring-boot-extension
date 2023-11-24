@@ -41,35 +41,21 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 @SpringAutoService
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
-@EnableConfigurationProperties({ConfigProperties.class, RedisProperties.class})
+@EnableConfigurationProperties({ ConfigProperties.class, RedisProperties.class })
 public class RedissonAutoConfiguration {
 
 	/**
 	 * Codec converter bean factory post processor bean factory post processor.
-	 *
 	 * @param baseConverters the base converters
 	 * @return the bean factory post processor
 	 */
 	@Bean
-	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
+	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(
+			ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
 		return beanFactory -> {
 			ConversionService conversionService = beanFactory.getConversionService();
 			if (conversionService instanceof ConverterRegistry converterRegistry) {
-				converterRegistry.addConverter(new ConfigBaseConverter.ConfigConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.AddressResolverGroupFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CodecConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.RedissonNodeInitializerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.LoadBalancerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NatMapperConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NameMapperConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.NettyHookConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CredentialsResolverConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.EventLoopGroupConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.ConnectionListenerConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.ExecutorServiceConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.KeyManagerFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.TrustManagerFactoryConverter());
-				converterRegistry.addConverter(new ConfigBaseConverter.CommandMapperConverter());
+				ByteBuddySupport.makeConverters().forEach(converterRegistry::addConverter);
 				baseConverters.orderedStream().forEach(converterRegistry::addConverter);
 			}
 		};
@@ -77,29 +63,28 @@ public class RedissonAutoConfiguration {
 
 	/**
 	 * Redisson client redisson client.
-	 *
-	 * @param configProperties  the config properties
-	 * @param redisProperties   the redis properties
+	 * @param configProperties the config properties
+	 * @param redisProperties the redis properties
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client
 	 */
-	@Bean
+	@Bean(destroyMethod = "shutdown")
 	@ConditionalOnMissingBean
-	public RedissonClient redissonClient(ConfigProperties configProperties,
-										 RedisProperties redisProperties,
-										 ObjectProvider<ConfigCustomizer> configCustomizers) {
+	public RedissonClient redissonClient(ConfigProperties configProperties, RedisProperties redisProperties,
+			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
 	}
 
 	/**
 	 * Redisson connection factory redisson connection factory.
-	 *
 	 * @param redisson the redisson
 	 * @return the redisson connection factory
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnClass(RedissonConnectionFactory.class)
 	public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
 		return new RedissonConnectionFactory(redisson);
 	}
+
 }

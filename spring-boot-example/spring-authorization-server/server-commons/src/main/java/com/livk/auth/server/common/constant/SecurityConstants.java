@@ -35,10 +35,10 @@ public interface SecurityConstants {
 	String SMS = "sms";
 
 	AuthorizationGrantType GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
+
 	String PASSWORD = "password";
 
 	AuthorizationGrantType GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
-
 
 	/**
 	 * {bcrypt} 加密的特征码
@@ -93,4 +93,5 @@ public interface SecurityConstants {
 	String DEFAULT_ID_SUFFIX = "}";
 
 	String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
+
 }

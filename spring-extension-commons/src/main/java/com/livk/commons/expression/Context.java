@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The type Context.
+ * 解析器上下文
  *
  * @author livk
  */
@@ -43,13 +43,11 @@ public class Context implements Map<String, Object> {
 
 	/**
 	 * Instantiates a new Context.
-	 *
 	 * @param map the map
 	 */
 	public Context(Map<String, ?> map) {
 		variables = Maps.newHashMap(map);
 	}
-
 
 	@Override
 	public int size() {
@@ -84,9 +82,8 @@ public class Context implements Map<String, Object> {
 
 	/**
 	 * Put object.
-	 *
-	 * @param key      the key
-	 * @param value    the value
+	 * @param key the key
+	 * @param value the value
 	 * @param override the override
 	 * @return the object
 	 */
@@ -111,14 +108,14 @@ public class Context implements Map<String, Object> {
 
 	/**
 	 * Put all.
-	 *
-	 * @param m        the m
+	 * @param m the m
 	 * @param override the override
 	 */
 	public void putAll(Map<? extends String, ?> m, boolean override) {
 		if (override) {
 			variables.putAll(m);
-		} else {
+		}
+		else {
 			for (Entry<? extends String, ?> entry : m.entrySet()) {
 				if (!variables.containsKey(entry.getKey())) {
 					variables.put(entry.getKey(), entry.getValue());
@@ -149,4 +146,5 @@ public class Context implements Map<String, Object> {
 	public Set<Entry<String, Object>> entrySet() {
 		return variables.entrySet();
 	}
+
 }

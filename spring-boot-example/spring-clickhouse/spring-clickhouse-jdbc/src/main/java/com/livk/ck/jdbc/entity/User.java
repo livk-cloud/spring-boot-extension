@@ -39,6 +39,7 @@ public class User {
 	private String appId;
 
 	private String version;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date regTime;
 

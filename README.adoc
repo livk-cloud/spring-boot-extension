@@ -35,13 +35,15 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
     |--spring-boot-extension-tests(测试用例集合)
     |--spring-extension-bom(BOM)
     |--spring-extension-commons(通用基础工具包)
-    |--spring-extension-core(拓展核心包)
+    |--spring-extension-context(拓展核心包)
     |--spring-extension-dependencies(依赖版本管理)
 ----
 
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:spring-boot-example/example.adoc[示例详情] +
+
+项目相关版本控制 +
 
 #Maven#
 
@@ -66,6 +68,34 @@ link:spring-boot-example/example.adoc[示例详情] +
 ----
 dependencies {
     implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
+}
+----
+
+仅使用当前项目的依赖相关 +
+
+#Maven#
+
+[source,xml,indent=0]
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.livk-cloud</groupId>
+            <artifactId>spring-extension-bom</artifactId>
+            <version>${version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+#Gradle#
+
+[source,groovy,indent=0]
+----
+dependencies {
+    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
 }
 ----
 

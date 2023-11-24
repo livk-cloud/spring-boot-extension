@@ -18,6 +18,7 @@
 package com.livk.commons.aop;
 
 import org.springframework.aop.Pointcut;
+import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 
@@ -29,19 +30,23 @@ import java.lang.annotation.Annotation;
  * @see AnnotationPointcutType
  * @see AnnotationAbstractPointcutAdvisor
  */
-public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation> extends AnnotationAbstractPointcutAdvisor<A> {
+public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation>
+		extends AnnotationAbstractPointcutAdvisor<A> {
 
+	@NonNull
 	@Override
 	public Pointcut getPointcut() {
 		return pointcutType().getPointcut(annotationType);
 	}
 
 	/**
-	 * <p>用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}</p>
-	 *
+	 * <p>
+	 * 用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}
+	 * </p>
 	 * @return the annotation pointcut type
 	 */
 	protected AnnotationPointcutType pointcutType() {
 		return AnnotationPointcutType.AUTO;
 	}
+
 }

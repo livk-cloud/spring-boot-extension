@@ -32,10 +32,13 @@ import java.util.Map;
  */
 @Slf4j
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
+
 	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) {
 		log.info("退出");
 		SecurityContextHolder.getContextHolderStrategy().clearContext();
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_OK, "msg", "exit successfully"));
 	}
+
 }

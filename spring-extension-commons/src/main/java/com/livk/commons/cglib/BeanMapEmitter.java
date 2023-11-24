@@ -33,32 +33,32 @@ import java.util.Map;
  * @author livk
  */
 class BeanMapEmitter extends ClassEmitter {
-	private static final Type BEAN_MAP =
-		TypeUtils.parseType("com.livk.commons.cglib.BeanMap");
-	private static final Type FIXED_KEY_SET =
-		TypeUtils.parseType("org.springframework.cglib.beans.FixedKeySet");
-	private static final Signature CSTRUCT_OBJECT =
-		TypeUtils.parseConstructor("Object");
-	private static final Signature CSTRUCT_STRING_ARRAY =
-		TypeUtils.parseConstructor("String[]");
-	private static final Signature BEAN_MAP_GET =
-		TypeUtils.parseSignature("Object get(Object, Object)");
-	private static final Signature BEAN_MAP_PUT =
-		TypeUtils.parseSignature("Object put(Object, Object, Object)");
-	private static final Signature KEY_SET =
-		TypeUtils.parseSignature("java.util.Set keySet()");
-	private static final Signature NEW_INSTANCE =
-		new Signature("newInstance", BEAN_MAP, new Type[]{Constants.TYPE_OBJECT});
-	private static final Signature GET_PROPERTY_TYPE =
-		TypeUtils.parseSignature("Class getPropertyType(String)");
+
+	private static final Type BEAN_MAP = TypeUtils.parseType("com.livk.commons.cglib.BeanMap");
+
+	private static final Type FIXED_KEY_SET = TypeUtils.parseType("org.springframework.cglib.beans.FixedKeySet");
+
+	private static final Signature CSTRUCT_OBJECT = TypeUtils.parseConstructor("Object");
+
+	private static final Signature CSTRUCT_STRING_ARRAY = TypeUtils.parseConstructor("String[]");
+
+	private static final Signature BEAN_MAP_GET = TypeUtils.parseSignature("Object get(Object, Object)");
+
+	private static final Signature BEAN_MAP_PUT = TypeUtils.parseSignature("Object put(Object, Object, Object)");
+
+	private static final Signature KEY_SET = TypeUtils.parseSignature("java.util.Set keySet()");
+
+	private static final Signature NEW_INSTANCE = new Signature("newInstance", BEAN_MAP,
+			new Type[] { Constants.TYPE_OBJECT });
+
+	private static final Signature GET_PROPERTY_TYPE = TypeUtils.parseSignature("Class getPropertyType(String)");
 
 	/**
 	 * Instantiates a new Bean map emitter.
-	 *
-	 * @param v         the v
+	 * @param v the v
 	 * @param className the class name
-	 * @param type      the type
-	 * @param require   the require
+	 * @param type the type
+	 * @param require the require
 	 */
 	public BeanMapEmitter(ClassVisitor v, String className, Class<?> type, int require) {
 		super(v);
@@ -75,10 +75,10 @@ class BeanMapEmitter extends ClassEmitter {
 		allProps.putAll(setters);
 
 		if (require != 0) {
-			for (Iterator<String> it = allProps.keySet().iterator(); it.hasNext(); ) {
+			for (Iterator<String> it = allProps.keySet().iterator(); it.hasNext();) {
 				String name = it.next();
-				if ((((require & BeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name)) ||
-					(((require & BeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
+				if ((((require & BeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name))
+						|| (((require & BeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
 					it.remove();
 					getters.remove(name);
 					setters.remove(name);
@@ -152,7 +152,8 @@ class BeanMapEmitter extends ClassEmitter {
 				PropertyDescriptor pd = setters.get((String) key);
 				if (pd.getReadMethod() == null) {
 					e.aconst_null();
-				} else {
+				}
+				else {
 					MethodInfo read = ReflectUtils.getMethodInfo(pd.getReadMethod());
 					e.dup();
 					e.invoke(read);
@@ -216,4 +217,5 @@ class BeanMapEmitter extends ClassEmitter {
 		});
 		e.end_method();
 	}
+
 }

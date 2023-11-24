@@ -51,7 +51,8 @@ public enum CryptoType {
 			str = str.replaceFirst(algorithm + "\\(", "");
 			int length = str.length();
 			return str.substring(0, length - 1);
-		} else {
+		}
+		else {
 			return str;
 		}
 	}
@@ -59,4 +60,5 @@ public enum CryptoType {
 	private boolean checkWrapper(String str) {
 		return str.startsWith(algorithm + "(") && str.endsWith(")");
 	}
+
 }

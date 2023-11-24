@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class LivkStreamListener
-	implements StreamListener<String, ObjectRecord<String, String>>, InitializingBean, DisposableBean {
+		implements StreamListener<String, ObjectRecord<String, String>>, InitializingBean, DisposableBean {
 
 	private final RedisOps redisOps;
 
@@ -65,20 +65,25 @@ public class LivkStreamListener
 			if (groups.isEmpty()) {
 				redisOps.opsForStream().createGroup("livk-streamKey", "livk-group");
 			}
-		} else {
+		}
+		else {
 			redisOps.opsForStream().createGroup("livk-streamKey", "livk-group");
 		}
 
-		StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, String>> options
-			= StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder().batchSize(10)
+		StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, String>> options = StreamMessageListenerContainer.StreamMessageListenerContainerOptions
+			.builder()
+			.batchSize(10)
 			.executor(new ThreadPoolExecutor(4, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10)))
-			.errorHandler(t -> log.error("ERROR:{}", t.getMessage())).pollTimeout(Duration.ZERO)
-			.serializer(RedisSerializer.string()).targetType(String.class).build();
+			.errorHandler(t -> log.error("ERROR:{}", t.getMessage()))
+			.pollTimeout(Duration.ZERO)
+			.serializer(RedisSerializer.string())
+			.targetType(String.class)
+			.build();
 		this.listenerContainer = StreamMessageListenerContainer
 			.create(Objects.requireNonNull(redisOps.getConnectionFactory()), options);
 
 		this.listenerContainer.receive(Consumer.from("livk-group", "livk"),
-			StreamOffset.create("livk-streamKey", ReadOffset.lastConsumed()), this);
+				StreamOffset.create("livk-streamKey", ReadOffset.lastConsumed()), this);
 		this.listenerContainer.start();
 	}
 

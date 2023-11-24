@@ -69,5 +69,5 @@ class Ip2RegionSearchTest {
 		assertEquals("保定市", jsonNode.get("city").asText());
 		assertEquals("联通", jsonNode.get("operator").asText());
 	}
-}
 
+}

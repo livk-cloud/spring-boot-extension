@@ -26,7 +26,7 @@ import java.net.NetworkInterface;
 
 /**
  * <p>
- * Snowflake
+ * 雪花算法生成器
  * </p>
  *
  * @author livk
@@ -55,21 +55,23 @@ public class Snowflake {
 	private final static long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
 
 	private static long lastTimestamp = -1L;
+
 	private final long workerId;
+
 	private final long datacenterId;
+
 	private long sequence = 0L;
 
 	/**
-	 * Instantiates a new Snowflake.
+	 * 构建一个默认的生成器
 	 */
 	public Snowflake() {
 		this(-1, -1);
 	}
 
 	/**
-	 * Instantiates a new Snowflake.
-	 *
-	 * @param workerId     Working machine ID
+	 * 构建一个的生成器
+	 * @param workerId Working machine ID
 	 * @param datacenterId Serial number
 	 */
 	public Snowflake(long workerId, long datacenterId) {
@@ -87,7 +89,6 @@ public class Snowflake {
 	 * <p>
 	 * 获取 maxWorkerId
 	 * </p>
-	 *
 	 * @param datacenterId the datacenter id
 	 * @return the max worker id
 	 */
@@ -105,7 +106,6 @@ public class Snowflake {
 	 * <p>
 	 * 数据标识id部分
 	 * </p>
-	 *
 	 * @return the max datacenter id
 	 */
 	protected static long getMaxDatacenterId() {
@@ -115,13 +115,15 @@ public class Snowflake {
 			NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 			if (network == null) {
 				id = 1L;
-			} else {
+			}
+			else {
 				byte[] mac = network.getHardwareAddress();
 				id = ((0x000000FF & (long) mac[mac.length - 1])
-					  | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
+						| (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
 				id = id % (MAX_DATACENTER_ID + 1);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("getDatacenterId:{}", e.getMessage(), e);
 		}
 		return id;
@@ -129,13 +131,13 @@ public class Snowflake {
 
 	/**
 	 * 获取下一个ID
-	 *
 	 * @return ID long
 	 */
 	public synchronized long nextId() {
 		long timestamp = System.currentTimeMillis();
 		if (timestamp < lastTimestamp) {
-			throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
+			throw new RuntimeException(String.format(
+					"Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
 		}
 
 		if (lastTimestamp == timestamp) {
@@ -143,14 +145,14 @@ public class Snowflake {
 			if (sequence == 0) {
 				timestamp = tilNextMillis(lastTimestamp);
 			}
-		} else {
+		}
+		else {
 			sequence = 0L;
 		}
 		lastTimestamp = timestamp;
 
-		return ((timestamp - TIME_START_BASE) << TIMESTAMP_LEFT_SHIFT)
-			   | (datacenterId << DATACENTER_ID_SHIFT)
-			   | (workerId << WORKER_ID_SHIFT) | sequence;
+		return ((timestamp - TIME_START_BASE) << TIMESTAMP_LEFT_SHIFT) | (datacenterId << DATACENTER_ID_SHIFT)
+				| (workerId << WORKER_ID_SHIFT) | sequence;
 	}
 
 	private long tilNextMillis(long lastTimestamp) {
@@ -160,4 +162,5 @@ public class Snowflake {
 		}
 		return timestamp;
 	}
+
 }

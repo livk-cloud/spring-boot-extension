@@ -25,37 +25,37 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * The interface Loader.
+ * SPI加载器
  *
  * @author livk
+ * @see ServiceLoader
+ * @see SpringFactoriesLoader
  */
 public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
 	/**
-	 * The constant JDK_SERVICE.
+	 * JDK SPI加载器实例
 	 */
 	ProviderLoader JDK_SERVICE = new AbstractLoader.JdkServiceLoader();
 
 	/**
-	 * The constant SPRING_FACTORY.
+	 * Spring SPI加载器实例
 	 */
 	ProviderLoader SPRING_FACTORY = new AbstractLoader.SpringFactoryLoader();
 
 	/**
-	 * Load stream.
-	 *
-	 * @param <T>  the type parameter
-	 * @param type the type
-	 * @return the stream
+	 * 根据type加载对应的实例
+	 * @param <T> type parameter
+	 * @param type type
+	 * @return list
 	 */
 	<T> List<T> load(Class<T> type);
 
 	/**
-	 * Load list.
-	 *
-	 * @param <T>            the type parameter
-	 * @param resolvableType the resolvable type
-	 * @return the list
+	 * 根据resolvableType加载对应的实例
+	 * @param <T> type parameter
+	 * @param resolvableType resolvable type
+	 * @return list
 	 */
 	default <T> List<T> load(ResolvableType resolvableType) {
 		Class<T> type = ClassUtils.toClass(resolvableType.getType());
@@ -63,7 +63,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 	}
 
 	/**
-	 * The type Abstract loader.
+	 * 抽象ProviderLoader
 	 */
 	abstract non-sealed class AbstractLoader implements ProviderLoader {
 
@@ -74,12 +74,11 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 		}
 
 		/**
-		 * Load list.
-		 *
-		 * @param <T>         the type parameter
-		 * @param type        the type
-		 * @param classLoader the class loader
-		 * @return the list
+		 * 根据type加载对应的实例
+		 * @param <T> type parameter
+		 * @param type type
+		 * @param classLoader classLoader
+		 * @return list
 		 */
 		protected abstract <T> List<T> load(Class<T> type, ClassLoader classLoader);
 
@@ -89,6 +88,7 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return Lists.newArrayList(ServiceLoader.load(type, classLoader));
 			}
+
 		}
 
 		private static class SpringFactoryLoader extends AbstractLoader {
@@ -97,6 +97,9 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return SpringFactoriesLoader.loadFactories(type, classLoader);
 			}
+
 		}
+
 	}
+
 }

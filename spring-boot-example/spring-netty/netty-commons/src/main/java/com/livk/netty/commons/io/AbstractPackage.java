@@ -28,4 +28,5 @@ public abstract class AbstractPackage {
 	protected Byte version = 1;
 
 	public abstract Byte type();
+
 }

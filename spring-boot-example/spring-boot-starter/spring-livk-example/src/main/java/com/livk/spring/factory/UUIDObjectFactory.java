@@ -25,8 +25,7 @@ import java.io.Serializable;
 /**
  * <p>
  * {@see AutowireUtils#resolveAutowiringValue(Object, Class)}
- * 需要注册interface并且当前类实现{@link Serializable}
- * 则会被spring代理
+ * 需要注册interface并且当前类实现{@link Serializable} 则会被spring代理
  * </p>
  *
  * @author livk
@@ -37,4 +36,5 @@ public class UUIDObjectFactory implements ObjectFactory<UUIDRequest>, Serializab
 	public UUIDRequest getObject() throws BeansException {
 		return UUIDConTextHolder::get;
 	}
+
 }

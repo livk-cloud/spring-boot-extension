@@ -40,7 +40,6 @@ class SpringContextHolderTest {
 
 	BeanTest bean = new BeanTest();
 
-
 	@Test
 	void getBean() {
 		SpringContextHolder.registerBean(bean, "test");
@@ -51,7 +50,6 @@ class SpringContextHolderTest {
 			context.removeBeanDefinition("test");
 		}
 	}
-
 
 	@Test
 	void getBeanProvider() {
@@ -101,6 +99,9 @@ class SpringContextHolderTest {
 
 	@Data
 	static class BeanTest {
+
 		private final Long id = 1L;
+
 	}
+
 }

@@ -42,14 +42,12 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	private BeanFactory beanFactory;
 
-
 	private Class<?> type;
 
 	private AdapterFactory<? extends HttpExchangeAdapter> adapterFactory;
 
 	/**
 	 * Sets type.
-	 *
 	 * @param httpInterfaceTypeName the http interface type name
 	 */
 	public void setType(String httpInterfaceTypeName) {
@@ -85,4 +83,5 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
+
 }

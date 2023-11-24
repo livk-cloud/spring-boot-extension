@@ -29,6 +29,7 @@ import org.springframework.kafka.core.KafkaAdmin;
  */
 @Configuration
 public class KafkaConfig {
+
 	@Bean
 	public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
 		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties(null));

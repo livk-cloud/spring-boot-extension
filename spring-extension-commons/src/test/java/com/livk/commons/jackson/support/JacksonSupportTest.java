@@ -54,32 +54,32 @@ class JacksonSupportTest {
 
 	@Language("json")
 	static String json = """
-		{
-		                    "c": "1",
-		                    "a": "2",
-		                    "b": {
-		                        "c": 3
-		                    }
-		                }""";
+			{
+			                    "c": "1",
+			                    "a": "2",
+			                    "b": {
+			                        "c": 3
+			                    }
+			                }""";
 
 	@Language("yaml")
 	static String yaml = """
-		c: 1
-		a: 2
-		b:
-		  c: 3
-		""";
+			c: 1
+			a: 2
+			b:
+			  c: 3
+			""";
 
 	@Language("xml")
 	static String xml = """
-		<pro>
-		    <c>1</c>
-		    <a>2</a>
-		    <b>
-		        <c>3</c>
-		    </b>
-		</pro>
-		            """;
+			<pro>
+			    <c>1</c>
+			    <a>2</a>
+			    <b>
+			        <c>3</c>
+			    </b>
+			</pro>
+			            """;
 
 	@Test
 	void javaType() {
@@ -98,18 +98,21 @@ class JacksonSupportTest {
 		assertEquals(String.class, type.getBindings().getBoundType(0).getRawClass());
 		assertEquals(Integer.class, type.getBindings().getBoundType(1).getRawClass());
 
-		assertEquals(String.class, TypeFactoryUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
-		assertEquals(Integer.class, TypeFactoryUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
-		assertEquals(Long.class, TypeFactoryUtils.collectionType(Long.class).getBindings().getBoundType(0).getRawClass());
+		assertEquals(String.class,
+				TypeFactoryUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
+		assertEquals(Integer.class,
+				TypeFactoryUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
+		assertEquals(Long.class,
+				TypeFactoryUtils.collectionType(Long.class).getBindings().getBoundType(0).getRawClass());
 
 		assertEquals(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(String.class)),
-			TypeFactoryUtils.mapType(String.class, String.class).getBindings().getTypeParameters());
+				TypeFactoryUtils.mapType(String.class, String.class).getBindings().getTypeParameters());
 		assertEquals(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(Integer.class)),
-			TypeFactoryUtils.mapType(String.class, Integer.class).getBindings().getTypeParameters());
+				TypeFactoryUtils.mapType(String.class, Integer.class).getBindings().getTypeParameters());
 		assertEquals(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(String.class)),
-			TypeFactoryUtils.mapType(Integer.class, String.class).getBindings().getTypeParameters());
+				TypeFactoryUtils.mapType(Integer.class, String.class).getBindings().getTypeParameters());
 		assertEquals(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(Integer.class)),
-			TypeFactoryUtils.mapType(Integer.class, Integer.class).getBindings().getTypeParameters());
+				TypeFactoryUtils.mapType(Integer.class, Integer.class).getBindings().getTypeParameters());
 	}
 
 	@Test
@@ -208,7 +211,8 @@ class JacksonSupportTest {
 	@Test
 	void testToJsonStr() {
 		String result = JSON.writeValueAsString(Map.of("username", "password"));
-		@Language("json") String json = "{\"username\":\"password\"}";
+		@Language("json")
+		String json = "{\"username\":\"password\"}";
 		assertEquals(json, result);
 
 		byte[] bytes = JSON.writeValueAsBytes(Map.of("username", "password"));
@@ -218,10 +222,11 @@ class JacksonSupportTest {
 	@Test
 	void testToYamlStr() {
 		String result = YAML.writeValueAsString(Map.of("username", "password"));
-		@Language("yml") String yml = """
-			---
-			username: "password"
-			""";
+		@Language("yml")
+		String yml = """
+				---
+				username: "password"
+				""";
 		assertEquals(yml, result);
 
 		byte[] bytes = YAML.writeValueAsBytes(Map.of("username", "password"));
@@ -231,7 +236,8 @@ class JacksonSupportTest {
 	@Test
 	void testToXmlStr() {
 		String result = XML.writeValueAsString(Map.of("username", "password"));
-		@Language("xml") String xml = "<Map1><username>password</username></Map1>";
+		@Language("xml")
+		String xml = "<Map1><username>password</username></Map1>";
 		assertEquals(xml, result);
 
 		byte[] bytes = XML.writeValueAsBytes(Map.of("username", "password"));
@@ -261,25 +267,28 @@ class JacksonSupportTest {
 
 	@Test
 	void convertJson() {
-		@Language("json") String json = """
-			{
-			  "dependency": [
-			    {
-			      "groupId": "org.springframework.boot",
-			      "artifactId": "spring-boot-starter-logging"
-			    },
-			    {
-			      "groupId": "org.springframework.boot",
-			      "artifactId": "spring-boot-starter-json"
-			    }
-			  ]
-			}
-			""";
+		@Language("json")
+		String json = """
+				{
+				  "dependency": [
+				    {
+				      "groupId": "org.springframework.boot",
+				      "artifactId": "spring-boot-starter-logging"
+				    },
+				    {
+				      "groupId": "org.springframework.boot",
+				      "artifactId": "spring-boot-starter-json"
+				    }
+				  ]
+				}
+				""";
 		JsonNode jsonNode = JSON.readTree(json);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
-		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
-		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
+		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-logging");
+		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, JSON.convertValue(jsonNodeList.get(0), mapType));
@@ -297,19 +306,22 @@ class JacksonSupportTest {
 
 	@Test
 	void convertYaml() {
-		@Language("yml") String yml = """
-			---
-			dependency:
-			  - groupId: org.springframework.boot
-			    artifactId: spring-boot-starter-logging
-			  - groupId: org.springframework.boot
-			    artifactId: spring-boot-starter-json
-			                                                """;
+		@Language("yml")
+		String yml = """
+				---
+				dependency:
+				  - groupId: org.springframework.boot
+				    artifactId: spring-boot-starter-logging
+				  - groupId: org.springframework.boot
+				    artifactId: spring-boot-starter-json
+				                                                """;
 		JsonNode jsonNode = YAML.readTree(yml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
-		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
-		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
+		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-logging");
+		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, YAML.convertValue(jsonNodeList.get(0), mapType));
@@ -327,23 +339,26 @@ class JacksonSupportTest {
 
 	@Test
 	void convertXml() {
-		@Language("xml") String xml = """
-			<pro>
-			    <dependency>
-			        <groupId>org.springframework.boot</groupId>
-			        <artifactId>spring-boot-starter-logging</artifactId>
-			    </dependency>
-			    <dependency>
-			        <groupId>org.springframework.boot</groupId>
-			        <artifactId>spring-boot-starter-json</artifactId>
-			    </dependency>
-			</pro>
-			                                               """;
+		@Language("xml")
+		String xml = """
+				<pro>
+				    <dependency>
+				        <groupId>org.springframework.boot</groupId>
+				        <artifactId>spring-boot-starter-logging</artifactId>
+				    </dependency>
+				    <dependency>
+				        <groupId>org.springframework.boot</groupId>
+				        <artifactId>spring-boot-starter-json</artifactId>
+				    </dependency>
+				</pro>
+				                                               """;
 		JsonNode jsonNode = XML.readTree(xml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
-		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-logging");
-		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId", "spring-boot-starter-json");
+		Map<String, String> loggingDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-logging");
+		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
+				"spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 		assertEquals(loggingDependency, XML.convertValue(jsonNodeList.get(0), mapType));
@@ -358,4 +373,5 @@ class JacksonSupportTest {
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
 		assertEquals(dependencyManagement, XML.convertValue(jsonNode, constructMapType));
 	}
+
 }

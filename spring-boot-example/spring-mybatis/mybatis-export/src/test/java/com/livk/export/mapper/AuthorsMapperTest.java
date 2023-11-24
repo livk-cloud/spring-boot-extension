@@ -69,4 +69,5 @@ class AuthorsMapperTest {
 			sqlSession.commit();
 		}
 	}
+
 }

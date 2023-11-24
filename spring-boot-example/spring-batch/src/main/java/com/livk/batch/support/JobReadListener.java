@@ -46,4 +46,5 @@ public class JobReadListener implements ItemReadListener<User> {
 	public void onReadError(Exception ex) {
 		log.error("spring batch read an error occurred ,message:{}", ex.getMessage(), ex);
 	}
+
 }

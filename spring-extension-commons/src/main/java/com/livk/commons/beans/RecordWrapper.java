@@ -18,9 +18,10 @@
 package com.livk.commons.beans;
 
 /**
- * The type Record wrapper.
+ * 使用record进行默认实现
  *
- * @param <V> the type parameter
+ * @param <V> 相关实例
+ * @see com.livk.commons.beans.GenericWrapper#of(Object)
  * @author livk
  */
 record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {

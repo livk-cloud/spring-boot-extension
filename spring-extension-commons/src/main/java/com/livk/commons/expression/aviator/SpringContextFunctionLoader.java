@@ -17,9 +17,12 @@
 
 package com.livk.commons.expression.aviator;
 
+import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.FunctionLoader;
 import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
@@ -32,7 +35,7 @@ import org.springframework.context.ApplicationContext;
  * @see AviatorFunction
  */
 @RequiredArgsConstructor
-public class SpringContextFunctionLoader implements FunctionLoader {
+public class SpringContextFunctionLoader implements FunctionLoader, InitializingBean, DisposableBean {
 
 	private final ApplicationContext applicationContext;
 
@@ -40,8 +43,20 @@ public class SpringContextFunctionLoader implements FunctionLoader {
 	public AviatorFunction onFunctionNotFound(String name) {
 		try {
 			return this.applicationContext.getBean(name, AviatorFunction.class);
-		} catch (NoSuchBeanDefinitionException e) {
+		}
+		catch (NoSuchBeanDefinitionException e) {
 			return null;
 		}
 	}
+
+	@Override
+	public void afterPropertiesSet() {
+		AviatorEvaluator.addFunctionLoader(this);
+	}
+
+	@Override
+	public void destroy() {
+		AviatorEvaluator.removeFunctionLoader(this);
+	}
+
 }

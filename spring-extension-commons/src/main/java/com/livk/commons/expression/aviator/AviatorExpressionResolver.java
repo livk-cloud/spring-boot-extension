@@ -39,4 +39,5 @@ public class AviatorExpressionResolver extends CacheExpressionResolver<Expressio
 	protected <T> T calculate(Expression expression, Context context, Class<T> returnType) {
 		return returnType.cast(expression.execute(context));
 	}
+
 }

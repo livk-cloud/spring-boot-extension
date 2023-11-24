@@ -41,12 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author livk
  */
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureWebTestClient(timeout = "15000")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookControllerTest {
@@ -75,40 +71,32 @@ class BookControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void list() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			query{
-			    bookList {
-			        title
-			        author {
-			            name
-			        }
-			    }
-			}""";
-		List<Map> result = tester.document(document)
-			.execute()
-			.path("bookList")
-			.entityList(Map.class)
-			.get();
+				query{
+				    bookList {
+				        title
+				        author {
+				            name
+				        }
+				    }
+				}""";
+		List<Map> result = tester.document(document).execute().path("bookList").entityList(Map.class).get();
 		assertNotNull(result);
 
-		//language=GraphQL
+		// language=GraphQL
 		String d1 = """
-			query{
-			  bookList {
-			    isbn
-			    title
-			    author {
-			      name
-			      age
-			    }
-			  }
-			}""";
-		List<Map> r1 = tester.document(d1)
-			.execute()
-			.path("bookList")
-			.entityList(Map.class)
-			.get();
+				query{
+				  bookList {
+				    isbn
+				    title
+				    author {
+				      name
+				      age
+				    }
+				  }
+				}""";
+		List<Map> r1 = tester.document(d1).execute().path("bookList").entityList(Map.class).get();
 		assertNotNull(r1);
 	}
 
@@ -116,23 +104,19 @@ class BookControllerTest {
 	@Test
 	@SuppressWarnings("rawtypes")
 	void bookByIsbn() {
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			query{
-			    bookByIsbn(isbn: "9787121377921"){
-			        isbn
-			        title
-			        author {
-			            name
-			            age
-			        }
-			    }
-			}""";
-		Map result = tester.document(document)
-			.execute()
-			.path("bookByIsbn")
-			.entity(Map.class)
-			.get();
+				query{
+				    bookByIsbn(isbn: "9787121377921"){
+				        isbn
+				        title
+				        author {
+				            name
+				            age
+				        }
+				    }
+				}""";
+		Map result = tester.document(document).execute().path("bookByIsbn").entity(Map.class).get();
 		assertNotNull(result);
 	}
 
@@ -140,56 +124,44 @@ class BookControllerTest {
 	@Test
 	void createBook() {
 		bookMapper.clear();
-		//language=GraphQL
+		// language=GraphQL
 		String d1 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121282089",
-			        title: "JavaEE开发的颠覆者：Spring Boot实战",
-			        pages: 524,
-			        authorIdCardNo: "341234567891234567"
-			    } )
-			}""";
-		//language=GraphQL
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121282089",
+				        title: "JavaEE开发的颠覆者：Spring Boot实战",
+				        pages: 524,
+				        authorIdCardNo: "341234567891234567"
+				    } )
+				}""";
+		// language=GraphQL
 		String d2 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121377921",
-			        title: "从企业级开发到云原生微服务:Spring Boot实战",
-			        pages: 504,
-			        authorIdCardNo: "341234567891234567"
-			    } )
-			}""";
-		//language=GraphQL
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121377921",
+				        title: "从企业级开发到云原生微服务:Spring Boot实战",
+				        pages: 504,
+				        authorIdCardNo: "341234567891234567"
+				    } )
+				}""";
+		// language=GraphQL
 		String d3 = """
-			mutation{
-			    createBook(dto: {
-			        isbn: "9787121347962",
-			        title: "架构整洁之道",
-			        pages: 348,
-			        authorIdCardNo: "341234567891234568"
-			    } )
-			}""";
+				mutation{
+				    createBook(dto: {
+				        isbn: "9787121347962",
+				        title: "架构整洁之道",
+				        pages: 348,
+				        authorIdCardNo: "341234567891234568"
+				    } )
+				}""";
 
-		Boolean r1 = tester.document(d1)
-			.execute()
-			.path("createBook")
-			.entity(Boolean.class)
-			.get();
+		Boolean r1 = tester.document(d1).execute().path("createBook").entity(Boolean.class).get();
 		assertTrue(r1);
 
-		Boolean r2 = tester.document(d2)
-			.execute()
-			.path("createBook")
-			.entity(Boolean.class)
-			.get();
+		Boolean r2 = tester.document(d2).execute().path("createBook").entity(Boolean.class).get();
 		assertTrue(r2);
 
-		Boolean r3 = tester.document(d3)
-			.execute()
-			.path("createBook")
-			.entity(Boolean.class)
-			.get();
+		Boolean r3 = tester.document(d3).execute().path("createBook").entity(Boolean.class).get();
 		assertTrue(r3);
 	}
 
@@ -197,35 +169,28 @@ class BookControllerTest {
 	@Test
 	void createAuthor() {
 		authorMapper.clear();
-		//language=GraphQL
+		// language=GraphQL
 		String document = """
-			mutation{
-			    createAuthor(dto: {
-			        idCardNo: "341234567891234567",
-			        name: "汪云飞",
-			        age: 38
-			    })
-			}""";
-		Boolean result = tester.document(document)
-			.execute()
-			.path("createAuthor")
-			.entity(Boolean.class)
-			.get();
+				mutation{
+				    createAuthor(dto: {
+				        idCardNo: "341234567891234567",
+				        name: "汪云飞",
+				        age: 38
+				    })
+				}""";
+		Boolean result = tester.document(document).execute().path("createAuthor").entity(Boolean.class).get();
 		assertTrue(result);
-		//language=GraphQL
+		// language=GraphQL
 		String d2 = """
-			mutation{
-			    createAuthor(dto: {
-			        idCardNo: "341234567891234568",
-			        name: "罗伯特C.马丁",
-			        age: 70 }
-			    )
-			}""";
-		Boolean result2 = tester.document(d2)
-			.execute()
-			.path("createAuthor")
-			.entity(Boolean.class)
-			.get();
+				mutation{
+				    createAuthor(dto: {
+				        idCardNo: "341234567891234568",
+				        name: "罗伯特C.马丁",
+				        age: 70 }
+				    )
+				}""";
+		Boolean result2 = tester.document(d2).execute().path("createAuthor").entity(Boolean.class).get();
 		assertTrue(result2);
 	}
+
 }

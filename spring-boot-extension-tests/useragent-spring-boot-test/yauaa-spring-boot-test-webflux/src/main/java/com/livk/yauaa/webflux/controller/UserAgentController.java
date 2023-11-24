@@ -50,4 +50,5 @@ public class UserAgentController {
 			.collect(Collectors.toMap(c -> UUID.randomUUID().toString(), Function.identity()))
 			.map(ResponseEntity::ok);
 	}
+
 }

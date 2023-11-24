@@ -31,6 +31,7 @@ import java.util.stream.Stream;
  * @param <T> the type parameter
  * @author livk
  */
+@Deprecated(since = "1.1.6", forRemoval = true)
 @RequiredArgsConstructor(staticName = "create")
 public class Predicates<T> {
 
@@ -38,8 +39,7 @@ public class Predicates<T> {
 
 	/**
 	 * Create predicates.
-	 *
-	 * @param <T>       the type parameter
+	 * @param <T> the type parameter
 	 * @param dataArray the data array
 	 * @return the predicates
 	 */
@@ -49,11 +49,9 @@ public class Predicates<T> {
 		return new Predicates<>(Arrays.stream(dataArray));
 	}
 
-
 	/**
 	 * Map predicates.
-	 *
-	 * @param <R>      the type parameter
+	 * @param <R> the type parameter
 	 * @param function the function
 	 * @return the predicates
 	 */
@@ -63,7 +61,6 @@ public class Predicates<T> {
 
 	/**
 	 * All checked boolean.
-	 *
 	 * @param predicate the predicate
 	 * @return the boolean
 	 */
@@ -73,7 +70,6 @@ public class Predicates<T> {
 
 	/**
 	 * Any checked boolean.
-	 *
 	 * @param predicate the predicate
 	 * @return the boolean
 	 */
@@ -83,11 +79,11 @@ public class Predicates<T> {
 
 	/**
 	 * None match boolean.
-	 *
 	 * @param predicate the predicate
 	 * @return the boolean
 	 */
 	public boolean noneMatch(Predicate<T> predicate) {
 		return dataStream.noneMatch(predicate);
 	}
+
 }

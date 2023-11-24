@@ -39,4 +39,5 @@ public class MessageSourceUtils {
 		messageSource.setDefaultLocale(Locale.CHINA);
 		return messageSource;
 	}
+
 }

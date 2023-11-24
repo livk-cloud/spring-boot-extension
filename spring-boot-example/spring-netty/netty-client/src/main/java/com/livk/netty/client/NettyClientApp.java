@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 public class NettyClientApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
@@ -35,4 +36,5 @@ public class NettyClientApp {
 	public NettyClient nettyClient() {
 		return new NettyClient();
 	}
+
 }

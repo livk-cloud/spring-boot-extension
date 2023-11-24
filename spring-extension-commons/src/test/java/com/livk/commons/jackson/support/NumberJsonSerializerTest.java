@@ -74,5 +74,7 @@ class NumberJsonSerializerTest {
 
 		@NumberJsonFormat(pattern = "#0.000")
 		private BigDecimal sunCount;
+
 	}
+
 }

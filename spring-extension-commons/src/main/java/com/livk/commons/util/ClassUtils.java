@@ -25,7 +25,7 @@ import java.lang.reflect.TypeVariable;
 
 /**
  * <p>
- * ClassUtils
+ * class相关工具类
  * </p>
  *
  * @author livk
@@ -34,42 +34,41 @@ import java.lang.reflect.TypeVariable;
 public class ClassUtils extends org.springframework.util.ClassUtils {
 
 	/**
-	 * To class.
-	 *
-	 * @param <T>  the type parameter
-	 * @param type the type
-	 * @return the class
+	 * 将Type安全的转成Class
+	 * @param <T> type parameter
+	 * @param type type
+	 * @return class
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> toClass(Type type) {
 		if (type instanceof ParameterizedType parameterizedType) {
 			return toClass(parameterizedType.getRawType());
-		} else if (type instanceof TypeVariable<?> typeVariable) {
+		}
+		else if (type instanceof TypeVariable<?> typeVariable) {
 			String className = typeVariable.getGenericDeclaration().toString();
 			return toClass(resolveClassName(className));
-		} else {
+		}
+		else {
 			return (Class<T>) type;
 		}
 	}
 
-
 	/**
-	 * Resolve class name class.
-	 *
-	 * @param className the class name
-	 * @return the class
+	 * 将class全类名转成class
+	 * @param className class name
+	 * @return class
 	 */
 	public static Class<?> resolveClassName(String className) {
 		return resolveClassName(className, getDefaultClassLoader());
 	}
 
 	/**
-	 * Is present boolean.
-	 *
-	 * @param className the class name
-	 * @return the boolean
+	 * 判定当前类是否被加载
+	 * @param className class name
+	 * @return boolean
 	 */
 	public static boolean isPresent(String className) {
 		return isPresent(className, getDefaultClassLoader());
 	}
+
 }

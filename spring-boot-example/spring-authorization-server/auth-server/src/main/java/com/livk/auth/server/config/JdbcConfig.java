@@ -50,7 +50,8 @@ public class JdbcConfig {
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-		RegisteredClient client = RegisteredClient.withId("livk").clientId("livk-client")
+		RegisteredClient client = RegisteredClient.withId("livk")
+			.clientId("livk-client")
 			.clientSecret(new BCryptPasswordEncoder().encode("secret"))
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
@@ -81,13 +82,14 @@ public class JdbcConfig {
 
 	@Bean
 	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
-														   RegisteredClientRepository registeredClientRepository) {
+			RegisteredClientRepository registeredClientRepository) {
 		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
 	}
 
 	@Bean
 	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
-																		 RegisteredClientRepository registeredClientRepository) {
+			RegisteredClientRepository registeredClientRepository) {
 		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
 	}
+
 }

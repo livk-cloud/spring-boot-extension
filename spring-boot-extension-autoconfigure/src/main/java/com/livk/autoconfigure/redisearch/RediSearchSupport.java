@@ -39,28 +39,24 @@ import java.util.function.Supplier;
  * @author livk
  */
 @UtilityClass
-public class RediSearchSupport {
+final class RediSearchSupport {
 
 	/**
 	 * Create cluster list.
-	 *
 	 * @param properties the properties
 	 * @return the list
 	 */
 	public List<RedisURI> createCluster(RediSearchProperties properties) {
-		return properties.getCluster().getNodes()
-			.stream()
-			.map(node -> {
-				String[] arr = node.split(":");
-				RedisURI redisURI = RedisURI.create(arr[0], Integer.parseInt(arr[1]));
-				config(redisURI, properties);
-				return redisURI;
-			}).toList();
+		return properties.getCluster().getNodes().stream().map(node -> {
+			String[] arr = node.split(":");
+			RedisURI redisURI = RedisURI.create(arr[0], Integer.parseInt(arr[1]));
+			config(redisURI, properties);
+			return redisURI;
+		}).toList();
 	}
 
 	/**
 	 * Create redis uri.
-	 *
 	 * @param properties the properties
 	 * @return the redis uri
 	 */
@@ -71,8 +67,8 @@ public class RediSearchSupport {
 	}
 
 	private void config(RedisURI redisURI, RediSearchProperties properties) {
-		redisURI.setCredentialsProvider(RedisCredentialsProvider.from(
-			() -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
+		redisURI.setCredentialsProvider(RedisCredentialsProvider
+			.from(() -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
 		redisURI.setDatabase(properties.getDatabase());
 		Duration timeout = properties.getTimeout();
 		if (timeout != null) {
@@ -84,8 +80,7 @@ public class RediSearchSupport {
 
 	/**
 	 * With pool config generic object pool config.
-	 *
-	 * @param <T>        the type parameter
+	 * @param <T> the type parameter
 	 * @param properties the properties
 	 * @return the generic object pool config
 	 */
@@ -106,47 +101,44 @@ public class RediSearchSupport {
 
 	/**
 	 * Pool generic object pool.
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param supplier   the supplier
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param supplier the supplier
 	 * @param poolConfig the pool config
 	 * @return the generic object pool
 	 */
-	public <K, V> GenericObjectPool<StatefulRedisModulesConnection<K, V>> pool(Supplier<StatefulRedisModulesConnection<K, V>> supplier,
-																			   GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
+	public <K, V> GenericObjectPool<StatefulRedisModulesConnection<K, V>> pool(
+			Supplier<StatefulRedisModulesConnection<K, V>> supplier,
+			GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
 		return ConnectionPoolSupport.createGenericObjectPool(supplier, poolConfig);
 	}
 
 	/**
 	 * Pool generic object pool.
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param client     the client
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param client the client
 	 * @param redisCodec the redis codec
 	 * @param poolConfig the pool config
 	 * @return the generic object pool
 	 */
 	public <K, V> GenericObjectPool<StatefulRedisModulesConnection<K, V>> pool(RedisModulesClient client,
-																			   RedisCodec<K, V> redisCodec,
-																			   GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
+			RedisCodec<K, V> redisCodec, GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
 		return pool(() -> client.connect(redisCodec), poolConfig);
 	}
 
 	/**
 	 * Pool generic object pool.
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param client     the client
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param client the client
 	 * @param redisCodec the redis codec
 	 * @param poolConfig the pool config
 	 * @return the generic object pool
 	 */
 	public <K, V> GenericObjectPool<StatefulRedisModulesConnection<K, V>> pool(RedisModulesClusterClient client,
-																			   RedisCodec<K, V> redisCodec,
-																			   GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
+			RedisCodec<K, V> redisCodec, GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig) {
 		return pool(() -> client.connect(redisCodec), poolConfig);
 	}
+
 }

@@ -41,6 +41,7 @@ import java.util.UUID;
 public class ProducerTask {
 
 	private static final Snowflake SNOWFLAKE = new Snowflake();
+
 	private final PulsarTemplate<String> pulsarTemplate;
 
 	@Scheduled(cron = "0/5 * * * * ?")

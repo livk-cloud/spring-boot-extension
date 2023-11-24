@@ -26,4 +26,5 @@ import org.springframework.context.annotation.Configuration;
 public class RocketMqConfig {
 
 	public static final String TOPIC_NAME = "rocketmq-protobuf";
+
 }

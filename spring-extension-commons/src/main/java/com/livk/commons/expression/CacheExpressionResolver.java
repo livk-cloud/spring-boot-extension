@@ -56,14 +56,14 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 				this.expressionCache.put(value, expression);
 			}
 			return calculate(expression, context, returnType);
-		} catch (Throwable ex) {
+		}
+		catch (Throwable ex) {
 			throw new ExpressionException("Expression parsing failed", ex);
 		}
 	}
 
 	/**
 	 * 对表达式进行数据包装，如果有必要
-	 *
 	 * @param expression 表达式
 	 * @return 包装后的表达式 string
 	 */
@@ -73,7 +73,6 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 
 	/**
 	 * 对表达式进行处理生成EXPRESSION
-	 *
 	 * @param value 表达式
 	 * @return EXPRESSION expression
 	 * @throws Throwable the throwable
@@ -82,13 +81,13 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 
 	/**
 	 * 表达式计算
-	 *
-	 * @param <T>        泛型
+	 * @param <T> 泛型
 	 * @param expression 表达式
-	 * @param context    环境上下文
+	 * @param context 环境上下文
 	 * @param returnType 返回类型
 	 * @return T
 	 * @throws Throwable the throwable
 	 */
 	protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType) throws Throwable;
+
 }

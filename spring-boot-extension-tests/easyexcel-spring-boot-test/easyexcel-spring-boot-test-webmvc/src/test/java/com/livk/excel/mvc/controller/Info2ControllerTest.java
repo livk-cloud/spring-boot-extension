@@ -50,11 +50,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @AutoConfigureMockMvc
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.mode=never"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.mode=never" })
 class Info2ControllerTest {
 
 	@Autowired
@@ -62,15 +59,15 @@ class Info2ControllerTest {
 
 	ClassPathResource resource = new ClassPathResource("outFile.xls");
 
-	MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
+	MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE,
+			resource.getInputStream());
 
 	Info2ControllerTest() throws IOException {
 	}
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(POST, "/info/uploadAndDownload")
-				.file(file))
+		mockMvc.perform(multipart(POST, "/info/uploadAndDownload").file(file))
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
@@ -86,7 +83,8 @@ class Info2ControllerTest {
 		List<Info> infos = LongStream.rangeClosed(1, 100)
 			.mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
 			.toList();
-		mockMvc.perform(MockMvcRequestBuilders.post("/info/download")
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/info/download")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(infos)))
 			.andExpect(status().isOk())
@@ -98,4 +96,5 @@ class Info2ControllerTest {
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
+
 }

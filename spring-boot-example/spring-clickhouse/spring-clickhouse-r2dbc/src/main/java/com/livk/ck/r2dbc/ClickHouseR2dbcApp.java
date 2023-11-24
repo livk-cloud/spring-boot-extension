@@ -33,11 +33,9 @@ import org.springframework.context.annotation.Bean;
  *
  * @author livk
  */
-@SpringBootApplication(exclude = {
-	R2dbcAutoConfiguration.class,
-	R2dbcDataAutoConfiguration.class
-})
+@SpringBootApplication(exclude = { R2dbcAutoConfiguration.class, R2dbcDataAutoConfiguration.class })
 public class ClickHouseR2dbcApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
@@ -46,4 +44,5 @@ public class ClickHouseR2dbcApp {
 	public ConnectionFactory connectionFactory(@Value("${spring.r2dbc.url}") String url) {
 		return ConnectionFactories.get(url);
 	}
+
 }

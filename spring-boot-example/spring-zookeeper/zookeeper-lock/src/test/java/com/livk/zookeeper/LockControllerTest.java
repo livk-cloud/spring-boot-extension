@@ -48,11 +48,10 @@ class LockControllerTest {
 			String param = String.valueOf(i);
 			service.submit(() -> {
 				try {
-					mockMvc.perform(get("/lock")
-							.queryParam("id", param))
-						.andExpect(status().isOk());
+					mockMvc.perform(get("/lock").queryParam("id", param)).andExpect(status().isOk());
 					countDownLatch.countDown();
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			});
@@ -60,4 +59,5 @@ class LockControllerTest {
 		countDownLatch.await();
 		service.shutdown();
 	}
+
 }

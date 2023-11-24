@@ -33,7 +33,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * The type Request wrapper.
+ * Request包装器
+ * <p>
+ * 用于修改body、添加header、添加param
  *
  * @author livk
  */
@@ -48,8 +50,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private boolean bodyReviseStatus = false;
 
 	/**
-	 * Instantiates a new Request wrapper.
-	 *
+	 * 构建一个RequestWrapper
 	 * @param request the request
 	 * @throws IOException the io exception
 	 */
@@ -61,8 +62,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * Sets body.
-	 *
+	 * 设置request body
 	 * @param body the body
 	 */
 	public void setBody(byte[] body) {
@@ -71,9 +71,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * Add header.
-	 *
-	 * @param name  the name
+	 * 添加http header
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void addHeader(String name, String value) {
@@ -81,9 +80,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * Put parameter.
-	 *
-	 * @param name   the name
+	 * 添加http parameter.
+	 * @param name the name
 	 * @param values the values
 	 */
 	public void putParameter(String name, String[] values) {
@@ -91,13 +89,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * Put parameter.
-	 *
-	 * @param name  the name
+	 * 添加http parameter.
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void putParameter(String name, String value) {
-		putParameter(name, new String[]{value});
+		putParameter(name, new String[] { value });
 	}
 
 	@Override
@@ -179,13 +176,13 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private static class ByteArrayReader extends InputStreamReader {
 
 		/**
-		 * Instantiates a new Byte array reader.
-		 *
+		 * 创建ByteArrayReader
 		 * @param bytes the bytes
 		 */
 		public ByteArrayReader(byte[] bytes) {
 			super(new ByteArrayInputStream(bytes));
 		}
+
 	}
 
 	private static class ByteArrayServletInputStream extends ServletInputStream {
@@ -193,8 +190,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		private final InputStream in;
 
 		/**
-		 * Instantiates a new Request servlet input stream.
-		 *
+		 * 创建ByteArrayServletInputStream
 		 * @param body the json
 		 */
 		public ByteArrayServletInputStream(byte[] body) {
@@ -222,4 +218,5 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		}
 
 	}
+
 }

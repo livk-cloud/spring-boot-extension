@@ -27,4 +27,5 @@ public class UserController extends BaseUserController {
 	protected User create(int i) {
 		return new User(100L + i, "rocketmq", "serializer@rocketmq.com", current.nextInt(0, 2));
 	}
+
 }

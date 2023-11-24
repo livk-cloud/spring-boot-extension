@@ -16,4 +16,5 @@ public class MessageModelConsumer implements DisruptorEventConsumer<MessageModel
 	public void onEvent(MessageModel event, long sequence, boolean endOfBatch) throws Exception {
 		log.info("消费者消费的信息是：{} :{} :{}", event, sequence, endOfBatch);
 	}
+
 }

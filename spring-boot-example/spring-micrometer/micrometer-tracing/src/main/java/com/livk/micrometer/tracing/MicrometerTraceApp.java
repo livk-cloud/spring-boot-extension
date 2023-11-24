@@ -53,4 +53,5 @@ public class MicrometerTraceApp {
 		wrap.shutdown();
 		return "Hello World!";
 	}
+
 }

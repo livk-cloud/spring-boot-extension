@@ -57,4 +57,5 @@ class SnowflakeTest {
 		Set<Long> set = new HashSet<>(list);
 		assertEquals(set.size(), list.size());
 	}
+
 }

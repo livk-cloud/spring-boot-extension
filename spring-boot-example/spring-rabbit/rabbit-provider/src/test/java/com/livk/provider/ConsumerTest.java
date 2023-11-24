@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ConsumerTest {
+
 	@RabbitListener(queuesToDeclare = @Queue(DirectConfig.RABBIT_DIRECT_TOPIC))
 	public <T> void consumerDirect(@Payload Message<T> message) {
 		log.info("direct anno consumer msg:{}", message);
@@ -78,4 +79,5 @@ public class ConsumerTest {
 		String contentType = messageProperties.getContentType();
 		log.info("headers B anno consumer msg:{}", new String(message.getBody(), contentType));
 	}
+
 }

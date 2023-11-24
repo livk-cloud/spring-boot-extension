@@ -40,4 +40,5 @@ public class VideoResourceHttpRequestHandler extends ResourceHttpRequestHandler 
 		String location = (String) request.getAttribute(ATTR);
 		return ResourceUtils.getResource(location);
 	}
+
 }

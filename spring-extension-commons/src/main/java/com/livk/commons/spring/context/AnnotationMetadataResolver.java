@@ -41,7 +41,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * The type Annotation metadata resolver.
+ * 包解析根据Annotation进行class获取
  *
  * @author livk
  * @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
@@ -57,7 +57,6 @@ public class AnnotationMetadataResolver {
 
 	/**
 	 * Instantiates a new Annotation metadata resolver.
-	 *
 	 * @param resourceLoader the resource loader
 	 */
 	public AnnotationMetadataResolver(ResourceLoader resourceLoader) {
@@ -75,9 +74,8 @@ public class AnnotationMetadataResolver {
 
 	/**
 	 * 获取被注解标注的class
-	 *
 	 * @param annotationType 注解
-	 * @param packages       待扫描的包
+	 * @param packages 待扫描的包
 	 * @return set class
 	 */
 	public Set<Class<?>> find(Class<? extends Annotation> annotationType, String... packages) {
@@ -87,9 +85,8 @@ public class AnnotationMetadataResolver {
 
 	/**
 	 * 获取被满足条件的的class
-	 *
 	 * @param typeFilter type匹配器
-	 * @param packages   待扫描的包
+	 * @param packages 待扫描的包
 	 * @return set class
 	 */
 	public Set<Class<?>> find(TypeFilter typeFilter, String... packages) {
@@ -102,9 +99,8 @@ public class AnnotationMetadataResolver {
 
 	/**
 	 * 获取被注解标注的class
-	 *
 	 * @param annotationType 注解
-	 * @param beanFactory    beanFactory
+	 * @param beanFactory beanFactory
 	 * @return set class
 	 */
 	public Set<Class<?>> find(Class<? extends Annotation> annotationType, BeanFactory beanFactory) {
@@ -119,17 +115,20 @@ public class AnnotationMetadataResolver {
 		for (String packageStr : packages) {
 			packageStr = ClassUtils.convertClassNameToResourcePath(packageStr);
 			try {
-				Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + packageStr + "/**/*.class");
+				Resource[] resources = resolver
+					.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + packageStr + "/**/*.class");
 				for (Resource resource : resources) {
 					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
 					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
 						result.add(function.apply(metadataReader));
 					}
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
 		return result;
 	}
+
 }

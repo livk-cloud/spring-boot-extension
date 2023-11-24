@@ -42,14 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest({
-	"spring.datasource.driver-class-name=org.h2.Driver",
-	"spring.datasource.url=jdbc:h2:mem:test",
-	"spring.sql.init.platform=h2",
-	"spring.sql.init.mode=embedded"
-})
+@SpringBootTest({ "spring.datasource.driver-class-name=org.h2.Driver", "spring.datasource.url=jdbc:h2:mem:test",
+		"spring.sql.init.platform=h2", "spring.sql.init.mode=embedded" })
 @AutoConfigureMockMvc
 class UserControllerTest {
+
 	@Autowired
 	MockMvc mockMvc;
 
@@ -60,21 +57,21 @@ class UserControllerTest {
 		Map<String, String> body = new HashMap<>();
 		body.put("username", "livk");
 		body.put("password", "123456");
-		MockHttpServletResponse response = mockMvc.perform(post("/login")
-				.contentType(MediaType.APPLICATION_JSON)
+		MockHttpServletResponse response = mockMvc
+			.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(body)))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(jsonPath("code", "200").exists())
-			.andReturn().getResponse();
-		token = "Bearer " + JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
+			.andReturn()
+			.getResponse();
+		token = "Bearer "
+				+ JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
 	}
-
 
 	@Test
 	void testList() throws Exception {
-		mockMvc.perform(get("/user/list")
-				.header(HttpHeaders.AUTHORIZATION, token))
+		mockMvc.perform(get("/user/list").header(HttpHeaders.AUTHORIZATION, token))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("list"));
@@ -82,12 +79,13 @@ class UserControllerTest {
 
 	@Test
 	void testUpdate() throws Exception {
-		mockMvc.perform(put("/user/update")
-				.header(HttpHeaders.AUTHORIZATION, token))
+		mockMvc.perform(put("/user/update").header(HttpHeaders.AUTHORIZATION, token))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("update"));
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

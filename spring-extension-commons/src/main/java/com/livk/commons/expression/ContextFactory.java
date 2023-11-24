@@ -21,27 +21,27 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * The interface Context resolver.
+ * 上下键创建工厂
  *
  * @author livk
+ * @see DefaultContextFactory
+ *
  */
 @FunctionalInterface
 public interface ContextFactory {
 
 	/**
-	 * Create context.
-	 *
+	 * 根据方法与参数创建上下文
 	 * @param method the method
-	 * @param args   the args
+	 * @param args the args
 	 * @return the context
 	 */
 	Context create(Method method, Object[] args);
 
 	/**
-	 * Merge map.
-	 *
-	 * @param method    the method
-	 * @param args      the args
+	 * 合并上下文
+	 * @param method the method
+	 * @param args the args
 	 * @param expandMap the expand map
 	 * @return the map
 	 */
@@ -50,4 +50,5 @@ public interface ContextFactory {
 		context.putAll(expandMap, false);
 		return context;
 	}
+
 }

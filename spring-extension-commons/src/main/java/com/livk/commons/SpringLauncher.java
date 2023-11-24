@@ -38,20 +38,21 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
- * The type Spring launcher.
+ * 自定义Spring启动器
+ * <p>
+ * 内嵌Banner图、以及各种版本
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpringLauncher {
 
-	private static SpringApplication application;
+	private volatile static SpringApplication application;
 
 	/**
 	 * Springboot主启动
 	 * <p>
-	 * 自动推到当前类Class
-	 *
-	 * @param args the args
-	 * @return the configurable application context
+	 * 自动推导当前类Class
+	 * @param args main方法参数
+	 * @return ConfigurableApplicationContext
 	 */
 	@SneakyThrows
 	public static ConfigurableApplicationContext run(String[] args) {
@@ -61,28 +62,26 @@ public class SpringLauncher {
 			.map(ClassUtils::resolveClassName)
 			.filter(type -> type.isAnnotationPresent(SpringBootApplication.class))
 			.findFirst()
-			.orElseThrow(() -> new AnnotationConfigurationException(" 缺少@" + SpringBootApplication.class.getName() + "注解"));
+			.orElseThrow(
+					() -> new AnnotationConfigurationException(" 缺少@" + SpringBootApplication.class.getName() + "注解"));
 		return run(mainClass, args);
 	}
 
 	/**
 	 * Springboot主启动
-	 *
-	 * @param targetClass the primary source to load
-	 * @param args        the application arguments (usually passed from a Java main method)
-	 * @return the configurable application context
+	 * @param targetClass 主启动类class
+	 * @param args main方法参数
+	 * @return ConfigurableApplicationContext
 	 */
 	public static ConfigurableApplicationContext run(Class<?> targetClass, String[] args) {
-		application = new SpringApplicationBuilder(targetClass)
-			.banner(CloudBanner.create())
+		application = new SpringApplicationBuilder(targetClass).banner(CloudBanner.create())
 			.bannerMode(Banner.Mode.CONSOLE)
 			.build(args);
 		return application.run(args);
 	}
 
 	/**
-	 * Gets version.
-	 *
+	 * 获取当前包版本
 	 * @return the version
 	 */
 	public static String getVersion() {
@@ -91,9 +90,8 @@ public class SpringLauncher {
 	}
 
 	/**
-	 * Application spring application.
-	 *
-	 * @return the spring application
+	 * 获取到SpringApplication
+	 * @return SpringApplication
 	 */
 	public static SpringApplication application() {
 		return application;
@@ -101,24 +99,24 @@ public class SpringLauncher {
 
 	@NoArgsConstructor(staticName = "create")
 	private static class CloudBanner implements Banner {
+
 		private static final String banner = """
-			 ██       ██          ██         ██████   ██                       ██
-			░██      ░░          ░██        ██░░░░██ ░██                      ░██
-			░██       ██ ██    ██░██  ██   ██    ░░  ░██  ██████  ██   ██     ░██
-			░██      ░██░██   ░██░██ ██   ░██        ░██ ██░░░░██░██  ░██  ██████
-			░██      ░██░░██ ░██ ░████    ░██        ░██░██   ░██░██  ░██ ██░░░██
-			░██      ░██ ░░████  ░██░██   ░░██    ██ ░██░██   ░██░██  ░██░██  ░██
-			░████████░██  ░░██   ░██░░██   ░░██████  ███░░██████ ░░██████░░██████
-			░░░░░░░░ ░░    ░░    ░░  ░░     ░░░░░░  ░░░  ░░░░░░   ░░░░░░  ░░░░░░
-			""";
+				 ██       ██          ██         ██████   ██                       ██
+				░██      ░░          ░██        ██░░░░██ ░██                      ░██
+				░██       ██ ██    ██░██  ██   ██    ░░  ░██  ██████  ██   ██     ░██
+				░██      ░██░██   ░██░██ ██   ░██        ░██ ██░░░░██░██  ░██  ██████
+				░██      ░██░░██ ░██ ░████    ░██        ░██░██   ░██░██  ░██ ██░░░██
+				░██      ░██ ░░████  ░██░██   ░░██    ██ ░██░██   ░██░██  ░██░██  ░██
+				░████████░██  ░░██   ░██░░██   ░░██████  ███░░██████ ░░██████░░██████
+				░░░░░░░░ ░░    ░░    ░░  ░░     ░░░░░░  ░░░  ░░░░░░   ░░░░░░  ░░░░░░
+				""";
 
 		@Override
 		public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
 			if (environment.getProperty("spring.banner.enabled", Boolean.class, true)) {
 				out.println(banner);
 				int max = banner.lines().mapToInt(String::length).max().orElse(0);
-				new Format(max, out)
-					.println(" Spring Version: " + SpringVersion.getVersion() + " ")
+				new Format(max, out).println(" Spring Version: " + SpringVersion.getVersion() + " ")
 					.println(" Spring Boot Version: " + SpringBootVersion.getVersion() + " ")
 					.println(" Spring Boot Extension Version: " + getVersion() + " ")
 					.println(" Current Time: " + DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS) + " ")
@@ -127,17 +125,19 @@ public class SpringLauncher {
 					.flush();
 			}
 		}
+
 	}
 
 	private static class Format {
 
 		private final static char ch = '*';
+
 		private final int n;
+
 		private final PrintStream out;
 
 		/**
-		 * Instantiates a new Format.
-		 *
+		 * 构建Format
 		 * @param max the max
 		 * @param out the out
 		 */
@@ -147,8 +147,7 @@ public class SpringLauncher {
 		}
 
 		/**
-		 * Accept.
-		 *
+		 * 输出字符串 前后使用*补全
 		 * @param str the str
 		 * @return the format
 		 */
@@ -166,10 +165,12 @@ public class SpringLauncher {
 		}
 
 		/**
-		 * Flush.
+		 * 刷新输出
 		 */
 		public void flush() {
 			out.flush();
 		}
+
 	}
+
 }

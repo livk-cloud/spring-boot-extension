@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The interface Enable http client.
+ * 用于声明http客户端
  *
  * @author livk
  */
@@ -34,10 +34,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HttpClientImportSelector.class)
 public @interface EnableHttpClient {
+
 	/**
-	 * Value http client type [ ].
-	 *
+	 * 声明客户端类型
 	 * @return the http client type [ ]
 	 */
 	HttpClientType[] value();
+
 }

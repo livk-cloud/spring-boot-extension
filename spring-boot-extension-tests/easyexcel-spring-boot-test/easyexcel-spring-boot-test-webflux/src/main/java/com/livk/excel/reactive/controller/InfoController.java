@@ -75,4 +75,5 @@ public class InfoController {
 	public Flux<Info> uploadDownLoadFlux(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels.flatMapMany(Flux::fromIterable);
 	}
+
 }

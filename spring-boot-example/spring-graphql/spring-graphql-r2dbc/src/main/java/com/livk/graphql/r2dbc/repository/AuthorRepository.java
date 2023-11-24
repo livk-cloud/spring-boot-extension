@@ -29,5 +29,7 @@ import reactor.core.publisher.Mono;
  * @author livk
  */
 public interface AuthorRepository extends R2dbcRepository<Author, Long> {
+
 	Mono<Author> findByIdCardNo(String authorIdCardNo);
+
 }

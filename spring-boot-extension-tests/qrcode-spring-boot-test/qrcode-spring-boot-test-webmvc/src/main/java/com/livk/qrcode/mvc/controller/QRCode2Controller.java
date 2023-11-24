@@ -47,4 +47,5 @@ public class QRCode2Controller {
 	public Map<String, String> json(@RequestBody JsonNode node) {
 		return JsonMapperUtils.convertValueMap(node, String.class, String.class);
 	}
+
 }

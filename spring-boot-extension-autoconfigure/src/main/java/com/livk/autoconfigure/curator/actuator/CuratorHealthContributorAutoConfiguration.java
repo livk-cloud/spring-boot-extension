@@ -38,12 +38,12 @@ import java.util.Map;
  * @author livk
  */
 @SpringAutoService
-@AutoConfiguration(after = {CuratorAutoConfiguration.class})
-@ConditionalOnClass({CuratorFramework.class, HealthIndicator.class})
+@AutoConfiguration(after = { CuratorAutoConfiguration.class })
+@ConditionalOnClass({ CuratorFramework.class, HealthIndicator.class })
 @ConditionalOnBean(CuratorFramework.class)
 @ConditionalOnEnabledHealthIndicator("curator")
 public class CuratorHealthContributorAutoConfiguration
-	extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
+		extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
 
 	/**
 	 * Instantiates a new Curator health contributor auto configuration.
@@ -54,13 +54,13 @@ public class CuratorHealthContributorAutoConfiguration
 
 	/**
 	 * Curator health contributor health contributor.
-	 *
 	 * @param curatorFrameworkFactories the curator framework factories
 	 * @return the health contributor
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = {"curatorHealthIndicator", "curatorHealthContributor"})
+	@ConditionalOnMissingBean(name = { "curatorHealthIndicator", "curatorHealthContributor" })
 	public HealthContributor curatorHealthContributor(Map<String, CuratorFramework> curatorFrameworkFactories) {
 		return createContributor(curatorFrameworkFactories);
 	}
+
 }

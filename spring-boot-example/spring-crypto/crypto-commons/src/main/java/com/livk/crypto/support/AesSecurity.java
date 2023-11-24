@@ -35,6 +35,7 @@ import java.util.Map;
  */
 @Slf4j
 public class AesSecurity extends AbstractCryptoFormatter<Long> {
+
 	private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
 
 	private final SecretKeySpec spec;
@@ -49,7 +50,8 @@ public class AesSecurity extends AbstractCryptoFormatter<Long> {
 			kg.init(256, new SecureRandom(salt.getBytes()));
 			SecretKey secretKey = kg.generateKey();
 			spec = new SecretKeySpec(secretKey.getEncoded(), CryptoType.AES.getAlgorithm());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -82,4 +84,5 @@ public class AesSecurity extends AbstractCryptoFormatter<Long> {
 	public CryptoType type() {
 		return CryptoType.AES;
 	}
+
 }

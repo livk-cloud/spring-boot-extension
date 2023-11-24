@@ -52,8 +52,7 @@ class RestAppTest {
 		user.setUsername("root");
 		user.setPassword("root");
 		user.setAge(18);
-		mockMvc.perform(post("/rest/api/user")
-				.content(support.writeValueAsBytes(user)))
+		mockMvc.perform(post("/rest/api/user").content(support.writeValueAsBytes(user)))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful());
 	}
@@ -67,8 +66,7 @@ class RestAppTest {
 		user.setUsername("admin");
 		user.setPassword("admin");
 		user.setAge(19);
-		mockMvc.perform(put("/rest/api/user/{id}", 1)
-				.content(support.writeValueAsBytes(user)))
+		mockMvc.perform(put("/rest/api/user/{id}", 1).content(support.writeValueAsBytes(user)))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful());
 	}
@@ -76,17 +74,13 @@ class RestAppTest {
 	@Order(6)
 	@Test
 	void testDelete() throws Exception {
-		mockMvc.perform(delete("/rest/api/user/{id}", 1))
-			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+		mockMvc.perform(delete("/rest/api/user/{id}", 1)).andDo(print()).andExpect(status().is2xxSuccessful());
 	}
 
 	@Order(4)
 	@Test
 	void testAuth() throws Exception {
-		mockMvc.perform(get("/rest/api/user/search/auth")
-				.param("name", "admin")
-				.param("pwd", "admin"))
+		mockMvc.perform(get("/rest/api/user/search/auth").param("name", "admin").param("pwd", "admin"))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("username", "admin").exists())
@@ -108,4 +102,5 @@ class RestAppTest {
 			.andExpect(jsonPath("page.totalPages", 1).exists())
 			.andExpect(jsonPath("page.number", 0).exists());
 	}
+
 }

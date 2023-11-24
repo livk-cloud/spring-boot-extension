@@ -28,20 +28,14 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin
 abstract class DeleteExpand : Plugin<Project> {
 
 	companion object {
-		private const val CLEAN_ALL_TASK_NAME = "cleanAll"
+		private val cleanFiles = setOf("build", "out", "bin", "src/main/generated", "src/test/generated_tests")
 	}
 
 	override fun apply(project: Project) {
 		project.tasks.withType(Delete::class.java) {
-			it.delete(project.projectDir.absolutePath + "/build")
-			it.delete(project.projectDir.absolutePath + "/out")
-			it.delete(project.projectDir.absolutePath + "/bin")
-		}
-
-		project.tasks.register(CLEAN_ALL_TASK_NAME, Delete::class.java) {
-			it.group = LifecycleBasePlugin.BUILD_GROUP
-			it.delete(project.projectDir.absolutePath + "/src/main/generated")
-			it.delete(project.projectDir.absolutePath + "/src/test/generated_tests")
+			cleanFiles.forEach { fileName ->
+				it.delete(project.projectDir.absolutePath + "/$fileName")
+			}
 		}
 	}
 }

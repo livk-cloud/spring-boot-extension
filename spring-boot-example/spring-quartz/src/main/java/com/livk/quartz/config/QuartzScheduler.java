@@ -50,7 +50,9 @@ public class QuartzScheduler {
 			String oldTime = cronTrigger.getCronExpression();
 			if (!oldTime.equalsIgnoreCase(time)) {
 				CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(time);
-				CronTrigger build = TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder)
+				CronTrigger build = TriggerBuilder.newTrigger()
+					.withIdentity(name, group)
+					.withSchedule(cronScheduleBuilder)
 					.build();
 				date = scheduler.rescheduleJob(triggerKey, build);
 			}

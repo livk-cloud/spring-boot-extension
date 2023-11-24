@@ -46,15 +46,17 @@ public class LockController {
 	public void lock(@RequestParam Integer id) throws InterruptedException {
 		Lock lock = lockRegistry.obtain("zookeeper");
 		while (!lock.tryLock()) {
-			//获取不到锁直接空转
+			// 获取不到锁直接空转
 			Thread.sleep(100);
 		}
 		try {
 			log.info("{} is locked", id);
 			Thread.sleep(1000);
-		} catch (InterruptedException ignored) {
+		}
+		catch (InterruptedException ignored) {
 
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 	}

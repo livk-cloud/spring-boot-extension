@@ -36,11 +36,10 @@ class TypeElements {
 
 	/**
 	 * Gets annotation attributes.
-	 *
-	 * @param <T>         the type parameter
-	 * @param element     the element
+	 * @param <T> the type parameter
+	 * @param element the element
 	 * @param targetClass the target class
-	 * @param key         the key
+	 * @param key the key
 	 * @return the annotation attributes
 	 */
 	public <T> Optional<TypeElement> getAnnotationAttributes(Element element, Class<T> targetClass, String key) {
@@ -51,13 +50,11 @@ class TypeElements {
 					.entrySet()
 					.stream()
 					.filter(entry -> entry.getValue() != null)
-					.collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(),
-						Map.Entry::getValue));
-				return Optional.ofNullable(elementValues.get(key))
-					.map(annotationValue -> {
-						DeclaredType declaredType = (DeclaredType) annotationValue.getValue();
-						return (TypeElement) declaredType.asElement();
-					});
+					.collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(), Map.Entry::getValue));
+				return Optional.ofNullable(elementValues.get(key)).map(annotationValue -> {
+					DeclaredType declaredType = (DeclaredType) annotationValue.getValue();
+					return (TypeElement) declaredType.asElement();
+				});
 			}
 		}
 		throw new IllegalArgumentException(element + " not has annotation:" + targetClass);
@@ -65,7 +62,6 @@ class TypeElements {
 
 	/**
 	 * Gets binary name.
-	 *
 	 * @param element the element
 	 * @return the binary name
 	 */
@@ -84,4 +80,5 @@ class TypeElements {
 		}
 		return getBinaryNameImpl((TypeElement) enclosingElement, enclosingElement.getSimpleName() + "$" + className);
 	}
+
 }

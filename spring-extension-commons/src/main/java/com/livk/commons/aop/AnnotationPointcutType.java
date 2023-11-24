@@ -28,8 +28,12 @@ import java.lang.annotation.Target;
 import java.util.HashSet;
 
 /**
- * <p>{@link AnnotationAutoPointcut} 的泛型实现</p>
- * <p>用于便捷的获取各种切点</p>
+ * <p>
+ * {@link AnnotationAutoPointcut} 的泛型实现
+ * </p>
+ * <p>
+ * 用于便捷的获取各种切点
+ * </p>
  *
  * @author livk
  * @see AnnotationAutoPointcut
@@ -47,7 +51,6 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 	 */
 	METHOD(AnnotationMatchingPointcut::forMethodAnnotation),
 
-
 	/**
 	 * 用于指定类级别或方法级别的切点
 	 */
@@ -56,27 +59,31 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 	/**
 	 * 自动识别，根据注解上的元注解信息
 	 *
-	 * @see Target
+	 * @see Target#value()
 	 */
 	AUTO(annotationType -> {
 		Target target = annotationType.getAnnotation(Target.class);
 		HashSet<ElementType> elementTypeHashSet = Sets.newHashSet(target.value());
 		if (elementTypeHashSet.contains(ElementType.TYPE) && elementTypeHashSet.contains(ElementType.METHOD)) {
 			return TYPE_OR_METHOD.annotationAutoPointcut.getPointcut(annotationType);
-		} else if (elementTypeHashSet.contains(ElementType.TYPE)) {
+		}
+		else if (elementTypeHashSet.contains(ElementType.TYPE)) {
 			return TYPE.annotationAutoPointcut.getPointcut(annotationType);
-		} else if (elementTypeHashSet.contains(ElementType.METHOD)) {
+		}
+		else if (elementTypeHashSet.contains(ElementType.METHOD)) {
 			return METHOD.annotationAutoPointcut.getPointcut(annotationType);
-		} else {
-			throw new IllegalArgumentException("annotation:" + annotationType + " Missing " + Target.class + " TYPE or METHOD information");
+		}
+		else {
+			throw new IllegalArgumentException(
+					"annotation:" + annotationType + " Missing " + Target.class + " TYPE or METHOD information");
 		}
 	});
 
 	private final AnnotationAutoPointcut annotationAutoPointcut;
 
-
 	@Override
 	public Pointcut getPointcut(Class<? extends Annotation> annotationType) {
 		return annotationAutoPointcut.getPointcut(annotationType);
 	}
+
 }

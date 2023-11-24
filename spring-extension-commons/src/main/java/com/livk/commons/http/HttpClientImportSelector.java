@@ -29,9 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Http client import selector.
+ * Http相关配置Selector进行IOC注入
+ * <p>
+ * 根据{@link EnableHttpClient}注解的value值加载对应的配置数据
  *
  * @author livk
+ * @see EnableHttpClient
  */
 public class HttpClientImportSelector extends SpringAbstractImportSelector<EnableHttpClient> {
 
@@ -40,21 +43,22 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 		HttpClientType[] types = getValue(attributes);
 		List<String> names = new ArrayList<>();
 		for (HttpClientType type : types) {
-			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader()).getCandidates();
+			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader())
+				.getCandidates();
 			names.addAll(configurations);
 		}
 		return names;
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T getValue(AnnotationAttributes attributes) {
+	private HttpClientType[] getValue(AnnotationAttributes attributes) {
 		Object value = attributes.get("value");
-		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray() &&
-			HttpClientType[].class.getComponentType().isInstance(value)) {
+		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray()
+				&& HttpClientType[].class.getComponentType().isInstance(value)) {
 			Object array = Array.newInstance(HttpClientType[].class.getComponentType(), 1);
 			Array.set(array, 0, value);
 			value = array;
 		}
-		return (T) value;
+		return (HttpClientType[]) value;
 	}
+
 }

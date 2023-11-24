@@ -33,7 +33,7 @@ import java.io.InputStream;
 
 /**
  * <p>
- * DataBufferUtils
+ * DataBufferUtils功能拓展
  * </p>
  *
  * @author livk
@@ -42,18 +42,17 @@ import java.io.InputStream;
 public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
 
 	/**
-	 * The constant BUFFER_SIZE.
+	 * 设置默认BUFFER_SIZE
 	 */
 	public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
 
 	/**
-	 * The constant DEFAULT_FACTORY.
+	 * 设置默认DEFAULT_FACTORY.
 	 */
 	public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
 
 	/**
-	 * Transform mono.
-	 *
+	 * 转换Flux DataBuffer成Mono InputStream
 	 * @param dataBufferFlux the data buffer flux
 	 * @return the mono
 	 */
@@ -62,8 +61,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * Transform flux.
-	 *
+	 * 转换byte[]成Flux DataBuffer
 	 * @param array the array
 	 * @return the flux
 	 */
@@ -73,8 +71,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * Transform byte mono.
-	 *
+	 * 转换Flux DataBuffer 成Mono byte[]
 	 * @param bufferFlux the buffer flux
 	 * @return the mono
 	 */
@@ -84,15 +81,15 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 			.handle((inputStream, sink) -> {
 				try {
 					sink.next(inputStream.readAllBytes());
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					sink.error(new RuntimeException(e));
 				}
 			});
 	}
 
 	/**
-	 * Transform flux.
-	 *
+	 * InputStream转换成Flux DataBuffer
 	 * @param inputStream the input stream
 	 * @return the flux
 	 */
@@ -101,12 +98,12 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * Transform flux.
-	 *
+	 * Mono InputStream 转换成Flux DataBuffer
 	 * @param inputStreamMono the input stream mono
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(Mono<InputStream> inputStreamMono) {
 		return inputStreamMono.flatMapMany(DataBufferUtils::transform);
 	}
+
 }

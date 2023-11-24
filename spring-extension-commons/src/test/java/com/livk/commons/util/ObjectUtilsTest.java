@@ -27,4 +27,3 @@ package com.livk.commons.util;
 class ObjectUtilsTest {
 
 }
-

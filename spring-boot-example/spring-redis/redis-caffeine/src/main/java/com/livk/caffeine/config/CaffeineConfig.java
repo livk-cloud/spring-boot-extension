@@ -49,4 +49,5 @@ public class CaffeineConfig {
 	public CacheManager cacheManager(CacheHandler<Object> cacheHandler) {
 		return new RedisCaffeineManager(cacheHandler);
 	}
+
 }

@@ -26,4 +26,5 @@ import io.lettuce.core.ClientOptions;
  * @author livk
  */
 public interface ClientOptionsBuilderCustomizer extends Customizer<ClientOptions.Builder> {
+
 }

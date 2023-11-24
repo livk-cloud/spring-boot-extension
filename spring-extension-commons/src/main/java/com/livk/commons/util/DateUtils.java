@@ -25,7 +25,7 @@ import java.util.Date;
 
 /**
  * <p>
- * DateUtils
+ * 日期相关工具类
  * </p>
  *
  * @author livk
@@ -34,23 +34,22 @@ import java.util.Date;
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
-	 * The constant YMD.
+	 * YMD.
 	 */
 	public static final String YMD = "yyyy-MM-dd";
 
 	/**
-	 * The constant HMS.
+	 * HMS.
 	 */
 	public static final String HMS = "HH:mm:ss";
 
 	/**
-	 * The constant YMD_HMS.
+	 * YMD_HMS.
 	 */
 	public static final String YMD_HMS = YMD + " " + HMS;
 
 	/**
 	 * LocalDateTime 转时间戳
-	 *
 	 * @param localDateTime the local date time
 	 * @return the long
 	 */
@@ -60,7 +59,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * 时间戳转LocalDateTime
-	 *
 	 * @param timeStamp the time stamp
 	 * @return the local date time
 	 */
@@ -70,7 +68,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * LocalDateTime 转 Date
-	 *
 	 * @param localDateTime the local date time
 	 * @return the date
 	 */
@@ -80,7 +77,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * LocalDate 转 Date
-	 *
 	 * @param localDate the local date
 	 * @return the date
 	 */
@@ -90,7 +86,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * Date转 LocalDateTime
-	 *
 	 * @param date the date
 	 * @return the local date time
 	 */
@@ -100,9 +95,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * 日期 格式化
-	 *
 	 * @param localDateTime the local date time
-	 * @param patten        the patten
+	 * @param patten the patten
 	 * @return the string
 	 */
 	public static String format(LocalDateTime localDateTime, String patten) {
@@ -112,9 +106,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * 日期 格式化
-	 *
 	 * @param localDateTime the local date time
-	 * @param formatter     the formatter
+	 * @param formatter the formatter
 	 * @return the string
 	 */
 	public static String format(LocalDateTime localDateTime, DateTimeFormatter formatter) {
@@ -123,13 +116,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * 字符串转 LocalDateTime
-	 *
 	 * @param localDateTime the local date time
-	 * @param pattern       the pattern
+	 * @param pattern the pattern
 	 * @return the local date time
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
 		return LocalDateTime.parse(localDateTime, dateTimeFormatter);
 	}
+
 }

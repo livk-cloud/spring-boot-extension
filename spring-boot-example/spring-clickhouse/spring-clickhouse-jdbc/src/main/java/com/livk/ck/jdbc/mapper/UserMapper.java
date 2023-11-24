@@ -40,4 +40,5 @@ public interface UserMapper {
 
 	@Insert("insert into user values (#{id},#{appId},#{version},#{regTime})")
 	int insert(User user);
+
 }

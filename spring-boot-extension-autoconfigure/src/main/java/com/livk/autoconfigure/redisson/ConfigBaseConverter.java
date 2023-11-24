@@ -54,8 +54,10 @@ import java.util.concurrent.ExecutorService;
 public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 
 	private static final JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
+
 	@SuppressWarnings("unchecked")
-	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), ConfigBaseConverter.class);
+	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+			ConfigBaseConverter.class);
 
 	private static YAMLMapper createMapper() {
 		YAMLMapper mapper = new YAMLMapper();
@@ -76,8 +78,8 @@ public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 		mapper.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
 		mapper.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
 		mapper.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class);
-		FilterProvider filterProvider = new SimpleFilterProvider()
-			.addFilter("classFilter", SimpleBeanPropertyFilter.filterOutAllExcept());
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
+				SimpleBeanPropertyFilter.filterOutAllExcept());
 		mapper.setFilterProvider(filterProvider);
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -89,93 +91,4 @@ public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 		return support.readValue(source, type);
 	}
 
-	/**
-	 * The type Config converter.
-	 */
-	public static class ConfigConverter extends ConfigBaseConverter<Config> {
-	}
-
-	/**
-	 * The type Address resolver group factory converter.
-	 */
-	public static class AddressResolverGroupFactoryConverter extends ConfigBaseConverter<AddressResolverGroupFactory> {
-	}
-
-	/**
-	 * The type Codec converter.
-	 */
-	public static class CodecConverter extends ConfigBaseConverter<Codec> {
-	}
-
-	/**
-	 * The type Redisson node initializer converter.
-	 */
-	public static class RedissonNodeInitializerConverter extends ConfigBaseConverter<RedissonNodeInitializer> {
-	}
-
-	/**
-	 * The type Load balancer converter.
-	 */
-	public static class LoadBalancerConverter extends ConfigBaseConverter<LoadBalancer> {
-	}
-
-	/**
-	 * The type Nat mapper converter.
-	 */
-	public static class NatMapperConverter extends ConfigBaseConverter<NatMapper> {
-	}
-
-	/**
-	 * The type Name mapper converter.
-	 */
-	public static class NameMapperConverter extends ConfigBaseConverter<NameMapper> {
-	}
-
-	/**
-	 * The type Netty hook converter.
-	 */
-	public static class NettyHookConverter extends ConfigBaseConverter<NettyHook> {
-	}
-
-	/**
-	 * The type Credentials resolver converter.
-	 */
-	public static class CredentialsResolverConverter extends ConfigBaseConverter<CredentialsResolver> {
-	}
-
-	/**
-	 * The type Event loop group converter.
-	 */
-	public static class EventLoopGroupConverter extends ConfigBaseConverter<EventLoopGroup> {
-	}
-
-	/**
-	 * The type Connection listener converter.
-	 */
-	public static class ConnectionListenerConverter extends ConfigBaseConverter<ConnectionListener> {
-	}
-
-	/**
-	 * The type Executor service converter.
-	 */
-	public static class ExecutorServiceConverter extends ConfigBaseConverter<ExecutorService> {
-	}
-
-	/**
-	 * The type Key manager factory converter.
-	 */
-	public static class KeyManagerFactoryConverter extends ConfigBaseConverter<KeyManagerFactory> {
-	}
-
-	/**
-	 * The type Trust manager factory converter.
-	 */
-	public static class TrustManagerFactoryConverter extends ConfigBaseConverter<TrustManagerFactory> {
-	}
-
-	/**
-	 * The type Command mapper converter.
-	 */
-	public static class CommandMapperConverter extends ConfigBaseConverter<CommandMapper> {
-	}
 }

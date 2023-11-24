@@ -41,7 +41,8 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 			String convert = convert(value);
 			byte[] encrypt = encrypt(convert.getBytes(StandardCharsets.UTF_8));
 			return Base64.getEncoder().encodeToString(encrypt);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LOG.error("format error:{}", e.getMessage());
 			throw new RuntimeException(e);
 		}
@@ -54,7 +55,8 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 			byte[] decrypt = decrypt(decode);
 			String result = new String(decrypt, StandardCharsets.UTF_8);
 			return convert(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LOG.error("parse error:{}", e.getMessage());
 			throw new RuntimeException(e);
 		}
@@ -62,7 +64,6 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 
 	/**
 	 * Decrypt byte [ ].
-	 *
 	 * @param bytes the bytes
 	 * @return the byte [ ]
 	 */
@@ -70,7 +71,6 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 
 	/**
 	 * Encrypt byte [ ].
-	 *
 	 * @param bytes the bytes
 	 * @return the byte [ ]
 	 */
@@ -78,7 +78,6 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 
 	/**
 	 * Convert t.
-	 *
 	 * @param decryptValue the decrypt value
 	 * @return the t
 	 */
@@ -86,9 +85,9 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 
 	/**
 	 * Convert string.
-	 *
 	 * @param encryptValue the encrypt value
 	 * @return the string
 	 */
 	protected abstract String convert(T encryptValue) throws Exception;
+
 }

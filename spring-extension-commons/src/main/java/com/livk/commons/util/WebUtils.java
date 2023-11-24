@@ -21,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,7 +43,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * WebUtils
+ * web、servlet相关工具类
  * </p>
  *
  * @author livk
@@ -56,12 +55,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	private static final String HTTP_IP_SPLIT = ",";
 
-	/**
-	 * Servlet request attributes servlet request attributes.
-	 *
-	 * @return the servlet request attributes
-	 */
-	public ServletRequestAttributes servletRequestAttributes() {
+	private ServletRequestAttributes servletRequestAttributes() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
 		Assert.notNull(servletRequestAttributes, "attributes not null!");
@@ -69,38 +63,25 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Request http servlet request.
-	 *
-	 * @return the http servlet request
+	 * 获取当前线程的request
+	 * @return http servlet request
 	 */
 	public HttpServletRequest request() {
 		return servletRequestAttributes().getRequest();
 	}
 
 	/**
-	 * Response http servlet response.
-	 *
-	 * @return the http servlet response
+	 * 获取当前线程的response.
+	 * @return http servlet response
 	 */
 	public HttpServletResponse response() {
 		return servletRequestAttributes().getResponse();
 	}
 
 	/**
-	 * Session http session.
-	 *
-	 * @param request the request
-	 * @return the http session
-	 */
-	public HttpSession session(HttpServletRequest request) {
-		return request.getSession();
-	}
-
-	/**
-	 * Headers http headers.
-	 *
-	 * @param request the request
-	 * @return the http headers
+	 * 将request header转成HttpHeaders
+	 * @param request request
+	 * @return http headers
 	 */
 	public HttpHeaders headers(HttpServletRequest request) {
 		LinkedCaseInsensitiveMap<List<String>> insensitiveMap = new LinkedCaseInsensitiveMap<>();
@@ -114,10 +95,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Attributes map.
-	 *
-	 * @param request the request
-	 * @return the map
+	 * 获取当前request所有的attributes
+	 * @param request request
+	 * @return attributes
 	 */
 	public Map<String, Object> attributes(HttpServletRequest request) {
 		return BaseStreamUtils.convert(request.getAttributeNames())
@@ -125,40 +105,35 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Param map map.
-	 *
-	 * @param request   the request
-	 * @param delimiter the delimiter
-	 * @return the map
+	 * 解析request的param,并使用delimiter连接相同key的数据
+	 * @param request request
+	 * @param delimiter 连接符
+	 * @return map
 	 */
 	public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
 		return request.getParameterMap()
 			.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey,
-				entry -> String.join(delimiter, entry.getValue())));
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
 	}
 
 	/**
-	 * Params multi value map.
-	 *
-	 * @param request the request
-	 * @return the multi value map
+	 * 解析request的param转成MultiValueMap
+	 * @param request request
+	 * @return MultiValueMap
 	 */
 	public MultiValueMap<String, String> params(HttpServletRequest request) {
 		Map<String, List<String>> map = request.getParameterMap()
 			.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey,
-				entry -> Lists.newArrayList(entry.getValue())));
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> Lists.newArrayList(entry.getValue())));
 		return new LinkedMultiValueMap<>(map);
 	}
 
 	/**
-	 * Real ip string.
-	 *
-	 * @param request the request
-	 * @return the string
+	 * 解析request获取真实IP
+	 * @param request request
+	 * @return ip
 	 */
 	public String realIp(HttpServletRequest request) {
 		// 这个一般是Nginx反向代理设置的参数
@@ -180,10 +155,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * Out.
-	 *
-	 * @param response the response
-	 * @param data     the data
+	 * 以JSON的格式写出数据到response
+	 * @param response response
+	 * @param data 需要写出的数据
+	 * @see JsonMapperUtils
 	 */
 	public void outJson(HttpServletResponse response, Object data) {
 		out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
@@ -191,9 +166,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 根据response写入返回值
-	 *
-	 * @param response    response
-	 * @param message     写入的信息
+	 * @param response response
+	 * @param message 写入的信息
 	 * @param contentType contentType {@link MediaType}
 	 */
 	public void out(HttpServletResponse response, String message, String contentType) {
@@ -202,8 +176,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		try (PrintWriter out = response.getWriter()) {
 			out.print(message);
 			out.flush();
-		} catch (IOException exception) {
+		}
+		catch (IOException exception) {
 			throw new ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		}
 	}
+
 }

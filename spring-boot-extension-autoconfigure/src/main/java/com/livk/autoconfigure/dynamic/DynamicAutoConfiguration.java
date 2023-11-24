@@ -42,7 +42,6 @@ public class DynamicAutoConfiguration {
 
 	/**
 	 * Dynamic datasource dynamic datasource.
-	 *
 	 * @param datasourceProperties the datasource properties
 	 * @return the dynamic datasource
 	 */
@@ -51,7 +50,8 @@ public class DynamicAutoConfiguration {
 		Map<Object, Object> datasourceMap = datasourceProperties.getDatasource()
 			.entrySet()
 			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().initializeDataSourceBuilder().build()));
+			.collect(Collectors.toMap(Map.Entry::getKey,
+					entry -> entry.getValue().initializeDataSourceBuilder().build()));
 		DynamicDatasource dynamicDatasource = new DynamicDatasource();
 		dynamicDatasource.setTargetDataSources(datasourceMap);
 		dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimary()));
@@ -60,11 +60,11 @@ public class DynamicAutoConfiguration {
 
 	/**
 	 * Data source interceptor data source interceptor.
-	 *
 	 * @return the data source interceptor
 	 */
 	@Bean
 	public DataSourceInterceptor dataSourceInterceptor() {
 		return new DataSourceInterceptor();
 	}
+
 }

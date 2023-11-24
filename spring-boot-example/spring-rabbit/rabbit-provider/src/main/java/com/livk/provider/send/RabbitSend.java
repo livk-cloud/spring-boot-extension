@@ -71,7 +71,7 @@ public class RabbitSend {
 		messageProperties.setContentType("UTF-8");
 		messageProperties.getHeaders().putAll(map);
 		org.springframework.amqp.core.Message msg = new org.springframework.amqp.core.Message(
-			message.toString().getBytes(), messageProperties);
+				message.toString().getBytes(), messageProperties);
 		rabbitTemplate.convertAndSend(HeadersConfig.HEADERS_EXCHANGE_NAME, null, msg);
 	}
 

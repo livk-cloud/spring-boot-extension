@@ -25,29 +25,37 @@ import java.security.ProtectionDomain;
 import java.util.*;
 
 /**
- * <p>The type Bean map.</p>
- * <p>根据{@link org.springframework.cglib.beans.BeanMap} 调整</p>
- * <p>依赖于spring-core</p>
+ * <p>
+ * The type Bean map.
+ * </p>
+ * <p>
+ * 根据{@link org.springframework.cglib.beans.BeanMap} 调整
+ * </p>
+ * <p>
+ * 依赖于spring-core
+ * </p>
  *
  * @author livk
  * @see org.springframework.cglib.beans.BeanMap
  */
 public abstract class BeanMap implements Map<String, Object> {
+
 	/**
-	 * Limit the properties reflected in the key set of the map
-	 * to readable properties.
+	 * Limit the properties reflected in the key set of the map to readable properties.
 	 *
-	 * @see org.springframework.cglib.beans.BeanMap.Generator#setRequire org.springframework.cglib.beans.BeanMap.Generator#setRequire
+	 * @see org.springframework.cglib.beans.BeanMap.Generator#setRequire
+	 * org.springframework.cglib.beans.BeanMap.Generator#setRequire
 	 */
 	public static final int REQUIRE_GETTER = 1;
 
 	/**
-	 * Limit the properties reflected in the key set of the map
-	 * to writable properties.
+	 * Limit the properties reflected in the key set of the map to writable properties.
 	 *
-	 * @see org.springframework.cglib.beans.BeanMap.Generator#setRequire org.springframework.cglib.beans.BeanMap.Generator#setRequire
+	 * @see org.springframework.cglib.beans.BeanMap.Generator#setRequire
+	 * org.springframework.cglib.beans.BeanMap.Generator#setRequire
 	 */
 	public static final int REQUIRE_SETTER = 2;
+
 	/**
 	 * The Bean.
 	 */
@@ -61,7 +69,6 @@ public abstract class BeanMap implements Map<String, Object> {
 
 	/**
 	 * Instantiates a new Bean map.
-	 *
 	 * @param bean the bean
 	 */
 	protected BeanMap(Object bean) {
@@ -69,11 +76,10 @@ public abstract class BeanMap implements Map<String, Object> {
 	}
 
 	/**
-	 * Helper method to create a new <code>BeanMap</code>.  For finer
-	 * control over the generated instance, use a new instance of
-	 * <code>BeanMap.Generator</code> instead of this static method.
-	 *
-	 * @param <T>  the type parameter
+	 * Helper method to create a new <code>BeanMap</code>. For finer control over the
+	 * generated instance, use a new instance of <code>BeanMap.Generator</code> instead of
+	 * this static method.
+	 * @param <T> the type parameter
 	 * @param bean the JavaBean underlying the map
 	 * @return a new <code>BeanMap</code> instance
 	 */
@@ -84,9 +90,8 @@ public abstract class BeanMap implements Map<String, Object> {
 	}
 
 	/**
-	 * Create a new <code>BeanMap</code> instance using the specified bean.
-	 * This is faster than using the {@link #create} static method.
-	 *
+	 * Create a new <code>BeanMap</code> instance using the specified bean. This is faster
+	 * than using the {@link #create} static method.
 	 * @param bean the JavaBean underlying the map
 	 * @return a new <code>BeanMap</code> instance
 	 */
@@ -94,7 +99,6 @@ public abstract class BeanMap implements Map<String, Object> {
 
 	/**
 	 * Get the type of a property.
-	 *
 	 * @param name the name of the JavaBean property
 	 * @return the type of the property, or null if the property does not exist
 	 */
@@ -111,23 +115,22 @@ public abstract class BeanMap implements Map<String, Object> {
 	}
 
 	/**
-	 * Get the property of a bean. This allows a <code>BeanMap</code>
-	 * to be used statically for multiple beans--the bean instance tied to the
-	 * map is ignored and the bean passed to this method is used instead.
-	 *
-	 * @param bean the bean to query; must be compatible with the type of             this <code>BeanMap</code>
-	 * @param key  must be a String
+	 * Get the property of a bean. This allows a <code>BeanMap</code> to be used
+	 * statically for multiple beans--the bean instance tied to the map is ignored and the
+	 * bean passed to this method is used instead.
+	 * @param bean the bean to query; must be compatible with the type of this
+	 * <code>BeanMap</code>
+	 * @param key must be a String
 	 * @return the current value, or null if there is no matching property
 	 */
 	public abstract Object get(Object bean, Object key);
 
 	/**
-	 * Set the property of a bean. This allows a <code>BeanMap</code>
-	 * to be used statically for multiple beans--the bean instance tied to the
-	 * map is ignored and the bean passed to this method is used instead.
-	 *
-	 * @param bean  the bean
-	 * @param key   must be a String
+	 * Set the property of a bean. This allows a <code>BeanMap</code> to be used
+	 * statically for multiple beans--the bean instance tied to the map is ignored and the
+	 * bean passed to this method is used instead.
+	 * @param bean the bean
+	 * @param key must be a String
 	 * @param value the value
 	 * @return the old value, if there was one, or null
 	 */
@@ -135,7 +138,6 @@ public abstract class BeanMap implements Map<String, Object> {
 
 	/**
 	 * Return the bean currently in use by this map.
-	 *
 	 * @return the current JavaBean
 	 * @see #setBean #setBean
 	 */
@@ -145,7 +147,6 @@ public abstract class BeanMap implements Map<String, Object> {
 
 	/**
 	 * Change the underlying bean this map should use.
-	 *
 	 * @param bean the new JavaBean
 	 * @see #getBean #getBean
 	 */
@@ -222,8 +223,7 @@ public abstract class BeanMap implements Map<String, Object> {
 		int code = 0;
 		for (Object key : keySet()) {
 			Object value = get(key);
-			code += ((key == null) ? 0 : key.hashCode()) ^
-					((value == null) ? 0 : value.hashCode());
+			code += ((key == null) ? 0 : key.hashCode()) ^ ((value == null) ? 0 : value.hashCode());
 		}
 		return code;
 	}
@@ -255,7 +255,7 @@ public abstract class BeanMap implements Map<String, Object> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
-		for (Iterator<String> it = keySet().iterator(); it.hasNext(); ) {
+		for (Iterator<String> it = keySet().iterator(); it.hasNext();) {
 			Object key = it.next();
 			sb.append(key);
 			sb.append('=');
@@ -274,13 +274,17 @@ public abstract class BeanMap implements Map<String, Object> {
 	 * @param <T> the type parameter
 	 */
 	public static class Generator<T> extends AbstractClassGenerator<T> {
+
 		private static final Source SOURCE = new Source(BeanMap.class.getName());
 
 		@SuppressWarnings("unchecked")
-		private final BeanMapKey<T> KEY_FACTORY =
-			(BeanMapKey<T>) KeyFactory.create(BeanMapKey.class, KeyFactory.CLASS_BY_NAME);
+		private final BeanMapKey<T> KEY_FACTORY = (BeanMapKey<T>) KeyFactory.create(BeanMapKey.class,
+				KeyFactory.CLASS_BY_NAME);
+
 		private Object bean;
+
 		private Class<T> beanClass;
+
 		private int require;
 
 		/**
@@ -291,11 +295,10 @@ public abstract class BeanMap implements Map<String, Object> {
 		}
 
 		/**
-		 * Set the bean that the generated map should reflect. The bean may be swapped
-		 * out for another bean of the same type using {@link #setBean}.
-		 * Calling this method overrides any value previously set using {@link #setBeanClass}.
-		 * You must call either this method or {@link #setBeanClass} before {@link #create}.
-		 *
+		 * Set the bean that the generated map should reflect. The bean may be swapped out
+		 * for another bean of the same type using {@link #setBean}. Calling this method
+		 * overrides any value previously set using {@link #setBeanClass}. You must call
+		 * either this method or {@link #setBeanClass} before {@link #create}.
 		 * @param bean the initial bean
 		 */
 		@SuppressWarnings("unchecked")
@@ -310,9 +313,8 @@ public abstract class BeanMap implements Map<String, Object> {
 		}
 
 		/**
-		 * Set the class of the bean that the generated map should support.
-		 * You must call either this method or {@link #setBeanClass} before {@link #create}.
-		 *
+		 * Set the class of the bean that the generated map should support. You must call
+		 * either this method or {@link #setBeanClass} before {@link #create}.
 		 * @param beanClass the class of the bean
 		 */
 		public void setBeanClass(Class<T> beanClass) {
@@ -321,8 +323,8 @@ public abstract class BeanMap implements Map<String, Object> {
 
 		/**
 		 * Limit the properties reflected by the generated map.
-		 *
-		 * @param require any combination of {@link #REQUIRE_GETTER} and                {@link #REQUIRE_SETTER}; default is zero (any property allowed)
+		 * @param require any combination of {@link #REQUIRE_GETTER} and
+		 * {@link #REQUIRE_SETTER}; default is zero (any property allowed)
 		 */
 		public void setRequire(int require) {
 			this.require = require;
@@ -339,9 +341,8 @@ public abstract class BeanMap implements Map<String, Object> {
 		}
 
 		/**
-		 * Create a new instance of the <code>BeanMap</code>. An existing
-		 * generated class will be reused if possible.
-		 *
+		 * Create a new instance of the <code>BeanMap</code>. An existing generated class
+		 * will be reused if possible.
 		 * @return the bean map
 		 */
 		public BeanMap create() {
@@ -373,14 +374,17 @@ public abstract class BeanMap implements Map<String, Object> {
 		 * @param <T> the type parameter
 		 */
 		interface BeanMapKey<T> {
+
 			/**
 			 * New instance t.
-			 *
-			 * @param type    the type
+			 * @param type the type
 			 * @param require the require
 			 * @return the t
 			 */
 			T newInstance(Class<T> type, int require);
+
 		}
+
 	}
+
 }

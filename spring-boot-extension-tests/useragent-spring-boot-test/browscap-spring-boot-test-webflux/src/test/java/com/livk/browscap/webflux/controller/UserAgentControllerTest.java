@@ -51,4 +51,5 @@ class UserAgentControllerTest {
 			.expectBody(JsonNode.class)
 			.value(System.out::println);
 	}
+
 }

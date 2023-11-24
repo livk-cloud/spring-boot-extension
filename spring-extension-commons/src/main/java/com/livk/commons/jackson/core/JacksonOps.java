@@ -22,92 +22,85 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
+ * Jackson相关操作接口
+ *
  * @author livk
  */
 public interface JacksonOps {
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
-	 * @param type the type
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param type 返回相关类型
+	 * @return 相关实例
 	 */
 	<T> T readValue(Object obj, Class<T> type);
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param obj           the obj
-	 * @param typeReference the type reference
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param typeReference TypeReference包装的类型
+	 * @return 相关实例
 	 */
 	<T> T readValue(Object obj, TypeReference<T> typeReference);
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
-	 * @param type the type
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param type 相关类型
+	 * @return 相关实例
 	 */
 	<T> T readValue(Object obj, JavaType type);
 
 	/**
-	 * json序列化
-	 *
+	 * obj序列化成string
 	 * @param obj obj
 	 * @return json string
 	 */
 	String writeValueAsString(Object obj);
 
 	/**
-	 * Write value as bytes byte [ ].
-	 *
+	 * obj序列化成byte[]
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
-
 	byte[] writeValueAsBytes(Object obj);
 
 	/**
-	 * 将json转化成JsonNode
-	 *
+	 * obj读取数据转化成JsonNode
 	 * @param obj the obj
 	 * @return the json node
 	 */
 	JsonNode readTree(Object obj);
 
 	/**
-	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param type      the type
-	 * @return the object
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
+	 * @param type 返回类型
+	 * @return 相关实例
 	 */
 	<T> T convertValue(Object fromValue, Class<T> type);
 
 	/**
-	 * Convert value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param fromValue     the value
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
 	 * @param typeReference the type reference
-	 * @return the t
+	 * @return 相关实例
 	 */
 	<T> T convertValue(Object fromValue, TypeReference<T> typeReference);
 
 	/**
-	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param javaType  the java type
-	 * @return the object
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
+	 * @param javaType 相关类型
+	 * @return 相关实例
 	 */
 	<T> T convertValue(Object fromValue, JavaType javaType);
+
 }

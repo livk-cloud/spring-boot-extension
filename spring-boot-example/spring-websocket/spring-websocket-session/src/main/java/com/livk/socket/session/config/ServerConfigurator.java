@@ -37,13 +37,15 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
 	@Override
 	public boolean checkOrigin(String originHeaderValue) {
-		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
+			.getRequestAttributes();
 		Assert.notNull(servletRequestAttributes, "servletRequestAttributes not be null!");
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if ("livk123".equals(token)) {
 			return super.checkOrigin(originHeaderValue);
-		} else {
+		}
+		else {
 			log.info("缺少参数!");
 			return false;
 		}

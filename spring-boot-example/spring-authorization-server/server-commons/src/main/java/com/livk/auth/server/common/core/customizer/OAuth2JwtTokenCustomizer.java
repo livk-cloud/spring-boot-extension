@@ -25,7 +25,9 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 /**
- * <p> JWT token 输出增强</p>
+ * <p>
+ * JWT token 输出增强
+ * </p>
  *
  * @author livk
  */
@@ -33,7 +35,6 @@ public class OAuth2JwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodi
 
 	/**
 	 * Customize the OAuth 2.0 Token attributes.
-	 *
 	 * @param context the context containing the OAuth 2.0 Token attributes
 	 */
 	@Override
@@ -47,7 +48,8 @@ public class OAuth2JwtTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodi
 			return;
 		}
 
-//        Oauth2User oauth2User = (Oauth2User) context.getPrincipal().getPrincipal();
+		// Oauth2User oauth2User = (Oauth2User) context.getPrincipal().getPrincipal();
 		claims.claim(SecurityConstants.DETAILS_USER, context.getPrincipal().getPrincipal());
 	}
+
 }

@@ -29,7 +29,6 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
 
 	/**
 	 * Exist boolean.
-	 *
 	 * @param bucketName the bucket name
 	 * @return the boolean
 	 */
@@ -37,63 +36,55 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
 
 	/**
 	 * Create bucket.
-	 *
 	 * @param bucketName the bucket name
 	 */
 	void createBucket(String bucketName);
 
 	/**
 	 * All buckets list.
-	 *
 	 * @return the list
 	 */
 	List<String> allBuckets();
 
 	/**
 	 * Remove.
-	 *
 	 * @param bucketName the bucket name
 	 */
 	void removeObj(String bucketName);
 
 	/**
 	 * Exist boolean.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
+	 * @param fileName the file name
 	 * @return the boolean
 	 */
 	boolean exist(String bucketName, String fileName);
 
 	/**
 	 * Upload.
-	 *
-	 * @param bucketName  the bucket name
-	 * @param fileName    the file name
+	 * @param bucketName the bucket name
+	 * @param fileName the file name
 	 * @param inputStream the input stream
 	 */
 	void upload(String bucketName, String fileName, InputStream inputStream);
 
 	/**
 	 * Download input stream.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
+	 * @param fileName the file name
 	 * @return the input stream
 	 */
 	InputStream download(String bucketName, String fileName);
 
 	/**
 	 * Remove.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
+	 * @param fileName the file name
 	 */
 	void removeObj(String bucketName, String fileName);
 
 	/**
 	 * Remove objs.
-	 *
 	 * @param bucketName the bucket name
 	 */
 	default void removeObjs(String bucketName) {
@@ -105,28 +96,26 @@ public sealed interface OSSOperations extends AutoCloseable permits AbstractServ
 
 	/**
 	 * Gets str url.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
+	 * @param fileName the file name
 	 * @return the str url
 	 */
 	String getStrUrl(String bucketName, String fileName);
 
 	/**
 	 * Gets str url.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
-	 * @param expires    the expires
+	 * @param fileName the file name
+	 * @param expires the expires
 	 * @return the str url
 	 */
 	String getStrUrl(String bucketName, String fileName, int expires);
 
 	/**
 	 * Gets all obj.
-	 *
 	 * @param bucketName the bucket name
 	 * @return the all obj
 	 */
 	List<String> getAllObj(String bucketName);
+
 }

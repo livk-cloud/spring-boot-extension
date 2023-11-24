@@ -47,4 +47,5 @@ public class JobWriteListener implements ItemWriteListener<User> {
 	public void onWriteError(@Nullable Exception e, @Nullable Chunk<? extends User> items) {
 		log.error("spring batch write an error occurred ,message:{} data:{}", e.getMessage(), items, e);
 	}
+
 }

@@ -46,4 +46,5 @@ public class MenuController {
 	public HttpEntity<List<Menu>> list() {
 		return ResponseEntity.ok(menuMapper.list());
 	}
+
 }

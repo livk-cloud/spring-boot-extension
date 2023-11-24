@@ -50,10 +50,7 @@ public class UserProtobufSchema extends AbstractSchema<User> {
 
 	@Override
 	public SchemaInfo getSchemaInfo() {
-		return SchemaInfo.builder()
-			.name("protobuf")
-			.type(SchemaType.BYTES)
-			.schema(new byte[0])
-			.build();
+		return SchemaInfo.builder().name("protobuf").type(SchemaType.BYTES).schema(new byte[0]).build();
 	}
+
 }

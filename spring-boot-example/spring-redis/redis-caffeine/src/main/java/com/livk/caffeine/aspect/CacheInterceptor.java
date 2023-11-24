@@ -72,4 +72,5 @@ public class CacheInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Doub
 	private Callable<Object> call(Object obj) {
 		return () -> obj;
 	}
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("user")
 public class UserController extends BaseUserController {
+
 	public UserController(PulsarSend pulsarSend) {
 		super(pulsarSend);
 	}
@@ -26,4 +27,5 @@ public class UserController extends BaseUserController {
 	protected User create(int i) {
 		return new User(100L + i, "pulsar", "serializer@pulsar.com", current.nextInt(0, 2));
 	}
+
 }

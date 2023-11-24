@@ -45,4 +45,5 @@ class DocControllerTest {
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(jsonPath("openapi", "3.0.1").exists());
 	}
+
 }

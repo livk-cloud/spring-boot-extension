@@ -75,7 +75,8 @@ public class WebSocketClientTest implements Runnable {
 		try {
 			getClient(uri);
 			countDownLatch.await();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -85,7 +86,8 @@ public class WebSocketClientTest implements Runnable {
 		while (webSocketClient.getReadyState().ordinal() == 0) {
 			try {
 				Thread.sleep(200);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				log.warn("延迟操作出现问题，但并不影响功能");
 			}
 			log.info("连接中.......");
@@ -97,4 +99,5 @@ public class WebSocketClientTest implements Runnable {
 			log.info(uri + "连接失败.......");
 		}
 	}
+
 }

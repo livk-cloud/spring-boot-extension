@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @Disabled("单独测试，性能损耗大")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-	useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
+		useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
 class WebSocketClientTestTest {
 
 	@Test
@@ -53,5 +53,5 @@ class WebSocketClientTestTest {
 		}
 		assertEquals(0, countDownLatch.getCount());
 	}
-}
 
+}

@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseUserController {
 
 	protected final ThreadLocalRandom current = ThreadLocalRandom.current();
+
 	private final ProtobufSend<User> protobufSend;
 
 	@GetMapping("send")
@@ -46,4 +47,5 @@ public abstract class BaseUserController {
 	protected abstract String key();
 
 	protected abstract User create(int i);
+
 }

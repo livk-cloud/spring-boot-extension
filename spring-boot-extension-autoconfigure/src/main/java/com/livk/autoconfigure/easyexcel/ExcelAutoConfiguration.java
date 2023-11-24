@@ -53,6 +53,7 @@ public class ExcelAutoConfiguration {
 	@AutoConfiguration
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 	public static class ExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
+
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 			resolvers.add(new ExcelMethodArgumentResolver());
@@ -62,6 +63,7 @@ public class ExcelAutoConfiguration {
 		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
 			handlers.add(new ExcelMethodReturnValueHandler());
 		}
+
 	}
 
 	/**
@@ -72,8 +74,8 @@ public class ExcelAutoConfiguration {
 	public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
 
 		/**
-		 * Reactive excel method return value handler reactive excel method return value handler.
-		 *
+		 * Reactive excel method return value handler reactive excel method return value
+		 * handler.
 		 * @return the reactive excel method return value handler
 		 */
 		@Bean
@@ -85,5 +87,7 @@ public class ExcelAutoConfiguration {
 		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
 			configurer.addCustomResolver(new ReactiveExcelMethodArgumentResolver());
 		}
+
 	}
+
 }

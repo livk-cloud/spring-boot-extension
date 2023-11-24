@@ -43,7 +43,7 @@ import java.util.Map;
 public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login",
-		"POST");
+			"POST");
 
 	private final AuthenticationManager authenticationManager;
 
@@ -54,16 +54,18 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-		throws AuthenticationException {
+			throws AuthenticationException {
 		try {
 			User user = JsonMapperUtils.readValue(request.getInputStream(), User.class);
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),
-				user.getAuthorities());
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					user.getUsername(), user.getPassword(), user.getAuthorities());
 			return authenticationManager.authenticate(authenticationToken);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
 			WebUtils.outJson(response, map);
 			throw new UsernameNotFoundException("用户名或者密码错误");
 		}
 	}
+
 }

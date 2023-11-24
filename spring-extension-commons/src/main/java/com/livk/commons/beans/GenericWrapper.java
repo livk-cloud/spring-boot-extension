@@ -28,9 +28,8 @@ import org.springframework.core.GenericTypeResolver;
 public interface GenericWrapper<T> extends Wrapper {
 
 	/**
-	 * Of delegating wrapper.
-	 *
-	 * @param <T>      the type parameter
+	 * 构建一个GenericWrapper包装器
+	 * @param <T> 相关泛型
 	 * @param delegate the value
 	 * @return the delegating wrapper
 	 */
@@ -45,9 +44,9 @@ public interface GenericWrapper<T> extends Wrapper {
 	}
 
 	/**
-	 * Unwrap t.
-	 *
-	 * @return the t
+	 * 解析成泛型相关实例
+	 * @return 带有泛型的相关实例
 	 */
 	T unwrap();
+
 }

@@ -36,4 +36,5 @@ public class SecurityContextUtils {
 		Object principal = getAuthentication().getPrincipal();
 		return principal instanceof User user ? user : null;
 	}
+
 }

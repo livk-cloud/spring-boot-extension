@@ -44,20 +44,24 @@ public class AdminRedisConfig {
 
 	@Bean
 	public ReactiveRedisOps reactiveRedisOps(AdminServerProperties adminServerProperties,
-											 ReactiveRedisConnectionFactory redisConnectionFactory) {
+			ReactiveRedisConnectionFactory redisConnectionFactory) {
 		JsonMapper mapper = JsonMapper.builder()
 			.addModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()))
 			.addModule(new JavaTimeModule())
 			.build();
-		Jackson2JsonRedisSerializer<InstanceId> hashKeySerializer = new Jackson2JsonRedisSerializer<>(mapper, InstanceId.class);
+		Jackson2JsonRedisSerializer<InstanceId> hashKeySerializer = new Jackson2JsonRedisSerializer<>(mapper,
+				InstanceId.class);
 		CollectionType collectionType = TypeFactoryUtils.collectionType(InstanceEvent.class);
-		Jackson2JsonRedisSerializer<List<InstanceEvent>> hashValueSerializer = new Jackson2JsonRedisSerializer<>(mapper, collectionType);
-		RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.
-			<String, Object>newSerializationContext()
+		Jackson2JsonRedisSerializer<List<InstanceEvent>> hashValueSerializer = new Jackson2JsonRedisSerializer<>(mapper,
+				collectionType);
+		RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext
+			.<String, Object>newSerializationContext()
 			.key(RedisSerializer.string())
 			.value(JacksonSerializerUtils.json())
 			.hashKey(hashKeySerializer)
-			.hashValue(hashValueSerializer).build();
+			.hashValue(hashValueSerializer)
+			.build();
 		return new ReactiveRedisOps(redisConnectionFactory, serializationContext);
 	}
+
 }

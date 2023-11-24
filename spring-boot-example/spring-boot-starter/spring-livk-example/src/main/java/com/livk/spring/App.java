@@ -33,7 +33,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @LivkImport
 @EnableLivk
-@EnableHttpClient({HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT})
+@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT })
 @SpringBootApplication
 public class App {
 

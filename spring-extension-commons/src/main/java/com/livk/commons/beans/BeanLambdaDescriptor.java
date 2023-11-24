@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The type Bean lambda descriptor.
+ * BeanLambda的相关方法或者字段处理
  *
  * @author livk
  */
@@ -54,11 +54,12 @@ class BeanLambdaDescriptor {
 	}
 
 	/**
-	 * Create bean lambda descriptor.
-	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the bean lambda descriptor
+	 * 静态构建根据{@link BeanLambdaDescriptor}
+	 * <p>
+	 * 使用缓存避免无效加载
+	 * @param <T> 相关泛型
+	 * @param function BeanLambdaFunc表达式
+	 * @return BeanLambdaDescriptor
 	 */
 	@SneakyThrows
 	public static <T> BeanLambdaDescriptor create(BeanLambdaFunc<T> function) {
@@ -67,7 +68,8 @@ class BeanLambdaDescriptor {
 		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className);
-		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()), pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
+		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()),
+				pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
 	}
 
 	private void initField() {
@@ -96,4 +98,5 @@ class BeanLambdaDescriptor {
 	public Method getMethod() {
 		return ReflectionUtils.findMethod(type, methodName);
 	}
+
 }

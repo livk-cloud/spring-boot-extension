@@ -22,15 +22,12 @@ class DisruptorMqControllerTest {
 
 	@Test
 	void send() throws Exception {
-		mockMvc.perform(post("/msg"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(post("/msg")).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test
 	void sendBatch() throws Exception {
-		mockMvc.perform(post("/msg/batch"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(post("/msg/batch")).andDo(print()).andExpect(status().isOk());
 	}
+
 }

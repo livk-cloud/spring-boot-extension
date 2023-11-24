@@ -73,7 +73,6 @@ public abstract class AbstractRedisCodec<T> implements RedisCodec<String, T> {
 
 	/**
 	 * Serialize the given object to binary data.
-	 *
 	 * @param value object to serialize. Can be {@literal null}.
 	 * @return the equivalent binary data. Can be {@literal null}.
 	 * @throws CodecException the codec exception
@@ -82,10 +81,10 @@ public abstract class AbstractRedisCodec<T> implements RedisCodec<String, T> {
 
 	/**
 	 * Deserialize an object from the given binary data.
-	 *
 	 * @param bytes object binary representation. Can be {@literal null}.
 	 * @return the equivalent object instance. Can be {@literal null}.
 	 * @throws CodecException the codec exception
 	 */
 	protected abstract T deserialize(byte[] bytes) throws CodecException;
+
 }

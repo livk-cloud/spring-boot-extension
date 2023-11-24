@@ -59,9 +59,7 @@ class UserControllerTest {
 	@Order(2)
 	@Test
 	void testMysqlUser() throws Exception {
-		mockMvc.perform(get("/user/mysql"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/user/mysql")).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Order(3)
@@ -76,10 +74,10 @@ class UserControllerTest {
 	@Order(4)
 	@Test
 	void testPgsqlUser() throws Exception {
-		mockMvc.perform(get("/user/pgsql"))
-			.andDo(print())
-			.andExpect(status().isOk());
+		mockMvc.perform(get("/user/pgsql")).andDo(print()).andExpect(status().isOk());
 	}
+
 }
 
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
+// Generated with love by TestMe :) Please report issues and submit feature requests at:
+// http://weirddev.com/forum#!/testme

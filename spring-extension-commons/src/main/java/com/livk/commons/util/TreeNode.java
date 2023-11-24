@@ -30,11 +30,11 @@ import java.util.List;
 
 /**
  * <p>
- * Construct tree nodes, node ID are not allowed to be duplicated
+ * 树形检点,无法出现相同的ID节点
  * </p>
  *
- * @param <I> the type parameter
- * @param <T> the type parameter
+ * @param <I> 树形节点ID相关type
+ * @param <T> 树形节点数据相关type
  * @author livk
  */
 @Slf4j
@@ -48,27 +48,27 @@ public class TreeNode<I, T> {
 	private I id;
 
 	private T node;
+
 	private I pid;
+
 	private List<TreeNode<I, T>> children;
 
 	/**
-	 * Construct the root node
-	 *
-	 * @param <I>  the type parameter
-	 * @param <T>  the type parameter
-	 * @param id   the id
-	 * @param node the node
-	 * @return the tree node
+	 * 创建一个root树形节点
+	 * @param <I> 树形节点ID相关type
+	 * @param <T> 树形节点数据相关type
+	 * @param id id
+	 * @param node node
+	 * @return tree node
 	 */
 	public static <I, T> TreeNode<I, T> createRoot(I id, T node) {
 		return new TreeNode<>(id, node, null, new ArrayList<>());
 	}
 
 	/**
-	 * Add a child node
-	 *
-	 * @param treeNo the tree no
-	 * @return the boolean
+	 * 添加一个子节点,出现相同ID则无法添加
+	 * @param treeNo TreeNode
+	 * @return boolean
 	 */
 	public boolean addChild(TreeNode<I, T> treeNo) {
 		if (this.findById(treeNo.id) != null) {
@@ -86,14 +86,11 @@ public class TreeNode<I, T> {
 	}
 
 	/**
-	 * Set up child nodes
-	 *
-	 * @param nodes the nodes
+	 * 设置子节点,会根据父子关系进行自动匹配
+	 * @param nodes TreeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
-		List<TreeNode<I, T>> treeNodeList = nodes.stream()
-			.filter(node -> id.equals(node.pid))
-			.toList();
+		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();
 		if (!CollectionUtils.isEmpty(treeNodeList)) {
 			children = new ArrayList<>();
 			children.addAll(treeNodeList);
@@ -102,10 +99,9 @@ public class TreeNode<I, T> {
 	}
 
 	/**
-	 * Find by id tree node.
-	 *
-	 * @param id the id
-	 * @return the tree node
+	 * 根据ID查找一个节点
+	 * @param id id
+	 * @return tree node
 	 */
 	public TreeNode<I, T> findById(I id) {
 		if (this.id.equals(id)) {
@@ -121,4 +117,5 @@ public class TreeNode<I, T> {
 		}
 		return null;
 	}
+
 }

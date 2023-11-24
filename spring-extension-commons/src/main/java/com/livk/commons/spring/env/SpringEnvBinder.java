@@ -35,9 +35,14 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * The type Spring env binder.
+ * 自定义{@link Binder}
+ * <p>
+ * 用于添加{@link Converter}
+ * <p>
+ * 便于解析Environment成各种类型的数据
  *
  * @author livk
+ * @see Binder
  */
 public class SpringEnvBinder {
 
@@ -46,9 +51,8 @@ public class SpringEnvBinder {
 	private final ConfigurableConversionService conversionService;
 
 	/**
-	 * Instantiates a new Spring env binder.
-	 *
-	 * @param environment       the environment
+	 * 构造方法
+	 * @param environment the environment
 	 * @param conversionService the conversion service
 	 */
 	public SpringEnvBinder(Environment environment, ConfigurableConversionService conversionService) {
@@ -57,8 +61,7 @@ public class SpringEnvBinder {
 	}
 
 	/**
-	 * Instantiates a new Spring env binder.
-	 *
+	 * 构造方法
 	 * @param environment the environment
 	 */
 	public SpringEnvBinder(Environment environment) {
@@ -66,8 +69,7 @@ public class SpringEnvBinder {
 	}
 
 	/**
-	 * Add converter spring env binder.
-	 *
+	 * 添加Converter
 	 * @param converter the converter
 	 * @return the spring env binder
 	 */
@@ -77,98 +79,90 @@ public class SpringEnvBinder {
 	}
 
 	/**
-	 * Binder binder.
-	 *
+	 * 构建Binder
 	 * @return the binder
 	 */
 	public Binder binder() {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		PropertySourcesPlaceholdersResolver placeholdersResolver = new PropertySourcesPlaceholdersResolver(environment);
-		return new Binder(sources, placeholdersResolver, conversionService,
-			null, null, null);
+		return new Binder(sources, placeholdersResolver, conversionService);
 	}
 
 	/**
-	 * Of bind result.
-	 *
-	 * @param <T>  the type parameter
-	 * @param name the name
-	 * @param type the type
-	 * @return the bind result
+	 * 构建BindResult,返回类型与ResolvableType相关
+	 * @param <T> 泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param type 类型相关
+	 * @return bind result
 	 */
 	public <T> BindResult<T> of(String name, ResolvableType type) {
 		return bind(name, Bindable.of(type));
 	}
 
 	/**
-	 * List of bind result.
-	 *
-	 * @param <E>  the type parameter
-	 * @param name the name
-	 * @param type the type
-	 * @return the bind result
+	 * 构建BindResult,返回数据为List
+	 * @param <E> 泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param type 泛型类型
+	 * @return bind result
 	 */
 	public <E> BindResult<List<E>> listOf(String name, Class<E> type) {
 		return bind(name, Bindable.listOf(type));
 	}
 
 	/**
-	 * Sets of.
-	 *
-	 * @param <E>  the type parameter
-	 * @param name the name
-	 * @param type the type
-	 * @return the of
+	 * 构建BindResult,返回数据为Set
+	 * @param <E> 泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param type 泛型类型
+	 * @return bind result
 	 */
 	public <E> BindResult<Set<E>> setOf(String name, Class<E> type) {
 		return bind(name, Bindable.setOf(type));
 	}
 
 	/**
-	 * Map of bind result.
-	 *
-	 * @param <K>   the type parameter
-	 * @param <V>   the type parameter
-	 * @param name  the name
-	 * @param kType the k type
-	 * @param vType the v type
-	 * @return the bind result
+	 * 构建BindResult,返回数据为Map
+	 * @param <K> Key泛型
+	 * @param <V> Value泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param kType Key类型
+	 * @param vType Value类型
+	 * @return bind result
 	 */
 	public <K, V> BindResult<Map<K, V>> mapOf(String name, Class<K> kType, Class<V> vType) {
 		return bind(name, Bindable.mapOf(kType, vType));
 	}
 
 	/**
-	 * Properties of bind result.
-	 *
-	 * @param name the name
-	 * @return the bind result
+	 * 构建BindResult,返回数据为Properties
+	 * @param name 要绑定的配置属性名称
+	 * @return bind result
 	 */
 	public BindResult<Properties> propertiesOf(String name) {
 		return bind(name, Properties.class);
 	}
 
 	/**
-	 * Bind bind result.
-	 *
-	 * @param <T>      the type parameter
-	 * @param name     the key prefix
-	 * @param bindable the bindable
-	 * @return the bind result
+	 * 构建BindResult
+	 * @param <T> 泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param bindable bindable
+	 * @return bind result
 	 */
 	public <T> BindResult<T> bind(String name, Bindable<T> bindable) {
 		return binder().bind(name, bindable);
 	}
 
 	/**
-	 * Bind bind result.
-	 *
-	 * @param <T>  the type parameter
-	 * @param name the key prefix
-	 * @param type the bindable
-	 * @return the bind result
+	 * 构建BindResult
+	 * @param <T> 泛型
+	 * @param name 要绑定的配置属性名称
+	 * @param type 返回数据类型
+	 * @return bind result
 	 */
 	public <T> BindResult<T> bind(String name, Class<T> type) {
 		return binder().bind(name, type);
 	}
+
 }

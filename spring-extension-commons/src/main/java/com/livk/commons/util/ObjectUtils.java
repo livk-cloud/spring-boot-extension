@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * StringUtils
+ * 常用Object相关工具类
  * </p>
  *
  * @author livk
@@ -34,10 +34,9 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
 
 	/**
 	 * All checked boolean.
-	 *
-	 * @param <T>       the type parameter
+	 * @param <T> the type parameter
 	 * @param predicate the predicate
-	 * @param ts        the ts
+	 * @param ts the ts
 	 * @return the boolean
 	 * @see Predicates
 	 */
@@ -49,10 +48,9 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
 
 	/**
 	 * Any checked boolean.
-	 *
-	 * @param <T>       the type parameter
+	 * @param <T> the type parameter
 	 * @param predicate the predicate
-	 * @param ts        the ts
+	 * @param ts the ts
 	 * @return the boolean
 	 * @see Predicates
 	 */

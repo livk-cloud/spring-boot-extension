@@ -46,7 +46,8 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 	}
 
 	@Override
-	public final <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {
+	public final <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap,
+			Class<T> returnType) {
 		Map<String, Object> map = contextFactory.merge(method, args, contextMap);
 		return evaluate(value, map, returnType);
 	}
@@ -73,10 +74,10 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 
 	/**
 	 * Gets context resolver.
-	 *
 	 * @return the context resolver
 	 */
 	protected ContextFactory getContextFactory() {
 		return new DefaultContextFactory();
 	}
+
 }

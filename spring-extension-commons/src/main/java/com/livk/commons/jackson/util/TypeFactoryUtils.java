@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The type Type factory utils.
+ * TypeFactory工具类
  *
  * @author livk
  */
@@ -40,7 +40,6 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 获取TypeFactory
-	 *
 	 * @return TypeFactory
 	 */
 	public static TypeFactory instance() {
@@ -49,7 +48,6 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个JavaType
-	 *
 	 * @param targetClass the target class
 	 * @return JavaType
 	 */
@@ -59,9 +57,8 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个含有泛型的JavaType
-	 *
 	 * @param targetClass the target class
-	 * @param generics    the generics
+	 * @param generics the generics
 	 * @return JavaType
 	 */
 	public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
@@ -70,9 +67,8 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个含有泛型的JavaType
-	 *
 	 * @param targetClass the target class
-	 * @param generics    the generics
+	 * @param generics the generics
 	 * @return JavaType
 	 */
 	public static JavaType javaType(Class<?> targetClass, JavaType... generics) {
@@ -80,8 +76,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * Java type java type.
-	 *
+	 * TypeReference转JavaType
 	 * @param typeReference the type reference
 	 * @return JavaType
 	 */
@@ -91,7 +86,6 @@ public class TypeFactoryUtils {
 
 	/**
 	 * ResolvableType转成Jackson JavaType
-	 *
 	 * @param resolvableType the resolvable type
 	 * @return JavaType
 	 * @see ResolvableType
@@ -109,8 +103,7 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个CollectionType
-	 *
-	 * @param <T>  the type parameter
+	 * @param <T> the type parameter
 	 * @param type the target class
 	 * @return CollectionType
 	 */
@@ -120,7 +113,6 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个CollectionType
-	 *
 	 * @param javaType the java type
 	 * @return CollectionType
 	 */
@@ -130,10 +122,9 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个MapType
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param keyClass   the key class
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param keyClass the key class
 	 * @param valueClass the value class
 	 * @return MapType
 	 */
@@ -143,7 +134,6 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 构建一个MapType
-	 *
 	 * @param kType the k type
 	 * @param vType the v type
 	 * @return MapType
@@ -151,4 +141,5 @@ public class TypeFactoryUtils {
 	public static MapType mapType(JavaType kType, JavaType vType) {
 		return instance().constructMapType(Map.class, kType, vType);
 	}
+
 }

@@ -28,7 +28,7 @@ import java.util.stream.*;
 
 /**
  * <p>
- * StreamUtils
+ * Stream工具类
  * </p>
  *
  * @author livk
@@ -37,12 +37,11 @@ import java.util.stream.*;
 public class BaseStreamUtils {
 
 	/**
-	 * Concat map.
-	 *
-	 * @param <K>  the type parameter
-	 * @param <V>  the type parameter
-	 * @param maps the maps
-	 * @return the map
+	 * 合并Map,key相同的则合并成List
+	 * @param <K> key type parameter
+	 * @param <V> value type parameter
+	 * @param maps maps
+	 * @return map
 	 */
 	@SafeVarargs
 	public <K, V> Map<K, List<V>> concat(Map<K, V>... maps) {
@@ -53,33 +52,28 @@ public class BaseStreamUtils {
 			.filter(Objects::nonNull)
 			.flatMap(map -> map.entrySet().stream())
 			.collect(Collectors.groupingBy(Map.Entry::getKey,
-				Collectors.mapping(Map.Entry::getValue,
-					Collectors.toList())));
+					Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 	}
 
 	/**
-	 * Concat stream.
-	 *
-	 * @param <T> the type parameter
-	 * @param ts  the ts
-	 * @return the stream
+	 * 合并数组
+	 * @param <T> type parameter
+	 * @param ts the ts
+	 * @return stream
 	 */
 	@SafeVarargs
 	public <T> Stream<T> concat(T[]... ts) {
 		if (ObjectUtils.isEmpty(ts)) {
 			return Stream.empty();
 		}
-		return Arrays.stream(ts)
-			.filter(Objects::nonNull)
-			.flatMap(Arrays::stream);
+		return Arrays.stream(ts).filter(Objects::nonNull).flatMap(Arrays::stream);
 	}
 
 	/**
-	 * Concat string [ ].
-	 *
+	 * 合并string数组
 	 * @param distinct 是否去重
-	 * @param strArr   str[]
-	 * @return the string [ ]
+	 * @param strArr str[]
+	 * @return string []
 	 */
 	public String[] concat(boolean distinct, String[]... strArr) {
 		Stream<String> concat = concat(strArr);
@@ -90,20 +84,18 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat distinct string [ ].
-	 *
+	 * 合并string数组并去重
 	 * @param strArr str[]
-	 * @return the string [ ]
+	 * @return string []
 	 */
 	public String[] concatDistinct(String[]... strArr) {
 		return concat(true, strArr);
 	}
 
 	/**
-	 * Concat int [ ].
-	 *
-	 * @param intArray the int array
-	 * @return the int [ ]
+	 * 合并int数组
+	 * @param intArray int array
+	 * @return int []
 	 */
 	public int[] concat(int[]... intArray) {
 		if (ObjectUtils.isEmpty(intArray)) {
@@ -113,10 +105,9 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat long [ ].
-	 *
-	 * @param longArray the long array
-	 * @return the long [ ]
+	 * 合并long数组
+	 * @param longArray long array
+	 * @return long []
 	 */
 	public long[] concat(long[]... longArray) {
 		if (ObjectUtils.isEmpty(longArray)) {
@@ -126,10 +117,9 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Concat double [ ].
-	 *
-	 * @param doubleArray the double array
-	 * @return the double [ ]
+	 * 合并double数组
+	 * @param doubleArray double array
+	 * @return double []
 	 */
 	public double[] concat(double[]... doubleArray) {
 		if (ObjectUtils.isEmpty(doubleArray)) {
@@ -138,28 +128,24 @@ public class BaseStreamUtils {
 		return Arrays.stream(doubleArray).filter(Objects::nonNull).flatMapToDouble(Arrays::stream).toArray();
 	}
 
-
 	/**
-	 * Zip stream.
-	 *
-	 * @param <T>        the type parameter
-	 * @param <R>        the type parameter
-	 * @param combinator the combinator
-	 * @param streams    the streams
-	 * @return the stream
+	 * 通过function合并多个Stream
+	 * @param <T> 转换前泛型
+	 * @param <R> 转换后泛型
+	 * @param combinator 转换Function
+	 * @param streams 待转换Stream
+	 * @return 合并后的Stream
 	 */
 	@SafeVarargs
 	public <T, R> Stream<R> zip(Function<Stream<T>, Stream<R>> combinator, Stream<T>... streams) {
-		return ObjectUtils.isEmpty(streams) ? Stream.empty() :
-			Stream.of(streams).flatMap(combinator);
+		return ObjectUtils.isEmpty(streams) ? Stream.empty() : Stream.of(streams).flatMap(combinator);
 	}
 
 	/**
-	 * Distinct predicate.
-	 *
-	 * @param <T>      the type parameter
-	 * @param function the function
-	 * @return the predicate
+	 * 根据某个条件进行去重
+	 * @param <T> type parameter
+	 * @param function 去重条件
+	 * @return predicate
 	 */
 	public <T> Predicate<T> distinct(Function<? super T, ?> function) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
@@ -172,8 +158,7 @@ public class BaseStreamUtils {
 	 * Deprecated
 	 * <p>
 	 * use {@link com.google.common.collect.Streams#stream(java.util.Iterator)}
-	 *
-	 * @param <T>      the type parameter
+	 * @param <T> the type parameter
 	 * @param iterator the iterator
 	 * @return the stream
 	 * @see com.google.common.collect.Streams#stream(java.util.Iterator)
@@ -184,26 +169,22 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * Convert stream.
-	 *
-	 * @param <T>         the type parameter
-	 * @param enumeration the enumeration
-	 * @return the stream
+	 * Enumeration转化成Stream
+	 * @param <T> type parameter
+	 * @param enumeration enumeration
+	 * @return stream
 	 */
 	public <T> Stream<T> convert(Enumeration<T> enumeration) {
-		return StreamSupport.stream(
-			EnumerationSpliterator.spliteratorUnknownSize(enumeration),
-			false);
+		return StreamSupport.stream(EnumerationSpliterator.spliteratorUnknownSize(enumeration), false);
 	}
 
 	/**
-	 * Map with index function.
-	 *
-	 * @param <T>        the type parameter
-	 * @param <R>        the type parameter
-	 * @param initValue  the init value
-	 * @param biFunction the bi function
-	 * @return the function
+	 * Stream.map()产生出index序号
+	 * @param <T> type parameter
+	 * @param <R> type parameter
+	 * @param initValue 初始值
+	 * @param biFunction bi function
+	 * @return function
 	 */
 	public <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
@@ -211,15 +192,15 @@ public class BaseStreamUtils {
 	}
 
 	/**
-	 * For each with index consumer.
-	 *
-	 * @param <T>        the type parameter
-	 * @param initValue  the init value
-	 * @param biConsumer the bi consumer
-	 * @return the consumer
+	 * Foreach中产生index序号
+	 * @param <T> type parameter
+	 * @param initValue 初始值
+	 * @param biConsumer bi consumer
+	 * @return consumer
 	 */
 	public <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
 		return t -> biConsumer.accept(t, atomicInteger.getAndIncrement());
 	}
+
 }

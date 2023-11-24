@@ -17,18 +17,16 @@
 
 package com.livk.commons.expression.aviator;
 
-import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethodTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -42,12 +40,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class AviatorExpressionResolverTest {
 
-	private final static Object[] args = new Object[]{"livk"};
+	private final static Object[] args = new Object[] { "livk" };
+
 	private final static Map<String, String> map = Map.of("username", "livk");
+
 	final ExpressionResolver resolver = new AviatorExpressionResolver();
+
 	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
-	@Autowired
-	ApplicationContext applicationContext;
 
 	AviatorExpressionResolverTest() throws NoSuchMethodException {
 	}
@@ -62,39 +61,47 @@ class AviatorExpressionResolverTest {
 		assertEquals("livk", resolver.evaluate("#username", map));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
-		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456",
+				resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
 		assertEquals("livk:" + System.getProperty("user.dir"),
-			resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
 		assertEquals("livk", resolver.evaluate("#username", method, args));
 		assertEquals("livk", resolver.evaluate("'livk'", method, args));
 
-		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
-		assertEquals("livk123456", resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456",
+				resolver.evaluate("'root:'+#username+':'+#password", method, args, Map.of("password", "123456")));
+		assertEquals("livk123456",
+				resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
 		assertEquals("livk", resolver.evaluate("#username", map));
 		assertEquals("livk:" + System.getProperty("user.dir"),
-			resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-		AviatorEvaluator.addFunctionLoader(new SpringContextFunctionLoader(applicationContext));
 		assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class SpringConfig {
 
 		@Bean
 		public AddFunction springStrAdd() {
 			return new AddFunction();
 		}
+
+		@Bean
+		public SpringContextFunctionLoader springContextFunctionLoader(ApplicationContext applicationContext) {
+			return new SpringContextFunctionLoader(applicationContext);
+		}
+
 	}
 
-
 	static class AddFunction extends AbstractFunction {
+
 		@Override
 		public String getName() {
 			return "add";
@@ -106,5 +113,7 @@ class AviatorExpressionResolverTest {
 			String right = FunctionUtils.getStringValue(arg2, env);
 			return FunctionUtils.wrapReturn(left + right);
 		}
+
 	}
+
 }

@@ -35,7 +35,8 @@ import java.io.StringWriter;
 @RequiredArgsConstructor
 public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Template> {
 
-	private static final Configuration DEFAULT_CONFIG = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+	private static final Configuration DEFAULT_CONFIG = new Configuration(
+			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
 	private static final String TEMPLATE_NAME = "template";
 
@@ -54,7 +55,8 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Templa
 	}
 
 	@Override
-	protected <T> T calculate(Template template, Context context, Class<T> returnType) throws TemplateException, IOException {
+	protected <T> T calculate(Template template, Context context, Class<T> returnType)
+			throws TemplateException, IOException {
 		if (returnType.isAssignableFrom(String.class)) {
 			StringWriter result = new StringWriter(1024);
 			template.process(context, result);
@@ -62,4 +64,5 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Templa
 		}
 		throw new UnsupportedOperationException("Classes other than String and its parent class are not supported");
 	}
+
 }

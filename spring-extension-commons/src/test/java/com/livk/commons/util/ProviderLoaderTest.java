@@ -52,4 +52,5 @@ class ProviderLoaderTest {
 	public static class Cat implements Animal {
 
 	}
+
 }

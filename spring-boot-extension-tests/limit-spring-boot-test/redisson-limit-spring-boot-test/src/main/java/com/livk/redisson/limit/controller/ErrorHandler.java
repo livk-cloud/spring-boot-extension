@@ -34,4 +34,5 @@ public class ErrorHandler {
 	public HttpEntity<String> handleLimitException(LimitException e) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 	}
+
 }

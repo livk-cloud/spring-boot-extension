@@ -31,10 +31,13 @@ import java.util.Map;
  */
 @Slf4j
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) {
 		log.error("异常：{}", exception.getMessage(), exception);
 		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_BAD_REQUEST, "msg",
-			"login failed, username or password is incorrect"));
+				"login failed, username or password is incorrect"));
 	}
+
 }

@@ -35,4 +35,5 @@ public interface UserService {
 	Mono<Void> remove(Mono<Integer> id);
 
 	Mono<Void> save(Mono<User> userMono);
+
 }

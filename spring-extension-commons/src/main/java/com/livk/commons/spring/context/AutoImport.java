@@ -22,7 +22,9 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * The interface Auto import.
+ * 自动装配相关注解
+ * <p>
+ * 适用与EnableXXXX
  *
  * @author livk
  */
@@ -31,4 +33,5 @@ import java.lang.annotation.*;
 @Documented
 @Import(AutoImportSelector.class)
 public @interface AutoImport {
+
 }

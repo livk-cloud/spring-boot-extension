@@ -46,4 +46,5 @@ public class MvelExpressionResolver extends ConverterExpressionResolver<Variable
 		Object parse = new MVELInterpretedRuntime(expression, null, context).parse();
 		return DataConversion.convert(parse, returnType);
 	}
+
 }

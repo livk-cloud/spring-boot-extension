@@ -27,7 +27,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableDynamicDatasource
 @SpringBootApplication
 public class DynamicApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
+
 }

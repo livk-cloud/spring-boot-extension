@@ -51,4 +51,5 @@ public class RedisCaffeineManager implements CacheManager {
 	public Collection<String> getCacheNames() {
 		return Collections.unmodifiableSet(this.cacheMap.keySet());
 	}
+
 }

@@ -56,16 +56,13 @@ public class SentController {
 	}
 
 	@PostMapping("/push/{id}")
-	public HttpEntity<Boolean> push(@PathVariable String id,
-									@RequestBody JsonNode content) throws IOException {
+	public HttpEntity<Boolean> push(@PathVariable String id, @RequestBody JsonNode content) throws IOException {
 		log.info("{}", content);
 		SseEmitter sseEmitter = sseEmitterRepository.get(id);
 		if (sseEmitter == null) {
 			return ResponseEntity.ok(false);
 		}
-		sseEmitter.send(SseEmitter.event()
-			.data(content)
-			.id(id));
+		sseEmitter.send(SseEmitter.event().data(content).id(id));
 		return ResponseEntity.ok(true);
 	}
 
@@ -76,9 +73,7 @@ public class SentController {
 			return ResponseEntity.ok(false);
 		}
 		for (int i = 0; i < 10; i++) {
-			sseEmitter.send(SseEmitter.event()
-				.data(i + ":::::" + UUID.randomUUID())
-				.id(id));
+			sseEmitter.send(SseEmitter.event().data(i + ":::::" + UUID.randomUUID()).id(id));
 		}
 		sseEmitter.complete();
 		sseEmitterRepository.remove(id);
@@ -95,4 +90,5 @@ public class SentController {
 		sseEmitterRepository.remove(id);
 		return ResponseEntity.ok(true);
 	}
+
 }

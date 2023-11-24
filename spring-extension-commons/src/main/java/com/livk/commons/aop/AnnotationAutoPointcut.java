@@ -22,7 +22,7 @@ import org.springframework.aop.Pointcut;
 import java.lang.annotation.Annotation;
 
 /**
- * The interface Annotation auto pointcut.
+ * 根据注解类型构建{@link Pointcut}的通用接口
  *
  * @author livk
  */
@@ -31,9 +31,9 @@ interface AnnotationAutoPointcut {
 
 	/**
 	 * 根据注解获取到切点
-	 *
 	 * @param annotationType 注解类信息
 	 * @return 切点
 	 */
 	Pointcut getPointcut(Class<? extends Annotation> annotationType);
+
 }

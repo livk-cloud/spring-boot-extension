@@ -23,6 +23,7 @@ import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
@@ -30,8 +31,13 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <p>类注解或者方法注解的切点</p>
- * <p>参考 {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}</p>
+ * <p>
+ * 类注解或者方法注解的切点
+ * </p>
+ * <p>
+ * 参考
+ * {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}
+ * </p>
  *
  * @author livk
  */
@@ -40,9 +46,10 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 	private final MethodMatcher methodResolver;
 
 	/**
-	 * Instantiates a new Annotation class or method pointcut.
-	 *
-	 * @param annotationType the annotation type
+	 * 构造方法
+	 * <p>
+	 * 用于类或者方法切点
+	 * @param annotationType 注解类型
 	 */
 	public AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
 		this.methodResolver = new AnnotationMethodMatcher(annotationType);
@@ -50,7 +57,7 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 	}
 
 	@Override
-	public boolean matches(Method method, Class<?> targetClass) {
+	public boolean matches(@NonNull Method method, @NonNull Class<?> targetClass) {
 		return getClassFilter().matches(targetClass) || this.methodResolver.matches(method, targetClass);
 	}
 
@@ -70,9 +77,10 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		private final AnnotationMethodsResolver methodResolver;
 
 		/**
-		 * Instantiates a new Annotation class or method filter.
-		 *
-		 * @param annotationType the annotation type
+		 * 构造方法
+		 * <p>
+		 * 用于匹配的ClassFilter
+		 * @param annotationType 注解类型
 		 */
 		AnnotationClassOrMethodFilter(Class<? extends Annotation> annotationType) {
 			super(annotationType, true);
@@ -80,7 +88,7 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		}
 
 		@Override
-		public boolean matches(Class<?> clazz) {
+		public boolean matches(@NonNull Class<?> clazz) {
 			return super.matches(clazz) || this.methodResolver.hasAnnotatedMethods(clazz);
 		}
 
@@ -91,19 +99,17 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		private final Class<? extends Annotation> annotationType;
 
 		/**
-		 * Instantiates a new Annotation methods resolver.
-		 *
-		 * @param annotationType the annotation type
+		 * 构造方法
+		 * @param annotationType 注解类型
 		 */
 		public AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
 			this.annotationType = annotationType;
 		}
 
 		/**
-		 * Has annotated methods boolean.
-		 *
-		 * @param clazz the clazz
-		 * @return the boolean
+		 * 判断类是否包含注解
+		 * @param clazz 类信息
+		 * @return boolean
 		 */
 		public boolean hasAnnotatedMethods(Class<?> clazz) {
 			final AtomicBoolean found = new AtomicBoolean(false);
@@ -120,4 +126,5 @@ public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut
 		}
 
 	}
+
 }

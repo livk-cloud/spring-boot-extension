@@ -37,4 +37,5 @@ class CuratorAppTest {
 	public void test() {
 		assertNotNull(curatorFramework);
 	}
+
 }

@@ -18,6 +18,7 @@
 package com.livk.boot
 
 import com.livk.boot.compile.CompileArgsPlugin
+import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -28,5 +29,6 @@ class ModulePlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.pluginManager.apply(CompileArgsPlugin::class.java)
 		project.pluginManager.apply(CorePlugin::class.java)
+		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
 	}
 }

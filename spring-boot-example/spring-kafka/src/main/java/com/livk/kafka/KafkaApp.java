@@ -28,6 +28,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 @Slf4j
 @SpringBootApplication
 public class KafkaApp {
+
 	public static void main(String[] args) {
 		SpringLauncher.run(args);
 	}
@@ -36,4 +37,5 @@ public class KafkaApp {
 	public void consumer(String input) {
 		log.info("data:{}", input);
 	}
+
 }

@@ -54,7 +54,6 @@ public final class OSSTemplate implements OSSOperations {
 
 	/**
 	 * Remove bucket and obj.
-	 *
 	 * @param bucketName the bucket name
 	 */
 	public void removeBucketAndObj(String bucketName) {
@@ -106,9 +105,8 @@ public final class OSSTemplate implements OSSOperations {
 
 	/**
 	 * Get external link string.
-	 *
 	 * @param bucketName the bucket name
-	 * @param fileName   the file name
+	 * @param fileName the file name
 	 * @return the string
 	 */
 	public String getExternalLink(String bucketName, String fileName) {
@@ -116,8 +114,10 @@ public final class OSSTemplate implements OSSOperations {
 		int index = url.indexOf('?');
 		if (index == -1) {
 			return url;
-		} else {
+		}
+		else {
 			return url.substring(0, index);
 		}
 	}
+
 }

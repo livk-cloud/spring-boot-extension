@@ -58,4 +58,5 @@ public class MessageController {
 		MessageId messageId = pulsarTemplate.sendAsync(message.toJson(), Schema.STRING).get();
 		return ResponseEntity.ok(JsonMapperUtils.writeValueAsString(messageId));
 	}
+
 }

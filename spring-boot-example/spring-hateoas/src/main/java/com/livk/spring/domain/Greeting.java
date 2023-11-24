@@ -41,4 +41,5 @@ public class Greeting extends AbstractEntity<Greeting> {
 	private final String contents;
 
 	private final Instant instant = Instant.now();
+
 }

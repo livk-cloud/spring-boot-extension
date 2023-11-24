@@ -54,4 +54,5 @@ public class UserController {
 	public HttpEntity<Boolean> save(@RequestBody User user) {
 		return ResponseEntity.ok(userService.save(user));
 	}
+
 }

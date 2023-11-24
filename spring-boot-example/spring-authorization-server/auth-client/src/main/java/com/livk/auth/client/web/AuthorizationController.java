@@ -48,10 +48,14 @@ public class AuthorizationController {
 
 	@GetMapping(value = "/authorize", params = "grant_type=authorization_code")
 	public String[] authorizationCodeGrant(
-		@RegisteredOAuth2AuthorizedClient("livk-client-authorization-code") OAuth2AuthorizedClient authorizedClient) {
+			@RegisteredOAuth2AuthorizedClient("livk-client-authorization-code") OAuth2AuthorizedClient authorizedClient) {
 
-		return this.webClient.get().uri(this.messagesBaseUri).attributes(oauth2AuthorizedClient(authorizedClient))
-			.retrieve().bodyToMono(String[].class).block();
+		return this.webClient.get()
+			.uri(this.messagesBaseUri)
+			.attributes(oauth2AuthorizedClient(authorizedClient))
+			.retrieve()
+			.bodyToMono(String[].class)
+			.block();
 	}
 
 	// '/authorized' is the registered 'redirect_uri' for authorization_code
@@ -60,7 +64,7 @@ public class AuthorizationController {
 		String errorCode = request.getParameter(OAuth2ParameterNames.ERROR);
 		if (StringUtils.hasText(errorCode)) {
 			return new OAuth2Error(errorCode, request.getParameter(OAuth2ParameterNames.ERROR_DESCRIPTION),
-				request.getParameter(OAuth2ParameterNames.ERROR_URI));
+					request.getParameter(OAuth2ParameterNames.ERROR_URI));
 		}
 
 		return new OAuth2Error("Null");
@@ -69,9 +73,12 @@ public class AuthorizationController {
 	@GetMapping(value = "/authorize", params = "grant_type=client_credentials")
 	public String[] clientCredentialsGrant() {
 
-		return this.webClient.get().uri(this.messagesBaseUri)
-			.attributes(clientRegistrationId("livk-client-client-credentials")).retrieve()
-			.bodyToMono(String[].class).block();
+		return this.webClient.get()
+			.uri(this.messagesBaseUri)
+			.attributes(clientRegistrationId("livk-client-client-credentials"))
+			.retrieve()
+			.bodyToMono(String[].class)
+			.block();
 	}
 
 }

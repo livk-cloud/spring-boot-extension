@@ -38,4 +38,5 @@ public class LivkAutoConfiguration {
 	public void init() {
 		log.info("{} is init", LivkAutoConfiguration.class);
 	}
+
 }

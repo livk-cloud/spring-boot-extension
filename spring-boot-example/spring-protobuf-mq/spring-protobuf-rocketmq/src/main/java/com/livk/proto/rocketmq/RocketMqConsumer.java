@@ -38,4 +38,5 @@ public class RocketMqConsumer implements RocketMQListener<User> {
 		log.info("data:{}", message);
 		ConsumerCheck.success();
 	}
+
 }

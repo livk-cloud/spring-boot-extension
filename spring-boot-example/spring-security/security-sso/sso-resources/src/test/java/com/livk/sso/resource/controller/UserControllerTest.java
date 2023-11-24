@@ -66,8 +66,10 @@ class UserControllerTest {
 		Map<String, String> body = new HashMap<>();
 		body.put("username", "livk");
 		body.put("password", "123456");
-		ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login", JsonMapperUtils.writeValueAsString(body), String.class);
-		token = "Bearer " + JsonMapperUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
+		ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login",
+				JsonMapperUtils.writeValueAsString(body), String.class);
+		token = "Bearer "
+				+ JsonMapperUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
 	}
 
 	@Test
@@ -77,8 +79,7 @@ class UserControllerTest {
 
 	@Test
 	void testList() throws Exception {
-		mockMvc.perform(get("/user/list")
-				.header(HttpHeaders.AUTHORIZATION, token))
+		mockMvc.perform(get("/user/list").header(HttpHeaders.AUTHORIZATION, token))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("list"));
@@ -86,10 +87,10 @@ class UserControllerTest {
 
 	@Test
 	void testUpdate() throws Exception {
-		mockMvc.perform(put("/user/update")
-				.header(HttpHeaders.AUTHORIZATION, token))
+		mockMvc.perform(put("/user/update").header(HttpHeaders.AUTHORIZATION, token))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("update"));
 	}
+
 }

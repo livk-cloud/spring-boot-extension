@@ -20,13 +20,15 @@ package com.livk.autoconfigure.oss.support;
 import com.livk.autoconfigure.oss.client.OSSClientFactory;
 import com.livk.autoconfigure.oss.client.OSSClientFactoryLoader;
 import com.livk.autoconfigure.oss.exception.OSSClientFactoryNotFoundException;
+import com.livk.autoconfigure.oss.support.aliyun.AliyunClientFactory;
+import com.livk.autoconfigure.oss.support.minio.MinioClientFactory;
+import com.livk.commons.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.ResolvableType;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The type Oss client factory pattern resolver.
@@ -36,24 +38,41 @@ import java.util.stream.Collectors;
 @Slf4j
 class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 
-	private final Map<String, OSSClientFactory<?>> factoryMap;
+	private static final Set<OSSClientFactory<?>> FACTORIES = new HashSet<>();
 
-	/**
-	 * Instantiates a new Oss client factory pattern resolver.
-	 */
-	public OSSClientFactoryPatternResolver(ApplicationContext applicationContext) {
-		factoryMap = applicationContext.<OSSClientFactory<?>>getBeanProvider(ResolvableType.forClass(OSSClientFactory.class))
-			.orderedStream()
-			.collect(Collectors.toMap(OSSClientFactory::name, Function.identity()));
+	static {
+		register();
+	}
+
+	private static void register() {
+		if (ClassUtils.isPresent("io.minio.MinioClient")) {
+			FACTORIES.add(new MinioClientFactory());
+		}
+		if (ClassUtils.isPresent("com.aliyun.oss.OSS")) {
+			FACTORIES.add(new AliyunClientFactory());
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> OSSClientFactory<T> loader(String prefix) {
-		if (factoryMap.containsKey(prefix)) {
-			return (OSSClientFactory<T>) factoryMap.get(prefix);
+		for (OSSClientFactory<?> factory : FACTORIES) {
+			if (factory.name().equals(prefix)) {
+				return (OSSClientFactory<T>) factory;
+			}
 		}
-		throw new OSSClientFactoryNotFoundException(prefix + " oss factory匹配失败,当前可用oss factory :" + factoryMap.keySet());
+		if (log.isDebugEnabled()) {
+			log.debug("oss factory匹配失败, 加载Spring SPI");
+		}
+		List<OSSClientFactoryLoader> factoryLoaders = SpringFactoriesLoader.loadFactories(OSSClientFactoryLoader.class,
+				ClassUtils.getDefaultClassLoader());
+		for (OSSClientFactoryLoader factoryLoader : factoryLoaders) {
+			OSSClientFactory<T> clientFactory = factoryLoader.loader(prefix);
+			if (clientFactory != null) {
+				return clientFactory;
+			}
+		}
+		throw new OSSClientFactoryNotFoundException(prefix + " oss factory匹配失败");
 	}
 
 }

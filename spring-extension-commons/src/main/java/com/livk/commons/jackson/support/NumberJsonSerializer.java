@@ -32,17 +32,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type Number json serializer.
+ * NumberJsonFormat序列化处理
  *
  * @author livk
+ * @see NumberJsonFormat
  */
 @AllArgsConstructor
 @NoArgsConstructor
 public class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {
 
-	private static final List<Class<?>> SUPPORT_PRIMITIVE_CLASS = List.of(
-		byte.class, short.class, int.class, long.class,
-		float.class, double.class);
+	private static final List<Class<?>> SUPPORT_PRIMITIVE_CLASS = List.of(byte.class, short.class, int.class,
+			long.class, float.class, double.class);
 
 	private String format;
 
@@ -52,11 +52,13 @@ public class NumberJsonSerializer extends JsonSerializer<Number> implements Cont
 	}
 
 	@Override
-	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
+			throws JsonMappingException {
 		Class<?> rawClass = property.getType().getRawClass();
 		NumberJsonFormat jsonFormat = Optional.ofNullable(property.getAnnotation((NumberJsonFormat.class)))
 			.orElse(property.getContextAnnotation(NumberJsonFormat.class));
-		if (Number.class.isAssignableFrom(rawClass) || this.simpleTypeSupport(jsonFormat.simpleTypeSupport(), rawClass)) {
+		if (Number.class.isAssignableFrom(rawClass)
+				|| this.simpleTypeSupport(jsonFormat.simpleTypeSupport(), rawClass)) {
 			return new NumberJsonSerializer(jsonFormat.pattern());
 		}
 		return prov.findValueSerializer(property.getType(), property);
@@ -65,4 +67,5 @@ public class NumberJsonSerializer extends JsonSerializer<Number> implements Cont
 	private boolean simpleTypeSupport(boolean support, Class<?> rawClass) {
 		return support && rawClass.isPrimitive() && SUPPORT_PRIMITIVE_CLASS.contains(rawClass);
 	}
+
 }

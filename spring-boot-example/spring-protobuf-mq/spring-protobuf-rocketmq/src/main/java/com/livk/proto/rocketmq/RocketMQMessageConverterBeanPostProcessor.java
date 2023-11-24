@@ -9,7 +9,6 @@ import org.springframework.messaging.converter.CompositeMessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -19,20 +18,17 @@ import java.util.List;
 public class RocketMQMessageConverterBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
-	public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
+	public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName)
+			throws BeansException {
 		if (bean instanceof RocketMQMessageConverter rocketMQMessageConverter) {
-			try {
-				Field field = RocketMQMessageConverter.class.getDeclaredField("messageConverter");
-				field.setAccessible(true);
-				CompositeMessageConverter compositeMessageConverter = (CompositeMessageConverter) field.get(rocketMQMessageConverter);
+			MessageConverter messageConverter = rocketMQMessageConverter.getMessageConverter();
+			if (messageConverter instanceof CompositeMessageConverter compositeMessageConverter) {
 				List<MessageConverter> converters = compositeMessageConverter.getConverters();
 				converters.add(new UserProtobufMessageConverter());
-				field.set(rocketMQMessageConverter, compositeMessageConverter);
-				return rocketMQMessageConverter;
-			} catch (NoSuchFieldException | IllegalAccessException ignored) {
-
 			}
+			return rocketMQMessageConverter;
 		}
 		return bean;
 	}
+
 }

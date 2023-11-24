@@ -20,18 +20,16 @@ package com.livk.commons.spring;
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
  * <p>
- * OtherBannerHandler
+ * 用于移除默认PageHelper Banner图的相关设置
  * </p>
  *
  * @author livk
  */
-@AutoConfiguration
 @SpringFactories
 public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 
@@ -44,4 +42,5 @@ public class PageHelperBannerSettings implements EnvironmentPostProcessor {
 			System.setProperty(PAGEHELPER_BANNER, pageHelperBannerEnable.toString());
 		}
 	}
+
 }

@@ -35,4 +35,5 @@ class ClassUtilsTest {
 		Class<String> result = ClassUtils.toClass(String.class);
 		assertEquals(String.class, result);
 	}
+
 }

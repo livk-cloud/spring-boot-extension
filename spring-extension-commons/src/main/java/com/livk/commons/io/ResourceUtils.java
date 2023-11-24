@@ -25,7 +25,11 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import java.io.IOException;
 
 /**
+ * 资源操作工具类
+ *
  * @author livk
+ * @see org.springframework.core.io.Resource
+ * @see PathMatchingResourcePatternResolver
  */
 @UtilityClass
 public class ResourceUtils extends org.springframework.util.ResourceUtils {
@@ -33,9 +37,8 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
 
 	/**
-	 * Gets resource.
-	 *
-	 * @param location the location
+	 * 获取单个资源
+	 * @param location 资源地址
 	 * @return the resource
 	 */
 	public Resource getResource(String location) {
@@ -43,13 +46,13 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	}
 
 	/**
-	 * Get resources resource [ ].
-	 *
-	 * @param location the location
-	 * @return the resource [ ]
+	 * 获取多个资源
+	 * @param location 资源地址
+	 * @return the resource[]
 	 * @throws IOException the io exception
 	 */
 	public Resource[] getResources(String location) throws IOException {
 		return resourceResolver.getResources(location);
 	}
+
 }

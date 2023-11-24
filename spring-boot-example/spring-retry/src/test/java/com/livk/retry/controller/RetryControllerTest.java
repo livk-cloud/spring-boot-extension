@@ -49,4 +49,5 @@ class RetryControllerTest {
 			.andDo(print())
 			.andExpect(content().string("recover SUC"));
 	}
+
 }

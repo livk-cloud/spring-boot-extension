@@ -26,6 +26,7 @@ import java.util.Date;
  */
 @Data
 public class Authors {
+
 	private Integer id;
 
 	private String firstName;
@@ -37,4 +38,5 @@ public class Authors {
 	private Date birthdate;
 
 	private Date added;
+
 }

@@ -43,7 +43,6 @@ public class MapstructAutoConfiguration {
 
 	/**
 	 * Generic mapstruct service generic mapstruct service.
-	 *
 	 * @param repository the repository
 	 * @return the generic mapstruct service
 	 */
@@ -54,7 +53,6 @@ public class MapstructAutoConfiguration {
 
 	/**
 	 * Converter repository converter repository.
-	 *
 	 * @return the converter repository
 	 */
 	@Bean
@@ -65,7 +63,6 @@ public class MapstructAutoConfiguration {
 
 	/**
 	 * Spring mapstruct locator mapstruct locator.
-	 *
 	 * @return the mapstruct locator
 	 */
 	@Bean

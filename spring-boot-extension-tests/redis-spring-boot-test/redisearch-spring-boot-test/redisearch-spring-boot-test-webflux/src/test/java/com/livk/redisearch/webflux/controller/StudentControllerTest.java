@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 @SpringBootTest
 @AutoConfigureWebTestClient
 class StudentControllerTest {
+
 	@Autowired
 	WebTestClient client;
-
 
 	@Test
 	void testList() {
@@ -50,10 +50,9 @@ class StudentControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
 			.value(students -> {
-				List<String> result = students.stream()
-					.map(Student::getName).toList();
-				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3",
-					"livk-4", "livk-5", "livk-6", "livk-7", "livk-8", "livk-9");
+				List<String> result = students.stream().map(Student::getName).toList();
+				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
+						"livk-7", "livk-8", "livk-9");
 				assertLinesMatch(list, result);
 			});
 
@@ -68,16 +67,13 @@ class StudentControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
 			.value(students -> {
-				List<String> result = students.stream()
-					.map(Student::getName).toList();
+				List<String> result = students.stream().map(Student::getName).toList();
 				List<String> list = List.of("livk-0");
 				assertLinesMatch(list, result);
 			});
 
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/student")
-				.queryParam("query", "livk")
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/student").queryParam("query", "livk").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -85,17 +81,14 @@ class StudentControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
 			.value(students -> {
-				List<String> result = students.stream()
-					.map(Student::getName).toList();
-				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3",
-					"livk-4", "livk-5", "livk-6", "livk-7", "livk-8", "livk-9");
+				List<String> result = students.stream().map(Student::getName).toList();
+				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
+						"livk-7", "livk-8", "livk-9");
 				assertLinesMatch(list, result);
 			});
 
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/student")
-				.queryParam("query", "女")
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/student").queryParam("query", "女").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -105,9 +98,7 @@ class StudentControllerTest {
 			.value(System.out::println);
 
 		client.get()
-			.uri(uriBuilder -> uriBuilder.path("/student")
-				.queryParam("query", "是一个学生")
-				.build())
+			.uri(uriBuilder -> uriBuilder.path("/student").queryParam("query", "是一个学生").build())
 			.exchange()
 			.expectStatus()
 			.isOk()
@@ -116,4 +107,5 @@ class StudentControllerTest {
 			.expectBodyList(Student.class)
 			.value(System.out::println);
 	}
+
 }

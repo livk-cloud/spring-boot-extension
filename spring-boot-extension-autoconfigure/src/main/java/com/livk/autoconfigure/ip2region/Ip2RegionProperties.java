@@ -44,10 +44,10 @@ public class Ip2RegionProperties {
 
 	/**
 	 * Get file resource resource [ ].
-	 *
 	 * @return the resource [ ]
 	 */
 	public Resource getFileResource() {
 		return ResourceUtils.getResource(filePath);
 	}
+
 }

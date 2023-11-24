@@ -25,4 +25,5 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OSSMarker {
+
 }

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * ReflectionUtils
+ * 反射相关工具类
  * </p>
  *
  * @author livk
@@ -38,11 +38,10 @@ import java.util.stream.Collectors;
 public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
-	 * Sets field and accessible.
-	 *
-	 * @param field     the field
-	 * @param parameter the parameter
-	 * @param value     the value
+	 * 给field设置accessible为true,并且设置一个值
+	 * @param field field
+	 * @param parameter parameter
+	 * @param value value
 	 */
 	public void setFieldAndAccessible(Field field, Object parameter, Object value) {
 		field.setAccessible(true);
@@ -50,10 +49,9 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * Gets read methods.
-	 *
-	 * @param targetClass the target class
-	 * @return the read methods
+	 * 获取一个类的所有的Get方法
+	 * @param targetClass class
+	 * @return read methods
 	 */
 	public Set<Method> getReadMethods(Class<?> targetClass) {
 		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
@@ -63,27 +61,26 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * Gets read method.
-	 *
-	 * @param targetClass the target class
-	 * @param field       the field
-	 * @return the read method
+	 * 获取一个类的Field Get方法
+	 * @param targetClass class
+	 * @param field field
+	 * @return read method
 	 */
 	public Method getReadMethod(Class<?> targetClass, Field field) {
 		try {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getReadMethod();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("获取字段get方法失败 message: {}", e.getMessage(), e);
 			return null;
 		}
 	}
 
 	/**
-	 * Gets write methods.
-	 *
-	 * @param targetClass the target class
-	 * @return the write methods
+	 * 获取一个类的所有的Set方法
+	 * @param targetClass target class
+	 * @return write methods
 	 */
 	public Set<Method> getWriteMethods(Class<?> targetClass) {
 		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
@@ -93,27 +90,26 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * Get write method.
-	 *
-	 * @param targetClass the target class
-	 * @param field       the field
-	 * @return the method
+	 * 获取一个类的Field Set方法
+	 * @param targetClass class
+	 * @param field field
+	 * @return method
 	 */
 	public Method getWriteMethod(Class<?> targetClass, Field field) {
 		try {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getWriteMethod();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("获取字段set方法失败 message: {}", e.getMessage(), e);
 			return null;
 		}
 	}
 
 	/**
-	 * Gets all fields.
-	 *
-	 * @param targetClass the target class
-	 * @return the all fields
+	 * 获取一个类的所有Field,包括所有的父类
+	 * @param targetClass class
+	 * @return fields
 	 */
 	public List<Field> getAllFields(Class<?> targetClass) {
 		List<Field> allFields = new ArrayList<>();
@@ -127,14 +123,14 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * Gets declared field value.
-	 *
-	 * @param field  the field
-	 * @param target the target
-	 * @return the declared field value
+	 * 获取一个私有属性的值
+	 * @param field field
+	 * @param target target
+	 * @return declared field value
 	 */
 	public static Object getDeclaredFieldValue(Field field, Object target) {
 		field.setAccessible(true);
 		return ReflectionUtils.getField(field, target);
 	}
+
 }

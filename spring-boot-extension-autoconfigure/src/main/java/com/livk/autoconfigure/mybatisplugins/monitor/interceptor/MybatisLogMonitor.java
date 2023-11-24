@@ -43,12 +43,7 @@ import java.util.Properties;
  */
 @Slf4j
 @Intercepts({
-	@Signature(
-		type = StatementHandler.class,
-		method = "prepare",
-		args = {Connection.class, Integer.class}
-	)
-})
+		@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 @RequiredArgsConstructor
 public class MybatisLogMonitor implements Interceptor {
 
@@ -74,9 +69,8 @@ public class MybatisLogMonitor implements Interceptor {
 	}
 
 	private long timeOut() {
-		return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName()))
-				   .getDuration()
-				   .toMillis() *
-			   (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
+		return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName())).getDuration().toMillis()
+				* (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
 	}
+
 }

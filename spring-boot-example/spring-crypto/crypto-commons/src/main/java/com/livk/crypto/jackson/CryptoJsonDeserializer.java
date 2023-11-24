@@ -48,13 +48,15 @@ public class CryptoJsonDeserializer extends JsonDeserializer<Object> implements 
 		}
 		try {
 			return parser.parse(type.unwrap(text));
-		} catch (ParseException e) {
+		}
+		catch (ParseException e) {
 			throw new JsonParseException(p, e.getMessage());
 		}
 	}
 
 	@Override
-	public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+	public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property)
+			throws JsonMappingException {
 		javaType = property.getType();
 		defaultJsonDeserializer = context.findContextualValueDeserializer(javaType, property);
 		return this;
@@ -68,4 +70,5 @@ public class CryptoJsonDeserializer extends JsonDeserializer<Object> implements 
 		}
 		return null;
 	}
+
 }

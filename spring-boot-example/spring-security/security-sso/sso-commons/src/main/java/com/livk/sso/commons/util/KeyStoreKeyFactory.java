@@ -39,9 +39,13 @@ import java.security.spec.RSAPublicKeySpec;
 public class KeyStoreKeyFactory {
 
 	private final Resource resource;
+
 	private final char[] password;
+
 	private final Object lock = new Object();
+
 	private final String type;
+
 	private KeyStore store;
 
 	public KeyStoreKeyFactory(Resource resource, char[] password) {
@@ -80,15 +84,15 @@ public class KeyStoreKeyFactory {
 			PublicKey publicKey = null;
 			if (certificate != null) {
 				publicKey = certificate.getPublicKey();
-			} else if (key != null) {
-				RSAPublicKeySpec spec = new RSAPublicKeySpec(key.getModulus(),
-					key.getPublicExponent());
+			}
+			else if (key != null) {
+				RSAPublicKeySpec spec = new RSAPublicKeySpec(key.getModulus(), key.getPublicExponent());
 				publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
 			}
 			return new KeyPair(publicKey, key);
-		} catch (Exception e) {
-			throw new IllegalStateException("Cannot load keys from store: " + resource,
-				e);
+		}
+		catch (Exception e) {
+			throw new IllegalStateException("Cannot load keys from store: " + resource, e);
 		}
 	}
 

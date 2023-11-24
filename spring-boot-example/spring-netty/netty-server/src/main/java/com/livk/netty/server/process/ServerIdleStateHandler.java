@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ServerIdleStateHandler extends IdleStateHandler {
+
 	/**
 	 * 设置空闲检测时间为 30s
 	 */
@@ -43,4 +44,5 @@ public class ServerIdleStateHandler extends IdleStateHandler {
 		log.info("{} 秒内没有读取到数据,关闭连接", READER_IDLE_TIME);
 		ctx.channel().close();
 	}
+
 }

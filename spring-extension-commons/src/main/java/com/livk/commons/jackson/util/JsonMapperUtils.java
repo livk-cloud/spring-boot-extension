@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The type Json mapper utils.
+ * JsonMapper工具类，使用默认JsonMapper
  *
  * @author livk
  */
@@ -39,50 +39,45 @@ public class JsonMapperUtils {
 
 	private static final JacksonSupport<JsonMapper> JSON;
 
-
 	static {
 		JSON = JacksonSupport.create(new JsonMapper());
 	}
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
-	 * @param type the type
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param type 返回相关类型
+	 * @return 相关实例
 	 */
 	public static <T> T readValue(Object obj, Class<T> type) {
 		return JSON.readValue(obj, type);
 	}
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>  the type parameter
-	 * @param obj  the obj
-	 * @param type the type
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param type 相关类型
+	 * @return 相关实例
 	 */
 	public static <T> T readValue(Object obj, JavaType type) {
 		return JSON.readValue(obj, type);
 	}
 
 	/**
-	 * Read value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param obj           the obj
-	 * @param typeReference the type reference
-	 * @return the t
+	 * 从obj读取json数据转成相应实体类
+	 * @param <T> 泛型
+	 * @param obj 待读取的数据
+	 * @param typeReference TypeReference包装的类型
+	 * @return 相关实例
 	 */
 	public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
 		return JSON.readValue(obj, typeReference);
 	}
 
 	/**
-	 * json序列化
-	 *
+	 * obj序列化成string
 	 * @param obj obj
 	 * @return json string
 	 */
@@ -91,8 +86,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * Write value as bytes byte [ ].
-	 *
+	 * obj序列化成byte[]
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
@@ -102,11 +96,12 @@ public class JsonMapperUtils {
 
 	/**
 	 * json反序列化成List
-	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-	 *
-	 * @param <T>  泛型
-	 * @param obj  the obj
+	 * <p>
+	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonSupport#convertValue(Object, JavaType)}
+	 * @param <T> 泛型
+	 * @param obj the obj
 	 * @param type 类型
 	 * @return the list
 	 */
@@ -117,13 +112,14 @@ public class JsonMapperUtils {
 
 	/**
 	 * json反序列化成Map
-	 * <p>也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
-	 * <p> {@link JacksonSupport#convertValue(Object, JavaType)}
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param obj        the obj
-	 * @param keyClass   K Class
+	 * <p>
+	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
+	 * <p>
+	 * {@link JacksonSupport#convertValue(Object, JavaType)}
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param obj the obj
+	 * @param keyClass K Class
 	 * @param valueClass V Class
 	 * @return the map
 	 */
@@ -133,8 +129,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * 将json转化成JsonNode
-	 *
+	 * obj读取数据转化成JsonNode
 	 * @param obj the obj
 	 * @return the json node
 	 */
@@ -143,48 +138,44 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param type      the type
-	 * @return the object
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
+	 * @param type 返回类型
+	 * @return 相关实例
 	 */
 	public static <T> T convertValue(Object fromValue, Class<T> type) {
 		return JSON.convertValue(fromValue, type);
 	}
 
 	/**
-	 * Convert value t.
-	 *
-	 * @param <T>           the type parameter
-	 * @param fromValue     the value
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
 	 * @param typeReference the type reference
-	 * @return the t
+	 * @return 相关实例
 	 */
 	public static <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
 		return JSON.convertValue(fromValue, typeReference);
 	}
 
 	/**
-	 * Convert object.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the  value
-	 * @param javaType  the java type
-	 * @return the object
+	 * jackson数据转换
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
+	 * @param javaType 相关类型
+	 * @return 相关实例
 	 */
 	public static <T> T convertValue(Object fromValue, JavaType javaType) {
 		return JSON.convertValue(fromValue, javaType);
 	}
 
 	/**
-	 * Convert value list list.
-	 *
-	 * @param <T>       the type parameter
-	 * @param fromValue the fromValue
-	 * @param type      the type
-	 * @return the list
+	 * jackson数据转换List
+	 * @param <T> 泛型
+	 * @param fromValue 待转换数据
+	 * @param type 返回类型
+	 * @return List
 	 */
 	public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
 		CollectionType collectionType = TypeFactoryUtils.collectionType(type);
@@ -192,17 +183,17 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * Object to map map.
-	 *
-	 * @param <K>        the type parameter
-	 * @param <V>        the type parameter
-	 * @param fromValue  the fromValue
-	 * @param keyClass   the key class
+	 * jackson数据转换Map
+	 * @param <K> the type parameter
+	 * @param <V> the type parameter
+	 * @param fromValue the fromValue
+	 * @param keyClass the key class
 	 * @param valueClass the value class
-	 * @return the map
+	 * @return MAP
 	 */
 	public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
 		MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);
 		return JSON.convertValue(fromValue, mapType);
 	}
+
 }

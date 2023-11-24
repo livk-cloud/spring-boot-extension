@@ -34,16 +34,19 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * The type File utils.
+ * 文件相关工具类
+ *
+ * @author livk
  */
 @UtilityClass
 public class FileUtils extends FileCopyUtils {
 
 	/**
-	 * Download.
-	 *
-	 * @param stream   the stream
-	 * @param filePath the file path
+	 * 文件下载
+	 * <p>
+	 * 路径不存在则自动创建
+	 * @param stream the stream
+	 * @param filePath 文件路径
 	 * @throws IOException the io exception
 	 */
 	public void download(InputStream stream, String filePath) throws IOException {
@@ -59,14 +62,16 @@ public class FileUtils extends FileCopyUtils {
 					buffer.clear();
 				}
 			}
-		} else {
+		}
+		else {
 			throw new IOException();
 		}
 	}
 
 	/**
-	 * Create new file boolean.
-	 *
+	 * 创建文件
+	 * <p>
+	 * 路径不存在则自动创建
 	 * @param file the file
 	 * @return the boolean
 	 * @throws IOException the io exception
@@ -81,59 +86,57 @@ public class FileUtils extends FileCopyUtils {
 	}
 
 	/**
-	 * Read string.
-	 *
+	 * 读取文件转成String
 	 * @param file the file
 	 * @return the string
 	 * @throws IOException the io exception
 	 */
 	public String read(File file) throws IOException {
-		try (FileReader fileReader = new FileReader(file);
-			 BufferedReader reader = new BufferedReader(fileReader)) {
+		try (FileReader fileReader = new FileReader(file); BufferedReader reader = new BufferedReader(fileReader)) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		}
 	}
 
 	/**
-	 * Gets part values.
-	 *
-	 * @param name     the name
+	 * 从ServerWebExchange读取文件转成Mono Part
+	 * @param name 文件参数
 	 * @param exchange the exchange
 	 * @return the part values
 	 */
 	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-		return exchange.getMultipartData()
-			.mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
+		return exchange.getMultipartData().mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
 	}
 
-
 	/**
-	 * Gzip compress.
-	 *
-	 * @param bytes        the bytes
-	 * @param outputStream the output stream
+	 * 使用GZip进行压缩
+	 * <p>
+	 * 把数据压缩至OutputStream
+	 * @param bytes 待压缩数据
+	 * @param outputStream 输出流
 	 */
 	public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
 		if (!ObjectUtils.isEmpty(bytes)) {
 			try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
 				stream.write(bytes);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
 
 	/**
-	 * Gzip decompress byte [ ].
-	 *
-	 * @param inputStream the input stream
-	 * @return the byte [ ]
+	 * 使用GZip进行解压缩
+	 * @param inputStream 输入流
+	 * @return byte[]
 	 */
 	public static byte[] gzipDecompress(InputStream inputStream) {
 		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
 			return FileUtils.copyToByteArray(stream);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * <p>
- * TraceEnvironmentPostProcessor
+ * 用于设置trace日志格式
  * </p>
  *
  * @author livk
@@ -57,7 +57,8 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 				if (!environment.containsProperty(LEVEL_KEY)) {
 					if (StringUtils.hasText(environment.getProperty("spring.application.name"))) {
 						map.put(LEVEL_KEY, "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]");
-					} else {
+					}
+					else {
 						map.put(LEVEL_KEY, "%5p [%X{traceId:-},%X{spanId:-}]");
 					}
 				}
@@ -71,8 +72,10 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 	}
 
 	private boolean isPresent() {
-		return ClassUtils.isPresent("org.springframework.boot.actuate.autoconfigure.tracing.OpenTelemetryAutoConfiguration")
-			   && ClassUtils.isPresent("io.micrometer.tracing.Tracer")
-			   && ClassUtils.isPresent("io.micrometer.tracing.otel.bridge.OtelTracer");
+		return ClassUtils
+			.isPresent("org.springframework.boot.actuate.autoconfigure.tracing.OpenTelemetryAutoConfiguration")
+				&& ClassUtils.isPresent("io.micrometer.tracing.Tracer")
+				&& ClassUtils.isPresent("io.micrometer.tracing.otel.bridge.OtelTracer");
 	}
+
 }

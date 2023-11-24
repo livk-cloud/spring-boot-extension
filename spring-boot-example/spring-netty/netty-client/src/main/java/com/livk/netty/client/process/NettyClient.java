@@ -36,11 +36,15 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class NettyClient implements AutoCloseable {
+
 	private final EventLoopGroup group = new NioEventLoopGroup();
+
 	@Value("${spring.netty.port}")
 	private int port;
+
 	@Value("${spring.netty.host}")
 	private String host;
+
 	private SocketChannel socketChannel;
 
 	public ChannelFuture sendMsg(NettyMessage.Message message) {
@@ -59,7 +63,8 @@ public class NettyClient implements AutoCloseable {
 		future.addListener((ChannelFutureListener) channelFuture -> {
 			if (channelFuture.isSuccess()) {
 				log.info("连接Netty服务端成功");
-			} else {
+			}
+			else {
 				log.info("连接失败，进行断线重连");
 				channelFuture.channel().eventLoop().schedule(this::start, 20, TimeUnit.SECONDS);
 			}
@@ -71,4 +76,5 @@ public class NettyClient implements AutoCloseable {
 	public void close() throws InterruptedException {
 		group.shutdownGracefully().sync();
 	}
+
 }

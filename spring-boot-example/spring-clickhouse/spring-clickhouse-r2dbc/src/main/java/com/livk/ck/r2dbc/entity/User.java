@@ -45,10 +45,12 @@ public class User {
 	private String appId;
 
 	private String version;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date regTime;
 
 	public static User collect(Row row, RowMetadata rowMetadata) {
 		return new User();
 	}
+
 }

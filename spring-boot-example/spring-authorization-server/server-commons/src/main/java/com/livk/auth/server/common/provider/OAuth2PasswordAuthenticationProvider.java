@@ -33,24 +33,26 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import java.util.Map;
 
 /**
- * <p>处理用户名密码授权</p>
+ * <p>
+ * 处理用户名密码授权
+ * </p>
  *
  * @author livk
  */
-public class OAuth2PasswordAuthenticationProvider extends OAuth2BaseAuthenticationProvider<OAuth2PasswordAuthenticationToken> {
+public class OAuth2PasswordAuthenticationProvider
+		extends OAuth2BaseAuthenticationProvider<OAuth2PasswordAuthenticationToken> {
 
 	/**
 	 * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
 	 * provided parameters.
-	 *
 	 * @param authenticationManager
-	 * @param authorizationService  the authorization service
-	 * @param tokenGenerator        the token generator
+	 * @param authorizationService the authorization service
+	 * @param tokenGenerator the token generator
 	 * @since 0.2.3
 	 */
 	public OAuth2PasswordAuthenticationProvider(AuthenticationManager authenticationManager,
-												OAuth2AuthorizationService authorizationService,
-												OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
+			OAuth2AuthorizationService authorizationService,
+			OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
 		super(authenticationManager, authorizationService, tokenGenerator);
 	}
 
