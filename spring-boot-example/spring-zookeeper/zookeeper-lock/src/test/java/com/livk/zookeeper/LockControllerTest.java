@@ -42,22 +42,22 @@ class LockControllerTest {
 
 	@Test
 	void lock() throws InterruptedException {
-		ExecutorService service = Executors.newFixedThreadPool(10);
-		CountDownLatch countDownLatch = new CountDownLatch(10);
-		for (int i = 0; i < 10; i++) {
-			String param = String.valueOf(i);
-			service.submit(() -> {
-				try {
-					mockMvc.perform(get("/lock").queryParam("id", param)).andExpect(status().isOk());
-					countDownLatch.countDown();
-				}
-				catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			});
+		try (ExecutorService service = Executors.newFixedThreadPool(10, Thread.ofVirtual().factory())) {
+			CountDownLatch countDownLatch = new CountDownLatch(10);
+			for (int i = 0; i < 10; i++) {
+				String param = String.valueOf(i);
+				service.submit(() -> {
+					try {
+						mockMvc.perform(get("/lock").queryParam("id", param)).andExpect(status().isOk());
+						countDownLatch.countDown();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				});
+			}
+			countDownLatch.await();
+			service.shutdown();
 		}
-		countDownLatch.await();
-		service.shutdown();
 	}
 
 }
