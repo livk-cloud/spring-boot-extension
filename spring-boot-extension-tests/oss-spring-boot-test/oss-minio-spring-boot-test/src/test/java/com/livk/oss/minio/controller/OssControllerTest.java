@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +51,7 @@ class OssControllerTest {
 			.andReturn()
 			.getResponse()
 			.getContentAsString();
-		try (InputStream stream = new URL(url).openStream()) {
+		try (InputStream stream = new URI(url).toURL().openStream()) {
 			FileUtils.download(stream, "./test.jpg");
 		}
 		File file = new File("./test.jpg");
