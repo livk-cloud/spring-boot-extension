@@ -17,7 +17,6 @@
 
 package com.livk.commons.util;
 
-import com.google.common.collect.Streams;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;
@@ -150,22 +149,6 @@ public class BaseStreamUtils {
 	public <T> Predicate<T> distinct(Function<? super T, ?> function) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
-	}
-
-	/**
-	 * Convert stream.
-	 * <p>
-	 * Deprecated
-	 * <p>
-	 * use {@link com.google.common.collect.Streams#stream(java.util.Iterator)}
-	 * @param <T> the type parameter
-	 * @param iterator the iterator
-	 * @return the stream
-	 * @see com.google.common.collect.Streams#stream(java.util.Iterator)
-	 */
-	@Deprecated(forRemoval = true)
-	public <T> Stream<T> convert(Iterator<T> iterator) {
-		return Streams.stream(iterator);
 	}
 
 	/**
