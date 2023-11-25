@@ -17,11 +17,12 @@
 
 package com.livk.autoconfigure.http;
 
-import com.livk.commons.util.AnnotationUtils;
 import com.livk.autoconfigure.http.adapter.AdapterFactory;
 import com.livk.autoconfigure.http.adapter.AdapterType;
 import com.livk.autoconfigure.http.annotation.HttpProvider;
 import com.livk.autoconfigure.http.factory.HttpFactoryBean;
+import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.ClassUtils;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -36,6 +37,7 @@ import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
@@ -54,7 +56,8 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Instantiates a new Class path http scanner.
-	 * @param registry the registry
+	 *
+	 * @param registry    the registry
 	 * @param environment the environment
 	 */
 	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment) {
@@ -63,6 +66,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 
 	/**
 	 * Register filters.
+	 *
 	 * @param annotationType the annotation type
 	 */
 	public void registerFilters(Class<? extends Annotation> annotationType) {
@@ -74,8 +78,9 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
 	}
 
+	@NonNull
 	@Override
-	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+	protected Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
 		BeanDefinitionRegistry registry = super.getRegistry();
 		Assert.notNull(registry, "registry not be null");
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
@@ -89,17 +94,20 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 					AdapterType type = attributes.getEnum("type");
 					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = AdapterType.builder(type);
 					String beanClassName = candidateComponent.getBeanClassName();
+					Assert.notNull(beanClassName, "beanClassName not be null");
+					Class<?> beanType = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
 					BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-					builder.addPropertyValue("httpInterfaceTypeName", beanClassName);
+					builder.addPropertyValue("type", beanType);
 					builder.addPropertyValue("adapterFactory", adapterFactory);
 					builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 					AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
 					String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
 					if (checkCandidate(beanName, beanDefinition)) {
-						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
+						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanType);
 
 						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
+						beanDefinitions.add(holder);
 						registerBeanDefinition(holder, registry);
 					}
 				}

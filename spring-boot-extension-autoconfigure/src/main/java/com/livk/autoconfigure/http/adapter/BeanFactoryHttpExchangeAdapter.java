@@ -26,12 +26,20 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpRequestValues;
 
 /**
+ * The type Bean factory http exchange adapter.
+ *
  * @author livk
  */
 public class BeanFactoryHttpExchangeAdapter implements HttpExchangeAdapter {
 
 	private final HttpExchangeAdapter adapter;
 
+	/**
+	 * Instantiates a new Bean factory http exchange adapter.
+	 *
+	 * @param factory     the factory
+	 * @param beanFactory the bean factory
+	 */
 	public BeanFactoryHttpExchangeAdapter(AdapterFactory<?> factory, BeanFactory beanFactory) {
 		adapter = factory.create(beanFactory);
 	}
