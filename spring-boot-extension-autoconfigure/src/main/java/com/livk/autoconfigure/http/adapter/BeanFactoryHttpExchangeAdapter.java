@@ -36,8 +36,7 @@ public class BeanFactoryHttpExchangeAdapter implements HttpExchangeAdapter {
 
 	/**
 	 * Instantiates a new Bean factory http exchange adapter.
-	 *
-	 * @param factory     the factory
+	 * @param factory the factory
 	 * @param beanFactory the bean factory
 	 */
 	public BeanFactoryHttpExchangeAdapter(AdapterFactory<?> factory, BeanFactory beanFactory) {

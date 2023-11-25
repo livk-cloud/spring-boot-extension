@@ -50,7 +50,8 @@ class LockControllerTest {
 					try {
 						mockMvc.perform(get("/lock").queryParam("id", param)).andExpect(status().isOk());
 						countDownLatch.countDown();
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						throw new RuntimeException(e);
 					}
 				});
