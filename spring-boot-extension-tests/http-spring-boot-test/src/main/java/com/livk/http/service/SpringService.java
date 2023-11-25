@@ -17,8 +17,11 @@
 
 package com.livk.http.service;
 
+import com.livk.autoconfigure.http.adapter.AdapterType;
 import com.livk.autoconfigure.http.annotation.HttpProvider;
 import org.springframework.web.service.annotation.GetExchange;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -27,10 +30,10 @@ import org.springframework.web.service.annotation.GetExchange;
  *
  * @author livk
  */
-@HttpProvider(url = "http://localhost:${server.port:8080}/rpc")
-public interface RemoteService {
+@HttpProvider(type = AdapterType.REST_CLIENT, url = "http://localhost:${server.port:8080}/rpc")
+public interface SpringService {
 
-	@GetExchange()
-	String get();
+	@GetExchange("spring")
+	Map<String, String> spring();
 
 }

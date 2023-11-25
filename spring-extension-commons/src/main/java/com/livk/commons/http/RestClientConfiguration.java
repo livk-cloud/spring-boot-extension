@@ -27,17 +27,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * HttpConfiguration
+ * RestClientConfiguration
  * </p>
  *
  * @author livk
@@ -45,15 +44,15 @@ import java.util.concurrent.TimeUnit;
 @AutoConfiguration
 @SpringAutoService(EnableRestTemplate.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class RestTemplateConfiguration {
+public class RestClientConfiguration {
 
 	/**
-	 * Rest template rest template.
-	 * @param builder the builder
-	 * @return the rest template
+	 * Rest client
+	 * @param builder builder
+	 * @return client
 	 */
 	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+	public RestClient restClient(RestClient.Builder builder) {
 		return builder.build();
 	}
 
@@ -70,13 +69,13 @@ public class RestTemplateConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean(OkHttpClient.class)
-		public RestTemplateCustomizer restTemplateCustomizer() {
+		public RestClientCustomizer restClientCustomizer() {
 			ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
 			OkHttpClientHttpRequestFactory requestFactory = new OkHttpClientHttpRequestFactory().connectionPool(pool)
 				.connectTimeout(3, TimeUnit.SECONDS)
 				.readTimeout(3, TimeUnit.SECONDS)
 				.writeTimeout(3, TimeUnit.SECONDS);
-			return restTemplate -> restTemplate.setRequestFactory(requestFactory);
+			return builder -> builder.requestFactory(requestFactory);
 		}
 
 		/**
@@ -86,8 +85,8 @@ public class RestTemplateConfiguration {
 		 */
 		@Bean
 		@ConditionalOnBean(OkHttpClient.class)
-		public RestTemplateCustomizer restTemplateCustomizer(OkHttpClient okHttpClient) {
-			return restTemplate -> restTemplate.setRequestFactory(new OkHttpClientHttpRequestFactory(okHttpClient));
+		public RestClientCustomizer restClientCustomizer(OkHttpClient okHttpClient) {
+			return builder -> builder.requestFactory(new OkHttpClientHttpRequestFactory(okHttpClient));
 		}
 
 	}

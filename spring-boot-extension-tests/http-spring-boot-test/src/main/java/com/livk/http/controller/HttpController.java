@@ -17,10 +17,10 @@
 
 package com.livk.http.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.livk.http.service.RemoteService;
+import com.google.common.collect.Maps;
+import com.livk.http.service.JavaService;
+import com.livk.http.service.SpringBootService;
+import com.livk.http.service.SpringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringBootVersion;
@@ -29,6 +29,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -42,20 +45,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HttpController {
 
-	private final RemoteService service;
+	private final SpringBootService bootService;
+
+	private final SpringService springService;
+
+	private final JavaService javaService;
 
 	@GetMapping("get")
-	public HttpEntity<String> get() {
-		return ResponseEntity.ok(service.get());
+	public HttpEntity<Map<String, String>> get() {
+		Map<String, String> result = Maps.newHashMap();
+		result.putAll(bootService.springBoot());
+		result.putAll(springService.spring());
+		result.putAll(javaService.java());
+		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("rpc")
-	public JsonNode rpc() {
-		ObjectNode node = new ObjectNode(JsonNodeFactory.instance);
-		node.put("spring-boot-version", SpringBootVersion.getVersion())
-			.put("spring-version", SpringVersion.getVersion())
-			.put("java-version", System.getProperty("java.version"));
-		return node;
+	@GetMapping("/rpc/spring-boot")
+	public Map<String, String> springBoot() {
+		return Map.of("spring-boot-version", SpringBootVersion.getVersion());
+	}
+
+	@GetMapping("/rpc/spring")
+	public Map<String, String> spring() {
+		return Map.of("spring-version", Objects.requireNonNull(SpringVersion.getVersion()));
+	}
+
+	@GetMapping("/rpc/java")
+	public Map<String, String> java() {
+		return Map.of("java-version", System.getProperty("java.version"));
 	}
 
 }

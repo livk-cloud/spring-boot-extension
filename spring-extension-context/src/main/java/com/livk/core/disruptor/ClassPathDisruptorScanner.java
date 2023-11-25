@@ -20,6 +20,7 @@ package com.livk.core.disruptor;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.core.disruptor.annotation.DisruptorEvent;
 import com.livk.core.disruptor.factory.DisruptorFactoryBean;
+import com.livk.core.disruptor.support.SpringDisruptor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
@@ -108,7 +110,9 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 					String beanName = StringUtils.hasText(name) ? name
 							: beanNameGenerator.generateBeanName(beanDefinition, registry);
 					if (checkCandidate(beanName, beanDefinition)) {
-						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
+						ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SpringDisruptor.class,
+								type);
+						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, resolvableType);
 
 						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
 						definitionHolders.add(holder);

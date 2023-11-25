@@ -32,14 +32,14 @@ public class KafkaConfig {
 
 	@Bean
 	public KafkaAdmin myKafkaAdmin(KafkaProperties kafkaProperties) {
-		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties());
+		KafkaAdmin admin = new KafkaAdmin(kafkaProperties.buildAdminProperties(null));
 		admin.setFatalIfBrokerNotAvailable(true);
 		return admin;
 	}
 
 	@Bean
 	public NewTopic myTopic() {
-		return new NewTopic(KafkaConstant.NEW_TOPIC, 1, (short) 1);
+		return new NewTopic(KafkaConstant.TOPIC, 1, (short) 1);
 	}
 
 }

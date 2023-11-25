@@ -46,7 +46,7 @@ public class MicrometerTraceApp {
 	@GetMapping("home")
 	public String home() {
 		log.info("home() has been called");
-		ExecutorService wrap = ContextSnapshots.wrap(Executors.newFixedThreadPool(2));
+		ExecutorService wrap = ContextSnapshots.wrap(Executors.newFixedThreadPool(2, Thread.ofVirtual().factory()));
 		for (int i = 0; i < 3; i++) {
 			wrap.execute(() -> log.info("home"));
 		}

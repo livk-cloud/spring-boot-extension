@@ -59,7 +59,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	 * 执行拦截的方法
 	 * @param invocation 方法相关信息
 	 * @param annotation 注解信息
-	 * @return 方法返回结果
+	 * @return 方法返回结果 object
 	 * @throws Throwable the throwable
 	 */
 	protected abstract Object invoke(MethodInvocation invocation, A annotation) throws Throwable;

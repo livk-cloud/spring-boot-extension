@@ -41,6 +41,7 @@ import java.util.Set;
  * <p>
  * 功效大致与 {@link AutoConfigurationImportSelector}一样，缺失排除自动装配的能力
  *
+ * @param <A> 注解类型
  * @author livk
  * @see AutoConfigurationImportSelector
  * @see org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -51,9 +52,16 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	/**
 	 * The Annotation class.
 	 */
+	protected final Class<A> annotationClass;
+
+	/**
+	 * 构建生菜annotationClass
+	 */
 	@SuppressWarnings("unchecked")
-	protected final Class<A> annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
-			SpringAbstractImportSelector.class);
+	protected SpringAbstractImportSelector() {
+		this.annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+				SpringAbstractImportSelector.class);
+	}
 
 	@Override
 	protected Class<?> getAnnotationClass() {

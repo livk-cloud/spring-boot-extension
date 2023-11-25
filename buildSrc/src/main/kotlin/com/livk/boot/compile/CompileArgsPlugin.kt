@@ -24,6 +24,8 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
+import org.gradle.external.javadoc.JavadocOutputLevel
+import org.gradle.external.javadoc.StandardJavadocDocletOptions
 
 /**
  * @author livk
@@ -52,7 +54,11 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.pluginManager.apply(JavaPlugin::class.java)
 		project.tasks.withType(Javadoc::class.java) { javadoc ->
-			javadoc.options.encoding(UTF_8)
+			val options = javadoc.options as StandardJavadocDocletOptions
+			options.encoding(UTF_8)
+			javadoc.isFailOnError = false
+			options.outputLevel = JavadocOutputLevel.QUIET
+			options.addStringOption("Xdoclint:none", "-quiet")
 		}
 		val javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
 		addCompile(javaCompile)
@@ -81,7 +87,7 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 	private fun addCompile(javaCompile: JavaCompile) {
 		javaCompile.options.compilerArgs.addAll(COMPILER_ARGS)
 		javaCompile.options.encoding = UTF_8
-		javaCompile.sourceCompatibility = JavaVersion.VERSION_17.toString()
-		javaCompile.targetCompatibility = JavaVersion.VERSION_17.toString()
+		javaCompile.sourceCompatibility = JavaVersion.VERSION_21.toString()
+		javaCompile.targetCompatibility = JavaVersion.VERSION_21.toString()
 	}
 }

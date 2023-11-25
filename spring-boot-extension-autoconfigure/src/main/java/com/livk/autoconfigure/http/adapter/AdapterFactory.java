@@ -15,42 +15,16 @@
  *
  */
 
-package com.livk.commons.http.annotation;
+package com.livk.autoconfigure.http.adapter;
 
-import lombok.RequiredArgsConstructor;
-
-import java.lang.annotation.Annotation;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 /**
- * http客户端类型
- *
  * @author livk
  */
-@RequiredArgsConstructor
-public enum HttpClientType {
+public interface AdapterFactory<H extends HttpExchangeAdapter> {
 
-	/**
-	 * RestTemplate
-	 */
-	REST_TEMPLATE(EnableRestTemplate.class),
-	/**
-	 * WebClient
-	 */
-	WEB_CLIENT(EnableWebClient.class),
-
-	/**
-	 * Rest client http client type.
-	 */
-	REST_CLIENT(EnableRestClient.class);
-
-	private final Class<? extends Annotation> annotationType;
-
-	/**
-	 * 返回相关注解
-	 * @return the class
-	 */
-	public Class<? extends Annotation> annotationType() {
-		return annotationType;
-	}
+	H create(BeanFactory beanFactory);
 
 }

@@ -44,18 +44,19 @@ class SnowflakeTest {
 	void nextId() throws InterruptedException {
 		int num = 10000;
 		List<Long> list = new CopyOnWriteArrayList<>();
-		ExecutorService service = Executors.newFixedThreadPool(1000);
-		CountDownLatch countDownLatch = new CountDownLatch(num);
-		for (int i = 0; i < num; i++) {
-			service.submit(() -> {
-				list.add(SNOWFLAKE.nextId());
-				countDownLatch.countDown();
-			});
+		try (ExecutorService service = Executors.newFixedThreadPool(1000, Thread.ofVirtual().factory())) {
+			CountDownLatch countDownLatch = new CountDownLatch(num);
+			for (int i = 0; i < num; i++) {
+				service.submit(() -> {
+					list.add(SNOWFLAKE.nextId());
+					countDownLatch.countDown();
+				});
+			}
+			countDownLatch.await();
+			service.shutdown();
+			Set<Long> set = new HashSet<>(list);
+			assertEquals(set.size(), list.size());
 		}
-		countDownLatch.await();
-		service.shutdown();
-		Set<Long> set = new HashSet<>(list);
-		assertEquals(set.size(), list.size());
 	}
 
 }

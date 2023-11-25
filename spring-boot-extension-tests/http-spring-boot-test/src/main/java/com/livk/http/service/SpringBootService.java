@@ -15,17 +15,25 @@
  *
  */
 
-package com.livk.kafka;
+package com.livk.http.service;
+
+import com.livk.autoconfigure.http.adapter.AdapterType;
+import com.livk.autoconfigure.http.annotation.HttpProvider;
+import org.springframework.web.service.annotation.GetExchange;
+
+import java.util.Map;
 
 /**
  * <p>
- * KafkaConstant
+ * RemoteService
  * </p>
  *
  * @author livk
  */
-public interface KafkaConstant {
+@HttpProvider(type = AdapterType.WEB_CLIENT, url = "http://localhost:${server.port:8080}/rpc")
+public interface SpringBootService {
 
-	String TOPIC = "livk-topic";
+	@GetExchange("spring-boot")
+	Map<String, String> springBoot();
 
 }
