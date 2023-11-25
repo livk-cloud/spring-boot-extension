@@ -108,7 +108,7 @@ public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 					String beanName = StringUtils.hasText(name) ? name
 							: beanNameGenerator.generateBeanName(beanDefinition, registry);
 					if (checkCandidate(beanName, beanDefinition)) {
-						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanClassName);
+						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, type);
 
 						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
 						definitionHolders.add(holder);
