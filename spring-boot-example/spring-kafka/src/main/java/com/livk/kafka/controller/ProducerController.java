@@ -44,7 +44,7 @@ public class ProducerController {
 	public void producer() {
 		kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString());
 		// 异步获取结果
-		kafkaTemplate.send(KafkaConstant.NEW_TOPIC, UUID.randomUUID().toString()).whenComplete((result, throwable) -> {
+		kafkaTemplate.send(KafkaConstant.TOPIC, UUID.randomUUID().toString()).whenComplete((result, throwable) -> {
 			if (throwable != null) {
 				log.error("ex:{}", throwable.getMessage());
 			}
@@ -53,7 +53,7 @@ public class ProducerController {
 			}
 		});
 		// 同步获取结果
-		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.NEW_TOPIC,
+		CompletableFuture<SendResult<Object, Object>> future = kafkaTemplate.send(KafkaConstant.TOPIC,
 				UUID.randomUUID().toString());
 		try {
 			SendResult<Object, Object> result = future.get();

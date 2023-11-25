@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author livk
  */
-@SpringBootTest("spring.kafka.bootstrap-servers=localhost:9092")
+@SpringBootTest
 @EmbeddedKafka(ports = 9092)
 @AutoConfigureMockMvc
 class UserControllerTest {
