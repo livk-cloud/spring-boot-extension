@@ -36,6 +36,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE_PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
+@EnableHttpClient(HttpClientType.REST_CLIENT)
 public @interface EnableRestClient {
 
 }

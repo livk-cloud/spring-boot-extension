@@ -159,7 +159,7 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 			if (cache != null) {
 				cache.close();
 			}
-			this.client.dispatcher().executorService().shutdown();
+			this.client.dispatcher().executorService().close();
 			this.client.connectionPool().evictAll();
 		}
 	}
