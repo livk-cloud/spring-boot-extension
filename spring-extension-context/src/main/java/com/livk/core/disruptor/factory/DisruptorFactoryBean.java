@@ -70,7 +70,8 @@ public class DisruptorFactoryBean<T>
 			return beanFactory.getBean(threadFactoryBeanName, ThreadFactory.class);
 		}
 		Class<? extends ThreadFactory> factoryClass = attributes.getClass("threadFactory");
-		return BeanUtils.instantiateClass(factoryClass);
+		ThreadFactory threadFactory = BeanUtils.instantiateClass(factoryClass);
+		return new VirtualThreadFactory(threadFactory);
 	}
 
 	private WaitStrategy createWaitStrategy() {
