@@ -17,6 +17,7 @@
 
 package com.livk.curator;
 
+import com.livk.core.curator.CuratorTemplate;
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,12 @@ class CuratorAppTest {
 	@Autowired
 	CuratorFramework curatorFramework;
 
+	@Autowired
+	CuratorTemplate curatorTemplate;
+
 	@Test
 	public void test() {
+		assertNotNull(curatorFramework);
 		assertNotNull(curatorFramework);
 	}
 
