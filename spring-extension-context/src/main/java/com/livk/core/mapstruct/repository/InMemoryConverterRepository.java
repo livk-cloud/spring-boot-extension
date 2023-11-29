@@ -40,7 +40,7 @@ public class InMemoryConverterRepository implements ConverterRepository {
 	}
 
 	@Override
-	public void put(ConverterPair converterPair, Converter<?, ?> converter) {
+	public <S, T> void put(ConverterPair converterPair, Converter<S, T> converter) {
 		converterMap.put(converterPair, converter);
 	}
 
@@ -50,9 +50,10 @@ public class InMemoryConverterRepository implements ConverterRepository {
 		return (Converter<S, T>) converterMap.get(converterPair);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Converter<?, ?> computeIfAbsent(ConverterPair converterPair, Converter<?, ?> converter) {
-		return converterMap.computeIfAbsent(converterPair, pair -> converter);
+	public <S, T> Converter<S, T> computeIfAbsent(ConverterPair converterPair, Converter<S, T> converter) {
+		return (Converter<S, T>) converterMap.computeIfAbsent(converterPair, pair -> converter);
 	}
 
 }

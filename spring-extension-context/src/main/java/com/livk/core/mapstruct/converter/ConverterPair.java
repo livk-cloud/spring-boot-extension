@@ -17,9 +17,11 @@
 
 package com.livk.core.mapstruct.converter;
 
+import com.livk.commons.util.ObjectUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
 
 /**
@@ -53,6 +55,19 @@ public class ConverterPair {
 	 */
 	public static ConverterPair of(Class<?> sourceType, Class<?> targetType) {
 		return new ConverterPair(sourceType, targetType);
+	}
+
+	/**
+	 * Of converter pair.
+	 * @param converter the converter
+	 * @return the converter pair
+	 */
+	public static ConverterPair of(Converter<?, ?> converter) {
+		Class<?>[] types = GenericTypeResolver.resolveTypeArguments(converter.getClass(), Converter.class);
+		if (ObjectUtils.isEmpty(types)) {
+			return null;
+		}
+		return ConverterPair.of(types[0], types[1]);
 	}
 
 }

@@ -32,15 +32,15 @@ public interface MapstructRegistry {
 	 * @param converter the converter
 	 * @return the converter
 	 */
-	Converter<?, ?> addConverter(ConverterPair converterPair, Converter<?, ?> converter);
+	<S, T> Converter<S, T> addConverter(ConverterPair converterPair, Converter<S, T> converter);
 
 	/**
 	 * Add converter.
 	 * @param converter the converter
 	 * @return the converter
 	 */
-	default Converter<?, ?> addConverter(Converter<?, ?> converter) {
-		ConverterPair converterPair = converter.type();
+	default <S, T> Converter<S, T> addConverter(Converter<S, T> converter) {
+		ConverterPair converterPair = ConverterPair.of(converter);
 		if (converterPair != null) {
 			return this.addConverter(converterPair, converter);
 		}
@@ -56,8 +56,7 @@ public interface MapstructRegistry {
 	 * @param converter the converter
 	 * @return the converter
 	 */
-	default <S, T> Converter<?, ?> addConverter(Class<S> sourceType, Class<T> targetType,
-			Converter<? super S, ? extends T> converter) {
+	default <S, T> Converter<S, T> addConverter(Class<S> sourceType, Class<T> targetType, Converter<S, T> converter) {
 		ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
 		return this.addConverter(converterPair, converter);
 	}
