@@ -79,6 +79,7 @@ public class DisruptorEventProducer<T> {
 	 * Send batch.
 	 * @param dataArray the data array
 	 */
+	@SuppressWarnings("varargs")
 	@SafeVarargs
 	public final void sendBatch(T... dataArray) {
 		sendBatch(Arrays.asList(dataArray));

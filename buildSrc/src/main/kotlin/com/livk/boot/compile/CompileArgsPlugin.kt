@@ -42,9 +42,11 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 		COMPILER_ARGS.addAll(
 			listOf(
 				"-Xlint:-options",
+				"-Xlint:varargs",
 				"-Xlint:rawtypes",
 				"-Xlint:deprecation",
 				"-Xlint:unchecked",
+				"-Werror",
 				"-parameters"
 			)
 		)

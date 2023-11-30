@@ -42,6 +42,7 @@ public class BaseStreamUtils {
 	 * @param maps maps
 	 * @return map
 	 */
+	@SuppressWarnings("varargs")
 	@SafeVarargs
 	public <K, V> Map<K, List<V>> concat(Map<K, V>... maps) {
 		if (ObjectUtils.isEmpty(maps)) {
@@ -60,6 +61,7 @@ public class BaseStreamUtils {
 	 * @param ts the ts
 	 * @return stream
 	 */
+	@SuppressWarnings("varargs")
 	@SafeVarargs
 	public <T> Stream<T> concat(T[]... ts) {
 		if (ObjectUtils.isEmpty(ts)) {
@@ -135,6 +137,7 @@ public class BaseStreamUtils {
 	 * @param streams 待转换Stream
 	 * @return 合并后的Stream
 	 */
+	@SuppressWarnings("varargs")
 	@SafeVarargs
 	public <T, R> Stream<R> zip(Function<Stream<T>, Stream<R>> combinator, Stream<T>... streams) {
 		return ObjectUtils.isEmpty(streams) ? Stream.empty() : Stream.of(streams).flatMap(combinator);
