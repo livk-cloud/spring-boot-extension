@@ -28,8 +28,12 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author livk
@@ -40,8 +44,7 @@ public class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
 	@Override
 	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
 			@NonNull BeanDefinitionRegistry registry, @NonNull BeanNameGenerator beanNameGenerator) {
-		AnnotationAttributes attributes = AnnotationUtils.attributesFor(importingClassMetadata, EnableDisruptor.class);
-		String[] basePackages = getBasePackages(attributes);
+		String[] basePackages = getBasePackages(importingClassMetadata);
 		if (ObjectUtils.isEmpty(basePackages)) {
 			throw new DisruptorRegistrarException(
 					EnableDisruptor.class.getName() + " required basePackages or basePackageClasses");
@@ -51,16 +54,18 @@ public class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
 		scanner.scan(basePackages);
 	}
 
-	private String[] getBasePackages(AnnotationAttributes attributes) {
+	private String[] getBasePackages(AnnotationMetadata metadata) {
+		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, EnableDisruptor.class);
 		String[] basePackages = attributes.getStringArray("basePackages");
-		if (ObjectUtils.isEmpty(basePackages)) {
-			Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
-			basePackages = Arrays.stream(basePackageClasses)
-				.map(Class::getPackageName)
-				.distinct()
-				.toArray(String[]::new);
+		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
+		Set<String> packagesToScan = new LinkedHashSet<>(Arrays.asList(basePackages));
+		for (Class<?> basePackageClass : basePackageClasses) {
+			packagesToScan.add(ClassUtils.getPackageName(basePackageClass));
 		}
-		return basePackages;
+		if (packagesToScan.isEmpty()) {
+			packagesToScan.add(ClassUtils.getPackageName(metadata.getClassName()));
+		}
+		return StringUtils.toStringArray(packagesToScan);
 	}
 
 }
