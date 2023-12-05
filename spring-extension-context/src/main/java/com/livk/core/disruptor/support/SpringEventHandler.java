@@ -19,6 +19,7 @@ package com.livk.core.disruptor.support;
 
 import com.livk.core.disruptor.DisruptorEventConsumer;
 import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.Sequence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -49,6 +50,33 @@ public class SpringEventHandler<T> implements EventHandler<DisruptorEventWrapper
 	public void onEvent(DisruptorEventWrapper<T> wrapper, long sequence, boolean endOfBatch) throws Exception {
 		for (DisruptorEventConsumer<T> disruptorEventConsumer : disruptorEventConsumers) {
 			disruptorEventConsumer.onEvent(wrapper.unwrap(), sequence, endOfBatch);
+		}
+	}
+
+	@Override
+	public void setSequenceCallback(Sequence sequenceCallback) {
+		disruptorEventConsumers.orderedStream().forEach(consumer -> consumer.setSequenceCallback(sequenceCallback));
+	}
+
+	@Override
+	public void onBatchStart(long batchSize, long queueDepth) {
+		disruptorEventConsumers.orderedStream().forEach(consumer -> consumer.onBatchStart(batchSize, queueDepth));
+	}
+
+	@Override
+	public void onStart() {
+		disruptorEventConsumers.orderedStream().forEach(DisruptorEventConsumer::onStart);
+	}
+
+	@Override
+	public void onShutdown() {
+		disruptorEventConsumers.orderedStream().forEach(DisruptorEventConsumer::onShutdown);
+	}
+
+	@Override
+	public void onTimeout(long sequence) throws Exception {
+		for (DisruptorEventConsumer<T> disruptorEventConsumer : disruptorEventConsumers) {
+			disruptorEventConsumer.onTimeout(sequence);
 		}
 	}
 
