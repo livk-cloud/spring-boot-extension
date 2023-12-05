@@ -18,6 +18,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import java.util.List;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ class UserControllerTest {
 			.expectStatus()
 			.isOk()
 			.expectBodyList(User.class)
-			.value(users -> assertNotEquals(0, users.size()));
+			.value(List::size, Is.is(0));
 	}
 
 	@Order(1)

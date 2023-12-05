@@ -18,15 +18,13 @@
 package com.livk.doc.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonNodeUtils;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author livk
@@ -48,7 +46,7 @@ class DocControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody(JsonNode.class)
-			.value(jsonNode -> assertEquals("3.0.1", JsonNodeUtils.findNode(jsonNode, "openapi").asText()));
+			.value(jsonNode -> jsonNode.get("openapi").asText(), Is.is("3.0.1"));
 	}
 
 }

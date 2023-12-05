@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.LongStream;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -59,49 +60,41 @@ class Info2ControllerTest {
 	}
 
 	@Test
-	void uploadAndDownload() {
-		client.post()
+	void uploadAndDownload() throws IOException {
+		Resource resource = client.post()
 			.uri("/info/uploadAndDownload")
 			.bodyValue(builder.build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(),
-							"./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
 		File outFile = new File("./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
 
 	@Test
-	void download() {
+	void download() throws IOException {
 		List<Info> infos = LongStream.rangeClosed(1, 100)
 			.mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
 			.toList();
-		client.post()
+		Resource resource = client.post()
 			.uri("/info/download")
 			.bodyValue(infos)
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(),
-							"./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());

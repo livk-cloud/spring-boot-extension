@@ -18,16 +18,13 @@
 package com.livk.redisearch.webflux.controller;
 
 import com.livk.redisearch.webflux.entity.Student;
+import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
 /**
  * @author livk
@@ -49,12 +46,18 @@ class StudentControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
-			.value(students -> {
-				List<String> result = students.stream().map(Student::getName).toList();
-				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
-						"livk-7", "livk-8", "livk-9");
-				assertLinesMatch(list, result);
-			});
+			.hasSize(10)
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-0"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-1"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-2"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-3"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-4"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-5"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-6"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-7"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-8"))
+			.value(students -> students.stream().map(Student::getName).toList(),
+					IsIterableContaining.hasItem("livk-9"));
 
 		client.get()
 			.uri(uriBuilder -> uriBuilder.path("/student")
@@ -66,11 +69,9 @@ class StudentControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
-			.value(students -> {
-				List<String> result = students.stream().map(Student::getName).toList();
-				List<String> list = List.of("livk-0");
-				assertLinesMatch(list, result);
-			});
+			.hasSize(1)
+			.value(students -> students.stream().map(Student::getName).toList(),
+					IsIterableContaining.hasItem("livk-0"));
 
 		client.get()
 			.uri(uriBuilder -> uriBuilder.path("/student").queryParam("query", "livk").build())
@@ -80,12 +81,18 @@ class StudentControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBodyList(Student.class)
-			.value(students -> {
-				List<String> result = students.stream().map(Student::getName).toList();
-				List<String> list = List.of("livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
-						"livk-7", "livk-8", "livk-9");
-				assertLinesMatch(list, result);
-			});
+			.hasSize(10)
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-0"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-1"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-2"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-3"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-4"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-5"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-6"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-7"))
+			.value(students -> students.stream().map(Student::getName).toList(), IsIterableContaining.hasItem("livk-8"))
+			.value(students -> students.stream().map(Student::getName).toList(),
+					IsIterableContaining.hasItem("livk-9"));
 
 		client.get()
 			.uri(uriBuilder -> uriBuilder.path("/student").queryParam("query", "女").build())

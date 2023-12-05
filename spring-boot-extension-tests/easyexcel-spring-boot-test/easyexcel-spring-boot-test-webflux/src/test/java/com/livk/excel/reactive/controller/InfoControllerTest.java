@@ -33,6 +33,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -81,69 +82,57 @@ class InfoControllerTest {
 	}
 
 	@Test
-	void uploadDownLoadMono() {
-		client.post()
+	void uploadDownLoadMono() throws IOException {
+		Resource resource = client.post()
 			.uri("/uploadDownLoad")
 			.bodyValue(builder.build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(),
-							"./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
 
 	@Test
-	void testUploadDownLoadMono() {
-		client.post()
+	void testUploadDownLoadMono() throws IOException {
+		Resource resource = client.post()
 			.uri("/uploadDownLoadMono")
 			.bodyValue(builder.build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(),
-							"./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
 	}
 
 	@Test
-	void uploadDownLoadFlux() {
-		client.post()
+	void uploadDownLoadFlux() throws IOException {
+		Resource resource = client.post()
 			.uri("/uploadDownLoadFlux")
 			.bodyValue(builder.build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(),
-							"./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());

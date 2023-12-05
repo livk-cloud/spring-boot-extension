@@ -34,8 +34,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * <p>
@@ -57,20 +56,17 @@ class QRCode2ControllerTest {
 
 	@Test
 	void text() throws IOException {
-		client.get()
+		Resource resource = client.get()
 			.uri(uriBuilder -> uriBuilder.path("/qrcode2").queryParam("text", text).build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
 			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
@@ -81,20 +77,17 @@ class QRCode2ControllerTest {
 
 	@Test
 	void textMono() throws IOException {
-		client.get()
+		Resource resource = client.get()
 			.uri(uriBuilder -> uriBuilder.path("/qrcode2/mono").queryParam("text", text).build())
 			.exchange()
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
 			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
@@ -105,7 +98,7 @@ class QRCode2ControllerTest {
 
 	@Test
 	void json() throws IOException {
-		client.post()
+		Resource resource = client.post()
 			.uri("/qrcode2/json")
 			.contentType(MediaType.APPLICATION_JSON)
 			.bodyValue(json)
@@ -113,14 +106,11 @@ class QRCode2ControllerTest {
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
 			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
@@ -131,7 +121,7 @@ class QRCode2ControllerTest {
 
 	@Test
 	void jsonMono() throws IOException {
-		client.post()
+		Resource resource = client.post()
 			.uri("/qrcode2/json/mono")
 			.contentType(MediaType.APPLICATION_JSON)
 			.bodyValue(json)
@@ -139,14 +129,11 @@ class QRCode2ControllerTest {
 			.expectStatus()
 			.isOk()
 			.expectBody(Resource.class)
-			.value(resource -> {
-				try {
-					FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
-				}
-				catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			});
+			.returnResult()
+			.getResponseBody();
+
+		assertNotNull(resource);
+		FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
 			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));

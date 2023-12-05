@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.util.JsonNodeUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.PbeSecurity;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -30,8 +31,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Locale;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author livk
@@ -59,10 +58,8 @@ class InfoWebFluxControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody(JsonNode.class)
-			.value(jsonNode -> {
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.paramId").asText());
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "id.headerId").asText());
-			});
+			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "id.paramId").asText(), Is.is(encoding))
+			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "id.headerId").asText(), Is.is(encoding));
 	}
 
 	@Test
@@ -80,10 +77,8 @@ class InfoWebFluxControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody(JsonNode.class)
-			.value(jsonNode -> {
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.paramId").asText());
-				assertEquals(encoding, JsonNodeUtils.findNode(jsonNode, "body.headerId").asText());
-			});
+			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "body.paramId").asText(), Is.is(encoding))
+			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "body.headerId").asText(), Is.is(encoding));
 	}
 
 }
