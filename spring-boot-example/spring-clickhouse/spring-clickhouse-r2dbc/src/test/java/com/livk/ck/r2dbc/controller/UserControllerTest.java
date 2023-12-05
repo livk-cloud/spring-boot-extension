@@ -18,7 +18,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
-import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class UserControllerTest {
 			.expectStatus()
 			.isOk()
 			.expectBodyList(User.class)
-			.value(List::size, Is.is(0));
+			.value(List::size, IsNot.not(0));
 	}
 
 	@Order(1)
