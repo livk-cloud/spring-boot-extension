@@ -23,6 +23,7 @@ import com.livk.commons.spring.context.SpringContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author livk
  */
 @SpringBootTest("spring.main.web-application-type=servlet")
-@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT })
+@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
 public class SpringHttpTest {
 
 	@Autowired
@@ -42,12 +43,17 @@ public class SpringHttpTest {
 	@Autowired
 	WebClient webClient;
 
+	@Autowired
+	RestClient restClient;
+
 	@Test
 	public void test() {
 		assertNotNull(restTemplate);
 		assertNotNull(webClient);
+		assertNotNull(restClient);
 		assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
 		assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
+		assertEquals(SpringContextHolder.getBean(RestClient.class), restClient);
 	}
 
 }
