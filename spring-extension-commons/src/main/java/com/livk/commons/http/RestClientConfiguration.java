@@ -18,7 +18,7 @@
 package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.http.annotation.EnableRestTemplate;
+import com.livk.commons.http.annotation.EnableRestClient;
 import com.livk.commons.http.support.OkHttpClientHttpRequestFactory;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * @author livk
  */
 @AutoConfiguration
-@SpringAutoService(EnableRestTemplate.class)
+@SpringAutoService(EnableRestClient.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class RestClientConfiguration {
 
