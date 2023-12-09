@@ -2,9 +2,9 @@ image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle.yml"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-green[link="https://spring.io/projects/spring-boot"]
-image:https://img.shields.io/badge/Gradle-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Spring%20Framework-6.1.1-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.2.0-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Gradle-8.5-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
@@ -12,7 +12,6 @@ image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,li
 link:README-en.adoc[English] | link:README.adoc[简体中文] +
 
 This is a starter collection that springboot integrates multiple third-party frameworks +
-It is also a variety of examples about springboot projects https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud`]+ And examples of various ways of using Gradle +
 Use third-party packages to basically cover the latest version +
 The code inside should more or less help you +
 If you can learn some techniques or techniques from it, please give it a star +

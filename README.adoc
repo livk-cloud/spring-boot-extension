@@ -3,9 +3,9 @@ link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-green[link="https://spring.io/projects/spring-boot"]
-image:https://img.shields.io/badge/Gradle-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Spring%20Framework-6.1.1-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.2.0-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Gradle-8.5-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
@@ -13,7 +13,6 @@ image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,li
 link:README-en.adoc[English] | link:README.adoc[简体中文] +
 
 这是一个springboot整合多个第三方框架的starter集合 +
-同时也是一个关于springboot项目的各种示例 https://github.com/livk-cloud/spring-cloud-example[`Spring Cloud示例项目`] +
 以及关于Gradle的各种使用方式示例 +
 使用第三方包基本覆盖最新版本 +
 里面的代码或多或少应该可以帮助到你 +
