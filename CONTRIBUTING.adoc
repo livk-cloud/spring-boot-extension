@@ -13,8 +13,8 @@ Gradle最新版 +
 
 == 提交代码前的工作
 
+在使用 `gradle build` 请先使用 `gradle format` 进行代码格式处理 +
 请使用命令 `gradle build` 构建当前提交的代码，以保证可正常运行 +
-如出现使用第三方中间件的测试用例，将测试用例的全类名提交至 *exclude.txt* 避免Github Gradle CI出现错误
 
 == gradle custom plugins
 
