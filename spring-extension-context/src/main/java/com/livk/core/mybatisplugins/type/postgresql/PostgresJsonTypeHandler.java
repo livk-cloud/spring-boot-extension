@@ -50,7 +50,7 @@ public class PostgresJsonTypeHandler extends AbstractJsonTypeHandler implements 
 	 * @param mapper the mapper
 	 */
 	public PostgresJsonTypeHandler(ObjectMapper mapper) {
-		super(JacksonSupport.create(mapper));
+		super(new JacksonSupport(mapper));
 	}
 
 	@Override

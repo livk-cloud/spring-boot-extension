@@ -47,7 +47,7 @@ class RestAppTest {
 	@Test
 	void testSave() throws Exception {
 		ObjectMapper mapper = builder.build();
-		JacksonSupport<ObjectMapper> support = JacksonSupport.create(mapper);
+		JacksonSupport support = new JacksonSupport(mapper);
 		User user = new User();
 		user.setUsername("root");
 		user.setPassword("root");
@@ -61,7 +61,7 @@ class RestAppTest {
 	@Test
 	void testUpdate() throws Exception {
 		ObjectMapper mapper = builder.build();
-		JacksonSupport<ObjectMapper> support = JacksonSupport.create(mapper);
+		JacksonSupport support = new JacksonSupport(mapper);
 		User user = new User();
 		user.setUsername("admin");
 		user.setPassword("admin");

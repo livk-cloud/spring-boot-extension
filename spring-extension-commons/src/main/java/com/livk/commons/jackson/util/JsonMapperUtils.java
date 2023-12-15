@@ -37,10 +37,10 @@ import java.util.Map;
 @UtilityClass
 public class JsonMapperUtils {
 
-	private static final JacksonSupport<JsonMapper> JSON;
+	private static final JacksonSupport JSON;
 
 	static {
-		JSON = JacksonSupport.create(new JsonMapper());
+		JSON = new JacksonSupport(new JsonMapper());
 	}
 
 	/**

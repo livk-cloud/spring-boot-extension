@@ -21,7 +21,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.beans.GenericWrapper;
 import lombok.SneakyThrows;
@@ -35,39 +34,20 @@ import java.net.URL;
 /**
  * Jackson操作默认实现
  *
- * @param <M> ObjectMapper类型
  * @author livk
  */
-public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps
-		implements JacksonOps, GenericWrapper<M> {
+public final class JacksonSupport extends AbstractJacksonOps implements JacksonOps, GenericWrapper<ObjectMapper> {
 
-	private final M mapper;
+	private final ObjectMapper mapper;
 
-	private JacksonSupport(M mapper) {
+	/**
+	 * 构造JacksonSupport
+	 * @param mapper jacksonMapper
+	 */
+	public JacksonSupport(ObjectMapper mapper) {
 		super(mapper.getTypeFactory());
 		this.mapper = mapper;
 		this.mapper.registerModules(new JavaTimeModule());
-	}
-
-	/**
-	 * 静态构造
-	 * @param <M> ObjectMapper类型
-	 * @param mapper ObjectMapper实例
-	 * @return the jackson support
-	 */
-	public static <M extends ObjectMapper> JacksonSupport<M> create(M mapper) {
-		return new JacksonSupport<>(mapper);
-	}
-
-	/**
-	 * 静态构造
-	 * @param <M> ObjectMapper类型
-	 * @param <B> ObjectMapper.Builder类型
-	 * @param builder ObjectMapper.Builder实例
-	 * @return the jackson support
-	 */
-	public static <M extends ObjectMapper, B extends MapperBuilder<M, B>> JacksonSupport<M> create(B builder) {
-		return create(builder.build());
 	}
 
 	@SneakyThrows
@@ -156,7 +136,7 @@ public class JacksonSupport<M extends ObjectMapper> extends AbstractJacksonOps
 	}
 
 	@Override
-	public M unwrap() {
+	public ObjectMapper unwrap() {
 		return mapper;
 	}
 

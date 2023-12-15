@@ -53,7 +53,7 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public abstract class ConfigBaseConverter<T> implements Converter<String, T> {
 
-	private static final JacksonSupport<YAMLMapper> support = JacksonSupport.create(createMapper());
+	private static final JacksonSupport support = new JacksonSupport(createMapper());
 
 	@SuppressWarnings("unchecked")
 	private final Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(),

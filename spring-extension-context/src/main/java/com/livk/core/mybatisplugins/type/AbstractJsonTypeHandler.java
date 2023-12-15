@@ -50,7 +50,7 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	 */
 	protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
 		ObjectMapper mapper = builder.build();
-		jacksonOps = JacksonSupport.create(mapper);
+		jacksonOps = new JacksonSupport(mapper);
 	}
 
 	@Override

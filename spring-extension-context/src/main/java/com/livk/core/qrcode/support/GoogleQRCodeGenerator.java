@@ -48,7 +48,7 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 	 * @param builder the builder
 	 */
 	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		jacksonOps = JacksonSupport.create(builder.build());
+		jacksonOps = new JacksonSupport(builder.build());
 	}
 
 	@Override

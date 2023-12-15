@@ -43,7 +43,7 @@ public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements Typ
 	 * @param mapper the mapper
 	 */
 	public MysqlJsonTypeHandler(ObjectMapper mapper) {
-		super(JacksonSupport.create(mapper));
+		super(new JacksonSupport(mapper));
 	}
 
 	@Override
