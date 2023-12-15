@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * NumberJsonFormat序列化处理
@@ -41,8 +41,8 @@ import java.util.Optional;
 @NoArgsConstructor
 public class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {
 
-	private static final List<Class<?>> SUPPORT_PRIMITIVE_CLASS = List.of(byte.class, short.class, int.class,
-			long.class, float.class, double.class);
+	private static final Set<Class<?>> SUPPORT_PRIMITIVE_CLASS = Set.of(byte.class, short.class, int.class, long.class,
+			float.class, double.class);
 
 	private String format;
 
@@ -57,15 +57,14 @@ public class NumberJsonSerializer extends JsonSerializer<Number> implements Cont
 		Class<?> rawClass = property.getType().getRawClass();
 		NumberJsonFormat jsonFormat = Optional.ofNullable(property.getAnnotation((NumberJsonFormat.class)))
 			.orElse(property.getContextAnnotation(NumberJsonFormat.class));
-		if (Number.class.isAssignableFrom(rawClass)
-				|| this.simpleTypeSupport(jsonFormat.simpleTypeSupport(), rawClass)) {
+		if (Number.class.isAssignableFrom(rawClass) || this.simpleTypeSupport(rawClass)) {
 			return new NumberJsonSerializer(jsonFormat.pattern());
 		}
 		return prov.findValueSerializer(property.getType(), property);
 	}
 
-	private boolean simpleTypeSupport(boolean support, Class<?> rawClass) {
-		return support && rawClass.isPrimitive() && SUPPORT_PRIMITIVE_CLASS.contains(rawClass);
+	private boolean simpleTypeSupport(Class<?> rawClass) {
+		return rawClass.isPrimitive() && SUPPORT_PRIMITIVE_CLASS.contains(rawClass);
 	}
 
 }

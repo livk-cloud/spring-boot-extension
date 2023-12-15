@@ -24,6 +24,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.text.DecimalFormat;
 
 /**
  * Number类型数据Jackson序列化处理注解
@@ -40,13 +41,8 @@ public @interface NumberJsonFormat {
 	/**
 	 * 序列化表达式
 	 * @return the string
+	 * @see DecimalFormat#DecimalFormat(String)
 	 */
 	String pattern() default "#0.00";
-
-	/**
-	 * 是否支持基础类型
-	 * @return the boolean
-	 */
-	boolean simpleTypeSupport() default true;
 
 }
