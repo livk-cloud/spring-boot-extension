@@ -30,6 +30,7 @@ import net.bytebuddy.description.type.TypeDefinition;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.description.type.TypeList;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Unloaded;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.dynamic.scaffold.subclass.SubclassDynamicTypeBuilder;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -75,13 +76,12 @@ final class ByteBuddySupport {
 
 	private static ConfigBaseConverter<?> make(Class<?> type) {
 		String name = PACKAGE_NAME + type.getSimpleName() + ConfigBaseConverter.class.getSimpleName() + "$Proxy";
-		DynamicType.Builder.MethodDefinition.ReceiverTypeDefinition<ConfigBaseConverter<?>> typeDefinition = new GenericsByteBuddy(
-				ClassFileVersion.JAVA_V17)
+		try (Unloaded<ConfigBaseConverter<?>> unloaded = new GenericsByteBuddy(ClassFileVersion.JAVA_V21)
 			.<ConfigBaseConverter<?>>sub(ConfigBaseConverter.class, type)
 			.name(name)
 			.method(ElementMatchers.none())
-			.withoutCode();
-		try (DynamicType.Unloaded<ConfigBaseConverter<?>> unloaded = typeDefinition.make()) {
+			.withoutCode()
+			.make()) {
 			Class<? extends ConfigBaseConverter<?>> proxyType = unloaded.load(ClassUtils.getDefaultClassLoader())
 				.getLoaded();
 			return BeanUtils.instantiateClass(proxyType);
