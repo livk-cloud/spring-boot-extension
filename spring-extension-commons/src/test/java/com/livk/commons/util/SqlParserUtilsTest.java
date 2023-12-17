@@ -20,6 +20,7 @@ package com.livk.commons.util;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -31,12 +32,12 @@ class SqlParserUtilsTest {
 
 	@Test
 	void parseTable() {
-		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("select * from user"));
-		assertLinesMatch(List.of("user", "account"),
+		assertEquals(Set.of("user"), SqlParserUtils.parseTable("select * from user"));
+		assertEquals(Set.of("user", "account"),
 				SqlParserUtils.parseTable("select * from user u left join account a on u.id = a.user_id"));
-		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("insert into user values (1,'root','root')"));
-		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("update user set username = 'root' where id = 1"));
-		assertLinesMatch(List.of("user"), SqlParserUtils.parseTable("delete from user where id = 1"));
+		assertEquals(Set.of("user"), SqlParserUtils.parseTable("insert into user values (1,'root','root')"));
+		assertEquals(Set.of("user"), SqlParserUtils.parseTable("update user set username = 'root' where id = 1"));
+		assertEquals(Set.of("user"), SqlParserUtils.parseTable("delete from user where id = 1"));
 	}
 
 	@Test
