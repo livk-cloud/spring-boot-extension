@@ -61,11 +61,7 @@ public class SqlParserUtils {
 	public List<String> getParams(String sql) {
 		Statement statement = CCJSqlParserUtil.parse(sql);
 		if (statement instanceof Select select) {
-			return select.getPlainSelect()
-				.getSelectItems()
-				.stream()
-				.map(Object::toString)
-				.toList();
+			return select.getPlainSelect().getSelectItems().stream().map(Object::toString).toList();
 		}
 		else if (statement instanceof Update update) {
 			return update.getUpdateSets()
