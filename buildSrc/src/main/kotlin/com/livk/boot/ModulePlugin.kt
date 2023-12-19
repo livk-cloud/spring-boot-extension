@@ -18,9 +18,11 @@
 package com.livk.boot
 
 import com.livk.boot.compile.CompileArgsPlugin
+import com.livk.boot.info.ExtractResources
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.bundling.Jar
 
 /**
  * @author livk
@@ -30,5 +32,17 @@ class ModulePlugin : Plugin<Project> {
 		project.pluginManager.apply(CompileArgsPlugin::class.java)
 		project.pluginManager.apply(CorePlugin::class.java)
 		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
+
+		val extractLegalResources = project.tasks.create("extractLegalResources", ExtractResources::class.java)
+		extractLegalResources.getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
+		extractLegalResources.setResourcesNames(listOf("LICENSE"))
+
+		project.tasks.withType(Jar::class.java) { jar ->
+			project.afterEvaluate {
+				jar.metaInf { metaInf ->
+					metaInf.from(extractLegalResources)
+				}
+			}
+		}
 	}
 }
