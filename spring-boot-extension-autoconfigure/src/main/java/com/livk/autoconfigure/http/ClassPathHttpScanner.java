@@ -17,9 +17,9 @@
 
 package com.livk.autoconfigure.http;
 
-import com.livk.autoconfigure.http.adapter.AdapterFactory;
-import com.livk.autoconfigure.http.adapter.AdapterType;
 import com.livk.autoconfigure.http.annotation.HttpProvider;
+import com.livk.autoconfigure.http.factory.AdapterFactory;
+import com.livk.autoconfigure.http.factory.AdapterType;
 import com.livk.autoconfigure.http.factory.HttpFactoryBean;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.ClassUtils;

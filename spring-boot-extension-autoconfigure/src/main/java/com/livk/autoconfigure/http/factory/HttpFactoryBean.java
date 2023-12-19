@@ -17,19 +17,16 @@
 
 package com.livk.autoconfigure.http.factory;
 
-import com.livk.autoconfigure.http.adapter.AdapterFactory;
-import com.livk.autoconfigure.http.adapter.BeanFactoryHttpExchangeAdapter;
-import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
+import com.livk.autoconfigure.http.HttpServiceProxyFactoryCustomizer;
 import lombok.Setter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.lang.NonNull;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -47,15 +44,15 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	private AdapterFactory<? extends HttpExchangeAdapter> adapterFactory;
 
+	private ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers;
+
 	@Override
 	public Object getObject() {
-		HttpExchangeAdapter adapter = new BeanFactoryHttpExchangeAdapter(adapterFactory, beanFactory);
+		HttpExchangeAdapter adapter = adapterFactory.create(beanFactory);
 		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builderFor(adapter);
-		beanFactory.getBeanProvider(HttpServiceProxyFactoryCustomizer.class)
-			.orderedStream()
-			.forEach(customizer -> customizer.customize(builder));
+		customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
 		HttpServiceProxyFactory proxyFactory = builder.build();
-		return proxyFactory.createClient(Objects.requireNonNull(getObjectType()));
+		return proxyFactory.createClient(type);
 	}
 
 	@Override
@@ -66,6 +63,7 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 	@Override
 	public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
+		customizers = beanFactory.getBeanProvider(HttpServiceProxyFactoryCustomizer.class);
 	}
 
 }

@@ -15,7 +15,7 @@
  *
  */
 
-package com.livk.autoconfigure.http.adapter;
+package com.livk.autoconfigure.http.factory;
 
 import com.livk.commons.util.ClassUtils;
 import lombok.RequiredArgsConstructor;
@@ -47,22 +47,20 @@ public enum AdapterType {
 	 */
 	AUTO;
 
-	@SuppressWarnings("unchecked")
-	public static <T extends AdapterFactory<? extends HttpExchangeAdapter>> T builder(AdapterType type) {
+	public static AdapterFactory<? extends HttpExchangeAdapter> builder(AdapterType type) {
 		return switch (type) {
-			case REST_TEMPLATE -> (T) new RestTemplateAdapterWrapper();
-			case WEB_CLIENT -> (T) new WebClientAdapterWrapper();
-			case REST_CLIENT -> (T) new RestClientAdapterWrapper();
+			case REST_TEMPLATE -> new RestTemplateAdapterWrapper();
+			case WEB_CLIENT -> new WebClientAdapterWrapper();
+			case REST_CLIENT -> new RestClientAdapterWrapper();
 			case AUTO -> {
-				ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-				if (ClassUtils.isPresent("org.springframework.web.reactive.function.client.WebClient", classLoader)) {
-					yield (T) new WebClientAdapterWrapper();
+				if (ClassUtils.isPresent("org.springframework.web.reactive.function.client.WebClient")) {
+					yield new WebClientAdapterWrapper();
 				}
-				else if (ClassUtils.isPresent("org.springframework.web.client.RestClient", classLoader)) {
-					yield (T) new RestClientAdapterWrapper();
+				else if (ClassUtils.isPresent("org.springframework.web.client.RestClient")) {
+					yield new RestClientAdapterWrapper();
 				}
-				else if (ClassUtils.isPresent("org.springframework.web.client.RestTemplate", classLoader)) {
-					yield (T) new RestTemplateAdapterWrapper();
+				else if (ClassUtils.isPresent("org.springframework.web.client.RestTemplate")) {
+					yield new RestTemplateAdapterWrapper();
 				}
 				throw new UnsupportedOperationException("缺少构建HttpExchangeAdapter的类信息");
 			}

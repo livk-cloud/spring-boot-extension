@@ -17,7 +17,7 @@
 
 package com.livk.autoconfigure.http.annotation;
 
-import com.livk.autoconfigure.http.adapter.AdapterType;
+import com.livk.autoconfigure.http.factory.AdapterType;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.service.annotation.HttpExchange;

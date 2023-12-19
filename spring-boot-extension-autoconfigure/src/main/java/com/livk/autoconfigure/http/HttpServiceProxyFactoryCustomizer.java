@@ -15,16 +15,19 @@
  *
  */
 
-package com.livk.autoconfigure.http.adapter;
+package com.livk.autoconfigure.http;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.web.service.invoker.HttpExchangeAdapter;
+import com.livk.commons.spring.Customizer;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
+ * <p>
+ * HttpServiceProxyFactoryCustomizer
+ * </p>
+ *
  * @author livk
  */
-public interface AdapterFactory<H extends HttpExchangeAdapter> {
-
-	H create(BeanFactory beanFactory);
+@FunctionalInterface
+public interface HttpServiceProxyFactoryCustomizer extends Customizer<HttpServiceProxyFactory.Builder> {
 
 }

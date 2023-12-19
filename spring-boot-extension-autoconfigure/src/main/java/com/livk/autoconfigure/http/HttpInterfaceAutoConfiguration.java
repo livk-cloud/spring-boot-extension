@@ -18,8 +18,6 @@
 package com.livk.autoconfigure.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.autoconfigure.http.customizer.HttpServiceProxyFactoryCustomizer;
-import com.livk.autoconfigure.http.factory.HttpServiceRegistrar;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -43,7 +41,7 @@ public class HttpInterfaceAutoConfiguration {
 	/**
 	 * 添加SpringEL解析
 	 * @param beanFactory bean factory
-	 * @return HttpServiceProxyFactoryCustomizer http service proxy factory customizer
+	 * @return HttpServiceProxyFactoryCustomizer
 	 */
 	@Bean
 	public HttpServiceProxyFactoryCustomizer embeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
