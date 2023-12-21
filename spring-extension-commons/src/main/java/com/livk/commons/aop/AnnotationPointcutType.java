@@ -65,13 +65,13 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 		Target target = annotationType.getAnnotation(Target.class);
 		HashSet<ElementType> elementTypeHashSet = Sets.newHashSet(target.value());
 		if (elementTypeHashSet.contains(ElementType.TYPE) && elementTypeHashSet.contains(ElementType.METHOD)) {
-			return TYPE_OR_METHOD.annotationAutoPointcut.getPointcut(annotationType);
+			return TYPE_OR_METHOD.getPointcut(annotationType);
 		}
 		else if (elementTypeHashSet.contains(ElementType.TYPE)) {
-			return TYPE.annotationAutoPointcut.getPointcut(annotationType);
+			return TYPE.getPointcut(annotationType);
 		}
 		else if (elementTypeHashSet.contains(ElementType.METHOD)) {
-			return METHOD.annotationAutoPointcut.getPointcut(annotationType);
+			return METHOD.getPointcut(annotationType);
 		}
 		else {
 			throw new IllegalArgumentException(
