@@ -42,7 +42,9 @@ public interface Wrapper {
 	 * @param type 类信息
 	 * @return bool
 	 */
-	boolean isWrapperFor(Class<?> type);
+	default boolean isWrapperFor(Class<?> type) {
+		return type.isInstance(unwrap());
+	}
 
 	/**
 	 * 解析获取相关实例

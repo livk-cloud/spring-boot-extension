@@ -17,15 +17,16 @@
 
 package com.livk.commons.beans;
 
-import org.springframework.core.GenericTypeResolver;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
- * The interface Delegating wrapper.
+ * 带有泛型的包装器
  *
- * @param <T> the type parameter
+ * @param <V> the type parameter
  * @author livk
  */
-public interface GenericWrapper<T> extends Wrapper {
+public interface GenericWrapper<V> extends Wrapper {
 
 	/**
 	 * 构建一个GenericWrapper包装器
@@ -37,16 +38,39 @@ public interface GenericWrapper<T> extends Wrapper {
 		return new RecordWrapper<>(delegate);
 	}
 
-	@Override
-	default boolean isWrapperFor(Class<?> type) {
-		Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), GenericWrapper.class);
-		return typeArgument == null || type.isAssignableFrom(typeArgument);
+	/**
+	 * 进行map转换
+	 * @param function fun
+	 * @param <R> 转换后泛型
+	 * @return wrapper
+	 */
+	default <R> GenericWrapper<R> map(Function<V, R> function) {
+		V unwrap = this.unwrap();
+		return of(function.apply(unwrap));
+	}
+
+	/**
+	 * 进行flatmap转换
+	 * @param function fun
+	 * @param <R> 转换后泛型
+	 * @return wrapper
+	 */
+	default <R> GenericWrapper<R> flatmap(Function<V, GenericWrapper<R>> function) {
+		return function.apply(this.unwrap());
+	}
+
+	/**
+	 * 转成optional
+	 * @return optional
+	 */
+	default Optional<V> optional() {
+		return Optional.of(this).map(GenericWrapper::unwrap);
 	}
 
 	/**
 	 * 解析成泛型相关实例
 	 * @return 带有泛型的相关实例
 	 */
-	T unwrap();
+	V unwrap();
 
 }

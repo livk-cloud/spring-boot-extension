@@ -131,11 +131,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 	}
 
 	@Override
-	public boolean isWrapperFor(Class<?> type) {
-		return type.isInstance(mapper);
-	}
-
-	@Override
 	public ObjectMapper unwrap() {
 		return mapper;
 	}
