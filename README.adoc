@@ -3,8 +3,8 @@ link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/gradle
 image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"]
 image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.1.1-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.2.0-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Framework-6.1.2-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.2.1-green[link="https://spring.io/projects/spring-boot"]
 image:https://img.shields.io/badge/Gradle-8.5-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
