@@ -17,6 +17,7 @@
 
 package com.livk.commons;
 
+import com.google.common.annotations.Beta;
 import com.livk.commons.util.ClassUtils;
 import com.livk.commons.util.DateUtils;
 import lombok.AccessLevel;
@@ -54,6 +55,7 @@ public class SpringLauncher {
 	 * @param args main方法参数
 	 * @return ConfigurableApplicationContext
 	 */
+	@Beta
 	@SneakyThrows
 	public static ConfigurableApplicationContext run(String[] args) {
 		Class<?> mainClass = Arrays.stream(Thread.currentThread().getStackTrace())
