@@ -18,6 +18,7 @@
 package com.livk.core.disruptor.support;
 
 import com.livk.commons.beans.GenericWrapper;
+import org.springframework.util.Assert;
 
 /**
  * The type Disruptor event wrapper.
@@ -41,6 +42,7 @@ public class DisruptorEventWrapper<V> implements GenericWrapper<V> {
 
 	@Override
 	public V unwrap() {
+		Assert.notNull(real, "real must not be null");
 		return real;
 	}
 
