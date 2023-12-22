@@ -1,6 +1,6 @@
 [versions]
 spring-boot = "3.2.1"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 pagehelper = "6.1.0"
 pagehelper-starter = "2.1.0"
 mybatis = "3.5.15"
