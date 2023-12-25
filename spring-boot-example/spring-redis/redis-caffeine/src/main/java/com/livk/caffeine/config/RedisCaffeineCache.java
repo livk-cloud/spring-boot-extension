@@ -17,11 +17,13 @@
 
 package com.livk.caffeine.config;
 
-import com.livk.caffeine.handler.CacheHandler;
-import org.springframework.cache.support.AbstractValueAdaptingCache;
-
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
+
+import com.livk.caffeine.handler.CacheHandler;
+
+import org.springframework.cache.support.AbstractValueAdaptingCache;
+import org.springframework.lang.NonNull;
 
 /**
  * @author livk
@@ -43,11 +45,13 @@ public class RedisCaffeineCache extends AbstractValueAdaptingCache {
 		return cacheHandler.read(key.toString());
 	}
 
+	@NonNull
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@NonNull
 	@Override
 	public CacheHandler<Object> getNativeCache() {
 		return cacheHandler;
@@ -55,7 +59,7 @@ public class RedisCaffeineCache extends AbstractValueAdaptingCache {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T get(Object key, Callable<T> valueLoader) {
+	public <T> T get(Object key, @NonNull Callable<T> valueLoader) {
 		return (T) fromStoreValue(this.cacheHandler.readAndPut(key.toString(), supplier(valueLoader).get()));
 	}
 

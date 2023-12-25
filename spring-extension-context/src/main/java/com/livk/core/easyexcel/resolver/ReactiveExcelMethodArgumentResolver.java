@@ -17,6 +17,8 @@
 
 package com.livk.core.easyexcel.resolver;
 
+import java.util.Objects;
+
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.util.BeanUtils;
@@ -25,6 +27,9 @@ import com.livk.core.easyexcel.ExcelDataType;
 import com.livk.core.easyexcel.annotation.ExcelParam;
 import com.livk.core.easyexcel.annotation.RequestExcel;
 import com.livk.core.easyexcel.listener.ExcelMapReadListener;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
@@ -34,10 +39,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -57,7 +58,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 
 	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(MethodParameter parameter, @NonNull BindingContext bindingContext,
+	public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext,
 			@NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);

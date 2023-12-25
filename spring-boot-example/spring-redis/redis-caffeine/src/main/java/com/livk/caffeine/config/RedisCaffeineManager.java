@@ -17,15 +17,17 @@
 
 package com.livk.caffeine.config;
 
-import com.livk.caffeine.handler.CacheHandler;
-import lombok.RequiredArgsConstructor;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.livk.caffeine.handler.CacheHandler;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.lang.NonNull;
 
 /**
  * @author livk
@@ -38,7 +40,7 @@ public class RedisCaffeineManager implements CacheManager {
 	private final Map<String, Cache> cacheMap = new ConcurrentHashMap<>(16);
 
 	@Override
-	public Cache getCache(String name) {
+	public Cache getCache(@NonNull String name) {
 		Cache cache = this.cacheMap.get(name);
 		return (cache != null) ? cache : this.cacheMap.computeIfAbsent(name, this::createCache);
 	}
@@ -47,6 +49,7 @@ public class RedisCaffeineManager implements CacheManager {
 		return new RedisCaffeineCache(name, adapter, true);
 	}
 
+	@NonNull
 	@Override
 	public Collection<String> getCacheNames() {
 		return Collections.unmodifiableSet(this.cacheMap.keySet());

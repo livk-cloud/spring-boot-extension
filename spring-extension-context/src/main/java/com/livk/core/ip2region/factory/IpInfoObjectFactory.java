@@ -17,11 +17,13 @@
 
 package com.livk.core.ip2region.factory;
 
+import java.io.Serializable;
+
 import com.livk.core.ip2region.support.RequestIpContextHolder;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
-
-import java.io.Serializable;
+import org.springframework.lang.NonNull;
 
 /**
  * The type Ip info object factory.
@@ -30,6 +32,7 @@ import java.io.Serializable;
  */
 public class IpInfoObjectFactory implements ObjectFactory<RequestIpInfo>, Serializable {
 
+	@NonNull
 	@Override
 	public RequestIpInfo getObject() throws BeansException {
 		return RequestIpContextHolder::get;

@@ -17,18 +17,19 @@
 
 package com.livk.rsocket;
 
+import java.time.Duration;
+
 import com.livk.rsocket.common.entity.Message;
 import io.rsocket.RSocket;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.messaging.rsocket.RSocketStrategies;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 /**
  * <p>
@@ -68,7 +69,7 @@ public class RSocketClient {
 		return this.rsocketRequester.route("fire-and-forget")
 			.data(new Message("客户端", "服务器"))
 			.send()
-			.flatMap(unused -> Mono.just("fire and forget"));
+			.then(Mono.defer(() -> Mono.just("fire and forget")));
 	}
 
 	@GetMapping("stream")

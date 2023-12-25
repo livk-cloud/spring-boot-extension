@@ -29,12 +29,12 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyClientHandler extends SimpleChannelInboundHandler<NettyMessage.Message> {
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, NettyMessage.Message msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, NettyMessage.Message msg) {
 		log.info("客户端收到消息：{}", msg);
 	}
 
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		log.info("error msg：{}", cause.getMessage(), cause);
 		ctx.close();
 	}

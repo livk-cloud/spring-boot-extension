@@ -17,21 +17,22 @@
 
 package com.livk.admin.server.config;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+
 import com.livk.core.redis.ReactiveRedisOps;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.eventstore.InstanceEventPublisher;
 import de.codecentric.boot.admin.server.eventstore.InstanceEventStore;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.ReactiveHashOperations;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
+import org.springframework.data.redis.core.ReactiveHashOperations;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 import static java.util.Comparator.comparing;
 
@@ -74,7 +75,7 @@ public class RedisEventStore extends InstanceEventPublisher implements InstanceE
 		if (events.isEmpty()) {
 			return Mono.empty();
 		}
-		InstanceId id = events.get(0).getInstance();
+		InstanceId id = events.getFirst().getInstance();
 		if (!events.stream().map(InstanceEvent::getInstance).allMatch(id::equals)) {
 			throw new IllegalArgumentException("events must only refer to the same instance.");
 		}

@@ -17,10 +17,11 @@
 
 package com.livk.spring.factory;
 
+import java.io.Serializable;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
-
-import java.io.Serializable;
+import org.springframework.lang.NonNull;
 
 /**
  * <p>
@@ -32,6 +33,7 @@ import java.io.Serializable;
  */
 public class UUIDObjectFactory implements ObjectFactory<UUIDRequest>, Serializable {
 
+	@NonNull
 	@Override
 	public UUIDRequest getObject() throws BeansException {
 		return UUIDConTextHolder::get;

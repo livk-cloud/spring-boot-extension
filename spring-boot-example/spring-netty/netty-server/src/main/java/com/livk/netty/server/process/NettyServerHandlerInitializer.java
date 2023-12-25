@@ -31,7 +31,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
 
 	@Override
-	protected void initChannel(Channel ch) throws Exception {
+	protected void initChannel(Channel ch) {
 		ch.pipeline()
 			// 空闲检测
 			.addLast(new ServerIdleStateHandler())

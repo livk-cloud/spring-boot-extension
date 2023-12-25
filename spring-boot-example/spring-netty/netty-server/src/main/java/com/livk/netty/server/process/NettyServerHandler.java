@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyServerHandler extends SimpleChannelInboundHandler<NettyMessage.Message> {
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, NettyMessage.Message msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, NettyMessage.Message msg) {
 		if (msg.getType().equals(NettyMessage.Message.MessageType.HEARTBEAT_CLIENT)) {
 			log.info("收到客户端发来的心跳消息：{}", msg);
 			// 回应pong

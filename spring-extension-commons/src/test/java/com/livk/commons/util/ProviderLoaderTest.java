@@ -31,12 +31,12 @@ class ProviderLoaderTest {
 
 	@Test
 	public void loadTest() {
-		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).get(0));
-		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).get(0));
+		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).getFirst());
+		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).getFirst());
 
 		ResolvableType type = ResolvableType.forClass(Animal.class);
-		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(type).get(0));
-		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(type).get(0));
+		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(type).getFirst());
+		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(type).getFirst());
 	}
 
 	public interface Animal {

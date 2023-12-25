@@ -20,14 +20,16 @@ package com.livk.core.useragent.support;
 import com.livk.core.useragent.domain.UserAgent;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
 
 /**
  * @author livk
  */
 public interface UserAgentConverter extends Converter<HttpHeaders, UserAgent> {
 
+	@NonNull
 	@Override
-	default <U> Converter<HttpHeaders, U> andThen(Converter<? super UserAgent, ? extends U> after) {
+	default <U> Converter<HttpHeaders, U> andThen(@NonNull Converter<? super UserAgent, ? extends U> after) {
 		throw new UnsupportedOperationException();
 	}
 

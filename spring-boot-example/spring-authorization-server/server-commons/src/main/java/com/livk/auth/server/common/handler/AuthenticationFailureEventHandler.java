@@ -17,11 +17,14 @@
 
 package com.livk.auth.server.common.handler;
 
+import java.io.IOException;
+
 import com.livk.auth.server.common.constant.SecurityConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +35,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-
-import java.io.IOException;
 
 /**
  * @author livk
@@ -66,11 +67,10 @@ public class AuthenticationFailureEventHandler implements AuthenticationFailureH
 		log.info("用户：{} 登录失败，异常：{}", username, exception.getLocalizedMessage());
 
 		// 写出错误信息
-		sendErrorResponse(request, response, exception);
+		sendErrorResponse(response, exception);
 	}
 
-	private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException {
+	private void sendErrorResponse(HttpServletResponse response, AuthenticationException exception) throws IOException {
 
 		OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
 

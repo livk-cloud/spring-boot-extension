@@ -17,18 +17,20 @@
 
 package com.livk.redisson.order;
 
+import java.time.LocalDateTime;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import com.livk.commons.util.DateUtils;
 import com.livk.redisson.order.entity.Employer;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
+
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -39,9 +41,12 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-public class OrderQueueConsumer implements Runnable, InitializingBean {
+public class OrderQueueConsumer implements Runnable, InitializingBean, DisposableBean {
 
 	private final RBlockingQueue<Employer> orderQueue;
+
+	private final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS,
+			new ArrayBlockingQueue<>(10));
 
 	public OrderQueueConsumer(RedissonClient redissonClient) {
 		this.orderQueue = redissonClient.getBlockingQueue("order_queue");
@@ -63,8 +68,12 @@ public class OrderQueueConsumer implements Runnable, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
 		executor.execute(this);
+	}
+
+	@Override
+	public void destroy() {
+		executor.shutdown();
 	}
 
 }

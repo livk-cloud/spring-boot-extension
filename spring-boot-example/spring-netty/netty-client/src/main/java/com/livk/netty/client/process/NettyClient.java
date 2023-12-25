@@ -17,19 +17,21 @@
 
 package com.livk.netty.client.process;
 
+import java.util.concurrent.TimeUnit;
+
 import com.livk.netty.commons.protobuf.NettyMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author livk
@@ -66,7 +68,9 @@ public class NettyClient implements AutoCloseable {
 			}
 			else {
 				log.info("连接失败，进行断线重连");
-				channelFuture.channel().eventLoop().schedule(this::start, 20, TimeUnit.SECONDS);
+				try (EventLoop eventLoop = channelFuture.channel().eventLoop()) {
+					eventLoop.schedule(this::start, 20, TimeUnit.SECONDS);
+				}
 			}
 		});
 		socketChannel = (SocketChannel) future.channel();

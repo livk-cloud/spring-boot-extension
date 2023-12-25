@@ -17,13 +17,13 @@
 
 package com.livk.commons.cglib;
 
+import java.util.List;
+import java.util.Set;
+
 import com.livk.commons.beans.BeanLambdaFunc;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,7 +43,7 @@ class BeanMapTest {
 		assertEquals("livk", beanMap.get(BeanLambdaFunc.fieldName(Bean::getUsername)));
 		assertEquals(Set.of(list), Set.of(beanMap.get(BeanLambdaFunc.fieldName(Bean::getBeans))));
 
-		assertEquals(1L, beanMap.get(list.get(0), BeanLambdaFunc.fieldName(Bean::getId)));
+		assertEquals(1L, beanMap.get(list.getFirst(), BeanLambdaFunc.fieldName(Bean::getId)));
 
 		assertEquals(Long.class, beanMap.getPropertyType(BeanLambdaFunc.fieldName(Bean::getId)));
 		assertEquals(String.class, beanMap.getPropertyType(BeanLambdaFunc.fieldName(Bean::getUsername)));

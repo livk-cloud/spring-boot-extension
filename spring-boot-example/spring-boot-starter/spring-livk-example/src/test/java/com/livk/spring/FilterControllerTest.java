@@ -51,7 +51,7 @@ class FilterControllerTest {
 	Environment environment;
 
 	@BeforeEach
-	public void init() throws Exception {
+	public void init() {
 		assertEquals("livk", environment.getProperty("spring.github.username"));
 		assertEquals("123456", environment.getProperty("spring.github.password"));
 	}

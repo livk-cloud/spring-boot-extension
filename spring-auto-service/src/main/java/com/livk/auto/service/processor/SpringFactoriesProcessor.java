@@ -17,12 +17,16 @@
 
 package com.livk.auto.service.processor;
 
-import com.google.auto.service.AutoService;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
-import com.livk.auto.service.annotation.SpringFactories;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -32,10 +36,13 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.*;
+
+import com.google.auto.service.AutoService;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+import com.livk.auto.service.annotation.SpringFactories;
 
 /**
  * <p>
@@ -112,7 +119,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 		if (element instanceof TypeElement typeElement) {
 			List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
 			if (interfaces != null && interfaces.size() == 1) {
-				TypeMirror typeMirror = interfaces.get(0);
+				TypeMirror typeMirror = interfaces.getFirst();
 				if (typeMirror instanceof DeclaredType declaredType) {
 					return (TypeElement) declaredType.asElement();
 				}

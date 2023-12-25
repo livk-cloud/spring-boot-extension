@@ -17,14 +17,15 @@
 
 package com.livk.excel.batch.support;
 
-import com.alibaba.excel.EasyExcel;
-import com.livk.core.easyexcel.listener.ExcelMapReadListener;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.core.GenericTypeResolver;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.alibaba.excel.EasyExcel;
+import com.livk.core.easyexcel.listener.ExcelMapReadListener;
+
+import org.springframework.batch.item.ItemReader;
+import org.springframework.core.GenericTypeResolver;
 
 /**
  * <p>
@@ -48,7 +49,7 @@ public class EasyExcelItemReader<T> implements ItemReader<T> {
 	@Override
 	public T read() {
 		if (!data.isEmpty()) {
-			return data.remove(0);
+			return data.removeFirst();
 		}
 		return null;
 	}

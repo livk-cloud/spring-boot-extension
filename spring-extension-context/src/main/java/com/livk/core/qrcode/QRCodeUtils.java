@@ -17,18 +17,25 @@
 
 package com.livk.core.qrcode;
 
-import com.google.zxing.*;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
-import com.livk.core.qrcode.exception.QRCodeException;
-import lombok.experimental.UtilityClass;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import com.google.zxing.Binarizer;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.livk.core.qrcode.exception.QRCodeException;
+import lombok.experimental.UtilityClass;
 
 /**
  * <p>
@@ -46,22 +53,19 @@ public class QRCodeUtils {
 	 * @return the string
 	 */
 	public static String parseQRCode(InputStream inputStream) {
-		String content = null;
-		BufferedImage image;
 		try {
-			image = ImageIO.read(inputStream);
+			BufferedImage image = ImageIO.read(inputStream);
 			LuminanceSource source = new BufferedImageLuminanceSource(image);
 			Binarizer binarizer = new HybridBinarizer(source);
 			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
 			Map<DecodeHintType, Object> hints = new HashMap<>();
 			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
 			Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 解码
-			content = result.getText();
+			return result.getText();
 		}
 		catch (IOException | NotFoundException e) {
 			throw new QRCodeException(e);
 		}
-		return content;
 	}
 
 }

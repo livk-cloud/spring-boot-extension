@@ -17,6 +17,9 @@
 
 package com.livk.netty.client.process;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import com.livk.netty.commons.protobuf.NettyMessage;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,8 +30,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import org.springframework.lang.NonNull;
 
 /**
  * @author livk
@@ -57,10 +59,11 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		EventLoop eventLoop = ctx.channel().eventLoop();
-		eventLoop.schedule(nettyClient::start, 10L, TimeUnit.SECONDS);
-		super.channelInactive(ctx);
+	public void channelInactive(@NonNull ChannelHandlerContext ctx) throws Exception {
+		try (EventLoop eventLoop = ctx.channel().eventLoop()) {
+			eventLoop.schedule(nettyClient::start, 10L, TimeUnit.SECONDS);
+			super.channelInactive(ctx);
+		}
 	}
 
 	@Override

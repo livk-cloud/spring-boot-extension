@@ -20,6 +20,7 @@ package com.livk.batch.support;
 import com.livk.batch.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 /**
@@ -43,7 +44,7 @@ public class JobReadListener implements ItemReadListener<User> {
 	}
 
 	@Override
-	public void onReadError(Exception ex) {
+	public void onReadError(@NonNull Exception ex) {
 		log.error("spring batch read an error occurred ,message:{}", ex.getMessage(), ex);
 	}
 
