@@ -33,8 +33,6 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(CryptoFormatter.class);
 
-	protected static final byte[] EMPTY = new byte[0];
-
 	@Override
 	public final String format(T value) {
 		try {

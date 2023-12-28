@@ -24,6 +24,7 @@ import com.livk.crypto.support.AesSecurity;
 import com.livk.crypto.support.PbeSecurity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -32,6 +33,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author livk
@@ -43,14 +47,18 @@ public class CryptoAutoConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "AES")
-	public AesSecurity aesSecurity(CryptoProperties properties) {
-		return new AesSecurity(properties.getMetadata());
+	public AesSecurity aesSecurity(@Value("${spring.crypto.metadata.salt}") String salt)
+			throws NoSuchAlgorithmException {
+		return new AesSecurity(salt);
 	}
 
 	@Bean
 	@ConditionalOnProperty(prefix = CryptoProperties.PREFIX, name = "type", havingValue = "PBE")
-	public PbeSecurity pbeSecurity(CryptoProperties properties) {
-		return new PbeSecurity(properties.getMetadata());
+	public PbeSecurity pbeSecurity(@Value("${spring.crypto.metadata.salt}") String salt,
+			@Value("${spring.crypto.metadata.password}") String password,
+			@Value("${spring.crypto.metadata.iterationCount:1000}") Integer iterationCount)
+			throws GeneralSecurityException {
+		return new PbeSecurity(salt, password, iterationCount);
 	}
 
 	@AutoConfiguration

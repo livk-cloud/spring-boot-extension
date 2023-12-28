@@ -17,43 +17,34 @@
 
 package com.livk.crypto.support;
 
-import com.livk.commons.util.ObjectUtils;
 import com.livk.crypto.CryptoType;
-import com.livk.crypto.exception.MetadataIllegalException;
 import com.livk.crypto.fotmat.AbstractCryptoFormatter;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Map;
 
 /**
  * @author livk
  */
-@Slf4j
 public class AesSecurity extends AbstractCryptoFormatter<Long> {
 
 	private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
 
 	private final SecretKeySpec spec;
 
-	public AesSecurity(Map<String, String> metadata) {
-		String salt = metadata.get("salt");
-		if (ObjectUtils.isEmpty(salt)) {
-			throw new MetadataIllegalException("缺少salt的配置!", "请添加 'spring.crypto.metadata.salt' ");
-		}
-		try {
-			KeyGenerator kg = KeyGenerator.getInstance(CryptoType.AES.getAlgorithm());
-			kg.init(256, new SecureRandom(salt.getBytes()));
-			SecretKey secretKey = kg.generateKey();
-			spec = new SecretKeySpec(secretKey.getEncoded(), CryptoType.AES.getAlgorithm());
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public AesSecurity(String salt) throws NoSuchAlgorithmException {
+		this(salt.getBytes());
+	}
+
+	public AesSecurity(byte[] salt) throws NoSuchAlgorithmException {
+		KeyGenerator kg = KeyGenerator.getInstance(CryptoType.AES.getAlgorithm());
+		kg.init(256, new SecureRandom(salt));
+		SecretKey secretKey = kg.generateKey();
+		spec = new SecretKeySpec(secretKey.getEncoded(), CryptoType.AES.getAlgorithm());
 	}
 
 	@Override

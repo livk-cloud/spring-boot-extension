@@ -17,23 +17,19 @@
 
 package com.livk.crypto.support;
 
-import com.livk.commons.util.ObjectUtils;
 import com.livk.crypto.CryptoType;
-import com.livk.crypto.exception.MetadataIllegalException;
 import com.livk.crypto.fotmat.AbstractCryptoFormatter;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import java.util.Map;
+import java.security.GeneralSecurityException;
 
 /**
  * @author livk
  */
-@Slf4j
 public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 
 	private static final String CIPHER_NAME = "PBEwithMD5AndDES";
@@ -42,24 +38,15 @@ public class PbeSecurity extends AbstractCryptoFormatter<Long> {
 
 	private final PBEParameterSpec pbeParameterSpec;
 
-	public PbeSecurity(Map<String, String> metadata) {
-		String salt = metadata.get("salt");
-		if (ObjectUtils.isEmpty(salt)) {
-			throw new MetadataIllegalException("缺少salt的配置!", "请添加 'spring.crypto.metadata.salt' ");
-		}
-		String password = metadata.get("password");
-		if (ObjectUtils.isEmpty(password)) {
-			throw new MetadataIllegalException("缺少password的配置!", "请添加 'spring.crypto.metadata.password' ");
-		}
-		try {
-			PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray());
-			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(CIPHER_NAME);
-			secretKey = secretKeyFactory.generateSecret(keySpec);
-			pbeParameterSpec = new PBEParameterSpec(salt.getBytes(), 1000);
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public PbeSecurity(String salt, String password, int iterationCount) throws GeneralSecurityException {
+		this(salt.getBytes(), password.toCharArray(), iterationCount);
+	}
+
+	public PbeSecurity(byte[] salt, char[] password, int iterationCount) throws GeneralSecurityException {
+		PBEKeySpec keySpec = new PBEKeySpec(password);
+		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(CIPHER_NAME);
+		secretKey = secretKeyFactory.generateSecret(keySpec);
+		pbeParameterSpec = new PBEParameterSpec(salt, iterationCount);
 	}
 
 	@Override
