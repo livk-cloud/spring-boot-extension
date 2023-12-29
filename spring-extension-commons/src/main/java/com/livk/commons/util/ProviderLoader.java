@@ -49,7 +49,18 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 	 * @param type type
 	 * @return list
 	 */
-	<T> List<T> load(Class<T> type);
+	default <T> List<T> load(Class<T> type) {
+		return load(type, ClassUtils.getDefaultClassLoader());
+	}
+
+	/**
+	 * 根据type加载对应的实例
+	 * @param type type
+	 * @param classLoader classLoader
+	 * @param <T> type parameter
+	 * @return list
+	 */
+	<T> List<T> load(Class<T> type, ClassLoader classLoader);
 
 	/**
 	 * 根据resolvableType加载对应的实例
@@ -63,38 +74,40 @@ public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 	}
 
 	/**
+	 * 根据resolvableType加载对应的实例
+	 * @param <T> type parameter
+	 * @param resolvableType resolvable type
+	 * @param classLoader classLoader
+	 * @return list
+	 */
+	default <T> List<T> load(ResolvableType resolvableType, ClassLoader classLoader) {
+		Class<T> type = ClassUtils.toClass(resolvableType.getType());
+		return load(type, classLoader);
+	}
+
+	/**
 	 * 抽象ProviderLoader
 	 */
 	abstract non-sealed class AbstractLoader implements ProviderLoader {
 
-		@Override
-		public final <T> List<T> load(Class<T> type) {
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			return load(type, classLoader);
-		}
-
-		/**
-		 * 根据type加载对应的实例
-		 * @param <T> type parameter
-		 * @param type type
-		 * @param classLoader classLoader
-		 * @return list
-		 */
-		protected abstract <T> List<T> load(Class<T> type, ClassLoader classLoader);
-
-		private static class JdkServiceLoader extends AbstractLoader {
+		private static final class JdkServiceLoader extends AbstractLoader {
 
 			@Override
-			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
+			public final <T> List<T> load(Class<T> type) {
+				return Lists.newArrayList(ServiceLoader.load(type));
+			}
+
+			@Override
+			public <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return Lists.newArrayList(ServiceLoader.load(type, classLoader));
 			}
 
 		}
 
-		private static class SpringFactoryLoader extends AbstractLoader {
+		private static final class SpringFactoryLoader extends AbstractLoader {
 
 			@Override
-			protected <T> List<T> load(Class<T> type, ClassLoader classLoader) {
+			public <T> List<T> load(Class<T> type, ClassLoader classLoader) {
 				return SpringFactoriesLoader.loadFactories(type, classLoader);
 			}
 
