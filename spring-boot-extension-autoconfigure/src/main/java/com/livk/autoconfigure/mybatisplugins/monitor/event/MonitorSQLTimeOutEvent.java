@@ -34,12 +34,9 @@ public class MonitorSQLTimeOutEvent extends ApplicationEvent {
 		super(source);
 	}
 
-	/**
-	 * Info monitor sql info.
-	 * @return the monitor sql info
-	 */
-	public MonitorSQLInfo info() {
-		return (MonitorSQLInfo) source;
+	@Override
+	public MonitorSQLInfo getSource() {
+		return (MonitorSQLInfo) super.getSource();
 	}
 
 }
