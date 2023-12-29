@@ -147,27 +147,24 @@ public class YamlUtils {
 					key = path + '.' + key;
 				}
 			}
-			if (value instanceof String) {
-				result.put(key, value);
-			}
-			else if (value instanceof Map map) {
-				// Need a compound key
-				buildFlattenedMap(result, map, key);
-			}
-			else if (value instanceof Collection collection) {
-				// Need a compound key
-				if (collection.isEmpty()) {
-					result.put(key, "");
-				}
-				else {
-					int count = 0;
-					for (Object object : collection) {
-						buildFlattenedMap(result, Collections.singletonMap("[" + (count++) + "]", object), key);
+			switch (value) {
+				case String s -> result.put(key, s);
+				case Map map ->
+					// Need a compound key
+					buildFlattenedMap(result, map, key);
+				case Collection collection -> {
+					// Need a compound key
+					if (collection.isEmpty()) {
+						result.put(key, "");
+					}
+					else {
+						int count = 0;
+						for (Object object : collection) {
+							buildFlattenedMap(result, Collections.singletonMap("[" + (count++) + "]", object), key);
+						}
 					}
 				}
-			}
-			else {
-				result.put(key, (value != null ? value : ""));
+				case null, default -> result.put(key, (value != null ? value : ""));
 			}
 		});
 	}
