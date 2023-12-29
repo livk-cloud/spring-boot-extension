@@ -32,7 +32,7 @@ import java.net.NetworkInterface;
  * @author livk
  */
 @Slf4j
-public class Snowflake {
+public final class Snowflake {
 
 	private final static long TIME_START_BASE = System.currentTimeMillis();
 

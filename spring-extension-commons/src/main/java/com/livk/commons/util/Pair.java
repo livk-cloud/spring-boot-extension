@@ -50,7 +50,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor(staticName = "of")
 @JsonSerialize(using = Pair.PairJsonSerializer.class)
 @JsonDeserialize(using = Pair.PairJsonDeserializer.class)
-public class Pair<K, V> implements Serializable, Cloneable {
+public final class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
 	 * 默认的空Pair
