@@ -10,7 +10,7 @@ dependencies {
 	optional("org.springframework:spring-tx")
 	optional("io.projectreactor.netty:reactor-netty-http")
 	optional("org.springframework.boot:spring-boot-starter")
-	optional("com.github.pagehelper:pagehelper")
+	optional("com.github.jsqlparser:jsqlparser")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	optional("com.squareup.okhttp3:okhttp")
 	optional("com.googlecode.aviator:aviator")
