@@ -68,7 +68,7 @@ public class YamlUtils {
 				String key = keys[i];
 				if (key.contains("[")) {
 					int index = index(key);
-					key = key.substring(0, key.indexOf("["));
+					key = key.substring(0, key.indexOf('['));
 					tempMap.putIfAbsent(key, new ArrayList<>());
 					List<Object> list = (List<Object>) tempMap.get(key);
 					while (list.size() <= index) {
@@ -84,7 +84,7 @@ public class YamlUtils {
 			String lastKey = keys[keys.length - 1];
 			if (lastKey.contains("[")) {
 				int index = index(lastKey);
-				lastKey = lastKey.substring(0, lastKey.indexOf("["));
+				lastKey = lastKey.substring(0, lastKey.indexOf('['));
 				tempMap.putIfAbsent(lastKey, new ArrayList<>());
 				List<Object> list = (List<Object>) tempMap.get(lastKey);
 				while (list.size() <= index) {
@@ -119,7 +119,7 @@ public class YamlUtils {
 	}
 
 	private static Integer index(String key) {
-		return Integer.parseInt(key.substring(key.indexOf("[") + 1, key.indexOf("]")));
+		return Integer.parseInt(key.substring(key.indexOf('[') + 1, key.indexOf(']')));
 	}
 
 	/**

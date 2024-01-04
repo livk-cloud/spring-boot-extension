@@ -202,7 +202,7 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 	}
 
 	private String extractEncodedPassword(String prefixEncodedPassword) {
-		int start = prefixEncodedPassword.indexOf(SecurityConstants.DEFAULT_ID_SUFFIX);
+		int start = prefixEncodedPassword.indexOf('}');
 		return prefixEncodedPassword.substring(start + SecurityConstants.DEFAULT_ID_SUFFIX.length());
 	}
 
