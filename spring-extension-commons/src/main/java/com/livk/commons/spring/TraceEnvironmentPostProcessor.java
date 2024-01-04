@@ -49,7 +49,7 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		if (application.getWebApplicationType() == WebApplicationType.SERVLET) {
-			if (isPresent() && Boolean.parseBoolean(environment.getProperty("management.tracing.enabled", "true"))) {
+			if (isPresent() && environment.getProperty("management.tracing.enabled", Boolean.class, true)) {
 				Map<String, Object> map = new HashMap<>();
 				if (!environment.containsProperty(PROBABILITY_KEY)) {
 					map.put(PROBABILITY_KEY, 1.0);

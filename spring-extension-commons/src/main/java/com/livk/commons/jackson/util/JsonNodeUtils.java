@@ -220,7 +220,7 @@ public class JsonNodeUtils {
 		if (jsonNode == null || ObjectUtils.isEmpty(nodePath)) {
 			return null;
 		}
-		int index = nodePath.indexOf(".");
+		int index = nodePath.indexOf('.');
 		if (jsonNode.isArray()) {
 			int range = Integer.parseInt(nodePath.substring(0, index));
 			Iterator<JsonNode> elements = jsonNode.elements();
