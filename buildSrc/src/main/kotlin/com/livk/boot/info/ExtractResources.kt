@@ -38,18 +38,14 @@ open class ExtractResources : DefaultTask() {
 	private var resourceNames: List<String> = ArrayList()
 
 	@Input
-	fun getResourceNames(): List<String> {
-		return this.resourceNames
-	}
+	fun getResourceNames(): List<String> = this.resourceNames
 
 	fun setResourcesNames(resourceNames: List<String>) {
 		this.resourceNames = resourceNames
 	}
 
 	@OutputDirectory
-	fun getDestinationDirectory(): DirectoryProperty {
-		return this.destinationDirectory
-	}
+	fun getDestinationDirectory(): DirectoryProperty = this.destinationDirectory
 
 	@TaskAction
 	fun extractResources() {
