@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 class ProviderLoaderTest {
 
 	@Test
-	public void loadTest() {
+	void loadTest() {
 		assertInstanceOf(Dog.class, ProviderLoader.SPRING_FACTORY.load(Animal.class).getFirst());
 		assertInstanceOf(Cat.class, ProviderLoader.JDK_SERVICE.load(Animal.class).getFirst());
 

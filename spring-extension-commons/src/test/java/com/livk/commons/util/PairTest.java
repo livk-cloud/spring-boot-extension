@@ -65,14 +65,14 @@ class PairTest {
 	}
 
 	@Test
-	public void pairJsonSerializerTest() {
+	void pairJsonSerializerTest() {
 		String json = "{\"livk\":123456}";
 		String result = JsonMapperUtils.writeValueAsString(pair);
 		assertEquals(json, result);
 	}
 
 	@Test
-	public void pairJsonDeserializerTest() {
+	void pairJsonDeserializerTest() {
 
 		Pair<String, Integer> empty = JsonMapperUtils.readValue("{}", new TypeReference<>() {
 		});

@@ -39,7 +39,7 @@ class DocControllerTest {
 	MockMvc mockMvc;
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		mockMvc.perform(get("/v3/api-docs"))
 			.andDo(print())
 			.andExpect(MockMvcResultMatchers.status().isOk())

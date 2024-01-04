@@ -37,7 +37,7 @@ import java.util.Properties;
 class SpringFactoriesProcessorTest {
 
 	@Test
-	public void test() {
+	void test() {
 		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class, SpringFactoryServiceImpl.class.getName());
 	}
 

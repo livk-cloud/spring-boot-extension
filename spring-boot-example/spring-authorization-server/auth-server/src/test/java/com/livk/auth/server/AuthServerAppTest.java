@@ -55,7 +55,7 @@ class AuthServerAppTest {
 	MockMvc mockMvc;
 
 	@Test
-	public void testPassword() throws Exception {
+	void testPassword() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("grant_type", "password");
 		params.set("username", "livk");
@@ -81,7 +81,7 @@ class AuthServerAppTest {
 	}
 
 	@Test
-	public void testSms() throws Exception {
+	void testSms() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.set("grant_type", "sms");
 		params.set("mobile", "18664960000");

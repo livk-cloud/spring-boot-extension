@@ -50,7 +50,7 @@ class YamlUtilsTest {
 	}
 
 	@Test
-	public void convertYamlToMap() throws IOException {
+	void convertYamlToMap() throws IOException {
 		Map<String, Object> load = new Yaml().load(yml.getInputStream());
 		Properties result = YamlUtils.convertYamlToMap(load);
 		assertEquals(map, result);

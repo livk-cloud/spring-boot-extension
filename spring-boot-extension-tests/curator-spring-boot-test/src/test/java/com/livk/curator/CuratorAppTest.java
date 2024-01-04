@@ -38,7 +38,7 @@ class CuratorAppTest {
 	CuratorTemplate curatorTemplate;
 
 	@Test
-	public void test() {
+	void test() {
 		assertNotNull(curatorFramework);
 		assertNotNull(curatorFramework);
 	}

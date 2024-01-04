@@ -35,12 +35,12 @@ import java.util.*;
 class SpringAutoServiceProcessorTest {
 
 	@Test
-	public void testAutoConfiguration() {
+	void testAutoConfiguration() {
 		compile(SpringContext.class, "org.springframework.boot.autoconfigure.AutoConfiguration");
 	}
 
 	@Test
-	public void testEnableAuto() {
+	void testEnableAuto() {
 		compile(SpringAutoContext.class, EnableAuto.class.getName());
 	}
 

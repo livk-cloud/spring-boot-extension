@@ -107,7 +107,7 @@ class CacheControllerTest {
 	}
 
 	@Test
-	public void test() {
+	void test() {
 		ScanOptions options = ScanOptions.scanOptions().match("*").count(100).build();
 		try (Cursor<String> cursor = redisOps.scan(options)) {
 			while (cursor.hasNext()) {
