@@ -37,7 +37,7 @@ class DocControllerTest {
 	WebTestClient client;
 
 	@Test
-	public void test() {
+	void test() {
 		client.get()
 			.uri("/v3/api-docs")
 			.exchange()

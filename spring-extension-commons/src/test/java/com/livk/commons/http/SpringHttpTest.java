@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @SpringBootTest("spring.main.web-application-type=servlet")
 @EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
-public class SpringHttpTest {
+class SpringHttpTest {
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -47,7 +47,7 @@ public class SpringHttpTest {
 	RestClient restClient;
 
 	@Test
-	public void test() {
+	void test() {
 		assertNotNull(restTemplate);
 		assertNotNull(webClient);
 		assertNotNull(restClient);

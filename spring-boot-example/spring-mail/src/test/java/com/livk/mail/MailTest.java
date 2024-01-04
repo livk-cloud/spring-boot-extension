@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @Slf4j
 @SpringBootTest
-public class MailTest {
+class MailTest {
 
 	@Autowired
 	private Configuration configuration;

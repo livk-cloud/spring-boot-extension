@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class NumberJsonSerializerTest {
 
 	@Test
-	public void test() {
+	void test() {
 		Big big = new Big();
 		big.l = 33L;
 		big.d = 0.333333d;

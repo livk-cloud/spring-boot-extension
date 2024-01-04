@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BeanMapTest {
 
 	@Test
-	public void test() {
+	void test() {
 		List<Bean> list = List.of(new Bean().setId(1L).setUsername("root"), new Bean().setId(2L).setUsername("root"),
 				new Bean().setId(3L).setUsername("root"));
 		Bean bean = new Bean().setId(0L).setUsername("livk").setBeans(list);
