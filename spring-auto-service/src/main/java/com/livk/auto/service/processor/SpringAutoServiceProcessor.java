@@ -67,17 +67,22 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	protected void generateConfigFiles() {
 		for (String providerInterface : importsMap.keySet()) {
 			String resourceFile = String.format(LOCATION, providerInterface);
+			log("Working on resource file: " + resourceFile);
 			try {
 				FileObject resource = filer.getResource(out, "", resourceFile);
+				log("Looking for existing resource file at " + resource.toUri());
 				Set<String> exitImports = this.read(resource);
+				log("Existing service entries: " + exitImports);
 				Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
 					.collect(Collectors.toSet());
+
 				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
 
 				this.writeFile(allImports, fileObject);
 			}
 			catch (IOException e) {
-				throw new RuntimeException(e);
+				fatalError("Unable to create " + resourceFile + ", " + e);
+				return;
 			}
 		}
 	}
@@ -85,14 +90,16 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	@Override
 	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
+		log(annotations.toString());
+		log(elements.toString());
 		for (Element element : elements) {
 			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-			String provider = TypeElements.getBinaryName(value.orElse(AutoConfigurationElement()));
+			String provider = TypeElements.getBinaryName(value.orElse(autoConfigurationElement()));
 			importsMap.put(provider, TypeElements.getBinaryName((TypeElement) element));
 		}
 	}
 
-	private TypeElement AutoConfigurationElement() {
+	private TypeElement autoConfigurationElement() {
 		return elements.getTypeElement(AUTOCONFIGURATION);
 	}
 

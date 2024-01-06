@@ -17,16 +17,12 @@
 
 package com.livk.auto.service.processor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
+import com.google.auto.service.AutoService;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -36,13 +32,10 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-
-import com.google.auto.service.AutoService;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
-import com.livk.auto.service.annotation.SpringFactories;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * <p>
@@ -81,6 +74,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 		if (!factoriesMap.isEmpty()) {
 			try {
 				FileObject resource = filer.getResource(out, "", location);
+				log("Looking for existing resource file at " + resource.toUri());
 				Multimap<String, String> allImportMap = this.read(resource);
 				for (Map.Entry<String, String> entry : factoriesMap.entries()) {
 					allImportMap.put(entry.getKey(), entry.getValue());
@@ -90,7 +84,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 				this.writeFile(allImportMap.asMap(), fileObject);
 			}
 			catch (IOException e) {
-				throw new RuntimeException(e);
+				fatalError("Unable to create " + location + ", " + e);
 			}
 		}
 	}
@@ -98,6 +92,8 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 	@Override
 	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
+		log(annotations.toString());
+		log(elements.toString());
 		for (Element element : elements) {
 			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
 			String provider = TypeElements.getBinaryName(value.orElseGet(() -> fromInterface(element)));

@@ -22,6 +22,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.BufferedReader;
@@ -138,6 +139,25 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	 */
 	protected BufferedWriter bufferedWriter(FileObject fileObject) throws IOException {
 		return new BufferedWriter(fileObject.openWriter());
+	}
+
+	/**
+	 * 日志输出
+	 * @param msg 待输出日志
+	 */
+	protected void log(String msg) {
+		if (this.processingEnv.getOptions().containsKey("debug")) {
+			this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
+		}
+
+	}
+
+	/**
+	 * 错误信息输出
+	 * @param msg 错误信息
+	 */
+	protected void fatalError(String msg) {
+		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "FATAL ERROR: " + msg);
 	}
 
 }
