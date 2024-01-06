@@ -17,7 +17,7 @@ tasks {
 	"asciidoctor"(AsciidoctorTask::class) {
 		configurations("asciidoctorExtensions")
 		baseDirFollowsSourceDir()
-		sourceDir(file("./docs"))
+		sourceDir(file("./docs/asciidoctor"))
 		sources {
 			include("index.adoc")
 		}
