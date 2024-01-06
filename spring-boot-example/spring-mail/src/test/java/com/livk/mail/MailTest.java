@@ -60,7 +60,7 @@ class MailTest {
 
 	@Test
 	@DisplayName("测试freemarker")
-	public void test() throws Exception {
+	void test() throws Exception {
 		// 定义个数据根节点
 		Map<String, Object> root = new HashMap<>();
 		// 往里面塞第一层节点
@@ -87,7 +87,7 @@ class MailTest {
 	}
 
 	@Test
-	public void testTemplate() throws Exception {
+	void testTemplate() throws Exception {
 		Map<String, Object> root = Map.of("bucketName", "Livk-Bucket");
 
 		Template template = configuration.getTemplate("ac.ftl");
@@ -97,7 +97,7 @@ class MailTest {
 	}
 
 	@Test
-	public void test1() throws IOException, TemplateException {
+	void test1() throws IOException, TemplateException {
 		String txt = "${logo} -> ${code}";
 		Map<String, Object> map = Map.of("logo", "www.baidu.com", "code", "123456");
 		Template template = new Template("template", new StringReader(txt), configuration);
@@ -111,7 +111,7 @@ class MailTest {
 	}
 
 	@Test
-	public void testSql() {
+	void testSql() {
 		String sql = "INSERT INTO ${tableName}(${columns}) VALUES <#list valuesArray as values>(${values})<#if values_has_next>,</#if></#list>";
 		String columns = String.join(",", "user_name", "sex", "age", "address", "status", "create_time", "update_time");
 		String format = DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS);
@@ -126,7 +126,7 @@ class MailTest {
 		assertEquals(resultSql, parse);
 	}
 
-	public String parse(String freemarker, Map<String, Object> model) {
+	private String parse(String freemarker, Map<String, Object> model) {
 		try (StringWriter out = new StringWriter()) {
 			new Template("template", new StringReader(freemarker), configuration).process(model, out);
 			return out.toString();
@@ -137,7 +137,7 @@ class MailTest {
 		}
 	}
 
-	public String parseFtlContent(String content, Map<String, Object> model) {
+	private String parseFtlContent(String content, Map<String, Object> model) {
 		// 获取配置
 		StringWriter out = new StringWriter();
 		try {

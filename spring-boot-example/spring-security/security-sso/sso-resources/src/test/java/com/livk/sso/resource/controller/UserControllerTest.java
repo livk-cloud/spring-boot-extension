@@ -73,7 +73,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	public void test() {
+	void test() {
 		System.out.println(token);
 	}
 
