@@ -20,6 +20,7 @@ package com.livk.autoconfigure.redisearch.codec;
 import com.livk.commons.util.ObjectUtils;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.ByteBuffer;
@@ -30,7 +31,7 @@ import java.nio.ByteBuffer;
  * @param <T> the type parameter
  * @author livk
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractRedisCodec<T> implements RedisCodec<String, T> {
 
 	private final RedisCodec<String, ?> keyCodec;
@@ -38,7 +39,7 @@ public abstract class AbstractRedisCodec<T> implements RedisCodec<String, T> {
 	/**
 	 * Instantiates a new Abstract redis codec.
 	 */
-	public AbstractRedisCodec() {
+	protected AbstractRedisCodec() {
 		this(new StringCodec());
 	}
 

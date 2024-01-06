@@ -39,8 +39,9 @@ public abstract class OAuth2BaseAuthenticationToken extends OAuth2AuthorizationG
 
 	private final Set<String> scopes;
 
-	public OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType, Authentication clientPrincipal,
-			@Nullable Set<String> scopes, @Nullable Map<String, Object> additionalParameters) {
+	protected OAuth2BaseAuthenticationToken(AuthorizationGrantType authorizationGrantType,
+			Authentication clientPrincipal, @Nullable Set<String> scopes,
+			@Nullable Map<String, Object> additionalParameters) {
 		super(authorizationGrantType, clientPrincipal, additionalParameters);
 		this.scopes = scopes == null ? Set.of() : Collections.unmodifiableSet(scopes);
 	}

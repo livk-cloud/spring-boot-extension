@@ -20,6 +20,7 @@ package com.livk.commons.jackson.core;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
  *
  * @author livk
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractJacksonOps implements JacksonOps {
 
 	private final TypeFactory typeFactory;
@@ -35,7 +36,7 @@ public abstract class AbstractJacksonOps implements JacksonOps {
 	/**
 	 * 无参构造
 	 */
-	public AbstractJacksonOps() {
+	protected AbstractJacksonOps() {
 		this(TypeFactoryUtils.instance());
 	}
 
