@@ -88,12 +88,7 @@ public class Context implements Map<String, Object> {
 	 * @return the object
 	 */
 	public Object put(String key, Object value, boolean override) {
-		if (!override) {
-			if (variables.containsKey(key)) {
-				variables.get(key);
-			}
-		}
-		return variables.put(key, value);
+		return !override && variables.containsKey(key) ? variables.get(key) : variables.put(key, value);
 	}
 
 	@Override
