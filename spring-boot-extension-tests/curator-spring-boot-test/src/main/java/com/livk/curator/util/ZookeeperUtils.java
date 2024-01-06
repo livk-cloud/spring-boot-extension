@@ -27,7 +27,9 @@ import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.zookeeper.CreateMode;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -191,21 +193,19 @@ public class ZookeeperUtils {
 	 * @return
 	 */
 	public List<String> getChildren(String path) {
-		if (ObjectUtils.isEmpty(path)) {
-			return null;
-		}
+		if (StringUtils.hasText(path)){
+			if (!path.startsWith(PATH_SEPARATOR)) {
+				path = PATH_SEPARATOR + path;
+			}
 
-		if (!path.startsWith(PATH_SEPARATOR)) {
-			path = PATH_SEPARATOR + path;
+			try {
+				return curatorFramework.getChildren().forPath(path);
+			}
+			catch (Exception e) {
+				log.error("get children path:{} error", path, e);
+			}
 		}
-
-		try {
-			return curatorFramework.getChildren().forPath(path);
-		}
-		catch (Exception e) {
-			log.error("get children path:{} error", path, e);
-		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
