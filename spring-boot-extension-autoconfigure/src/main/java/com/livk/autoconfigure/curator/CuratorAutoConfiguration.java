@@ -46,21 +46,21 @@ import org.springframework.context.annotation.Bean;
 public class CuratorAutoConfiguration {
 
 	/**
-	 * Curator framework curator framework.
+	 * Curator framework.
 	 * @param properties the properties
 	 * @param retryPolicy the retry policy
 	 * @param curatorFrameworkBuilderCustomizers the curator framework builder customizers
 	 * @param ensembleProviders the ensemble providers
 	 * @param tracerDrivers the tracer drivers
 	 * @return the curator framework
-	 * @throws Exception the exception
+	 * @throws InterruptedException the exception
 	 */
 	@Bean(destroyMethod = "close")
 	@ConditionalOnMissingBean
 	public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
 			ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
 			ObjectProvider<EnsembleProvider> ensembleProviders, ObjectProvider<TracerDriver> tracerDrivers)
-			throws Exception {
+			throws InterruptedException {
 		return CuratorFactory.curatorFramework(properties, retryPolicy,
 				curatorFrameworkBuilderCustomizers::orderedStream, ensembleProviders::getIfAvailable,
 				tracerDrivers::getIfAvailable);

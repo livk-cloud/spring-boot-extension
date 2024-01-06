@@ -19,6 +19,7 @@ package com.livk.video.controller;
 
 import com.livk.commons.util.WebUtils;
 import com.livk.video.support.VideoResourceHttpRequestHandler;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class VideoController {
 
 	@GetMapping
 	public void video(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(defaultValue = "test") String videoName) throws Exception {
+			@RequestParam(defaultValue = "test") String videoName) throws ServletException, IOException {
 		// 查询视频是否存在
 		if ("test".equals(videoName)) {
 			request.setAttribute(VideoResourceHttpRequestHandler.ATTR, "classpath:" + videoName + VIDEO_SUFFIX);

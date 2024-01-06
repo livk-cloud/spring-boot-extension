@@ -28,12 +28,12 @@ public abstract class CuratorFactory {
 	 * @param optionalEnsembleProvider the optional ensemble provider
 	 * @param optionalTracerDriverProvider the optional tracer driver provider
 	 * @return the curator framework
-	 * @throws Exception the exception
+	 * @throws InterruptedException the exception
 	 */
 	public static CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
 			Supplier<Stream<CuratorFrameworkBuilderCustomizer>> optionalCuratorFrameworkCustomizerProvider,
 			Supplier<EnsembleProvider> optionalEnsembleProvider, Supplier<TracerDriver> optionalTracerDriverProvider)
-			throws Exception {
+			throws InterruptedException {
 		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder();
 
 		EnsembleProvider ensembleProvider = optionalEnsembleProvider.get();
