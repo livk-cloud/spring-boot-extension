@@ -128,12 +128,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 解析request获取真实IP
-	 *
 	 * @param request request
 	 * @return ip
 	 */
 	public String realIp(HttpServletRequest request) {
-		String[] ipHeaders = {"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
+		String[] ipHeaders = { "X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP" };
 		Optional<String> optional = Optional.empty();
 		for (String header : ipHeaders) {
 			String headerIp = request.getHeader(header);
