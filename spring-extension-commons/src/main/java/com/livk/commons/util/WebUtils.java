@@ -134,7 +134,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 */
 	public String realIp(HttpServletRequest request) {
 		String[] ipHeaders = {"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
-		Optional<String> optional = Optional.empty()
+		Optional<String> optional = Optional.empty();
 		for (String header : ipHeaders) {
 			String headerIp = request.getHeader(header);
 			if (headerIp != null && !headerIp.isBlank() && !UNKNOWN.equalsIgnoreCase(headerIp)) {
