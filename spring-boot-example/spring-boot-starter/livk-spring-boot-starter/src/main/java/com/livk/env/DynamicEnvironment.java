@@ -49,18 +49,17 @@ public class DynamicEnvironment implements EnvironmentPostProcessor {
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		MutablePropertySources propertySources = environment.getPropertySources();
-		try {
-			ClassPathResource resource = new ClassPathResource(source);
-			if (resource.exists()) {
-				InputStream inputStream = resource.getInputStream();
+		ClassPathResource resource = new ClassPathResource(source);
+		if (resource.exists()) {
+			try (InputStream inputStream = resource.getInputStream()) {
 				Map<String, Object> map = JsonMapperUtils.readValueMap(inputStream, String.class, Object.class);
 				Properties properties = YamlUtils.convertYamlToMap(map);
 				PropertiesPropertySource livkSource = new PropertiesPropertySource("livkSource", properties);
 				propertySources.addLast(livkSource);
 			}
-		}
-		catch (IOException e) {
-			log.error("error:{}", e.getMessage(), e);
+			catch (IOException e) {
+				log.error("error:{}", e.getMessage(), e);
+			}
 		}
 	}
 
