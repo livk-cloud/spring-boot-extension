@@ -25,7 +25,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.*;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.RequestAttributes;
@@ -34,10 +33,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -132,24 +128,21 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	/**
 	 * 解析request获取真实IP
+	 *
 	 * @param request request
 	 * @return ip
 	 */
 	public String realIp(HttpServletRequest request) {
-		// 这个一般是Nginx反向代理设置的参数
-		String ip = request.getHeader("X-Real-IP");
-		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-			ip = request.getHeader("X-Forwarded-For");
+		String[] ipHeaders = {"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
+		Optional<String> optional = Optional.empty()
+		for (String header : ipHeaders) {
+			String headerIp = request.getHeader(header);
+			if (headerIp != null && !headerIp.isBlank() && !UNKNOWN.equalsIgnoreCase(headerIp)) {
+				optional = Optional.of(headerIp);
+				break;
+			}
 		}
-		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (org.springframework.util.ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (ObjectUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
+		String ip = optional.orElse(request.getRemoteAddr());
 		// 处理多IP的情况（只取第一个IP）
 		return ip != null && ip.contains(HTTP_IP_SPLIT) ? ip.split(HTTP_IP_SPLIT)[0] : ip;
 	}
