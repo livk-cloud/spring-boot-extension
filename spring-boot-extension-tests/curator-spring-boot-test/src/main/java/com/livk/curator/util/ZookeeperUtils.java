@@ -193,7 +193,7 @@ public class ZookeeperUtils {
 	 * @return
 	 */
 	public List<String> getChildren(String path) {
-		if (StringUtils.hasText(path)){
+		if (StringUtils.hasText(path)) {
 			if (!path.startsWith(PATH_SEPARATOR)) {
 				path = PATH_SEPARATOR + path;
 			}
