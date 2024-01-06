@@ -20,11 +20,11 @@ package com.livk.commons.http;
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
 import com.livk.commons.spring.context.SpringAbstractImportSelector;
+import com.livk.commons.util.AnnotationUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 
 	@Override
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-		HttpClientType[] types = getValue(attributes);
+		HttpClientType[] types = AnnotationUtils.getValue(attributes, "value");
 		List<String> names = new ArrayList<>();
 		for (HttpClientType type : types) {
 			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader())
@@ -48,17 +48,6 @@ public class HttpClientImportSelector extends SpringAbstractImportSelector<Enabl
 			names.addAll(configurations);
 		}
 		return names;
-	}
-
-	private HttpClientType[] getValue(AnnotationAttributes attributes) {
-		Object value = attributes.get("value");
-		if (!(value instanceof HttpClientType[]) && HttpClientType[].class.isArray()
-				&& HttpClientType[].class.getComponentType().isInstance(value)) {
-			Object array = Array.newInstance(HttpClientType[].class.getComponentType(), 1);
-			Array.set(array, 0, value);
-			value = array;
-		}
-		return (HttpClientType[]) value;
 	}
 
 }

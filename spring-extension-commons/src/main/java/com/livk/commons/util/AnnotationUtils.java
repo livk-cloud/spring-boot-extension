@@ -24,6 +24,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 /**
@@ -44,10 +45,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return annotation annotation element
 	 */
 	public <A extends Annotation> A getAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
-		A annotation = methodParameter.getMethodAnnotation(annotationClass);
+		A annotation = getAnnotation(methodParameter.getAnnotatedElement(), annotationClass);
 		if (annotation == null) {
 			Class<?> containingClass = methodParameter.getContainingClass();
-			annotation = AnnotatedElementUtils.getMergedAnnotation(containingClass, annotationClass);
+			annotation = getAnnotation(containingClass, annotationClass);
 		}
 		return annotation;
 	}
@@ -78,7 +79,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 			Class<A> annotationClass) {
 		Class<?> containingClass = methodParameter.getContainingClass();
 		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass)
-				|| methodParameter.hasMethodAnnotation(annotationClass));
+				|| AnnotatedElementUtils.hasAnnotation(methodParameter.getAnnotatedElement(), annotationClass));
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return bool boolean
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
-		return method.isAnnotationPresent(annotationClass)
+		return AnnotatedElementUtils.hasAnnotation(method, annotationClass)
 				|| AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
 	}
 
@@ -113,6 +114,24 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata,
 			Class<A> annotationClass) {
 		return attributesFor(metadata, annotationClass.getName());
+	}
+
+	/**
+	 * 根据key获取AnnotationAttributes数据，并转成枚举数组
+	 * @param attributes AnnotationAttributes
+	 * @param key key
+	 * @param <E> 枚举类型
+	 * @return E[]
+	 */
+	@SuppressWarnings("unchecked")
+	public <E extends Enum<?>> E[] getValue(AnnotationAttributes attributes, String key) {
+		Object value = attributes.get(key);
+		if (!(value instanceof Enum<?>[]) && Enum[].class.getComponentType().isInstance(value)) {
+			Object array = Array.newInstance(Enum[].class.getComponentType(), 1);
+			Array.set(array, 0, value);
+			value = array;
+		}
+		return (E[]) value;
 	}
 
 }
