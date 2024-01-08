@@ -61,7 +61,7 @@ class JsonMapperUtilsTest {
 			                }""";
 
 	@Test
-	void readValue$JsonParser() throws IOException {
+	void readValueJsonParser() throws IOException {
 		JsonFactory jsonFactory = new JsonFactory();
 		try (JsonParser parser = jsonFactory.createParser(json)) {
 			JsonNode parserJsonNode = JsonMapperUtils.readValue(parser, JsonNode.class);
@@ -90,7 +90,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$File() throws IOException {
+	void readValueFile() throws IOException {
 		File file = new ClassPathResource("input.json").getFile();
 		JsonNode fileJsonNode = JsonMapperUtils.readValue(file, JsonNode.class);
 		assertNotNull(fileJsonNode);
@@ -113,7 +113,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$URL() throws IOException {
+	void readValueURL() throws IOException {
 		URL url = new ClassPathResource("input.json").getURL();
 		JsonNode urlJsonNode = JsonMapperUtils.readValue(url, JsonNode.class);
 		assertNotNull(urlJsonNode);
@@ -136,7 +136,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$Str() {
+	void readValueStr() {
 		JsonNode strJsonNode = JsonMapperUtils.readValue(json, JsonNode.class);
 		assertNotNull(strJsonNode);
 		assertEquals("1", strJsonNode.get("c").asText());
@@ -158,7 +158,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$Reader() throws IOException {
+	void readValueReader() throws IOException {
 		{
 			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 			InputStreamReader reader = new InputStreamReader(inputStream);
@@ -190,7 +190,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$InputStream() throws IOException {
+	void readValueInputStream() throws IOException {
 		{
 			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 			JsonNode inputStreamJsonNode = JsonMapperUtils.readValue(inputStream, JsonNode.class);
@@ -219,7 +219,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$ByteArray() {
+	void readValueByteArray() {
 		JsonNode byteArrayJsonNode = JsonMapperUtils.readValue(json.getBytes(), JsonNode.class);
 		assertNotNull(byteArrayJsonNode);
 		assertEquals("1", byteArrayJsonNode.get("c").asText());
@@ -241,7 +241,7 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void readValue$DataInput() throws IOException {
+	void readValueDataInput() throws IOException {
 		{
 			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 			DataInput dataInput = new DataInputStream(inputStream);
