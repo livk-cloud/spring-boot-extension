@@ -78,7 +78,7 @@ public class WebClientConfiguration {
 		 * @return WebClientCustomizer
 		 */
 		@Bean
-		public WebClientCustomizer ReactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
+		public WebClientCustomizer reactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
 			Function<HttpClient, HttpClient> function = httpClient -> httpClient
 				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
 				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
