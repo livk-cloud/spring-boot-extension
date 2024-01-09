@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author livk
  */
 @Getter
-class BeanLambdaDescriptor {
+final class BeanLambdaDescriptor {
 
 	private static final Map<Pair<Class<?>, String>, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
 
