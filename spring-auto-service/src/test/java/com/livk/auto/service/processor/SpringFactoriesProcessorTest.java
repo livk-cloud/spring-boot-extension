@@ -17,7 +17,6 @@
 
 package com.livk.auto.service.processor;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.test.tools.SourceFile;
@@ -29,6 +28,9 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author livk
@@ -42,26 +44,26 @@ class SpringFactoriesProcessorTest {
 	}
 
 	private void compile(Class<?> type, Class<?> factoryClass, String factoryClassImplName) {
-		SpringFactoriesProcessor serviceProcessor = new SpringFactoriesProcessor();
-		SourceFile sourceFile = SourceFile.forTestClass(type);
-		TestCompiler testCompiler = TestCompiler.forSystem().withProcessors(serviceProcessor).withSources(sourceFile);
-		testCompiler.compile(compiled -> {
-			try {
-				Enumeration<URL> resources = compiled.getClassLoader().getResources("META-INF/spring.factories");
-				Properties pro = new Properties();
-				for (URL url : Collections.list(resources)) {
-					InputStream inputStream = new UrlResource(url).getInputStream();
-					Properties properties = new Properties();
-					properties.load(inputStream);
-					pro.putAll(properties);
+		TestCompiler.forSystem()
+			.withProcessors(new SpringFactoriesProcessor())
+			.withSources(SourceFile.forTestClass(type))
+			.compile(compiled -> {
+				try {
+					Enumeration<URL> resources = compiled.getClassLoader().getResources("META-INF/spring.factories");
+					Properties pro = new Properties();
+					for (URL url : Collections.list(resources)) {
+						InputStream inputStream = new UrlResource(url).getInputStream();
+						Properties properties = new Properties();
+						properties.load(inputStream);
+						pro.putAll(properties);
+					}
+					assertTrue(pro.containsKey(factoryClass.getName()));
+					assertEquals(factoryClassImplName, pro.get(factoryClass.getName()));
 				}
-				Assertions.assertTrue(pro.containsKey(factoryClass.getName()));
-				Assertions.assertEquals(factoryClassImplName, pro.get(factoryClass.getName()));
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		});
+				catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
 	}
 
 }

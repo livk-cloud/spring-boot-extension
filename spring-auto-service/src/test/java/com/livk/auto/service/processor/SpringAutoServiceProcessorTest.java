@@ -17,7 +17,6 @@
 
 package com.livk.auto.service.processor;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.test.tools.SourceFile;
@@ -28,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author livk
@@ -45,25 +46,25 @@ class SpringAutoServiceProcessorTest {
 	}
 
 	private void compile(Class<?> type, String annotationName) {
-		SpringAutoServiceProcessor serviceProcessor = new SpringAutoServiceProcessor();
-		SourceFile sourceFile = SourceFile.forTestClass(type);
-		TestCompiler testCompiler = TestCompiler.forSystem().withProcessors(serviceProcessor).withSources(sourceFile);
-		testCompiler.compile(compiled -> {
-			try {
-				Enumeration<URL> resources = compiled.getClassLoader()
-					.getResources("META-INF/spring/" + annotationName + ".imports");
-				List<String> configList = new ArrayList<>();
-				for (URL url : Collections.list(resources)) {
-					InputStream inputStream = new UrlResource(url).getInputStream();
-					String[] arr = new String(FileCopyUtils.copyToByteArray(inputStream)).split("\n");
-					configList.addAll(Arrays.stream(arr).map(String::trim).toList());
+		TestCompiler.forSystem()
+			.withProcessors(new SpringAutoServiceProcessor())
+			.withSources(SourceFile.forTestClass(type))
+			.compile(compiled -> {
+				try {
+					Enumeration<URL> resources = compiled.getClassLoader()
+						.getResources("META-INF/spring/" + annotationName + ".imports");
+					List<String> configList = new ArrayList<>();
+					for (URL url : Collections.list(resources)) {
+						InputStream inputStream = new UrlResource(url).getInputStream();
+						String[] arr = new String(FileCopyUtils.copyToByteArray(inputStream)).split("\n");
+						configList.addAll(Arrays.stream(arr).map(String::trim).toList());
+					}
+					assertTrue(configList.contains(type.getName()));
 				}
-				Assertions.assertTrue(configList.contains(type.getName()));
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		});
+				catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
 	}
 
 }
