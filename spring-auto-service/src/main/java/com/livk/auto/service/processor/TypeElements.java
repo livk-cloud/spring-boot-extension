@@ -17,13 +17,16 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.auto.common.MoreTypes;
 import lombok.experimental.UtilityClass;
 
 import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleAnnotationValueVisitor14;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -42,22 +45,37 @@ class TypeElements {
 	 * @param key the key
 	 * @return the annotation attributes
 	 */
-	public <T> Optional<TypeElement> getAnnotationAttributes(Element element, Class<T> targetClass, String key) {
+	public <T> Optional<Set<TypeElement>> getAnnotationAttributes(Element element, Class<T> targetClass, String key) {
 		for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
 			TypeMirror typeMirror = annotationMirror.getAnnotationType().asElement().asType();
 			if (typeMirror.toString().contentEquals(targetClass.getCanonicalName())) {
-				Map<String, AnnotationValue> elementValues = annotationMirror.getElementValues()
-					.entrySet()
-					.stream()
-					.filter(entry -> entry.getValue() != null)
-					.collect(Collectors.toMap(entry -> entry.getKey().getSimpleName().toString(), Map.Entry::getValue));
-				return Optional.ofNullable(elementValues.get(key)).map(annotationValue -> {
-					DeclaredType declaredType = (DeclaredType) annotationValue.getValue();
-					return (TypeElement) declaredType.asElement();
-				});
+				for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : annotationMirror
+					.getElementValues()
+					.entrySet()) {
+					if (entry.getKey().getSimpleName().contentEquals(key)) {
+						return Optional.of(entry.getValue().accept(new SimpleAnnotationValueVisitor(), null));
+					}
+				}
+				return Optional.empty();
 			}
 		}
 		throw new IllegalArgumentException(element + " not has annotation:" + targetClass);
+	}
+
+	private static class SimpleAnnotationValueVisitor extends SimpleAnnotationValueVisitor14<Set<TypeElement>, Void> {
+
+		@Override
+		public Set<TypeElement> visitType(TypeMirror t, Void v) {
+			return Set.of(MoreTypes.asTypeElement(t));
+		}
+
+		@Override
+		public Set<TypeElement> visitArray(List<? extends AnnotationValue> values, Void unused) {
+			return values.stream()
+				.flatMap(value -> value.accept(this, null).stream())
+				.collect(Collectors.toUnmodifiableSet());
+		}
+
 	}
 
 	/**

@@ -37,6 +37,7 @@ mvel2 = "2.5.1.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.41"
+compile-testing = "0.21.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -97,6 +98,7 @@ commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
+compile-testing = { group = "com.google.testing.compile", name = "compile-testing", version.ref = "compile-testing" }
 
 [bundles]
 springdoc-openapi-all = ["openapi-common", "openapi-webflux-api", "openapi-webflux-ui", "openapi-webmvc-api", "openapi-webmvc-ui"]

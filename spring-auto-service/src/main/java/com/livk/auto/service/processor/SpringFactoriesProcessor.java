@@ -17,6 +17,7 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.auto.common.MoreTypes;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -28,7 +29,6 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -95,18 +95,20 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 		log(annotations.toString());
 		log(elements.toString());
 		for (Element element : elements) {
-			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-			String provider = TypeElements.getBinaryName(value.orElseGet(() -> fromInterface(element)));
-			if (provider == null || provider.isBlank()) {
-				throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
-			}
-			boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
-			String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
-			if (aot) {
-				aotFactoriesMap.put(provider, serviceImpl);
-			}
-			else {
-				springFactoriesMap.put(provider, serviceImpl);
+			Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			for (TypeElement typeElement : value.orElseGet(() -> Set.of(fromInterface(element)))) {
+				String provider = TypeElements.getBinaryName(typeElement);
+				if (provider == null || provider.isBlank()) {
+					throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
+				}
+				boolean aot = element.getAnnotation(SUPPORT_CLASS).aot();
+				String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
+				if (aot) {
+					aotFactoriesMap.put(provider, serviceImpl);
+				}
+				else {
+					springFactoriesMap.put(provider, serviceImpl);
+				}
 			}
 		}
 	}
@@ -115,10 +117,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 		if (element instanceof TypeElement typeElement) {
 			List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
 			if (interfaces != null && interfaces.size() == 1) {
-				TypeMirror typeMirror = interfaces.getFirst();
-				if (typeMirror instanceof DeclaredType declaredType) {
-					return (TypeElement) declaredType.asElement();
-				}
+				return MoreTypes.asTypeElement(interfaces.getFirst());
 			}
 		}
 		return null;

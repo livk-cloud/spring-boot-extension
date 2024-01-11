@@ -17,12 +17,14 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.auto.service.AutoService;
 import com.livk.auto.service.annotation.SpringFactories;
 
 /**
  * @author livk
  */
 @SpringFactories
+@AutoService(SpringFactoryService.class)
 public class SpringFactoryServiceImpl implements SpringFactoryService {
 
 }

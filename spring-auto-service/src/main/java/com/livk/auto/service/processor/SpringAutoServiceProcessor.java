@@ -93,14 +93,16 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 		log(annotations.toString());
 		log(elements.toString());
 		for (Element element : elements) {
-			Optional<TypeElement> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
-			String provider = TypeElements.getBinaryName(value.orElse(autoConfigurationElement()));
-			importsMap.put(provider, TypeElements.getBinaryName((TypeElement) element));
+			Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			for (TypeElement typeElement : value.orElse(autoConfigurationElement())) {
+				String provider = TypeElements.getBinaryName(typeElement);
+				importsMap.put(provider, TypeElements.getBinaryName((TypeElement) element));
+			}
 		}
 	}
 
-	private TypeElement autoConfigurationElement() {
-		return elements.getTypeElement(AUTOCONFIGURATION);
+	private Set<TypeElement> autoConfigurationElement() {
+		return Set.of(elements.getTypeElement(AUTOCONFIGURATION));
 	}
 
 	/**
