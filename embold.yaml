@@ -1,0 +1,46 @@
+version: 1
+
+languages: 'JAVA,KOTLIN'
+
+sources:
+  exclusions:
+    - 'test'
+    - 'generated'
+    - 'mock'
+    - 'thirdparty'
+    - 'third-party'
+    - '3rd-party'
+    - '3rdparty'
+    - 'external'
+    - 'build'
+    - 'node_modules'
+    - 'assets'
+    - 'gulp'
+    - 'grunt'
+    - 'library'
+    - '.git'
+    - 'spring-boot-example'
+
+modules:
+  - name: gamma_java
+    enabled: true
+    rules:
+      - key: 'EMB-JAVA-44'
+        enabled: false
+      - key: 'EMB-JAVA-51'
+        enabled: false
+  - name: pmd
+    enabled: true
+    rules:
+      - key: 'PMD-JAVA-110'
+        enabled: false
+      - key: 'PMD-APEX-308'
+        enabled: false
+      - key: 'PMD-JAVA-91'
+        enabled: false
+      - key: 'PMD-JAVA-248'
+        enabled: false
+      - key: 'PMD-JAVA-53'
+        enabled: false
+      - key: 'PMD-JAVA-57'
+        enabled: false
