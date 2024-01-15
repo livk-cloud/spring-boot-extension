@@ -43,27 +43,44 @@ import org.springframework.context.annotation.Bean;
 public class MybatisTypeHandlerAutoConfiguration {
 
 	/**
-	 * Mysql configuration customizer.
-	 * @param mapperProvider the mapper provider
-	 * @return the configuration customizer
+	 * The type Mysql mybatis type handler auto configuration.
 	 */
-	@Bean
+	@AutoConfiguration
 	@ConditionalOnClass(com.mysql.cj.jdbc.Driver.class)
-	public ConfigurationCustomizer mysqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-		ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-		return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
+	public static class MysqlMybatisTypeHandlerAutoConfiguration {
+
+		/**
+		 * Mysql configuration customizer.
+		 * @param mapperProvider the mapper provider
+		 * @return the configuration customizer
+		 */
+		@Bean
+		public ConfigurationCustomizer mysqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
+			return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
+		}
+
 	}
 
 	/**
-	 * Postgresql configuration customizer.
-	 * @param mapperProvider the mapper provider
-	 * @return the configuration customizer
+	 * The type Postgresql mybatis type handler auto configuration.
 	 */
-	@Bean
+	@AutoConfiguration
 	@ConditionalOnClass(org.postgresql.Driver.class)
-	public ConfigurationCustomizer postgresqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
-		ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-		return configuration -> configuration.getTypeHandlerRegistry().register(new PostgresJsonTypeHandler(mapper));
+	public static class PostgresqlMybatisTypeHandlerAutoConfiguration {
+
+		/**
+		 * Postgresql configuration customizer.
+		 * @param mapperProvider the mapper provider
+		 * @return the configuration customizer
+		 */
+		@Bean
+		public ConfigurationCustomizer postgresqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
+			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
+			return configuration -> configuration.getTypeHandlerRegistry()
+				.register(new PostgresJsonTypeHandler(mapper));
+		}
+
 	}
 
 }

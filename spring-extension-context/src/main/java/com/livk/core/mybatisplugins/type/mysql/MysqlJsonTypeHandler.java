@@ -48,7 +48,7 @@ public class MysqlJsonTypeHandler extends AbstractJsonTypeHandler implements Typ
 
 	@Override
 	protected void setParameter(PreparedStatement ps, int i, String json, JdbcType jdbcType) throws SQLException {
-		ps.setObject(i, json);
+		ps.setString(i, json);
 	}
 
 }
