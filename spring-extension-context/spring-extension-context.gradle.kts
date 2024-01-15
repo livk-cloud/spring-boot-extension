@@ -30,4 +30,10 @@ dependencies {
 	optional("org.apache.commons:commons-pool2")
 	optional("com.lmax:disruptor")
 	optional("org.redisson:redisson")
+
+	testImplementation("io.lettuce:lettuce-core")
+	testImplementation("com.h2database:h2")
+	implementation("com.mysql:mysql-connector-j")
+	implementation("org.postgresql:postgresql")
+	implementation("com.zaxxer:HikariCP")
 }

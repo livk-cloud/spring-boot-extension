@@ -60,7 +60,9 @@ class UserControllerTest {
 		mockMvc.perform(get("/user/{id}", id))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("id", id).exists());
+			.andExpect(jsonPath("id", id).exists())
+			.andExpect(jsonPath("insertTime").isNotEmpty())
+			.andExpect(jsonPath("updateTime").isNotEmpty());
 	}
 
 	@Order(2)

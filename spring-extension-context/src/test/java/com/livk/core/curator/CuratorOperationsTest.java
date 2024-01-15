@@ -1,22 +1,22 @@
 package com.livk.core.curator;
 
 import com.livk.core.curator.lock.ZkLockType;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.CuratorEventType;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -30,27 +30,13 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author livk
  */
-@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = CuratorConfig.class)
+@ExtendWith({ SpringExtension.class })
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CuratorOperationsTest {
 
+	@Autowired
 	CuratorOperations curatorOperations;
-
-	@BeforeEach
-	public void init() {
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
-		CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
-			.retryPolicy(retryPolicy)
-			.connectString("livk.com:2181")
-			.build();
-		curatorFramework.start();
-		curatorOperations = new CuratorTemplate(curatorFramework);
-	}
-
-	@AfterEach
-	public void after() throws IOException {
-		curatorOperations.close();
-	}
 
 	@Test
 	@Order(1)
