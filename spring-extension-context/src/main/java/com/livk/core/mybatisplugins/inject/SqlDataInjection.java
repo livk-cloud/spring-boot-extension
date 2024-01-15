@@ -21,6 +21,7 @@ import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.core.mybatisplugins.inject.annotation.SqlFunction;
 import com.livk.core.mybatisplugins.inject.enums.SqlFill;
+import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -31,7 +32,9 @@ import org.apache.ibatis.plugin.Signature;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -48,20 +51,31 @@ public class SqlDataInjection implements Interceptor {
 		MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
 		SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
 		Object parameter = invocation.getArgs()[1];
-		List<Field> declaredFields = ReflectionUtils.getAllFields(parameter.getClass());
-		if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
-			for (Field field : declaredFields) {
-				if (field.isAnnotationPresent(SqlFunction.class)) {
-					SqlFunction sqlFunction = field.getAnnotation(SqlFunction.class);
-					Object value = getValue(sqlFunction);
-					if (value == null) {
-						continue;
-					}
-					// insert或者update并且SqlFill.INSERT_UPDATE
-					if (SqlCommandType.INSERT.equals(sqlCommandType)
-							|| sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-						Method writeMethod = ReflectionUtils.getWriteMethod(parameter.getClass(), field);
-						writeMethod.invoke(parameter, value);
+		Map<Object, List<Field>> map = new HashMap<>();
+		if (parameter instanceof MapperMethod.ParamMap<?> paramMap) {
+			for (Object value : paramMap.values()) {
+				map.putIfAbsent(value, ReflectionUtils.getAllFields(value.getClass()));
+			}
+		}
+		else {
+			map.putIfAbsent(parameter, ReflectionUtils.getAllFields(parameter.getClass()));
+		}
+
+		for (Map.Entry<Object, List<Field>> entry : map.entrySet()) {
+			if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
+				for (Field field : entry.getValue()) {
+					if (field.isAnnotationPresent(SqlFunction.class)) {
+						SqlFunction sqlFunction = field.getAnnotation(SqlFunction.class);
+						Object value = getValue(sqlFunction);
+						if (value == null) {
+							continue;
+						}
+						// insert或者update并且SqlFill.INSERT_UPDATE
+						if (SqlCommandType.INSERT.equals(sqlCommandType)
+								|| sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
+							Method writeMethod = ReflectionUtils.getWriteMethod(entry.getKey().getClass(), field);
+							writeMethod.invoke(entry.getKey(), value);
+						}
 					}
 				}
 			}
