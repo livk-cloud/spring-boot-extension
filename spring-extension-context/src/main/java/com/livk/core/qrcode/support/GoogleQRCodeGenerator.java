@@ -17,6 +17,7 @@
 
 package com.livk.core.qrcode.support;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
@@ -29,7 +30,6 @@ import com.livk.core.qrcode.PicType;
 import com.livk.core.qrcode.QRCodeGenerator;
 import com.livk.core.qrcode.exception.QRCodeException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.awt.image.BufferedImage;
 
@@ -45,10 +45,10 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 
 	/**
 	 * Instantiates a new Google qrcode generator.
-	 * @param builder the builder
+	 * @param mapper the mapper
 	 */
-	public GoogleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		jacksonOps = new JacksonSupport(builder.build());
+	public GoogleQRCodeGenerator(ObjectMapper mapper) {
+		jacksonOps = new JacksonSupport(mapper);
 	}
 
 	@Override

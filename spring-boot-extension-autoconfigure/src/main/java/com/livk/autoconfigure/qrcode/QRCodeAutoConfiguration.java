@@ -53,7 +53,7 @@ public class QRCodeAutoConfiguration {
 	 */
 	@Bean
 	public QRCodeGenerator googleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		return new GoogleQRCodeGenerator(builder);
+		return new GoogleQRCodeGenerator(builder.build());
 	}
 
 	/**
