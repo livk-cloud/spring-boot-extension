@@ -33,7 +33,7 @@ dependencies {
 
 	testImplementation("io.lettuce:lettuce-core")
 	testImplementation("com.h2database:h2")
-	implementation("com.mysql:mysql-connector-j")
-	implementation("org.postgresql:postgresql")
-	implementation("com.zaxxer:HikariCP")
+	testImplementation("com.mysql:mysql-connector-j")
+	testImplementation("org.postgresql:postgresql")
+	testImplementation("com.zaxxer:HikariCP")
 }
