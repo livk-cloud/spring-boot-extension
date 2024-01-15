@@ -28,6 +28,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -43,33 +44,38 @@ public class CuratorTemplate implements CuratorOperations {
 	private final CuratorFramework curatorFramework;
 
 	@Override
-	public String createNode(String path, String data) throws Exception {
-		return curatorFramework.create().creatingParentsIfNeeded().forPath(path, data.getBytes());
+	public String createNode(String path, byte[] data) throws Exception {
+		return curatorFramework.create().creatingParentsIfNeeded().forPath(path, data);
 	}
 
 	@Override
-	public String createTypeNode(CreateMode nodeType, String path, String data) throws Exception {
-		return curatorFramework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data.getBytes());
+	public byte[] getNode(String path) throws Exception {
+		return curatorFramework.getData().forPath(path);
 	}
 
 	@Override
-	public String createTypeSeqNode(CreateMode nodeType, String path, String data) throws Exception {
+	public String createTypeNode(CreateMode nodeType, String path, byte[] data) throws Exception {
+		return curatorFramework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data);
+	}
+
+	@Override
+	public String createTypeSeqNode(CreateMode nodeType, String path, byte[] data) throws Exception {
 		return curatorFramework.create()
 			.creatingParentsIfNeeded()
 			.withProtection()
 			.withMode(nodeType)
-			.forPath(path, data.getBytes());
+			.forPath(path, data);
 	}
 
 	@Override
-	public Stat setData(String path, String data) throws Exception {
-		return curatorFramework.setData().forPath(path, data.getBytes());
+	public Stat setData(String path, byte[] data) throws Exception {
+		return curatorFramework.setData().forPath(path, data);
 	}
 
 	@Override
-	public Stat setDataAsync(String path, String data, CuratorListener listener) throws Exception {
+	public Stat setDataAsync(String path, byte[] data, CuratorListener listener) throws Exception {
 		curatorFramework.getCuratorListenable().addListener(listener);
-		return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
+		return curatorFramework.setData().inBackground().forPath(path, data);
 	}
 
 	/**
@@ -79,8 +85,8 @@ public class CuratorTemplate implements CuratorOperations {
 	 * @return the data async
 	 * @throws Exception the exception
 	 */
-	public Stat setDataAsync(String path, String data) throws Exception {
-		return curatorFramework.setData().inBackground().forPath(path, data.getBytes());
+	public Stat setDataAsync(String path, byte[] data) throws Exception {
+		return curatorFramework.setData().inBackground().forPath(path, data);
 	}
 
 	@Override
@@ -135,8 +141,8 @@ public class CuratorTemplate implements CuratorOperations {
 	}
 
 	@Override
-	public String getDistributedId(String path, String data) throws Exception {
-		String seqNode = this.createTypeSeqNode(CreateMode.EPHEMERAL_SEQUENTIAL, "/" + path, data);
+	public String getDistributedId(String path, byte[] data) throws Exception {
+		String seqNode = this.createTypeSeqNode(CreateMode.EPHEMERAL_SEQUENTIAL, path, data);
 		System.out.println(seqNode);
 		int index = seqNode.lastIndexOf(path);
 		if (index >= 0) {
@@ -144,6 +150,11 @@ public class CuratorTemplate implements CuratorOperations {
 			return index <= seqNode.length() ? seqNode.substring(index) : "";
 		}
 		return seqNode;
+	}
+
+	@Override
+	public void close() throws IOException {
+		curatorFramework.close();
 	}
 
 }

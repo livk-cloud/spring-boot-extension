@@ -24,6 +24,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
 
+import java.io.Closeable;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ import java.util.List;
  *
  * @author livk
  */
-public interface CuratorOperations {
+public interface CuratorOperations extends Closeable {
 
 	/**
 	 * 创建节点
@@ -42,7 +43,15 @@ public interface CuratorOperations {
 	 * @return string
 	 * @throws Exception the exception
 	 */
-	String createNode(String path, String data) throws Exception;
+	String createNode(String path, byte[] data) throws Exception;
+
+	/**
+	 * 获取节点数据
+	 * @param path the path
+	 * @return nodeData
+	 * @throws Exception the exception
+	 */
+	byte[] getNode(String path) throws Exception;
 
 	/**
 	 * 创建指定类型的无序节点(持久或临时)
@@ -52,7 +61,7 @@ public interface CuratorOperations {
 	 * @return string
 	 * @throws Exception the exception
 	 */
-	String createTypeNode(CreateMode nodeType, String path, String data) throws Exception;
+	String createTypeNode(CreateMode nodeType, String path, byte[] data) throws Exception;
 
 	/**
 	 * 创建指定类型的有序节点
@@ -62,7 +71,7 @@ public interface CuratorOperations {
 	 * @return string
 	 * @throws Exception the exception
 	 */
-	String createTypeSeqNode(CreateMode nodeType, String path, String data) throws Exception;
+	String createTypeSeqNode(CreateMode nodeType, String path, byte[] data) throws Exception;
 
 	/**
 	 * 设置值
@@ -71,7 +80,7 @@ public interface CuratorOperations {
 	 * @return data
 	 * @throws Exception the exception
 	 */
-	Stat setData(String path, String data) throws Exception;
+	Stat setData(String path, byte[] data) throws Exception;
 
 	/**
 	 * 异步设置值
@@ -81,7 +90,7 @@ public interface CuratorOperations {
 	 * @return data async
 	 * @throws Exception the exception
 	 */
-	Stat setDataAsync(String path, String data, CuratorListener listener) throws Exception;
+	Stat setDataAsync(String path, byte[] data, CuratorListener listener) throws Exception;
 
 	/**
 	 * 删除节点
@@ -122,6 +131,6 @@ public interface CuratorOperations {
 	 * @return distributed id
 	 * @throws Exception the exception
 	 */
-	String getDistributedId(String path, String data) throws Exception;
+	String getDistributedId(String path, byte[] data) throws Exception;
 
 }
