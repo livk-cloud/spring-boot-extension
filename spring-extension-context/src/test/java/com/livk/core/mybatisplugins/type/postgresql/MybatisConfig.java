@@ -1,7 +1,6 @@
 package com.livk.core.mybatisplugins.type.postgresql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.core.mybatisplugins.type.mysql.MysqlJsonTypeHandler;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
@@ -31,7 +30,7 @@ class MybatisConfig {
 	public HikariDataSource dataSource() {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:postgresql://livk.com:5432/mybatis_type");
+		dataSource.setJdbcUrl("jdbc:postgresql://livk.com:5432/mybatis_type_context");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("123456");
 		return dataSource;

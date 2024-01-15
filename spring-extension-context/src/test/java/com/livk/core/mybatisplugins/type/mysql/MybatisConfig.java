@@ -30,7 +30,7 @@ class MybatisConfig {
 	public HikariDataSource dataSource() {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:mysql://livk.com:3306/mybatis_type?createDatabaseIfNotExist=true");
+		dataSource.setJdbcUrl("jdbc:mysql://livk.com:3306/mybatis_type_context?createDatabaseIfNotExist=true");
 		dataSource.setUsername("root");
 		dataSource.setPassword("123456");
 		return dataSource;

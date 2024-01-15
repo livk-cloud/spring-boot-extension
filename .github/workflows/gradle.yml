@@ -83,7 +83,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_MULTIPLE_DATABASES: graphql,mybatis,mybatis_type
+          POSTGRES_MULTIPLE_DATABASES: graphql,mybatis,mybatis_type,mybatis_type_context
           POSTGRES_PASSWORD: 123456
 
       mysql:
