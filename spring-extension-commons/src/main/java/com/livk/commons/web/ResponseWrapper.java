@@ -18,11 +18,12 @@
 package com.livk.commons.web;
 
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
-import lombok.SneakyThrows;
-import org.springframework.lang.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,38 +39,24 @@ import java.io.PrintWriter;
  */
 public class ResponseWrapper extends HttpServletResponseWrapper {
 
-	private final ByteArrayOutputStream buffer;
-
-	private final ServletOutputStream out;
-
-	private final PrintWriter writer;
+	private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 	/**
 	 * 创建ResponseWrapper
 	 * @param response the response
-	 * @throws IOException the io exception
 	 */
-	public ResponseWrapper(HttpServletResponse response) throws IOException {
+	public ResponseWrapper(HttpServletResponse response) {
 		super(response);
-		buffer = new ByteArrayOutputStream();
-		out = new WrapperOutputStream(buffer);
-		writer = new PrintWriter(new OutputStreamWriter(buffer, this.getCharacterEncoding()));
 	}
 
 	@Override
 	public ServletOutputStream getOutputStream() {
-		return out;
+		return new WrapperOutputStream(super.getResponse(), buffer);
 	}
 
 	@Override
 	public PrintWriter getWriter() {
-		return writer;
-	}
-
-	@Override
-	public void flushBuffer() throws IOException {
-		out.flush();
-		writer.flush();
+		return new PrintWriter(new OutputStreamWriter(buffer));
 	}
 
 	@Override
@@ -80,44 +67,55 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	/**
 	 * 获取response body
 	 * @return the byte []
-	 * @throws IOException the io exception
 	 */
-	public byte[] getResponseData() throws IOException {
-		this.flushBuffer();
+	public byte[] getResponseData() {
 		return buffer.toByteArray();
 	}
 
+	/**
+	 * 修改response body
+	 * @param bytes byte[]
+	 */
+	public void setResponseData(byte[] bytes) throws IOException {
+		buffer.reset();
+		StreamUtils.copy(bytes, buffer);
+	}
+
+	@RequiredArgsConstructor
 	private static class WrapperOutputStream extends ServletOutputStream {
 
-		private final ByteArrayOutputStream stream;
+		private final ServletResponse response;
 
-		/**
-		 * 创建WrapperOutputStream
-		 * @param stream the stream
-		 */
-		public WrapperOutputStream(ByteArrayOutputStream stream) {
-			this.stream = stream;
-		}
+		private final ByteArrayOutputStream outputStream;
 
 		@Override
 		public void write(int b) {
-			stream.write(b);
+			outputStream.write(b);
 		}
 
 		@Override
-		public void write(@NonNull byte[] b) {
-			stream.writeBytes(b);
+		public void flush() throws IOException {
+			if (!this.response.isCommitted()) {
+				byte[] body = this.outputStream.toByteArray();
+				ServletOutputStream stream = this.response.getOutputStream();
+				stream.write(body);
+				stream.flush();
+			}
 		}
 
-		@SneakyThrows
 		@Override
 		public void setWriteListener(WriteListener writeListener) {
-			writeListener.onWritePossible();
+			throw new UnsupportedOperationException("setWriteListener");
 		}
 
 		@Override
 		public boolean isReady() {
 			return false;
+		}
+
+		@Override
+		public String toString() {
+			return this.outputStream.toString();
 		}
 
 	}
