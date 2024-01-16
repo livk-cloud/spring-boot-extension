@@ -35,7 +35,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -52,7 +51,6 @@ import java.util.function.Consumer;
  * @author livk
  */
 @Data
-@Component
 @ConfigurationProperties(ConfigProperties.PREFIX)
 public class ConfigProperties {
 
