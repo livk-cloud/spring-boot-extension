@@ -16,9 +16,11 @@
 
 package com.livk.core.redis;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.livk.commons.jackson.util.TypeFactoryUtils;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -33,23 +35,22 @@ public class JacksonSerializerUtils {
 	 * Json redis serializer.
 	 * @param <T> the type parameter
 	 * @param targetClass the target class
-	 * @param mapper the mapper
 	 * @return the redis serializer
 	 */
-	public <T> RedisSerializer<T> json(Class<T> targetClass, ObjectMapper mapper) {
-		return new Jackson2JsonRedisSerializer<>(mapper, targetClass);
+	public <T> RedisSerializer<T> json(Class<T> targetClass) {
+		return json(TypeFactoryUtils.javaType(targetClass));
 	}
 
 	/**
 	 * Json redis serializer.
 	 * @param <T> the type parameter
-	 * @param targetClass the target class
+	 * @param javaType the target java type
 	 * @return the redis serializer
 	 */
-	public <T> RedisSerializer<T> json(Class<T> targetClass) {
+	public <T> RedisSerializer<T> json(JavaType javaType) {
 		ObjectMapper mapper = JsonMapper.builder().build();
 		mapper.registerModules(new JavaTimeModule());
-		return json(targetClass, mapper);
+		return new Jackson2JsonRedisSerializer<>(mapper, javaType);
 	}
 
 	/**
