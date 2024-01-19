@@ -473,8 +473,8 @@ public class ConfigProperties {
 		 * Convert t.
 		 * @return the t
 		 */
-		@SuppressWarnings("unchecked")
 		public T convert() {
+			@SuppressWarnings("unchecked")
 			Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), Base.class);
 			Assert.notNull(type, "type must not be null");
 			return BeanUtils.copy(this, type);

@@ -48,10 +48,10 @@ import java.util.List;
 public class RedisConfig {
 
 	@Bean
-	@SuppressWarnings("rawtypes")
 	public ReactiveRedisMessageListenerContainer reactiveRedisMessageListenerContainer(
 			ReactiveRedisConnectionFactory connectionFactory) {
 		ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
+		@SuppressWarnings("rawtypes")
 		RedisSerializer<LivkMessage> serializer = JacksonSerializerUtils.json(LivkMessage.class);
 		container
 			.receive(List.of(PatternTopic.of(LivkMessage.CHANNEL)),

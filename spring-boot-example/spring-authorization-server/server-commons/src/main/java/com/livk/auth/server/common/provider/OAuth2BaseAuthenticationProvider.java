@@ -99,8 +99,8 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 	 * @return
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean supports(Class<?> authentication) {
+		@SuppressWarnings("unchecked")
 		Class<T> childType = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
 				OAuth2BaseAuthenticationProvider.class);
 		Assert.notNull(childType, "child Type is null");
@@ -122,9 +122,8 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 	 * {@link AuthenticationManager#authenticate(Authentication)} .
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
+		@SuppressWarnings("unchecked")
 		T baseAuthentication = (T) authentication;
 
 		OAuth2ClientAuthenticationToken clientPrincipal = OAuth2AuthenticationProviderUtils

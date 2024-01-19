@@ -37,8 +37,8 @@ public class EasyExcelItemReader<T> implements ItemReader<T> {
 
 	private final List<T> data;
 
-	@SuppressWarnings("unchecked")
 	public EasyExcelItemReader(InputStream inputStream, ExcelMapReadListener<T> excelReadListener) {
+		@SuppressWarnings("unchecked")
 		Class<T> targetClass = (Class<T>) GenericTypeResolver.resolveTypeArgument(excelReadListener.getClass(),
 				ExcelMapReadListener.class);
 		EasyExcel.read(inputStream, targetClass, excelReadListener).sheet().doRead();

@@ -41,9 +41,9 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
 	 */
 	private MapstructLocator mapstructLocator;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S, T> T convert(S source, Class<T> targetType) {
+		@SuppressWarnings("unchecked")
 		Class<S> sourceType = (Class<S>) source.getClass();
 		Converter<S, T> sourceConverter = this.getConverter(sourceType, targetType);
 		if (sourceConverter != null) {
