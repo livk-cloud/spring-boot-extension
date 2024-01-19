@@ -16,15 +16,22 @@
 
 package com.livk.commons.cglib;
 
-import org.springframework.asm.ClassVisitor;
-import org.springframework.asm.Label;
-import org.springframework.asm.Type;
-import org.springframework.cglib.core.*;
-
 import java.beans.PropertyDescriptor;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.springframework.asm.ClassVisitor;
+import org.springframework.asm.Label;
+import org.springframework.asm.Type;
+import org.springframework.cglib.core.ClassEmitter;
+import org.springframework.cglib.core.CodeEmitter;
+import org.springframework.cglib.core.Constants;
+import org.springframework.cglib.core.EmitUtils;
+import org.springframework.cglib.core.MethodInfo;
+import org.springframework.cglib.core.ObjectSwitchCallback;
+import org.springframework.cglib.core.ReflectUtils;
+import org.springframework.cglib.core.Signature;
+import org.springframework.cglib.core.TypeUtils;
 
 /**
  * The type Bean map emitter.

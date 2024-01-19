@@ -21,16 +21,19 @@ import com.livk.core.disruptor.support.SpringDisruptor;
 import com.livk.core.disruptor.support.SpringEventHandler;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
+import java.util.concurrent.ThreadFactory;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.*;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
-
-import java.util.concurrent.ThreadFactory;
 
 /**
  * @author livk

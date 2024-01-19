@@ -19,13 +19,16 @@ package com.livk.commons.jackson.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.*;
-import org.junit.jupiter.api.Test;
-import org.springframework.core.ResolvableType;
-
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.SimpleType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
+import org.springframework.core.ResolvableType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

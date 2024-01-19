@@ -20,11 +20,18 @@ import com.livk.commons.util.AnnotationUtils;
 import com.livk.core.disruptor.annotation.DisruptorEvent;
 import com.livk.core.disruptor.factory.DisruptorFactoryBean;
 import com.livk.core.disruptor.support.SpringDisruptor;
+import java.lang.annotation.Annotation;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.DefaultBeanNameGenerator;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.ResolvableType;
@@ -35,10 +42,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
-
-import java.lang.annotation.Annotation;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * The type Class path disruptor scanner.

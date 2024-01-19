@@ -17,7 +17,11 @@
 package com.livk.graphql.mybatis.mapper;
 
 import com.livk.graphql.mybatis.entity.Author;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>

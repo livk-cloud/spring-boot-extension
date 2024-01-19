@@ -18,6 +18,13 @@ package com.livk.autoconfigure.redisson;
 
 import com.livk.commons.util.BeanUtils;
 import io.netty.channel.EventLoopGroup;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.redisson.api.NameMapper;
@@ -25,7 +32,20 @@ import org.redisson.api.NatMapper;
 import org.redisson.client.DefaultCredentialsResolver;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
-import org.redisson.config.*;
+import org.redisson.config.BaseConfig;
+import org.redisson.config.BaseMasterSlaveServersConfig;
+import org.redisson.config.ClusterServersConfig;
+import org.redisson.config.CommandMapper;
+import org.redisson.config.Config;
+import org.redisson.config.CredentialsResolver;
+import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.ReadMode;
+import org.redisson.config.ReplicatedServersConfig;
+import org.redisson.config.SentinelServersConfig;
+import org.redisson.config.SingleServerConfig;
+import org.redisson.config.SslProvider;
+import org.redisson.config.SubscriptionMode;
+import org.redisson.config.TransportMode;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -35,14 +55,6 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 
 /**
  * The type Config properties.

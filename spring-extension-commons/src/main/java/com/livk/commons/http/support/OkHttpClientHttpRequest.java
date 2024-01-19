@@ -16,6 +16,9 @@
 
 package com.livk.commons.http.support;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -25,15 +28,12 @@ import okio.BufferedSink;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.StreamingHttpOutputMessage;
-import org.springframework.http.client.*;
+import org.springframework.http.client.AbstractClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.util.StringUtils;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
 
 /**
  * The type Ok http client http request.

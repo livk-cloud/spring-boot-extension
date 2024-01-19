@@ -17,16 +17,26 @@
 package com.livk.autoconfigure.oss.support.minio;
 
 import com.livk.autoconfigure.oss.support.AbstractService;
-import io.minio.*;
+import io.minio.BucketExistsArgs;
+import io.minio.GetObjectArgs;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListObjectsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveBucketArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.Result;
+import io.minio.SetBucketPolicyArgs;
+import io.minio.StatObjectArgs;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
-import lombok.SneakyThrows;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 
 /**
  * The type Minio service.

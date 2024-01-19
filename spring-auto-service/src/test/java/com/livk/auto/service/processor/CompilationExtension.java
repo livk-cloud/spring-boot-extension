@@ -22,8 +22,18 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
-import org.junit.jupiter.api.extension.*;
-
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -32,12 +42,15 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.JavaFileObject;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -45,9 +58,9 @@ import static com.google.testing.compile.Compilation.Status.SUCCESS;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * A Junit 5 {@link Extension} that extends a test suite such that an instance of
- * {@link Elements} and {@link Types} are available through parameter injection during
- * execution.
+ * A Junit 5 {@link org.junit.jupiter.api.extension.Extension} that extends a test suite
+ * such that an instance of {@link Elements} and {@link Types} are available through
+ * parameter injection during execution.
  *
  * <p>
  * To use this extension, request it with {@link ExtendWith} and add the required

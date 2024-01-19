@@ -16,15 +16,18 @@
 
 package com.livk.commons.micrometer;
 
-import io.micrometer.context.*;
-import lombok.experimental.UtilityClass;
-
+import io.micrometer.context.ContextExecutorService;
+import io.micrometer.context.ContextRegistry;
+import io.micrometer.context.ContextScheduledExecutorService;
+import io.micrometer.context.ContextSnapshot;
+import io.micrometer.context.ContextSnapshotFactory;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import lombok.experimental.UtilityClass;
 
 /**
  * ContextSnapshot相关工具

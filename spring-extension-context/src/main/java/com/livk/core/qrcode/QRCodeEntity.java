@@ -17,8 +17,7 @@
 package com.livk.core.qrcode;
 
 import com.google.zxing.client.j2se.MatrixToImageConfig;
-
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * The type Qr code entity.

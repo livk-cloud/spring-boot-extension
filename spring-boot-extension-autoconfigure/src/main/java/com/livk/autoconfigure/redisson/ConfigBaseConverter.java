@@ -24,6 +24,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.livk.commons.jackson.core.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
+import java.util.concurrent.ExecutorService;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.NameMapper;
 import org.redisson.api.NatMapper;
@@ -31,17 +34,17 @@ import org.redisson.api.RedissonNodeInitializer;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
 import org.redisson.codec.ReferenceCodecProvider;
-import org.redisson.config.*;
+import org.redisson.config.BaseMasterSlaveServersConfig;
+import org.redisson.config.CommandMapper;
+import org.redisson.config.Config;
+import org.redisson.config.ConfigSupport;
+import org.redisson.config.CredentialsResolver;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-import java.util.concurrent.ExecutorService;
 
 /**
  * The type Config base converter.

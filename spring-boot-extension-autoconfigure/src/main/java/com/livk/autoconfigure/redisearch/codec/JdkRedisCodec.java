@@ -16,9 +16,13 @@
 
 package com.livk.autoconfigure.redisearch.codec;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import org.springframework.core.ConfigurableObjectInputStream;
-
-import java.io.*;
 
 /**
  * The type Jdk redis codec.
