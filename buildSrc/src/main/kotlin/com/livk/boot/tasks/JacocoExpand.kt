@@ -37,10 +37,10 @@ abstract class JacocoExpand : Plugin<Project> {
 			it.finalizedBy(TASK_NAME)
 		}
 
-		project.tasks.named(TASK_NAME, JacocoReport::class.java){
-			it.dependsOn("test")
+		project.tasks.named(TASK_NAME, JacocoReport::class.java){ jacocoReport->
+			jacocoReport.dependsOn("test")
 
-			it.reports{
+			jacocoReport.reports{
 				it.xml.required.set(true)
 				it.html.required.set(false)
 			}
