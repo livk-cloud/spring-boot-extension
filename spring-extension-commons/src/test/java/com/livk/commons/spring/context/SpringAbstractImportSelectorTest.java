@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SpringAbstractImportSelectorTest {
 
 	@Test
-	public void testFindAnnotation() {
+	void testFindAnnotation() {
 		MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
 		assertEquals(MyAnnotation.class, selector.annotationClass);
 	}
