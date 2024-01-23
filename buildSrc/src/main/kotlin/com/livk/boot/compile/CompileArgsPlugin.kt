@@ -61,19 +61,18 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 			options.outputLevel = JavadocOutputLevel.QUIET
 			options.addStringOption("Xdoclint:none", "-quiet")
 		}
-		val javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
-		addCompile(javaCompile)
 
-		val test = project.tasks.named(JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME).getOrNull()
-		if (test != null) {
-			val javaTestCompile = test as JavaCompile
-			addCompile(javaTestCompile)
-		}
+		project.tasks.withType(JavaCompile::class.java).matching { compileTask ->
+			compileTask.name == JavaPlugin.COMPILE_JAVA_TASK_NAME ||
+				compileTask.name == JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME ||
+				compileTask.name == "compileTestFixturesJava"
+		}.forEach { addCompile(it) }
 
 		project.tasks.withType(Test::class.java) {
 			it.useJUnitPlatform()
 		}
 
+		val javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
 		project.afterEvaluate {
 			val dependencyName = hashSetOf<String>()
 			project.configurations.forEach {
