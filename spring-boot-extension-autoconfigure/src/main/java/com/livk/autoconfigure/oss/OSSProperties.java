@@ -84,7 +84,7 @@ public class OSSProperties {
 		if (StringUtils.hasText(scheme)) {
 			return scheme;
 		}
-		throw new RuntimeException("url缺少前缀!");
+		throw new IllegalArgumentException("url缺少前缀!");
 	}
 
 }

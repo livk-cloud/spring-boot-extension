@@ -23,6 +23,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.util.StreamUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -82,7 +83,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 					sink.next(inputStream.readAllBytes());
 				}
 				catch (IOException e) {
-					sink.error(new RuntimeException(e));
+					sink.error(Exceptions.bubble(e));
 				}
 			});
 	}

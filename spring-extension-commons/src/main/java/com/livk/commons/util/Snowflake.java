@@ -135,7 +135,7 @@ public final class Snowflake {
 	public synchronized long nextId() {
 		long timestamp = System.currentTimeMillis();
 		if (timestamp < lastTimestamp) {
-			throw new RuntimeException(String.format(
+			throw new IllegalArgumentException(String.format(
 					"Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
 		}
 
