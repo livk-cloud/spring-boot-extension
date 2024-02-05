@@ -42,10 +42,7 @@ public class JacksonConfiguration {
 	 */
 	@Bean
 	public Jackson2ObjectMapperBuilderCustomizer javaTimeCustomizer() {
-		return builder -> {
-			builder.locale(Locale.CHINA);
-			builder.modules(new JavaTimeModule());
-		};
+		return builder -> builder.locale(Locale.CHINA).modules(new JavaTimeModule());
 	}
 
 }
