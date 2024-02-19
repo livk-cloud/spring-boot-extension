@@ -18,7 +18,6 @@ package com.livk.core.disruptor.factory;
 
 import com.livk.core.disruptor.support.DisruptorCustomizer;
 import com.livk.core.disruptor.support.SpringDisruptor;
-import com.livk.core.disruptor.support.SpringEventHandler;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 import java.util.concurrent.ThreadFactory;
@@ -89,12 +88,11 @@ public class DisruptorFactoryBean<T>
 	public void afterPropertiesSet() {
 		SpringEventFactory<T> factory = new SpringEventFactory<>();
 		ResolvableType disruptorCustomizerType = ResolvableType.forClassWithGenerics(DisruptorCustomizer.class, type);
-		SpringEventHandler<T> springEventHandler = new SpringEventHandler<>(beanFactory, type);
 		int bufferSize = attributes.getNumber("bufferSize").intValue();
 		ProducerType producerType = attributes.getEnum("type");
 		disruptor = new SpringDisruptor<>(factory, bufferSize, createThreadFactory(), producerType,
 				createWaitStrategy());
-		disruptor.handleEventsWith(springEventHandler);
+		disruptor.handleEventsWith(SpringEventHandlerFactory.create(beanFactory, type));
 		beanFactory.<DisruptorCustomizer<T>>getBeanProvider(disruptorCustomizerType)
 			.forEach(customizer -> customizer.customize(disruptor));
 		disruptor.start();
