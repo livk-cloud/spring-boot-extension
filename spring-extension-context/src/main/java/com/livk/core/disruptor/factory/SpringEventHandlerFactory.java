@@ -32,9 +32,11 @@ import org.springframework.core.ResolvableType;
 final class SpringEventHandlerFactory {
 
 	@SuppressWarnings("unchecked")
-	public static <T> EventHandler<DisruptorEventWrapper<T>> create(BeanFactory beanFactory, Class<T> type){
+	public static <T> EventHandler<DisruptorEventWrapper<T>> create(BeanFactory beanFactory, Class<T> type) {
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
 		ObjectProvider<DisruptorEventConsumer<T>> disruptorEventConsumers = beanFactory.getBeanProvider(resolvableType);
-		return new AggregateEventHandler<>(disruptorEventConsumers.orderedStream().toArray(DisruptorEventConsumer[]::new));
+		return new AggregateEventHandler<>(
+				disruptorEventConsumers.orderedStream().toArray(DisruptorEventConsumer[]::new));
 	}
+
 }
