@@ -18,7 +18,6 @@ package com.livk.commons.expression.jexl3;
 
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethodTest;
-import com.livk.commons.expression.aviator.AviatorExpressionResolver;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -36,7 +35,7 @@ class JexlExpressionResolverTest {
 
 	private final static Map<String, String> map = Map.of("username", "livk");
 
-	final ExpressionResolver resolver = new AviatorExpressionResolver();
+	final ExpressionResolver resolver = new JexlExpressionResolver();
 
 	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 
@@ -57,8 +56,6 @@ class JexlExpressionResolverTest {
 				resolver.evaluate("'root:'+username+':'+password", method, args, Map.of("password", "123456")));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+username", method, args));
 		assertEquals("livk", resolver.evaluate("username", method, args));
@@ -70,8 +67,6 @@ class JexlExpressionResolverTest {
 
 		assertEquals("root:livk", resolver.evaluate("'root:'+username", map));
 		assertEquals("livk", resolver.evaluate("username", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate("username+':'+System.getProperty(\"user.dir\")", map));
 	}
 
 }

@@ -36,7 +36,7 @@ class MvelExpressionResolverTest {
 
 	private final static Map<String, String> map = Map.of("username", "livk");
 
-	final ExpressionResolver resolver = new AviatorExpressionResolver();
+	final ExpressionResolver resolver = new MvelExpressionResolver();
 
 	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
 

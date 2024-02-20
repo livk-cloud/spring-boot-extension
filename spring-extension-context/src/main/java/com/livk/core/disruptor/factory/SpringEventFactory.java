@@ -22,7 +22,7 @@ import com.lmax.disruptor.EventFactory;
 /**
  * @author livk
  */
-public class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
+class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
 
 	public DisruptorEventWrapper<T> newInstance() {
 		return new DisruptorEventWrapper<>();
