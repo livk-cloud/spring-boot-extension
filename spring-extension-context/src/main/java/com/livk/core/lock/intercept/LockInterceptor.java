@@ -17,6 +17,7 @@
 package com.livk.core.lock.intercept;
 
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.core.lock.DistributedLock;
 import com.livk.core.lock.LockScope;
@@ -46,7 +47,7 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
 	/**
 	 * SpEL表达式解析器
 	 */
-	private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
 	protected Object invoke(MethodInvocation invocation, OnLock onLock) throws Throwable {
