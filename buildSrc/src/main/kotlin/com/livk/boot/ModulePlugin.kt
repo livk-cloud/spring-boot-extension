@@ -36,7 +36,7 @@ class ModulePlugin : Plugin<Project> {
 
 		val extractLegalResources = project.tasks.create("extractLegalResources", ExtractResources::class.java)
 		extractLegalResources.getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
-		extractLegalResources.setResourcesNames(listOf("LICENSE"))
+		extractLegalResources.setResourcesNames(listOf("LICENSE.txt"))
 
 		project.tasks.withType(Jar::class.java) { jar ->
 			project.afterEvaluate {
