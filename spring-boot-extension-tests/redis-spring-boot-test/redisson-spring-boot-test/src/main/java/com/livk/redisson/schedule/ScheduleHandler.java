@@ -44,15 +44,9 @@ public class ScheduleHandler {
 	public void start() {
 		RScheduledExecutorService executorService = redissonClient.getExecutorService("livk");
 		executorService.registerWorkers(WorkerOptions.defaults().workers(12));
-		RScheduledFuture<?> future = executorService.scheduleAtFixedRate((Runnable & Serializable) () -> {
-			log.info("time:{}", System.currentTimeMillis());
-			try {
-				Thread.sleep(100L);
-			}
-			catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}, 0, 1, TimeUnit.SECONDS);
+		RScheduledFuture<?> future = executorService.scheduleAtFixedRate(
+				(Runnable & Serializable) () -> log.info("time:{}", System.currentTimeMillis()), 0, 1,
+				TimeUnit.SECONDS);
 		log.info("TaskId:{}", future.getTaskId());
 	}
 

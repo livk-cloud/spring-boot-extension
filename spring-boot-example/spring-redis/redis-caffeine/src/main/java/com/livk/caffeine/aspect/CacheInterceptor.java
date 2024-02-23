@@ -18,6 +18,7 @@ package com.livk.caffeine.aspect;
 
 import com.livk.caffeine.annotation.DoubleCache;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.cache.Cache;
@@ -39,7 +40,7 @@ public class CacheInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Doub
 
 	private final Cache cache;
 
-	private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	public CacheInterceptor(CacheManager cacheManager) {
 		this.cache = cacheManager.getCache("redis-caffeine");

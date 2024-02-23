@@ -32,6 +32,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -124,7 +125,7 @@ public class AnnotationMetadataResolver {
 				}
 			}
 			catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new ResourceAccessException("Failed to read metadata", e);
 			}
 		}
 		return result;

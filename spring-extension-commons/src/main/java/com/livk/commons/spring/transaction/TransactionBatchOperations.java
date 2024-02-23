@@ -32,7 +32,9 @@ import java.util.function.Consumer;
  * Spring事务批量操作
  *
  * @author livk
+ * @deprecated 使用场景较少
  */
+@Deprecated(since = "1.2.2", forRemoval = true)
 @RequiredArgsConstructor
 public class TransactionBatchOperations {
 

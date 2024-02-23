@@ -17,6 +17,12 @@
 package com.livk.commons.io;
 
 import com.livk.commons.util.ObjectUtils;
+import lombok.experimental.UtilityClass;
+import org.springframework.http.codec.multipart.Part;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,11 +37,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import lombok.experimental.UtilityClass;
-import org.springframework.http.codec.multipart.Part;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 /**
  * 文件相关工具类
@@ -117,14 +118,12 @@ public class FileUtils extends FileCopyUtils {
 	 * 把数据压缩至OutputStream
 	 * @param bytes 待压缩数据
 	 * @param outputStream 输出流
+	 * @throws IOException io exception
 	 */
-	public static void gzipCompress(byte[] bytes, OutputStream outputStream) {
+	public static void gzipCompress(byte[] bytes, OutputStream outputStream) throws IOException {
 		if (!ObjectUtils.isEmpty(bytes)) {
 			try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
 				stream.write(bytes);
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -133,13 +132,11 @@ public class FileUtils extends FileCopyUtils {
 	 * 使用GZip进行解压缩
 	 * @param inputStream 输入流
 	 * @return byte[]
+	 * @throws IOException io exception
 	 */
-	public static byte[] gzipDecompress(InputStream inputStream) {
+	public static byte[] gzipDecompress(InputStream inputStream) throws IOException {
 		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
 			return FileUtils.copyToByteArray(stream);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 	}
 

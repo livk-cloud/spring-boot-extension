@@ -53,7 +53,7 @@ public class RequestIPMethodArgumentResolver implements HandlerMethodArgumentRes
 		if (parameter.getParameterType().isAssignableFrom(IpInfo.class)) {
 			return RequestIpContextHolder.computeIfAbsent(() -> parseIp(webRequest));
 		}
-		throw new RuntimeException("param not support " + parameter.getParameterType());
+		throw new UnsupportedOperationException("param not support " + parameter.getParameterType());
 	}
 
 	private IpInfo parseIp(NativeWebRequest webRequest) {

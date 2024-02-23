@@ -48,7 +48,7 @@ import org.springframework.util.StringUtils;
  *
  * @author livk
  */
-public class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
+class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 
 	private final BeanNameGenerator beanNameGenerator;
 

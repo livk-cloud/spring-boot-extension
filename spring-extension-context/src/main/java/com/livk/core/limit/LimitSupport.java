@@ -16,6 +16,7 @@
 
 package com.livk.core.limit;
 
+import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.commons.util.WebUtils;
 import com.livk.core.limit.annotation.Limit;
@@ -35,7 +36,7 @@ public class LimitSupport {
 	/**
 	 * SpEL表达式解析器
 	 */
-	private final SpringExpressionResolver resolver = new SpringExpressionResolver();
+	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	private final LimitExecutor limitExecutor;
 

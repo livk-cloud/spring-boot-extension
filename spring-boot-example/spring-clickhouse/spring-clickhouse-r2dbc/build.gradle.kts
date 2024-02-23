@@ -8,4 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("com.clickhouse:clickhouse-r2dbc")
 	implementation("com.clickhouse:clickhouse-client")
+	implementation("org.apache.httpcomponents.client5:httpclient5")
 }

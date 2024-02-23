@@ -22,6 +22,7 @@ import com.livk.excel.mvc.mapper.InfoMapper;
 import com.livk.excel.mvc.service.InfoService;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -103,7 +104,7 @@ public class InfoServiceImpl implements InfoService {
 			}
 		}
 		catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
+			throw new CompletionException(e);
 		}
 		sqlSession.commit();
 		sqlSession.clearCache();

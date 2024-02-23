@@ -60,7 +60,7 @@ class SpringFactoriesProcessorTest {
 					assertEquals(factoryClassImplName, pro.get(factoryClass.getName()));
 				}
 				catch (IOException e) {
-					throw new RuntimeException(e);
+					throw new CompilationException(e, SourceFile.forTestClass(type));
 				}
 			});
 	}

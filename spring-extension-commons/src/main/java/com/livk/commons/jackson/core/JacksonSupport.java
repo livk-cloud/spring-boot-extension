@@ -55,6 +55,9 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		if (obj instanceof JsonParser jsonParser) {
 			return mapper.readValue(jsonParser, type);
 		}
+		if (obj instanceof JsonNode jsonNode) {
+			return mapper.treeToValue(jsonNode, type);
+		}
 		else if (obj instanceof File file) {
 			return mapper.readValue(file, type);
 		}
@@ -121,7 +124,7 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		else if (obj instanceof byte[] bytes) {
 			return mapper.readTree(bytes);
 		}
-		throw new UnsupportedOperationException();
+		return mapper.valueToTree(obj);
 	}
 
 	@Override

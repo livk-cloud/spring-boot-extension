@@ -18,8 +18,10 @@ package com.livk.commons.expression.mvel2;
 
 import com.livk.commons.expression.Context;
 import com.livk.commons.expression.ConverterExpressionResolver;
+import lombok.RequiredArgsConstructor;
 import org.mvel2.DataConversion;
 import org.mvel2.MVELInterpretedRuntime;
+import org.mvel2.ParserContext;
 import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
 
@@ -28,7 +30,19 @@ import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
  *
  * @author livk
  */
+@RequiredArgsConstructor
 public class MvelExpressionResolver extends ConverterExpressionResolver<VariableResolverFactory, String> {
+
+	private final ParserContext parserContext;
+
+	/**
+	 * 使用默认的ParserContext
+	 *
+	 * @see ParserContext
+	 */
+	public MvelExpressionResolver() {
+		this(new ParserContext());
+	}
 
 	@Override
 	protected String compile(String value) {
@@ -42,8 +56,8 @@ public class MvelExpressionResolver extends ConverterExpressionResolver<Variable
 
 	@Override
 	protected <T> T calculate(String expression, VariableResolverFactory context, Class<T> returnType) {
-		Object parse = new MVELInterpretedRuntime(expression, null, context).parse();
-		return DataConversion.convert(parse, returnType);
+		MVELInterpretedRuntime runtime = new MVELInterpretedRuntime(expression, null, context, parserContext);
+		return DataConversion.convert(runtime.parse(), returnType);
 	}
 
 }

@@ -38,7 +38,7 @@ import java.util.Set;
  * @author livk
  */
 @Slf4j
-public class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
+class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
 
 	@Override
 	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,

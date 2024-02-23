@@ -16,6 +16,12 @@
 
 package com.livk.auto.service.processor;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.test.tools.SourceFile;
+import org.springframework.core.test.tools.TestCompiler;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -24,11 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.test.tools.SourceFile;
-import org.springframework.core.test.tools.TestCompiler;
-import org.springframework.util.FileCopyUtils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,7 +65,7 @@ class SpringAutoServiceProcessorTest {
 					assertTrue(configList.contains(type.getName()));
 				}
 				catch (IOException e) {
-					throw new RuntimeException(e);
+					throw new CompilationException(e, SourceFile.forTestClass(type));
 				}
 			});
 	}
