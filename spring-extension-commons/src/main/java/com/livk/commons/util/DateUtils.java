@@ -16,10 +16,10 @@
 
 package com.livk.commons.util;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -56,7 +56,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return the long
 	 */
 	public static Long timestamp(LocalDateTime localDateTime) {
-		return localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+		return timestamp(localDateTime, ZoneId.systemDefault());
+	}
+
+	/**
+	 * LocalDateTime 转时间戳
+	 * @param localDateTime the local date time
+	 * @param zoneId zoneId
+	 * @return the long
+	 */
+	public static Long timestamp(LocalDateTime localDateTime, ZoneId zoneId) {
+		return localDateTime.atZone(zoneId).toEpochSecond();
 	}
 
 	/**
@@ -65,7 +75,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime localDateTime(Long timeStamp) {
-		return LocalDateTime.ofEpochSecond(timeStamp, 0, OffsetDateTime.now().getOffset());
+		return localDateTime(timeStamp, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 时间戳转LocalDateTime
+	 * @param timeStamp the time stamp
+	 * @param zoneId zoneId
+	 * @return the local date time
+	 */
+	public static LocalDateTime localDateTime(Long timeStamp, ZoneId zoneId) {
+		return LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), zoneId);
 	}
 
 	/**
@@ -74,7 +94,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return the date
 	 */
 	public static Date date(LocalDateTime localDateTime) {
-		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		return date(localDateTime, ZoneId.systemDefault());
+	}
+
+	/**
+	 * LocalDateTime 转 Date
+	 * @param localDateTime the local date time
+	 * @param zoneId zoneId
+	 * @return the date
+	 */
+	public static Date date(LocalDateTime localDateTime, ZoneId zoneId) {
+		return Date.from(localDateTime.atZone(zoneId).toInstant());
 	}
 
 	/**
@@ -83,7 +113,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return the date
 	 */
 	public static Date date(LocalDate localDate) {
-		return date(localDate.atTime(LocalTime.now(ZoneId.systemDefault())));
+		return date(localDate, ZoneId.systemDefault());
+	}
+
+	/**
+	 * LocalDate 转 Date
+	 * @param localDate the local date
+	 * @param zoneId zoneId
+	 * @return the date
+	 */
+	public static Date date(LocalDate localDate, ZoneId zoneId) {
+		return date(localDate.atTime(LocalTime.now(zoneId)));
 	}
 
 	/**
@@ -92,7 +132,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime localDateTime(Date date) {
-		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+		return localDateTime(date, ZoneId.systemDefault());
+	}
+
+	/**
+	 * Date转 LocalDateTime
+	 * @param date the date
+	 * @param zoneId zoneId
+	 * @return the local date time
+	 */
+	public static LocalDateTime localDateTime(Date date, ZoneId zoneId) {
+		return LocalDateTime.ofInstant(date.toInstant(), zoneId);
 	}
 
 	/**
@@ -103,6 +153,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 */
 	public static String format(LocalDateTime localDateTime, String patten) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten);
+		return format(localDateTime, formatter);
+	}
+
+	/**
+	 * 日期 格式化
+	 * @param localDateTime the local date time
+	 * @param patten the patten
+	 * @param zoneId zoneId
+	 * @return the string
+	 */
+	public static String format(LocalDateTime localDateTime, String patten, ZoneId zoneId) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten).withZone(zoneId);
 		return format(localDateTime, formatter);
 	}
 
@@ -124,6 +186,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+		return LocalDateTime.parse(localDateTime, dateTimeFormatter);
+	}
+
+	/**
+	 * 字符串转 LocalDateTime
+	 * @param localDateTime the local date time
+	 * @param pattern the pattern
+	 * @param zoneId zoneId
+	 * @return the local date time
+	 */
+	public static LocalDateTime parse(String localDateTime, String pattern, ZoneId zoneId) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern).withZone(zoneId);
 		return LocalDateTime.parse(localDateTime, dateTimeFormatter);
 	}
 
