@@ -8,4 +8,7 @@ dependencies {
 	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter")
 	implementation(group = "com.clickhouse", name = "clickhouse-jdbc", classifier = "http")
 	implementation("org.apache.httpcomponents.client5:httpclient5")
+
+	testImplementation("org.testcontainers:clickhouse")
+	testImplementation(project(":spring-extension-testcontainers"))
 }
