@@ -17,8 +17,6 @@ import com.livk.core.disruptor.DisruptorEventConsumer;
 import com.livk.core.disruptor.support.DisruptorEventWrapper;
 import com.lmax.disruptor.AggregateEventHandler;
 import com.lmax.disruptor.EventHandler;
-import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
