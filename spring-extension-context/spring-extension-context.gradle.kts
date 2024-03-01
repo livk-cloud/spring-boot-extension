@@ -36,4 +36,8 @@ dependencies {
 	testImplementation("com.mysql:mysql-connector-j")
 	testImplementation("org.postgresql:postgresql")
 	testImplementation("com.zaxxer:HikariCP")
+
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:mysql")
+	testImplementation(project(":spring-extension-testcontainers"))
 }

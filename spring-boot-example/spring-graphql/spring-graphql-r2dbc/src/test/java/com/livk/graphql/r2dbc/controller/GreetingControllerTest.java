@@ -16,15 +16,21 @@
 
 package com.livk.graphql.r2dbc.controller;
 
+import com.livk.testcontainers.PostgresqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Map;
 
@@ -39,7 +45,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")
+@Testcontainers(disabledWithoutDocker = true)
 class GreetingControllerTest {
+
+	@Container
+	@ServiceConnection
+	static PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+		.withDatabaseName("graphql");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.r2dbc.username", postgresql::getUsername);
+		registry.add("spring.r2dbc.password", postgresql::getPassword);
+		registry.add("spring.r2dbc.url", () -> "r2dbc:postgres://" + postgresql.getHost() + ":"
+				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+	}
 
 	@Autowired
 	WebTestClient webTestClient;

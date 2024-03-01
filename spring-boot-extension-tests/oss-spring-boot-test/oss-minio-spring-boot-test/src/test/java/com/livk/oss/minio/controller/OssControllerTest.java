@@ -17,11 +17,18 @@
 package com.livk.oss.minio.controller;
 
 import com.livk.commons.io.FileUtils;
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.MinIOContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.io.InputStream;
@@ -37,7 +44,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class OssControllerTest {
+
+	@Container
+	@ServiceConnection
+	static MinIOContainer minio = new MinIOContainer(DockerImageNames.minio()).withUserName("admin")
+		.withPassword("1375632510")
+		.withExposedPorts(9000);
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.oss.access-key", minio::getUserName);
+		registry.add("spring.oss.secret-key", minio::getPassword);
+		registry.add("spring.oss.url", () -> "minio:http://" + minio.getHost() + ":" + minio.getMappedPort(9000));
+	}
 
 	@Autowired
 	MockMvc mockMvc;

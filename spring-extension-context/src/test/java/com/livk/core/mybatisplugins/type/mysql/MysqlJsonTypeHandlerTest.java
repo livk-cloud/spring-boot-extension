@@ -17,14 +17,20 @@
 package com.livk.core.mybatisplugins.type.mysql;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.testcontainers.MysqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -40,7 +46,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @ContextConfiguration(classes = MybatisConfig.class)
 @ExtendWith(SpringExtension.class)
+@Testcontainers(disabledWithoutDocker = true)
 class MysqlJsonTypeHandlerTest {
+
+	@Container
+	@ServiceConnection
+	static MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+		.withDatabaseName("mybatis");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.username", mysql::getUsername);
+		registry.add("spring.datasource.password", mysql::getPassword);
+		registry.add("spring.datasource.url", () -> "jdbc:mysql://" + mysql.getHost() + ":" + mysql.getMappedPort(3306)
+				+ "/" + mysql.getDatabaseName() + "?createDatabaseIfNotExist=true");
+	}
 
 	@Autowired
 	DataSource dataSource;

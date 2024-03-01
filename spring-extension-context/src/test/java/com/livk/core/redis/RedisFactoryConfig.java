@@ -17,9 +17,11 @@
 package com.livk.core.redis;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
@@ -31,7 +33,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
  * @author livk
  */
 @Configuration
-@PropertySource("classpath:env.properties")
+@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class RedisFactoryConfig {
 
 	@Bean

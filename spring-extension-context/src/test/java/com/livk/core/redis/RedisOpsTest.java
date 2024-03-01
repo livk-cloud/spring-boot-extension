@@ -16,13 +16,19 @@
 
 package com.livk.core.redis;
 
+import com.livk.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +41,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @ContextConfiguration(classes = { RedisFactoryConfig.class })
 @ExtendWith(SpringExtension.class)
+@Testcontainers(disabledWithoutDocker = true)
 class RedisOpsTest {
+
+	@Container
+	@ServiceConnection
+	static RedisContainer redis = new RedisContainer().withPassword("123456");
+
+	@DynamicPropertySource
+	static void redisProperties(DynamicPropertyRegistry registry) {
+		registry.add("redis.host", redis::getHost);
+		registry.add("redis.port", redis::getFirstMappedPort);
+		registry.add("redis.password", redis::getPassword);
+	}
 
 	@Autowired
 	RedisConnectionFactory connectionFactory;

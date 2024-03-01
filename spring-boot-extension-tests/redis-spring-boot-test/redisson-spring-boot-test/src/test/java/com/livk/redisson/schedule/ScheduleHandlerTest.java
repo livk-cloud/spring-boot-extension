@@ -16,9 +16,15 @@
 
 package com.livk.redisson.schedule;
 
+import com.livk.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * <p>
@@ -28,7 +34,18 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author livk
  */
 @SpringBootTest
+@Testcontainers(disabledWithoutDocker = true)
 class ScheduleHandlerTest {
+
+	@Container
+	@ServiceConnection
+	static RedisContainer redis = new RedisContainer().withPassword("123456");
+
+	@DynamicPropertySource
+	static void redisProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.redisson.config.single-server-config.address",
+				() -> "redis://" + redis.getHost() + ":" + redis.getMappedPort(6379));
+	}
 
 	@Autowired
 	ScheduleHandler scheduleHandler;

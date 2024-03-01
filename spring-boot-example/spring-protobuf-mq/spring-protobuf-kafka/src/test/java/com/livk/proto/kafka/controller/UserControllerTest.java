@@ -16,12 +16,18 @@
 
 package com.livk.proto.kafka.controller;
 
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,9 +36,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @SpringBootTest
-@EmbeddedKafka(ports = 9092)
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka()).withExposedPorts(9093)
+		.withEnv("KAFKA_LISTENER_SECURITY_PROTOCOL_MAP", "PLAINTEXT:PLAINTEXT,BROKER:PLAINTEXT")
+		.withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+		.withKraft();
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.kafka.bootstrap-servers",
+				() -> String.format("%s:%s", kafka.getHost(), kafka.getMappedPort(9093)));
+	}
 
 	@Autowired
 	MockMvc mockMvc;

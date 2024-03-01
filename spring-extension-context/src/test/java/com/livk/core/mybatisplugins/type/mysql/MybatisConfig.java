@@ -27,8 +27,12 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import javax.sql.DataSource;
 
@@ -40,15 +44,18 @@ import javax.sql.DataSource;
  * @author livk
  */
 @Configuration
+@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class MybatisConfig {
 
 	@Bean(destroyMethod = "close")
-	public HikariDataSource dataSource() {
+	public HikariDataSource dataSource(@Value("${spring.datasource.url}") String url,
+			@Value("${spring.datasource.username}") String username,
+			@Value("${spring.datasource.password}") String password) {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:mysql://livk.com:3306/mybatis_type_context?createDatabaseIfNotExist=true");
-		dataSource.setUsername("root");
-		dataSource.setPassword("123456");
+		dataSource.setJdbcUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
 		return dataSource;
 	}
 

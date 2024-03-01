@@ -16,11 +16,20 @@
 
 package com.livk.proto.amqp.controller;
 
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.time.Duration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +39,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static final RabbitMQContainer rabbit = new RabbitMQContainer(DockerImageNames.rabbitmq())
+		.withStartupTimeout(Duration.ofMinutes(4));
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.rabbitmq.host", rabbit::getHost);
+		registry.add("spring.rabbitmq.port", () -> rabbit.getMappedPort(5672));
+	}
 
 	@Autowired
 	MockMvc mockMvc;

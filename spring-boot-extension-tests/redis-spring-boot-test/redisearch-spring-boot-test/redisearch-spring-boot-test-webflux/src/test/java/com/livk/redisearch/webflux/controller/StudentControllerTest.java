@@ -17,20 +17,37 @@
 package com.livk.redisearch.webflux.controller;
 
 import com.livk.redisearch.webflux.entity.Student;
+import com.livk.testcontainers.RedisStackContainer;
 import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * @author livk
  */
 @SpringBootTest
 @AutoConfigureWebTestClient
+@Testcontainers(disabledWithoutDocker = true)
 class StudentControllerTest {
+
+	@Container
+	@ServiceConnection
+	static RedisStackContainer redis = new RedisStackContainer();
+
+	@DynamicPropertySource
+	static void redisProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", () -> redis.getMappedPort(6379));
+	}
 
 	@Autowired
 	WebTestClient client;

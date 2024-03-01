@@ -17,10 +17,16 @@
 package com.livk.curator;
 
 import com.livk.core.curator.CuratorTemplate;
+import com.livk.testcontainers.ZookeeperContainer;
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,7 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author livk
  */
 @SpringBootTest
+@Testcontainers(disabledWithoutDocker = true)
 class CuratorAppTest {
+
+	@Container
+	@ServiceConnection
+	static ZookeeperContainer zookeeper = new ZookeeperContainer();
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.zookeeper.curator.connect-string",
+				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getMappedPort(2181)));
+	}
 
 	@Autowired
 	CuratorFramework curatorFramework;

@@ -16,11 +16,17 @@
 
 package com.livk.redisearch.mvc.controller;
 
+import com.livk.testcontainers.RedisStackContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +42,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class StudentControllerTest {
+
+	@Container
+	@ServiceConnection
+	static RedisStackContainer redis = new RedisStackContainer();
+
+	@DynamicPropertySource
+	static void redisProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", () -> redis.getMappedPort(6379));
+	}
 
 	@Autowired
 	MockMvc mockMvc;
