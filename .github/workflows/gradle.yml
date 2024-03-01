@@ -71,13 +71,6 @@ jobs:
         ports:
           - 9000:9000
 
-      click-house:
-        image: clickhouse/clickhouse-server
-        ports:
-          - 18123:8123
-          - 19000:9000
-          - 19009:9009
-
       postgresql:
         image: gradescope/postgresql-multiple-databases
         ports:
