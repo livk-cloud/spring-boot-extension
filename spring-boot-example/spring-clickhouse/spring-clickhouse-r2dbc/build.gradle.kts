@@ -12,6 +12,5 @@ dependencies {
 
 	testImplementation("org.testcontainers:clickhouse")
 	testImplementation("org.testcontainers:r2dbc")
-	testImplementation(group = "com.clickhouse", name = "clickhouse-jdbc", classifier = "http")
 	testImplementation(project(":spring-extension-testcontainers"))
 }
