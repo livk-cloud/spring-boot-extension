@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
-    url: jdbc:clickhouse://livk.com:18123/default
+    url: jdbc:clickhouse://livk.com:8123/default
   sql:
     init:
       schema-locations: classpath:data.sql

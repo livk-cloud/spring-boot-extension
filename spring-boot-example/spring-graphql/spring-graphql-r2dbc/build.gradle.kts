@@ -9,4 +9,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.postgresql:r2dbc-postgresql")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
+
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:r2dbc")
+	testImplementation(project(":spring-extension-testcontainers"))
 }

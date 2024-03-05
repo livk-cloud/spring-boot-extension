@@ -17,6 +17,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
+import com.livk.testcontainers.r2dbc.ClickHouseR2dbcContainer;
 import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -25,8 +26,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Date;
 import java.util.List;
@@ -40,8 +46,20 @@ import java.util.List;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")
+@Testcontainers(disabledWithoutDocker = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static ClickHouseR2dbcContainer clickhouse = new ClickHouseR2dbcContainer()
+		.withExposedPorts(ClickHouseR2dbcContainer.HTTP_PORT, ClickHouseR2dbcContainer.NATIVE_PORT);
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.r2dbc.url", () -> "r2dbc:clickhouse://" + clickhouse.getHost() + ":"
+				+ clickhouse.getMappedPort(ClickHouseR2dbcContainer.HTTP_PORT) + "/default");
+	}
 
 	@Autowired
 	WebTestClient client;

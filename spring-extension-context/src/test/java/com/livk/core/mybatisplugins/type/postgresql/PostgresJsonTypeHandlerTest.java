@@ -17,14 +17,20 @@
 package com.livk.core.mybatisplugins.type.postgresql;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.testcontainers.PostgresqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -40,7 +46,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @ContextConfiguration(classes = MybatisConfig.class)
 @ExtendWith(SpringExtension.class)
+@Testcontainers(disabledWithoutDocker = true)
 class PostgresJsonTypeHandlerTest {
+
+	@Container
+	@ServiceConnection
+	static PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+		.withDatabaseName("mybatis");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.username", postgresql::getUsername);
+		registry.add("spring.datasource.password", postgresql::getPassword);
+		registry.add("spring.datasource.url", () -> "jdbc:postgresql://" + postgresql.getHost() + ":"
+				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+	}
 
 	@Autowired
 	DataSource dataSource;

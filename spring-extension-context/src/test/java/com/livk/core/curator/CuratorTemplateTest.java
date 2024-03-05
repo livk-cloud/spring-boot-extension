@@ -16,6 +16,7 @@
 
 package com.livk.core.curator;
 
+import com.livk.testcontainers.ZookeeperContainer;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
@@ -24,8 +25,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -35,16 +41,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * <p>
- * CuratorTemplateTest
- * </p>
- *
  * @author livk
  */
 @ContextConfiguration(classes = CuratorConfig.class)
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Testcontainers(disabledWithoutDocker = true)
 class CuratorTemplateTest {
+
+	@Container
+	@ServiceConnection
+	static ZookeeperContainer zookeeper = new ZookeeperContainer();
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("curator.connectString",
+				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getMappedPort(2181)));
+	}
 
 	@Autowired
 	CuratorTemplate template;

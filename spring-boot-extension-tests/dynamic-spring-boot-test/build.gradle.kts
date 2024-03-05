@@ -8,4 +8,8 @@ dependencies {
 	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter")
 	implementation("com.mysql:mysql-connector-j")
 	implementation("org.postgresql:postgresql")
+
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:mysql")
+	testImplementation(project(":spring-extension-testcontainers"))
 }

@@ -21,19 +21,17 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Import;
 
 /**
- * <p>
- * CuratorConfig
- * </p>
- *
  * @author livk
  */
 @Configuration
-@PropertySource("classpath:env.properties")
+@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class CuratorConfig {
 
 	@Bean(initMethod = "start", destroyMethod = "close")
