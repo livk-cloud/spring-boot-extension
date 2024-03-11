@@ -1,6 +1,9 @@
 package com.livk.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.livk.elasticsearch.annotation.*;
@@ -10,7 +13,10 @@ import com.livk.elasticsearch.template.ElasticsearchTemplate;
 import com.livk.testcontainers.DockerImageNames;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHost;
+import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -31,9 +37,9 @@ class ElasticsearchAppTest {
 
 	@Container
 	@ServiceConnection
-	static ElasticsearchContainer elasticsearch = new ElasticsearchContainer(DockerImageNames.elasticsearch())
-		.withPassword("livk123")
+	static ElasticsearchContainer elasticsearch = new ElasticsearchContainer(DockerImageNames.elasticsearch("8.6.2"))
 		.withStartupTimeout(Duration.ofMinutes(5))
+		.withPassword("livk123")
 		.withExposedPorts(9200, 9300);
 
 	@DynamicPropertySource
@@ -44,14 +50,11 @@ class ElasticsearchAppTest {
 		registry.add("spring.elasticsearch.password", () -> "livk123");
 	}
 
-	private final ElasticsearchClient elasticsearchClient;
+	@Autowired
+	ElasticsearchClient elasticsearchClient;
 
-	private final ElasticsearchTemplate elasticsearchTemplate;
-
-	ElasticsearchAppTest(ElasticsearchClient elasticsearchClient, ElasticsearchTemplate elasticsearchTemplate) {
-		this.elasticsearchClient = elasticsearchClient;
-		this.elasticsearchTemplate = elasticsearchTemplate;
-	}
+	@Autowired
+	ElasticsearchTemplate elasticsearchTemplate;
 
 	@Test
 	void contextLoads() {
