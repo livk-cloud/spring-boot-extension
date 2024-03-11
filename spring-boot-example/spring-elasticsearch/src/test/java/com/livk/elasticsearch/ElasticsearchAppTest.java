@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers
+@Testcontainers(disabledWithoutDocker = true)
 class ElasticsearchAppTest {
 
 	@Container
