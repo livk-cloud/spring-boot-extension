@@ -32,70 +32,99 @@ import java.util.List;
 @AllArgsConstructor
 public class Document {
 
-    private String name;
-    private String alias;
-    private List<Mapping> mappings;
-    private Setting setting;
-    private Analysis analysis;
+	private String name;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Mapping {
-        private String field;
-        private Type type;
-        private String searchAnalyzer;
-        private String analyzer;
-        private boolean fielddata;
-        private boolean eagerGlobalOrdinals;
-    }
+	private String alias;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Setting {
-        private short shards;
-        private short replicas;
-    }
+	private List<Mapping> mappings;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Analysis {
-        private List<Filter> filters;
-        private List<Analyzer> analyzers;
-    }
+	private Setting setting;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Filter {
-        private String name;
-        private List<Option> options;
-    }
+	private Analysis analysis;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Args {
-        private String filter;
-        private String tokenizer;
-    }
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Mapping {
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Option {
-        private String key;
-        private String value;
-    }
+		private String field;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Analyzer {
-        private String name;
-        private Args args;
-    }
+		private Type type;
+
+		private String searchAnalyzer;
+
+		private String analyzer;
+
+		private boolean fielddata;
+
+		private boolean eagerGlobalOrdinals;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Setting {
+
+		private short shards;
+
+		private short replicas;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Analysis {
+
+		private List<Filter> filters;
+
+		private List<Analyzer> analyzers;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Filter {
+
+		private String name;
+
+		private List<Option> options;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Args {
+
+		private String filter;
+
+		private String tokenizer;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Option {
+
+		private String key;
+
+		private String value;
+
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Analyzer {
+
+		private String name;
+
+		private Args args;
+
+	}
 
 }

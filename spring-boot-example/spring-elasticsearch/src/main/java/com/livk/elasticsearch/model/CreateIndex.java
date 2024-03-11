@@ -28,8 +28,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateIndex<TDocument> {
 
-    private String name;
-    private String alias;
-    private Class<TDocument> clazz;
+	private String name;
+
+	private String alias;
+
+	private Class<TDocument> clazz;
 
 }

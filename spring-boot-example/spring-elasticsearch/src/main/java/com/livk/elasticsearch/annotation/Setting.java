@@ -19,9 +19,10 @@ package com.livk.elasticsearch.annotation;
 /**
  * @author laokou
  */
-public  @interface Setting {
+public @interface Setting {
 
-    short shards() default 1;
-    short replicas() default 1;
+	short shards() default 1;
+
+	short replicas() default 1;
 
 }

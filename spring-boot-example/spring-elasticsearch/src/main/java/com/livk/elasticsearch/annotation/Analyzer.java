@@ -21,7 +21,8 @@ package com.livk.elasticsearch.annotation;
  */
 public @interface Analyzer {
 
-    String name();
-    Args args();
+	String name();
+
+	Args args();
 
 }

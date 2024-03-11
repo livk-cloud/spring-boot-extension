@@ -26,8 +26,8 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE })
 public @interface Index {
 
-    Analysis analysis() default @Analysis;
+	Analysis analysis() default @Analysis;
 
-    Setting setting() default @Setting;
+	Setting setting() default @Setting;
 
 }

@@ -5,7 +5,7 @@ spring:
   # elasticsearch
   elasticsearch:
     uris:
-      - http://elasticsearch.laokou.org:9200
+      - http://elasticsearch.livk.com:9200
     username: elastic
     password: laokou123
     connection-timeout: 30s

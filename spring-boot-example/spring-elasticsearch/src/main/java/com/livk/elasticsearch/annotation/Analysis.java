@@ -21,7 +21,8 @@ package com.livk.elasticsearch.annotation;
  */
 public @interface Analysis {
 
-    Filter[] filters() default {};
-    Analyzer[] analyzers() default {};
+	Filter[] filters() default {};
+
+	Analyzer[] analyzers() default {};
 
 }

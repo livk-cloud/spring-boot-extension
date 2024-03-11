@@ -50,19 +50,17 @@ class ElasticsearchAppTest {
 	}
 
 	@Data
-	@Index(analysis = @Analysis(filters = {
-		@Filter(name = "livk_pinyin",options = { @Option(key = "type", value = "pinyin")
-			, @Option(key = "keep_full_pinyin", value = "false")
-			, @Option(key = "keep_joined_full_pinyin", value = "true")
-			, @Option(key = "keep_original", value = "true")
-			, @Option(key = "limit_first_letter_length", value = "16")
-			, @Option(key = "remove_duplicated_term", value = "true")
-			, @Option(key = "none_chinese_pinyin_tokenize", value = "false")
-		}),
-	}
-		, analyzers = {
-		@Analyzer(name = "ik_pinyin", args = @Args(filter = "livk_pinyin", tokenizer = "ik_max_word"))
-	}))
+	@Index(analysis = @Analysis(
+			filters = { @Filter(name = "livk_pinyin",
+					options = { @Option(key = "type", value = "pinyin"),
+							@Option(key = "keep_full_pinyin", value = "false"),
+							@Option(key = "keep_joined_full_pinyin", value = "true"),
+							@Option(key = "keep_original", value = "true"),
+							@Option(key = "limit_first_letter_length", value = "16"),
+							@Option(key = "remove_duplicated_term", value = "true"),
+							@Option(key = "none_chinese_pinyin_tokenize", value = "false") }), },
+			analyzers = {
+					@Analyzer(name = "ik_pinyin", args = @Args(filter = "livk_pinyin", tokenizer = "ik_max_word")) }))
 	static class Resource {
 
 		@Field(type = Type.TEXT, searchAnalyzer = "ik_smart", analyzer = "ik_pinyin")
@@ -73,8 +71,11 @@ class ElasticsearchAppTest {
 	@Data
 	@Index
 	static class Project {
+
 		@JsonSerialize(using = ToStringSerializer.class)
 		@Field(type = Type.LONG)
 		private Long businessKey;
+
 	}
+
 }

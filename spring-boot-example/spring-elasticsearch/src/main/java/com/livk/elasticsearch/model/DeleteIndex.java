@@ -28,7 +28,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeleteIndex {
 
-    private String name;
-    private String alias;
+	private String name;
+
+	private String alias;
 
 }

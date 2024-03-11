@@ -26,7 +26,8 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE })
 public @interface Option {
 
-    String key();
-    String value();
+	String key();
+
+	String value();
 
 }

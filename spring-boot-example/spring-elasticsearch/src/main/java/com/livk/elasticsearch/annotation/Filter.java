@@ -21,7 +21,8 @@ package com.livk.elasticsearch.annotation;
  */
 public @interface Filter {
 
-    String name();
-    Option[] options();
+	String name();
+
+	Option[] options();
 
 }

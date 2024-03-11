@@ -21,7 +21,8 @@ package com.livk.elasticsearch.annotation;
  */
 public @interface Args {
 
-    String filter();
-    String tokenizer();
+	String filter();
+
+	String tokenizer();
 
 }

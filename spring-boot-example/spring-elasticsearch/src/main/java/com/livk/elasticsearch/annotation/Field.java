@@ -26,16 +26,16 @@ import java.lang.annotation.*;
 @Target({ ElementType.FIELD })
 public @interface Field {
 
-    String value() default "";
+	String value() default "";
 
-    Type type();
+	Type type();
 
-    String searchAnalyzer() default "";
+	String searchAnalyzer() default "";
 
-    String analyzer() default "";
+	String analyzer() default "";
 
-    boolean fielddata() default false;
+	boolean fielddata() default false;
 
-    boolean eagerGlobalOrdinals() default false;
+	boolean eagerGlobalOrdinals() default false;
 
 }
