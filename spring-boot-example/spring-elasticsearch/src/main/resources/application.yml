@@ -1,0 +1,12 @@
+server:
+  port: 8092
+
+spring:
+  # elasticsearch
+  elasticsearch:
+    uris:
+      - http://elasticsearch.laokou.org:9200
+    username: elastic
+    password: laokou123
+    connection-timeout: 30s
+    socket-timeout: 30s
