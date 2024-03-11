@@ -7,6 +7,6 @@ spring:
     uris:
       - http://elasticsearch.livk.com:9200
     username: elastic
-    password: laokou123
+    password: livk123
     connection-timeout: 30s
     socket-timeout: 30s

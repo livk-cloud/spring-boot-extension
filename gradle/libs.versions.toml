@@ -39,12 +39,14 @@ spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.41"
 compile-testing = "0.21.0"
 elasticsearch = "8.12.2"
+testcontainers-elasticsearch = "1.19.7"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
 
 #elasticsearch
 elasticsearch = { group = "co.elastic.clients", name = "elasticsearch-java", version.ref = "elasticsearch" }
+testcontainers-elasticsearch = { group = "org.testcontainers", name = "elasticsearch", version.ref = "testcontainers-elasticsearch" }
 
 #springdoc-openapi-all
 openapi-common = { group = "org.springdoc", name = "springdoc-openapi-starter-common", version.ref = "springdoc" }

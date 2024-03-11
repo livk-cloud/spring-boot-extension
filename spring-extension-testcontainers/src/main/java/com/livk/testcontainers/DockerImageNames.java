@@ -44,6 +44,16 @@ public class DockerImageNames {
 
 	public static final String MINIO_IMAGE = "minio/minio";
 
+	public static final String ELASTICSEARCH_IMAGE = "elasticsearch/elasticsearch";
+
+	public static DockerImageName elasticsearch() {
+		return elasticsearch(LATEST_TAG);
+	}
+
+	public static DockerImageName elasticsearch(String tag) {
+		return DockerImageName.parse(ELASTICSEARCH_IMAGE).withTag(tag);
+	}
+
 	public static DockerImageName mysql() {
 		return mysql(LATEST_TAG);
 	}
