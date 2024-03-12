@@ -39,7 +39,8 @@ class ElasticsearchAppTest {
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.elasticsearch.uris", () -> "http://" + elasticsearch.getHost()  + ":" + elasticsearch.getMappedPort(9200));
+		registry.add("spring.elasticsearch.uris",
+				() -> "http://" + elasticsearch.getHost() + ":" + elasticsearch.getMappedPort(9200));
 		registry.add("spring.elasticsearch.username", () -> "");
 		registry.add("spring.elasticsearch.password", () -> "");
 	}
@@ -61,7 +62,7 @@ class ElasticsearchAppTest {
 		// Resource.class);
 		CreateIndex<Project> createIndex2 = new CreateIndex<>("livk_pro_1", "livk_pro", Project.class);
 		// elasticsearchTemplate.createIndex(createIndex);
-		//elasticsearchTemplate.createIndex(createIndex2);
+		// elasticsearchTemplate.createIndex(createIndex2);
 	}
 
 	@Test
