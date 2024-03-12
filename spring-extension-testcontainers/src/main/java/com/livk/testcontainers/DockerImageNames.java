@@ -47,7 +47,7 @@ public class DockerImageNames {
 	public static final String ELASTICSEARCH_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch";
 
 	public static DockerImageName elasticsearch(String tag) {
-		return DockerImageName.parse(ELASTICSEARCH_IMAGE).withTag(tag).asCompatibleSubstituteFor(ELASTICSEARCH_IMAGE);
+		return DockerImageName.parse(ELASTICSEARCH_IMAGE).withTag(tag);
 	}
 
 	public static DockerImageName mysql() {

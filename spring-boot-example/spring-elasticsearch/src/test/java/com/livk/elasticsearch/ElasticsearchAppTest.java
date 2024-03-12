@@ -1,9 +1,6 @@
 package com.livk.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.livk.elasticsearch.annotation.*;
@@ -13,8 +10,6 @@ import com.livk.elasticsearch.template.ElasticsearchTemplate;
 import com.livk.testcontainers.DockerImageNames;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHost;
-import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +20,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,22 +29,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers
 class ElasticsearchAppTest {
 
 	@Container
 	@ServiceConnection
-	static ElasticsearchContainer elasticsearch = new ElasticsearchContainer(DockerImageNames.elasticsearch("8.6.2"))
-		.withStartupTimeout(Duration.ofMinutes(5))
-		.withPassword("livk123")
+	static ElasticsearchContainer elasticsearch = new ElasticsearchContainer(DockerImageNames.elasticsearch("8.12.2"))
 		.withExposedPorts(9200, 9300);
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.elasticsearch.uris",
-				() -> "http://" + elasticsearch.getHost() + ":" + elasticsearch.getMappedPort(9200));
-		registry.add("spring.elasticsearch.username", () -> "elastic");
-		registry.add("spring.elasticsearch.password", () -> "livk123");
+		registry.add("spring.elasticsearch.uris", () -> "http://" + elasticsearch.getHost()  + ":" + elasticsearch.getMappedPort(9200));
+		registry.add("spring.elasticsearch.username", () -> "");
+		registry.add("spring.elasticsearch.password", () -> "");
 	}
 
 	@Autowired
@@ -67,7 +61,7 @@ class ElasticsearchAppTest {
 		// Resource.class);
 		CreateIndex<Project> createIndex2 = new CreateIndex<>("livk_pro_1", "livk_pro", Project.class);
 		// elasticsearchTemplate.createIndex(createIndex);
-		elasticsearchTemplate.createIndex(createIndex2);
+		//elasticsearchTemplate.createIndex(createIndex2);
 	}
 
 	@Test
@@ -75,7 +69,7 @@ class ElasticsearchAppTest {
 		// DeleteIndex deleteIndex = new DeleteIndex("livk_res_1", "livk_res");
 		DeleteIndex deleteIndex2 = new DeleteIndex("livk_pro_1", "livk_pro");
 		// elasticsearchTemplate.deleteIndex(deleteIndex);
-		elasticsearchTemplate.deleteIndex(deleteIndex2);
+		// elasticsearchTemplate.deleteIndex(deleteIndex2);
 	}
 
 	// @Data
