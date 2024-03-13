@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.SynthesizingMethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -67,7 +66,7 @@ class UserAgentResolverTest {
 	@Test
 	void supportsParameter() throws Exception {
 		Method method = this.getClass().getDeclaredMethod("test", UserAgent.class);
-		MethodParameter parameter = new SynthesizingMethodParameter(method, 0);
+		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
 		assertTrue(resolver.supportsParameter(parameter));
 	}
@@ -77,7 +76,7 @@ class UserAgentResolverTest {
 
 		assertNull(UserAgentContextHolder.getUserAgentContext());
 		Method method = this.getClass().getDeclaredMethod("test", UserAgent.class);
-		MethodParameter parameter = new SynthesizingMethodParameter(method, 0);
+		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
 		ServletWebRequest webRequest = new ServletWebRequest(request, response);
 		Object result = resolver.resolveArgument(parameter, null, webRequest, null);
