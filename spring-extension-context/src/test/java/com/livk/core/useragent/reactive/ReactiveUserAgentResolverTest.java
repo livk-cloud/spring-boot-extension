@@ -22,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.SynthesizingMethodParameter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
@@ -66,7 +65,7 @@ class ReactiveUserAgentResolverTest {
 	@Test
 	void supportsParameter() throws Exception {
 		Method method = this.getClass().getDeclaredMethod("test", Mono.class);
-		MethodParameter parameter = new SynthesizingMethodParameter(method, 0);
+		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
 		assertTrue(resolver.supportsParameter(parameter));
 	}
@@ -76,7 +75,7 @@ class ReactiveUserAgentResolverTest {
 		StepVerifier.create(ReactiveUserAgentContextHolder.get()).expectNextCount(0).verifyComplete();
 
 		Method method = this.getClass().getDeclaredMethod("test", Mono.class);
-		MethodParameter parameter = new SynthesizingMethodParameter(method, 0);
+		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo")
 			.header(HttpHeaders.USER_AGENT,
