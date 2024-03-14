@@ -14,12 +14,12 @@
 package com.livk.core.ip2region;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.io.ResourceUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.core.ip2region.doamin.IpInfo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.lionsoul.ip2region.xdb.Searcher;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ class Ip2RegionSearchTest {
 
 	@BeforeAll
 	static void init() throws IOException {
-		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "ip/ip2region.xdb");
+		Resource resource = new FileUrlResource("../ip/ip2region.xdb");
 		Searcher searcher = Searcher.newWithBuffer(resource.getContentAsByteArray());
 		search = new Ip2RegionSearch(searcher);
 	}

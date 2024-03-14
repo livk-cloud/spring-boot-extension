@@ -13,7 +13,6 @@
 
 package com.livk.core.ip2region.support;
 
-import com.livk.commons.io.ResourceUtils;
 import com.livk.core.ip2region.Ip2RegionSearch;
 import com.livk.core.ip2region.annotation.RequestIp;
 import com.livk.core.ip2region.doamin.IpInfo;
@@ -21,6 +20,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.lionsoul.ip2region.xdb.Searcher;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -44,7 +44,7 @@ class RequestIPMethodArgumentResolverTest {
 
 	@BeforeAll
 	static void init() throws Exception {
-		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "ip/ip2region.xdb");
+		Resource resource = new FileUrlResource("../ip/ip2region.xdb");
 		Searcher searcher = Searcher.newWithBuffer(resource.getContentAsByteArray());
 		Ip2RegionSearch search = new Ip2RegionSearch(searcher);
 		resolver = new RequestIPMethodArgumentResolver(search);
