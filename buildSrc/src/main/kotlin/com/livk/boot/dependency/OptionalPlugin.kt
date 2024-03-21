@@ -20,6 +20,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.SourceSet
+import org.gradle.configurationcache.extensions.capitalized
 
 /**
  * @author livk
@@ -36,9 +38,14 @@ abstract class OptionalPlugin : Plugin<Project> {
 			optional.isCanBeResolved = false
 			optional.isCanBeConsumed = false
 			project.plugins.withType(JavaPlugin::class.java) {
-				project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.all { sourceSet ->
+				val extension = project.extensions.getByType(JavaPluginExtension::class.java)
+				extension.registerFeature(OPTIONAL) {
+					it.usingSourceSet(extension.sourceSets.getAt(SourceSet.MAIN_SOURCE_SET_NAME))
+				}
+				extension.sourceSets.all { sourceSet ->
 					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(optional)
 					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(optional)
+					configurations.getByName(OPTIONAL + JavaPlugin.API_CONFIGURATION_NAME.capitalized()).extendsFrom(optional)
 				}
 			}
 		}

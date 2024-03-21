@@ -69,7 +69,9 @@ abstract class DeployedPlugin : Plugin<Project> {
 		return project.extensions
 			.getByType(PublishingExtension::class.java)
 			.publications
-			.create(NAME, MavenPublication::class.java)
+			.create(NAME, MavenPublication::class.java){
+				it.suppressAllPomMetadataWarnings()
+			}
 
 	}
 
@@ -80,7 +82,7 @@ abstract class DeployedPlugin : Plugin<Project> {
 			}
 		}
 		publication.pom { pom ->
-			project.afterEvaluate{
+			project.afterEvaluate {
 				pom.name.set(project.name)
 				pom.description.set(project.description)
 			}
@@ -104,10 +106,4 @@ abstract class DeployedPlugin : Plugin<Project> {
 		}
 	}
 
-	private fun description(project: Project): String {
-		return if (project.description.isNullOrBlank())
-			project.name.replace("-", " ")
-		else
-			project.description!!
-	}
 }
