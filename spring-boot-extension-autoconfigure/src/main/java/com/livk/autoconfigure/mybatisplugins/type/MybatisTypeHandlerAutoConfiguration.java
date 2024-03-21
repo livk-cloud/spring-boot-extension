@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringAutoService
 @AutoConfiguration
-@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class, ConfigurationCustomizer.class })
 public class MybatisTypeHandlerAutoConfiguration {
 
 	/**
