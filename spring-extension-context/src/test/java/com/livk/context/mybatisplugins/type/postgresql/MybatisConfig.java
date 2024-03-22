@@ -81,7 +81,7 @@ class MybatisConfig {
 		MapperScannerConfigurer configurer = new MapperScannerConfigurer();
 		configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
 		configurer.setSqlSessionTemplateBeanName("sqlSessionTemplate");
-		configurer.setBasePackage("com.livk.core.mybatisplugins.type.postgresql");
+		configurer.setBasePackage(this.getClass().getPackageName());
 		configurer.setAnnotationClass(Mapper.class);
 		return configurer;
 	}
