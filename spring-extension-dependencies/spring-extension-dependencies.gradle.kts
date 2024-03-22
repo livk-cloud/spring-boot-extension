@@ -21,7 +21,6 @@ dependencies {
 		api(libs.easyexcel)
 		api(libs.spotbugs.annotations)
 		api(libs.curator.recipes)
-		api(libs.ip2region)
 		api(libs.browscap.java)
 		api(libs.auto.service)
 		api(libs.yauaa)

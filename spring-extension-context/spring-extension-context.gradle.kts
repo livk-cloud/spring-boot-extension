@@ -13,7 +13,6 @@ dependencies {
 	optional("com.alibaba:easyexcel")
 	optional("org.springframework:spring-webmvc")
 	optional("org.springframework:spring-webflux")
-	optional("org.lionsoul:ip2region")
 	optional("dnsjava:dnsjava")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
