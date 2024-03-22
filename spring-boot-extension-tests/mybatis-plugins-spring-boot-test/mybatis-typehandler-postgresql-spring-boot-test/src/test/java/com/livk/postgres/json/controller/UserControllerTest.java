@@ -17,6 +17,7 @@
 package com.livk.postgres.json.controller;
 
 import com.livk.postgres.json.PGSQLTypeHandlerExampleApp;
+import com.livk.testcontainers.PostgresqlContainer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,8 +47,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(classes = PGSQLTypeHandlerExampleApp.class)
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+		.withDatabaseName("mybatis");
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.username", postgresql::getUsername);
+		registry.add("spring.datasource.password", postgresql::getPassword);
+		registry.add("spring.datasource.url", () -> "jdbc:postgresql://" + postgresql.getHost() + ":"
+				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+	}
 
 	@Autowired
 	MockMvc mockMvc;

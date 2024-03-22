@@ -17,9 +17,18 @@
 package com.livk.mqtt;
 
 import com.livk.mqtt.handler.MqttSender;
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.time.Duration;
 
 /**
  * <p>
@@ -29,7 +38,23 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author livk
  */
 @SpringBootTest(classes = MqttApp.class)
+@Testcontainers(disabledWithoutDocker = true)
 class MqttTest {
+
+	@Container
+	@ServiceConnection
+	@SuppressWarnings("deprecation")
+	static final RabbitMQContainer rabbit = new RabbitMQContainer(DockerImageNames.rabbitmq()).withExposedPorts(1883)
+		.withPluginsEnabled("rabbitmq_mqtt", "rabbitmq_web_mqtt")
+		.withAdminPassword("admin")
+		.withStartupTimeout(Duration.ofMinutes(4));
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.mqtt.url", () -> "tcp://" + rabbit.getHost() + ":" + rabbit.getMappedPort(1883));
+		registry.add("spring.mqtt.username", rabbit::getAdminUsername);
+		registry.add("spring.mqtt.password", rabbit::getAdminPassword);
+	}
 
 	@Autowired
 	MqttSender mqttSender;

@@ -16,15 +16,21 @@
 
 package com.livk.caffeine.controller;
 
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.RedisOps;
+import com.livk.testcontainers.RedisContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,16 +45,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>
- * CacheControllerTest
- * </p>
- *
  * @author livk
  */
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class CacheControllerTest {
+
+	@Container
+	@ServiceConnection
+	static RedisContainer redis = new RedisContainer();
+
+	@DynamicPropertySource
+	static void redisProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.data.redis.host", () -> "127.0.0.1");
+		registry.add("spring.data.redis.port", () -> redis.getMappedPort(6379));
+		registry.add("spring.data.redis.password", redis::getPassword);
+	}
 
 	@Autowired
 	MockMvc mockMvc;
@@ -124,6 +138,3 @@ class CacheControllerTest {
 	}
 
 }
-
-// Generated with love by TestMe :) Please report issues and submit feature requests at:
-// http://weirddev.com/forum#!/testme

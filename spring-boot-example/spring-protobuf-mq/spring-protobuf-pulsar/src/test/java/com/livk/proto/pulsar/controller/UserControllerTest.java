@@ -16,11 +16,20 @@
 
 package com.livk.proto.pulsar.controller;
 
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PulsarContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.time.Duration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +39,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static final PulsarContainer pulsar = new PulsarContainer(DockerImageNames.pulsar()).withStartupAttempts(2)
+		.withStartupTimeout(Duration.ofMinutes(3))
+		.withExposedPorts(PulsarContainer.BROKER_PORT, PulsarContainer.BROKER_HTTP_PORT);
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.pulsar.client.service-url",
+				() -> "pulsar://" + pulsar.getHost() + ":" + pulsar.getMappedPort(PulsarContainer.BROKER_PORT));
+	}
 
 	@Autowired
 	MockMvc mockMvc;

@@ -21,85 +21,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-cmd "redis-cli config set requirepass 123456"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
-
-      redis-stack:
-        image: redis/redis-stack
-        ports:
-          - 6380:6379
-          - 8001:8001
-
-      zookeeper:
-        image: zookeeper
-        ports:
-          - 2181:2181
-
-      rabbitmq:
-        image: rabbitmq
-        env:
-          RABBITMQ_DEFAULT_USER: admin
-          RABBITMQ_DEFAULT_PASS: admin
-        ports:
-          - 5672:5672
-          - 15672:15672
-          - 15675:15675
-          - 1883:1883
-        options: >-
-          --health-cmd "rabbitmq-plugins enable rabbitmq_mqtt"
-          --health-cmd "rabbitmq-plugins enable rabbitmq_web_mqtt"
-
-      pulsar:
-        image: apachepulsar/pulsar-standalone
-        ports:
-          - 6650:6650
-
-      minio:
-        image: bitnami/minio
-        env:
-          MINIO_ROOT_USER: admin
-          MINIO_ROOT_PASSWORD: 1375632510
-        ports:
-          - 9000:9000
-
-      click-house:
-        image: clickhouse/clickhouse-server
-        ports:
-          - 18123:8123
-          - 19000:9000
-          - 19009:9009
-
-      postgresql:
-        image: gradescope/postgresql-multiple-databases
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_MULTIPLE_DATABASES: graphql,mybatis,mybatis_type,mybatis_type_context
-          POSTGRES_PASSWORD: 123456
-
-      mysql:
-        image: mysql
-        env:
-          MYSQL_ROOT_PASSWORD: 123456
-        ports:
-          - 3306:3306
-
     steps:
       - name: Set up host
         run: echo '127.0.0.1 livk.com' | sudo tee -a /etc/hosts
 
       - uses: actions/checkout@v4.1.1
       - name: Set up JDK 21
-        uses: actions/setup-java@v4.0.0
+        uses: actions/setup-java@v4.2.1
         with:
           java-version: 21
           distribution: 'temurin'
@@ -110,6 +38,6 @@ jobs:
           gradle-version: current
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v4.1.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

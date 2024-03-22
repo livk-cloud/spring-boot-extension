@@ -28,12 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * <p>
- * ResponseWrapperTest
- * </p>
- *
  * @author livk
- * @date 2024/1/16
  */
 class ResponseWrapperTest {
 

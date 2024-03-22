@@ -19,8 +19,8 @@ package com.livk.autoconfigure.mybatisplugins.type;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.mybatisplugins.type.mysql.MysqlJsonTypeHandler;
-import com.livk.core.mybatisplugins.type.postgresql.PostgresJsonTypeHandler;
+import com.livk.context.mybatisplugins.type.mysql.MysqlJsonTypeHandler;
+import com.livk.context.mybatisplugins.type.postgresql.PostgresJsonTypeHandler;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringAutoService
 @AutoConfiguration
-@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
+@ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class, ConfigurationCustomizer.class })
 public class MybatisTypeHandlerAutoConfiguration {
 
 	/**

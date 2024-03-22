@@ -17,13 +17,21 @@
 package com.livk.pulsar.producer.controller;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PulsarContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.Duration;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,10 +45,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author livk
  */
-@SpringBootTest({ "spring.pulsar.client.service-url=pulsar://livk.com:6650", "spring.pulsar.consumer.topics=livk-topic",
-		"spring.pulsar.consumer.subscription.name=consumer" })
+@SpringBootTest({ "spring.pulsar.consumer.topics=livk-topic", "spring.pulsar.consumer.subscription.name=consumer" })
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 class MessageControllerTest {
+
+	@Container
+	@ServiceConnection
+	static final PulsarContainer pulsar = new PulsarContainer(DockerImageNames.pulsar()).withStartupAttempts(2)
+		.withStartupTimeout(Duration.ofMinutes(3))
+		.withExposedPorts(PulsarContainer.BROKER_PORT, PulsarContainer.BROKER_HTTP_PORT);
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.pulsar.client.service-url",
+				() -> "pulsar://" + pulsar.getHost() + ":" + pulsar.getMappedPort(PulsarContainer.BROKER_PORT));
+	}
 
 	@Autowired
 	MockMvc mockMvc;

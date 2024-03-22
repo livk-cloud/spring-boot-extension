@@ -16,7 +16,7 @@
 
 package com.livk.disruptor.event;
 
-import com.livk.core.disruptor.annotation.DisruptorEvent;
+import com.livk.context.disruptor.annotation.DisruptorEvent;
 import lombok.Builder;
 import lombok.Data;
 

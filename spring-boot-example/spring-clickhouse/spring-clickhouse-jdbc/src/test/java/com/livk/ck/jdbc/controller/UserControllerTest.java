@@ -19,6 +19,7 @@ package com.livk.ck.jdbc.controller;
 import com.livk.ck.jdbc.entity.User;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.DateUtils;
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.clickhouse.ClickHouseContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -48,8 +55,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers(disabledWithoutDocker = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
+
+	@Container
+	@ServiceConnection
+	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
+		.withExposedPorts(8123, 9000);
+
+	@DynamicPropertySource
+	static void properties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url",
+				() -> "jdbc:clickhouse://" + clickhouse.getHost() + ":" + clickhouse.getMappedPort(8123) + "/default");
+	}
 
 	@Autowired
 	MockMvc mockMvc;

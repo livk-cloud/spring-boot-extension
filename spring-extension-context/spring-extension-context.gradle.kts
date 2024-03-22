@@ -13,7 +13,6 @@ dependencies {
 	optional("com.alibaba:easyexcel")
 	optional("org.springframework:spring-webmvc")
 	optional("org.springframework:spring-webflux")
-	optional("org.lionsoul:ip2region")
 	optional("dnsjava:dnsjava")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
@@ -36,4 +35,9 @@ dependencies {
 	testImplementation("com.mysql:mysql-connector-j")
 	testImplementation("org.postgresql:postgresql")
 	testImplementation("com.zaxxer:HikariCP")
+	testImplementation("io.projectreactor:reactor-test")
+
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:mysql")
+	testImplementation(project(":spring-extension-testcontainers"))
 }

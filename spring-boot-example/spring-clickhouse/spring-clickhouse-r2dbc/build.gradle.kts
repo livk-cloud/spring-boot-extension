@@ -9,4 +9,8 @@ dependencies {
 	implementation("com.clickhouse:clickhouse-r2dbc")
 	implementation("com.clickhouse:clickhouse-client")
 	implementation("org.apache.httpcomponents.client5:httpclient5")
+
+	testImplementation("org.testcontainers:clickhouse")
+	testImplementation("org.testcontainers:r2dbc")
+	testImplementation(project(":spring-extension-testcontainers"))
 }
