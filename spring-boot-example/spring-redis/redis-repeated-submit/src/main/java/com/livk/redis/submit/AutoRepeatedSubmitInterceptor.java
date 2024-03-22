@@ -17,7 +17,7 @@
 package com.livk.redis.submit;
 
 import com.livk.commons.util.WebUtils;
-import com.livk.core.lock.LockType;
+import com.livk.context.lock.LockType;
 import com.livk.redis.submit.annotation.AutoRepeatedSubmit;
 import com.livk.redis.submit.support.LockSupport;
 import com.livk.redis.submit.support.RedisSupport;

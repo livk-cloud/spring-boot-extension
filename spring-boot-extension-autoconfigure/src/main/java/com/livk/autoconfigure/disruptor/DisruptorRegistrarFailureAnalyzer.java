@@ -17,7 +17,7 @@
 package com.livk.autoconfigure.disruptor;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.core.disruptor.exception.DisruptorRegistrarException;
+import com.livk.context.disruptor.exception.DisruptorRegistrarException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;

@@ -16,8 +16,8 @@
 
 package com.livk.disruptor.service.impl;
 
-import com.livk.core.disruptor.DisruptorEventProducer;
-import com.livk.core.disruptor.support.SpringDisruptor;
+import com.livk.context.disruptor.DisruptorEventProducer;
+import com.livk.context.disruptor.support.SpringDisruptor;
 import com.livk.disruptor.event.MessageModel;
 import com.livk.disruptor.service.DisruptorMqService;
 import lombok.extern.slf4j.Slf4j;

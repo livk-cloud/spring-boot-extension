@@ -16,7 +16,7 @@
 
 package com.livk.curator;
 
-import com.livk.core.curator.CuratorTemplate;
+import com.livk.context.curator.CuratorTemplate;
 import com.livk.testcontainers.ZookeeperContainer;
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.Test;

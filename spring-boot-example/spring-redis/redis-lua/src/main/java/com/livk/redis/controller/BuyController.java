@@ -16,7 +16,7 @@
 
 package com.livk.redis.controller;
 
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.RedisOps;
 import com.livk.redis.support.LuaStock;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
