@@ -16,8 +16,8 @@
 
 package com.livk.curator.lock;
 
-import com.livk.core.lock.LockScope;
-import com.livk.core.lock.annotation.OnLock;
+import com.livk.context.lock.LockScope;
+import com.livk.context.lock.annotation.OnLock;
 import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;

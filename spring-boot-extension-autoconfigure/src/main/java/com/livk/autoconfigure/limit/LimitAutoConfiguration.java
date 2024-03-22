@@ -18,9 +18,9 @@ package com.livk.autoconfigure.limit;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.redisson.RedissonAutoConfiguration;
-import com.livk.core.limit.LimitExecutor;
-import com.livk.core.limit.executor.RedissonLimitExecutor;
-import com.livk.core.limit.interceptor.LimitInterceptor;
+import com.livk.context.limit.LimitExecutor;
+import com.livk.context.limit.executor.RedissonLimitExecutor;
+import com.livk.context.limit.interceptor.LimitInterceptor;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

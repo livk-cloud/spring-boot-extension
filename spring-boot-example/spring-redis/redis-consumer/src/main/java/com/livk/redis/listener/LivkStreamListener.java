@@ -16,7 +16,7 @@
 
 package com.livk.redis.listener;
 
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.RedisOps;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;

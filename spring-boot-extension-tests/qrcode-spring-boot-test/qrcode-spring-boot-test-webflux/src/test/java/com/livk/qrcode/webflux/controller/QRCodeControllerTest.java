@@ -18,8 +18,8 @@ package com.livk.qrcode.webflux.controller;
 
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
-import com.livk.core.qrcode.PicType;
-import com.livk.core.qrcode.QRCodeUtils;
+import com.livk.context.qrcode.PicType;
+import com.livk.context.qrcode.QRCodeUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;

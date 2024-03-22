@@ -16,8 +16,8 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.core.lock.LockScope;
-import com.livk.core.lock.annotation.OnLock;
+import com.livk.context.lock.LockScope;
+import com.livk.context.lock.annotation.OnLock;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;

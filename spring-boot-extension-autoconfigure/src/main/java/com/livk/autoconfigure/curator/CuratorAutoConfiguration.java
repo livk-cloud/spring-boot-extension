@@ -17,7 +17,7 @@
 package com.livk.autoconfigure.curator;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.curator.CuratorTemplate;
+import com.livk.context.curator.CuratorTemplate;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;

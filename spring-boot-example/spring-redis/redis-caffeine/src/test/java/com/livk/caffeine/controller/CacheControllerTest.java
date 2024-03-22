@@ -16,7 +16,7 @@
 
 package com.livk.caffeine.controller;
 
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.RedisOps;
 import com.livk.testcontainers.RedisContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
