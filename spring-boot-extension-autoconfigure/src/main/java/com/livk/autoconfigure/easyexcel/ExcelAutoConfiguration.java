@@ -18,10 +18,10 @@ package com.livk.autoconfigure.easyexcel;
 
 import com.alibaba.excel.EasyExcel;
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.easyexcel.resolver.ExcelMethodArgumentResolver;
-import com.livk.core.easyexcel.resolver.ExcelMethodReturnValueHandler;
-import com.livk.core.easyexcel.resolver.ReactiveExcelMethodArgumentResolver;
-import com.livk.core.easyexcel.resolver.ReactiveExcelMethodReturnValueHandler;
+import com.livk.context.easyexcel.resolver.ExcelMethodArgumentResolver;
+import com.livk.context.easyexcel.resolver.ExcelMethodReturnValueHandler;
+import com.livk.context.easyexcel.resolver.ReactiveExcelMethodArgumentResolver;
+import com.livk.context.easyexcel.resolver.ReactiveExcelMethodReturnValueHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

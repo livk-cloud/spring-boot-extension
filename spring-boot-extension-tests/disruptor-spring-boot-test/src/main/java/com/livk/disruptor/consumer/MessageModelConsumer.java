@@ -16,7 +16,7 @@
 
 package com.livk.disruptor.consumer;
 
-import com.livk.core.disruptor.DisruptorEventConsumer;
+import com.livk.context.disruptor.DisruptorEventConsumer;
 import com.livk.disruptor.event.MessageModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

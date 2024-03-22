@@ -17,7 +17,7 @@
 package com.livk.redis.controller;
 
 import com.livk.common.redis.domain.LivkMessage;
-import com.livk.core.redis.ReactiveRedisOps;
+import com.livk.context.redis.ReactiveRedisOps;
 import com.livk.redis.entity.Person;
 import com.livk.redis.repository.PersonRepository;
 import java.util.Map;

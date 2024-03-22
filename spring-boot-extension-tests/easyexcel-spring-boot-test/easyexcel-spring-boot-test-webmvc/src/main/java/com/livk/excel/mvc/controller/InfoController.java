@@ -17,9 +17,9 @@
 package com.livk.excel.mvc.controller;
 
 import com.google.common.collect.Lists;
-import com.livk.core.easyexcel.annotation.ExcelParam;
-import com.livk.core.easyexcel.annotation.RequestExcel;
-import com.livk.core.easyexcel.annotation.ResponseExcel;
+import com.livk.context.easyexcel.annotation.ExcelParam;
+import com.livk.context.easyexcel.annotation.RequestExcel;
+import com.livk.context.easyexcel.annotation.ResponseExcel;
 import com.livk.excel.mvc.entity.Info;
 import com.livk.excel.mvc.listener.InfoExcelListener;
 import com.livk.excel.mvc.service.InfoService;

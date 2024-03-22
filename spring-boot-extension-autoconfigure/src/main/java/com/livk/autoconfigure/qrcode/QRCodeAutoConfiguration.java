@@ -17,10 +17,10 @@
 package com.livk.autoconfigure.qrcode;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.qrcode.QRCodeGenerator;
-import com.livk.core.qrcode.resolver.QRCodeMethodReturnValueHandler;
-import com.livk.core.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
-import com.livk.core.qrcode.support.GoogleQRCodeGenerator;
+import com.livk.context.qrcode.QRCodeGenerator;
+import com.livk.context.qrcode.resolver.QRCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

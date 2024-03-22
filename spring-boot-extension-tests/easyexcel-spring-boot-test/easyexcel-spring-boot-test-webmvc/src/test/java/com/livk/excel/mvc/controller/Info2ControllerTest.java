@@ -18,7 +18,7 @@ package com.livk.excel.mvc.controller;
 
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.util.JsonMapperUtils;
-import com.livk.core.easyexcel.annotation.ResponseExcel;
+import com.livk.context.easyexcel.annotation.ResponseExcel;
 import com.livk.excel.mvc.entity.Info;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

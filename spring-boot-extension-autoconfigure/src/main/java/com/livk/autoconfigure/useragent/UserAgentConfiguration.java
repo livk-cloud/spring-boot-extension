@@ -16,12 +16,12 @@
 
 package com.livk.autoconfigure.useragent;
 
-import com.livk.core.useragent.UserAgentHelper;
-import com.livk.core.useragent.reactive.ReactiveUserAgentFilter;
-import com.livk.core.useragent.reactive.ReactiveUserAgentResolver;
-import com.livk.core.useragent.servlet.UserAgentFilter;
-import com.livk.core.useragent.servlet.UserAgentResolver;
-import com.livk.core.useragent.support.UserAgentConverter;
+import com.livk.context.useragent.UserAgentHelper;
+import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
+import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
+import com.livk.context.useragent.servlet.UserAgentFilter;
+import com.livk.context.useragent.servlet.UserAgentResolver;
+import com.livk.context.useragent.support.UserAgentConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
