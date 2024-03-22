@@ -66,7 +66,7 @@ class CuratorOperationsTest {
 	}
 
 	@Autowired
-    CuratorOperations curatorOperations;
+	CuratorOperations curatorOperations;
 
 	@Test
 	@Order(1)
