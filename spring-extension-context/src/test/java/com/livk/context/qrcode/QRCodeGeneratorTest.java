@@ -42,8 +42,7 @@ class QRCodeGeneratorTest {
 
 	@Test
 	void generateTextQRCode() throws IOException {
-		QRCodeEntity<String> entity = new QRCodeEntity<>("hello", 400,
-				400, new MatrixToImageConfig(), PicType.PNG);
+		QRCodeEntity<String> entity = new QRCodeEntity<>("hello", 400, 400, new MatrixToImageConfig(), PicType.PNG);
 		BufferedImage image = generator.generateQRCode(entity);
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -60,8 +59,8 @@ class QRCodeGeneratorTest {
 	@Test
 	void generateJsonQRCode() throws IOException {
 		Map<String, String> map = Map.of("username", "livk", "password", "123456");
-		QRCodeEntity<Map<String, String>> entity = new QRCodeEntity<>(map, 400, 400,
-				new MatrixToImageConfig(), PicType.PNG);
+		QRCodeEntity<Map<String, String>> entity = new QRCodeEntity<>(map, 400, 400, new MatrixToImageConfig(),
+				PicType.PNG);
 		BufferedImage image = generator.generateQRCode(entity);
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
