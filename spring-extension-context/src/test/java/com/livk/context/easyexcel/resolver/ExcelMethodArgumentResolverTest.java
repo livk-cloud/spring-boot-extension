@@ -35,7 +35,7 @@ class ExcelMethodArgumentResolverTest {
 
 	static MethodParameter parameter;
 
-	static com.livk.context.easyexcel.resolver.ExcelMethodArgumentResolver resolver;
+	static ExcelMethodArgumentResolver resolver;
 
 	@BeforeAll
 	static void init() throws NoSuchMethodException {

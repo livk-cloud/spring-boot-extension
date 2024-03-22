@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ReactiveQRCodeMethodReturnValueHandlerTest {
 
-	static com.livk.context.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler handler;
+	static ReactiveQRCodeMethodReturnValueHandler handler;
 
 	static HandlerResult result;
 

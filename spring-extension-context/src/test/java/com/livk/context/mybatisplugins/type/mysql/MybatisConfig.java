@@ -63,8 +63,7 @@ class MybatisConfig {
 				environment);
 		configuration.setMapUnderscoreToCamelCase(true);
 		configuration.setLogImpl(StdOutImpl.class);
-		com.livk.context.mybatisplugins.type.mysql.MysqlJsonTypeHandler typeHandler = new MysqlJsonTypeHandler(
-				new ObjectMapper());
+		MysqlJsonTypeHandler typeHandler = new MysqlJsonTypeHandler(new ObjectMapper());
 		configuration.getTypeHandlerRegistry().register(typeHandler);
 		return new DefaultSqlSessionFactory(configuration);
 	}

@@ -57,7 +57,7 @@ class RedisOpsTest {
 
 	@Test
 	void test() {
-		com.livk.context.redis.RedisOps ops = new RedisOps(connectionFactory);
+		RedisOps ops = new RedisOps(connectionFactory);
 		assertEquals("PONG", ops.execute(RedisConnectionCommands::ping));
 	}
 

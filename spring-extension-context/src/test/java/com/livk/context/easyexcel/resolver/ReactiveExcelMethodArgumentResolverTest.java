@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ReactiveExcelMethodArgumentResolverTest {
 
-	static com.livk.context.easyexcel.resolver.ReactiveExcelMethodArgumentResolver resolver;
+	static ReactiveExcelMethodArgumentResolver resolver;
 
 	static MethodParameter parameter;
 

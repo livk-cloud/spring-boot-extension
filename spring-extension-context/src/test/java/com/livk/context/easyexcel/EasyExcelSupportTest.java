@@ -38,7 +38,7 @@ class EasyExcelSupportTest {
 	void read() throws IOException {
 		Info.InfoMapReadListener listener = new Info.InfoMapReadListener();
 		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
-		com.livk.context.easyexcel.EasyExcelSupport.read(inputStream, Info.class, listener, true);
+		EasyExcelSupport.read(inputStream, Info.class, listener, true);
 
 		Map<String, ? extends Collection<Info>> map = listener.getMapData();
 		assertFalse(map.isEmpty());
@@ -56,7 +56,7 @@ class EasyExcelSupportTest {
 
 		assertEquals(0, stream.toByteArray().length);
 
-		com.livk.context.easyexcel.EasyExcelSupport.write(stream, Info.class, null, data);
+		EasyExcelSupport.write(stream, Info.class, null, data);
 
 		assertNotEquals(0, stream.toByteArray().length);
 	}

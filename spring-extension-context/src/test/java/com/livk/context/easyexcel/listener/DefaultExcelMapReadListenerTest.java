@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  */
 class DefaultExcelMapReadListenerTest {
 
-	static com.livk.context.easyexcel.listener.DefaultExcelMapReadListener listener = new DefaultExcelMapReadListener();
+	static DefaultExcelMapReadListener listener = new DefaultExcelMapReadListener();
 
 	@Test
 	void test() throws IOException {

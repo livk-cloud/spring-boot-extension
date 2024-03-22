@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class QRCodeMethodReturnValueHandlerTest {
 
-	static com.livk.context.qrcode.resolver.QRCodeMethodReturnValueHandler handler;
+	static QRCodeMethodReturnValueHandler handler;
 
 	static MethodParameter parameter;
 

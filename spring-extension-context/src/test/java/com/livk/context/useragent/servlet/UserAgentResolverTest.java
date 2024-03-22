@@ -74,7 +74,7 @@ class UserAgentResolverTest {
 	@Test
 	void resolveArgument() throws Exception {
 
-		assertNull(com.livk.context.useragent.servlet.UserAgentContextHolder.getUserAgentContext());
+		assertNull(UserAgentContextHolder.getUserAgentContext());
 		Method method = this.getClass().getDeclaredMethod("test", UserAgent.class);
 		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
@@ -95,7 +95,7 @@ class UserAgentResolverTest {
 		assertEquals("Desktop", userAgent.deviceName());
 		assertNull(userAgent.deviceBrand());
 
-		assertEquals(result, com.livk.context.useragent.servlet.UserAgentContextHolder.getUserAgentContext());
+		assertEquals(result, UserAgentContextHolder.getUserAgentContext());
 
 		UserAgentContextHolder.cleanUserAgentContext();
 	}

@@ -38,7 +38,7 @@ class CuratorConfig {
 	}
 
 	@Bean(destroyMethod = "close")
-	public com.livk.context.curator.CuratorTemplate curatorTemplate(CuratorFramework framework) {
+	public CuratorTemplate curatorTemplate(CuratorFramework framework) {
 		return new CuratorTemplate(framework);
 	}
 

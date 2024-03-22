@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class DynamicDatasourceTest {
 
-	static com.livk.context.dynamic.DynamicDatasource dynamicDatasource = new DynamicDatasource();
+	static DynamicDatasource dynamicDatasource = new DynamicDatasource();
 
 	static HikariDataSource primary = new HikariDataSource();
 
@@ -52,11 +52,11 @@ class DynamicDatasourceTest {
 		assertEquals(primary, dynamicDatasource.unwrap(HikariDataSource.class));
 		assertTrue(dynamicDatasource.isWrapperFor(HikariDataSource.class));
 
-		com.livk.context.dynamic.DataSourceContextHolder.switchDataSource("slave1");
+		DataSourceContextHolder.switchDataSource("slave1");
 		assertEquals(slave1, dynamicDatasource.unwrap(DriverManagerDataSource.class));
 		assertTrue(dynamicDatasource.isWrapperFor(DriverManagerDataSource.class));
 
-		com.livk.context.dynamic.DataSourceContextHolder.switchDataSource("slave2");
+		DataSourceContextHolder.switchDataSource("slave2");
 		assertEquals(slave2, dynamicDatasource.unwrap(SingleConnectionDataSource.class));
 		assertTrue(dynamicDatasource.isWrapperFor(SingleConnectionDataSource.class));
 

@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 class ReactiveUserAgentResolverTest {
 
-	final com.livk.context.useragent.reactive.ReactiveUserAgentResolver resolver;
+	final ReactiveUserAgentResolver resolver;
 
 	private BindingContext bindContext;
 

@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ReactiveExcelMethodReturnValueHandlerTest {
 
-	static com.livk.context.easyexcel.resolver.ReactiveExcelMethodReturnValueHandler handler;
+	static ReactiveExcelMethodReturnValueHandler handler;
 
 	static HandlerResult result;
 

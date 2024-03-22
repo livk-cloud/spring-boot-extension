@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ExcelMethodReturnValueHandlerTest {
 
-	static com.livk.context.easyexcel.resolver.ExcelMethodReturnValueHandler handler;
+	static ExcelMethodReturnValueHandler handler;
 
 	static MethodParameter parameter;
 

@@ -62,11 +62,11 @@ class ReactiveRedisOpsTest {
 		RedisSerializationContext<String, Object> context = RedisSerializationContext
 			.<String, Object>newSerializationContext()
 			.key(RedisSerializer.string())
-			.value(com.livk.context.redis.JacksonSerializerUtils.json())
+			.value(JacksonSerializerUtils.json())
 			.hashKey(RedisSerializer.string())
 			.hashValue(JacksonSerializerUtils.json())
 			.build();
-		com.livk.context.redis.ReactiveRedisOps ops = new ReactiveRedisOps(connectionFactory, context);
+		ReactiveRedisOps ops = new ReactiveRedisOps(connectionFactory, context);
 		assertEquals("PONG", ops.execute(ReactiveRedisConnection::ping).blockFirst());
 	}
 
