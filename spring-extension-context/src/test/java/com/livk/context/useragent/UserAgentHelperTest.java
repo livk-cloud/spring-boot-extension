@@ -50,7 +50,8 @@ class UserAgentHelperTest {
 		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class,
 				ConversionServiceConfig.class);
 
-		com.livk.context.useragent.UserAgentHelper helper = new com.livk.context.useragent.UserAgentHelper(applicationContext);
+		com.livk.context.useragent.UserAgentHelper helper = new com.livk.context.useragent.UserAgentHelper(
+				applicationContext);
 		UserAgent userAgent = helper.convert(headers);
 		assertNotNull(userAgent);
 		assertEquals(userAgentStr, userAgent.userAgentStr());

@@ -57,7 +57,7 @@ class CuratorTemplateTest {
 	}
 
 	@Autowired
-    CuratorTemplate template;
+	CuratorTemplate template;
 
 	@Test
 	void setDataAsync() throws Exception {
