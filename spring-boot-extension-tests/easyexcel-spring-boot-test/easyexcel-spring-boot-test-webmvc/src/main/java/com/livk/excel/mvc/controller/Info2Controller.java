@@ -16,9 +16,9 @@
 
 package com.livk.excel.mvc.controller;
 
-import com.livk.core.easyexcel.annotation.ExcelController;
-import com.livk.core.easyexcel.annotation.ExcelParam;
-import com.livk.core.easyexcel.annotation.RequestExcel;
+import com.livk.context.easyexcel.annotation.ExcelController;
+import com.livk.context.easyexcel.annotation.ExcelParam;
+import com.livk.context.easyexcel.annotation.RequestExcel;
 import com.livk.excel.mvc.entity.Info;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

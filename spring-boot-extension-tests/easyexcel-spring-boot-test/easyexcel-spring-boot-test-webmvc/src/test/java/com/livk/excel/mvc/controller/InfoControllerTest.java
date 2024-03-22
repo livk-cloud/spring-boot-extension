@@ -17,7 +17,7 @@
 package com.livk.excel.mvc.controller;
 
 import com.livk.commons.io.FileUtils;
-import com.livk.core.easyexcel.annotation.ResponseExcel;
+import com.livk.context.easyexcel.annotation.ResponseExcel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

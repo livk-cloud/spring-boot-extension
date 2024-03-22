@@ -17,7 +17,7 @@
 package com.livk.redis.submit.support;
 
 import com.livk.commons.spring.context.SpringContextHolder;
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.RedisOps;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.redis.core.ValueOperations;
 

@@ -16,7 +16,7 @@
 
 package com.livk.dynamic.controller;
 
-import com.livk.core.dynamic.DataSourceContextHolder;
+import com.livk.context.dynamic.DataSourceContextHolder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

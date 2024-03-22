@@ -17,9 +17,9 @@
 package com.livk.autoconfigure.redis;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.redis.JacksonSerializerUtils;
-import com.livk.core.redis.ReactiveRedisOps;
-import com.livk.core.redis.RedisOps;
+import com.livk.context.redis.JacksonSerializerUtils;
+import com.livk.context.redis.ReactiveRedisOps;
+import com.livk.context.redis.RedisOps;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

@@ -17,11 +17,11 @@
 package com.livk.autoconfigure.mapstruct;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.core.mapstruct.GenericMapstructService;
-import com.livk.core.mapstruct.repository.ConverterRepository;
-import com.livk.core.mapstruct.repository.InMemoryConverterRepository;
-import com.livk.core.mapstruct.repository.MapstructLocator;
-import com.livk.core.mapstruct.repository.SpringMapstructLocator;
+import com.livk.context.mapstruct.GenericMapstructService;
+import com.livk.context.mapstruct.repository.ConverterRepository;
+import com.livk.context.mapstruct.repository.InMemoryConverterRepository;
+import com.livk.context.mapstruct.repository.MapstructLocator;
+import com.livk.context.mapstruct.repository.SpringMapstructLocator;
 import org.mapstruct.factory.Mappers;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

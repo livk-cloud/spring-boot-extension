@@ -16,9 +16,9 @@
 
 package com.livk.yauaa.webflux.controller;
 
-import com.livk.core.useragent.annotation.UserAgentInfo;
-import com.livk.core.useragent.domain.UserAgent;
-import com.livk.core.useragent.reactive.ReactiveUserAgentContextHolder;
+import com.livk.context.useragent.annotation.UserAgentInfo;
+import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.reactive.ReactiveUserAgentContextHolder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
