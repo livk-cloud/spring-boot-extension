@@ -36,7 +36,7 @@ public class DockerImageNames {
 
 	public static final String CLICKHOUSE_IMAGE = "clickhouse/clickhouse-server";
 
-	public static final String KAFKA_IMAGE = "confluentinc/cp-kafka";
+	public static final String KAFKA_IMAGE = "apache/kafka";
 
 	public static final String RABBITMQ_IMAGE = "rabbitmq";
 
