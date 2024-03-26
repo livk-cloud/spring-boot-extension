@@ -16,7 +16,7 @@
 
 package com.livk.curator.lock;
 
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

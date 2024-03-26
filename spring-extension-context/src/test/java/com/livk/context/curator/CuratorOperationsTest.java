@@ -17,7 +17,7 @@
 package com.livk.context.curator;
 
 import com.livk.context.curator.lock.ZkLockType;
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.api.CuratorEventType;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;

@@ -16,7 +16,7 @@
 
 package com.livk.redisearch.mvc.controller;
 
-import com.livk.testcontainers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisStackContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

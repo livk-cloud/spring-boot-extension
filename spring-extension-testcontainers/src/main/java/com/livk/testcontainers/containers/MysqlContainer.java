@@ -11,18 +11,20 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers;
+package com.livk.testcontainers.containers;
 
-import org.testcontainers.containers.PostgreSQLContainer;
+import com.livk.testcontainers.DockerImageNames;
+import org.testcontainers.containers.MySQLContainer;
 
 /**
  * @author livk
  */
-public class PostgresqlContainer extends PostgreSQLContainer<PostgresqlContainer> {
+public class MysqlContainer extends MySQLContainer<MysqlContainer> {
 
-	public PostgresqlContainer() {
-		super(DockerImageNames.postgres());
-		addExposedPorts(5432);
+	public MysqlContainer() {
+		super(DockerImageNames.mysql());
+		addExposedPorts(3306);
+
 	}
 
 }

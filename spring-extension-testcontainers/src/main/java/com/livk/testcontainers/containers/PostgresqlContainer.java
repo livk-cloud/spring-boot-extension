@@ -11,20 +11,19 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers;
+package com.livk.testcontainers.containers;
 
-import org.testcontainers.containers.GenericContainer;
+import com.livk.testcontainers.DockerImageNames;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * @author livk
  */
-public class RedisStackContainer extends GenericContainer<RedisStackContainer> {
+public class PostgresqlContainer extends PostgreSQLContainer<PostgresqlContainer> {
 
-	public static final int PORT = 6379;
-
-	public RedisStackContainer() {
-		super(DockerImageNames.redisStack());
-		addExposedPort(PORT);
+	public PostgresqlContainer() {
+		super(DockerImageNames.postgres());
+		addExposedPorts(5432);
 	}
 
 }

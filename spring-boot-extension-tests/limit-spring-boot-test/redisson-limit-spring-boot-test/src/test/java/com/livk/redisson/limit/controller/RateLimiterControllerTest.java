@@ -16,7 +16,7 @@
 
 package com.livk.redisson.limit.controller;
 
-import com.livk.testcontainers.RedisContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

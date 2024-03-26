@@ -11,42 +11,43 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.ZookeeperContainer;
-import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
+import com.livk.testcontainers.containers.RedisStackContainer;
+import org.springframework.boot.autoconfigure.data.redis.RedisConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
 
 /**
- * 需要根据{@link ConnectionDetails}设计一个ZookeeperConnectionDetails
- * <p>
- * 目前暂定使用ConnectionDetails
- *
  * @author livk
- * @see ConnectionDetails
  */
 @SpringFactories(ConnectionDetailsFactory.class)
-class ZookeeperContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<ZookeeperContainer, ConnectionDetails> {
+class RedisStackContainerConnectionDetailsFactory
+		extends ContainerConnectionDetailsFactory<RedisStackContainer, RedisConnectionDetails> {
 
-	ZookeeperContainerConnectionDetailsFactory() {
-		super(DockerImageNames.ZOOKEEPER_IMAGE);
+	RedisStackContainerConnectionDetailsFactory() {
+		super(DockerImageNames.REDIS_STACK_IMAGE);
 	}
 
 	@Override
-	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
-		return new ZookeeperContainerConnectionDetails(source);
+	protected RedisConnectionDetails getContainerConnectionDetails(
+			ContainerConnectionSource<RedisStackContainer> source) {
+		return new RedisStackContainerConnectionDetails(source);
 	}
 
-	private static final class ZookeeperContainerConnectionDetails
-			extends ContainerConnectionDetails<ZookeeperContainer> {
+	private static final class RedisStackContainerConnectionDetails
+			extends ContainerConnectionDetails<RedisStackContainer> implements RedisConnectionDetails {
 
-		private ZookeeperContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
+		private RedisStackContainerConnectionDetails(ContainerConnectionSource<RedisStackContainer> source) {
 			super(source);
+		}
+
+		@Override
+		public Standalone getStandalone() {
+			return Standalone.of(getContainer().getHost(), getContainer().getFirstMappedPort());
 		}
 
 	}

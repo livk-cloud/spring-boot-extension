@@ -16,7 +16,7 @@
 
 package com.livk.graphql.r2dbc.controller;
 
-import com.livk.testcontainers.PostgresqlContainer;
+import com.livk.testcontainers.containers.PostgresqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

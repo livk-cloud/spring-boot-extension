@@ -17,7 +17,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
-import com.livk.testcontainers.r2dbc.ClickHouseR2dbcContainer;
+import com.livk.testcontainers.containers.r2dbc.ClickHouseR2dbcContainer;
 import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

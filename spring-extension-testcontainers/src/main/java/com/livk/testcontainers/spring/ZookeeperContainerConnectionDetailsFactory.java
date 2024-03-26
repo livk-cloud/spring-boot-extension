@@ -11,35 +11,41 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
-import org.testcontainers.containers.MinIOContainer;
 
 /**
+ * 需要根据{@link ConnectionDetails}设计一个ZookeeperConnectionDetails
+ * <p>
+ * 目前暂定使用ConnectionDetails
+ *
  * @author livk
+ * @see ConnectionDetails
  */
 @SpringFactories(ConnectionDetailsFactory.class)
-class MinIOContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<MinIOContainer, ConnectionDetails> {
+class ZookeeperContainerConnectionDetailsFactory
+		extends ContainerConnectionDetailsFactory<ZookeeperContainer, ConnectionDetails> {
 
-	MinIOContainerConnectionDetailsFactory() {
-		super(DockerImageNames.MINIO_IMAGE);
+	ZookeeperContainerConnectionDetailsFactory() {
+		super(DockerImageNames.ZOOKEEPER_IMAGE);
 	}
 
 	@Override
-	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
-		return new MinIOContainerConnectionDetails(source);
+	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
+		return new ZookeeperContainerConnectionDetails(source);
 	}
 
-	private static final class MinIOContainerConnectionDetails extends ContainerConnectionDetails<MinIOContainer> {
+	private static final class ZookeeperContainerConnectionDetails
+			extends ContainerConnectionDetails<ZookeeperContainer> {
 
-		private MinIOContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
+		private ZookeeperContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
 			super(source);
 		}
 
