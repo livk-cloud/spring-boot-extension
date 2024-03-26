@@ -17,7 +17,7 @@
 package com.livk.context.mybatisplugins.type.mysql;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
-import com.livk.testcontainers.MysqlContainer;
+import com.livk.testcontainers.containers.MysqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -16,7 +16,7 @@
 
 package com.livk.context.curator;
 
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;

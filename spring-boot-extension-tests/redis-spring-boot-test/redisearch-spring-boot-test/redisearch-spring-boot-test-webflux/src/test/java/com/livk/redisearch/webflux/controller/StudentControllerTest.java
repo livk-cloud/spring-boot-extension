@@ -17,7 +17,7 @@
 package com.livk.redisearch.webflux.controller;
 
 import com.livk.redisearch.webflux.entity.Student;
-import com.livk.testcontainers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisStackContainer;
 import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

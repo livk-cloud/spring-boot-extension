@@ -11,19 +11,21 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers;
+package com.livk.testcontainers.containers;
 
-import org.testcontainers.containers.MySQLContainer;
+import com.livk.testcontainers.DockerImageNames;
+import org.testcontainers.containers.GenericContainer;
 
 /**
  * @author livk
  */
-public class MysqlContainer extends MySQLContainer<MysqlContainer> {
+public class RedisStackContainer extends GenericContainer<RedisStackContainer> {
 
-	public MysqlContainer() {
-		super(DockerImageNames.mysql());
-		addExposedPorts(3306);
+	public static final int PORT = 6379;
 
+	public RedisStackContainer() {
+		super(DockerImageNames.redisStack());
+		addExposedPort(PORT);
 	}
 
 }

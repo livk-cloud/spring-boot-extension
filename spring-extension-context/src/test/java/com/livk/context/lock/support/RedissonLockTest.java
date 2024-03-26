@@ -16,7 +16,7 @@ package com.livk.context.lock.support;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
-import com.livk.testcontainers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisStackContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

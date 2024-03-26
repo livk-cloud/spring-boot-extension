@@ -11,18 +11,35 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers;
+package com.livk.testcontainers.containers;
 
+import com.livk.testcontainers.DockerImageNames;
+import lombok.Getter;
 import org.testcontainers.containers.GenericContainer;
+
+import java.util.Optional;
 
 /**
  * @author livk
  */
-public class ZookeeperContainer extends GenericContainer<ZookeeperContainer> {
+@Getter
+public class RedisContainer extends GenericContainer<RedisContainer> {
 
-	public ZookeeperContainer() {
-		super(DockerImageNames.zookeeper());
-		addExposedPorts(2181);
+	private String password;
+
+	public RedisContainer() {
+		super(DockerImageNames.redis());
+		addExposedPorts(6379);
+	}
+
+	@Override
+	protected void configure() {
+		Optional.ofNullable(password).ifPresent(s -> withCommand("--requirepass", s));
+	}
+
+	public RedisContainer withPassword(String password) {
+		this.password = password;
+		return this;
 	}
 
 }

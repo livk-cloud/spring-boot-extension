@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import com.livk.testcontainers.r2dbc.ClickHouseR2dbcContainer;
-import com.livk.testcontainers.r2dbc.ClickhouseR2DBCDatabaseContainer;
+import com.livk.testcontainers.containers.r2dbc.ClickHouseR2dbcContainer;
+import com.livk.testcontainers.containers.r2dbc.ClickhouseR2DBCDatabaseContainer;
 import io.r2dbc.spi.ConnectionFactoryOptions;
 import org.springframework.boot.autoconfigure.r2dbc.R2dbcConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;

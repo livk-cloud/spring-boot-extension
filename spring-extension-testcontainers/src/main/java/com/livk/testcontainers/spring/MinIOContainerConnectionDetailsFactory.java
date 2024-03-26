@@ -11,43 +11,36 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.RedisStackContainer;
-import org.springframework.boot.autoconfigure.data.redis.RedisConnectionDetails;
+import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
+import org.testcontainers.containers.MinIOContainer;
 
 /**
  * @author livk
  */
 @SpringFactories(ConnectionDetailsFactory.class)
-class RedisStackContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<RedisStackContainer, RedisConnectionDetails> {
+class MinIOContainerConnectionDetailsFactory
+		extends ContainerConnectionDetailsFactory<MinIOContainer, ConnectionDetails> {
 
-	RedisStackContainerConnectionDetailsFactory() {
-		super(DockerImageNames.REDIS_STACK_IMAGE);
+	MinIOContainerConnectionDetailsFactory() {
+		super(DockerImageNames.MINIO_IMAGE);
 	}
 
 	@Override
-	protected RedisConnectionDetails getContainerConnectionDetails(
-			ContainerConnectionSource<RedisStackContainer> source) {
-		return new RedisStackContainerConnectionDetails(source);
+	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
+		return new MinIOContainerConnectionDetails(source);
 	}
 
-	private static final class RedisStackContainerConnectionDetails
-			extends ContainerConnectionDetails<RedisStackContainer> implements RedisConnectionDetails {
+	private static final class MinIOContainerConnectionDetails extends ContainerConnectionDetails<MinIOContainer> {
 
-		private RedisStackContainerConnectionDetails(ContainerConnectionSource<RedisStackContainer> source) {
+		private MinIOContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
 			super(source);
-		}
-
-		@Override
-		public Standalone getStandalone() {
-			return Standalone.of(getContainer().getHost(), getContainer().getFirstMappedPort());
 		}
 
 	}

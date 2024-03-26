@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers.r2dbc;
+package com.livk.testcontainers.containers.r2dbc;
 
 import com.clickhouse.r2dbc.connection.ClickHouseConnectionFactoryProvider;
 import com.google.auto.service.AutoService;

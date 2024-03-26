@@ -16,7 +16,7 @@ package com.livk.context.lock.support;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
