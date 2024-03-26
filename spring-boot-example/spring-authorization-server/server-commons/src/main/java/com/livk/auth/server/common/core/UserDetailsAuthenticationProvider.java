@@ -139,11 +139,11 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 			.filter(service -> service.support(finalClientId, grantType))
 			.max(Comparator.comparingInt(Ordered::getOrder));
 
-		optional
+		Oauth2UserDetailsService oauth2UserDetailsService = optional
 			.orElseThrow((() -> new InternalAuthenticationServiceException("UserDetailsService error , not register")));
 
 		try {
-			UserDetails loadedUser = optional.get().loadUserByUsername(username);
+			UserDetails loadedUser = oauth2UserDetailsService.loadUserByUsername(username);
 			Optional.ofNullable(loadedUser)
 				.orElseThrow(() -> new InternalAuthenticationServiceException(
 						"UserDetailsService returned null, which is an interface contract violation"));
