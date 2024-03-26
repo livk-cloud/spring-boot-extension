@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,6 +33,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -97,7 +97,7 @@ public class FileUtils extends FileCopyUtils {
 	 * @throws IOException the io exception
 	 */
 	public String read(File file) throws IOException {
-		try (FileReader fileReader = new FileReader(file); BufferedReader reader = new BufferedReader(fileReader)) {
+		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		}
 	}
