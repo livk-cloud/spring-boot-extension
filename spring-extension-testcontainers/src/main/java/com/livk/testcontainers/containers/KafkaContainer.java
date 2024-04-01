@@ -89,7 +89,7 @@ public class KafkaContainer extends GenericContainer<KafkaContainer> {
 		String kafkaAdvertisedListeners = String.join(",", advertisedListeners);
 		String command = "#!/bin/bash\n";
 		// exporting KAFKA_ADVERTISED_LISTENERS with the container hostname
-		command += String.format("export KAFKA_ADVERTISED_LISTENERS=%s\n", kafkaAdvertisedListeners);
+		command += String.format("export KAFKA_ADVERTISED_LISTENERS=%s%n", kafkaAdvertisedListeners);
 
 		command += "/etc/kafka/docker/run \n";
 		copyFileToContainer(Transferable.of(command, 0777), STARTER_SCRIPT);
