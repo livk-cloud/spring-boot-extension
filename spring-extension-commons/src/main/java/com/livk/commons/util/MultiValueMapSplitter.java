@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -83,12 +84,30 @@ public final class MultiValueMapSplitter {
 
 	/**
 	 * 拆分CharSequence成一个MultiValueMap
-	 * @param sequence the sequence
-	 * @return the multi value map
-	 * @throws IllegalArgumentException if the specified sequence does not split into
-	 * valid map entries, or if there are duplicate keys
+	 * <p>
+	 * 示例: String str = "root=1,2,3&root=4&a=b&a=c"
+	 * <p>
+	 * MultiValueMapSplitter.of("&", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
+	 * "c"]}
+	 * @param sequence 待分割的字符串
+	 * @return MultiValueMap
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence) {
+		return split(sequence, "^$");
+	}
+
+	/**
+	 * 拆分CharSequence成一个MultiValueMap
+	 * <p>
+	 * 示例: String str = "root=1,2,3&root=4&a=b&a=c"
+	 * <p>
+	 * MultiValueMapSplitter.of("&", "=").split(str,",") -> {root=["1", "2", "3", "4"],
+	 * a=["b", "c"]}
+	 * @param sequence 待分割的字符串
+	 * @param regex value分割符
+	 * @return MultiValueMap
+	 */
+	public MultiValueMap<String, String> split(CharSequence sequence, String regex) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		for (String entry : outerSplitter.split(sequence)) {
 			Iterator<String> entryFields = entrySplitter.split(entry).iterator();
@@ -97,8 +116,8 @@ public final class MultiValueMapSplitter {
 			String key = entryFields.next();
 
 			checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
-			String value = entryFields.next();
-			map.add(key, value);
+
+			map.addAll(key, Arrays.asList(entryFields.next().split(regex)));
 
 			checkArgument(!entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
 		}
