@@ -5,14 +5,18 @@ pluginManagement {
 }
 
 plugins {
-	id("com.gradle.enterprise") version ("3.17")
+	id("com.gradle.develocity") version ("3.17")
 }
 
-gradleEnterprise {
+develocity {
 	buildScan {
-		termsOfServiceUrl = "https://gradle.com/terms-of-service"
-		termsOfServiceAgree = "yes"
-		publishOnFailure()
+		termsOfUseUrl = "https://gradle.com/terms-of-service"
+		termsOfUseAgree = "yes"
+		publishing {
+			onlyIf {
+				it.buildResult.failures.isNotEmpty()
+			}
+		}
 	}
 }
 
