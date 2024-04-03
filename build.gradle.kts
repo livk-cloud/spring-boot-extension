@@ -42,6 +42,7 @@ configure(module) {
 		annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 		testImplementation("org.springframework:spring-tx")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	}
 }
 
