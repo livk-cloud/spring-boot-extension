@@ -19,6 +19,7 @@ package com.livk.boot.dependency
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.JavaTestFixturesPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -36,11 +37,7 @@ abstract class ManagementPlugin : Plugin<Project> {
 		init {
 			DEPENDENCY_NAMES_SET.addAll(
 				setOf(
-					JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME,
-					JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME,
 					JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME,
-					JavaPlugin.TEST_COMPILE_CLASSPATH_CONFIGURATION_NAME,
-					JavaPlugin.TEST_RUNTIME_CLASSPATH_CONFIGURATION_NAME,
 					JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME
 				)
 			)
@@ -57,6 +54,10 @@ abstract class ManagementPlugin : Plugin<Project> {
 			val plugins = project.plugins
 			plugins.withType(JavaPlugin::class.java) {
 				DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(management) }
+				project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.all { sourceSet ->
+					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(management)
+					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(management)
+				}
 			}
 			plugins.withType(JavaTestFixturesPlugin::class.java) {
 				configurations.getByName("testFixturesCompileClasspath").extendsFrom(management)
