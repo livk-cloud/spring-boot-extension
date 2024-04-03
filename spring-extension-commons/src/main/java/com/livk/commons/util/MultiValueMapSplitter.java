@@ -85,9 +85,9 @@ public final class MultiValueMapSplitter {
 	/**
 	 * 拆分CharSequence成一个MultiValueMap
 	 * <p>
-	 * 示例: String str = "root=1,2,3&root=4&a=b&a=c"
+	 * 示例: String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
 	 * <p>
-	 * MultiValueMapSplitter.of("&", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
+	 * MultiValueMapSplitter.of("&amp;", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
 	 * "c"]}
 	 * @param sequence 待分割的字符串
 	 * @return MultiValueMap
@@ -99,10 +99,10 @@ public final class MultiValueMapSplitter {
 	/**
 	 * 拆分CharSequence成一个MultiValueMap
 	 * <p>
-	 * 示例: String str = "root=1,2,3&root=4&a=b&a=c"
+	 * 示例: String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
 	 * <p>
-	 * MultiValueMapSplitter.of("&", "=").split(str,",") -> {root=["1", "2", "3", "4"],
-	 * a=["b", "c"]}
+	 * MultiValueMapSplitter.of("&amp;", "=").split(str,",") -> {root=["1", "2", "3",
+	 * "4"], a=["b", "c"]}
 	 * @param sequence 待分割的字符串
 	 * @param regex value分割符
 	 * @return MultiValueMap
