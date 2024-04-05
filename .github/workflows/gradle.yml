@@ -32,7 +32,7 @@ jobs:
           java-version: 21
           distribution: 'temurin'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3.1.0
+        uses: gradle/gradle-build-action@v3.2.0
         with:
           arguments: clean build
           gradle-version: current
