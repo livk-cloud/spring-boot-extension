@@ -17,25 +17,20 @@
 package com.livk.context.easyexcel.resolver;
 
 import com.livk.commons.util.BeanUtils;
-import com.livk.context.easyexcel.EasyExcelSupport;
-import com.livk.context.easyexcel.ExcelDataType;
+import com.livk.context.easyexcel.converter.ExcelHttpMessageConverter;
 import com.livk.context.easyexcel.annotation.ExcelParam;
 import com.livk.context.easyexcel.annotation.RequestExcel;
 import com.livk.context.easyexcel.listener.ExcelMapReadListener;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.ResolvableType;
+import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 /**
@@ -55,27 +50,19 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			@NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		RequestExcel excelImport = parameter.getMethodAnnotation(RequestExcel.class);
+		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+		RequestExcel requestExcel = parameter.getMethodAnnotation(RequestExcel.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
-		if (Objects.nonNull(excelImport) && Objects.nonNull(excelParam)) {
-			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(excelImport.parse());
-			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-			InputStream in = getInputStream(request, excelParam.fileName());
-			ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
-			Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
-			EasyExcelSupport.read(in, excelModelClass, listener, excelImport.ignoreEmptyRow());
-			return listener.getData(dataType);
+		if (Objects.nonNull(requestExcel) && Objects.nonNull(request) && Objects.nonNull(excelParam)) {
+			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(requestExcel.parse());
+			ExcelHttpMessageConverter converter = ExcelHttpMessageConverter.readExcel(listener, parameter,
+					requestExcel);
+			if (converter.canRead(parameter.getParameterType(), MediaType.valueOf(request.getContentType()))) {
+				return converter.read(parameter.getParameterType(),
+						new RequestPartServletServerHttpRequest(request, excelParam.fileName()));
+			}
 		}
 		throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
-	}
-
-	private InputStream getInputStream(HttpServletRequest request, String fileName) throws IOException {
-		if (request instanceof MultipartRequest multipartRequest) {
-			MultipartFile file = multipartRequest.getFile(fileName);
-			Assert.notNull(file, "file not be null");
-			return file.getInputStream();
-		}
-		return null;
 	}
 
 }

@@ -16,16 +16,15 @@
 
 package com.livk.context.easyexcel.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.context.easyexcel.EasyExcelSupport;
 import com.livk.context.easyexcel.annotation.ResponseExcel;
-import com.livk.context.easyexcel.exception.ExcelExportException;
+import com.livk.context.easyexcel.converter.ExcelHttpMessageWriter;
+import org.reactivestreams.Publisher;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,15 +34,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * <p>
@@ -59,7 +55,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 	 */
 	public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
-	private static final Function<Collection<?>, Map<String, Collection<?>>> defaultFunction = c -> Map.of("sheet", c);
+	private final ExcelHttpMessageWriter writer = new ExcelHttpMessageWriter();
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
@@ -69,95 +65,28 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 	}
 
 	@NonNull
-	@SuppressWarnings("unchecked")
 	@Override
 	public Mono<Void> handleResult(@NonNull ServerWebExchange exchange, HandlerResult result) {
 		Object returnValue = result.getReturnValue();
-		if (returnValue == null) {
-			return Mono.empty();
-		}
-		ResponseExcel excelReturn = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(),
-				ResponseExcel.class);
-		ServerHttpResponse response = exchange.getResponse();
-		ResolvableType returnType = result.getReturnType();
-		ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
-		if (adapter != null) {
-			ResolvableType genericType = returnType.getGeneric();
-			if (Flux.class.isAssignableFrom(returnType.toClass())) {
-				Class<?> excelModelClass = genericType.toClass();
-				Flux<?> flux = (Flux<?>) returnValue;
-				Mono<Map<String, Collection<?>>> mono = flux.collectList().map(defaultFunction);
-				return this.write(excelReturn, response, excelModelClass, mono);
-			}
-			else if (Mono.class.isAssignableFrom(returnType.toClass())) {
-				if (Collection.class.isAssignableFrom(genericType.toClass())) {
-					Class<?> excelModelClass = genericType.resolveGeneric(0);
-					Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) returnValue).map(defaultFunction);
-					return this.write(excelReturn, response, excelModelClass, mono);
-				}
-				else if (Map.class.isAssignableFrom(genericType.toClass())) {
-					Class<?> excelModelClass = genericType.getGeneric(1).resolveGeneric(0);
-					Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) returnValue;
-					return this.write(excelReturn, response, excelModelClass, mono);
-				}
-				else {
-					throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
-				}
-			}
-			else {
-				throw new ExcelExportException(
-						"the return class is not reactor.core.publisher.Flux or reactor.core.publisher.Mono");
+		if (returnValue != null) {
+			ResponseExcel responseExcel = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(),
+					ResponseExcel.class);
+			ServerHttpResponse response = exchange.getResponse();
+			setResponse(responseExcel, response);
+			ResolvableType returnType = result.getReturnType();
+			ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+			if (writer.canWrite(returnType, MediaType.ALL)) {
+				Publisher<?> inputStream = adapter != null ? (Publisher<?>) returnValue : Mono.just(returnValue);
+				Map<String, Object> hints = new HashMap<>();
+				hints.put("responseExcel", responseExcel);
+				return writer.write(inputStream, returnType, EXCEL_MEDIA_TYPE, exchange.getResponse(), hints);
 			}
 		}
-		else {
-			if (Collection.class.isAssignableFrom(returnType.toClass())) {
-				Class<?> excelModelClass = returnType.resolveGeneric(0);
-				return this.write(excelReturn, response, excelModelClass,
-						defaultFunction.apply((Collection<?>) returnValue));
-			}
-			else if (Map.class.isAssignableFrom(returnType.toClass())) {
-				Map<String, Collection<?>> map = (Map<String, Collection<?>>) returnValue;
-				Class<?> excelModelClass = returnType.getGeneric(1).resolveGeneric(0);
-				return this.write(excelReturn, response, excelModelClass, map);
-			}
-			else {
-				throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
-			}
-		}
+		return Mono.empty();
 	}
 
-	/**
-	 * Write mono.
-	 * @param excelReturn the excel return
-	 * @param response the response
-	 * @param excelModelClass the excel model class
-	 * @param result the result
-	 * @return the mono
-	 */
-	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass,
-			Mono<Map<String, Collection<?>>> result) {
-		return result.flatMap(r -> this.write(excelReturn, response, excelModelClass, r));
-	}
-
-	/**
-	 * Write mono.
-	 * @param excelReturn the excel return
-	 * @param response the response
-	 * @param excelModelClass the excel model class
-	 * @param result the result
-	 * @return the mono
-	 */
-	private Mono<Void> write(ResponseExcel excelReturn, ServerHttpResponse response, Class<?> excelModelClass,
-			Map<String, Collection<?>> result) {
-		this.setResponse(excelReturn, response);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		EasyExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), result);
-		Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
-		return response.writeWith(bufferFlux);
-	}
-
-	private void setResponse(ResponseExcel excelReturn, ServerHttpResponse response) {
-		String fileName = EasyExcelSupport.fileName(excelReturn);
+	private void setResponse(ResponseExcel responseExcel, ServerHttpResponse response) {
+		String fileName = EasyExcelSupport.fileName(responseExcel);
 		MediaType mediaType = MediaTypeFactory.getMediaType(fileName).orElse(EXCEL_MEDIA_TYPE);
 		HttpHeaders headers = response.getHeaders();
 		headers.setContentType(mediaType);

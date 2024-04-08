@@ -22,6 +22,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +50,7 @@ class ExcelMethodReturnValueHandlerTest {
 	}
 
 	@Test
-	void handleReturnValue() {
+	void handleReturnValue() throws IOException {
 		List<Info> list = List.of(new Info("123456789"), new Info("987654321"));
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 		MockHttpServletResponse response = new MockHttpServletResponse();
