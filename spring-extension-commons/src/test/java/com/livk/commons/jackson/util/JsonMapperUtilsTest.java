@@ -23,8 +23,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.livk.commons.util.Pair;
+import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.File;
@@ -34,9 +39,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import org.intellij.lang.annotations.Language;
-import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -389,7 +392,14 @@ class JsonMapperUtilsTest {
 	}
 
 	@Test
-	void objectToMap() {
+	void convertValueList() {
+		Set<String> set = Set.of("username", "password");
+		List<String> list = JsonMapperUtils.convertValueList(set, String.class);
+		assertEquals(Lists.newArrayList(set), list);
+	}
+
+	@Test
+	void convertValueMap() {
 		Pair<String, String> pair = Pair.of("username", "password");
 		Map<String, String> map = JsonMapperUtils.convertValueMap(pair, String.class, String.class);
 		assertEquals(pair.toMap(), map);

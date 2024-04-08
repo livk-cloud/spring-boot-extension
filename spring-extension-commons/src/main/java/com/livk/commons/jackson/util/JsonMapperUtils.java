@@ -36,11 +36,7 @@ import java.util.Map;
 @UtilityClass
 public class JsonMapperUtils {
 
-	private static final JacksonSupport JSON;
-
-	static {
-		JSON = new JacksonSupport(new JsonMapper());
-	}
+	private static final JacksonSupport JSON = new JacksonSupport(new JsonMapper());
 
 	/**
 	 * 从obj读取json数据转成相应实体类
