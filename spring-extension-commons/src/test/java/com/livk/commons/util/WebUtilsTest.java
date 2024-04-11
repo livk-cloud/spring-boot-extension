@@ -100,7 +100,7 @@ class WebUtilsTest {
 		request.addParameter("password", "123456");
 
 		MultiValueMap<String, String> paramMap = WebUtils.params(request);
-		assertEquals("livk,root,admin", String.join(",",paramMap.get("username")));
+		assertEquals("livk,root,admin", String.join(",", paramMap.get("username")));
 		assertEquals("123456", paramMap.getFirst("password"));
 		assertEquals(2, paramMap.size());
 	}
