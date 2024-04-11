@@ -20,9 +20,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +29,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -94,14 +95,13 @@ class WebUtilsTest {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void paramMap() {
 		request.addParameter("username", "livk", "root", "admin");
 		request.addParameter("password", "123456");
 
-		Map<String, String> paramMap = WebUtils.paramMap(request, ",");
-		assertEquals("livk,root,admin", paramMap.get("username"));
-		assertEquals("123456", paramMap.get("password"));
+		MultiValueMap<String, String> paramMap = WebUtils.params(request);
+		assertEquals("livk,root,admin", String.join(",",paramMap.get("username")));
+		assertEquals("123456", paramMap.getFirst("password"));
 		assertEquals(2, paramMap.size());
 	}
 
