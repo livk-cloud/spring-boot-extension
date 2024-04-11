@@ -33,7 +33,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.util.LinkedMultiValueMap;
@@ -58,10 +57,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	private static final String HTTP_IP_SPLIT = ",";
 
 	private ServletRequestAttributes servletRequestAttributes() {
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-		Assert.notNull(servletRequestAttributes, "attributes not null!");
-		return servletRequestAttributes;
+		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+		return (ServletRequestAttributes) requestAttributes;
 	}
 
 	/**
@@ -111,10 +108,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @param request request
 	 * @param delimiter 连接符
 	 * @return map
+	 * @deprecated use {@link #params(HttpServletRequest)}
 	 */
+	@Deprecated
 	public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
-		return request.getParameterMap()
-			.entrySet()
+		return params(request).entrySet()
 			.stream()
 			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
 	}
