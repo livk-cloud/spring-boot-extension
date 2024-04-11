@@ -19,14 +19,12 @@ import com.livk.context.lock.LockType;
 import com.livk.testcontainers.containers.RedisStackContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -41,8 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@ContextConfiguration(classes = { RedissonLockConfig.class })
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(RedissonLockConfig.class)
 @Testcontainers(disabledWithoutDocker = true)
 class RedissonLockTest {
 

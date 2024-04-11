@@ -51,7 +51,7 @@ class GreetingControllerTest {
 	WebGraphQlTester tester;
 
 	@BeforeEach
-	public void init() {
+	void init() {
 		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
 		tester = HttpGraphQlTester.builder(builder).build();
 	}

@@ -18,14 +18,12 @@ import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.domain.UserAgent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
@@ -40,8 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@ContextConfiguration(classes = { MvcConfig.class })
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(MvcConfig.class)
 class UserAgentResolverTest {
 
 	MockHttpServletRequest request;

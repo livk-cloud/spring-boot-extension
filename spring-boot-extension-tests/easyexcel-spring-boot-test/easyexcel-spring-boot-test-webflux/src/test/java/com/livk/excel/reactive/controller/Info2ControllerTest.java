@@ -54,7 +54,7 @@ class Info2ControllerTest {
 	WebTestClient client;
 
 	@BeforeAll
-	public static void before() {
+	static void before() {
 		builder.part("file", new ClassPathResource("outFile.xls")).filename("file");
 	}
 

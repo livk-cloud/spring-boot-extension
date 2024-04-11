@@ -39,7 +39,7 @@ class DynamicDatasourceTest {
 	static SingleConnectionDataSource slave2 = new SingleConnectionDataSource();
 
 	@BeforeAll
-	public static void init() {
+	static void init() {
 		Map<Object, Object> datasourceMap = Map.of("primary", primary, "slave1", slave1, "slave2", slave2);
 		dynamicDatasource.setTargetDataSources(datasourceMap);
 		dynamicDatasource.setDefaultTargetDataSource(primary);

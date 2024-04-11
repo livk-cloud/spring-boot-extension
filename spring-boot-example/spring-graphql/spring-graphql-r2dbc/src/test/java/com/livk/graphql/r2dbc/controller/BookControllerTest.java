@@ -20,9 +20,6 @@ import com.livk.graphql.r2dbc.entity.Author;
 import com.livk.graphql.r2dbc.entity.Book;
 import com.livk.graphql.r2dbc.repository.AuthorRepository;
 import com.livk.graphql.r2dbc.repository.BookRepository;
-import java.util.List;
-import java.util.Map;
-
 import com.livk.testcontainers.containers.PostgresqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -41,6 +38,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -85,7 +85,7 @@ class BookControllerTest {
 	WebGraphQlTester tester;
 
 	@BeforeEach
-	public void init() {
+	void init() {
 		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
 		tester = HttpGraphQlTester.builder(builder).build();
 	}

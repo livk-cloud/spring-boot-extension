@@ -18,17 +18,15 @@ package com.livk.context.redis;
 
 import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.redis.connection.ReactiveRedisConnection;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -41,8 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
-@ContextConfiguration(classes = { RedisFactoryConfig.class })
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(RedisFactoryConfig.class)
 @Testcontainers(disabledWithoutDocker = true)
 class ReactiveRedisOpsTest {
 
