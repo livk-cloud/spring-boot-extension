@@ -7,19 +7,10 @@ sources:
     - 'test'
     - 'generated'
     - 'mock'
-    - 'thirdparty'
-    - 'third-party'
-    - '3rd-party'
-    - '3rdparty'
-    - 'external'
     - 'build'
-    - 'node_modules'
-    - 'assets'
-    - 'gulp'
-    - 'grunt'
-    - 'library'
     - '.git'
     - 'spring-boot-example'
+    - 'spring-boot-extension-tests'
 
 modules:
   - name: gamma_java
