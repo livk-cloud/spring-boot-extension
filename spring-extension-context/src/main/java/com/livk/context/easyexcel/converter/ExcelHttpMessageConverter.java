@@ -59,7 +59,7 @@ public class ExcelHttpMessageConverter implements HttpMessageConverter<Object> {
 	}
 
 	@Override
-	public boolean canRead(@NonNull Class<?> clazz, @NonNull MediaType mediaType) {
+	public boolean canRead(@NonNull Class<?> clazz, MediaType mediaType) {
 		try {
 			ExcelDataType.match(clazz);
 		}
