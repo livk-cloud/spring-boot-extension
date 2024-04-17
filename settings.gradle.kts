@@ -1,9 +1,3 @@
-pluginManagement {
-	repositories {
-		gradlePluginPortal()
-	}
-}
-
 plugins {
 	id("com.gradle.develocity") version ("3.17.1")
 }
@@ -22,20 +16,15 @@ develocity {
 
 rootProject.name = "spring-boot-extension"
 fileTree(rootDir) {
-	val excludes = gradle.startParameter.projectProperties["excludeProjects"]?.split(",")
 	include("**/*.gradle.kts")
 	exclude("build", "**/gradle", "settings.gradle.kts", "buildSrc", "/build.gradle.kts", ".", "out")
-	if (!excludes.isNullOrEmpty()) {
-		exclude(excludes)
-	}
 }.forEach {
-	val buildFilePath = it.parentFile.absolutePath
-	val projectPath = buildFilePath.replace(rootDir.absolutePath, "").replace(File.separator, ":")
+	val projectPath = it.parentFile.absolutePath
+		.replace(rootDir.absolutePath, "")
+		.replace(File.separator, ":")
 	include(projectPath)
-
-	val project = findProject(projectPath)
-	project?.projectDir = it.parentFile
-	project?.buildFileName = it.name
+	project(projectPath).projectDir = it.parentFile
+	project(projectPath).buildFileName = it.name
 }
 
 gradle.settingsEvaluated {
