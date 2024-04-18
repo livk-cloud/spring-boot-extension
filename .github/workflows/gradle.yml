@@ -32,10 +32,10 @@ jobs:
           java-version: 21
           distribution: 'temurin'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3.3.0
+        uses: gradle/actions/setup-gradle@v3.3.0
         with:
-          arguments: clean build
           gradle-version: current
+        run: ./gradlew clean build
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.3.0
