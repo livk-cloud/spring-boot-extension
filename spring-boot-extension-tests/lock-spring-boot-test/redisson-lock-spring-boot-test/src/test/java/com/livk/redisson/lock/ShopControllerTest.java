@@ -16,7 +16,7 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.testcontainers.RedisContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

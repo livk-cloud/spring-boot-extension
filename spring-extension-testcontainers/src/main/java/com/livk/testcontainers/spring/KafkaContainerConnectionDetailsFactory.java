@@ -11,43 +11,42 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.RedisStackContainer;
-import org.springframework.boot.autoconfigure.data.redis.RedisConnectionDetails;
+import com.livk.testcontainers.containers.KafkaContainer;
+import org.springframework.boot.autoconfigure.kafka.KafkaConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
+
+import java.util.List;
 
 /**
  * @author livk
  */
 @SpringFactories(ConnectionDetailsFactory.class)
-class RedisStackContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<RedisStackContainer, RedisConnectionDetails> {
+class KafkaContainerConnectionDetailsFactory
+		extends ContainerConnectionDetailsFactory<KafkaContainer, KafkaConnectionDetails> {
 
-	RedisStackContainerConnectionDetailsFactory() {
-		super(DockerImageNames.REDIS_STACK_IMAGE);
+	KafkaContainerConnectionDetailsFactory() {
+		super(DockerImageNames.KAFKA_IMAGE);
 	}
 
-	@Override
-	protected RedisConnectionDetails getContainerConnectionDetails(
-			ContainerConnectionSource<RedisStackContainer> source) {
-		return new RedisStackContainerConnectionDetails(source);
+	protected KafkaConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<KafkaContainer> source) {
+		return new KafkaContainerConnectionDetails(source);
 	}
 
-	private static final class RedisStackContainerConnectionDetails
-			extends ContainerConnectionDetails<RedisStackContainer> implements RedisConnectionDetails {
+	private static final class KafkaContainerConnectionDetails extends ContainerConnectionDetails<KafkaContainer>
+			implements KafkaConnectionDetails {
 
-		private RedisStackContainerConnectionDetails(ContainerConnectionSource<RedisStackContainer> source) {
+		private KafkaContainerConnectionDetails(ContainerConnectionSource<KafkaContainer> source) {
 			super(source);
 		}
 
-		@Override
-		public Standalone getStandalone() {
-			return Standalone.of(getContainer().getHost(), getContainer().getFirstMappedPort());
+		public List<String> getBootstrapServers() {
+			return List.of(this.getContainer().getBootstrapServers());
 		}
 
 	}

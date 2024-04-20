@@ -17,7 +17,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
-import com.livk.testcontainers.r2dbc.ClickHouseR2dbcContainer;
+import com.livk.testcontainers.containers.r2dbc.ClickHouseR2dbcContainer;
 import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -34,7 +34,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -79,7 +79,11 @@ class UserControllerTest {
 	@Order(1)
 	@Test
 	void testSave() {
-		User user = new User().setId(Integer.MAX_VALUE).setAppId("appId").setVersion("version").setRegTime(new Date());
+		User user = new User();
+		user.setId(Integer.MAX_VALUE);
+		user.setAppId("appId");
+		user.setVersion("version");
+		user.setRegTime(LocalDate.now());
 		client.post().uri("/user").bodyValue(user).accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk();
 	}
 

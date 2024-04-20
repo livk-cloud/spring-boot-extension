@@ -48,7 +48,7 @@ class ExtRocketProducerTest {
 	RocketDTO dto = new RocketDTO();
 
 	@BeforeEach
-	public void init() {
+	void init() {
 		String msg = "Java第一，老寇无敌。千秋万代，一统江湖。";
 		dto.setBody(msg);
 	}

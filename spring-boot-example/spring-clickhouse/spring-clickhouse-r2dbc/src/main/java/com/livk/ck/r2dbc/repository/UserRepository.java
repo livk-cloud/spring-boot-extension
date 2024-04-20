@@ -58,15 +58,13 @@ public class UserRepository {
 	}
 
 	public Mono<Void> save(User user) {
-		SimpleDateFormat formatter = new SimpleDateFormat(DateUtils.YMD);
-		String time = formatter.format(user.getRegTime());
 		return mono
 			.flatMapMany(
 					connection -> connection.createStatement("insert into user values (:id,:appId,:version,:regTime)")
 						.bind("id", user.getId())
 						.bind("appId", user.getAppId())
 						.bind("version", user.getVersion())
-						.bind("regTime", time)
+						.bind("regTime", user.getRegTime())
 						.execute())
 			.then();
 	}

@@ -18,12 +18,10 @@ package com.livk.context.mybatisplugins.inject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -38,8 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *
  * @author livk
  */
-@ContextConfiguration(classes = MybatisConfig.class)
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(MybatisConfig.class)
 class SqlDataInjectionTest {
 
 	@Autowired

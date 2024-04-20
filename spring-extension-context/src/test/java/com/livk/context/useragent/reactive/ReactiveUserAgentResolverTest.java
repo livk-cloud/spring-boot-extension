@@ -18,7 +18,6 @@ import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.domain.UserAgent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -26,8 +25,7 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.reactive.BindingContext;
 import reactor.core.publisher.Mono;
@@ -42,8 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@ContextConfiguration(classes = { WebFluxConfig.class })
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(WebFluxConfig.class)
 class ReactiveUserAgentResolverTest {
 
 	final ReactiveUserAgentResolver resolver;

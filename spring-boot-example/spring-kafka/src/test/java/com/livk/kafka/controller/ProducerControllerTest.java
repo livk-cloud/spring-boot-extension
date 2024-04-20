@@ -17,6 +17,7 @@
 package com.livk.kafka.controller;
 
 import com.livk.testcontainers.DockerImageNames;
+import com.livk.testcontainers.containers.KafkaContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +26,6 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -43,15 +43,12 @@ class ProducerControllerTest {
 
 	@Container
 	@ServiceConnection
-	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka()).withExposedPorts(9093)
-		.withEnv("KAFKA_LISTENER_SECURITY_PROTOCOL_MAP", "PLAINTEXT:PLAINTEXT,BROKER:PLAINTEXT")
-		.withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
-		.withKraft();
+	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka()).withExposedPorts(9092);
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.kafka.bootstrap-servers",
-				() -> String.format("%s:%s", kafka.getHost(), kafka.getMappedPort(9093)));
+				() -> String.format("%s:%s", kafka.getHost(), kafka.getMappedPort(9092)));
 	}
 
 	@Autowired

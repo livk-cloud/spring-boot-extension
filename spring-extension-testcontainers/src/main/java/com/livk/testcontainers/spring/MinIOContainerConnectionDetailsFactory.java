@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.livk.spring;
+package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;

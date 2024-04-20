@@ -42,9 +42,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.util.Assert;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -126,9 +126,9 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 	protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) {
 		prepareTimingAttackProtection();
 
-		Map<String, String> paramMap = WebUtils.paramMap(WebUtils.request(), ",");
-		String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
-		String clientId = paramMap.get(OAuth2ParameterNames.CLIENT_ID);
+		MultiValueMap<String, String> paramMap = WebUtils.params(WebUtils.request());
+		String grantType = paramMap.getFirst(OAuth2ParameterNames.GRANT_TYPE);
+		String clientId = paramMap.getFirst(OAuth2ParameterNames.CLIENT_ID);
 
 		if (ObjectUtils.isEmpty(clientId)) {
 			clientId = basicConvert.convert(WebUtils.request()).getName();
@@ -139,11 +139,11 @@ public class UserDetailsAuthenticationProvider extends AbstractUserDetailsAuthen
 			.filter(service -> service.support(finalClientId, grantType))
 			.max(Comparator.comparingInt(Ordered::getOrder));
 
-		optional
+		Oauth2UserDetailsService oauth2UserDetailsService = optional
 			.orElseThrow((() -> new InternalAuthenticationServiceException("UserDetailsService error , not register")));
 
 		try {
-			UserDetails loadedUser = optional.get().loadUserByUsername(username);
+			UserDetails loadedUser = oauth2UserDetailsService.loadUserByUsername(username);
 			Optional.ofNullable(loadedUser)
 				.orElseThrow(() -> new InternalAuthenticationServiceException(
 						"UserDetailsService returned null, which is an interface contract violation"));

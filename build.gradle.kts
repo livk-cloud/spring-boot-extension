@@ -30,7 +30,7 @@ tasks {
 
 val root = setOf(project(":spring-boot-extension-starters"))
 val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
-val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
+val module = subprojects.filter { buildFile.exists() } - (bom + root)
 
 configure(module) {
 	apply(plugin = "com.livk.module")
@@ -42,13 +42,15 @@ configure(module) {
 		annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 		testImplementation("org.springframework:spring-tx")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	}
 }
 
 allprojects {
 	repositories {
-		maven("https://repo.spring.io/milestone")
-		maven("https://repo.spring.io/release")
 		maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
+		maven("https://repo.huaweicloud.com/repository/maven/")
+		maven("https://repo.spring.io/release")
+		mavenCentral()
 	}
 }

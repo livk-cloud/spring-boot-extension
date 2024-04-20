@@ -20,6 +20,19 @@ import com.google.common.collect.Lists;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.experimental.UtilityClass;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedCaseInsensitiveMap;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.ErrorResponseException;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
@@ -29,19 +42,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.LinkedCaseInsensitiveMap;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.ErrorResponseException;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * <p>
@@ -58,10 +58,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	private static final String HTTP_IP_SPLIT = ",";
 
 	private ServletRequestAttributes servletRequestAttributes() {
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-		Assert.notNull(servletRequestAttributes, "attributes not null!");
-		return servletRequestAttributes;
+		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+		return (ServletRequestAttributes) requestAttributes;
 	}
 
 	/**
@@ -111,10 +109,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @param request request
 	 * @param delimiter 连接符
 	 * @return map
+	 * @deprecated use {@link #params(HttpServletRequest)}
 	 */
+	@Deprecated(forRemoval = true)
 	public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
-		return request.getParameterMap()
-			.entrySet()
+		return params(request).entrySet()
 			.stream()
 			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
 	}

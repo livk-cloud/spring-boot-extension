@@ -35,7 +35,7 @@ abstract class ManifestPlugin : Plugin<Project> {
 			attributes.putIfAbsent("Implementation-Version", project.version)
 			attributes.putIfAbsent(
 				"Created-By",
-				System.getProperty("java.version") + " (" + System.getProperty("java.specification.vendor") + ")"
+				"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
 			)
 			attributes.putIfAbsent("Gradle-Version", GradleVersion.current())
 		}

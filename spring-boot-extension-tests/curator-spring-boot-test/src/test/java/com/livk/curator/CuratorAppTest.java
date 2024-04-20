@@ -17,7 +17,7 @@
 package com.livk.curator;
 
 import com.livk.context.curator.CuratorTemplate;
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

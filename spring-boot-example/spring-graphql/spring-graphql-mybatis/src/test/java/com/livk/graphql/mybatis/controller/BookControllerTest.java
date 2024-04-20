@@ -18,8 +18,6 @@ package com.livk.graphql.mybatis.controller;
 
 import com.livk.graphql.mybatis.mapper.AuthorMapper;
 import com.livk.graphql.mybatis.mapper.BookMapper;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,6 +30,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,7 +65,7 @@ class BookControllerTest {
 	WebGraphQlTester tester;
 
 	@BeforeEach
-	public void init() {
+	void init() {
 		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
 		tester = HttpGraphQlTester.builder(builder).build();
 	}

@@ -16,7 +16,7 @@
 
 package com.livk.graphql.r2dbc.controller;
 
-import com.livk.testcontainers.PostgresqlContainer;
+import com.livk.testcontainers.containers.PostgresqlContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ class GreetingControllerTest {
 	WebGraphQlTester tester;
 
 	@BeforeEach
-	public void init() {
+	void init() {
 		WebTestClient.Builder builder = webTestClient.mutate().baseUrl(graphqlPath);
 		tester = HttpGraphQlTester.builder(builder).build();
 	}

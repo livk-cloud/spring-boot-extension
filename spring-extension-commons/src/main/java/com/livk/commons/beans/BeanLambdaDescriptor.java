@@ -38,18 +38,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 final class BeanLambdaDescriptor {
 
-	private static final Map<Pair<Class<?>, String>, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
+	private static final Map<Pair<Class<?>, Method>, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
 
 	private final Class<?> type;
 
-	private final String methodName;
+	private final Method method;
 
-	private PropertyDescriptor propertyDescriptor;
+	private final PropertyDescriptor propertyDescriptor;
 
-	private BeanLambdaDescriptor(Class<?> type, String methodName) {
+	private BeanLambdaDescriptor(Class<?> type, Method method) {
 		this.type = type;
-		this.methodName = methodName;
-		initField();
+		this.method = method;
+		this.propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
 	}
 
 	/**
@@ -67,17 +67,8 @@ final class BeanLambdaDescriptor {
 		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className);
-		return cache.computeIfAbsent(Pair.of(type, serializedLambda.getImplMethodName()),
-				pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
-	}
-
-	private void initField() {
-		PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(type);
-		for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-			if (propertyDescriptor.getReadMethod().getName().equals(methodName)) {
-				this.propertyDescriptor = propertyDescriptor;
-			}
-		}
+		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
+		return cache.computeIfAbsent(Pair.of(type, method), pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
 	}
 
 	public String getFieldName() {
@@ -86,16 +77,15 @@ final class BeanLambdaDescriptor {
 
 	public Field getField() {
 		if (propertyDescriptor != null) {
-			String fieldName = getFieldName();
+			String fieldName = propertyDescriptor.getName();
 			Class<?> fieldType = propertyDescriptor.getPropertyType();
 			return ReflectionUtils.findField(type, fieldName, fieldType);
 		}
 		return null;
 	}
 
-	@SneakyThrows
-	public Method getMethod() {
-		return ReflectionUtils.findMethod(type, methodName);
+	public String getMethodName() {
+		return method.getName();
 	}
 
 }

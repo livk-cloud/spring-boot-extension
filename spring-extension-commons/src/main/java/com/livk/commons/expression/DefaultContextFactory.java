@@ -44,7 +44,9 @@ class DefaultContextFactory implements ContextFactory {
 	public Context create(Method method, Object[] args) {
 		Assert.notNull(method, "method not be null");
 		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
-		Assert.notNull(parameterNames, "参数列表不能为null");
+		if (parameterNames == null || parameterNames.length == 0) {
+			return new Context();
+		}
 		HashMap<String, Object> map = Maps.newHashMapWithExpectedSize(parameterNames.length);
 		if (args != null && parameterNames.length == args.length) {
 			for (int i = 0; i < parameterNames.length; i++) {

@@ -16,8 +16,8 @@
 
 package com.livk.dynamic.controller;
 
-import com.livk.testcontainers.MysqlContainer;
-import com.livk.testcontainers.PostgresqlContainer;
+import com.livk.testcontainers.containers.MysqlContainer;
+import com.livk.testcontainers.containers.PostgresqlContainer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

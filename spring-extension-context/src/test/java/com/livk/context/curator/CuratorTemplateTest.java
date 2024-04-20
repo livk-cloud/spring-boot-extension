@@ -16,20 +16,18 @@
 
 package com.livk.context.curator;
 
-import com.livk.testcontainers.ZookeeperContainer;
+import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -43,8 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@ContextConfiguration(classes = CuratorConfig.class)
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig(CuratorConfig.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers(disabledWithoutDocker = true)
 class CuratorTemplateTest {

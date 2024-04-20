@@ -16,15 +16,20 @@
 
 package com.livk.ck.r2dbc.entity;
 
+import com.google.common.base.CaseFormat;
+import com.livk.commons.util.ReflectionUtils;
+import io.r2dbc.spi.ColumnMetadata;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -34,7 +39,6 @@ import java.util.Date;
  * @author livk
  */
 @Data
-@Accessors(chain = true)
 @Table("user")
 public class User {
 
@@ -46,10 +50,25 @@ public class User {
 	private String version;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date regTime;
+	private LocalDate regTime;
 
 	public static User collect(Row row, RowMetadata rowMetadata) {
-		return new User();
+		User user = new User();
+		for (ColumnMetadata columnMetadata : rowMetadata.getColumnMetadatas()) {
+			String name = columnMetadata.getName();
+			String fieldName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name);
+			Field field = ReflectionUtils.findField(User.class, fieldName);
+			if (field != null) {
+				Method writeMethod = ReflectionUtils.getWriteMethod(User.class, field);
+				try {
+					writeMethod.invoke(user, row.get(name, field.getType()));
+				}
+				catch (InvocationTargetException | IllegalAccessException e) {
+					throw new IllegalArgumentException(e);
+				}
+			}
+		}
+		return user;
 	}
 
 }
