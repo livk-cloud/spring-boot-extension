@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "3.3.0-M3"
+spring-boot = "3.3.0-RC1"
 kotlin = "1.9.23"
 pagehelper = "6.1.0"
 pagehelper-starter = "2.1.0"
