@@ -4,14 +4,12 @@ import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common
-	alias(libs.plugins.google.protobuf)
+	google.protobuf
 }
 
 dependencies {
 	api("io.netty:netty-all")
 	api(libs.protobuf.java)
-	//google protobuf插件使用的依赖申明方式是implementation或者compileOnly
-	implementation(platform(project(":spring-extension-dependencies")))
 }
 
 tasks.withType<CheckFormat> {

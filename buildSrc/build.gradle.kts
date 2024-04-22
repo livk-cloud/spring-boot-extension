@@ -11,6 +11,8 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-gradle-plugin:${libs.versions.spring.boot.get()}")
 	implementation("io.spring.javaformat:spring-javaformat-gradle-plugin:${libs.versions.spring.javaformat.get()}")
+	implementation("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.google.protobuf.plugins.get()}")
+	implementation("com.google.gradle:osdetector-gradle-plugin:${libs.versions.google.osdetector.plugins.get()}")
 }
 
 gradlePlugin {
@@ -38,6 +40,10 @@ gradlePlugin {
 		create("deployedPlugin") {
 			id = "com.livk.mvn.deployed"
 			implementationClass = "com.livk.boot.maven.DeployedPlugin"
+		}
+		create("protobufPlugin"){
+			id = "google.protobuf"
+			implementationClass = "com.google.protobuf.gradle.ProtobufPlugin"
 		}
 	}
 }

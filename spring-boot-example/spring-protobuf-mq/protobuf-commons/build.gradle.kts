@@ -4,7 +4,7 @@ import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common
-	alias(libs.plugins.google.protobuf)
+	google.protobuf
 }
 
 dependencies {
@@ -13,8 +13,6 @@ dependencies {
 	api("org.springframework:spring-web")
 	api(project(":spring-boot-extension-starters:mapstruct-spring-boot-starter"))
 	annotationProcessor("org.mapstruct:mapstruct-processor")
-	//google protobuf插件使用的依赖申明方式是implementation或者compileOnly
-	implementation(platform(project(":spring-extension-dependencies")))
 }
 
 sourceSets {
