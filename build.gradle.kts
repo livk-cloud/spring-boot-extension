@@ -30,7 +30,7 @@ tasks {
 
 val root = setOf(project(":spring-boot-extension-starters"))
 val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
-val module = subprojects.filter { buildFile.exists() } - (bom + root)
+val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
 
 configure(module) {
 	apply(plugin = "com.livk.module")
