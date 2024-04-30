@@ -17,8 +17,7 @@
 package com.livk.context.useragent;
 
 import com.livk.context.useragent.domain.UserAgent;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 
@@ -27,12 +26,13 @@ import org.springframework.http.HttpHeaders;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class UserAgentHelper {
 
-	private volatile ConversionService conversionService;
+	private final ConversionService conversionService;
 
-	private final ApplicationContext applicationContext;
+	public UserAgentHelper(@Lazy ConversionService conversionService) {
+		this.conversionService = conversionService;
+	}
 
 	/**
 	 * Convert user agent.
@@ -40,13 +40,6 @@ public class UserAgentHelper {
 	 * @return the user agent
 	 */
 	public UserAgent convert(HttpHeaders headers) {
-		if (conversionService == null) {
-			synchronized (this) {
-				if (conversionService == null) {
-					conversionService = applicationContext.getBean(ConversionService.class);
-				}
-			}
-		}
 		return conversionService.convert(headers, UserAgent.class);
 	}
 
