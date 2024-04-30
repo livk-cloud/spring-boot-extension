@@ -21,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +54,7 @@ class UserAgentHelperTest {
 		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class,
 				ConversionServiceConfig.class);
 
-		UserAgentHelper helper = new UserAgentHelper(applicationContext);
+		UserAgentHelper helper = new UserAgentHelper(applicationContext.getBean(ConversionService.class));
 		UserAgent userAgent = helper.convert(headers);
 		assertNotNull(userAgent);
 		assertEquals(userAgentStr, userAgent.userAgentStr());
@@ -72,7 +73,7 @@ class UserAgentHelperTest {
 
 		applicationContext = new AnnotationConfigApplicationContext(YauaaConfig.class, ConversionServiceConfig.class);
 
-		UserAgentHelper helper = new UserAgentHelper(applicationContext);
+		UserAgentHelper helper = new UserAgentHelper(applicationContext.getBean(ConversionService.class));
 
 		UserAgent userAgent = helper.convert(headers);
 		assertNotNull(userAgent);

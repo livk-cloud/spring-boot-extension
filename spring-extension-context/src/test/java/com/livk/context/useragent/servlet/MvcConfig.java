@@ -18,7 +18,6 @@ import com.livk.context.useragent.support.UserAgentConverter;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
@@ -45,8 +44,8 @@ class MvcConfig {
 	}
 
 	@Bean
-	public UserAgentHelper userAgentHelper(ApplicationContext applicationContext) {
-		return new UserAgentHelper(applicationContext);
+	public UserAgentHelper userAgentHelper(ConversionService conversionService) {
+		return new UserAgentHelper(conversionService);
 	}
 
 }

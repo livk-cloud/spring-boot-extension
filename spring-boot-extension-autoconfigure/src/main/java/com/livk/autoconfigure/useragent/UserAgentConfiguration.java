@@ -27,8 +27,9 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
@@ -45,12 +46,12 @@ public class UserAgentConfiguration {
 
 	/**
 	 * User agent helper user agent helper.
-	 * @param applicationContext the application context
+	 * @param conversionService the application context
 	 * @return the user agent helper
 	 */
 	@Bean
-	public UserAgentHelper userAgentHelper(ApplicationContext applicationContext) {
-		return new UserAgentHelper(applicationContext);
+	public UserAgentHelper userAgentHelper(@Lazy ConversionService conversionService) {
+		return new UserAgentHelper(conversionService);
 	}
 
 	/**
