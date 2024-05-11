@@ -16,8 +16,6 @@
 
 package com.livk.doc.webflux.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -44,8 +42,9 @@ class DocControllerTest {
 			.isOk()
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
-			.expectBody(JsonNode.class)
-			.value(jsonNode -> jsonNode.get("openapi").asText(), Is.is("3.0.1"));
+			.expectBody()
+			.jsonPath("openapi", "3.0.1")
+			.exists();
 	}
 
 }

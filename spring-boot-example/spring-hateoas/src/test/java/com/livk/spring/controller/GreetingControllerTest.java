@@ -16,8 +16,6 @@
 
 package com.livk.spring.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
@@ -46,8 +44,9 @@ class GreetingControllerTest {
 			.isOk()
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
-			.expectBody(JsonNode.class)
-			.value(jsonNode -> jsonNode.get("content").asText(), Is.is("hello,World!"));
+			.expectBody()
+			.jsonPath("content", "hello,World!")
+			.exists();
 	}
 
 }

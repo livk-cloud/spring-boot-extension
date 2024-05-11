@@ -16,11 +16,8 @@
 
 package com.livk.crypto.webflux.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonNodeUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.PbeSecurity;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -56,9 +53,11 @@ class InfoWebFluxControllerTest {
 			.isOk()
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
-			.expectBody(JsonNode.class)
-			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "id.paramId").asText(), Is.is(encoding))
-			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "id.headerId").asText(), Is.is(encoding));
+			.expectBody()
+			.jsonPath("id.paramId", encoding)
+			.exists()
+			.jsonPath("id.headerId", encoding)
+			.exists();
 	}
 
 	@Test
@@ -75,9 +74,11 @@ class InfoWebFluxControllerTest {
 			.isOk()
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
-			.expectBody(JsonNode.class)
-			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "body.paramId").asText(), Is.is(encoding))
-			.value(jsonNode -> JsonNodeUtils.findNode(jsonNode, "body.headerId").asText(), Is.is(encoding));
+			.expectBody()
+			.jsonPath("body.paramId", encoding)
+			.exists()
+			.jsonPath("body.headerId", encoding)
+			.exists();
 	}
 
 }
