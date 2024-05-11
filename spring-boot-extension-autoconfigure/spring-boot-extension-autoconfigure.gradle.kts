@@ -17,7 +17,7 @@ dependencies {
 	optional("org.springframework:spring-webflux")
 	optional("dnsjava:dnsjava")
 	optional("org.redisson:redisson")
-	optional("org.redisson:redisson-spring-data-31")
+	optional("org.redisson:redisson-spring-data-32")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
 	optional("org.aspectj:aspectjweaver")
