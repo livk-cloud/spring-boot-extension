@@ -14,23 +14,32 @@
  * limitations under the License.
  */
 
-package com.livk.pulsar.consumer;
+package com.livk.pulsar.producer.entity;
 
-import com.livk.commons.SpringLauncher;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.livk.commons.jackson.util.JsonMapperUtils;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
- * PulsarConsumerApp
+ * PulsarMessage
  * </p>
  *
  * @author livk
  */
-@SpringBootApplication
-public class PulsarConsumerApp {
+@Data
+public class PulsarMessage<T> implements Serializable {
 
-	public static void main(String[] args) {
-		SpringLauncher.run(args);
+	private String msgId;
+
+	private LocalDateTime sendTime;
+
+	private T data;
+
+	public String toJson() {
+		return JsonMapperUtils.writeValueAsString(this);
 	}
 
 }

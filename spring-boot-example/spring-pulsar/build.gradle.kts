@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":spring-boot-example:spring-pulsar:pulsar-commons"))
+	implementation(project(":spring-extension-commons"))
+	implementation("org.springframework.boot:spring-boot-starter-pulsar")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
 	testImplementation("org.testcontainers:pulsar")

@@ -16,6 +16,7 @@
 
 package com.livk.kafka.controller;
 
+import com.livk.kafka.KafkaConstant;
 import com.livk.testcontainers.DockerImageNames;
 import com.livk.testcontainers.containers.KafkaContainer;
 import org.junit.jupiter.api.Test;
@@ -23,12 +24,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,6 +65,17 @@ class ProducerControllerTest {
 	@Test
 	void producer() throws Exception {
 		mockMvc.perform(get("/kafka/send")).andDo(print()).andExpect(status().isOk());
+
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> {
+			assertEquals(3, this.messages.size());
+		});
+	}
+
+	final List<String> messages = new ArrayList<>();
+
+	@KafkaListener(id = "test-id", topics = KafkaConstant.TOPIC)
+	void processMessage(String message) {
+		this.messages.add(message);
 	}
 
 }

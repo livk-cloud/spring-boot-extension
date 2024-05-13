@@ -14,48 +14,48 @@
  * limitations under the License.
  */
 
-package com.livk.pulsar.producer;
+package com.livk.pulsar.producer.controller;
 
-import com.livk.commons.util.Snowflake;
-import com.livk.pulsar.common.entity.PulsarMessage;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.pulsar.producer.entity.PulsarMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.pulsar.client.api.PulsarClientException;
+import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Schema;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.pulsar.core.PulsarTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
  * <p>
- * ProducerTask
+ * MessageController
  * </p>
  *
  * @author livk
  */
-@Component
+@RestController
+@RequestMapping("producer")
 @RequiredArgsConstructor
-public class ProducerTask {
-
-	private static final Snowflake SNOWFLAKE = new Snowflake();
+public class MessageController {
 
 	private final PulsarTemplate<String> pulsarTemplate;
 
-	@Scheduled(cron = "0/5 * * * * ?")
-	public void send() throws PulsarClientException {
-		PulsarMessage<String> message = new PulsarMessage<>();
+	@PostMapping
+	public HttpEntity<String> send(@RequestBody JsonNode jsonNode) throws Exception {
+		PulsarMessage<JsonNode> message = new PulsarMessage<>();
 		message.setMsgId(UUID.randomUUID().toString());
 		message.setSendTime(LocalDateTime.now());
-		message.setData(String.valueOf(SNOWFLAKE.nextId()));
+		message.setData(jsonNode);
 
-		pulsarTemplate.newMessage(message.toJson())
-			.withSchema(Schema.STRING)
-			.withMessageCustomizer(builder -> builder.key(UUID.randomUUID().toString().substring(0, 5)))
-			.sendAsync()
-			.handle((messageId, throwable) -> throwable == null)
-			.join();
+		MessageId messageId = pulsarTemplate.sendAsync(message.toJson(), Schema.STRING).get();
+		return ResponseEntity.ok(JsonMapperUtils.writeValueAsString(messageId));
 	}
 
 }
