@@ -62,7 +62,7 @@ class LockControllerTest {
 			CountDownLatch countDownLatch = new CountDownLatch(10);
 			for (int i = 0; i < 10; i++) {
 				String param = String.valueOf(i);
-				service.submit(() -> {
+				service.execute(() -> {
 					try {
 						mockMvc.perform(get("/lock").queryParam("id", param)).andExpect(status().isOk());
 						countDownLatch.countDown();

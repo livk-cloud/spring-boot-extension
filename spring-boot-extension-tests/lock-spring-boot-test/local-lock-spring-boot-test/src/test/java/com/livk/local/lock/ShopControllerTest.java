@@ -52,7 +52,7 @@ class ShopControllerTest {
 		try (ExecutorService service = Executors.newFixedThreadPool(500, Thread.ofVirtual().factory())) {
 			CountDownLatch countDownLatch = new CountDownLatch(500);
 			for (int i = 0; i < 500; i++) {
-				service.submit(() -> {
+				service.execute(() -> {
 					try {
 						mockMvc.perform(post("/shop/buy/local")).andExpect(status().isOk());
 						countDownLatch.countDown();

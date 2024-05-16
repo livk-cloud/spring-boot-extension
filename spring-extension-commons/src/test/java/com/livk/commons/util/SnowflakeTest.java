@@ -46,7 +46,7 @@ class SnowflakeTest {
 		try (ExecutorService service = Executors.newFixedThreadPool(1000, Thread.ofVirtual().factory())) {
 			CountDownLatch countDownLatch = new CountDownLatch(num);
 			for (int i = 0; i < num; i++) {
-				service.submit(() -> {
+				service.execute(() -> {
 					list.add(SNOWFLAKE.nextId());
 					countDownLatch.countDown();
 				});

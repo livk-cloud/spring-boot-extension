@@ -69,7 +69,7 @@ class ShopControllerTest {
 		try (ExecutorService service = Executors.newFixedThreadPool(10, Thread.ofVirtual().factory())) {
 			CountDownLatch countDownLatch = new CountDownLatch(10);
 			for (int i = 0; i < 10; i++) {
-				service.submit(() -> {
+				service.execute(() -> {
 					try {
 						mockMvc.perform(post("/shop/buy/distributed")).andExpect(status().isOk());
 						countDownLatch.countDown();
