@@ -56,7 +56,7 @@ public class InfoController {
 			@RequestParam(defaultValue = "false") Boolean async, @RequestParam(defaultValue = "1") Integer multiple) {
 		List<Info> infos = this.multiple(dataExcels, multiple);
 		log.info("size:{},async:{},multiple:{}", infos.size(), async, multiple);
-		if (async) {
+		if (Boolean.TRUE.equals(async)) {
 			infoService.insertBatchMultithreading(infos);
 		}
 		else {
