@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.item.Chunk;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * <p>
@@ -44,6 +45,7 @@ public class JobWriteListener implements ItemWriteListener<User> {
 
 	@Override
 	public void onWriteError(@Nullable Exception e, @Nullable Chunk<? extends User> items) {
+		Assert.notNull(e, "exception must not be null");
 		log.error("spring batch write an error occurred ,message:{} data:{}", e.getMessage(), items, e);
 	}
 
