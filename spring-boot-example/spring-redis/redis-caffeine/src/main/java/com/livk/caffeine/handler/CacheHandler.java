@@ -28,7 +28,7 @@ public interface CacheHandler<T> extends CacheReadHandler<T>, CacheWriteHandler<
 	default T readAndPut(String key, T defaultValue) {
 		T t = this.read(key);
 		if (t == null) {
-			synchronized (this) {
+			synchronized (CacheHandler.class) {
 				t = this.read(key);
 				if (t == null) {
 					t = defaultValue;
