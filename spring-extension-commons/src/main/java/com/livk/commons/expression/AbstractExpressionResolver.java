@@ -35,7 +35,7 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 
 	@Override
 	public final <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType) {
-		return evaluate(value, new Context(contextMap), returnType);
+		return evaluate(value, Context.create(contextMap), returnType);
 	}
 
 	@Override
