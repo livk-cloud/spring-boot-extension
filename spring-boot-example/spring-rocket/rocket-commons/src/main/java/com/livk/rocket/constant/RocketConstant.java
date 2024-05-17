@@ -16,19 +16,22 @@
 
 package com.livk.rocket.constant;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * @author laokou
  */
-public interface RocketConstant {
+@UtilityClass
+public class RocketConstant {
 
-	String LIVK_MESSAGE_TOPIC = "livk-message-topic";
+	public static final String LIVK_MESSAGE_TOPIC = "livk-message-topic";
 
-	String LIVK_EXT_MESSAGE_TOPIC = "livk-ext-message-topic";
+	public static final String LIVK_EXT_MESSAGE_TOPIC = "livk-ext-message-topic";
 
-	String LIVK_MESSAGE_QUEUE_SELECTOR_KEY = "livk-message_queue_selector_key";
+	public static final String LIVK_MESSAGE_QUEUE_SELECTOR_KEY = "livk-message_queue_selector_key";
 
-	String LIVK_MESSAGE_ORDERLY_TOPIC = "livk-message-orderly-topic";
+	public static final String LIVK_MESSAGE_ORDERLY_TOPIC = "livk-message-orderly-topic";
 
-	String LIVK_EXT_MESSAGE_ORDERLY_TOPIC = "livk-ext-message-orderly-topic";
+	public static final String LIVK_EXT_MESSAGE_ORDERLY_TOPIC = "livk-ext-message-orderly-topic";
 
 }

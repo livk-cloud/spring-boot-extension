@@ -16,81 +16,83 @@
 
 package com.livk.auth.server.common.constant;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
  * @author livk
  */
-public interface SecurityConstants {
+@UtilityClass
+public class SecurityConstants {
 
 	/**
 	 * 角色前缀
 	 */
-	String ROLE = "ROLE_";
+	public static final String ROLE = "ROLE_";
 
 	/**
 	 * 手机号登录
 	 */
-	String SMS = "sms";
+	public static final String SMS = "sms";
 
-	AuthorizationGrantType GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
+	public static final AuthorizationGrantType GRANT_TYPE_SMS = new AuthorizationGrantType(SMS);
 
-	String PASSWORD = "password";
+	public static final String PASSWORD = "password";
 
-	AuthorizationGrantType GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
+	public static final AuthorizationGrantType GRANT_TYPE_PASSWORD = new AuthorizationGrantType(PASSWORD);
 
 	/**
 	 * {bcrypt} 加密的特征码
 	 */
-	String BCRYPT = "{bcrypt}";
+	public static final String BCRYPT = "{bcrypt}";
 
 	/**
 	 * {noop} 加密的特征码
 	 */
-	String NOOP = "{noop}";
+	public static final String NOOP = "{noop}";
 
 	/**
 	 * 用户信息
 	 */
-	String DETAILS_USER = "user_info";
+	public static final String DETAILS_USER = "user_info";
 
 	/**
 	 * 验证码有效期,默认 60秒
 	 */
-	long CODE_TIME = 60;
+	public static final long CODE_TIME = 60;
 
 	/**
 	 * 验证码长度
 	 */
-	String CODE_SIZE = "6";
+	public static final String CODE_SIZE = "6";
 
 	/**
 	 * 短信登录 参数名称
 	 */
-	String SMS_PARAMETER_NAME = "mobile";
+	public static final String SMS_PARAMETER_NAME = "mobile";
 
 	/**
 	 * 授权码模式confirm
 	 */
-	String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
+	public static final String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
 
 	/**
 	 * 删除
 	 */
-	String STATUS_DEL = "1";
+	public static final String STATUS_DEL = "1";
 
 	/**
 	 * 正常
 	 */
-	String STATUS_NORMAL = "0";
+	public static final String STATUS_NORMAL = "0";
 
 	/**
 	 * 锁定
 	 */
-	String STATUS_LOCK = "9";
+	public static final String STATUS_LOCK = "9";
 
-	String DEFAULT_ID_SUFFIX = "}";
+	public static final String DEFAULT_ID_SUFFIX = "}";
 
-	String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
+	public static final String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
 
 }

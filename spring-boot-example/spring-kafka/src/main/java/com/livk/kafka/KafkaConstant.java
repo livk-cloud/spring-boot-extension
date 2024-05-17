@@ -16,6 +16,8 @@
 
 package com.livk.kafka;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * <p>
  * KafkaConstant
@@ -23,8 +25,9 @@ package com.livk.kafka;
  *
  * @author livk
  */
-public interface KafkaConstant {
+@UtilityClass
+public class KafkaConstant {
 
-	String TOPIC = "livk-topic";
+	public static final String TOPIC = "livk-topic";
 
 }
