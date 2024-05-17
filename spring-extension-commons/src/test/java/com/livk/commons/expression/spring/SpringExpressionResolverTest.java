@@ -17,7 +17,7 @@
 package com.livk.commons.expression.spring;
 
 import com.livk.commons.expression.ExpressionResolver;
-import com.livk.commons.expression.ParseMethodTest;
+import com.livk.commons.expression.ParseMethod;
 import com.livk.commons.spring.context.SpringContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +43,7 @@ class SpringExpressionResolverTest {
 
 	final String springContextHolderName = SpringContextHolder.class.getName();
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	SpringExpressionResolverTest() throws NoSuchMethodException {
 	}

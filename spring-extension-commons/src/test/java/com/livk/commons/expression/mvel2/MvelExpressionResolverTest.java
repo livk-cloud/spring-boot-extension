@@ -17,8 +17,7 @@
 package com.livk.commons.expression.mvel2;
 
 import com.livk.commons.expression.ExpressionResolver;
-import com.livk.commons.expression.ParseMethodTest;
-import com.livk.commons.expression.aviator.AviatorExpressionResolver;
+import com.livk.commons.expression.ParseMethod;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -38,7 +37,7 @@ class MvelExpressionResolverTest {
 
 	final ExpressionResolver resolver = new MvelExpressionResolver();
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	MvelExpressionResolverTest() throws NoSuchMethodException {
 	}

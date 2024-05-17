@@ -19,14 +19,10 @@ package com.livk.commons;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>
- * SpringBootTestMain
- * </p>
- *
  * @author livk
  */
 @SpringBootApplication
-public class SpringBootTestMain {
+public class SpringBootMain {
 
 	public static void main(String[] args) {
 		SpringLauncher.run(args);

@@ -22,15 +22,11 @@ import org.springframework.pulsar.annotation.PulsarListener;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * MessageConsumerTest
- * </p>
- *
  * @author livk
  */
 @Slf4j
 @Component
-public class MessageConsumerTest {
+public class PulsarMessageConsumer {
 
 	@PulsarListener
 	public void receive(Message<String> message) {

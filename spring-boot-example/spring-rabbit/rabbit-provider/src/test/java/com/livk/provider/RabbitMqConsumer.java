@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class ConsumerTest {
+public class RabbitMqConsumer {
 
 	@RabbitListener(queuesToDeclare = @Queue(DirectConfig.RABBIT_DIRECT_TOPIC))
 	public <T> void consumerDirect(@Payload Message<T> message) {

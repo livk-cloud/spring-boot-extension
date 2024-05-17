@@ -19,7 +19,7 @@ package com.livk.commons.expression;
 /**
  * @author livk
  */
-public class ParseMethodTest {
+public class ParseMethod {
 
 	@SuppressWarnings("unused")
 	private void parseMethod(String username) {

@@ -33,7 +33,7 @@ class ContextFactoryTest {
 
 	private final static Map<String, String> map = Map.of("username", "livk");
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	ContextFactory contextFactory = new DefaultContextFactory();
 

@@ -17,7 +17,7 @@
 package com.livk.commons.expression.jexl3;
 
 import com.livk.commons.expression.ExpressionResolver;
-import com.livk.commons.expression.ParseMethodTest;
+import com.livk.commons.expression.ParseMethod;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -37,7 +37,7 @@ class JexlExpressionResolverTest {
 
 	final ExpressionResolver resolver = new JexlExpressionResolver();
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	JexlExpressionResolverTest() throws NoSuchMethodException {
 	}

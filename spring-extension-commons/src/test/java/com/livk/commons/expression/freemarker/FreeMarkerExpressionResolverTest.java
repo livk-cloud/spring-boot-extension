@@ -17,7 +17,7 @@
 package com.livk.commons.expression.freemarker;
 
 import com.livk.commons.expression.ExpressionResolver;
-import com.livk.commons.expression.ParseMethodTest;
+import com.livk.commons.expression.ParseMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.expression.ExpressionException;
 
@@ -38,7 +38,7 @@ class FreeMarkerExpressionResolverTest {
 
 	final ExpressionResolver resolver = new FreeMarkerExpressionResolver();
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	FreeMarkerExpressionResolverTest() throws NoSuchMethodException {
 	}

@@ -20,7 +20,7 @@ import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import com.livk.commons.expression.ExpressionResolver;
-import com.livk.commons.expression.ParseMethodTest;
+import com.livk.commons.expression.ParseMethod;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -45,7 +45,7 @@ class AviatorExpressionResolverTest {
 
 	final ExpressionResolver resolver = new AviatorExpressionResolver();
 
-	private final Method method = ParseMethodTest.class.getDeclaredMethod("parseMethod", String.class);
+	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
 	AviatorExpressionResolverTest() throws NoSuchMethodException {
 	}
