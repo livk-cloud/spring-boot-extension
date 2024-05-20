@@ -26,6 +26,7 @@ dependencies {
 	optional("org.springframework.data:spring-data-redis")
 	optional("com.blueconic:browscap-java")
 	optional("nl.basjes.parse.useragent:yauaa")
+	optional("com.redis:lettucemod")
 	optional("org.apache.commons:commons-pool2")
 	optional("com.lmax:disruptor")
 	optional("org.redisson:redisson")

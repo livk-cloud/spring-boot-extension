@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.redisearch.codec;
+package com.livk.context.redisearch.codec;
+
+import org.springframework.core.ConfigurableObjectInputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,14 +24,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.springframework.core.ConfigurableObjectInputStream;
 
 /**
  * The type Jdk redis codec.
  *
  * @author livk
  */
-public class JdkRedisCodec extends AbstractRedisCodec<Object> {
+public class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
 
 	private ClassLoader classLoader;
 
@@ -48,7 +49,26 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 	}
 
 	@Override
-	protected byte[] serialize(Object value) throws CodecException {
+	protected byte[] serializeKey(Object value) throws CodecException {
+		return serialize(value);
+	}
+
+	@Override
+	protected Object deserializeKey(byte[] bytes) throws CodecException {
+		return deserialize(bytes);
+	}
+
+	@Override
+	protected byte[] serializeValue(Object value) throws CodecException {
+		return serialize(value);
+	}
+
+	@Override
+	protected Object deserializeValue(byte[] bytes) throws CodecException {
+		return deserialize(bytes);
+	}
+
+	private byte[] serialize(Object value) throws CodecException {
 		if (!(value instanceof Serializable)) {
 			throw new IllegalArgumentException(getClass().getSimpleName() + " requires a Serializable payload "
 					+ "but received an object of type [" + value.getClass().getName() + "]");
@@ -65,8 +85,7 @@ public class JdkRedisCodec extends AbstractRedisCodec<Object> {
 		}
 	}
 
-	@Override
-	protected Object deserialize(byte[] bytes) throws CodecException {
+	private Object deserialize(byte[] bytes) throws CodecException {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
 		try {
 			ObjectInputStream objectInputStream = new ConfigurableObjectInputStream(inputStream, this.classLoader);

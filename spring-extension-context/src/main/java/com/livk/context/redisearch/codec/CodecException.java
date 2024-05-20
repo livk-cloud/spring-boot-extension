@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.redisearch.codec;
+package com.livk.context.redisearch.codec;
 
 /**
  * @author livk

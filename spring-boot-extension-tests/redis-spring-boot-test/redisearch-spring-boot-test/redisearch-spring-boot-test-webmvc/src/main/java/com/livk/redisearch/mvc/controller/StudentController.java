@@ -17,8 +17,8 @@
 package com.livk.redisearch.mvc.controller;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
-import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.lettucemod.search.SearchResults;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +43,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
 
-	private final StatefulRedisModulesConnection<String, String> connection;
+	private final StringRediSearchTemplate template;
 
 	@GetMapping
 	public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
-		RedisModulesCommands<String, String> search = connection.sync();
+		RedisModulesCommands<String, String> search = template.sync();
 		SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
 		List<Student> studentList = result.stream()
 			.map(document -> JsonMapperUtils.convertValue(document, Student.class))

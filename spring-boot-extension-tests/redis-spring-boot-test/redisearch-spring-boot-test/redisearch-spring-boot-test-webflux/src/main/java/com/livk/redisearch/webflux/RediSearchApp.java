@@ -19,8 +19,8 @@ package com.livk.redisearch.webflux;
 import com.livk.commons.SpringLauncher;
 import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
-import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.lettucemod.search.Document;
 import com.redis.lettucemod.search.Field;
@@ -50,9 +50,9 @@ public class RediSearchApp {
 
 	@Bean
 	@SuppressWarnings("unchecked")
-	public ApplicationRunner applicationRunner(StatefulRedisModulesConnection<String, String> connect) {
+	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
 		return (args) -> {
-			RedisModulesCommands<String, String> search = connect.sync();
+			RedisModulesCommands<String, String> search = template.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
 				search.ftCreate(Student.INDEX,

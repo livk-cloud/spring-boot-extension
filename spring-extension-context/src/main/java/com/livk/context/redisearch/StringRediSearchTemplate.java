@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.redisearch.customizer;
+package com.livk.context.redisearch;
 
-import com.livk.commons.spring.Customizer;
-import io.lettuce.core.resource.ClientResources;
+import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import io.lettuce.core.AbstractRedisClient;
+import io.lettuce.core.codec.StringCodec;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
- * The interface Client resources builder customizer.
- *
  * @author livk
  */
-public interface ClientResourcesBuilderCustomizer extends Customizer<ClientResources.Builder> {
+public class StringRediSearchTemplate extends RediSearchTemplate<String, String> {
+
+	public StringRediSearchTemplate(AbstractRedisClient client,
+			GenericObjectPoolConfig<StatefulRedisModulesConnection<String, String>> poolConfig) {
+		super(client, poolConfig);
+		setRedisCodec(StringCodec.UTF8);
+	}
 
 }
