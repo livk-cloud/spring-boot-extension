@@ -94,9 +94,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 	@SneakyThrows
 	@Override
 	public byte[] writeValueAsBytes(Object obj) {
-		if (obj instanceof String str) {
-			return str.getBytes();
-		}
 		return mapper.writeValueAsBytes(obj);
 	}
 
