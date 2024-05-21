@@ -33,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,15 +65,15 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	@Override
 	protected void generateConfigFiles() {
-		for (String providerInterface : importsMap.keySet()) {
-			String resourceFile = String.format(LOCATION, providerInterface);
+		for (Map.Entry<String, Collection<String>> entity : importsMap.asMap().entrySet()) {
+			String resourceFile = String.format(LOCATION, entity.getKey());
 			log("Working on resource file: " + resourceFile);
 			try {
 				FileObject resource = filer.getResource(out, "", resourceFile);
 				log("Looking for existing resource file at " + resource.toUri());
 				Set<String> exitImports = this.read(resource);
 				log("Existing service entries: " + exitImports);
-				Set<String> allImports = Stream.concat(exitImports.stream(), importsMap.get(providerInterface).stream())
+				Set<String> allImports = Stream.concat(exitImports.stream(), entity.getValue().stream())
 					.collect(Collectors.toSet());
 
 				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
