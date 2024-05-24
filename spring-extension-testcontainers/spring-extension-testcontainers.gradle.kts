@@ -12,6 +12,7 @@ dependencies {
 	compileProcessor(project(":spring-auto-service"))
 
     optional("org.testcontainers:mysql")
+    optional("org.testcontainers:kafka")
     optional("org.testcontainers:postgresql")
     optional("org.testcontainers:clickhouse")
     optional("org.testcontainers:minio")

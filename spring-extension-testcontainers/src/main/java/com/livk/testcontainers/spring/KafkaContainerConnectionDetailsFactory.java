@@ -15,15 +15,18 @@ package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.containers.KafkaContainer;
 import org.springframework.boot.autoconfigure.kafka.KafkaConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
+import org.testcontainers.kafka.KafkaContainer;
 
 import java.util.List;
 
 /**
+ * <a href="https://github.com/spring-projects/spring-boot/pull/40695">springboot support
+ * testcontainers kafka</a>
+ *
  * @author livk
  */
 @SpringFactories(ConnectionDetailsFactory.class)

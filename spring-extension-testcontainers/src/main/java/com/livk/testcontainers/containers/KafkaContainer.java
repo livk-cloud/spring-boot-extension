@@ -28,7 +28,9 @@ import java.util.List;
  * use apache kafka</a>
  *
  * @author livk
+ * @see org.testcontainers.kafka.KafkaContainer
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class KafkaContainer extends GenericContainer<KafkaContainer> {
 
 	private static final DockerImageName DEFAULT_IMAGE_NAME = DockerImageName.parse("apache/kafka");
