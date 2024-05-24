@@ -28,4 +28,5 @@ class HttpClientTypeTest {
 		assertEquals(EnableRestTemplate.class, HttpClientType.REST_TEMPLATE.annotationType());
 		assertEquals(EnableWebClient.class, HttpClientType.WEB_CLIENT.annotationType());
 	}
+
 }
