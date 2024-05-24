@@ -126,7 +126,7 @@ class CacheControllerTest {
 		ScanOptions options = ScanOptions.scanOptions().match("*").count(100).build();
 		try (Cursor<String> cursor = redisOps.scan(options)) {
 			while (cursor.hasNext()) {
-				log.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getCursorId(), cursor.getPosition());
+				log.info("key:{} cursorId:{} position:{}", cursor.next(), cursor.getId(), cursor.getPosition());
 			}
 		}
 
