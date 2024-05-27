@@ -15,7 +15,6 @@ dependencies {
 	optional("com.alibaba:easyexcel")
 	optional("org.springframework:spring-webmvc")
 	optional("org.springframework:spring-webflux")
-	optional("dnsjava:dnsjava")
 	optional("org.redisson:redisson")
 	optional("org.redisson:redisson-spring-data-32")
 	optional("org.apache.curator:curator-recipes")

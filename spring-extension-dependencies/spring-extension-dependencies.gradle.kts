@@ -28,7 +28,6 @@ dependencies {
 		api(libs.jsqlparser)
 		api(libs.lettucemod)
 		api(libs.minio)
-		api(libs.dnsjava)
 		api(libs.aliyun.oss)
 		api(libs.aviator)
 		api(libs.commons.jexl3)
