@@ -29,10 +29,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
@@ -95,7 +97,11 @@ public class FileUtils extends FileCopyUtils {
 	 * @param file the file
 	 * @return the string
 	 * @throws IOException the io exception
+	 * @deprecated use
+	 * {@link org.springframework.util.StreamUtils#copyToString(InputStream, Charset)} or
+	 * {@link FileCopyUtils#copyToString(Reader)}
 	 */
+	@Deprecated(since = "1.3.0", forRemoval = true)
 	public String read(File file) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 			return reader.lines().collect(Collectors.joining("\n"));
