@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  */
 final class ByteBuddySupport {
 
-	private static final String PACKAGE_NAME = "com.livk.autoconfigure.redisson.";
+	private static final String PACKAGE_NAME = ByteBuddySupport.class.getPackageName();
 
 	private static final Set<Class<?>> supportType = Sets.newHashSet(Config.class, AddressResolverGroupFactory.class,
 			Codec.class, RedissonNodeInitializer.class, LoadBalancer.class, NatMapper.class, NameMapper.class,
