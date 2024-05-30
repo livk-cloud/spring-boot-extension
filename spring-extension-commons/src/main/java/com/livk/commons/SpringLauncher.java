@@ -30,7 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.SpringVersion;
-import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.core.env.Environment;
 
 import java.io.PrintStream;
@@ -43,7 +42,7 @@ import java.util.Arrays;
  * 内嵌Banner图、以及各种版本
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SpringLauncher {
+public final class SpringLauncher {
 
 	private volatile static SpringApplication application;
 
@@ -57,15 +56,20 @@ public class SpringLauncher {
 	@Beta
 	@SneakyThrows
 	public static ConfigurableApplicationContext run(String[] args) {
-		Class<?> mainClass = Arrays.stream(Thread.currentThread().getStackTrace())
+		Class<?>[] targetClassArray = Arrays.stream(Thread.currentThread().getStackTrace())
 			.map(StackTraceElement::getClassName)
 			.filter(StringUtils::isNotBlank)
 			.map(ClassUtils::resolveClassName)
 			.filter(type -> type.isAnnotationPresent(SpringBootApplication.class))
-			.findFirst()
-			.orElseThrow(
-					() -> new AnnotationConfigurationException(" 缺少@" + SpringBootApplication.class.getName() + "注解"));
-		return run(mainClass, args);
+			.toArray(Class[]::new);
+		return run(targetClassArray, args);
+	}
+
+	private static ConfigurableApplicationContext run(Class<?>[] targetClassArray, String[] args) {
+		application = new SpringApplicationBuilder(targetClassArray).banner(CloudBanner.create())
+			.bannerMode(Banner.Mode.CONSOLE)
+			.build(args);
+		return application.run(args);
 	}
 
 	/**
@@ -75,10 +79,7 @@ public class SpringLauncher {
 	 * @return ConfigurableApplicationContext
 	 */
 	public static ConfigurableApplicationContext run(Class<?> targetClass, String[] args) {
-		application = new SpringApplicationBuilder(targetClass).banner(CloudBanner.create())
-			.bannerMode(Banner.Mode.CONSOLE)
-			.build(args);
-		return application.run(args);
+		return run(new Class<?>[] { targetClass }, args);
 	}
 
 	/**
