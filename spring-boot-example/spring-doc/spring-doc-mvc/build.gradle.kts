@@ -5,5 +5,5 @@ plugins {
 dependencies {
 	implementation(project(":spring-extension-commons"))
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation(libs.openapi.webmvc.ui)
 }
