@@ -17,6 +17,6 @@ dependencies {
     optional("org.testcontainers:clickhouse")
     optional("org.testcontainers:minio")
     optional("org.testcontainers:r2dbc")
-	optional("com.clickhouse:clickhouse-r2dbc")
+	optional(libs.clickhouse.r2dbc)
 }
 
