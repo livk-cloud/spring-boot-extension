@@ -17,7 +17,7 @@
 package com.livk.redisson.limit;
 
 import com.livk.autoconfigure.limit.EnableLimit;
-import com.livk.commons.SpringLauncher;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -28,7 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RedissonLimitApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(RedissonLimitApp.class, args);
 	}
 
 }

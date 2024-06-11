@@ -16,7 +16,7 @@
 
 package com.livk.spring;
 
-import com.livk.commons.SpringLauncher;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Hateoas {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(Hateoas.class, args);
 	}
 
 }

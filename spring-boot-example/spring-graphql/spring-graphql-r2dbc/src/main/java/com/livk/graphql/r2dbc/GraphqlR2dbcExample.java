@@ -16,7 +16,7 @@
 
 package com.livk.graphql.r2dbc;
 
-import com.livk.commons.SpringLauncher;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GraphqlR2dbcExample {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(GraphqlR2dbcExample.class, args);
 	}
 
 }

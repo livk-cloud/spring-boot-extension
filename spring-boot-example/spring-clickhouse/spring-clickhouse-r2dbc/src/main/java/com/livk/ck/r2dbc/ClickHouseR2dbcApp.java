@@ -16,10 +16,10 @@
 
 package com.livk.ck.r2dbc;
 
-import com.livk.commons.SpringLauncher;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.r2dbc.R2dbcDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration;
@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Bean;
 public class ClickHouseR2dbcApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(ClickHouseR2dbcApp.class, args);
 	}
 
 	@Bean

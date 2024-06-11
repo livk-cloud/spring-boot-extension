@@ -16,11 +16,11 @@
 
 package com.livk.spring;
 
-import com.livk.commons.SpringLauncher;
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
 import com.livk.selector.LivkImport;
 import com.livk.starter01.EnableLivk;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -38,7 +38,7 @@ public class App {
 
 	public static void main(String[] args) {
 		System.setProperty("server.port", "9099");
-		SpringLauncher.run(args);
+		SpringApplication.run(App.class, args);
 	}
 
 }

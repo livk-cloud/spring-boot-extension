@@ -16,9 +16,9 @@
 
 package com.livk.micrometer.tracing;
 
-import com.livk.commons.SpringLauncher;
 import com.livk.commons.micrometer.ContextSnapshots;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +39,7 @@ import java.util.concurrent.Executors;
 public class MicrometerTraceApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(MicrometerTraceApp.class, args);
 	}
 
 	@GetMapping("home")

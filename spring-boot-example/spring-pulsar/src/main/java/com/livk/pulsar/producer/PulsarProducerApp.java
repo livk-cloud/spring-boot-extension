@@ -16,7 +16,7 @@
 
 package com.livk.pulsar.producer;
 
-import com.livk.commons.SpringLauncher;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -32,7 +32,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PulsarProducerApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(PulsarProducerApp.class, args);
 	}
 
 }

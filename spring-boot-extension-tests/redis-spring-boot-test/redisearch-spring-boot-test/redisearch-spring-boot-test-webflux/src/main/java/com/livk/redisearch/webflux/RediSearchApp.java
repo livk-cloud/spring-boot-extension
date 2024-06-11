@@ -16,7 +16,6 @@
 
 package com.livk.redisearch.webflux;
 
-import com.livk.commons.SpringLauncher;
 import com.livk.commons.beans.BeanLambdaFunc;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
@@ -27,6 +26,7 @@ import com.redis.lettucemod.search.Field;
 import com.redis.lettucemod.search.SearchResults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -45,7 +45,7 @@ import java.util.Random;
 public class RediSearchApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(RediSearchApp.class, args);
 	}
 
 	@Bean

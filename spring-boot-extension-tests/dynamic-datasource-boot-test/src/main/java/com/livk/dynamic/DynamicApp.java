@@ -17,7 +17,7 @@
 package com.livk.dynamic;
 
 import com.livk.autoconfigure.dynamic.EnableDynamicDatasource;
-import com.livk.commons.SpringLauncher;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -28,7 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DynamicApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(DynamicApp.class, args);
 	}
 
 }

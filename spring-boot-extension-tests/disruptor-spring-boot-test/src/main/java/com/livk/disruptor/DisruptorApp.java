@@ -16,9 +16,9 @@
 
 package com.livk.disruptor;
 
-import com.livk.commons.SpringLauncher;
 import com.livk.context.disruptor.EnableDisruptor;
 import com.livk.disruptor.event.MessageModel;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DisruptorApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(DisruptorApp.class, args);
 	}
 
 }

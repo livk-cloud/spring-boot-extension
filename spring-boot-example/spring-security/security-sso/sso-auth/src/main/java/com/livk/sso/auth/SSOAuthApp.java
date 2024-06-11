@@ -16,9 +16,9 @@
 
 package com.livk.sso.auth;
 
-import com.livk.commons.SpringLauncher;
 import com.livk.sso.auth.mapper.UserMapper;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,7 +34,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class SSOAuthApp {
 
 	public static void main(String[] args) {
-		SpringLauncher.run(args);
+		SpringApplication.run(SSOAuthApp.class, args);
 	}
 
 	@Bean
