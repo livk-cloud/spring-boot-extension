@@ -33,9 +33,11 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3.3.2
+        with:
+          gradle-version: 8.8
 
       - name: Gradle Run Build
-        run: ./gradlew clean build
+        run: gradle clean build
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.4.1

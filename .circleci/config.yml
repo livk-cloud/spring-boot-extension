@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: cimg/openjdk:21.0.2
+      - image: gradle:8.8
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -12,8 +13,8 @@ jobs:
     steps:
       - checkout
 
-      - run: ./gradlew dependencies
-      - run: ./gradlew test
+      - run: gradle dependencies
+      - run: gradle test
 workflows:
   gradle-build:
     jobs:
