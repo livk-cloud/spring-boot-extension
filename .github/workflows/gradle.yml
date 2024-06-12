@@ -34,7 +34,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3.3.2
         with:
-          gradle-version: current
+          gradle-version: 8.8
 
       - name: Gradle Run Build
         run: gradle clean build
