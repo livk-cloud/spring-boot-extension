@@ -16,15 +16,12 @@
 
 package com.livk.commons.aop;
 
-import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
-import java.util.HashSet;
 
 /**
  * <p>
@@ -61,15 +58,14 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 	 * @see Target#value()
 	 */
 	AUTO(annotationType -> {
-		Target target = annotationType.getAnnotation(Target.class);
-		HashSet<ElementType> elementTypeHashSet = Sets.newHashSet(target.value());
-		if (elementTypeHashSet.contains(ElementType.TYPE) && elementTypeHashSet.contains(ElementType.METHOD)) {
+		AnnotationTarget<?> target = new AnnotationTarget<>(annotationType);
+		if (target.supportType() && target.supportMethod()) {
 			return TYPE_OR_METHOD.getPointcut(annotationType);
 		}
-		else if (elementTypeHashSet.contains(ElementType.TYPE)) {
+		else if (target.supportType()) {
 			return TYPE.getPointcut(annotationType);
 		}
-		else if (elementTypeHashSet.contains(ElementType.METHOD)) {
+		else if (target.supportMethod()) {
 			return METHOD.getPointcut(annotationType);
 		}
 		else {

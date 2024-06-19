@@ -16,11 +16,8 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.context.lock.LockScope;
 import com.livk.context.lock.annotation.OnLock;
 import jakarta.annotation.PostConstruct;
-import java.util.List;
-import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,6 +31,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -65,7 +65,7 @@ public class ShopController {
 	}
 
 	@PostMapping("/buy/distributed")
-	@OnLock(key = "shop:lock", scope = LockScope.DISTRIBUTED_LOCK)
+	@OnLock(key = "shop:lock")
 	public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam(defaultValue = "2") Integer count) {
 		RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("script/buy.lua"), Long.class);
 		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(),

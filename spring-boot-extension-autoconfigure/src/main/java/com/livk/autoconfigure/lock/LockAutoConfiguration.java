@@ -20,9 +20,8 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
 import com.livk.autoconfigure.redisson.RedissonAutoConfiguration;
 import com.livk.context.lock.DistributedLock;
-import com.livk.context.lock.intercept.LockInterceptor;
+import com.livk.context.lock.intercept.DistributedLockInterceptor;
 import com.livk.context.lock.support.CuratorLock;
-import com.livk.context.lock.support.LocalLock;
 import com.livk.context.lock.support.RedissonLock;
 import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RedissonClient;
@@ -45,23 +44,15 @@ import org.springframework.context.annotation.Bean;
 public class LockAutoConfiguration {
 
 	/**
-	 * Lock aspect lock aspect.
+	 * DistributedLockInterceptor
 	 * @param distributedLockProvider the distributed lock provider
 	 * @return the lock aspect
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public LockInterceptor lockInterceptor(ObjectProvider<DistributedLock> distributedLockProvider) {
-		return new LockInterceptor(distributedLockProvider);
-	}
-
-	/**
-	 * Local lock distributed lock.
-	 * @return the distributed lock
-	 */
-	@Bean
-	public DistributedLock localLock() {
-		return new LocalLock();
+	public DistributedLockInterceptor distributedLockInterceptor(
+			ObjectProvider<DistributedLock> distributedLockProvider) {
+		return new DistributedLockInterceptor(distributedLockProvider);
 	}
 
 	/**

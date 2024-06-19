@@ -14,7 +14,6 @@
 package com.livk.context.lock.support;
 
 import com.livk.context.lock.DistributedLock;
-import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
 import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.CuratorFramework;
@@ -32,7 +31,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -79,11 +77,6 @@ class CuratorLockTest {
 		assertTrue(lock.tryLock(LockType.LOCK, "key", 3, 3, false));
 
 		lock.unlock();
-	}
-
-	@Test
-	void scope() {
-		assertEquals(LockScope.DISTRIBUTED_LOCK, lock.scope());
 	}
 
 }

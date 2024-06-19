@@ -51,12 +51,6 @@ public interface DistributedLock extends Ordered {
 	 */
 	void unlock();
 
-	/**
-	 * Scope lock scope.
-	 * @return the lock scope
-	 */
-	LockScope scope();
-
 	@Override
 	default int getOrder() {
 		return 0;
