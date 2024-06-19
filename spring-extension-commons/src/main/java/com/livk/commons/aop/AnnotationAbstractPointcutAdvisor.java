@@ -23,6 +23,7 @@ import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -46,10 +47,23 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	@NonNull
 	@Override
 	public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
+		Assert.notNull(annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
-		A annotation = AnnotationUtils.findAnnotation(method, annotationType);
-		if (annotation == null && invocation.getThis() != null) {
-			annotation = AnnotationUtils.findAnnotation(invocation.getThis().getClass(), annotationType);
+		AnnotationTarget<A> target = new AnnotationTarget<>(annotationType);
+		A annotation = null;
+		if (target.supportType() && target.supportMethod()) {
+			annotation = AnnotationUtils.findAnnotation(method, annotationType);
+			if (annotation == null && invocation.getThis() != null) {
+				annotation = AnnotationUtils.findAnnotation(invocation.getThis().getClass(), annotationType);
+			}
+		}
+		else if (target.supportType()) {
+			if (invocation.getThis() != null) {
+				annotation = AnnotationUtils.findAnnotation(invocation.getThis().getClass(), annotationType);
+			}
+		}
+		else if (target.supportMethod()) {
+			annotation = AnnotationUtils.findAnnotation(method, annotationType);
 		}
 		return invoke(invocation, annotation);
 	}
