@@ -16,7 +16,6 @@
 
 package com.livk.context.lock.support;
 
-import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
@@ -47,7 +46,7 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected boolean unlock(String key, RLock lock) {
+	protected boolean unlock(RLock lock) {
 		lock.unlock();
 		return !isLocked(lock);
 	}
@@ -75,11 +74,6 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	@Override
 	protected boolean isLocked(RLock lock) {
 		return lock.isLocked() && lock.isHeldByCurrentThread();
-	}
-
-	@Override
-	public LockScope scope() {
-		return LockScope.DISTRIBUTED_LOCK;
 	}
 
 	@Override

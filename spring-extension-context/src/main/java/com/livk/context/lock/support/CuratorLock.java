@@ -16,7 +16,6 @@
 
 package com.livk.context.lock.support;
 
-import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
 import com.livk.context.lock.exception.LockException;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +51,7 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 	}
 
 	@Override
-	protected boolean unlock(String key, InterProcessLock lock) {
+	protected boolean unlock(InterProcessLock lock) {
 		try {
 			lock.release();
 			return !isLocked(lock);
@@ -75,11 +74,6 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 	@Override
 	protected boolean isLocked(InterProcessLock lock) {
 		return lock.isAcquiredInThisProcess();
-	}
-
-	@Override
-	public LockScope scope() {
-		return LockScope.DISTRIBUTED_LOCK;
 	}
 
 }

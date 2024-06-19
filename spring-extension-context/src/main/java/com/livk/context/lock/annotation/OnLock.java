@@ -16,7 +16,6 @@
 
 package com.livk.context.lock.annotation;
 
-import com.livk.context.lock.LockScope;
 import com.livk.context.lock.LockType;
 
 import java.lang.annotation.ElementType;
@@ -60,15 +59,8 @@ public @interface OnLock {
 	long waitTime() default 3;
 
 	/**
-	 * scope为{@link LockScope#STANDALONE_LOCK} async强制为false
 	 * @return the boolean
 	 */
 	boolean async() default false;
-
-	/**
-	 * Scope lock scope.
-	 * @return the lock scope
-	 */
-	LockScope scope();
 
 }

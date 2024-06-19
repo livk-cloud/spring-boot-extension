@@ -16,7 +16,6 @@
 
 package com.livk.context.lock.support;
 
-import com.livk.commons.util.Pair;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
 import com.livk.context.lock.exception.LockException;
@@ -35,16 +34,16 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	/**
 	 * The Thread local.
 	 */
-	protected final ThreadLocal<Pair<String, T>> threadLocal = new InheritableThreadLocal<>();
+	protected final ThreadLocal<T> threadLocal = new InheritableThreadLocal<>();
 
 	@Override
-	public boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
+	public final boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
 		T lock = getLock(type, key);
 		try {
 			boolean isLocked = supportAsync() && async ? tryLockAsync(lock, leaseTime, waitTime)
 					: tryLock(lock, waitTime, leaseTime);
 			if (isLocked) {
-				threadLocal.set(Pair.of(key, lock));
+				threadLocal.set(lock);
 			}
 			return isLocked;
 		}
@@ -55,7 +54,7 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	}
 
 	@Override
-	public void lock(LockType type, String key, boolean async) {
+	public final void lock(LockType type, String key, boolean async) {
 		T lock = getLock(type, key);
 		try {
 			if (supportAsync() && async) {
@@ -64,7 +63,7 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			else {
 				lock(lock);
 			}
-			threadLocal.set(Pair.of(key, lock));
+			threadLocal.set(lock);
 		}
 		catch (Exception e) {
 			threadLocal.remove();
@@ -73,14 +72,10 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	}
 
 	@Override
-	public void unlock() {
-		Pair<String, T> pair = threadLocal.get();
-		if (pair != null) {
-			String key = pair.key();
-			T lock = pair.value();
-			if (isLocked(lock) && unlock(key, lock)) {
-				threadLocal.remove();
-			}
+	public final void unlock() {
+		T lock = threadLocal.get();
+		if (lock != null && isLocked(lock) && unlock(lock)) {
+			threadLocal.remove();
 		}
 	}
 
@@ -94,11 +89,10 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	/**
 	 * Unlock.
-	 * @param key the key
 	 * @param lock the lock
 	 * @return the boolean
 	 */
-	protected abstract boolean unlock(String key, T lock);
+	protected abstract boolean unlock(T lock);
 
 	/**
 	 * Try lock async boolean.
