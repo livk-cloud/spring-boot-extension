@@ -1,12 +1,9 @@
 /*
  * Copyright 2021-2024 spring-boot-extension the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *       https://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +13,17 @@
 
 package com.livk.context.redisearch;
 
-import io.lettuce.core.codec.StringCodec;
+import com.redis.lettucemod.cluster.RedisModulesClusterClient;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Delegate;
 
 /**
  * @author livk
  */
-public class StringRediSearchTemplate extends RediSearchTemplate<String, String> {
+@RequiredArgsConstructor
+public class RedisModulesClusterConnectionFactory implements RedisSearchConnectionFactory {
 
-	public StringRediSearchTemplate(RedisSearchConnectionFactory factory) {
-		super(factory, StringCodec.UTF8);
-	}
+	@Delegate
+	private final RedisModulesClusterClient client;
 
 }

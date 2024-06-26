@@ -16,8 +16,6 @@ package com.livk.context.redisearch;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.livk.context.redisearch.codec.JacksonRedisCodec;
 import com.livk.testcontainers.containers.RedisStackContainer;
-import com.redis.lettucemod.RedisModulesClient;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -47,13 +45,13 @@ class RediSearchTemplateTest {
 	}
 
 	@Autowired
-	RedisModulesClient client;
+	RedisSearchConnectionFactory factory;
 
 	@Test
 	void test() throws Exception {
-		RediSearchTemplate<String, Object> template = new RediSearchTemplate<>(client, new GenericObjectPoolConfig<>());
-		template.setRedisCodec(new JacksonRedisCodec<>(new JsonMapper(), String.class, Object.class));
-		template.afterPropertiesSet();
+		JacksonRedisCodec<String, Object> redisCodec = new JacksonRedisCodec<>(new JsonMapper(), String.class,
+				Object.class);
+		RediSearchTemplate<String, Object> template = new RediSearchTemplate<>(factory, redisCodec);
 
 		assertEquals("PONG", template.async().ping().get());
 		assertEquals("PONG", template.reactive().ping().block());

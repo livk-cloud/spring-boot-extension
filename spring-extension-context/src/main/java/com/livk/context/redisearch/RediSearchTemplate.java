@@ -17,71 +17,42 @@
 package com.livk.context.redisearch;
 
 import com.livk.context.redisearch.codec.JdkRedisCodec;
-import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
-import com.redis.lettucemod.cluster.RedisModulesClusterClient;
-import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Delegate;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-
-import java.util.function.Supplier;
 
 /**
  * @author livk
  */
-@RequiredArgsConstructor
-public class RediSearchTemplate<K, V>
-		implements StatefulRedisModulesConnection<K, V>, InitializingBean, DisposableBean {
+public class RediSearchTemplate<K, V> implements StatefulRedisModulesConnection<K, V> {
 
-	private GenericObjectPool<StatefulRedisModulesConnection<K, V>> genericObjectPool;
+	private final GenericObjectPool<StatefulRedisModulesConnection<K, V>> delegate;
 
-	@Setter
-	private RedisCodec<K, V> redisCodec;
+	private final RedisSearchConnectionFactory factory;
 
-	private final AbstractRedisClient client;
-
-	private final GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> poolConfig;
-
-	@Override
 	@SuppressWarnings("unchecked")
-	public void afterPropertiesSet() throws Exception {
-		if (redisCodec == null) {
-			redisCodec = (RedisCodec<K, V>) new JdkRedisCodec();
-		}
-		if (client instanceof RedisModulesClient redisModulesClient) {
-			genericObjectPool = createPool(() -> redisModulesClient.connect(redisCodec));
-		}
-		else if (client instanceof RedisModulesClusterClient redisModulesClusterClient) {
-			genericObjectPool = createPool(() -> redisModulesClusterClient.connect(redisCodec));
-		}
-		else {
-			throw new IllegalArgumentException("client must be RedisModulesClient or RedisModulesClusterClient");
-		}
+	public RediSearchTemplate(RedisSearchConnectionFactory factory) {
+		this(factory, (RedisCodec<K, V>) new JdkRedisCodec());
 	}
 
-	protected GenericObjectPool<StatefulRedisModulesConnection<K, V>> createPool(
-			Supplier<StatefulRedisModulesConnection<K, V>> supplier) {
-		return ConnectionPoolSupport.createGenericObjectPool(supplier, poolConfig);
+	public RediSearchTemplate(RedisSearchConnectionFactory factory, RedisCodec<K, V> redisCodec) {
+		this.factory = factory;
+		this.delegate = ConnectionPoolSupport.createGenericObjectPool(() -> factory.connect(redisCodec),
+				getPoolConfig());
 	}
 
-	@Delegate
 	@SneakyThrows
-	private StatefulRedisModulesConnection<K, V> delegate() {
-		return genericObjectPool.borrowObject();
+	@Delegate
+	protected StatefulRedisModulesConnection<K, V> borrowObject() {
+		return delegate.borrowObject();
 	}
 
-	@Override
-	public void destroy() {
-		genericObjectPool.close();
-		client.shutdown();
+	protected GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> getPoolConfig() {
+		return factory.getPoolConfig();
 	}
 
 }
