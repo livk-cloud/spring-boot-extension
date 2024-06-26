@@ -16,7 +16,7 @@
 
 package com.livk.selector;
 
-import com.livk.commons.spring.context.AutoImport;
+import com.livk.commons.selector.AutoImport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

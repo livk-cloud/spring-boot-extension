@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.selector;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;

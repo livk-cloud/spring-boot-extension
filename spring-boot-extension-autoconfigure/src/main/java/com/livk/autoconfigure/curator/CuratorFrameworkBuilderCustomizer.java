@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.curator;
 
-import com.livk.commons.spring.Customizer;
+import com.livk.commons.Customizer;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 
 /**

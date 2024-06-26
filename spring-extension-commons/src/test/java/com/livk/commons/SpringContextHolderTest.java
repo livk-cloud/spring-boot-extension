@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons;
 
 import lombok.Data;
 import org.junit.jupiter.api.Test;

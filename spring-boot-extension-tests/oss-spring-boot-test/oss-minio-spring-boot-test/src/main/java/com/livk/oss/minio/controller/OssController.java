@@ -17,7 +17,7 @@
 package com.livk.oss.minio.controller;
 
 import com.livk.autoconfigure.oss.support.OSSTemplate;
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import io.minio.MinioClient;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

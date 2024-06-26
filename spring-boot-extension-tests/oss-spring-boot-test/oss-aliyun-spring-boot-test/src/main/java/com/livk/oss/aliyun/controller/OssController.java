@@ -18,7 +18,7 @@ package com.livk.oss.aliyun.controller;
 
 import com.aliyun.oss.OSS;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

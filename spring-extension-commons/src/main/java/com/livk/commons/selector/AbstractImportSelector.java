@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.selector;
 
 import lombok.Setter;
 import org.springframework.beans.factory.BeanClassLoaderAware;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;

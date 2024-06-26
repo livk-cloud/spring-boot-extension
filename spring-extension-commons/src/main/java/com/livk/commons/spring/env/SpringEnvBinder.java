@@ -43,6 +43,7 @@ import java.util.Set;
  * @author livk
  * @see Binder
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class SpringEnvBinder {
 
 	private final Environment environment;

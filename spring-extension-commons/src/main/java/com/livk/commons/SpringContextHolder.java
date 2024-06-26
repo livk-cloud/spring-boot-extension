@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import java.util.Map;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.selector;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <p>
- * SpringAbstractImportSelectorTest
+ * AbstractImportSelectorTest
  * </p>
  *
  * @author livk
  */
-class SpringAbstractImportSelectorTest {
+class AbstractImportSelectorTest {
 
 	@Test
 	void testFindAnnotation() {
@@ -39,7 +39,7 @@ class SpringAbstractImportSelectorTest {
 
 	}
 
-	static class MyAnnotationImportSelector extends SpringAbstractImportSelector<MyAnnotation> {
+	static class MyAnnotationImportSelector extends AbstractImportSelector<MyAnnotation> {
 
 	}
 

@@ -16,7 +16,7 @@
 
 package com.livk.curator.util;
 
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

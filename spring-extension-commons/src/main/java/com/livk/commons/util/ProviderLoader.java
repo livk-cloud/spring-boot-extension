@@ -30,6 +30,7 @@ import java.util.ServiceLoader;
  * @see ServiceLoader
  * @see SpringFactoriesLoader
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public sealed interface ProviderLoader permits ProviderLoader.AbstractLoader {
 
 	/**

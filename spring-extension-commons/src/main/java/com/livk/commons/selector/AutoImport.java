@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.selector;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
 
 /**
- * 自定义回调接口
+ * 自动装配相关注解
+ * <p>
+ * 适用与EnableXXXX
  *
- * @param <T> the type parameter
  * @author livk
  */
-@FunctionalInterface
-public interface Customizer<T> {
-
-	/**
-	 * 执行回调过程
-	 * @param t 待执行数据
-	 */
-	void customize(T t);
+@Target(ElementType.ANNOTATION_TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(AutoImportSelector.class)
+public @interface AutoImport {
 
 }
