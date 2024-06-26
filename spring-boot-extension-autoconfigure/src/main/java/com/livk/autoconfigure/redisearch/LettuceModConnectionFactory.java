@@ -48,7 +48,9 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 	private final RediSearchProperties.Pool pool;
 
 	public LettuceModConnectionFactory(ClientResources resources, RediSearchProperties properties) {
-		this.isCluster = Optional.ofNullable(properties.getCluster()).map(RediSearchProperties.Cluster::getEnabled).orElse(false);
+		this.isCluster = Optional.ofNullable(properties.getCluster())
+			.map(RediSearchProperties.Cluster::getEnabled)
+			.orElse(false);
 		this.factory = init(resources, properties);
 		this.pool = properties.getPool();
 	}
