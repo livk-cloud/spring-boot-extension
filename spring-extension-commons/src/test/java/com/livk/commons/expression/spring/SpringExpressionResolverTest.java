@@ -18,7 +18,7 @@ package com.livk.commons.expression.spring;
 
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethod;
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
@@ -49,7 +49,7 @@ class AnnotationMetadataResolverTest {
 		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(resourceLoader);
 
 		assertEquals(Set.of(A.class, TestController.class),
-				resolver.find(TestAnnotation.class, "com.livk.commons.spring.context"));
+				resolver.find(TestAnnotation.class, AnnotationMetadataResolverTest.class.getPackageName()));
 
 		assertEquals(Set.of(A.class, TestController.class), resolver.find(TestAnnotation.class, beanFactory));
 	}

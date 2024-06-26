@@ -13,7 +13,7 @@
 
 package com.livk.autoconfigure.redisearch;
 
-import com.livk.commons.spring.Customizer;
+import com.livk.commons.Customizer;
 import io.lettuce.core.resource.ClientResources;
 
 /**

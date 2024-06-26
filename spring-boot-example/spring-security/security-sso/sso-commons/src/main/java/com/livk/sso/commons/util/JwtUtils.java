@@ -17,7 +17,7 @@
 package com.livk.sso.commons.util;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import com.livk.sso.commons.RsaKeyProperties;
 import com.livk.sso.commons.entity.Payload;
 import com.livk.sso.commons.entity.User;

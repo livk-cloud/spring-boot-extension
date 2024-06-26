@@ -18,7 +18,7 @@ package com.livk.commons.http;
 
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
-import com.livk.commons.spring.context.SpringAbstractImportSelector;
+import com.livk.commons.selector.SpringAbstractImportSelector;
 import com.livk.commons.util.AnnotationUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;

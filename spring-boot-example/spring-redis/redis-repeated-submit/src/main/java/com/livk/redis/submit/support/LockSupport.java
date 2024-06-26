@@ -16,7 +16,7 @@
 
 package com.livk.redis.submit.support;
 
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
 import com.livk.context.lock.support.RedissonLock;

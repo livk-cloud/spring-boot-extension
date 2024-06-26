@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.selector;
 
 import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;

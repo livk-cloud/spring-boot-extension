@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.livk.commons.spring.context.SpringContextHolder;
+import com.livk.commons.SpringContextHolder;
 import com.livk.crypto.CryptoType;
 
 import org.springframework.beans.factory.BeanFactory;

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring.context;
+package com.livk.commons.util;
 
-import com.livk.commons.util.ObjectUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;

@@ -16,7 +16,7 @@
 
 package com.livk.context.disruptor.support;
 
-import com.livk.commons.spring.Customizer;
+import com.livk.commons.Customizer;
 
 /**
  * @author livk

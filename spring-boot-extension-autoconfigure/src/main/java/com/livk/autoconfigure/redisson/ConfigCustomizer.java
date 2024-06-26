@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.redisson;
 
-import com.livk.commons.spring.Customizer;
+import com.livk.commons.Customizer;
 import org.redisson.config.Config;
 
 /**

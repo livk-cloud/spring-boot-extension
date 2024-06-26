@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.micrometer;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.util.ClassUtils;
