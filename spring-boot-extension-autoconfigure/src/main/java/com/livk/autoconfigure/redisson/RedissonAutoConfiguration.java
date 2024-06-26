@@ -29,7 +29,6 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConverterRegistry;
 
 /**
@@ -45,17 +44,13 @@ public class RedissonAutoConfiguration {
 
 	/**
 	 * Codec converter bean factory post processor bean factory post processor.
-	 * @param baseConverters the base converters
 	 * @return the bean factory post processor
 	 */
 	@Bean
-	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor(
-			ObjectProvider<ConfigBaseConverter<?>> baseConverters) {
+	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor() {
 		return beanFactory -> {
-			ConversionService conversionService = beanFactory.getConversionService();
-			if (conversionService instanceof ConverterRegistry converterRegistry) {
+			if (beanFactory.getConversionService() instanceof ConverterRegistry converterRegistry) {
 				ByteBuddySupport.makeConverters().forEach(converterRegistry::addConverter);
-				baseConverters.orderedStream().forEach(converterRegistry::addConverter);
 			}
 		};
 	}

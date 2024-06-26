@@ -14,8 +14,6 @@
 package com.livk.context.redisearch;
 
 import com.livk.testcontainers.containers.RedisStackContainer;
-import com.redis.lettucemod.RedisModulesClient;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -45,12 +43,11 @@ class StringRediSearchTemplateTest {
 	}
 
 	@Autowired
-	RedisModulesClient client;
+	RedisSearchConnectionFactory factory;
 
 	@Test
 	void test() throws Exception {
-		StringRediSearchTemplate template = new StringRediSearchTemplate(client, new GenericObjectPoolConfig<>());
-		template.afterPropertiesSet();
+		StringRediSearchTemplate template = new StringRediSearchTemplate(factory);
 
 		assertEquals("PONG", template.async().ping().get());
 		assertEquals("PONG", template.reactive().ping().block());

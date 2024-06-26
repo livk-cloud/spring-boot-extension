@@ -31,10 +31,11 @@ import org.springframework.context.annotation.Import;
 class RediSearchConfig {
 
 	@Bean
-	public RedisModulesClient redisModulesClient(@Value("${redisearch.host}") String host,
+	public RedisSearchConnectionFactory redisSearchConnectionFactory(@Value("${redisearch.host}") String host,
 			@Value("${redisearch.port}") Integer port) {
 		ClientResources resources = ClientResources.builder().build();
-		return RedisModulesClient.create(resources, RedisURI.create(host, port));
+		RedisModulesClient client = RedisModulesClient.create(resources, RedisURI.create(host, port));
+		return new RedisModulesConnectionFactory(client);
 	}
 
 }
