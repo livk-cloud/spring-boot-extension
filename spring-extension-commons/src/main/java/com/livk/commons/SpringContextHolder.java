@@ -17,7 +17,6 @@
 package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import java.util.Map;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -31,6 +30,10 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
@@ -38,9 +41,15 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * <p>
@@ -182,6 +191,20 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 */
 	public static String resolvePlaceholders(String text) {
 		return applicationContext.getEnvironment().resolvePlaceholders(text);
+	}
+
+	/**
+	 * {@link Binder#get(Environment)}的补充、用户添加数据转换器
+	 * @param converters 添加转换器
+	 * @return binder
+	 */
+	public static Binder binder(Converter<?, ?>... converters) {
+		Environment environment = applicationContext.getEnvironment();
+		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
+		PropertySourcesPlaceholdersResolver placeholdersResolver = new PropertySourcesPlaceholdersResolver(environment);
+		GenericConversionService service = new GenericConversionService();
+		Arrays.stream(converters).forEach(service::addConverter);
+		return new Binder(sources, placeholdersResolver, service);
 	}
 
 	/**

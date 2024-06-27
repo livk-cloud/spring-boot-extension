@@ -19,6 +19,8 @@ package com.livk.commons;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
@@ -26,6 +28,7 @@ import org.springframework.core.ResolvableType;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -81,6 +84,14 @@ class SpringContextHolderTest {
 	@Test
 	void resolvePlaceholders() {
 		assertEquals("livk.com", SpringContextHolder.resolvePlaceholders("${spring.data.redis.host}"));
+	}
+
+	@Test
+	void binder() {
+		Binder binder = SpringContextHolder.binder();
+		BindResult<String> result = binder.bind("spring.data.redis", String.class);
+		assertTrue(result.isBound());
+		assertEquals("livk.com", result.get());
 	}
 
 	@Test
