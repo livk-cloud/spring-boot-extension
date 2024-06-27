@@ -22,6 +22,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.Ordered;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -66,6 +67,12 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 			annotation = AnnotationUtils.findAnnotation(method, annotationType);
 		}
 		return invoke(invocation, annotation);
+	}
+
+	@Override
+	public int getOrder() {
+		int order = super.getOrder();
+		return order == Ordered.LOWEST_PRECEDENCE ? Ordered.LOWEST_PRECEDENCE - 1 : order;
 	}
 
 	/**
