@@ -89,7 +89,7 @@ class SpringContextHolderTest {
 	@Test
 	void binder() {
 		Binder binder = SpringContextHolder.binder();
-		BindResult<String> result = binder.bind("spring.data.redis", String.class);
+		BindResult<String> result = binder.bind("spring.data.redis.host", String.class);
 		assertTrue(result.isBound());
 		assertEquals("livk.com", result.get());
 	}
