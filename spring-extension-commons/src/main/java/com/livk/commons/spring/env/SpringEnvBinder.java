@@ -39,6 +39,8 @@ import java.util.Set;
  * 用于添加{@link Converter}
  * <p>
  * 便于解析Environment成各种类型的数据
+ * <p>
+ * 推荐使用 {@link com.livk.commons.SpringContextHolder#binder(Converter[]) }
  *
  * @author livk
  * @see Binder
