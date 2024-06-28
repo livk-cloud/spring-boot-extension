@@ -4,7 +4,7 @@
 link:spring-admin[Spring Boot Admin示例] +
 link:spring-authorization-server/auth-server[Spring Auth授权服务器] +
 link:spring-batch[Spring整合Spring Batch] +
-link:spring-boot-starter[Spring自定义Starter] +
+link:spring-boot-web-scope[Spring web scope] +
 link:spring-clickhouse/spring-clickhouse-jdbc[Spring整合ClickHouse-jdbc] +
 link:spring-clickhouse/spring-clickhouse-r2dbc[Spring整合ClickHouse-r2dbc] +
 link:spring-doc/spring-doc-mvc[spring mvc整合Spring doc] +

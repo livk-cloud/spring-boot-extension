@@ -43,12 +43,15 @@ import java.util.List;
  * 无法识别 {@link AutoConfigureAfter}和{@link AutoConfigureBefore}
  * <p>
  * 同时{@link AutoConfiguration}中仅仅识别{@link Configuration}
+ * <p>
+ * 推荐使用 {@link SpringAbstractImportSelector}
  *
  * @param <A> 注解泛型
  * @author livk
  * @see SpringAbstractImportSelector
  * @see DeferredImportSelector
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public abstract class AbstractImportSelector<A extends Annotation>
 		implements DeferredImportSelector, Ordered, EnvironmentAware, BeanClassLoaderAware {
 
