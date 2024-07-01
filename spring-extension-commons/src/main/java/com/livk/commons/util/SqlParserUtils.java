@@ -47,7 +47,7 @@ public class SqlParserUtils {
 	@SneakyThrows
 	public Set<String> parseTable(String sql) {
 		Statement statement = CCJSqlParserUtil.parse(sql);
-		TablesNamesFinder namesFinder = new TablesNamesFinder();
+		TablesNamesFinder<Void> namesFinder = new TablesNamesFinder<>();
 		return namesFinder.getTables(statement);
 	}
 
