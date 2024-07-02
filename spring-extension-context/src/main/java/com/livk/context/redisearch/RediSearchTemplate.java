@@ -53,7 +53,7 @@ public class RediSearchTemplate<K, V> implements StatefulRedisModulesConnection<
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final void afterPropertiesSet() throws Exception {
+	public final void afterPropertiesSet() {
 		if (redisCodec == null) {
 			redisCodec = (RedisCodec<K, V>) RedisCodecs.jdk();
 		}

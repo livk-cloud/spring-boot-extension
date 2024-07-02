@@ -52,6 +52,7 @@ class RediSearchTemplateTest {
 	void test() throws Exception {
 		RedisCodec<String, Object> redisCodec = RedisCodecs.json(new JsonMapper(), String.class, Object.class);
 		RediSearchTemplate<String, Object> template = new RediSearchTemplate<>(factory, redisCodec);
+		template.afterPropertiesSet();
 
 		assertEquals("PONG", template.async().ping().get());
 		assertEquals("PONG", template.reactive().ping().block());

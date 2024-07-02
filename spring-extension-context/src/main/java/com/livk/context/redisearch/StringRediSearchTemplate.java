@@ -25,6 +25,7 @@ public class StringRediSearchTemplate extends RediSearchTemplate<String, String>
 
 	public StringRediSearchTemplate(RedisSearchConnectionFactory factory) {
 		super(factory, StringCodec.UTF8);
+		super.afterPropertiesSet();
 	}
 
 }
