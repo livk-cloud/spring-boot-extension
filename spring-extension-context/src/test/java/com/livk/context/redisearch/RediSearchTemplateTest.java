@@ -14,8 +14,9 @@
 package com.livk.context.redisearch;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.livk.context.redisearch.codec.JacksonRedisCodec;
+import com.livk.context.redisearch.codec.RedisCodecs;
 import com.livk.testcontainers.containers.RedisStackContainer;
+import io.lettuce.core.codec.RedisCodec;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -49,8 +50,7 @@ class RediSearchTemplateTest {
 
 	@Test
 	void test() throws Exception {
-		JacksonRedisCodec<String, Object> redisCodec = new JacksonRedisCodec<>(new JsonMapper(), String.class,
-				Object.class);
+		RedisCodec<String, Object> redisCodec = RedisCodecs.json(new JsonMapper(), String.class, Object.class);
 		RediSearchTemplate<String, Object> template = new RediSearchTemplate<>(factory, redisCodec);
 
 		assertEquals("PONG", template.async().ping().get());

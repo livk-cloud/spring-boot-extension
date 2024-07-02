@@ -16,38 +16,55 @@
 
 package com.livk.context.redisearch;
 
-import com.livk.context.redisearch.codec.JdkRedisCodec;
+import com.livk.context.redisearch.codec.RedisCodecs;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Delegate;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
+
+import java.util.function.Supplier;
 
 /**
  * @author livk
  */
-public class RediSearchTemplate<K, V> implements StatefulRedisModulesConnection<K, V> {
+public class RediSearchTemplate<K, V> implements StatefulRedisModulesConnection<K, V>, InitializingBean {
 
-	private final GenericObjectPool<StatefulRedisModulesConnection<K, V>> delegate;
+	private GenericObjectPool<StatefulRedisModulesConnection<K, V>> delegate;
 
 	private final RedisSearchConnectionFactory factory;
 
-	@SuppressWarnings("unchecked")
+	@Setter
+	private RedisCodec<K, V> redisCodec;
+
 	public RediSearchTemplate(RedisSearchConnectionFactory factory) {
-		this(factory, (RedisCodec<K, V>) new JdkRedisCodec());
+		this.factory = factory;
 	}
 
 	public RediSearchTemplate(RedisSearchConnectionFactory factory, RedisCodec<K, V> redisCodec) {
 		this.factory = factory;
-		this.delegate = ConnectionPoolSupport.createGenericObjectPool(() -> factory.connect(redisCodec),
-				getPoolConfig());
+		this.redisCodec = redisCodec;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public final void afterPropertiesSet() throws Exception {
+		if (redisCodec == null) {
+			redisCodec = (RedisCodec<K, V>) RedisCodecs.jdk();
+		}
+		Supplier<StatefulRedisModulesConnection<K, V>> supplier = () -> factory.connect(redisCodec);
+		this.delegate = ConnectionPoolSupport.createGenericObjectPool(supplier, getPoolConfig());
 	}
 
 	@SneakyThrows
 	@Delegate
 	protected StatefulRedisModulesConnection<K, V> borrowObject() {
+		Assert.notNull(delegate, "GenericObjectPool must not be null, call afterPropertiesSet");
 		return delegate.borrowObject();
 	}
 

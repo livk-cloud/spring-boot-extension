@@ -36,6 +36,7 @@ dependencies {
 	testImplementation("org.postgresql:postgresql")
 	testImplementation("com.zaxxer:HikariCP")
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation(("net.bytebuddy:byte-buddy"))
 
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:mysql")
