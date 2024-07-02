@@ -13,7 +13,9 @@
 
 package com.livk.context.redisearch;
 
+import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import com.redis.lettucemod.cluster.RedisModulesClusterClient;
 import io.lettuce.core.codec.RedisCodec;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -28,6 +30,14 @@ public interface RedisSearchConnectionFactory extends AutoCloseable {
 
 	default <T> GenericObjectPoolConfig<T> getPoolConfig() {
 		return new GenericObjectPoolConfig<>();
+	}
+
+	static RedisSearchConnectionFactory create(RedisModulesClient client) {
+		return FactoryProxySupport.newProxy(client);
+	}
+
+	static RedisSearchConnectionFactory create(RedisModulesClusterClient client) {
+		return FactoryProxySupport.newProxy(client);
 	}
 
 }

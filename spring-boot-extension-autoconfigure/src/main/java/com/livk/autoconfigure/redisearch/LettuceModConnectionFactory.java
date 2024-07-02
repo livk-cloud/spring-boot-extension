@@ -13,8 +13,6 @@
 
 package com.livk.autoconfigure.redisearch;
 
-import com.livk.context.redisearch.RedisModulesClusterConnectionFactory;
-import com.livk.context.redisearch.RedisModulesConnectionFactory;
 import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.cluster.RedisModulesClusterClient;
@@ -65,7 +63,7 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 		RedisModulesClient client = RedisModulesClient.create(clientResources, redisURI);
 		ClientOptions.Builder builder = client.getOptions().mutate();
 		client.setOptions(builder.build());
-		return new RedisModulesConnectionFactory(client);
+		return RedisSearchConnectionFactory.create(client);
 	}
 
 	private RedisSearchConnectionFactory createClusterFactory(ClientResources clientResources,
@@ -81,7 +79,7 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 			builder.maxRedirects(properties.getCluster().getMaxRedirects());
 		}
 		clusterClient.setOptions(builder.build());
-		return new RedisModulesClusterConnectionFactory(clusterClient);
+		return RedisSearchConnectionFactory.create(clusterClient);
 	}
 
 	private RedisURI createRedisURI(String node, RediSearchProperties properties) {

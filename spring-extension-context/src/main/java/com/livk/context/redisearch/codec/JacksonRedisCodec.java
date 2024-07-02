@@ -30,7 +30,7 @@ import java.io.IOException;
  * @author livk
  */
 @RequiredArgsConstructor
-public class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
+class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 
 	private final ObjectMapper mapper;
 

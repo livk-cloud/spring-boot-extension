@@ -30,12 +30,12 @@ import org.springframework.context.annotation.Import;
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class RediSearchConfig {
 
-	@Bean
+	@Bean(destroyMethod = "close")
 	public RedisSearchConnectionFactory redisSearchConnectionFactory(@Value("${redisearch.host}") String host,
 			@Value("${redisearch.port}") Integer port) {
 		ClientResources resources = ClientResources.builder().build();
 		RedisModulesClient client = RedisModulesClient.create(resources, RedisURI.create(host, port));
-		return new RedisModulesConnectionFactory(client);
+		return FactoryProxySupport.newProxy(client);
 	}
 
 }

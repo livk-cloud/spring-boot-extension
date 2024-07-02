@@ -20,8 +20,9 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.redisearch.RediSearchTemplate;
 import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import com.livk.context.redisearch.StringRediSearchTemplate;
-import com.livk.context.redisearch.codec.JacksonRedisCodec;
+import com.livk.context.redisearch.codec.RedisCodecs;
 import com.redis.lettucemod.RedisModulesClient;
+import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.resource.ClientResources;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -77,8 +78,7 @@ public class RediSearchAutoConfiguration {
 	@ConditionalOnMissingBean
 	public RediSearchTemplate<String, Object> rediSearchTemplate(RedisSearchConnectionFactory factory,
 			Jackson2ObjectMapperBuilder builder) {
-		JacksonRedisCodec<String, Object> redisCodec = new JacksonRedisCodec<>(builder.build(), String.class,
-				Object.class);
+		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build(), String.class, Object.class);
 		return new RediSearchTemplate<>(factory, redisCodec);
 	}
 

@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author livk
  */
-public class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
+class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
 
 	private ClassLoader classLoader;
 
