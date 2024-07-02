@@ -29,15 +29,31 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.reflect.Modifier;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author livk
  */
 final class FactoryProxySupport {
 
+	private static final Map<Class<? extends AbstractRedisClient>, Class<? extends RedisSearchConnectionFactory>> FACTORY_CACHE = new ConcurrentHashMap<>();
+
 	@SuppressWarnings("unchecked")
 	public static <T extends AbstractRedisClient, S extends RedisSearchConnectionFactory> S newProxy(T client) {
 		Class<T> clientType = (Class<T>) client.getClass();
+		Class<S> type = (Class<S>) FACTORY_CACHE.computeIfAbsent(clientType, FactoryProxySupport::createFactoryClass);
+		try {
+			return type.getConstructor(clientType).newInstance(client);
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <S extends RedisSearchConnectionFactory> Class<S> createFactoryClass(
+			Class<? extends AbstractRedisClient> clientType) {
 		try (DynamicType.Unloaded<Object> unloaded = new ByteBuddy().subclass(Object.class)
 			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
 					+ "$ProxyConnectionFactory")
@@ -54,12 +70,10 @@ final class FactoryProxySupport {
 			.method(ElementMatchers.named("close"))
 			.intercept(MethodDelegation.to(CloseInterceptor.class))
 			.make()) {
-			Class<S> type = (Class<S>) unloaded
-				.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+			return (Class<S>) unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
 				.getLoaded();
-			return type.getConstructor(clientType).newInstance(client);
 		}
-		catch (Exception e) {
+		catch (NoSuchMethodException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
