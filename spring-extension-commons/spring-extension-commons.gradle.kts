@@ -18,6 +18,7 @@ dependencies {
 	optional("org.mvel:mvel2")
 	optional("org.freemarker:freemarker")
 	optional("io.micrometer:micrometer-tracing")
+	optional("net.bytebuddy:byte-buddy")
 	api("org.apache.commons:commons-lang3")
 	api("com.github.spotbugs:spotbugs-annotations")
 	api("com.google.guava:guava")

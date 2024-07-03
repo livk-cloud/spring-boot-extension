@@ -14,10 +14,11 @@
 package com.livk.context.redisearch;
 
 import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.GenericsByteBuddy;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
-import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FieldAccessor;
@@ -51,13 +52,12 @@ final class FactoryProxySupport {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private static <S extends RedisSearchConnectionFactory> Class<S> createFactoryClass(
+	private static <S extends RedisSearchConnectionFactory> Class<? extends S> createFactoryClass(
 			Class<? extends AbstractRedisClient> clientType) {
-		try (DynamicType.Unloaded<Object> unloaded = new ByteBuddy().subclass(Object.class)
+		TypeDescription definitions = TypeDescription.ForLoadedType.of(RedisSearchConnectionFactory.class);
+		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>sub(definitions)
 			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
 					+ "$ProxyConnectionFactory")
-			.implement(RedisSearchConnectionFactory.class)
 			.defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
 			.defineConstructor(Modifier.PUBLIC)
 			.withParameters(clientType)
@@ -70,7 +70,7 @@ final class FactoryProxySupport {
 			.method(ElementMatchers.named("close"))
 			.intercept(MethodDelegation.to(CloseInterceptor.class))
 			.make()) {
-			return (Class<S>) unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
 				.getLoaded();
 		}
 		catch (NoSuchMethodException e) {

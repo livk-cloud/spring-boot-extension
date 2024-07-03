@@ -50,7 +50,7 @@ public class RedissonAutoConfiguration {
 	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor() {
 		return beanFactory -> {
 			if (beanFactory.getConversionService() instanceof ConverterRegistry converterRegistry) {
-				ByteBuddySupport.makeConverters().forEach(converterRegistry::addConverter);
+				ConverterProxySupport.makeConverters().forEach(converterRegistry::addConverter);
 			}
 		};
 	}
