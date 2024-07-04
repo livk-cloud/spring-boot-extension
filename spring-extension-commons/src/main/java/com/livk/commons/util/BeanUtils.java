@@ -22,6 +22,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,13 +103,11 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 		PropertyDescriptor[] descriptors = beanWrapper.getPropertyDescriptors();
 		Map<String, Object> map = new HashMap<>();
 		for (PropertyDescriptor descriptor : descriptors) {
-			if ("class".equals(descriptor.getName())) {
-				continue;
-			}
-			Object propertyValue = beanWrapper.getPropertyValue(descriptor.getName());
-			map.put(descriptor.getName(), propertyValue);
+			String name = descriptor.getName();
+			Object propertyValue = beanWrapper.getPropertyValue(name);
+			map.put(name, propertyValue);
 		}
-		return map;
+		return Collections.unmodifiableMap(map);
 	}
 
 }
