@@ -45,8 +45,8 @@ class GreetingControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody()
-			.jsonPath("content", "hello,World!")
-			.exists();
+			.jsonPath("content")
+			.isEqualTo("hello,World!");
 	}
 
 }

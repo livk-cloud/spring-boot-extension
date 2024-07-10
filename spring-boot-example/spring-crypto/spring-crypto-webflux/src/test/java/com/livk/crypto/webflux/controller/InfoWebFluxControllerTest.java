@@ -54,10 +54,10 @@ class InfoWebFluxControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody()
-			.jsonPath("id.paramId", encoding)
-			.exists()
-			.jsonPath("id.headerId", encoding)
-			.exists();
+			.jsonPath("id.paramId")
+			.isEqualTo(encoding)
+			.jsonPath("id.headerId")
+			.isEqualTo(encoding);
 	}
 
 	@Test
@@ -75,10 +75,10 @@ class InfoWebFluxControllerTest {
 			.expectHeader()
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody()
-			.jsonPath("body.paramId", encoding)
-			.exists()
-			.jsonPath("body.headerId", encoding)
-			.exists();
+			.jsonPath("body.paramId")
+			.isEqualTo(encoding)
+			.jsonPath("body.headerId")
+			.isEqualTo(encoding);
 	}
 
 }

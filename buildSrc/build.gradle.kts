@@ -4,8 +4,8 @@ plugins {
 }
 
 repositories {
-	maven("https://repo.spring.io/milestone")
 	maven("https://repo.spring.io/release")
+	maven("https://repo.huaweicloud.com/repository/maven/")
 	maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
 }
 
