@@ -46,7 +46,7 @@ abstract class OptionalPlugin : Plugin<Project> {
 					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(optional)
 					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(optional)
 					if (sourceSet.name != OPTIONAL) {
-						configurations.getByName(OPTIONAL + JavaPlugin.API_CONFIGURATION_NAME.capitalized())
+						configurations.getByName(OPTIONAL + "Api")
 							.extendsFrom(optional)
 					}
 				}
