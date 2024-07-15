@@ -36,9 +36,9 @@ public final class GenericsByteBuddy extends ByteBuddy {
 	 * @param generics the generics
 	 * @return the dynamic type . builder
 	 */
-	public <T> DynamicType.Builder<T> sub(Class<?> type, Class<?>... generics) {
+	public <T> DynamicType.Builder<T> subType(Class<?> type, Class<?>... generics) {
 		TypeDefinition description = TypeDescription.Generic.Builder.parameterizedType(type, generics).build();
-		return sub(description);
+		return subType(description);
 	}
 
 	/**
@@ -47,8 +47,8 @@ public final class GenericsByteBuddy extends ByteBuddy {
 	 * @param superType the super type
 	 * @return the dynamic type . builder
 	 */
-	public <T> DynamicType.Builder<T> sub(TypeDefinition superType) {
-		return sub(superType, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING);
+	public <T> DynamicType.Builder<T> subType(TypeDefinition superType) {
+		return subType(superType, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class GenericsByteBuddy extends ByteBuddy {
 	 * @param constructorStrategy the constructor strategy
 	 * @return the dynamic type . builder
 	 */
-	public <T> DynamicType.Builder<T> sub(TypeDefinition superType, ConstructorStrategy constructorStrategy) {
+	public <T> DynamicType.Builder<T> subType(TypeDefinition superType, ConstructorStrategy constructorStrategy) {
 		TypeDescription.Generic actualSuperType;
 		TypeList.Generic interfaceTypes;
 		if (superType.isPrimitive() || superType.isArray() || superType.isFinal()) {

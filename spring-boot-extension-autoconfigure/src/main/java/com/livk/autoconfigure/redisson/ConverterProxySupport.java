@@ -66,7 +66,7 @@ final class ConverterProxySupport {
 	private static ConfigBaseConverter<?> make(Class<?> type) {
 		String name = PACKAGE_NAME + type.getSimpleName() + ConfigBaseConverter.class.getSimpleName() + "$Proxy";
 		try (Unloaded<ConfigBaseConverter<?>> unloaded = new GenericsByteBuddy()
-			.<ConfigBaseConverter<?>>sub(ConfigBaseConverter.class, type)
+			.<ConfigBaseConverter<?>>subType(ConfigBaseConverter.class, type)
 			.name(name)
 			.method(ElementMatchers.none())
 			.withoutCode()

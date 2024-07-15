@@ -55,7 +55,7 @@ final class FactoryProxySupport {
 	private static <S extends RedisSearchConnectionFactory> Class<? extends S> createFactoryClass(
 			Class<? extends AbstractRedisClient> clientType) {
 		TypeDescription definitions = TypeDescription.ForLoadedType.of(RedisSearchConnectionFactory.class);
-		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>sub(definitions)
+		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>subType(definitions)
 			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
 					+ "$ProxyConnectionFactory")
 			.defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
