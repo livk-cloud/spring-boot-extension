@@ -8,7 +8,6 @@ image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=
 image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=resolved+issues&show_trend=true&token=nc2HVdT6bxfGl90GCpRLzl6n["DeepSource", link="https://app.deepsource.com/gh/livk-cloud/spring-boot-extension/"]
 
 image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"]
-image:https://badges.gitter.im/livk-cloud/community.svg[link="https://gitter.im/livk-cloud/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge")]
 
 image:https://img.shields.io/badge/Spring%20Framework-6.1.10-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring%20Boot-3.3.1-green[link="https://spring.io/projects/spring-boot"]
