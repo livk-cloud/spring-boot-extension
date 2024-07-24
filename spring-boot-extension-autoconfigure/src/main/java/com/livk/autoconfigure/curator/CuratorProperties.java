@@ -46,11 +46,6 @@ public class CuratorProperties {
 	private String connectString = "localhost:2181";
 
 	/**
-	 * Is Zookeeper enabled.
-	 */
-	private boolean enabled = true;
-
-	/**
 	 * Initial amount of time to wait between retries.
 	 */
 	private Integer baseSleepTimeMs = 50;

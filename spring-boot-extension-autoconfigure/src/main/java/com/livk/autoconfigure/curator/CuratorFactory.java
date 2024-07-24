@@ -76,8 +76,8 @@ public abstract class CuratorFactory {
 
 		curator.start();
 		if (log.isTraceEnabled()) {
-			log.trace("blocking until connected to zookeeper for " + properties.getBlockUntilConnectedWait()
-					+ properties.getBlockUntilConnectedUnit());
+			log.trace("blocking until connected to zookeeper for {}{}", properties.getBlockUntilConnectedWait(),
+					properties.getBlockUntilConnectedUnit());
 		}
 		curator.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
 		if (log.isTraceEnabled()) {
