@@ -16,11 +16,15 @@
 
 package com.livk.commons.selector;
 
+import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 使用注解的方式代替 XXXImportSelector
@@ -34,9 +38,17 @@ class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 
 	@Override
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+		Set<String> names = new HashSet<>();
 		Class<AutoImport> annotationClass = getAnnotationClass();
-		Class<AutoImport> type = metadata.getAnnotations().get(annotationClass).getType();
-		return ImportCandidates.load(type, getBeanClassLoader()).getCandidates();
+		if (annotationClass != null) {
+			for (String annotationType : metadata.getAnnotationTypes()) {
+				Class<?> type = ClassUtils.resolveClassName(annotationType, getBeanClassLoader());
+				if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
+					names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
+				}
+			}
+		}
+		return new ArrayList<>(names);
 	}
 
 }
