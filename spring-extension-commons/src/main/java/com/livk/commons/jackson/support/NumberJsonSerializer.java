@@ -38,7 +38,7 @@ import java.util.Set;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {
+class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {
 
 	private static final Set<Class<?>> SUPPORT_PRIMITIVE_CLASS = Set.of(byte.class, short.class, int.class, long.class,
 			float.class, double.class);
