@@ -18,6 +18,7 @@ package com.livk.context.disruptor;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.core.annotation.MergedAnnotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -46,7 +47,7 @@ public @interface EnableDisruptor {
 	 * least one method will be registered; concrete classes will be ignored.
 	 * @return base package names for scanning mapper interface
 	 */
-	@AliasFor("value")
+	@AliasFor(MergedAnnotation.VALUE)
 	String[] basePackages() default {};
 
 	/**

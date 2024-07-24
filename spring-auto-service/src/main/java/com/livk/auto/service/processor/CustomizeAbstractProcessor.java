@@ -16,12 +16,6 @@
 
 package com.livk.auto.service.processor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -34,6 +28,12 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -43,6 +43,8 @@ import javax.tools.StandardLocation;
  * @author livk
  */
 abstract class CustomizeAbstractProcessor extends AbstractProcessor {
+
+	protected static final String VALUE = "value";
 
 	/**
 	 * The Filer.

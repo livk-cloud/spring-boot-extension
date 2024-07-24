@@ -23,6 +23,14 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringFactories;
+
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,13 +41,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 /**
  * <p>
@@ -99,7 +100,7 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 		log(annotations.toString());
 		log(elements.toString());
 		for (Element element : elements) {
-			Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, "value");
+			Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, VALUE);
 			for (TypeElement typeElement : value.orElseGet(() -> Set.of(fromInterface(element)))) {
 				String provider = TypeElements.getBinaryName(typeElement);
 				if (provider == null || provider.isBlank()) {

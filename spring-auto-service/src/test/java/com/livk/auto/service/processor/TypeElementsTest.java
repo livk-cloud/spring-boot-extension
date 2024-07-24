@@ -19,6 +19,7 @@ package com.livk.auto.service.processor;
 import com.google.auto.service.AutoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.core.annotation.MergedAnnotation;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -42,8 +43,8 @@ class TypeElementsTest {
 
 	@Test
 	void getAnnotationAttributes(Elements elements) {
-		Optional<Set<TypeElement>> autoServiceOption = TypeElements
-			.getAnnotationAttributes(get(elements, SpringFactoryServiceImpl.class), AutoService.class, "value");
+		Optional<Set<TypeElement>> autoServiceOption = TypeElements.getAnnotationAttributes(
+				get(elements, SpringFactoryServiceImpl.class), AutoService.class, MergedAnnotation.VALUE);
 		assertTrue(autoServiceOption.isPresent());
 		ArrayList<TypeElement> list = autoServiceOption.map(ArrayList::new).get();
 		assertFalse(list.isEmpty());

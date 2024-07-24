@@ -20,9 +20,6 @@ import com.livk.commons.util.AnnotationUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.factory.DisruptorFactoryBean;
 import com.livk.context.disruptor.support.SpringDisruptor;
-import java.lang.annotation.Annotation;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -36,12 +33,17 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * The type Class path disruptor scanner.
@@ -108,7 +110,7 @@ class ClassPathDisruptorScanner extends ClassPathBeanDefinitionScanner {
 					builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 					AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-					String name = attributes.getString("value");
+					String name = attributes.getString(MergedAnnotation.VALUE);
 					String beanName = StringUtils.hasText(name) ? name
 							: beanNameGenerator.generateBeanName(beanDefinition, registry);
 					if (checkCandidate(beanName, beanDefinition)) {

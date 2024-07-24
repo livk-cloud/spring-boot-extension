@@ -18,6 +18,7 @@ package com.livk.autoconfigure.http.annotation;
 
 import com.livk.autoconfigure.http.factory.AdapterType;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.service.annotation.HttpExchange;
 
@@ -52,7 +53,7 @@ public @interface HttpProvider {
 	 * a Spring bean in case of an autodetected component.
 	 * @return the suggested component name, if any (or empty String otherwise)
 	 */
-	@AliasFor(annotation = Component.class, attribute = "value")
+	@AliasFor(annotation = Component.class, attribute = MergedAnnotation.VALUE)
 	String value() default "";
 
 	/**
