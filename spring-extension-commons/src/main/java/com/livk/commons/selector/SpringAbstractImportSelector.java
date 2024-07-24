@@ -51,11 +51,8 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	/**
 	 * The Annotation class.
 	 */
-	protected final Class<A> annotationClass;
+	private final Class<A> annotationClass;
 
-	/**
-	 * 构建生菜annotationClass
-	 */
 	@SuppressWarnings("unchecked")
 	protected SpringAbstractImportSelector() {
 		this.annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
@@ -63,7 +60,7 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	}
 
 	@Override
-	protected Class<?> getAnnotationClass() {
+	protected Class<A> getAnnotationClass() {
 		return annotationClass;
 	}
 
@@ -72,8 +69,8 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 		Assert.notNull(annotationClass, "annotation Class not be null");
 		List<String> configurations = ImportCandidates.load(annotationClass, getBeanClassLoader()).getCandidates();
 		Assert.notEmpty(configurations,
-				"No auto configuration classes found in " + "META-INF/spring/" + annotationClass.getName()
-						+ ".imports. If you " + "are using a custom packaging, make sure that file is correct.");
+				"No auto configuration classes found in META-INF/spring/" + annotationClass.getName()
+						+ ".imports. If you are using a custom packaging, make sure that file is correct.");
 		return configurations;
 	}
 

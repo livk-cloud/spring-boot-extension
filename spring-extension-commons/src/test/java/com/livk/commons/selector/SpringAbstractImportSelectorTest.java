@@ -32,7 +32,7 @@ class SpringAbstractImportSelectorTest {
 	@Test
 	void testFindAnnotation() {
 		MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
-		assertEquals(MyAnnotation.class, selector.annotationClass);
+		assertEquals(MyAnnotation.class, selector.getAnnotationClass());
 	}
 
 	@interface MyAnnotation {
