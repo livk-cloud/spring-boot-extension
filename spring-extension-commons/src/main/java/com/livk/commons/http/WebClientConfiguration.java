@@ -57,7 +57,6 @@ public class WebClientConfiguration {
 	/**
 	 * spring官方建议使用{@link WebClient} <a href=
 	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
-	 *
 	 * @param builder the web client builder
 	 * @return WebClient web client
 	 */
@@ -86,7 +85,7 @@ public class WebClientConfiguration {
 			Function<HttpClient, HttpClient> function = httpClient -> httpClient
 				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
 				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
-					StandardCharsets.UTF_8)
+						StandardCharsets.UTF_8)
 				.responseTimeout(Duration.ofSeconds(15))
 				.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
 				.doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(20))
