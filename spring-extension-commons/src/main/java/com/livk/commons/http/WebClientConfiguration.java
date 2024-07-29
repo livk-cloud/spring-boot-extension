@@ -20,6 +20,7 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableWebClient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -34,6 +35,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.DefaultSslContextSpec;
+import reactor.netty.tcp.SslProvider;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.nio.charset.StandardCharsets;
@@ -55,6 +57,7 @@ public class WebClientConfiguration {
 	/**
 	 * spring官方建议使用{@link WebClient} <a href=
 	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
+	 *
 	 * @param builder the web client builder
 	 * @return WebClient web client
 	 */
@@ -78,13 +81,14 @@ public class WebClientConfiguration {
 		 */
 		@Bean
 		public WebClientCustomizer reactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
+			SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient()
+				.configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE));
 			Function<HttpClient, HttpClient> function = httpClient -> httpClient
 				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
 				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
-						StandardCharsets.UTF_8)
+					StandardCharsets.UTF_8)
 				.responseTimeout(Duration.ofSeconds(15))
-				.secure(sslContextSpec -> sslContextSpec.sslContext(DefaultSslContextSpec.forClient()
-					.configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE))))
+				.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
 				.doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(20))
 					.addHandlerLast(new WriteTimeoutHandler(20)));
 			ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
