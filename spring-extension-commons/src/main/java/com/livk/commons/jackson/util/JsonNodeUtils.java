@@ -23,13 +23,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Streams;
 import com.livk.commons.util.ObjectUtils;
+import lombok.experimental.UtilityClass;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 /**
  * <p>
@@ -137,7 +138,9 @@ public class JsonNodeUtils {
 	 * @return str node first
 	 * @see JsonNode#at(String)
 	 * @see JsonNode#at(JsonPointer)
+	 * @see JsonNode#findValue(String)
 	 */
+	@Deprecated(since = "1.3.3", forRemoval = true)
 	public JsonNode findNodeFirst(JsonNode jsonNode, String nodeName) {
 		if (jsonNode == null || ObjectUtils.isEmpty(nodeName)) {
 			return null;
@@ -178,6 +181,7 @@ public class JsonNodeUtils {
 	 * @param nodeName name
 	 * @return list
 	 */
+	@Deprecated(since = "1.3.3", forRemoval = true)
 	public List<JsonNode> findNodeAll(JsonNode jsonNode, String nodeName) {
 		if (jsonNode == null || ObjectUtils.isEmpty(nodeName)) {
 			return Collections.emptyList();
@@ -219,6 +223,7 @@ public class JsonNodeUtils {
 	 * @see JsonNode#at(String)
 	 * @see JsonNode#at(JsonPointer)
 	 */
+	@Deprecated(since = "1.3.3", forRemoval = true)
 	public JsonNode findNode(JsonNode jsonNode, String nodePath) {
 		if (jsonNode == null || ObjectUtils.isEmpty(nodePath)) {
 			return null;
