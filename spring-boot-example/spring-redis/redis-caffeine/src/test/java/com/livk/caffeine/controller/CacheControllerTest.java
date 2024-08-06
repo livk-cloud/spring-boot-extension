@@ -55,7 +55,7 @@ class CacheControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = RedisContainer.redis();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
