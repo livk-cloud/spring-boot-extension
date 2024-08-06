@@ -18,7 +18,9 @@ import org.testcontainers.containers.GenericContainer;
 
 /**
  * @author livk
+ * @see RedisContainer
  */
+@Deprecated(since = "1.3.3", forRemoval = true)
 public class RedisStackContainer extends GenericContainer<RedisStackContainer> {
 
 	public static final int PORT = 6379;

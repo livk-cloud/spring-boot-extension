@@ -16,7 +16,7 @@
 
 package com.livk.redisearch.mvc.controller;
 
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,12 +47,12 @@ class StudentControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redis = new RedisStackContainer();
+	static RedisContainer redisStack = RedisContainer.redisStack();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.redisearch.host", redis::getHost);
-		registry.add("spring.redisearch.port", () -> redis.getMappedPort(6379));
+		registry.add("spring.redisearch.host", redisStack::getHost);
+		registry.add("spring.redisearch.port", () -> redisStack.getMappedPort(6379));
 	}
 
 	@Autowired

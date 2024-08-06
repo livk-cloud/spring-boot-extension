@@ -15,7 +15,7 @@ package com.livk.context.lock.support;
 
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
@@ -43,11 +43,12 @@ class RedissonLockTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redis = new RedisStackContainer();
+	static RedisContainer redisStack = RedisContainer.redisStack();
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getMappedPort(6379));
+		registry.add("redisson.address",
+				() -> "redis://" + redisStack.getHost() + ":" + redisStack.getMappedPort(6379));
 	}
 
 	static ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
