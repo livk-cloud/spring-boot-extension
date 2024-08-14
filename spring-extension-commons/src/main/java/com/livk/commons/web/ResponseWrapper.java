@@ -67,7 +67,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	 * 获取response body
 	 * @return the byte []
 	 */
-	public byte[] getResponseData() {
+	public byte[] responseBody() {
 		return buffer.toByteArray();
 	}
 
@@ -75,7 +75,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	 * 修改response body
 	 * @param bytes byte[]
 	 */
-	public void setResponseData(byte[] bytes) throws IOException {
+	public void responseBody(byte[] bytes) throws IOException {
 		buffer.reset();
 		StreamUtils.copy(bytes, buffer);
 	}

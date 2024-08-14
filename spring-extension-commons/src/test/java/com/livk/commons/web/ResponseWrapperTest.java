@@ -35,18 +35,18 @@ class ResponseWrapperTest {
 	ResponseWrapper wrapper;
 
 	@Test
-	void getResponseData() throws IOException {
+	void responseBody() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Map<String, String> result = Map.of("username", "livk", "password", "123456");
 		wrapper = new ResponseWrapper(response);
 		WebUtils.outJson(wrapper, result);
 
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(result), wrapper.getResponseData());
+		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(result), wrapper.responseBody());
 		assertEquals(JsonMapperUtils.writeValueAsString(result), wrapper.getOutputStream().toString());
 
-		wrapper.setResponseData(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+		wrapper.responseBody(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
 
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")), wrapper.getResponseData());
+		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")), wrapper.responseBody());
 		assertEquals(JsonMapperUtils.writeValueAsString(Map.of("root", "root")), wrapper.getOutputStream().toString());
 
 	}

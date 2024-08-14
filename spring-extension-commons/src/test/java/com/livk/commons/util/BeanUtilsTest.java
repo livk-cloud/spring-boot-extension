@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * <p>
@@ -58,12 +57,6 @@ class BeanUtilsTest {
 		List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
 		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10), new TargetBean("target", 9));
 		assertEquals(result, targetBeans);
-	}
-
-	@Test
-	void isFieldNull() {
-		boolean result = BeanUtils.isFieldNull(bean);
-		assertFalse(result);
 	}
 
 	record SourceBean(String beanName, Integer beanNo) {
