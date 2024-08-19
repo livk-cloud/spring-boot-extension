@@ -19,7 +19,6 @@ package com.livk.boot.tasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
-import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 /**
  * @author livk

@@ -20,7 +20,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import java.util.regex.Pattern
 
 /**
  * @author livk
@@ -48,16 +47,4 @@ abstract class MavenRepositoryPlugin : Plugin<Project> {
 		}
 	}
 
-	private fun checkSnapshot(version: String): Boolean {
-		val index = version.lastIndexOf('-');
-		if (index > -1) {
-			val snapshot = version.substring(index + 1)
-			val rc = Pattern.compile("RC[0-9]*")
-			val m = Pattern.compile("M[0-9]*")
-			return "SNAPSHOT".equals(snapshot, true) ||
-				rc.matcher(snapshot).matches() ||
-				m.matcher(snapshot).matches()
-		}
-		return false
-	}
 }

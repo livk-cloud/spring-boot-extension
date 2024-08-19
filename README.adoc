@@ -11,7 +11,7 @@ image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https:/
 
 image:https://img.shields.io/badge/Spring%20Framework-6.1.11-green[link="https://spring.io/projects/spring-framework"]
 image:https://img.shields.io/badge/Spring%20Boot-3.3.2-green[link="https://spring.io/projects/spring-boot"]
-image:https://img.shields.io/badge/Gradle-8.9-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Gradle-8.10-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
