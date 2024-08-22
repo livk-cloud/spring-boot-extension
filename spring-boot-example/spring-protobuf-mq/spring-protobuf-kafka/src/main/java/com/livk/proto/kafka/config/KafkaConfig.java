@@ -16,7 +16,11 @@
 
 package com.livk.proto.kafka.config;
 
+import com.livk.proto.kafka.converter.ProtobufDeserializer;
+import com.livk.proto.kafka.converter.ProtobufSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,6 +35,16 @@ public class KafkaConfig {
 	@Bean
 	public NewTopic myTopic() {
 		return new NewTopic(TOPIC_NAME, 1, (short) 1);
+	}
+
+	@Bean
+	public DefaultKafkaConsumerFactoryCustomizer userProtobufConsumerFactoryCustomizer() {
+		return consumerFactory -> consumerFactory.setValueDeserializerSupplier(ProtobufDeserializer::new);
+	}
+
+	@Bean
+	public DefaultKafkaProducerFactoryCustomizer userProtobufProducerFactoryCustomizer() {
+		return producerFactory -> producerFactory.setValueSerializerSupplier(ProtobufSerializer::new);
 	}
 
 }
