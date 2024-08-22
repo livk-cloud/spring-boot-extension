@@ -76,7 +76,7 @@ class ProtobufPlugin : Plugin<Project> {
 			// after the doneConfig() loop over the generated outputs and will be out-of-date if
 			// plugin output is added after this point.
 			this.protobufExtension.generateProtoTasks.all().configureEach { it.doneConfig() }
-			postConfigure.forEach() { it.get() }
+			postConfigure.forEach { it.get() }
 			// protoc and codegen plugin configuration may change through the protobuf{}
 			// block. Only at this point the configuration has been finalized.
 			protobufExtension.tools.resolve(project)

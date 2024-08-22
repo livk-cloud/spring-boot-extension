@@ -48,7 +48,7 @@ class SpringContextHolderTest {
 		assertEquals(bean, SpringContextHolder.getBean("test"));
 		assertEquals(bean, SpringContextHolder.getBean(BeanTest.class));
 		assertEquals(bean, SpringContextHolder.getBean("test", BeanTest.class));
-		if (SpringContextHolder.getApplicationContext() instanceof GenericApplicationContext context) {
+		if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 			context.removeBeanDefinition("test");
 		}
 	}
@@ -59,7 +59,7 @@ class SpringContextHolderTest {
 		ResolvableType resolvableType = ResolvableType.forClass(BeanTest.class);
 		assertEquals(bean, SpringContextHolder.getBeanProvider(BeanTest.class).getIfAvailable());
 		assertEquals(bean, SpringContextHolder.getBeanProvider(resolvableType).getIfAvailable());
-		if (SpringContextHolder.getApplicationContext() instanceof GenericApplicationContext context) {
+		if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 			context.removeBeanDefinition("test");
 		}
 	}
@@ -68,7 +68,7 @@ class SpringContextHolderTest {
 	void getBeansOfType() {
 		SpringContextHolder.registerBean(bean, "test");
 		assertEquals(Map.of("test", bean), SpringContextHolder.getBeansOfType(BeanTest.class));
-		if (SpringContextHolder.getApplicationContext() instanceof GenericApplicationContext context) {
+		if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 			context.removeBeanDefinition("test");
 		}
 	}
@@ -101,7 +101,7 @@ class SpringContextHolderTest {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<BeanTest>) bean.getClass(), () -> bean);
 		SpringContextHolder.registerBean(beanDefinition, "test2");
 		assertEquals(Map.of("test1", bean, "test2", bean), SpringContextHolder.getBeansOfType(BeanTest.class));
-		if (SpringContextHolder.getApplicationContext() instanceof GenericApplicationContext context) {
+		if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 			context.removeBeanDefinition("test1");
 			context.removeBeanDefinition("test2");
 		}

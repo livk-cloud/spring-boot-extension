@@ -16,20 +16,19 @@
 
 package com.livk.crypto.fotmat;
 
-import java.text.ParseException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.livk.commons.SpringContextHolder;
 import com.livk.crypto.CryptoType;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.ResolvableType;
 import org.springframework.format.Formatter;
 import org.springframework.lang.NonNull;
+
+import java.text.ParseException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The interface Spring context parser.
@@ -44,7 +43,7 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 	 * @return the object provider
 	 */
 	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext() {
-		return fromContext(SpringContextHolder.getApplicationContext());
+		return fromContext(SpringContextHolder.fetch());
 	}
 
 	static Map<Class<?>, List<CryptoFormatter<?>>> fromContext(BeanFactory beanFactory) {
