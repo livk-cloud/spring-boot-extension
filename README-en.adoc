@@ -7,8 +7,8 @@ image:https://www.codefactor.io/repository/github/livk-cloud/spring-boot-extensi
 image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=active+issues&show_trend=true&token=nc2HVdT6bxfGl90GCpRLzl6n["DeepSource", link="https://app.deepsource.com/gh/livk-cloud/spring-boot-extension/"]
 image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=resolved+issues&show_trend=true&token=nc2HVdT6bxfGl90GCpRLzl6n["DeepSource", link="https://app.deepsource.com/gh/livk-cloud/spring-boot-extension/"]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.1.11-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.3.2-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Spring%20Framework-6.1.12-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.3.3-green[link="https://spring.io/projects/spring-boot"]
 image:https://img.shields.io/badge/Gradle-8.10-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
