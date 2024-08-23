@@ -17,6 +17,7 @@
 package com.livk.commons.util;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -124,10 +125,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return MultiValueMap
 	 */
 	public MultiValueMap<String, String> params(HttpServletRequest request) {
-		Map<String, List<String>> map = request.getParameterMap()
-			.entrySet()
-			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, entry -> Lists.newArrayList(entry.getValue())));
+		Map<String, List<String>> map = Maps.transformValues(request.getParameterMap(), Lists::newArrayList);
 		return new LinkedMultiValueMap<>(map);
 	}
 

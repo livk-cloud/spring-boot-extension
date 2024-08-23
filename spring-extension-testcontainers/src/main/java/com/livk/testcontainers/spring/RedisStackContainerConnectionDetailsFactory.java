@@ -15,33 +15,34 @@ package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.springframework.boot.autoconfigure.data.redis.RedisConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
 
 /**
+ * <a href="https://github.com/spring-projects/spring-boot/pull/41327">redis-stack支持</a>
+ *
  * @author livk
  */
 @SpringFactories(ConnectionDetailsFactory.class)
 class RedisStackContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<RedisStackContainer, RedisConnectionDetails> {
+		extends ContainerConnectionDetailsFactory<RedisContainer, RedisConnectionDetails> {
 
 	RedisStackContainerConnectionDetailsFactory() {
 		super(DockerImageNames.REDIS_STACK_IMAGE);
 	}
 
 	@Override
-	protected RedisConnectionDetails getContainerConnectionDetails(
-			ContainerConnectionSource<RedisStackContainer> source) {
+	protected RedisConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<RedisContainer> source) {
 		return new RedisStackContainerConnectionDetails(source);
 	}
 
-	private static final class RedisStackContainerConnectionDetails
-			extends ContainerConnectionDetails<RedisStackContainer> implements RedisConnectionDetails {
+	private static final class RedisStackContainerConnectionDetails extends ContainerConnectionDetails<RedisContainer>
+			implements RedisConnectionDetails {
 
-		private RedisStackContainerConnectionDetails(ContainerConnectionSource<RedisStackContainer> source) {
+		private RedisStackContainerConnectionDetails(ContainerConnectionSource<RedisContainer> source) {
 			super(source);
 		}
 

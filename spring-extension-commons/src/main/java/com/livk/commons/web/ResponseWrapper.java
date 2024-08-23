@@ -17,7 +17,6 @@
 package com.livk.commons.web;
 
 import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
@@ -28,6 +27,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.nio.charset.Charset;
 
 /**
  * <p>
@@ -40,76 +42,128 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
+	private final ServletOutputStream outputStream = new WrapperOutputStream(this.buffer);
+
+	private PrintWriter writer;
+
+	private final Charset characterEncoding;
+
 	/**
 	 * 创建ResponseWrapper
 	 * @param response the response
 	 */
 	public ResponseWrapper(HttpServletResponse response) {
 		super(response);
+		this.characterEncoding = initCharacterEncoding(response);
+	}
+
+	private Charset initCharacterEncoding(HttpServletResponse response) {
+		String characterEncoding = response.getCharacterEncoding();
+		if (characterEncoding == null) {
+			return Charset.defaultCharset();
+		}
+		return Charset.forName(characterEncoding, Charset.defaultCharset());
 	}
 
 	@Override
 	public ServletOutputStream getOutputStream() {
-		return new WrapperOutputStream(super.getResponse(), buffer);
+		return this.outputStream;
 	}
 
 	@Override
-	public PrintWriter getWriter() {
-		return new PrintWriter(new OutputStreamWriter(buffer));
+	public PrintWriter getWriter() throws UnsupportedEncodingException {
+		if (this.writer == null) {
+			Writer targetWriter = new OutputStreamWriter(this.buffer, getCharacterEncoding());
+			this.writer = new PrintWriter(targetWriter);
+		}
+		return writer;
 	}
 
 	@Override
 	public void reset() {
-		buffer.reset();
+		this.buffer.reset();
+	}
+
+	@Override
+	public String getCharacterEncoding() {
+		return this.characterEncoding.name();
+	}
+
+	/**
+	 * 根据默认编码获取response body数据
+	 * @see characterEncoding
+	 * @return String
+	 */
+	public String getContentAsString() {
+		return getContentAsString(this.characterEncoding);
+	}
+
+	/**
+	 * 根据编码获取response body数据
+	 * @param charset 编码格式
+	 * @return String
+	 */
+	public String getContentAsString(Charset charset) {
+		return this.buffer.toString(charset);
 	}
 
 	/**
 	 * 获取response body
 	 * @return the byte []
 	 */
-	public byte[] getResponseData() {
-		return buffer.toByteArray();
+	public byte[] getContentAsByteArray() {
+		return this.buffer.toByteArray();
 	}
 
 	/**
 	 * 修改response body
 	 * @param bytes byte[]
 	 */
-	public void setResponseData(byte[] bytes) throws IOException {
-		buffer.reset();
-		StreamUtils.copy(bytes, buffer);
+	public void replaceBody(byte[] bytes) throws IOException {
+		this.buffer.reset();
+		StreamUtils.copy(bytes, this.buffer);
+	}
+
+	/**
+	 * 修改response body
+	 * @param content string
+	 */
+	public void replaceBody(String content) throws IOException {
+		replaceBody(content, this.characterEncoding);
+	}
+
+	/**
+	 * 修改response body
+	 * @param content string
+	 * @param charset charset
+	 */
+	public void replaceBody(String content, Charset charset) throws IOException {
+		replaceBody(content.getBytes(charset));
 	}
 
 	@RequiredArgsConstructor
 	private static class WrapperOutputStream extends ServletOutputStream {
 
-		private final ServletResponse response;
-
 		private final ByteArrayOutputStream outputStream;
 
 		@Override
 		public void write(int b) {
-			outputStream.write(b);
+			this.outputStream.write(b);
 		}
 
 		@Override
 		public void flush() throws IOException {
-			if (!this.response.isCommitted()) {
-				byte[] body = this.outputStream.toByteArray();
-				ServletOutputStream stream = this.response.getOutputStream();
-				stream.write(body);
-				stream.flush();
-			}
+			this.outputStream.flush();
 		}
 
 		@Override
 		public void setWriteListener(WriteListener writeListener) {
-			throw new UnsupportedOperationException("setWriteListener");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public boolean isReady() {
-			return false;
+			return true;
 		}
 
 		@Override

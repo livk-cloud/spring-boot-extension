@@ -52,9 +52,9 @@ class RequestWrapperTest {
 	}
 
 	@Test
-	void setBody() throws IOException {
+	void body() throws IOException {
 		Map<String, String> map = Map.of("root", "root");
-		wrapper.setBody(JsonMapperUtils.writeValueAsBytes(map));
+		wrapper.body(JsonMapperUtils.writeValueAsBytes(map));
 
 		ServletInputStream inputStream = wrapper.getInputStream();
 		byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
@@ -75,9 +75,9 @@ class RequestWrapperTest {
 	}
 
 	@Test
-	void putParameter() {
-		wrapper.putParameter("username", new String[] { "livk", "root", "admin" });
-		wrapper.putParameter("password", "123456");
+	void addParameter() {
+		wrapper.addParameter("username", new String[] { "livk", "root", "admin" });
+		wrapper.addParameter("password", "123456");
 
 		MultiValueMap<String, String> params = WebUtils.params(wrapper);
 		assertEquals(List.of("livk", "root", "admin"), params.get("username"));

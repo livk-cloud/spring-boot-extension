@@ -17,7 +17,6 @@
 package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -69,7 +68,6 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 */
 	public static final String BEAN_NAME = "com.livk.commons.spring.context.SpringContextHolder";
 
-	@Getter
 	private volatile static ApplicationContext applicationContext = null;
 
 	private volatile static BeanFactory beanFactory = null;
@@ -78,7 +76,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * Spring事件发布
 	 * @param event 事件
 	 */
-	public static void publishEvent(ApplicationEvent event) {
+	public static <E extends ApplicationEvent> void publishEvent(E event) {
 		applicationContext.publishEvent(event);
 	}
 
@@ -245,6 +243,10 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	private static ListableBeanFactory getBeanFactory() {
 		return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory
 				: applicationContext;
+	}
+
+	public static ApplicationContext fetch() {
+		return applicationContext;
 	}
 
 	@Override

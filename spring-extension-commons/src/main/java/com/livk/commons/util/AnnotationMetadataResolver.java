@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * 包解析根据Annotation进行class获取
@@ -83,20 +82,6 @@ public class AnnotationMetadataResolver {
 	}
 
 	/**
-	 * 获取被满足条件的的class
-	 * @param typeFilter type匹配器
-	 * @param packages 待扫描的包
-	 * @return set class
-	 */
-	public Set<Class<?>> find(TypeFilter typeFilter, String... packages) {
-		Function<MetadataReader, Class<?>> function = metadataReader -> {
-			String className = metadataReader.getClassMetadata().getClassName();
-			return ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
-		};
-		return find(typeFilter, function, packages);
-	}
-
-	/**
 	 * 获取被注解标注的class
 	 * @param annotationType 注解
 	 * @param beanFactory beanFactory
@@ -106,8 +91,14 @@ public class AnnotationMetadataResolver {
 		return find(annotationType, StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory)));
 	}
 
-	private <E> Set<E> find(TypeFilter typeFilter, Function<MetadataReader, E> function, String... packages) {
-		Set<E> result = new HashSet<>();
+	/**
+	 * 获取被满足条件的的class
+	 * @param typeFilter type匹配器
+	 * @param packages 待扫描的包
+	 * @return set class
+	 */
+	public Set<Class<?>> find(TypeFilter typeFilter, String... packages) {
+		Set<Class<?>> result = new HashSet<>();
 		if (ObjectUtils.isEmpty(packages)) {
 			return result;
 		}
@@ -119,7 +110,8 @@ public class AnnotationMetadataResolver {
 				for (Resource resource : resources) {
 					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
 					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
-						result.add(function.apply(metadataReader));
+						Class<?> type = toType(metadataReader);
+						result.add(type);
 					}
 				}
 			}
@@ -128,6 +120,11 @@ public class AnnotationMetadataResolver {
 			}
 		}
 		return result;
+	}
+
+	private Class<?> toType(MetadataReader metadataReader) {
+		String className = metadataReader.getClassMetadata().getClassName();
+		return ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
 	}
 
 }

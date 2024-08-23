@@ -13,7 +13,7 @@
 
 package com.livk.context.redisearch;
 
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -34,12 +34,12 @@ class StringRediSearchTemplateTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redis = new RedisStackContainer();
+	static RedisContainer redisStack = RedisContainer.redisStack();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("redisearch.host", redis::getHost);
-		registry.add("redisearch.port", () -> redis.getMappedPort(6379));
+		registry.add("redisearch.host", redisStack::getHost);
+		registry.add("redisearch.port", () -> redisStack.getMappedPort(6379));
 	}
 
 	@Autowired

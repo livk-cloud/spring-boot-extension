@@ -11,23 +11,27 @@
  * limitations under the License.
  */
 
-package com.livk.testcontainers.containers;
+package com.livk.proto.kafka.converter;
 
-import com.livk.testcontainers.DockerImageNames;
-import org.testcontainers.containers.GenericContainer;
+import com.livk.proto.UserConverter;
+import org.apache.kafka.common.serialization.Deserializer;
 
 /**
  * @author livk
- * @see RedisContainer
  */
-@Deprecated(since = "1.3.3", forRemoval = true)
-public class RedisStackContainer extends GenericContainer<RedisStackContainer> {
+public class ProtobufDeserializer<T> implements Deserializer<T> {
 
-	public static final int PORT = 6379;
+	private final UserConverter converter = UserConverter.INSTANCE;
 
-	public RedisStackContainer() {
-		super(DockerImageNames.redisStack());
-		addExposedPort(PORT);
+	@SuppressWarnings("unchecked")
+	@Override
+	public T deserialize(String s, byte[] bytes) {
+		try {
+			return (T) converter.convert(bytes);
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 }

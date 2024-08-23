@@ -17,7 +17,7 @@
 package com.livk.redisearch.webflux.controller;
 
 import com.livk.redisearch.webflux.entity.Student;
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.containers.RedisContainer;
 import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +41,12 @@ class StudentControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redis = new RedisStackContainer();
+	static RedisContainer redisStack = RedisContainer.redisStack();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.redisearch.host", redis::getHost);
-		registry.add("spring.redisearch.port", () -> redis.getMappedPort(6379));
+		registry.add("spring.redisearch.host", redisStack::getHost);
+		registry.add("spring.redisearch.port", () -> redisStack.getMappedPort(6379));
 	}
 
 	@Autowired

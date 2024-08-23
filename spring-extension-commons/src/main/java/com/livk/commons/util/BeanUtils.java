@@ -84,6 +84,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	 * @param source 目标
 	 * @return boolean
 	 */
+	@Deprecated(since = "1.3.3", forRemoval = true)
 	public static boolean isFieldNull(Object source) {
 		if (source == null) {
 			return true;

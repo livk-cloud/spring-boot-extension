@@ -1,15 +1,16 @@
 [versions]
 spring-boot = "3.4.0-M1"
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 pagehelper-starter = "2.1.0"
 mybatis = "3.5.16"
-spring-mybatis = "3.0.3"
-guava = "33.2.1-jre"
-easyexcel = "4.0.1"
-redisson = "3.33.0"
-clickhouse = "0.6.3"
+mybatis-spring = "3.0.4"
+mybatis-boot = "3.0.3"
+guava = "33.3.0-jre"
+easyexcel = "4.0.2"
+redisson = "3.35.0"
+clickhouse = "0.6.4"
 spotbugs-annotations = "4.8.6"
-mapstruct = "1.5.5.Final"
+mapstruct = "1.6.0"
 mapstruct-lombok = "0.2.0"
 curator = "5.7.0"
 asciidoctor-jvm = "4.0.3"
@@ -22,19 +23,19 @@ spring-admin = "3.3.3"
 nimbusds-jwt = "9.40"
 rocket-starter = "2.3.1"
 jsqlparser = "5.0"
-lettucemod = "3.8.1"
-minio = "8.5.11"
+lettucemod = "4.0.0"
+minio = "8.5.12"
 aliyun-oss = "3.18.1"
 aviator = "5.4.3"
-protobuf-java = "4.27.2"
-grpc-java = "1.65.1"
+protobuf-java = "4.27.3"
+grpc-java = "1.66.0"
 google-protobuf-plugins = "0.9.4"
 google-osdetector-plugins = "1.7.3"
 jexl3 = "3.4.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
-spring-javaformat = "0.0.42"
+spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
 
 [libraries]
@@ -47,9 +48,9 @@ openapi-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper-starter" }
 
 #mybatis-all
-mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "spring-mybatis" }
-mybatis-autoconfigure = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-autoconfigure", version.ref = "spring-mybatis" }
-mybatis-spring = { group = "org.mybatis", name = "mybatis-spring", version.ref = "spring-mybatis" }
+mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis-boot" }
+mybatis-autoconfigure = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-autoconfigure", version.ref = "mybatis-boot" }
+mybatis-spring = { group = "org.mybatis", name = "mybatis-spring", version.ref = "mybatis-spring" }
 mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 
 #redisson-all

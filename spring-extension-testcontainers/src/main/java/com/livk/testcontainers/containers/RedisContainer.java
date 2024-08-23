@@ -16,6 +16,7 @@ package com.livk.testcontainers.containers;
 import com.livk.testcontainers.DockerImageNames;
 import lombok.Getter;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Optional;
 
@@ -27,9 +28,17 @@ public class RedisContainer extends GenericContainer<RedisContainer> {
 
 	private String password;
 
-	public RedisContainer() {
-		super(DockerImageNames.redis());
+	public RedisContainer(DockerImageName dockerImageName) {
+		super(dockerImageName);
 		addExposedPorts(6379);
+	}
+
+	public static RedisContainer redis() {
+		return new RedisContainer(DockerImageNames.redis());
+	}
+
+	public static RedisContainer redisStack() {
+		return new RedisContainer(DockerImageNames.redisStack());
 	}
 
 	@Override
