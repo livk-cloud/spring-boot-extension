@@ -32,7 +32,7 @@ public class ProtobufSerializer<T> implements Serializer<T> {
 		if (data instanceof User user) {
 			return converter.convert(user);
 		}
-		return null;
+		return new byte[0];
 	}
 
 }
