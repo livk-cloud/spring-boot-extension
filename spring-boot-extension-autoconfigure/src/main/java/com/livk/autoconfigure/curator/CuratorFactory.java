@@ -33,10 +33,10 @@ import java.util.stream.Stream;
  * @author livk
  */
 @Slf4j
-public abstract class CuratorFactory {
+abstract class CuratorFactory {
 
 	/**
-	 * Curator framework
+	 * Create Curator framework
 	 * @param properties the properties
 	 * @param retryPolicy the retry policy
 	 * @param optionalCuratorFrameworkCustomizerProvider the optional curator framework
@@ -46,7 +46,7 @@ public abstract class CuratorFactory {
 	 * @return the curator framework
 	 * @throws InterruptedException the exception
 	 */
-	public static CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
+	public static CuratorFramework create(CuratorProperties properties, RetryPolicy retryPolicy,
 			Supplier<Stream<CuratorFrameworkBuilderCustomizer>> optionalCuratorFrameworkCustomizerProvider,
 			Supplier<EnsembleProvider> optionalEnsembleProvider, Supplier<TracerDriver> optionalTracerDriverProvider)
 			throws InterruptedException {
@@ -74,7 +74,6 @@ public abstract class CuratorFactory {
 			curator.getZookeeperClient().setTracerDriver(tracerDriver);
 		}
 
-		curator.start();
 		if (log.isTraceEnabled()) {
 			log.trace("blocking until connected to zookeeper for {}{}", properties.getBlockUntilConnectedWait(),
 					properties.getBlockUntilConnectedUnit());

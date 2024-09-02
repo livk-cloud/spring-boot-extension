@@ -54,15 +54,14 @@ public class CuratorAutoConfiguration {
 	 * @return the curator framework
 	 * @throws InterruptedException the exception
 	 */
-	@Bean(destroyMethod = "close")
+	@Bean(initMethod = "start", destroyMethod = "close")
 	@ConditionalOnMissingBean
 	public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
 			ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
 			ObjectProvider<EnsembleProvider> ensembleProviders, ObjectProvider<TracerDriver> tracerDrivers)
 			throws InterruptedException {
-		return CuratorFactory.curatorFramework(properties, retryPolicy,
-				curatorFrameworkBuilderCustomizers::orderedStream, ensembleProviders::getIfAvailable,
-				tracerDrivers::getIfAvailable);
+		return CuratorFactory.create(properties, retryPolicy, curatorFrameworkBuilderCustomizers::orderedStream,
+				ensembleProviders::getIfAvailable, tracerDrivers::getIfAvailable);
 	}
 
 	/**
