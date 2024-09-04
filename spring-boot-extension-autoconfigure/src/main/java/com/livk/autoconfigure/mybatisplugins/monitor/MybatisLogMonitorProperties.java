@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.mybatisplugins.monitor;
 
-import com.livk.commons.beans.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambda;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -48,7 +48,7 @@ public class MybatisLogMonitorProperties {
 	 * @return the string
 	 */
 	public static String timeOutName() {
-		return BeanLambdaFunc.fieldName(MybatisLogMonitorProperties::getTimeOut);
+		return BeanLambda.fieldName(MybatisLogMonitorProperties::getTimeOut);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class MybatisLogMonitorProperties {
 	 * @return the string
 	 */
 	public static String unitName() {
-		return BeanLambdaFunc.fieldName(MybatisLogMonitorProperties::getUnit);
+		return BeanLambda.fieldName(MybatisLogMonitorProperties::getUnit);
 	}
 
 	/**

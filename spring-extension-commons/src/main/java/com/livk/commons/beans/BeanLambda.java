@@ -30,7 +30,7 @@ import java.util.function.Function;
  * @author livk
  */
 @FunctionalInterface
-public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
+public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 
 	/**
 	 * 获取方法名称
@@ -38,7 +38,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 * @param function BeanLambdaFunc表达式
 	 * @return methodName
 	 */
-	static <T> String methodName(BeanLambdaFunc<T> function) {
+	static <T> String methodName(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getMethodName();
 	}
 
@@ -48,7 +48,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 * @param function BeanLambdaFunc表达式
 	 * @return method
 	 */
-	static <T> Method method(BeanLambdaFunc<T> function) {
+	static <T> Method method(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getMethod();
 	}
 
@@ -59,7 +59,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 * @return fieldName
 	 */
 	@SneakyThrows
-	static <T> String fieldName(BeanLambdaFunc<T> function) {
+	static <T> String fieldName(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getFieldName();
 	}
 
@@ -70,7 +70,7 @@ public interface BeanLambdaFunc<T> extends Function<T, Object>, Serializable {
 	 * @return field
 	 */
 	@SneakyThrows
-	static <T> Field field(BeanLambdaFunc<T> function) {
+	static <T> Field field(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getField();
 	}
 

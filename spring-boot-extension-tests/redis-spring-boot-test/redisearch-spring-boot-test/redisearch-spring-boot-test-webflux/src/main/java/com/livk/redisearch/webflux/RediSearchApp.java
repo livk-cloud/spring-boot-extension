@@ -16,7 +16,7 @@
 
 package com.livk.redisearch.webflux;
 
-import com.livk.commons.beans.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambda;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
@@ -55,10 +55,9 @@ public class RediSearchApp {
 			RedisModulesCommands<String, String> search = template.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
-				search.ftCreate(Student.INDEX,
-						Field.text(BeanLambdaFunc.fieldName(Student::getName)).weight(5.0).build(),
-						Field.text(BeanLambdaFunc.fieldName(Student::getSex)).build(),
-						Field.text(BeanLambdaFunc.fieldName(Student::getDesc)).build(), Field.tag("class").build());
+				search.ftCreate(Student.INDEX, Field.text(BeanLambda.fieldName(Student::getName)).weight(5.0).build(),
+						Field.text(BeanLambda.fieldName(Student::getSex)).build(),
+						Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build());
 			}
 			Random random = new Random();
 			for (int i = 0; i < 10; i++) {

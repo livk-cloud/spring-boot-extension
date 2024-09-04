@@ -18,7 +18,6 @@ package com.livk.commons.beans;
 
 import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ClassUtils;
-import com.livk.commons.util.Pair;
 import com.livk.commons.util.ReflectionUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -38,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 final class BeanLambdaDescriptor {
 
-	private static final Map<Pair<Class<?>, Method>, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
+	private static final Map<Method, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
 
 	private final Class<?> type;
 
@@ -61,14 +60,14 @@ final class BeanLambdaDescriptor {
 	 * @return BeanLambdaDescriptor
 	 */
 	@SneakyThrows
-	public static <T> BeanLambdaDescriptor create(BeanLambdaFunc<T> function) {
+	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {
 		Method writeReplace = function.getClass().getDeclaredMethod("writeReplace");
 		writeReplace.setAccessible(true);
 		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className);
 		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
-		return cache.computeIfAbsent(Pair.of(type, method), pair -> new BeanLambdaDescriptor(pair.key(), pair.value()));
+		return cache.computeIfAbsent(method, other -> new BeanLambdaDescriptor(type, other));
 	}
 
 	public String getFieldName() {
