@@ -19,15 +19,24 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author livk
  */
-final class AnnotationTarget<T extends Annotation> {
+final class AnnotationTarget<A extends Annotation> {
+
+	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
+
+	@SuppressWarnings("unchecked")
+	public static <A extends Annotation> AnnotationTarget<A> of(Class<A> annotationType) {
+		return (AnnotationTarget<A>) CACHE.computeIfAbsent(annotationType, AnnotationTarget::new);
+	}
 
 	private final Set<ElementType> elementTypes;
 
-	public AnnotationTarget(Class<T> annotationType) {
+	private AnnotationTarget(Class<A> annotationType) {
 		Target target = annotationType.getAnnotation(Target.class);
 		this.elementTypes = Sets.newHashSet(target.value());
 	}
