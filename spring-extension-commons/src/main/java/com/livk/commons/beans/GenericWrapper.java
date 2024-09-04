@@ -25,7 +25,7 @@ import java.util.function.Function;
  * @param <V> the type parameter
  * @author livk
  */
-public interface GenericWrapper<V> extends Wrapper {
+public interface GenericWrapper<V> {
 
 	/**
 	 * 构建一个GenericWrapper包装器
@@ -35,6 +35,30 @@ public interface GenericWrapper<V> extends Wrapper {
 	 */
 	static <T> GenericWrapper<T> of(T delegate) {
 		return new RecordWrapper<>(delegate);
+	}
+
+	/**
+	 * 根据类型获取相关实例
+	 * <p>
+	 * 如果无法进行转换则抛出异常{@link ClassCastException}
+	 * @param <T> 相关泛型
+	 * @param type 类信息
+	 * @return 相关实例
+	 */
+	default <T> T unwrap(Class<T> type) {
+		if (isWrapperFor(type)) {
+			return type.cast(unwrap());
+		}
+		throw new ClassCastException("cannot be converted to " + type);
+	}
+
+	/**
+	 * 判断是否可以进行转换
+	 * @param type 类信息
+	 * @return bool
+	 */
+	default boolean isWrapperFor(Class<?> type) {
+		return type.isInstance(unwrap());
 	}
 
 	/**
@@ -51,10 +75,9 @@ public interface GenericWrapper<V> extends Wrapper {
 	/**
 	 * 进行flatmap转换
 	 * @param function fun
-	 * @param <R> 转换后泛型
 	 * @return wrapper
 	 */
-	default <R> GenericWrapper<R> flatmap(Function<V, GenericWrapper<R>> function) {
+	default <G extends GenericWrapper<?>> G flatmap(Function<V, G> function) {
 		return function.apply(this.unwrap());
 	}
 

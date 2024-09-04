@@ -58,7 +58,7 @@ public enum AnnotationPointcutType implements AnnotationAutoPointcut {
 	 * @see Target#value()
 	 */
 	AUTO(annotationType -> {
-		AnnotationTarget<?> target = new AnnotationTarget<>(annotationType);
+		AnnotationTarget<?> target = AnnotationTarget.of(annotationType);
 		if (target.supportType() && target.supportMethod()) {
 			return TYPE_OR_METHOD.getPointcut(annotationType);
 		}

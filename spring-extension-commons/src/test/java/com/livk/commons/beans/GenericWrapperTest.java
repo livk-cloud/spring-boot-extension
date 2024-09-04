@@ -16,23 +16,33 @@
 
 package com.livk.commons.beans;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author livk
  */
-class WrapperTest {
+class GenericWrapperTest {
 
 	@Test
 	void test() {
 		String value = "livk";
+		StringBuilder builder = new StringBuilder(value).reverse();
 		GenericWrapper<String> wrapper = GenericWrapper.of(value);
 		assertEquals(value, wrapper.unwrap(String.class));
 		assertEquals(value, wrapper.unwrap());
 		assertTrue(wrapper.isWrapperFor(String.class));
+
+		GenericWrapper<String> map = wrapper.map(StringUtils::reverse);
+		assertEquals(builder.toString(), map.unwrap());
+		assertNotEquals(value, map.unwrap());
+
+		GenericWrapper<String> flatmap = wrapper.flatmap(GenericWrapper::of);
+		assertEquals(value, flatmap.unwrap());
 	}
 
 }

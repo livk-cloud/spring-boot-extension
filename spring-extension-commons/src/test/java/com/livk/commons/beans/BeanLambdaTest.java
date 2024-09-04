@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author livk
  */
-class BeanLambdaFuncTest {
+class BeanLambdaTest {
 
 	final Field field1 = Maker.class.getDeclaredField("no");
 
@@ -37,25 +37,25 @@ class BeanLambdaFuncTest {
 
 	final Method method2 = Maker.class.getMethod("getUsername");
 
-	BeanLambdaFuncTest() throws NoSuchFieldException, NoSuchMethodException {
+	BeanLambdaTest() throws NoSuchFieldException, NoSuchMethodException {
 	}
 
 	@Test
 	void method() {
-		assertEquals(method1.getName(), BeanLambdaFunc.methodName(Maker::getNo));
-		assertEquals(method2.getName(), BeanLambdaFunc.methodName(Maker::getUsername));
+		assertEquals(method1.getName(), BeanLambda.methodName(Maker::getNo));
+		assertEquals(method2.getName(), BeanLambda.methodName(Maker::getUsername));
 
-		assertEquals(method1, BeanLambdaFunc.method(Maker::getNo));
-		assertEquals(method2, BeanLambdaFunc.method(Maker::getUsername));
+		assertEquals(method1, BeanLambda.method(Maker::getNo));
+		assertEquals(method2, BeanLambda.method(Maker::getUsername));
 	}
 
 	@Test
 	void field() {
-		assertEquals(field1.getName(), BeanLambdaFunc.fieldName(Maker::getNo));
-		assertEquals(field2.getName(), BeanLambdaFunc.fieldName(Maker::getUsername));
+		assertEquals(field1.getName(), BeanLambda.fieldName(Maker::getNo));
+		assertEquals(field2.getName(), BeanLambda.fieldName(Maker::getUsername));
 
-		assertEquals(field1, BeanLambdaFunc.field(Maker::getNo));
-		assertEquals(field2, BeanLambdaFunc.field(Maker::getUsername));
+		assertEquals(field1, BeanLambda.field(Maker::getNo));
+		assertEquals(field2, BeanLambda.field(Maker::getUsername));
 	}
 
 	@Data

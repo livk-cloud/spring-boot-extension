@@ -17,7 +17,7 @@
 package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.beans.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambda;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
@@ -49,11 +49,11 @@ class NumberJsonSerializerTest {
 		assertEquals(0.33d, bean.count.doubleValue());
 		assertEquals(0.333d, bean.sunCount.doubleValue());
 		JsonNode jsonNode = JsonMapperUtils.readTree(json);
-		assertEquals("0033", jsonNode.get(BeanLambdaFunc.fieldName(Big::getL)).asText());
-		assertEquals(0.33d, jsonNode.get(BeanLambdaFunc.fieldName(Big::getD)).asDouble());
-		assertEquals(0.3d, jsonNode.get(BeanLambdaFunc.fieldName(Big::getF)).asDouble());
-		assertEquals(0.33d, jsonNode.get(BeanLambdaFunc.fieldName(Big::getCount)).asDouble());
-		assertEquals(0.333d, jsonNode.get(BeanLambdaFunc.fieldName(Big::getSunCount)).asDouble());
+		assertEquals("0033", jsonNode.get(BeanLambda.fieldName(Big::getL)).asText());
+		assertEquals(0.33d, jsonNode.get(BeanLambda.fieldName(Big::getD)).asDouble());
+		assertEquals(0.3d, jsonNode.get(BeanLambda.fieldName(Big::getF)).asDouble());
+		assertEquals(0.33d, jsonNode.get(BeanLambda.fieldName(Big::getCount)).asDouble());
+		assertEquals(0.333d, jsonNode.get(BeanLambda.fieldName(Big::getSunCount)).asDouble());
 	}
 
 	@Getter
