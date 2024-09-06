@@ -16,11 +16,12 @@
 
 package com.livk.context.disruptor.factory;
 
-import com.livk.context.disruptor.support.DisruptorCustomizer;
+import com.livk.context.disruptor.support.DisruptorEventConsumer;
+import com.livk.context.disruptor.support.DisruptorEventWrapper;
 import com.livk.context.disruptor.support.SpringDisruptor;
+import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
-import java.util.concurrent.ThreadFactory;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -29,10 +30,13 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  * @author livk
@@ -87,20 +91,49 @@ public class DisruptorFactoryBean<T>
 	@Override
 	public void afterPropertiesSet() {
 		SpringEventFactory<T> factory = new SpringEventFactory<>();
-		ResolvableType disruptorCustomizerType = ResolvableType.forClassWithGenerics(DisruptorCustomizer.class, type);
 		int bufferSize = attributes.getNumber("bufferSize").intValue();
 		ProducerType producerType = attributes.getEnum("type");
 		disruptor = new SpringDisruptor<>(factory, bufferSize, createThreadFactory(), producerType,
 				createWaitStrategy());
-		disruptor.handleEventsWith(SpringEventHandlerFactory.create(beanFactory, type));
-		beanFactory.<DisruptorCustomizer<T>>getBeanProvider(disruptorCustomizerType)
-			.forEach(customizer -> customizer.customize(disruptor));
+		disruptor.handleEventsWith(createEventHandler(beanFactory, type));
 		disruptor.start();
+	}
+
+	private EventHandler<DisruptorEventWrapper<T>> createEventHandler(BeanFactory beanFactory, Class<T> type) {
+		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
+		ObjectProvider<DisruptorEventConsumer<T>> disruptorEventConsumers = beanFactory.getBeanProvider(resolvableType);
+		return new AggregateEventHandlerProvider<>(disruptorEventConsumers);
 	}
 
 	@Override
 	public void destroy() {
 		disruptor.shutdown();
+	}
+
+	private record AggregateEventHandlerProvider<T>(ObjectProvider<DisruptorEventConsumer<T>> consumerObjectProvider)
+			implements
+				EventHandler<DisruptorEventWrapper<T>> {
+
+		@Override
+		public void onEvent(DisruptorEventWrapper<T> event, long sequence, boolean endOfBatch) throws Exception {
+			for (DisruptorEventConsumer<T> eventConsumer : consumerObjectProvider) {
+				eventConsumer.onEvent(event.unwrap(), sequence, endOfBatch);
+			}
+		}
+
+		@Override
+		public void onStart() {
+			for (EventHandler<T> eventHandler : consumerObjectProvider) {
+				eventHandler.onStart();
+			}
+		}
+
+		@Override
+		public void onShutdown() {
+			for (EventHandler<T> eventHandler : consumerObjectProvider) {
+				eventHandler.onShutdown();
+			}
+		}
 	}
 
 }

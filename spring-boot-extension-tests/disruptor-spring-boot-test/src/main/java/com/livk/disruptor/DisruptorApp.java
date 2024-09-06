@@ -16,15 +16,12 @@
 
 package com.livk.disruptor;
 
-import com.livk.context.disruptor.EnableDisruptor;
-import com.livk.disruptor.event.MessageModel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author livk
  */
-@EnableDisruptor(basePackageClasses = MessageModel.class)
 @SpringBootApplication
 public class DisruptorApp {
 

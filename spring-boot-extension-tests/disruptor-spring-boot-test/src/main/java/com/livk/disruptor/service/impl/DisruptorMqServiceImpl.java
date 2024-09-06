@@ -16,7 +16,7 @@
 
 package com.livk.disruptor.service.impl;
 
-import com.livk.context.disruptor.DisruptorEventProducer;
+import com.livk.context.disruptor.support.DisruptorEventProducer;
 import com.livk.context.disruptor.support.SpringDisruptor;
 import com.livk.disruptor.event.MessageModel;
 import com.livk.disruptor.service.DisruptorMqService;
