@@ -30,8 +30,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(DisruptorRegistrar.class)
-public @interface EnableDisruptor {
+@Import({ DisruptorScanRegistrar.class })
+public @interface DisruptorScan {
 
 	/**
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation

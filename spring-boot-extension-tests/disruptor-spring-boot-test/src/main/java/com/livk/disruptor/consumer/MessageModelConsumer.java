@@ -16,9 +16,11 @@
 
 package com.livk.disruptor.consumer;
 
-import com.livk.context.disruptor.DisruptorEventConsumer;
+import com.livk.context.disruptor.support.DisruptorEventConsumer;
 import com.livk.disruptor.event.MessageModel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,11 +28,14 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class MessageModelConsumer implements DisruptorEventConsumer<MessageModel> {
 
+	private final ApplicationContext applicationContext;
+
 	@Override
-	public void onEvent(MessageModel event, long sequence, boolean endOfBatch) throws Exception {
-		log.info("消费者消费的信息是：{} :{} :{}", event, sequence, endOfBatch);
+	public void onEvent(MessageModel wrapper, long sequence, boolean endOfBatch) {
+		log.info("消费者消费的信息是：{} :{} :{} id:{}", wrapper, sequence, endOfBatch, applicationContext.getId());
 	}
 
 }

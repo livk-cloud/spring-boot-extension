@@ -20,7 +20,6 @@ import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -37,24 +36,23 @@ import java.util.Set;
 /**
  * @author livk
  */
-@Slf4j
-class DisruptorRegistrar implements ImportBeanDefinitionRegistrar {
+public class DisruptorScanRegistrar implements ImportBeanDefinitionRegistrar {
 
 	@Override
-	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
+	public final void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
 			@NonNull BeanDefinitionRegistry registry, @NonNull BeanNameGenerator beanNameGenerator) {
 		String[] basePackages = getBasePackages(importingClassMetadata);
 		if (ObjectUtils.isEmpty(basePackages)) {
 			throw new DisruptorRegistrarException(
-					EnableDisruptor.class.getName() + " required basePackages or basePackageClasses");
+					DisruptorScan.class.getName() + " required basePackages or basePackageClasses");
 		}
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(registry, beanNameGenerator);
 		scanner.registerFilters(DisruptorEvent.class);
 		scanner.scan(basePackages);
 	}
 
-	private String[] getBasePackages(AnnotationMetadata metadata) {
-		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, EnableDisruptor.class);
+	protected String[] getBasePackages(AnnotationMetadata metadata) {
+		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, DisruptorScan.class);
 		String[] basePackages = attributes.getStringArray("basePackages");
 		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
 		Set<String> packagesToScan = new LinkedHashSet<>(Arrays.asList(basePackages));
