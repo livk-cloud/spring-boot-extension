@@ -22,6 +22,7 @@ import com.livk.context.disruptor.support.SpringDisruptor;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -110,9 +111,10 @@ public class DisruptorFactoryBean<T>
 		disruptor.shutdown();
 	}
 
-	private record AggregateEventHandlerProvider<T>(ObjectProvider<DisruptorEventConsumer<T>> consumerObjectProvider)
-			implements
-				EventHandler<DisruptorEventWrapper<T>> {
+	@RequiredArgsConstructor
+	private static final class AggregateEventHandlerProvider<T> implements EventHandler<DisruptorEventWrapper<T>> {
+
+		private final ObjectProvider<DisruptorEventConsumer<T>> consumerObjectProvider;
 
 		@Override
 		public void onEvent(DisruptorEventWrapper<T> event, long sequence, boolean endOfBatch) throws Exception {
@@ -134,6 +136,7 @@ public class DisruptorFactoryBean<T>
 				eventHandler.onShutdown();
 			}
 		}
+
 	}
 
 }
