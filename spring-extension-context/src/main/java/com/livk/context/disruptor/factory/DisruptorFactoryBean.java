@@ -77,7 +77,10 @@ public class DisruptorFactoryBean<T>
 		}
 		Class<? extends ThreadFactory> factoryClass = attributes.getClass("threadFactory");
 		ThreadFactory threadFactory = BeanUtils.instantiateClass(factoryClass);
-		return new VirtualThreadFactory(threadFactory);
+		if (attributes.getBoolean("isVirtual")) {
+			return new VirtualThreadFactory(threadFactory);
+		}
+		return threadFactory;
 	}
 
 	private WaitStrategy createWaitStrategy() {
@@ -135,6 +138,22 @@ public class DisruptorFactoryBean<T>
 			for (EventHandler<T> eventHandler : consumerObjectProvider) {
 				eventHandler.onShutdown();
 			}
+		}
+
+	}
+
+	@RequiredArgsConstructor
+	private static class VirtualThreadFactory implements ThreadFactory {
+
+		private final ThreadFactory delegate;
+
+		@Override
+		public Thread newThread(@NonNull Runnable r) {
+			Thread thread = delegate.newThread(r);
+			return Thread.ofVirtual()
+				.name("virtual-" + thread.getName())
+				.inheritInheritableThreadLocals(true)
+				.unstarted(thread);
 		}
 
 	}

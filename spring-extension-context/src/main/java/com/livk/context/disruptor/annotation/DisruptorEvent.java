@@ -67,6 +67,11 @@ public @interface DisruptorEvent {
 	String threadFactoryBeanName() default "";
 
 	/**
+	 * 是否开启虚拟线程
+	 */
+	boolean isVirtual() default true;
+
+	/**
 	 * Strategy class.
 	 * @return the class
 	 */
