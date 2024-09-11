@@ -69,7 +69,7 @@ public @interface DisruptorEvent {
 	/**
 	 * 是否开启虚拟线程
 	 */
-	boolean isVirtual() default true;
+	boolean useVirtualThreads() default true;
 
 	/**
 	 * Strategy class.

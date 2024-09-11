@@ -77,7 +77,7 @@ public class DisruptorFactoryBean<T>
 		}
 		Class<? extends ThreadFactory> factoryClass = attributes.getClass("threadFactory");
 		ThreadFactory threadFactory = BeanUtils.instantiateClass(factoryClass);
-		if (attributes.getBoolean("isVirtual")) {
+		if (attributes.getBoolean("useVirtualThreads")) {
 			return new VirtualThreadFactory(threadFactory);
 		}
 		return threadFactory;
