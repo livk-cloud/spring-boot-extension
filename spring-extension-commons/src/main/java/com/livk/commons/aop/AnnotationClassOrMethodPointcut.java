@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author livk
  */
-public class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut {
+final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut {
 
 	private final MethodMatcher methodResolver;
 
