@@ -17,6 +17,7 @@
 package com.livk.commons.aop;
 
 import org.springframework.aop.Pointcut;
+import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.lang.annotation.Annotation;
 
@@ -26,7 +27,7 @@ import java.lang.annotation.Annotation;
  * @author livk
  */
 @FunctionalInterface
-interface AnnotationAutoPointcut {
+public interface AnnotationAutoPointcut {
 
 	/**
 	 * 根据注解获取到切点
@@ -34,5 +35,21 @@ interface AnnotationAutoPointcut {
 	 * @return 切点
 	 */
 	Pointcut getPointcut(Class<? extends Annotation> annotationType);
+
+	static AnnotationAutoPointcut type() {
+		return AnnotationMatchingPointcut::forClassAnnotation;
+	}
+
+	static AnnotationAutoPointcut method() {
+		return AnnotationMatchingPointcut::forMethodAnnotation;
+	}
+
+	static AnnotationAutoPointcut typeOrMethod() {
+		return AnnotationClassOrMethodPointcut::new;
+	}
+
+	static AnnotationAutoPointcut auto() {
+		return AnnotationTarget.POINTCUT;
+	}
 
 }

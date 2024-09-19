@@ -26,7 +26,6 @@ import java.lang.annotation.Annotation;
  *
  * @param <A> the type parameter
  * @author livk
- * @see AnnotationPointcutType
  * @see AnnotationAbstractPointcutAdvisor
  */
 public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation>
@@ -35,17 +34,17 @@ public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation
 	@NonNull
 	@Override
 	public Pointcut getPointcut() {
-		return pointcutType().getPointcut(annotationType);
+		return autoPointcut().getPointcut(annotationType);
 	}
 
 	/**
 	 * <p>
-	 * 用于指定不同的切点类型，默认为{@link AnnotationPointcutType#AUTO}
+	 * 用于指定不同的切点类型，默认为{@link AnnotationAutoPointcut#auto()}
 	 * </p>
 	 * @return the annotation pointcut type
 	 */
-	protected AnnotationPointcutType pointcutType() {
-		return AnnotationPointcutType.AUTO;
+	protected AnnotationAutoPointcut autoPointcut() {
+		return AnnotationAutoPointcut.auto();
 	}
 
 }
