@@ -42,7 +42,7 @@ class RediSearchTemplateTest {
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("redisearch.host", redisStack::getHost);
-		registry.add("redisearch.port", () -> redisStack.getMappedPort(6379));
+		registry.add("redisearch.port", redisStack::getFirstMappedPort);
 	}
 
 	@Autowired

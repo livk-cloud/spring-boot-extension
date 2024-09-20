@@ -52,7 +52,7 @@ class StudentControllerTest {
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.redisearch.host", redisStack::getHost);
-		registry.add("spring.redisearch.port", () -> redisStack.getMappedPort(6379));
+		registry.add("spring.redisearch.port", redisStack::getFirstMappedPort);
 	}
 
 	@Autowired

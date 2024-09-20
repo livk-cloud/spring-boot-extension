@@ -61,7 +61,7 @@ public class RediSearchAutoConfiguration {
 	 * @param clientResources the client resources
 	 * @return the redis search connection factory
 	 */
-	@Bean
+	@Bean(destroyMethod = "close")
 	@ConditionalOnMissingBean
 	public RedisSearchConnectionFactory lettuceConnectionFactory(RediSearchProperties properties,
 			ClientResources clientResources) {
