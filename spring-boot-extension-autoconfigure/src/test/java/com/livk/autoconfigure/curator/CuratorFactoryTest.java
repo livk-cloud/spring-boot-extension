@@ -29,10 +29,9 @@ class CuratorFactoryTest {
 	static CuratorProperties properties = new CuratorProperties();
 
 	@Test
-	void curatorFramework() throws InterruptedException {
+	void create() throws InterruptedException {
 		RetryPolicy retryPolicy = CuratorFactory.retryPolicy(properties);
-		CuratorFramework framework = CuratorFactory.curatorFramework(properties, retryPolicy, () -> null, () -> null,
-				() -> null);
+		CuratorFramework framework = CuratorFactory.create(properties, retryPolicy, () -> null, () -> null, () -> null);
 		assertNotNull(framework);
 	}
 

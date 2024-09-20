@@ -50,7 +50,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
 		Assert.notNull(annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
-		AnnotationTarget<A> target = new AnnotationTarget<>(annotationType);
+		AnnotationTarget<A> target = AnnotationTarget.of(annotationType);
 		A annotation = null;
 		if (target.supportType() && target.supportMethod()) {
 			annotation = AnnotationUtils.findAnnotation(method, annotationType);

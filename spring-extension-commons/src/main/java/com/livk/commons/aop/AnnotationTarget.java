@@ -14,20 +14,35 @@
 package com.livk.commons.aop;
 
 import com.google.common.collect.Sets;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.aop.Pointcut;
+import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author livk
  */
-final class AnnotationTarget<T extends Annotation> {
+final class AnnotationTarget<A extends Annotation> {
+
+	public static final AnnotationAutoPointcut POINTCUT = new AnnotationTargetPointcut();
+
+	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
+
+	@SuppressWarnings("unchecked")
+	public static <A extends Annotation> AnnotationTarget<A> of(Class<A> annotationType) {
+		return (AnnotationTarget<A>) CACHE.computeIfAbsent(annotationType, AnnotationTarget::new);
+	}
 
 	private final Set<ElementType> elementTypes;
 
-	public AnnotationTarget(Class<T> annotationType) {
+	private AnnotationTarget(Class<A> annotationType) {
 		Target target = annotationType.getAnnotation(Target.class);
 		this.elementTypes = Sets.newHashSet(target.value());
 	}
@@ -38,6 +53,29 @@ final class AnnotationTarget<T extends Annotation> {
 
 	public boolean supportType() {
 		return elementTypes.contains(ElementType.TYPE);
+	}
+
+	@NoArgsConstructor(access = AccessLevel.PRIVATE)
+	static final class AnnotationTargetPointcut implements AnnotationAutoPointcut {
+
+		@Override
+		public Pointcut getPointcut(Class<? extends Annotation> annotationType) {
+			AnnotationTarget<?> target = AnnotationTarget.of(annotationType);
+			if (target.supportType() && target.supportMethod()) {
+				return new AnnotationClassOrMethodPointcut(annotationType);
+			}
+			else if (target.supportType()) {
+				return AnnotationMatchingPointcut.forClassAnnotation(annotationType);
+			}
+			else if (target.supportMethod()) {
+				return AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
+			}
+			else {
+				throw new IllegalArgumentException(
+						"annotation:" + annotationType + " Missing " + Target.class + " TYPE or METHOD information");
+			}
+		}
+
 	}
 
 }

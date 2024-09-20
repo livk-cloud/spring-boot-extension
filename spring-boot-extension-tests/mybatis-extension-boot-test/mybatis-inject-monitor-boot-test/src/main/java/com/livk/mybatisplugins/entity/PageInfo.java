@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
-import com.livk.commons.beans.BeanLambdaFunc;
+import com.livk.commons.beans.BeanLambda;
 import com.livk.commons.jackson.util.JsonNodeUtils;
 import java.io.IOException;
 import java.io.Serial;
@@ -135,12 +135,12 @@ public class PageInfo<T> implements Serializable {
 		public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
 			JsonNode jsonNode = context.readTree(p);
 			ObjectMapper mapper = (ObjectMapper) p.getCodec();
-			String listFieldName = BeanLambdaFunc.<PageInfo<Object>>fieldName(PageInfo::getList);
+			String listFieldName = BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getList);
 			CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
 			List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
-			int pageNum = jsonNode.get(BeanLambdaFunc.<PageInfo<Object>>fieldName(PageInfo::getPageNum)).asInt();
-			int pageSize = jsonNode.get(BeanLambdaFunc.<PageInfo<Object>>fieldName(PageInfo::getPageSize)).asInt();
-			long total = jsonNode.get(BeanLambdaFunc.<PageInfo<Object>>fieldName(PageInfo::getTotal)).asLong();
+			int pageNum = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getPageNum)).asInt();
+			int pageSize = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getPageSize)).asInt();
+			long total = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getTotal)).asLong();
 			return new PageInfo<>(list, pageNum, pageSize, total);
 		}
 
