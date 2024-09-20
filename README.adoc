@@ -9,9 +9,9 @@ image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=
 
 image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"]
 
-image:https://img.shields.io/badge/Spring%20Framework-6.1.12-green[link="https://spring.io/projects/spring-framework"]
-image:https://img.shields.io/badge/Spring%20Boot-3.3.3-green[link="https://spring.io/projects/spring-boot"]
-image:https://img.shields.io/badge/Gradle-8.10-blue[link="https://gradle.org/"]
+image:https://img.shields.io/badge/Spring%20Framework-6.1.13-green[link="https://spring.io/projects/spring-framework"]
+image:https://img.shields.io/badge/Spring%20Boot-3.3.4-green[link="https://spring.io/projects/spring-boot"]
+image:https://img.shields.io/badge/Gradle-8.10.1-blue[link="https://gradle.org/"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
