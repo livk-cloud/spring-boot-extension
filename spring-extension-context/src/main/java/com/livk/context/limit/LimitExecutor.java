@@ -16,6 +16,7 @@
 
 package com.livk.context.limit;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,9 +31,14 @@ public interface LimitExecutor {
 	 * @param compositeKey 资源Key
 	 * @param rate 最多的访问限制次数
 	 * @param rateInterval 给定的时间段(单位秒)
-	 * @param rateIntervalUnit the rate interval unit
+	 * @param unit the rate interval unit
 	 * @return boolean
 	 */
-	boolean tryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit);
+	@Deprecated(since = "1.3.5")
+	default boolean tryAccess(String compositeKey, int rate, int rateInterval, TimeUnit unit) {
+		return tryAccess(compositeKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
+	}
+
+	boolean tryAccess(String compositeKey, int rate, Duration rateInterval);
 
 }
