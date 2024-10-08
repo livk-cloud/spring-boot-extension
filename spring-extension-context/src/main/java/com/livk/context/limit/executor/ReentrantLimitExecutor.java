@@ -20,7 +20,7 @@ import com.livk.commons.util.WebUtils;
 import com.livk.context.limit.LimitExecutor;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * The type Reentrant limit executor.
@@ -39,21 +39,19 @@ public abstract class ReentrantLimitExecutor implements LimitExecutor {
 	 * @param compositeKey 资源Key
 	 * @param rate 最多的访问限制次数
 	 * @param rateInterval 给定的时间段(单位秒)
-	 * @param rateIntervalUnit the rate interval unit
 	 * @return boolean
 	 */
-	protected abstract boolean reentrantTryAccess(String compositeKey, int rate, int rateInterval,
-			TimeUnit rateIntervalUnit);
+	protected abstract boolean reentrantTryAccess(String compositeKey, int rate, Duration rateInterval);
 
 	@Override
-	public final boolean tryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
+	public boolean tryAccess(String compositeKey, int rate, Duration rateInterval) {
 		HttpServletRequest request = WebUtils.request();
 		Object limitAttribute = request.getAttribute(ATTRIBUTE_NAME);
 		if (limitAttribute instanceof Boolean bool && bool) {
 			return true;
 		}
 		else {
-			boolean bool = reentrantTryAccess(compositeKey, rate, rateInterval, rateIntervalUnit);
+			boolean bool = reentrantTryAccess(compositeKey, rate, rateInterval);
 			request.setAttribute(ATTRIBUTE_NAME, bool);
 			return bool;
 		}

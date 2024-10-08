@@ -21,12 +21,11 @@ import com.livk.context.limit.exception.LimitException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RRateLimiter;
-import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
 import org.springframework.util.StringUtils;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * @author livk
@@ -38,17 +37,11 @@ public class RedissonLimitExecutor extends ReentrantLimitExecutor implements Lim
 	private final RedissonClient redissonClient;
 
 	@Override
-	protected boolean reentrantTryAccess(String compositeKey, int rate, int rateInterval, TimeUnit rateIntervalUnit) {
+	protected boolean reentrantTryAccess(String compositeKey, int rate, Duration rateInterval) {
 		if (StringUtils.hasText(compositeKey)) {
-			RRateLimiter rateLimiter = redissonClient.getRateLimiter(compositeKey);
-			try {
-				RateIntervalUnit unit = RateIntervalUnit.valueOf(rateIntervalUnit.name());
-				rateLimiter.trySetRate(RateType.OVERALL, rate, rateInterval, unit);
-				return rateLimiter.tryAcquire(1);
-			}
-			catch (Exception e) {
-				throw new LimitException("un support TimeUnit " + rateIntervalUnit, e);
-			}
+			RRateLimiter limiter = redissonClient.getRateLimiter(compositeKey);
+			limiter.trySetRate(RateType.OVERALL, rate, rateInterval);
+			return limiter.tryAcquire(1);
 		}
 		throw new LimitException("Composite key is null or empty");
 	}
