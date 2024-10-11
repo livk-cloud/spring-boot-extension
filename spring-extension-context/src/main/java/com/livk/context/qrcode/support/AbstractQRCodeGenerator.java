@@ -29,9 +29,8 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
 
 	@Override
-	public final BufferedImage generateQRCode(QRCodeEntity<?> entity) {
-		return generateQRCode(convert(entity.content()), entity.width(), entity.height(), entity.config(),
-				entity.type());
+	public final BufferedImage generate(QRCodeEntity<?> entity) {
+		return generate(convert(entity.content()), entity.width(), entity.height(), entity.config(), entity.type());
 	}
 
 	/**

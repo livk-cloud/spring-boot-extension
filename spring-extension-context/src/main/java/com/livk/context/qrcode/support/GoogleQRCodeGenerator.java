@@ -56,8 +56,7 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 	}
 
 	@Override
-	public BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config,
-			PicType type) {
+	public BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type) {
 		try {
 			QRCodeWriter writer = new QRCodeWriter();
 			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);

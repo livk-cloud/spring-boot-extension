@@ -32,7 +32,7 @@ public interface QRCodeGenerator {
 	 * @param entity 二维码实体
 	 * @return BufferedImage
 	 */
-	BufferedImage generateQRCode(QRCodeEntity<?> entity);
+	BufferedImage generate(QRCodeEntity<?> entity);
 
 	/**
 	 * 生成二维码
@@ -42,8 +42,8 @@ public interface QRCodeGenerator {
 	 * @param type 图片类型
 	 * @return BufferedImage
 	 */
-	default BufferedImage generateQRCode(String content, int width, int height, PicType type) {
-		return generateQRCode(content, width, height, new MatrixToImageConfig(), type);
+	default BufferedImage generate(String content, int width, int height, PicType type) {
+		return generate(content, width, height, new MatrixToImageConfig(), type);
 	}
 
 	/**
@@ -55,6 +55,6 @@ public interface QRCodeGenerator {
 	 * @param type 图片类型
 	 * @return BufferedImage
 	 */
-	BufferedImage generateQRCode(String content, int width, int height, MatrixToImageConfig config, PicType type);
+	BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type);
 
 }
