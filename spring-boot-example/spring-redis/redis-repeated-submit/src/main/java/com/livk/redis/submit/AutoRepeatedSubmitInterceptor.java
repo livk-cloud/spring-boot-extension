@@ -30,6 +30,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Map;
+
 /**
  * @author livk
  */
@@ -39,37 +41,38 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull Object handler) {
-		if (handler instanceof HandlerMethod handlerMethod) {
-			AutoRepeatedSubmit methodAnnotation = handlerMethod.getMethodAnnotation(AutoRepeatedSubmit.class);
-			if (methodAnnotation != null) {
-				String token = WebUtils.request().getHeader(HttpHeaders.AUTHORIZATION);
-				if (StringUtils.hasText(token)) {
-					try {
-						if (LockSupport.tryLock(LockType.LOCK, token, 3, 3, false)) {
-							if (RedisSupport.exists(token)) {
-								WebUtils.outJson(response, "重复提交3s后重试");
-								return false;
-							}
-							else {
-								RedisSupport.setEx(token, true, 3L);
-								return true;
-							}
+		if (handler instanceof HandlerMethod handlerMethod
+				&& handlerMethod.hasMethodAnnotation(AutoRepeatedSubmit.class)) {
+			String token = WebUtils.request().getHeader(HttpHeaders.AUTHORIZATION);
+			if (StringUtils.hasText(token)) {
+				try {
+					if (LockSupport.tryLock(LockType.LOCK, token, 3, 3, false)) {
+						if (RedisSupport.exists(token)) {
+							return outJson(response, "重复提交3s后重试");
 						}
 						else {
-							WebUtils.outJson(response, "重复提交3s后重试");
-							return false;
+							RedisSupport.setEx(token, true, 3L);
+							return true;
 						}
 					}
-					finally {
-						LockSupport.unlock();
+					else {
+						return outJson(response, "重复提交3s后重试");
 					}
 				}
-				WebUtils.outJson(response, "丢失Token");
-				return false;
+				finally {
+					LockSupport.unlock();
+				}
 			}
+			return outJson(response, "丢失Token");
 		}
 		// 必须返回true,否则会被拦截一切请求
 		return true;
+	}
+
+	private boolean outJson(HttpServletResponse response, String message) {
+		Map<String, String> body = Map.of("status", "500", "message", message);
+		WebUtils.outJson(response, body);
+		return false;
 	}
 
 }
