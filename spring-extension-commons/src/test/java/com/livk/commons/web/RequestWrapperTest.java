@@ -47,7 +47,7 @@ class RequestWrapperTest {
 	RequestWrapper wrapper;
 
 	@BeforeEach
-	void init() throws IOException {
+	void init() {
 		wrapper = new RequestWrapper(new MockHttpServletRequest());
 	}
 
@@ -59,6 +59,7 @@ class RequestWrapperTest {
 		ServletInputStream inputStream = wrapper.getInputStream();
 		byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
 		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(map), bytes);
+		assertEquals(wrapper.getContentType(), MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	@Test

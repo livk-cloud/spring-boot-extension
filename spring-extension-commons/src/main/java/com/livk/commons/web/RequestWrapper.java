@@ -16,7 +16,8 @@
 
 package com.livk.commons.web;
 
-import com.livk.commons.util.BaseStreamUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.util.WebUtils;
 import jakarta.servlet.ReadListener;
@@ -25,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
 
@@ -36,7 +38,6 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,22 +53,24 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	private final HttpHeaders headers = new HttpHeaders();
 
-	private final Map<String, String[]> parameter = new LinkedHashMap<>(16);
+	private final HttpParameters parameter = new HttpParameters();
 
+	@Nullable
 	private byte[] body;
 
 	private boolean bodyReviseStatus = false;
 
+	private String contentType;
+
 	/**
 	 * 构建一个RequestWrapper
 	 * @param request the request
-	 * @throws IOException the io exception
 	 */
-	public RequestWrapper(HttpServletRequest request) throws IOException {
+	public RequestWrapper(HttpServletRequest request) {
 		super(request);
 		headers.putAll(WebUtils.headers(request));
-		parameter.putAll(request.getParameterMap());
-		body = StreamUtils.copyToByteArray(request.getInputStream());
+		parameter.putAll(WebUtils.params(request));
+		contentType = request.getContentType();
 	}
 
 	/**
@@ -75,8 +78,31 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param body the body
 	 */
 	public void body(byte[] body) {
+		body(body, MediaType.APPLICATION_JSON_VALUE);
+	}
+
+	public void body(byte[] body, String contentType) {
 		bodyReviseStatus = true;
 		this.body = body;
+		this.contentType = contentType;
+	}
+
+	/**
+	 * 添加http header.
+	 * @param name the name
+	 * @param values the values
+	 */
+	public void addHeader(String name, String[] values) {
+		addHeader(name, Lists.newArrayList(values));
+	}
+
+	/**
+	 * 添加http header.
+	 * @param name the name
+	 * @param values the values
+	 */
+	public void addHeader(String name, List<String> values) {
+		parameter.addAll(name, values);
 	}
 
 	/**
@@ -94,7 +120,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param values the values
 	 */
 	public void addParameter(String name, String[] values) {
-		parameter.merge(name, values, BaseStreamUtils::concatDistinct);
+		addParameter(name, Lists.newArrayList(values));
+	}
+
+	/**
+	 * 添加http parameter.
+	 * @param name the name
+	 * @param values the values
+	 */
+	public void addParameter(String name, List<String> values) {
+		parameter.addAll(name, values);
 	}
 
 	/**
@@ -103,11 +138,14 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param value the value
 	 */
 	public void addParameter(String name, String value) {
-		addParameter(name, new String[] { value });
+		parameter.add(name, value);
 	}
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
+		if (ObjectUtils.isEmpty(body)) {
+			body = StreamUtils.copyToByteArray(super.getInputStream());
+		}
 		return new ByteArrayServletInputStream(body);
 	}
 
@@ -118,17 +156,17 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public int getContentLength() {
-		return bodyReviseStatus ? body.length : super.getContentLength();
+		return bodyReviseStatus && !ObjectUtils.isEmpty(body) ? body.length : super.getContentLength();
 	}
 
 	@Override
 	public long getContentLengthLong() {
-		return bodyReviseStatus ? body.length : super.getContentLengthLong();
+		return bodyReviseStatus && !ObjectUtils.isEmpty(body) ? body.length : super.getContentLengthLong();
 	}
 
 	@Override
 	public String getContentType() {
-		return bodyReviseStatus ? MediaType.APPLICATION_JSON_VALUE : super.getContentType();
+		return contentType;
 	}
 
 	@Override
@@ -139,7 +177,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
-		return parameter;
+		return Maps.transformValues(parameter, parameterValues -> parameterValues.toArray(String[]::new));
 	}
 
 	@Override
@@ -149,7 +187,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String[] getParameterValues(String name) {
-		return parameter.get(name);
+		return getParameterMap().get(name);
 	}
 
 	@Override
