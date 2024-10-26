@@ -16,6 +16,7 @@
 
 package com.livk.commons.util;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.livk.commons.jackson.util.JsonMapperUtils;
@@ -40,7 +41,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,10 +53,6 @@ import java.util.stream.Collectors;
  */
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {
-
-	private static final String UNKNOWN = "unknown";
-
-	private static final String HTTP_IP_SPLIT = ",";
 
 	private ServletRequestAttributes servletRequestAttributes() {
 		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -135,18 +131,16 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return ip
 	 */
 	public String realIp(HttpServletRequest request) {
-		String[] ipHeaders = { "X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP" };
-		Optional<String> optional = Optional.empty();
+		String[] ipHeaders = { "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
+				"HTTP_X_FORWARDED_FOR", "X-Real-IP" };
 		for (String header : ipHeaders) {
 			String headerIp = request.getHeader(header);
-			if (headerIp != null && !headerIp.isBlank() && !UNKNOWN.equalsIgnoreCase(headerIp)) {
-				optional = Optional.of(headerIp);
-				break;
+			if (headerIp != null && !headerIp.isBlank() && !"unknown".equalsIgnoreCase(headerIp)) {
+				// 处理多IP的情况（只取第一个IP）
+				Splitter.on(",").splitToList(headerIp).getFirst();
 			}
 		}
-		String ip = optional.orElse(request.getRemoteAddr());
-		// 处理多IP的情况（只取第一个IP）
-		return ip != null && ip.contains(HTTP_IP_SPLIT) ? ip.split(HTTP_IP_SPLIT)[0] : ip;
+		return request.getRemoteAddr();
 	}
 
 	/**

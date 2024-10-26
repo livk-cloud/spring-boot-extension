@@ -14,6 +14,7 @@
 package com.livk.commons.aop;
 
 import com.google.common.collect.Sets;
+import com.livk.commons.util.AnnotationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.aop.Pointcut;
@@ -22,6 +23,7 @@ import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -40,18 +42,35 @@ final class AnnotationTarget<A extends Annotation> {
 		return (AnnotationTarget<A>) CACHE.computeIfAbsent(annotationType, AnnotationTarget::new);
 	}
 
+	private final Class<A> annotationType;
+
 	private final Set<ElementType> elementTypes;
 
 	private AnnotationTarget(Class<A> annotationType) {
+		this.annotationType = annotationType;
 		Target target = annotationType.getAnnotation(Target.class);
 		this.elementTypes = Sets.newHashSet(target.value());
 	}
 
-	public boolean supportMethod() {
+	public A getAnnotation(Method method) {
+		if (supportMethod()) {
+			return AnnotationUtils.getAnnotation(method, annotationType);
+		}
+		return null;
+	}
+
+	public A getAnnotation(Class<?> clazz) {
+		if (supportType()) {
+			return AnnotationUtils.getAnnotation(clazz, annotationType);
+		}
+		return null;
+	}
+
+	private boolean supportMethod() {
 		return elementTypes.contains(ElementType.METHOD);
 	}
 
-	public boolean supportType() {
+	private boolean supportType() {
 		return elementTypes.contains(ElementType.TYPE);
 	}
 

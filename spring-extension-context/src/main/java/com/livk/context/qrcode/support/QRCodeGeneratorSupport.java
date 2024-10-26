@@ -71,7 +71,7 @@ public abstract class QRCodeGeneratorSupport {
 	 */
 	protected BufferedImage toBufferedImage(Object returnValue, AnnotationAttributes attributes) {
 		if (returnValue instanceof QRCodeEntity<?> entity) {
-			return qrCodeGenerator.generateQRCode(entity);
+			return qrCodeGenerator.generate(entity);
 		}
 		else {
 			QRCodeEntity<?> entity = QRCodeEntity.builder(returnValue)
@@ -81,7 +81,7 @@ public abstract class QRCodeGeneratorSupport {
 				.offColor(attributes.getNumber("offColor").intValue())
 				.type(attributes.getEnum("type"))
 				.build();
-			return qrCodeGenerator.generateQRCode(entity);
+			return qrCodeGenerator.generate(entity);
 		}
 	}
 

@@ -23,6 +23,7 @@ import com.livk.context.limit.annotation.Limit;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,13 +52,13 @@ public class LimitSupport {
 		String key = limit.key();
 		int rate = limit.rate();
 		int rateInterval = limit.rateInterval();
-		TimeUnit rateIntervalUnit = limit.rateIntervalUnit();
+		TimeUnit unit = limit.rateIntervalUnit();
 		String spELKey = resolver.evaluate(key, method, args);
 		if (limit.restrictIp()) {
 			String ip = WebUtils.realIp(WebUtils.request());
 			spELKey = spELKey + "#" + ip;
 		}
-		return limitExecutor.tryAccess(spELKey, rate, rateInterval, rateIntervalUnit);
+		return limitExecutor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
 	}
 
 }

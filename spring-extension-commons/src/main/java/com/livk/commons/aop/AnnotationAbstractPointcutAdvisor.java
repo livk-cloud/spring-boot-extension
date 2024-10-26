@@ -16,7 +16,6 @@
 
 package com.livk.commons.aop;
 
-import com.livk.commons.util.AnnotationUtils;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.IntroductionInterceptor;
@@ -51,20 +50,9 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 		Assert.notNull(annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
 		AnnotationTarget<A> target = AnnotationTarget.of(annotationType);
-		A annotation = null;
-		if (target.supportType() && target.supportMethod()) {
-			annotation = AnnotationUtils.findAnnotation(method, annotationType);
-			if (annotation == null && invocation.getThis() != null) {
-				annotation = AnnotationUtils.findAnnotation(invocation.getThis().getClass(), annotationType);
-			}
-		}
-		else if (target.supportType()) {
-			if (invocation.getThis() != null) {
-				annotation = AnnotationUtils.findAnnotation(invocation.getThis().getClass(), annotationType);
-			}
-		}
-		else if (target.supportMethod()) {
-			annotation = AnnotationUtils.findAnnotation(method, annotationType);
+		A annotation = target.getAnnotation(method);
+		if (annotation == null && invocation.getThis() != null) {
+			annotation = target.getAnnotation(invocation.getThis().getClass());
 		}
 		return invoke(invocation, annotation);
 	}

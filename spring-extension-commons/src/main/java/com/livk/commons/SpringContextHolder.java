@@ -66,7 +66,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	/**
 	 * SpringContextHolder bean name
 	 */
-	public static final String BEAN_NAME = "com.livk.commons.spring.context.SpringContextHolder";
+	public static final String BEAN_NAME = "com.livk.commons.SpringContextHolder";
 
 	private volatile static ApplicationContext applicationContext = null;
 

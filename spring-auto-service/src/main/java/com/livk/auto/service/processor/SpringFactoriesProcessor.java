@@ -166,7 +166,6 @@ public class SpringFactoriesProcessor extends CustomizeAbstractProcessor {
 				writer.newLine();
 				String[] serviceArrays = services.toArray(String[]::new);
 				for (int i = 0; i < serviceArrays.length; i++) {
-					writer.write("\t");
 					writer.write(serviceArrays[i]);
 					if (i != serviceArrays.length - 1) {
 						writer.write(",\\");
