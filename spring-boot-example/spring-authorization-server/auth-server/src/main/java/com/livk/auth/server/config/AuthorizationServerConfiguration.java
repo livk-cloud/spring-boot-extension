@@ -48,16 +48,14 @@ import org.springframework.security.oauth2.server.authorization.token.Delegating
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
 import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.DelegatingAuthenticationConverter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.util.List;
 
 /**
  * <p>
@@ -129,9 +127,9 @@ public class AuthorizationServerConfiguration {
 	}
 
 	private AuthenticationConverter accessTokenRequestConverter() {
-		return new DelegatingAuthenticationConverter(List.of(new OAuth2AuthorizationCodeAuthenticationConverter(),
+		return new DelegatingAuthenticationConverter(new OAuth2AuthorizationCodeAuthenticationConverter(),
 				new OAuth2ClientCredentialsAuthenticationConverter(), new OAuth2RefreshTokenAuthenticationConverter(),
-				new OAuth2PasswordAuthenticationConverter(), new OAuth2SmsAuthenticationConverter()));
+				new OAuth2PasswordAuthenticationConverter(), new OAuth2SmsAuthenticationConverter());
 	}
 
 }
