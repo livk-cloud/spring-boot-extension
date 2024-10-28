@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.clickhouse.ClickHouseContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -52,13 +53,14 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ClickHouseR2dbcContainer clickhouse = new ClickHouseR2dbcContainer()
-		.withExposedPorts(ClickHouseR2dbcContainer.HTTP_PORT, ClickHouseR2dbcContainer.NATIVE_PORT);
+//	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
+//		.withExposedPorts(8123,9000);
+	static ClickHouseContainer clickhouse = new ClickHouseR2dbcContainer().withExposedPorts(8123,9000);
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.r2dbc.url", () -> "r2dbc:clickhouse://" + clickhouse.getHost() + ":"
-				+ clickhouse.getMappedPort(ClickHouseR2dbcContainer.HTTP_PORT) + "/default");
+				+ clickhouse.getMappedPort(8123) + "/default");
 	}
 
 	@Autowired

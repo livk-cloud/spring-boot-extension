@@ -15,60 +15,21 @@ package com.livk.testcontainers.containers.r2dbc;
 
 import com.livk.testcontainers.DockerImageNames;
 import lombok.Getter;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.clickhouse.ClickHouseContainer;
 
 /**
  * @author livk
+ * @see org.testcontainers.clickhouse.ClickHouseContainer
  */
 @Getter
-public class ClickHouseR2dbcContainer extends GenericContainer<ClickHouseR2dbcContainer> {
-
-	public static final Integer HTTP_PORT = 8123;
-
-	public static final Integer NATIVE_PORT = 9000;
-
-	private String databaseName;
-
-	private String username;
-
-	private String password;
+public class ClickHouseR2dbcContainer extends ClickHouseContainer {
 
 	public ClickHouseR2dbcContainer() {
-		this(DockerImageNames.clickhouse());
-	}
-
-	public ClickHouseR2dbcContainer(String dockerImageName) {
-		this(DockerImageName.parse(dockerImageName));
-	}
-
-	public ClickHouseR2dbcContainer(DockerImageName dockerImageName) {
-		super(dockerImageName);
-		this.databaseName = "default";
-		this.username = "default";
-		this.password = "";
+		super(DockerImageNames.clickhouse());
 	}
 
 	@Override
-	protected void configure() {
-		this.withEnv("CLICKHOUSE_DB", this.databaseName);
-		this.withEnv("CLICKHOUSE_USER", this.username);
-		this.withEnv("CLICKHOUSE_PASSWORD", this.password);
+	protected void waitUntilContainerStarted() {
+		this.getWaitStrategy().waitUntilReady(this);
 	}
-
-	public ClickHouseR2dbcContainer withUsername(String username) {
-		this.username = username;
-		return this;
-	}
-
-	public ClickHouseR2dbcContainer withPassword(String password) {
-		this.password = password;
-		return this;
-	}
-
-	public ClickHouseR2dbcContainer withDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
-		return this;
-	}
-
 }
