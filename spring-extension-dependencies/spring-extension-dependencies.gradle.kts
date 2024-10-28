@@ -9,6 +9,7 @@ description = "spring boot extension dependencies"
 dependencies {
 	api(platform(SpringBootPlugin.BOM_COORDINATES))
 	api(platform(project(":spring-extension-bom")))
+	api(platform(libs.okhttp.bom))
 	constraints {
 		api(libs.bundles.mybatis.all)
 		api(libs.bundles.redisson.all)

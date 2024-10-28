@@ -37,9 +37,11 @@ disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
+okhttp = "4.12.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
 
 #springdoc-openapi-all
 openapi-webflux-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
@@ -61,7 +63,6 @@ redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-33
 #clickhouse-all
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
-clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
 
 #mapstruct-all
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
