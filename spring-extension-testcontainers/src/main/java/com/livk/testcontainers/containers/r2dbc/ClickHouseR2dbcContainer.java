@@ -32,4 +32,5 @@ public class ClickHouseR2dbcContainer extends ClickHouseContainer {
 	protected void waitUntilContainerStarted() {
 		this.getWaitStrategy().waitUntilReady(this);
 	}
+
 }
