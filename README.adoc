@@ -15,8 +15,6 @@ image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extensi
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
 
-link:README-en.adoc[English] | link:README.adoc[简体中文] +
-
 这是一个springboot整合多个第三方框架的starter集合 +
 以及关于Gradle的各种使用方式示例 +
 使用第三方包基本覆盖最新版本 +
