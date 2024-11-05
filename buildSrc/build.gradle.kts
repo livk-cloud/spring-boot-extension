@@ -16,6 +16,17 @@ dependencies {
 	implementation("com.google.gradle:osdetector-gradle-plugin:${libs.versions.google.osdetector.plugins.get()}")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+	compilerOptions {
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		suppressWarnings = true
+		allWarningsAsErrors = true
+		jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+		verbose = true
+		languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+	}
+}
+
 gradlePlugin {
 	plugins {
 		create("bomPlugin") {
@@ -42,7 +53,7 @@ gradlePlugin {
 			id = "com.livk.mvn.deployed"
 			implementationClass = "com.livk.boot.maven.DeployedPlugin"
 		}
-		create("protobufPlugin"){
+		create("protobufPlugin") {
 			id = "google.protobuf"
 			implementationClass = "com.google.protobuf.gradle.ProtobufPlugin"
 		}
