@@ -24,6 +24,7 @@ import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.time.Instant
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
@@ -41,9 +42,7 @@ abstract class BootPlugin : Plugin<Project> {
 					build.group.set(project.group.toString())
 					build.version.set(project.version.toString())
 					build.time.set(
-						DateTimeFormatter.ISO_INSTANT.format(
-							Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8))
-						)
+						ZonedDateTime.now().plusHours(8).format(DateTimeFormatter.ISO_INSTANT)
 					)
 				}
 			}
