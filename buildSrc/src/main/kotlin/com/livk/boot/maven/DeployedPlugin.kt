@@ -22,6 +22,7 @@ import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.VariantVersionMappingStrategy
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.bundling.Jar
@@ -50,7 +51,7 @@ abstract class DeployedPlugin : Plugin<Project> {
 					javaPluginExtension.withJavadocJar()
 					project.components
 						.matching { softwareComponent -> softwareComponent.name == "java" }
-						.all { publication.from(it) }
+						.all(publication::from)
 					mavenInfo(publication, project)
 				}
 			}
@@ -58,7 +59,7 @@ abstract class DeployedPlugin : Plugin<Project> {
 		project.plugins.withType(JavaPlatformPlugin::class.java) {
 			project.components
 				.matching { softwareComponent -> softwareComponent.name == "javaPlatform" }
-				.all { publication.from(it) }
+				.all(publication::from)
 			mavenInfo(publication, project)
 		}
 	}
@@ -69,17 +70,13 @@ abstract class DeployedPlugin : Plugin<Project> {
 		return project.extensions
 			.getByType(PublishingExtension::class.java)
 			.publications
-			.create(NAME, MavenPublication::class.java){
-				it.suppressAllPomMetadataWarnings()
-			}
+			.create(NAME, MavenPublication::class.java, MavenPublication::suppressAllPomMetadataWarnings)
 
 	}
 
 	private fun mavenInfo(publication: MavenPublication, project: Project) {
 		publication.versionMapping { versionMappingStrategy ->
-			versionMappingStrategy.allVariants { variantVersionMappingStrategy ->
-				variantVersionMappingStrategy.fromResolutionResult()
-			}
+			versionMappingStrategy.allVariants(VariantVersionMappingStrategy::fromResolutionResult)
 		}
 		publication.pom { pom ->
 			project.afterEvaluate {

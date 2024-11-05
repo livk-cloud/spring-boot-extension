@@ -109,9 +109,9 @@ class ProtobufPlugin : Plugin<Project> {
 					LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
 					project.objects.named(LibraryElements::class.java, LibraryElements.RESOURCES)
 				).attribute(
-						Usage.USAGE_ATTRIBUTE,
-						project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
-					)
+					Usage.USAGE_ATTRIBUTE,
+					project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+				)
 			}
 		}
 	}
@@ -150,9 +150,7 @@ class ProtobufPlugin : Plugin<Project> {
 
 		val closure: () -> Unit = {
 			project.plugins.withId("eclipse") {
-				generateProtoTask.get().outputSourceDirectories.all { outputDir ->
-					outputDir.mkdirs()
-				}
+				generateProtoTask.get().outputSourceDirectories.all(File::mkdirs)
 			}
 
 			project.plugins.withId("idea") {
@@ -199,7 +197,9 @@ class ProtobufPlugin : Plugin<Project> {
 			}
 			configureAction.execute(protoTask)
 		}
-		protoSourceSet.output.from(task.map { it.outputSourceDirectories })
+		protoSourceSet.output.from(task.map {
+			it.outputSourceDirectories
+		})
 		return task
 	}
 

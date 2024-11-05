@@ -22,6 +22,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.JavaTestFixturesPlugin
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.VariantVersionMappingStrategy
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 
@@ -56,9 +57,7 @@ abstract class ManagementPlugin : Plugin<Project> {
 				project.extensions.getByType(PublishingExtension::class.java).publications
 					.withType(MavenPublication::class.java) { mavenPublication ->
 						mavenPublication.versionMapping { versions ->
-							versions.allVariants {
-								it.fromResolutionResult()
-							}
+							versions.allVariants(VariantVersionMappingStrategy::fromResolutionResult)
 						}
 					}
 			}

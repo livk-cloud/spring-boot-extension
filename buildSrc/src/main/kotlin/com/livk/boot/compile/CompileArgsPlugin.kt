@@ -66,11 +66,9 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 			compileTask.name == JavaPlugin.COMPILE_JAVA_TASK_NAME ||
 				compileTask.name == JavaPlugin.COMPILE_TEST_JAVA_TASK_NAME ||
 				compileTask.name == "compileTestFixturesJava"
-		}.forEach { addCompile(it) }
+		}.forEach(::addCompile)
 
-		project.tasks.withType(Test::class.java) {
-			it.useJUnitPlatform()
-		}
+		project.tasks.withType(Test::class.java, Test::useJUnitPlatform)
 
 		val javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
 		project.afterEvaluate {
