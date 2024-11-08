@@ -1,0 +1,84 @@
+[[util]]
+==== util
+
+===== AnnotationMetadataResolver
+
+根据包名查找含有某些注解的类
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+      resolver.find(MyAnnotation.class,"com.livk.resolver");
+    }
+}
+----
+
+===== BeanLambda
+
+根据lambda解析Field和Method
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      String methodName = BeanLambda.methodName(Maker::getNo);
+      Method method = BeanLambda.method(Maker::getNo);
+      String fieldName = BeanLambda.fieldName(Maker::getNo);
+      Field field = BeanLambda.field(Maker::getNo);
+    }
+}
+----
+
+===== GenericWrapper
+
+进行类包装
+
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      GenericWrapper<?> wrapper = GenericWrapper.of("123");
+      wrapper.unwrap()
+    }
+}
+----
+
+===== MultiValueMapSplitter
+
+字符串分割成MultiValueMap，例如String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      String str = "root=1,2,3&root=4&a=b&a=c";
+			Map<String, List<String>> map = Map.of("root", List.of("1", "2", "3", "4"), "a", List.of("b", "c"));
+			MultiValueMap<String, String> multiValueMap = MultiValueMapSplitter.of("&", "=").split(str, ",");
+			assertEquals(CollectionUtils.toMultiValueMap(map), multiValueMap);
+    }
+}
+----
+

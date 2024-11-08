@@ -1,0 +1,19 @@
+[[jackson]]
+==== jackson
+
+===== JacksonSupport
+
+Jackson便捷开发工具，通过包装ObjectMapper实现各种JSON转换
+
+使用示例:
+
+[source,java,indent=0]
+----
+public static void main(String[] args){
+  JacksonSupport json = new JacksonSupport(new JsonMapper());
+}
+----
+
+===== @NumberJsonFormat
+
+Number类型数据Jackson序列化处理注解
