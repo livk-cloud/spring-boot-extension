@@ -1,9 +1,5 @@
-image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/jdk21-ci.yml/badge.svg?branch=main["Build Status",
-link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/jdk21-ci.yml"]
-image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/jdk22-ci.yml/badge.svg?branch=main["Build Status",
-link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/jdk22-ci.yml"]
-
-image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI", link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
+image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml/badge.svg?branch=main["Build Status",
+link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml"]image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI", link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
 image:https://app.codacy.com/project/badge/Grade/65ac2ad9bc494943b8e4571c9adeefc5[link="https://app.codacy.com/gh/livk-cloud/spring-boot-extension/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"]
 image:https://www.codefactor.io/repository/github/livk-cloud/spring-boot-extension/badge["CodeFactor", link="https://www.codefactor.io/repository/github/livk-cloud/spring-boot-extension"]
 
