@@ -18,7 +18,7 @@ package com.livk.mybatisplugins.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.livk.commons.beans.BeanLambda;
+import com.livk.commons.util.BeanLambda;
 import com.livk.mybatisplugins.entity.PageInfo;
 import com.livk.mybatisplugins.entity.User;
 import com.livk.mybatisplugins.service.UserService;

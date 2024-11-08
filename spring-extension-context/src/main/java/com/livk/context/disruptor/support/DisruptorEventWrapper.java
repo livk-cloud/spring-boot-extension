@@ -16,7 +16,7 @@
 
 package com.livk.context.disruptor.support;
 
-import com.livk.commons.beans.GenericWrapper;
+import com.livk.commons.util.GenericWrapper;
 import org.springframework.util.Assert;
 
 /**

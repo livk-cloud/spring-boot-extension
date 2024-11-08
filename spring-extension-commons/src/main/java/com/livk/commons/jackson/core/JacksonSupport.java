@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.beans.GenericWrapper;
+import com.livk.commons.util.GenericWrapper;
 import lombok.SneakyThrows;
 
 import java.io.DataInput;
