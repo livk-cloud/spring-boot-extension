@@ -1,2 +1,33 @@
 [[spring]]
 ==== spring
+
+===== SpringAbstractImportSelector
+
+通过继承AutoConfigurationImportSelector，可以实现自动导入spring的配置文件，导入文件为META-INF/spring/{annotationClass}.imports,需要使用org.springframework.context.annotation.Import进行注册
+
+使用示例:
+
+[source,java,indent=0]
+----
+public @interface Http{
+
+}
+
+public class HttpImportSelector extends SpringAbstractImportSelector<Http>{
+
+}
+----
+
+===== @AutoImport
+
+使用AutoImport自动进行注册，作用于注解上，功能同SpringAbstractImportSelector类似
+
+使用示例:
+
+[source,java,indent=0]
+----
+@AutoImport
+public @interface Http{
+
+}
+----

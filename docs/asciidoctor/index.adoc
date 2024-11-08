@@ -1,5 +1,5 @@
 [[spring-boot-extension-doc]]
-= spring-boot-extension-doc
+= spring boot extension doc
 :revdate: {docdate}
 :toc: left
 :Author: Livk
@@ -24,8 +24,12 @@ include::install.adoc[]
 include::spring-auto-service.adoc[]
 [#_spring-extension-commons]
 include::spring-extension-commons.adoc[]
+[#_spring-extension-context]
+include::spring-extension-context.adoc[]
 [#_spring-boot-extension-autoconfigure]
 include::spring-boot-extension-autoconfigure.adoc[]
+[#_spring-extension-testcontainers]
+include::spring-extension-testcontainers.adoc[]
 
 == 问题 ==
 

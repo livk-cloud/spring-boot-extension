@@ -41,7 +41,7 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
     @Override
     protected AnnotationPointcutType pointcutType() {
         //默认实现
-        return AnnotationPointcutType.AUTO;
+        return AnnotationAutoPointcut.auto();
     }
 }
 ----
