@@ -4,7 +4,6 @@ jobs:
   jdk21-ci:
     docker:
       - image: cimg/openjdk:21.0.5
-      - image: gradle:latest
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -12,14 +11,11 @@ jobs:
 
     steps:
       - checkout
-
-      - run: gradle dependencies
-      - run: gradle build
+      - run: ./gradlew build
 
   jdk22-ci:
     docker:
       - image: cimg/openjdk:22.0.2
-      - image: gradle:latest
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -27,9 +23,7 @@ jobs:
 
     steps:
       - checkout
-
-      - run: gradle dependencies
-      - run: gradle build
+      - run: ./gradlew build
 
 workflows:
   gradle-build:
