@@ -42,6 +42,7 @@ public interface GenericWrapper<V> {
 	 * @param type 类信息
 	 * @return 相关实例
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <T> T unwrap(Class<T> type) {
 		if (isWrapperFor(type)) {
 			return type.cast(unwrap());
@@ -64,6 +65,7 @@ public interface GenericWrapper<V> {
 	 * @param <R> 转换后泛型
 	 * @return wrapper
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <R> GenericWrapper<R> map(Function<V, R> function) {
 		V unwrap = this.unwrap();
 		return of(function.apply(unwrap));
@@ -74,6 +76,7 @@ public interface GenericWrapper<V> {
 	 * @param function fun
 	 * @return wrapper
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <G extends GenericWrapper<?>> G flatmap(Function<V, G> function) {
 		return function.apply(this.unwrap());
 	}

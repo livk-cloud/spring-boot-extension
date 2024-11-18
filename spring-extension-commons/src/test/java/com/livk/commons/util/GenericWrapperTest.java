@@ -30,15 +30,14 @@ class GenericWrapperTest {
 		String value = "livk";
 		StringBuilder builder = new StringBuilder(value).reverse();
 		GenericWrapper<String> wrapper = GenericWrapper.of(value);
-		assertEquals(value, wrapper.unwrap(String.class));
 		assertEquals(value, wrapper.unwrap());
 		assertTrue(wrapper.isWrapperFor(String.class));
 
-		GenericWrapper<String> map = wrapper.map(StringUtils::reverse);
+		GenericWrapper<String> map = GenericWrapper.of(StringUtils.reverse(wrapper.unwrap()));
 		assertEquals(builder.toString(), map.unwrap());
 		assertNotEquals(value, map.unwrap());
 
-		GenericWrapper<String> flatmap = wrapper.flatmap(GenericWrapper::of);
+		GenericWrapper<String> flatmap = GenericWrapper.of(wrapper.unwrap());
 		assertEquals(value, flatmap.unwrap());
 	}
 
