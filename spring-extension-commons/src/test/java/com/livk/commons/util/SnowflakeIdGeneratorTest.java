@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
-class SnowflakeTest {
+class SnowflakeIdGeneratorTest {
 
-	static final Snowflake SNOWFLAKE = new Snowflake();
+	final SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2);
 
 	@Test
 	void nextId() throws InterruptedException {
@@ -47,7 +47,7 @@ class SnowflakeTest {
 			CountDownLatch countDownLatch = new CountDownLatch(num);
 			for (int i = 0; i < num; i++) {
 				service.execute(() -> {
-					list.add(SNOWFLAKE.nextId());
+					list.add(generator.nextId());
 					countDownLatch.countDown();
 				});
 			}
