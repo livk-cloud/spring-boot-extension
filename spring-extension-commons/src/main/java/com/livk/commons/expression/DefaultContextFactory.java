@@ -17,8 +17,8 @@
 package com.livk.commons.expression;
 
 import com.google.common.collect.Maps;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -29,16 +29,16 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * {@link Context}默认解析工厂
  * <p>
- * 使用spring StandardReflectionParameterNameDiscoverer进行解析
+ * 使用spring DefaultParameterNameDiscoverer进行解析
  *
  * @author livk
- * @see StandardReflectionParameterNameDiscoverer
+ * @see DefaultParameterNameDiscoverer
  */
 class DefaultContextFactory implements ContextFactory {
 
 	private final Map<Method, String[]> parameterNamesCache = new ConcurrentHashMap<>(64);
 
-	private final ParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
+	private final ParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
 	@Override
 	public Context create(Method method, Object[] args) {
