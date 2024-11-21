@@ -12,12 +12,12 @@ dependencies {
 	add("asciidoctorExt", "org.springframework.restdocs:spring-restdocs-asciidoctor")
 }
 
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
 	outputs.dir(file("build/generated-snippets"))
 }
 
-tasks.withType<Jar> {
+tasks.jar {
 	dependsOn("asciidoctor")
 	from("${tasks.asciidoctor.get().outputDir}/html5") {
 		into("static/docs")

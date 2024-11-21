@@ -37,7 +37,3 @@ dependencies {
 	optional("com.lmax:disruptor")
 	compileProcessor(project(":spring-auto-service"))
 }
-
-tasks.withType<Jar> {
-	duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}

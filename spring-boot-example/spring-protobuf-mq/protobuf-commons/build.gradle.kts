@@ -23,7 +23,7 @@ sourceSets {
 	}
 }
 
-tasks.withType<CheckFormat> {
+tasks.checkFormatMain {
 	exclude("com/livk/proto/gen")
 }
 

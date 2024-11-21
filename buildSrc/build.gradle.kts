@@ -49,7 +49,7 @@ gradlePlugin {
 	}
 }
 
-tasks.withType<Jar> {
+tasks.jar {
 	manifest.attributes.putIfAbsent(
 		"Created-By",
 		System.getProperty("java.version") + " (" + System.getProperty("java.specification.vendor") + ")"

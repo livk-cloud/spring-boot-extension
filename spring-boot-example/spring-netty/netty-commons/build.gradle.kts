@@ -1,6 +1,5 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
-import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common
@@ -12,7 +11,7 @@ dependencies {
 	api(libs.protobuf.java)
 }
 
-tasks.withType<CheckFormat> {
+tasks.checkFormatMain {
 	exclude("com/livk/netty/commons/protobuf")
 }
 
