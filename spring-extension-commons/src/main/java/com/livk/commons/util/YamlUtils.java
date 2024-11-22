@@ -16,6 +16,13 @@
 
 package com.livk.commons.util;
 
+import com.google.common.base.CharMatcher;
+import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.Yaml;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,11 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * <p>
@@ -110,7 +112,7 @@ public class YamlUtils {
 			StringBuilder builder = new StringBuilder();
 			String[] keys = entry.getKey().toString().split("\\.");
 			for (String key : keys) {
-				if (org.apache.commons.lang3.StringUtils.isNumeric(key)) {
+				if (CharMatcher.inRange('0', '9').matchesAllOf(key)) {
 					builder.append("[").append(key).append("]");
 				}
 				else {

@@ -80,7 +80,7 @@ public final class GenericsByteBuddy extends ByteBuddy {
 					.withInterfaces(interfaceTypes),
 				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
 				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
-				classWriterStrategy, ignoredMethods, constructorStrategy);
+				classReaderFactory, classWriterFactory, ignoredMethods, constructorStrategy);
 	}
 
 }

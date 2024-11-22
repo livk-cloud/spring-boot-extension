@@ -59,8 +59,8 @@ class CacheControllerTest {
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.data.redis.host", () -> "127.0.0.1");
-		registry.add("spring.data.redis.port", () -> redis.getMappedPort(6379));
+		registry.add("spring.data.redis.host", redis::getHost);
+		registry.add("spring.data.redis.port", redis::getFirstMappedPort);
 		registry.add("spring.data.redis.password", redis::getPassword);
 	}
 

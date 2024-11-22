@@ -49,7 +49,7 @@ class ScheduleControllerTest {
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.redisson.config.single-server-config.address",
-				() -> "redis://" + redis.getHost() + ":" + redis.getMappedPort(6379));
+				() -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 	}
 
 	@Autowired

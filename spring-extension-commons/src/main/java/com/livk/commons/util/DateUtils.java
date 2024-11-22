@@ -16,6 +16,8 @@
 
 package com.livk.commons.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +25,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import lombok.experimental.UtilityClass;
 
 /**
  * <p>
@@ -33,7 +34,7 @@ import lombok.experimental.UtilityClass;
  * @author livk
  */
 @UtilityClass
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+public class DateUtils {
 
 	/**
 	 * YMD.

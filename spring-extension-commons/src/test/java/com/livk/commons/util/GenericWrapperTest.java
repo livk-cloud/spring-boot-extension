@@ -13,8 +13,11 @@
 
 package com.livk.commons.util;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -33,12 +36,18 @@ class GenericWrapperTest {
 		assertEquals(value, wrapper.unwrap());
 		assertTrue(wrapper.isWrapperFor(String.class));
 
-		GenericWrapper<String> map = GenericWrapper.of(StringUtils.reverse(wrapper.unwrap()));
+		GenericWrapper<String> map = GenericWrapper.of(reverse(wrapper.unwrap()));
 		assertEquals(builder.toString(), map.unwrap());
 		assertNotEquals(value, map.unwrap());
 
 		GenericWrapper<String> flatmap = GenericWrapper.of(wrapper.unwrap());
 		assertEquals(value, flatmap.unwrap());
+	}
+
+	String reverse(String str) {
+		List<String> list = Arrays.asList(str.split(""));
+		Collections.reverse(list);
+		return String.join("", list);
 	}
 
 }

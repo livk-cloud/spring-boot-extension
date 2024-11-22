@@ -48,7 +48,7 @@ class RedissonLockTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("redisson.address",
-				() -> "redis://" + redisStack.getHost() + ":" + redisStack.getMappedPort(6379));
+				() -> "redis://" + redisStack.getHost() + ":" + redisStack.getFirstMappedPort());
 	}
 
 	static ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();

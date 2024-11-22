@@ -16,6 +16,7 @@ package com.livk.testcontainers.containers;
 import com.livk.testcontainers.DockerImageNames;
 import lombok.Getter;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class RedisContainer extends GenericContainer<RedisContainer> {
 	public RedisContainer(DockerImageName dockerImageName) {
 		super(dockerImageName);
 		addExposedPorts(6379);
+		this.waitingFor(Wait.forLogMessage(".*Ready to accept connections.*\\n", 1));
 	}
 
 	public static RedisContainer redis() {

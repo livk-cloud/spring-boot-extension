@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "3.3.6"
+spring-boot = "3.4.0"
 kotlin = "2.0.21"
 pagehelper-starter = "2.1.0"
 mybatis = "3.5.16"
@@ -37,9 +37,11 @@ disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
+okhttp = "4.12.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
 
 #springdoc-openapi-all
 openapi-webflux-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
