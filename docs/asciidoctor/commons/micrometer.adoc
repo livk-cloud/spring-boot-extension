@@ -1,0 +1,20 @@
+[[micrometer]]
+==== micrometer
+
+===== ContextSnapshots
+
+ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public static void main(String[] args){
+  ExecutorService service = Executors.newCachedThreadPool();
+  ExecutorService wrap = ContextSnapshots.wrap(service);
+  wrap.submit(()->{});
+}
+----

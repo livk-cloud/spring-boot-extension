@@ -16,7 +16,7 @@
 
 package com.livk.pulsar.producer;
 
-import com.livk.commons.util.Snowflake;
+import com.livk.commons.util.SnowflakeIdGenerator;
 import com.livk.pulsar.producer.entity.PulsarMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.pulsar.client.api.PulsarClientException;
@@ -39,7 +39,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProducerTask {
 
-	private static final Snowflake SNOWFLAKE = new Snowflake();
+	final SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2);
 
 	private final PulsarTemplate<String> pulsarTemplate;
 
@@ -48,7 +48,7 @@ public class ProducerTask {
 		PulsarMessage<String> message = new PulsarMessage<>();
 		message.setMsgId(UUID.randomUUID().toString());
 		message.setSendTime(LocalDateTime.now());
-		message.setData(String.valueOf(SNOWFLAKE.nextId()));
+		message.setData(String.valueOf(generator.nextId()));
 
 		pulsarTemplate.newMessage(message.toJson())
 			.withSchema(Schema.STRING)

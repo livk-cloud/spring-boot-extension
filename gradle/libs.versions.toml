@@ -8,19 +8,19 @@ mybatis-boot = "3.0.3"
 guava = "33.3.1-jre"
 easyexcel = "4.0.3"
 redisson = "3.37.0"
-clickhouse = "0.6.5"
+clickhouse = "0.7.1"
 spotbugs-annotations = "4.8.6"
-mapstruct = "1.6.2"
+mapstruct = "1.6.3"
 mapstruct-lombok = "0.2.0"
 curator = "5.7.1"
 asciidoctor-jvm = "4.0.3"
 browscap-java = "1.4.4"
 auto-service = "1.1.1"
-yauaa = "7.28.1"
+yauaa = "7.29.0"
 springdoc = "2.6.0"
 google-javase = "3.5.3"
-spring-admin = "3.3.4"
-nimbusds-jwt = "9.41.2"
+spring-admin = "3.3.6"
+nimbusds-jwt = "9.47"
 rocket-starter = "2.3.1"
 jsqlparser = "5.0"
 lettucemod = "4.1.2"
@@ -28,7 +28,7 @@ minio = "8.5.13"
 aliyun-oss = "3.18.1"
 aviator = "5.4.3"
 protobuf-java = "4.28.3"
-grpc-java = "1.68.0"
+grpc-java = "1.68.1"
 google-protobuf-plugins = "0.9.4"
 google-osdetector-plugins = "1.7.3"
 jexl3 = "3.4.0"
@@ -37,11 +37,9 @@ disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
-okhttp = "4.12.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
-okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
 
 #springdoc-openapi-all
 openapi-webflux-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
@@ -63,6 +61,7 @@ redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-33
 #clickhouse-all
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
 clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
+clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
 
 #mapstruct-all
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }

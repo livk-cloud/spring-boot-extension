@@ -31,6 +31,7 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.ErrorResponseException;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -54,17 +55,19 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
-	private ServletRequestAttributes servletRequestAttributes() {
-		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-		return (ServletRequestAttributes) requestAttributes;
-	}
-
 	/**
 	 * 获取当前线程的request
 	 * @return http servlet request
 	 */
 	public HttpServletRequest request() {
-		return servletRequestAttributes().getRequest();
+		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+		if (requestAttributes instanceof ServletRequestAttributes attributes) {
+			return attributes.getRequest();
+		}
+		if (requestAttributes instanceof NativeWebRequest nativeWebRequest) {
+			return nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+		}
+		throw new IllegalStateException("request not found");
 	}
 
 	/**
@@ -72,7 +75,14 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return http servlet response
 	 */
 	public HttpServletResponse response() {
-		return servletRequestAttributes().getResponse();
+		RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+		if (requestAttributes instanceof ServletRequestAttributes attributes) {
+			return attributes.getResponse();
+		}
+		if (requestAttributes instanceof NativeWebRequest nativeWebRequest) {
+			return nativeWebRequest.getNativeResponse(HttpServletResponse.class);
+		}
+		throw new IllegalStateException("response not found");
 	}
 
 	/**

@@ -10,7 +10,7 @@ dependencies {
 		api(project(":spring-extension-commons"))
 		api(project(":spring-extension-context"))
 		api(project(":spring-boot-extension-autoconfigure"))
-		project(":spring-boot-extension-starters").dependencyProject.subprojects {
+		project.project(project(":spring-boot-extension-starters").path).subprojects {
 			api(this)
 		}
 	}

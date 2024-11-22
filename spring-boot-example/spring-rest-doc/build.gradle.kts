@@ -1,14 +1,9 @@
-import org.asciidoctor.gradle.jvm.AsciidoctorTask
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
 	com.livk.service
 	alias(libs.plugins.asciidoctor.jvm)
 }
 
-configurations {
-	create("asciidoctorExt")
-}
+configurations.create("asciidoctorExt")
 
 dependencies {
 	implementation(project(":spring-extension-commons"))
@@ -17,15 +12,14 @@ dependencies {
 	add("asciidoctorExt", "org.springframework.restdocs:spring-restdocs-asciidoctor")
 }
 
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
 	outputs.dir(file("build/generated-snippets"))
 }
 
-tasks.withType<BootJar> {
-	val asciidoctor = tasks.named("asciidoctor").get() as AsciidoctorTask
+tasks.jar {
 	dependsOn("asciidoctor")
-	from("${asciidoctor.outputDir}/html5") {
+	from("${tasks.asciidoctor.get().outputDir}/html5") {
 		into("static/docs")
 	}
 }

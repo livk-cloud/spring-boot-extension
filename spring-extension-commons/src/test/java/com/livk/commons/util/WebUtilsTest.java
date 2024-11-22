@@ -62,6 +62,7 @@ class WebUtilsTest {
 		RequestContextHolder.setRequestAttributes(servletWebRequest);
 		HttpServletRequest req = WebUtils.request();
 		assertEquals(request, req);
+		RequestContextHolder.resetRequestAttributes();
 	}
 
 	@Test
@@ -70,6 +71,7 @@ class WebUtilsTest {
 		RequestContextHolder.setRequestAttributes(servletWebRequest);
 		HttpServletResponse resp = WebUtils.response();
 		assertEquals(response, resp);
+		RequestContextHolder.resetRequestAttributes();
 	}
 
 	@Test

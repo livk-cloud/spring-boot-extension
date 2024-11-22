@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.mybatisplugins.monitor;
 
-import com.livk.commons.beans.BeanLambda;
+import com.livk.commons.util.BeanLambda;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

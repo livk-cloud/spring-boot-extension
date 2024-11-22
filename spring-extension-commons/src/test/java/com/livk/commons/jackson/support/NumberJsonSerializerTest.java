@@ -17,7 +17,7 @@
 package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.beans.BeanLambda;
+import com.livk.commons.util.BeanLambda;
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;

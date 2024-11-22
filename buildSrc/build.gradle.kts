@@ -43,14 +43,14 @@ gradlePlugin {
 			id = "com.livk.mvn.deployed"
 			implementationClass = "com.livk.boot.maven.DeployedPlugin"
 		}
-		create("protobufPlugin"){
+		create("protobufPlugin") {
 			id = "google.protobuf"
 			implementationClass = "com.google.protobuf.gradle.ProtobufPlugin"
 		}
 	}
 }
 
-tasks.withType<Jar> {
+tasks.jar {
 	manifest.attributes.putIfAbsent(
 		"Created-By",
 		System.getProperty("java.version") + " (" + System.getProperty("java.specification.vendor") + ")"

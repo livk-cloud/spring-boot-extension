@@ -1,12 +1,9 @@
 /*
  * Copyright 2021-2024 spring-boot-extension the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *       https://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.beans;
+package com.livk.commons.util;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -45,6 +42,7 @@ public interface GenericWrapper<V> {
 	 * @param type 类信息
 	 * @return 相关实例
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <T> T unwrap(Class<T> type) {
 		if (isWrapperFor(type)) {
 			return type.cast(unwrap());
@@ -67,6 +65,7 @@ public interface GenericWrapper<V> {
 	 * @param <R> 转换后泛型
 	 * @return wrapper
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <R> GenericWrapper<R> map(Function<V, R> function) {
 		V unwrap = this.unwrap();
 		return of(function.apply(unwrap));
@@ -77,6 +76,7 @@ public interface GenericWrapper<V> {
 	 * @param function fun
 	 * @return wrapper
 	 */
+	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <G extends GenericWrapper<?>> G flatmap(Function<V, G> function) {
 		return function.apply(this.unwrap());
 	}

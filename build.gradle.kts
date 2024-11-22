@@ -1,30 +1,21 @@
-import org.asciidoctor.gradle.jvm.AsciidoctorTask
-
 plugins {
 	com.livk.root
 	alias(libs.plugins.asciidoctor.jvm)
 }
 
-configurations {
-	create("asciidoctorExtensions")
-}
+configurations.create("asciidoctorExtensions")
+dependencies.add("asciidoctorExtensions", libs.spring.asciidoctor)
 
-dependencies {
-	add("asciidoctorExtensions", libs.spring.asciidoctor)
-}
-
-tasks {
-	"asciidoctor"(AsciidoctorTask::class) {
-		configurations("asciidoctorExtensions")
-		baseDirFollowsSourceDir()
-		sourceDir(file("./docs/asciidoctor"))
-		sources {
-			include("index.adoc")
-		}
-		setOutputDir(file("./docs"))
-		outputOptions {
-			backends("spring-html")
-		}
+tasks.asciidoctor {
+	configurations("asciidoctorExtensions")
+	baseDirFollowsSourceDir()
+	sourceDir(file("./docs/asciidoctor"))
+	sources {
+		include("index.adoc")
+	}
+	setOutputDir(file("./docs"))
+	outputOptions {
+		backends("spring-html")
 	}
 }
 

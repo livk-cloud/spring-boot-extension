@@ -1,0 +1,14 @@
+[[web]]
+==== web
+
+===== HttpParameters
+
+http请求Parameter参数,类似于org.springframework.http.HttpHeaders
+
+===== RequestWrapper
+
+HttpServletRequest包装类，用于修改body、添加header、添加param
+
+===== ResponseWrapper
+
+HttpServletResponse包装类，用于修改body

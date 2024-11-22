@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.mybatisplugins.monitor.annotation;
 
-import com.livk.commons.selector.AutoImport;
+import com.livk.commons.spring.AutoImport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
