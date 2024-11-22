@@ -49,4 +49,5 @@ class GenericWrapperTest {
 		Collections.reverse(list);
 		return String.join("", list);
 	}
+
 }
