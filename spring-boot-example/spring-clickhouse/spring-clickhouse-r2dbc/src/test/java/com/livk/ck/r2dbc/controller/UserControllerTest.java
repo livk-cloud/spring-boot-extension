@@ -17,7 +17,7 @@
 package com.livk.ck.r2dbc.controller;
 
 import com.livk.ck.r2dbc.entity.User;
-import com.livk.testcontainers.containers.r2dbc.ClickHouseR2dbcContainer;
+import com.livk.testcontainers.DockerImageNames;
 import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -53,10 +53,7 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	// static ClickHouseContainer clickhouse = new
-	// ClickHouseContainer(DockerImageNames.clickhouse())
-	// .withExposedPorts(8123,9000);
-	static ClickHouseContainer clickhouse = new ClickHouseR2dbcContainer().withExposedPorts(8123, 9000);
+	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse()).withExposedPorts(8123, 9000);
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
