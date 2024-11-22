@@ -21,7 +21,6 @@ import com.livk.commons.http.annotation.EnableWebClient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -38,7 +37,9 @@ import reactor.netty.tcp.DefaultSslContextSpec;
 import reactor.netty.tcp.SslProvider;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
+import javax.net.ssl.TrustManagerFactory;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -79,9 +80,12 @@ public class WebClientConfiguration {
 		 * @return WebClientCustomizer
 		 */
 		@Bean
-		public WebClientCustomizer reactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
+		public WebClientCustomizer reactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory)
+				throws NoSuchAlgorithmException {
+			TrustManagerFactory trustManagerFactory = TrustManagerFactory
+				.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient()
-				.configure(builder -> builder.trustManager(InsecureTrustManagerFactory.INSTANCE));
+				.configure(builder -> builder.trustManager(trustManagerFactory));
 			Function<HttpClient, HttpClient> function = httpClient -> httpClient
 				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
 				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
