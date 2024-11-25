@@ -11,11 +11,10 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.curator;
+package com.livk.autoconfigure.dynamic;
 
-import com.livk.context.curator.CuratorTemplate;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
+import com.livk.context.dynamic.DynamicDatasource;
+import com.livk.context.dynamic.intercept.DataSourceInterceptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,36 +24,36 @@ import org.springframework.context.annotation.Configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * <p>
+ * DynamicAutoConfigurationTest
+ * </p>
+ *
  * @author livk
  */
-class CuratorAutoConfigurationTest {
+class DynamicAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(CuratorAutoConfiguration.class));
+		.withConfiguration(AutoConfigurations.of(DynamicAutoConfiguration.class))
+		.withPropertyValues("spring.dynamic.primary=mysql",
+				"spring.dynamic.datasource.mysql.url=jdbc:mysql://localhost:3306/test",
+				"spring.dynamic.datasource.mysql.username=root", "spring.dynamic.datasource.mysql.password=root");
 
 	@Test
-	void curatorFramework() {
+	void curatorDynamicDatasource() {
 		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(CuratorFramework.class);
+			assertThat(context).hasSingleBean(DynamicDatasource.class);
 		});
 	}
 
 	@Test
-	void exponentialBackoffRetry() {
+	void exponentialDataSourceInterceptor() {
 		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(RetryPolicy.class);
-		});
-	}
-
-	@Test
-	void curatorTemplate() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(CuratorTemplate.class);
+			assertThat(context).hasSingleBean(DataSourceInterceptor.class);
 		});
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(CuratorProperties.class)
+	@EnableConfigurationProperties(DynamicDatasourceProperties.class)
 	static class Config {
 
 	}

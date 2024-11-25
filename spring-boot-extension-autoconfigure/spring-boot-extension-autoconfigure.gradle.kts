@@ -36,4 +36,7 @@ dependencies {
 	optional("com.aliyun.oss:aliyun-sdk-oss")
 	optional("com.lmax:disruptor")
 	compileProcessor(project(":spring-auto-service"))
+
+	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation("com.zaxxer:HikariCP")
 }

@@ -11,12 +11,12 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.curator;
+package com.livk.autoconfigure.curator.actuator;
 
-import com.livk.context.curator.CuratorTemplate;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
+import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
+import com.livk.autoconfigure.curator.CuratorProperties;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -25,32 +25,22 @@ import org.springframework.context.annotation.Configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * <p>
+ * CuratorHealthContributorAutoConfigurationTest
+ * </p>
+ *
  * @author livk
  */
-class CuratorAutoConfigurationTest {
+class CuratorHealthContributorAutoConfigurationTest {
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(CuratorAutoConfiguration.class));
-
-	@Test
-	void curatorFramework() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(CuratorFramework.class);
-		});
-	}
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withConfiguration(AutoConfigurations.of(HealthContributorAutoConfiguration.class,
+				CuratorAutoConfiguration.class, CuratorHealthContributorAutoConfiguration.class));
 
 	@Test
-	void exponentialBackoffRetry() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(RetryPolicy.class);
-		});
-	}
-
-	@Test
-	void curatorTemplate() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(CuratorTemplate.class);
-		});
+	void runShouldCreateHealthIndicator() {
+		this.contextRunner.withUserConfiguration(Config.class)
+			.run((context) -> assertThat(context).hasSingleBean(CuratorHealthIndicator.class));
 	}
 
 	@Configuration(proxyBeanMethods = false)
