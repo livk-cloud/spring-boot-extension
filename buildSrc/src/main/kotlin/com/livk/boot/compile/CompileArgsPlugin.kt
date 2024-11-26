@@ -70,14 +70,13 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 
 		project.tasks.withType(Test::class.java, Test::useJUnitPlatform)
 
-		val javaCompile = project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get() as JavaCompile
 		project.afterEvaluate {
 			val dependencyName = hashSetOf<String>()
 			project.configurations.forEach {
 				dependencyName.addAll(it.dependencies.map { dependency -> dependency.name })
 			}
-			if (dependencyName.contains(MAPSTRUCT_PROCESSOR_NAME)) {
-				javaCompile.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
+			project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaCompile::class.java) {
+				it.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
 			}
 		}
 	}

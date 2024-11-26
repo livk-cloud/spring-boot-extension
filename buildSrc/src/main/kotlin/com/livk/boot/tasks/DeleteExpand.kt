@@ -32,7 +32,7 @@ abstract class DeleteExpand : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.tasks.withType(Delete::class.java) {
 			cleanFiles.forEach { fileName ->
-				it.delete(project.projectDir.absolutePath + "/$fileName")
+				it.delete("${project.projectDir.absolutePath}/$fileName")
 			}
 		}
 	}

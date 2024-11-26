@@ -30,16 +30,16 @@ abstract class MavenRepositoryPlugin : Plugin<Project> {
 		val publishing = project.extensions.getByType(PublishingExtension::class.java)
 		publishing.repositories.mavenLocal()
 		try {
-			val releasesRepoUrl = project.property("mvn.releasesRepoUrl") as String
-			val snapshotsRepoUrl = project.property("mvn.releasesRepoUrl") as String
+			val releasesRepoUrl = project.property("mvn.releasesRepoUrl").toString()
+			val snapshotsRepoUrl = project.property("mvn.releasesRepoUrl").toString()
 			publishing.repositories.maven { maven ->
 				//使用不安全的http请求、也就是缺失SSL
 				maven.isAllowInsecureProtocol = true
 				val url = if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
 				maven.setUrl(url)
 				maven.credentials {
-					it.username = project.property("mvn.username") as String
-					it.password = project.property("mvn.password") as String
+					it.username = project.property("mvn.username").toString()
+					it.password = project.property("mvn.password").toString()
 				}
 			}
 		} catch (_: Exception) {

@@ -97,8 +97,8 @@ abstract class DeployedPlugin : Plugin<Project> {
 				}
 			}
 			pom.scm { scm ->
-				scm.connection.set("git@github.com:livk-cloud/" + project.rootProject.name + ".git")
-				scm.url.set("https://github.com/livk-cloud/" + project.rootProject.name + "/")
+				scm.connection.set("git@github.com:livk-cloud/${project.rootProject.name}.git")
+				scm.url.set("https://github.com/livk-cloud/${project.rootProject.name}/")
 			}
 		}
 	}

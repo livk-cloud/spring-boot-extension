@@ -51,7 +51,7 @@ gradlePlugin {
 tasks.jar {
 	manifest.attributes.putIfAbsent(
 		"Created-By",
-		System.getProperty("java.version") + " (" + System.getProperty("java.specification.vendor") + ")"
+		"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
 	)
 	manifest.attributes.putIfAbsent("Gradle-Version", GradleVersion.current())
 }
