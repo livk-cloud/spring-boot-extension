@@ -75,8 +75,10 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 			project.configurations.forEach {
 				dependencyName.addAll(it.dependencies.map { dependency -> dependency.name })
 			}
-			project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaCompile::class.java) {
-				it.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
+			if (dependencyName.contains(MAPSTRUCT_PROCESSOR_NAME)) {
+				project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaCompile::class.java) {
+					it.options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
+				}
 			}
 		}
 	}
