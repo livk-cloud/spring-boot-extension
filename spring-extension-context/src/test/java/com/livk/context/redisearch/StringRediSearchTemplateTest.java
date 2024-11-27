@@ -43,7 +43,7 @@ class StringRediSearchTemplateTest {
 	}
 
 	@Autowired
-	RedisSearchConnectionFactory factory;
+	RediSearchConnectionFactory factory;
 
 	@Test
 	void test() throws Exception {

@@ -22,21 +22,23 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 /**
  * @author livk
  */
-public interface RedisSearchConnectionFactory extends AutoCloseable {
+public interface RediSearchConnectionFactory {
 
 	StatefulRedisModulesConnection<String, String> connect();
 
 	<K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec);
 
+	void close();
+
 	default <T> GenericObjectPoolConfig<T> getPoolConfig() {
 		return new GenericObjectPoolConfig<>();
 	}
 
-	static RedisSearchConnectionFactory create(RedisModulesClient client) {
+	static RediSearchConnectionFactory create(RedisModulesClient client) {
 		return FactoryProxySupport.newProxy(client);
 	}
 
-	static RedisSearchConnectionFactory create(RedisModulesClusterClient client) {
+	static RediSearchConnectionFactory create(RedisModulesClusterClient client) {
 		return FactoryProxySupport.newProxy(client);
 	}
 

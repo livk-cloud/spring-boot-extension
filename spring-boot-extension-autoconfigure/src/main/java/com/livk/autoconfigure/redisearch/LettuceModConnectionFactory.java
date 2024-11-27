@@ -13,7 +13,7 @@
 
 package com.livk.autoconfigure.redisearch;
 
-import com.livk.context.redisearch.RedisSearchConnectionFactory;
+import com.livk.context.redisearch.RediSearchConnectionFactory;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.cluster.RedisModulesClusterClient;
 import io.lettuce.core.ClientOptions;
@@ -32,14 +32,14 @@ import java.util.Optional;
 /**
  * @author livk
  */
-public class LettuceModConnectionFactory implements RedisSearchConnectionFactory {
+public class LettuceModConnectionFactory implements RediSearchConnectionFactory {
 
 	private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 
 	private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
 	@Delegate
-	private final RedisSearchConnectionFactory factory;
+	private final RediSearchConnectionFactory factory;
 
 	private final boolean isCluster;
 
@@ -53,20 +53,20 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 		this.pool = properties.getPool();
 	}
 
-	private RedisSearchConnectionFactory init(ClientResources resources, RediSearchProperties properties) {
+	private RediSearchConnectionFactory init(ClientResources resources, RediSearchProperties properties) {
 		return isCluster ? createClusterFactory(resources, properties) : createFactory(resources, properties);
 	}
 
-	private RedisSearchConnectionFactory createFactory(ClientResources clientResources,
+	private RediSearchConnectionFactory createFactory(ClientResources clientResources,
 			RediSearchProperties properties) {
 		RedisURI redisURI = createRedisURI(properties.getHost() + ":" + properties.getPort(), properties);
 		RedisModulesClient client = RedisModulesClient.create(clientResources, redisURI);
 		ClientOptions.Builder builder = client.getOptions().mutate();
 		client.setOptions(builder.build());
-		return RedisSearchConnectionFactory.create(client);
+		return RediSearchConnectionFactory.create(client);
 	}
 
-	private RedisSearchConnectionFactory createClusterFactory(ClientResources clientResources,
+	private RediSearchConnectionFactory createClusterFactory(ClientResources clientResources,
 			RediSearchProperties properties) {
 		List<RedisURI> redisURIList = properties.getCluster()
 			.getNodes()
@@ -79,7 +79,7 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 			builder.maxRedirects(properties.getCluster().getMaxRedirects());
 		}
 		clusterClient.setOptions(builder.build());
-		return RedisSearchConnectionFactory.create(clusterClient);
+		return RediSearchConnectionFactory.create(clusterClient);
 	}
 
 	private RedisURI createRedisURI(String node, RediSearchProperties properties) {

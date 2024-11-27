@@ -38,10 +38,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class FactoryProxySupport {
 
-	private static final Map<Class<? extends AbstractRedisClient>, Class<? extends RedisSearchConnectionFactory>> FACTORY_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Class<? extends AbstractRedisClient>, Class<? extends RediSearchConnectionFactory>> FACTORY_CACHE = new ConcurrentHashMap<>();
 
 	@SuppressWarnings("unchecked")
-	public static <T extends AbstractRedisClient, S extends RedisSearchConnectionFactory> S newProxy(T client) {
+	public static <T extends AbstractRedisClient, S extends RediSearchConnectionFactory> S newProxy(T client) {
 		Class<T> clientType = (Class<T>) client.getClass();
 		Class<S> type = (Class<S>) FACTORY_CACHE.computeIfAbsent(clientType, FactoryProxySupport::createFactoryClass);
 		try {
@@ -52,9 +52,9 @@ final class FactoryProxySupport {
 		}
 	}
 
-	private static <S extends RedisSearchConnectionFactory> Class<? extends S> createFactoryClass(
+	private static <S extends RediSearchConnectionFactory> Class<? extends S> createFactoryClass(
 			Class<? extends AbstractRedisClient> clientType) {
-		TypeDescription definitions = TypeDescription.ForLoadedType.of(RedisSearchConnectionFactory.class);
+		TypeDescription definitions = TypeDescription.ForLoadedType.of(RediSearchConnectionFactory.class);
 		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>subType(definitions)
 			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
 					+ "$ProxyConnectionFactory")

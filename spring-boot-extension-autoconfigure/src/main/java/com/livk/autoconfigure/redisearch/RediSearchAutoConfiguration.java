@@ -18,7 +18,7 @@ package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.redisearch.RediSearchTemplate;
-import com.livk.context.redisearch.RedisSearchConnectionFactory;
+import com.livk.context.redisearch.RediSearchConnectionFactory;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.context.redisearch.codec.RedisCodecs;
 import com.redis.lettucemod.RedisModulesClient;
@@ -61,9 +61,9 @@ public class RediSearchAutoConfiguration {
 	 * @param clientResources the client resources
 	 * @return the redis search connection factory
 	 */
-	@Bean(destroyMethod = "close")
+	@Bean
 	@ConditionalOnMissingBean
-	public RedisSearchConnectionFactory lettuceConnectionFactory(RediSearchProperties properties,
+	public RediSearchConnectionFactory lettuceConnectionFactory(RediSearchProperties properties,
 			ClientResources clientResources) {
 		return new LettuceModConnectionFactory(clientResources, properties);
 	}
@@ -76,7 +76,7 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RediSearchTemplate<String, Object> rediSearchTemplate(RedisSearchConnectionFactory factory,
+	public RediSearchTemplate<String, Object> rediSearchTemplate(RediSearchConnectionFactory factory,
 			Jackson2ObjectMapperBuilder builder) {
 		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build(), String.class, Object.class);
 		return new RediSearchTemplate<>(factory, redisCodec);
@@ -89,7 +89,7 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public StringRediSearchTemplate stringRediSearchTemplate(RedisSearchConnectionFactory factory) {
+	public StringRediSearchTemplate stringRediSearchTemplate(RediSearchConnectionFactory factory) {
 		return new StringRediSearchTemplate(factory);
 	}
 

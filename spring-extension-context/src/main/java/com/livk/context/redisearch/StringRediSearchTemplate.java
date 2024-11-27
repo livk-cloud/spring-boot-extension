@@ -23,7 +23,7 @@ import io.lettuce.core.codec.StringCodec;
  */
 public class StringRediSearchTemplate extends RediSearchTemplate<String, String> {
 
-	public StringRediSearchTemplate(RedisSearchConnectionFactory factory) {
+	public StringRediSearchTemplate(RediSearchConnectionFactory factory) {
 		super(factory, StringCodec.UTF8);
 		super.afterPropertiesSet();
 	}

@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
 class RediSearchConfig {
 
 	@Bean(destroyMethod = "close")
-	public RedisSearchConnectionFactory redisSearchConnectionFactory(@Value("${redisearch.host}") String host,
+	public RediSearchConnectionFactory rediSearchConnectionFactory(@Value("${redisearch.host}") String host,
 			@Value("${redisearch.port}") Integer port) {
 		ClientResources resources = ClientResources.builder().build();
 		RedisModulesClient client = RedisModulesClient.create(resources, RedisURI.create(host, port));
