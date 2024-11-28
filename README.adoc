@@ -44,9 +44,11 @@ link:spring-boot-example/example.adoc[示例详情] +
 
 项目相关版本控制 +
 
-#Maven#
-
-[source,xml,indent=0]
+[tabs]
+======
+Maven::
++
+[source,xml,indent=0,subs="verbatim,quotes"]
 ----
 <dependencyManagement>
     <dependencies>
@@ -61,20 +63,32 @@ link:spring-boot-example/example.adoc[示例详情] +
 </dependencyManagement>
 ----
 
-#Gradle#
-
-[source,groovy,indent=0]
+Gradle-Groovy::
++
+[source,groovy,indent=0,subs="verbatim,quotes"]
 ----
 dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
+    implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
 }
 ----
 
-仅使用当前项目的依赖相关 +
+Gradle-Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+dependencies {
+    implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
+}
+----
+======
 
-#Maven#
+最小BOM依赖
 
-[source,xml,indent=0]
+[tabs]
+======
+Maven::
++
+[source,xml,indent=0,subs="verbatim,quotes"]
 ----
 <dependencyManagement>
     <dependencies>
@@ -89,14 +103,24 @@ dependencies {
 </dependencyManagement>
 ----
 
-#Gradle#
-
-[source,groovy,indent=0]
+Gradle-Groovy::
++
+[source,groovy,indent=0,subs="verbatim,quotes"]
 ----
 dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
+    implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 }
 ----
+
+Gradle-Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+dependencies {
+    implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
+}
+----
+======
 
 == 其他支持
 
