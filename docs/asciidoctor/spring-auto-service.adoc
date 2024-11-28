@@ -20,9 +20,6 @@
 [source,groovy,indent=0]
 ----
 dependencies {
-    //自定义插件，等同于如下两个依赖引用
-    compileProcessor project(":spring-auto-service")
-
     compileOnly project(":spring-auto-service")
     annotationProcessor project(":spring-auto-service")
 }
@@ -33,9 +30,6 @@ dependencies {
 [source,kotlin,indent=0]
 ----
 dependencies {
-    //自定义插件，等同于如下两个依赖引用
-    compileProcessor(project(":spring-auto-service"))
-
     compileOnly(project(":spring-auto-service"))
     annotationProcessor(project(":spring-auto-service"))
 }

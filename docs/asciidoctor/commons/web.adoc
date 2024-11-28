@@ -5,10 +5,54 @@
 
 http请求Parameter参数,类似于org.springframework.http.HttpHeaders
 
+使用示例:
+
+[source,java,indent=0]
+----
+public class Main{
+    public static void main(String[] args){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+		    request.addParameter("username", "livk", "root", "admin");
+		    request.addParameter("password", "123456");
+		    MultiValueMap<String, String> params = WebUtils.params(request);
+		    HttpParameters parameters = new HttpParameters(params);
+    }
+}
+----
+
 ===== RequestWrapper
 
 HttpServletRequest包装类，用于修改body、添加header、添加param
 
+使用示例:
+
+[source,java,indent=0]
+----
+public class Main{
+    public static void main(String[] args){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+		    RequestWrapper wrapper = new RequestWrapper(request);
+        wrapper.body(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+        wrapper.addHeader("Content-Type", "application/json");
+        wrapper.addParameter("username", "livk");
+        wrapper.addParameter("username", new String[]{"root", "admin"});
+    }
+}
+----
+
 ===== ResponseWrapper
 
 HttpServletResponse包装类，用于修改body
+
+使用示例:
+
+[source,java,indent=0]
+----
+public class Main{
+    public static void main(String[] args){
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        ResponseWrapper wrapper = new ResponseWrapper(response);
+        wrapper.replaceBody(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+    }
+}
+----

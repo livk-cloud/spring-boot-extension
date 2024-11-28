@@ -1,0 +1,19 @@
+[[curator]]
+==== curator
+
+===== CuratorOperations
+
+Curator相关所有对zookeeper的操作 +
+由CuratorTemplate进行实现 +
+采用CuratorFramework作为底层实现
+
+使用示例
+
+[source,java,indent=0]
+----
+public static void main(String[] args){
+  CuratorFramework framework = createFramework();
+  framework.start();
+  CuratorTemplate template = new CuratorTemplate(framework);
+}
+----

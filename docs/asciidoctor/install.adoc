@@ -55,4 +55,14 @@ dependencies {
 ----
 
 === 支持的Java版本
-仅支持JDK21及其以上版本
+
+|===
+|version |支持情况
+|Jdk21以下
+| ✗
+|Jdk21-Jdk23
+| ✔
+|===
+
+
+
