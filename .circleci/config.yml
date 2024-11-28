@@ -25,8 +25,21 @@ jobs:
       - checkout
       - run: ./gradlew build
 
+  jdk23-ci:
+    docker:
+      - image: cimg/openjdk:23.0.1
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+      - run: ./gradlew build
+
 workflows:
   gradle-build:
     jobs:
       - jdk21-ci
       - jdk22-ci
+      - jdk23-ci
