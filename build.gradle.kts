@@ -11,11 +11,27 @@ tasks.asciidoctor {
 	baseDirFollowsSourceDir()
 	sourceDir(file("./docs/asciidoctor"))
 	sources {
-		include("index.adoc")
+		include("spring-boot-extension.adoc")
 	}
 	setOutputDir(file("./docs"))
 	outputOptions {
 		backends("spring-html")
+	}
+	doLast {
+		delete("./docs/fonts")
+		copy {
+			delete(file("./docs/img/banner-logo.svg"))
+			from("./docs/img/banner-logo-copy.svg")
+			into("./docs/img")
+			rename { "banner-logo.svg" }
+		}
+		copy {
+			from("./docs/spring-boot-extension.html")
+			into("./docs")
+			val version = findProperty("version").toString().replace("-SNAPSHOT", "")
+			rename { "spring-boot-extension-${version}.html" }
+			delete("./docs/spring-boot-extension.html")
+		}
 	}
 }
 
