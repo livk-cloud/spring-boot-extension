@@ -44,11 +44,9 @@ link:spring-boot-example/example.adoc[示例详情] +
 
 项目相关版本控制 +
 
-[tabs]
-======
-Maven::
-+
-[source,xml,indent=0,subs="verbatim,quotes"]
+--
+[source,xml,indent=0,subs="verbatim,quotes",role="primary"]
+.Maven
 ----
 <dependencyManagement>
     <dependencies>
@@ -63,32 +61,24 @@ Maven::
 </dependencyManagement>
 ----
 
-Gradle-Groovy::
-+
-[source,groovy,indent=0,subs="verbatim,quotes"]
+[source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
+.Gradle-Groovy
 ----
-dependencies {
-    implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
-}
+implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
 ----
 
-Gradle-Kotlin::
-+
-[source,kotlin,indent=0,subs="verbatim,quotes"]
+[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
+.Groovy-Kotlin
 ----
-dependencies {
-    implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
-}
+implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
 ----
-======
+--
 
 最小BOM依赖
 
-[tabs]
-======
-Maven::
-+
-[source,xml,indent=0,subs="verbatim,quotes"]
+--
+[source,xml,indent=0,subs="verbatim,quotes",role="primary"]
+.Maven
 ----
 <dependencyManagement>
     <dependencies>
@@ -103,24 +93,18 @@ Maven::
 </dependencyManagement>
 ----
 
-Gradle-Groovy::
-+
-[source,groovy,indent=0,subs="verbatim,quotes"]
+[source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
+.Gradle-Groovy
 ----
-dependencies {
-    implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
-}
+implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 ----
 
-Gradle-Kotlin::
-+
-[source,kotlin,indent=0,subs="verbatim,quotes"]
+[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
+.Groovy-Kotlin
 ----
-dependencies {
-    implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
-}
+implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 ----
-======
+--
 
 == 其他支持
 
