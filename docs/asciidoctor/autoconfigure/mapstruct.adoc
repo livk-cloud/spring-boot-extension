@@ -1,8 +1,7 @@
 [[mapstruct-spring-boot-starter]]
 ==== Mapstruct
 
-使用方式: +
-link:../../spring-mapstruct/mapstruct-example[mapstruct示例] +
+artifactId: mapstruct-spring-boot-starter
 
 使用示例 +
 自定义转换器 +

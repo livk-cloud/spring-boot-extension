@@ -1,7 +1,8 @@
 === 依赖相关
 
-#Maven#
-
+[primary]
+.Maven
+--
 [source,xml,indent=0]
 ----
 <dependencyManagement>
@@ -16,20 +17,31 @@
     </dependencies>
 </dependencyManagement>
 ----
+--
 
-#Gradle#
-
+[secondary]
+.Gradle-Groovy
+--
 [source,groovy,indent=0]
 ----
-dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
-}
+implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
 ----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
+----
+--
 
 最小BOM依赖
 
-#Maven#
-
+[primary]
+.Maven
+--
 [source,xml,indent=0]
 ----
 <dependencyManagement>
@@ -44,15 +56,25 @@ dependencies {
     </dependencies>
 </dependencyManagement>
 ----
+--
 
-#Gradle#
-
+[secondary]
+.Gradle-Groovy
+--
 [source,groovy,indent=0]
 ----
-dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
-}
+implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 ----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
+----
+--
 
 === 支持的Java版本
 
@@ -63,6 +85,4 @@ dependencies {
 |Jdk21-Jdk23
 | ✔
 |===
-
-
 

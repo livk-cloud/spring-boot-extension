@@ -3,8 +3,9 @@
 
 根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories
 
-*Maven*
-
+[primary]
+.Maven
+--
 [source,xml,indent=0]
 ----
 <dependency>
@@ -14,26 +15,27 @@
     <scope>provided</scope>
 </dependency>
 ----
+--
 
-*Gradle-Groovy*
-
+[secondary]
+.Gradle-Groovy
+--
 [source,groovy,indent=0]
 ----
-dependencies {
-    compileOnly project(":spring-auto-service")
-    annotationProcessor project(":spring-auto-service")
-}
+    compileOnly 'io.github.livk-cloud:spring-auto-service:${version}'
+    annotationProcessor 'io.github.livk-cloud:spring-auto-service:${version}'
 ----
+--
 
-*Gradle-Kotlin*
-
+[secondary]
+.Groovy-Kotlin
+--
 [source,kotlin,indent=0]
 ----
-dependencies {
-    compileOnly(project(":spring-auto-service"))
-    annotationProcessor(project(":spring-auto-service"))
-}
+    compileOnly("io.github.livk-cloud:spring-auto-service:${version}")
+    annotationProcessor("io.github.livk-cloud:spring-auto-service:${version}")
 ----
+--
 
 ==== @SpringAutoService使用示例
 

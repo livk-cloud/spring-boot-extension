@@ -4,6 +4,37 @@
 
 提供一些通用、工具类方便开发
 
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-extension-commons</artifactId>
+    <version>${version}</version>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+    implementation 'io.github.livk-cloud:spring-extension-commons:${version}'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+    implementation("io.github.livk-cloud:spring-extension-commons:${version}")
+----
+--
+
 include::{basedir}/aop.adoc[]
 
 include::{basedir}/expression.adoc[]

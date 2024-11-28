@@ -166,13 +166,11 @@
           <div class="sectionbody">
             <div class="sect2">
               <h3 id="_依赖相关"><a class="anchor" href="#_依赖相关"></a>2.1. 依赖相关</h3>
-              <div class="paragraph">
-                <p>
-                  <mark>Maven</mark>
-                </p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock primary">
+                <div class="title">Maven</div>
                 <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;dependency&gt;
@@ -184,31 +182,40 @@
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="paragraph">
-                <p>
-                  <mark>Gradle</mark>
-                </p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
                 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-dependencies:$version")
-}
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
 </code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
+</code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="paragraph">
                 <p>最小BOM依赖</p>
               </div>
-              <div class="paragraph">
-                <p>
-                  <mark>Maven</mark>
-                </p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock primary">
+                <div class="title">Maven</div>
                 <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;dependency&gt;
@@ -220,19 +227,30 @@
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="paragraph">
-                <p>
-                  <mark>Gradle</mark>
-                </p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
                 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
-    implementation platform("io.github.livk-cloud:spring-extension-bom:$version")
-}
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 </code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
+</code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -270,41 +288,43 @@
               <div class="paragraph">
                 <p>根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories</p>
               </div>
-              <div class="paragraph">
-                <p><strong>Maven</strong></p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock primary">
+                <div class="title">Maven</div>
                 <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-auto-service&lt;/artifactId&gt;
     &lt;version&gt;${version}&lt;/version&gt;
     &lt;scope&gt;provided&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="paragraph">
-                <p><strong>Gradle-Groovy</strong></p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
                 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
-    compileOnly project(":spring-auto-service")
-    annotationProcessor project(":spring-auto-service")
-}
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">compileOnly 'io.github.livk-cloud:spring-auto-service:${version}'
+annotationProcessor 'io.github.livk-cloud:spring-auto-service:${version}'
 </code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="paragraph">
-                <p><strong>Gradle-Kotlin</strong></p>
-              </div>
-              <div class="listingblock">
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
                 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">dependencies {
-    compileOnly(project(":spring-auto-service"))
-    annotationProcessor(project(":spring-auto-service"))
-}
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">compileOnly("io.github.livk-cloud:spring-auto-service:${version}")
+annotationProcessor("io.github.livk-cloud:spring-auto-service:${version}")
 </code></pre>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="sect3">
@@ -403,6 +423,42 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
                 spring通用工具拓展</h3>
               <div class="paragraph">
                 <p>提供一些通用、工具类方便开发</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-extension-commons&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-extension-commons:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-extension-commons:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="sect3">
                 <h4 id="aop"><a class="anchor" href="#aop"></a>3.2.1. aop</h4>
@@ -839,6 +895,42 @@ import java.lang.reflect.Method;
               <div class="paragraph">
                 <p>提供一些第三方包与spring整合的拓展,包括一些自定义拓展</p>
               </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-extension-context&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-extension-context:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-extension-context:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="sect3">
                 <h4 id="curator"><a class="anchor" href="#curator"></a>3.3.1. curator</h4>
                 <div class="sect4">
@@ -960,12 +1052,47 @@ public class Consumerimplements DisruptorEventConsumer&lt;MessageModel&gt; {
               <div class="paragraph">
                 <p>使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置</p>
               </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-extension-autoconfigure&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="sect3">
                 <h4 id="dynamic-spring-boot-starter"><a class="anchor" href="#dynamic-spring-boot-starter"></a>3.4.1.
                   动态数据源</h4>
                 <div class="paragraph">
-                  <p>使用方式<br>
-                    <a href="../../spring-mybatis/dynamic-datasource-example">示例</a><br></p>
+                  <p>artifactId: dynamic-spring-boot-starter</p>
                 </div>
                 <div class="paragraph">
                   <p>主启动类添加 <code>@EnableDynamicDatasource</code></p>
@@ -1056,9 +1183,7 @@ public class UserController {
                 <h4 id="excel-spring-boot-starter"><a class="anchor" href="#excel-spring-boot-starter"></a>3.4.2.
                   注解导入或生成Excel</h4>
                 <div class="paragraph">
-                  <p>使用方式:<br>
-                    <a href="../../spring-easyexcel/spring-webmvc-easyexcel-example">SpringMvc示例</a><br>
-                    <a href="../../spring-easyexcel/spring-webflux-easyexcel-example">SpringWebflux示例</a><br></p>
+                  <p>artifactId: easyexcel-spring-boot-starter</p>
                 </div>
                 <div class="sect4">
                   <h5 id="_excel导入"><a class="anchor" href="#_excel导入"></a>Excel导入</h5>
@@ -1161,8 +1286,7 @@ public class Info2Controller {
                 <h4 id="http-spring-boot-starter"><a class="anchor" href="#http-spring-boot-starter"></a>3.4.3.
                   接口声明式http客户端</h4>
                 <div class="paragraph">
-                  <p>使用方式:<br>
-                    <a href="../../spring-http/http-example">http interface示例</a><br></p>
+                  <p>artifactId: http-spring-boot-starter</p>
                 </div>
                 <div class="paragraph">
                   <p>使用示例，在接口上添加 <code>@Provider</code> 或者 <code>@HttpExchange</code><br>
@@ -1210,8 +1334,7 @@ public class HttpController {
                 <h4 id="lock-spring-boot-starter"><a class="anchor" href="#lock-spring-boot-starter"></a>3.4.4. 本地锁与分布式锁
                 </h4>
                 <div class="paragraph">
-                  <p>使用方式:<br>
-                    <a href="../../spring-lock/local-lock-example">lock示例</a><br></p>
+                  <p>artifactId: distributed-lock-boot-starter</p>
                 </div>
                 <div class="paragraph">
                   <p>使用示例<br>
@@ -1261,8 +1384,7 @@ public class ShopController {
                 <h4 id="mapstruct-spring-boot-starter"><a class="anchor" href="#mapstruct-spring-boot-starter"></a>3.4.5.
                   Mapstruct</h4>
                 <div class="paragraph">
-                  <p>使用方式:<br>
-                    <a href="../../spring-mapstruct/mapstruct-example">mapstruct示例</a><br></p>
+                  <p>artifactId: mapstruct-spring-boot-starter</p>
                 </div>
                 <div class="paragraph">
                   <p>使用示例<br>

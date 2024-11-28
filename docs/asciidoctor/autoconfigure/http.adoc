@@ -1,8 +1,7 @@
 [[http-spring-boot-starter]]
 ==== 接口声明式http客户端
 
-使用方式: +
-link:../../spring-http/http-example[http interface示例] +
+artifactId: http-spring-boot-starter
 
 使用示例，在接口上添加 `@Provider` 或者 `@HttpExchange` +
 兼容reactor `Mono` `Flux` +

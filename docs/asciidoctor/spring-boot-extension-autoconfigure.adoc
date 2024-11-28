@@ -4,6 +4,37 @@
 
 使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置
 
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-boot-extension-autoconfigure</artifactId>
+    <version>${version}</version>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+    implementation 'io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+    implementation("io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}")
+----
+--
+
 include::{basedir}/curator.adoc[]
 
 include::{basedir}/dynamic.adoc[]
