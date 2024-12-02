@@ -8,12 +8,16 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-      architecture: "amd64"
-      platform: "linux/amd64"
 
     steps:
       - checkout
-      - run: ./gradlew build
+      - run:
+          name: Start Docker
+          command: |
+            sudo service docker start
+      - run:
+          name: Run Tests with Testcontainers
+          command: ./gradlew build
 
   jdk22-ci:
     docker:
@@ -22,12 +26,16 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-      architecture: "amd64"
-      platform: "linux/amd64"
 
     steps:
       - checkout
-      - run: ./gradlew build
+      - run:
+          name: Start Docker
+          command: |
+            sudo service docker start
+      - run:
+          name: Run Tests with Testcontainers
+          command: ./gradlew build
 
   jdk23-ci:
     docker:
@@ -36,12 +44,16 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-      architecture: "amd64"
-      platform: "linux/amd64"
 
     steps:
       - checkout
-      - run: ./gradlew build
+      - run:
+          name: Start Docker
+          command: |
+            sudo service docker start
+      - run:
+          name: Run Tests with Testcontainers
+          command: ./gradlew build
 
 workflows:
   gradle-build:
