@@ -6,22 +6,25 @@ executors:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2004:202104-01
+      image: ubuntu-2204:2024.11.1
       docker_layer_caching: true
+    resource_class: arm.medium
   jdk22:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2004:202104-01
+      image: ubuntu-2204:2024.11.1
       docker_layer_caching: true
+    resource_class: arm.medium
   jdk23:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2004:202104-01
+      image: ubuntu-2204:2024.11.1
       docker_layer_caching: true
+    resource_class: arm.medium
 
 jobs:
   jdk21-ci:
