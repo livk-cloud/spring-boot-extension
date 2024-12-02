@@ -1,63 +1,49 @@
 version: 2.1
 
-jobs:
-  jdk21-ci:
+orbs:
+  tcc: atomicjar/testcontainers-cloud-orb@0.1.0
+
+executors:
+  jdk21:
     docker:
       - image: cimg/openjdk:21.0.5
-
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
-      - run:
-          name: Start Docker
-          command: |
-            sudo service docker start
-      - run:
-          name: Run Tests with Testcontainers
-          command: ./gradlew build
-
-  jdk22-ci:
+  jdk22:
     docker:
       - image: cimg/openjdk:22.0.2
-
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
-      - run:
-          name: Start Docker
-          command: |
-            sudo service docker start
-      - run:
-          name: Run Tests with Testcontainers
-          command: ./gradlew build
-
-  jdk23-ci:
+  jdk23:
     docker:
       - image: cimg/openjdk:23.0.1
-
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
-      - run:
-          name: Start Docker
-          command: |
-            sudo service docker start
-      - run:
-          name: Run Tests with Testcontainers
-          command: ./gradlew build
 
 workflows:
   gradle-build:
     jobs:
-      - jdk21-ci
-      - jdk22-ci
-      - jdk23-ci
+      - jdk21-ci:
+          command: ./gradlew build
+          executor: jdk21
+          pre-steps:
+            - tcc/setup
+      - jdk22-ci:
+          command: ./gradlew build
+          executor: jdk22
+          pre-steps:
+            - tcc/setup
+      - jdk23-ci:
+          command: ./gradlew build
+          executor: jdk23
+          pre-steps:
+            - tcc/setup
