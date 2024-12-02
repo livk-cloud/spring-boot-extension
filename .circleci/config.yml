@@ -23,24 +23,32 @@ executors:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
 
+jobs:
+  jdk21-ci:
+    executor: jdk21
+    steps:
+      - checkout
+      - run: ./gradlew build
+  jdk22-ci:
+    executor: jdk22
+    steps:
+      - checkout
+      - run: ./gradlew build
+  jdk23-ci:
+    executor: jdk23
+    steps:
+      - checkout
+      - run: ./gradlew build
+
 workflows:
   gradle-build:
     jobs:
       - jdk21-ci:
-          steps: checkout
-          command: ./gradlew build
-          executor: jdk21
           pre-steps:
             - tcc/setup
       - jdk22-ci:
-          steps: checkout
-          command: ./gradlew build
-          executor: jdk22
           pre-steps:
             - tcc/setup
       - jdk23-ci:
-          steps: checkout
-          command: ./gradlew build
-          executor: jdk23
           pre-steps:
             - tcc/setup
