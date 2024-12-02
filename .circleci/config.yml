@@ -1,38 +1,38 @@
 version: 2.1
 
-jobs:
-  jdk21-ci:
+executors:
+  jdk21:
     docker:
       - image: cimg/openjdk:21.0.5
-
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
-    steps:
-      - checkout
-      - run: ./gradlew build
-
-  jdk22-ci:
+  jdk22:
     docker:
       - image: cimg/openjdk:22.0.2
-
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+  jdk23:
+    docker:
+      - image: cimg/openjdk:23.0.1
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
 
+jobs:
+  jdk21-ci:
+    executor: jdk21
     steps:
       - checkout
       - run: ./gradlew build
-
+  jdk22-ci:
+    executor: jdk22
+    steps:
+      - checkout
+      - run: ./gradlew build
   jdk23-ci:
-    docker:
-      - image: cimg/openjdk:23.0.1
-
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-
+    executor: jdk23
     steps:
       - checkout
       - run: ./gradlew build
