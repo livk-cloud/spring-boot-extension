@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest({ "spring.pulsar.consumer.topics=livk-topic", "spring.pulsar.consumer.subscription.name=consumer" })
 @AutoConfigureMockMvc
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class MessageControllerTest {
 
 	@Container

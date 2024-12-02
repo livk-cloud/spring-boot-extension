@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @AutoConfigureMockMvc
 @SpringBootTest
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class ProducerControllerTest {
 
 	@Container

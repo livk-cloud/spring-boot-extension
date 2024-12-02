@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringJUnitConfig(CuratorConfig.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class CuratorTemplateTest {
 
 	@Container

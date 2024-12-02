@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RabbitControllerTest {
 
 	@Container

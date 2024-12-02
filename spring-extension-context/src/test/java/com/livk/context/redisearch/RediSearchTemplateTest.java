@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author livk
  */
 @SpringJUnitConfig(RediSearchConfig.class)
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RediSearchTemplateTest {
 
 	@Container

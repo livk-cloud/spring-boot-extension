@@ -36,7 +36,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class StudentControllerTest {
 
 	@Container

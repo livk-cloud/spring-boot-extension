@@ -38,7 +38,7 @@ import java.time.Duration;
  * @author livk
  */
 @SpringBootTest(classes = MqttApp.class)
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class MqttTest {
 
 	@Container

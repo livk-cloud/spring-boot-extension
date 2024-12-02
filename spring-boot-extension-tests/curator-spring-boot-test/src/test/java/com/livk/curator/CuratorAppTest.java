@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author livk
  */
 @SpringBootTest
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class CuratorAppTest {
 
 	@Container

@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(classes = PGSQLTypeHandlerExampleApp.class)
 @AutoConfigureMockMvc
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
 

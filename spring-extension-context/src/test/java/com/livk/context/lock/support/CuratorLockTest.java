@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author livk
  */
 @SpringJUnitConfig(CuratorLockConfig.class)
-@Testcontainers(parallel = true)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class CuratorLockTest {
 
 	@Container
