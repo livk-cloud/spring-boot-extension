@@ -38,14 +38,14 @@ class DataSourceContextHolderTest {
 
 			DataSourceContextHolder.switchDataSource(datasource, true);
 			assertEquals(datasource, DataSourceContextHolder.getDataSource());
-			service.submit(() -> {
+			service.execute(() -> {
 				assertEquals(datasource, DataSourceContextHolder.getDataSource());
 			});
 			DataSourceContextHolder.clear();
 
 			DataSourceContextHolder.switchDataSource(datasource, false);
 			assertEquals(datasource, DataSourceContextHolder.getDataSource());
-			service.submit(() -> {
+			service.execute(() -> {
 				assertNull(DataSourceContextHolder.getDataSource());
 			});
 			DataSourceContextHolder.clear();
