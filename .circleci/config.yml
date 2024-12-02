@@ -10,39 +10,36 @@ executors:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    steps:
-      - checkout
   jdk22:
     docker:
       - image: cimg/openjdk:22.0.2
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    steps:
-      - checkout
   jdk23:
     docker:
       - image: cimg/openjdk:23.0.1
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    steps:
-      - checkout
 
 workflows:
   gradle-build:
     jobs:
       - jdk21-ci:
+          steps: checkout
           command: ./gradlew build
           executor: jdk21
           pre-steps:
             - tcc/setup
       - jdk22-ci:
+          steps: checkout
           command: ./gradlew build
           executor: jdk22
           pre-steps:
             - tcc/setup
       - jdk23-ci:
+          steps: checkout
           command: ./gradlew build
           executor: jdk23
           pre-steps:
