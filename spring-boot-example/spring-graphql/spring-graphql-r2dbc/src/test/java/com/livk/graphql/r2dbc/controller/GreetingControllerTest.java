@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class GreetingControllerTest {
 
 	@Container

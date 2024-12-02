@@ -49,7 +49,7 @@ class SpringServiceTest {
 		Map<String, String> result = service.spring();
 
 		assertNotEquals(result.get("spring-version"), SpringVersion.getVersion());
-		assertEquals(result.get("spring-version"), "1.0.0");
+		assertEquals("1.0.0", result.get("spring-version"));
 		assertTrue(Boolean.parseBoolean(result.get("mockito")));
 	}
 

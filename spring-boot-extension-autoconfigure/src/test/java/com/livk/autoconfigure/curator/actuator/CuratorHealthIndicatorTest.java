@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class CuratorHealthIndicatorTest {
 
 	@Test

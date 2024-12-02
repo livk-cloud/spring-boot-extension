@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class ShopControllerTest {
 
 	@Container

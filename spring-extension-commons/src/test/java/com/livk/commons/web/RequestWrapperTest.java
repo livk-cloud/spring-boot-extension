@@ -25,7 +25,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.MultiValueMap;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,7 +58,7 @@ class RequestWrapperTest {
 		ServletInputStream inputStream = wrapper.getInputStream();
 		byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
 		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(map), bytes);
-		assertEquals(wrapper.getContentType(), MediaType.APPLICATION_JSON_VALUE);
+		assertEquals(MediaType.APPLICATION_JSON_VALUE, wrapper.getContentType());
 	}
 
 	@Test

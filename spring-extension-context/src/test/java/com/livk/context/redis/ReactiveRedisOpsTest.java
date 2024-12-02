@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author livk
  */
 @SpringJUnitConfig(RedisFactoryConfig.class)
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class ReactiveRedisOpsTest {
 
 	@Container

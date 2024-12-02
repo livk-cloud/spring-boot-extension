@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author livk
  */
 @SpringJUnitConfig(MybatisConfig.class)
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class MysqlJsonTypeHandlerTest {
 
 	@Container

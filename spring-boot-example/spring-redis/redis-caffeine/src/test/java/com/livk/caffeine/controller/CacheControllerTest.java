@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class CacheControllerTest {
 
 	@Container
@@ -90,7 +90,7 @@ class CacheControllerTest {
 				.getContentAsString();
 			result.add(newUUID);
 		}
-		assertEquals(result.size(), 1);
+		assertEquals(1, result.size());
 	}
 
 	@Test
@@ -113,7 +113,7 @@ class CacheControllerTest {
 				.getContentAsString();
 			result.add(newUUID);
 		}
-		assertEquals(result.size(), 3);
+		assertEquals(3, result.size());
 	}
 
 	@Test

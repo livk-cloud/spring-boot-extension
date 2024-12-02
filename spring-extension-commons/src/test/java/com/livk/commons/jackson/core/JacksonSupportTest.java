@@ -78,7 +78,7 @@ class JacksonSupportTest {
 			        <c>3</c>
 			    </b>
 			</pro>
-			            """;
+			""";
 
 	@Test
 	void javaType() {

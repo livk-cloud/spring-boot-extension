@@ -48,7 +48,7 @@ class JavaServiceTest {
 		Map<String, String> result = service.java();
 
 		assertNotEquals(result.get("java-version"), System.getProperty("java.version"));
-		assertEquals(result.get("java-version"), "17");
+		assertEquals("17", result.get("java-version"));
 		assertTrue(Boolean.parseBoolean(result.get("mockito")));
 	}
 

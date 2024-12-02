@@ -47,7 +47,7 @@ import java.util.List;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
 

@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author livk
  */
 @SpringJUnitConfig(RedissonLockConfig.class)
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers(parallel = true)
 class RedissonLockTest {
 
 	@Container
