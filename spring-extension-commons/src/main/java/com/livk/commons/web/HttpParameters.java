@@ -19,7 +19,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.LinkedCaseInsensitiveMap;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.Serial;
@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -52,12 +51,16 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	final MultiValueMap<String, String> parameters;
 
 	public HttpParameters() {
-		this(CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH)));
+		this(CollectionUtils.toMultiValueMap(new LinkedMultiValueMap<>(8)));
 	}
 
 	public HttpParameters(MultiValueMap<String, String> parameters) {
 		Assert.notNull(parameters, "MultiValueMap must not be null");
 		this.parameters = parameters;
+	}
+
+	public HttpParameters(Map<String, List<String>> map) {
+		this(CollectionUtils.toMultiValueMap(map));
 	}
 
 	public List<String> getOrEmpty(Object parameterName) {

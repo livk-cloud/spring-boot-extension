@@ -16,7 +16,6 @@ package com.livk.commons.web;
 import com.livk.commons.util.WebUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 
@@ -36,8 +35,7 @@ class HttpParametersTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("username", "livk", "root", "admin");
 		request.addParameter("password", "123456");
-		MultiValueMap<String, String> params = WebUtils.params(request);
-		HttpParameters parameters = new HttpParameters(params);
+		HttpParameters parameters = WebUtils.params(request);
 		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
 		assertEquals("livk", parameters.getFirst("username"));
 		assertEquals("123456", parameters.getFirst("password"));

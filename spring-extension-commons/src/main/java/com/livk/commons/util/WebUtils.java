@@ -20,6 +20,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.web.HttpParameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.UtilityClass;
@@ -28,8 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedCaseInsensitiveMap;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -112,27 +111,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * 解析request的param,并使用delimiter连接相同key的数据
-	 * @param request request
-	 * @param delimiter 连接符
-	 * @return map
-	 * @deprecated use {@link #params(HttpServletRequest)}
-	 */
-	@Deprecated(forRemoval = true)
-	public Map<String, String> paramMap(HttpServletRequest request, CharSequence delimiter) {
-		return params(request).entrySet()
-			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(delimiter, entry.getValue())));
-	}
-
-	/**
 	 * 解析request的param转成MultiValueMap
 	 * @param request request
 	 * @return MultiValueMap
 	 */
-	public MultiValueMap<String, String> params(HttpServletRequest request) {
-		Map<String, List<String>> map = Maps.transformValues(request.getParameterMap(), Lists::newArrayList);
-		return new LinkedMultiValueMap<>(map);
+	public HttpParameters params(HttpServletRequest request) {
+		return new HttpParameters(Maps.transformValues(request.getParameterMap(), Lists::newArrayList));
 	}
 
 	/**

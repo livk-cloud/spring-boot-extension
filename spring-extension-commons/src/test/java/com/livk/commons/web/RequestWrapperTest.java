@@ -80,10 +80,10 @@ class RequestWrapperTest {
 		wrapper.addParameter("username", new String[] { "livk", "root", "admin" });
 		wrapper.addParameter("password", "123456");
 
-		MultiValueMap<String, String> params = WebUtils.params(wrapper);
-		assertEquals(List.of("livk", "root", "admin"), params.get("username"));
-		assertLinesMatch(List.of("123456"), params.get("password"));
-		assertEquals(2, params.size());
+		HttpParameters parameters = WebUtils.params(wrapper);
+		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
+		assertLinesMatch(List.of("123456"), parameters.get("password"));
+		assertEquals(2, parameters.size());
 	}
 
 }
