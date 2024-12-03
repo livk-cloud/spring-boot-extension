@@ -1,38 +1,36 @@
 version: 2.1
 
 executors:
-  jdk21:
-    docker:
-      - image: cimg/openjdk:21.0.5
+  ubuntu:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-  jdk22:
-    docker:
-      - image: cimg/openjdk:22.0.2
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-  jdk23:
+    machine:
+      image: ubuntu-2204:2024.11.1
+      docker_layer_caching: true
+    resource_class: arm.large
+
+jobs:
+  jdk21-ci:
+    executor: ubuntu
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt install openjdk-21-jdk
+      - checkout
+      - run: ./gradlew build
+  jdk22-ci:
+    executor: ubuntu
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt install openjdk-22-jdk
+      - checkout
+      - run: ./gradlew build
+  jdk23-ci:
     docker:
       - image: cimg/openjdk:23.0.1
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
-jobs:
-  jdk21-ci:
-    executor: jdk21
-    steps:
-      - checkout
-      - run: ./gradlew build
-  jdk22-ci:
-    executor: jdk22
-    steps:
-      - checkout
-      - run: ./gradlew build
-  jdk23-ci:
-    executor: jdk23
     steps:
       - checkout
       - run: ./gradlew build
