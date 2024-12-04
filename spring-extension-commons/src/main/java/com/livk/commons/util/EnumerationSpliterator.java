@@ -29,14 +29,14 @@ import java.util.function.Consumer;
  *
  * @param <T> the type parameter
  * @author livk
- * @see BaseStreamUtils#convert(Enumeration)
+ * @see StreamUtils#convert(Enumeration)
  */
 final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T> {
 
 	private final Enumeration<T> enumeration;
 
-	private EnumerationSpliterator(Enumeration<T> enumeration, int additionalCharacteristics) {
-		super(Long.MAX_VALUE, additionalCharacteristics);
+	private EnumerationSpliterator(Enumeration<T> enumeration) {
+		super(Long.MAX_VALUE, Spliterator.ORDERED);
 		this.enumeration = enumeration;
 	}
 
@@ -47,7 +47,7 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 	 * @return spliterator
 	 */
 	public static <T> Spliterator<T> spliteratorUnknownSize(Enumeration<T> enumeration) {
-		return new EnumerationSpliterator<>(Objects.requireNonNull(enumeration), Spliterator.ORDERED);
+		return new EnumerationSpliterator<>(Objects.requireNonNull(enumeration));
 	}
 
 	@Override

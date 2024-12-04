@@ -19,7 +19,7 @@ package com.livk.auth.server.common.converter;
 import com.google.common.collect.Sets;
 import com.livk.auth.server.common.constant.SecurityConstants;
 import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
-import com.livk.commons.util.BaseStreamUtils;
+import com.livk.commons.util.StreamUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -80,7 +80,7 @@ public interface OAuth2BaseAuthenticationConverter<T extends OAuth2BaseAuthentic
 					OAuth2ErrorCodes.INVALID_CLIENT, SecurityConstants.ACCESS_TOKEN_REQUEST_ERROR_URI)));
 
 		// 扩展信息
-		Map<String, Object> additionalParameters = BaseStreamUtils.convert(request.getParameterNames())
+		Map<String, Object> additionalParameters = StreamUtils.convert(request.getParameterNames())
 			.filter(Predicate.isEqual(OAuth2ParameterNames.GRANT_TYPE)
 				.negate()
 				.and(Predicate.isEqual(OAuth2ParameterNames.SCOPE).negate()))

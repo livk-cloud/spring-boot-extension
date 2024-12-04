@@ -26,7 +26,7 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.livk.commons.io.ResourceUtils;
-import com.livk.commons.util.BaseStreamUtils;
+import com.livk.commons.util.StreamUtils;
 import com.livk.context.easyexcel.annotation.ResponseExcel;
 import com.livk.context.easyexcel.listener.ExcelMapReadListener;
 import lombok.experimental.UtilityClass;
@@ -107,7 +107,7 @@ public class EasyExcelSupport {
 
 	private void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
 		try (ExcelWriter writer = builder.build()) {
-			result.entrySet().forEach(BaseStreamUtils.forEachWithIndex(0, (entry, index) -> {
+			result.entrySet().forEach(StreamUtils.forEachWithIndex(0, (entry, index) -> {
 				WriteSheet writeSheet = EasyExcel.writerSheet(index, entry.getKey())
 					.registerWriteHandler(new SheetWriteHandler() {
 						@Override

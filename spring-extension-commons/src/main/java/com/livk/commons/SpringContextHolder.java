@@ -17,8 +17,8 @@
 package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanCreationNotAllowedException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
@@ -57,7 +57,6 @@ import java.util.Map;
  *
  * @author livk
  */
-@Slf4j
 @SpringAutoService
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component(SpringContextHolder.BEAN_NAME)
@@ -230,7 +229,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 			registerBean(context, beanDefinition, beanName);
 		}
 		else {
-			log.error("bean register fail name: {} instantClass: {}", beanName, beanDefinition.getResolvableType());
+			throw new BeanCreationNotAllowedException(beanName, "missing created bean factory");
 		}
 	}
 

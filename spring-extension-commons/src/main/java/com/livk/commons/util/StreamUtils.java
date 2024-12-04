@@ -16,6 +16,8 @@
 
 package com.livk.commons.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -35,7 +37,6 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import lombok.experimental.UtilityClass;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ import lombok.experimental.UtilityClass;
  * @author livk
  */
 @UtilityClass
-public class BaseStreamUtils {
+public class StreamUtils {
 
 	/**
 	 * 合并Map,key相同的则合并成List

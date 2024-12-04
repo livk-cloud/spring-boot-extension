@@ -41,8 +41,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -106,8 +104,13 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return attributes
 	 */
 	public Map<String, Object> attributes(HttpServletRequest request) {
-		return BaseStreamUtils.convert(request.getAttributeNames())
-			.collect(Collectors.toMap(Function.identity(), request::getAttribute));
+		Enumeration<String> attributeNames = request.getAttributeNames();
+		Map<String, Object> attributes = Maps.newHashMap();
+		while (attributeNames.hasMoreElements()) {
+			String attributeName = attributeNames.nextElement();
+			attributes.put(attributeName, request.getAttribute(attributeName));
+		}
+		return attributes;
 	}
 
 	/**
