@@ -28,10 +28,9 @@ tasks.asciidoctor {
 		copy {
 			from("./docs/spring-boot-extension.html")
 			into("./docs")
-			val version = findProperty("version").toString().replace("-SNAPSHOT", "")
-			rename { "spring-boot-extension-${version}.html" }
-			delete("./docs/spring-boot-extension.html")
+			rename { "spring-boot-extension-${findProperty("version")}.html" }
 		}
+		delete("./docs/spring-boot-extension.html")
 	}
 }
 
