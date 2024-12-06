@@ -81,7 +81,9 @@ class AviatorExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-		assertEquals("livk123", resolver.evaluate("springStrAdd(x,y)", Map.of("x", "livk", "y", "123")));
+		assertEquals("livk123", resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123")));
+
+		assertEquals(4, resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class));
 	}
 
 	@TestConfiguration
@@ -95,6 +97,25 @@ class AviatorExpressionResolverTest {
 		@Bean
 		public SpringContextFunctionLoader springContextFunctionLoader(ApplicationContext applicationContext) {
 			return new SpringContextFunctionLoader(applicationContext);
+		}
+
+		@Bean
+		public IfElseFunction ifElse() {
+			return new IfElseFunction();
+		}
+
+	}
+
+	static class IfElseFunction extends AbstractFunction {
+
+		@Override
+		public String getName() {
+			return "ifElse";
+		}
+
+		@Override
+		public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2, AviatorObject arg3) {
+			return FunctionUtils.getBooleanValue(arg1, env) ? arg2 : arg3;
 		}
 
 	}

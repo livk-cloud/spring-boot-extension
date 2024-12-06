@@ -41,6 +41,11 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 	@Override
 	public AviatorFunction onFunctionNotFound(String name) {
 		try {
+			for (AviatorFunction function : this.applicationContext.getBeanProvider(AviatorFunction.class)) {
+				if (name.equals(function.getName())) {
+					return function;
+				}
+			}
 			return this.applicationContext.getBean(name, AviatorFunction.class);
 		}
 		catch (NoSuchBeanDefinitionException e) {
