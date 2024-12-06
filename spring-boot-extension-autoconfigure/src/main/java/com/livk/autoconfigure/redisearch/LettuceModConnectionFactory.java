@@ -99,17 +99,18 @@ public class LettuceModConnectionFactory implements RediSearchConnectionFactory 
 
 	@Override
 	public final <T> GenericObjectPoolConfig<T> getPoolConfig() {
-		GenericObjectPoolConfig<T> config = new GenericObjectPoolConfig<>();
-		config.setJmxEnabled(false);
-		if (pool != null) {
+		if (pool != null && pool.getEnabled()) {
+			GenericObjectPoolConfig<T> config = new GenericObjectPoolConfig<>();
+			config.setJmxEnabled(false);
 			config.setMaxTotal(pool.getMaxActive());
 			config.setMaxIdle(pool.getMaxIdle());
 			config.setMinIdle(pool.getMinIdle());
 			if (pool.getMaxWait() != null) {
 				config.setMaxWait(pool.getMaxWait());
 			}
+			return config;
 		}
-		return config;
+		return RediSearchConnectionFactory.super.getPoolConfig();
 	}
 
 }
