@@ -81,7 +81,7 @@ public class RediSearchProperties {
 		 * available. With Jedis, pooling is implicitly enabled in sentinel mode and this
 		 * setting only applies to single node setup.
 		 */
-		private Boolean enabled;
+		private Boolean enabled = true;
 
 		/**
 		 * Maximum number of "idle" connections in the pool. Use a negative value to
