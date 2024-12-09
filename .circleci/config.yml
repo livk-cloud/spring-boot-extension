@@ -6,7 +6,7 @@ executors:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2204:2024.11.1
+      image: ubuntu-2404:2024.11.1
       docker_layer_caching: true
     resource_class: arm.large
 
@@ -26,12 +26,10 @@ jobs:
       - checkout
       - run: ./gradlew build
   jdk23-ci:
-    docker:
-      - image: cimg/openjdk:23.0.1
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+    executor: ubuntu
     steps:
+      - run: sudo apt-get update
+      - run: sudo apt install openjdk-23-jdk
       - checkout
       - run: ./gradlew build
 
