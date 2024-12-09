@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
+package com.livk.context.mybatis.inject.handler;
 
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import org.springframework.core.GenericTypeResolver;
 
 /**
  * <p>
- * SqlTimeOutHandler
+ * FunctionHandle
  * </p>
  *
+ * @param <T> the type parameter
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+public interface FunctionHandle<T> {
 
-	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
+	/**
+	 * Handler t.
+	 * @return the t
+	 */
+	T handler();
+
+	/**
+	 * Gets type.
+	 * @return the type
+	 */
+	@SuppressWarnings("unchecked")
+	default Class<T> getType() {
+		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), FunctionHandle.class);
 	}
 
 }

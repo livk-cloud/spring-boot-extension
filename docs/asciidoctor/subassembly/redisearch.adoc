@@ -1,0 +1,6 @@
+[[redisearch]]
+==== redisearch
+
+===== redisearch-spring-boot-starter
+
+artifactId: redisearch-spring-boot-starter

@@ -1,0 +1,35 @@
+[[lock]]
+==== lock
+
+===== DistLock注解
+
+标记方法,用于对此方法进行分布式锁
+
+使用示例
+key支持SpEL表达式，同时支持公平锁、读锁、写锁，并支持异步 +
+在方法上添加 `@OnLock(scope =  LockScope.DISTRIBUTED_LOCK)` (当前分布式锁仅支持Redisson、Curator)+
+
+[source,java,indent=0]
+----
+public class UserService {
+  @PostMapping("/buy/distributed")
+	@DistLock(key = "shop")
+	public void buyLocal(@RequestParam(defaultValue = "2") Integer count) {
+
+	}
+}
+----
+
+===== DistributedLock
+
+分布式锁基类,实现注册为Spring Bean即可
+提供RedissonLock作为实现，需要Redisson依赖
+提供CuratorLock作为实现，需要Curator依赖
+
+===== DistributedLockInterceptor
+
+分布式锁拦截器,注册为Spring Bean即，使用AOP实现
+
+===== distributed-lock-boot-starter
+
+artifactId: distributed-lock-boot-starter

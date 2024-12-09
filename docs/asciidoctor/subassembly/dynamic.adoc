@@ -1,0 +1,48 @@
+[[dynamic]]
+==== dynamic
+
+===== DynamicSource
+
+标记Service方法上,动态数据源切换
+
+使用示例
+
+[source,java,indent=0]
+----
+@DynamicSource("mysql")
+public class UserService{
+
+}
+----
+
+===== DataSourceInterceptor
+
+动态数据源切换拦截器,注册为Spring Bean即可
+
+===== DynamicDatasource
+
+动态数据源,使用DataSourceContextHolder进行数据源切换
+
+使用示例
+
+[source,java,indent=0]
+----
+@Configuration
+public class Config {
+  @Bean
+	public DynamicDatasource dynamicDatasource() {
+		DynamicDatasource dynamicDatasource = new DynamicDatasource();
+		dynamicDatasource.setTargetDataSources(datasourceMap);
+		dynamicDatasource.setDefaultTargetDataSource(datasourcePrimary);
+		return dynamicDatasource;
+	}
+}
+----
+
+===== dynamic-datasource-boot-starter
+
+artifactId: dynamic-datasource-boot-starter
+
+根据DynamicDatasourceProperties注册DynamicDatasource和DataSourceInterceptor
+
+需要添加EnableDynamicDatasource到Spring Configuration

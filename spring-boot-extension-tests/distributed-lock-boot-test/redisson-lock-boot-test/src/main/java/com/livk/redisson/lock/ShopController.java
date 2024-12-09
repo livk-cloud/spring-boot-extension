@@ -16,7 +16,7 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.context.lock.annotation.OnLock;
+import com.livk.context.lock.annotation.DistLock;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
@@ -65,8 +65,8 @@ public class ShopController {
 	}
 
 	@PostMapping("/buy/distributed")
-	@OnLock(key = "shop:lock")
-	public HttpEntity<Map<String, Object>> buyDistributed(@RequestParam(defaultValue = "2") Integer count) {
+	@DistLock(key = "shop:lock")
+	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) {
 		RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("script/buy.lua"), Long.class);
 		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(),
 				new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"),

@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
+package com.livk.context.mybatis.type.postgresql;
 
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
- * SqlTimeOutHandler
+ * UserMapper
  * </p>
  *
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+@Mapper
+public interface UserMapper {
 
-	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
-	}
+	@Insert("insert into \"user\" (username,password,des) values (#{username},#{password},#{des})")
+	int insert(User user);
+
+	@Select("select * from \"user\"")
+	List<User> selectList();
 
 }

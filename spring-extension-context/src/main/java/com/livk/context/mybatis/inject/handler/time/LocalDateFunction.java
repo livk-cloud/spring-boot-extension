@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
+package com.livk.context.mybatis.inject.handler.time;
 
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import com.livk.context.mybatis.inject.handler.FunctionHandle;
+
+import java.time.LocalDate;
 
 /**
  * <p>
- * SqlTimeOutHandler
+ * LocalDateFunction
  * </p>
  *
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+public class LocalDateFunction implements FunctionHandle<LocalDate> {
 
 	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
+	public LocalDate handler() {
+		return LocalDate.now();
 	}
 
 }

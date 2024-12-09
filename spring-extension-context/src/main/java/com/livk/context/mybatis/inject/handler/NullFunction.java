@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
-
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+package com.livk.context.mybatis.inject.handler;
 
 /**
  * <p>
- * SqlTimeOutHandler
+ * NullFunction
  * </p>
  *
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+public class NullFunction implements FunctionHandle<Object> {
 
 	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
+	public Object handler() {
+		return null;
 	}
 
 }

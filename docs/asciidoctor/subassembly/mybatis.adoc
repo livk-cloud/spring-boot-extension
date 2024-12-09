@@ -1,0 +1,6 @@
+[[mybatis]]
+==== mybatis
+
+===== mybatis-extension-boot-starter
+
+artifactId: mybatis-extension-boot-starter

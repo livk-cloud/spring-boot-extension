@@ -1,0 +1,6 @@
+[[qrcode]]
+==== qrcode
+
+===== qrcode-spring-boot-starter
+
+artifactId: qrcode-spring-boot-starter

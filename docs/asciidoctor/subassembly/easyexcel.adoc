@@ -1,0 +1,94 @@
+[[easyexcel]]
+==== easyexcel
+
+===== Excel导入
+
+使用注解 `@ExcelImport` 解析Excel(支持Spring Webflux) +
+fileName指定文件名称 +
+parse使用自定义封装阿里EasyExcel的解析器 `com.livk.excel.mvc.listener.InfoExcelListener` +
+paramName指定需要传递至那个参数 +
+
+[source,java,indent=0]
+----
+@RestController
+public class InfoController {
+
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadList")
+    public HttpEntity<List<Info>> uploadList(List<Info> dataExcels) {
+        return ResponseEntity.ok(dataExcels);
+    }
+
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("upload")
+    public HttpEntity<List<Info>> upload(List<Info> dataExcels) {
+        return ResponseEntity.ok(dataExcels);
+    }
+
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadMono")
+    public Mono<HttpEntity<List<Info>>> uploadMono(Mono<List<Info>> dataExcels) {
+        return dataExcels.map(ResponseEntity::ok);
+    }
+}
+----
+
+===== Excel导出
+
+使用注解 `@ExcelReturn` 或者 `@ExcelController` 解析Excel(支持Spring Webflux) +
+fileName指定下载文件名 +
+suffix指定Excel后缀 默认xlsm +
+使用ExcelController之后，fileName为out，suffix为xlsm
+
+返回结果为 `List<?>` `Mono<List<?>>` `Flux<?>` 是sheet名称即为sheet +
+返回结果为 `Map<String,?>` `Mono<Map<String,?>>` 是sheet名称即为map key +
+
+[source,java,indent=0]
+----
+@RestController
+@RequiredArgsConstructor
+public class InfoController {
+
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadDownLoad")
+    public List<Info> uploadDownLoadMono(List<Info> dataExcels) {
+        return dataExcels;
+    }
+
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadDownLoadMono")
+    public Mono<List<Info>> uploadDownLoadMono(Mono<List<Info>> dataExcels) {
+        return dataExcels;
+    }
+
+    @ExcelReturn(fileName = "outFile")
+    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
+    @PostMapping("uploadDownLoadFlux")
+    public Flux<Info> uploadDownLoadFlux(Mono<List<Info>> dataExcels) {
+        return dataExcels.flatMapMany(Flux::fromIterable);
+    }
+}
+----
+
+[source,java,indent=0]
+----
+@ExcelController
+public class Info2Controller {
+
+    @PostMapping("download")
+    public Map<String, List<Info>> download(@RequestBody List<Info> dataExcels) {
+        return dataExcels.stream()
+                .collect(Collectors.groupingBy(info -> String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+    }
+}
+----
+
+===== easyexcel-spring-boot-starter
+
+artifactId: easyexcel-spring-boot-starter
+
+根据Servlet环境自动注册 *ExcelMethodArgumentResolver* 和 *ExcelMethodReturnValueHandler* +
+
+或Reactive环境自动注册 *ReactiveExcelMethodReturnValueHandler* 和 *ReactiveExcelMethodArgumentResolver*

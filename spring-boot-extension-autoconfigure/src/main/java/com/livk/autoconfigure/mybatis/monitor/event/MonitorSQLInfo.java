@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins.handler;
-
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
+package com.livk.autoconfigure.mybatis.monitor.event;
 
 /**
- * <p>
- * VersionFunction
- * </p>
+ * The type Monitor sql info.
  *
  * @author livk
  */
-public class VersionFunction implements FunctionHandle<Integer> {
-
-	@Override
-	public Integer handler() {
-		return 0;
-	}
+public record MonitorSQLInfo(String sql, Long timeout, Object result) {
 
 }

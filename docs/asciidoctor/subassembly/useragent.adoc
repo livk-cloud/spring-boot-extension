@@ -1,0 +1,10 @@
+[[useragent]]
+==== useragent
+
+===== browscap-spring-boot-starter
+
+artifactId: browscap-spring-boot-starter
+
+===== yauaa-spring-boot-starter
+
+artifactId: yauaa-spring-boot-starter

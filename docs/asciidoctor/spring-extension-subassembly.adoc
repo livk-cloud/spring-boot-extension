@@ -1,0 +1,103 @@
+=== spring 组件拓展
+
+:basedir: subassembly
+
+*兼容Spring的基础包* +
+提供一些第三方包与spring整合的拓展,包括一些自定义拓展
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-extension-context</artifactId>
+    <version>${version}</version>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+    implementation 'io.github.livk-cloud:spring-extension-context:${version}'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+    implementation("io.github.livk-cloud:spring-extension-context:${version}")
+----
+--
+
+*兼容SpringBoot的拓展包* +
+使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-boot-extension-autoconfigure</artifactId>
+    <version>${version}</version>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+    implementation 'io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+    implementation("io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}")
+----
+--
+
+include::{basedir}/curator.adoc[]
+
+include::{basedir}/disruptor.adoc[]
+
+include::{basedir}/dynamic.adoc[]
+
+include::{basedir}/easyexcel.adoc[]
+
+include::{basedir}/http.adoc[]
+
+include::{basedir}/limit.adoc[]
+
+include::{basedir}/lock.adoc[]
+
+include::{basedir}/mapstruct.adoc[]
+
+include::{basedir}/mybatis.adoc[]
+
+include::{basedir}/oss.adoc[]
+
+include::{basedir}/qrcode.adoc[]
+
+include::{basedir}/redis.adoc[]
+
+include::{basedir}/redisearch.adoc[]
+
+include::{basedir}/redisson.adoc[]
+
+include::{basedir}/useragent.adoc[]
+
+

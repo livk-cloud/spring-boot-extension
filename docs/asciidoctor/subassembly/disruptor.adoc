@@ -1,0 +1,78 @@
+[[disruptor]]
+==== disruptor
+
+===== DisruptorScan
+
+类似于MyBatisScan用与扫描DisruptorEvent标记的实体 +
+根据实体和DisruptorEvent生成SpringDisruptor<DisruptorEventWrapper<T>>队列
+
+使用示例
+
+[source,java,indent=0]
+----
+@DisruptorScan("com.livk.disruptor")
+public class Config{
+
+}
+----
+
+===== DisruptorEventProducer
+
+Disruptor生产者
+
+使用示例
+
+[source,java,indent=0]
+----
+@org.springframework.stereotype.Component
+public class DisruptorMqServiceImpl implements DisruptorMqService {
+
+	private final DisruptorEventProducer<MessageModel> producer;
+
+	public DisruptorMqServiceImpl(SpringDisruptor<MessageModel> disruptor) {
+		producer = new DisruptorEventProducer<>(disruptor);
+	}
+
+	@Override
+	public void send(String message) {
+		log.info("record the message: {}", message);
+		producer.send(toMessageModel(message));
+	}
+
+	@Override
+	public void batch(List<String> messages) {
+		List<MessageModel> messageModels = messages.stream().map(this::toMessageModel).toList();
+		producer.sendBatch(messageModels);
+	}
+
+	private MessageModel toMessageModel(String message) {
+		return MessageModel.builder().message(message).build();
+	}
+
+}
+----
+
+===== DisruptorEventConsumer
+
+Disruptor消费者
+
+使用示例
+
+[source,java,indent=0]
+----
+@org.springframework.stereotype.Component
+public class Consumerimplements DisruptorEventConsumer<MessageModel> {
+
+	private final ApplicationContext applicationContext;
+
+	@Override
+	public void onEvent(MessageModel wrapper, long sequence, boolean endOfBatch) {
+		log.info("消费者消费的信息是：{} :{} :{} id:{}", wrapper, sequence, endOfBatch, applicationContext.getId());
+	}
+
+}
+----
+
+===== disruptor-spring-boot-starter
+
+artifactId: disruptor-spring-boot-starter

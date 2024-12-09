@@ -14,51 +14,53 @@
  * limitations under the License.
  */
 
-package com.livk.context.limit.annotation;
+package com.livk.context.lock.annotation;
+
+import com.livk.context.lock.LockType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
 
 /**
- * The interface Limit.
+ * <p>
+ * Lock
+ * </p>
  *
  * @author livk
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Limit {
+public @interface DistLock {
 
 	/**
-	 * 资源的key
-	 * @return String string
+	 * 锁名称
+	 * @return the string
 	 */
-	String key() default "";
+	String key();
 
 	/**
-	 * 单位时间
-	 * @return int int
+	 * Type lock type.
+	 * @return the lock type
 	 */
-	int rateInterval();
+	LockType type() default LockType.LOCK;
 
 	/**
-	 * 单位(默认秒)
-	 * @return TimeUnit time unit
+	 * Lease time long.
+	 * @return the long
 	 */
-	TimeUnit rateIntervalUnit() default TimeUnit.SECONDS;
+	long leaseTime() default 10;
 
 	/**
-	 * 单位时间产生的令牌个数
-	 * @return int int
+	 * Wait time long.
+	 * @return the long
 	 */
-	int rate();
+	long waitTime() default 3;
 
 	/**
-	 * 是否限制IP
-	 * @return boolean boolean
+	 * @return the boolean
 	 */
-	boolean restrictIp() default false;
+	boolean async() default false;
 
 }

@@ -1,0 +1,4 @@
+[[redisson-spring-boot-starter]]
+==== redisson-spring-boot-starter
+
+artifactId: redisson-spring-boot-starter

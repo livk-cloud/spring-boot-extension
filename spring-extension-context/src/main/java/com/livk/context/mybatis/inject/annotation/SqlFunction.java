@@ -14,51 +14,53 @@
  * limitations under the License.
  */
 
-package com.livk.context.limit.annotation;
+package com.livk.context.mybatis.inject.annotation;
+
+import com.livk.context.mybatis.inject.enums.FunctionType;
+import com.livk.context.mybatis.inject.enums.SqlFill;
+import com.livk.context.mybatis.inject.handler.FunctionHandle;
+import com.livk.context.mybatis.inject.handler.NullFunction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
 
 /**
- * The interface Limit.
+ * <p>
+ * SqlFunction
+ * </p>
  *
  * @author livk
  */
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Limit {
+@Target(ElementType.FIELD)
+public @interface SqlFunction {
 
 	/**
-	 * 资源的key
-	 * @return String string
+	 * <p>
+	 * {@link SqlFunction#supplier()}
+	 * </p>
+	 * <p>
+	 * {@link SqlFunction#time()}
+	 * </p>
+	 * <p>
+	 * 两个必须指定一个，否则无法注入
+	 * </p>
+	 * @return the sql fill
 	 */
-	String key() default "";
+	SqlFill fill();
 
 	/**
-	 * 单位时间
-	 * @return int int
+	 * 优先级低于{@link SqlFunction#time()}
+	 * @return the class
 	 */
-	int rateInterval();
+	Class<? extends FunctionHandle<?>> supplier() default NullFunction.class;
 
 	/**
-	 * 单位(默认秒)
-	 * @return TimeUnit time unit
+	 * 优先级高于 {@link SqlFunction#supplier()}
+	 * @return the function enum
 	 */
-	TimeUnit rateIntervalUnit() default TimeUnit.SECONDS;
-
-	/**
-	 * 单位时间产生的令牌个数
-	 * @return int int
-	 */
-	int rate();
-
-	/**
-	 * 是否限制IP
-	 * @return boolean boolean
-	 */
-	boolean restrictIp() default false;
+	FunctionType time() default FunctionType.DEFAULT;
 
 }

@@ -1,0 +1,32 @@
+[[limit]]
+==== limit
+
+===== Limit注解
+
+标记方法,用于对此方法进行限流
+
+使用示例
+
+[source,java,indent=0]
+----
+public class UserService {
+
+  @Limit(key = "livk:user", rate = 2, rateInterval = 30)
+  public void save(User user) {
+
+  }
+}
+----
+
+===== LimitExecutor
+
+限流执行器基类,实现注册为Spring Bean即可
+提供RedissonLimitExecutor作为实现，需要Redisson依赖
+
+===== LimitInterceptor
+
+限流拦截器,注册为Spring Bean即，使用AOP实现
+
+===== limit-spring-boot-starter
+
+artifactId: limit-spring-boot-starter

@@ -16,7 +16,7 @@
 
 package com.livk.curator.lock;
 
-import com.livk.context.lock.annotation.OnLock;
+import com.livk.context.lock.annotation.DistLock;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +45,8 @@ public class ShopController {
 	private int buySucCount = 0;
 
 	@PostMapping("/buy/distributed")
-	@OnLock(key = "shop")
-	public HttpEntity<Map<String, Object>> buyLocal(@RequestParam(defaultValue = "2") Integer count) {
+	@DistLock(key = "shop")
+	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) {
 		buyCount++;
 		if (num >= count) {
 			num -= count;

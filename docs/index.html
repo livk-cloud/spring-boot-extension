@@ -14,17 +14,14 @@
     .main-content {
       text-align: center;
     }
-
     #version-links {
       margin-top: 30px;
       display: flex;
       flex-direction: column;
     }
-
     #version-links div {
       margin-bottom: 30px;
     }
-
     #version-links a {
       margin: 0 10px;
       font-size: 1rem;
@@ -35,12 +32,10 @@
       border-radius: 5px;
       transition: all 0.3s ease;
     }
-
     #version-links a:hover {
       background-color: #4CAF50;
       color: white;
     }
-
     footer {
       text-align: center;
       padding: 10px 0;
@@ -49,6 +44,22 @@
       position: fixed; /* 固定在页面底部 */
       bottom: 0;
       width: 100%;
+    }
+    .github-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #24292e;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .github-button:hover {
+      background-color: #0366d6;
     }
   </style>
 </head>
@@ -70,13 +81,15 @@
 <!-- Main Content Section -->
 <div class="main-content">
   <h2>Welcome to Spring Boot Extension Documentation</h2>
+  <a href="https://github.com/livk-cloud/spring-boot-extension" target="_blank" class="github-button">GitHub</a>
   <p>探索 Spring Boot Extension 库的强大功能。使用导航面板访问详细指南、API 参考和示例.</p>
   <p>要开始使用，请在下方选择一个版本:</p>
 
   <!-- Version Links -->
   <div id="version-links">
     <div>
-      <a href="./spring-boot-extension-1.4.0.html">1.4.0</a>
+      <a href="spring-boot-extension-1.4.0.html">1.4.0</a>
+      <a href="spring-boot-extension-1.4.1-SNAPSHOT.html">1.4.1-SNAPSHOT</a>
     </div>
   </div>
 </div>

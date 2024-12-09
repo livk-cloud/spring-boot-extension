@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
+package com.livk.context.mybatis.type.postgresql;
 
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
 
 /**
  * <p>
- * SqlTimeOutHandler
+ * User
  * </p>
  *
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+@Data
+public class User {
 
-	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
-	}
+	private Long id;
+
+	private String username;
+
+	private String password;
+
+	private JsonNode des;
 
 }

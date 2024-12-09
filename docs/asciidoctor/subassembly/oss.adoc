@@ -1,0 +1,6 @@
+[[oss]]
+==== oss
+
+===== oss-spring-boot-starter
+
+artifactId: oss-spring-boot-starter

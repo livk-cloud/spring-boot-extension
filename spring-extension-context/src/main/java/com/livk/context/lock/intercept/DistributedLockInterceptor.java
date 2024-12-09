@@ -20,7 +20,7 @@ import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.context.lock.DistributedLock;
-import com.livk.context.lock.annotation.OnLock;
+import com.livk.context.lock.annotation.DistLock;
 import com.livk.context.lock.exception.LockException;
 import com.livk.context.lock.exception.UnSupportLockException;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  * @author livk
  */
 @RequiredArgsConstructor
-public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLock> {
+public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DistLock> {
 
 	/**
 	 * lock的实现类集合
@@ -45,14 +45,13 @@ public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAd
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, OnLock onLock) throws Throwable {
-		Assert.notNull(onLock, "lock is null");
+	protected Object invoke(MethodInvocation invocation, DistLock lock) throws Throwable {
+		Assert.notNull(lock, "lock is null");
 		DistributedLock distributedLock = distributedLockProvider.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new UnSupportLockException("缺少DistributedLock的实现"));
-		String key = resolver.evaluate(onLock.key(), invocation.getMethod(), invocation.getArguments());
-		boolean isLock = distributedLock.tryLock(onLock.type(), key, onLock.leaseTime(), onLock.waitTime(),
-				onLock.async());
+		String key = resolver.evaluate(lock.key(), invocation.getMethod(), invocation.getArguments());
+		boolean isLock = distributedLock.tryLock(lock.type(), key, lock.leaseTime(), lock.waitTime(), lock.async());
 		try {
 			if (isLock) {
 				return invocation.proceed();
