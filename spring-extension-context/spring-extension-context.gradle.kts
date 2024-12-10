@@ -10,7 +10,7 @@ dependencies {
 	optional("org.springframework:spring-jdbc")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	optional("jakarta.validation:jakarta.validation-api")
-	optional("com.alibaba:easyexcel")
+	optional("cn.idev.excel:fastexcel")
 	optional("org.springframework:spring-webmvc")
 	optional("org.springframework:spring-webflux")
 	optional("org.apache.curator:curator-recipes")

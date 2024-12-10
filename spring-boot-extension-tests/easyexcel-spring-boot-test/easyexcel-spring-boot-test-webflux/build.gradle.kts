@@ -1,8 +1,0 @@
-plugins {
-	com.livk.service
-}
-
-dependencies {
-	implementation(project(":spring-boot-extension-starters:easyexcel-spring-boot-starter"))
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
-}

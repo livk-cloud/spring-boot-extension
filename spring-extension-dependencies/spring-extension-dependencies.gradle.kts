@@ -15,7 +15,7 @@ dependencies {
 		api(libs.bundles.redisson.all)
 		api(libs.bundles.mapstruct.all)
 		api(libs.guava)
-		api(libs.easyexcel)
+		api(libs.fastexcel)
 		api(libs.spotbugs.annotations)
 		api(libs.curator.recipes)
 		api(libs.browscap.java)

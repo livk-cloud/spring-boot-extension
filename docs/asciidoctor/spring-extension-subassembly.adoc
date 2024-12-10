@@ -76,7 +76,7 @@ include::{basedir}/disruptor.adoc[]
 
 include::{basedir}/dynamic.adoc[]
 
-include::{basedir}/easyexcel.adoc[]
+include::{basedir}/fastexcel.adoc[]
 
 include::{basedir}/http.adoc[]
 
