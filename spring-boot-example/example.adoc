@@ -9,7 +9,7 @@ link:spring-clickhouse/spring-clickhouse-jdbc[Spring整合ClickHouse-jdbc] +
 link:spring-clickhouse/spring-clickhouse-r2dbc[Spring整合ClickHouse-r2dbc] +
 link:spring-doc/spring-doc-mvc[spring mvc整合Spring doc] +
 link:spring-doc/spring-doc-webflux[spring webflux整合spring doc] +
-link:spring-easyexcel/spring-easyexcel-batch[spring batch整合Excel自定义注解实现导入和导出] +
+link:spring-fastexcel/spring-fastexcel-batch[spring batch整合Excel自定义注解实现导入和导出] +
 link:spring-graphql/spring-graphql-mybatis[graphql整合Mybatis] +
 link:spring-graphql/spring-graphql-r2dbc[graphql整合Postgres R2dbc] +
 link:spring-hateoas[spring整合hateoas实现restful风格返回] +

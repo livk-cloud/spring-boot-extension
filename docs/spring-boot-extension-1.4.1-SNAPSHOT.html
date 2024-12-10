@@ -34,7 +34,7 @@
         <div class="details">
           <span id="author" class="author">Livk</span><br>
           <span id="revnumber">version 1.4.1-SNAPSHOT,</span>
-          <span id="revdate">2024-12-09</span>
+          <span id="revdate">2024-12-10</span>
         </div>
         <div id="toc" class="toc2">
           <div id="toctitle">Table of Contents</div>
@@ -129,11 +129,11 @@
                         <li><a href="#_dynamic_datasource_boot_starter">dynamic-datasource-boot-starter</a></li>
                       </ul>
                     </li>
-                    <li><a href="#easyexcel">3.3.4. easyexcel</a>
+                    <li><a href="#fastexcel">3.3.4. fastexcel</a>
                       <ul class="sectlevel4">
                         <li><a href="#_excel导入">Excel导入</a></li>
                         <li><a href="#_excel导出">Excel导出</a></li>
-                        <li><a href="#_easyexcel_spring_boot_starter">easyexcel-spring-boot-starter</a></li>
+                        <li><a href="#_fastexcel_spring_boot_starter">fastexcel-spring-boot-starter</a></li>
                       </ul>
                     </li>
                     <li><a href="#http-spring-boot-starter">3.3.5. http-spring-boot-starter</a></li>
@@ -1223,13 +1223,13 @@ public class Config {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="easyexcel"><a class="anchor" href="#easyexcel"></a>3.3.4. easyexcel</h4>
+                <h4 id="fastexcel"><a class="anchor" href="#fastexcel"></a>3.3.4. fastexcel</h4>
                 <div class="sect4">
                   <h5 id="_excel导入"><a class="anchor" href="#_excel导入"></a>Excel导入</h5>
                   <div class="paragraph">
                     <p>使用注解 <code>@ExcelImport</code> 解析Excel(支持Spring Webflux)<br>
                       fileName指定文件名称<br>
-                      parse使用自定义封装阿里EasyExcel的解析器
+                      parse使用自定义封装FastExcel的解析器
                       <code>com.livk.excel.mvc.listener.InfoExcelListener</code><br>
                       paramName指定需要传递至那个参数<br></p>
                   </div>
@@ -1321,10 +1321,10 @@ public class Info2Controller {
                   </div>
                 </div>
                 <div class="sect4">
-                  <h5 id="_easyexcel_spring_boot_starter"><a class="anchor" href="#_easyexcel_spring_boot_starter"></a>easyexcel-spring-boot-starter
+                  <h5 id="_fastexcel_spring_boot_starter"><a class="anchor" href="#_fastexcel_spring_boot_starter"></a>fastexcel-spring-boot-starter
                   </h5>
                   <div class="paragraph">
-                    <p>artifactId: easyexcel-spring-boot-starter</p>
+                    <p>artifactId: fastexcel-spring-boot-starter</p>
                   </div>
                   <div class="paragraph">
                     <p>根据Servlet环境自动注册 <strong>ExcelMethodArgumentResolver</strong> 和 <strong>ExcelMethodReturnValueHandler</strong><br>
@@ -1678,7 +1678,7 @@ public class UserController {
       <div id="footer">
         <div id="footer-text">
           Version 1.4.1-SNAPSHOT<br>
-          Last updated 2024-12-09 17:26:42 +0800
+          Last updated 2024-12-10 +0800
         </div>
       </div>
     </div>
