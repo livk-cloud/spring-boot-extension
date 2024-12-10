@@ -8,12 +8,12 @@ updates:
   - package-ecosystem: "gradle" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
       timezone: "Asia/Hong_Kong"
-      time: "07:00"
+      time: "09:00"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       timezone: "Asia/Hong_Kong"
-      time: "07:00"
+      time: "09:00"
