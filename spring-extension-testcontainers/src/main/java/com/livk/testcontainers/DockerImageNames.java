@@ -32,7 +32,7 @@ public class DockerImageNames {
 
 	public static final String REDIS_IMAGE = "redis";
 
-	public static final String REDIS_STACK_IMAGE = "redis/redis-stack";
+	public static final String REDIS_STACK_IMAGE = "redis/redis-stack-server";
 
 	public static final String CLICKHOUSE_IMAGE = "clickhouse/clickhouse-server";
 
