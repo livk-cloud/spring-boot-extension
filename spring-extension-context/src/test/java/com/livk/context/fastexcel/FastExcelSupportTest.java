@@ -44,7 +44,6 @@ class FastExcelSupportTest {
 		assertFalse(map.isEmpty());
 
 		assertEquals(1, map.size());
-		assertEquals(1, map.keySet().size());
 		assertEquals(Set.of("0"), map.keySet());
 		assertEquals(100, map.values().stream().mapToLong(Collection::size).sum());
 	}
