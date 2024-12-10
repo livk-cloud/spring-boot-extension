@@ -18,6 +18,7 @@ package com.livk.boot.info
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.springframework.boot.gradle.dsl.SpringBootExtension
@@ -49,6 +50,7 @@ abstract class BootPlugin : Plugin<Project> {
 			it.archiveBaseName.set(project.name)
 			it.archiveFileName.set("${it.archiveBaseName.get()}.${it.archiveExtension.get()}")
 			it.launchScript()
+			it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 		}
 
 		project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar::class.java) {
