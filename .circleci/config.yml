@@ -36,6 +36,21 @@ jobs:
 workflows:
   gradle-build:
     jobs:
-      - jdk21-ci
-      - jdk22-ci
-      - jdk23-ci
+      - jdk21-ci:
+          filters:
+            branches:
+              only:
+                - main
+                - dev-snapshot
+      - jdk22-ci:
+          filters:
+            branches:
+              only:
+                - main
+                - dev-snapshot
+      - jdk23-ci:
+          filters:
+            branches:
+              only:
+                - main
+                - dev-snapshot
