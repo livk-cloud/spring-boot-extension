@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * @author livk
  */
 @SpringFactories
-public class RestTemplateAdapterWrapper implements AdapterFactory<RestTemplateAdapter> {
+class RestTemplateAdapterFactory implements AdapterFactory<RestTemplateAdapter> {
 
 	@Override
 	public boolean support() {

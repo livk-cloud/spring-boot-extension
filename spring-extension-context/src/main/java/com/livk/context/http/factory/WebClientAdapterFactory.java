@@ -16,30 +16,30 @@ package com.livk.context.http.factory;
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.commons.util.ClassUtils;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 
 /**
  * @author livk
  */
 @SpringFactories
-public class RestClientAdapterWrapper implements AdapterFactory<RestClientAdapter> {
+class WebClientAdapterFactory implements AdapterFactory<WebClientAdapter> {
 
 	@Override
 	public boolean support() {
-		return ClassUtils.isPresent("org.springframework.web.client.RestClient");
+		return ClassUtils.isPresent("org.springframework.web.reactive.function.client.WebClient");
 	}
 
 	@Override
-	public RestClientAdapter create(BeanFactory beanFactory) {
-		RestClient restClient = beanFactory.getBeanProvider(RestClient.class)
-			.getIfAvailable(() -> beanFactory.getBean(RestClient.Builder.class).build());
-		return RestClientAdapter.create(restClient);
+	public WebClientAdapter create(BeanFactory beanFactory) {
+		WebClient webClient = beanFactory.getBeanProvider(WebClient.class)
+			.getIfAvailable(() -> beanFactory.getBean(WebClient.Builder.class).build());
+		return WebClientAdapter.create(webClient);
 	}
 
 	@Override
 	public AdapterType type() {
-		return AdapterType.REST_CLIENT;
+		return AdapterType.WEB_CLIENT;
 	}
 
 }
