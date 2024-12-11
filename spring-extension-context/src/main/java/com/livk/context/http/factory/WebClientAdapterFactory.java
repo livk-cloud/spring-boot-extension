@@ -32,9 +32,13 @@ class WebClientAdapterFactory implements AdapterFactory<WebClientAdapter> {
 
 	@Override
 	public WebClientAdapter create(BeanFactory beanFactory) {
-		WebClient webClient = beanFactory.getBeanProvider(WebClient.class)
-			.getIfAvailable(() -> beanFactory.getBean(WebClient.Builder.class).build());
-		return WebClientAdapter.create(webClient);
+		WebClient client = beanFactory.getBeanProvider(WebClient.class).getIfUnique();
+		if (client == null) {
+			WebClient.Builder builder = beanFactory.getBeanProvider(WebClient.Builder.class)
+				.getIfUnique(WebClient::builder);
+			client = builder.build();
+		}
+		return WebClientAdapter.create(client);
 	}
 
 	@Override

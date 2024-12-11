@@ -32,14 +32,23 @@ class RestClientAdapterFactory implements AdapterFactory<RestClientAdapter> {
 
 	@Override
 	public RestClientAdapter create(BeanFactory beanFactory) {
-		RestClient restClient = beanFactory.getBeanProvider(RestClient.class)
-			.getIfAvailable(() -> beanFactory.getBean(RestClient.Builder.class).build());
+		RestClient restClient = beanFactory.getBeanProvider(RestClient.class).getIfUnique();
+		if (restClient == null) {
+			RestClient.Builder builder = beanFactory.getBeanProvider(RestClient.Builder.class)
+				.getIfUnique(RestClient::builder);
+			restClient = builder.build();
+		}
 		return RestClientAdapter.create(restClient);
 	}
 
 	@Override
 	public AdapterType type() {
 		return AdapterType.REST_CLIENT;
+	}
+
+	@Override
+	public int getOrder() {
+		return AdapterFactory.super.getOrder() + 1;
 	}
 
 }

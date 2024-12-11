@@ -39,15 +39,22 @@ class RestTemplateAdapterFactory implements AdapterFactory<RestTemplateAdapter> 
 		ObjectProvider<RestTemplate> beanProvider = beanFactory.getBeanProvider(RestTemplate.class);
 		Supplier<RestTemplate> defaultSupplier = RestTemplate::new;
 		if (ClassUtils.isPresent("org.springframework.boot.web.client.RestTemplateBuilder")) {
-			defaultSupplier = () -> beanFactory.getBean(RestTemplateBuilder.class).build();
+			RestTemplateBuilder builder = beanFactory.getBeanProvider(RestTemplateBuilder.class)
+				.getIfUnique(RestTemplateBuilder::new);
+			defaultSupplier = builder::build;
 		}
-		RestTemplate restTemplate = beanProvider.getIfAvailable(defaultSupplier);
+		RestTemplate restTemplate = beanProvider.getIfUnique(defaultSupplier);
 		return RestTemplateAdapter.create(restTemplate);
 	}
 
 	@Override
 	public AdapterType type() {
 		return AdapterType.REST_TEMPLATE;
+	}
+
+	@Override
+	public int getOrder() {
+		return AdapterFactory.super.getOrder() + 2;
 	}
 
 }
