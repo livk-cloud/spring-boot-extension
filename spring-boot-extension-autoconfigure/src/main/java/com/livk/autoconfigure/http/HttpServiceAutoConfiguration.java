@@ -17,12 +17,24 @@
 package com.livk.autoconfigure.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.context.http.HttpServiceProxyFactoryCustomizer;
+import com.livk.context.http.HttpServiceRegistrar;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.NonNull;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * <p>
@@ -33,9 +45,9 @@ import org.springframework.context.annotation.Import;
  */
 @AutoConfiguration
 @SpringAutoService
-@Import(HttpServiceRegistrar.class)
+@Import(HttpServiceAutoConfiguration.AutoConfiguredHttpServiceRegistrar.class)
 @ConditionalOnClass(name = "com.livk.http.marker.HttpMarker")
-public class HttpInterfaceAutoConfiguration {
+public class HttpServiceAutoConfiguration {
 
 	/**
 	 * 添加SpringEL解析
@@ -45,6 +57,27 @@ public class HttpInterfaceAutoConfiguration {
 	@Bean
 	public HttpServiceProxyFactoryCustomizer embeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
 		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
+	}
+
+	public static class AutoConfiguredHttpServiceRegistrar extends HttpServiceRegistrar implements BeanFactoryAware {
+
+		private BeanFactory beanFactory;
+
+		public AutoConfiguredHttpServiceRegistrar(Environment environment) {
+			super(environment);
+		}
+
+		@Override
+		protected String[] getBasePackages(AnnotationMetadata metadata) {
+			List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
+			return StringUtils.toStringArray(packages);
+		}
+
+		@Override
+		public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
+			this.beanFactory = beanFactory;
+		}
+
 	}
 
 }

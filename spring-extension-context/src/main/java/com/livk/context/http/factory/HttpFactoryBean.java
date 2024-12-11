@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.http.factory;
+package com.livk.context.http.factory;
 
-import com.livk.autoconfigure.http.HttpServiceProxyFactoryCustomizer;
+import com.livk.context.http.HttpServiceProxyFactoryCustomizer;
 import lombok.Setter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

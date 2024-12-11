@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.http;
+package com.livk.context.http;
 
-import com.livk.autoconfigure.http.annotation.HttpProvider;
-import com.livk.autoconfigure.http.factory.AdapterFactory;
-import com.livk.autoconfigure.http.factory.AdapterType;
-import com.livk.autoconfigure.http.factory.HttpFactoryBean;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.ClassUtils;
+import com.livk.context.http.annotation.HttpProvider;
+import com.livk.context.http.exception.HttpServiceRegistrarException;
+import com.livk.context.http.factory.AdapterFactory;
+import com.livk.context.http.factory.AdapterType;
+import com.livk.context.http.factory.HttpFactoryBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -35,13 +36,16 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 import java.lang.annotation.Annotation;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -89,7 +93,7 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 					AnnotationAttributes attributes = AnnotationUtils
 						.attributesFor(scannedGenericBeanDefinition.getMetadata(), HttpProvider.class);
 					AdapterType type = attributes.getEnum("type");
-					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = AdapterType.builder(type);
+					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = this.getAdapterFactory(type);
 					String beanClassName = candidateComponent.getBeanClassName();
 					Assert.notNull(beanClassName, "beanClassName not be null");
 					Class<?> beanType = ClassUtils.resolveClassName(beanClassName,
@@ -112,6 +116,19 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 			}
 		}
 		return beanDefinitions;
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected AdapterFactory<? extends HttpExchangeAdapter> getAdapterFactory(AdapterType type) {
+		List<AdapterFactory> adapterFactories = SpringFactoriesLoader.loadFactories(AdapterFactory.class,
+				getResourceLoader().getClassLoader());
+		adapterFactories.sort(Comparator.comparingInt(AdapterFactory::getOrder));
+		for (AdapterFactory adapterFactory : adapterFactories) {
+			if (type == AdapterType.AUTO && adapterFactory.support() || adapterFactory.type() == type) {
+				return (AdapterFactory<? extends HttpExchangeAdapter>) adapterFactory;
+			}
+		}
+		throw new HttpServiceRegistrarException("adapterFactory not be found");
 	}
 
 }

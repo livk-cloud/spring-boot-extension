@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package com.livk.http.service;
-
-import com.livk.context.http.annotation.HttpProvider;
-import com.livk.context.http.factory.AdapterType;
-import org.springframework.web.service.annotation.GetExchange;
-
-import java.util.Map;
+package com.livk.context.http.exception;
 
 /**
- * <p>
- * RemoteService
- * </p>
- *
  * @author livk
  */
-@HttpProvider(type = AdapterType.WEB_CLIENT, url = "http://localhost:${server.port:8080}/rpc")
-public interface SpringBootService {
+public class HttpServiceRegistrarException extends RuntimeException {
 
-	@GetExchange("spring-boot")
-	Map<String, String> springBoot();
+	/**
+	 * Instantiates a new Disruptor registrar exception.
+	 * @param message the message
+	 */
+	public HttpServiceRegistrarException(String message) {
+		super(message);
+	}
 
 }

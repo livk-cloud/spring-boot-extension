@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package com.livk.http.service;
+package com.livk.context.http;
 
-import com.livk.context.http.annotation.HttpProvider;
-import com.livk.context.http.factory.AdapterType;
-import org.springframework.web.service.annotation.GetExchange;
-
-import java.util.Map;
+import com.livk.commons.Customizer;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
  * <p>
- * RemoteService
+ * HttpServiceProxyFactoryCustomizer
  * </p>
  *
  * @author livk
  */
-@HttpProvider(type = AdapterType.WEB_CLIENT, url = "http://localhost:${server.port:8080}/rpc")
-public interface SpringBootService {
-
-	@GetExchange("spring-boot")
-	Map<String, String> springBoot();
+@FunctionalInterface
+public interface HttpServiceProxyFactoryCustomizer extends Customizer<HttpServiceProxyFactory.Builder> {
 
 }
