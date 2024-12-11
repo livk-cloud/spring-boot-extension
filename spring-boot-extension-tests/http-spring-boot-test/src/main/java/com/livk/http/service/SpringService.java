@@ -16,8 +16,8 @@
 
 package com.livk.http.service;
 
-import com.livk.autoconfigure.http.factory.AdapterType;
-import com.livk.autoconfigure.http.annotation.HttpProvider;
+import com.livk.context.http.annotation.HttpProvider;
+import com.livk.context.http.factory.AdapterType;
 import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.Map;

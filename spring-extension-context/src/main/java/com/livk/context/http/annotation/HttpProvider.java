@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.http.annotation;
+package com.livk.context.http.annotation;
 
-import com.livk.autoconfigure.http.factory.AdapterType;
+import com.livk.context.http.factory.AdapterType;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.stereotype.Component;

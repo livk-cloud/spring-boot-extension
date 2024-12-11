@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.http.factory;
+package com.livk.context.http.factory;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.core.Ordered;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 /**
  * @author livk
  */
-public interface AdapterFactory<H extends HttpExchangeAdapter> {
+public interface AdapterFactory<H extends HttpExchangeAdapter> extends Ordered {
+
+	boolean support();
 
 	H create(BeanFactory beanFactory);
+
+	AdapterType type();
+
+	@Override
+	default int getOrder() {
+		return 0;
+	}
 
 }

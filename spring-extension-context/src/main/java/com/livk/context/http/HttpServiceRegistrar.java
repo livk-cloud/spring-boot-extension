@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.http;
+package com.livk.context.http;
 
-import com.livk.autoconfigure.http.annotation.HttpProvider;
+import com.livk.commons.spring.AnnotationBasePackageSupport;
+import com.livk.commons.util.ObjectUtils;
+import com.livk.context.disruptor.DisruptorScan;
+import com.livk.context.disruptor.exception.DisruptorRegistrarException;
+import com.livk.context.http.annotation.HttpProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
-import org.springframework.util.StringUtils;
-
-import java.util.List;
 
 /**
  * <p>
@@ -39,17 +38,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {
 
-	private final BeanFactory beanFactory;
-
 	private final Environment environment;
 
 	@Override
-	public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
+	public final void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
 			@NonNull BeanDefinitionRegistry registry) {
-		List<String> packages = AutoConfigurationPackages.get(beanFactory);
+		String[] basePackages = getBasePackages(importingClassMetadata);
+		if (ObjectUtils.isEmpty(basePackages)) {
+			throw new DisruptorRegistrarException(
+					DisruptorScan.class.getName() + " required basePackages or basePackageClasses");
+		}
 		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment);
 		scanner.registerFilters(HttpProvider.class);
-		scanner.scan(StringUtils.toStringArray(packages));
+		scanner.scan(basePackages);
+	}
+
+	protected String[] getBasePackages(AnnotationMetadata metadata) {
+		return AnnotationBasePackageSupport.getBasePackages(metadata, HttpProviderScan.class);
 	}
 
 }

@@ -16,22 +16,15 @@
 
 package com.livk.context.disruptor;
 
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.spring.AnnotationBasePackageSupport;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * @author livk
@@ -52,17 +45,7 @@ public class DisruptorScanRegistrar implements ImportBeanDefinitionRegistrar {
 	}
 
 	protected String[] getBasePackages(AnnotationMetadata metadata) {
-		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, DisruptorScan.class);
-		String[] basePackages = attributes.getStringArray("basePackages");
-		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
-		Set<String> packagesToScan = new LinkedHashSet<>(Arrays.asList(basePackages));
-		for (Class<?> basePackageClass : basePackageClasses) {
-			packagesToScan.add(ClassUtils.getPackageName(basePackageClass));
-		}
-		if (packagesToScan.isEmpty()) {
-			packagesToScan.add(ClassUtils.getPackageName(metadata.getClassName()));
-		}
-		return StringUtils.toStringArray(packagesToScan);
+		return AnnotationBasePackageSupport.getBasePackages(metadata, DisruptorScan.class);
 	}
 
 }

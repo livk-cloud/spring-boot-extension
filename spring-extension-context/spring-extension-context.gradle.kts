@@ -29,6 +29,9 @@ dependencies {
 	optional("org.apache.commons:commons-pool2")
 	optional("com.lmax:disruptor")
 	optional("org.redisson:redisson")
+	optional("org.springframework.boot:spring-boot")
+
+	compileProcessor(project(":spring-auto-service"))
 
 	testImplementation("io.lettuce:lettuce-core")
 	testImplementation("com.h2database:h2")
@@ -37,7 +40,6 @@ dependencies {
 	testImplementation("com.zaxxer:HikariCP")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("net.bytebuddy:byte-buddy")
-
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:mysql")
 	testImplementation(project(":spring-extension-testcontainers"))
