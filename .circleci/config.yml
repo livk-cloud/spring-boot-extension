@@ -11,21 +11,21 @@ executors:
     resource_class: arm.large
 
 jobs:
-  jdk21-ci:
+  jdk21:
     executor: ubuntu
     steps:
       - run: sudo apt-get update
       - run: sudo apt install openjdk-21-jdk
       - checkout
       - run: ./gradlew build
-  jdk22-ci:
+  jdk22:
     executor: ubuntu
     steps:
       - run: sudo apt-get update
       - run: sudo apt install openjdk-22-jdk
       - checkout
       - run: ./gradlew build
-  jdk23-ci:
+  jdk23:
     executor: ubuntu
     steps:
       - run: sudo apt-get update
@@ -36,6 +36,6 @@ jobs:
 workflows:
   gradle-build:
     jobs:
-      - jdk21-ci
-      - jdk22-ci
-      - jdk23-ci
+      - jdk21
+      - jdk22
+      - jdk23
