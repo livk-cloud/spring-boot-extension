@@ -103,4 +103,19 @@ public @interface HttpProvider {
 	@AliasFor(annotation = HttpExchange.class, attribute = "accept")
 	String[] accept() default {};
 
+	/**
+	 * The additional headers to use, as an array of {@code name=value} pairs.
+	 * <p>
+	 * Multiple comma-separated values are accepted, and placeholders are supported in
+	 * these values. However, Accept and Content-Type headers are ignored: see
+	 * {@link #accept()} and {@link #contentType()}.
+	 * <p>
+	 * Supported at the type level as well as at the method level, in which case the
+	 * method-level values override type-level values.
+	 * <p>
+	 * By default, this is empty.
+	 */
+	@AliasFor(annotation = HttpExchange.class, attribute = "headers")
+	String[] headers() default {};
+
 }
