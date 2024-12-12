@@ -13,12 +13,17 @@
 
 package com.livk.context.useragent.servlet;
 
+import com.livk.context.useragent.UserAgentConverter;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -38,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringJUnitConfig(MvcConfig.class)
+@SpringJUnitConfig(UserAgentResolverTest.MvcConfig.class)
 class UserAgentResolverTest {
 
 	MockHttpServletRequest request;
@@ -90,7 +95,7 @@ class UserAgentResolverTest {
 		assertEquals("Windows NT ??", userAgent.osVersion());
 		assertEquals("Desktop", userAgent.deviceType());
 		assertEquals("Desktop", userAgent.deviceName());
-		assertNull(userAgent.deviceBrand());
+		assertEquals("Unknown", userAgent.deviceBrand());
 
 		assertEquals(result, UserAgentContextHolder.getUserAgentContext());
 
@@ -99,6 +104,22 @@ class UserAgentResolverTest {
 
 	@SuppressWarnings("unused")
 	void test(@UserAgentInfo UserAgent agent) {
+	}
+
+	@Configuration
+	static class MvcConfig {
+
+		@Bean
+		public UserAgentConverter yauaaUserAgentConverter() {
+			UserAgentAnalyzer analyzer = UserAgentAnalyzer.newBuilder().hideMatcherLoadStats().withCache(10).build();
+			return new YauaaUserAgentConverter(analyzer);
+		}
+
+		@Bean
+		public UserAgentHelper userAgentHelper() {
+			return new UserAgentHelper();
+		}
+
 	}
 
 }

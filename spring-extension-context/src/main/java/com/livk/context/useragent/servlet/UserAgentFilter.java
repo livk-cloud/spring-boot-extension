@@ -47,7 +47,7 @@ public class UserAgentFilter extends OncePerRequestFilter {
 			FilterChain filterChain) throws IOException, ServletException {
 		HttpHeaders headers = WebUtils.headers(request);
 		UserAgent userAgent = helper.convert(headers);
-		UserAgentContextHolder.setUserAgentContext(userAgent);
+		UserAgentContextHolder.withUserAgentContext(userAgent);
 		filterChain.doFilter(request, response);
 		UserAgentContextHolder.cleanUserAgentContext();
 	}

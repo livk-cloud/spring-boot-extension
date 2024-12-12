@@ -19,7 +19,7 @@ package com.livk.context.useragent.browscap;
 import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.UserAgentParser;
-import com.livk.context.useragent.support.AbstractUserAgentConverter;
+import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 

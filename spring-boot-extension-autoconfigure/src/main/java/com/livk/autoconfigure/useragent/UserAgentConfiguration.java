@@ -16,20 +16,18 @@
 
 package com.livk.autoconfigure.useragent;
 
+import com.livk.context.useragent.UserAgentConverter;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
 import com.livk.context.useragent.servlet.UserAgentFilter;
 import com.livk.context.useragent.servlet.UserAgentResolver;
-import com.livk.context.useragent.support.UserAgentConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
@@ -46,12 +44,11 @@ public class UserAgentConfiguration {
 
 	/**
 	 * User agent helper user agent helper.
-	 * @param conversionService the application context
 	 * @return the user agent helper
 	 */
 	@Bean
-	public UserAgentHelper userAgentHelper(@Lazy ConversionService conversionService) {
-		return new UserAgentHelper(conversionService);
+	public UserAgentHelper userAgentHelper() {
+		return new UserAgentHelper();
 	}
 
 	/**

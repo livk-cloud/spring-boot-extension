@@ -13,13 +13,18 @@
 
 package com.livk.context.useragent.reactive;
 
+import com.livk.context.useragent.UserAgentConverter;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringJUnitConfig(WebFluxConfig.class)
+@SpringJUnitConfig(ReactiveUserAgentResolverTest.WebFluxConfig.class)
 class ReactiveUserAgentResolverTest {
 
 	final ReactiveUserAgentResolver resolver;
@@ -98,7 +103,7 @@ class ReactiveUserAgentResolverTest {
 		verifyComplete(result.map(UserAgent::deviceType), "Desktop");
 		verifyComplete(result.map(UserAgent::deviceName), "Desktop");
 
-		verifyComplete(result.mapNotNull(UserAgent::deviceBrand).defaultIfEmpty("empty"), "empty");
+		verifyComplete(result.mapNotNull(UserAgent::deviceBrand).defaultIfEmpty("empty"), "Unknown");
 	}
 
 	<T> void verifyComplete(Publisher<T> publisher, T next) {
@@ -107,6 +112,22 @@ class ReactiveUserAgentResolverTest {
 
 	@SuppressWarnings("unused")
 	void test(@UserAgentInfo Mono<UserAgent> mono) {
+	}
+
+	@Configuration
+	static class WebFluxConfig {
+
+		@Bean
+		public UserAgentConverter yauaaUserAgentConverter() {
+			UserAgentAnalyzer analyzer = UserAgentAnalyzer.newBuilder().hideMatcherLoadStats().withCache(10).build();
+			return new YauaaUserAgentConverter(analyzer);
+		}
+
+		@Bean
+		public UserAgentHelper userAgentHelper() {
+			return new UserAgentHelper();
+		}
+
 	}
 
 }

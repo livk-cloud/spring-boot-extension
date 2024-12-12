@@ -16,11 +16,20 @@ package com.livk.context.lock.support;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
 import com.livk.testcontainers.containers.ZookeeperContainer;
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -37,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringJUnitConfig(CuratorLockConfig.class)
+@SpringJUnitConfig(CuratorLockTest.CuratorLockConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class CuratorLockTest {
 
@@ -77,6 +86,18 @@ class CuratorLockTest {
 		assertTrue(lock.tryLock(LockType.LOCK, "key", 3, 3, false));
 
 		lock.unlock();
+	}
+
+	@Configuration
+	@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
+	static class CuratorLockConfig {
+
+		@Bean(initMethod = "start", destroyMethod = "close")
+		public CuratorFramework curatorFramework(@Value("${curator.connectString}") String connectString) {
+			RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
+			return CuratorFrameworkFactory.builder().retryPolicy(retryPolicy).connectString(connectString).build();
+		}
+
 	}
 
 }

@@ -57,7 +57,7 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 			Assert.notNull(request, "request not be null!");
 			HttpHeaders headers = WebUtils.headers(request);
 			agentContext = helper.convert(headers);
-			UserAgentContextHolder.setUserAgentContext(agentContext);
+			UserAgentContextHolder.withUserAgentContext(agentContext);
 		}
 		return agentContext;
 	}
