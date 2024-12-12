@@ -7,5 +7,5 @@ dependencies {
 	implementation(project(":spring-boot-extension-starters:curator-spring-boot-starter"))
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

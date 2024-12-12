@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
 	testImplementation("org.testcontainers:pulsar")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

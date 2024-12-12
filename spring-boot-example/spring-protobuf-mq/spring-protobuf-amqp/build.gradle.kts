@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 
 	testImplementation("org.testcontainers:rabbitmq")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

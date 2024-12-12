@@ -12,5 +12,5 @@ dependencies {
 
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:r2dbc")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

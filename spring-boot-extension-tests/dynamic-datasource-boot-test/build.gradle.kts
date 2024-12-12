@@ -11,5 +11,5 @@ dependencies {
 
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:mysql")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

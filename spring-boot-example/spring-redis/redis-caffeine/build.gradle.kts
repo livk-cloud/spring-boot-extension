@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("com.github.ben-manes.caffeine:caffeine")
 
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

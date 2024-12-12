@@ -11,5 +11,5 @@ dependencies {
 
 	testImplementation("org.testcontainers:clickhouse")
 	testImplementation("org.testcontainers:r2dbc")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

@@ -9,5 +9,5 @@ dependencies {
 	implementation("org.springframework.integration:spring-integration-mqtt")
 
 	testImplementation("org.testcontainers:rabbitmq")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

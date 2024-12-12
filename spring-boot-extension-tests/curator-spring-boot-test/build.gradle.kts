@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation(project(":spring-boot-extension-starters:curator-spring-boot-starter"))
 
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

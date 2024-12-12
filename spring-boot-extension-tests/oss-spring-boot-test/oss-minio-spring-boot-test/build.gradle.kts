@@ -8,5 +8,5 @@ dependencies {
 	implementation("io.minio:minio")
 
 	testImplementation("org.testcontainers:minio")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

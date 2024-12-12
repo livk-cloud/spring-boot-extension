@@ -27,7 +27,7 @@ include::spring-extension-commons.adoc[]
 [#_spring-extension-subassembly]
 include::spring-extension-subassembly.adoc[]
 [#_spring-extension-testcontainers]
-include::spring-extension-testcontainers.adoc[]
+include::spring-testcontainers-support.adoc[]
 
 == 问题 ==
 

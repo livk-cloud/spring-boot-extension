@@ -8,5 +8,5 @@ dependencies {
     implementation("com.mysql:mysql-connector-j")
 
 	testImplementation("org.testcontainers:mysql")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

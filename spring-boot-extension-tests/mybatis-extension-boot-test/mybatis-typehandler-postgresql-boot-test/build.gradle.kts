@@ -8,5 +8,5 @@ dependencies {
     implementation("org.postgresql:postgresql")
 
 	testImplementation("org.testcontainers:postgresql")
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }

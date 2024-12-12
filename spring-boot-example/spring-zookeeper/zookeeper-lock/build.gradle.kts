@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework.integration:spring-integration-zookeeper")
 	implementation(project(":spring-boot-extension-starters:curator-spring-boot-starter"))
 
-	testImplementation(project(":spring-extension-testcontainers"))
+	testImplementation(project(":spring-testcontainers-support"))
 }
