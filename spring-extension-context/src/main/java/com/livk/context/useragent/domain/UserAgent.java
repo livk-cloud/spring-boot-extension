@@ -136,10 +136,10 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 
 		/**
 		 * Device brand user agent builder.
-		 * @param deviceName the device name
+		 * @param deviceBrand the device name
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder deviceBrand(String deviceName) {
+		public UserAgentBuilder deviceBrand(String deviceBrand) {
 			this.deviceBrand = deviceBrand;
 			return this;
 		}

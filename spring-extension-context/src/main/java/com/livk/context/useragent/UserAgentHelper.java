@@ -17,8 +17,10 @@
 package com.livk.context.useragent;
 
 import com.livk.context.useragent.domain.UserAgent;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.convert.ConversionService;
+import lombok.Setter;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpHeaders;
 
 /**
@@ -26,13 +28,10 @@ import org.springframework.http.HttpHeaders;
  *
  * @author livk
  */
-public class UserAgentHelper {
+@Setter
+public class UserAgentHelper implements ApplicationContextAware {
 
-	private final ConversionService conversionService;
-
-	public UserAgentHelper(@Lazy ConversionService conversionService) {
-		this.conversionService = conversionService;
-	}
+	private ApplicationContext applicationContext;
 
 	/**
 	 * Convert user agent.
@@ -40,7 +39,13 @@ public class UserAgentHelper {
 	 * @return the user agent
 	 */
 	public UserAgent convert(HttpHeaders headers) {
-		return conversionService.convert(headers, UserAgent.class);
+		for (UserAgentConverter converter : applicationContext.getBeanProvider(UserAgentConverter.class)) {
+			UserAgent userAgent = converter.convert(headers);
+			if (userAgent != null) {
+				return userAgent;
+			}
+		}
+		throw new NoSuchBeanDefinitionException(UserAgentConverter.class);
 	}
 
 }

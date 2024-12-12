@@ -41,7 +41,7 @@ public class UserAgentContextHolder {
 	 * Sets user agent context.
 	 * @param userAgent the useragent wrapper
 	 */
-	public static void setUserAgentContext(UserAgent userAgent) {
+	public static void withUserAgentContext(UserAgent userAgent) {
 		inheritableContext.set(userAgent);
 	}
 

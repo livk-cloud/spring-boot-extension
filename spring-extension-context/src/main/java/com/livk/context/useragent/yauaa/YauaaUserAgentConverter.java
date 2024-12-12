@@ -16,7 +16,7 @@
 
 package com.livk.context.useragent.yauaa;
 
-import com.livk.context.useragent.support.AbstractUserAgentConverter;
+import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
