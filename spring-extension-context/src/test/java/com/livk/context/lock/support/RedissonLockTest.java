@@ -18,9 +18,17 @@ import com.livk.context.lock.LockType;
 import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -37,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringJUnitConfig(RedissonLockConfig.class)
+@SpringJUnitConfig(RedissonLockTest.RedissonLockConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RedissonLockTest {
 
@@ -77,6 +85,19 @@ class RedissonLockTest {
 		assertTrue(lock.tryLock(LockType.LOCK, "key", 3, 3, false));
 
 		lock.unlock();
+	}
+
+	@Configuration
+	@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
+	static class RedissonLockConfig {
+
+		@Bean
+		public RedissonClient redissonLock(@Value("${redisson.address}") String address) {
+			Config config = new Config();
+			config.useSingleServer().setAddress(address);
+			return Redisson.create(config);
+		}
+
 	}
 
 }

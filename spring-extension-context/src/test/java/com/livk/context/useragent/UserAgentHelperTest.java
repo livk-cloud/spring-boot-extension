@@ -16,17 +16,27 @@
 
 package com.livk.context.useragent;
 
+import com.blueconic.browscap.BrowsCapField;
+import com.blueconic.browscap.ParseException;
+import com.blueconic.browscap.UserAgentParser;
+import com.blueconic.browscap.UserAgentService;
+import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.convert.ConversionService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * <p>
@@ -51,10 +61,10 @@ class UserAgentHelperTest {
 	@Test
 	void convertBrowscap() {
 
-		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class,
-				ConversionServiceConfig.class);
+		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class);
 
-		UserAgentHelper helper = new UserAgentHelper(applicationContext.getBean(ConversionService.class));
+		UserAgentHelper helper = new UserAgentHelper();
+		helper.setApplicationContext(applicationContext);
 		UserAgent userAgent = helper.convert(headers);
 		assertNotNull(userAgent);
 		assertEquals(userAgentStr, userAgent.userAgentStr());
@@ -65,16 +75,16 @@ class UserAgentHelperTest {
 		assertEquals("10.0", userAgent.osVersion());
 		assertEquals("Desktop", userAgent.deviceType());
 		assertEquals("Windows Desktop", userAgent.deviceName());
-		assertNull(userAgent.deviceBrand());
+		assertEquals("Unknown", userAgent.deviceBrand());
 	}
 
 	@Test
 	void convertYauaa() {
 
-		applicationContext = new AnnotationConfigApplicationContext(YauaaConfig.class, ConversionServiceConfig.class);
+		applicationContext = new AnnotationConfigApplicationContext(YauaaConfig.class);
 
-		UserAgentHelper helper = new UserAgentHelper(applicationContext.getBean(ConversionService.class));
-
+		UserAgentHelper helper = new UserAgentHelper();
+		helper.setApplicationContext(applicationContext);
 		UserAgent userAgent = helper.convert(headers);
 		assertNotNull(userAgent);
 		assertEquals(userAgentStr, userAgent.userAgentStr());
@@ -85,7 +95,29 @@ class UserAgentHelperTest {
 		assertEquals("Windows NT ??", userAgent.osVersion());
 		assertEquals("Desktop", userAgent.deviceType());
 		assertEquals("Desktop", userAgent.deviceName());
-		assertNull(userAgent.deviceBrand());
+		assertEquals("Unknown", userAgent.deviceBrand());
+	}
+
+	@Configuration
+	static class BrowscapConfig {
+
+		@Bean
+		public UserAgentConverter browscapUserAgentConverter() throws IOException, ParseException {
+			UserAgentParser userAgentParser = new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
+			return new BrowscapUserAgentConverter(userAgentParser);
+		}
+
+	}
+
+	@Configuration
+	static class YauaaConfig {
+
+		@Bean
+		public UserAgentConverter yauaaUserAgentConverter() {
+			UserAgentAnalyzer analyzer = UserAgentAnalyzer.newBuilder().hideMatcherLoadStats().withCache(10).build();
+			return new YauaaUserAgentConverter(analyzer);
+		}
+
 	}
 
 }
