@@ -80,7 +80,7 @@ final class FactoryProxySupport {
 
 	private static class ConnectInterceptor {
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "unused" })
 		@RuntimeType
 		public static StatefulRedisModulesConnection<String, String> connect(@FieldValue("client") Object client)
 				throws Exception {
@@ -93,7 +93,7 @@ final class FactoryProxySupport {
 
 	private static class ConnectWithCodecInterceptor {
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "unused" })
 		@RuntimeType
 		public static <K, V> StatefulRedisModulesConnection<K, V> connect(@FieldValue("client") Object client,
 				@Argument(0) RedisCodec<K, V> codec) throws Exception {
@@ -106,6 +106,7 @@ final class FactoryProxySupport {
 
 	private static class CloseInterceptor {
 
+		@SuppressWarnings("unused")
 		@RuntimeType
 		public static void close(@FieldValue("client") AbstractRedisClient client) {
 			client.close();
