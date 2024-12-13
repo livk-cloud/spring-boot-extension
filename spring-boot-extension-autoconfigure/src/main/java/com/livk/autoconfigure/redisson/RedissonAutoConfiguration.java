@@ -21,7 +21,7 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,7 +29,6 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.ConverterRegistry;
 
 /**
  * The type Redisson auto configuration.
@@ -42,17 +41,11 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 @EnableConfigurationProperties({ ConfigProperties.class, RedisProperties.class })
 public class RedissonAutoConfiguration {
 
-	/**
-	 * Codec converter bean factory post processor bean factory post processor.
-	 * @return the bean factory post processor
-	 */
 	@Bean
-	public BeanFactoryPostProcessor codecConverterBeanFactoryPostProcessor() {
-		return beanFactory -> {
-			if (beanFactory.getConversionService() instanceof ConverterRegistry converterRegistry) {
-				ConverterProxySupport.makeConverters().forEach(converterRegistry::addConverter);
-			}
-		};
+	public CustomEditorConfigurer customEditorConfigurer() {
+		CustomEditorConfigurer configurer = new CustomEditorConfigurer();
+		configurer.setCustomEditors(PropertyEditorProxySupport.make());
+		return configurer;
 	}
 
 	/**
