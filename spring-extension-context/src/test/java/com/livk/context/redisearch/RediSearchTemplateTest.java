@@ -50,7 +50,7 @@ class RediSearchTemplateTest {
 
 	@Test
 	void test() throws Exception {
-		RedisCodec<String, Object> redisCodec = RedisCodecs.json(new JsonMapper(), String.class, Object.class);
+		RedisCodec<String, Object> redisCodec = RedisCodecs.json(new JsonMapper());
 		RediSearchTemplate<String, Object> template = new RediSearchTemplate<>(factory, redisCodec);
 		template.afterPropertiesSet();
 

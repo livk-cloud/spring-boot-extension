@@ -30,6 +30,10 @@ public class RedisCodecs {
 		return new JacksonRedisCodec<>(mapper, keyType, valueType);
 	}
 
+	public static RedisCodec<String, Object> json(ObjectMapper mapper) {
+		return json(mapper, String.class, Object.class);
+	}
+
 	public static RedisCodec<Object, Object> jdk(ClassLoader classLoader) {
 		return new JdkRedisCodec(classLoader);
 	}

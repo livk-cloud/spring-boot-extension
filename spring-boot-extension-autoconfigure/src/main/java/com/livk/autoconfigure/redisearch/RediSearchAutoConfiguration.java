@@ -78,7 +78,7 @@ public class RediSearchAutoConfiguration {
 	@ConditionalOnMissingBean
 	public RediSearchTemplate<String, Object> rediSearchTemplate(RediSearchConnectionFactory factory,
 			Jackson2ObjectMapperBuilder builder) {
-		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build(), String.class, Object.class);
+		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build());
 		return new RediSearchTemplate<>(factory, redisCodec);
 	}
 
