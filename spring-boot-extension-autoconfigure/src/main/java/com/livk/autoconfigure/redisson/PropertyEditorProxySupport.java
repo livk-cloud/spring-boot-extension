@@ -95,7 +95,7 @@ final class PropertyEditorProxySupport {
 	}
 
 	@RequiredArgsConstructor
-	public class SetAsTextInterceptor {
+	public static class SetAsTextInterceptor {
 
 		private final Class<?> type;
 
