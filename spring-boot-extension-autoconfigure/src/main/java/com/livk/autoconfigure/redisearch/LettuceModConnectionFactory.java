@@ -18,8 +18,8 @@ import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.cluster.RedisModulesClusterClient;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisCredentials;
-import io.lettuce.core.RedisCredentialsProvider;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.StaticCredentialsProvider;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.resource.ClientResources;
 import lombok.experimental.Delegate;
@@ -32,7 +32,7 @@ import java.util.Optional;
 /**
  * @author livk
  */
-public class LettuceModConnectionFactory implements RediSearchConnectionFactory {
+public final class LettuceModConnectionFactory implements RediSearchConnectionFactory {
 
 	private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 
@@ -41,38 +41,31 @@ public class LettuceModConnectionFactory implements RediSearchConnectionFactory 
 	@Delegate
 	private final RediSearchConnectionFactory factory;
 
-	private final boolean isCluster;
-
-	private final RediSearchProperties.Pool pool;
+	private final RediSearchProperties properties;
 
 	public LettuceModConnectionFactory(ClientResources resources, RediSearchProperties properties) {
-		this.isCluster = Optional.ofNullable(properties.getCluster())
-			.map(RediSearchProperties.Cluster::getEnabled)
-			.orElse(false);
-		this.factory = init(resources, properties);
-		this.pool = properties.getPool();
+		this.properties = properties;
+		this.factory = init(resources);
 	}
 
-	private RediSearchConnectionFactory init(ClientResources resources, RediSearchProperties properties) {
-		return isCluster ? createClusterFactory(resources, properties) : createFactory(resources, properties);
+	public boolean isCluster() {
+		return Optional.ofNullable(properties.getCluster()).map(RediSearchProperties.Cluster::getEnabled).orElse(false);
 	}
 
-	private RediSearchConnectionFactory createFactory(ClientResources clientResources,
-			RediSearchProperties properties) {
-		RedisURI redisURI = createRedisURI(properties.getHost() + ":" + properties.getPort(), properties);
+	private RediSearchConnectionFactory init(ClientResources resources) {
+		return isCluster() ? createClusterFactory(resources) : createFactory(resources);
+	}
+
+	private RediSearchConnectionFactory createFactory(ClientResources clientResources) {
+		RedisURI redisURI = createRedisURI(properties.getHost() + ":" + properties.getPort());
 		RedisModulesClient client = RedisModulesClient.create(clientResources, redisURI);
 		ClientOptions.Builder builder = client.getOptions().mutate();
 		client.setOptions(builder.build());
 		return RediSearchConnectionFactory.create(client);
 	}
 
-	private RediSearchConnectionFactory createClusterFactory(ClientResources clientResources,
-			RediSearchProperties properties) {
-		List<RedisURI> redisURIList = properties.getCluster()
-			.getNodes()
-			.stream()
-			.map(node -> createRedisURI(node, properties))
-			.toList();
+	private RediSearchConnectionFactory createClusterFactory(ClientResources clientResources) {
+		List<RedisURI> redisURIList = properties.getCluster().getNodes().stream().map(this::createRedisURI).toList();
 		RedisModulesClusterClient clusterClient = RedisModulesClusterClient.create(clientResources, redisURIList);
 		ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
 		if (properties.getCluster().getMaxRedirects() != null) {
@@ -82,11 +75,12 @@ public class LettuceModConnectionFactory implements RediSearchConnectionFactory 
 		return RediSearchConnectionFactory.create(clusterClient);
 	}
 
-	private RedisURI createRedisURI(String node, RediSearchProperties properties) {
+	private RedisURI createRedisURI(String node) {
 		String uri = (properties.getSsl() ? REDISS_PROTOCOL_PREFIX : REDIS_PROTOCOL_PREFIX) + node;
 		RedisURI redisURI = RedisURI.create(uri);
-		redisURI.setCredentialsProvider(RedisCredentialsProvider
-			.from(() -> RedisCredentials.just(properties.getUsername(), properties.getPassword())));
+		RedisCredentials credentials = RedisCredentials.just(properties.getUsername(), properties.getPassword());
+		StaticCredentialsProvider credentialsProvider = new StaticCredentialsProvider(credentials);
+		redisURI.setCredentialsProvider(credentialsProvider);
 		redisURI.setDatabase(properties.getDatabase());
 		Duration timeout = properties.getTimeout();
 		if (timeout != null) {
@@ -98,8 +92,9 @@ public class LettuceModConnectionFactory implements RediSearchConnectionFactory 
 	}
 
 	@Override
-	public final <T> GenericObjectPoolConfig<T> getPoolConfig() {
-		if (pool != null && pool.getEnabled()) {
+	public <T> GenericObjectPoolConfig<T> getPoolConfig() {
+		RediSearchProperties.Pool pool = properties.getPool();
+		if (pool.getEnabled()) {
 			GenericObjectPoolConfig<T> config = new GenericObjectPoolConfig<>();
 			config.setJmxEnabled(false);
 			config.setMaxTotal(pool.getMaxActive());
