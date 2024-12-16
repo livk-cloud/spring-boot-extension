@@ -138,9 +138,7 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 	 * @return the ok http client http request factory
 	 */
 	public OkHttpClientHttpRequestFactory connectionPool(ConnectionPool connectionPool) {
-		OkHttpClient.Builder builder = this.client.newBuilder();
-		builder.setConnectionPool$okhttp(connectionPool);
-		this.client = builder.build();
+		this.client = this.client.newBuilder().connectionPool(connectionPool).build();
 		return this;
 	}
 
