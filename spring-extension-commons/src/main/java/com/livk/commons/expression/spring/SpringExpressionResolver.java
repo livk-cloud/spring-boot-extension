@@ -16,9 +16,8 @@
 
 package com.livk.commons.expression.spring;
 
+import com.livk.commons.expression.CacheExpressionResolver;
 import com.livk.commons.expression.Context;
-import com.livk.commons.expression.ConverterExpressionResolver;
-import com.livk.commons.expression.ExpressionResolver;
 import org.springframework.context.expression.BeanExpressionContextAccessor;
 import org.springframework.context.expression.BeanFactoryAccessor;
 import org.springframework.context.expression.EnvironmentAccessor;
@@ -40,8 +39,7 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
  * @author livk
  * @see SpelExpressionParser
  */
-public class SpringExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression>
-		implements ExpressionResolver {
+public class SpringExpressionResolver extends CacheExpressionResolver<EvaluationContext, Expression> {
 
 	private final ExpressionParser expressionParser;
 

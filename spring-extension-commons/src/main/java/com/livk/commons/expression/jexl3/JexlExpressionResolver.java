@@ -16,8 +16,8 @@
 
 package com.livk.commons.expression.jexl3;
 
+import com.livk.commons.expression.CacheExpressionResolver;
 import com.livk.commons.expression.Context;
-import com.livk.commons.expression.ConverterExpressionResolver;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.jexl3.JexlContext;
 import org.apache.commons.jexl3.JexlEngine;
@@ -33,7 +33,7 @@ import java.util.Optional;
  * @author livk
  */
 @RequiredArgsConstructor
-public class JexlExpressionResolver extends ConverterExpressionResolver<JexlContext, JexlExpression> {
+public class JexlExpressionResolver extends CacheExpressionResolver<JexlContext, JexlExpression> {
 
 	private static final JexlEngine DEFAULT_ENGINE = new Engine();
 

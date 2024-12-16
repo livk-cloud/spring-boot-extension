@@ -21,13 +21,15 @@ import com.googlecode.aviator.Expression;
 import com.livk.commons.expression.CacheExpressionResolver;
 import com.livk.commons.expression.Context;
 
+import java.util.Map;
+
 /**
  * 使用<a href="https://github.com/killme2008/aviator">Aviator</a>实现的表达式解析器
  *
  * @author livk
  * @see AviatorEvaluator
  */
-public class AviatorExpressionResolver extends CacheExpressionResolver<Expression> {
+public class AviatorExpressionResolver extends CacheExpressionResolver<Map<String, Object>, Expression> {
 
 	@Override
 	protected Expression compile(String value) {
@@ -35,8 +37,13 @@ public class AviatorExpressionResolver extends CacheExpressionResolver<Expressio
 	}
 
 	@Override
-	protected <T> T calculate(Expression expression, Context context, Class<T> returnType) {
-		return returnType.cast(expression.execute(context.asMap()));
+	protected Map<String, Object> transform(Context context) {
+		return context.asMap();
+	}
+
+	@Override
+	protected <T> T calculate(Expression expression, Map<String, Object> context, Class<T> returnType) {
+		return returnType.cast(expression.execute(context));
 	}
 
 }

@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Map;
 
 /**
  * 使用FreeMarker实现的表达式解析器
@@ -32,7 +33,7 @@ import java.io.StringWriter;
  * @author livk
  */
 @RequiredArgsConstructor
-public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Template> {
+public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<String, Object>, Template> {
 
 	private static final Configuration DEFAULT_CONFIG = new Configuration(
 			Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
@@ -54,11 +55,16 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Templa
 	}
 
 	@Override
-	protected <T> T calculate(Template template, Context context, Class<T> returnType)
+	protected Map<String, Object> transform(Context context) {
+		return context.asMap();
+	}
+
+	@Override
+	protected <T> T calculate(Template template, Map<String, Object> context, Class<T> returnType)
 			throws TemplateException, IOException {
 		if (returnType.isAssignableFrom(String.class)) {
 			StringWriter result = new StringWriter(1024);
-			template.process(context.asMap(), result);
+			template.process(context, result);
 			return returnType.cast(result.toString());
 		}
 		throw new UnsupportedOperationException("Classes other than String and its parent class are not supported");

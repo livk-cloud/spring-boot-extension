@@ -20,6 +20,7 @@ import com.livk.commons.util.ObjectUtils;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionException;
+import org.springframework.util.Assert;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see com.livk.commons.expression.aviator.AviatorExpressionResolver
  * @see Environment
  */
-public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpressionResolver {
+public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends AbstractExpressionResolver {
 
 	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 
@@ -54,7 +55,9 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 				expression = compile(value);
 				this.expressionCache.put(value, expression);
 			}
-			return calculate(expression, context, returnType);
+			CONTEXT frameworkContext = transform(context);
+			Assert.notNull(frameworkContext, "frameworkContext not be null");
+			return calculate(expression, frameworkContext, returnType);
 		}
 		catch (Throwable ex) {
 			throw new ExpressionException("Expression parsing failed", ex);
@@ -79,14 +82,20 @@ public abstract class CacheExpressionResolver<EXPRESSION> extends AbstractExpres
 	protected abstract EXPRESSION compile(String value) throws Throwable;
 
 	/**
-	 * 表达式计算
+	 * 从Context装换成框架的上下文
+	 * @param context context
+	 * @return the c
+	 */
+	protected abstract CONTEXT transform(Context context);
+
+	/**
+	 * 对表达式进行计算
 	 * @param <T> 泛型
 	 * @param expression 表达式
-	 * @param context 环境上下文
+	 * @param context 上下文
 	 * @param returnType 返回类型
-	 * @return T
-	 * @throws Throwable the throwable
+	 * @return 计算结果相关实例
 	 */
-	protected abstract <T> T calculate(EXPRESSION expression, Context context, Class<T> returnType) throws Throwable;
+	protected abstract <T> T calculate(EXPRESSION expression, CONTEXT context, Class<T> returnType) throws Exception;
 
 }

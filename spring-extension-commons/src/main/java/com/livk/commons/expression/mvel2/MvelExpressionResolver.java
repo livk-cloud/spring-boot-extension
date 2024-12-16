@@ -16,8 +16,8 @@
 
 package com.livk.commons.expression.mvel2;
 
+import com.livk.commons.expression.CacheExpressionResolver;
 import com.livk.commons.expression.Context;
-import com.livk.commons.expression.ConverterExpressionResolver;
 import lombok.RequiredArgsConstructor;
 import org.mvel2.DataConversion;
 import org.mvel2.MVELInterpretedRuntime;
@@ -31,7 +31,7 @@ import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
  * @author livk
  */
 @RequiredArgsConstructor
-public class MvelExpressionResolver extends ConverterExpressionResolver<VariableResolverFactory, String> {
+public class MvelExpressionResolver extends CacheExpressionResolver<VariableResolverFactory, String> {
 
 	private final ParserContext parserContext;
 
