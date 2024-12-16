@@ -51,7 +51,7 @@ public class MvelExpressionResolver extends ConverterExpressionResolver<Variable
 
 	@Override
 	protected VariableResolverFactory transform(Context context) {
-		return new CachingMapVariableResolverFactory(context);
+		return new CachingMapVariableResolverFactory(context.asMap());
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Templa
 			throws TemplateException, IOException {
 		if (returnType.isAssignableFrom(String.class)) {
 			StringWriter result = new StringWriter(1024);
-			template.process(context, result);
+			template.process(context.asMap(), result);
 			return returnType.cast(result.toString());
 		}
 		throw new UnsupportedOperationException("Classes other than String and its parent class are not supported");

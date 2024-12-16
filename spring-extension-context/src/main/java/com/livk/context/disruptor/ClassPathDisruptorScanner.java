@@ -17,6 +17,7 @@
 package com.livk.context.disruptor;
 
 import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.ClassUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.factory.DisruptorFactoryBean;
 import com.livk.context.disruptor.support.SpringDisruptor;
@@ -38,7 +39,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;

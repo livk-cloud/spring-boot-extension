@@ -46,7 +46,7 @@ public interface ContextFactory {
 	 */
 	default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
 		Context context = create(method, args);
-		context.putAll(expandMap, false);
+		context.putAll(expandMap);
 		return context;
 	}
 

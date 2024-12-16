@@ -87,7 +87,7 @@ public class SpringExpressionResolver extends ConverterExpressionResolver<Evalua
 		evaluationContext.addPropertyAccessor(new EnvironmentAccessor());
 		evaluationContext.setTypeLocator(new StandardTypeLocator());
 		evaluationContext.setTypeConverter(new StandardTypeConverter());
-		evaluationContext.setVariables(context);
+		evaluationContext.setVariables(context.asMap());
 		return evaluationContext;
 	}
 

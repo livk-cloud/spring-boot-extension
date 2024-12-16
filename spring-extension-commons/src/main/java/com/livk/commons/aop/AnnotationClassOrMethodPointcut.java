@@ -17,13 +17,13 @@
 package com.livk.commons.aop;
 
 import com.livk.commons.util.ObjectUtils;
+import com.livk.commons.util.ReflectionUtils;
 import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
-import org.springframework.util.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

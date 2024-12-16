@@ -23,7 +23,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -43,21 +42,21 @@ class ContextFactoryTest {
 	@Test
 	void create() {
 		Context context = contextFactory.create(method, new String[] { "livk" });
-		assertEquals(map.size(), context.size());
-		assertEquals(map.keySet(), context.keySet());
-		assertEquals(map.entrySet(), context.entrySet());
+		assertEquals(map.size(), context.asMap().size());
+		assertEquals(map.keySet(), context.asMap().keySet());
+		assertEquals(map.entrySet(), context.asMap().entrySet());
 	}
 
 	@Test
 	void merge() {
 		Context context = contextFactory.merge(method, new String[] { "root" }, map);
-		assertEquals(1, context.size());
-		assertEquals(map.keySet(), context.keySet());
-		assertNotEquals(map.entrySet(), context.entrySet());
-		assertTrue(context.containsKey("username"));
-		assertTrue(context.containsValue("root"));
-		assertFalse(context.containsValue("livk"));
-		assertEquals("root", context.get("username"));
+		assertEquals(1, context.asMap().size());
+		assertEquals(map.keySet(), context.asMap().keySet());
+		assertEquals(map.entrySet(), context.asMap().entrySet());
+		assertTrue(context.asMap().containsKey("username"));
+		assertFalse(context.asMap().containsValue("root"));
+		assertTrue(context.asMap().containsValue("livk"));
+		assertEquals("livk", context.asMap().get("username"));
 	}
 
 }

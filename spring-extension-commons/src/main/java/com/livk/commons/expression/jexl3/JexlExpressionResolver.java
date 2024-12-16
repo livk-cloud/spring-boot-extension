@@ -53,7 +53,7 @@ public class JexlExpressionResolver extends ConverterExpressionResolver<JexlCont
 
 	@Override
 	protected JexlContext transform(Context context) {
-		return new MapContext(context);
+		return new MapContext(context.asMap());
 	}
 
 	@Override

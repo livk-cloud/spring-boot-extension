@@ -17,6 +17,7 @@
 package com.livk.commons.expression;
 
 import com.google.common.collect.Maps;
+import com.livk.commons.util.ObjectUtils;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.Assert;
@@ -44,7 +45,7 @@ class DefaultContextFactory implements ContextFactory {
 	public Context create(Method method, Object[] args) {
 		Assert.notNull(method, "method not be null");
 		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
-		if (parameterNames == null || parameterNames.length == 0) {
+		if (ObjectUtils.isEmpty(parameterNames)) {
 			return Context.create();
 		}
 		HashMap<String, Object> map = Maps.newHashMapWithExpectedSize(parameterNames.length);
