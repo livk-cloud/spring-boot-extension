@@ -23,8 +23,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Fallback;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * <p>
  * OkHttpClientConfiguration
@@ -40,11 +38,8 @@ class OkHttpClientConfiguration {
 	@Fallback
 	@ConditionalOnMissingBean(OkHttpClient.class)
 	public OkHttpClientHttpRequestFactory defaultOkHttpClientHttpRequestFactory() {
-		ConnectionPool pool = new ConnectionPool(200, 300, TimeUnit.SECONDS);
-		return new OkHttpClientHttpRequestFactory().connectionPool(pool)
-			.connectTimeout(3, TimeUnit.SECONDS)
-			.readTimeout(3, TimeUnit.SECONDS)
-			.writeTimeout(3, TimeUnit.SECONDS);
+		ConnectionPool pool = new ConnectionPool();
+		return new OkHttpClientHttpRequestFactory().connectionPool(pool);
 	}
 
 	/**
