@@ -24,7 +24,6 @@ nimbusds-jwt = "9.47"
 jsqlparser = "5.0"
 lettucemod = "4.1.2"
 minio = "8.5.14"
-aliyun-oss = "3.18.1"
 aviator = "5.4.3"
 protobuf-java = "4.29.1"
 grpc-java = "1.69.0"
@@ -81,7 +80,6 @@ nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.re
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
-aliyun-oss = { group = "com.aliyun.oss", name = "aliyun-sdk-oss", version.ref = "aliyun-oss" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf-java" }
 protobuf-java-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf-java" }

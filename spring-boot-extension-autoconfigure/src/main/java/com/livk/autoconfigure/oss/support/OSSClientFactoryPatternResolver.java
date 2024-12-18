@@ -19,7 +19,6 @@ package com.livk.autoconfigure.oss.support;
 import com.livk.autoconfigure.oss.client.OSSClientFactory;
 import com.livk.autoconfigure.oss.client.OSSClientFactoryLoader;
 import com.livk.autoconfigure.oss.exception.OSSClientFactoryNotFoundException;
-import com.livk.autoconfigure.oss.support.aliyun.AliyunClientFactory;
 import com.livk.autoconfigure.oss.support.minio.MinioClientFactory;
 import com.livk.commons.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +45,6 @@ class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 	private static void register() {
 		if (ClassUtils.isPresent("io.minio.MinioClient")) {
 			FACTORIES.add(new MinioClientFactory());
-		}
-		if (ClassUtils.isPresent("com.aliyun.oss.OSS")) {
-			FACTORIES.add(new AliyunClientFactory());
 		}
 	}
 
