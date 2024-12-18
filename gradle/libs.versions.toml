@@ -21,7 +21,6 @@ springdoc = "2.7.0"
 google-javase = "3.5.3"
 spring-admin = "3.4.1"
 nimbusds-jwt = "9.47"
-rocket-starter = "2.3.1"
 jsqlparser = "5.0"
 lettucemod = "4.1.2"
 minio = "8.5.14"
@@ -79,7 +78,6 @@ auto-service = { group = "com.google.auto.service", name = "auto-service", versi
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "google-javase" }
 nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusds-jwt" }
-rocketmq-boot-starter = { group = "org.apache.rocketmq", name = "rocketmq-spring-boot-starter", version.ref = "rocket-starter" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
