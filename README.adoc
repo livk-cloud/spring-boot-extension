@@ -108,4 +108,6 @@ implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 
 == 其他支持
 
-link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - 感谢JetBrains对 spring-boot-extension项目的支持
+link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - 感谢JetBrains对 spring-boot-extension项目的支持 +
+link:https://spring.io/[Spring] - Spring社区技术指导 +
+link:https://discuss.gradle.org/[Gradle Forums] - Gradle社区插件功能指导 +
