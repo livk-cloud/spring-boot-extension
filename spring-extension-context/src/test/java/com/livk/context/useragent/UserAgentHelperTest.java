@@ -26,6 +26,7 @@ import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -98,7 +99,7 @@ class UserAgentHelperTest {
 		assertEquals("Unknown", userAgent.deviceBrand());
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class BrowscapConfig {
 
 		@Bean
@@ -109,7 +110,7 @@ class UserAgentHelperTest {
 
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class YauaaConfig {
 
 		@Bean

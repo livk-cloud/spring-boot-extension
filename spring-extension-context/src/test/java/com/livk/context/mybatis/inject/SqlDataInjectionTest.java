@@ -38,6 +38,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -87,7 +88,7 @@ class SqlDataInjectionTest {
 		assertNotNull(copy.getUpdateTime());
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class MybatisConfig {
 
 		@Bean(destroyMethod = "close")

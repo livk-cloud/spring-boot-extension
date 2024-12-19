@@ -17,6 +17,7 @@ import com.redis.lettucemod.RedisModulesClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.resource.ClientResources;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,7 @@ import org.springframework.context.annotation.Import;
 /**
  * @author livk
  */
-@Configuration
+@TestConfiguration
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class RediSearchConfig {
 

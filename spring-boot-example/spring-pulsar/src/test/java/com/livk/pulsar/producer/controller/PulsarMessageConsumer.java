@@ -18,6 +18,7 @@ package com.livk.pulsar.producer.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Message;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.pulsar.annotation.PulsarListener;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @author livk
  */
 @Slf4j
-@Component
+@TestComponent
 public class PulsarMessageConsumer {
 
 	@PulsarListener

@@ -20,6 +20,7 @@ import com.livk.context.dynamic.DataSourceContextHolder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -30,7 +31,7 @@ import javax.sql.DataSource;
 /**
  * @author livk
  */
-@Component
+@TestComponent
 public class DataSourceInit implements InitializingBean {
 
 	@Autowired
