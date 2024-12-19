@@ -18,6 +18,7 @@ import com.livk.context.dynamic.intercept.DataSourceInterceptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 
@@ -52,7 +53,7 @@ class DynamicAutoConfigurationTest {
 		});
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@TestConfiguration(proxyBeanMethods = false)
 	@EnableConfigurationProperties(DynamicDatasourceProperties.class)
 	static class Config {
 

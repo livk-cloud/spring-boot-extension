@@ -19,6 +19,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,7 +54,7 @@ class CuratorAutoConfigurationTest {
 		});
 	}
 
-	@Configuration(proxyBeanMethods = false)
+	@TestConfiguration(proxyBeanMethods = false)
 	@EnableConfigurationProperties(CuratorProperties.class)
 	static class Config {
 

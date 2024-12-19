@@ -23,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
@@ -114,7 +115,7 @@ class ReactiveUserAgentResolverTest {
 	void test(@UserAgentInfo Mono<UserAgent> mono) {
 	}
 
-	@Configuration
+	@TestConfiguration
 	static class WebFluxConfig {
 
 		@Bean
