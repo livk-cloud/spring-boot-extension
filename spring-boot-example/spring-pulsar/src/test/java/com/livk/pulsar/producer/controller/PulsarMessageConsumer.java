@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @author livk
  */
 @Slf4j
-@TestComponent
+@Component
 public class PulsarMessageConsumer {
 
 	@PulsarListener

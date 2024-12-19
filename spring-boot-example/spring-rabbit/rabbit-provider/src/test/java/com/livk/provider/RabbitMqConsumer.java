@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.boot.test.context.TestComponent;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +32,7 @@ import org.springframework.stereotype.Component;
  * @author livk
  */
 @Slf4j
-@TestComponent
+@Component
 public class RabbitMqConsumer {
 
 	@RabbitListener(queuesToDeclare = @Queue(DirectConfig.RABBIT_DIRECT_TOPIC))
