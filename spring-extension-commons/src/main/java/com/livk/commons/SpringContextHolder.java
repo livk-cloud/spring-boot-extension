@@ -245,7 +245,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	public static ApplicationContext fetch() {
-		return applicationContext;
+		return beanFactory instanceof ApplicationContext context ? context : applicationContext;
 	}
 
 	@Override
