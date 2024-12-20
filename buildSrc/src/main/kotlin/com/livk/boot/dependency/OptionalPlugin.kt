@@ -20,6 +20,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.bundling.Jar
+import org.gradle.internal.extensions.stdlib.capitalized
 
 /**
  * @author livk
@@ -44,10 +46,17 @@ abstract class OptionalPlugin : Plugin<Project> {
 				extension.sourceSets.all { sourceSet ->
 					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(optional)
 					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(optional)
-					if (sourceSet.name != OPTIONAL) {
-						configurations.getByName("${OPTIONAL}Api")
-							.extendsFrom(optional)
+					configurations.named("${OPTIONAL}${JavaPlugin.API_CONFIGURATION_NAME.capitalized()}") {
+						it.extendsFrom(
+							optional
+						)
 					}
+				}
+			}
+
+			project.tasks.withType(Jar::class.java) {
+				if (it.name == "${OPTIONAL}${JavaPlugin.JAR_TASK_NAME.capitalized()}") {
+					it.enabled = false
 				}
 			}
 		}
