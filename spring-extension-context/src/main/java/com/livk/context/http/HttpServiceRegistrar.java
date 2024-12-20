@@ -20,7 +20,6 @@ import com.livk.commons.spring.AnnotationBasePackageSupport;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.disruptor.DisruptorScan;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;
-import com.livk.context.http.annotation.HttpProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -48,8 +47,7 @@ public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {
 			throw new DisruptorRegistrarException(
 					DisruptorScan.class.getName() + " required basePackages or basePackageClasses");
 		}
-		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry, environment);
-		scanner.registerFilters(HttpProvider.class);
+		ClassPathHttpScanner scanner = new ClassPathHttpScanner(registry);
 		scanner.scan(basePackages);
 	}
 

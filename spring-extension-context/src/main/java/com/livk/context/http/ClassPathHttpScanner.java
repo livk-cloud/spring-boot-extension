@@ -16,7 +16,7 @@
 
 package com.livk.context.http;
 
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.spring.AnnotationBeanDefinitionScanner;
 import com.livk.commons.util.ClassUtils;
 import com.livk.context.http.annotation.HttpProvider;
 import com.livk.context.http.exception.HttpServiceRegistrarException;
@@ -30,48 +30,27 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanNameGenerator;
-import org.springframework.context.annotation.AnnotationBeanNameGenerator;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
-import java.lang.annotation.Annotation;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The type Class path http scanner.
  *
  * @author livk
  */
-public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
-
-	private final BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+public class ClassPathHttpScanner extends AnnotationBeanDefinitionScanner<HttpProvider> {
 
 	/**
 	 * Instantiates a new Class path http scanner.
 	 * @param registry the registry
-	 * @param environment the environment
 	 */
-	public ClassPathHttpScanner(BeanDefinitionRegistry registry, Environment environment) {
-		super(registry, false, environment);
-	}
-
-	/**
-	 * Register filters.
-	 * @param annotationType the annotation type
-	 */
-	public void registerFilters(Class<? extends Annotation> annotationType) {
-		addIncludeFilter(new AnnotationTypeFilter(annotationType));
+	public ClassPathHttpScanner(BeanDefinitionRegistry registry) {
+		super(registry);
 	}
 
 	@Override
@@ -79,43 +58,26 @@ public class ClassPathHttpScanner extends ClassPathBeanDefinitionScanner {
 		return beanDefinition.getMetadata().isIndependent() && !beanDefinition.getMetadata().isAnnotation();
 	}
 
-	@NonNull
 	@Override
-	protected Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
-		BeanDefinitionRegistry registry = super.getRegistry();
-		Assert.notNull(registry, "registry not be null");
-		Assert.notEmpty(basePackages, "At least one base package must be specified");
-		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
-		for (String basePackage : basePackages) {
-			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
-			for (BeanDefinition candidateComponent : candidateComponents) {
-				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
-					AnnotationAttributes attributes = AnnotationUtils
-						.attributesFor(scannedGenericBeanDefinition.getMetadata(), HttpProvider.class);
-					AdapterType type = attributes.getEnum("type");
-					AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = this.getAdapterFactory(type);
-					String beanClassName = candidateComponent.getBeanClassName();
-					Assert.notNull(beanClassName, "beanClassName not be null");
-					Class<?> beanType = ClassUtils.resolveClassName(beanClassName,
-							super.getResourceLoader().getClassLoader());
-					BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
-					builder.addPropertyValue("type", beanType);
-					builder.addPropertyValue("adapterFactory", adapterFactory);
-					builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+	protected BeanDefinitionHolder generateHolder(AnnotationAttributes attributes, BeanDefinition candidateComponent,
+			BeanDefinitionRegistry registry) {
+		AdapterType type = attributes.getEnum("type");
+		AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = this.getAdapterFactory(type);
+		String beanClassName = candidateComponent.getBeanClassName();
+		Assert.notNull(beanClassName, "beanClassName not be null");
+		Class<?> beanType = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HttpFactoryBean.class);
+		builder.addPropertyValue("type", beanType);
+		builder.addPropertyValue("adapterFactory", adapterFactory);
+		builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
-					AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-					String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
-					if (checkCandidate(beanName, beanDefinition)) {
-						beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanType);
-
-						BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, beanName);
-						beanDefinitions.add(holder);
-						registerBeanDefinition(holder, registry);
-					}
-				}
-			}
+		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+		String beanName = beanNameGenerator.generateBeanName(candidateComponent, registry);
+		if (checkCandidate(beanName, beanDefinition)) {
+			beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, beanType);
+			return new BeanDefinitionHolder(beanDefinition, beanName);
 		}
-		return beanDefinitions;
+		return null;
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -40,7 +40,6 @@ public class DisruptorScanRegistrar implements ImportBeanDefinitionRegistrar {
 					DisruptorScan.class.getName() + " required basePackages or basePackageClasses");
 		}
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(registry, beanNameGenerator);
-		scanner.registerFilters(DisruptorEvent.class);
 		scanner.scan(basePackages);
 	}
 
