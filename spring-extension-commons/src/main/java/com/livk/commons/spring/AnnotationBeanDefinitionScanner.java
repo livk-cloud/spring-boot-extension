@@ -43,18 +43,13 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 
 	protected final BeanNameGenerator beanNameGenerator;
 
-	/**
-	 * Instantiates a new Class path disruptor scanner.
-	 * @param registry the registry
-	 * @param beanNameGenerator the bean name generator
-	 */
-	public AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
+	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 		super(registry, false);
 		this.beanNameGenerator = beanNameGenerator;
 		addIncludeFilter(new AnnotationTypeFilter(annotationClass));
 	}
 
-	public AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
+	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
 		this(registry, new AnnotationBeanNameGenerator());
 	}
 
