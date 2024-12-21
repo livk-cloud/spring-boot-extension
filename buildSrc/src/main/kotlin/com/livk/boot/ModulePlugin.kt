@@ -34,14 +34,16 @@ class ModulePlugin : Plugin<Project> {
 		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
 		project.pluginManager.apply(JacocoExpand::class.java)
 
-		val extractLegalResources = project.tasks.create("extractLegalResources", ExtractResources::class.java)
-		extractLegalResources.getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
-		extractLegalResources.setResourcesNames(listOf("LICENSE.txt"))
+		val extractResourcesProvider =
+			project.tasks.register("extractLegalResources", ExtractResources::class.java) {
+				it.getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
+				it.setResourcesNames(listOf("LICENSE.txt"))
+			}
 
 		project.tasks.withType(Jar::class.java) { jar ->
 			project.afterEvaluate {
 				jar.metaInf { metaInf ->
-					metaInf.from(extractLegalResources)
+					metaInf.from(extractResourcesProvider.get())
 				}
 			}
 		}
