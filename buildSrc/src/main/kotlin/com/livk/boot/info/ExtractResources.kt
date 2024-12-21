@@ -17,7 +17,6 @@
 package com.livk.boot.info
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
@@ -49,9 +48,13 @@ open class ExtractResources : DefaultTask() {
 	@TaskAction
 	fun extractResources() {
 		for (resourceName in this.resourceNames) {
-			val resourceStream = javaClass.classLoader.getResourceAsStream(resourceName)
-				?: throw GradleException("Resource '$resourceName' does not exist")
-			copy(resourceStream, FileOutputStream(destinationDirectory.file(resourceName).get().asFile))
+			javaClass.classLoader.resources(resourceName).forEach { url ->
+				if (url.path.contains("buildSrc")) {
+					url.openStream().use {
+						copy(it, FileOutputStream(destinationDirectory.file(resourceName).get().asFile))
+					}
+				}
+			}
 		}
 	}
 
