@@ -17,6 +17,7 @@ import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.cluster.RedisModulesClusterClient;
 import io.lettuce.core.codec.RedisCodec;
+import io.lettuce.core.codec.StringCodec;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -24,7 +25,9 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  */
 public interface RediSearchConnectionFactory {
 
-	StatefulRedisModulesConnection<String, String> connect();
+	default StatefulRedisModulesConnection<String, String> connect() {
+		return this.connect(StringCodec.UTF8);
+	}
 
 	<K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec);
 

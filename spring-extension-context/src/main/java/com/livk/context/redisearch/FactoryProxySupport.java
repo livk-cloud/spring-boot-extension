@@ -63,8 +63,6 @@ final class FactoryProxySupport {
 			.withParameters(clientType)
 			.intercept(MethodCall.invoke(Object.class.getConstructor())
 				.andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
-			.method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(0)))
-			.intercept(MethodDelegation.to(ConnectInterceptor.class))
 			.method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(1)))
 			.intercept(MethodDelegation.to(ConnectWithCodecInterceptor.class))
 			.method(ElementMatchers.named("close"))
@@ -76,19 +74,6 @@ final class FactoryProxySupport {
 		catch (NoSuchMethodException e) {
 			throw new IllegalArgumentException(e);
 		}
-	}
-
-	private static class ConnectInterceptor {
-
-		@SuppressWarnings({ "unchecked", "unused" })
-		@RuntimeType
-		public static StatefulRedisModulesConnection<String, String> connect(@FieldValue("client") Object client)
-				throws Exception {
-			return (StatefulRedisModulesConnection<String, String>) client.getClass()
-				.getMethod("connect")
-				.invoke(client);
-		}
-
 	}
 
 	private static class ConnectWithCodecInterceptor {
