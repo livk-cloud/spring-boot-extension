@@ -15,6 +15,7 @@ package com.livk.commons.spring;
 
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.ClassUtils;
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -29,9 +30,10 @@ import java.util.Set;
 /**
  * @author livk
  */
-public abstract class AnnotationBasePackageSupport {
+@UtilityClass
+public class AnnotationBasePackageSupport {
 
-	public static String[] getBasePackages(AnnotationMetadata metadata, Class<? extends Annotation> annotationClass) {
+	public String[] getBasePackages(AnnotationMetadata metadata, Class<? extends Annotation> annotationClass) {
 		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, annotationClass);
 		String[] basePackages = attributes.getStringArray("basePackages");
 		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
@@ -45,7 +47,7 @@ public abstract class AnnotationBasePackageSupport {
 		return StringUtils.toStringArray(packagesToScan);
 	}
 
-	public String[] getBasePackage(BeanFactory beanFactory) {
+	public String[] getBasePackages(BeanFactory beanFactory) {
 		if (AutoConfigurationPackages.has(beanFactory)) {
 			return StringUtils.toStringArray(AutoConfigurationPackages.get(beanFactory));
 		}
