@@ -24,7 +24,6 @@ import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -37,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -236,7 +236,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		if (ObjectUtils.isEmpty(body)) {
 			body = StreamUtils.copyToByteArray(super.getInputStream());
 		}
-		return body;
+		return Arrays.copyOf(body, body.length);
 	}
 
 	public String getContentAsString() throws IOException {

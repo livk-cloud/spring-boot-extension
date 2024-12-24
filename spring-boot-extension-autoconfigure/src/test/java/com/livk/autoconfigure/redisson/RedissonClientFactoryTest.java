@@ -39,6 +39,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * @author livk
  */
@@ -77,6 +79,8 @@ class RedissonClientFactoryTest {
 		RedissonClient redissonClient = RedissonClientFactory.create(properties, new RedisProperties(),
 				configCustomizers);
 
+		assertNotNull(redissonClient);
+		redissonClient.shutdown();
 	}
 
 }
