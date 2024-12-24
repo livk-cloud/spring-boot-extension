@@ -37,6 +37,7 @@ import java.nio.charset.Charset;
  * </p>
  *
  * @author livk
+ * @see org.springframework.web.util.ContentCachingResponseWrapper
  */
 public class ResponseWrapper extends HttpServletResponseWrapper {
 

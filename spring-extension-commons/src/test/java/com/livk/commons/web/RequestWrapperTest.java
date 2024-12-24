@@ -18,13 +18,11 @@ package com.livk.commons.web;
 
 import com.livk.commons.jackson.util.JsonMapperUtils;
 import com.livk.commons.util.WebUtils;
-import jakarta.servlet.ServletInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,9 +53,8 @@ class RequestWrapperTest {
 		Map<String, String> map = Map.of("root", "root");
 		wrapper.body(JsonMapperUtils.writeValueAsBytes(map));
 
-		ServletInputStream inputStream = wrapper.getInputStream();
-		byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(map), bytes);
+		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(map), wrapper.getContentAsByteArray());
+		assertEquals(JsonMapperUtils.writeValueAsString(map), wrapper.getContentAsString());
 		assertEquals(MediaType.APPLICATION_JSON_VALUE, wrapper.getContentType());
 	}
 

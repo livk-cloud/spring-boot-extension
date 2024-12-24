@@ -24,6 +24,7 @@ import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -35,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -48,6 +50,7 @@ import java.util.Set;
  * 用于修改body、添加header、添加param
  *
  * @author livk
+ * @see org.springframework.web.util.ContentCachingRequestWrapper
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
 
@@ -150,7 +153,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	@Override
-	public BufferedReader getReader() {
+	public String getCharacterEncoding() {
+		String enc = super.getCharacterEncoding();
+		return enc != null ? enc : "UTF-8";
+	}
+
+	@Override
+	public BufferedReader getReader() throws IOException {
+		if (ObjectUtils.isEmpty(body)) {
+			body = StreamUtils.copyToByteArray(super.getInputStream());
+		}
 		return new BufferedReader(new ByteArrayReader(body));
 	}
 
@@ -218,6 +230,21 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 			headerValues.addAll(list);
 		}
 		return Collections.enumeration(headerValues);
+	}
+
+	public byte[] getContentAsByteArray() throws IOException {
+		if (ObjectUtils.isEmpty(body)) {
+			body = StreamUtils.copyToByteArray(super.getInputStream());
+		}
+		return body;
+	}
+
+	public String getContentAsString() throws IOException {
+		Charset charset = Charset.forName(this.getCharacterEncoding());
+		if (ObjectUtils.isEmpty(body)) {
+			return StreamUtils.copyToString(super.getInputStream(), charset);
+		}
+		return new String(body, charset);
 	}
 
 	private static class ByteArrayReader extends InputStreamReader {
