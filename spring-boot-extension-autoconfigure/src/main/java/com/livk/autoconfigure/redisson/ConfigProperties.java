@@ -18,15 +18,9 @@ package com.livk.autoconfigure.redisson;
 
 import com.livk.commons.util.BeanUtils;
 import io.netty.channel.EventLoopGroup;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.redisson.api.NameMapper;
 import org.redisson.api.NatMapper;
 import org.redisson.client.DefaultCredentialsResolver;
@@ -39,6 +33,7 @@ import org.redisson.config.CommandMapper;
 import org.redisson.config.Config;
 import org.redisson.config.CredentialsResolver;
 import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.Protocol;
 import org.redisson.config.ReadMode;
 import org.redisson.config.ReplicatedServersConfig;
 import org.redisson.config.SentinelServersConfig;
@@ -55,6 +50,15 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * The type Config properties.
@@ -77,91 +81,60 @@ public class ConfigProperties {
 	 */
 	@EqualsAndHashCode(callSuper = true)
 	@Data
+	@NoArgsConstructor
 	public static class RedissonConfig extends Config {
 
 		/**
 		 * Instantiates a new Redisson config.
-		 * @param clusterServersConfig the cluster servers config
-		 * @param replicatedServersConfig the replicated servers config
-		 * @param singleServerConfig the single server config
-		 * @param sentinelServersConfig the sentinel connection config
-		 * @param masterSlaveServersConfig the master slave connection config
-		 * @param nettyHook the netty hook
-		 * @param codec the codec
-		 * @param redissonReferenceEnabled the redisson reference enabled
-		 * @param threads the threads
-		 * @param transportMode the transport mode
-		 * @param nettyThreads the netty threads
-		 * @param executor the executor
-		 * @param eventLoopGroup the event loop group
-		 * @param lockWatchdogTimeout the lock watchdog timeout
-		 * @param checkLockSyncedSlaves the check lock synced slaves
-		 * @param keepPubSubOrder the keep pub sub order
-		 * @param addressResolverGroupFactory the address resolver group factory
-		 * @param useScriptCache the use script cache
-		 * @param minCleanUpDelay the min clean up delay
-		 * @param maxCleanUpDelay the max clean up delay
-		 * @param cleanUpKeysAmount the clean up keys amount
-		 * @param useThreadClassLoader the use thread class loader
-		 * @param reliableTopicWatchdogTimeout the reliable topic watchdog timeout
-		 * @param connectionListener the connection listener
-		 * @param lazyInitialization the lazy initialization
-		 * @param slavesSyncTimeout the slaves sync timeout
 		 */
 		@ConstructorBinding
-		public RedissonConfig(ClusterServers clusterServersConfig, ReplicatedServers replicatedServersConfig,
-				SingleServer singleServerConfig, SentinelServers sentinelServersConfig,
-				MasterSlaveServers masterSlaveServersConfig,
-				@DefaultValue("!<org.redisson.client.DefaultNettyHook> {}") NettyHook nettyHook, Codec codec,
-				@DefaultValue("true") Boolean redissonReferenceEnabled, @DefaultValue("16") Integer threads,
-				@DefaultValue("NIO") TransportMode transportMode, @DefaultValue("32") Integer nettyThreads,
-				ExecutorService executor, EventLoopGroup eventLoopGroup,
-				@DefaultValue("30000") Long lockWatchdogTimeout, @DefaultValue("true") Boolean checkLockSyncedSlaves,
-				@DefaultValue("true") Boolean keepPubSubOrder,
+		public RedissonConfig(SentinelServers sentinelServersConfig, MasterSlaveServers masterSlaveServersConfig,
+				SingleServer singleServerConfig, ClusterServers clusterServersConfig,
+				ReplicatedServers replicatedServersConfig, @DefaultValue("16") Integer threads,
+				@DefaultValue("32") Integer nettyThreads, Executor nettyExecutor, Codec codec, ExecutorService executor,
+				@DefaultValue("true") Boolean referenceEnabled, @DefaultValue("NIO") TransportMode transportMode,
+				EventLoopGroup eventLoopGroup, @DefaultValue("30000") Long lockWatchdogTimeout,
+				@DefaultValue("true") Boolean checkLockSyncedSlaves, @DefaultValue("1000") Long slavesSyncTimeout,
+				@DefaultValue("600000") Long reliableTopicWatchdogTimeout,
+				@DefaultValue("true") Boolean keepPubSubOrder, @DefaultValue("false") Boolean useScriptCache,
+				@DefaultValue("3") Integer minCleanUpDelay, @DefaultValue("1800") Integer maxCleanUpDelay,
+				@DefaultValue("100") Integer cleanUpKeysAmount,
+				@DefaultValue("!<org.redisson.client.DefaultNettyHook> {}") NettyHook nettyHook,
+				ConnectionListener connectionListener, @DefaultValue("true") Boolean useThreadClassLoader,
 				@DefaultValue("!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}") AddressResolverGroupFactory addressResolverGroupFactory,
-				@DefaultValue("false") Boolean useScriptCache, @DefaultValue("5") Integer minCleanUpDelay,
-				@DefaultValue("1800") Integer maxCleanUpDelay, @DefaultValue("100") Integer cleanUpKeysAmount,
-				@DefaultValue("true") Boolean useThreadClassLoader,
-				@DefaultValue("600000") Long reliableTopicWatchdogTimeout, ConnectionListener connectionListener,
-				Boolean lazyInitialization, @DefaultValue("1000") Long slavesSyncTimeout) {
-			setConfig(clusterServersConfig, super::setClusterServersConfig);
-			setConfig(replicatedServersConfig, super::setReplicatedServersConfig);
-			setConfig(singleServerConfig, super::setSingleServerConfig);
-			setConfig(sentinelServersConfig, super::setSentinelServersConfig);
-			setConfig(masterSlaveServersConfig, super::setMasterSlaveServersConfig);
-			set(nettyHook, super::setNettyHook);
-			set(codec, super::setCodec);
-			set(redissonReferenceEnabled, super::setReferenceEnabled);
-			set(threads, super::setThreads);
-			set(transportMode, super::setTransportMode);
-			set(nettyThreads, super::setNettyThreads);
-			set(executor, super::setExecutor);
-			set(eventLoopGroup, super::setEventLoopGroup);
-			set(lockWatchdogTimeout, super::setLockWatchdogTimeout);
-			set(checkLockSyncedSlaves, super::setCheckLockSyncedSlaves);
-			set(keepPubSubOrder, super::setKeepPubSubOrder);
-			set(addressResolverGroupFactory, super::setAddressResolverGroupFactory);
-			set(useScriptCache, super::setUseScriptCache);
-			set(minCleanUpDelay, super::setMinCleanUpDelay);
-			set(maxCleanUpDelay, super::setMaxCleanUpDelay);
-			set(cleanUpKeysAmount, super::setCleanUpKeysAmount);
-			set(useThreadClassLoader, super::setUseThreadClassLoader);
-			set(reliableTopicWatchdogTimeout, super::setReliableTopicWatchdogTimeout);
-			set(connectionListener, super::setConnectionListener);
-			set(lazyInitialization, super::setLazyInitialization);
-			set(slavesSyncTimeout, super::setSlavesSyncTimeout);
-		}
-
-		private <T extends Base<R>, R extends BaseConfig<R>> void setConfig(T t, Consumer<R> consumer) {
-			if (t != null) {
-				consumer.accept(t.convert());
-			}
-		}
-
-		private <T> void set(T t, Consumer<T> consumer) {
-			if (t != null) {
-				consumer.accept(t);
-			}
+				Boolean lazyInitialization, @DefaultValue("RESP2") Protocol protocol) {
+			Optional.ofNullable(sentinelServersConfig).map(Base::convert).ifPresent(super::setSentinelServersConfig);
+			Optional.ofNullable(masterSlaveServersConfig)
+				.map(Base::convert)
+				.ifPresent(super::setMasterSlaveServersConfig);
+			Optional.ofNullable(singleServerConfig).map(Base::convert).ifPresent(super::setSingleServerConfig);
+			Optional.ofNullable(clusterServersConfig).map(Base::convert).ifPresent(super::setClusterServersConfig);
+			Optional.ofNullable(replicatedServersConfig)
+				.map(Base::convert)
+				.ifPresent(super::setReplicatedServersConfig);
+			setThreads(threads);
+			setNettyThreads(nettyThreads);
+			Optional.ofNullable(nettyExecutor).ifPresent(super::setNettyExecutor);
+			Optional.ofNullable(codec).ifPresent(super::setCodec);
+			Optional.ofNullable(executor).ifPresent(super::setExecutor);
+			setReferenceEnabled(referenceEnabled);
+			setTransportMode(transportMode);
+			Optional.ofNullable(eventLoopGroup).ifPresent(super::setEventLoopGroup);
+			setLockWatchdogTimeout(lockWatchdogTimeout);
+			setCheckLockSyncedSlaves(checkLockSyncedSlaves);
+			setSlavesSyncTimeout(slavesSyncTimeout);
+			setReliableTopicWatchdogTimeout(reliableTopicWatchdogTimeout);
+			setKeepPubSubOrder(keepPubSubOrder);
+			setUseScriptCache(useScriptCache);
+			setMinCleanUpDelay(minCleanUpDelay);
+			setMaxCleanUpDelay(maxCleanUpDelay);
+			setCleanUpKeysAmount(cleanUpKeysAmount);
+			setNettyHook(nettyHook);
+			Optional.ofNullable(connectionListener).ifPresent(super::setConnectionListener);
+			setUseThreadClassLoader(useThreadClassLoader);
+			setAddressResolverGroupFactory(addressResolverGroupFactory);
+			Optional.ofNullable(lazyInitialization).ifPresent(super::setLazyInitialization);
+			setProtocol(protocol);
 		}
 
 	}
@@ -405,7 +378,7 @@ public class ConfigProperties {
 		/**
 		 * If pooled connection not used for a <code>timeout</code> time and current
 		 * connections amount bigger than minimum idle connections pool size, then it will
-		 * closed and removed from pool. Value in milliseconds.
+		 * close and removed from pool. Value in milliseconds.
 		 */
 
 		private int idleConnectionTimeout = 10000;
@@ -418,7 +391,7 @@ public class ConfigProperties {
 
 		/**
 		 * Redis server response timeout. Starts to countdown when Redis command was
-		 * succesfully sent. Value in milliseconds.
+		 * successfully sent. Value in milliseconds.
 		 */
 
 		private int timeout = 3000;

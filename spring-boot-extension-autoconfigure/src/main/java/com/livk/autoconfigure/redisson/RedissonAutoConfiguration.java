@@ -20,6 +20,7 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -44,7 +45,7 @@ public class RedissonAutoConfiguration {
 	@Bean
 	public CustomEditorConfigurer customEditorConfigurer() {
 		CustomEditorConfigurer configurer = new CustomEditorConfigurer();
-		configurer.setCustomEditors(PropertyEditorProxySupport.make());
+		configurer.setPropertyEditorRegistrars(new PropertyEditorRegistrar[] { new RedissonPropertyEditorRegistrar() });
 		return configurer;
 	}
 
