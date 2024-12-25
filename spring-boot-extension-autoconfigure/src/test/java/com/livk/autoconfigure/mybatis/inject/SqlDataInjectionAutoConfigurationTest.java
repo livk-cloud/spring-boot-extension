@@ -11,49 +11,45 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.dynamic;
+package com.livk.autoconfigure.mybatis.inject;
 
-import com.livk.context.dynamic.DynamicDatasource;
-import com.livk.context.dynamic.intercept.DataSourceInterceptor;
+import com.livk.context.mybatis.inject.SqlDataInjection;
+import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * <p>
- * DynamicAutoConfigurationTest
- * </p>
- *
  * @author livk
  */
-class DynamicAutoConfigurationTest {
+class SqlDataInjectionAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(DynamicAutoConfiguration.class))
-		.withPropertyValues("spring.dynamic.primary=mysql",
-				"spring.dynamic.datasource.mysql.url=jdbc:mysql://localhost:3306/test",
-				"spring.dynamic.datasource.mysql.username=root", "spring.dynamic.datasource.mysql.password=root");
+		.withBean(DataSource.class, HikariDataSource::new)
+		.withConfiguration(AutoConfigurations.of(SqlDataInjectionAutoConfiguration.class));
 
 	@Test
-	void curatorDynamicDatasource() {
+	void sqlDataInjectionConfigurationCustomizer() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DynamicDatasource.class);
+			SqlSessionFactory factory = context.getBean(SqlSessionFactory.class);
+			List<Interceptor> interceptors = factory.getConfiguration().getInterceptors();
+			assertThat(interceptors).isNotNull().hasAtLeastOneElementOfType(SqlDataInjection.class);
 		});
 	}
 
-	@Test
-	void exponentialDataSourceInterceptor() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DataSourceInterceptor.class);
-		});
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(DynamicDatasourceProperties.class)
+	@TestConfiguration
+	@EnableSqlPlugin
+	@ImportAutoConfiguration(MybatisAutoConfiguration.class)
 	static class Config {
 
 	}

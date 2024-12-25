@@ -11,50 +11,42 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.dynamic;
+package com.livk.autoconfigure.disruptor;
 
-import com.livk.context.dynamic.DynamicDatasource;
-import com.livk.context.dynamic.intercept.DataSourceInterceptor;
+import com.livk.context.disruptor.annotation.DisruptorEvent;
+import com.livk.context.disruptor.support.SpringDisruptor;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * <p>
- * DynamicAutoConfigurationTest
- * </p>
- *
  * @author livk
  */
-class DynamicAutoConfigurationTest {
+class DisruptorAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(DynamicAutoConfiguration.class))
-		.withPropertyValues("spring.dynamic.primary=mysql",
-				"spring.dynamic.datasource.mysql.url=jdbc:mysql://localhost:3306/test",
-				"spring.dynamic.datasource.mysql.username=root", "spring.dynamic.datasource.mysql.password=root");
+		.withConfiguration(AutoConfigurations.of(DisruptorAutoConfiguration.class));
 
 	@Test
-	void curatorDynamicDatasource() {
+	void test() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DynamicDatasource.class);
+			assertThat(context).hasSingleBean(SpringDisruptor.class);
+			assertThat(context).hasBean("disruptorEntity");
 		});
 	}
 
-	@Test
-	void exponentialDataSourceInterceptor() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DataSourceInterceptor.class);
-		});
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(DynamicDatasourceProperties.class)
+	@TestConfiguration
+	@AutoConfigurationPackage
 	static class Config {
+
+	}
+
+	@DisruptorEvent("disruptorEntity")
+	static class DisruptorEntity {
 
 	}
 

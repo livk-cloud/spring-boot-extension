@@ -88,7 +88,7 @@ public class LockAutoConfiguration {
 		 * @return the distributed lock
 		 */
 		@Bean
-		public DistributedLock redissonLock(CuratorFramework curatorFramework) {
+		public DistributedLock curatorLock(CuratorFramework curatorFramework) {
 			return new CuratorLock(curatorFramework);
 		}
 

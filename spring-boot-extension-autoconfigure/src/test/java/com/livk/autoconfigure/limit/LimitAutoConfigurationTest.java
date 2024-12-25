@@ -11,45 +11,44 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.redisson;
+package com.livk.autoconfigure.limit;
 
+import com.livk.context.limit.executor.RedissonLimitExecutor;
+import com.livk.context.limit.interceptor.LimitInterceptor;
 import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
-import org.redisson.spring.data.connection.RedissonConnectionFactory;
-import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
-import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.support.ConfigurableConversionService;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
-@SpringJUnitConfig
+@SpringJUnitConfig(LimitAutoConfigurationTest.Config.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
-class RedissonAutoConfigurationTest {
+class LimitAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
@@ -57,44 +56,38 @@ class RedissonAutoConfigurationTest {
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.redisson.config.single-server-config.address",
+		registry.add("redisson.single-server-config.address",
 				() -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
-		registry.add("spring.redisson.config.codec", () -> "!<org.redisson.codec.JsonJacksonCodec> {}");
 	}
 
 	@Autowired
-	StandardEnvironment environment;
+	ApplicationContext applicationContext;
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(ConfigProperties.class, this::properties)
-		.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner(new Supplier<>() {
+		@Override
+		public ConfigurableApplicationContext get() {
+			return new GenericApplicationContext(applicationContext);
+		}
+	}).withConfiguration(AutoConfigurations.of(LimitAutoConfiguration.class));
 
 	@Test
-	void redissonClient() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(RedissonClient.class);
+	void test() {
+		this.contextRunner.run((context) -> {
+			assertThat(context).hasSingleBean(LimitInterceptor.class);
+			assertThat(context).hasSingleBean(RedissonLimitExecutor.class);
 		});
 	}
 
-	@Test
-	void redissonConnectionFactory() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
-			assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
-		});
-	}
-
-	ConfigProperties properties() {
-		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
-		ConfigurableConversionService conversionService = environment.getConversionService();
-		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
-		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
-			.registerCustomEditors(registry);
-		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
+	@TestConfiguration
+	@EnableLimit
 	static class Config {
+
+		@Bean
+		RedissonClient redissonClient(@Value("${redisson.single-server-config.address}") String address) {
+			org.redisson.config.Config config = new org.redisson.config.Config();
+			config.useSingleServer().setAddress(address);
+			return Redisson.create(config);
+		}
 
 	}
 

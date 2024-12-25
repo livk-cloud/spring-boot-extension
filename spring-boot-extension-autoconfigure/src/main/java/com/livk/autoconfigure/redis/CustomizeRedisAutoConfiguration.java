@@ -50,7 +50,7 @@ public class CustomizeRedisAutoConfiguration {
 	 * @return the universal redis template
 	 */
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name = "redisOps")
 	public RedisOps redisOps(RedisConnectionFactory redisConnectionFactory) {
 		return new RedisOps(redisConnectionFactory);
 	}

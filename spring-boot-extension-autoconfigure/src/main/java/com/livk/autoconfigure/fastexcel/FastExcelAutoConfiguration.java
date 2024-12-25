@@ -35,23 +35,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
- * <p>
- * ExcelAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @AutoConfiguration
 @SpringAutoService
 @ConditionalOnClass(FastExcel.class)
-public class ExcelAutoConfiguration {
+public class FastExcelAutoConfiguration {
 
 	/**
 	 * The type Excel web mvc auto configuration.
 	 */
 	@AutoConfiguration
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-	public static class ExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
+	public static class FastExcelWebMvcAutoConfiguration implements WebMvcConfigurer {
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -70,7 +66,7 @@ public class ExcelAutoConfiguration {
 	 */
 	@AutoConfiguration
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-	public static class ExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
+	public static class FastExcelWebFluxAutoConfiguration implements WebFluxConfigurer {
 
 		/**
 		 * Reactive excel method return value handler reactive excel method return value
