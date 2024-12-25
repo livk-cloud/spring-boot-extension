@@ -29,25 +29,33 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
-@SpringJUnitConfig
+@SpringJUnitConfig(LockAutoConfigurationTest.Config.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class LockAutoConfigurationTest {
@@ -79,27 +87,15 @@ class LockAutoConfigurationTest {
 				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
 	}
 
-	@Value("${redisson.single-server-config.address}")
-	String address;
+	@Autowired
+	ApplicationContext applicationContext;
 
-	RedissonClient redissonClient() {
-		org.redisson.config.Config config = new org.redisson.config.Config();
-		config.useSingleServer().setAddress(address);
-		return Redisson.create(config);
-	}
-
-	@Value("${curator.connectString}")
-	String connectString;
-
-	CuratorFramework curatorFramework() {
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
-		return CuratorFrameworkFactory.builder().retryPolicy(retryPolicy).connectString(connectString).build();
-	}
-
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(RedissonClient.class, this::redissonClient)
-		.withBean(CuratorFramework.class, this::curatorFramework)
-		.withConfiguration(AutoConfigurations.of(LockAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner(new Supplier<>() {
+		@Override
+		public ConfigurableApplicationContext get() {
+			return new GenericApplicationContext(applicationContext);
+		}
+	}).withConfiguration(AutoConfigurations.of(LockAutoConfiguration.class));
 
 	@Test
 	void test() {
@@ -108,6 +104,24 @@ class LockAutoConfigurationTest {
 			assertThat(context).hasSingleBean(RedissonLock.class);
 			assertThat(context).hasSingleBean(CuratorLock.class);
 		});
+	}
+
+	@TestConfiguration
+	static class Config {
+
+		@Bean
+		RedissonClient redissonClient(@Value("${redisson.single-server-config.address}") String address) {
+			org.redisson.config.Config config = new org.redisson.config.Config();
+			config.useSingleServer().setAddress(address);
+			return Redisson.create(config);
+		}
+
+		@Bean
+		CuratorFramework curatorFramework(@Value("${curator.connectString}") String connectString) {
+			RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
+			return CuratorFrameworkFactory.builder().retryPolicy(retryPolicy).connectString(connectString).build();
+		}
+
 	}
 
 }

@@ -19,6 +19,7 @@ import com.livk.testcontainers.containers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -26,19 +27,25 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
-@SpringJUnitConfig
+@SpringJUnitConfig(LimitAutoConfigurationTest.Config.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class LimitAutoConfigurationTest {
@@ -53,19 +60,15 @@ class LimitAutoConfigurationTest {
 				() -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 	}
 
-	@Value("${redisson.single-server-config.address}")
-	String address;
+	@Autowired
+	ApplicationContext applicationContext;
 
-	RedissonClient redissonClient() {
-		org.redisson.config.Config config = new org.redisson.config.Config();
-		config.useSingleServer().setAddress(address);
-		return Redisson.create(config);
-	}
-
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(RedissonClient.class, this::redissonClient)
-		.withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(LimitAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner(new Supplier<>() {
+		@Override
+		public ConfigurableApplicationContext get() {
+			return new GenericApplicationContext(applicationContext);
+		}
+	}).withConfiguration(AutoConfigurations.of(LimitAutoConfiguration.class));
 
 	@Test
 	void test() {
@@ -78,6 +81,13 @@ class LimitAutoConfigurationTest {
 	@TestConfiguration
 	@EnableLimit
 	static class Config {
+
+		@Bean
+		RedissonClient redissonClient(@Value("${redisson.single-server-config.address}") String address) {
+			org.redisson.config.Config config = new org.redisson.config.Config();
+			config.useSingleServer().setAddress(address);
+			return Redisson.create(config);
+		}
 
 	}
 
