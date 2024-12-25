@@ -20,8 +20,6 @@ import org.apache.ibatis.type.TypeHandler;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import javax.sql.DataSource;
@@ -34,9 +32,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MybatisTypeHandlerAutoConfigurationTest {
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 		.withBean(DataSource.class, HikariDataSource::new)
-		.withConfiguration(AutoConfigurations.of(MybatisTypeHandlerAutoConfiguration.class));
+		.withConfiguration(
+				AutoConfigurations.of(MybatisAutoConfiguration.class, MybatisTypeHandlerAutoConfiguration.class));
 
 	@Test
 	void testMysql() {
@@ -51,19 +50,13 @@ class MybatisTypeHandlerAutoConfigurationTest {
 
 	@Test
 	void testPgsql() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+		this.contextRunner.run((context) -> {
 			SqlSessionFactory factory = context.getBean(SqlSessionFactory.class);
 			Collection<TypeHandler<?>> typeHandlers = factory.getConfiguration()
 				.getTypeHandlerRegistry()
 				.getTypeHandlers();
 			assertThat(typeHandlers).isNotNull().hasAtLeastOneElementOfType(MysqlJsonTypeHandler.class);
 		});
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(MybatisAutoConfiguration.class)
-	static class Config {
-
 	}
 
 }

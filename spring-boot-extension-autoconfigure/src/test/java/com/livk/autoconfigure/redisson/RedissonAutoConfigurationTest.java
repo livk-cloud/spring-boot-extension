@@ -25,7 +25,6 @@ import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
 import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -71,14 +70,14 @@ class RedissonAutoConfigurationTest {
 
 	@Test
 	void redissonClient() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(RedissonClient.class);
 		});
 	}
 
 	@Test
 	void redissonConnectionFactory() {
-		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
 		});
 	}
@@ -91,11 +90,6 @@ class RedissonAutoConfigurationTest {
 			.registerCustomEditors(registry);
 		Binder binder = new Binder(sources, resolver, conversionService, consumer);
 		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
-	static class Config {
-
 	}
 
 }

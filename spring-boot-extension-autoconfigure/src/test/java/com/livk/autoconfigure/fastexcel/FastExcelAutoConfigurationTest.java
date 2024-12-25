@@ -20,10 +20,8 @@ import com.livk.context.fastexcel.resolver.ReactiveExcelMethodArgumentResolver;
 import com.livk.context.fastexcel.resolver.ReactiveExcelMethodReturnValueHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
@@ -44,9 +42,9 @@ class FastExcelAutoConfigurationTest {
 	@Test
 	void testServlet() {
 		WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(FastExcelAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebMvcAutoConfiguration.class, FastExcelAutoConfiguration.class));
 
-		contextRunner.withUserConfiguration(WebMvcConfig.class).run(context -> {
+		contextRunner.run(context -> {
 			RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 			assertThat(adapter.getArgumentResolvers()).isNotNull()
 				.hasAtLeastOneElementOfType(ExcelMethodArgumentResolver.class);
@@ -59,9 +57,9 @@ class FastExcelAutoConfigurationTest {
 	@SuppressWarnings("unchecked")
 	void testReactive() {
 		ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(FastExcelAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, FastExcelAutoConfiguration.class));
 
-		contextRunner.withUserConfiguration(WebFluxConfig.class).run(context -> {
+		contextRunner.run(context -> {
 			org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter adapter = context
 				.getBean(org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter.class);
 
@@ -74,18 +72,6 @@ class FastExcelAutoConfigurationTest {
 
 			assertThat(context).hasSingleBean(ReactiveExcelMethodReturnValueHandler.class);
 		});
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebMvcAutoConfiguration.class)
-	static class WebMvcConfig {
-
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebFluxAutoConfiguration.class)
-	static class WebFluxConfig {
-
 	}
 
 }

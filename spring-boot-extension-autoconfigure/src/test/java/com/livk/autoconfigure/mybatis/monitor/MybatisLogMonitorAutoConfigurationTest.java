@@ -38,7 +38,8 @@ class MybatisLogMonitorAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 		.withBean(DataSource.class, HikariDataSource::new)
-		.withConfiguration(AutoConfigurations.of(MybatisLogMonitorAutoConfiguration.class));
+		.withConfiguration(
+				AutoConfigurations.of(MybatisAutoConfiguration.class, MybatisLogMonitorAutoConfiguration.class));
 
 	@Test
 	void mybatisLogMonitorConfigurationCustomizer() {
@@ -51,7 +52,6 @@ class MybatisLogMonitorAutoConfigurationTest {
 
 	@TestConfiguration
 	@EnableSqlMonitor
-	@ImportAutoConfiguration(MybatisAutoConfiguration.class)
 	@EnableConfigurationProperties(MybatisLogMonitorProperties.class)
 	static class Config {
 

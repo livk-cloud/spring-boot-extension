@@ -18,10 +18,8 @@ import com.livk.context.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
 import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -50,9 +48,9 @@ class QRCodeAutoConfigurationTest {
 	void testServlet() {
 		WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
-			.withConfiguration(AutoConfigurations.of(QRCodeAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebMvcAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
-		contextRunner.withUserConfiguration(WebMvcConfig.class).run(context -> {
+		contextRunner.run(context -> {
 			RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 			assertThat(adapter.getReturnValueHandlers()).isNotNull()
 				.hasAtLeastOneElementOfType(QRCodeMethodReturnValueHandler.class);
@@ -63,23 +61,11 @@ class QRCodeAutoConfigurationTest {
 	void testReactive() {
 		ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner()
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
-			.withConfiguration(AutoConfigurations.of(QRCodeAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
-		contextRunner.withUserConfiguration(WebFluxConfig.class).run(context -> {
+		contextRunner.run(context -> {
 			assertThat(context).hasSingleBean(ReactiveQRCodeMethodReturnValueHandler.class);
 		});
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebMvcAutoConfiguration.class)
-	static class WebMvcConfig {
-
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebFluxAutoConfiguration.class)
-	static class WebFluxConfig {
-
 	}
 
 }

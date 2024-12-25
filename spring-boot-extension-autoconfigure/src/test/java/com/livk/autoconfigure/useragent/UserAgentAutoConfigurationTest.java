@@ -25,10 +25,8 @@ import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -78,9 +76,9 @@ class UserAgentAutoConfigurationTest {
 	@Test
 	void testServlet() {
 		WebApplicationContextRunner runner = new WebApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(UserAgentAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebMvcAutoConfiguration.class, UserAgentAutoConfiguration.class));
 
-		runner.withUserConfiguration(WebMvcConfig.class).run(context -> {
+		runner.run(context -> {
 			RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 			assertThat(adapter.getArgumentResolvers()).isNotNull().hasAtLeastOneElementOfType(UserAgentResolver.class);
 
@@ -98,9 +96,9 @@ class UserAgentAutoConfigurationTest {
 	@SuppressWarnings("unchecked")
 	void testReactive() {
 		ReactiveWebApplicationContextRunner runner = new ReactiveWebApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(UserAgentAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, UserAgentAutoConfiguration.class));
 
-		runner.withUserConfiguration(WebFluxConfig.class).run(context -> {
+		runner.run(context -> {
 			org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter adapter = context
 				.getBean(org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter.class);
 
@@ -112,18 +110,6 @@ class UserAgentAutoConfigurationTest {
 
 			assertThat(context).hasSingleBean(ReactiveUserAgentFilter.class);
 		});
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebMvcAutoConfiguration.class)
-	static class WebMvcConfig {
-
-	}
-
-	@TestConfiguration
-	@ImportAutoConfiguration(WebFluxAutoConfiguration.class)
-	static class WebFluxConfig {
-
 	}
 
 }

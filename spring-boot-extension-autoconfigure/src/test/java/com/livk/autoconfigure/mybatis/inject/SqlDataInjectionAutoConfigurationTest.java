@@ -20,7 +20,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -36,7 +35,8 @@ class SqlDataInjectionAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 		.withBean(DataSource.class, HikariDataSource::new)
-		.withConfiguration(AutoConfigurations.of(SqlDataInjectionAutoConfiguration.class));
+		.withConfiguration(
+				AutoConfigurations.of(MybatisAutoConfiguration.class, SqlDataInjectionAutoConfiguration.class));
 
 	@Test
 	void sqlDataInjectionConfigurationCustomizer() {
@@ -49,7 +49,6 @@ class SqlDataInjectionAutoConfigurationTest {
 
 	@TestConfiguration
 	@EnableSqlPlugin
-	@ImportAutoConfiguration(MybatisAutoConfiguration.class)
 	static class Config {
 
 	}
