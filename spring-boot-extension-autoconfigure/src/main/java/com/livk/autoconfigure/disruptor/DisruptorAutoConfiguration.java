@@ -20,7 +20,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
@@ -34,7 +33,6 @@ import java.util.List;
 @SpringAutoService
 @AutoConfiguration
 @Import(DisruptorAutoConfiguration.AutoConfiguredDisruptorRegistrar.class)
-@ConditionalOnMissingBean(DisruptorScanRegistrar.class)
 public class DisruptorAutoConfiguration {
 
 	public static class AutoConfiguredDisruptorRegistrar extends DisruptorScanRegistrar implements BeanFactoryAware {

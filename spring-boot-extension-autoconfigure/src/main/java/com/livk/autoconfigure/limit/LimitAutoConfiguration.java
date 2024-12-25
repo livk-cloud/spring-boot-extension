@@ -24,7 +24,7 @@ import com.livk.context.limit.interceptor.LimitInterceptor;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
@@ -50,7 +50,7 @@ public class LimitAutoConfiguration {
 	/**
 	 * The type Redisson limit configuration.
 	 */
-	@ConditionalOnClass(RedissonClient.class)
+	@ConditionalOnBean(RedissonClient.class)
 	@AutoConfiguration(after = { RedissonAutoConfiguration.class },
 			afterName = { "org.redisson.spring.starter.RedissonAutoConfiguration" })
 	public static class RedissonLimitConfiguration {

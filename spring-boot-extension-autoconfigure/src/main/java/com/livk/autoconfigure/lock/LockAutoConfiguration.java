@@ -27,6 +27,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +59,7 @@ public class LockAutoConfiguration {
 	/**
 	 * The type Redisson lock auto configuration.
 	 */
-	@ConditionalOnClass(RedissonClient.class)
+	@ConditionalOnBean(RedissonClient.class)
 	@AutoConfiguration(after = RedissonAutoConfiguration.class,
 			afterName = { "org.redisson.spring.starter.RedissonAutoConfiguration" })
 	public static class RedissonLockAutoConfiguration {
@@ -78,7 +79,7 @@ public class LockAutoConfiguration {
 	/**
 	 * The type Curator lock auto configuration.
 	 */
-	@ConditionalOnClass(CuratorFramework.class)
+	@ConditionalOnBean(CuratorFramework.class)
 	@AutoConfiguration(after = CuratorAutoConfiguration.class)
 	public static class CuratorLockAutoConfiguration {
 
@@ -88,7 +89,7 @@ public class LockAutoConfiguration {
 		 * @return the distributed lock
 		 */
 		@Bean
-		public DistributedLock redissonLock(CuratorFramework curatorFramework) {
+		public DistributedLock curatorLock(CuratorFramework curatorFramework) {
 			return new CuratorLock(curatorFramework);
 		}
 
