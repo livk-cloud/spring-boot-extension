@@ -11,50 +11,54 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.dynamic;
+package com.livk.autoconfigure.http;
 
-import com.livk.context.dynamic.DynamicDatasource;
-import com.livk.context.dynamic.intercept.DataSourceInterceptor;
+import com.livk.commons.util.ClassUtils;
+import com.livk.context.http.annotation.HttpProvider;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * <p>
- * DynamicAutoConfigurationTest
- * </p>
- *
  * @author livk
  */
-class DynamicAutoConfigurationTest {
+class HttpServiceAutoConfigurationTest {
+
+	static {
+		try (DynamicType.Unloaded<Object> unloaded = new ByteBuddy().subclass(Object.class)
+			.name("com.livk.http.marker.HttpMarker")
+			.make()) {
+			Class<?> loaded = unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+				.getLoaded();
+			assertThat(loaded).isNotNull();
+		}
+	}
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(DynamicAutoConfiguration.class))
-		.withPropertyValues("spring.dynamic.primary=mysql",
-				"spring.dynamic.datasource.mysql.url=jdbc:mysql://localhost:3306/test",
-				"spring.dynamic.datasource.mysql.username=root", "spring.dynamic.datasource.mysql.password=root");
+		.withConfiguration(AutoConfigurations.of(HttpServiceAutoConfiguration.class));
 
 	@Test
-	void curatorDynamicDatasource() {
+	void test() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DynamicDatasource.class);
+			assertThat(context).hasSingleBean(RemoteService.class);
 		});
 	}
 
-	@Test
-	void exponentialDataSourceInterceptor() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DataSourceInterceptor.class);
-		});
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(DynamicDatasourceProperties.class)
+	@TestConfiguration
+	@AutoConfigurationPackage
 	static class Config {
+
+	}
+
+	@HttpProvider
+	interface RemoteService {
 
 	}
 

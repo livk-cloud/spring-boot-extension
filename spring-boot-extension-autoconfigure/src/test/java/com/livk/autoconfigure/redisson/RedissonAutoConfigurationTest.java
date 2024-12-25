@@ -66,24 +66,21 @@ class RedissonAutoConfigurationTest {
 	StandardEnvironment environment;
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withBean(ConfigProperties.class, this::properties)
 		.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
 
 	@Test
 	void redissonClient() {
-		this.contextRunner.withUserConfiguration(Config.class)
-			.withBean(ConfigProperties.class, this::properties)
-			.run((context) -> {
-				assertThat(context).hasSingleBean(RedissonClient.class);
-			});
+		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+			assertThat(context).hasSingleBean(RedissonClient.class);
+		});
 	}
 
 	@Test
 	void redissonConnectionFactory() {
-		this.contextRunner.withUserConfiguration(Config.class)
-			.withBean(ConfigProperties.class, this::properties)
-			.run((context) -> {
-				assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
-			});
+		this.contextRunner.withUserConfiguration(Config.class).run((context) -> {
+			assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
+		});
 	}
 
 	ConfigProperties properties() {

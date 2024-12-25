@@ -11,15 +11,13 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.curator;
+package com.livk.autoconfigure.mapstruct;
 
-import com.livk.context.curator.CuratorTemplate;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
+import com.livk.context.mapstruct.GenericMapstructService;
+import com.livk.context.mapstruct.repository.ConverterRepository;
+import com.livk.context.mapstruct.repository.SpringMapstructLocator;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,36 +25,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class CuratorAutoConfigurationTest {
+class MapstructAutoConfigurationTest {
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(CuratorAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withConfiguration(AutoConfigurations.of(MapstructAutoConfiguration.class));
 
 	@Test
-	void curatorFramework() {
+	void genericMapstructService() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(CuratorFramework.class);
+			assertThat(context).hasSingleBean(GenericMapstructService.class);
 		});
 	}
 
 	@Test
-	void exponentialBackoffRetry() {
+	void converterRepository() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(RetryPolicy.class);
+			assertThat(context).hasSingleBean(ConverterRepository.class);
 		});
 	}
 
 	@Test
-	void curatorTemplate() {
+	void springMapstructLocator() {
 		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(CuratorTemplate.class);
+			assertThat(context).hasSingleBean(SpringMapstructLocator.class);
 		});
-	}
-
-	@TestConfiguration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(CuratorProperties.class)
-	static class Config {
-
 	}
 
 }
