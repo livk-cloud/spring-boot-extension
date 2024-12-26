@@ -16,7 +16,7 @@ package com.livk.autoconfigure.oss;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
 import com.livk.autoconfigure.oss.support.minio.MinioService;
 import com.livk.commons.util.ClassUtils;
-import net.bytebuddy.ByteBuddy;
+import com.livk.commons.util.GenericsByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OSSAutoConfigurationTest {
 
 	static {
-		try (DynamicType.Unloaded<Object> unloaded = new ByteBuddy().subclass(Object.class)
+		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class)
 			.name("com.livk.oss.marker.OSSMarker")
 			.make()) {
 			Class<?> loaded = unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)

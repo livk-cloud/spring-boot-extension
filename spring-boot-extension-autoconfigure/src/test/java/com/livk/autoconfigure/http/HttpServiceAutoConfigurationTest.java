@@ -14,8 +14,8 @@
 package com.livk.autoconfigure.http;
 
 import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.GenericsByteBuddy;
 import com.livk.context.http.annotation.HttpProvider;
-import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HttpServiceAutoConfigurationTest {
 
 	static {
-		try (DynamicType.Unloaded<Object> unloaded = new ByteBuddy().subclass(Object.class)
+		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class)
 			.name("com.livk.http.marker.HttpMarker")
 			.make()) {
 			Class<?> loaded = unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
