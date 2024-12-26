@@ -18,5 +18,8 @@ dependencies {
     optional("org.testcontainers:minio")
     optional("org.testcontainers:r2dbc")
 	optional(libs.clickhouse.r2dbc)
+
+	testImplementation("com.mysql:mysql-connector-j")
+	testImplementation("org.postgresql:postgresql")
 }
 
