@@ -15,7 +15,7 @@ package com.livk.context.redisearch;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.livk.context.redisearch.codec.RedisCodecs;
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.containers.RedisStackContainer;
 import io.lettuce.core.codec.RedisCodec;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ class RediSearchTemplateTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redisStack = RedisContainer.redisStack();
+	static RedisStackContainer redisStack = new RedisStackContainer();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

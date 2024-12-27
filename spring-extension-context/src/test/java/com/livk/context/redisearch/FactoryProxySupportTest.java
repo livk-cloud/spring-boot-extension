@@ -13,7 +13,7 @@
 
 package com.livk.context.redisearch;
 
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.containers.RedisStackContainer;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import io.lettuce.core.RedisURI;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FactoryProxySupportTest {
 
 	@Container
-	static RedisContainer redisStack = RedisContainer.redisStack();
+	static RedisStackContainer redisStack = new RedisStackContainer();
 
 	static RediSearchConnectionFactory factory;
 
