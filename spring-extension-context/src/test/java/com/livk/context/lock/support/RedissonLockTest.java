@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -52,12 +51,11 @@ class RedissonLockTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redisStack = RedisContainer.redisStack();
+	static RedisContainer redis = new RedisContainer();
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("redisson.address",
-				() -> "redis://" + redisStack.getHost() + ":" + redisStack.getFirstMappedPort());
+		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 	}
 
 	static ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();

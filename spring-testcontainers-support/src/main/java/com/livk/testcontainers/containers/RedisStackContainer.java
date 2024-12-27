@@ -14,20 +14,18 @@
 package com.livk.testcontainers.containers;
 
 import com.livk.testcontainers.DockerImageNames;
-import lombok.Getter;
 import org.testcontainers.utility.DockerImageName;
 
 /**
  * @author livk
  */
-@Getter
-public class RedisContainer extends AbstractRedisContainer<RedisContainer> {
+public class RedisStackContainer extends AbstractRedisContainer<RedisStackContainer> {
 
-	public RedisContainer() {
-		super(DockerImageNames.redis());
+	public RedisStackContainer() {
+		super(DockerImageNames.redisStack());
 	}
 
-	public RedisContainer(DockerImageName dockerImageName) {
+	public RedisStackContainer(DockerImageName dockerImageName) {
 		super(dockerImageName);
 	}
 

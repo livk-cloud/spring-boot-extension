@@ -52,7 +52,7 @@ class ShopControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = RedisContainer.redis().withPassword("123456");
+	static RedisContainer redis = new RedisContainer().withPassword("123456");
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

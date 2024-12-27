@@ -72,7 +72,7 @@ class LockAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = RedisContainer.redis();
+	static RedisContainer redis = new RedisContainer();
 
 	@Container
 	@ServiceConnection

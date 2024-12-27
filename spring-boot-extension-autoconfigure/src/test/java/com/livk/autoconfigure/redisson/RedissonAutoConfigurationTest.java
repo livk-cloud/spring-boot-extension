@@ -52,7 +52,7 @@ class RedissonAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = RedisContainer.redis();
+	static RedisContainer redis = new RedisContainer();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
