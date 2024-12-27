@@ -54,7 +54,7 @@ class RabbitControllerTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.rabbitmq.host", rabbit::getHost);
-		registry.add("spring.rabbitmq.port", () -> rabbit.getMappedPort(5672));
+		registry.add("spring.rabbitmq.port", rabbit::getFirstMappedPort);
 	}
 
 	static String body = JsonMapperUtils.writeValueAsString(Map.of("msg", "hello", "data", "By Livk"));

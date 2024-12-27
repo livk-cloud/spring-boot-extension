@@ -50,7 +50,7 @@ class UserControllerTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.rabbitmq.host", rabbit::getHost);
-		registry.add("spring.rabbitmq.port", () -> rabbit.getMappedPort(5672));
+		registry.add("spring.rabbitmq.port", rabbit::getFirstMappedPort);
 	}
 
 	@Autowired

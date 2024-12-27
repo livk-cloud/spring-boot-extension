@@ -61,7 +61,7 @@ class UserControllerTest {
 		registry.add("spring.datasource.username", postgresql::getUsername);
 		registry.add("spring.datasource.password", postgresql::getPassword);
 		registry.add("spring.datasource.url", () -> "jdbc:postgresql://" + postgresql.getHost() + ":"
-				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+				+ postgresql.getFirstMappedPort() + "/" + postgresql.getDatabaseName());
 	}
 
 	@Autowired

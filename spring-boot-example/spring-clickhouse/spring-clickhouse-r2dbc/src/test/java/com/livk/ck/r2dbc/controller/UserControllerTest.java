@@ -58,8 +58,8 @@ class UserControllerTest {
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url",
-				() -> "r2dbc:clickhouse://" + clickhouse.getHost() + ":" + clickhouse.getMappedPort(8123) + "/default");
+		registry.add("spring.r2dbc.url", () -> "r2dbc:clickhouse://" + clickhouse.getHost() + ":"
+				+ clickhouse.getFirstMappedPort() + "/default");
 	}
 
 	@Autowired

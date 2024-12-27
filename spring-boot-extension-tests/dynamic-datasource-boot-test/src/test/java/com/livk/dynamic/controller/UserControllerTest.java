@@ -67,12 +67,12 @@ class UserControllerTest {
 		registry.add("spring.dynamic.datasource.mysql.username", mysql::getUsername);
 		registry.add("spring.dynamic.datasource.mysql.password", mysql::getPassword);
 		registry.add("spring.dynamic.datasource.mysql.url", () -> "jdbc:mysql://" + mysql.getHost() + ":"
-				+ mysql.getMappedPort(3306) + "/" + mysql.getDatabaseName() + "?createDatabaseIfNotExist=true");
+				+ mysql.getFirstMappedPort() + "/" + mysql.getDatabaseName() + "?createDatabaseIfNotExist=true");
 
 		registry.add("spring.dynamic.datasource.pgsql.username", postgresql::getUsername);
 		registry.add("spring.dynamic.datasource.pgsql.password", postgresql::getPassword);
 		registry.add("spring.dynamic.datasource.pgsql.url", () -> "jdbc:postgresql://" + postgresql.getHost() + ":"
-				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+				+ postgresql.getFirstMappedPort() + "/" + postgresql.getDatabaseName());
 	}
 
 	@Autowired

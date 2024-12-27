@@ -59,7 +59,7 @@ class MessageControllerTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.pulsar.client.service-url",
-				() -> "pulsar://" + pulsar.getHost() + ":" + pulsar.getMappedPort(PulsarContainer.BROKER_PORT));
+				() -> "pulsar://" + pulsar.getHost() + ":" + pulsar.getFirstMappedPort());
 	}
 
 	@Autowired

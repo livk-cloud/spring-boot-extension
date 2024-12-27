@@ -62,7 +62,7 @@ class CuratorOperationsTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("curator.connectString",
-				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getMappedPort(2181)));
+				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
 	}
 
 	@Autowired

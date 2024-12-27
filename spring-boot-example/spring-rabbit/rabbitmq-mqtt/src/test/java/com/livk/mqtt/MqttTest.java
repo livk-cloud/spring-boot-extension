@@ -51,7 +51,7 @@ class MqttTest {
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("spring.mqtt.url", () -> "tcp://" + rabbit.getHost() + ":" + rabbit.getMappedPort(1883));
+		registry.add("spring.mqtt.url", () -> "tcp://" + rabbit.getHost() + ":" + rabbit.getFirstMappedPort());
 		registry.add("spring.mqtt.username", rabbit::getAdminUsername);
 		registry.add("spring.mqtt.password", rabbit::getAdminPassword);
 	}

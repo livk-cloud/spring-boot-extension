@@ -57,7 +57,7 @@ class OssControllerTest {
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.oss.access-key", minio::getUserName);
 		registry.add("spring.oss.secret-key", minio::getPassword);
-		registry.add("spring.oss.url", () -> "minio:http://" + minio.getHost() + ":" + minio.getMappedPort(9000));
+		registry.add("spring.oss.url", () -> "minio:http://" + minio.getHost() + ":" + minio.getFirstMappedPort());
 	}
 
 	@Autowired

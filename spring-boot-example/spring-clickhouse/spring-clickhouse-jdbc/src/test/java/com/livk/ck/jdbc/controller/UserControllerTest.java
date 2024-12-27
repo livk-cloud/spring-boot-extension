@@ -67,7 +67,7 @@ class UserControllerTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.datasource.url",
-				() -> "jdbc:clickhouse://" + clickhouse.getHost() + ":" + clickhouse.getMappedPort(8123) + "/default");
+				() -> "jdbc:clickhouse://" + clickhouse.getHost() + ":" + clickhouse.getFirstMappedPort() + "/default");
 	}
 
 	@Autowired

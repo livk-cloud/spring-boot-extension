@@ -58,7 +58,7 @@ class GreetingControllerTest {
 		registry.add("spring.r2dbc.username", postgresql::getUsername);
 		registry.add("spring.r2dbc.password", postgresql::getPassword);
 		registry.add("spring.r2dbc.url", () -> "r2dbc:postgres://" + postgresql.getHost() + ":"
-				+ postgresql.getMappedPort(5432) + "/" + postgresql.getDatabaseName());
+				+ postgresql.getFirstMappedPort() + "/" + postgresql.getDatabaseName());
 	}
 
 	@Autowired

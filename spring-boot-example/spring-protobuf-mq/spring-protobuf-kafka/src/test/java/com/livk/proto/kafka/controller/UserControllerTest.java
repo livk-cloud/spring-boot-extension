@@ -50,7 +50,7 @@ class UserControllerTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.kafka.bootstrap-servers",
-				() -> String.format("%s:%s", kafka.getHost(), kafka.getMappedPort(9092)));
+				() -> String.format("%s:%s", kafka.getHost(), kafka.getFirstMappedPort()));
 	}
 
 	@Autowired

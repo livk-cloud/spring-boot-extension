@@ -78,7 +78,7 @@ class MysqlJsonTypeHandlerTest {
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.datasource.username", mysql::getUsername);
 		registry.add("spring.datasource.password", mysql::getPassword);
-		registry.add("spring.datasource.url", () -> "jdbc:mysql://" + mysql.getHost() + ":" + mysql.getMappedPort(3306)
+		registry.add("spring.datasource.url", () -> "jdbc:mysql://" + mysql.getHost() + ":" + mysql.getFirstMappedPort()
 				+ "/" + mysql.getDatabaseName() + "?createDatabaseIfNotExist=true");
 	}
 

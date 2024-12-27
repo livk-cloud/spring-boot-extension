@@ -44,7 +44,7 @@ class CuratorAppTest {
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("spring.zookeeper.curator.connect-string",
-				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getMappedPort(2181)));
+				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
 	}
 
 	@Autowired
