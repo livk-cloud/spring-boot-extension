@@ -36,10 +36,6 @@ abstract class AbstractRedisContainer<C extends AbstractRedisContainer<C>> exten
 		waitingFor(Wait.forLogMessage(".*Ready to accept connections.*\\n", 1));
 	}
 
-	public int redisPort() {
-		return this.isRunning() ? this.getFirstMappedPort() : this.getMappedPort(DEFAULT_PORT);
-	}
-
 	@Override
 	protected void configure() {
 		Optional.ofNullable(password).ifPresent(s -> withCommand("--requirepass", s));
