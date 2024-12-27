@@ -589,8 +589,7 @@ public class GenericsByteBuddy {
 		if (naming == null) {
 			if (GraalImageCode.getCurrent().isDefined()) {
 				namingStrategy = new NamingStrategy.Suffixing("ByteBuddy",
-						new NamingStrategy.Suffixing.BaseNameResolver.WithCallerSuffix(
-								NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
+						new WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
 						"net.bytebuddy.renamed");
 				auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
 				implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
@@ -609,8 +608,7 @@ public class GenericsByteBuddy {
 		}
 		else if (naming.equalsIgnoreCase("caller")) {
 			namingStrategy = new NamingStrategy.Suffixing("ByteBuddy",
-					new NamingStrategy.Suffixing.BaseNameResolver.WithCallerSuffix(
-							NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
+					new WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
 					"net.bytebuddy.renamed");
 			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
 			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
@@ -931,6 +929,44 @@ public class GenericsByteBuddy {
 		@NonNull
 		public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
 			return instrumentedType;
+		}
+
+	}
+
+	/**
+	 * 替换{@link NamingStrategy.Suffixing.BaseNameResolver.WithCallerSuffix}
+	 */
+	@HashCodeAndEqualsPlugin.Enhance
+	public static class WithCallerSuffix implements NamingStrategy.Suffixing.BaseNameResolver {
+
+		private final NamingStrategy.Suffixing.BaseNameResolver delegate;
+
+		public WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver delegate) {
+			this.delegate = delegate;
+		}
+
+		@NonNull
+		@Override
+		public String resolve(@NonNull TypeDescription typeDescription) {
+			boolean matched = false;
+			String caller = null;
+
+			for (StackTraceElement stackTraceElement : (new Throwable()).getStackTrace()) {
+				if (stackTraceElement.getClassName().equals(GenericsByteBuddy.class.getName())) {
+					matched = true;
+				}
+				else if (matched) {
+					caller = stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName();
+					break;
+				}
+			}
+
+			if (caller == null) {
+				throw new IllegalStateException("Base name resolver not invoked via " + GenericsByteBuddy.class);
+			}
+			else {
+				return this.delegate.resolve(typeDescription) + "$" + caller.replace('.', '$');
+			}
 		}
 
 	}

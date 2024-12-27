@@ -15,9 +15,7 @@ package com.livk.commons.util;
 
 import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.NamingStrategy;
-import net.bytebuddy.build.HashCodeAndEqualsPlugin;
 import net.bytebuddy.description.modifier.Visibility;
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.TypeResolutionStrategy;
 import net.bytebuddy.dynamic.loading.ByteArrayClassLoader;
@@ -26,7 +24,6 @@ import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.StubMethod;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.junit.jupiter.api.Test;
-import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -36,7 +33,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
 
-import static net.bytebuddy.matcher.ElementMatchers.isTypeInitializer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -138,7 +134,7 @@ class GenericsByteBuddyTest {
 	void testTypeInitializerInstrumentation() throws Exception {
 		Recorder recorder = new Recorder();
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class)
-			.invokable(isTypeInitializer())
+			.invokable(ElementMatchers.isTypeInitializer())
 			.intercept(MethodDelegation.to(recorder))
 			.make(new TypeResolutionStrategy.Active())) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
@@ -214,7 +210,8 @@ class GenericsByteBuddyTest {
 	void testCallerSuffixNamingStrategy() {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy()
 			.with(new NamingStrategy.Suffixing("SuffixedName",
-					new WithCallerSuffix(new NamingStrategy.Suffixing.BaseNameResolver.ForFixedValue("foo.Bar"))))
+					new GenericsByteBuddy.WithCallerSuffix(
+							new NamingStrategy.Suffixing.BaseNameResolver.ForFixedValue("foo.Bar"))))
 			.subclass(Object.class)
 			.make()) {
 			Class<?> type = unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
@@ -242,41 +239,6 @@ class GenericsByteBuddyTest {
 
 		public Jsr14Sample<TYPE> method() {
 			return null;
-		}
-
-	}
-
-	@HashCodeAndEqualsPlugin.Enhance
-	public static class WithCallerSuffix implements NamingStrategy.Suffixing.BaseNameResolver {
-
-		private final NamingStrategy.Suffixing.BaseNameResolver delegate;
-
-		public WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver delegate) {
-			this.delegate = delegate;
-		}
-
-		@NonNull
-		@Override
-		public String resolve(@NonNull TypeDescription typeDescription) {
-			boolean matched = false;
-			String caller = null;
-
-			for (StackTraceElement stackTraceElement : (new Throwable()).getStackTrace()) {
-				if (stackTraceElement.getClassName().equals(GenericsByteBuddy.class.getName())) {
-					matched = true;
-				}
-				else if (matched) {
-					caller = stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName();
-					break;
-				}
-			}
-
-			if (caller == null) {
-				throw new IllegalStateException("Base name resolver not invoked via " + GenericsByteBuddy.class);
-			}
-			else {
-				return this.delegate.resolve(typeDescription) + "$" + caller.replace('.', '$');
-			}
 		}
 
 	}
