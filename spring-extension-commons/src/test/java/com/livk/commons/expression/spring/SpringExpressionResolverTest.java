@@ -16,6 +16,8 @@
 
 package com.livk.commons.expression.spring;
 
+import com.livk.commons.expression.Context;
+import com.livk.commons.expression.ContextFactory;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethod;
 import com.livk.commons.SpringContextHolder;
@@ -50,6 +52,7 @@ class SpringExpressionResolverTest {
 
 	@Test
 	void evaluate() {
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
 		assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
 		assertEquals("livk", resolver.evaluate("#username", method, args));
 
@@ -57,8 +60,7 @@ class SpringExpressionResolverTest {
 		assertEquals("livk", resolver.evaluate("#username", map));
 
 		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
-		assertEquals("root:livk:123456",
-				resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", context));
 
 		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
 		assertEquals("livk:" + System.getProperty("user.dir"),
@@ -72,10 +74,8 @@ class SpringExpressionResolverTest {
 		assertEquals("livk", resolver.evaluate("#username", method, args));
 		assertEquals("livk", resolver.evaluate("livk", method, args));
 
-		assertEquals("root:livk:123456",
-				resolver.evaluate("root:#{#username}:#{#password}", method, args, Map.of("password", "123456")));
-		assertEquals("livk123456",
-				resolver.evaluate("#username+#password", method, args, Map.of("password", "123456")));
+		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", context));
+		assertEquals("livk123456", resolver.evaluate("#username+#password", context));
 
 		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
 		assertEquals("livk", resolver.evaluate("#username", map));

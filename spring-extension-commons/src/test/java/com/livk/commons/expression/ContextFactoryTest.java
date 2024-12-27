@@ -16,13 +16,14 @@
 
 package com.livk.commons.expression;
 
+import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -41,22 +42,25 @@ class ContextFactoryTest {
 
 	@Test
 	void create() {
-		Context context = contextFactory.create(method, new String[] { "livk" });
-		assertEquals(map.size(), context.asMap().size());
-		assertEquals(map.keySet(), context.asMap().keySet());
-		assertEquals(map.entrySet(), context.asMap().entrySet());
-	}
-
-	@Test
-	void merge() {
-		Context context = contextFactory.merge(method, new String[] { "root" }, map);
-		assertEquals(1, context.asMap().size());
-		assertEquals(map.keySet(), context.asMap().keySet());
-		assertEquals(map.entrySet(), context.asMap().entrySet());
-		assertTrue(context.asMap().containsKey("username"));
-		assertFalse(context.asMap().containsValue("root"));
-		assertTrue(context.asMap().containsValue("livk"));
-		assertEquals("livk", context.asMap().get("username"));
+		{
+			Context context = contextFactory.create(method, new String[] { "livk" });
+			assertEquals(map.size(), context.asMap().size());
+			assertEquals(map.keySet(), context.asMap().keySet());
+			assertEquals(map.entrySet(), context.asMap().entrySet());
+		}
+		{
+			HashMap<String, Object> contextMap = Maps
+				.newHashMap(contextFactory.create(method, new String[] { "root" }).asMap());
+			contextMap.putAll(map);
+			Context context = Context.create(contextMap);
+			assertEquals(1, context.asMap().size());
+			assertEquals(contextMap.keySet(), context.asMap().keySet());
+			assertEquals(contextMap.entrySet(), context.asMap().entrySet());
+			assertTrue(context.asMap().containsKey("username"));
+			assertFalse(context.asMap().containsValue("root"));
+			assertTrue(context.asMap().containsValue("livk"));
+			assertEquals("livk", context.asMap().get("username"));
+		}
 	}
 
 }

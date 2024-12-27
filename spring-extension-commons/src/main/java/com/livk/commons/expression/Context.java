@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author livk
  */
-public interface Context {
+public sealed interface Context permits Context.ContextImpl {
 
 	/**
 	 * Instantiates a new Context.
@@ -46,7 +46,7 @@ public interface Context {
 	 * Put all.
 	 * @param m the m
 	 */
-	void putAll(Map<? extends String, ?> m);
+	Context putAll(Map<? extends String, ?> m);
 
 	/**
 	 * Put object.
@@ -54,11 +54,11 @@ public interface Context {
 	 * @param value the value
 	 * @return the object
 	 */
-	Object put(String key, Object value);
+	Context put(String key, Object value);
 
 	Map<String, Object> asMap();
 
-	class ContextImpl implements Context {
+	non-sealed class ContextImpl implements Context {
 
 		private final Map<String, Object> variables;
 
@@ -71,13 +71,15 @@ public interface Context {
 		}
 
 		@Override
-		public Object put(String key, Object value) {
-			return variables.put(key, value);
+		public Context put(String key, Object value) {
+			variables.put(key, value);
+			return this;
 		}
 
 		@Override
-		public void putAll(@NonNull Map<? extends String, ?> m) {
+		public Context putAll(@NonNull Map<? extends String, ?> m) {
 			variables.putAll(m);
+			return this;
 		}
 
 		@Override
