@@ -45,6 +45,7 @@ public interface ContextFactory {
 	 * @param args the args
 	 * @param expandMap the expand map
 	 * @return the map
+	 * @deprecated use {@link Context#putAll(Map)}
 	 */
 	@Deprecated(since = "1.4.2", forRemoval = true)
 	default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
