@@ -46,30 +46,18 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 	}
 
 	@Override
-	public final <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap,
-			Class<T> returnType) {
-		Context context = contextFactory.merge(method, args, contextMap);
-		return evaluate(value, context, returnType);
-	}
-
-	@Override
 	public final String evaluate(String value, Context context) {
-		return evaluate(value, context, String.class);
+		return ExpressionResolver.super.evaluate(value, context);
 	}
 
 	@Override
 	public final String evaluate(String value, Map<String, ?> contextMap) {
-		return evaluate(value, contextMap, String.class);
+		return ExpressionResolver.super.evaluate(value, contextMap);
 	}
 
 	@Override
 	public final String evaluate(String value, Method method, Object[] args) {
-		return evaluate(value, method, args, String.class);
-	}
-
-	@Override
-	public final String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
-		return evaluate(value, method, args, contextMap, String.class);
+		return ExpressionResolver.super.evaluate(value, method, args);
 	}
 
 	/**

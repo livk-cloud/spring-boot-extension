@@ -67,8 +67,14 @@ public interface ExpressionResolver {
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
 	 * @return T
+	 * @see #evaluate(String, Context, Class)
+	 * @deprecated use {@link #evaluate(String, Context, Class)}
 	 */
-	<T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType);
+	@Deprecated(since = "1.4.2", forRemoval = true)
+	default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(contextMap);
+		return evaluate(value, context, returnType);
+	}
 
 	/**
 	 * 根据Method将表达式解析，并转成String
@@ -107,8 +113,9 @@ public interface ExpressionResolver {
 	 * @param method method
 	 * @param args args
 	 * @param contextMap 解析上下文环境数据
-	 * @return string
+	 * @return string * @deprecated use {@link #evaluate(String, Context)}
 	 */
+	@Deprecated(since = "1.4.2", forRemoval = true)
 	default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
 		return evaluate(value, method, args, contextMap, String.class);
 	}

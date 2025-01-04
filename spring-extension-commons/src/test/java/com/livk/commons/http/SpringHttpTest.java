@@ -16,12 +16,17 @@
 
 package com.livk.commons.http;
 
+import com.livk.commons.SpringContextHolder;
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
-import com.livk.commons.SpringContextHolder;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.reactor.netty.ReactorNettyConfigurations;
+import org.springframework.boot.autoconfigure.web.client.RestClientAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,27 +37,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author livk
  */
-@SpringBootTest("spring.main.web-application-type=servlet")
-@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
 class SpringHttpTest {
 
-	@Autowired
-	RestTemplate restTemplate;
-
-	@Autowired
-	WebClient webClient;
-
-	@Autowired
-	RestClient restClient;
+	final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+		.withPropertyValues("spring.main.web-application-type=servlet")
+		.withUserConfiguration(SpringHttpTest.Config.class)
+		.withBean(SpringContextHolder.class, SpringContextHolder::new);
 
 	@Test
 	void test() {
-		assertNotNull(restTemplate);
-		assertNotNull(webClient);
-		assertNotNull(restClient);
-		assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
-		assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
-		assertEquals(SpringContextHolder.getBean(RestClient.class), restClient);
+		contextRunner.run(context -> {
+			RestClient restClient = context.getBean(RestClient.class);
+			RestTemplate restTemplate = context.getBean(RestTemplate.class);
+			WebClient webClient = context.getBean(WebClient.class);
+			assertNotNull(restTemplate);
+			assertNotNull(webClient);
+			assertNotNull(restClient);
+			assertEquals(SpringContextHolder.getBean(RestTemplate.class), restTemplate);
+			assertEquals(SpringContextHolder.getBean(WebClient.class), webClient);
+			assertEquals(SpringContextHolder.getBean(RestClient.class), restClient);
+		});
+	}
+
+	@TestConfiguration
+	@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
+	@ImportAutoConfiguration({ RestClientAutoConfiguration.class, RestTemplateAutoConfiguration.class,
+			WebClientAutoConfiguration.class, ReactorNettyConfigurations.ReactorResourceFactoryConfiguration.class })
+	static class Config {
+
 	}
 
 }

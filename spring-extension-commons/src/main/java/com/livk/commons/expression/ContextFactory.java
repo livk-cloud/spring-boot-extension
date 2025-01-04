@@ -29,6 +29,8 @@ import java.util.Map;
 @FunctionalInterface
 public interface ContextFactory {
 
+	ContextFactory DEFAULT_FACTORY = new DefaultContextFactory();
+
 	/**
 	 * 根据方法与参数创建上下文
 	 * @param method the method
@@ -43,11 +45,12 @@ public interface ContextFactory {
 	 * @param args the args
 	 * @param expandMap the expand map
 	 * @return the map
+	 * @deprecated use {@link Context#putAll(Map)}
 	 */
+	@Deprecated(since = "1.4.2", forRemoval = true)
 	default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
 		Context context = create(method, args);
-		context.putAll(expandMap);
-		return context;
+		return context.putAll(expandMap);
 	}
 
 }

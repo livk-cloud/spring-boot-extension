@@ -64,7 +64,7 @@ class UserControllerTest {
 		mockMvc.perform(get("/user/{id}", id))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("id", id).exists())
+			.andExpect(jsonPath("id").value(id))
 			.andExpect(jsonPath("insertTime").isNotEmpty())
 			.andExpect(jsonPath("updateTime").isNotEmpty());
 	}
@@ -109,9 +109,9 @@ class UserControllerTest {
 		mockMvc.perform(get("/user"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("list.[*].id", id).exists())
-			.andExpect(jsonPath("pageNum", 1).exists())
-			.andExpect(jsonPath("pageSize", 10).exists());
+			.andExpect(jsonPath("list.[*].id").value(id))
+			.andExpect(jsonPath("pageNum").value(1))
+			.andExpect(jsonPath("pageSize").value(10));
 	}
 
 }

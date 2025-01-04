@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 /**
  * @author livk
  */
-public class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
+final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	private static final Set<Class<?>> supportType = Set.of(Config.class, AddressResolverGroupFactory.class,
 			Codec.class, RedissonNodeInitializer.class, LoadBalancer.class, NatMapper.class, NameMapper.class,

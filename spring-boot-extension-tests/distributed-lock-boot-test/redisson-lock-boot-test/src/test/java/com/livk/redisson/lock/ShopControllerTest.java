@@ -90,9 +90,9 @@ class ShopControllerTest {
 		mockMvc.perform(get("/shop/result"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("redisson.buyCount", 10).exists())
-			.andExpect(jsonPath("redisson.buySucCount", 10).exists())
-			.andExpect(jsonPath("redisson.num", 480).exists());
+			.andExpect(jsonPath("redisson.buyCount").value(10))
+			.andExpect(jsonPath("redisson.buySucCount").value(10))
+			.andExpect(jsonPath("redisson.num").value(480));
 	}
 
 }
