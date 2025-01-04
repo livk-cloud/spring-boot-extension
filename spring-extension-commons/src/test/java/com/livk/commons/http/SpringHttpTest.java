@@ -37,22 +37,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author livk
  */
-// @SpringJUnitConfig(classes = SpringHttpTest.Config.class)
 class SpringHttpTest {
 
 	final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
 		.withPropertyValues("spring.main.web-application-type=servlet")
 		.withUserConfiguration(SpringHttpTest.Config.class)
 		.withBean(SpringContextHolder.class, SpringContextHolder::new);
-
-	// @Autowired
-	// RestTemplate restTemplate;
-	//
-	// @Autowired
-	// WebClient webClient;
-	//
-	// @Autowired
-	// RestClient restClient;
 
 	@Test
 	void test() {
