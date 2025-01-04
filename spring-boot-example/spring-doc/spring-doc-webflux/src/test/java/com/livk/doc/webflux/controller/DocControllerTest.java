@@ -44,7 +44,7 @@ class DocControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.expectBody()
 			.jsonPath("openapi")
-			.isEqualTo("3.0.1");
+			.isEqualTo("3.1.0");
 	}
 
 }

@@ -42,7 +42,7 @@ class DocControllerTest {
 		mockMvc.perform(get("/v3/api-docs"))
 			.andDo(print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(jsonPath("openapi").value("3.0.1"));
+			.andExpect(jsonPath("openapi").value("3.1.0"));
 	}
 
 }
