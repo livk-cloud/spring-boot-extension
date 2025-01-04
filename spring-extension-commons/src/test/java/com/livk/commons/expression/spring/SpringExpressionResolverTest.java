@@ -16,13 +16,13 @@
 
 package com.livk.commons.expression.spring;
 
+import com.livk.commons.SpringContextHolder;
 import com.livk.commons.expression.Context;
 import com.livk.commons.expression.ContextFactory;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethod;
-import com.livk.commons.SpringContextHolder;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.env.Environment;
 
 import java.lang.reflect.Method;
@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringBootTest("spring.application.root.name=livk")
 class SpringExpressionResolverTest {
 
 	private final static Object[] args = new Object[] { "livk" };
@@ -46,6 +45,10 @@ class SpringExpressionResolverTest {
 	final String springContextHolderName = SpringContextHolder.class.getName();
 
 	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
+
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withPropertyValues("spring.application.root.name=livk")
+		.withBean(SpringContextHolder.class, SpringContextHolder::new);
 
 	SpringExpressionResolverTest() throws NoSuchMethodException {
 	}
@@ -66,10 +69,6 @@ class SpringExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 				resolver.evaluate(("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"), map));
 
-		assertEquals("livk:livk", resolver.evaluate(
-				"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
-				map));
-
 		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
 		assertEquals("livk", resolver.evaluate("#username", method, args));
 		assertEquals("livk", resolver.evaluate("livk", method, args));
@@ -82,13 +81,20 @@ class SpringExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 				resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map));
 
-		assertEquals("livk:livk", resolver.evaluate(
-				"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
-				map));
+		contextRunner.run(ctx -> {
+			assertEquals("livk:livk", resolver.evaluate(
+					"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
+					map));
 
-		Map<String, Object> envMap = Map.of("username", "livk", "env", SpringContextHolder.getBean(Environment.class));
-		assertEquals("livk:livk",
-				resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
+			assertEquals("livk:livk", resolver.evaluate(
+					"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
+					map));
+
+			Map<String, Object> envMap = Map.of("username", "livk", "env",
+					SpringContextHolder.getBean(Environment.class));
+			assertEquals("livk:livk",
+					resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
+		});
 	}
 
 }

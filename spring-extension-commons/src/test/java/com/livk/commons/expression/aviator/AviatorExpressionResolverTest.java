@@ -24,8 +24,8 @@ import com.livk.commons.expression.ContextFactory;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.ParseMethod;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -38,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-@SpringBootTest
 class AviatorExpressionResolverTest {
 
 	private final static Object[] args = new Object[] { "livk" };
@@ -51,6 +50,9 @@ class AviatorExpressionResolverTest {
 
 	AviatorExpressionResolverTest() throws NoSuchMethodException {
 	}
+
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withUserConfiguration(SpringConfig.class);
 
 	@Test
 	void evaluate() {
@@ -81,9 +83,12 @@ class AviatorExpressionResolverTest {
 		assertEquals("livk:" + System.getProperty("user.dir"),
 				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
 
-		assertEquals("livk123", resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123")));
+		contextRunner.run(ctx -> {
+			assertEquals("livk123", resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123")));
 
-		assertEquals(4, resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class));
+			assertEquals(4,
+					resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class));
+		});
 	}
 
 	@TestConfiguration

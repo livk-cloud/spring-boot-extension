@@ -17,11 +17,10 @@
 package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.annotation.AliasFor;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 
 import java.lang.annotation.ElementType;
@@ -35,23 +34,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author livk
  */
-@SpringBootTest
 class AnnotationMetadataResolverTest {
 
-	@Autowired
-	private ResourceLoader resourceLoader;
-
-	@Autowired
-	private BeanFactory beanFactory;
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class);
 
 	@Test
 	void find() {
-		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(resourceLoader);
+		contextRunner.run(ctx -> {
+			AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(ctx);
 
-		assertEquals(Set.of(A.class, TestController.class),
-				resolver.find(TestAnnotation.class, AnnotationMetadataResolverTest.class.getPackageName()));
+			assertEquals(Set.of(A.class, TestController.class),
+					resolver.find(TestAnnotation.class, AnnotationMetadataResolverTest.class.getPackageName()));
 
-		assertEquals(Set.of(A.class, TestController.class), resolver.find(TestAnnotation.class, beanFactory));
+			assertEquals(Set.of(A.class, TestController.class), resolver.find(TestAnnotation.class, ctx));
+		});
+	}
+
+	@TestConfiguration
+	@AutoConfigurationPackage
+	static class Config {
+
 	}
 
 	@Target(ElementType.TYPE)

@@ -14,9 +14,9 @@
 package com.livk.commons.spring;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
@@ -31,11 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 /**
  * @author livk
  */
-@SpringBootTest
 class AnnotationBasePackageSupportTest {
 
-	@Autowired
-	BeanFactory beanFactory;
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class);
 
 	@Test
 	void getBasePackages() {
@@ -43,11 +41,15 @@ class AnnotationBasePackageSupportTest {
 		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
 		assertArrayEquals(new String[] { "com.livk.commons.spring" }, basePackages);
 
-		String[] packages = AnnotationBasePackageSupport.getBasePackages(beanFactory);
-		assertArrayEquals(new String[] { "com.livk.commons" }, packages);
+		contextRunner.run(context -> {
+			String[] packages = AnnotationBasePackageSupport.getBasePackages(context);
+			assertArrayEquals(new String[] { "com.livk.commons.spring" }, packages);
+		});
 	}
 
+	@TestConfiguration
 	@AnnotationScan(basePackageClasses = Config.class)
+	@AutoConfigurationPackage
 	static class Config {
 
 	}
