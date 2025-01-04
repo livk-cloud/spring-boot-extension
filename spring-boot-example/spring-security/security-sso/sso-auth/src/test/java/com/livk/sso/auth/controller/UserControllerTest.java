@@ -65,7 +65,7 @@ class UserControllerTest {
 				.content(JsonMapperUtils.writeValueAsString(body)))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("code", "200").exists())
+			.andExpect(jsonPath("code").value(200))
 			.andReturn()
 			.getResponse();
 		token = "Bearer "

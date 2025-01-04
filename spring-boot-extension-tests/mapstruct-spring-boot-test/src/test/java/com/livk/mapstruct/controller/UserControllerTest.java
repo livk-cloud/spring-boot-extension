@@ -46,11 +46,19 @@ class UserControllerTest {
 		mockMvc.perform(get("/user"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("customize[0:2].username", "livk1", "livk2", "livk3").exists())
-			.andExpect(jsonPath("customize[0:2].type", "1", "2", "3").exists())
+			.andExpect(jsonPath("customize[0].username").value("livk1"))
+			.andExpect(jsonPath("customize[1].username").value("livk2"))
+			.andExpect(jsonPath("customize[2].username").value("livk3"))
+			.andExpect(jsonPath("customize[0].type").value(1))
+			.andExpect(jsonPath("customize[1].type").value(2))
+			.andExpect(jsonPath("customize[2].type").value(3))
 			.andExpect(jsonPath("customize[0:2].createTime").exists())
-			.andExpect(jsonPath("spring[0:2].username", "livk1", "livk2", "livk3").exists())
-			.andExpect(jsonPath("spring[0:2].type", "1", "2", "3").exists())
+			.andExpect(jsonPath("spring[0].username").value("livk1"))
+			.andExpect(jsonPath("spring[1].username").value("livk2"))
+			.andExpect(jsonPath("spring[2].username").value("livk3"))
+			.andExpect(jsonPath("spring[0].type").value(1))
+			.andExpect(jsonPath("spring[1].type").value(2))
+			.andExpect(jsonPath("spring[2].type").value(3))
 			.andExpect(jsonPath("spring[0:2].createTime").exists());
 	}
 
@@ -60,11 +68,11 @@ class UserControllerTest {
 			mockMvc.perform(get("/user/{id}", i))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("customize.username", "livk" + i).exists())
-				.andExpect(jsonPath("customize.type", i).exists())
+				.andExpect(jsonPath("customize.username").value("livk" + i))
+				.andExpect(jsonPath("customize.type").value(i))
 				.andExpect(jsonPath("customize.createTime").exists())
-				.andExpect(jsonPath("spring.username", "livk" + i).exists())
-				.andExpect(jsonPath("spring.type", i).exists())
+				.andExpect(jsonPath("spring.username").value("livk" + i))
+				.andExpect(jsonPath("spring.type").value(i))
 				.andExpect(jsonPath("spring.createTime").exists());
 		}
 	}

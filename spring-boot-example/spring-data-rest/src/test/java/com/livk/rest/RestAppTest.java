@@ -57,9 +57,9 @@ class RestAppTest {
 		mockMvc.perform(get("/rest/api/user/{id}", 1))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(jsonPath("username", "root").exists())
-			.andExpect(jsonPath("password", "root").exists())
-			.andExpect(jsonPath("age", 18).exists());
+			.andExpect(jsonPath("username").value("root"))
+			.andExpect(jsonPath("password").value("root"))
+			.andExpect(jsonPath("age").value(18));
 	}
 
 	@Order(1)
@@ -102,9 +102,9 @@ class RestAppTest {
 		mockMvc.perform(get("/rest/api/user/search/auth").param("name", "admin").param("pwd", "admin"))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(jsonPath("username", "admin").exists())
-			.andExpect(jsonPath("password", "admin").exists())
-			.andExpect(jsonPath("age", 19).exists());
+			.andExpect(jsonPath("username").value("admin"))
+			.andExpect(jsonPath("password").value("admin"))
+			.andExpect(jsonPath("age").value(19));
 	}
 
 	@Order(5)
@@ -113,13 +113,13 @@ class RestAppTest {
 		mockMvc.perform(get("/rest/api/user"))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(jsonPath("_embedded.users[0].username", "admin").exists())
-			.andExpect(jsonPath("_embedded.users[0].password", "admin").exists())
-			.andExpect(jsonPath("_embedded.users[0].age", 19).exists())
-			.andExpect(jsonPath("page.size", 20).exists())
-			.andExpect(jsonPath("page.totalElements", 1).exists())
-			.andExpect(jsonPath("page.totalPages", 1).exists())
-			.andExpect(jsonPath("page.number", 0).exists());
+			.andExpect(jsonPath("_embedded.users[0].username").value("admin"))
+			.andExpect(jsonPath("_embedded.users[0].password").value("admin"))
+			.andExpect(jsonPath("_embedded.users[0].age").value(19))
+			.andExpect(jsonPath("page.size").value(20))
+			.andExpect(jsonPath("page.totalElements").value(1))
+			.andExpect(jsonPath("page.totalPages").value(1))
+			.andExpect(jsonPath("page.number").value(0));
 	}
 
 }

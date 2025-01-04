@@ -55,8 +55,8 @@ class InfoMvcControllerTest {
 		mockMvc.perform(get("/info").param("id", encoding).header("id", encoding))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("id.paramId", encoding).exists())
-			.andExpect(jsonPath("id.headerId", encoding).exists());
+			.andExpect(jsonPath("id.paramId").value(encoding))
+			.andExpect(jsonPath("id.headerId").value(encoding));
 	}
 
 	@Test
@@ -67,8 +67,8 @@ class InfoMvcControllerTest {
 		mockMvc.perform(post("/info").contentType(MediaType.APPLICATION_JSON).content(json))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("body.paramId", encoding).exists())
-			.andExpect(jsonPath("body.headerId", encoding).exists());
+			.andExpect(jsonPath("body.paramId").value(encoding))
+			.andExpect(jsonPath("body.headerId").value(encoding));
 	}
 
 }

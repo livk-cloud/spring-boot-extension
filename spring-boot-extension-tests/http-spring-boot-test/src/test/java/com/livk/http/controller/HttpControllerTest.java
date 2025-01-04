@@ -49,9 +49,9 @@ class HttpControllerTest {
 		mockMvc.perform(get("/get"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("spring-boot-version", SpringBootVersion.getVersion()).exists())
-			.andExpect(jsonPath("spring-version", SpringVersion.getVersion()).exists())
-			.andExpect(jsonPath("java-version", System.getProperty("java.version")).exists());
+			.andExpect(jsonPath("spring-boot-version").value(SpringBootVersion.getVersion()))
+			.andExpect(jsonPath("spring-version").value(SpringVersion.getVersion()))
+			.andExpect(jsonPath("java-version").value(System.getProperty("java.version")));
 	}
 
 }

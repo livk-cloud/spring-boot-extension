@@ -63,21 +63,35 @@ class StudentControllerTest {
 		mockMvc.perform(get("/student"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("[0:9].name", "livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
-					"livk-7", "livk-8", "livk-9")
-				.exists());
+			.andExpect(jsonPath("[0].name").value("livk-0"))
+			.andExpect(jsonPath("[1].name").value("livk-1"))
+			.andExpect(jsonPath("[2].name").value("livk-2"))
+			.andExpect(jsonPath("[3].name").value("livk-3"))
+			.andExpect(jsonPath("[4].name").value("livk-4"))
+			.andExpect(jsonPath("[5].name").value("livk-5"))
+			.andExpect(jsonPath("[6].name").value("livk-6"))
+			.andExpect(jsonPath("[7].name").value("livk-7"))
+			.andExpect(jsonPath("[8].name").value("livk-8"))
+			.andExpect(jsonPath("[9].name").value("livk-9"));
 
 		mockMvc.perform(get("/student").param("query", "@class:{1班}"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("[0].name", "livk-0").exists());
+			.andExpect(jsonPath("[0].name").value("livk-0"));
 
 		mockMvc.perform(get("/student").param("query", "livk"))
 			.andExpect(status().isOk())
 			.andDo(print())
-			.andExpect(jsonPath("[0:9].name", "livk-0", "livk-1", "livk-2", "livk-3", "livk-4", "livk-5", "livk-6",
-					"livk-7", "livk-8", "livk-9")
-				.exists());
+			.andExpect(jsonPath("[0].name").value("livk-0"))
+			.andExpect(jsonPath("[1].name").value("livk-1"))
+			.andExpect(jsonPath("[2].name").value("livk-2"))
+			.andExpect(jsonPath("[3].name").value("livk-3"))
+			.andExpect(jsonPath("[4].name").value("livk-4"))
+			.andExpect(jsonPath("[5].name").value("livk-5"))
+			.andExpect(jsonPath("[6].name").value("livk-6"))
+			.andExpect(jsonPath("[7].name").value("livk-7"))
+			.andExpect(jsonPath("[8].name").value("livk-8"))
+			.andExpect(jsonPath("[9].name").value("livk-9"));
 
 		mockMvc.perform(get("/student").param("query", "女")).andExpect(status().isOk()).andDo(print());
 
