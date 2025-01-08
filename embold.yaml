@@ -20,6 +20,12 @@ modules:
         enabled: false
       - key: 'EMB-JAVA-51'
         enabled: false
+      - key: 'EMB-JAVA-79'
+        enabled: false
+      - key: 'EMB-JAVA-75'
+        enabled: false
+      - key: 'EMB-JAVA-23'
+        enabled: false
   - name: pmd
     enabled: true
     rules:
@@ -34,4 +40,16 @@ modules:
       - key: 'PMD-JAVA-53'
         enabled: false
       - key: 'PMD-JAVA-57'
+        enabled: false
+      - key: 'PMD-JAVA-285'
+        enabled: false
+      - key: 'PMD-JAVA-150'
+        enabled: false
+      - key: 'PMD-JAVA-58'
+        enabled: false
+      - key: 'PMD-JAVA-140'
+        enabled: false
+      - key: 'PMD-JAVA-290'
+        enabled: false
+      - key: 'PMD-JAVA-101'
         enabled: false
