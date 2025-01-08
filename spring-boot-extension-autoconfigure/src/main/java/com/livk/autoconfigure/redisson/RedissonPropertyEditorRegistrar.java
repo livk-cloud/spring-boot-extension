@@ -73,7 +73,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		private final Class<?> type;
 
 		@Override
-		public void setAsText(String text) throws IllegalArgumentException {
+		public void setAsText(String text) {
 			setValue(support.readValue(text, type));
 		}
 
