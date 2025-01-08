@@ -29,7 +29,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "spring.redisearch")
 public class RediSearchProperties {
 
-	private final Boolean ssl = false;
+	private Boolean ssl = false;
 
 	private final Pool pool = new Pool();
 
