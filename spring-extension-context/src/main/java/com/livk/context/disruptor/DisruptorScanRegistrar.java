@@ -18,7 +18,6 @@ package com.livk.context.disruptor;
 
 import com.livk.commons.spring.AnnotationBasePackageSupport;
 import com.livk.commons.util.ObjectUtils;
-import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
