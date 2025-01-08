@@ -22,7 +22,7 @@ import org.testcontainers.utility.DockerImageName;
 public class RedisStackContainer extends AbstractRedisContainer<RedisStackContainer> {
 
 	public RedisStackContainer() {
-		super(DockerImageNames.redisStack());
+		this(DockerImageNames.redisStack());
 	}
 
 	public RedisStackContainer(DockerImageName dockerImageName) {
