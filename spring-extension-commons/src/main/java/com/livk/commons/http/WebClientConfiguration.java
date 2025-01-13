@@ -18,30 +18,24 @@ package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableWebClient;
-import io.netty.channel.ChannelOption;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.ReactorNettyHttpClientMapper;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.client.ReactorResourceFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.tcp.DefaultSslContextSpec;
-import reactor.netty.tcp.SslProvider;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
-import javax.net.ssl.TrustManagerFactory;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -74,28 +68,30 @@ public class WebClientConfiguration {
 	@ConditionalOnClass(HttpClient.class)
 	public static class ReactorClientConfiguration {
 
-		/**
-		 * Reactor client配置
-		 * @param reactorResourceFactory ReactorResourceFactory
-		 * @return WebClientCustomizer
-		 */
 		@Bean
-		public WebClientCustomizer reactorClientWebClientCustomizer(ReactorResourceFactory reactorResourceFactory)
-				throws NoSuchAlgorithmException {
-			TrustManagerFactory trustManagerFactory = TrustManagerFactory
-				.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient()
-				.configure(builder -> builder.trustManager(trustManagerFactory));
-			Function<HttpClient, HttpClient> function = httpClient -> httpClient
-				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3_000)
-				.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL,
-						StandardCharsets.UTF_8)
-				.responseTimeout(Duration.ofSeconds(15))
-				.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
-				.doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(20))
-					.addHandlerLast(new WriteTimeoutHandler(20)));
-			ReactorClientHttpConnector connector = new ReactorClientHttpConnector(reactorResourceFactory, function);
-			return webClientBuilder -> webClientBuilder.clientConnector(connector);
+		@Lazy
+		@Order(0)
+		public WebClientCustomizer clientConnectorCustomizer(ReactorResourceFactory reactorResourceFactory,
+				ObjectProvider<ReactorNettyHttpClientMapper> mapperProvider) {
+			return builder -> {
+				List<ReactorNettyHttpClientMapper> mappers = mapperProvider.orderedStream()
+					.collect(Collectors.toCollection(ArrayList::new));
+				builder.clientConnector(new ReactorClientHttpConnector(reactorResourceFactory,
+						ReactorNettyHttpClientMapper.of(mappers)::configure));
+			};
+		}
+
+		@Bean
+		@ConditionalOnMissingBean
+		public ReactorResourceFactory reactorClientResourceFactory() {
+			ReactorResourceFactory factory = new ReactorResourceFactory();
+			factory.setUseGlobalResources(false);
+			return factory;
+		}
+
+		@Bean
+		public ReactorNettyHttpClientMapper reactorNettyHttpClientMapper() {
+			return new DefaultReactorNettyHttpClientMapper();
 		}
 
 	}

@@ -20,7 +20,6 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableRestTemplate;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
@@ -52,7 +51,6 @@ public class RestTemplateConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBean(ClientHttpRequestFactory.class)
 	public RestTemplateCustomizer restTemplateCustomizer(ClientHttpRequestFactory requestFactory) {
 		return restTemplate -> restTemplate.setRequestFactory(requestFactory);
 	}

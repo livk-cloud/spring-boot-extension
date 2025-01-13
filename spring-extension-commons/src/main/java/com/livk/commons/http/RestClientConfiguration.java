@@ -20,7 +20,6 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableRestClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +50,6 @@ public class RestClientConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBean(ClientHttpRequestFactory.class)
 	public RestClientCustomizer restClientCustomizer(ClientHttpRequestFactory requestFactory) {
 		return builder -> builder.requestFactory(requestFactory);
 	}
