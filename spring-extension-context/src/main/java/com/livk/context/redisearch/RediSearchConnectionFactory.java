@@ -13,9 +13,8 @@
 
 package com.livk.context.redisearch;
 
-import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
-import com.redis.lettucemod.cluster.RedisModulesClusterClient;
+import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -37,11 +36,7 @@ public interface RediSearchConnectionFactory {
 		return new GenericObjectPoolConfig<>();
 	}
 
-	static RediSearchConnectionFactory create(RedisModulesClient client) {
-		return FactoryProxySupport.newProxy(client);
-	}
-
-	static RediSearchConnectionFactory create(RedisModulesClusterClient client) {
+	static RediSearchConnectionFactory create(AbstractRedisClient client) {
 		return FactoryProxySupport.newProxy(client);
 	}
 
