@@ -39,14 +39,13 @@ import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.lang.NonNull;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.beans.PropertyEditorSupport;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @author livk
@@ -59,16 +58,16 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 			ExecutorService.class, KeyManagerFactory.class, TrustManagerFactory.class, CommandMapper.class);
 
 	@Override
-	public void registerCustomEditors(PropertyEditorRegistry registry) {
-		supportType.stream()
-			.collect(Collectors.toMap(Function.identity(), TypePropertyEditor::new))
-			.forEach((registry::registerCustomEditor));
+	public void registerCustomEditors(@NonNull PropertyEditorRegistry registry) {
+		for (Class<?> type : supportType) {
+			registry.registerCustomEditor(type, new RedissonTypePropertyEditor(type));
+		}
 	}
 
 	@RequiredArgsConstructor
-	private static class TypePropertyEditor extends PropertyEditorSupport {
+	private static class RedissonTypePropertyEditor extends PropertyEditorSupport {
 
-		private static final JacksonSupport support = create();
+		private static final JacksonSupport support;
 
 		private final Class<?> type;
 
@@ -77,7 +76,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 			setValue(support.readValue(text, type));
 		}
 
-		private static JacksonSupport create() {
+		static {
 			YAMLMapper mapper = new YAMLMapper();
 			mapper.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class);
 			mapper.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class);
@@ -102,7 +101,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 			mapper.setFilterProvider(filterProvider);
 			mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-			return new JacksonSupport(mapper);
+			support = new JacksonSupport(mapper);
 		}
 
 	}
