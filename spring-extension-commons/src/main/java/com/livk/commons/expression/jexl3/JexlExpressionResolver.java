@@ -35,15 +35,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JexlExpressionResolver extends CacheExpressionResolver<JexlContext, JexlExpression> {
 
-	private static final JexlEngine DEFAULT_ENGINE = new Engine();
-
 	private final JexlEngine engine;
 
 	/**
 	 * Instantiates a new Jexl expression resolver.
 	 */
 	public JexlExpressionResolver() {
-		this(Optional.ofNullable(JexlEngine.getThreadEngine()).orElse(DEFAULT_ENGINE));
+		this(Optional.ofNullable(JexlEngine.getThreadEngine()).orElseGet(Engine::new));
 	}
 
 	@Override
