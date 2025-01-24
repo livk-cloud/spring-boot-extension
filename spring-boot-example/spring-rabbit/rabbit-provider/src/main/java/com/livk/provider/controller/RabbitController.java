@@ -42,22 +42,22 @@ public class RabbitController {
 	private final RabbitSend send;
 
 	@PostMapping("sendMsgDirect")
-	public <T> void sendMsgDirect(@RequestBody Message<T> message) {
+	public void sendMsgDirect(@RequestBody Message<String> message) {
 		send.sendMsgDirect(message);
 	}
 
 	@PostMapping("sendMsgFanout")
-	public <T> void sendMsgFanout(@RequestBody Message<T> message) {
+	public void sendMsgFanout(@RequestBody Message<String> message) {
 		send.sendMsgFanout(message);
 	}
 
 	@PostMapping("/sendMsgTopic/{key}")
-	public <T> void sendMsgTopic(@RequestBody Message<T> message, @PathVariable String key) {
+	public void sendMsgTopic(@RequestBody Message<String> message, @PathVariable String key) {
 		send.sendMsgTopic(message, key);
 	}
 
 	@PostMapping("sendMsgHeaders")
-	public <T> void sendMsgHeaders(@RequestBody Message<T> message, @RequestParam String json) {
+	public void sendMsgHeaders(@RequestBody Message<String> message, @RequestParam String json) {
 		send.sendMsgHeaders(message, JsonMapperUtils.readValueMap(json, String.class, Object.class));
 	}
 
