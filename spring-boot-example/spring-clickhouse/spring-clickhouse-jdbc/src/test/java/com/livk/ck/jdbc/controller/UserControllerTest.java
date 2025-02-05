@@ -39,9 +39,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,13 +59,16 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
+	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse()).withUsername("livk")
+		.withPassword("password")
 		.withExposedPorts(8123, 9000);
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url",
-				() -> "jdbc:clickhouse://" + clickhouse.getHost() + ":" + clickhouse.getFirstMappedPort() + "/default");
+		registry.add("spring.datasource.url", () -> "jdbc:clickhouse://" + clickhouse.getHost() + ":"
+				+ clickhouse.getFirstMappedPort() + "/" + clickhouse.getDatabaseName());
+		registry.add("spring.datasource.username", clickhouse::getUsername);
+		registry.add("spring.datasource.password", clickhouse::getPassword);
 	}
 
 	@Autowired

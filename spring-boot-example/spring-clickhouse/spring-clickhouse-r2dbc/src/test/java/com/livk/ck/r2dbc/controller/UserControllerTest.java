@@ -53,13 +53,16 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
+	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse()).withUsername("livk")
+		.withPassword("password")
 		.withExposedPorts(8123, 9000);
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("spring.r2dbc.url", () -> "r2dbc:clickhouse://" + clickhouse.getHost() + ":"
-				+ clickhouse.getFirstMappedPort() + "/default");
+		registry.add("spring.r2dbc.url",
+				() -> "r2dbc:clickhouse:http://" + clickhouse.getUsername() + ":" + clickhouse.getPassword() + "@"
+						+ clickhouse.getHost() + ":" + clickhouse.getFirstMappedPort() + "/"
+						+ clickhouse.getDatabaseName());
 	}
 
 	@Autowired
