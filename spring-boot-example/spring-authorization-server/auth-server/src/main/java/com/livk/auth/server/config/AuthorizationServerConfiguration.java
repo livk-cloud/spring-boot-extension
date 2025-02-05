@@ -112,9 +112,8 @@ public class AuthorizationServerConfiguration {
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
 			UserDetailsService userDetailsService) {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 		provider.setPasswordEncoder(passwordEncoder);
-		provider.setUserDetailsService(userDetailsService);
 		return provider;
 	}
 

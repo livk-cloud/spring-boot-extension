@@ -23,26 +23,10 @@ import net.bytebuddy.description.field.FieldList;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.method.ParameterDescription;
-import net.bytebuddy.description.modifier.EnumerationState;
-import net.bytebuddy.description.modifier.ModifierContributor;
-import net.bytebuddy.description.modifier.Ownership;
-import net.bytebuddy.description.modifier.TypeManifestation;
-import net.bytebuddy.description.modifier.Visibility;
-import net.bytebuddy.description.type.PackageDescription;
-import net.bytebuddy.description.type.RecordComponentDescription;
-import net.bytebuddy.description.type.TypeDefinition;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.description.type.TypeList;
-import net.bytebuddy.dynamic.ClassFileLocator;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.dynamic.TargetType;
-import net.bytebuddy.dynamic.Transformer;
-import net.bytebuddy.dynamic.VisibilityBridgeStrategy;
-import net.bytebuddy.dynamic.scaffold.ClassWriterStrategy;
-import net.bytebuddy.dynamic.scaffold.InstrumentedType;
-import net.bytebuddy.dynamic.scaffold.MethodGraph;
-import net.bytebuddy.dynamic.scaffold.MethodRegistry;
-import net.bytebuddy.dynamic.scaffold.TypeValidation;
+import net.bytebuddy.description.modifier.*;
+import net.bytebuddy.description.type.*;
+import net.bytebuddy.dynamic.*;
+import net.bytebuddy.dynamic.scaffold.*;
 import net.bytebuddy.dynamic.scaffold.inline.DecoratingDynamicTypeBuilder;
 import net.bytebuddy.dynamic.scaffold.inline.MethodNameTransformer;
 import net.bytebuddy.dynamic.scaffold.inline.RebaseDynamicTypeBuilder;
@@ -73,13 +57,8 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.matcher.LatentMatcher;
-import net.bytebuddy.utility.AsmClassReader;
-import net.bytebuddy.utility.AsmClassWriter;
-import net.bytebuddy.utility.CompoundList;
-import net.bytebuddy.utility.GraalImageCode;
-import net.bytebuddy.utility.JavaConstant;
-import net.bytebuddy.utility.JavaType;
-import net.bytebuddy.utility.RandomString;
+import net.bytebuddy.utility.*;
+import net.bytebuddy.utility.AsmClassReader.Factory;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 import org.springframework.lang.NonNull;
@@ -88,17 +67,9 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Type;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-import static net.bytebuddy.description.type.TypeDescription.ArrayProjection;
-import static net.bytebuddy.description.type.TypeDescription.ForLoadedType;
-import static net.bytebuddy.description.type.TypeDescription.ForPackageDescription;
-import static net.bytebuddy.description.type.TypeDescription.Generic;
+import static net.bytebuddy.description.type.TypeDescription.*;
 import static net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy.Default;
 
 /**
@@ -171,9 +142,8 @@ public class GenericsByteBuddy {
 				DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY == null ? Implementation.Context.Default.Factory.INSTANCE
 						: DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY,
 				MethodGraph.Compiler.DEFAULT, InstrumentedType.Factory.Default.MODIFIABLE, DEFAULT_TYPE_VALIDATION,
-				net.bytebuddy.dynamic.VisibilityBridgeStrategy.Default.ALWAYS,
-				net.bytebuddy.utility.AsmClassReader.Factory.Default.INSTANCE,
-				net.bytebuddy.utility.AsmClassWriter.Factory.Default.INSTANCE,
+				VisibilityBridgeStrategy.Default.ALWAYS, Factory.Default.IMPLICIT,
+				AsmClassWriter.Factory.Default.IMPLICIT,
 				new LatentMatcher.Resolved<>(ElementMatchers.isSynthetic().or(ElementMatchers.isDefaultFinalizer())));
 	}
 

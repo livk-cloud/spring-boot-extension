@@ -55,7 +55,8 @@ configure(module) {
 allprojects {
 	repositories {
 		maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
-		maven("https://repo.spring.io/release")
+//		maven("https://repo.spring.io/release")
+		maven("https://repo.spring.io/milestone")
 		mavenCentral()
 	}
 }
