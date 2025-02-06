@@ -55,6 +55,7 @@ public interface GenericWrapper<V> {
 	 * @param type 类信息
 	 * @return bool
 	 */
+	@Deprecated(since = "1.4.3", forRemoval = true)
 	default boolean isWrapperFor(Class<?> type) {
 		return type.isInstance(unwrap());
 	}

@@ -21,7 +21,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author livk
@@ -34,7 +33,6 @@ class GenericWrapperTest {
 		StringBuilder builder = new StringBuilder(value).reverse();
 		GenericWrapper<String> wrapper = GenericWrapper.of(value);
 		assertEquals(value, wrapper.unwrap());
-		assertTrue(wrapper.isWrapperFor(String.class));
 
 		GenericWrapper<String> map = GenericWrapper.of(reverse(wrapper.unwrap()));
 		assertEquals(builder.toString(), map.unwrap());
