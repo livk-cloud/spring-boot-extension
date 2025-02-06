@@ -17,6 +17,7 @@
 package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.commons.util.GenericWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationNotAllowedException;
 import org.springframework.beans.factory.BeanFactory;
@@ -67,16 +68,14 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 */
 	public static final String BEAN_NAME = "com.livk.commons.SpringContextHolder";
 
-	private volatile static ApplicationContext applicationContext = null;
-
-	private volatile static BeanFactory beanFactory = null;
+	private static final SpringIoC IOC = new SpringIoC();
 
 	/**
 	 * Spring事件发布
 	 * @param event 事件
 	 */
 	public static <E extends ApplicationEvent> void publishEvent(E event) {
-		applicationContext.publishEvent(event);
+		IOC.unwrap().publishEvent(event);
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(String name) {
-		return (T) getBeanFactory().getBean(name);
+		return (T) IOC.getBeanFactory().getBean(name);
 	}
 
 	/**
@@ -97,7 +96,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return spring bean
 	 */
 	public static <T> T getBean(Class<T> typeClass) {
-		return getBeanFactory().getBean(typeClass);
+		return IOC.getBeanFactory().getBean(typeClass);
 	}
 
 	/**
@@ -108,7 +107,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return spring bean
 	 */
 	public static <T> T getBean(String name, Class<T> typeClass) {
-		return getBeanFactory().getBean(name, typeClass);
+		return IOC.getBeanFactory().getBean(name, typeClass);
 	}
 
 	/**
@@ -120,7 +119,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return spring bean provider
 	 */
 	public static <T> ObjectProvider<T> getBeanProvider(Class<T> typeClass) {
-		return getBeanFactory().getBeanProvider(typeClass);
+		return IOC.getBeanFactory().getBeanProvider(typeClass);
 	}
 
 	/**
@@ -132,7 +131,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return spring bean provider
 	 */
 	public static <T> ObjectProvider<T> getBeanProvider(ResolvableType resolvableType) {
-		return getBeanFactory().getBeanProvider(resolvableType);
+		return IOC.getBeanFactory().getBeanProvider(resolvableType);
 	}
 
 	/**
@@ -144,7 +143,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return spring bean map
 	 */
 	public static <T> Map<String, T> getBeansOfType(Class<T> typeClass) {
-		return getBeanFactory().getBeansOfType(typeClass);
+		return IOC.getBeanFactory().getBeansOfType(typeClass);
 	}
 
 	/**
@@ -164,7 +163,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return value
 	 */
 	public static <T> T getProperty(String key, Class<T> requiredType) {
-		return applicationContext.getEnvironment().getProperty(key, requiredType);
+		return IOC.unwrap().getEnvironment().getProperty(key, requiredType);
 	}
 
 	/**
@@ -178,7 +177,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return value
 	 */
 	public static <T> T getProperty(String key, Class<T> requiredType, T defaultValue) {
-		return applicationContext.getEnvironment().getProperty(key, requiredType, defaultValue);
+		return IOC.unwrap().getEnvironment().getProperty(key, requiredType, defaultValue);
 	}
 
 	/**
@@ -187,7 +186,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return value
 	 */
 	public static String resolvePlaceholders(String text) {
-		return applicationContext.getEnvironment().resolvePlaceholders(text);
+		return IOC.unwrap().getEnvironment().resolvePlaceholders(text);
 	}
 
 	/**
@@ -196,7 +195,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @return binder
 	 */
 	public static Binder binder(Converter<?, ?>... converters) {
-		Environment environment = applicationContext.getEnvironment();
+		Environment environment = IOC.unwrap().getEnvironment();
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		PropertySourcesPlaceholdersResolver placeholdersResolver = new PropertySourcesPlaceholdersResolver(environment);
 		GenericConversionService service = new GenericConversionService();
@@ -222,10 +221,10 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	 * @param beanName BeanName
 	 */
 	public static void registerBean(BeanDefinition beanDefinition, String beanName) {
-		if (beanFactory instanceof DefaultListableBeanFactory defaultBeanFactory) {
+		if (IOC.getBeanFactory() instanceof DefaultListableBeanFactory defaultBeanFactory) {
 			registerBean(defaultBeanFactory, beanDefinition, beanName);
 		}
-		else if (applicationContext instanceof GenericApplicationContext context) {
+		else if (IOC.unwrap() instanceof GenericApplicationContext context) {
 			registerBean(context, beanDefinition, beanName);
 		}
 		else {
@@ -239,30 +238,50 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 		registry.registerBeanDefinition(beanName, beanDefinition);
 	}
 
-	private static ListableBeanFactory getBeanFactory() {
-		return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory
-				: applicationContext;
-	}
-
 	public static ApplicationContext fetch() {
-		return beanFactory instanceof ApplicationContext context ? context : applicationContext;
+		return IOC.unwrap();
 	}
 
 	@Override
-	public synchronized void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException {
-		SpringContextHolder.beanFactory = beanFactory;
+	public void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException {
+		SpringContextHolder.IOC.beanFactory(beanFactory);
 	}
 
 	@Override
-	public synchronized void setApplicationContext(@Nullable ApplicationContext applicationContext)
-			throws BeansException {
-		SpringContextHolder.applicationContext = applicationContext;
+	public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
+		SpringContextHolder.IOC.applicationContext(applicationContext);
 	}
 
 	@Override
-	public synchronized void destroy() {
-		SpringContextHolder.applicationContext = null;
-		SpringContextHolder.beanFactory = null;
+	public void destroy() {
+		SpringContextHolder.IOC.beanFactory(null);
+		SpringContextHolder.IOC.applicationContext(null);
+	}
+
+	private static class SpringIoC implements GenericWrapper<ApplicationContext> {
+
+		private volatile ApplicationContext applicationContext;
+
+		private volatile BeanFactory beanFactory;
+
+		private ListableBeanFactory getBeanFactory() {
+			return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory
+					: applicationContext;
+		}
+
+		@Override
+		public ApplicationContext unwrap() {
+			return beanFactory instanceof ApplicationContext contextFactory ? contextFactory : applicationContext;
+		}
+
+		public void beanFactory(BeanFactory beanFactory) {
+			this.beanFactory = beanFactory;
+		}
+
+		public void applicationContext(ApplicationContext applicationContext) {
+			this.applicationContext = applicationContext;
+		}
+
 	}
 
 }
