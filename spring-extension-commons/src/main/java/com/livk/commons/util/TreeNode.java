@@ -25,7 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -51,6 +53,9 @@ public class TreeNode<I, T> {
 	private I pid;
 
 	private List<TreeNode<I, T>> children;
+
+	private static final Map<Object, TreeNode<?, ?>> idCache = new HashMap<>(); // 节点 ID
+																				// 缓存
 
 	/**
 	 * 创建一个root树形节点
@@ -91,8 +96,7 @@ public class TreeNode<I, T> {
 	public void setChildren(List<TreeNode<I, T>> nodes) {
 		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();
 		if (!CollectionUtils.isEmpty(treeNodeList)) {
-			children = new ArrayList<>();
-			children.addAll(treeNodeList);
+			children = new ArrayList<>(treeNodeList);
 			children.forEach(child -> child.setChildren(nodes));
 		}
 	}
@@ -102,14 +106,20 @@ public class TreeNode<I, T> {
 	 * @param id id
 	 * @return tree node
 	 */
+	@SuppressWarnings("unchecked")
 	public TreeNode<I, T> findById(I id) {
+		if (idCache.containsKey(id)) {
+			return (TreeNode<I, T>) idCache.get(id);
+		}
 		if (this.id.equals(id)) {
+			idCache.put(id, this);
 			return this;
 		}
 		if (!CollectionUtils.isEmpty(children)) {
 			for (TreeNode<I, T> child : children) {
 				TreeNode<I, T> treeNo = child.findById(id);
 				if (treeNo != null) {
+					idCache.put(id, treeNo);
 					return treeNo;
 				}
 			}
