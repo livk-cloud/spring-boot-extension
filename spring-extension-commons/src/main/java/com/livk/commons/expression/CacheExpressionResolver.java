@@ -37,6 +37,13 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 
 	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
 
+	protected CacheExpressionResolver(ContextFactory contextFactory) {
+		super(contextFactory);
+	}
+
+	protected CacheExpressionResolver() {
+	}
+
 	@Setter
 	private Environment environment;
 

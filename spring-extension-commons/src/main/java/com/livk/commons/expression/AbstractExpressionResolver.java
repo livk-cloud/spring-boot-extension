@@ -18,6 +18,7 @@ package com.livk.commons.expression;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 使用{@link ContextFactory}解析或者合并成{@link Context}
@@ -31,7 +32,15 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 	/**
 	 * The Context resolver.
 	 */
-	protected final ContextFactory contextFactory = getContextFactory();
+	protected final ContextFactory contextFactory;
+
+	protected AbstractExpressionResolver(ContextFactory contextFactory) {
+		this.contextFactory = Objects.requireNonNull(contextFactory, "ContextFactory must not be null");
+	}
+
+	protected AbstractExpressionResolver() {
+		this(new DefaultContextFactory());
+	}
 
 	@Override
 	public final <T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType) {
@@ -58,14 +67,6 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 	@Override
 	public final String evaluate(String value, Method method, Object[] args) {
 		return ExpressionResolver.super.evaluate(value, method, args);
-	}
-
-	/**
-	 * Gets context resolver.
-	 * @return the context resolver
-	 */
-	protected ContextFactory getContextFactory() {
-		return new DefaultContextFactory();
 	}
 
 }
