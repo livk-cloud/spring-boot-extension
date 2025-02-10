@@ -18,6 +18,7 @@ package com.livk.commons.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.Pointcut;
 import org.springframework.lang.NonNull;
 
@@ -43,7 +44,7 @@ class AnnotationAbstractPointcutAdvisorTest {
 		MyAnnotationAbstractPointcutAdvisor advisor = new MyAnnotationAbstractPointcutAdvisor();
 
 		assertEquals(MyAnnotation.class, advisor.annotationType);
-		assertTrue(advisor.implementsInterface(MyAnnotation.class));
+		assertTrue(advisor.implementsInterface(IntroductionInterceptor.class));
 		assertEquals(AnnotationClassOrMethodPointcut.class, advisor.getPointcut().getClass());
 		assertEquals(new AnnotationClassOrMethodPointcut(MyAnnotation.class), advisor.getPointcut());
 
