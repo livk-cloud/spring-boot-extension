@@ -44,7 +44,7 @@ class DefaultContextFactory implements ContextFactory {
 	@Override
 	public Context create(Method method, Object[] args) {
 		Assert.notNull(method, "method not be null");
-		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
+		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, this::parseParameterNames);
 		if (ObjectUtils.isEmpty(parameterNames)) {
 			return Context.create();
 		}
@@ -55,6 +55,11 @@ class DefaultContextFactory implements ContextFactory {
 			}
 		}
 		return Context.create(map);
+	}
+
+	private String[] parseParameterNames(Method method) {
+		String[] parameterNames = discoverer.getParameterNames(method);
+		return parameterNames == null ? new String[0] : parameterNames;
 	}
 
 }
