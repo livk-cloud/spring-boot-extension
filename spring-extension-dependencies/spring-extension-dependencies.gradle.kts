@@ -16,7 +16,6 @@ dependencies {
 		api(libs.bundles.mapstruct.all)
 		api(libs.guava)
 		api(libs.fastexcel)
-		api(libs.spotbugs.annotations)
 		api(libs.curator.recipes)
 		api(libs.browscap.java)
 		api(libs.auto.service)

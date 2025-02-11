@@ -19,7 +19,6 @@ dependencies {
 	optional("org.freemarker:freemarker")
 	optional("io.micrometer:micrometer-tracing")
 	optional("net.bytebuddy:byte-buddy")
-	api("com.github.spotbugs:spotbugs-annotations")
 	api("com.google.guava:guava")
 	api("org.springframework:spring-core")
 	api("com.fasterxml.jackson.core:jackson-databind")
