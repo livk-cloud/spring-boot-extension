@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,7 +32,7 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	@Override
 	public UserAgent convert(@NonNull HttpHeaders headers) {
-		String useragent = headers.getFirst(HttpHeaders.USER_AGENT);
+		String useragent = Optional.ofNullable(headers.getFirst(HttpHeaders.USER_AGENT)).orElse("");
 		return cache.computeIfAbsent(useragent, this::build);
 	}
 
