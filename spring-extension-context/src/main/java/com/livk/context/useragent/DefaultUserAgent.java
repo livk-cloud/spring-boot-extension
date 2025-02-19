@@ -1,12 +1,9 @@
 /*
  * Copyright 2021-2024 spring-boot-extension the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *       https://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,23 +11,25 @@
  * limitations under the License.
  */
 
-package com.livk.context.useragent.domain;
+package com.livk.context.useragent;
 
 /**
- * The type User agent.
+ * <p>
+ * DefaultUserAgent
+ * </p>
  *
  * @author livk
  */
-public record UserAgent(String userAgentStr, String browser, String browserType, String browserVersion, String os,
-		String osVersion, String deviceType, String deviceName, String deviceBrand) {
+record DefaultUserAgent(String userAgentStr, String browser, String browserType, String browserVersion, String os,
+		String osVersion, String deviceType, String deviceName, String deviceBrand) implements UserAgent {
 
 	/**
 	 * Builder user agent builder.
 	 * @param userAgentStr the user agent str
 	 * @return the user agent builder
 	 */
-	public static UserAgentBuilder builder(String userAgentStr) {
-		return new UserAgentBuilder(userAgentStr);
+	public static DefaultUserAgent.UserAgentBuilder builder(String userAgentStr) {
+		return new DefaultUserAgent.UserAgentBuilder(userAgentStr);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param browser the browser
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder browser(String browser) {
+		public DefaultUserAgent.UserAgentBuilder browser(String browser) {
 			this.browser = browser;
 			return this;
 		}
@@ -79,7 +78,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param browserType the browser type
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder browserType(String browserType) {
+		public DefaultUserAgent.UserAgentBuilder browserType(String browserType) {
 			this.browserType = browserType;
 			return this;
 		}
@@ -89,7 +88,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param browserVersion the browser version
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder browserVersion(String browserVersion) {
+		public DefaultUserAgent.UserAgentBuilder browserVersion(String browserVersion) {
 			this.browserVersion = browserVersion;
 			return this;
 		}
@@ -99,7 +98,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param os the os
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder os(String os) {
+		public DefaultUserAgent.UserAgentBuilder os(String os) {
 			this.os = os;
 			return this;
 		}
@@ -109,7 +108,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param osVersion the os version
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder osVersion(String osVersion) {
+		public DefaultUserAgent.UserAgentBuilder osVersion(String osVersion) {
 			this.osVersion = osVersion;
 			return this;
 		}
@@ -119,7 +118,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param deviceType the device type
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder deviceType(String deviceType) {
+		public DefaultUserAgent.UserAgentBuilder deviceType(String deviceType) {
 			this.deviceType = deviceType;
 			return this;
 		}
@@ -129,7 +128,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param deviceName the device name
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder deviceName(String deviceName) {
+		public DefaultUserAgent.UserAgentBuilder deviceName(String deviceName) {
 			this.deviceName = deviceName;
 			return this;
 		}
@@ -139,7 +138,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @param deviceBrand the device name
 		 * @return the user agent builder
 		 */
-		public UserAgentBuilder deviceBrand(String deviceBrand) {
+		public DefaultUserAgent.UserAgentBuilder deviceBrand(String deviceBrand) {
 			this.deviceBrand = deviceBrand;
 			return this;
 		}
@@ -149,7 +148,7 @@ public record UserAgent(String userAgentStr, String browser, String browserType,
 		 * @return the user agent
 		 */
 		public UserAgent build() {
-			return new UserAgent(userAgentStr, browser, browserType, browserVersion, os, osVersion, deviceType,
+			return new DefaultUserAgent(userAgentStr, browser, browserType, browserVersion, os, osVersion, deviceType,
 					deviceName, deviceBrand);
 		}
 

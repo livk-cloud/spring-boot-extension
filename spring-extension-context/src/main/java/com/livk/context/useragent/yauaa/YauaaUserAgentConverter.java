@@ -22,9 +22,6 @@ import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.http.HttpHeaders;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
  * @author livk
  */
@@ -34,11 +31,8 @@ public class YauaaUserAgentConverter extends AbstractUserAgentConverter<UserAgen
 	private final UserAgentAnalyzer userAgentAnalyzer;
 
 	@Override
-	protected UserAgent create(HttpHeaders headers) {
-		Map<String, String> headersConcat = headers.entrySet()
-			.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, entry -> String.join(",", entry.getValue())));
-		return userAgentAnalyzer.parse(headersConcat);
+	protected UserAgent create(String useragent) {
+		return userAgentAnalyzer.parse(useragent);
 	}
 
 	@Override

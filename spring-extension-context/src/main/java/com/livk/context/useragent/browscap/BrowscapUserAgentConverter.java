@@ -21,7 +21,6 @@ import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.UserAgentParser;
 import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 
 /**
  * @author livk
@@ -32,9 +31,8 @@ public class BrowscapUserAgentConverter extends AbstractUserAgentConverter<Capab
 	private final UserAgentParser userAgentParser;
 
 	@Override
-	protected Capabilities create(HttpHeaders headers) {
-		String userAgent = headers.getFirst(HttpHeaders.USER_AGENT);
-		return userAgentParser.parse(userAgent);
+	protected Capabilities create(String useragent) {
+		return userAgentParser.parse(useragent);
 	}
 
 	@Override

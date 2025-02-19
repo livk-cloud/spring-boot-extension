@@ -16,7 +16,7 @@
 
 package com.livk.context.useragent.reactive;
 
-import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.UserAgent;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
