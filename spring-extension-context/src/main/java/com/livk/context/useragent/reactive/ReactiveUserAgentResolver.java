@@ -18,7 +18,7 @@ package com.livk.context.useragent.reactive;
 
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
-import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.UserAgent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;

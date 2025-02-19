@@ -13,13 +13,27 @@
 
 package com.livk.context.useragent;
 
-import org.springframework.http.HttpHeaders;
-
 /**
  * @author livk
  */
-public interface UserAgentConverter {
+public interface UserAgent {
 
-	UserAgent convert(HttpHeaders headers);
+	String userAgentStr();
+
+	String browser();
+
+	String browserType();
+
+	String browserVersion();
+
+	String os();
+
+	String osVersion();
+
+	String deviceType();
+
+	String deviceName();
+
+	String deviceBrand();
 
 }

@@ -16,7 +16,7 @@
 
 package com.livk.context.useragent.servlet;
 
-import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.UserAgent;
 import org.springframework.core.NamedInheritableThreadLocal;
 
 /**
