@@ -1,0 +1,20 @@
+name: 第三方组件问题
+description: 第三方组件问题导致错误
+title: "[第三方组件问题]: "
+labels:
+  - "bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请填写第三方组件名称
+  - type: input
+    id: version
+    attributes:
+      label: 当前组件版本
+      description: 遇到问题时组件所在的版本号
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 如何修复

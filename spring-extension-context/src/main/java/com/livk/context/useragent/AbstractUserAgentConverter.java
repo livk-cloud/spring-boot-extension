@@ -13,9 +13,12 @@
 
 package com.livk.context.useragent;
 
-import com.livk.context.useragent.domain.UserAgent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The type Abstract user agent converter.
@@ -25,11 +28,17 @@ import org.springframework.lang.NonNull;
  */
 public abstract class AbstractUserAgentConverter<T> implements UserAgentConverter {
 
+	private final Map<String, UserAgent> cache = new ConcurrentHashMap<>();
+
 	@Override
 	public UserAgent convert(@NonNull HttpHeaders headers) {
-		String useragent = headers.getFirst(HttpHeaders.USER_AGENT);
-		UserAgent.UserAgentBuilder builder = UserAgent.builder(useragent);
-		T t = create(headers);
+		String useragent = Optional.ofNullable(headers.getFirst(HttpHeaders.USER_AGENT)).orElse("");
+		return cache.computeIfAbsent(useragent, this::build);
+	}
+
+	protected UserAgent build(String useragent) {
+		DefaultUserAgent.UserAgentBuilder builder = DefaultUserAgent.builder(useragent);
+		T t = create(useragent);
 		return builder.browser(browser(t))
 			.browserType(browserType(t))
 			.browserVersion(browserVersion(t))
@@ -43,10 +52,10 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 
 	/**
 	 * Create t.
-	 * @param headers the headers
+	 * @param useragent the useragent
 	 * @return the t
 	 */
-	protected abstract T create(HttpHeaders headers);
+	protected abstract T create(String useragent);
 
 	/**
 	 * Browser string.

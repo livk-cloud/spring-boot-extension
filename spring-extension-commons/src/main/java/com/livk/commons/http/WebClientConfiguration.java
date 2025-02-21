@@ -18,6 +18,7 @@ package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableWebClient;
+import com.livk.commons.http.support.DefaultReactorNettyHttpClientMapper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

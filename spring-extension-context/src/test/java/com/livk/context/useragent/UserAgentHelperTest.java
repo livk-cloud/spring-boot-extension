@@ -21,7 +21,6 @@ import com.blueconic.browscap.ParseException;
 import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
-import com.livk.context.useragent.domain.UserAgent;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +29,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;

@@ -16,7 +16,6 @@
 
 package com.livk.context.useragent;
 
-import com.livk.context.useragent.domain.UserAgent;
 import lombok.Setter;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;

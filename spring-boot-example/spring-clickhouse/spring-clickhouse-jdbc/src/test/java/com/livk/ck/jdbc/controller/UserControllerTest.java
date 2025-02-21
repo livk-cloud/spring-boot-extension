@@ -39,9 +39,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -59,8 +62,7 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse()).withUsername("livk")
-		.withPassword("password")
+	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
 		.withExposedPorts(8123, 9000);
 
 	@DynamicPropertySource
@@ -77,7 +79,11 @@ class UserControllerTest {
 	@Order(2)
 	@Test
 	void testList() throws Exception {
-		mockMvc.perform(get("/user")).andDo(print()).andExpect(status().isOk());
+		mockMvc.perform(get("/user"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("[0].appId").value("appId"))
+			.andExpect(jsonPath("[0].version").value("version"));
 	}
 
 	@Order(3)

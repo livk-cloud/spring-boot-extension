@@ -74,7 +74,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 
 	@Override
 	public boolean implementsInterface(@NonNull Class<?> intf) {
-		return annotationType != null && annotationType.isAssignableFrom(intf);
+		return intf.isAssignableFrom(this.getClass());
 	}
 
 	@NonNull

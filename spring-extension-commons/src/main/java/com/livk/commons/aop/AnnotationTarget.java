@@ -53,17 +53,11 @@ final class AnnotationTarget<A extends Annotation> {
 	}
 
 	public A getAnnotation(Method method) {
-		if (supportMethod()) {
-			return AnnotationUtils.getAnnotation(method, annotationType);
-		}
-		return null;
+		return supportMethod() ? AnnotationUtils.getAnnotation(method, annotationType) : null;
 	}
 
 	public A getAnnotation(Class<?> clazz) {
-		if (supportType()) {
-			return AnnotationUtils.getAnnotation(clazz, annotationType);
-		}
-		return null;
+		return supportType() ? AnnotationUtils.getAnnotation(clazz, annotationType) : null;
 	}
 
 	private boolean supportMethod() {

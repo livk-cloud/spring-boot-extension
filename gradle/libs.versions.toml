@@ -9,17 +9,16 @@ guava = "33.4.0-jre"
 fastexcel = "1.1.0"
 redisson = "3.44.0"
 clickhouse = "0.7.2"
-spotbugs-annotations = "4.9.0"
 mapstruct = "1.6.3"
 mapstruct-lombok = "0.2.0"
 curator = "5.7.1"
 asciidoctor-jvm = "4.0.4"
-browscap-java = "1.4.4"
+browscap-java = "1.4.5"
 auto-service = "1.1.1"
-yauaa = "7.29.0"
-springdoc = "2.8.4"
+yauaa = "7.30.0"
+springdoc = "2.8.5"
 google-javase = "3.5.3"
-spring-admin = "3.4.1"
+spring-admin = "3.4.2"
 nimbusds-jwt = "10.0.1"
 jsqlparser = "5.1"
 lettucemod = "4.2.0"
@@ -70,7 +69,6 @@ lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-bindi
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fastexcel = { group = "cn.idev.excel", name = "fastexcel", version.ref = "fastexcel" }
-spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 curator-recipes = { group = "org.apache.curator", name = "curator-recipes", version.ref = "curator" }
 browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref = "browscap-java" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "auto-service" }

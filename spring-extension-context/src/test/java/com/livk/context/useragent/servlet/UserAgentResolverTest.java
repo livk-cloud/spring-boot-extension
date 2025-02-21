@@ -13,10 +13,10 @@
 
 package com.livk.context.useragent.servlet;
 
+import com.livk.context.useragent.UserAgent;
 import com.livk.context.useragent.UserAgentConverter;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
-import com.livk.context.useragent.domain.UserAgent;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -35,11 +34,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author livk

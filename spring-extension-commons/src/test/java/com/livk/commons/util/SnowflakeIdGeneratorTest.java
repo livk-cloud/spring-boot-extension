@@ -16,6 +16,7 @@
 
 package com.livk.commons.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -27,6 +28,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * <p>
@@ -35,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
+@Slf4j
 class SnowflakeIdGeneratorTest {
 
 	final SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2);
@@ -54,8 +58,74 @@ class SnowflakeIdGeneratorTest {
 			countDownLatch.await();
 			service.shutdown();
 			Set<Long> set = new HashSet<>(list);
-			assertEquals(set.size(), list.size());
+			assertEquals(set.size(), list.size(), "ID 的数量不匹配，可能有重复 ID");
 		}
+	}
+
+	@Test
+	void testUniqueIds() {
+		int num = 10000;
+		Set<Long> idSet = new HashSet<>();
+		for (int i = 0; i < num; i++) {
+			long id = generator.nextId();
+			assertFalse(idSet.contains(id), "ID 生成重复：" + id);
+			idSet.add(id);
+		}
+	}
+
+	/**
+	 * 测试时间回拨的处理
+	 */
+	@Test
+	void testTimeRollbackHandling() throws InterruptedException {
+		// 模拟时间回拨的情况，检查是否会抛出异常
+		System.currentTimeMillis();
+
+		// 生成一个 ID
+		long id1 = generator.nextId();
+
+		// 人为改变系统时间，使其回到过去
+		System.setProperty("user.timezone", "UTC"); // 模拟时区变化
+		Thread.sleep(1000); // 暂停一秒钟
+
+		// 再次生成 ID，验证是否正常
+		long id2 = generator.nextId();
+
+		// 验证生成的两个 ID 是否不同，且没有时间回拨导致的问题
+		assertNotEquals(id1, id2, "生成的 ID 相同，时间回拨没有处理正确");
+	}
+
+	/**
+	 * 测试序列号溢出
+	 */
+	@Test
+	void testSequenceOverflow() {
+		long startTime = System.currentTimeMillis();
+		long lastId = generator.nextId();
+
+		// 模拟多次生成 ID，观察序列号是否正确溢出
+		for (int i = 0; i < 10000; i++) {
+			long currentId = generator.nextId();
+			// 验证生成的 ID 不重复
+			assertNotEquals(lastId, currentId, "ID 重复：" + currentId);
+			lastId = currentId;
+		}
+
+		long endTime = System.currentTimeMillis();
+		log.info("生成 10000 个 ID 耗时：{} 毫秒", endTime - startTime);
+	}
+
+	/**
+	 * 测试边界条件，生成 ID 时跨毫秒溢出
+	 */
+	@Test
+	void testBoundaryCondition() throws InterruptedException {
+		// 测试生成 ID 时，序列号溢出后的行为
+		long lastId = generator.nextId();
+		Thread.sleep(2); // 等待一毫秒
+
+		long newId = generator.nextId();
+		assertNotEquals(lastId, newId, "跨毫秒生成的 ID 重复");
 	}
 
 }

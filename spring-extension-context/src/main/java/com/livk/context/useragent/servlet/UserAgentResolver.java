@@ -19,7 +19,7 @@ package com.livk.context.useragent.servlet;
 import com.livk.commons.util.WebUtils;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
-import com.livk.context.useragent.domain.UserAgent;
+import com.livk.context.useragent.UserAgent;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

@@ -55,7 +55,7 @@ public class SnowflakeIdGenerator {
 
 	private long sequence = 0L; // 当前序列号
 
-	private long lastTimestamp = -1L; // 上一次生成 ID 的时间戳
+	private volatile long lastTimestamp = -1L; // 上一次生成 ID 的时间戳，使用 volatile 保证可见性
 
 	/**
 	 * 构造方法
@@ -81,7 +81,8 @@ public class SnowflakeIdGenerator {
 		long currentTimestamp = System.currentTimeMillis();
 
 		if (currentTimestamp < lastTimestamp) {
-			throw new RuntimeException("Clock moved backwards. Refusing to generate ID.");
+			// 时间回拨，建议重试而不是抛出异常
+			waitForNextMillisecond(lastTimestamp);
 		}
 
 		if (currentTimestamp == lastTimestamp) {
@@ -115,6 +116,31 @@ public class SnowflakeIdGenerator {
 			currentTimestamp = System.currentTimeMillis();
 		}
 		return currentTimestamp;
+	}
+
+	/**
+	 * 等待下一毫秒
+	 * @param lastTimestamp 上一毫秒
+	 */
+	private void waitForNextMillisecond(long lastTimestamp) {
+		long currentTimestamp = System.currentTimeMillis();
+		// 设置一个较高的最大重试次数，允许系统时间回拨一定范围
+		int maxRetries = 20; // 根据具体场景调整
+		int retries = 0;
+		while (currentTimestamp <= lastTimestamp && retries < maxRetries) {
+			currentTimestamp = System.currentTimeMillis();
+			retries++;
+			try {
+				// 添加适当的延迟，减少 CPU 占用，避免高频轮询
+				Thread.sleep(1); // 睡眠 1 毫秒，避免过多的 CPU 占用
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt(); // 恢复中断状态
+			}
+		}
+		if (retries >= maxRetries) {
+			throw new IllegalStateException("Time moved backwards and exceeded retry limit.");
+		}
 	}
 
 }

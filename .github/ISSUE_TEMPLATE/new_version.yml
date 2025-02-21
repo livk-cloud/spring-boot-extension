@@ -1,0 +1,9 @@
+name: 组件新版本
+description: 组件新版本
+title: "[组件新版本]: "
+labels:
+  - "enhancement"
+body:
+  - type: textarea
+    attributes:
+      label: 当前版本升级相关描述

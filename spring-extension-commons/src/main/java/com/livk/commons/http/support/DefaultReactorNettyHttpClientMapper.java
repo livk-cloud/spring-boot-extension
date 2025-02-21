@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.http;
+package com.livk.commons.http.support;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
