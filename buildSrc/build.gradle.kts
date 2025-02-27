@@ -5,7 +5,6 @@ plugins {
 
 repositories {
 	maven("https://repo.spring.io/release")
-	maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
 }
 
 dependencies {
