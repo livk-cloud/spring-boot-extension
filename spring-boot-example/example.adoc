@@ -32,6 +32,4 @@ link:spring-retry[Spring整合Retry] +
 link:spring-rsocket[Spring整合rsocket] +
 link:spring-security/security-sso[Spring整合security SSO] +
 link:spring-server-sent-events[Spring整合SSE] +
-link:spring-video[Spring webmvc传输视频文件] +
-link:spring-websocket[Spring整合Websocket] +
 link:spring-zookeeper[Spring整合Zookeeper] +
