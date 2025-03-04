@@ -18,7 +18,6 @@ package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.util.BeanUtils;
-import com.livk.context.fastexcel.PartServerHttpRequest;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.converter.ExcelHttpMessageReader;
@@ -27,10 +26,16 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.codec.multipart.Part;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -77,6 +82,31 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 		}
 
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+	}
+
+	/**
+	 * @author livk
+	 * @see org.springframework.web.reactive.result.method.annotation.RequestPartMethodArgumentResolver.PartServerHttpRequest
+	 */
+	private static class PartServerHttpRequest extends ServerHttpRequestDecorator {
+
+		private final Part part;
+
+		public PartServerHttpRequest(ServerHttpRequest delegate, Part part) {
+			super(delegate);
+			this.part = part;
+		}
+
+		@NonNull
+		public HttpHeaders getHeaders() {
+			return this.part.headers();
+		}
+
+		@NonNull
+		public Flux<DataBuffer> getBody() {
+			return this.part.content();
+		}
+
 	}
 
 }
