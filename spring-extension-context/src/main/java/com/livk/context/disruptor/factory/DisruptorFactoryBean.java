@@ -19,6 +19,7 @@ package com.livk.context.disruptor.factory;
 import com.livk.context.disruptor.support.DisruptorEventConsumer;
 import com.livk.context.disruptor.support.DisruptorEventWrapper;
 import com.livk.context.disruptor.support.SpringDisruptor;
+import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -70,35 +71,14 @@ public class DisruptorFactoryBean<T>
 		this.beanFactory = beanFactory;
 	}
 
-	private ThreadFactory createThreadFactory() {
-		String threadFactoryBeanName = attributes.getString("threadFactoryBeanName");
-		if (StringUtils.hasText(threadFactoryBeanName)) {
-			return beanFactory.getBean(threadFactoryBeanName, ThreadFactory.class);
-		}
-		Class<? extends ThreadFactory> factoryClass = attributes.getClass("threadFactory");
-		ThreadFactory threadFactory = BeanUtils.instantiateClass(factoryClass);
-		if (attributes.getBoolean("useVirtualThreads")) {
-			return new VirtualThreadFactory(threadFactory);
-		}
-		return threadFactory;
-	}
-
-	private WaitStrategy createWaitStrategy() {
-		String strategyBeanName = attributes.getString("strategyBeanName");
-		if (StringUtils.hasText(strategyBeanName)) {
-			return beanFactory.getBean(strategyBeanName, WaitStrategy.class);
-		}
-		Class<? extends WaitStrategy> strategyClass = attributes.getClass("strategy");
-		return BeanUtils.instantiateClass(strategyClass);
-	}
-
 	@Override
 	public void afterPropertiesSet() {
 		SpringEventFactory<T> factory = new SpringEventFactory<>();
 		int bufferSize = attributes.getNumber("bufferSize").intValue();
 		ProducerType producerType = attributes.getEnum("type");
-		disruptor = new SpringDisruptor<>(factory, bufferSize, createThreadFactory(), producerType,
-				createWaitStrategy());
+		WaitStrategy waitStrategy = this.createInstance("strategyBeanName", "strategy", WaitStrategy.class);
+		ThreadFactory threadFactory = this.createThreadFactory();
+		disruptor = new SpringDisruptor<>(factory, bufferSize, threadFactory, producerType, waitStrategy);
 		disruptor.handleEventsWith(createEventHandler(beanFactory, type));
 		disruptor.start();
 	}
@@ -109,9 +89,35 @@ public class DisruptorFactoryBean<T>
 		return new AggregateEventHandlerProvider<>(disruptorEventConsumers);
 	}
 
+	private ThreadFactory createThreadFactory() {
+		ThreadFactory threadFactory = this.createInstance("threadFactoryBeanName", "threadFactory",
+				ThreadFactory.class);
+		if (attributes.getBoolean("useVirtualThreads")) {
+			return new VirtualThreadFactory(threadFactory);
+		}
+		return threadFactory;
+	}
+
+	private <S> S createInstance(String beanNameKey, String classKey, Class<S> targetType) {
+		String beanName = attributes.getString(beanNameKey);
+		if (StringUtils.hasText(beanName)) {
+			return beanFactory.getBean(beanName, targetType);
+		}
+		Class<? extends S> clazz = attributes.getClass(classKey);
+		return BeanUtils.instantiateClass(clazz);
+	}
+
 	@Override
 	public void destroy() {
 		disruptor.shutdown();
+	}
+
+	private static class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
+
+		public DisruptorEventWrapper<T> newInstance() {
+			return new DisruptorEventWrapper<>();
+		}
+
 	}
 
 	@RequiredArgsConstructor
