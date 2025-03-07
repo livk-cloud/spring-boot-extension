@@ -110,7 +110,7 @@ public abstract class QRCodeGeneratorSupport {
 			ImageIO.write(bufferedImage, formatName, stream);
 		}
 		catch (IOException e) {
-			throw new QRCodeException("二维码写入失败", e);
+			throw new QRCodeException("The QRCode was written to failure", e);
 		}
 	}
 

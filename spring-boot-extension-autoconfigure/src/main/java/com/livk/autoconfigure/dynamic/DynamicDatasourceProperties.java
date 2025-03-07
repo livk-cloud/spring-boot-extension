@@ -51,11 +51,13 @@ public class DynamicDatasourceProperties implements InitializingBean {
 	public void afterPropertiesSet() {
 		if (StringUtils.hasText(primary)) {
 			if (!datasource.containsKey(primary)) {
-				throw new PrimaryNotFountException(primary + "数据源不存在!\n当前数据源:" + datasource.keySet());
+				throw new PrimaryNotFountException(
+						primary + "The data source does not exist!\\nThe current data source does not exist:"
+								+ datasource.keySet());
 			}
 		}
 		else {
-			throw new PrimaryNotFountException("缺少primary数据源!");
+			throw new PrimaryNotFountException("The 'primary' datasource is missing!");
 		}
 	}
 

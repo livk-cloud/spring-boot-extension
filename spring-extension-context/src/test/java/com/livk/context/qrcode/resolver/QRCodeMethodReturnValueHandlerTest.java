@@ -45,7 +45,7 @@ class QRCodeMethodReturnValueHandlerTest {
 	@BeforeAll
 	static void init() throws NoSuchMethodException {
 		JsonMapper mapper = JsonMapper.builder().build();
-		QRCodeGenerator generator = new GoogleQRCodeGenerator(mapper);
+		QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
 		handler = new QRCodeMethodReturnValueHandler(generator);
 		parameter = MethodParameter.forExecutable(QRCodeMethodReturnValueHandlerTest.class.getDeclaredMethod("qrcode"),
 				-1);

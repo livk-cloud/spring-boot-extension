@@ -76,7 +76,7 @@ public class TreeNode<I, T> {
 	 */
 	public boolean addChild(TreeNode<I, T> treeNo) {
 		if (this.findById(treeNo.id) != null) {
-			log.info("出现相同节点 id:{}", treeNo.id);
+			log.info("The same node appears id:{}", treeNo.id);
 			return false;
 		}
 		TreeNode<I, T> parent = this.findById(treeNo.pid);
