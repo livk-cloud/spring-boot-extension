@@ -37,6 +37,8 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -81,71 +83,83 @@ public class RediSearchTemplate<K, V> implements InitializingBean {
 	}
 
 	public RedisModulesCommands<K, V> sync() {
-		return this.borrowObject().sync();
+		return submit(StatefulRedisModulesConnection::sync);
 	}
 
 	public RedisModulesAsyncCommands<K, V> async() {
-		return this.borrowObject().async();
+		return submit(StatefulRedisModulesConnection::async);
 	}
 
 	public RedisModulesReactiveCommands<K, V> reactive() {
-		return this.borrowObject().reactive();
+		return submit(StatefulRedisModulesConnection::reactive);
 	}
 
 	public boolean isMulti() {
-		return this.borrowObject().isMulti();
+		return submit(StatefulRedisModulesConnection::isMulti);
 	}
 
 	public void addListener(PushListener listener) {
-		this.borrowObject().addListener(listener);
+		execute(connection -> connection.addListener(listener));
 	}
 
 	public void removeListener(PushListener listener) {
-		this.borrowObject().removeListener(listener);
+		execute(connection -> connection.removeListener(listener));
 	}
 
 	public void addListener(RedisConnectionStateListener listener) {
-		this.borrowObject().addListener(listener);
+		execute(connection -> connection.addListener(listener));
 	}
 
 	public void removeListener(RedisConnectionStateListener listener) {
-		this.borrowObject().removeListener(listener);
+		execute(connection -> connection.removeListener(listener));
 	}
 
 	public void setTimeout(Duration timeout) {
-		this.borrowObject().setTimeout(timeout);
+		execute(connection -> connection.setTimeout(timeout));
 	}
 
 	public Duration getTimeout() {
-		return this.borrowObject().getTimeout();
+		return submit(StatefulRedisModulesConnection::getTimeout);
 	}
 
 	public <T> RedisCommand<K, V, T> dispatch(RedisCommand<K, V, T> command) {
-		return this.borrowObject().dispatch(command);
+		return submit(connection -> connection.dispatch(command));
 	}
 
 	public Collection<RedisCommand<K, V, ?>> dispatch(Collection<? extends RedisCommand<K, V, ?>> commands) {
-		return this.borrowObject().dispatch(commands);
+		return submit(connection -> connection.dispatch(commands));
 	}
 
 	public boolean isOpen() {
-		return this.borrowObject().isOpen();
+		return submit(StatefulRedisModulesConnection::isOpen);
 	}
 
 	public ClientOptions getOptions() {
-		return this.borrowObject().getOptions();
+		return submit(StatefulRedisModulesConnection::getOptions);
 	}
 
 	public ClientResources getResources() {
-		return this.borrowObject().getResources();
+		return submit(StatefulRedisModulesConnection::getResources);
 	}
 
 	public void setAutoFlushCommands(boolean autoFlush) {
-		this.borrowObject().setAutoFlushCommands(autoFlush);
+		execute(connection -> connection.setAutoFlushCommands(autoFlush));
 	}
 
 	public void flushCommands() {
-		this.borrowObject().flushCommands();
+		execute(StatefulRedisModulesConnection::flushCommands);
+	}
+
+	private <T> T submit(Function<StatefulRedisModulesConnection<K, V>, T> command) {
+		try (StatefulRedisModulesConnection<K, V> borrowed = this.borrowObject()) {
+			return command.apply(borrowed);
+		}
+	}
+
+	private void execute(Consumer<StatefulRedisModulesConnection<K, V>> command) {
+		try (StatefulRedisModulesConnection<K, V> borrowed = this.borrowObject()) {
+			command.accept(borrowed);
+		}
 	}
 
 }
