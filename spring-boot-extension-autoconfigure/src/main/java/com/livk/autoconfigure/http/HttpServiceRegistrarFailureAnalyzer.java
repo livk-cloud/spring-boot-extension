@@ -31,7 +31,8 @@ public class HttpServiceRegistrarFailureAnalyzer extends AbstractFailureAnalyzer
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, HttpServiceRegistrarException cause) {
 		return new FailureAnalysis(cause.getMessage(),
-				"请添加com.livk.context.http.factory.AdapterFactory实现，并添加至spring.factories", cause);
+				"Please add the 'com.livk.context.http.factory.AdapterFactory' implementation and add it to 'spring.factories'",
+				cause);
 	}
 
 }

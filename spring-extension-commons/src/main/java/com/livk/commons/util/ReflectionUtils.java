@@ -75,7 +75,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 			return descriptor.getReadMethod();
 		}
 		catch (Exception e) {
-			log.error("获取字段get方法失败 message: {}", e.getMessage(), e);
+			log.error("Failed to get the get field method message: {}", e.getMessage(), e);
 			return null;
 		}
 	}
@@ -104,7 +104,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 			return descriptor.getWriteMethod();
 		}
 		catch (Exception e) {
-			log.error("获取字段set方法失败 message: {}", e.getMessage(), e);
+			log.error("Failed to set the get field method message: {}", e.getMessage(), e);
 			return null;
 		}
 	}

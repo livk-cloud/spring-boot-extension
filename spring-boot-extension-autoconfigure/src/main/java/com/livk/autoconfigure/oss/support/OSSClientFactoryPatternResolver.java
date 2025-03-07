@@ -57,7 +57,7 @@ class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 			}
 		}
 		if (log.isDebugEnabled()) {
-			log.debug("oss factory匹配失败, 加载Spring SPI");
+			log.debug("oss factory fails to match and Spring SPI is loaded");
 		}
 		List<OSSClientFactoryLoader> factoryLoaders = SpringFactoriesLoader.loadFactories(OSSClientFactoryLoader.class,
 				ClassUtils.getDefaultClassLoader());
@@ -67,7 +67,7 @@ class OSSClientFactoryPatternResolver implements OSSClientFactoryLoader {
 				return clientFactory;
 			}
 		}
-		throw new OSSClientFactoryNotFoundException(prefix + " oss factory匹配失败");
+		throw new OSSClientFactoryNotFoundException(prefix + " OSS Factory match failed");
 	}
 
 }

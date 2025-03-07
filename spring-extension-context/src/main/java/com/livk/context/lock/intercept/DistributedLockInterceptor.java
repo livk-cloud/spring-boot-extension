@@ -49,14 +49,14 @@ public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAd
 		Assert.notNull(lock, "lock is null");
 		DistributedLock distributedLock = distributedLockProvider.orderedStream()
 			.findFirst()
-			.orElseThrow(() -> new UnSupportLockException("缺少DistributedLock的实现"));
+			.orElseThrow(() -> new UnSupportLockException("Lack of implementation of DistributedLock"));
 		String key = resolver.evaluate(lock.key(), invocation.getMethod(), invocation.getArguments());
 		boolean isLock = distributedLock.tryLock(lock.type(), key, lock.leaseTime(), lock.waitTime(), lock.async());
 		try {
 			if (isLock) {
 				return invocation.proceed();
 			}
-			throw new LockException("获取锁失败!");
+			throw new LockException("Failed to acquire locks!");
 		}
 		finally {
 			if (isLock) {
