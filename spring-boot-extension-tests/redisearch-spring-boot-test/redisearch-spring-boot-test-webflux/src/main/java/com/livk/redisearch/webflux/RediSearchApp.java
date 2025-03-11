@@ -16,12 +16,11 @@
 
 package com.livk.redisearch.webflux;
 
-import com.livk.commons.util.BeanLambda;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.util.BeanLambda;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
-import com.redis.lettucemod.api.sync.RedisModulesCommands;
-import com.redis.lettucemod.search.Document;
+import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import com.redis.lettucemod.search.Field;
 import com.redis.lettucemod.search.SearchResults;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +28,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -52,28 +53,39 @@ public class RediSearchApp {
 	@SuppressWarnings("unchecked")
 	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
 		return (args) -> {
-			RedisModulesCommands<String, String> search = template.sync();
+			RedisModulesReactiveCommands<String, String> reactive = template.reactive();
 
-			if (!search.ftList().contains(Student.INDEX)) {
-				search.ftCreate(Student.INDEX, Field.text(BeanLambda.fieldName(Student::getName)).weight(5.0).build(),
-						Field.text(BeanLambda.fieldName(Student::getSex)).build(),
-						Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build());
-			}
+			Mono<Void> createIndex = reactive.ftList()
+				.any(index -> index.equals(Student.INDEX))
+				.filter(exists -> !exists)
+				.flatMap(exists -> reactive
+					.ftCreate(Student.INDEX, Field.text(BeanLambda.fieldName(Student::getName)).weight(5.0).build(),
+							Field.text(BeanLambda.fieldName(Student::getSex)).build(),
+							Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build())
+					.then());
 			ThreadLocalRandom random = ThreadLocalRandom.current();
-			for (int i = 0; i < 10; i++) {
+			Flux<Student> studentFlux = Flux.range(0, 10).map(i -> {
 				int randomNum = random.nextInt(2);
-				Student student = new Student().setName("livk-" + i)
+				return new Student().setName("livk-" + i)
 					.setSex(randomNum == 0 ? "男" : "女")
 					.setDesc("是一个学生")
 					.setClassX((i + 1) + "班");
+			});
+
+			Flux<String> insertData = studentFlux.flatMap(student -> {
 				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
-				search.hmset("00" + i, body);
-			}
-			SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
-			for (Document<String, String> document : result) {
-				Student bean = JsonMapperUtils.convertValue(document, Student.class);
-				log.info("{}", bean);
-			}
+				String key = "00" + student.getName().replace("livk-", "");
+				return reactive.hmset(key, body);
+			});
+
+			Mono<SearchResults<String, String>> searchResult = reactive.ftSearch(Student.INDEX, "*");
+
+			createIndex.thenMany(insertData)
+				.then(searchResult)
+				.flatMapMany(Flux::fromIterable)
+				.map(document -> JsonMapperUtils.convertValue(document, Student.class))
+				.doOnNext(student -> log.info("{}", student))
+				.subscribe();
 		};
 	}
 
