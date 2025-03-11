@@ -28,7 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author livk
  */
 @Disabled("需要启动授权服务器")
-@EnableHttpClient(HttpClientType.REST_TEMPLATE)
+@EnableHttpClient(HttpClientType.REST_CLIENT)
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -56,7 +56,7 @@ class UserControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
-	RestTemplate template;
+	RestClient restClient;
 
 	String token;
 
@@ -65,8 +65,11 @@ class UserControllerTest {
 		Map<String, String> body = new HashMap<>();
 		body.put("username", "livk");
 		body.put("password", "123456");
-		ResponseEntity<String> responseEntity = template.postForEntity("http://localhost:9987/login",
-				JsonMapperUtils.writeValueAsString(body), String.class);
+		ResponseEntity<String> responseEntity = restClient.post()
+			.uri("http://localhost:9987/login")
+			.body(body)
+			.retrieve()
+			.toEntity(String.class);
 		token = "Bearer "
 				+ JsonMapperUtils.readValueMap(responseEntity.getBody(), String.class, String.class).get("data");
 	}

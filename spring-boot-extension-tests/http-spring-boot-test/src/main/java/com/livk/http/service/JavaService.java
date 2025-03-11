@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @author livk
  */
-@HttpProvider(type = AdapterType.REST_TEMPLATE, url = "http://localhost:${server.port:8080}/rpc")
+@HttpProvider(type = AdapterType.AUTO, url = "http://localhost:${server.port:8080}/rpc")
 public interface JavaService {
 
 	@GetExchange("java")

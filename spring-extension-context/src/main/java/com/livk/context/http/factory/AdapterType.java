@@ -21,6 +21,7 @@ package com.livk.context.http.factory;
  */
 public enum AdapterType {
 
+	@Deprecated(since = "1.4.3")
 	REST_TEMPLATE,
 
 	WEB_CLIENT,

@@ -34,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author livk
  */
+@Deprecated(since = "1.4.3")
 @AutoConfiguration
 @SpringAutoService(EnableRestTemplate.class)
 @ImportAutoConfiguration(OkHttpClientConfiguration.class)

@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class RestTemplateConfigurationTest {
 
+	@SuppressWarnings("deprecation")
 	final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
 		.withPropertyValues("spring.main.web-application-type=servlet")
 		.withConfiguration(AutoConfigurations.of(RestTemplateConfiguration.class, RestTemplateAutoConfiguration.class));
