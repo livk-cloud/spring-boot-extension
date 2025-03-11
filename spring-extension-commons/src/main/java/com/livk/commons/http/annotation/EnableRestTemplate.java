@@ -33,6 +33,7 @@ import java.lang.annotation.Target;
  * @see EnableHttpClient
  * @see com.livk.commons.http.RestTemplateConfiguration
  */
+@Deprecated(since = "1.4.3")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @EnableHttpClient(HttpClientType.REST_TEMPLATE)

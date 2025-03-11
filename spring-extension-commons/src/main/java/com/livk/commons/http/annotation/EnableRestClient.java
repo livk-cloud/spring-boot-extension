@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  *
  * @author livk
  * @see EnableHttpClient
- * @see com.livk.commons.http.RestTemplateConfiguration
+ * @see com.livk.commons.http.RestClientConfiguration
  */
 @Target(ElementType.TYPE_PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

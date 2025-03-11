@@ -27,6 +27,7 @@ import java.util.function.Supplier;
  * @author livk
  */
 @SpringFactories
+@Deprecated(since = "1.4.3", forRemoval = true)
 class RestTemplateAdapterFactory implements AdapterFactory<RestTemplateAdapter> {
 
 	@Override

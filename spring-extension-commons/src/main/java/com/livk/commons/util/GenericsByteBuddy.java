@@ -93,7 +93,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static net.bytebuddy.description.type.TypeDescription.ArrayProjection;
 import static net.bytebuddy.description.type.TypeDescription.ForLoadedType;
@@ -622,10 +622,11 @@ public class GenericsByteBuddy {
 				throw new IllegalStateException(
 						"'net.bytebuddy.naming' is set to an unknown, non-numeric value: " + naming);
 			}
-
+			ThreadLocalRandom current = ThreadLocalRandom.current();
+			current.setSeed(seed);
 			namingStrategy = new NamingStrategy.SuffixingRandom("ByteBuddy",
 					NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE, "net.bytebuddy.renamed",
-					new RandomString(8, new Random(seed)));
+					new RandomString(8, current));
 			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
 			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
 		}

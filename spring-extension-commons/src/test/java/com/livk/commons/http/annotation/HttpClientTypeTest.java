@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class HttpClientTypeTest {
 
 	@Test
+	@SuppressWarnings("deprecation")
 	void annotationType() {
 		assertEquals(EnableRestClient.class, HttpClientType.REST_CLIENT.annotationType());
 		assertEquals(EnableRestTemplate.class, HttpClientType.REST_TEMPLATE.annotationType());

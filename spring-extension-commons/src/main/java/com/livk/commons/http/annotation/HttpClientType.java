@@ -31,6 +31,7 @@ public enum HttpClientType {
 	/**
 	 * RestTemplate
 	 */
+	@Deprecated(since = "1.4.3")
 	REST_TEMPLATE(EnableRestTemplate.class),
 	/**
 	 * WebClient
