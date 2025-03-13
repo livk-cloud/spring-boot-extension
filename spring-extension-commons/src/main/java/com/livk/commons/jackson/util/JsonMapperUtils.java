@@ -101,7 +101,7 @@ public class JsonMapperUtils {
 	 * @return the list
 	 */
 	public static <T> List<T> readValueList(Object obj, Class<T> type) {
-		CollectionType collectionType = TypeFactoryUtils.collectionType(type);
+		CollectionType collectionType = TypeFactoryUtils.listType(type);
 		return JSON.readValue(obj, collectionType);
 	}
 
@@ -173,7 +173,7 @@ public class JsonMapperUtils {
 	 * @return List
 	 */
 	public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
-		CollectionType collectionType = TypeFactoryUtils.collectionType(type);
+		CollectionType collectionType = TypeFactoryUtils.listType(type);
 		return JSON.convertValue(fromValue, collectionType);
 	}
 

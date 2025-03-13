@@ -24,11 +24,13 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.junit.jupiter.api.Test;
+import org.springframework.core.ResolvableType;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
-import org.springframework.core.ResolvableType;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -83,13 +85,23 @@ class TypeFactoryUtilsTest {
 	}
 
 	@Test
-	void collectionType() {
+	void listType() {
 		SimpleType strType = SimpleType.constructUnsafe(String.class);
-		TypeBindings bindings = TypeBindings.createIfNeeded(Collection.class, strType);
-		CollectionType collectionType = CollectionType.construct(Collection.class, bindings,
+		TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
+		CollectionType listType = CollectionType.construct(List.class, bindings,
 				SimpleType.constructUnsafe(Iterable.class), null, strType);
-		assertEquals(collectionType, TypeFactoryUtils.collectionType(String.class));
-		assertEquals(collectionType, TypeFactoryUtils.collectionType(strType));
+		assertEquals(listType, TypeFactoryUtils.listType(String.class));
+		assertEquals(listType, TypeFactoryUtils.listType(strType));
+	}
+
+	@Test
+	void seyType() {
+		SimpleType strType = SimpleType.constructUnsafe(String.class);
+		TypeBindings bindings = TypeBindings.createIfNeeded(Set.class, strType);
+		CollectionType setType = CollectionType.construct(Set.class, bindings,
+				SimpleType.constructUnsafe(Iterable.class), null, strType);
+		assertEquals(setType, TypeFactoryUtils.setType(String.class));
+		assertEquals(setType, TypeFactoryUtils.setType(strType));
 	}
 
 	@Test
