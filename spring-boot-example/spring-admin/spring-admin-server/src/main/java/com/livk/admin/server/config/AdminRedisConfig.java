@@ -50,7 +50,7 @@ public class AdminRedisConfig {
 			.build();
 		Jackson2JsonRedisSerializer<InstanceId> hashKeySerializer = new Jackson2JsonRedisSerializer<>(mapper,
 				InstanceId.class);
-		CollectionType collectionType = TypeFactoryUtils.collectionType(InstanceEvent.class);
+		CollectionType collectionType = TypeFactoryUtils.listType(InstanceEvent.class);
 		Jackson2JsonRedisSerializer<List<InstanceEvent>> hashValueSerializer = new Jackson2JsonRedisSerializer<>(mapper,
 				collectionType);
 		RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext
