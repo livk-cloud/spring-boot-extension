@@ -435,7 +435,7 @@ class JsonMapperUtilsTest {
 		assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-		CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
+		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
 		assertEquals(dependencyList, JsonMapperUtils.convertValue(dependencyArray, collectionType));
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);

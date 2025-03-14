@@ -27,7 +27,9 @@ import org.springframework.core.ResolvableType;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TypeFactory工具类
@@ -105,7 +107,9 @@ public class TypeFactoryUtils {
 	 * @param <T> the type parameter
 	 * @param type the target class
 	 * @return CollectionType
+	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
 	 */
+	@Deprecated(since = "1.4.3")
 	public static <T> CollectionType collectionType(Class<T> type) {
 		return instance().constructCollectionType(Collection.class, type);
 	}
@@ -114,9 +118,49 @@ public class TypeFactoryUtils {
 	 * 构建一个CollectionType
 	 * @param javaType the java type
 	 * @return CollectionType
+	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
 	 */
+	@Deprecated(since = "1.4.3")
 	public static CollectionType collectionType(JavaType javaType) {
 		return instance().constructCollectionType(Collection.class, javaType);
+	}
+
+	/**
+	 * 构建一个SetType
+	 * @param javaType the java type
+	 * @return SetType
+	 */
+	public static CollectionType setType(JavaType javaType) {
+		return instance().constructCollectionType(Set.class, javaType);
+	}
+
+	/**
+	 * 构建一个SetType
+	 * @param <T> the type parameter
+	 * @param type the target class
+	 * @return SetType
+	 */
+	public static <T> CollectionType setType(Class<T> type) {
+		return instance().constructCollectionType(Set.class, type);
+	}
+
+	/**
+	 * 构建一个ListType
+	 * @param <T> the type parameter
+	 * @param type the target class
+	 * @return ListType
+	 */
+	public static <T> CollectionType listType(Class<T> type) {
+		return instance().constructCollectionType(List.class, type);
+	}
+
+	/**
+	 * 构建一个ListType
+	 * @param javaType the java type
+	 * @return ListType
+	 */
+	public static CollectionType listType(JavaType javaType) {
+		return instance().constructCollectionType(List.class, javaType);
 	}
 
 	/**
