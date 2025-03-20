@@ -5,7 +5,7 @@ pagehelper-starter = "2.1.0"
 mybatis = "3.5.19"
 mybatis-spring = "3.0.4"
 mybatis-boot = "3.0.4"
-guava = "33.4.0-jre"
+guava = "33.4.5-jre"
 fastexcel = "1.1.0"
 redisson = "3.45.1"
 clickhouse = "0.7.2"
@@ -35,6 +35,7 @@ spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
 okhttp = "4.12.0"
+spotbugs-annotations = "4.9.1"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -87,6 +88,7 @@ mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 compile-testing = { group = "com.google.testing.compile", name = "compile-testing", version.ref = "compile-testing" }
+spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
