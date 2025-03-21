@@ -26,9 +26,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.fotmat.CryptoFormatter;
+import lombok.NoArgsConstructor;
+
 import java.io.IOException;
 import java.text.ParseException;
-import lombok.NoArgsConstructor;
 
 /**
  * @author livk

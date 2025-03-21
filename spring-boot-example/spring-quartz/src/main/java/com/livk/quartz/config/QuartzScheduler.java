@@ -17,7 +17,6 @@
 package com.livk.quartz.config;
 
 import jakarta.annotation.PostConstruct;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -29,6 +28,8 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 /**
  * <p>

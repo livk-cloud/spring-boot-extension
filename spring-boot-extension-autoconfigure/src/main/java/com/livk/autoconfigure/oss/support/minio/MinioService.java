@@ -32,11 +32,12 @@ import io.minio.StatObjectArgs;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
+import lombok.SneakyThrows;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.SneakyThrows;
 
 /**
  * The type Minio service.

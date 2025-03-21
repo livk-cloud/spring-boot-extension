@@ -16,8 +16,6 @@
 
 package com.livk.netty.client.process;
 
-import java.util.concurrent.TimeUnit;
-
 import com.livk.netty.commons.protobuf.NettyMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -29,8 +27,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author livk

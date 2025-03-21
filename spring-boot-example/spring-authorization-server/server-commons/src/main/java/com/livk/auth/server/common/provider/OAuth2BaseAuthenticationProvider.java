@@ -22,11 +22,6 @@ import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
 import com.livk.auth.server.common.util.MessageSourceUtils;
 import com.livk.auth.server.common.util.OAuth2AuthenticationProviderUtils;
 import com.livk.auth.server.common.util.OAuth2ErrorCodesExpand;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.GenericTypeResolver;
@@ -62,6 +57,12 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * <p>
