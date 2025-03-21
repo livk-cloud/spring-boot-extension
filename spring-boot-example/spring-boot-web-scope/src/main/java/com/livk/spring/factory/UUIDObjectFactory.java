@@ -16,11 +16,11 @@
 
 package com.livk.spring.factory;
 
-import java.io.Serializable;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.lang.NonNull;
+
+import java.io.Serializable;
 
 /**
  * <p>

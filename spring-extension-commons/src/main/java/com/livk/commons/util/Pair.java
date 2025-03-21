@@ -35,14 +35,15 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.type.TypeBindings;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 
 /**
  * <p>

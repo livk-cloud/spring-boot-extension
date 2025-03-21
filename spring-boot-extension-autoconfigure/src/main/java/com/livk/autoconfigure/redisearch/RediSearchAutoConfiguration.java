@@ -17,8 +17,8 @@
 package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.redisearch.RediSearchTemplate;
 import com.livk.context.redisearch.RediSearchConnectionFactory;
+import com.livk.context.redisearch.RediSearchTemplate;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.context.redisearch.codec.RedisCodecs;
 import com.redis.lettucemod.RedisModulesClient;

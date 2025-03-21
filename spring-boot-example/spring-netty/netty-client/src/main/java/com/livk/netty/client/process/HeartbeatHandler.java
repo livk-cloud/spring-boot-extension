@@ -16,9 +16,6 @@
 
 package com.livk.netty.client.process;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import com.livk.netty.commons.protobuf.NettyMessage;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,8 +25,10 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.lang.NonNull;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author livk

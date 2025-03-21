@@ -23,8 +23,6 @@ import com.livk.batch.support.CsvLineMapper;
 import com.livk.batch.support.JobCompletionListener;
 import com.livk.batch.support.JobReadListener;
 import com.livk.batch.support.JobWriteListener;
-import java.io.FileNotFoundException;
-import javax.sql.DataSource;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -42,6 +40,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+
+import javax.sql.DataSource;
+import java.io.FileNotFoundException;
 
 /**
  * <p>

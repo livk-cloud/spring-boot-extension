@@ -55,7 +55,8 @@ public class TreeNode<I, T> {
 	private List<TreeNode<I, T>> children;
 
 	private static final Map<Object, TreeNode<?, ?>> idCache = new HashMap<>(); // 节点 ID
-																				// 缓存
+
+	// 缓存
 
 	/**
 	 * 创建一个root树形节点

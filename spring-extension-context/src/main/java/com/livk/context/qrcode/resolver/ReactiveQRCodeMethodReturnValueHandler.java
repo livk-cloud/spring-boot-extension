@@ -24,8 +24,6 @@ import com.livk.context.qrcode.QRCodeGenerator;
 import com.livk.context.qrcode.annotation.ResponseQRCode;
 import com.livk.context.qrcode.exception.QRCodeException;
 import com.livk.context.qrcode.support.QRCodeGeneratorSupport;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
@@ -43,6 +41,9 @@ import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * <p>

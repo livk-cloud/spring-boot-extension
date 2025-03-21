@@ -24,7 +24,6 @@ import java.util.Map;
  *
  * @author livk
  * @see DefaultContextFactory
- *
  */
 @FunctionalInterface
 public interface ContextFactory {

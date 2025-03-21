@@ -27,14 +27,15 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.common.collect.Streams;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
 import com.livk.commons.util.Pair;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -311,7 +312,7 @@ class JacksonSupportTest {
 				    artifactId: spring-boot-starter-logging
 				  - groupId: org.springframework.boot
 				    artifactId: spring-boot-starter-json
-				                                                """;
+				""";
 		JsonNode jsonNode = YAML.readTree(yml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
@@ -348,7 +349,7 @@ class JacksonSupportTest {
 				        <artifactId>spring-boot-starter-json</artifactId>
 				    </dependency>
 				</pro>
-				                                               """;
+				""";
 		JsonNode jsonNode = XML.readTree(xml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
