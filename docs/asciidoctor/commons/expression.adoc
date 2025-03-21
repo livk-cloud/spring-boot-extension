@@ -48,14 +48,15 @@ public class MyExpressionResolver extends CacheExpressionResolver<Expression> {
 }
 ----
 
-===== ConverterExpressionResolver
+===== CacheExpressionResolver
 
 用于适配不同的解析工具 +
 将Context转成相对于的上下文环境 +
+并添加部分转换缓存 +
 
 [source,java,indent=0]
 ----
-public class MyExpressionResolver extends ConverterExpressionResolver<EvaluationContext, Expression> {
+public class MyExpressionResolver extends CacheExpressionResolver<EvaluationContext, Expression> {
   //将上下文转成组件的上下文
 	@Override
 	protected EvaluationContext transform(Context context) {
