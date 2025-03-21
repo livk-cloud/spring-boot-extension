@@ -20,7 +20,6 @@ import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
-import org.springframework.http.HttpHeaders;
 
 /**
  * @author livk

@@ -17,8 +17,8 @@ package com.livk.commons.util;
  * 使用record进行默认实现
  *
  * @param <V> 相关实例
- * @see GenericWrapper#of(Object)
  * @author livk
+ * @see GenericWrapper#of(Object)
  */
 record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {
 

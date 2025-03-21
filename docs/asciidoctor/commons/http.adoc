@@ -11,7 +11,6 @@ EnableHttpClient会根据value值自动导入对应的http客户端
 ----
 @Slf4j
 @EnableHttpClient({
-    HttpClientType.REST_TEMPLATE,
     HttpClientType.WEB_CLIENT,
     HttpClientType.REST_CLIENT
 })
@@ -19,10 +18,8 @@ public class App {
 
 	@Bean
 	public ApplicationRunner applicationRunner(WebClient webClient,
-                                             RestTemplate restTemplate,
                                              RestClient restClient) {
 		return args -> {
-			log.info("restTemplate:{}", restTemplate);
 			log.info("webClient:{}", webClient);
 			log.info("restClient:{}", restClient);
 		};
@@ -30,4 +27,4 @@ public class App {
 
 }
 ----
-同时提供了@EnableRestClient、@EnableRestTemplate和@EnableWebClient作为快捷方式
+同时提供了@EnableRestClient、@EnableWebClient作为快捷方式

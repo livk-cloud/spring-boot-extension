@@ -17,7 +17,6 @@
 package com.livk.spring.factory;
 
 import com.livk.auto.service.annotation.SpringFactories;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 

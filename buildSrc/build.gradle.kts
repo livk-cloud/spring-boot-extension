@@ -4,9 +4,10 @@ plugins {
 }
 
 repositories {
-	maven("https://repo.spring.io/release")
 	maven("https://repo.spring.io/milestone")
 	maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
+	mavenCentral()
+	gradlePluginPortal()
 }
 
 dependencies {

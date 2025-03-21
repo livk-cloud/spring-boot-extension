@@ -20,6 +20,7 @@ import com.livk.context.curator.lock.ZkLockType;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.CuratorListener;
+import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
@@ -153,7 +154,9 @@ public class CuratorTemplate implements CuratorOperations {
 
 	@Override
 	public void close() throws IOException {
-		curatorFramework.close();
+		if (curatorFramework.getState() == CuratorFrameworkState.STARTED) {
+			curatorFramework.close();
+		}
 	}
 
 }

@@ -47,25 +47,48 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-		if (application.getWebApplicationType() == WebApplicationType.SERVLET) {
-			if (checkDependency() && environment.getProperty("management.tracing.enabled", Boolean.class, true)) {
-				Map<String, Object> map = new HashMap<>();
-				if (!environment.containsProperty(PROBABILITY_KEY)) {
-					map.put(PROBABILITY_KEY, 1.0);
-				}
-				if (!environment.containsProperty(LEVEL_KEY)) {
-					if (StringUtils.hasText(environment.getProperty("spring.application.name"))) {
-						map.put(LEVEL_KEY, "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]");
-					}
-					else {
-						map.put(LEVEL_KEY, "%5p [%X{traceId:-},%X{spanId:-}]");
-					}
-				}
-				MutablePropertySources propertySources = environment.getPropertySources();
-				if (!propertySources.contains(PROPERTY_SOURCE_NAME) && !map.isEmpty()) {
-					MapPropertySource target = new MapPropertySource(PROPERTY_SOURCE_NAME, map);
-					propertySources.addLast(target);
-				}
+		if (isServletApplication(application) && isTracingEnabled(environment)) {
+			Map<String, Object> traceProperties = new HashMap<>();
+			// Ensure default probability is set if not already configured
+			setDefaultProbabilityIfNeeded(environment, traceProperties);
+			// Ensure default level is set if not already configured
+			setDefaultLevelIfNeeded(environment, traceProperties);
+			// Add trace properties to environment if not already added
+			addTracePropertiesToEnvironment(environment, traceProperties);
+		}
+	}
+
+	private boolean isServletApplication(SpringApplication application) {
+		return application.getWebApplicationType() == WebApplicationType.SERVLET;
+	}
+
+	private boolean isTracingEnabled(ConfigurableEnvironment environment) {
+		return checkDependency() && environment.getProperty("management.tracing.enabled", Boolean.class, true);
+	}
+
+	private void setDefaultProbabilityIfNeeded(ConfigurableEnvironment environment,
+			Map<String, Object> traceProperties) {
+		if (!environment.containsProperty(PROBABILITY_KEY)) {
+			traceProperties.put(PROBABILITY_KEY, 1.0);
+		}
+	}
+
+	private void setDefaultLevelIfNeeded(ConfigurableEnvironment environment, Map<String, Object> traceProperties) {
+		if (!environment.containsProperty(LEVEL_KEY)) {
+			String applicationName = environment.getProperty("spring.application.name");
+			String levelPattern = StringUtils.hasText(applicationName)
+					? "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+					: "%5p [%X{traceId:-},%X{spanId:-}]";
+			traceProperties.put(LEVEL_KEY, levelPattern);
+		}
+	}
+
+	private void addTracePropertiesToEnvironment(ConfigurableEnvironment environment,
+			Map<String, Object> traceProperties) {
+		if (!traceProperties.isEmpty()) {
+			MutablePropertySources propertySources = environment.getPropertySources();
+			if (!propertySources.contains(PROPERTY_SOURCE_NAME)) {
+				propertySources.addLast(new MapPropertySource(PROPERTY_SOURCE_NAME, traceProperties));
 			}
 		}
 	}

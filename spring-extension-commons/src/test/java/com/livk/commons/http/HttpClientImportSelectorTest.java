@@ -31,6 +31,7 @@ class HttpClientImportSelectorTest {
 	void test() {
 		{
 			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(AllConfig.class));
+			@SuppressWarnings("deprecation")
 			String[] result = new String[] { WebClientConfiguration.class.getName(),
 					RestClientConfiguration.class.getName(), RestTemplateConfiguration.class.getName() };
 			assertArrayEquals(result, imports);
@@ -50,6 +51,7 @@ class HttpClientImportSelectorTest {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EnableHttpClient({ HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT, HttpClientType.REST_TEMPLATE })
 	static class AllConfig {
 

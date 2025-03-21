@@ -16,8 +16,8 @@
 
 package com.livk.micrometer.tracing;
 
-import com.livk.commons.micrometer.TraceEnvironmentPostProcessor;
 import com.livk.commons.micrometer.ContextSnapshots;
+import com.livk.commons.micrometer.TraceEnvironmentPostProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

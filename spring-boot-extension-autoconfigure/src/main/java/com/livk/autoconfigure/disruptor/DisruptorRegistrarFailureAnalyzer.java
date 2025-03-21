@@ -30,7 +30,7 @@ public class DisruptorRegistrarFailureAnalyzer extends AbstractFailureAnalyzer<D
 
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, DisruptorRegistrarException cause) {
-		return new FailureAnalysis(cause.getMessage(), "请添加 basePackages or basePackageClasses", cause);
+		return new FailureAnalysis(cause.getMessage(), "Please add basePackages or basePackageClasses", cause);
 	}
 
 }

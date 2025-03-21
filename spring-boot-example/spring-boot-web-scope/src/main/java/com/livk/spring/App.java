@@ -24,7 +24,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -35,7 +34,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @author livk
  */
 @Slf4j
-@EnableHttpClient({ HttpClientType.REST_TEMPLATE, HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
+@EnableHttpClient({ HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
 @SpringBootApplication
 public class App {
 
@@ -45,10 +44,9 @@ public class App {
 	}
 
 	@Bean
-	public ApplicationRunner applicationRunner(WebClient webClient, RestTemplate restTemplate, RestClient restClient) {
+	public ApplicationRunner applicationRunner(WebClient webClient, RestClient restClient) {
 
 		return args -> {
-			log.info("restTemplate:{}", restTemplate);
 			log.info("webClient:{}", webClient);
 			log.info("restClient:{}", restClient);
 		};

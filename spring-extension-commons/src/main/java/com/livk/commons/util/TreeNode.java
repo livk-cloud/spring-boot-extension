@@ -55,7 +55,8 @@ public class TreeNode<I, T> {
 	private List<TreeNode<I, T>> children;
 
 	private static final Map<Object, TreeNode<?, ?>> idCache = new HashMap<>(); // 节点 ID
-																				// 缓存
+
+	// 缓存
 
 	/**
 	 * 创建一个root树形节点
@@ -76,7 +77,7 @@ public class TreeNode<I, T> {
 	 */
 	public boolean addChild(TreeNode<I, T> treeNo) {
 		if (this.findById(treeNo.id) != null) {
-			log.info("出现相同节点 id:{}", treeNo.id);
+			log.info("The same node appears id:{}", treeNo.id);
 			return false;
 		}
 		TreeNode<I, T> parent = this.findById(treeNo.pid);

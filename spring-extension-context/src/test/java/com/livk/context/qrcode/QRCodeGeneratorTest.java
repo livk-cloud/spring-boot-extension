@@ -41,7 +41,7 @@ class QRCodeGeneratorTest {
 
 	JsonMapper mapper = JsonMapper.builder().build();
 
-	QRCodeGenerator generator = new GoogleQRCodeGenerator(mapper);
+	QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
 
 	@Test
 	void generateTextQRCode() throws IOException {

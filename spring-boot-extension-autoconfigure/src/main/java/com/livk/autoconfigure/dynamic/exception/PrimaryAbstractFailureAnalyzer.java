@@ -30,7 +30,7 @@ public class PrimaryAbstractFailureAnalyzer extends AbstractFailureAnalyzer<Prim
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, PrimaryNotFountException cause) {
 
-		return new FailureAnalysis(cause.getMessage(), "请添加 spring.dynamic.primary", cause);
+		return new FailureAnalysis(cause.getMessage(), "Please add spring.dynamic.primary", cause);
 	}
 
 }

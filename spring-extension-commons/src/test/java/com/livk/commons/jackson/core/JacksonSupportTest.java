@@ -27,14 +27,15 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.common.collect.Streams;
 import com.livk.commons.jackson.util.TypeFactoryUtils;
 import com.livk.commons.util.Pair;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,12 +98,10 @@ class JacksonSupportTest {
 		assertEquals(String.class, type.getBindings().getBoundType(0).getRawClass());
 		assertEquals(Integer.class, type.getBindings().getBoundType(1).getRawClass());
 
-		assertEquals(String.class,
-				TypeFactoryUtils.collectionType(String.class).getBindings().getBoundType(0).getRawClass());
+		assertEquals(String.class, TypeFactoryUtils.listType(String.class).getBindings().getBoundType(0).getRawClass());
 		assertEquals(Integer.class,
-				TypeFactoryUtils.collectionType(Integer.class).getBindings().getBoundType(0).getRawClass());
-		assertEquals(Long.class,
-				TypeFactoryUtils.collectionType(Long.class).getBindings().getBoundType(0).getRawClass());
+				TypeFactoryUtils.listType(Integer.class).getBindings().getBoundType(0).getRawClass());
+		assertEquals(Long.class, TypeFactoryUtils.setType(Long.class).getBindings().getBoundType(0).getRawClass());
 
 		assertEquals(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(String.class)),
 				TypeFactoryUtils.mapType(String.class, String.class).getBindings().getTypeParameters());
@@ -294,7 +293,7 @@ class JacksonSupportTest {
 		assertEquals(jsonDependency, JSON.convertValue(jsonNodeList.get(1), mapType));
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-		CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
+		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
 		assertEquals(dependencyList, JSON.convertValue(dependencyArray, collectionType));
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
@@ -313,7 +312,7 @@ class JacksonSupportTest {
 				    artifactId: spring-boot-starter-logging
 				  - groupId: org.springframework.boot
 				    artifactId: spring-boot-starter-json
-				                                                """;
+				""";
 		JsonNode jsonNode = YAML.readTree(yml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
@@ -327,7 +326,7 @@ class JacksonSupportTest {
 		assertEquals(jsonDependency, YAML.convertValue(jsonNodeList.get(1), mapType));
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-		CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
+		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
 		assertEquals(dependencyList, YAML.convertValue(dependencyArray, collectionType));
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
@@ -350,7 +349,7 @@ class JacksonSupportTest {
 				        <artifactId>spring-boot-starter-json</artifactId>
 				    </dependency>
 				</pro>
-				                                               """;
+				""";
 		JsonNode jsonNode = XML.readTree(xml);
 		JsonNode dependencyArray = jsonNode.get("dependency");
 
@@ -364,7 +363,7 @@ class JacksonSupportTest {
 		assertEquals(jsonDependency, XML.convertValue(jsonNodeList.get(1), mapType));
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
-		CollectionType collectionType = TypeFactoryUtils.collectionType(mapType);
+		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
 		assertEquals(dependencyList, XML.convertValue(dependencyArray, collectionType));
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);

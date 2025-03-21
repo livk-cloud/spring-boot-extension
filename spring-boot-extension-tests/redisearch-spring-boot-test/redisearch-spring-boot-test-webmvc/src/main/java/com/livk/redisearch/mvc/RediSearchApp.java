@@ -16,8 +16,8 @@
 
 package com.livk.redisearch.mvc;
 
-import com.livk.commons.util.BeanLambda;
 import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.util.BeanLambda;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * <p>
@@ -59,7 +59,7 @@ public class RediSearchApp {
 						Field.text(BeanLambda.fieldName(Student::getSex)).build(),
 						Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build());
 			}
-			Random random = new Random();
+			ThreadLocalRandom random = ThreadLocalRandom.current();
 			for (int i = 0; i < 10; i++) {
 				int randomNum = random.nextInt(2);
 				Student student = new Student().setName("livk-" + i)

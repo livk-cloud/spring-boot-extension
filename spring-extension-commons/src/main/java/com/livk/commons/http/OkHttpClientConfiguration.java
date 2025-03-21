@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Fallback;
+import org.springframework.http.client.ClientHttpRequestFactory;
 
 /**
  * <p>
@@ -32,6 +33,7 @@ import org.springframework.context.annotation.Fallback;
  */
 @AutoConfiguration
 @ConditionalOnClass(OkHttpClient.class)
+@ConditionalOnMissingBean(ClientHttpRequestFactory.class)
 class OkHttpClientConfiguration {
 
 	@Bean

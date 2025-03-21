@@ -50,6 +50,12 @@ configure(module) {
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	}
+
+	afterEvaluate {
+		dependencies {
+			compileOnly(libs.spotbugs.annotations)
+		}
+	}
 }
 
 allprojects {

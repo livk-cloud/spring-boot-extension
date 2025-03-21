@@ -16,15 +16,10 @@
 
 package com.livk.auth.server.common.handler;
 
-import java.io.IOException;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
@@ -36,6 +31,10 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.util.CollectionUtils;
+
+import java.io.IOException;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 /**
  * @author livk

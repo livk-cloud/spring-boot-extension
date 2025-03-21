@@ -92,8 +92,8 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * 根据默认编码获取response body数据
-	 * @see characterEncoding
 	 * @return String
+	 * @see characterEncoding
 	 */
 	public String getContentAsString() {
 		return getContentAsString(this.characterEncoding);

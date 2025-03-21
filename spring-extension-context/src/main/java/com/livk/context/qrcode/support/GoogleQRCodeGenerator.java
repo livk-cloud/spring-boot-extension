@@ -23,14 +23,15 @@ import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.livk.commons.jackson.core.JacksonOps;
 import com.livk.commons.jackson.core.JacksonSupport;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QRCodeGenerator;
 import com.livk.context.qrcode.exception.QRCodeException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.image.BufferedImage;
+import java.util.function.Function;
 
 /**
  * The type Google qrcode generator.
@@ -38,21 +39,23 @@ import java.awt.image.BufferedImage;
  * @author livk
  */
 @Slf4j
+@RequiredArgsConstructor
 public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QRCodeGenerator {
 
-	private final JacksonOps jacksonOps;
+	private final Function<Object, String> command;
 
 	/**
 	 * Instantiates a new Google qrcode generator.
 	 * @param mapper the mapper
 	 */
-	public GoogleQRCodeGenerator(ObjectMapper mapper) {
-		jacksonOps = new JacksonSupport(mapper);
+	public static GoogleQRCodeGenerator of(ObjectMapper mapper) {
+		JacksonSupport support = new JacksonSupport(mapper);
+		return new GoogleQRCodeGenerator(support::writeValueAsString);
 	}
 
 	@Override
 	protected String convert(Object content) {
-		return jacksonOps.writeValueAsString(content);
+		return command.apply(content);
 	}
 
 	@Override
@@ -64,7 +67,7 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 		}
 		catch (WriterException e) {
 			log.error("{}", e.getMessage(), e);
-			throw new QRCodeException("生成二维码失败", e);
+			throw new QRCodeException("Failed to generate a QRCode", e);
 		}
 	}
 

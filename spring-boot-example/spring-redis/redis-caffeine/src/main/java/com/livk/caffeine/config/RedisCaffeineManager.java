@@ -16,17 +16,16 @@
 
 package com.livk.caffeine.config;
 
+import com.livk.caffeine.handler.CacheHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.lang.NonNull;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.livk.caffeine.handler.CacheHandler;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.lang.NonNull;
 
 /**
  * @author livk
