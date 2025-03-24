@@ -16,7 +16,8 @@
 
 package com.livk.context.redis;
 
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -43,13 +44,12 @@ class RedisOpsTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer().withPassword("123456");
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("redis.host", redis::getHost);
 		registry.add("redis.port", redis::getFirstMappedPort);
-		registry.add("redis.password", redis::getPassword);
 	}
 
 	@Autowired

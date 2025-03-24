@@ -13,7 +13,8 @@
 
 package com.livk.autoconfigure.redisson;
 
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.PropertyEditorRegistry;
@@ -51,7 +52,7 @@ class RedissonClientFactoryTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

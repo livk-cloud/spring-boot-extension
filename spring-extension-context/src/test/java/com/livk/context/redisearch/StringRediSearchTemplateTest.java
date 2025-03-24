@@ -13,7 +13,8 @@
 
 package com.livk.context.redisearch;
 
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisStackContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -34,7 +35,7 @@ class StringRediSearchTemplateTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redisStack = new RedisStackContainer();
+	static RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

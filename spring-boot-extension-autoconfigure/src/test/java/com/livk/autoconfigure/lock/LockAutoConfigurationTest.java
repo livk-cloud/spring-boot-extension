@@ -18,8 +18,9 @@ import com.livk.commons.util.GenericsByteBuddy;
 import com.livk.context.lock.intercept.DistributedLockInterceptor;
 import com.livk.context.lock.support.CuratorLock;
 import com.livk.context.lock.support.RedissonLock;
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.livk.testcontainers.containers.ZookeeperContainer;
+import com.redis.testcontainers.RedisContainer;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.apache.curator.RetryPolicy;
@@ -72,7 +73,7 @@ class LockAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@Container
 	@ServiceConnection

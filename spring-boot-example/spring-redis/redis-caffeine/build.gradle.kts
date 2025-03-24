@@ -9,4 +9,5 @@ dependencies {
 	implementation("com.github.ben-manes.caffeine:caffeine")
 
 	testImplementation(project(":spring-testcontainers-support"))
+	testImplementation("com.redis:testcontainers-redis")
 }
