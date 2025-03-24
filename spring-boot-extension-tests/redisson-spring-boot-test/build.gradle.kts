@@ -7,4 +7,5 @@ dependencies {
     implementation(project(":spring-boot-extension-starters:redisson-spring-boot-starter"))
 
 	testImplementation(project(":spring-testcontainers-support"))
+	testImplementation("com.redis:testcontainers-redis")
 }

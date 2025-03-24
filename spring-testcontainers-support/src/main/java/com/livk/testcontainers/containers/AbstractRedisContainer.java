@@ -24,6 +24,7 @@ import java.util.Optional;
  * @author livk
  */
 @Getter
+@Deprecated(since = "1.4.5")
 abstract class AbstractRedisContainer<C extends AbstractRedisContainer<C>> extends GenericContainer<C> {
 
 	private String password;

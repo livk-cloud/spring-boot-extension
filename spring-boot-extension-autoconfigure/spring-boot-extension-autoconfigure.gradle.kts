@@ -38,4 +38,5 @@ dependencies {
 
 	testImplementation(project(":spring-testcontainers-support"))
 	testImplementation("com.zaxxer:HikariCP")
+	testImplementation("com.redis:testcontainers-redis")
 }

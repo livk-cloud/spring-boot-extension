@@ -13,7 +13,8 @@
 
 package com.livk.redisson.schedule;
 
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,7 +45,7 @@ class ScheduleControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer().withPassword("123456");
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass", "123456");
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

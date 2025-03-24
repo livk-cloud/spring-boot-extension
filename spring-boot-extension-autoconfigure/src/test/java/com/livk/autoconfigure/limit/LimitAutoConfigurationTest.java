@@ -15,7 +15,8 @@ package com.livk.autoconfigure.limit;
 
 import com.livk.context.limit.executor.RedissonLimitExecutor;
 import com.livk.context.limit.interceptor.LimitInterceptor;
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -52,7 +53,7 @@ class LimitAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

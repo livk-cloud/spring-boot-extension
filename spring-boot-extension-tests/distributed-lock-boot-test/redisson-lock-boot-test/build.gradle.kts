@@ -9,4 +9,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
 	testImplementation(project(":spring-testcontainers-support"))
+	testImplementation("com.redis:testcontainers-redis")
 }

@@ -17,7 +17,8 @@
 package com.livk.caffeine.controller;
 
 import com.livk.context.redis.RedisOps;
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +56,12 @@ class CacheControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.data.redis.host", redis::getHost);
 		registry.add("spring.data.redis.port", redis::getFirstMappedPort);
-		registry.add("spring.data.redis.password", redis::getPassword);
 	}
 
 	@Autowired

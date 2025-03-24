@@ -13,9 +13,10 @@
 
 package com.livk.context.redisearch;
 
-import com.livk.testcontainers.containers.RedisStackContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import com.redis.testcontainers.RedisStackContainer;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.resource.ClientResources;
 import org.junit.jupiter.api.AfterAll;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FactoryProxySupportTest {
 
 	@Container
-	static RedisStackContainer redisStack = new RedisStackContainer();
+	static RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
 
 	static RediSearchConnectionFactory factory;
 
