@@ -63,7 +63,7 @@ class ReactiveExcelMethodReturnValueHandlerTest {
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
 		Mono<Collection<Info>> mono = DataBufferUtils.transform(exchange.getResponse().getBody())
-			.doOnSuccess(in -> FastExcelSupport.read(in, Info.class, listener, true))
+			.doOnSuccess(in -> listener.execute(in, Info.class, true))
 			.map(in -> listener.getCollectionData());
 
 		StepVerifier.create(mono).expectNext(List.of(new Info("123456789"), new Info("987654321"))).verifyComplete();

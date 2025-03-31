@@ -17,13 +17,20 @@
 package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.util.BeanUtils;
+import com.livk.context.fastexcel.ExcelDataType;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
-import com.livk.context.fastexcel.converter.ExcelHttpMessageConverter;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -31,6 +38,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -55,14 +64,62 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		if (Objects.nonNull(requestExcel) && Objects.nonNull(request) && Objects.nonNull(excelParam)) {
 			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(requestExcel.parse());
-			ExcelHttpMessageConverter converter = ExcelHttpMessageConverter.readExcel(listener, parameter,
-					requestExcel);
-			if (converter.canRead(parameter.getParameterType(), MediaType.valueOf(request.getContentType()))) {
-				return converter.read(parameter.getParameterType(),
+			ExcelHttpMessageReader reader = new ExcelHttpMessageReader(listener, parameter, requestExcel);
+			if (reader.canRead(parameter.getParameterType(), MediaType.valueOf(request.getContentType()))) {
+				return reader.read(parameter.getParameterType(),
 						new RequestPartServletServerHttpRequest(request, excelParam.fileName()));
 			}
 		}
 		throw new IllegalArgumentException("Excel upload request resolver error, @ExcelData parameter type error");
+	}
+
+	@RequiredArgsConstructor
+	private static class ExcelHttpMessageReader implements HttpMessageConverter<Object> {
+
+		private final ExcelMapReadListener<?> listener;
+
+		private final MethodParameter parameter;
+
+		private final RequestExcel requestExcel;
+
+		@Override
+		public boolean canRead(@NonNull Class<?> clazz, MediaType mediaType) {
+			try {
+				ExcelDataType.match(clazz);
+			}
+			catch (Exception e) {
+				return false;
+			}
+			return mediaType.toString().startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
+		}
+
+		@Override
+		public boolean canWrite(@NonNull Class<?> type, MediaType mediaType) {
+			throw new UnsupportedOperationException();
+		}
+
+		@NonNull
+		@Override
+		public List<MediaType> getSupportedMediaTypes() {
+			return List.of();
+		}
+
+		@NonNull
+		@Override
+		public Object read(@NonNull Class<?> parameterType, HttpInputMessage inputMessage)
+				throws IOException, HttpMessageNotReadableException {
+			ExcelDataType dataType = ExcelDataType.match(parameterType);
+			Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
+			listener.execute(inputMessage.getBody(), excelModelClass, requestExcel.ignoreEmptyRow());
+			return listener.getData(dataType);
+		}
+
+		@Override
+		public void write(@NonNull Object returnValue, MediaType contentType, @NonNull HttpOutputMessage outputMessage)
+				throws HttpMessageNotWritableException {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 }

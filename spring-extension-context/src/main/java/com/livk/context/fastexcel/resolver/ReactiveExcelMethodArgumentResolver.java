@@ -16,11 +16,13 @@
 
 package com.livk.context.fastexcel.resolver;
 
+import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.util.BeanUtils;
+import com.livk.context.fastexcel.ExcelDataType;
+import com.livk.context.fastexcel.FastExcelSupport;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
-import com.livk.context.fastexcel.converter.ExcelHttpMessageReader;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
@@ -28,6 +30,9 @@ import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpInputMessage;
+import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
@@ -39,7 +44,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -82,6 +89,66 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 		}
 
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+	}
+
+	private static class ExcelHttpMessageReader implements HttpMessageReader<Object> {
+
+		@NonNull
+		@Override
+		public List<MediaType> getReadableMediaTypes() {
+			return List.of(MediaType.MULTIPART_FORM_DATA);
+		}
+
+		@Override
+		public boolean canRead(@NonNull ResolvableType elementType, MediaType mediaType) {
+			try {
+				ResolvableType type = elementType;
+				if (Objects.equals(type.resolve(), Mono.class)) {
+					type = elementType.getGeneric(0);
+				}
+				if (type.getRawClass() == null) {
+					return false;
+				}
+				if (Flux.class.isAssignableFrom(type.getRawClass())) {
+					return true;
+				}
+				ExcelDataType.match(type.getRawClass());
+			}
+			catch (Exception e) {
+				return false;
+			}
+			return mediaType.toString().startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
+		}
+
+		@NonNull
+		@Override
+		public Flux<Object> read(@NonNull ResolvableType elementType, @NonNull ReactiveHttpInputMessage message,
+				@NonNull Map<String, Object> hints) {
+			throw new UnsupportedOperationException("");
+		}
+
+		@NonNull
+		@Override
+		public Mono<Object> readMono(@NonNull ResolvableType elementType, @NonNull ReactiveHttpInputMessage message,
+				@NonNull Map<String, Object> hints) {
+			ExcelMapReadListener<?> listener = (ExcelMapReadListener<?>) hints.get("listener");
+			RequestExcel requestExcel = (RequestExcel) hints.get("requestExcel");
+			if (Objects.equals(elementType.resolve(), Mono.class)) {
+				elementType = elementType.getGeneric(0);
+			}
+			if (elementType.getRawClass() != null) {
+
+				ExcelDataType dataType = Flux.class.isAssignableFrom(elementType.getRawClass())
+						? ExcelDataType.COLLECTION : ExcelDataType.match(elementType.getRawClass());
+				Class<?> excelModelClass = dataType.getFunction().apply(elementType);
+				return Mono.just(message.getBody())
+					.flatMap(DataBufferUtils::transform)
+					.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
+					.map(in -> listener.getData(dataType));
+			}
+			return Mono.empty();
+		}
+
 	}
 
 	/**
