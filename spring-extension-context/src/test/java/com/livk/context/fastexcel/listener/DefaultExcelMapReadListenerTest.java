@@ -37,7 +37,7 @@ class DefaultExcelMapReadListenerTest {
 	@Test
 	void test() throws IOException {
 		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
-		FastExcelSupport.read(inputStream, Info.class, listener, true);
+		listener.execute(inputStream, Info.class, true);
 
 		Map<String, ? extends Collection<Object>> map = listener.getMapData();
 		assertFalse(map.isEmpty());

@@ -16,10 +16,8 @@
 
 package com.livk.context.fastexcel;
 
-import cn.idev.excel.ExcelReader;
 import cn.idev.excel.ExcelWriter;
 import cn.idev.excel.FastExcel;
-import cn.idev.excel.read.metadata.ReadSheet;
 import cn.idev.excel.write.builder.ExcelWriterBuilder;
 import cn.idev.excel.write.handler.SheetWriteHandler;
 import cn.idev.excel.write.metadata.WriteSheet;
@@ -38,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,20 +51,12 @@ public class FastExcelSupport {
 	 * @param excelModelClass the excel model class
 	 * @param listener the listener
 	 * @param ignoreEmptyRow the ignore empty row
+	 * @deprecated use {@link ExcelMapReadListener#execute(InputStream, Class, Boolean)}
 	 */
+	@Deprecated(since = "1.4.5")
 	public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener,
 			Boolean ignoreEmptyRow) {
-		try (ExcelReader excelReader = FastExcel.read(in, listener).ignoreEmptyRow(ignoreEmptyRow).build()) {
-			List<ReadSheet> readSheets = excelReader.excelExecutor()
-				.sheetList()
-				.stream()
-				.map(sheet -> FastExcel.readSheet(sheet.getSheetNo(), sheet.getSheetName())
-					.head(excelModelClass)
-					.build())
-				.toList();
-			excelReader.read(readSheets);
-			excelReader.finish();
-		}
+		listener.execute(in, excelModelClass, ignoreEmptyRow);
 	}
 
 	/**
@@ -85,14 +74,15 @@ public class FastExcelSupport {
 				File file = ResourceUtils.getFile(location);
 				builder.withTemplate(file);
 				templateWrite(builder, result);
-				return;
 			}
 			catch (FileNotFoundException e) {
 				log.info("FastExcel uses the template error:{}", e.getMessage(), e);
 			}
 		}
-		builder.head(excelModelClass);
-		ordinaryWrite(FastExcel.write(outputStream, excelModelClass), result);
+		else {
+			builder.head(excelModelClass);
+			ordinaryWrite(FastExcel.write(outputStream, excelModelClass), result);
+		}
 	}
 
 	private void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
@@ -127,18 +117,11 @@ public class FastExcelSupport {
 	 * File name string.
 	 * @param excelReturn the excel return
 	 * @return the string
+	 * @deprecated use {@link ResponseExcel.Utils#parseName(ResponseExcel)}
 	 */
+	@Deprecated(since = "1.4.5")
 	public String fileName(ResponseExcel excelReturn) {
-		String template = excelReturn.template();
-		String suffix;
-		if (StringUtils.hasText(template)) {
-			int index = template.lastIndexOf('.');
-			suffix = template.substring(index);
-		}
-		else {
-			suffix = excelReturn.suffix().getName();
-		}
-		return excelReturn.fileName().concat(suffix);
+		return ResponseExcel.Utils.parseName(excelReturn);
 	}
 
 }

@@ -18,6 +18,8 @@ package com.livk.context.fastexcel.annotation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.UtilityClass;
+import org.springframework.util.StringUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -111,6 +113,24 @@ public @interface ResponseExcel {
 		XLSM(".xlsm");
 
 		private final String name;
+
+	}
+
+	@UtilityClass
+	class Utils {
+
+		public String parseName(ResponseExcel excelReturn) {
+			String template = excelReturn.template();
+			String suffix;
+			if (StringUtils.hasText(template)) {
+				int index = template.lastIndexOf('.');
+				suffix = template.substring(index);
+			}
+			else {
+				suffix = excelReturn.suffix().getName();
+			}
+			return excelReturn.fileName().concat(suffix);
+		}
 
 	}
 
