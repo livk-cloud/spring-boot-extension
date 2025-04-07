@@ -1,15 +1,12 @@
 image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml/badge.svg?branch=main["Build Status",
-link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml"]image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI", link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
-image:https://app.codacy.com/project/badge/Grade/65ac2ad9bc494943b8e4571c9adeefc5[link="https://app.codacy.com/gh/livk-cloud/spring-boot-extension/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"]
-image:https://www.codefactor.io/repository/github/livk-cloud/spring-boot-extension/badge["CodeFactor", link="https://www.codefactor.io/repository/github/livk-cloud/spring-boot-extension"]
-
-image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=active+issues&show_trend=true&token=nc2HVdT6bxfGl90GCpRLzl6n["DeepSource", link="https://app.deepsource.com/gh/livk-cloud/spring-boot-extension/"]
-image:https://app.deepsource.com/gh/livk-cloud/spring-boot-extension.svg/?label=resolved+issues&show_trend=true&token=nc2HVdT6bxfGl90GCpRLzl6n["DeepSource", link="https://app.deepsource.com/gh/livk-cloud/spring-boot-extension/"]
-
-image:https://img.shields.io/badge/QQ群:857146133-brightgreen.svg[link="https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf"]
+link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml"]
+image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI", link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud/spring-extension-dependencies"]
 
 image:https://niixer.com/wp-content/uploads/2020/11/spring-boot.png[width=500,link="https://spring.io/projects/spring-boot"]
+
+link:https://spring-boot-extension.netlify.app[netlify文档] +
+link:https://livk-cloud.github.io/spring-boot-extension[Github文档] +
 
 这是一个springboot与spring功能拓展 +
 整合多个第三方框架的starter集合 +
@@ -111,3 +108,4 @@ implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 link:https://www.jetbrains.com/?from=spring-boot-extension[JetBrains] - 感谢JetBrains对 spring-boot-extension项目的支持 +
 link:https://spring.io/[Spring] - Spring社区技术指导 +
 link:https://discuss.gradle.org/[Gradle Forums] - Gradle社区插件功能指导 +
+link:https://qm.qq.com/cgi-bin/qm/qr?k=7mqPb8JcXoDpFkk4Vx7CcFFrIXrIxbVE&jump_from=webapi&authKey=twOCFhCWeYIiP4DNWM91BjGcPXuxpWikyk2Dh+fFctht5xcvT9N8PUsVMUcKQvJf[QQ群:857146133] - 加入技术讨论
