@@ -40,7 +40,7 @@ public class SpringFactoriesProcessor extends AbstractFactoriesProcessor {
 
 	static final String SPRING_LOCATION = "META-INF/spring.factories";
 
-	protected SpringFactoriesProcessor() {
+	public SpringFactoriesProcessor() {
 		super(SPRING_LOCATION);
 	}
 

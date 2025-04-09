@@ -1,7 +1,6 @@
 package com.livk.auto.service.processor;
 
 import com.livk.auto.service.processor.factories.aot.AotRuntimeHintsRegistrar;
-import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.core.io.UrlResource;

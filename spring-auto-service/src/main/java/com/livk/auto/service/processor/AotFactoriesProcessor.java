@@ -2,7 +2,6 @@ package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
 import com.livk.auto.service.annotation.AotFactories;
-import com.livk.auto.service.annotation.SpringFactories;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -21,7 +20,7 @@ public class AotFactoriesProcessor extends AbstractFactoriesProcessor {
 
 	static final String AOT_LOCATION = "META-INF/spring/aot.factories";
 
-	protected AotFactoriesProcessor() {
+	public AotFactoriesProcessor() {
 		super(AOT_LOCATION);
 	}
 
