@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.livk.auto.service.processor;
+package com.livk.auto.service.processor.factories.spring;
 
-import com.livk.auto.service.annotation.SpringAutoService;
+import com.google.auto.service.AutoService;
+import com.livk.auto.service.annotation.SpringFactories;
 
 /**
  * @author livk
  */
-@SpringAutoService(EnableAuto.class)
-public class SpringAutoContext {
+@SpringFactories
+@AutoService(SpringFactoryService.class)
+public class SpringFactoryServiceImpl implements SpringFactoryService {
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.auto.service.processor;
+package com.livk.auto.service.processor.factories.spring;
 
 /**
  * @author livk

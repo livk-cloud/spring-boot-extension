@@ -53,7 +53,7 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	private static final String AUTOCONFIGURATION = "org.springframework.boot.autoconfigure.AutoConfiguration";
 
-	private static final String LOCATION = "META-INF/spring/%s.imports";
+	static final String LOCATION = "META-INF/spring/%s.imports";
 
 	private final SetMultimap<String, String> importsMap = Multimaps
 		.synchronizedSetMultimap(LinkedHashMultimap.create());
