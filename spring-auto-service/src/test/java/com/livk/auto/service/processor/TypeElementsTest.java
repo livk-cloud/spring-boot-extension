@@ -17,6 +17,10 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
+import com.livk.auto.service.processor.autoconfigure.SpringAutoContext;
+import com.livk.auto.service.processor.autoconfigure.SpringContext;
+import com.livk.auto.service.processor.factories.spring.SpringFactoryService;
+import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.core.annotation.MergedAnnotation;
@@ -49,18 +53,16 @@ class TypeElementsTest {
 		ArrayList<TypeElement> list = autoServiceOption.map(ArrayList::new).get();
 		assertFalse(list.isEmpty());
 		assertEquals(1, list.size());
-		assertEquals("com.livk.auto.service.processor.SpringFactoryService",
-				TypeElements.getBinaryName(list.getFirst()));
+		assertEquals(SpringFactoryService.class.getName(), TypeElements.getBinaryName(list.getFirst()));
 	}
 
 	@Test
 	void getBinaryName(Elements elements) {
-		assertEquals("java.lang.String", TypeElements.getBinaryName(get(elements, String.class)));
-		assertEquals("com.livk.auto.service.processor.SpringAutoContext",
+		assertEquals(String.class.getName(), TypeElements.getBinaryName(get(elements, String.class)));
+		assertEquals(SpringAutoContext.class.getName(),
 				TypeElements.getBinaryName(get(elements, SpringAutoContext.class)));
-		assertEquals("com.livk.auto.service.processor.SpringContext",
-				TypeElements.getBinaryName(get(elements, SpringContext.class)));
-		assertEquals("com.livk.auto.service.processor.SpringFactoryServiceImpl",
+		assertEquals(SpringContext.class.getName(), TypeElements.getBinaryName(get(elements, SpringContext.class)));
+		assertEquals(SpringFactoryServiceImpl.class.getName(),
 				TypeElements.getBinaryName(get(elements, SpringFactoryServiceImpl.class)));
 	}
 
