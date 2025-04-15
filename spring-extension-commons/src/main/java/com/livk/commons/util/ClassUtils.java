@@ -43,43 +43,46 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> toClass(Type type) {
-		switch (type) {
+		return switch (type) {
 			case null -> throw new IllegalArgumentException("Type cannot be null");
-			case ParameterizedType parameterizedType -> {
-				return toClass(parameterizedType.getRawType());
-			}
-			case TypeVariable<?> typeVariable -> {
-				Type[] bounds = typeVariable.getBounds();
-				for (Type bound : bounds) {
-					if (bound != Object.class) {
-						return toClass(bound);
-					}
-				}
-				return (Class<T>) Object.class;
-			}
-			case GenericArrayType genericArrayType -> {
-				Type componentType = genericArrayType.getGenericComponentType();
-				Class<?> componentClass = toClass(componentType);
-				return (Class<T>) Array.newInstance(componentClass, 0).getClass();
-			}
-			case WildcardType wildcardType -> {
-				Type[] upperBounds = wildcardType.getUpperBounds();
-				if (upperBounds.length > 0 && upperBounds[0] != Object.class) {
-					return toClass(upperBounds[0]);
-				}
-				// Check lower bounds if upper bound is Object
-				Type[] lowerBounds = wildcardType.getLowerBounds();
-				if (lowerBounds.length > 0) {
-					return toClass(lowerBounds[0]);
-				}
-				return (Class<T>) Object.class;
-			}
-			case Class<?> ignored -> {
-				return (Class<T>) type;
-			}
+			case ParameterizedType parameterizedType -> toClass(parameterizedType.getRawType());
+			case TypeVariable<?> typeVariable -> handleTypeVariable(typeVariable);
+			case GenericArrayType genericArrayType -> handleGenericArrayType(genericArrayType);
+			case WildcardType wildcardType -> handleWildcardType(wildcardType);
+			case Class<?> ignored -> (Class<T>) type;
 			default -> throw new IllegalArgumentException(
 					"Unsupported Type: " + type.getClass().getName() + ", type: " + type);
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleTypeVariable(TypeVariable<?> typeVariable) {
+		for (Type bound : typeVariable.getBounds()) {
+			if (bound != Object.class) {
+				return toClass(bound);
+			}
 		}
+		return (Class<T>) Object.class;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleGenericArrayType(GenericArrayType genericArrayType) {
+		Type componentType = genericArrayType.getGenericComponentType();
+		Class<?> componentClass = toClass(componentType);
+		return (Class<T>) Array.newInstance(componentClass, 0).getClass();
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleWildcardType(WildcardType wildcardType) {
+		Type[] upperBounds = wildcardType.getUpperBounds();
+		if (upperBounds.length > 0 && upperBounds[0] != Object.class) {
+			return toClass(upperBounds[0]);
+		}
+		Type[] lowerBounds = wildcardType.getLowerBounds();
+		if (lowerBounds.length > 0) {
+			return toClass(lowerBounds[0]);
+		}
+		return (Class<T>) Object.class;
 	}
 
 	/**
