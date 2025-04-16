@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean remove(String regTime) {
-		return userMapper.delete(regTime) > 0;
+		return userMapper.delete(regTime) != 0;
 	}
 
 	@Override

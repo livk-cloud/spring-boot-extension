@@ -51,10 +51,7 @@ class ProducerControllerTest {
 
 	@Container
 	@ServiceConnection
-	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka())
-		// https://github.com/testcontainers/testcontainers-java/issues/9506
-		.withEnv("KAFKA_LISTENERS", "PLAINTEXT://:9092,BROKER://:9093,CONTROLLER://:9094")
-		.withExposedPorts(9092);
+	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
