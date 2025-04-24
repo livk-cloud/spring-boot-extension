@@ -31,22 +31,28 @@ import org.springframework.boot.testcontainers.service.connection.ContainerConne
  */
 @SpringFactories(ConnectionDetailsFactory.class)
 class ZookeeperContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<ZookeeperContainer, ConnectionDetails> {
+		extends ContainerConnectionDetailsFactory<ZookeeperContainer, ZookeeperConnectionDetails> {
 
 	ZookeeperContainerConnectionDetailsFactory() {
 		super(DockerImageNames.ZOOKEEPER_IMAGE);
 	}
 
 	@Override
-	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
+	protected ZookeeperConnectionDetails getContainerConnectionDetails(
+			ContainerConnectionSource<ZookeeperContainer> source) {
 		return new ZookeeperContainerConnectionDetails(source);
 	}
 
 	private static final class ZookeeperContainerConnectionDetails
-			extends ContainerConnectionDetails<ZookeeperContainer> {
+			extends ContainerConnectionDetails<ZookeeperContainer> implements ZookeeperConnectionDetails {
 
 		private ZookeeperContainerConnectionDetails(ContainerConnectionSource<ZookeeperContainer> source) {
 			super(source);
+		}
+
+		@Override
+		public String getConnectString() {
+			return String.format("%s:%s", getContainer().getHost(), getContainer().getMappedPort(2181));
 		}
 
 	}
