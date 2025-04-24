@@ -15,7 +15,6 @@ package com.livk.testcontainers.spring;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import com.livk.testcontainers.DockerImageNames;
-import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
@@ -26,21 +25,37 @@ import org.testcontainers.containers.MinIOContainer;
  */
 @SpringFactories(ConnectionDetailsFactory.class)
 class MinIOContainerConnectionDetailsFactory
-		extends ContainerConnectionDetailsFactory<MinIOContainer, ConnectionDetails> {
+		extends ContainerConnectionDetailsFactory<MinIOContainer, MinIOConnectionDetails> {
 
 	MinIOContainerConnectionDetailsFactory() {
 		super(DockerImageNames.MINIO_IMAGE);
 	}
 
 	@Override
-	protected ConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
+	protected MinIOConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
 		return new MinIOContainerConnectionDetails(source);
 	}
 
-	private static final class MinIOContainerConnectionDetails extends ContainerConnectionDetails<MinIOContainer> {
+	private static final class MinIOContainerConnectionDetails extends ContainerConnectionDetails<MinIOContainer>
+			implements MinIOConnectionDetails {
 
 		private MinIOContainerConnectionDetails(ContainerConnectionSource<MinIOContainer> source) {
 			super(source);
+		}
+
+		@Override
+		public String getEndpoint() {
+			return getContainer().getS3URL();
+		}
+
+		@Override
+		public String getUserName() {
+			return getContainer().getUserName();
+		}
+
+		@Override
+		public String getPassword() {
+			return getContainer().getPassword();
 		}
 
 	}
