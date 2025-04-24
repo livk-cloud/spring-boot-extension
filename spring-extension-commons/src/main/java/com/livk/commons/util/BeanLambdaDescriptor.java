@@ -15,9 +15,7 @@ package com.livk.commons.util;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.invoke.SerializedLambda;
