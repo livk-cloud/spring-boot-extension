@@ -2,4 +2,5 @@ spring:
   oss:
     access-key: admin
     secret-key: 1375632510
-    url: minio:http://livk.com:9000
+    endpoint: http://livk.com:9000
+    type: minio

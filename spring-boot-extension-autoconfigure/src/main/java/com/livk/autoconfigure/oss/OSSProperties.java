@@ -42,49 +42,10 @@ public class OSSProperties {
 
 	private String secretKey;
 
-	private String prefix;
+	private String type;
 
 	private String endpoint;
 
 	private String region;
-
-	/**
-	 * Instantiates a new Oss properties.
-	 * @param url the url
-	 * @param accessKey the access key
-	 * @param secretKey the secret key
-	 * @param region the region
-	 */
-	public OSSProperties(@Name("url") URI url, @Name("accessKey") String accessKey, @Name("secretKey") String secretKey,
-			@Name("region") String region) {
-		Assert.notNull(url, "url not be blank");
-		Assert.hasText(accessKey, "accessKey not be blank");
-		Assert.hasText(secretKey, "secretKey not be blank");
-		this.accessKey = accessKey;
-		this.secretKey = secretKey;
-		this.prefix = prefix(url);
-		this.endpoint = endpoint(url);
-		this.region = region;
-	}
-
-	/**
-	 * Endpoint string.
-	 * @return the string
-	 */
-	private String endpoint(URI url) {
-		return url.getSchemeSpecificPart();
-	}
-
-	/**
-	 * Gets prefix.
-	 * @return the prefix
-	 */
-	private String prefix(URI uri) {
-		String scheme = uri.getScheme();
-		if (StringUtils.hasText(scheme)) {
-			return scheme;
-		}
-		throw new IllegalArgumentException("url缺少前缀!");
-	}
 
 }

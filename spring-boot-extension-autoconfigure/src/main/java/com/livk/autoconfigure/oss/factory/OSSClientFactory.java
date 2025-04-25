@@ -14,21 +14,30 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.oss.client;
+package com.livk.autoconfigure.oss.factory;
 
 /**
- * The interface Oss client factory loader.
+ * The interface Oss client factory.
  *
+ * @param <T> the type parameter
  * @author livk
  */
-public interface OSSClientFactoryLoader {
+public interface OSSClientFactory<T> {
 
 	/**
-	 * Loader oss client factory.
-	 * @param <T> the type parameter
-	 * @param prefix the prefix
-	 * @return the oss client factory
+	 * Instance t.
+	 * @param endpoint the endpoint
+	 * @param accessKey the access key
+	 * @param secretKey the secret key
+	 * @param region the region
+	 * @return the t
 	 */
-	<T> OSSClientFactory<T> loader(String prefix);
+	T instance(String endpoint, String accessKey, String secretKey, String region);
+
+	/**
+	 * Prefix string.
+	 * @return the string
+	 */
+	String name();
 
 }
