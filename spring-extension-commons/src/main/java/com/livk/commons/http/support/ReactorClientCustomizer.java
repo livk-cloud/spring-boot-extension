@@ -20,9 +20,10 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.ReactorNettyHttpClientMapper;
+import org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorBuilderCustomizer;
+import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder;
+import org.springframework.http.client.ReactorResourceFactory;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.DefaultSslContextSpec;
 import reactor.netty.tcp.SslProvider;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
@@ -36,7 +37,8 @@ import java.util.List;
  * @author livk
  */
 @RequiredArgsConstructor
-public final class DefaultReactorNettyHttpClientMapper implements ReactorNettyHttpClientMapper {
+public final class ReactorClientCustomizer
+		implements ClientHttpConnectorBuilderCustomizer<ReactorClientHttpConnectorBuilder> {
 
 	private int connectTimeout = 3_000;
 
@@ -48,27 +50,29 @@ public final class DefaultReactorNettyHttpClientMapper implements ReactorNettyHt
 
 	private final List<ChannelHandler> handlerList = new ArrayList<>();
 
-	public DefaultReactorNettyHttpClientMapper withConnectTimeout(Integer connectTimeout) {
+	private final ReactorResourceFactory reactorResourceFactory;
+
+	public ReactorClientCustomizer withConnectTimeout(Integer connectTimeout) {
 		this.connectTimeout = connectTimeout;
 		return this;
 	}
 
-	public DefaultReactorNettyHttpClientMapper withResponseTimeout(Integer responseTimeout) {
+	public ReactorClientCustomizer withResponseTimeout(Integer responseTimeout) {
 		this.responseTimeout = responseTimeout;
 		return this;
 	}
 
-	public DefaultReactorNettyHttpClientMapper withReadTimeout(Integer readTimeout) {
+	public ReactorClientCustomizer withReadTimeout(Integer readTimeout) {
 		this.readTimeout = readTimeout;
 		return this;
 	}
 
-	public DefaultReactorNettyHttpClientMapper withWriteTimeout(Integer writeTimeout) {
+	public ReactorClientCustomizer withWriteTimeout(Integer writeTimeout) {
 		this.writeTimeout = writeTimeout;
 		return this;
 	}
 
-	public DefaultReactorNettyHttpClientMapper addChannelHandler(ChannelHandler... handlers) {
+	public ReactorClientCustomizer addChannelHandler(ChannelHandler... handlers) {
 		for (ChannelHandler handler : handlers) {
 			if (!handlerList.contains(handler) && handler != null) {
 				handlerList.add(handler);
@@ -78,13 +82,15 @@ public final class DefaultReactorNettyHttpClientMapper implements ReactorNettyHt
 	}
 
 	@Override
-	public HttpClient configure(HttpClient httpClient) {
+	public ReactorClientHttpConnectorBuilder customize(ReactorClientHttpConnectorBuilder builder) {
 		SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient();
-		return httpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout)
+		return builder.withHttpClientCustomizer(httpClient -> httpClient
+			.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout)
+			.runOn(reactorResourceFactory.getLoopResources())
 			.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL, StandardCharsets.UTF_8)
 			.responseTimeout(Duration.ofSeconds(responseTimeout))
 			.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
-			.doOnConnected(connection -> getHandlerList().forEach(connection::addHandlerLast));
+			.doOnConnected(connection -> getHandlerList().forEach(connection::addHandlerLast)));
 	}
 
 	private List<ChannelHandler> getHandlerList() {
