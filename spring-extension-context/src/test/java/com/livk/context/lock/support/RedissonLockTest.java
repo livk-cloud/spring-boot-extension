@@ -15,7 +15,8 @@ package com.livk.context.lock.support;
 
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
@@ -51,7 +52,7 @@ class RedissonLockTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer();
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {

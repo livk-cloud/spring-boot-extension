@@ -19,6 +19,7 @@ package com.livk.autoconfigure.oss;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.oss.support.AbstractService;
 import com.livk.autoconfigure.oss.support.OSSTemplate;
+import com.livk.autoconfigure.oss.support.minio.MinioClientFactory;
 import com.livk.autoconfigure.oss.support.minio.MinioService;
 import io.minio.MinioClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -55,6 +56,11 @@ public class OSSAutoConfiguration {
 	@AutoConfiguration
 	@ConditionalOnClass(MinioClient.class)
 	public static class MinioOSSAutoConfiguration {
+
+		@Bean
+		public MinioClientFactory minioClientFactory() {
+			return new MinioClientFactory();
+		}
 
 		/**
 		 * Minio service minio service.

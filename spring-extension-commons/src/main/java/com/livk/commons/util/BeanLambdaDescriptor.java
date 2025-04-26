@@ -15,6 +15,7 @@ package com.livk.commons.util;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.springframework.util.Assert;
 
 import java.beans.PropertyDescriptor;
 import java.lang.invoke.SerializedLambda;
@@ -33,16 +34,19 @@ final class BeanLambdaDescriptor {
 
 	private static final Map<Method, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
 
-	private final Class<?> type;
-
 	private final Method method;
 
-	private final PropertyDescriptor propertyDescriptor;
-
-	private BeanLambdaDescriptor(Class<?> type, Method method) {
-		this.type = type;
+	private BeanLambdaDescriptor(Method method) {
 		this.method = method;
-		this.propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
+	}
+
+	private PropertyDescriptor getPropertyDescriptor() {
+		Class<?> type = method.getDeclaringClass();
+		PropertyDescriptor propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
+		if (propertyDescriptor == null) {
+			throw new IllegalStateException("propertyDescriptor must not be null");
+		}
+		return propertyDescriptor;
 	}
 
 	/**
@@ -59,22 +63,22 @@ final class BeanLambdaDescriptor {
 		writeReplace.setAccessible(true);
 		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
-		Class<?> type = ClassUtils.resolveClassName(className);
+		Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
 		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
-		return cache.computeIfAbsent(method, other -> new BeanLambdaDescriptor(type, other));
+		Assert.notNull(method, "method must not be null");
+		return cache.computeIfAbsent(method, BeanLambdaDescriptor::new);
 	}
 
 	public String getFieldName() {
-		return propertyDescriptor != null ? propertyDescriptor.getName() : null;
+		return getPropertyDescriptor().getName();
 	}
 
 	public Field getField() {
-		if (propertyDescriptor != null) {
-			String fieldName = propertyDescriptor.getName();
-			Class<?> fieldType = propertyDescriptor.getPropertyType();
-			return ReflectionUtils.findField(type, fieldName, fieldType);
-		}
-		return null;
+		PropertyDescriptor propertyDescriptor = getPropertyDescriptor();
+		String fieldName = propertyDescriptor.getName();
+		Class<?> fieldType = propertyDescriptor.getPropertyType();
+		Class<?> type = method.getDeclaringClass();
+		return ReflectionUtils.findField(type, fieldName, fieldType);
 	}
 
 	public String getMethodName() {

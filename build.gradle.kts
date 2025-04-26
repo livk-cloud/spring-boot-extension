@@ -18,9 +18,7 @@ tasks.asciidoctor {
 		backends("spring-html")
 	}
 	doLast {
-		delete("./docs/fonts")
 		copy {
-			delete(file("./docs/img/banner-logo.svg"))
 			from("./docs/img/banner-logo-copy.svg")
 			into("./docs/img")
 			rename { "banner-logo.svg" }
@@ -30,7 +28,7 @@ tasks.asciidoctor {
 			into("./docs")
 			rename { "spring-boot-extension-${findProperty("version")}.html" }
 		}
-		delete("./docs/spring-boot-extension.html")
+		delete("./docs/fonts", "./docs/spring-boot-extension.html")
 	}
 }
 

@@ -16,7 +16,8 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.testcontainers.containers.RedisContainer;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class ShopControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer().withPassword("123456");
+	static RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass", "123456");
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

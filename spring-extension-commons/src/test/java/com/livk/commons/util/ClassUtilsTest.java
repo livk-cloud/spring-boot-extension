@@ -16,7 +16,16 @@
 
 package com.livk.commons.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.lang.NonNull;
+
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,8 +40,73 @@ class ClassUtilsTest {
 
 	@Test
 	void toClassTest() {
-		Class<String> result = ClassUtils.toClass(String.class);
-		assertEquals(String.class, result);
+		assertEquals(String.class, ClassUtils.toClass(String.class));
+
+		Type listType = new ListType();
+
+		assertEquals(List.class, ClassUtils.toClass(listType));
+
+		TypeVariable<?> typeVar = MyGeneric.class.getTypeParameters()[0];
+		assertEquals(Number.class, ClassUtils.toClass(typeVar));
+
+		Type arrayType = new StringGenericArrayType();
+		assertEquals(String[].class, ClassUtils.toClass(arrayType));
+
+		WildcardType wildcardType = new NumberWildcardType();
+		assertEquals(Number.class, ClassUtils.toClass(wildcardType));
+
+		Assertions.assertThrows(IllegalArgumentException.class, () -> ClassUtils.toClass(null), "Type cannot be null");
+	}
+
+	static class NumberWildcardType implements WildcardType {
+
+		@NonNull
+		@Override
+		public Type[] getUpperBounds() {
+			return new Type[] { Number.class };
+		}
+
+		@NonNull
+		@Override
+		public Type[] getLowerBounds() {
+			return new Type[0];
+		}
+
+	}
+
+	static class StringGenericArrayType implements GenericArrayType {
+
+		@NonNull
+		@Override
+		public Type getGenericComponentType() {
+			return String.class;
+		}
+
+	}
+
+	static class ListType implements ParameterizedType {
+
+		@NonNull
+		@Override
+		public Type[] getActualTypeArguments() {
+			return new Type[] { String.class };
+		}
+
+		@NonNull
+		@Override
+		public Type getRawType() {
+			return List.class;
+		}
+
+		@Override
+		public Type getOwnerType() {
+			return null;
+		}
+
+	}
+
+	static class MyGeneric<T extends Number> {
+
 	}
 
 }

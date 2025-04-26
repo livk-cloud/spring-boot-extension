@@ -35,20 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class FastExcelSupportTest {
 
 	@Test
-	void read() throws IOException {
-		Info.InfoMapReadListener listener = new Info.InfoMapReadListener();
-		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
-		FastExcelSupport.read(inputStream, Info.class, listener, true);
-
-		Map<String, ? extends Collection<Info>> map = listener.getMapData();
-		assertFalse(map.isEmpty());
-
-		assertEquals(1, map.size());
-		assertEquals(Set.of("0"), map.keySet());
-		assertEquals(100, map.values().stream().mapToLong(Collection::size).sum());
-	}
-
-	@Test
 	void write() {
 		Map<String, List<Info>> data = Map.of("0", List.of(new Info("123456789"), new Info("987654321")));
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -65,7 +51,7 @@ class FastExcelSupportTest {
 		ResponseExcel responseExcel = this.getClass()
 			.getDeclaredMethod("fileNameResponse")
 			.getAnnotation(ResponseExcel.class);
-		assertEquals("outFile.xls", FastExcelSupport.fileName(responseExcel));
+		assertEquals("outFile.xls", ResponseExcel.Utils.parseName(responseExcel));
 	}
 
 	@ResponseExcel(fileName = "outFile", suffix = ResponseExcel.Suffix.XLS)

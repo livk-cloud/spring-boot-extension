@@ -16,6 +16,9 @@
 
 package com.livk.auto.service.processor;
 
+import com.livk.auto.service.processor.autoconfigure.EnableAuto;
+import com.livk.auto.service.processor.autoconfigure.SpringAutoContext;
+import com.livk.auto.service.processor.autoconfigure.SpringContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.test.tools.SourceFile;
@@ -54,8 +57,8 @@ class SpringAutoServiceProcessorTest {
 			.withSources(SourceFile.forTestClass(type))
 			.compile(compiled -> {
 				try {
-					Enumeration<URL> resources = compiled.getClassLoader()
-						.getResources("META-INF/spring/" + annotationName + ".imports");
+					String location = String.format(SpringAutoServiceProcessor.LOCATION, annotationName);
+					Enumeration<URL> resources = compiled.getClassLoader().getResources(location);
 					List<String> configList = new ArrayList<>();
 					for (URL url : Collections.list(resources)) {
 						InputStream inputStream = new UrlResource(url).getInputStream();

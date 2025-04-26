@@ -14,18 +14,30 @@
  * limitations under the License.
  */
 
-package com.livk.auto.service.processor;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.livk.autoconfigure.oss.factory;
 
 /**
+ * The interface Oss client factory.
+ *
+ * @param <T> the type parameter
  * @author livk
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface EnableAuto {
+public interface OSSClientFactory<T> {
+
+	/**
+	 * Instance t.
+	 * @param endpoint the endpoint
+	 * @param accessKey the access key
+	 * @param secretKey the secret key
+	 * @param region the region
+	 * @return the t
+	 */
+	T instance(String endpoint, String accessKey, String secretKey, String region);
+
+	/**
+	 * Prefix string.
+	 * @return the string
+	 */
+	String name();
 
 }

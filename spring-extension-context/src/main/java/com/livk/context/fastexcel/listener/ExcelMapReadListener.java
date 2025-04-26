@@ -16,11 +16,16 @@
 
 package com.livk.context.fastexcel.listener;
 
+import cn.idev.excel.ExcelReader;
+import cn.idev.excel.FastExcel;
 import cn.idev.excel.context.AnalysisContext;
 import cn.idev.excel.read.listener.ReadListener;
+import cn.idev.excel.read.metadata.ReadSheet;
 import com.livk.context.fastexcel.ExcelDataType;
 
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,6 +65,20 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 			case MAP -> getMapData();
 			case COLLECTION -> getCollectionData();
 		};
+	}
+
+	default void execute(InputStream in, Class<?> excelModelClass, Boolean ignoreEmptyRow) {
+		try (ExcelReader excelReader = FastExcel.read(in, this).ignoreEmptyRow(ignoreEmptyRow).build()) {
+			List<ReadSheet> readSheets = excelReader.excelExecutor()
+				.sheetList()
+				.stream()
+				.map(sheet -> FastExcel.readSheet(sheet.getSheetNo(), sheet.getSheetName())
+					.head(excelModelClass)
+					.build())
+				.toList();
+			excelReader.read(readSheets);
+			excelReader.finish();
+		}
 	}
 
 }

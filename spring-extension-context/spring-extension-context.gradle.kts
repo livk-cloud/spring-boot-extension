@@ -42,5 +42,6 @@ dependencies {
 	testImplementation("net.bytebuddy:byte-buddy")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:mysql")
+	testImplementation("com.redis:testcontainers-redis")
 	testImplementation(project(":spring-testcontainers-support"))
 }

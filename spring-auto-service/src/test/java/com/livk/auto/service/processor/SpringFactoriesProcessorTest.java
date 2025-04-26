@@ -16,6 +16,8 @@
 
 package com.livk.auto.service.processor;
 
+import com.livk.auto.service.processor.factories.spring.SpringFactoryService;
+import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.test.tools.SourceFile;
@@ -39,16 +41,17 @@ class SpringFactoriesProcessorTest {
 
 	@Test
 	void test() {
-		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class, SpringFactoryServiceImpl.class.getName());
+		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class);
 	}
 
-	private void compile(Class<?> type, Class<?> factoryClass, String factoryClassImplName) {
+	private void compile(Class<?> type, Class<?> factoryClass) {
 		TestCompiler.forSystem()
 			.withProcessors(new SpringFactoriesProcessor())
 			.withSources(SourceFile.forTestClass(type))
 			.compile(compiled -> {
 				try {
-					Enumeration<URL> resources = compiled.getClassLoader().getResources("META-INF/spring.factories");
+					Enumeration<URL> resources = compiled.getClassLoader()
+						.getResources(SpringFactoriesProcessor.SPRING_LOCATION);
 					Properties pro = new Properties();
 					for (URL url : Collections.list(resources)) {
 						InputStream inputStream = new UrlResource(url).getInputStream();
@@ -57,7 +60,7 @@ class SpringFactoriesProcessorTest {
 						pro.putAll(properties);
 					}
 					assertTrue(pro.containsKey(factoryClass.getName()));
-					assertEquals(factoryClassImplName, pro.get(factoryClass.getName()));
+					assertEquals(type.getName(), pro.get(factoryClass.getName()));
 				}
 				catch (IOException e) {
 					throw new CompilationException(e, SourceFile.forTestClass(type));

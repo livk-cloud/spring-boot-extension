@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.oss.support.minio;
 
-import com.livk.autoconfigure.oss.client.OSSClientFactory;
+import com.livk.autoconfigure.oss.factory.OSSClientFactory;
 import io.minio.MinioClient;
 
 /**
