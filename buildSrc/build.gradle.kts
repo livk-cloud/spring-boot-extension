@@ -11,10 +11,11 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-gradle-plugin:${libs.versions.spring.boot.get()}")
-	implementation("io.spring.javaformat:spring-javaformat-gradle-plugin:${libs.versions.spring.javaformat.get()}")
-	implementation("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.google.protobuf.plugins.get()}")
-	implementation("com.google.gradle:osdetector-gradle-plugin:${libs.versions.google.osdetector.plugins.get()}")
+	implementation(libs.spring.boot.plugin)
+	implementation(libs.spring.javaformat.plugin)
+	implementation(libs.google.protobuf.plugin)
+	implementation(libs.osdetector.gradle.plugin)
+	implementation(libs.maven.publish.plugin)
 }
 
 gradlePlugin {

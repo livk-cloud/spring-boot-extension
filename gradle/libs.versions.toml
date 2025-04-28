@@ -36,6 +36,7 @@ spring-javaformat = "0.0.43"
 compile-testing = "0.21.0"
 okhttp = "4.12.0"
 spotbugs-annotations = "4.9.3"
+maven-publish-plugins = "0.31.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -90,14 +91,18 @@ spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-
 compile-testing = { group = "com.google.testing.compile", name = "compile-testing", version.ref = "compile-testing" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 
+#plugin
+spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
+spring-javaformat-plugin = { group = "io.spring.javaformat", name = "spring-javaformat-gradle-plugin", version.ref = "spring-javaformat" }
+google-protobuf-plugin = { group = "com.google.protobuf", name = "protobuf-gradle-plugin", version.ref = "google-protobuf-plugins" }
+osdetector-gradle-plugin = { group = "com.google.gradle", name = "osdetector-gradle-plugin", version.ref = "google-osdetector-plugins" }
+maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "maven-publish-plugins" }
+
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
 mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
-google-protobuf = { id = "com.google.protobuf", version.ref = "google-protobuf-plugins" }
-spring-javaformat = { id = "io.spring.javaformat", version.ref = "spring-javaformat" }
