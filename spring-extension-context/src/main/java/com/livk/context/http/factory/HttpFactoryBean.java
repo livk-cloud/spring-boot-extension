@@ -22,6 +22,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.lang.NonNull;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
@@ -35,7 +36,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * @author livk
  */
 @Setter
-public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
+public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, InitializingBean {
 
 	private BeanFactory beanFactory;
 
@@ -45,13 +46,20 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware {
 
 	private ObjectProvider<HttpServiceProxyFactoryCustomizer> customizers;
 
+	private Object httpClient;
+
 	@Override
 	public Object getObject() {
+		return httpClient;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
 		HttpExchangeAdapter adapter = adapterFactory.create(beanFactory);
 		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builderFor(adapter);
 		customizers.orderedStream().forEach(customizer -> customizer.customize(builder));
 		HttpServiceProxyFactory proxyFactory = builder.build();
-		return proxyFactory.createClient(type);
+		httpClient = proxyFactory.createClient(type);
 	}
 
 	@Override
