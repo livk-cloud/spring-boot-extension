@@ -95,7 +95,7 @@
 
 	<delete id="deleteById">
 		DELETE
-		FROM `user`
+		FROM ` user `
 		WHERE id = #{id}
 	</delete>
 

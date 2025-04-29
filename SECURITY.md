@@ -10,7 +10,6 @@
 | 1.1.x   | no support          |
 | 1.0.x   | no support          |
 
-
 ## Reporting a Vulnerability
 
 Use GitHub issues to report issues and vulnerabilities

@@ -27,4 +27,5 @@ public class App {
 
 }
 ----
+
 同时提供了@EnableRestClient、@EnableWebClient作为快捷方式
