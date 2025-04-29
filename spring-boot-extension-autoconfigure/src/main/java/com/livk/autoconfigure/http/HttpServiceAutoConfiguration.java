@@ -19,9 +19,8 @@ package com.livk.autoconfigure.http;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.http.HttpServiceProxyFactoryCustomizer;
 import com.livk.context.http.HttpServiceRegistrar;
-import org.springframework.beans.BeansException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -29,9 +28,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -59,23 +56,15 @@ public class HttpServiceAutoConfiguration {
 		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
 	}
 
-	public static class AutoConfiguredHttpServiceRegistrar extends HttpServiceRegistrar implements BeanFactoryAware {
+	@RequiredArgsConstructor
+	static class AutoConfiguredHttpServiceRegistrar extends HttpServiceRegistrar {
 
-		private BeanFactory beanFactory;
-
-		public AutoConfiguredHttpServiceRegistrar(Environment environment) {
-			super(environment);
-		}
+		private final BeanFactory beanFactory;
 
 		@Override
 		protected String[] getBasePackages(AnnotationMetadata metadata) {
 			List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
 			return StringUtils.toStringArray(packages);
-		}
-
-		@Override
-		public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
-			this.beanFactory = beanFactory;
 		}
 
 	}
