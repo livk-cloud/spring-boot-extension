@@ -45,7 +45,6 @@ public class Main{
 
 进行类包装
 
-
 使用示例:
 
 [source,java,indent=0]

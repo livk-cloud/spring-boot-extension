@@ -18,11 +18,6 @@ package com.livk.autoconfigure.oss;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.Name;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
-import java.net.URI;
 
 /**
  * The type Oss properties.

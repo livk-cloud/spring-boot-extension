@@ -15,14 +15,12 @@ package com.livk.autoconfigure.disruptor;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.disruptor.DisruptorScanRegistrar;
-import org.springframework.beans.BeansException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -35,19 +33,15 @@ import java.util.List;
 @Import(DisruptorAutoConfiguration.AutoConfiguredDisruptorRegistrar.class)
 public class DisruptorAutoConfiguration {
 
-	public static class AutoConfiguredDisruptorRegistrar extends DisruptorScanRegistrar implements BeanFactoryAware {
+	@RequiredArgsConstructor
+	static class AutoConfiguredDisruptorRegistrar extends DisruptorScanRegistrar {
 
-		private BeanFactory beanFactory;
+		private final BeanFactory beanFactory;
 
 		@Override
 		protected String[] getBasePackages(AnnotationMetadata metadata) {
 			List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
 			return StringUtils.toStringArray(packages);
-		}
-
-		@Override
-		public void setBeanFactory(@NonNull BeanFactory beanFactory) throws BeansException {
-			this.beanFactory = beanFactory;
 		}
 
 	}

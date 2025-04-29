@@ -18,15 +18,6 @@ package com.livk.boot.maven
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlatformPlugin
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.VariantVersionMappingStrategy
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 
 /**

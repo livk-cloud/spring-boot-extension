@@ -11,7 +11,7 @@ dependencies {
 		api(project(":spring-extension-context"))
 		api(project(":spring-boot-extension-autoconfigure"))
 		project(":spring-boot-extension-starters") {
-			subprojects{
+			subprojects {
 				api(this)
 			}
 		}
