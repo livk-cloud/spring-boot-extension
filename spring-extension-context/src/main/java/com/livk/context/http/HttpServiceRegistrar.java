@@ -20,10 +20,8 @@ import com.livk.commons.spring.AnnotationBasePackageSupport;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.disruptor.DisruptorScan;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
 
@@ -34,10 +32,7 @@ import org.springframework.lang.NonNull;
  *
  * @author livk
  */
-@RequiredArgsConstructor
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {
-
-	private final Environment environment;
 
 	@Override
 	public final void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
