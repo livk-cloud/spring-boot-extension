@@ -1,5 +1,6 @@
 package com.livk.context.disruptor;
 
+import com.livk.context.disruptor.factory.DisruptorFactoryBean;
 import com.livk.context.disruptor.support.SpringDisruptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.DefaultBeanNameGenerator;
@@ -23,6 +24,16 @@ class ClassPathDisruptorScannerTest {
 
 		ResolvableType type = ResolvableType.forClassWithGenerics(SpringDisruptor.class, Entity.class);
 		assertEquals(1, context.getBeanProvider(type).stream().count());
+	}
+
+	@Test
+	void testEmptyPackage() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(context, DefaultBeanNameGenerator.INSTANCE);
+		int result = scanner.scan(ClassPathDisruptorScannerTest.class.getPackageName() + ".empty");
+		assertEquals(0, result);
+		assertEquals(0, context.getBeanProvider(SpringDisruptor.class).stream().count());
+		assertEquals(0, context.getBeanNamesForType(DisruptorFactoryBean.class).length);
 	}
 
 	@TestConfiguration
