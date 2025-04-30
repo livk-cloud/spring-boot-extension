@@ -1,5 +1,6 @@
 package com.livk.redisson.order.controller;
 
+import com.livk.redisson.order.OrderQueueConsumer;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,12 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,11 +44,16 @@ class OrderControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
+	@Autowired
+	OrderQueueConsumer consumer;
+
 	@Test
 	void create() throws Exception {
 		mockMvc.perform(post("/order/create")).andDo(print()).andExpect(status().isOk());
 
-		Thread.sleep(5000L);
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> {
+			assertTrue(consumer.isEmpty());
+		});
 	}
 
 }

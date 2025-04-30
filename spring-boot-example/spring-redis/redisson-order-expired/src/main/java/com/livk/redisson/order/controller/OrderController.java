@@ -50,13 +50,13 @@ public class OrderController implements DisposableBean {
 
 	@PostMapping("create")
 	public void create() throws InterruptedException {
-		for (int i = 0; i < 10; i++) {
-			TimeUnit.SECONDS.sleep(1L);
+		for (int i = 0; i < 5; i++) {
 			Employer callCdr = new Employer();
 			callCdr.setSalary(345.6);
 			callCdr.setPutTime(DateUtils.format(LocalDateTime.now(), DateUtils.HMS));
 			delayedQueue.offer(callCdr, 3, TimeUnit.SECONDS);
 		}
+		TimeUnit.SECONDS.sleep(5L);
 	}
 
 	@Override
