@@ -16,15 +16,18 @@
 
 package com.livk.redisson.order.controller;
 
+import com.livk.autoconfigure.redisson.queue.RDelayedQueue;
+import com.livk.autoconfigure.redisson.queue.RedissonDelayedQueue;
+import com.livk.commons.util.DateUtils;
 import com.livk.redisson.order.entity.Employer;
 import org.redisson.api.RBlockingQueue;
-import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,7 +45,7 @@ public class OrderController implements DisposableBean {
 
 	public OrderController(RedissonClient redissonClient) {
 		RBlockingQueue<Employer> orderQueue = redissonClient.getBlockingQueue("order_queue");
-		this.delayedQueue = redissonClient.getDelayedQueue(orderQueue);
+		this.delayedQueue = new RedissonDelayedQueue<>(redissonClient, orderQueue);
 	}
 
 	@PostMapping("create")
@@ -51,8 +54,8 @@ public class OrderController implements DisposableBean {
 			TimeUnit.SECONDS.sleep(1L);
 			Employer callCdr = new Employer();
 			callCdr.setSalary(345.6);
-			callCdr.setPutTime();
-			delayedQueue.offer(callCdr, 30, TimeUnit.SECONDS);
+			callCdr.setPutTime(DateUtils.format(LocalDateTime.now(), DateUtils.HMS));
+			delayedQueue.offer(callCdr, 3, TimeUnit.SECONDS);
 		}
 	}
 
