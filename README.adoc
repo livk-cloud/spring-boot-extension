@@ -1,7 +1,7 @@
-image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml/badge.svg?branch=main["Build Status",
-link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml"]
+image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml/badge.svg?branch=main["Build Status",link="https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml"]
 image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI",link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud/spring-extension-dependencies"]
+image:https://deepwiki.com/badge.svg[Ask DeepWiki,link="https://deepwiki.com/livk-cloud/spring-boot-extension"]
 
 image:https://img.icons8.com/?size=100&id=90519&format=png&color=000000[link="https://spring.io/projects/spring-framework"]
 image:https://img.icons8.com/?size=100&id=2oBx9FpXcbLa&format=png&color=000000[link="https://spring.io/projects/spring-boot"]
