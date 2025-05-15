@@ -69,8 +69,7 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	@Override
-	@Nullable
-	public String getFirst(@NonNull String parameterName) {
+	@Nullable public String getFirst(@NonNull String parameterName) {
 		return this.parameters.getFirst(parameterName);
 	}
 
@@ -126,8 +125,7 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	@Override
-	@Nullable
-	public List<String> get(Object key) {
+	@Nullable public List<String> get(Object key) {
 		return this.parameters.get(key);
 	}
 

@@ -655,8 +655,7 @@ public class GenericsByteBuddy {
 			this.values = values;
 		}
 
-		@NonNull
-		public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
+		@NonNull public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
 			for (String value : this.values) {
 				instrumentedType = instrumentedType
 					.withField(new FieldDescription.Token(value, 16409, TargetType.DESCRIPTION.asGenericType()));
@@ -668,8 +667,7 @@ public class GenericsByteBuddy {
 				.withInitializer(new GenericsByteBuddy.EnumerationImplementation.InitializationAppender(this.values));
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
+		@NonNull public ByteCodeAppender appender(Implementation.Target implementationTarget) {
 			return new GenericsByteBuddy.EnumerationImplementation.ValuesMethodAppender(
 					implementationTarget.getInstrumentedType());
 		}
@@ -683,8 +681,7 @@ public class GenericsByteBuddy {
 				this.instrumentedType = instrumentedType;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
+			@NonNull public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
 					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
 				FieldDescription valuesField = ((FieldList<?>) this.instrumentedType.getDeclaredFields()
 					.filter(ElementMatchers.named("$VALUES"))).getOnly();
@@ -710,8 +707,7 @@ public class GenericsByteBuddy {
 				this.values = values;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
+			@NonNull public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
 					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
 				TypeDescription instrumentedType = instrumentedMethod.getDeclaringType().asErasure();
 				MethodDescription enumConstructor = ((MethodList<?>) instrumentedType.getDeclaredMethods()
@@ -761,8 +757,7 @@ public class GenericsByteBuddy {
 		RecordConstructorStrategy() {
 		}
 
-		@NonNull
-		public List<MethodDescription.Token> extractConstructors(TypeDescription instrumentedType) {
+		@NonNull public List<MethodDescription.Token> extractConstructors(TypeDescription instrumentedType) {
 			List<ParameterDescription.Token> tokens = new ArrayList<>(instrumentedType.getRecordComponents().size());
 
 			for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType.getRecordComponents()) {
@@ -777,8 +772,7 @@ public class GenericsByteBuddy {
 					Collections.emptyList(), AnnotationValue.UNDEFINED, Generic.UNDEFINED));
 		}
 
-		@NonNull
-		public MethodRegistry inject(TypeDescription instrumentedType, MethodRegistry methodRegistry) {
+		@NonNull public MethodRegistry inject(TypeDescription instrumentedType, MethodRegistry methodRegistry) {
 			return methodRegistry.prepend(
 					new LatentMatcher.Resolved<>(ElementMatchers.isConstructor()
 						.and(ElementMatchers
@@ -787,13 +781,11 @@ public class GenericsByteBuddy {
 					MethodAttributeAppender.ForInstrumentedMethod.EXCLUDING_RECEIVER, Transformer.NoOp.make());
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
+		@NonNull public ByteCodeAppender appender(Implementation.Target implementationTarget) {
 			return new GenericsByteBuddy.RecordConstructorStrategy.Appender(implementationTarget.getInstrumentedType());
 		}
 
-		@NonNull
-		public InstrumentedType prepare(InstrumentedType instrumentedType) {
+		@NonNull public InstrumentedType prepare(InstrumentedType instrumentedType) {
 			for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType.getRecordComponents()) {
 				instrumentedType = instrumentedType
 					.withField(
@@ -819,8 +811,7 @@ public class GenericsByteBuddy {
 				this.instrumentedType = instrumentedType;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
+			@NonNull public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
 					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
 				if (instrumentedMethod.isMethod()) {
 					return (new ByteCodeAppender.Simple(MethodVariableAccess.loadThis(),
@@ -886,8 +877,7 @@ public class GenericsByteBuddy {
 			this.arguments = new TypeList.ForLoadedTypes(arguments);
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
+		@NonNull public ByteCodeAppender appender(Implementation.Target implementationTarget) {
 			StringBuilder stringBuilder = new StringBuilder();
 			List<JavaConstant> methodHandles = new ArrayList<>(
 					implementationTarget.getInstrumentedType().getRecordComponents().size());
@@ -927,8 +917,7 @@ public class GenericsByteBuddy {
 					MethodReturn.of(this.returnType));
 		}
 
-		@NonNull
-		public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
+		@NonNull public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
 			return instrumentedType;
 		}
 
