@@ -22,6 +22,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -49,8 +50,9 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 		this(DEFAULT_CONFIG);
 	}
 
+	@SneakyThrows
 	@Override
-	protected Template compile(String value) throws IOException {
+	protected Template compile(String value) {
 		return new Template(TEMPLATE_NAME, value, configuration);
 	}
 
