@@ -22,8 +22,10 @@ import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 /**
  * <p>
@@ -57,6 +59,31 @@ class BeanUtilsTest {
 		List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
 		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10), new TargetBean("target", 9));
 		assertEquals(result, targetBeans);
+	}
+
+	@Test
+	void convert() {
+		{
+			TargetBean source = new TargetBean("source", 10);
+			Map<String, Object> convert = BeanUtils.convert(source);
+			assertEquals("source", convert.get("beanName"));
+			assertEquals(10, convert.get("beanNo"));
+			assertEquals(TargetBean.class, convert.get("class"));
+
+			TargetBean target = BeanUtils.convert(convert);
+			assertEquals(source, target);
+		}
+
+		{
+			SourceBean source = new SourceBean("source", 10);
+			Map<String, Object> convert = BeanUtils.convert(source);
+			assertEquals("source", convert.get("beanName"));
+			assertEquals(10, convert.get("beanNo"));
+			assertEquals(SourceBean.class, convert.get("class"));
+
+			assertThrowsExactly(IllegalArgumentException.class, () -> BeanUtils.convert(convert),
+					"Missing no-argument constructor");
+		}
 	}
 
 	record SourceBean(String beanName, Integer beanNo) {
