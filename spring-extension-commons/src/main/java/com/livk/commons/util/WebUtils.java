@@ -29,6 +29,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedCaseInsensitiveMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
@@ -119,7 +121,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return MultiValueMap
 	 */
 	public HttpParameters params(HttpServletRequest request) {
-		return new HttpParameters(Maps.transformValues(request.getParameterMap(), Lists::newArrayList));
+		Map<String, List<String>> map = Maps.transformValues(request.getParameterMap(), Lists::newArrayList);
+		MultiValueMap<String, String> adapter = new MultiValueMapAdapter<>(map);
+		return new HttpParameters(adapter);
 	}
 
 	/**

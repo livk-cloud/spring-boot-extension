@@ -15,7 +15,7 @@
 
 package com.livk.commons.web;
 
-import org.springframework.lang.NonNull;
+import lombok.experimental.Delegate;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -24,11 +24,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -48,6 +46,7 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	@Serial
 	private static final long serialVersionUID = -578554704772377436L;
 
+	@Delegate
 	final MultiValueMap<String, String> parameters;
 
 	public HttpParameters() {
@@ -59,6 +58,13 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 		this.parameters = parameters;
 	}
 
+	/**
+	 * @see #HttpParameters(MultiValueMap)
+	 * @see CollectionUtils#toMultiValueMap
+	 * @see MultiValueMap#fromMultiValue(Map)
+	 * @deprecated since 1.5.0 use {@link #HttpParameters(MultiValueMap)}
+	 */
+	@Deprecated(since = "1.5.0")
 	public HttpParameters(Map<String, List<String>> map) {
 		this(CollectionUtils.toMultiValueMap(map));
 	}
@@ -66,105 +72,6 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	public List<String> getOrEmpty(Object parameterName) {
 		List<String> values = get(parameterName);
 		return (values != null ? values : Collections.emptyList());
-	}
-
-	@Override
-	@Nullable public String getFirst(@NonNull String parameterName) {
-		return this.parameters.getFirst(parameterName);
-	}
-
-	@Override
-	public void add(@NonNull String parameterName, @Nullable String parameterValue) {
-		this.parameters.add(parameterName, parameterValue);
-	}
-
-	@Override
-	public void addAll(@NonNull String key, @NonNull List<? extends String> values) {
-		this.parameters.addAll(key, values);
-	}
-
-	@Override
-	public void addAll(@NonNull MultiValueMap<String, String> values) {
-		this.parameters.addAll(values);
-	}
-
-	@Override
-	public void set(@NonNull String parameterName, @Nullable String parameterValue) {
-		this.parameters.set(parameterName, parameterValue);
-	}
-
-	@Override
-	public void setAll(@NonNull Map<String, String> values) {
-		this.parameters.setAll(values);
-	}
-
-	@NonNull
-	@Override
-	public Map<String, String> toSingleValueMap() {
-		return this.parameters.toSingleValueMap();
-	}
-
-	@Override
-	public int size() {
-		return this.parameters.size();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return this.parameters.isEmpty();
-	}
-
-	@Override
-	public boolean containsKey(Object key) {
-		return this.parameters.containsKey(key);
-	}
-
-	@Override
-	public boolean containsValue(Object value) {
-		return this.parameters.containsValue(value);
-	}
-
-	@Override
-	@Nullable public List<String> get(Object key) {
-		return this.parameters.get(key);
-	}
-
-	@Override
-	public List<String> put(String key, List<String> value) {
-		return this.parameters.put(key, value);
-	}
-
-	@Override
-	public List<String> remove(Object key) {
-		return this.parameters.remove(key);
-	}
-
-	@Override
-	public void putAll(@NonNull Map<? extends String, ? extends List<String>> map) {
-		this.parameters.putAll(map);
-	}
-
-	@Override
-	public void clear() {
-		this.parameters.clear();
-	}
-
-	@NonNull
-	@Override
-	public Set<String> keySet() {
-		return this.parameters.keySet();
-	}
-
-	@NonNull
-	@Override
-	public Collection<List<String>> values() {
-		return this.parameters.values();
-	}
-
-	@NonNull
-	@Override
-	public Set<Entry<String, List<String>>> entrySet() {
-		return this.parameters.entrySet();
 	}
 
 	@Override
