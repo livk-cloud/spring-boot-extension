@@ -402,7 +402,7 @@ class JsonMapperUtilsTest {
 	void convertValueMap() {
 		Pair<String, String> pair = Pair.of("username", "password");
 		Map<String, String> map = JsonMapperUtils.convertValueMap(pair, String.class, String.class);
-		assertEquals(pair.toMap(), map);
+		assertEquals(Map.of(pair.key(), pair.value()), map);
 	}
 
 	@Test

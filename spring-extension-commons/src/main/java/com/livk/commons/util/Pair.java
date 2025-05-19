@@ -109,7 +109,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 * 转成Map
 	 * @return the map
 	 * @see Map#of(Object, Object)
+	 * @deprecated use {@link Map#of()}
 	 */
+	@Deprecated(since = "1.5.0")
 	public Map<K, V> toMap() {
 		return Map.of(key, value);
 	}
@@ -117,7 +119,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	/**
 	 * 转成Map.Entry
 	 * @return entry
+	 * @deprecated use {@link Map#entry(Object, Object)}
 	 */
+	@Deprecated(since = "1.5.0")
 	public Map.Entry<K, V> toEntry() {
 		return Map.entry(key, value);
 	}
@@ -129,7 +133,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 * @param keyFunction key function
 	 * @param valueFunction value function
 	 * @return pair
+	 * @deprecated 暂无使用场景
 	 */
+	@Deprecated(since = "1.5.0")
 	public <S, U> Pair<S, U> map(Function<K, S> keyFunction, Function<V, U> valueFunction) {
 		return of(keyFunction.apply(key), valueFunction.apply(value));
 	}
@@ -139,7 +145,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 * @param <S> key转换后type
 	 * @param keyFunction key function
 	 * @return pair
+	 * @deprecated 暂无使用场景
 	 */
+	@Deprecated(since = "1.5.0")
 	public <S> Pair<S, V> keyMap(Function<K, S> keyFunction) {
 		return map(keyFunction, Function.identity());
 	}
@@ -149,7 +157,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 * @param <U> value转换后type
 	 * @param valueFunction value function
 	 * @return pair
+	 * @deprecated 暂无使用场景
 	 */
+	@Deprecated(since = "1.5.0")
 	public <U> Pair<K, U> valueMap(Function<V, U> valueFunction) {
 		return map(Function.identity(), valueFunction);
 	}
@@ -160,7 +170,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 * @param <U> value转换后type
 	 * @param biFunction bi function
 	 * @return pair
+	 * @deprecated 暂无使用场景
 	 */
+	@Deprecated(since = "1.5.0")
 	public <S, U> Pair<S, U> flatMap(BiFunction<K, V, Pair<S, U>> biFunction) {
 		return biFunction.apply(key, value);
 	}

@@ -21,7 +21,9 @@ import com.livk.context.curator.CuratorTemplate;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;
+import org.apache.curator.ensemble.fixed.FixedEnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.utils.DefaultTracerDriver;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -62,6 +64,18 @@ public class CuratorAutoConfiguration {
 			throws InterruptedException {
 		return CuratorFactory.create(properties, retryPolicy, curatorFrameworkBuilderCustomizers::orderedStream,
 				ensembleProviders::getIfAvailable, tracerDrivers::getIfAvailable);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public TracerDriver tracerDriver() {
+		return new DefaultTracerDriver();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public EnsembleProvider fixedEnsembleProvider(CuratorProperties properties) {
+		return new FixedEnsembleProvider(properties.getConnectString());
 	}
 
 	/**

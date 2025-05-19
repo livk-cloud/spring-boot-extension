@@ -13,7 +13,6 @@
 
 package com.livk.autoconfigure.redisson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -99,7 +98,6 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 			FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
 					SimpleBeanPropertyFilter.filterOutAllExcept());
 			mapper.setFilterProvider(filterProvider);
-			mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			support = new JacksonSupport(mapper);
 		}
