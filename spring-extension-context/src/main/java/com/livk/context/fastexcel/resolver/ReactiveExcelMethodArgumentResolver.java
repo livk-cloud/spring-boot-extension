@@ -163,11 +163,13 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 			this.part = part;
 		}
 
-		@NonNull public HttpHeaders getHeaders() {
+		@NonNull
+		public HttpHeaders getHeaders() {
 			return this.part.headers();
 		}
 
-		@NonNull public Flux<DataBuffer> getBody() {
+		@NonNull
+		public Flux<DataBuffer> getBody() {
 			return this.part.content();
 		}
 
