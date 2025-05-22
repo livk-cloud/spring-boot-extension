@@ -16,11 +16,10 @@
 
 package com.livk.redisson.order.controller;
 
-import com.livk.autoconfigure.redisson.queue.RDelayedQueue;
-import com.livk.autoconfigure.redisson.queue.RedissonDelayedQueue;
 import com.livk.commons.util.DateUtils;
 import com.livk.redisson.order.entity.Employer;
 import org.redisson.api.RBlockingQueue;
+import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,11 +40,12 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("order")
 public class OrderController implements DisposableBean {
 
+	@SuppressWarnings("deprecation")
 	private final RDelayedQueue<Employer> delayedQueue;
 
 	public OrderController(RedissonClient redissonClient) {
 		RBlockingQueue<Employer> orderQueue = redissonClient.getBlockingQueue("order_queue");
-		this.delayedQueue = new RedissonDelayedQueue<>(redissonClient, orderQueue);
+		this.delayedQueue = redissonClient.getDelayedQueue(orderQueue);
 	}
 
 	@PostMapping("create")
