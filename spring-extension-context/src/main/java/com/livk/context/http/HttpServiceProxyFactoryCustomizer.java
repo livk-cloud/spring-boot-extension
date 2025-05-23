@@ -20,12 +20,9 @@ import com.livk.commons.Customizer;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
- * <p>
- * HttpServiceProxyFactoryCustomizer
- * </p>
- *
  * @author livk
  */
+@Deprecated(since = "1.5.0")
 @FunctionalInterface
 public interface HttpServiceProxyFactoryCustomizer extends Customizer<HttpServiceProxyFactory.Builder> {
 
