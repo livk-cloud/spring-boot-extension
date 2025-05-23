@@ -92,7 +92,7 @@ public class ConfigProperties {
 		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
 			.registerCustomEditors(registry);
 		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
+		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).orElse(new ConfigProperties());
 	}
 
 	/**
