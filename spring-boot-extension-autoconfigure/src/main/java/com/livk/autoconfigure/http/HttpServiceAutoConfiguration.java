@@ -17,16 +17,12 @@
 package com.livk.autoconfigure.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.http.HttpServiceProxyFactoryCustomizer;
 import com.livk.context.http.HttpServiceRegistrar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.EmbeddedValueResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
@@ -45,16 +41,6 @@ import java.util.List;
 @Import(HttpServiceAutoConfiguration.AutoConfiguredHttpServiceRegistrar.class)
 @ConditionalOnClass(name = "com.livk.http.marker.HttpMarker")
 public class HttpServiceAutoConfiguration {
-
-	/**
-	 * 添加SpringEL解析
-	 * @param beanFactory bean factory
-	 * @return HttpServiceProxyFactoryCustomizer
-	 */
-	@Bean
-	public HttpServiceProxyFactoryCustomizer embeddedValueResolverCustomizer(ConfigurableBeanFactory beanFactory) {
-		return builder -> builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));
-	}
 
 	@RequiredArgsConstructor
 	static class AutoConfiguredHttpServiceRegistrar extends HttpServiceRegistrar {

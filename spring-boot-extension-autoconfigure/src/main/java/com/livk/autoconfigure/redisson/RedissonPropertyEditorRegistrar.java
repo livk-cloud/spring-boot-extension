@@ -51,14 +51,14 @@ import java.util.concurrent.ExecutorService;
  */
 final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
-	private static final Set<Class<?>> supportType = Set.of(Config.class, AddressResolverGroupFactory.class,
+	private static final Set<Class<?>> SUPPORT_TYPE = Set.of(Config.class, AddressResolverGroupFactory.class,
 			Codec.class, RedissonNodeInitializer.class, LoadBalancer.class, NatMapper.class, NameMapper.class,
 			NettyHook.class, CredentialsResolver.class, EventLoopGroup.class, ConnectionListener.class,
 			ExecutorService.class, KeyManagerFactory.class, TrustManagerFactory.class, CommandMapper.class);
 
 	@Override
 	public void registerCustomEditors(@NonNull PropertyEditorRegistry registry) {
-		for (Class<?> type : supportType) {
+		for (Class<?> type : SUPPORT_TYPE) {
 			registry.registerCustomEditor(type, new RedissonTypePropertyEditor(type));
 		}
 	}

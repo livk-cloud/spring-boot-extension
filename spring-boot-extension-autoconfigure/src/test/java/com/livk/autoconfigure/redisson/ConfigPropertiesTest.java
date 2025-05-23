@@ -17,19 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.redisson.client.DefaultNettyHook;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.connection.SequentialDnsAddressResolverFactory;
-import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
-import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
-import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -47,13 +38,7 @@ class ConfigPropertiesTest {
 
 	@Test
 	void test() {
-		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
-		ConfigurableConversionService conversionService = environment.getConversionService();
-		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
-		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
-			.registerCustomEditors(registry);
-		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		ConfigProperties properties = binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
+		ConfigProperties properties = ConfigProperties.load(environment);
 		assertEquals("redis://livk.com:6379", properties.getConfig().useSingleServer().getAddress());
 		assertInstanceOf(JsonJacksonCodec.class, properties.getConfig().getCodec());
 		assertInstanceOf(DefaultNettyHook.class, properties.getConfig().getNettyHook());

@@ -18,28 +18,19 @@ import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
-import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
-import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,7 +57,7 @@ class RedissonAutoConfigurationTest {
 	StandardEnvironment environment;
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(ConfigProperties.class, this::properties)
+		.withBean(ConfigProperties.class, () -> ConfigProperties.load(environment))
 		.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
 
 	@Test
@@ -81,16 +72,6 @@ class RedissonAutoConfigurationTest {
 		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
 		});
-	}
-
-	ConfigProperties properties() {
-		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
-		ConfigurableConversionService conversionService = environment.getConversionService();
-		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
-		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
-			.registerCustomEditors(registry);
-		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
 	}
 
 }

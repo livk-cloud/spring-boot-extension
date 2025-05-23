@@ -157,7 +157,7 @@ public class GenericsByteBuddy {
 	}
 
 	public GenericsByteBuddy() {
-		this(ClassFileVersion.ofThisVm(ClassFileVersion.JAVA_V5));
+		this(ClassFileVersion.ofThisVm(ClassFileVersion.JAVA_V21));
 	}
 
 	public GenericsByteBuddy(ClassFileVersion classFileVersion) {
@@ -171,9 +171,8 @@ public class GenericsByteBuddy {
 				DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY == null ? Implementation.Context.Default.Factory.INSTANCE
 						: DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY,
 				MethodGraph.Compiler.DEFAULT, InstrumentedType.Factory.Default.MODIFIABLE, DEFAULT_TYPE_VALIDATION,
-				net.bytebuddy.dynamic.VisibilityBridgeStrategy.Default.ALWAYS,
-				net.bytebuddy.utility.AsmClassReader.Factory.Default.INSTANCE,
-				net.bytebuddy.utility.AsmClassWriter.Factory.Default.INSTANCE,
+				VisibilityBridgeStrategy.Default.ALWAYS, AsmClassReader.Factory.Default.IMPLICIT,
+				AsmClassWriter.Factory.Default.IMPLICIT,
 				new LatentMatcher.Resolved<>(ElementMatchers.isSynthetic().or(ElementMatchers.isDefaultFinalizer())));
 	}
 

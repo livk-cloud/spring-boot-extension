@@ -18,13 +18,15 @@ package com.livk.commons.http;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.http.annotation.EnableWebClient;
-import com.livk.commons.http.support.DefaultReactorNettyHttpClientMapper;
+import com.livk.commons.http.support.ReactorClientCustomizer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.ReactorNettyHttpClientMapper;
+import org.springframework.boot.autoconfigure.http.client.reactive.ClientHttpConnectorBuilderCustomizer;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.http.client.reactive.ClientHttpConnectorBuilder;
+import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -33,10 +35,6 @@ import org.springframework.http.client.ReactorResourceFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -72,13 +70,13 @@ public class WebClientConfiguration {
 		@Bean
 		@Lazy
 		@Order(0)
-		public WebClientCustomizer clientConnectorCustomizer(ReactorResourceFactory reactorResourceFactory,
-				ObjectProvider<ReactorNettyHttpClientMapper> mapperProvider) {
+		public WebClientCustomizer clientConnectorCustomizer(
+				ObjectProvider<ClientHttpConnectorBuilderCustomizer<ReactorClientHttpConnectorBuilder>> customizers) {
 			return builder -> {
-				List<ReactorNettyHttpClientMapper> mappers = mapperProvider.orderedStream()
-					.collect(Collectors.toCollection(ArrayList::new));
-				builder.clientConnector(new ReactorClientHttpConnector(reactorResourceFactory,
-						ReactorNettyHttpClientMapper.of(mappers)::configure));
+				ReactorClientHttpConnectorBuilder connectorBuilder = ClientHttpConnectorBuilder.reactor();
+				customizers.orderedStream().forEach(customizer -> customizer.customize(connectorBuilder));
+				ReactorClientHttpConnector connector = connectorBuilder.build();
+				builder.clientConnector(connector);
 			};
 		}
 
@@ -91,8 +89,8 @@ public class WebClientConfiguration {
 		}
 
 		@Bean
-		public ReactorNettyHttpClientMapper reactorNettyHttpClientMapper() {
-			return new DefaultReactorNettyHttpClientMapper();
+		public ReactorClientCustomizer reactorClientCustomizer(ReactorResourceFactory reactorResourceFactory) {
+			return new ReactorClientCustomizer(reactorResourceFactory);
 		}
 
 	}

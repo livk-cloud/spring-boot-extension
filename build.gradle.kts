@@ -58,8 +58,9 @@ configure(module) {
 
 allprojects {
 	repositories {
+		maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
+//		maven("https://repo.spring.io/release")
+		maven("https://repo.spring.io/milestone")
 		mavenCentral()
-//		国内镜像源，海外CI拉取容易失败，在国内构建项目使用即可
-//		maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
 	}
 }

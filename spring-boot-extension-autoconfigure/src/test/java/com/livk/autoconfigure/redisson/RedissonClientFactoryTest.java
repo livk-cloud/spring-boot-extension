@@ -15,30 +15,23 @@ package com.livk.autoconfigure.redisson;
 
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
-import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -59,6 +52,8 @@ class RedissonClientFactoryTest {
 		registry.add("spring.redisson.config.single-server-config.address",
 				() -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 		registry.add("spring.redisson.config.codec", () -> "!<org.redisson.codec.JsonJacksonCodec> {}");
+		registry.add("spring.data.redis.host", redis::getHost);
+		registry.add("spring.data.redis.port", redis::getFirstMappedPort);
 	}
 
 	@Autowired
@@ -67,17 +62,29 @@ class RedissonClientFactoryTest {
 	@Autowired
 	ObjectProvider<ConfigCustomizer> configCustomizers;
 
-	@Test
-	void create() {
-		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
-		ConfigurableConversionService conversionService = environment.getConversionService();
-		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
-		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
-			.registerCustomEditors(registry);
-		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		ConfigProperties properties = binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
+	ConfigProperties configProperties;
 
-		RedissonClient redissonClient = RedissonClientFactory.create(properties, new RedisProperties(),
+	RedisProperties redisProperties;
+
+	@BeforeEach
+	void before() {
+		this.configProperties = ConfigProperties.load(environment);
+
+		this.redisProperties = Binder.get(environment).bind("spring.data.redis", RedisProperties.class).get();
+	}
+
+	@Test
+	void createTest() {
+		RedissonClient redissonClient = RedissonClientFactory.create(configProperties, new RedisProperties(),
+				configCustomizers);
+
+		assertNotNull(redissonClient);
+		redissonClient.shutdown();
+	}
+
+	@Test
+	void createByRedisPropertiesTest() {
+		RedissonClient redissonClient = RedissonClientFactory.create(new ConfigProperties(), redisProperties,
 				configCustomizers);
 
 		assertNotNull(redissonClient);
