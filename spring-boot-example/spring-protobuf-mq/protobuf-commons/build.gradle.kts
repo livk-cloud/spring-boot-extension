@@ -1,6 +1,5 @@
 import com.google.protobuf.gradle.id
 import com.google.protobuf.gradle.proto
-import io.spring.javaformat.gradle.tasks.CheckFormat
 
 plugins {
 	com.livk.common

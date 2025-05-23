@@ -57,11 +57,7 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 			if (environment != null) {
 				value = environment.resolvePlaceholders(value);
 			}
-			EXPRESSION expression = this.expressionCache.get(value);
-			if (expression == null) {
-				expression = compile(value);
-				this.expressionCache.put(value, expression);
-			}
+			EXPRESSION expression = this.expressionCache.computeIfAbsent(value, this::compile);
 			CONTEXT frameworkContext = transform(context);
 			Assert.notNull(frameworkContext, "frameworkContext not be null");
 			return calculate(expression, frameworkContext, returnType);
@@ -84,9 +80,8 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 	 * 对表达式进行处理生成EXPRESSION
 	 * @param value 表达式
 	 * @return EXPRESSION expression
-	 * @throws Throwable the throwable
 	 */
-	protected abstract EXPRESSION compile(String value) throws Throwable;
+	protected abstract EXPRESSION compile(String value);
 
 	/**
 	 * 从Context装换成框架的上下文

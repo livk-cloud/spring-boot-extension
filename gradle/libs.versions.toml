@@ -1,30 +1,30 @@
 [versions]
-spring-boot = "3.5.0-RC1"
-kotlin = "2.1.20"
+spring-boot = "3.5.0"
+kotlin = "2.1.21"
 pagehelper-starter = "2.1.0"
 mybatis = "3.5.19"
 mybatis-spring = "3.0.4"
 mybatis-boot = "3.0.4"
 guava = "33.4.8-jre"
 fastexcel = "1.2.0"
-redisson = "3.45.1"
-clickhouse = "0.8.4"
+redisson = "3.47.0"
+clickhouse = "0.8.6"
 mapstruct = "1.6.3"
 mapstruct-lombok = "0.2.0"
 curator = "5.8.0"
 asciidoctor-jvm = "4.0.4"
-browscap-java = "1.5.0"
+browscap-java = "1.5.1"
 auto-service = "1.1.1"
-yauaa = "7.30.0"
-springdoc = "2.8.6"
+yauaa = "7.31.0"
+springdoc = "2.8.8"
 google-javase = "3.5.3"
-spring-admin = "3.4.5"
-nimbusds-jwt = "10.2"
-jsqlparser = "5.1"
-lettucemod = "4.2.1"
+spring-admin = "3.4.6"
+nimbusds-jwt = "10.3"
+jsqlparser = "5.3"
+lettucemod = "4.3.0"
 minio = "8.5.17"
 aviator = "5.4.3"
-protobuf-java = "4.30.2"
+protobuf-java = "4.31.0"
 grpc-java = "1.72.0"
 google-protobuf-plugins = "0.9.5"
 google-osdetector-plugins = "1.7.3"
@@ -32,10 +32,11 @@ jexl3 = "3.5.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
-spring-javaformat = "0.0.43"
+spring-javaformat = "0.0.45"
 compile-testing = "0.21.0"
 okhttp = "4.12.0"
 spotbugs-annotations = "4.9.3"
+maven-publish-plugins = "0.32.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
@@ -90,14 +91,18 @@ spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-
 compile-testing = { group = "com.google.testing.compile", name = "compile-testing", version.ref = "compile-testing" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 
+#plugin
+spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
+spring-javaformat-plugin = { group = "io.spring.javaformat", name = "spring-javaformat-gradle-plugin", version.ref = "spring-javaformat" }
+google-protobuf-plugin = { group = "com.google.protobuf", name = "protobuf-gradle-plugin", version.ref = "google-protobuf-plugins" }
+osdetector-gradle-plugin = { group = "com.google.gradle", name = "osdetector-gradle-plugin", version.ref = "google-osdetector-plugins" }
+maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "maven-publish-plugins" }
+
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
 mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
-google-protobuf = { id = "com.google.protobuf", version.ref = "google-protobuf-plugins" }
-spring-javaformat = { id = "io.spring.javaformat", version.ref = "spring-javaformat" }

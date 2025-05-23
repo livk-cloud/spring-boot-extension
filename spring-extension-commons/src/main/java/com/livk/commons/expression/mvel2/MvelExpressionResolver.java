@@ -23,7 +23,9 @@ import org.mvel2.DataConversion;
 import org.mvel2.MVELInterpretedRuntime;
 import org.mvel2.ParserContext;
 import org.mvel2.integration.VariableResolverFactory;
+import org.mvel2.integration.impl.CachedMapVariableResolverFactory;
 import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
+import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 /**
  * 使用<a href="https://github.com/mvel/mvel">Mvel 2</a>实现的表达式解析器
@@ -51,7 +53,9 @@ public class MvelExpressionResolver extends CacheExpressionResolver<VariableReso
 
 	@Override
 	protected VariableResolverFactory transform(Context context) {
-		return new CachingMapVariableResolverFactory(context.asMap());
+		VariableResolverFactory resolverFactory = new CachingMapVariableResolverFactory(context.asMap());
+		VariableResolverFactory nextFactory = new CachedMapVariableResolverFactory(context.asMap(), resolverFactory);
+		return new MapVariableResolverFactory(context.asMap(), nextFactory);
 	}
 
 	@Override

@@ -34,6 +34,7 @@ abstract class MavenRepositoryPlugin : Plugin<Project> {
 			val snapshotsRepoUrl = project.property("mvn.releasesRepoUrl").toString()
 			publishing.repositories.maven { maven ->
 				//使用不安全的http请求、也就是缺失SSL
+				maven.name = "CustomizeMaven"
 				maven.isAllowInsecureProtocol = true
 				val url = if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
 				maven.setUrl(url)

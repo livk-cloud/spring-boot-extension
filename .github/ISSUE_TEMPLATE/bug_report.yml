@@ -1,7 +1,7 @@
 name: Bug报告
 description: 帮助我们改进
 title: "[Bug报告]: "
-labels: ["bug"]
+labels: [ "bug" ]
 assignees: 'livk-cloud'
 body:
   - type: dropdown

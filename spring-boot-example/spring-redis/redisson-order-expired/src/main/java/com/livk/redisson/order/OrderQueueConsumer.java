@@ -74,4 +74,8 @@ public class OrderQueueConsumer implements Runnable, InitializingBean, Disposabl
 		executor.shutdown();
 	}
 
+	public boolean isEmpty() {
+		return orderQueue.isEmpty();
+	}
+
 }

@@ -16,6 +16,7 @@
 
 package com.livk.commons.util;
 
+import com.google.common.collect.Maps;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -101,14 +102,28 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	 */
 	public static Map<String, Object> convert(Object source) {
 		BeanWrapper beanWrapper = new BeanWrapperImpl(source);
-		PropertyDescriptor[] descriptors = beanWrapper.getPropertyDescriptors();
 		Map<String, Object> map = new HashMap<>();
-		for (PropertyDescriptor descriptor : descriptors) {
+		for (PropertyDescriptor descriptor : beanWrapper.getPropertyDescriptors()) {
 			String name = descriptor.getName();
 			Object propertyValue = beanWrapper.getPropertyValue(name);
 			map.put(name, propertyValue);
 		}
 		return Collections.unmodifiableMap(map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T convert(Map<String, Object> map) {
+		if (!map.containsKey("class")) {
+			throw new IllegalArgumentException("class must not be null");
+		}
+		HashMap<String, Object> target = Maps.newHashMap(map);
+		Class<T> targetClass = (Class<T>) target.remove("class");
+		if (BeanUtils.getResolvableConstructor(targetClass).getParameterCount() != 0) {
+			throw new IllegalArgumentException("Missing no-argument constructor");
+		}
+		BeanWrapper beanWrapper = new BeanWrapperImpl(targetClass);
+		beanWrapper.setPropertyValues(target);
+		return (T) beanWrapper.getWrappedInstance();
 	}
 
 }

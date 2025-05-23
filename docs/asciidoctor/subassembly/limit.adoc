@@ -20,8 +20,7 @@ public class UserService {
 
 ===== LimitExecutor
 
-限流执行器基类,实现注册为Spring Bean即可
-提供RedissonLimitExecutor作为实现，需要Redisson依赖
+限流执行器基类,实现注册为Spring Bean即可 提供RedissonLimitExecutor作为实现，需要Redisson依赖
 
 ===== LimitInterceptor
 
