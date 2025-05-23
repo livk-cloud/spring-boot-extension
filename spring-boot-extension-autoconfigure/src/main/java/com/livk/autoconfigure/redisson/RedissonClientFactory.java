@@ -32,7 +32,7 @@ import java.util.Optional;
  *
  * @author livk
  */
-public class RedissonClientFactory {
+abstract class RedissonClientFactory {
 
 	private static final String REDIS_PROTOCOL_PREFIX = "redis://";
 

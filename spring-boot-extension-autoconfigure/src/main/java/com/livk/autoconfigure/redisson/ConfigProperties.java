@@ -45,10 +45,18 @@ import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.redisson.connection.balancer.RoundRobinLoadBalancer;
+import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
+import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.convert.support.ConfigurableConversionService;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -59,6 +67,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 
 /**
  * The type Config properties.
@@ -75,6 +84,16 @@ public class ConfigProperties {
 	public static final String PREFIX = "spring.redisson";
 
 	private RedissonConfig config;
+
+	public static ConfigProperties load(StandardEnvironment environment) {
+		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
+		ConfigurableConversionService conversionService = environment.getConversionService();
+		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
+		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
+			.registerCustomEditors(registry);
+		Binder binder = new Binder(sources, resolver, conversionService, consumer);
+		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).get();
+	}
 
 	/**
 	 * The type Redisson config.
