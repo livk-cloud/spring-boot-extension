@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -78,20 +77,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	 */
 	public <T> List<T> copyList(Collection<?> sourceList, Class<T> targetClass) {
 		return sourceList.stream().map(source -> copy(source, targetClass)).toList();
-	}
-
-	/**
-	 * 判断当前类是否为NULL,同时判定当前类所有的Field是否为NULL
-	 * @param source 目标
-	 * @return boolean
-	 */
-	@Deprecated(since = "1.3.3", forRemoval = true)
-	public static boolean isFieldNull(Object source) {
-		if (source == null) {
-			return true;
-		}
-		return Stream.of(source.getClass().getDeclaredFields())
-			.anyMatch(field -> ReflectionUtils.getDeclaredFieldValue(field, source) == null);
 	}
 
 	/**
