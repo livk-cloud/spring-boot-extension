@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-public class AotFactoriesProcessorTest {
+class AotFactoriesProcessorTest {
 
 	@Test
 	void test() {
