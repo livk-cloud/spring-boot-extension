@@ -15,13 +15,11 @@ package com.livk.commons.util;
 
 import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.NamingStrategy;
-import net.bytebuddy.build.AccessControllerPlugin.Enhance;
+import net.bytebuddy.build.AccessControllerPlugin;
 import net.bytebuddy.build.HashCodeAndEqualsPlugin;
 import net.bytebuddy.description.annotation.AnnotationValue;
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.field.FieldList;
 import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.method.ParameterDescription;
 import net.bytebuddy.description.modifier.EnumerationState;
 import net.bytebuddy.description.modifier.ModifierContributor;
@@ -38,7 +36,6 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.TargetType;
 import net.bytebuddy.dynamic.Transformer;
 import net.bytebuddy.dynamic.VisibilityBridgeStrategy;
-import net.bytebuddy.dynamic.scaffold.ClassWriterStrategy;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import net.bytebuddy.dynamic.scaffold.MethodRegistry;
@@ -70,8 +67,8 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.MethodVisitor;
+import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.matcher.LatentMatcher;
 import net.bytebuddy.utility.AsmClassReader;
 import net.bytebuddy.utility.AsmClassWriter;
@@ -82,7 +79,7 @@ import net.bytebuddy.utility.JavaType;
 import net.bytebuddy.utility.RandomString;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -93,13 +90,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
-import static net.bytebuddy.description.type.TypeDescription.ArrayProjection;
-import static net.bytebuddy.description.type.TypeDescription.ForLoadedType;
-import static net.bytebuddy.description.type.TypeDescription.ForPackageDescription;
-import static net.bytebuddy.description.type.TypeDescription.Generic;
-import static net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy.Default;
+import static net.bytebuddy.matcher.ElementMatchers.isConstructor;
+import static net.bytebuddy.matcher.ElementMatchers.isDefaultFinalizer;
+import static net.bytebuddy.matcher.ElementMatchers.isEquals;
+import static net.bytebuddy.matcher.ElementMatchers.isHashCode;
+import static net.bytebuddy.matcher.ElementMatchers.isSynthetic;
+import static net.bytebuddy.matcher.ElementMatchers.isToString;
+import static net.bytebuddy.matcher.ElementMatchers.named;
+import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
+import static net.bytebuddy.matcher.ElementMatchers.takesGenericArguments;
+import static net.bytebuddy.matcher.ElementMatchers.targetsElement;
 
 /**
  * 复制{@link net.bytebuddy.ByteBuddy} 调整，便于适配高版本JDK
@@ -113,6 +115,14 @@ public class GenericsByteBuddy {
 
 	public static final String DEFAULT_NAMING_PROPERTY = "net.bytebuddy.naming";
 
+	public static final String DEFAULT_VALIDATION_PROPERTY = "net.bytebuddy.validation";
+
+	private static final String BYTE_BUDDY_DEFAULT_PREFIX = "ByteBuddy";
+
+	private static final String BYTE_BUDDY_DEFAULT_SUFFIX = "auxiliary";
+
+	private static final String BYTE_BUDDY_DEFAULT_CONTEXT_NAME = "synthetic";
+
 	private static final TypeValidation DEFAULT_TYPE_VALIDATION;
 
 	@MaybeNull
@@ -123,6 +133,87 @@ public class GenericsByteBuddy {
 
 	@MaybeNull
 	private static final Implementation.Context.Factory DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY;
+
+	static {
+		String validation;
+		try {
+			validation = doPrivileged(new GetSystemPropertyAction(DEFAULT_VALIDATION_PROPERTY));
+		}
+		catch (Throwable ignored) {
+			validation = null;
+		}
+		DEFAULT_TYPE_VALIDATION = validation == null || Boolean.parseBoolean(validation) ? TypeValidation.ENABLED
+				: TypeValidation.DISABLED;
+		String naming;
+		try {
+			naming = doPrivileged(new GetSystemPropertyAction(DEFAULT_NAMING_PROPERTY));
+		}
+		catch (Throwable ignored) {
+			naming = null;
+		}
+		NamingStrategy namingStrategy;
+		AuxiliaryType.NamingStrategy auxiliaryNamingStrategy;
+		Implementation.Context.Factory implementationContextFactory;
+		if (naming == null) {
+			if (GraalImageCode.getCurrent().isDefined()) {
+				namingStrategy = new NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_PREFIX,
+						new NamingStrategy.Suffixing.BaseNameResolver.WithCallerSuffix(
+								NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
+						NamingStrategy.BYTE_BUDDY_RENAME_PACKAGE);
+				auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_SUFFIX);
+				implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix(
+						BYTE_BUDDY_DEFAULT_CONTEXT_NAME);
+			}
+			else {
+				namingStrategy = null;
+				auxiliaryNamingStrategy = null;
+				implementationContextFactory = null;
+			}
+		}
+		else if (naming.equalsIgnoreCase("fixed")) {
+			namingStrategy = new NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_PREFIX,
+					NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE,
+					NamingStrategy.BYTE_BUDDY_RENAME_PACKAGE);
+			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_SUFFIX);
+			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix(
+					BYTE_BUDDY_DEFAULT_CONTEXT_NAME);
+		}
+		else if (naming.equalsIgnoreCase("caller")) {
+			namingStrategy = new NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_PREFIX,
+					new NamingStrategy.Suffixing.BaseNameResolver.WithCallerSuffix(
+							NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
+					NamingStrategy.BYTE_BUDDY_RENAME_PACKAGE);
+			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_SUFFIX);
+			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix(
+					BYTE_BUDDY_DEFAULT_CONTEXT_NAME);
+		}
+		else {
+			long seed;
+			try {
+				seed = Long.parseLong(naming);
+			}
+			catch (Exception ignored) {
+				throw new IllegalStateException(
+						"'net.bytebuddy.naming' is set to an unknown, non-numeric value: " + naming);
+			}
+			namingStrategy = new NamingStrategy.SuffixingRandom(BYTE_BUDDY_DEFAULT_PREFIX,
+					NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE,
+					NamingStrategy.BYTE_BUDDY_RENAME_PACKAGE,
+					new RandomString(RandomString.DEFAULT_LENGTH, new Random(seed)));
+			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing(BYTE_BUDDY_DEFAULT_SUFFIX);
+			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix(
+					BYTE_BUDDY_DEFAULT_CONTEXT_NAME);
+		}
+		DEFAULT_NAMING_STRATEGY = namingStrategy;
+		DEFAULT_AUXILIARY_NAMING_STRATEGY = auxiliaryNamingStrategy;
+		DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY = implementationContextFactory;
+	}
+
+	@MaybeNull
+	@AccessControllerPlugin.Enhance
+	private static <T> T doPrivileged(PrivilegedAction<T> action) {
+		return action.run();
+	}
 
 	protected final ClassFileVersion classFileVersion;
 
@@ -150,22 +241,16 @@ public class GenericsByteBuddy {
 
 	protected final AsmClassWriter.Factory classWriterFactory;
 
-	@MaybeNull
-	@Enhance
-	private static <T> T doPrivileged(PrivilegedAction<T> action) {
-		return action.run();
-	}
-
 	public GenericsByteBuddy() {
 		this(ClassFileVersion.ofThisVm(ClassFileVersion.JAVA_V21));
 	}
 
 	public GenericsByteBuddy(ClassFileVersion classFileVersion) {
 		this(classFileVersion,
-				DEFAULT_NAMING_STRATEGY == null ? new NamingStrategy.SuffixingRandom("ByteBuddy")
+				DEFAULT_NAMING_STRATEGY == null ? new NamingStrategy.SuffixingRandom(BYTE_BUDDY_DEFAULT_PREFIX)
 						: DEFAULT_NAMING_STRATEGY,
 				DEFAULT_AUXILIARY_NAMING_STRATEGY == null
-						? new AuxiliaryType.NamingStrategy.SuffixingRandom("auxiliary")
+						? new AuxiliaryType.NamingStrategy.SuffixingRandom(BYTE_BUDDY_DEFAULT_SUFFIX)
 						: DEFAULT_AUXILIARY_NAMING_STRATEGY,
 				AnnotationValueFilter.Default.APPEND_DEFAULTS, AnnotationRetention.ENABLED,
 				DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY == null ? Implementation.Context.Default.Factory.INSTANCE
@@ -173,7 +258,7 @@ public class GenericsByteBuddy {
 				MethodGraph.Compiler.DEFAULT, InstrumentedType.Factory.Default.MODIFIABLE, DEFAULT_TYPE_VALIDATION,
 				VisibilityBridgeStrategy.Default.ALWAYS, AsmClassReader.Factory.Default.IMPLICIT,
 				AsmClassWriter.Factory.Default.IMPLICIT,
-				new LatentMatcher.Resolved<>(ElementMatchers.isSynthetic().or(ElementMatchers.isDefaultFinalizer())));
+				new LatentMatcher.Resolved<>(isSynthetic().or(isDefaultFinalizer())));
 	}
 
 	protected GenericsByteBuddy(ClassFileVersion classFileVersion, NamingStrategy namingStrategy,
@@ -199,440 +284,344 @@ public class GenericsByteBuddy {
 	}
 
 	public <T> DynamicType.Builder<T> subclass(Class<T> superType) {
-		return this.subclass(ForLoadedType.of(superType));
+		return subclass(TypeDescription.ForLoadedType.of(superType));
 	}
 
 	public <T> DynamicType.Builder<T> subclass(Class<T> superType, ConstructorStrategy constructorStrategy) {
-		return this.subclass(ForLoadedType.of(superType), constructorStrategy);
+		return subclass(TypeDescription.ForLoadedType.of(superType), constructorStrategy);
 	}
 
 	public <T> DynamicType.Builder<T> subclass(Type superType) {
-		return this.subclass(TypeDefinition.Sort.describe(superType));
+		return subclass(TypeDefinition.Sort.describe(superType));
 	}
 
 	public <T> DynamicType.Builder<T> subclass(Type superType, ConstructorStrategy constructorStrategy) {
-		return this.subclass(TypeDefinition.Sort.describe(superType), constructorStrategy);
+		return subclass(TypeDefinition.Sort.describe(superType), constructorStrategy);
 	}
 
 	public <T> DynamicType.Builder<T> subclass(TypeDefinition superType) {
-		return this.subclass(superType, Default.IMITATE_SUPER_CLASS_OPENING);
+		return subclass(superType, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING);
 	}
 
 	public <T> DynamicType.Builder<T> subclass(TypeDefinition superType, ConstructorStrategy constructorStrategy) {
-		if (!superType.isPrimitive() && !superType.isArray() && !superType.isFinal()) {
-			Generic actualSuperType;
-			TypeList.Generic interfaceTypes;
-			if (superType.isInterface()) {
-				actualSuperType = Generic.OfNonGenericType.ForLoadedType.of(Object.class);
-				interfaceTypes = new TypeList.Generic.Explicit(superType);
-			}
-			else {
-				actualSuperType = superType.asGenericType();
-				interfaceTypes = new TypeList.Generic.Empty();
-			}
-
-			return new SubclassDynamicTypeBuilder<>(
-					this.instrumentedTypeFactory.subclass(this.namingStrategy.subclass(superType.asGenericType()),
-							ModifierContributor.Resolver
-								.of(new ModifierContributor.ForType[] { Visibility.PUBLIC, TypeManifestation.PLAIN })
-								.resolve(superType.getModifiers()),
-							actualSuperType)
-						.withInterfaces(interfaceTypes),
-					this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-					this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-					this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory,
-					this.classWriterFactory, this.ignoredMethods, constructorStrategy);
-		}
-		else {
+		TypeDescription.Generic actualSuperType;
+		TypeList.Generic interfaceTypes;
+		if (superType.isPrimitive() || superType.isArray() || superType.isFinal()) {
 			throw new IllegalArgumentException("Cannot subclass primitive, array or final types: " + superType);
 		}
+		else if (superType.isInterface()) {
+			actualSuperType = TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class);
+			interfaceTypes = new TypeList.Generic.Explicit(superType);
+		}
+		else {
+			actualSuperType = superType.asGenericType();
+			interfaceTypes = new TypeList.Generic.Empty();
+		}
+		return new SubclassDynamicTypeBuilder<>(
+				instrumentedTypeFactory.subclass(namingStrategy.subclass(superType.asGenericType()),
+						ModifierContributor.Resolver.of(Visibility.PUBLIC, TypeManifestation.PLAIN)
+							.resolve(superType.getModifiers()),
+						actualSuperType)
+					.withInterfaces(interfaceTypes),
+				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, constructorStrategy);
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface() {
-		return this.makeInterface(Collections.<Type>emptyList());
+		return makeInterface(Collections.<TypeDescription>emptyList());
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface(Class<T> interfaceType) {
-		return this.makeInterface(Collections.singletonList(interfaceType));
+		return makeInterface(Collections.<Type>singletonList(interfaceType));
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface(Type... interfaceType) {
-		return this.makeInterface(Arrays.asList(interfaceType));
+		return makeInterface(Arrays.asList(interfaceType));
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface(List<? extends Type> interfaceTypes) {
-		return this.makeInterface(new TypeList.Generic.ForLoadedTypes(interfaceTypes));
+		return makeInterface(new TypeList.Generic.ForLoadedTypes(interfaceTypes));
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface(TypeDefinition... interfaceType) {
-		return this.makeInterface(Arrays.asList(interfaceType));
+		return makeInterface(Arrays.asList(interfaceType));
 	}
 
 	public <T> DynamicType.Builder<T> makeInterface(Collection<? extends TypeDefinition> interfaceTypes) {
-		return this.<T>subclass(Object.class, Default.NO_CONSTRUCTORS)
+		return this.<T>subclass(Object.class, ConstructorStrategy.Default.NO_CONSTRUCTORS)
 			.implement(interfaceTypes)
 			.modifiers(TypeManifestation.INTERFACE, Visibility.PUBLIC);
 	}
 
 	public <T> DynamicType.Builder<T> makePackage(String name) {
 		return new SubclassDynamicTypeBuilder<>(
-				this.instrumentedTypeFactory.subclass(name + "." + "package-info", 5632,
-						Generic.OfNonGenericType.ForLoadedType.of(Object.class)),
-				this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-				this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-				this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory,
-				this.ignoredMethods, Default.NO_CONSTRUCTORS);
+				instrumentedTypeFactory.subclass(name + "." + PackageDescription.PACKAGE_CLASS_NAME,
+						PackageDescription.PACKAGE_MODIFIERS,
+						TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class)),
+				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, ConstructorStrategy.Default.NO_CONSTRUCTORS);
 	}
 
 	public <T> DynamicType.Builder<T> makeRecord() {
-		Generic record = InstrumentedType.Default
-			.of(JavaType.RECORD.getTypeStub().getName(), Generic.OfNonGenericType.ForLoadedType.of(Object.class),
-					Visibility.PUBLIC)
-			.withMethod(new MethodDescription.Token(4))
-			.withMethod(new MethodDescription.Token("hashCode", 1025, ForLoadedType.of(Integer.TYPE).asGenericType()))
-			.withMethod(new MethodDescription.Token("equals", 1025, ForLoadedType.of(Boolean.TYPE).asGenericType(),
-					Collections.singletonList(Generic.OfNonGenericType.ForLoadedType.of(Object.class))))
-			.withMethod(new MethodDescription.Token("toString", 1025, ForLoadedType.of(String.class).asGenericType()))
+		TypeDescription.Generic record = InstrumentedType.Default
+			.of(JavaType.RECORD.getTypeStub().getName(),
+					TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class), Visibility.PUBLIC)
+			.withMethod(new MethodDescription.Token(Opcodes.ACC_PROTECTED))
+			.withMethod(new MethodDescription.Token("hashCode", Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT,
+					TypeDescription.ForLoadedType.of(int.class).asGenericType()))
+			.withMethod(new MethodDescription.Token("equals", Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT,
+					TypeDescription.ForLoadedType.of(boolean.class).asGenericType(),
+					Collections.singletonList(TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class))))
+			.withMethod(new MethodDescription.Token("toString", Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT,
+					TypeDescription.ForLoadedType.of(String.class).asGenericType()))
 			.asGenericType();
-		return (new SubclassDynamicTypeBuilder<T>(
-				this.instrumentedTypeFactory.subclass(this.namingStrategy.subclass(record), 17, record)
+		return new SubclassDynamicTypeBuilder<T>(
+				instrumentedTypeFactory
+					.subclass(namingStrategy.subclass(record), Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, record)
 					.withRecord(true),
-				this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-				this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-				this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory,
-				this.ignoredMethods, GenericsByteBuddy.RecordConstructorStrategy.INSTANCE))
-			.method(ElementMatchers.isHashCode())
-			.intercept(GenericsByteBuddy.RecordObjectMethod.HASH_CODE)
-			.method(ElementMatchers.isEquals())
-			.intercept(GenericsByteBuddy.RecordObjectMethod.EQUALS)
-			.method(ElementMatchers.isToString())
-			.intercept(GenericsByteBuddy.RecordObjectMethod.TO_STRING);
+				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, RecordConstructorStrategy.INSTANCE)
+			.method(isHashCode())
+			.intercept(RecordObjectMethod.HASH_CODE)
+			.method(isEquals())
+			.intercept(RecordObjectMethod.EQUALS)
+			.method(isToString())
+			.intercept(RecordObjectMethod.TO_STRING);
 	}
 
 	public <T extends Annotation> DynamicType.Builder<T> makeAnnotation() {
 		return new SubclassDynamicTypeBuilder<>(
-				this.instrumentedTypeFactory
-					.subclass(this.namingStrategy.subclass(Generic.OfNonGenericType.ForLoadedType.of(Annotation.class)),
-							ModifierContributor.Resolver
-								.of(new ModifierContributor.ForType[] {
-										Visibility.PUBLIC, TypeManifestation.ANNOTATION })
-								.resolve(),
-							Generic.OfNonGenericType.ForLoadedType.of(Object.class))
-					.withInterfaces(
-							new TypeList.Generic.Explicit(Generic.OfNonGenericType.ForLoadedType.of(Annotation.class))),
-				this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-				this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-				this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory,
-				this.ignoredMethods, Default.NO_CONSTRUCTORS);
+				instrumentedTypeFactory
+					.subclass(
+							namingStrategy
+								.subclass(TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Annotation.class)),
+							ModifierContributor.Resolver.of(Visibility.PUBLIC, TypeManifestation.ANNOTATION).resolve(),
+							TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class))
+					.withInterfaces(new TypeList.Generic.Explicit(
+							TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Annotation.class))),
+				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, ConstructorStrategy.Default.NO_CONSTRUCTORS);
 	}
 
 	public <T extends Enum<T>> DynamicType.Builder<T> makeEnumeration(String... value) {
-		return this.makeEnumeration(Arrays.asList(value));
+		return makeEnumeration(Arrays.asList(value));
 	}
 
 	public <T extends Enum<T>> DynamicType.Builder<T> makeEnumeration(Collection<? extends String> values) {
 		if (values.isEmpty()) {
 			throw new IllegalArgumentException("Require at least one enumeration constant");
 		}
-		else {
-			Generic enumType = Generic.Builder.parameterizedType(Enum.class, new Type[] { TargetType.class }).build();
-			return (new SubclassDynamicTypeBuilder<T>(
-					this.instrumentedTypeFactory.subclass(this.namingStrategy.subclass(enumType),
-							ModifierContributor.Resolver.of(new ModifierContributor.ForType[] { Visibility.PUBLIC,
-									TypeManifestation.FINAL, EnumerationState.ENUMERATION })
-								.resolve(),
-							enumType),
-					this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-					this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-					this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory,
-					this.classWriterFactory, this.ignoredMethods, Default.NO_CONSTRUCTORS))
-				.defineConstructor(new ModifierContributor.ForMethod[] { Visibility.PRIVATE })
-				.withParameters(new Type[] { String.class, Integer.TYPE })
-				.intercept(SuperMethodCall.INSTANCE)
-				.defineMethod("valueOf", TargetType.class,
-						new ModifierContributor.ForMethod[] { Visibility.PUBLIC, Ownership.STATIC })
-				.withParameters(new Type[] { String.class })
-				.intercept(MethodCall
-					.invoke(((MethodList<?>) enumType.getDeclaredMethods()
-						.filter(ElementMatchers.named("valueOf")
-							.and(ElementMatchers.takesArguments(Class.class, String.class))))
-						.getOnly())
-					.withOwnType()
-					.withArgument(0)
-					.withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC))
-				.defineMethod("values", TargetType[].class,
-						new ModifierContributor.ForMethod[] { Visibility.PUBLIC, Ownership.STATIC })
-				.intercept(new GenericsByteBuddy.EnumerationImplementation(new ArrayList<>(values)));
-		}
+		TypeDescription.Generic enumType = TypeDescription.Generic.Builder
+			.parameterizedType(Enum.class, TargetType.class)
+			.build();
+		return new SubclassDynamicTypeBuilder<T>(
+				instrumentedTypeFactory.subclass(namingStrategy.subclass(enumType),
+						ModifierContributor.Resolver
+							.of(Visibility.PUBLIC, TypeManifestation.FINAL, EnumerationState.ENUMERATION)
+							.resolve(),
+						enumType),
+				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, ConstructorStrategy.Default.NO_CONSTRUCTORS)
+			.defineConstructor(Visibility.PRIVATE)
+			.withParameters(String.class, int.class)
+			.intercept(SuperMethodCall.INSTANCE)
+			.defineMethod(EnumerationImplementation.ENUM_VALUE_OF_METHOD_NAME, TargetType.class, Visibility.PUBLIC,
+					Ownership.STATIC)
+			.withParameters(String.class)
+			.intercept(MethodCall
+				.invoke(enumType.getDeclaredMethods()
+					.filter(named(EnumerationImplementation.ENUM_VALUE_OF_METHOD_NAME)
+						.and(takesArguments(Class.class, String.class)))
+					.getOnly())
+				.withOwnType()
+				.withArgument(0)
+				.withAssigner(Assigner.DEFAULT, Assigner.Typing.DYNAMIC))
+			.defineMethod(EnumerationImplementation.ENUM_VALUES_METHOD_NAME, TargetType[].class, Visibility.PUBLIC,
+					Ownership.STATIC)
+			.intercept(new EnumerationImplementation(new ArrayList<>(values)));
 	}
 
 	public <T> DynamicType.Builder<T> redefine(Class<T> type) {
-		return this.redefine(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
+		return redefine(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
 	}
 
 	public <T> DynamicType.Builder<T> redefine(Class<T> type, ClassFileLocator classFileLocator) {
-		return this.redefine(ForLoadedType.of(type), classFileLocator);
+		return redefine(TypeDescription.ForLoadedType.of(type), classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> redefine(TypeDescription type, ClassFileLocator classFileLocator) {
-		if (!type.isArray() && !type.isPrimitive()) {
-			return new RedefinitionDynamicTypeBuilder<>(this.instrumentedTypeFactory.represent(type),
-					this.classFileVersion, this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory,
-					this.annotationRetention, this.implementationContextFactory, this.methodGraphCompiler,
-					this.typeValidation, this.visibilityBridgeStrategy, this.classReaderFactory,
-					this.classWriterFactory, this.ignoredMethods, type, classFileLocator);
-		}
-		else {
+		if (type.isArray() || type.isPrimitive()) {
 			throw new IllegalArgumentException("Cannot redefine array or primitive type: " + type);
 		}
+		return new RedefinitionDynamicTypeBuilder<>(instrumentedTypeFactory.represent(type), classFileVersion,
+				auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, type, classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> rebase(Class<T> type) {
-		return this.rebase(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
+		return rebase(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
 	}
 
 	public <T> DynamicType.Builder<T> rebase(Class<T> type, ClassFileLocator classFileLocator) {
-		return this.rebase(ForLoadedType.of(type), classFileLocator);
+		return rebase(TypeDescription.ForLoadedType.of(type), classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> rebase(Class<T> type, ClassFileLocator classFileLocator,
 			MethodNameTransformer methodNameTransformer) {
-		return this.rebase(ForLoadedType.of(type), classFileLocator, methodNameTransformer);
+		return rebase(TypeDescription.ForLoadedType.of(type), classFileLocator, methodNameTransformer);
 	}
 
 	public <T> DynamicType.Builder<T> rebase(TypeDescription type, ClassFileLocator classFileLocator) {
-		return this.rebase(type, classFileLocator, MethodNameTransformer.Suffixing.withRandomSuffix());
+		return rebase(type, classFileLocator, MethodNameTransformer.Suffixing.withRandomSuffix());
 	}
 
 	public <T> DynamicType.Builder<T> rebase(TypeDescription type, ClassFileLocator classFileLocator,
 			MethodNameTransformer methodNameTransformer) {
-		if (!type.isArray() && !type.isPrimitive()) {
-			return new RebaseDynamicTypeBuilder<>(this.instrumentedTypeFactory.represent(type), this.classFileVersion,
-					this.auxiliaryTypeNamingStrategy, this.annotationValueFilterFactory, this.annotationRetention,
-					this.implementationContextFactory, this.methodGraphCompiler, this.typeValidation,
-					this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory,
-					this.ignoredMethods, type, classFileLocator, methodNameTransformer);
-		}
-		else {
+		if (type.isArray() || type.isPrimitive()) {
 			throw new IllegalArgumentException("Cannot rebase array or primitive type: " + type);
 		}
+		return new RebaseDynamicTypeBuilder<>(instrumentedTypeFactory.represent(type), classFileVersion,
+				auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
+				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
+				classReaderFactory, classWriterFactory, ignoredMethods, type, classFileLocator, methodNameTransformer);
 	}
 
 	public <T> DynamicType.Builder<T> rebase(Package aPackage, ClassFileLocator classFileLocator) {
-		return this.rebase(new PackageDescription.ForLoadedPackage(aPackage), classFileLocator);
+		return rebase(new PackageDescription.ForLoadedPackage(aPackage), classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> rebase(PackageDescription aPackage, ClassFileLocator classFileLocator) {
-		return this.rebase(new ForPackageDescription(aPackage), classFileLocator);
+		return rebase(new TypeDescription.ForPackageDescription(aPackage), classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> decorate(Class<T> type) {
-		return this.decorate(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
+		return decorate(type, ClassFileLocator.ForClassLoader.of(type.getClassLoader()));
 	}
 
 	public <T> DynamicType.Builder<T> decorate(Class<T> type, ClassFileLocator classFileLocator) {
-		return this.decorate(ForLoadedType.of(type), classFileLocator);
+		return decorate(TypeDescription.ForLoadedType.of(type), classFileLocator);
 	}
 
 	public <T> DynamicType.Builder<T> decorate(TypeDescription type, ClassFileLocator classFileLocator) {
-		if (!type.isArray() && !type.isPrimitive()) {
-			return new DecoratingDynamicTypeBuilder<>(type, this.classFileVersion, this.auxiliaryTypeNamingStrategy,
-					this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-					this.methodGraphCompiler, this.typeValidation, this.classReaderFactory, this.classWriterFactory,
-					this.ignoredMethods, classFileLocator);
-		}
-		else {
+		if (type.isArray() || type.isPrimitive()) {
 			throw new IllegalArgumentException("Cannot decorate array or primitive type: " + type);
 		}
+		return new DecoratingDynamicTypeBuilder<>(type, classFileVersion, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				typeValidation, classReaderFactory, classWriterFactory, ignoredMethods, classFileLocator);
 	}
 
 	public GenericsByteBuddy with(ClassFileVersion classFileVersion) {
-		return new GenericsByteBuddy(classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(NamingStrategy namingStrategy) {
-		return new GenericsByteBuddy(this.classFileVersion, namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(AuxiliaryType.NamingStrategy auxiliaryTypeNamingStrategy) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(AnnotationValueFilter.Factory annotationValueFilterFactory) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(AnnotationRetention annotationRetention) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(Implementation.Context.Factory implementationContextFactory) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(MethodGraph.Compiler methodGraphCompiler) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation, this.visibilityBridgeStrategy,
-				this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(InstrumentedType.Factory instrumentedTypeFactory) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, instrumentedTypeFactory, this.typeValidation, this.visibilityBridgeStrategy,
-				this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(TypeValidation typeValidation) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, typeValidation, this.visibilityBridgeStrategy,
-				this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(VisibilityBridgeStrategy visibilityBridgeStrategy) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation, visibilityBridgeStrategy,
-				this.classReaderFactory, this.classWriterFactory, this.ignoredMethods);
-	}
-
-	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	public GenericsByteBuddy with(ClassWriterStrategy classWriterStrategy) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory,
-				new ClassWriterStrategy.Delegating(classWriterStrategy), this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(AsmClassReader.Factory classReaderFactory) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, classReaderFactory, this.classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy with(AsmClassWriter.Factory classWriterFactory) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, classWriterFactory, this.ignoredMethods);
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	public GenericsByteBuddy withIgnoredClassReader() {
-		return this.classWriterFactory instanceof AsmClassWriter.Factory.Suppressing ? this
-				: new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-						this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-						this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-						this.visibilityBridgeStrategy, this.classReaderFactory,
-						new AsmClassWriter.Factory.Suppressing(this.classWriterFactory), this.ignoredMethods);
+		if (classWriterFactory instanceof AsmClassWriter.Factory.Suppressing) {
+			return this;
+		}
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				new AsmClassWriter.Factory.Suppressing(classWriterFactory), ignoredMethods);
 	}
 
+	@SuppressWarnings("overloads")
 	public GenericsByteBuddy ignore(ElementMatcher<? super MethodDescription> ignoredMethods) {
-		return this.ignore(new LatentMatcher.Resolved<>(ignoredMethods));
+		return ignore(new LatentMatcher.Resolved<>(ignoredMethods));
 	}
 
+	@SuppressWarnings("overloads")
 	public GenericsByteBuddy ignore(LatentMatcher<? super MethodDescription> ignoredMethods) {
-		return new GenericsByteBuddy(this.classFileVersion, this.namingStrategy, this.auxiliaryTypeNamingStrategy,
-				this.annotationValueFilterFactory, this.annotationRetention, this.implementationContextFactory,
-				this.methodGraphCompiler, this.instrumentedTypeFactory, this.typeValidation,
-				this.visibilityBridgeStrategy, this.classReaderFactory, this.classWriterFactory, ignoredMethods);
-	}
-
-	static {
-		String validation;
-		try {
-			validation = doPrivileged(new GetSystemPropertyAction(DEFAULT_NAMING_PROPERTY));
-		}
-		catch (Throwable var10) {
-			validation = null;
-		}
-
-		DEFAULT_TYPE_VALIDATION = validation != null && !Boolean.parseBoolean(validation) ? TypeValidation.DISABLED
-				: TypeValidation.ENABLED;
-
-		String naming;
-		try {
-			naming = doPrivileged(new GetSystemPropertyAction("net.bytebuddy.naming"));
-		}
-		catch (Throwable var9) {
-			naming = null;
-		}
-
-		NamingStrategy namingStrategy;
-		AuxiliaryType.NamingStrategy auxiliaryNamingStrategy;
-		Implementation.Context.Factory implementationContextFactory;
-		if (naming == null) {
-			if (GraalImageCode.getCurrent().isDefined()) {
-				namingStrategy = new NamingStrategy.Suffixing("ByteBuddy",
-						new WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
-						"net.bytebuddy.renamed");
-				auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
-				implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
-			}
-			else {
-				namingStrategy = null;
-				auxiliaryNamingStrategy = null;
-				implementationContextFactory = null;
-			}
-		}
-		else if (naming.equalsIgnoreCase("fixed")) {
-			namingStrategy = new NamingStrategy.Suffixing("ByteBuddy",
-					NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE, "net.bytebuddy.renamed");
-			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
-			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
-		}
-		else if (naming.equalsIgnoreCase("caller")) {
-			namingStrategy = new NamingStrategy.Suffixing("ByteBuddy",
-					new WithCallerSuffix(NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE),
-					"net.bytebuddy.renamed");
-			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
-			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
-		}
-		else {
-			long seed;
-			try {
-				seed = Long.parseLong(naming);
-			}
-			catch (Exception var8) {
-				throw new IllegalStateException(
-						"'net.bytebuddy.naming' is set to an unknown, non-numeric value: " + naming);
-			}
-			ThreadLocalRandom current = ThreadLocalRandom.current();
-			current.setSeed(seed);
-			namingStrategy = new NamingStrategy.SuffixingRandom("ByteBuddy",
-					NamingStrategy.Suffixing.BaseNameResolver.ForUnnamedType.INSTANCE, "net.bytebuddy.renamed",
-					new RandomString(8, current));
-			auxiliaryNamingStrategy = new AuxiliaryType.NamingStrategy.Suffixing("auxiliary");
-			implementationContextFactory = new Implementation.Context.Default.Factory.WithFixedSuffix("synthetic");
-		}
-
-		DEFAULT_NAMING_STRATEGY = namingStrategy;
-		DEFAULT_AUXILIARY_NAMING_STRATEGY = auxiliaryNamingStrategy;
-		DEFAULT_IMPLEMENTATION_CONTEXT_FACTORY = implementationContextFactory;
+		return new GenericsByteBuddy(classFileVersion, namingStrategy, auxiliaryTypeNamingStrategy,
+				annotationValueFilterFactory, annotationRetention, implementationContextFactory, methodGraphCompiler,
+				instrumentedTypeFactory, typeValidation, visibilityBridgeStrategy, classReaderFactory,
+				classWriterFactory, ignoredMethods);
 	}
 
 	@HashCodeAndEqualsPlugin.Enhance
@@ -644,7 +633,7 @@ public class GenericsByteBuddy {
 
 		protected static final String ENUM_VALUES_METHOD_NAME = "values";
 
-		private static final int ENUM_FIELD_MODIFIERS = 25;
+		private static final int ENUM_FIELD_MODIFIERS = Opcodes.ACC_FINAL | Opcodes.ACC_STATIC | Opcodes.ACC_PUBLIC;
 
 		private static final String ENUM_VALUES = "$VALUES";
 
@@ -654,23 +643,19 @@ public class GenericsByteBuddy {
 			this.values = values;
 		}
 
-		@NonNull
-		public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
-			for (String value : this.values) {
-				instrumentedType = instrumentedType
-					.withField(new FieldDescription.Token(value, 16409, TargetType.DESCRIPTION.asGenericType()));
+		@NonNull public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
+			for (String value : values) {
+				instrumentedType = instrumentedType.withField(new FieldDescription.Token(value,
+						ENUM_FIELD_MODIFIERS | Opcodes.ACC_ENUM, TargetType.DESCRIPTION.asGenericType()));
 			}
-
 			return instrumentedType
-				.withField(new FieldDescription.Token("$VALUES", 4121,
-						ArrayProjection.of(TargetType.DESCRIPTION).asGenericType()))
-				.withInitializer(new GenericsByteBuddy.EnumerationImplementation.InitializationAppender(this.values));
+				.withField(new FieldDescription.Token(ENUM_VALUES, ENUM_FIELD_MODIFIERS | Opcodes.ACC_SYNTHETIC,
+						TypeDescription.ArrayProjection.of(TargetType.DESCRIPTION).asGenericType()))
+				.withInitializer(new InitializationAppender(values));
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
-			return new GenericsByteBuddy.EnumerationImplementation.ValuesMethodAppender(
-					implementationTarget.getInstrumentedType());
+		@NonNull public ByteCodeAppender appender(Target implementationTarget) {
+			return new ValuesMethodAppender(implementationTarget.getInstrumentedType());
 		}
 
 		@HashCodeAndEqualsPlugin.Enhance
@@ -682,18 +667,18 @@ public class GenericsByteBuddy {
 				this.instrumentedType = instrumentedType;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
-					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
-				FieldDescription valuesField = ((FieldList<?>) this.instrumentedType.getDeclaredFields()
-					.filter(ElementMatchers.named("$VALUES"))).getOnly();
-				MethodDescription cloneMethod = ((MethodList<?>) Generic.OfNonGenericType.ForLoadedType.of(Object.class)
+			@NonNull public Size apply(@NonNull MethodVisitor methodVisitor, @NonNull Context implementationContext,
+					@NonNull MethodDescription instrumentedMethod) {
+				FieldDescription valuesField = instrumentedType.getDeclaredFields()
+					.filter(named(ENUM_VALUES))
+					.getOnly();
+				MethodDescription cloneMethod = TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class)
 					.getDeclaredMethods()
-					.filter(ElementMatchers.named("clone"))).getOnly();
-				return new ByteCodeAppender.Size((new StackManipulation.Compound(
-						new StackManipulation[] { FieldAccess.forField(valuesField).read(),
-								MethodInvocation.invoke(cloneMethod).virtual(valuesField.getType().asErasure()),
-								TypeCasting.to(valuesField.getType().asErasure()), MethodReturn.REFERENCE }))
+					.filter(named(CLONE_METHOD_NAME))
+					.getOnly();
+				return new Size(new StackManipulation.Compound(FieldAccess.forField(valuesField).read(),
+						MethodInvocation.invoke(cloneMethod).virtual(valuesField.getType().asErasure()),
+						TypeCasting.to(valuesField.getType().asErasure()), MethodReturn.REFERENCE)
 					.apply(methodVisitor, implementationContext)
 					.getMaximalSize(), instrumentedMethod.getStackSize());
 			}
@@ -709,42 +694,34 @@ public class GenericsByteBuddy {
 				this.values = values;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
-					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
+			@NonNull public Size apply(@NonNull MethodVisitor methodVisitor, @NonNull Context implementationContext,
+					MethodDescription instrumentedMethod) {
 				TypeDescription instrumentedType = instrumentedMethod.getDeclaringType().asErasure();
-				MethodDescription enumConstructor = ((MethodList<?>) instrumentedType.getDeclaredMethods()
-					.filter(ElementMatchers.isConstructor()
-						.and(ElementMatchers.takesArguments(String.class, Integer.TYPE))))
+				MethodDescription enumConstructor = instrumentedType.getDeclaredMethods()
+					.filter(isConstructor().and(takesArguments(String.class, int.class)))
 					.getOnly();
 				int ordinal = 0;
 				StackManipulation stackManipulation = StackManipulation.Trivial.INSTANCE;
-				List<FieldDescription> enumerationFields = new ArrayList<>(this.values.size());
-
-				for (String value : this.values) {
-					FieldDescription fieldDescription = ((FieldList<?>) instrumentedType.getDeclaredFields()
-						.filter(ElementMatchers.named(value))).getOnly();
+				List<FieldDescription> enumerationFields = new ArrayList<>(values.size());
+				for (String value : values) {
+					FieldDescription fieldDescription = instrumentedType.getDeclaredFields()
+						.filter(named(value))
+						.getOnly();
 					stackManipulation = new StackManipulation.Compound(stackManipulation,
 							TypeCreation.of(instrumentedType), Duplication.SINGLE, new TextConstant(value),
 							IntegerConstant.forValue(ordinal++), MethodInvocation.invoke(enumConstructor),
 							FieldAccess.forField(fieldDescription).write());
 					enumerationFields.add(fieldDescription);
 				}
-
-				List<StackManipulation> fieldGetters = new ArrayList<>(this.values.size());
-
+				List<StackManipulation> fieldGetters = new ArrayList<>(values.size());
 				for (FieldDescription fieldDescription : enumerationFields) {
 					fieldGetters.add(FieldAccess.forField(fieldDescription).read());
 				}
-
-				StackManipulation var12 = new StackManipulation.Compound(stackManipulation,
+				stackManipulation = new StackManipulation.Compound(stackManipulation,
 						ArrayFactory.forType(instrumentedType.asGenericType()).withValues(fieldGetters),
-						FieldAccess
-							.forField((FieldDescription.InDefinedShape) ((FieldList<?>) instrumentedType
-								.getDeclaredFields()
-								.filter(ElementMatchers.named("$VALUES"))).getOnly())
+						FieldAccess.forField(instrumentedType.getDeclaredFields().filter(named(ENUM_VALUES)).getOnly())
 							.write());
-				return new ByteCodeAppender.Size(var12.apply(methodVisitor, implementationContext).getMaximalSize(),
+				return new Size(stackManipulation.apply(methodVisitor, implementationContext).getMaximalSize(),
 						instrumentedMethod.getStackSize());
 			}
 
@@ -757,55 +734,45 @@ public class GenericsByteBuddy {
 
 		INSTANCE;
 
-		RecordConstructorStrategy() {
-		}
-
-		@NonNull
-		public List<MethodDescription.Token> extractConstructors(TypeDescription instrumentedType) {
+		@NonNull public List<MethodDescription.Token> extractConstructors(TypeDescription instrumentedType) {
 			List<ParameterDescription.Token> tokens = new ArrayList<>(instrumentedType.getRecordComponents().size());
-
 			for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType.getRecordComponents()) {
 				tokens.add(new ParameterDescription.Token(recordComponent.getType(),
-						recordComponent.getDeclaredAnnotations()
-							.filter(ElementMatchers.targetsElement(ElementType.CONSTRUCTOR)),
-						recordComponent.getActualName(), 0));
+						recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.CONSTRUCTOR)),
+						recordComponent.getActualName(), ModifierContributor.EMPTY_MASK));
 			}
-
-			return Collections.singletonList(new MethodDescription.Token("<init>", 1, Collections.emptyList(),
-					Generic.OfNonGenericType.ForLoadedType.of(Void.TYPE), tokens, Collections.emptyList(),
-					Collections.emptyList(), AnnotationValue.UNDEFINED, Generic.UNDEFINED));
+			return Collections.singletonList(new MethodDescription.Token(MethodDescription.CONSTRUCTOR_INTERNAL_NAME,
+					Opcodes.ACC_PUBLIC, Collections.emptyList(),
+					TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(void.class), tokens,
+					Collections.emptyList(), Collections.emptyList(), AnnotationValue.UNDEFINED,
+					TypeDescription.Generic.UNDEFINED));
 		}
 
-		@NonNull
-		public MethodRegistry inject(TypeDescription instrumentedType, MethodRegistry methodRegistry) {
+		@NonNull public MethodRegistry inject(TypeDescription instrumentedType, MethodRegistry methodRegistry) {
 			return methodRegistry.prepend(
-					new LatentMatcher.Resolved<>(ElementMatchers.isConstructor()
-						.and(ElementMatchers
-							.takesGenericArguments(instrumentedType.getRecordComponents().asTypeList()))),
+					new LatentMatcher.Resolved<MethodDescription>(isConstructor()
+						.and(takesGenericArguments(instrumentedType.getRecordComponents().asTypeList()))),
 					new MethodRegistry.Handler.ForImplementation(this),
-					MethodAttributeAppender.ForInstrumentedMethod.EXCLUDING_RECEIVER, Transformer.NoOp.make());
+					MethodAttributeAppender.ForInstrumentedMethod.EXCLUDING_RECEIVER,
+					Transformer.ForMethod.NoOp.<MethodDescription>make());
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
-			return new GenericsByteBuddy.RecordConstructorStrategy.Appender(implementationTarget.getInstrumentedType());
+		@NonNull public ByteCodeAppender appender(Target implementationTarget) {
+			return new Appender(implementationTarget.getInstrumentedType());
 		}
 
-		@NonNull
-		public InstrumentedType prepare(InstrumentedType instrumentedType) {
+		@NonNull public InstrumentedType prepare(InstrumentedType instrumentedType) {
 			for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType.getRecordComponents()) {
 				instrumentedType = instrumentedType
-					.withField(
-							new FieldDescription.Token(recordComponent.getActualName(), 18, recordComponent.getType(),
-									recordComponent.getDeclaredAnnotations()
-										.filter(ElementMatchers.targetsElement(ElementType.FIELD))))
-					.withMethod(new MethodDescription.Token(recordComponent.getActualName(), 1, Collections.emptyList(),
-							recordComponent.getType(), Collections.emptyList(), Collections.emptyList(),
-							recordComponent.getDeclaredAnnotations()
-								.filter(ElementMatchers.targetsElement(ElementType.METHOD)),
-							AnnotationValue.UNDEFINED, Generic.UNDEFINED));
+					.withField(new FieldDescription.Token(recordComponent.getActualName(),
+							Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, recordComponent.getType(),
+							recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.FIELD))))
+					.withMethod(new MethodDescription.Token(recordComponent.getActualName(), Opcodes.ACC_PUBLIC,
+							Collections.emptyList(), recordComponent.getType(), Collections.emptyList(),
+							Collections.emptyList(),
+							recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.METHOD)),
+							AnnotationValue.UNDEFINED, TypeDescription.Generic.UNDEFINED));
 			}
-
 			return instrumentedType;
 		}
 
@@ -818,42 +785,36 @@ public class GenericsByteBuddy {
 				this.instrumentedType = instrumentedType;
 			}
 
-			@NonNull
-			public ByteCodeAppender.Size apply(@NonNull MethodVisitor methodVisitor,
-					@NonNull Implementation.Context implementationContext, MethodDescription instrumentedMethod) {
+			@NonNull public Size apply(@NonNull MethodVisitor methodVisitor, @NonNull Context implementationContext,
+					MethodDescription instrumentedMethod) {
 				if (instrumentedMethod.isMethod()) {
-					return (new ByteCodeAppender.Simple(MethodVariableAccess.loadThis(),
-							FieldAccess
-								.forField((FieldDescription.InDefinedShape) ((FieldList<?>) this.instrumentedType
-									.getDeclaredFields()
-									.filter(ElementMatchers.named(instrumentedMethod.getName()))).getOnly())
-								.read(),
-							MethodReturn.of(instrumentedMethod.getReturnType())))
+					return new Simple(MethodVariableAccess.loadThis(), FieldAccess.forField(
+							instrumentedType.getDeclaredFields().filter(named(instrumentedMethod.getName())).getOnly())
+						.read(), MethodReturn.of(instrumentedMethod.getReturnType()))
 						.apply(methodVisitor, implementationContext, instrumentedMethod);
 				}
 				else {
 					List<StackManipulation> stackManipulations = new ArrayList<>(
-							this.instrumentedType.getRecordComponents().size() * 3 + 2);
+							instrumentedType.getRecordComponents().size() * 3 + 2);
 					stackManipulations.add(MethodVariableAccess.loadThis());
 					stackManipulations
 						.add(MethodInvocation.invoke(new MethodDescription.Latent(JavaType.RECORD.getTypeStub(),
-								new MethodDescription.Token(1))));
+								new MethodDescription.Token(Opcodes.ACC_PUBLIC))));
 					int offset = 1;
-
-					for (RecordComponentDescription.InDefinedShape recordComponent : this.instrumentedType
+					for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType
 						.getRecordComponents()) {
 						stackManipulations.add(MethodVariableAccess.loadThis());
 						stackManipulations.add(MethodVariableAccess.of(recordComponent.getType()).loadFrom(offset));
-						stackManipulations.add(FieldAccess
-							.forField((FieldDescription.InDefinedShape) ((FieldList<?>) this.instrumentedType
-								.getDeclaredFields()
-								.filter(ElementMatchers.named(recordComponent.getActualName()))).getOnly())
-							.write());
+						stackManipulations.add(
+								FieldAccess
+									.forField(instrumentedType.getDeclaredFields()
+										.filter(named(recordComponent.getActualName()))
+										.getOnly())
+									.write());
 						offset += recordComponent.getType().getStackSize().getSize();
 					}
-
 					stackManipulations.add(MethodReturn.VOID);
-					return (new ByteCodeAppender.Simple(stackManipulations)).apply(methodVisitor, implementationContext,
+					return new Simple(stackManipulations).apply(methodVisitor, implementationContext,
 							instrumentedMethod);
 				}
 			}
@@ -865,8 +826,10 @@ public class GenericsByteBuddy {
 	@HashCodeAndEqualsPlugin.Enhance
 	protected enum RecordObjectMethod implements Implementation {
 
-		HASH_CODE("hashCode", StackManipulation.Trivial.INSTANCE, Integer.TYPE),
-		EQUALS("equals", MethodVariableAccess.REFERENCE.loadFrom(1), Boolean.TYPE, Object.class),
+		HASH_CODE("hashCode", StackManipulation.Trivial.INSTANCE, int.class),
+
+		EQUALS("equals", MethodVariableAccess.REFERENCE.loadFrom(1), boolean.class, Object.class),
+
 		TO_STRING("toString", StackManipulation.Trivial.INSTANCE, String.class);
 
 		private final String name;
@@ -881,53 +844,44 @@ public class GenericsByteBuddy {
 				Class<?>... arguments) {
 			this.name = name;
 			this.stackManipulation = stackManipulation;
-			this.returnType = ForLoadedType.of(returnType);
+			this.returnType = TypeDescription.ForLoadedType.of(returnType);
 			this.arguments = new TypeList.ForLoadedTypes(arguments);
 		}
 
-		@NonNull
-		public ByteCodeAppender appender(Implementation.Target implementationTarget) {
+		@NonNull public ByteCodeAppender appender(Target implementationTarget) {
 			StringBuilder stringBuilder = new StringBuilder();
 			List<JavaConstant> methodHandles = new ArrayList<>(
 					implementationTarget.getInstrumentedType().getRecordComponents().size());
-
 			for (RecordComponentDescription.InDefinedShape recordComponent : implementationTarget.getInstrumentedType()
 				.getRecordComponents()) {
 				if (!stringBuilder.isEmpty()) {
 					stringBuilder.append(";");
 				}
-
 				stringBuilder.append(recordComponent.getActualName());
-				methodHandles.add(JavaConstant.MethodHandle.ofGetter(
-						(FieldDescription.InDefinedShape) ((FieldList<?>) implementationTarget.getInstrumentedType()
-							.getDeclaredFields()
-							.filter(ElementMatchers.named(recordComponent.getActualName()))).getOnly()));
+				methodHandles.add(JavaConstant.MethodHandle.ofGetter(implementationTarget.getInstrumentedType()
+					.getDeclaredFields()
+					.filter(named(recordComponent.getActualName()))
+					.getOnly()));
 			}
-
-			return new ByteCodeAppender.Simple(MethodVariableAccess.loadThis(), this.stackManipulation,
-					MethodInvocation
-						.invoke(new MethodDescription.Latent(JavaType.OBJECT_METHODS.getTypeStub(),
-								new MethodDescription.Token("bootstrap", 9,
-										Generic.OfNonGenericType.ForLoadedType.of(Object.class),
-										Arrays.asList(JavaType.METHOD_HANDLES_LOOKUP.getTypeStub().asGenericType(),
-												ForLoadedType.of(String.class).asGenericType(),
-												JavaType.TYPE_DESCRIPTOR.getTypeStub().asGenericType(),
-												ForLoadedType.of(Class.class).asGenericType(),
-												ForLoadedType.of(String.class).asGenericType(),
-												ArrayProjection.of(JavaType.METHOD_HANDLE.getTypeStub())
-													.asGenericType()))))
-						.dynamic(this.name, this.returnType,
-								CompoundList.of(implementationTarget.getInstrumentedType(), this.arguments),
-								CompoundList.of(
-										Arrays.asList(
-												JavaConstant.Simple.of(implementationTarget.getInstrumentedType()),
-												JavaConstant.Simple.ofLoaded(stringBuilder.toString())),
-										methodHandles)),
-					MethodReturn.of(this.returnType));
+			return new ByteCodeAppender.Simple(MethodVariableAccess.loadThis(), stackManipulation, MethodInvocation
+				.invoke(new MethodDescription.Latent(JavaType.OBJECT_METHODS.getTypeStub(),
+						new MethodDescription.Token("bootstrap", Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
+								TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class),
+								Arrays.asList(JavaType.METHOD_HANDLES_LOOKUP.getTypeStub().asGenericType(),
+										TypeDescription.ForLoadedType.of(String.class).asGenericType(),
+										JavaType.TYPE_DESCRIPTOR.getTypeStub().asGenericType(),
+										TypeDescription.ForLoadedType.of(Class.class).asGenericType(),
+										TypeDescription.ForLoadedType.of(String.class).asGenericType(),
+										TypeDescription.ArrayProjection.of(JavaType.METHOD_HANDLE.getTypeStub())
+											.asGenericType()))))
+				.dynamic(name, returnType, CompoundList.of(implementationTarget.getInstrumentedType(), arguments),
+						CompoundList
+							.of(Arrays.asList(JavaConstant.Simple.of(implementationTarget.getInstrumentedType()),
+									JavaConstant.Simple.ofLoaded(stringBuilder.toString())), methodHandles)),
+					MethodReturn.of(returnType));
 		}
 
-		@NonNull
-		public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
+		@NonNull public InstrumentedType prepare(@NonNull InstrumentedType instrumentedType) {
 			return instrumentedType;
 		}
 

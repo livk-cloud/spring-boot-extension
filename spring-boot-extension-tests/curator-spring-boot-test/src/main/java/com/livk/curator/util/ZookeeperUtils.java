@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 @UtilityClass
 public class ZookeeperUtils {
 
-	private static final CuratorFramework curatorFramework = SpringContextHolder.getBean(CuratorFramework.class);
+	private static final CuratorFramework framework = SpringContextHolder.getBean(CuratorFramework.class);
 
 	/**
 	 * 路径分隔符
@@ -76,7 +76,7 @@ public class ZookeeperUtils {
 		path = buildPath(path, node);
 		log.info("create node for path: {} with createMode: {}", path, createMode.name());
 		try {
-			curatorFramework.create().creatingParentsIfNeeded().withMode(createMode).forPath(path);
+			framework.create().creatingParentsIfNeeded().withMode(createMode).forPath(path);
 			log.info("create node :{} successfully", node);
 			return path;
 		}
@@ -112,7 +112,7 @@ public class ZookeeperUtils {
 		path = buildPath(path, node);
 		log.info("create node for path: {}, value: {}, with createMode: {}", path, value, createMode.name());
 		try {
-			curatorFramework.create().creatingParentsIfNeeded().withMode(createMode).forPath(path, value.getBytes());
+			framework.create().creatingParentsIfNeeded().withMode(createMode).forPath(path, value.getBytes());
 			return path;
 		}
 		catch (Exception e) {
@@ -131,7 +131,7 @@ public class ZookeeperUtils {
 	public String get(String path, String node) {
 		path = buildPath(path, node);
 		try {
-			byte[] bytes = curatorFramework.getData().forPath(path);
+			byte[] bytes = framework.getData().forPath(path);
 			if (bytes.length > 0) {
 				return new String(bytes);
 			}
@@ -157,7 +157,7 @@ public class ZookeeperUtils {
 		log.info("update path: {} to value: {}", path, value);
 
 		try {
-			curatorFramework.setData().forPath(path, value.getBytes());
+			framework.setData().forPath(path, value.getBytes());
 			return path;
 		}
 		catch (Exception e) {
@@ -177,7 +177,7 @@ public class ZookeeperUtils {
 		log.info("delete node for path: {}", path);
 
 		try {
-			curatorFramework.delete().deletingChildrenIfNeeded().forPath(path);
+			framework.delete().deletingChildrenIfNeeded().forPath(path);
 			return true;
 		}
 		catch (Exception e) {
@@ -198,7 +198,7 @@ public class ZookeeperUtils {
 			}
 
 			try {
-				return curatorFramework.getChildren().forPath(path);
+				return framework.getChildren().forPath(path);
 			}
 			catch (Exception e) {
 				log.error("get children path:{} error", path, e);
@@ -232,7 +232,7 @@ public class ZookeeperUtils {
 	 */
 	public void lock(String path, long time, TimeUnit unit, Runnable runnable) {
 		try {
-			InterProcessMutex lock = new InterProcessMutex(curatorFramework, path);
+			InterProcessMutex lock = new InterProcessMutex(framework, path);
 			if (lock.acquire(time, unit)) {
 				try {
 					runnable.run();
@@ -260,7 +260,7 @@ public class ZookeeperUtils {
 	 */
 	public <T> T lock(String path, long time, TimeUnit unit, Callable<T> callable) {
 		try {
-			InterProcessMutex lock = new InterProcessMutex(curatorFramework, path);
+			InterProcessMutex lock = new InterProcessMutex(framework, path);
 			if (lock.acquire(time, unit)) {
 				try {
 					return callable.call();
@@ -288,7 +288,7 @@ public class ZookeeperUtils {
 
 	public void watchNode(String path, boolean dataIsCompressed) {
 		try {
-			CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+			CuratorCache curatorCache = CuratorCache.build(framework, path);
 			curatorCache.listenable().addListener((type, oldData, data) -> {
 				log.info("ZNode节点状态改变, path={}", data.getPath());
 				log.info("ZNode节点状态改变, data={}", data.getData());
@@ -308,7 +308,7 @@ public class ZookeeperUtils {
 	 */
 	public void watchChildren(String path, CuratorCacheListener listener) {
 		try {
-			CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+			CuratorCache curatorCache = CuratorCache.build(framework, path);
 			curatorCache.start();
 			curatorCache.listenable().addListener(listener);
 		}
@@ -325,7 +325,7 @@ public class ZookeeperUtils {
 	 */
 	public void watchTree(String path, int maxDepth, CuratorCacheListener listener) {
 		try {
-			CuratorCache curatorCache = CuratorCache.build(curatorFramework, path);
+			CuratorCache curatorCache = CuratorCache.build(framework, path);
 			curatorCache.start();
 			curatorCache.listenable().addListener(listener);
 		}

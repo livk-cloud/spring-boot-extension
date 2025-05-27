@@ -201,7 +201,7 @@ class CuratorOperationsTest {
 	@Test
 	@Order(10)
 	void getLock() throws Exception {
-		InterProcessLock lock = curatorOperations.getLock("/node/lock", ZkLockType.LOCK);
+		InterProcessLock lock = curatorOperations.getLock("/node/lock", ZkLockType.REENTRANT);
 		assertEquals(InterProcessMutex.class, lock.getClass());
 		assertTrue(lock.acquire(3, TimeUnit.SECONDS));
 		lock.release();

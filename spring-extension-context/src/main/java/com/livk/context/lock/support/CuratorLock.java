@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 
-	private final CuratorFramework curatorFramework;
+	private final CuratorFramework framework;
 
 	@Override
 	protected InterProcessLock getLock(LockType type, String key) {
@@ -44,9 +44,9 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 			key = "/".concat(key);
 		}
 		return switch (type) {
-			case LOCK, FAIR -> new InterProcessMutex(curatorFramework, key);
-			case READ -> new InterProcessReadWriteLock(curatorFramework, key).readLock();
-			case WRITE -> new InterProcessReadWriteLock(curatorFramework, key).writeLock();
+			case LOCK, FAIR -> new InterProcessMutex(framework, key);
+			case READ -> new InterProcessReadWriteLock(framework, key).readLock();
+			case WRITE -> new InterProcessReadWriteLock(framework, key).writeLock();
 		};
 	}
 

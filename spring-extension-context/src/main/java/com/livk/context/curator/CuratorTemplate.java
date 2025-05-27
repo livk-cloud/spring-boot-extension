@@ -22,8 +22,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.CuratorListener;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
-import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
@@ -41,41 +39,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CuratorTemplate implements CuratorOperations {
 
-	private final CuratorFramework curatorFramework;
+	private final CuratorFramework framework;
 
 	@Override
 	public String createNode(String path, byte[] data) throws Exception {
-		return curatorFramework.create().creatingParentsIfNeeded().forPath(path, data);
+		return framework.create().creatingParentsIfNeeded().forPath(path, data);
 	}
 
 	@Override
 	public byte[] getNode(String path) throws Exception {
-		return curatorFramework.getData().forPath(path);
+		return framework.getData().forPath(path);
 	}
 
 	@Override
 	public String createTypeNode(CreateMode nodeType, String path, byte[] data) throws Exception {
-		return curatorFramework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data);
+		return framework.create().creatingParentsIfNeeded().withMode(nodeType).forPath(path, data);
 	}
 
 	@Override
 	public String createTypeSeqNode(CreateMode nodeType, String path, byte[] data) throws Exception {
-		return curatorFramework.create()
-			.creatingParentsIfNeeded()
-			.withProtection()
-			.withMode(nodeType)
-			.forPath(path, data);
+		return framework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType).forPath(path, data);
 	}
 
 	@Override
 	public Stat setData(String path, byte[] data) throws Exception {
-		return curatorFramework.setData().forPath(path, data);
+		return framework.setData().forPath(path, data);
 	}
 
 	@Override
 	public Stat setDataAsync(String path, byte[] data, CuratorListener listener) throws Exception {
-		curatorFramework.getCuratorListenable().addListener(listener);
-		return curatorFramework.setData().inBackground().forPath(path, data);
+		framework.getCuratorListenable().addListener(listener);
+		return framework.setData().inBackground().forPath(path, data);
 	}
 
 	/**
@@ -86,58 +80,27 @@ public class CuratorTemplate implements CuratorOperations {
 	 * @throws Exception the exception
 	 */
 	public Stat setDataAsync(String path, byte[] data) throws Exception {
-		return curatorFramework.setData().inBackground().forPath(path, data);
+		return framework.setData().inBackground().forPath(path, data);
 	}
 
 	@Override
 	public void deleteNode(String path) throws Exception {
-		curatorFramework.delete().deletingChildrenIfNeeded().forPath(path);
+		framework.delete().deletingChildrenIfNeeded().forPath(path);
 	}
 
 	@Override
 	public List<String> watchedGetChildren(String path) throws Exception {
-		return curatorFramework.getChildren().watched().forPath(path);
+		return framework.getChildren().watched().forPath(path);
 	}
 
 	@Override
 	public List<String> watchedGetChildren(String path, Watcher watcher) throws Exception {
-		return curatorFramework.getChildren().usingWatcher(watcher).forPath(path);
+		return framework.getChildren().usingWatcher(watcher).forPath(path);
 	}
 
 	@Override
 	public InterProcessLock getLock(String path, ZkLockType type) {
-		return switch (type) {
-			case LOCK -> new InterProcessMutex(curatorFramework, path);
-			case READ -> new InterProcessReadWriteLock(curatorFramework, path).readLock();
-			case WRITE -> new InterProcessReadWriteLock(curatorFramework, path).writeLock();
-		};
-	}
-
-	/**
-	 * Gets lock.
-	 * @param path the path
-	 * @return the lock
-	 */
-	public InterProcessLock getLock(String path) {
-		return getLock(path, ZkLockType.LOCK);
-	}
-
-	/**
-	 * Gets read lock.
-	 * @param path the path
-	 * @return the read lock
-	 */
-	public InterProcessLock getReadLock(String path) {
-		return getLock(path, ZkLockType.READ);
-	}
-
-	/**
-	 * Gets write lock.
-	 * @param path the path
-	 * @return write lock
-	 */
-	public InterProcessLock getWriteLock(String path) {
-		return getLock(path, ZkLockType.WRITE);
+		return type.getLock(framework, path);
 	}
 
 	@Override
@@ -154,8 +117,8 @@ public class CuratorTemplate implements CuratorOperations {
 
 	@Override
 	public void close() throws IOException {
-		if (curatorFramework.getState() == CuratorFrameworkState.STARTED) {
-			curatorFramework.close();
+		if (framework.getState() == CuratorFrameworkState.STARTED) {
+			framework.close();
 		}
 	}
 

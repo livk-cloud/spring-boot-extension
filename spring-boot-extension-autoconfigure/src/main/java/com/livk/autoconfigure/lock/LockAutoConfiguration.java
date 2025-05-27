@@ -84,12 +84,12 @@ public class LockAutoConfiguration {
 
 		/**
 		 * Redisson lock distributed lock.
-		 * @param curatorFramework the curator framework
+		 * @param framework the curator framework
 		 * @return the distributed lock
 		 */
 		@Bean
-		public DistributedLock curatorLock(CuratorFramework curatorFramework) {
-			return new CuratorLock(curatorFramework);
+		public DistributedLock curatorLock(CuratorFramework framework) {
+			return new CuratorLock(framework);
 		}
 
 	}

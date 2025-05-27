@@ -91,13 +91,13 @@ public class CuratorAutoConfiguration {
 
 	/**
 	 * Curator template curator template.
-	 * @param curatorFramework the curator framework
+	 * @param framework the curator framework
 	 * @return the curator template
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public CuratorTemplate curatorTemplate(CuratorFramework curatorFramework) {
-		return new CuratorTemplate(curatorFramework);
+	public CuratorTemplate curatorTemplate(CuratorFramework framework) {
+		return new CuratorTemplate(framework);
 	}
 
 }
