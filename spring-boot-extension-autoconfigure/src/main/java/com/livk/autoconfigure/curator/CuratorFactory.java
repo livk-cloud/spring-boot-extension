@@ -68,21 +68,21 @@ abstract class CuratorFactory {
 			customizers.forEach(curatorFrameworkCustomizer -> curatorFrameworkCustomizer.customize(builder));
 		}
 
-		CuratorFramework curator = builder.build();
+		CuratorFramework framework = builder.build();
 		TracerDriver tracerDriver = optionalTracerDriverProvider.get();
-		if (tracerDriver != null && curator.getZookeeperClient() != null) {
-			curator.getZookeeperClient().setTracerDriver(tracerDriver);
+		if (tracerDriver != null && framework.getZookeeperClient() != null) {
+			framework.getZookeeperClient().setTracerDriver(tracerDriver);
 		}
 
 		if (log.isTraceEnabled()) {
 			log.trace("blocking until connected to zookeeper for {}{}", properties.getBlockUntilConnectedWait(),
 					properties.getBlockUntilConnectedUnit());
 		}
-		curator.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
+		framework.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
 		if (log.isTraceEnabled()) {
 			log.trace("connected to zookeeper");
 		}
-		return curator;
+		return framework;
 	}
 
 	/**

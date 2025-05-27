@@ -16,6 +16,7 @@
 
 package com.livk.context.curator;
 
+import com.livk.context.curator.lock.ZkLockType;
 import com.livk.testcontainers.containers.ZookeeperContainer;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
@@ -70,25 +71,19 @@ class CuratorTemplateTest {
 
 	@Test
 	void getLock() throws Exception {
-		InterProcessLock lock = template.getLock("/node/lock");
+		InterProcessLock lock = template.getLock("/node/lock", ZkLockType.REENTRANT);
 		assertEquals(InterProcessMutex.class, lock.getClass());
 		assertTrue(lock.acquire(3, TimeUnit.SECONDS));
 		lock.release();
 		template.deleteNode("/node");
-	}
 
-	@Test
-	void getReadLock() throws Exception {
-		InterProcessLock read = template.getReadLock("/node/lock");
+		InterProcessLock read = template.getLock("/node/lock", ZkLockType.READ);
 		assertEquals(InterProcessReadWriteLock.ReadLock.class, read.getClass());
 		assertTrue(read.acquire(3, TimeUnit.SECONDS));
 		read.release();
 		template.deleteNode("/node");
-	}
 
-	@Test
-	void getWriteLock() throws Exception {
-		InterProcessLock write = template.getWriteLock("/node/lock");
+		InterProcessLock write = template.getLock("/node/lock", ZkLockType.WRITE);
 		assertEquals(InterProcessReadWriteLock.WriteLock.class, write.getClass());
 		assertTrue(write.acquire(3, TimeUnit.SECONDS));
 		write.release();

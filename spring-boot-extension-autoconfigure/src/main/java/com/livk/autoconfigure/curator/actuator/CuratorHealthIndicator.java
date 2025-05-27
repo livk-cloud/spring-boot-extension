@@ -28,22 +28,22 @@ import org.springframework.boot.actuate.health.Health;
 @RequiredArgsConstructor
 public class CuratorHealthIndicator extends AbstractHealthIndicator {
 
-	private final CuratorFramework curatorFramework;
+	private final CuratorFramework framework;
 
 	@Override
 	protected void doHealthCheck(Health.Builder builder) {
 		try {
-			CuratorFrameworkState state = curatorFramework.getState();
+			CuratorFrameworkState state = framework.getState();
 			if (state != CuratorFrameworkState.STARTED) {
 				builder.down().withDetail("error", "Client not started");
 			}
-			else if (curatorFramework.checkExists().forPath("/") == null) {
+			else if (framework.checkExists().forPath("/") == null) {
 				builder.down().withDetail("error", "Root for namespace does not exist");
 			}
 			else {
 				builder.up();
 			}
-			builder.withDetail("connectionString", curatorFramework.getZookeeperClient().getCurrentConnectionString())
+			builder.withDetail("connectionString", framework.getZookeeperClient().getCurrentConnectionString())
 				.withDetail("state", state);
 		}
 		catch (Exception e) {

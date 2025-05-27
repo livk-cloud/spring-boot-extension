@@ -16,6 +16,16 @@
 
 package com.livk.context.curator.lock;
 
+import lombok.RequiredArgsConstructor;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.locks.InterProcessLock;
+import org.apache.curator.framework.recipes.locks.InterProcessMultiLock;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
+import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
+
+import java.util.List;
+
 /**
  * <p>
  * ZkLockType
@@ -23,19 +33,71 @@ package com.livk.context.curator.lock;
  *
  * @author livk
  */
-public enum ZkLockType {
+@RequiredArgsConstructor
+public enum ZkLockType implements LockProcess {
 
 	/**
-	 * 普通锁
+	 * 可重入锁
 	 */
-	LOCK,
+	REENTRANT(new ReentrantLockProcess()),
+	/**
+	 * 不可重入锁
+	 */
+	NON_REENTRANT(new NonReentrantLockProcess()),
 	/**
 	 * 读锁
 	 */
-	READ,
+	READ(new ReadLockProcess()),
 	/**
 	 * 写锁
 	 */
-	WRITE
+	WRITE(new WriteLockProcess());
+
+	private final LockProcess delegate;
+
+	@Override
+	public InterProcessLock getLock(CuratorFramework framework, String path) {
+		return delegate.getLock(framework, path);
+	}
+
+	public static InterProcessMultiLock multiLock(List<InterProcessLock> locks) {
+		return new InterProcessMultiLock(locks);
+	}
+
+	private static class ReentrantLockProcess implements LockProcess {
+
+		@Override
+		public InterProcessLock getLock(CuratorFramework framework, String path) {
+			return new InterProcessMutex(framework, path);
+		}
+
+	}
+
+	private static class NonReentrantLockProcess implements LockProcess {
+
+		@Override
+		public InterProcessLock getLock(CuratorFramework framework, String path) {
+			return new InterProcessSemaphoreMutex(framework, path);
+		}
+
+	}
+
+	private static class ReadLockProcess implements LockProcess {
+
+		@Override
+		public InterProcessLock getLock(CuratorFramework framework, String path) {
+			return new InterProcessReadWriteLock(framework, path).readLock();
+		}
+
+	}
+
+	private static class WriteLockProcess implements LockProcess {
+
+		@Override
+		public InterProcessLock getLock(CuratorFramework framework, String path) {
+			return new InterProcessReadWriteLock(framework, path).writeLock();
+		}
+
+	}
 
 }

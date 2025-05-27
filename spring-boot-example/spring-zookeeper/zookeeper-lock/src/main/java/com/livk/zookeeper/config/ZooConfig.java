@@ -32,8 +32,8 @@ import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 public class ZooConfig {
 
 	@Bean
-	public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework curatorFramework) {
-		return new ZookeeperLockRegistry(curatorFramework);
+	public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework framework) {
+		return new ZookeeperLockRegistry(framework);
 	}
 
 }

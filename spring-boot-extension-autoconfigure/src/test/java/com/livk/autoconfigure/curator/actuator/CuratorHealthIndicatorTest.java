@@ -72,9 +72,9 @@ class CuratorHealthIndicatorTest {
 			.sessionTimeoutMs((int) properties.getSessionTimeout().toMillis())
 			.connectionTimeoutMs((int) properties.getConnectionTimeout().toMillis())
 			.retryPolicy(retryPolicy);
-		CuratorFramework curator = builder.build();
-		curator.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
-		return curator;
+		CuratorFramework framework = builder.build();
+		framework.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
+		return framework;
 	}
 
 }
