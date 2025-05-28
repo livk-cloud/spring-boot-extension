@@ -23,7 +23,7 @@ dependencies {
 	api("org.springframework:spring-core")
 	api("com.fasterxml.jackson.core:jackson-databind")
 	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")

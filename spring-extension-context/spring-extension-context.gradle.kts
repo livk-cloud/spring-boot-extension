@@ -31,7 +31,7 @@ dependencies {
 	optional("org.redisson:redisson")
 	optional("org.springframework.boot:spring-boot")
 
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 
 	testImplementation("io.lettuce:lettuce-core")
 	testImplementation("com.h2database:h2")

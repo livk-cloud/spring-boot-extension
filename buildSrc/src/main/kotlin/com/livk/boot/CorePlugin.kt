@@ -16,7 +16,7 @@
 
 package com.livk.boot
 
-import com.livk.boot.dependency.CompileProcessorPlugin
+import com.livk.boot.dependency.AptCompilePlugin
 import com.livk.boot.dependency.ManagementPlugin
 import com.livk.boot.dependency.OptionalPlugin
 import com.livk.boot.info.ManifestPlugin
@@ -32,7 +32,7 @@ class CorePlugin : Plugin<Project> {
 		project.pluginManager.apply(DeleteExpand::class.java)
 		project.pluginManager.apply(ManagementPlugin::class.java)
 		project.pluginManager.apply(OptionalPlugin::class.java)
-		project.pluginManager.apply(CompileProcessorPlugin::class.java)
+		project.pluginManager.apply(AptCompilePlugin::class.java)
 		project.pluginManager.apply(ManifestPlugin::class.java)
 	}
 

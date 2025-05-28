@@ -34,7 +34,7 @@ dependencies {
 	optional("org.apache.commons:commons-pool2")
 	optional("io.minio:minio")
 	optional("com.lmax:disruptor")
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 
 	testImplementation(project(":spring-testcontainers-support"))
 	testImplementation("com.zaxxer:HikariCP")

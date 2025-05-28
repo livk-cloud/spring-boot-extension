@@ -9,5 +9,5 @@ dependencies {
 	optional("org.springframework.boot:spring-boot-starter-logging")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	optional("org.springframework.security:spring-security-oauth2-authorization-server")
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 }
