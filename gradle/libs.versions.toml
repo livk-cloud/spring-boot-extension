@@ -7,7 +7,7 @@ mybatis-spring = "3.0.4"
 mybatis-boot = "3.0.4"
 guava = "33.4.8-jre"
 fastexcel = "1.2.0"
-redisson = "3.47.0"
+redisson = "3.48.0"
 clickhouse = "0.8.6"
 mapstruct = "1.6.3"
 mapstruct-lombok = "0.2.0"
@@ -57,7 +57,7 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 #redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-34", version.ref = "redisson" }
+redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-35", version.ref = "redisson" }
 
 #clickhouse-all
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }

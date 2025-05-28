@@ -16,7 +16,7 @@ dependencies {
 	optional("org.springframework:spring-webmvc")
 	optional("org.springframework:spring-webflux")
 	optional("org.redisson:redisson")
-	optional("org.redisson:redisson-spring-data-34")
+	optional("org.redisson:redisson-spring-data-35")
 	optional("org.apache.curator:curator-recipes")
 	optional("org.mapstruct:mapstruct")
 	optional("org.aspectj:aspectjweaver")
