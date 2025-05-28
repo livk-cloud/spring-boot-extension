@@ -33,6 +33,10 @@ import org.redisson.config.CommandMapper;
 import org.redisson.config.Config;
 import org.redisson.config.ConfigSupport;
 import org.redisson.config.CredentialsResolver;
+import org.redisson.config.DecorrelatedJitterDelay;
+import org.redisson.config.DelayStrategy;
+import org.redisson.config.EqualJitterDelay;
+import org.redisson.config.FullJitterDelay;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -76,29 +80,36 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		}
 
 		static {
-			YAMLMapper mapper = new YAMLMapper();
-			mapper.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class);
-			mapper.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class);
-			mapper.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(Codec.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(LoadBalancer.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(NatMapper.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(NameMapper.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(NettyHook.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(CredentialsResolver.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(EventLoopGroup.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(ConnectionListener.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(ExecutorService.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
-			mapper.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class);
-			mapper.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class);
-			mapper.addMixIn(FailedNodeDetector.class, ConfigSupport.ClassMixIn.class);
 			FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
 					SimpleBeanPropertyFilter.filterOutAllExcept());
-			mapper.setFilterProvider(filterProvider);
-			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+			YAMLMapper mapper = YAMLMapper.builder()
+				.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class)
+				.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class)
+				.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(Codec.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(LoadBalancer.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(NatMapper.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(NameMapper.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(NettyHook.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(CredentialsResolver.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(EventLoopGroup.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(ConnectionListener.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(ExecutorService.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class)
+				.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class)
+				.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(FailedNodeDetector.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(DelayStrategy.class, ConfigSupport.ClassMixIn.class)
+				.addMixIn(EqualJitterDelay.class, ConfigSupport.DelayMixin.class)
+				.addMixIn(FullJitterDelay.class, ConfigSupport.DelayMixin.class)
+				.addMixIn(DecorrelatedJitterDelay.class, ConfigSupport.DelayMixin.class)
+				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+				.filterProvider(filterProvider)
+				.build();
+
 			support = new JacksonSupport(mapper);
 		}
 

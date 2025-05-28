@@ -24,6 +24,8 @@ import lombok.NoArgsConstructor;
 import org.redisson.api.NameMapper;
 import org.redisson.api.NatMapper;
 import org.redisson.client.DefaultCredentialsResolver;
+import org.redisson.client.FailedConnectionDetector;
+import org.redisson.client.FailedNodeDetector;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
 import org.redisson.config.BaseConfig;
@@ -32,15 +34,20 @@ import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.CommandMapper;
 import org.redisson.config.Config;
 import org.redisson.config.CredentialsResolver;
+import org.redisson.config.DelayStrategy;
+import org.redisson.config.EqualJitterDelay;
 import org.redisson.config.MasterSlaveServersConfig;
 import org.redisson.config.Protocol;
 import org.redisson.config.ReadMode;
 import org.redisson.config.ReplicatedServersConfig;
 import org.redisson.config.SentinelServersConfig;
+import org.redisson.config.ShardedSubscriptionMode;
 import org.redisson.config.SingleServerConfig;
 import org.redisson.config.SslProvider;
+import org.redisson.config.SslVerificationMode;
 import org.redisson.config.SubscriptionMode;
 import org.redisson.config.TransportMode;
+import org.redisson.config.ValkeyCapability;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -62,9 +69,11 @@ import org.springframework.util.Assert;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -113,15 +122,17 @@ public class ConfigProperties {
 				@DefaultValue("32") Integer nettyThreads, Executor nettyExecutor, Codec codec, ExecutorService executor,
 				@DefaultValue("true") Boolean referenceEnabled, @DefaultValue("NIO") TransportMode transportMode,
 				EventLoopGroup eventLoopGroup, @DefaultValue("30000") Long lockWatchdogTimeout,
+				@DefaultValue("100") Integer lockWatchdogBatchSize, @DefaultValue("300000") Integer fairLockWaitTimeout,
 				@DefaultValue("true") Boolean checkLockSyncedSlaves, @DefaultValue("1000") Long slavesSyncTimeout,
 				@DefaultValue("600000") Long reliableTopicWatchdogTimeout,
-				@DefaultValue("true") Boolean keepPubSubOrder, @DefaultValue("false") Boolean useScriptCache,
-				@DefaultValue("3") Integer minCleanUpDelay, @DefaultValue("1800") Integer maxCleanUpDelay,
+				@DefaultValue("true") Boolean keepPubSubOrder, @DefaultValue("true") Boolean useScriptCache,
+				@DefaultValue("5") Integer minCleanUpDelay, @DefaultValue("1800") Integer maxCleanUpDelay,
 				@DefaultValue("100") Integer cleanUpKeysAmount,
 				@DefaultValue("!<org.redisson.client.DefaultNettyHook> {}") NettyHook nettyHook,
 				ConnectionListener connectionListener, @DefaultValue("true") Boolean useThreadClassLoader,
 				@DefaultValue("!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}") AddressResolverGroupFactory addressResolverGroupFactory,
-				Boolean lazyInitialization, @DefaultValue("RESP2") Protocol protocol) {
+				Boolean lazyInitialization, @DefaultValue("RESP2") Protocol protocol,
+				Set<ValkeyCapability> valkeyCapabilities) {
 			Optional.ofNullable(sentinelServersConfig).map(Base::convert).ifPresent(super::setSentinelServersConfig);
 			Optional.ofNullable(masterSlaveServersConfig)
 				.map(Base::convert)
@@ -140,6 +151,8 @@ public class ConfigProperties {
 			setTransportMode(transportMode);
 			Optional.ofNullable(eventLoopGroup).ifPresent(super::setEventLoopGroup);
 			setLockWatchdogTimeout(lockWatchdogTimeout);
+			setLockWatchdogBatchSize(lockWatchdogBatchSize);
+			setFairLockWaitTimeout(fairLockWaitTimeout);
 			setCheckLockSyncedSlaves(checkLockSyncedSlaves);
 			setSlavesSyncTimeout(slavesSyncTimeout);
 			setReliableTopicWatchdogTimeout(reliableTopicWatchdogTimeout);
@@ -154,6 +167,7 @@ public class ConfigProperties {
 			setAddressResolverGroupFactory(addressResolverGroupFactory);
 			Optional.ofNullable(lazyInitialization).ifPresent(super::setLazyInitialization);
 			setProtocol(protocol);
+			Optional.ofNullable(valkeyCapabilities).ifPresent(super::setValkeyCapabilities);
 		}
 
 	}
@@ -181,6 +195,8 @@ public class ConfigProperties {
 
 		private boolean checkSlotsCoverage = true;
 
+		private ShardedSubscriptionMode shardedSubscriptionMode = ShardedSubscriptionMode.AUTO;
+
 	}
 
 	/**
@@ -203,8 +219,6 @@ public class ConfigProperties {
 		 */
 
 		private int scanInterval = 5000;
-
-		private boolean checkSlotsCoverage = true;
 
 	}
 
@@ -350,8 +364,6 @@ public class ConfigProperties {
 
 		private int failedSlaveReconnectionInterval = 3000;
 
-		private int failedSlaveCheckInterval = 180000;
-
 		/**
 		 * Redis 'master' node minimum idle connection amount for <b>each</b> slave node
 		 */
@@ -383,6 +395,8 @@ public class ConfigProperties {
 		private int subscriptionConnectionPoolSize = 50;
 
 		private long dnsMonitoringInterval = 5000;
+
+		private FailedNodeDetector failedSlaveNodeDetector = new FailedConnectionDetector();
 
 	}
 
@@ -417,9 +431,11 @@ public class ConfigProperties {
 
 		private int subscriptionTimeout = 7500;
 
-		private int retryAttempts = 3;
+		private int retryAttempts = 4;
 
-		private int retryInterval = 1500;
+		private DelayStrategy retryDelay = new EqualJitterDelay(Duration.ofMillis(1000), Duration.ofSeconds(2));
+
+		private DelayStrategy reconnectionDelay = new EqualJitterDelay(Duration.ofMillis(100), Duration.ofSeconds(10));
 
 		/**
 		 * Password for Redis authentication. Should be null if not needed
@@ -430,6 +446,8 @@ public class ConfigProperties {
 		private String username;
 
 		private CredentialsResolver credentialsResolver = new DefaultCredentialsResolver();
+
+		private int credentialsReapplyInterval = 0;
 
 		/**
 		 * Subscriptions per Redis connection limit
@@ -443,7 +461,9 @@ public class ConfigProperties {
 
 		private String clientName;
 
-		private boolean sslEnableEndpointIdentification = true;
+		private SslVerificationMode sslVerificationMode = SslVerificationMode.STRICT;
+
+		private String sslKeystoreType;
 
 		private SslProvider sslProvider = SslProvider.JDK;
 
@@ -466,6 +486,14 @@ public class ConfigProperties {
 		private int pingConnectionInterval = 30000;
 
 		private boolean keepAlive;
+
+		private int tcpKeepAliveCount;
+
+		private int tcpKeepAliveIdle;
+
+		private int tcpKeepAliveInterval;
+
+		private int tcpUserTimeout;
 
 		private boolean tcpNoDelay = true;
 
