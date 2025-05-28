@@ -23,10 +23,10 @@ import org.gradle.api.plugins.JavaPlugin
 /**
  * @author livk
  */
-abstract class CompileProcessorPlugin : Plugin<Project> {
+abstract class AptCompilePlugin : Plugin<Project> {
 
 	companion object {
-		const val COMPILE_PROCESSOR = "compileProcessor"
+		const val APT_COMPILE = "aptCompile"
 
 		val DEPENDENCY_NAMES_SET = HashSet<String>()
 
@@ -45,12 +45,12 @@ abstract class CompileProcessorPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		val configurations = project.configurations
 		project.pluginManager.apply(JavaPlugin::class.java)
-		configurations.create(COMPILE_PROCESSOR) { compileProcessor ->
-			compileProcessor.isVisible = false
-			compileProcessor.isCanBeResolved = false
-			compileProcessor.isCanBeConsumed = false
+		configurations.create(APT_COMPILE) { apt ->
+			apt.isVisible = false
+			apt.isCanBeResolved = false
+			apt.isCanBeConsumed = false
 			project.plugins.withType(JavaPlugin::class.java) {
-				DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(compileProcessor) }
+				DEPENDENCY_NAMES_SET.forEach { configurations.getByName(it).extendsFrom(apt) }
 			}
 		}
 	}

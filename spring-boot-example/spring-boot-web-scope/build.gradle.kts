@@ -8,5 +8,5 @@ dependencies {
 	implementation("org.springframework:spring-webflux")
 	implementation("io.projectreactor.netty:reactor-netty-http")
 	implementation("com.squareup.okhttp3:okhttp")
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 }

@@ -9,7 +9,7 @@ dependencies {
 	api("org.testcontainers:testcontainers")
 	api("org.springframework.boot:spring-boot-testcontainers")
 
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 
 	optional("org.testcontainers:mysql")
 	optional("org.testcontainers:postgresql")

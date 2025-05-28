@@ -11,5 +11,5 @@ dependencies {
 	optional("org.springframework.security:spring-security-web")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	api("com.fasterxml.jackson.core:jackson-databind")
-	compileProcessor(project(":spring-auto-service"))
+	aptCompile(project(":spring-auto-service"))
 }

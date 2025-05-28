@@ -41,7 +41,7 @@ configure(module) {
 
 	dependencies {
 		management(platform(project(":spring-extension-dependencies")))
-		compileProcessor("org.projectlombok:lombok")
+		aptCompile("org.projectlombok:lombok")
 		annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 		annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
 		testImplementation("org.springframework:spring-tx")
