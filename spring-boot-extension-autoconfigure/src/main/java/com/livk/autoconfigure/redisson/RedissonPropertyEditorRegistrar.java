@@ -13,7 +13,6 @@
 
 package com.livk.autoconfigure.redisson;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -21,6 +20,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.livk.commons.jackson.core.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.redisson.api.NameMapper;
 import org.redisson.api.NatMapper;
 import org.redisson.api.RedissonNodeInitializer;
@@ -42,12 +42,11 @@ import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
-import org.jspecify.annotations.NonNull;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.beans.PropertyEditorSupport;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -55,14 +54,45 @@ import java.util.concurrent.ExecutorService;
  */
 final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
-	private static final Set<Class<?>> SUPPORT_TYPE = Set.of(Config.class, AddressResolverGroupFactory.class,
-			Codec.class, RedissonNodeInitializer.class, LoadBalancer.class, NatMapper.class, NameMapper.class,
-			NettyHook.class, CredentialsResolver.class, EventLoopGroup.class, ConnectionListener.class,
-			ExecutorService.class, KeyManagerFactory.class, TrustManagerFactory.class, CommandMapper.class);
+	private static final Map<Class<?>, Class<?>> REDISSON_MIXIN = Map.ofEntries(
+			Map.entry(Config.class, ConfigSupport.ConfigMixIn.class),
+			Map.entry(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class),
+			Map.entry(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(Codec.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(LoadBalancer.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(NatMapper.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(NameMapper.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(NettyHook.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(CredentialsResolver.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(EventLoopGroup.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(ConnectionListener.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(ExecutorService.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class),
+			Map.entry(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class),
+			Map.entry(CommandMapper.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(FailedNodeDetector.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(DelayStrategy.class, ConfigSupport.ClassMixIn.class),
+			Map.entry(EqualJitterDelay.class, ConfigSupport.DelayMixin.class),
+			Map.entry(FullJitterDelay.class, ConfigSupport.DelayMixin.class),
+			Map.entry(DecorrelatedJitterDelay.class, ConfigSupport.DelayMixin.class));
+
+	private static final JacksonSupport support;
+
+	static {
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
+				SimpleBeanPropertyFilter.filterOutAllExcept());
+
+		YAMLMapper.Builder builder = YAMLMapper.builder().filterProvider(filterProvider);
+		REDISSON_MIXIN.forEach(builder::addMixIn);
+
+		support = new JacksonSupport(builder.build());
+	}
 
 	@Override
 	public void registerCustomEditors(@NonNull PropertyEditorRegistry registry) {
-		for (Class<?> type : SUPPORT_TYPE) {
+		for (Class<?> type : REDISSON_MIXIN.keySet()) {
 			registry.registerCustomEditor(type, new RedissonTypePropertyEditor(type));
 		}
 	}
@@ -70,47 +100,11 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 	@RequiredArgsConstructor
 	private static class RedissonTypePropertyEditor extends PropertyEditorSupport {
 
-		private static final JacksonSupport support;
-
 		private final Class<?> type;
 
 		@Override
 		public void setAsText(String text) {
 			setValue(support.readValue(text, type));
-		}
-
-		static {
-			FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
-					SimpleBeanPropertyFilter.filterOutAllExcept());
-
-			YAMLMapper mapper = YAMLMapper.builder()
-				.addMixIn(Config.class, ConfigSupport.ConfigMixIn.class)
-				.addMixIn(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class)
-				.addMixIn(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(Codec.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(LoadBalancer.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(NatMapper.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(NameMapper.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(NettyHook.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(CredentialsResolver.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(EventLoopGroup.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(ConnectionListener.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(ExecutorService.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class)
-				.addMixIn(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class)
-				.addMixIn(CommandMapper.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(FailedNodeDetector.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(DelayStrategy.class, ConfigSupport.ClassMixIn.class)
-				.addMixIn(EqualJitterDelay.class, ConfigSupport.DelayMixin.class)
-				.addMixIn(FullJitterDelay.class, ConfigSupport.DelayMixin.class)
-				.addMixIn(DecorrelatedJitterDelay.class, ConfigSupport.DelayMixin.class)
-				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-				.filterProvider(filterProvider)
-				.build();
-
-			support = new JacksonSupport(mapper);
 		}
 
 	}
