@@ -57,7 +57,7 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 #redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-34", version.ref = "redisson" }
+redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-35", version.ref = "redisson" }
 
 #clickhouse-all
 clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
