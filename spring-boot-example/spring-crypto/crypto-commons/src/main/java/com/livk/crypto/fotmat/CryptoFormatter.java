@@ -22,7 +22,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.ResolvableType;
 import org.springframework.format.Formatter;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.text.ParseException;
 import java.util.List;
@@ -75,7 +75,7 @@ public interface CryptoFormatter<T> extends Formatter<T> {
 
 	String format(T value);
 
-	T parse(String text) throws ParseException;
+	T parse(String text);
 
 	/**
 	 * Type crypto type.

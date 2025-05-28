@@ -63,7 +63,7 @@ public class LivkStreamListener
 
 	@Override
 	public void afterPropertiesSet() {
-		if (Boolean.TRUE.equals(redisOps.hasKey("livk-streamKey"))) {
+		if (redisOps.hasKey("livk-streamKey")) {
 			StreamInfo.XInfoGroups groups = redisOps.opsForStream().groups("livk-streamKey");
 			if (groups.isEmpty()) {
 				redisOps.opsForStream().createGroup("livk-streamKey", "livk-group");

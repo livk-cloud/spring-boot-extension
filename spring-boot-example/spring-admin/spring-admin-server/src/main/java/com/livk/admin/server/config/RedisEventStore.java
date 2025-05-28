@@ -23,7 +23,7 @@ import de.codecentric.boot.admin.server.eventstore.InstanceEventPublisher;
 import de.codecentric.boot.admin.server.eventstore.InstanceEventStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveHashOperations;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

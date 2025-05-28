@@ -44,7 +44,7 @@ class RedissonAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
@@ -62,16 +62,12 @@ class RedissonAutoConfigurationTest {
 
 	@Test
 	void redissonClient() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(RedissonClient.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonClient.class));
 	}
 
 	@Test
 	void redissonConnectionFactory() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(RedissonConnectionFactory.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonConnectionFactory.class));
 	}
 
 }

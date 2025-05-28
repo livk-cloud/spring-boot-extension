@@ -14,7 +14,7 @@
 package com.livk.context.useragent;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 import java.util.Optional;

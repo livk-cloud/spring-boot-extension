@@ -19,7 +19,6 @@ package com.livk.proto.pulsar;
 import com.livk.proto.ProtobufSend;
 import com.livk.proto.User;
 import lombok.RequiredArgsConstructor;
-import org.apache.pulsar.client.api.PulsarClientException;
 import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,7 @@ public class PulsarSend implements ProtobufSend<User> {
 	private final PulsarTemplate<User> pulsarTemplate;
 
 	@Override
-	public void send(String key, User data) throws PulsarClientException {
+	public void send(String key, User data) {
 		pulsarTemplate.newMessage(data)
 			.withTopic(key)
 			.withMessageCustomizer(builder -> builder.key(UUID.randomUUID().toString().substring(0, 5)))

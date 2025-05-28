@@ -16,7 +16,6 @@
 
 package com.livk.crypto.jackson;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -29,7 +28,6 @@ import com.livk.crypto.fotmat.CryptoFormatter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 /**
  * @author livk
@@ -49,12 +47,7 @@ public class CryptoJsonDeserializer extends JsonDeserializer<Object> implements 
 		if (parser == null) {
 			return defaultJsonDeserializer.deserialize(p, context);
 		}
-		try {
-			return parser.parse(type.unwrap(text));
-		}
-		catch (ParseException e) {
-			throw new JsonParseException(p, e.getMessage());
-		}
+		return parser.parse(type.unwrap(text));
 	}
 
 	@Override

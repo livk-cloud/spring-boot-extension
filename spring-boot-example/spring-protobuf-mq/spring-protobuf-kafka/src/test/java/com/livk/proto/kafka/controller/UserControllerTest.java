@@ -42,7 +42,7 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka());
+	static final KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {

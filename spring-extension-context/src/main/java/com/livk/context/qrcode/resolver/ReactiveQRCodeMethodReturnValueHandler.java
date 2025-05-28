@@ -34,7 +34,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;

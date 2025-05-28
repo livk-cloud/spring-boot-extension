@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FactoryProxySupportTest {
 
 	@Container
-	static RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
 
 	static RediSearchConnectionFactory factory;
 

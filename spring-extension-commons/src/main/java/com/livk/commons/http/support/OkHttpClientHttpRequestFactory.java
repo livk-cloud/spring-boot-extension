@@ -23,7 +23,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 
 import java.io.IOException;

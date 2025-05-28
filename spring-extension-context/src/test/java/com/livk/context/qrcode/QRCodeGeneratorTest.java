@@ -39,9 +39,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class QRCodeGeneratorTest {
 
-	JsonMapper mapper = JsonMapper.builder().build();
+	final JsonMapper mapper = JsonMapper.builder().build();
 
-	QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
+	final QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
 
 	@Test
 	void generateTextQRCode() throws IOException {

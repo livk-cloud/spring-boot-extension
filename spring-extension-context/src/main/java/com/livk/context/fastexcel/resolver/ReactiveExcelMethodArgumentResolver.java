@@ -35,7 +35,7 @@ import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.server.ServerWebExchange;
@@ -163,13 +163,11 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 			this.part = part;
 		}
 
-		@NonNull
-		public HttpHeaders getHeaders() {
+		@NonNull public HttpHeaders getHeaders() {
 			return this.part.headers();
 		}
 
-		@NonNull
-		public Flux<DataBuffer> getBody() {
+		@NonNull public Flux<DataBuffer> getBody() {
 			return this.part.content();
 		}
 

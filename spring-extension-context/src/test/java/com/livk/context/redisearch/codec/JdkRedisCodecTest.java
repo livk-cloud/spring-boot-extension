@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  */
 class JdkRedisCodecTest {
 
-	static RedisCodec<Object, Object> codec = new JdkRedisCodec();
+	static final RedisCodec<Object, Object> codec = new JdkRedisCodec();
 
 	@Test
 	void testKey() {

@@ -70,7 +70,7 @@ class MysqlJsonTypeHandlerTest {
 
 	@Container
 	@ServiceConnection
-	static MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("mybatis");
 
 	@DynamicPropertySource
@@ -103,7 +103,7 @@ class MysqlJsonTypeHandlerTest {
 		user.setPassword("admin");
 		user.setDes(JsonMapperUtils.readTree(json));
 
-		userMapper.insert(user);
+		assertEquals(1, userMapper.insert(user));
 		User first = userMapper.selectList().getFirst();
 		assertEquals(user.getUsername(), first.getUsername());
 		assertEquals(user.getPassword(), first.getPassword());

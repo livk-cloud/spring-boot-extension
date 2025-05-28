@@ -33,7 +33,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
@@ -116,7 +116,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 
 		@NonNull
 		@Override
-		public Object read(@NonNull Class<?> parameterType, HttpInputMessage inputMessage)
+		public Object read(@NonNull Class<?> parameterType, @NonNull HttpInputMessage inputMessage)
 				throws HttpMessageNotReadableException {
 			throw new UnsupportedOperationException();
 		}

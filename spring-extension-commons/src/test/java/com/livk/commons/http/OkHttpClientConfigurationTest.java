@@ -30,13 +30,10 @@ class OkHttpClientConfigurationTest {
 
 	@Test
 	void test() {
-		contextRunner.run(context -> {
-			assertThat(context).hasBean("defaultOkHttpClientHttpRequestFactory");
-		});
+		contextRunner.run(context -> assertThat(context).hasBean("defaultOkHttpClientHttpRequestFactory"));
 
-		contextRunner.withBean("okHttpClient", OkHttpClient.class, OkHttpClient::new).run(context -> {
-			assertThat(context).hasBean("okHttpClientHttpRequestFactory");
-		});
+		contextRunner.withBean("okHttpClient", OkHttpClient.class, OkHttpClient::new)
+			.run(context -> assertThat(context).hasBean("okHttpClientHttpRequestFactory"));
 	}
 
 }

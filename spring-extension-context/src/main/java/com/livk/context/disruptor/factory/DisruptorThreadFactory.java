@@ -16,7 +16,7 @@
 
 package com.livk.context.disruptor.factory;
 
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.ThreadFactory;
 

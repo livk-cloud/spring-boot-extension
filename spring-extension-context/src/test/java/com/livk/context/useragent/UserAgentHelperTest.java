@@ -48,9 +48,9 @@ class UserAgentHelperTest {
 
 	ApplicationContext applicationContext;
 
-	HttpHeaders headers = new HttpHeaders();
+	final HttpHeaders headers = new HttpHeaders();
 
-	String userAgentStr = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+	final String userAgentStr = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 	@BeforeEach
 	public void init() {

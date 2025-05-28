@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class CuratorFactoryTest {
 
-	static CuratorProperties properties = new CuratorProperties();
+	static final CuratorProperties properties = new CuratorProperties();
 
 	@Test
 	void create() throws InterruptedException {

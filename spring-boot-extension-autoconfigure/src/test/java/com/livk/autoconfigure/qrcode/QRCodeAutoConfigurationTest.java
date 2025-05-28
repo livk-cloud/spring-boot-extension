@@ -39,9 +39,7 @@ class QRCodeAutoConfigurationTest {
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
 			.withConfiguration(AutoConfigurations.of(QRCodeAutoConfiguration.class));
 
-		contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(GoogleQRCodeGenerator.class);
-		});
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(GoogleQRCodeGenerator.class));
 	}
 
 	@Test
@@ -63,9 +61,7 @@ class QRCodeAutoConfigurationTest {
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
 			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
-		contextRunner.run(context -> {
-			assertThat(context).hasSingleBean(ReactiveQRCodeMethodReturnValueHandler.class);
-		});
+		contextRunner.run(context -> assertThat(context).hasSingleBean(ReactiveQRCodeMethodReturnValueHandler.class));
 	}
 
 }

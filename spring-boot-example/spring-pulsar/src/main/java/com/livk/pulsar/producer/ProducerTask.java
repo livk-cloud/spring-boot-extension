@@ -19,7 +19,6 @@ package com.livk.pulsar.producer;
 import com.livk.commons.util.SnowflakeIdGenerator;
 import com.livk.pulsar.producer.entity.PulsarMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
 import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -44,7 +43,7 @@ public class ProducerTask {
 	private final PulsarTemplate<String> pulsarTemplate;
 
 	@Scheduled(cron = "0/5 * * * * ?")
-	public void send() throws PulsarClientException {
+	public void send() {
 		PulsarMessage<String> message = new PulsarMessage<>();
 		message.setMsgId(UUID.randomUUID().toString());
 		message.setSendTime(LocalDateTime.now());

@@ -46,9 +46,7 @@ class HttpServiceAutoConfigurationTest {
 
 	@Test
 	void test() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(RemoteService.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RemoteService.class));
 	}
 
 	@TestConfiguration

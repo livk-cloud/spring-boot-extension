@@ -53,7 +53,7 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("mybatis");
 
 	@DynamicPropertySource

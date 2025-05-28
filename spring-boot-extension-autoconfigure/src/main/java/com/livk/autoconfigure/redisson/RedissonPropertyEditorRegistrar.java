@@ -38,7 +38,7 @@ import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;

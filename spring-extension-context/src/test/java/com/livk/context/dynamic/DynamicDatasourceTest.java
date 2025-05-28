@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class DynamicDatasourceTest {
 
-	static DynamicDatasource dynamicDatasource = new DynamicDatasource();
+	static final DynamicDatasource dynamicDatasource = new DynamicDatasource();
 
-	static HikariDataSource primary = new HikariDataSource();
+	static final HikariDataSource primary = new HikariDataSource();
 
-	static DriverManagerDataSource slave1 = new DriverManagerDataSource();
+	static final DriverManagerDataSource slave1 = new DriverManagerDataSource();
 
-	static SingleConnectionDataSource slave2 = new SingleConnectionDataSource();
+	static final SingleConnectionDataSource slave2 = new SingleConnectionDataSource();
 
 	@BeforeAll
 	static void init() {

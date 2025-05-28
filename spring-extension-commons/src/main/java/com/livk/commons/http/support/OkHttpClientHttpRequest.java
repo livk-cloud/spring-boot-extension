@@ -27,7 +27,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.http.client.AbstractClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.util.StringUtils;
 

@@ -34,7 +34,7 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
@@ -114,6 +114,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 		private static final Function<Collection<?>, Map<String, Collection<?>>> defaultFunction = c -> Map.of("sheet",
 				c);
 
+		@NonNull
 		@Override
 		public List<MediaType> getWritableMediaTypes() {
 			return List.of();
@@ -137,10 +138,11 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 			return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
 		}
 
+		@NonNull
 		@SuppressWarnings("unchecked")
 		@Override
-		public Mono<Void> write(Publisher<?> inputStream, ResolvableType elementType, MediaType mediaType,
-				ReactiveHttpOutputMessage message, Map<String, Object> hints) {
+		public Mono<Void> write(@NonNull Publisher<?> inputStream, @NonNull ResolvableType elementType,
+				MediaType mediaType, @NonNull ReactiveHttpOutputMessage message, Map<String, Object> hints) {
 			ResponseExcel responseExcel = (ResponseExcel) hints.get("responseExcel");
 			if (inputStream instanceof Flux<?> flux) {
 				Class<?> excelModelClass = elementType.resolveGeneric(0);

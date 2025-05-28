@@ -26,7 +26,6 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.data.Stat;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -116,7 +115,7 @@ public class CuratorTemplate implements CuratorOperations {
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() {
 		if (framework.getState() == CuratorFrameworkState.STARTED) {
 			framework.close();
 		}

@@ -18,7 +18,7 @@ package com.livk.commons.util;
 
 import com.google.common.base.CharMatcher;
 import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;

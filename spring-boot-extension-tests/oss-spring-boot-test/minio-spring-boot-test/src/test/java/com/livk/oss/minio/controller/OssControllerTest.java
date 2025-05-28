@@ -49,7 +49,7 @@ class OssControllerTest {
 
 	@Container
 	@ServiceConnection
-	static MinIOContainer minio = new MinIOContainer(DockerImageNames.minio()).withUserName("admin")
+	static final MinIOContainer minio = new MinIOContainer(DockerImageNames.minio()).withUserName("admin")
 		.withPassword("1375632510")
 		.withExposedPorts(9000);
 

@@ -24,7 +24,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.support.converter.AbstractMessageConverter;
 import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * @author livk

@@ -17,7 +17,7 @@
 package com.livk.commons.aop;
 
 import org.springframework.aop.Pointcut;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.annotation.Annotation;
 

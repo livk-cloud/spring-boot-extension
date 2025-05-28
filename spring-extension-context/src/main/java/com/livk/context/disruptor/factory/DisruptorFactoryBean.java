@@ -35,7 +35,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.util.concurrent.ThreadFactory;

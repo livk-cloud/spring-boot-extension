@@ -45,7 +45,8 @@ class ScheduleControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass", "123456");
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass",
+			"123456");
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

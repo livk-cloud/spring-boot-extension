@@ -78,13 +78,13 @@ public abstract class AbstractCryptoFormatter<T> implements CryptoFormatter<T> {
 	 * @param decryptValue the decrypt value
 	 * @return the t
 	 */
-	protected abstract T convert(String decryptValue) throws Exception;
+	protected abstract T convert(String decryptValue);
 
 	/**
 	 * Convert string.
 	 * @param encryptValue the encrypt value
 	 * @return the string
 	 */
-	protected abstract String convert(T encryptValue) throws Exception;
+	protected abstract String convert(T encryptValue);
 
 }

@@ -26,7 +26,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
 
@@ -58,7 +57,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	private final HttpParameters parameter = new HttpParameters();
 
-	@Nullable
 	private byte[] body;
 
 	private boolean bodyReviseStatus = false;

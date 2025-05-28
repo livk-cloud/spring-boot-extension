@@ -51,7 +51,7 @@ class ProducerControllerTest {
 
 	@Container
 	@ServiceConnection
-	static KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka());
+	static final KafkaContainer kafka = new KafkaContainer(DockerImageNames.kafka());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
@@ -66,9 +66,7 @@ class ProducerControllerTest {
 	void producer() throws Exception {
 		mockMvc.perform(get("/kafka/send")).andDo(print()).andExpect(status().isOk());
 
-		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> {
-			assertEquals(3, this.messages.size());
-		});
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertEquals(3, this.messages.size()));
 	}
 
 	final List<String> messages = new ArrayList<>();

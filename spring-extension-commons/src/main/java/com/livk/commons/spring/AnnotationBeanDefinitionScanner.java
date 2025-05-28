@@ -14,6 +14,7 @@
 package com.livk.commons.spring;
 
 import com.livk.commons.util.AnnotationUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -24,7 +25,6 @@ import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;

@@ -22,7 +22,7 @@ import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.Ordered;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;

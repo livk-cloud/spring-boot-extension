@@ -32,23 +32,17 @@ class MapstructAutoConfigurationTest {
 
 	@Test
 	void genericMapstructService() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(GenericMapstructService.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(GenericMapstructService.class));
 	}
 
 	@Test
 	void converterRepository() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(ConverterRepository.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(ConverterRepository.class));
 	}
 
 	@Test
 	void springMapstructLocator() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(SpringMapstructLocator.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(SpringMapstructLocator.class));
 	}
 
 }

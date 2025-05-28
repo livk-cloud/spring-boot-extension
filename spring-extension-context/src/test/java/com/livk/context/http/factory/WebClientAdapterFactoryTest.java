@@ -19,7 +19,7 @@ class WebClientAdapterFactoryTest {
 	@Autowired
 	BeanFactory beanFactory;
 
-	static WebClientAdapterFactory factory = new WebClientAdapterFactory();
+	static final WebClientAdapterFactory factory = new WebClientAdapterFactory();
 
 	@Test
 	void support() {

@@ -71,7 +71,7 @@ public class ShopController {
 		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(),
 				new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"),
 				String.valueOf(count));
-		if (result != null && result == 1) {
+		if (result == 1) {
 			return ResponseEntity.ok(Map.of("code", "200", "msg", "购买成功，数量：" + count));
 		}
 		return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));

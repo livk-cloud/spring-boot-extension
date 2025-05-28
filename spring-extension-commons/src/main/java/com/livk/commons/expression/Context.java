@@ -14,7 +14,7 @@
 package com.livk.commons.expression;
 
 import com.google.common.collect.Maps;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collections;
 import java.util.HashMap;

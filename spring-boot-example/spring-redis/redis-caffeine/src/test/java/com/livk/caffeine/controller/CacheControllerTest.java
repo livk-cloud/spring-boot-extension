@@ -56,7 +56,7 @@ class CacheControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

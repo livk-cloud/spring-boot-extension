@@ -36,9 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
  */
 class BeanUtilsTest {
 
-	static SourceBean bean = new SourceBean("source", 10);
+	static final SourceBean bean = new SourceBean("source", 10);
 
-	static List<SourceBean> beanList = List.of(new SourceBean("source", 10), new SourceBean("target", 9));
+	static final List<SourceBean> beanList = List.of(new SourceBean("source", 10), new SourceBean("target", 9));
 
 	@Test
 	void copy() {

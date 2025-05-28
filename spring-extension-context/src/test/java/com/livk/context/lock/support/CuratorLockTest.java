@@ -52,7 +52,7 @@ class CuratorLockTest {
 
 	@Container
 	@ServiceConnection
-	static ZookeeperContainer zookeeper = new ZookeeperContainer();
+	static final ZookeeperContainer zookeeper = new ZookeeperContainer();
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
@@ -60,14 +60,14 @@ class CuratorLockTest {
 				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
 	}
 
-	static ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
+	static final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
 
 	@Autowired
 	CuratorLockTest(CuratorFramework framework) {
 		lock = new CuratorLock(framework);
 	}
 
-	DistributedLock lock;
+	final DistributedLock lock;
 
 	@AfterAll
 	static void close() {

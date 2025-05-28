@@ -45,7 +45,7 @@ class LockControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ZookeeperContainer zookeeper = new ZookeeperContainer();
+	static final ZookeeperContainer zookeeper = new ZookeeperContainer();
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {

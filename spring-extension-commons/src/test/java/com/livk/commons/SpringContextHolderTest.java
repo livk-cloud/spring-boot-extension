@@ -43,7 +43,7 @@ class SpringContextHolderTest {
 		.withPropertyValues("spring.data.redis.host=livk.com")
 		.withBean(SpringContextHolder.class, SpringContextHolder::new);
 
-	BeanTest bean = new BeanTest();
+	final BeanTest bean = new BeanTest();
 
 	@Test
 	void getBean() {
@@ -96,9 +96,8 @@ class SpringContextHolderTest {
 
 	@Test
 	void resolvePlaceholders() {
-		contextRunner.run(ctx -> {
-			assertEquals("livk.com", SpringContextHolder.resolvePlaceholders("${spring.data.redis.host}"));
-		});
+		contextRunner
+			.run(ctx -> assertEquals("livk.com", SpringContextHolder.resolvePlaceholders("${spring.data.redis.host}")));
 	}
 
 	@Test

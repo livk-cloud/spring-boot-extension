@@ -40,16 +40,12 @@ class DynamicAutoConfigurationTest {
 
 	@Test
 	void curatorDynamicDatasource() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DynamicDatasource.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(DynamicDatasource.class));
 	}
 
 	@Test
 	void exponentialDataSourceInterceptor() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(DataSourceInterceptor.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(DataSourceInterceptor.class));
 	}
 
 	@TestConfiguration(proxyBeanMethods = false)

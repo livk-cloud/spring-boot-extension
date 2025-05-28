@@ -52,21 +52,21 @@ class RedissonLockTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
 		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 	}
 
-	static ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
+	static final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
 
 	@Autowired
 	RedissonLockTest(RedissonClient redissonClient) {
 		lock = new RedissonLock(redissonClient);
 	}
 
-	DistributedLock lock;
+	final DistributedLock lock;
 
 	@AfterAll
 	static void close() {

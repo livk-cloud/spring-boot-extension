@@ -29,37 +29,29 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class RediSearchAutoConfigurationTest {
 
-	ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 		.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
 		.withConfiguration(AutoConfigurations.of(RediSearchAutoConfiguration.class))
 		.withUserConfiguration(Config.class);
 
 	@Test
 	void clientResources() {
-		contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(ClientResources.class);
-		});
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(ClientResources.class));
 	}
 
 	@Test
 	void lettuceConnectionFactory() {
-		contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(LettuceModConnectionFactory.class);
-		});
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(LettuceModConnectionFactory.class));
 	}
 
 	@Test
 	void rediSearchTemplate() {
-		contextRunner.run((context) -> {
-			assertThat(context).hasBean("rediSearchTemplate");
-		});
+		contextRunner.run((context) -> assertThat(context).hasBean("rediSearchTemplate"));
 	}
 
 	@Test
 	void stringRediSearchTemplate() {
-		contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(StringRediSearchTemplate.class);
-		});
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(StringRediSearchTemplate.class));
 	}
 
 	@TestConfiguration

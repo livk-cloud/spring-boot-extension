@@ -23,7 +23,7 @@ import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

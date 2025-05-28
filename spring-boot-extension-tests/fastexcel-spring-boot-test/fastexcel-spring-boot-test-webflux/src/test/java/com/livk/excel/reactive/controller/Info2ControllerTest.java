@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureWebTestClient(timeout = "15000")
 class Info2ControllerTest {
 
-	static MultipartBodyBuilder builder = new MultipartBodyBuilder();
+	static final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
 	@Autowired
 	WebTestClient client;

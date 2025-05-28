@@ -20,7 +20,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.Pointcut;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

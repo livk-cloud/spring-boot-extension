@@ -36,10 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class YamlUtilsTest {
 
-	Resource yml = new ClassPathResource("yamlData.yml");
+	final Resource yml = new ClassPathResource("yamlData.yml");
 
-	Map<String, Object> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", 5672, "spring.env[0]", 1,
-			"spring.env[1]", 2);
+	final Map<String, Object> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", 5672, "spring.env[0]",
+			1, "spring.env[1]", 2);
 
 	@Test
 	void convertMapToYaml() throws IOException {

@@ -73,11 +73,11 @@ class LockAutoConfigurationTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@Container
 	@ServiceConnection
-	static ZookeeperContainer zookeeper = new ZookeeperContainer();
+	static final ZookeeperContainer zookeeper = new ZookeeperContainer();
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

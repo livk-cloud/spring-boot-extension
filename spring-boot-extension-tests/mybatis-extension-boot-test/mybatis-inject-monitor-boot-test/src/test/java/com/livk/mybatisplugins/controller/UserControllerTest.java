@@ -54,9 +54,9 @@ class UserControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
-	Integer id = 10;
+	final Integer id = 10;
 
-	ObjectMapper mapper = JsonMapper.builder().build();
+	final ObjectMapper mapper = JsonMapper.builder().build();
 
 	@Order(3)
 	@Test

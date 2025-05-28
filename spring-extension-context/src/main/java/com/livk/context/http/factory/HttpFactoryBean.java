@@ -24,7 +24,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
@@ -52,7 +52,7 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, I
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		HttpExchangeAdapter adapter = adapterFactory.create(beanFactory);
 		HttpServiceProxyFactory.Builder builder = HttpServiceProxyFactory.builderFor(adapter);
 		builder.embeddedValueResolver(new EmbeddedValueResolver(beanFactory));

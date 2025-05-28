@@ -42,7 +42,7 @@ class StudentControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {

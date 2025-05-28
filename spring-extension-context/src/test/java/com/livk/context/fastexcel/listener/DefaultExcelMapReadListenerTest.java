@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  */
 class DefaultExcelMapReadListenerTest {
 
-	static DefaultExcelMapReadListener listener = new DefaultExcelMapReadListener();
+	static final DefaultExcelMapReadListener listener = new DefaultExcelMapReadListener();
 
 	@Test
 	void test() throws IOException {

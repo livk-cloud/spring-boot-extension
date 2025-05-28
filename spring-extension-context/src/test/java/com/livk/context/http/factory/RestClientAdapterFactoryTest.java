@@ -19,7 +19,7 @@ class RestClientAdapterFactoryTest {
 	@Autowired
 	BeanFactory beanFactory;
 
-	static RestClientAdapterFactory factory = new RestClientAdapterFactory();
+	static final RestClientAdapterFactory factory = new RestClientAdapterFactory();
 
 	@Test
 	void support() {

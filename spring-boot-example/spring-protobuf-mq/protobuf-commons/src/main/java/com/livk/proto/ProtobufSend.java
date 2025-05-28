@@ -16,13 +16,11 @@
 
 package com.livk.proto;
 
-import java.io.IOException;
-
 /**
  * @author livk
  */
 public interface ProtobufSend<V> {
 
-	void send(String key, V data) throws IOException;
+	void send(String key, V data);
 
 }

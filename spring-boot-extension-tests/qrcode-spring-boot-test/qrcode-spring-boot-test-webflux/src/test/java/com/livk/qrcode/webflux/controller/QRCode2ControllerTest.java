@@ -51,9 +51,9 @@ class QRCode2ControllerTest {
 	@Autowired
 	WebTestClient client;
 
-	String text = "Hello World!";
+	final String text = "Hello World!";
 
-	String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
+	final String json = JsonMapperUtils.writeValueAsString(Map.of("username", "root", "password", "root"));
 
 	@Test
 	void text() throws IOException {

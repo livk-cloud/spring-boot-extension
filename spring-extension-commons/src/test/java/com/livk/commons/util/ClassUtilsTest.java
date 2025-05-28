@@ -18,7 +18,7 @@ package com.livk.commons.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;

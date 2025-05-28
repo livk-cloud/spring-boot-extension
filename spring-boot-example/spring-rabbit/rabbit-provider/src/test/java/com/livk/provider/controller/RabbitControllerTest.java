@@ -57,7 +57,7 @@ class RabbitControllerTest {
 		registry.add("spring.rabbitmq.port", rabbit::getFirstMappedPort);
 	}
 
-	static String body = JsonMapperUtils.writeValueAsString(Map.of("msg", "hello", "data", "By Livk"));
+	static final String body = JsonMapperUtils.writeValueAsString(Map.of("msg", "hello", "data", "By Livk"));
 
 	@Autowired
 	MockMvc mockMvc;

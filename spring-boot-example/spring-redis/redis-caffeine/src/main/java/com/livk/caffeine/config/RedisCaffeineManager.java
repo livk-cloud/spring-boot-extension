@@ -20,7 +20,7 @@ import com.livk.caffeine.handler.CacheHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;

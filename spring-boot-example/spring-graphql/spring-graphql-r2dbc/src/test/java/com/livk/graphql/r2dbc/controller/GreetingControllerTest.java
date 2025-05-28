@@ -50,7 +50,7 @@ class GreetingControllerTest {
 
 	@Container
 	@ServiceConnection
-	static PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
 		.withDatabaseName("graphql");
 
 	@DynamicPropertySource

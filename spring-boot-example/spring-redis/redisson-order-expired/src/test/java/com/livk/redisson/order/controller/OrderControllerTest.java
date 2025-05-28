@@ -32,7 +32,8 @@ class OrderControllerTest {
 
 	@Container
 	@ServiceConnection
-	static RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass", "123456");
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis()).withCommand("--requirepass",
+			"123456");
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
@@ -50,9 +51,7 @@ class OrderControllerTest {
 	void create() throws Exception {
 		mockMvc.perform(post("/order/create")).andDo(print()).andExpect(status().isOk());
 
-		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> {
-			assertTrue(consumer.isEmpty());
-		});
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertTrue(consumer.isEmpty()));
 	}
 
 }

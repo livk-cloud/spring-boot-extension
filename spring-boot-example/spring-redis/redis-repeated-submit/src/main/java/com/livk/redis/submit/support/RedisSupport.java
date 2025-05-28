@@ -56,7 +56,7 @@ public class RedisSupport {
 	 * @return boolean boolean
 	 */
 	public boolean exists(String key) {
-		return Boolean.TRUE.equals(REDIS_OPS.hasKey(key));
+		return REDIS_OPS.hasKey(key);
 	}
 
 }

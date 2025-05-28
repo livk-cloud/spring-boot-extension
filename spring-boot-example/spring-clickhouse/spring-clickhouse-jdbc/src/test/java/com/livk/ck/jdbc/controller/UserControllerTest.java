@@ -62,7 +62,7 @@ class UserControllerTest {
 
 	@Container
 	@ServiceConnection
-	static ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
+	static final ClickHouseContainer clickhouse = new ClickHouseContainer(DockerImageNames.clickhouse())
 		.withExposedPorts(8123, 9000);
 
 	@DynamicPropertySource

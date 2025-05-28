@@ -27,9 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class JacksonRedisCodecTest {
 
-	static ObjectMapper mapper = new ObjectMapper();
+	static final ObjectMapper mapper = new ObjectMapper();
 
-	static RedisCodec<String, Object> codec = new JacksonRedisCodec<>(mapper, String.class, Object.class);
+	static final RedisCodec<String, Object> codec = new JacksonRedisCodec<>(mapper, String.class, Object.class);
 
 	@Test
 	void testKey() throws Exception {

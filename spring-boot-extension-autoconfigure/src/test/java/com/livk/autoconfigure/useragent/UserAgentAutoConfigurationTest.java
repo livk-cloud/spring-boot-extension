@@ -52,9 +52,7 @@ class UserAgentAutoConfigurationTest {
 
 	@Test
 	void test() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(UserAgentHelper.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentHelper.class));
 	}
 
 	@Test

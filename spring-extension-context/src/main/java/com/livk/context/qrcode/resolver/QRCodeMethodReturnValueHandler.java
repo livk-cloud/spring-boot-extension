@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;

@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 class PairTest {
 
-	static Pair<String, Integer> pair = Pair.of("livk", 123456);
+	static final Pair<String, Integer> pair = Pair.of("livk", 123456);
 
 	@Test
 	void pairJsonSerializerTest() {

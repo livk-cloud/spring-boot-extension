@@ -54,10 +54,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class JsonMapperUtilsTest {
 
-	static JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
+	static final JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 
 	@Language("json")
-	static String json = """
+	static final String json = """
 			{
 			                    "c": "1",
 			                    "a": "2",

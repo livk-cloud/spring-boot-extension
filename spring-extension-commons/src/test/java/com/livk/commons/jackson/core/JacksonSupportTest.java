@@ -53,7 +53,7 @@ class JacksonSupportTest {
 	static final JacksonSupport XML = new JacksonSupport(new XmlMapper());
 
 	@Language("json")
-	static String json = """
+	static final String json = """
 			{
 			                    "c": "1",
 			                    "a": "2",
@@ -63,7 +63,7 @@ class JacksonSupportTest {
 			                }""";
 
 	@Language("yaml")
-	static String yaml = """
+	static final String yaml = """
 			c: 1
 			a: 2
 			b:
@@ -71,7 +71,7 @@ class JacksonSupportTest {
 			""";
 
 	@Language("xml")
-	static String xml = """
+	static final String xml = """
 			<pro>
 			    <c>1</c>
 			    <a>2</a>

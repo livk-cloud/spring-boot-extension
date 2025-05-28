@@ -52,9 +52,9 @@ class InfoControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
-	ClassPathResource resource = new ClassPathResource("outFile.xls");
+	final ClassPathResource resource = new ClassPathResource("outFile.xls");
 
-	MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE,
+	final MockMultipartFile file = new MockMultipartFile("file", "outFile.xls", MediaType.MULTIPART_FORM_DATA_VALUE,
 			resource.getInputStream());
 
 	InfoControllerTest() throws IOException {

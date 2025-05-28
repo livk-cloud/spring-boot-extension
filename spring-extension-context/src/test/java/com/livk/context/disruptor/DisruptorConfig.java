@@ -34,7 +34,7 @@ public class DisruptorConfig {
 	public static class EntityDisruptorEventConsumer implements DisruptorEventConsumer<Entity> {
 
 		@Override
-		public void onEvent(Entity entity, long sequence, boolean endOfBatch) throws Exception {
+		public void onEvent(Entity entity, long sequence, boolean endOfBatch) {
 			log.info("消费者消费的信息是：{} :{} :{}", entity, sequence, endOfBatch);
 		}
 

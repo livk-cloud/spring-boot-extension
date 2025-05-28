@@ -43,7 +43,7 @@ public class BuyController {
 
 	@PostConstruct
 	public void init() {
-		if (Boolean.TRUE.equals(redisOps.hasKey("livk"))) {
+		if (redisOps.hasKey("livk")) {
 			redisOps.delete("livk");
 		}
 		redisOps.opsForValue().set("livk", 1);

@@ -23,7 +23,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.format.AnnotationFormatterFactory;
 import org.springframework.format.Parser;
 import org.springframework.format.Printer;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;

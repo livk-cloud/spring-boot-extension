@@ -34,23 +34,17 @@ class CuratorAutoConfigurationTest {
 
 	@Test
 	void curatorFramework() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(CuratorFramework.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(CuratorFramework.class));
 	}
 
 	@Test
 	void exponentialBackoffRetry() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(RetryPolicy.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RetryPolicy.class));
 	}
 
 	@Test
 	void curatorTemplate() {
-		this.contextRunner.run((context) -> {
-			assertThat(context).hasSingleBean(CuratorTemplate.class);
-		});
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(CuratorTemplate.class));
 	}
 
 	@TestConfiguration(proxyBeanMethods = false)

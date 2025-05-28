@@ -36,7 +36,7 @@ class ContextFactoryTest {
 
 	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
-	ContextFactory contextFactory = new DefaultContextFactory();
+	final ContextFactory contextFactory = new DefaultContextFactory();
 
 	ContextFactoryTest() throws NoSuchMethodException {
 	}

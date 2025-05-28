@@ -19,8 +19,8 @@ package com.livk.batch.support;
 import com.livk.batch.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <p>
