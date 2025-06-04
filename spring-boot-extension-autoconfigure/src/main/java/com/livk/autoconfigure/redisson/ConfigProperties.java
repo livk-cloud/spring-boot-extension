@@ -54,6 +54,7 @@ import org.redisson.connection.balancer.LoadBalancer;
 import org.redisson.connection.balancer.RoundRobinLoadBalancer;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -72,7 +73,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -133,23 +133,21 @@ public class ConfigProperties {
 				@DefaultValue("!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}") AddressResolverGroupFactory addressResolverGroupFactory,
 				Boolean lazyInitialization, @DefaultValue("RESP2") Protocol protocol,
 				Set<ValkeyCapability> valkeyCapabilities) {
-			Optional.ofNullable(sentinelServersConfig).map(Base::convert).ifPresent(super::setSentinelServersConfig);
-			Optional.ofNullable(masterSlaveServersConfig)
-				.map(Base::convert)
-				.ifPresent(super::setMasterSlaveServersConfig);
-			Optional.ofNullable(singleServerConfig).map(Base::convert).ifPresent(super::setSingleServerConfig);
-			Optional.ofNullable(clusterServersConfig).map(Base::convert).ifPresent(super::setClusterServersConfig);
-			Optional.ofNullable(replicatedServersConfig)
-				.map(Base::convert)
-				.ifPresent(super::setReplicatedServersConfig);
+			PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
+			mapper.from(sentinelServersConfig).as(Base::convert).to(this::setSentinelServersConfig);
+			mapper.from(masterSlaveServersConfig).as(Base::convert).to(this::setMasterSlaveServersConfig);
+			mapper.from(singleServerConfig).as(Base::convert).to(this::setSingleServerConfig);
+			mapper.from(clusterServersConfig).as(Base::convert).to(this::setClusterServersConfig);
+			mapper.from(replicatedServersConfig).as(Base::convert).to(this::setReplicatedServersConfig);
 			setThreads(threads);
 			setNettyThreads(nettyThreads);
-			Optional.ofNullable(nettyExecutor).ifPresent(super::setNettyExecutor);
-			Optional.ofNullable(codec).ifPresent(super::setCodec);
-			Optional.ofNullable(executor).ifPresent(super::setExecutor);
+			mapper.from(nettyExecutor).to(this::setNettyExecutor);
+			mapper.from(codec).to(this::setCodec);
+			mapper.from(executor).to(this::setExecutor);
 			setReferenceEnabled(referenceEnabled);
 			setTransportMode(transportMode);
-			Optional.ofNullable(eventLoopGroup).ifPresent(super::setEventLoopGroup);
+			mapper.from(eventLoopGroup).to(this::setEventLoopGroup);
 			setLockWatchdogTimeout(lockWatchdogTimeout);
 			setLockWatchdogBatchSize(lockWatchdogBatchSize);
 			setFairLockWaitTimeout(fairLockWaitTimeout);
@@ -162,12 +160,12 @@ public class ConfigProperties {
 			setMaxCleanUpDelay(maxCleanUpDelay);
 			setCleanUpKeysAmount(cleanUpKeysAmount);
 			setNettyHook(nettyHook);
-			Optional.ofNullable(connectionListener).ifPresent(super::setConnectionListener);
+			mapper.from(connectionListener).to(this::setConnectionListener);
 			setUseThreadClassLoader(useThreadClassLoader);
 			setAddressResolverGroupFactory(addressResolverGroupFactory);
-			Optional.ofNullable(lazyInitialization).ifPresent(super::setLazyInitialization);
+			mapper.from(lazyInitialization).to(this::setLazyInitialization);
 			setProtocol(protocol);
-			Optional.ofNullable(valkeyCapabilities).ifPresent(super::setValkeyCapabilities);
+			mapper.from(valkeyCapabilities).to(this::setValkeyCapabilities);
 		}
 
 	}
