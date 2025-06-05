@@ -254,32 +254,35 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 
 	@Override
 	public void destroy() {
-		SpringContextHolder.IOC.beanFactory(null);
-		SpringContextHolder.IOC.applicationContext(null);
+		SpringContextHolder.IOC.clear();
 	}
 
 	private static class SpringIoC implements GenericWrapper<ApplicationContext> {
 
-		private volatile ApplicationContext applicationContext;
+		private volatile ApplicationContext context;
 
-		private volatile BeanFactory beanFactory;
+		private volatile BeanFactory factory;
 
 		private ListableBeanFactory getBeanFactory() {
-			return beanFactory instanceof ListableBeanFactory listableBeanFactory ? listableBeanFactory
-					: applicationContext;
+			return factory instanceof ListableBeanFactory beanFactory ? beanFactory : context;
 		}
 
 		@Override
 		public ApplicationContext unwrap() {
-			return beanFactory instanceof ApplicationContext contextFactory ? contextFactory : applicationContext;
+			return factory instanceof ApplicationContext contextFactory ? contextFactory : context;
 		}
 
 		public void beanFactory(BeanFactory beanFactory) {
-			this.beanFactory = beanFactory;
+			this.factory = beanFactory;
 		}
 
 		public void applicationContext(ApplicationContext applicationContext) {
-			this.applicationContext = applicationContext;
+			this.context = applicationContext;
+		}
+
+		public void clear() {
+			this.factory = null;
+			this.context = null;
 		}
 
 	}
