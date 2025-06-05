@@ -64,7 +64,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.convert.support.ConfigurableConversionService;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -94,7 +94,7 @@ public class ConfigProperties {
 
 	private RedissonConfig config;
 
-	public static ConfigProperties load(StandardEnvironment environment) {
+	public static ConfigProperties load(ConfigurableEnvironment environment) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		ConfigurableConversionService conversionService = environment.getConversionService();
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);

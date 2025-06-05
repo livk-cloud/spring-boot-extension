@@ -26,7 +26,7 @@ import org.springframework.boot.testcontainers.properties.TestcontainersProperty
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -57,7 +57,7 @@ class RedissonClientFactoryTest {
 	}
 
 	@Autowired
-	StandardEnvironment environment;
+	ConfigurableEnvironment environment;
 
 	@Autowired
 	ObjectProvider<ConfigCustomizer> configCustomizers;

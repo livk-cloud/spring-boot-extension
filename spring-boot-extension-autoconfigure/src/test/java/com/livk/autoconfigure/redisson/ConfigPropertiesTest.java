@@ -18,7 +18,7 @@ import org.redisson.client.DefaultNettyHook;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.connection.SequentialDnsAddressResolverFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 class ConfigPropertiesTest {
 
 	@Autowired
-	StandardEnvironment environment;
+	ConfigurableEnvironment environment;
 
 	@Test
 	void test() {
