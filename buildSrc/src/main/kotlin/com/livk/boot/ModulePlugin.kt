@@ -43,7 +43,7 @@ class ModulePlugin : Plugin<Project> {
 		project.tasks.withType(Jar::class.java) { jar ->
 			jar.dependsOn(extractResourcesProvider)
 			jar.metaInf { metaInf ->
-				metaInf.from(extractResourcesProvider.get())
+				metaInf.from(extractResourcesProvider)
 			}
 		}
 	}
