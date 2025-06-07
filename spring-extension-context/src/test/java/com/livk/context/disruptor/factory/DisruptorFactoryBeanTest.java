@@ -13,15 +13,13 @@
 
 package com.livk.context.disruptor.factory;
 
-import com.livk.commons.util.AnnotationUtils;
 import com.livk.context.disruptor.DisruptorConfig;
 import com.livk.context.disruptor.Entity;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,12 +35,17 @@ class DisruptorFactoryBeanTest {
 
 	@Test
 	void test() {
-		DisruptorFactoryBean<Entity> factoryBean = new DisruptorFactoryBean<>();
-		AnnotationMetadata metadata = AnnotationMetadata.introspect(Entity.class);
-		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, DisruptorEvent.class);
-		factoryBean.setType(Entity.class);
-		factoryBean.setAttributes(attributes);
+		DisruptorFactoryBean<Entity> factoryBean = new DisruptorFactoryBean<>(Entity.class);
+		DisruptorEvent event = Entity.class.getAnnotation(DisruptorEvent.class);
 		factoryBean.setBeanFactory(beanFactory);
+		assertNotNull(event);
+		factoryBean.setBufferSize(event.bufferSize());
+		factoryBean.setProducerType(event.type());
+		factoryBean.setThreadFactory(BeanUtils.instantiateClass(event.threadFactory()));
+		factoryBean.setThreadFactoryBeanName(event.threadFactoryBeanName());
+		factoryBean.setUseVirtualThreads(event.useVirtualThreads());
+		factoryBean.setWaitStrategy(BeanUtils.instantiateClass(event.strategy()));
+		factoryBean.setStrategyBeanName(event.strategyBeanName());
 		factoryBean.afterPropertiesSet();
 		assertNotNull(factoryBean.getObject());
 	}

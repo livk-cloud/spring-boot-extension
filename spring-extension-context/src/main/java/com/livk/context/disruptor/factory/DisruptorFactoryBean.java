@@ -25,7 +25,7 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -34,8 +34,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.jspecify.annotations.NonNull;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.concurrent.ThreadFactory;
@@ -43,18 +42,36 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author livk
  */
+@RequiredArgsConstructor
 public class DisruptorFactoryBean<T>
 		implements FactoryBean<SpringDisruptor<T>>, BeanFactoryAware, InitializingBean, DisposableBean {
 
+	private final Class<T> type;
+
 	@Setter
-	private AnnotationAttributes attributes;
+	private int bufferSize = 1024 * 256;
+
+	@Setter
+	private ProducerType producerType;
+
+	@Setter
+	private WaitStrategy waitStrategy;
+
+	@Setter
+	private ThreadFactory threadFactory;
+
+	@Setter
+	private String strategyBeanName;
+
+	@Setter
+	private String threadFactoryBeanName;
+
+	@Setter
+	private boolean useVirtualThreads = true;
 
 	private BeanFactory beanFactory;
 
 	private SpringDisruptor<T> disruptor;
-
-	@Setter
-	private Class<T> type;
 
 	@Override
 	public SpringDisruptor<T> getObject() {
@@ -73,38 +90,39 @@ public class DisruptorFactoryBean<T>
 
 	@Override
 	public void afterPropertiesSet() {
-		SpringEventFactory<T> factory = new SpringEventFactory<>();
-		int bufferSize = attributes.getNumber("bufferSize").intValue();
-		ProducerType producerType = attributes.getEnum("type");
-		WaitStrategy waitStrategy = this.createInstance("strategyBeanName", "strategy", WaitStrategy.class);
-		ThreadFactory threadFactory = this.createThreadFactory();
-		disruptor = new SpringDisruptor<>(factory, bufferSize, threadFactory, producerType, waitStrategy);
+		SpringEventFactory<T> eventFactory = new SpringEventFactory<>();
+		ThreadFactory factory = getThreadFactory();
+		Assert.notNull(factory, "threadFactory must not be null");
+		WaitStrategy strategy = getWaitStrategy();
+		Assert.notNull(strategy, "waitStrategy must not be null");
+		disruptor = new SpringDisruptor<>(eventFactory, bufferSize, factory, producerType, strategy);
 		disruptor.handleEventsWith(createEventHandler(beanFactory, type));
 		disruptor.start();
+	}
+
+	private ThreadFactory getThreadFactory() {
+		ThreadFactory factory = this.threadFactory;
+		if (StringUtils.hasText(threadFactoryBeanName)) {
+			factory = beanFactory.getBean(threadFactoryBeanName, ThreadFactory.class);
+		}
+		if (useVirtualThreads) {
+			factory = new VirtualThreadFactory(factory);
+		}
+		return factory;
+	}
+
+	private WaitStrategy getWaitStrategy() {
+		WaitStrategy strategy = this.waitStrategy;
+		if (StringUtils.hasText(strategyBeanName)) {
+			strategy = beanFactory.getBean(strategyBeanName, WaitStrategy.class);
+		}
+		return strategy;
 	}
 
 	private EventHandler<DisruptorEventWrapper<T>> createEventHandler(BeanFactory beanFactory, Class<T> type) {
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
 		ObjectProvider<DisruptorEventConsumer<T>> disruptorEventConsumers = beanFactory.getBeanProvider(resolvableType);
 		return new AggregateEventHandlerProvider<>(disruptorEventConsumers);
-	}
-
-	private ThreadFactory createThreadFactory() {
-		ThreadFactory threadFactory = this.createInstance("threadFactoryBeanName", "threadFactory",
-				ThreadFactory.class);
-		if (attributes.getBoolean("useVirtualThreads")) {
-			return new VirtualThreadFactory(threadFactory);
-		}
-		return threadFactory;
-	}
-
-	private <S> S createInstance(String beanNameKey, String classKey, Class<S> targetType) {
-		String beanName = attributes.getString(beanNameKey);
-		if (StringUtils.hasText(beanName)) {
-			return beanFactory.getBean(beanName, targetType);
-		}
-		Class<? extends S> clazz = attributes.getClass(classKey);
-		return BeanUtils.instantiateClass(clazz);
 	}
 
 	@Override
