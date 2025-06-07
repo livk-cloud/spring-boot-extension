@@ -17,10 +17,12 @@
 package com.livk.context.disruptor;
 
 import com.livk.commons.spring.AnnotationBeanDefinitionScanner;
+import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ClassUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.factory.DisruptorFactoryBean;
 import com.livk.context.disruptor.support.SpringDisruptor;
+import com.lmax.disruptor.WaitStrategy;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -34,6 +36,8 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  * The type Class path disruptor scanner.
@@ -62,10 +66,17 @@ class ClassPathDisruptorScanner extends AnnotationBeanDefinitionScanner<Disrupto
 		String beanClassName = candidateComponent.getBeanClassName();
 		Assert.notNull(beanClassName, "beanClassName not be null");
 		Class<?> type = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
-		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DisruptorFactoryBean.class);
-		builder.addPropertyValue("attributes", attributes);
-		builder.addPropertyValue("type", type);
-		builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DisruptorFactoryBean.class)
+			.addConstructorArgValue(type)
+			.addPropertyValue("bufferSize", attributes.getNumber("bufferSize").intValue())
+			.addPropertyValue("producerType", attributes.getEnum("type"))
+			.addPropertyValue("threadFactory",
+					BeanUtils.instantiateClass(attributes.<ThreadFactory>getClass("threadFactory")))
+			.addPropertyValue("threadFactoryBeanName", attributes.getString("threadFactoryBeanName"))
+			.addPropertyValue("useVirtualThreads", attributes.getBoolean("useVirtualThreads"))
+			.addPropertyValue("waitStrategy", BeanUtils.instantiateClass(attributes.<WaitStrategy>getClass("strategy")))
+			.addPropertyValue("strategyBeanName", attributes.getString("strategyBeanName"))
+			.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
 		String name = attributes.getString(MergedAnnotation.VALUE);
