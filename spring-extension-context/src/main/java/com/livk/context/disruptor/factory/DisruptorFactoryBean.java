@@ -95,6 +95,7 @@ public class DisruptorFactoryBean<T>
 		Assert.notNull(factory, "threadFactory must not be null");
 		WaitStrategy strategy = getWaitStrategy();
 		Assert.notNull(strategy, "waitStrategy must not be null");
+		Assert.notNull(producerType, "producerType must not be null");
 		disruptor = new SpringDisruptor<>(eventFactory, bufferSize, factory, producerType, strategy);
 		disruptor.handleEventsWith(createEventHandler(beanFactory, type));
 		disruptor.start();

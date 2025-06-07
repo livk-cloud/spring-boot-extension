@@ -23,7 +23,6 @@ import com.livk.context.disruptor.annotation.DisruptorEvent;
 import com.livk.context.disruptor.factory.DisruptorFactoryBean;
 import com.livk.context.disruptor.support.SpringDisruptor;
 import com.lmax.disruptor.WaitStrategy;
-import com.lmax.disruptor.dsl.ProducerType;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -69,13 +68,14 @@ class ClassPathDisruptorScanner extends AnnotationBeanDefinitionScanner<Disrupto
 		Class<?> type = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DisruptorFactoryBean.class)
 			.addConstructorArgValue(type)
-			.addPropertyValue("bufferSize", bufferSize(attributes))
-			.addPropertyValue("producerType", type(attributes))
-			.addPropertyValue("threadFactory", threadFactory(attributes))
-			.addPropertyValue("threadFactoryBeanName", threadFactoryBeanName(attributes))
-			.addPropertyValue("useVirtualThreads", useVirtualThreads(attributes))
-			.addPropertyValue("waitStrategy", strategy(attributes))
-			.addPropertyValue("strategyBeanName", strategyBeanName(attributes))
+			.addPropertyValue("bufferSize", attributes.getNumber("bufferSize").intValue())
+			.addPropertyValue("producerType", attributes.getEnum("type"))
+			.addPropertyValue("threadFactory",
+					BeanUtils.instantiateClass(attributes.<ThreadFactory>getClass("threadFactory")))
+			.addPropertyValue("threadFactoryBeanName", attributes.getString("threadFactoryBeanName"))
+			.addPropertyValue("useVirtualThreads", attributes.getBoolean("useVirtualThreads"))
+			.addPropertyValue("waitStrategy", BeanUtils.instantiateClass(attributes.<WaitStrategy>getClass("strategy")))
+			.addPropertyValue("strategyBeanName", attributes.getString("strategyBeanName"))
 			.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
 		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
@@ -89,34 +89,6 @@ class ClassPathDisruptorScanner extends AnnotationBeanDefinitionScanner<Disrupto
 			return new BeanDefinitionHolder(beanDefinition, beanName);
 		}
 		return null;
-	}
-
-	private int bufferSize(AnnotationAttributes attributes) {
-		return attributes.getNumber("bufferSize").intValue();
-	}
-
-	private ProducerType type(AnnotationAttributes attributes) {
-		return attributes.getEnum("type");
-	}
-
-	private ThreadFactory threadFactory(AnnotationAttributes attributes) {
-		return BeanUtils.instantiateClass(attributes.<ThreadFactory>getClass("threadFactory"));
-	}
-
-	private String threadFactoryBeanName(AnnotationAttributes attributes) {
-		return attributes.getString("threadFactoryBeanName");
-	}
-
-	private boolean useVirtualThreads(AnnotationAttributes attributes) {
-		return attributes.getBoolean("useVirtualThreads");
-	}
-
-	private WaitStrategy strategy(AnnotationAttributes attributes) {
-		return BeanUtils.instantiateClass(attributes.<WaitStrategy>getClass("strategy"));
-	}
-
-	private String strategyBeanName(AnnotationAttributes attributes) {
-		return attributes.getString("strategyBeanName");
 	}
 
 }
