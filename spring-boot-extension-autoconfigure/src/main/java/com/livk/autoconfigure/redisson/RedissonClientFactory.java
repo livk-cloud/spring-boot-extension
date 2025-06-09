@@ -21,11 +21,11 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The type Redisson client factory.
@@ -38,16 +38,17 @@ abstract class RedissonClientFactory {
 
 	private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
 
-	/**
-	 * Create redisson client.
-	 * @param properties the properties
-	 * @param redisProperties the redis properties
-	 * @param configCustomizers the config customizers
-	 * @return the redisson client
-	 */
-	public static RedissonClient create(ConfigProperties properties, RedisProperties redisProperties,
+	public static RedissonClient create(RedissonProperties properties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
-		Config config = Optional.<Config>ofNullable(properties.getConfig()).orElse(createConfig(redisProperties));
+		Config config = properties.getConfig();
+		Assert.notNull(config, "Redisson config must not be null");
+		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		return Redisson.create(config);
+	}
+
+	public static RedissonClient create(RedisProperties redisProperties,
+			ObjectProvider<ConfigCustomizer> configCustomizers) {
+		Config config = createConfig(redisProperties);
 		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
 		return Redisson.create(config);
 	}

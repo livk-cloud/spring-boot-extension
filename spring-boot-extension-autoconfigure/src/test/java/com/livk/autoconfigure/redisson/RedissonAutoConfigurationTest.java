@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -56,9 +57,11 @@ class RedissonAutoConfigurationTest {
 	@Autowired
 	ConfigurableEnvironment environment;
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(ConfigProperties.class, () -> ConfigProperties.load(environment))
-		.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner(() -> {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.setEnvironment(environment);
+		return context;
+	}).withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
 
 	@Test
 	void redissonClient() {
@@ -66,8 +69,17 @@ class RedissonAutoConfigurationTest {
 	}
 
 	@Test
+	void fallbackRedissonClient() {
+		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+			.withPropertyValues("spring.data.redis.host=" + redis.getHost(),
+					"spring.data.redis.port=" + redis.getFirstMappedPort())
+			.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonClient.class));
+	}
+
+	@Test
 	void redissonConnectionFactory() {
-		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonConnectionFactory.class));
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonConnectionFactory.class));
 	}
 
 }

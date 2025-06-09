@@ -62,21 +62,20 @@ class RedissonClientFactoryTest {
 	@Autowired
 	ObjectProvider<ConfigCustomizer> configCustomizers;
 
-	ConfigProperties configProperties;
+	RedissonProperties redissonProperties;
 
 	RedisProperties redisProperties;
 
 	@BeforeEach
 	void before() {
-		this.configProperties = ConfigProperties.load(environment);
+		this.redissonProperties = RedissonProperties.load(environment);
 
 		this.redisProperties = Binder.get(environment).bind("spring.data.redis", RedisProperties.class).get();
 	}
 
 	@Test
 	void createTest() {
-		RedissonClient redissonClient = RedissonClientFactory.create(configProperties, new RedisProperties(),
-				configCustomizers);
+		RedissonClient redissonClient = RedissonClientFactory.create(redissonProperties, configCustomizers);
 
 		assertNotNull(redissonClient);
 		redissonClient.shutdown();
@@ -84,8 +83,7 @@ class RedissonClientFactoryTest {
 
 	@Test
 	void createByRedisPropertiesTest() {
-		RedissonClient redissonClient = RedissonClientFactory.create(new ConfigProperties(), redisProperties,
-				configCustomizers);
+		RedissonClient redissonClient = RedissonClientFactory.create(redisProperties, configCustomizers);
 
 		assertNotNull(redissonClient);
 		redissonClient.shutdown();

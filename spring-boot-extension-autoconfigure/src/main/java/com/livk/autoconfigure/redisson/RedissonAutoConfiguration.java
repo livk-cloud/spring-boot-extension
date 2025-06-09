@@ -30,6 +30,8 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Fallback;
 
 /**
  * The type Redisson auto configuration.
@@ -39,7 +41,7 @@ import org.springframework.context.annotation.Bean;
 @SpringAutoService
 @ConditionalOnClass(Redisson.class)
 @AutoConfiguration(before = RedisAutoConfiguration.class)
-@EnableConfigurationProperties({ ConfigProperties.class, RedisProperties.class })
+@EnableConfigurationProperties({ RedissonProperties.class, RedisProperties.class })
 public class RedissonAutoConfiguration {
 
 	@Bean
@@ -50,17 +52,25 @@ public class RedissonAutoConfiguration {
 	}
 
 	/**
-	 * Redisson client redisson client.
-	 * @param configProperties the config properties
-	 * @param redisProperties the redis properties
+	 * RedissonClient
+	 * @param properties the config properties
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client
 	 */
 	@Bean(destroyMethod = "shutdown")
 	@ConditionalOnMissingBean
-	public RedissonClient redissonClient(ConfigProperties configProperties, RedisProperties redisProperties,
+	@Conditional(RedissonCondition.class)
+	public RedissonClient redissonClient(RedissonProperties properties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
-		return RedissonClientFactory.create(configProperties, redisProperties, configCustomizers);
+		return RedissonClientFactory.create(properties, configCustomizers);
+	}
+
+	@Fallback
+	@Bean(value = "redissonClient", destroyMethod = "shutdown")
+	@ConditionalOnMissingBean
+	public RedissonClient fallbackRedissonClient(RedisProperties properties,
+			ObjectProvider<ConfigCustomizer> configCustomizers) {
+		return RedissonClientFactory.create(properties, configCustomizers);
 	}
 
 	/**

@@ -84,8 +84,8 @@ import java.util.function.Consumer;
  * @author livk
  */
 @Data
-@ConfigurationProperties(ConfigProperties.PREFIX)
-public class ConfigProperties {
+@ConfigurationProperties(RedissonProperties.PREFIX)
+public class RedissonProperties {
 
 	/**
 	 * The constant PREFIX.
@@ -94,14 +94,14 @@ public class ConfigProperties {
 
 	private RedissonConfig config;
 
-	public static ConfigProperties load(ConfigurableEnvironment environment) {
+	public static RedissonProperties load(ConfigurableEnvironment environment) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		ConfigurableConversionService conversionService = environment.getConversionService();
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
 		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
 			.registerCustomEditors(registry);
 		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).orElse(new ConfigProperties());
+		return binder.bind(RedissonProperties.PREFIX, RedissonProperties.class).orElse(new RedissonProperties());
 	}
 
 	/**
