@@ -84,8 +84,8 @@ import java.util.function.Consumer;
  * @author livk
  */
 @Data
-@ConfigurationProperties(ConfigProperties.PREFIX)
-public class ConfigProperties {
+@ConfigurationProperties(RedissonProperties.PREFIX)
+public class RedissonProperties {
 
 	/**
 	 * The constant PREFIX.
@@ -94,14 +94,14 @@ public class ConfigProperties {
 
 	private RedissonConfig config;
 
-	public static ConfigProperties load(ConfigurableEnvironment environment) {
+	public static RedissonProperties load(ConfigurableEnvironment environment) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		ConfigurableConversionService conversionService = environment.getConversionService();
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
 		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
 			.registerCustomEditors(registry);
 		Binder binder = new Binder(sources, resolver, conversionService, consumer);
-		return binder.bind(ConfigProperties.PREFIX, ConfigProperties.class).orElse(new ConfigProperties());
+		return binder.bind(RedissonProperties.PREFIX, RedissonProperties.class).orElse(new RedissonProperties());
 	}
 
 	/**
@@ -344,7 +344,7 @@ public class ConfigProperties {
 	 */
 	@EqualsAndHashCode(callSuper = true)
 	@Data
-	public static abstract class BaseMasterSlaveServers<T extends BaseMasterSlaveServersConfig<T>> extends Base<T> {
+	public abstract static class BaseMasterSlaveServers<T extends BaseMasterSlaveServersConfig<T>> extends Base<T> {
 
 		private LoadBalancer loadBalancer = new RoundRobinLoadBalancer();
 
@@ -404,7 +404,7 @@ public class ConfigProperties {
 	 * @param <T> the type parameter
 	 */
 	@Data
-	public static abstract class Base<T extends BaseConfig<T>> {
+	public abstract static class Base<T extends BaseConfig<T>> {
 
 		/**
 		 * If pooled connection not used for a <code>timeout</code> time and current

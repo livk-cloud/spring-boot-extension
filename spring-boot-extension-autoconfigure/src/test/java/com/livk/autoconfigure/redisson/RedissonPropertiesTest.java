@@ -31,14 +31,14 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @SpringJUnitConfig
 @TestPropertySource(properties = { "spring.redisson.config.single-server-config.address=redis://livk.com:6379",
 		"spring.redisson.config.codec=!<org.redisson.codec.JsonJacksonCodec> {}" })
-class ConfigPropertiesTest {
+class RedissonPropertiesTest {
 
 	@Autowired
 	ConfigurableEnvironment environment;
 
 	@Test
 	void test() {
-		ConfigProperties properties = ConfigProperties.load(environment);
+		RedissonProperties properties = RedissonProperties.load(environment);
 		assertEquals("redis://livk.com:6379", properties.getConfig().useSingleServer().getAddress());
 		assertInstanceOf(JsonJacksonCodec.class, properties.getConfig().getCodec());
 		assertInstanceOf(DefaultNettyHook.class, properties.getConfig().getNettyHook());
