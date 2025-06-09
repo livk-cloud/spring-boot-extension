@@ -344,7 +344,7 @@ public class RedissonProperties {
 	 */
 	@EqualsAndHashCode(callSuper = true)
 	@Data
-	public static abstract class BaseMasterSlaveServers<T extends BaseMasterSlaveServersConfig<T>> extends Base<T> {
+	public abstract static class BaseMasterSlaveServers<T extends BaseMasterSlaveServersConfig<T>> extends Base<T> {
 
 		private LoadBalancer loadBalancer = new RoundRobinLoadBalancer();
 
@@ -404,7 +404,7 @@ public class RedissonProperties {
 	 * @param <T> the type parameter
 	 */
 	@Data
-	public static abstract class Base<T extends BaseConfig<T>> {
+	public abstract static class Base<T extends BaseConfig<T>> {
 
 		/**
 		 * If pooled connection not used for a <code>timeout</code> time and current

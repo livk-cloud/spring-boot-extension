@@ -70,11 +70,11 @@ class RedissonAutoConfigurationTest {
 
 	@Test
 	void fallbackRedissonClient() {
-		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		new ApplicationContextRunner()
 			.withPropertyValues("spring.data.redis.host=" + redis.getHost(),
 					"spring.data.redis.port=" + redis.getFirstMappedPort())
-			.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class));
-		contextRunner.run((context) -> assertThat(context).hasSingleBean(RedissonClient.class));
+			.withConfiguration(AutoConfigurations.of(RedissonAutoConfiguration.class))
+			.run((context) -> assertThat(context).hasSingleBean(RedissonClient.class));
 	}
 
 	@Test
