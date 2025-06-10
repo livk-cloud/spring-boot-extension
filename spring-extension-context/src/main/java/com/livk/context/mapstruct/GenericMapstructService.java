@@ -39,4 +39,16 @@ public class GenericMapstructService extends AbstractMapstructService implements
 		return converterRepository.computeIfAbsent(converterPair, converter);
 	}
 
+	@Override
+	protected <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
+		Converter<S, T> converter = super.getConverter(sourceType, targetType);
+		if (converter == null) {
+			converter = converterRepository.get(ConverterPair.of(sourceType, targetType));
+		}
+		if (converter != null) {
+			this.addConverter(converter);
+		}
+		return converter;
+	}
+
 }

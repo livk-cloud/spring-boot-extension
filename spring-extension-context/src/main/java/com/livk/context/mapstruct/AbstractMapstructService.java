@@ -57,15 +57,19 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
 		throw new ConverterNotFoundException(source + " to class " + targetType + " not found converter");
 	}
 
-	private <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
+	protected <S, T> Converter<S, T> getConverter(Class<S> sourceType, Class<T> targetType) {
 		ConverterPair converterPair = ConverterPair.of(sourceType, targetType);
-		return mapstructLocator.get(converterPair);
+		Converter<S, T> converter = mapstructLocator.get(converterPair);
+		if (converter != null) {
+			return this.addConverter(converter);
+		}
+		return null;
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
-		this.mapstructLocator = new PrioritizedMapstructLocator(this, mapstructLocators);
+		this.mapstructLocator = new PrioritizedMapstructLocator(mapstructLocators.orderedStream().toList());
 	}
 
 }
