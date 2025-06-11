@@ -16,6 +16,7 @@
 
 package com.livk.autoconfigure.qrcode;
 
+import com.google.zxing.common.BitMatrix;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.qrcode.QRCodeGenerator;
 import com.livk.context.qrcode.resolver.QRCodeMethodReturnValueHandler;
@@ -42,7 +43,7 @@ import java.util.List;
  */
 @AutoConfiguration
 @SpringAutoService
-@ConditionalOnClass(name = "com.google.zxing.common.BitMatrix")
+@ConditionalOnClass(BitMatrix.class)
 public class QRCodeAutoConfiguration {
 
 	/**
