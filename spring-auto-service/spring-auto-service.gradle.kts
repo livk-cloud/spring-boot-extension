@@ -9,5 +9,4 @@ dependencies {
 	api("com.google.auto.service:auto-service")
 	annotationProcessor("com.google.auto.service:auto-service")
 	testImplementation("org.springframework:spring-core-test")
-	testImplementation(libs.compile.testing)
 }
