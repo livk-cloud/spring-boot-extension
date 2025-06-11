@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  */
 abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {
 
-	private final Predicate<MapstructLocator> predicate = ConverterRepository.class::isInstance;
+	private static final Predicate<MapstructLocator> MATCH = ConverterRepository.class::isInstance;
 
 	/**
 	 * The Application context.
@@ -75,7 +75,7 @@ abstract class AbstractMapstructService implements MapstructService, MapstructRe
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
 		this.mapstructLocator = new PrioritizedMapstructLocator(
-				mapstructLocators.orderedStream().filter(predicate.negate()).toList());
+				mapstructLocators.orderedStream().filter(MATCH.negate()).toList());
 	}
 
 }
