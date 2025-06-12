@@ -21,11 +21,14 @@ import com.livk.context.mapstruct.converter.ConverterPair;
 import com.livk.context.mapstruct.converter.MapstructRegistry;
 import com.livk.context.mapstruct.converter.MapstructService;
 import com.livk.context.mapstruct.exception.ConverterNotFoundException;
+import com.livk.context.mapstruct.repository.ConverterRepository;
 import com.livk.context.mapstruct.repository.MapstructLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.util.function.Predicate;
 
 /**
  * <p>
@@ -34,7 +37,9 @@ import org.springframework.context.ApplicationContextAware;
  *
  * @author livk
  */
-public abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {
+abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {
+
+	private static final Predicate<MapstructLocator> MATCH = ConverterRepository.class::isInstance;
 
 	/**
 	 * The Application context.
@@ -69,7 +74,8 @@ public abstract class AbstractMapstructService implements MapstructService, Maps
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
-		this.mapstructLocator = new PrioritizedMapstructLocator(mapstructLocators.orderedStream().toList());
+		this.mapstructLocator = new PrioritizedMapstructLocator(
+				mapstructLocators.orderedStream().filter(MATCH.negate()).toList());
 	}
 
 }

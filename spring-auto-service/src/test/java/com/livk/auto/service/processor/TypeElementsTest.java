@@ -21,13 +21,21 @@ import com.livk.auto.service.processor.autoconfigure.SpringAutoContext;
 import com.livk.auto.service.processor.autoconfigure.SpringContext;
 import com.livk.auto.service.processor.factories.spring.SpringFactoryService;
 import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl;
+import com.sun.source.util.JavacTask;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.core.annotation.MergedAnnotation;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.SimpleJavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,13 +50,36 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author livk
  */
-@ExtendWith(CompilationExtension.class)
 class TypeElementsTest {
 
+	static Elements elements;
+
+	@BeforeAll
+	static void init() throws IOException {
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+
+		JavaFileObject file = new SimpleJavaFileObject(java.net.URI.create("string:///Dummy.java"),
+				JavaFileObject.Kind.SOURCE) {
+			@Override
+			public CharSequence getCharContent(boolean ignoreEncodingErrors) {
+				return "final class Dummy {}";
+			}
+		};
+
+		JavacTask task = (JavacTask) compiler.getTask(null, fileManager, null, List.of("-proc:none"), null,
+				List.of(file));
+
+		task.parse();
+		task.analyze();
+
+		elements = task.getElements();
+	}
+
 	@Test
-	void getAnnotationAttributes(Elements elements) {
-		Optional<Set<TypeElement>> autoServiceOption = TypeElements.getAnnotationAttributes(
-				get(elements, SpringFactoryServiceImpl.class), AutoService.class, MergedAnnotation.VALUE);
+	void getAnnotationAttributes() {
+		Optional<Set<TypeElement>> autoServiceOption = TypeElements
+			.getAnnotationAttributes(get(SpringFactoryServiceImpl.class), AutoService.class, MergedAnnotation.VALUE);
 		assertTrue(autoServiceOption.isPresent());
 		ArrayList<TypeElement> list = autoServiceOption.map(ArrayList::new).get();
 		assertFalse(list.isEmpty());
@@ -57,16 +88,15 @@ class TypeElementsTest {
 	}
 
 	@Test
-	void getBinaryName(Elements elements) {
-		assertEquals(String.class.getName(), TypeElements.getBinaryName(get(elements, String.class)));
-		assertEquals(SpringAutoContext.class.getName(),
-				TypeElements.getBinaryName(get(elements, SpringAutoContext.class)));
-		assertEquals(SpringContext.class.getName(), TypeElements.getBinaryName(get(elements, SpringContext.class)));
+	void getBinaryName() {
+		assertEquals(String.class.getName(), TypeElements.getBinaryName(get(String.class)));
+		assertEquals(SpringAutoContext.class.getName(), TypeElements.getBinaryName(get(SpringAutoContext.class)));
+		assertEquals(SpringContext.class.getName(), TypeElements.getBinaryName(get(SpringContext.class)));
 		assertEquals(SpringFactoryServiceImpl.class.getName(),
-				TypeElements.getBinaryName(get(elements, SpringFactoryServiceImpl.class)));
+				TypeElements.getBinaryName(get(SpringFactoryServiceImpl.class)));
 	}
 
-	private TypeElement get(Elements elements, Class<?> type) {
+	static TypeElement get(Class<?> type) {
 		return elements.getTypeElement(type.getCanonicalName());
 	}
 

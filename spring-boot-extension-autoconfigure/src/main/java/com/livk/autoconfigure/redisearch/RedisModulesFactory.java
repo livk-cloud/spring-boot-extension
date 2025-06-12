@@ -23,10 +23,9 @@ import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.resource.ClientResources;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.boot.context.properties.PropertyMapper;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author livk
@@ -40,6 +39,8 @@ class RedisModulesFactory {
 
 	private final RediSearchProperties properties;
 
+	private final PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
 	public final AbstractRedisClient getClient(ClientResources clientResources) {
 		if (properties.getCluster() != null && properties.getCluster().getEnabled()) {
 			List<RedisURI> clusterNodes = properties.getCluster()
@@ -49,7 +50,9 @@ class RedisModulesFactory {
 				.toList();
 			RedisModulesClusterClient clusterClient = RedisModulesClusterClient.create(clientResources, clusterNodes);
 			ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
-			Optional.ofNullable(properties.getCluster().getMaxRedirects()).ifPresent(builder::maxRedirects);
+			mapper.from(properties::getCluster)
+				.as(RediSearchProperties.Cluster::getMaxRedirects)
+				.to(builder::maxRedirects);
 			clusterClient.setOptions(builder.build());
 			return clusterClient;
 		}
@@ -63,14 +66,11 @@ class RedisModulesFactory {
 		String uri = (properties.getSsl() ? REDISS_PROTOCOL_PREFIX : REDIS_PROTOCOL_PREFIX) + node;
 		RedisURI redisURI = RedisURI.create(uri);
 		RedisCredentials credentials = RedisCredentials.just(properties.getUsername(), properties.getPassword());
-		redisURI.setCredentialsProvider(new StaticCredentialsProvider(credentials));
-		redisURI.setDatabase(properties.getDatabase());
-		Duration timeout = properties.getTimeout();
-		if (timeout != null) {
-			redisURI.setTimeout(timeout);
-		}
-		redisURI.setSsl(properties.getSsl());
-		redisURI.setClientName(properties.getClientName());
+		mapper.from(credentials).as(StaticCredentialsProvider::new).to(redisURI::setCredentialsProvider);
+		mapper.from(properties::getDatabase).to(redisURI::setDatabase);
+		mapper.from(properties::getTimeout).to(redisURI::setTimeout);
+		mapper.from(properties::getSsl).to(redisURI::setSsl);
+		mapper.from(properties::getClientName).to(redisURI::setClientName);
 		return redisURI;
 	}
 
@@ -78,14 +78,10 @@ class RedisModulesFactory {
 		GenericObjectPoolConfig<T> config = new GenericObjectPoolConfig<>();
 		config.setJmxEnabled(false);
 		RediSearchProperties.Pool pool = properties.getPool();
-		if (pool != null) {
-			config.setMaxTotal(pool.getMaxActive());
-			config.setMaxIdle(pool.getMaxIdle());
-			config.setMinIdle(pool.getMinIdle());
-			if (pool.getMaxWait() != null) {
-				config.setMaxWait(pool.getMaxWait());
-			}
-		}
+		mapper.from(pool::getMaxActive).to(config::setMaxTotal);
+		mapper.from(pool::getMaxIdle).to(config::setMaxIdle);
+		mapper.from(pool::getMinIdle).to(config::setMinIdle);
+		mapper.from(pool::getMaxWait).to(config::setMaxWait);
 		return config;
 	}
 
