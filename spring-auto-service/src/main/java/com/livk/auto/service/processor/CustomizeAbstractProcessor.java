@@ -22,6 +22,7 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -31,9 +32,10 @@ import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -94,14 +96,14 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
-		return getSupportedAnnotation().stream().map(Class::getName).collect(Collectors.toSet());
+		return Set.of(getSupportedAnnotation().getName());
 	}
 
 	/**
 	 * Set supported annotations
 	 * @return Set class
 	 */
-	protected abstract Set<Class<?>> getSupportedAnnotation();
+	protected abstract Class<? extends Annotation> getSupportedAnnotation();
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -109,22 +111,34 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 			generateConfigFiles();
 		}
 		else {
-			processAnnotations(annotations, roundEnv);
+			Class<? extends Annotation> supportClass = getSupportedAnnotation();
+			Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(supportClass);
+			log(annotations.toString());
+			log(elements.toString());
+			for (Element element : elements) {
+				Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, supportClass, VALUE);
+				for (TypeElement typeElement : value.orElse(elseElement(element))) {
+					String provider = TypeElements.getBinaryName(typeElement);
+					if (provider == null || provider.isBlank()) {
+						throw new IllegalArgumentException(
+								"current " + element + "missing " + supportClass + " 'value'");
+					}
+					String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
+					storage(provider, serviceImpl);
+				}
+			}
 		}
 		return false;
 	}
+
+	protected abstract Set<TypeElement> elseElement(Element element);
+
+	protected abstract void storage(String provider, String serviceImpl);
 
 	/**
 	 * 生成文件
 	 */
 	protected abstract void generateConfigFiles();
-
-	/**
-	 * 处理注解
-	 * @param annotations annotations
-	 * @param roundEnv roundEnv
-	 */
-	protected abstract void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
 	/**
 	 * buffered reader.
