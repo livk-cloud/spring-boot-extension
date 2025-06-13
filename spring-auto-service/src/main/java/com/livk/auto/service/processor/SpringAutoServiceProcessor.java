@@ -23,7 +23,6 @@ import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringAutoService;
 
 import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
@@ -31,10 +30,10 @@ import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,8 +58,8 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 		.synchronizedSetMultimap(LinkedHashMultimap.create());
 
 	@Override
-	protected Set<Class<?>> getSupportedAnnotation() {
-		return Set.of(SUPPORT_CLASS);
+	protected Class<? extends Annotation> getSupportedAnnotation() {
+		return SUPPORT_CLASS;
 	}
 
 	@Override
@@ -88,21 +87,13 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	}
 
 	@Override
-	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SUPPORT_CLASS);
-		log(annotations.toString());
-		log(elements.toString());
-		for (Element element : elements) {
-			Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, SUPPORT_CLASS, VALUE);
-			for (TypeElement typeElement : value.orElse(autoConfigurationElement())) {
-				String provider = TypeElements.getBinaryName(typeElement);
-				importsMap.put(provider, TypeElements.getBinaryName((TypeElement) element));
-			}
-		}
+	protected Set<TypeElement> elseElement(Element element) {
+		return Set.of(elements.getTypeElement(AUTOCONFIGURATION));
 	}
 
-	private Set<TypeElement> autoConfigurationElement() {
-		return Set.of(elements.getTypeElement(AUTOCONFIGURATION));
+	@Override
+	protected void storage(String provider, String serviceImpl) {
+		importsMap.put(provider, serviceImpl);
 	}
 
 	/**

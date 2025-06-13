@@ -8,7 +8,6 @@ import com.google.common.collect.SetMultimap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -21,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
@@ -57,35 +55,19 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	}
 
 	@Override
-	protected void processAnnotations(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		Set<? extends Element> elements = this.getElements(roundEnv);
-		log(annotations.toString());
-		log(elements.toString());
-		for (Element element : elements) {
-			Optional<Set<TypeElement>> value = this.getAnnotationAttributes(element);
-			for (TypeElement typeElement : value.orElseGet(() -> Set.of(fromInterface(element)))) {
-				String provider = TypeElements.getBinaryName(typeElement);
-				if (provider == null || provider.isBlank()) {
-					throw new IllegalArgumentException("current " + element + "missing @SpringFactories 'value'");
-				}
-				String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
-				factoriesMap.put(provider, serviceImpl);
-			}
-		}
-	}
-
-	protected abstract Set<? extends Element> getElements(RoundEnvironment roundEnv);
-
-	protected abstract Optional<Set<TypeElement>> getAnnotationAttributes(Element element);
-
-	private TypeElement fromInterface(Element element) {
+	protected Set<TypeElement> elseElement(Element element) {
 		if (element instanceof TypeElement typeElement) {
 			List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
 			if (interfaces != null && interfaces.size() == 1) {
-				return MoreTypes.asTypeElement(interfaces.getFirst());
+				return Set.of(MoreTypes.asTypeElement(interfaces.getFirst()));
 			}
 		}
-		return null;
+		return Set.of();
+	}
+
+	@Override
+	protected void storage(String provider, String serviceImpl) {
+		factoriesMap.put(provider, serviceImpl);
 	}
 
 	/**

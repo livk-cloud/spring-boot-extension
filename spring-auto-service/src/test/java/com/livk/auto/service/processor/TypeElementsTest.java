@@ -34,6 +34,7 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,23 +58,24 @@ class TypeElementsTest {
 	@BeforeAll
 	static void init() throws IOException {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+		try (StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null)) {
 
-		JavaFileObject file = new SimpleJavaFileObject(java.net.URI.create("string:///Dummy.java"),
-				JavaFileObject.Kind.SOURCE) {
-			@Override
-			public CharSequence getCharContent(boolean ignoreEncodingErrors) {
-				return "final class Dummy {}";
-			}
-		};
+			JavaFileObject file = new SimpleJavaFileObject(URI.create("string:///Dummy.java"),
+					JavaFileObject.Kind.SOURCE) {
+				@Override
+				public CharSequence getCharContent(boolean ignoreEncodingErrors) {
+					return "final class Dummy {}";
+				}
+			};
 
-		JavacTask task = (JavacTask) compiler.getTask(null, fileManager, null, List.of("-proc:none"), null,
-				List.of(file));
+			JavacTask task = (JavacTask) compiler.getTask(null, fileManager, null, List.of("-proc:none"), null,
+					List.of(file));
 
-		task.parse();
-		task.analyze();
+			task.parse();
+			task.analyze();
 
-		elements = task.getElements();
+			elements = task.getElements();
+		}
 	}
 
 	@Test
