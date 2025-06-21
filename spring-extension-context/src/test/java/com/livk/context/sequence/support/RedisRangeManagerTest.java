@@ -20,10 +20,10 @@ import com.livk.context.sequence.SequenceRange;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisConnectionException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.redis.RedisConnectionFailureException;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -83,10 +83,8 @@ class RedisRangeManagerTest {
 		// Use an unreachable port to simulate connection failure
 		int unreachablePort = 6399;
 		RedisRangeManager manager = new RedisRangeManager(RedisClient.create("redis://localhost:" + unreachablePort));
-		manager.init();
-		Exception exception = assertThrows(RedisConnectionFailureException.class,
-				() -> manager.nextRange("fail-sequence"));
-		assertTrue(exception.getMessage().contains("Unable to connect"));
+		Exception exception = assertThrows(RedisConnectionException.class, manager::init);
+		assertTrue(exception.getMessage().contains("Unable to connect to localhost/<unresolved>:6399"));
 	}
 
 	@Test
