@@ -27,8 +27,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.ErrorResponseException;
@@ -90,14 +88,14 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return http headers
 	 */
 	public HttpHeaders headers(HttpServletRequest request) {
-		LinkedCaseInsensitiveMap<List<String>> insensitiveMap = new LinkedCaseInsensitiveMap<>();
+		HttpHeaders httpHeaders = new HttpHeaders();
 		Enumeration<String> headerNames = request.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
 			Enumeration<String> headers = request.getHeaders(headerName);
-			insensitiveMap.put(headerName, Collections.list(headers));
+			httpHeaders.put(headerName, Collections.list(headers));
 		}
-		return new HttpHeaders(CollectionUtils.toMultiValueMap(insensitiveMap));
+		return httpHeaders;
 	}
 
 	/**

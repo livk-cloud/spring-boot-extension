@@ -18,11 +18,11 @@ package com.livk.commons.http.support;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpResponse;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 import java.io.InputStream;
@@ -36,8 +36,7 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 
 	private final Response response;
 
-	@Nullable
-	private volatile HttpHeaders headers;
+	@Nullable private volatile HttpHeaders headers;
 
 	/**
 	 * Instantiates a new Ok http client http response.
