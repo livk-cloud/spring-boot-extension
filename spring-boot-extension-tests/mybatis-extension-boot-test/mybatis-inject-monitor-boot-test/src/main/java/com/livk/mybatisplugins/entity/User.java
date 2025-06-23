@@ -19,10 +19,10 @@ package com.livk.mybatisplugins.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.livk.commons.util.DateUtils;
-import com.livk.context.mybatis.inject.annotation.SqlFunction;
-import com.livk.context.mybatis.inject.enums.FunctionType;
-import com.livk.context.mybatis.inject.enums.SqlFill;
-import com.livk.mybatisplugins.handler.VersionFunction;
+import com.livk.context.mybatis.annotation.SqlInject;
+import com.livk.context.mybatis.enums.InjectType;
+import com.livk.context.mybatis.enums.SqlFill;
+import com.livk.mybatisplugins.handler.VersionInject;
 import lombok.Data;
 
 import java.io.Serial;
@@ -47,15 +47,15 @@ public class User implements Serializable {
 	private String username;
 
 	@JsonIgnore
-	@SqlFunction(fill = SqlFill.INSERT, supplier = VersionFunction.class)
+	@SqlInject(fill = SqlFill.INSERT, supplier = VersionInject.class)
 	private Integer version;
 
 	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlFunction(fill = SqlFill.INSERT, time = FunctionType.DATE)
+	@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
 	private Date insertTime;
 
 	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionType.DATE)
+	@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
 	private Date updateTime;
 
 }

@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.enums;
+package com.livk.context.mybatis.event;
 
 /**
- * <p>
- * SqlFill
- * </p>
+ * The type Monitor sql info.
  *
  * @author livk
  */
-public enum SqlFill {
-
-	/**
-	 * Insert sql fill.
-	 */
-	INSERT,
-	/**
-	 * Insert update sql fill.
-	 */
-	INSERT_UPDATE
+public record MonitorSQLInfo(String sql, Long timeout, Object result) {
 
 }

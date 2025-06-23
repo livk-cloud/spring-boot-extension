@@ -59,10 +59,9 @@ class RedisSequenceBuilderTest {
 		RedisSequenceBuilder builder = new RedisSequenceBuilder(redisClient).bizName("test-sequence");
 		Sequence sequence = builder.build();
 		assertNotNull(sequence);
-		long first = sequence.nextValue();
-		long second = sequence.nextValue();
-		assertEquals(1, first);
-		assertEquals(2, second);
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, sequence.nextValue());
+		}
 	}
 
 	@Test
@@ -72,10 +71,9 @@ class RedisSequenceBuilderTest {
 			.stepStart(100);
 		Sequence sequence = builder.build();
 		assertNotNull(sequence);
-		long first = sequence.nextValue();
-		long second = sequence.nextValue();
-		assertEquals(101, first);
-		assertEquals(102, second);
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 101, sequence.nextValue());
+		}
 	}
 
 	@Test
@@ -85,8 +83,9 @@ class RedisSequenceBuilderTest {
 			.stepStart(50)
 			.build();
 		assertNotNull(sequence);
-		assertEquals(51, sequence.nextValue());
-		assertEquals(52, sequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 51, sequence.nextValue());
+		}
 	}
 
 	@Test
@@ -105,21 +104,27 @@ class RedisSequenceBuilderTest {
 		// step = 0 should fallback to default (1000)
 		Sequence zeroStepSequence = new RedisSequenceBuilder(redisClient).bizName("zero-step").step(0).build();
 		assertNotNull(zeroStepSequence);
-		assertEquals(1, zeroStepSequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, zeroStepSequence.nextValue());
+		}
 
 		// step < 0 should fallback to default (1000)
 		Sequence negativeStepSequence = new RedisSequenceBuilder(redisClient).bizName("negative-step")
 			.step(-10)
 			.build();
 		assertNotNull(negativeStepSequence);
-		assertEquals(1, negativeStepSequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, negativeStepSequence.nextValue());
+		}
 
 		// stepStart < 0 should fallback to default (0)
 		Sequence negativeStepStartSequence = new RedisSequenceBuilder(redisClient).bizName("negative-stepstart")
 			.stepStart(-100)
 			.build();
 		assertNotNull(negativeStepStartSequence);
-		assertEquals(1, negativeStepStartSequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, negativeStepStartSequence.nextValue());
+		}
 	}
 
 }

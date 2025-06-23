@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler;
+package com.livk.context.mybatis.handler;
+
+import org.springframework.core.GenericTypeResolver;
 
 /**
- * <p>
- * NullFunction
- * </p>
- *
+ * @param <T> the type parameter
  * @author livk
  */
-public class NullFunction implements FunctionHandle<Object> {
+public interface InjectHandle<T> {
 
-	@Override
-	public Object handler() {
-		return null;
+	/**
+	 * Handler t.
+	 * @return the t
+	 */
+	T handler();
+
+	/**
+	 * Gets type.
+	 * @return the type
+	 */
+	@SuppressWarnings("unchecked")
+	default Class<T> getType() {
+		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), InjectHandle.class);
 	}
 
 }

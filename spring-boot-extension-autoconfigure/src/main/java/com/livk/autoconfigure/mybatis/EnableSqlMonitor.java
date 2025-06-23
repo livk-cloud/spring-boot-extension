@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.annotation;
+package com.livk.autoconfigure.mybatis;
 
-import com.livk.context.mybatis.inject.enums.FunctionType;
-import com.livk.context.mybatis.inject.enums.SqlFill;
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
-import com.livk.context.mybatis.inject.handler.NullFunction;
+import com.livk.commons.spring.AutoImport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,39 +25,14 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * SqlFunction
+ * EnableSqlMonitor
  * </p>
  *
  * @author livk
  */
+@AutoImport
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface SqlFunction {
-
-	/**
-	 * <p>
-	 * {@link SqlFunction#supplier()}
-	 * </p>
-	 * <p>
-	 * {@link SqlFunction#time()}
-	 * </p>
-	 * <p>
-	 * 两个必须指定一个，否则无法注入
-	 * </p>
-	 * @return the sql fill
-	 */
-	SqlFill fill();
-
-	/**
-	 * 优先级低于{@link SqlFunction#time()}
-	 * @return the class
-	 */
-	Class<? extends FunctionHandle<?>> supplier() default NullFunction.class;
-
-	/**
-	 * 优先级高于 {@link SqlFunction#supplier()}
-	 * @return the function enum
-	 */
-	FunctionType time() default FunctionType.DEFAULT;
+@Target(ElementType.TYPE)
+public @interface EnableSqlMonitor {
 
 }

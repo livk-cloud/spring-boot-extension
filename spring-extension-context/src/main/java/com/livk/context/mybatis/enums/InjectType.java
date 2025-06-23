@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.enums;
+package com.livk.context.mybatis.enums;
 
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
-import com.livk.context.mybatis.inject.handler.NullFunction;
-import com.livk.context.mybatis.inject.handler.time.DateFunction;
-import com.livk.context.mybatis.inject.handler.time.LocalDateFunction;
-import com.livk.context.mybatis.inject.handler.time.LocalDateTimeFunction;
-import com.livk.context.mybatis.inject.handler.time.TimestampFunction;
+import com.livk.context.mybatis.handler.InjectHandle;
+import com.livk.context.mybatis.handler.NullInject;
+import com.livk.context.mybatis.handler.time.DateInject;
+import com.livk.context.mybatis.handler.time.LocalDateInject;
+import com.livk.context.mybatis.handler.time.LocalDateTimeInject;
+import com.livk.context.mybatis.handler.time.TimestampInject;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -32,30 +32,30 @@ import lombok.RequiredArgsConstructor;
  * @author livk
  */
 @RequiredArgsConstructor
-public enum FunctionType implements FunctionHandle<Object> {
+public enum InjectType implements InjectHandle<Object> {
 
 	/**
 	 * The Default.
 	 */
-	DEFAULT(new NullFunction()),
+	DEFAULT(new NullInject()),
 	/**
 	 * The Date.
 	 */
-	DATE(new DateFunction()),
+	DATE(new DateInject()),
 	/**
 	 * The Local date.
 	 */
-	LOCAL_DATE(new LocalDateFunction()),
+	LOCAL_DATE(new LocalDateInject()),
 	/**
 	 * The Local date time.
 	 */
-	LOCAL_DATE_TIME(new LocalDateTimeFunction()),
+	LOCAL_DATE_TIME(new LocalDateTimeInject()),
 	/**
 	 * The Timestamp.
 	 */
-	TIMESTAMP(new TimestampFunction());
+	TIMESTAMP(new TimestampInject());
 
-	private final FunctionHandle<?> function;
+	private final InjectHandle<?> function;
 
 	@Override
 	public Object handler() {

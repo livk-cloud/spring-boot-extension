@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins.handler;
+package com.livk.context.mybatis.handler.time;
 
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
+import com.livk.context.mybatis.handler.InjectHandle;
+
+import java.util.Date;
 
 /**
  * <p>
- * VersionFunction
+ * DateFaction
  * </p>
  *
  * @author livk
  */
-public class VersionFunction implements FunctionHandle<Integer> {
+public class DateInject implements InjectHandle<Date> {
 
 	@Override
-	public Integer handler() {
-		return 0;
+	public Date handler() {
+		return new Date();
 	}
 
 }

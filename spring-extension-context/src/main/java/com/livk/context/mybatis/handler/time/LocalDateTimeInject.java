@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler.time;
+package com.livk.context.mybatis.handler.time;
 
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
+import com.livk.context.mybatis.handler.InjectHandle;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
  *
  * @author livk
  */
-public class LocalDateTimeFunction implements FunctionHandle<LocalDateTime> {
+public class LocalDateTimeInject implements InjectHandle<LocalDateTime> {
 
 	@Override
 	public LocalDateTime handler() {

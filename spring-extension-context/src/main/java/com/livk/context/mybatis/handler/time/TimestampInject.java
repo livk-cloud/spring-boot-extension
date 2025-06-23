@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.monitor.event;
+package com.livk.context.mybatis.handler.time;
+
+import com.livk.context.mybatis.handler.InjectHandle;
 
 /**
- * The type Monitor sql info.
+ * <p>
+ * TimestampFunction
+ * </p>
  *
  * @author livk
  */
-public record MonitorSQLInfo(String sql, Long timeout, Object result) {
+public class TimestampInject implements InjectHandle<Long> {
+
+	@Override
+	public Long handler() {
+		return System.currentTimeMillis();
+	}
 
 }

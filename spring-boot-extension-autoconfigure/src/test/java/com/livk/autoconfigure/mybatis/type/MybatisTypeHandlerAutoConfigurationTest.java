@@ -16,6 +16,7 @@
 
 package com.livk.autoconfigure.mybatis.type;
 
+import com.livk.autoconfigure.mybatis.MybatisTypeHandlerAutoConfiguration;
 import com.livk.context.mybatis.type.mysql.MysqlJsonTypeHandler;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;

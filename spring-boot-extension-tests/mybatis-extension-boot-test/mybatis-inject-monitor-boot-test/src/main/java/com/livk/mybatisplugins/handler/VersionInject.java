@@ -14,33 +14,22 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler;
+package com.livk.mybatisplugins.handler;
 
-import org.springframework.core.GenericTypeResolver;
+import com.livk.context.mybatis.handler.InjectHandle;
 
 /**
  * <p>
- * FunctionHandle
+ * VersionFunction
  * </p>
  *
- * @param <T> the type parameter
  * @author livk
  */
-public interface FunctionHandle<T> {
+public class VersionInject implements InjectHandle<Integer> {
 
-	/**
-	 * Handler t.
-	 * @return the t
-	 */
-	T handler();
-
-	/**
-	 * Gets type.
-	 * @return the type
-	 */
-	@SuppressWarnings("unchecked")
-	default Class<T> getType() {
-		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), FunctionHandle.class);
+	@Override
+	public Integer handler() {
+		return 0;
 	}
 
 }

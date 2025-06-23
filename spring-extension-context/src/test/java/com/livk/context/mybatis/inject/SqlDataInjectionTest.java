@@ -18,9 +18,10 @@ package com.livk.context.mybatis.inject;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.livk.commons.util.DateUtils;
-import com.livk.context.mybatis.inject.annotation.SqlFunction;
-import com.livk.context.mybatis.inject.enums.FunctionType;
-import com.livk.context.mybatis.inject.enums.SqlFill;
+import com.livk.context.mybatis.SqlDataInjection;
+import com.livk.context.mybatis.annotation.SqlInject;
+import com.livk.context.mybatis.enums.InjectType;
+import com.livk.context.mybatis.enums.SqlFill;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 import org.apache.ibatis.annotations.Insert;
@@ -139,7 +140,7 @@ class SqlDataInjectionTest {
 	}
 
 	@Data
-	static class User implements Serializable {
+	public static class User implements Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;
@@ -149,11 +150,11 @@ class SqlDataInjectionTest {
 		private String username;
 
 		@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-		@SqlFunction(fill = SqlFill.INSERT, time = FunctionType.DATE)
+		@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
 		private Date insertTime;
 
 		@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-		@SqlFunction(fill = SqlFill.INSERT_UPDATE, time = FunctionType.DATE)
+		@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
 		private Date updateTime;
 
 	}

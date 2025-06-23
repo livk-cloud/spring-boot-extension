@@ -39,9 +39,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author livk
@@ -80,14 +83,31 @@ class SequenceTest {
 	void testDb() {
 		Sequence sequence = SequenceBuilder.builder(dataSource).bizName("test-sequence").build();
 		assertNotNull(sequence);
-		assertEquals(1, sequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, sequence.nextValue());
+		}
 	}
 
 	@Test
 	void testRedis() {
 		Sequence sequence = SequenceBuilder.builder(redisClient).bizName("test-sequence").build();
 		assertNotNull(sequence);
-		assertEquals(1, sequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, sequence.nextValue());
+		}
+	}
+
+	@Test
+	void test() {
+		Sequence sequence = Sequence.snowflake(1, 2);
+		assertNotNull(sequence);
+		Set<Long> generatedIds = new HashSet<>();
+		for (int i = 0; i < 1000; i++) { // 增加迭代次数以更严格测试
+			Long nextId = sequence.nextValue();
+			assertNotNull(nextId);
+			assertTrue(generatedIds.add(nextId), "ID should be unique");
+		}
+		assertEquals(1000, generatedIds.size(), "All generated IDs should be unique");
 	}
 
 	@TestConfiguration

@@ -16,8 +16,8 @@
 
 package com.livk.mybatisplugins;
 
-import com.livk.autoconfigure.mybatis.inject.EnableSqlPlugin;
-import com.livk.autoconfigure.mybatis.monitor.annotation.EnableSqlMonitor;
+import com.livk.autoconfigure.mybatis.EnableSqlInjector;
+import com.livk.autoconfigure.mybatis.EnableSqlMonitor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author livk
  */
 @EnableSqlMonitor
-@EnableSqlPlugin
+@EnableSqlInjector
 @SpringBootApplication
 public class MybatisApp {
 

@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler.time;
+package com.livk.context.mybatis.event;
 
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
-
-import java.time.LocalDate;
+import org.springframework.context.ApplicationEvent;
 
 /**
- * <p>
- * LocalDateFunction
- * </p>
+ * The type Monitor sql time out event.
  *
  * @author livk
  */
-public class LocalDateFunction implements FunctionHandle<LocalDate> {
+public class MonitorSQLTimeOutEvent extends ApplicationEvent {
+
+	/**
+	 * Instantiates a new Monitor sql time out event.
+	 * @param source the source
+	 */
+	public MonitorSQLTimeOutEvent(MonitorSQLInfo source) {
+		super(source);
+	}
 
 	@Override
-	public LocalDate handler() {
-		return LocalDate.now();
+	public MonitorSQLInfo getSource() {
+		return (MonitorSQLInfo) super.getSource();
 	}
 
 }

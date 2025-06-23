@@ -14,37 +14,43 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.inject;
+package com.livk.autoconfigure.mybatis;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.mybatis.inject.SqlDataInjection;
+import com.livk.context.mybatis.MybatisSqlMonitor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
  * <p>
- * SqlDataInjectionAutoConfiguration
+ * MybatisLogMonitorAutoConfiguration
  * </p>
  *
  * @author livk
  */
-@SpringAutoService(EnableSqlPlugin.class)
+@SpringAutoService(EnableSqlMonitor.class)
 @AutoConfiguration(before = MybatisAutoConfiguration.class)
+@EnableConfigurationProperties(MybatisLogMonitorProperties.class)
 @ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
-public class SqlDataInjectionAutoConfiguration {
+public class MybatisLogMonitorAutoConfiguration {
 
 	/**
-	 * Sql data injection configuration customizer configuration customizer.
+	 * Mybatis log monitor configuration customizer configuration customizer.
+	 * @param monitorProperties the properties
 	 * @return the configuration customizer
 	 */
 	@Bean
-	public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
-		return configuration -> configuration.addInterceptor(new SqlDataInjection());
+	public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(
+			MybatisLogMonitorProperties monitorProperties) {
+		MybatisSqlMonitor logMonitor = new MybatisSqlMonitor();
+		logMonitor.setProperties(monitorProperties.properties());
+		return configuration -> configuration.addInterceptor(logMonitor);
 	}
 
 }

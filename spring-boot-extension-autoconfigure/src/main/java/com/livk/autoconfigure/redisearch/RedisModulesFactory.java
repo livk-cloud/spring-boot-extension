@@ -36,10 +36,6 @@ import java.util.List;
 @RequiredArgsConstructor
 class RedisModulesFactory {
 
-	private static final String REDIS_PROTOCOL_PREFIX = "redis://";
-
-	private static final String REDISS_PROTOCOL_PREFIX = "rediss://";
-
 	private final RediSearchProperties properties;
 
 	private final PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
@@ -60,14 +56,32 @@ class RedisModulesFactory {
 			return clusterClient;
 		}
 		else {
-			RedisURI standaloneNode = createRedisURI(properties.getHost() + ":" + properties.getPort());
+			RedisURI standaloneNode = createRedisURI(properties.getHost(), properties.getPort());
 			return RedisModulesClient.create(clientResources, standaloneNode);
 		}
 	}
 
 	public RedisURI createRedisURI(String node) {
-		String uri = (properties.getSsl() ? REDISS_PROTOCOL_PREFIX : REDIS_PROTOCOL_PREFIX) + node;
-		RedisURI redisURI = RedisURI.create(uri);
+		Node parsedNode = asNode(node);
+		return createRedisURI(parsedNode);
+	}
+
+	public RedisURI createRedisURI(String host, int port) {
+		Node parsedNode = new Node(host, port);
+		return createRedisURI(parsedNode);
+	}
+
+	private Node asNode(String node) {
+		int portSeparatorIndex = node.lastIndexOf(':');
+		String host = node.substring(0, portSeparatorIndex);
+		int port = Integer.parseInt(node.substring(portSeparatorIndex + 1));
+		return new Node(host, port);
+	}
+
+	private RedisURI createRedisURI(Node node) {
+		RedisURI.Builder builder = RedisURI.builder().withHost(node.host).withPort(node.port);
+		mapper.from(properties::getSsl).to(builder::withSsl);
+		RedisURI redisURI = builder.build();
 		RedisCredentials credentials = RedisCredentials.just(properties.getUsername(), properties.getPassword());
 		mapper.from(credentials).as(StaticCredentialsProvider::new).to(redisURI::setCredentialsProvider);
 		mapper.from(properties::getDatabase).to(redisURI::setDatabase);
@@ -86,6 +100,9 @@ class RedisModulesFactory {
 		mapper.from(pool::getMinIdle).to(config::setMinIdle);
 		mapper.from(pool::getMaxWait).to(config::setMaxWait);
 		return config;
+	}
+
+	private record Node(String host, int port) {
 	}
 
 }
