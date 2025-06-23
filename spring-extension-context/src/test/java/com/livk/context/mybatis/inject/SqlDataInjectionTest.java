@@ -140,7 +140,7 @@ class SqlDataInjectionTest {
 	}
 
 	@Data
-	static class User implements Serializable {
+	public static class User implements Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;
