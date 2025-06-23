@@ -31,7 +31,10 @@ class DefaultRangeSequenceTest {
 
 	@Test
 	void nextValue() {
-		assertEquals(1, new DefaultRangeSequence(rangeManager, "test").nextValue());
+		DefaultRangeSequence sequence = new DefaultRangeSequence(rangeManager, "test");
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, sequence.nextValue());
+		}
 	}
 
 	static class TestRangeManager implements RangeManager {

@@ -54,7 +54,9 @@ class DbSequenceBuilderTest {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("test-biz");
 		Sequence sequence = builder.build();
 		assertNotNull(sequence);
-		assertEquals(1, sequence.nextValue());
+		for (int i = 0; i < 10; i++) {
+			assertEquals(i + 1, sequence.nextValue());
+		}
 	}
 
 	@Test
