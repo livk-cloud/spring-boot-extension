@@ -1,6 +1,53 @@
 [[mybatis]]
 ==== mybatis
 
+==== 内置SQL数据注入工具
+
+[source,java,indent=0]
+----
+import javax.sql.DataSource;
+
+@Data
+public class User implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
+
+	private String username;
+
+	@JsonIgnore
+	@SqlInject(fill = SqlFill.INSERT, supplier = VersionInject.class)
+	private Integer version;
+
+	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
+	@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
+	private Date insertTime;
+
+	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
+	@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
+	private Date updateTime;
+
+}
+----
+
+并且添加com.livk.context.mybatis.SqlDataInjection至MyBatis
+
+==== 数据库JSON类型转换处理(目前只支持MySQL、Postgres)
+
+com.livk.context.mybatis.type.mysql.MysqlJsonTypeHandler
+
+com.livk.context.mybatis.type.postgres.PostgresJsonTypeHandler
+
+添加至MyBatis
+
+==== mybatis sql监控
+
+添加com.livk.context.mybatis.MybatisSqlMonitor至MyBatis
+
+并且配置timeOut和unit至Properties
+
 ===== mybatis-extension-boot-starter
 
 artifactId: mybatis-extension-boot-starter

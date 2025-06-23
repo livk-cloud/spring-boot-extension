@@ -98,6 +98,8 @@ include::{basedir}/redisearch.adoc[]
 
 include::{basedir}/redisson.adoc[]
 
+include::{basedir}/sequence.adoc[]
+
 include::{basedir}/useragent.adoc[]
 
 

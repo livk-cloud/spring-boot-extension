@@ -1,0 +1,35 @@
+[[sequence]]
+==== sequence
+
+发号器，可自定义datasource、redis、snowflake等发号策略
+
+datasource发号器内置Postgres、Mysql、H2等数据库发号策略
+
+未支持的数据库实现 *com.livk.context.sequence.support.spi.SqlProvider* 并注册到 *META-INF/spring.factories* 文件
+
+[source,java,indent=0]
+----
+import javax.sql.DataSource;
+
+@Configuration
+public class Config{
+
+   @Bean
+   public Sequence dbSequence(DataSource dataSource) {
+     Sequence sequence = SequenceBuilder.builder(dataSource).bizName("test-sequence").build();
+     return sequence;
+   }
+
+   @Bean
+   public Sequence redisSequence(RedisClient redisClient) {
+     Sequence sequence = SequenceBuilder.builder(redisClient).bizName("test-sequence").build();
+     return sequence;
+   }
+
+   @Bean
+   public Sequence snowflakeSequence() {
+     Sequence sequence = Sequence.snowflake(1, 2);
+     return sequence;
+   }
+}
+----
