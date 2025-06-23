@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.inject;
-
-import com.livk.commons.spring.AutoImport;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.livk.context.mybatis.enums;
 
 /**
  * <p>
- * EnableSqlPlugin
+ * SqlFill
  * </p>
  *
  * @author livk
  */
-@AutoImport
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface EnableSqlPlugin {
+public enum SqlFill {
+
+	/**
+	 * Insert sql fill.
+	 */
+	INSERT,
+	/**
+	 * Insert update sql fill.
+	 */
+	INSERT_UPDATE
 
 }

@@ -16,7 +16,9 @@
 
 package com.livk.autoconfigure.mybatis.inject;
 
-import com.livk.context.mybatis.inject.SqlDataInjection;
+import com.livk.autoconfigure.mybatis.EnableSqlInjector;
+import com.livk.autoconfigure.mybatis.SqlDataInjectionAutoConfiguration;
+import com.livk.context.mybatis.SqlDataInjection;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -51,7 +53,7 @@ class SqlDataInjectionAutoConfigurationTest {
 	}
 
 	@TestConfiguration
-	@EnableSqlPlugin
+	@EnableSqlInjector
 	static class Config {
 
 	}

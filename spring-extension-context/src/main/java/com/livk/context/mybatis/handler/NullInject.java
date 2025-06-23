@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler.time;
-
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
+package com.livk.context.mybatis.handler;
 
 /**
  * <p>
- * TimestampFunction
+ * NullFunction
  * </p>
  *
  * @author livk
  */
-public class TimestampFunction implements FunctionHandle<Long> {
+public class NullInject implements InjectHandle<Object> {
 
 	@Override
-	public Long handler() {
-		return System.currentTimeMillis();
+	public Object handler() {
+		return null;
 	}
 
 }

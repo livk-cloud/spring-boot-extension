@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject;
+package com.livk.context.mybatis;
 
 import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ReflectionUtils;
-import com.livk.context.mybatis.inject.annotation.SqlFunction;
-import com.livk.context.mybatis.inject.enums.SqlFill;
+import com.livk.context.mybatis.annotation.SqlInject;
+import com.livk.context.mybatis.enums.SqlFill;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -63,8 +63,8 @@ public class SqlDataInjection implements Interceptor {
 		for (Map.Entry<Object, List<Field>> entry : map.entrySet()) {
 			if (!SqlCommandType.DELETE.equals(sqlCommandType)) {
 				for (Field field : entry.getValue()) {
-					if (field.isAnnotationPresent(SqlFunction.class)) {
-						SqlFunction sqlFunction = field.getAnnotation(SqlFunction.class);
+					if (field.isAnnotationPresent(SqlInject.class)) {
+						SqlInject sqlFunction = field.getAnnotation(SqlInject.class);
 						Object value = getValue(sqlFunction);
 						if (value == null) {
 							continue;
@@ -82,9 +82,9 @@ public class SqlDataInjection implements Interceptor {
 		return invocation.proceed();
 	}
 
-	private Object getValue(SqlFunction sqlFunction) {
-		Object value = sqlFunction.time().handler();
-		return value != null ? value : BeanUtils.instantiateClass(sqlFunction.supplier()).handler();
+	private Object getValue(SqlInject inject) {
+		Object value = inject.time().handler();
+		return value != null ? value : BeanUtils.instantiateClass(inject.supplier()).handler();
 	}
 
 }

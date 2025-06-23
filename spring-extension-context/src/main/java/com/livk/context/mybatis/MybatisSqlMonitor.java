@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.monitor.interceptor;
+package com.livk.context.mybatis;
 
-import com.livk.autoconfigure.mybatis.monitor.MybatisLogMonitorProperties;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLInfo;
-import com.livk.autoconfigure.mybatis.monitor.event.MonitorSQLTimeOutEvent;
 import com.livk.commons.SpringContextHolder;
 import com.livk.commons.util.SqlParserUtils;
-import lombok.RequiredArgsConstructor;
+import com.livk.context.mybatis.event.MonitorSQLInfo;
+import com.livk.context.mybatis.event.MonitorSQLTimeOutEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
+import org.springframework.util.Assert;
 
 import java.sql.Connection;
 import java.time.temporal.ChronoUnit;
@@ -43,8 +42,7 @@ import java.util.Properties;
 @Slf4j
 @Intercepts({
 		@Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
-@RequiredArgsConstructor
-public class MybatisLogMonitor implements Interceptor {
+public class MybatisSqlMonitor implements Interceptor {
 
 	private Properties properties;
 
@@ -52,24 +50,30 @@ public class MybatisLogMonitor implements Interceptor {
 	public Object intercept(Invocation invocation) throws Throwable {
 		long start = System.currentTimeMillis();
 		Object proceed = invocation.proceed();
-		long time = System.currentTimeMillis() - start;
-		String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
-		if (time > timeOut()) {
-			log.warn("{SQL execution timeout SQL:[{}],Time:[{}ms]}", sql, time);
-			MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
-			SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
+		if (properties != null) {
+			long time = System.currentTimeMillis() - start;
+			String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
+			if (time > timeOut()) {
+				log.warn("{SQL execution timeout SQL:[{}],Time:[{}ms]}", sql, time);
+				MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
+				SpringContextHolder.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
+			}
+		}
+		else {
+			log.warn("MybatisLogMonitor properties is null. Monitor disabled");
 		}
 		return proceed;
 	}
 
 	@Override
 	public void setProperties(Properties properties) {
+		Assert.isTrue(properties.containsKey("timeOut"), "timeOut is required");
+		Assert.isTrue(properties.containsKey("unit"), "unit is required");
 		this.properties = properties;
 	}
 
 	private long timeOut() {
-		return ((ChronoUnit) properties.get(MybatisLogMonitorProperties.unitName())).getDuration().toMillis()
-				* (Long) properties.get(MybatisLogMonitorProperties.timeOutName());
+		return ((ChronoUnit) properties.get("unit")).getDuration().toMillis() * (Long) properties.get("timeOut");
 	}
 
 }

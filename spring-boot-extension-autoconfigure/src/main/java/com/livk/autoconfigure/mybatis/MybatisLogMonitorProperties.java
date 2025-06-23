@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.monitor;
+package com.livk.autoconfigure.mybatis;
 
 import com.livk.commons.util.BeanLambda;
 import lombok.Data;

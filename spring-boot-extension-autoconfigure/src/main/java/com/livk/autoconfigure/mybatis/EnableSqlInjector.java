@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.inject.handler.time;
+package com.livk.autoconfigure.mybatis;
 
-import com.livk.context.mybatis.inject.handler.FunctionHandle;
+import com.livk.commons.spring.AutoImport;
 
-import java.util.Date;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * <p>
- * DateFaction
- * </p>
- *
  * @author livk
  */
-public class DateFunction implements FunctionHandle<Date> {
-
-	@Override
-	public Date handler() {
-		return new Date();
-	}
+@AutoImport
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface EnableSqlInjector {
 
 }

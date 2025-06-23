@@ -16,8 +16,10 @@
 
 package com.livk.autoconfigure.mybatis.monitor;
 
-import com.livk.autoconfigure.mybatis.monitor.annotation.EnableSqlMonitor;
-import com.livk.autoconfigure.mybatis.monitor.interceptor.MybatisLogMonitor;
+import com.livk.autoconfigure.mybatis.MybatisLogMonitorAutoConfiguration;
+import com.livk.autoconfigure.mybatis.MybatisLogMonitorProperties;
+import com.livk.autoconfigure.mybatis.EnableSqlMonitor;
+import com.livk.context.mybatis.MybatisSqlMonitor;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -36,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MybatisLogMonitorAutoConfigurationTest {
+class MybatisSqlMonitorAutoConfigurationTest {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
 		.withBean(DataSource.class, HikariDataSource::new)
@@ -48,7 +50,7 @@ class MybatisLogMonitorAutoConfigurationTest {
 		this.contextRunner.run((context) -> {
 			SqlSessionFactory factory = context.getBean(SqlSessionFactory.class);
 			List<Interceptor> interceptors = factory.getConfiguration().getInterceptors();
-			assertThat(interceptors).isNotNull().hasAtLeastOneElementOfType(MybatisLogMonitor.class);
+			assertThat(interceptors).isNotNull().hasAtLeastOneElementOfType(MybatisSqlMonitor.class);
 		});
 	}
 

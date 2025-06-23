@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.mybatis.monitor.annotation;
+package com.livk.context.mybatis.annotation;
 
-import com.livk.commons.spring.AutoImport;
+import com.livk.context.mybatis.enums.InjectType;
+import com.livk.context.mybatis.enums.SqlFill;
+import com.livk.context.mybatis.handler.InjectHandle;
+import com.livk.context.mybatis.handler.NullInject;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,15 +27,36 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * EnableSqlMonitor
- * </p>
- *
  * @author livk
  */
-@AutoImport
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface EnableSqlMonitor {
+@Target(ElementType.FIELD)
+public @interface SqlInject {
+
+	/**
+	 * <p>
+	 * {@link SqlInject#supplier()}
+	 * </p>
+	 * <p>
+	 * {@link SqlInject#time()}
+	 * </p>
+	 * <p>
+	 * 两个必须指定一个，否则无法注入
+	 * </p>
+	 * @return the sql fill
+	 */
+	SqlFill fill();
+
+	/**
+	 * 优先级低于{@link SqlInject#time()}
+	 * @return the class
+	 */
+	Class<? extends InjectHandle<?>> supplier() default NullInject.class;
+
+	/**
+	 * 优先级高于 {@link SqlInject#supplier()}
+	 * @return the function enum
+	 */
+	InjectType time() default InjectType.DEFAULT;
 
 }
