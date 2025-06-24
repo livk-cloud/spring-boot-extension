@@ -34,9 +34,9 @@ abstract class BootPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.pluginManager.apply(JavaPlugin::class.java)
 		project.pluginManager.apply(SpringBootPlugin::class.java)
-		project.extensions
-			.getByType(SpringBootExtension::class.java)
-			.buildInfo {
+
+		project.extensions.getByType(SpringBootExtension::class.java).apply {
+			buildInfo {
 				it.properties { build ->
 					build.group.set(project.group.toString())
 					build.version.set(project.version.toString())
@@ -45,6 +45,7 @@ abstract class BootPlugin : Plugin<Project> {
 					)
 				}
 			}
+		}
 
 		project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME, BootJar::class.java) {
 			it.archiveBaseName.set(project.name)

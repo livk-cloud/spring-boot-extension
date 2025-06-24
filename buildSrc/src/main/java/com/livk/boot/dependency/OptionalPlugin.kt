@@ -38,18 +38,19 @@ abstract class OptionalPlugin : Plugin<Project> {
 			optional.isCanBeResolved = false
 			optional.isCanBeConsumed = false
 			project.plugins.withType(JavaPlugin::class.java) {
-				val extension = project.extensions.getByType(JavaPluginExtension::class.java)
-				extension.sourceSets.create(OPTIONAL)
-				extension.registerFeature(OPTIONAL) {
-					it.usingSourceSet(extension.sourceSets.getAt(OPTIONAL))
-				}
-				extension.sourceSets.all { sourceSet ->
-					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(optional)
-					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(optional)
-					configurations.named("${OPTIONAL}${JavaPlugin.API_CONFIGURATION_NAME.capitalized()}") {
-						it.extendsFrom(
-							optional
-						)
+				project.extensions.getByType(JavaPluginExtension::class.java).apply {
+					sourceSets.create(OPTIONAL)
+					registerFeature(OPTIONAL) {
+						it.usingSourceSet(sourceSets.getAt(OPTIONAL))
+					}
+					sourceSets.all { sourceSet ->
+						configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(optional)
+						configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(optional)
+						configurations.named("${OPTIONAL}${JavaPlugin.API_CONFIGURATION_NAME.capitalized()}") {
+							it.extendsFrom(
+								optional
+							)
+						}
 					}
 				}
 			}
