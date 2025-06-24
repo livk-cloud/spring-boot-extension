@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         distribution: [ temurin ]
-        java: [ 21 ,23 ]
+        java: [ 21 ,24 ]
 
     name: JDK ${{ matrix.java }}
 
