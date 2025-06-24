@@ -18,6 +18,7 @@ package com.livk.testcontainers.containers;
 
 import com.livk.testcontainers.DockerImageNames;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.images.builder.Transferable;
 
 /**
  * @author livk
@@ -28,6 +29,17 @@ public class MysqlContainer extends MySQLContainer<MysqlContainer> {
 		super(DockerImageNames.mysql());
 		addExposedPorts(3306);
 
+	}
+
+	/**
+	 * <a href="https://github.com/testcontainers/testcontainers-java/pull/10185">MySql
+	 * 9.3不兼容问题</a>
+	 */
+	@Override
+	protected void configure() {
+		super.configure();
+		optionallyMapResourceParameterAsVolume("TC_MY_CNF", "/etc/mysql/conf.d", "mysql-conf",
+				Transferable.DEFAULT_DIR_MODE);
 	}
 
 }

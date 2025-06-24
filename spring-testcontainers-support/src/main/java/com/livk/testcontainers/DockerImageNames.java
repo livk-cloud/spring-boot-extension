@@ -48,7 +48,7 @@ public class DockerImageNames {
 	public static final String MINIO_IMAGE = "minio/minio";
 
 	public static DockerImageName mysql() {
-		return mysql("8.0");
+		return mysql(LATEST_TAG);
 	}
 
 	public static DockerImageName mysql(String tag) {
