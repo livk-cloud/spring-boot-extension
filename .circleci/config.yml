@@ -18,11 +18,11 @@ jobs:
       - run: sudo apt install openjdk-21-jdk
       - checkout
       - run: ./gradlew build
-  jdk24:
+  jdk23:
     executor: ubuntu
     steps:
       - run: sudo apt-get update
-      - run: sudo apt install openjdk-24-jdk
+      - run: sudo apt install openjdk-23-jdk
       - checkout
       - run: ./gradlew build
 
@@ -30,4 +30,4 @@ workflows:
   gradle-build:
     jobs:
       - jdk21
-      - jdk24
+      - jdk23
