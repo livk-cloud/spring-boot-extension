@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,8 +50,8 @@ class AuthorsMapperTest {
 				authors.setFirstName("root" + i);
 				authors.setLastName("admin" + i);
 				authors.setEmail("1375632510@qq.com");
-				authors.setBirthdate(new Date());
-				authors.setAdded(new Date());
+				authors.setBirthdate(LocalDateTime.now());
+				authors.setAdded(LocalDateTime.now());
 
 				authorsList.add(authors);
 

@@ -19,7 +19,6 @@ link:spring-micrometer[spring整合micrometer trace] +
 link:spring-mybatis/mybatis-tree[spring整合mybatis实现SQL查询树形结构] +
 link:spring-netty[spring整合netty] +
 link:spring-pulsar[spring整合Pulsar] +
-link:spring-quartz[spring整合Quartz] +
 link:spring-r2dbc[Spring整合R2DBC] +
 link:spring-rabbit/rabbitmq-mqtt[Spring整合Rabbit mqtt] +
 link:spring-rabbit/rabbitmq-order-expired[Rabbit处理订单过期取消] +

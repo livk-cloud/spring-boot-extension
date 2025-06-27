@@ -19,7 +19,7 @@ package com.livk.mapstruct.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -40,6 +40,6 @@ public class User {
 
 	private Integer type;
 
-	private Date createTime;
+	private LocalDateTime createTime;
 
 }

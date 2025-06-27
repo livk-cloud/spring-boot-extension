@@ -24,7 +24,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -44,7 +44,8 @@ public class JobController {
 	@SneakyThrows
 	@GetMapping("doJob")
 	public void doJob() {
-		jobLauncher.run(job, new JobParametersBuilder().addDate("jobDate", new Date()).toJobParameters());
+		jobLauncher.run(job,
+				new JobParametersBuilder().addLocalDateTime("jobDate", LocalDateTime.now()).toJobParameters());
 	}
 
 }
