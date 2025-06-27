@@ -18,7 +18,7 @@ package com.livk.export.entity;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author livk
@@ -34,8 +34,8 @@ public class Authors {
 
 	private String email;
 
-	private Date birthdate;
+	private LocalDateTime birthdate;
 
-	private Date added;
+	private LocalDateTime added;
 
 }

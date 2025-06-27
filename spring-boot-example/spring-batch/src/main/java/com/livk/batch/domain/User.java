@@ -18,7 +18,7 @@ package com.livk.batch.domain;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -40,8 +40,8 @@ public class User {
 
 	private Integer status;
 
-	private Date createTime;
+	private LocalDateTime createTime;
 
-	private Date updateTime;
+	private LocalDateTime updateTime;
 
 }

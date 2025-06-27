@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -40,6 +40,6 @@ public class User {
 	private String version;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date regTime;
+	private LocalDate regTime;
 
 }

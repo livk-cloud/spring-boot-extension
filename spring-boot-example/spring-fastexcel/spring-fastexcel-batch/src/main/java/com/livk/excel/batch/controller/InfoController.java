@@ -48,8 +48,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,7 +77,8 @@ public class InfoController {
 			JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 		Step step = excelStep(dataExcels);
 		Job job = excelJob(step);
-		jobLauncher.run(job, new JobParametersBuilder().addDate("date", new Date()).toJobParameters());
+		jobLauncher.run(job,
+				new JobParametersBuilder().addLocalDateTime("date", LocalDateTime.now()).toJobParameters());
 		return ResponseEntity.ok(null);
 	}
 

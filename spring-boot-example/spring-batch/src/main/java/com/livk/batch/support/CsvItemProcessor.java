@@ -18,12 +18,12 @@ package com.livk.batch.support;
 
 import com.livk.batch.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
-import org.jspecify.annotations.NonNull;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -48,8 +48,8 @@ public class CsvItemProcessor implements ItemProcessor<User, User> {
 				item.setSex("2");
 			}
 			item.setStatus(1);
-			item.setCreateTime(new Date());
-			item.setUpdateTime(new Date());
+			item.setCreateTime(LocalDateTime.now());
+			item.setUpdateTime(LocalDateTime.now());
 			return item;
 		}
 		catch (ValidationException e) {
