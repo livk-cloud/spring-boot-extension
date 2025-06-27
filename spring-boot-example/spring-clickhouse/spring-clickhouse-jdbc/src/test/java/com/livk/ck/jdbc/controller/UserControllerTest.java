@@ -36,8 +36,8 @@ import org.testcontainers.clickhouse.ClickHouseContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -99,7 +99,10 @@ class UserControllerTest {
 	@Order(1)
 	@Test
 	void testSave() throws Exception {
-		User user = new User().setId(Integer.MAX_VALUE).setAppId("appId").setVersion("version").setRegTime(new Date());
+		User user = new User().setId(Integer.MAX_VALUE)
+			.setAppId("appId")
+			.setVersion("version")
+			.setRegTime(LocalDate.now());
 		mockMvc
 			.perform(post("/user").contentType(MediaType.APPLICATION_JSON)
 				.content(JsonMapperUtils.writeValueAsString(user)))

@@ -57,6 +57,7 @@ public @interface SqlInject {
 	 * 优先级高于 {@link SqlInject#supplier()}
 	 * @return the function enum
 	 */
+	@Deprecated(since = "1.5.2")
 	InjectType time() default InjectType.DEFAULT;
 
 }

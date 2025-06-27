@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.livk.commons.util.DateUtils;
 import com.livk.context.mybatis.SqlDataInjection;
 import com.livk.context.mybatis.annotation.SqlInject;
-import com.livk.context.mybatis.enums.InjectType;
 import com.livk.context.mybatis.enums.SqlFill;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
@@ -49,7 +48,7 @@ import javax.sql.DataSource;
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -150,12 +149,12 @@ class SqlDataInjectionTest {
 		private String username;
 
 		@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-		@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
-		private Date insertTime;
+		@SqlInject(fill = SqlFill.INSERT)
+		private LocalDateTime insertTime;
 
 		@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-		@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
-		private Date updateTime;
+		@SqlInject(fill = SqlFill.INSERT_UPDATE)
+		private LocalDateTime updateTime;
 
 	}
 

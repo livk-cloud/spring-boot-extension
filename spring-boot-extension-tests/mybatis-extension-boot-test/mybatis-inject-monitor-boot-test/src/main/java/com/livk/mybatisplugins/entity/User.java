@@ -20,14 +20,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.livk.commons.util.DateUtils;
 import com.livk.context.mybatis.annotation.SqlInject;
-import com.livk.context.mybatis.enums.InjectType;
 import com.livk.context.mybatis.enums.SqlFill;
 import com.livk.mybatisplugins.handler.VersionInject;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -51,11 +50,11 @@ public class User implements Serializable {
 	private Integer version;
 
 	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
-	private Date insertTime;
+	@SqlInject(fill = SqlFill.INSERT)
+	private LocalDateTime insertTime;
 
 	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
-	private Date updateTime;
+	@SqlInject(fill = SqlFill.INSERT_UPDATE)
+	private LocalDateTime updateTime;
 
 }

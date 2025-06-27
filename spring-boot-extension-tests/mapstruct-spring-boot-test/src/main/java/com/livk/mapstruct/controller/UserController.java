@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -46,9 +46,21 @@ import java.util.Objects;
 public class UserController {
 
 	public static final List<User> USERS = List.of(
-			new User().setId(1).setUsername("livk1").setPassword("123456").setType(1).setCreateTime(new Date()),
-			new User().setId(2).setUsername("livk2").setPassword("123456").setType(2).setCreateTime(new Date()),
-			new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
+			new User().setId(1)
+				.setUsername("livk1")
+				.setPassword("123456")
+				.setType(1)
+				.setCreateTime(LocalDateTime.now()),
+			new User().setId(2)
+				.setUsername("livk2")
+				.setPassword("123456")
+				.setType(2)
+				.setCreateTime(LocalDateTime.now()),
+			new User().setId(3)
+				.setUsername("livk3")
+				.setPassword("123456")
+				.setType(3)
+				.setCreateTime(LocalDateTime.now()));
 
 	// 自定义双向转换
 	private final MapstructService service;

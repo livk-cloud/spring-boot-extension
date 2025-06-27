@@ -19,6 +19,7 @@ package com.livk.context.mybatis;
 import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ReflectionUtils;
 import com.livk.context.mybatis.annotation.SqlInject;
+import com.livk.context.mybatis.enums.InjectType;
 import com.livk.context.mybatis.enums.SqlFill;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.Executor;
@@ -65,7 +66,7 @@ public class SqlDataInjection implements Interceptor {
 				for (Field field : entry.getValue()) {
 					if (field.isAnnotationPresent(SqlInject.class)) {
 						SqlInject sqlFunction = field.getAnnotation(SqlInject.class);
-						Object value = getValue(sqlFunction);
+						Object value = getValue(sqlFunction, field);
 						if (value == null) {
 							continue;
 						}
@@ -82,9 +83,9 @@ public class SqlDataInjection implements Interceptor {
 		return invocation.proceed();
 	}
 
-	private Object getValue(SqlInject inject) {
-		Object value = inject.time().handler();
-		return value != null ? value : BeanUtils.instantiateClass(inject.supplier()).handler();
+	private Object getValue(SqlInject inject, Field field) {
+		Object value = BeanUtils.instantiateClass(inject.supplier()).handler();
+		return value != null ? value : InjectType.handler(field.getType());
 	}
 
 }

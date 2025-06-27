@@ -57,24 +57,25 @@ public enum InjectType implements InjectHandle<Object> {
 
 	private final InjectHandle<?> function;
 
+	public Class<?> type() {
+		return function.getType();
+	}
+
 	@Override
 	public Object handler() {
 		return function.handler();
 	}
 
-	/**
-	 * Handler t.
-	 * @param <T> the type parameter
-	 * @param targetClass the target class
-	 * @return the t
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T handler(Class<T> targetClass) {
-		Object value = handler();
-		if (targetClass.isInstance(value)) {
-			return (T) value;
+	public static Object handler(Class<?> type) {
+		for (InjectType value : values()) {
+			if (value == DEFAULT) {
+				continue;
+			}
+			if (value.type().isAssignableFrom(type)) {
+				return value.handler();
+			}
 		}
-		throw new ClassCastException("class " + value.getClass() + " can not to be class " + targetClass);
+		return DEFAULT.handler();
 	}
 
 }
