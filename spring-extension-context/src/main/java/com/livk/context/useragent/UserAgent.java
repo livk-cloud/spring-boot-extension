@@ -21,6 +21,10 @@ package com.livk.context.useragent;
  */
 public interface UserAgent {
 
+	static Builder builder(String userAgentStr) {
+		return new DefaultUserAgent.UserAgentBuilder(userAgentStr);
+	}
+
 	String userAgentStr();
 
 	String browser();
@@ -38,5 +42,66 @@ public interface UserAgent {
 	String deviceName();
 
 	String deviceBrand();
+
+	interface Builder {
+
+		Builder browser(String browser);
+
+		/**
+		 * Browser type user agent builder.
+		 * @param browserType the browser type
+		 * @return the user agent builder
+		 */
+		Builder browserType(String browserType);
+
+		/**
+		 * Browser version user agent builder.
+		 * @param browserVersion the browser version
+		 * @return the user agent builder
+		 */
+		Builder browserVersion(String browserVersion);
+
+		/**
+		 * Os user agent builder.
+		 * @param os the os
+		 * @return the user agent builder
+		 */
+		Builder os(String os);
+
+		/**
+		 * Os version user agent builder.
+		 * @param osVersion the os version
+		 * @return the user agent builder
+		 */
+		Builder osVersion(String osVersion);
+
+		/**
+		 * Device type user agent builder.
+		 * @param deviceType the device type
+		 * @return the user agent builder
+		 */
+		Builder deviceType(String deviceType);
+
+		/**
+		 * Device name user agent builder.
+		 * @param deviceName the device name
+		 * @return the user agent builder
+		 */
+		Builder deviceName(String deviceName);
+
+		/**
+		 * Device brand user agent builder.
+		 * @param deviceBrand the device name
+		 * @return the user agent builder
+		 */
+		Builder deviceBrand(String deviceBrand);
+
+		/**
+		 * Build user agent.
+		 * @return the user agent
+		 */
+		UserAgent build();
+
+	}
 
 }

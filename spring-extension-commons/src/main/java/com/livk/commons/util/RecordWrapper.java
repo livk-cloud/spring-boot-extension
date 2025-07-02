@@ -16,6 +16,8 @@
 
 package com.livk.commons.util;
 
+import org.springframework.util.Assert;
+
 /**
  * 使用record进行默认实现
  *
@@ -24,5 +26,7 @@ package com.livk.commons.util;
  * @see GenericWrapper#of(Object)
  */
 record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {
-
+	public RecordWrapper {
+		Assert.notNull(unwrap, "unwrap must not be null");
+	}
 }

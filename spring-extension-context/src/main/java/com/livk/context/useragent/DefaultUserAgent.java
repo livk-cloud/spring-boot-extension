@@ -16,6 +16,9 @@
 
 package com.livk.context.useragent;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 /**
  * <p>
  * DefaultUserAgent
@@ -27,18 +30,11 @@ record DefaultUserAgent(String userAgentStr, String browser, String browserType,
 		String osVersion, String deviceType, String deviceName, String deviceBrand) implements UserAgent {
 
 	/**
-	 * Builder user agent builder.
-	 * @param userAgentStr the user agent str
-	 * @return the user agent builder
-	 */
-	public static DefaultUserAgent.UserAgentBuilder builder(String userAgentStr) {
-		return new DefaultUserAgent.UserAgentBuilder(userAgentStr);
-	}
-
-	/**
 	 * The type User agent builder.
 	 */
-	public static class UserAgentBuilder {
+	@Setter
+	@Accessors(chain = true, fluent = true)
+	public static class UserAgentBuilder implements Builder {
 
 		private final String userAgentStr;
 
@@ -67,89 +63,10 @@ record DefaultUserAgent(String userAgentStr, String browser, String browserType,
 		}
 
 		/**
-		 * Browser user agent builder.
-		 * @param browser the browser
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder browser(String browser) {
-			this.browser = browser;
-			return this;
-		}
-
-		/**
-		 * Browser type user agent builder.
-		 * @param browserType the browser type
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder browserType(String browserType) {
-			this.browserType = browserType;
-			return this;
-		}
-
-		/**
-		 * Browser version user agent builder.
-		 * @param browserVersion the browser version
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder browserVersion(String browserVersion) {
-			this.browserVersion = browserVersion;
-			return this;
-		}
-
-		/**
-		 * Os user agent builder.
-		 * @param os the os
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder os(String os) {
-			this.os = os;
-			return this;
-		}
-
-		/**
-		 * Os version user agent builder.
-		 * @param osVersion the os version
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder osVersion(String osVersion) {
-			this.osVersion = osVersion;
-			return this;
-		}
-
-		/**
-		 * Device type user agent builder.
-		 * @param deviceType the device type
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder deviceType(String deviceType) {
-			this.deviceType = deviceType;
-			return this;
-		}
-
-		/**
-		 * Device name user agent builder.
-		 * @param deviceName the device name
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder deviceName(String deviceName) {
-			this.deviceName = deviceName;
-			return this;
-		}
-
-		/**
-		 * Device brand user agent builder.
-		 * @param deviceBrand the device name
-		 * @return the user agent builder
-		 */
-		public DefaultUserAgent.UserAgentBuilder deviceBrand(String deviceBrand) {
-			this.deviceBrand = deviceBrand;
-			return this;
-		}
-
-		/**
 		 * Build user agent.
 		 * @return the user agent
 		 */
+		@Override
 		public UserAgent build() {
 			return new DefaultUserAgent(userAgentStr, browser, browserType, browserVersion, os, osVersion, deviceType,
 					deviceName, deviceBrand);
