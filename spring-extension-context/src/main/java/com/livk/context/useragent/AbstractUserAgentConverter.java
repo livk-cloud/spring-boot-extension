@@ -40,9 +40,9 @@ public abstract class AbstractUserAgentConverter<T> implements UserAgentConverte
 	}
 
 	protected UserAgent build(String useragent) {
-		DefaultUserAgent.UserAgentBuilder builder = DefaultUserAgent.builder(useragent);
 		T t = create(useragent);
-		return builder.browser(browser(t))
+		return UserAgent.builder(useragent)
+			.browser(browser(t))
 			.browserType(browserType(t))
 			.browserVersion(browserVersion(t))
 			.os(os(t))
