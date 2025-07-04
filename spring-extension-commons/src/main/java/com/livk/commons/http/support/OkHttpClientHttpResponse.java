@@ -17,7 +17,6 @@
 package com.livk.commons.http.support;
 
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
@@ -62,8 +61,7 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 	@NonNull
 	@Override
 	public InputStream getBody() {
-		ResponseBody body = this.response.body();
-		return (body != null ? body.byteStream() : InputStream.nullInputStream());
+		return this.response.body().byteStream();
 	}
 
 	@NonNull
@@ -84,10 +82,7 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 
 	@Override
 	public void close() {
-		ResponseBody body = this.response.body();
-		if (body != null) {
-			body.close();
-		}
+		this.response.body().close();
 	}
 
 }
