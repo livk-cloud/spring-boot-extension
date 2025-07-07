@@ -33,7 +33,7 @@ mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.47"
-okhttp = "5.0.0"
+okhttp = "5.1.0"
 spotbugs-annotations = "4.9.3"
 maven-publish-plugins = "0.33.0"
 
