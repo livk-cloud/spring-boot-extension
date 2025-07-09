@@ -16,6 +16,7 @@
 
 package com.livk.autoconfigure.curator;
 
+import com.livk.context.curator.CuratorException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.drivers.TracerDriver;
@@ -48,8 +49,7 @@ abstract class CuratorFactory {
 	 */
 	public static CuratorFramework create(CuratorProperties properties, RetryPolicy retryPolicy,
 			Supplier<Stream<CuratorFrameworkBuilderCustomizer>> optionalCuratorFrameworkCustomizerProvider,
-			Supplier<EnsembleProvider> optionalEnsembleProvider, Supplier<TracerDriver> optionalTracerDriverProvider)
-			throws InterruptedException {
+			Supplier<EnsembleProvider> optionalEnsembleProvider, Supplier<TracerDriver> optionalTracerDriverProvider) {
 		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder();
 
 		EnsembleProvider ensembleProvider = optionalEnsembleProvider.get();
@@ -78,7 +78,13 @@ abstract class CuratorFactory {
 			log.trace("blocking until connected to zookeeper for {}{}", properties.getBlockUntilConnectedWait(),
 					properties.getBlockUntilConnectedUnit());
 		}
-		framework.blockUntilConnected(properties.getBlockUntilConnectedWait(), properties.getBlockUntilConnectedUnit());
+		try {
+			framework.blockUntilConnected(properties.getBlockUntilConnectedWait(),
+					properties.getBlockUntilConnectedUnit());
+		}
+		catch (InterruptedException e) {
+			throw new CuratorException(e);
+		}
 		if (log.isTraceEnabled()) {
 			log.trace("connected to zookeeper");
 		}

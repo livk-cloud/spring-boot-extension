@@ -40,17 +40,15 @@ public interface CuratorOperations extends Closeable {
 	 * @param path the path
 	 * @param data the data
 	 * @return string
-	 * @throws Exception the exception
 	 */
-	String createNode(String path, byte[] data) throws Exception;
+	String createNode(String path, byte[] data);
 
 	/**
 	 * 获取节点数据
 	 * @param path the path
 	 * @return nodeData
-	 * @throws Exception the exception
 	 */
-	byte[] getNode(String path) throws Exception;
+	byte[] getNode(String path);
 
 	/**
 	 * 创建指定类型的无序节点(持久或临时)
@@ -58,9 +56,8 @@ public interface CuratorOperations extends Closeable {
 	 * @param path the path
 	 * @param data the data
 	 * @return string
-	 * @throws Exception the exception
 	 */
-	String createTypeNode(CreateMode nodeType, String path, byte[] data) throws Exception;
+	String createTypeNode(CreateMode nodeType, String path, byte[] data);
 
 	/**
 	 * 创建指定类型的有序节点
@@ -68,18 +65,16 @@ public interface CuratorOperations extends Closeable {
 	 * @param path the path
 	 * @param data the data
 	 * @return string
-	 * @throws Exception the exception
 	 */
-	String createTypeSeqNode(CreateMode nodeType, String path, byte[] data) throws Exception;
+	String createTypeSeqNode(CreateMode nodeType, String path, byte[] data);
 
 	/**
 	 * 设置值
 	 * @param path the path
 	 * @param data the data
 	 * @return data
-	 * @throws Exception the exception
 	 */
-	Stat setData(String path, byte[] data) throws Exception;
+	Stat setData(String path, byte[] data);
 
 	/**
 	 * 异步设置值
@@ -87,33 +82,29 @@ public interface CuratorOperations extends Closeable {
 	 * @param data the data
 	 * @param listener the listener
 	 * @return data async
-	 * @throws Exception the exception
 	 */
-	Stat setDataAsync(String path, byte[] data, CuratorListener listener) throws Exception;
+	Stat setDataAsync(String path, byte[] data, CuratorListener listener);
 
 	/**
 	 * 删除节点
 	 * @param path the path
-	 * @throws Exception the exception
 	 */
-	void deleteNode(String path) throws Exception;
+	void deleteNode(String path);
 
 	/**
 	 * 查看子节点
 	 * @param path the path
 	 * @return list
-	 * @throws Exception the exception
 	 */
-	List<String> watchedGetChildren(String path) throws Exception;
+	List<String> watchedGetChildren(String path);
 
 	/**
 	 * 查看子节点
 	 * @param path the path
 	 * @param watcher the watcher
 	 * @return list
-	 * @throws Exception the exception
 	 */
-	List<String> watchedGetChildren(String path, Watcher watcher) throws Exception;
+	List<String> watchedGetChildren(String path, Watcher watcher);
 
 	/**
 	 * 创建分布式锁
@@ -128,8 +119,7 @@ public interface CuratorOperations extends Closeable {
 	 * @param path the path
 	 * @param data the data
 	 * @return distributed id
-	 * @throws Exception the exception
 	 */
-	String getDistributedId(String path, byte[] data) throws Exception;
+	String getDistributedId(String path, byte[] data);
 
 }

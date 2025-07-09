@@ -17,10 +17,12 @@
 package com.livk.context.lock.support;
 
 import com.livk.context.lock.LockType;
+import com.livk.context.lock.exception.LockException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -52,18 +54,33 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected boolean tryLockAsync(RLock lock, long leaseTime, long waitTime) throws Exception {
-		return lock.tryLockAsync(waitTime, leaseTime, TimeUnit.SECONDS).get();
+	protected boolean tryLockAsync(RLock lock, long leaseTime, long waitTime) throws LockException {
+		try {
+			return lock.tryLockAsync(waitTime, leaseTime, TimeUnit.SECONDS).get();
+		}
+		catch (InterruptedException | ExecutionException e) {
+			throw new LockException(e);
+		}
 	}
 
 	@Override
-	protected boolean tryLock(RLock lock, long leaseTime, long waitTime) throws Exception {
-		return lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+	protected boolean tryLock(RLock lock, long leaseTime, long waitTime) throws LockException {
+		try {
+			return lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+		}
+		catch (InterruptedException e) {
+			throw new LockException(e);
+		}
 	}
 
 	@Override
-	protected void lockAsync(RLock lock) throws Exception {
-		lock.lockAsync().get();
+	protected void lockAsync(RLock lock) throws LockException {
+		try {
+			lock.lockAsync().get();
+		}
+		catch (InterruptedException | ExecutionException e) {
+			throw new LockException(e);
+		}
 	}
 
 	@Override

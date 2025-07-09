@@ -18,6 +18,7 @@ package com.livk.context.redisearch;
 
 import com.livk.commons.util.ClassUtils;
 import com.livk.commons.util.GenericsByteBuddy;
+import com.livk.commons.util.ReflectionUtils;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
@@ -32,6 +33,7 @@ import net.bytebuddy.implementation.bind.annotation.FieldValue;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -84,10 +86,9 @@ final class FactoryProxySupport {
 		@SuppressWarnings({ "unchecked", "unused" })
 		@RuntimeType
 		public static <K, V> StatefulRedisModulesConnection<K, V> connect(@FieldValue("client") Object client,
-				@Argument(0) RedisCodec<K, V> codec) throws Exception {
-			return (StatefulRedisModulesConnection<K, V>) client.getClass()
-				.getMethod("connect", RedisCodec.class)
-				.invoke(client, codec);
+				@Argument(0) RedisCodec<K, V> codec) {
+			Method connect = ClassUtils.getMethod(client.getClass(), "connect", RedisCodec.class);
+			return (StatefulRedisModulesConnection<K, V>) ReflectionUtils.invokeMethod(connect, client, codec);
 		}
 
 	}

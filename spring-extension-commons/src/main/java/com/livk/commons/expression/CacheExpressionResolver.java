@@ -98,6 +98,6 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 	 * @param returnType 返回类型
 	 * @return 计算结果相关实例
 	 */
-	protected abstract <T> T calculate(EXPRESSION expression, CONTEXT context, Class<T> returnType) throws Exception;
+	protected abstract <T> T calculate(EXPRESSION expression, CONTEXT context, Class<T> returnType);
 
 }

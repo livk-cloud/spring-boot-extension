@@ -70,7 +70,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(1)
-	void createNode() throws Exception {
+	void createNode() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		assertEquals("/node", data);
 		curatorOperations.deleteNode("/node");
@@ -78,7 +78,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(2)
-	void getNode() throws Exception {
+	void getNode() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		assertEquals("/node", data);
 		assertArrayEquals("data".getBytes(StandardCharsets.UTF_8), curatorOperations.getNode("/node"));
@@ -87,7 +87,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(3)
-	void createTypeNode() throws Exception {
+	void createTypeNode() {
 		String persistent = curatorOperations.createTypeNode(CreateMode.PERSISTENT, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
 		assertEquals("/node", persistent);
@@ -114,7 +114,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(4)
-	void createTypeSeqNode() throws Exception {
+	void createTypeSeqNode() {
 		String persistent = curatorOperations.createTypeSeqNode(CreateMode.PERSISTENT, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
 		assertTrue(persistent.endsWith("node"));
@@ -138,7 +138,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(5)
-	void setData() throws Exception {
+	void setData() {
 		curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		assertArrayEquals("data".getBytes(StandardCharsets.UTF_8), curatorOperations.getNode("/node"));
 		Stat data = curatorOperations.setData("/node", "setData".getBytes(StandardCharsets.UTF_8));
@@ -149,7 +149,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(6)
-	void setDataAsync() throws Exception {
+	void setDataAsync() {
 		curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		assertArrayEquals("data".getBytes(), curatorOperations.getNode("/node"));
 		curatorOperations.setDataAsync("/node", "setData".getBytes(StandardCharsets.UTF_8), (client, event) -> {
@@ -164,14 +164,14 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(7)
-	void deleteNode() throws Exception {
+	void deleteNode() {
 		curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		curatorOperations.deleteNode("/node");
 	}
 
 	@Test
 	@Order(8)
-	void watchedGetChildren() throws Exception {
+	void watchedGetChildren() {
 		for (int i = 0; i < 10; i++) {
 			String data = curatorOperations.createNode("/node/" + i, "data".getBytes(StandardCharsets.UTF_8));
 			assertEquals("/node/" + i, data);
@@ -183,7 +183,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(9)
-	void testWatchedGetChildren() throws Exception {
+	void testWatchedGetChildren() {
 		for (int i = 0; i < 10; i++) {
 			String data = curatorOperations.createNode("/node/" + i, "data".getBytes(StandardCharsets.UTF_8));
 			assertEquals("/node/" + i, data);
@@ -221,7 +221,7 @@ class CuratorOperationsTest {
 
 	@Test
 	@Order(11)
-	void getDistributedId() throws Exception {
+	void getDistributedId() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
 		assertEquals("/node", data);
 		String distributedId = curatorOperations.getDistributedId("/node", "data".getBytes(StandardCharsets.UTF_8));

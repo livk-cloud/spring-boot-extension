@@ -79,12 +79,12 @@ public class CuratorProperties {
 	 * Tech Note 14</a>
 	 */
 	@DurationUnit(ChronoUnit.MILLIS)
-	private Duration sessionTimeout = Duration.of(60 * 1000, ChronoUnit.MILLIS);
+	private Duration sessionTimeout = Duration.of(60, ChronoUnit.SECONDS);
 
 	/**
 	 * The configured connection timeout in milliseconds.
 	 */
 	@DurationUnit(ChronoUnit.MILLIS)
-	private Duration connectionTimeout = Duration.of(15 * 1000, ChronoUnit.MILLIS);
+	private Duration connectionTimeout = Duration.of(15, ChronoUnit.SECONDS);
 
 }

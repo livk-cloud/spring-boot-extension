@@ -62,12 +62,16 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 	}
 
 	@Override
-	protected <T> T calculate(Template template, Map<String, Object> context, Class<T> returnType)
-			throws TemplateException, IOException {
+	protected <T> T calculate(Template template, Map<String, Object> context, Class<T> returnType) {
 		if (returnType.isAssignableFrom(String.class)) {
 			StringWriter result = new StringWriter(1024);
-			template.process(context, result);
-			return returnType.cast(result.toString());
+			try {
+				template.process(context, result);
+				return returnType.cast(result.toString());
+			}
+			catch (IOException | TemplateException e) {
+				throw new IllegalArgumentException(e);
+			}
 		}
 		throw new UnsupportedOperationException("Classes other than String and its parent class are not supported");
 	}
