@@ -51,77 +51,77 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 
 	@SneakyThrows
 	@Override
-	public <T> T readValue(Object obj, JavaType type) {
-		if (obj instanceof JsonParser jsonParser) {
+	public <T> T readValue(Object readVal, JavaType type) {
+		if (readVal instanceof JsonParser jsonParser) {
 			return mapper.readValue(jsonParser, type);
 		}
-		if (obj instanceof JsonNode jsonNode) {
+		if (readVal instanceof JsonNode jsonNode) {
 			return mapper.treeToValue(jsonNode, type);
 		}
-		else if (obj instanceof File file) {
+		else if (readVal instanceof File file) {
 			return mapper.readValue(file, type);
 		}
-		else if (obj instanceof URL url) {
+		else if (readVal instanceof URL url) {
 			return mapper.readValue(url, type);
 		}
-		else if (obj instanceof String json) {
+		else if (readVal instanceof String json) {
 			return mapper.readValue(json, type);
 		}
-		else if (obj instanceof Reader reader) {
+		else if (readVal instanceof Reader reader) {
 			return mapper.readValue(reader, type);
 		}
-		else if (obj instanceof InputStream inputStream) {
+		else if (readVal instanceof InputStream inputStream) {
 			return mapper.readValue(inputStream, type);
 		}
-		else if (obj instanceof byte[] bytes) {
+		else if (readVal instanceof byte[] bytes) {
 			return mapper.readValue(bytes, type);
 		}
-		else if (obj instanceof DataInput dataInput) {
+		else if (readVal instanceof DataInput dataInput) {
 			return mapper.readValue(dataInput, type);
 		}
-		throw new UnsupportedOperationException("Unsupported type: " + obj.getClass().getName());
+		throw new UnsupportedOperationException("Unsupported type: " + readVal.getClass().getName());
 	}
 
 	@SneakyThrows
 	@Override
-	public String writeValueAsString(Object obj) {
-		if (obj instanceof String str) {
+	public String writeValueAsString(Object writeVal) {
+		if (writeVal instanceof String str) {
 			return str;
 		}
-		return mapper.writeValueAsString(obj);
+		return mapper.writeValueAsString(writeVal);
 	}
 
 	@SneakyThrows
 	@Override
-	public byte[] writeValueAsBytes(Object obj) {
-		return mapper.writeValueAsBytes(obj);
+	public byte[] writeValueAsBytes(Object writeVal) {
+		return mapper.writeValueAsBytes(writeVal);
 	}
 
 	@SneakyThrows
 	@Override
-	public JsonNode readTree(Object obj) {
-		if (obj instanceof JsonParser jsonParser) {
+	public JsonNode readTree(Object readVal) {
+		if (readVal instanceof JsonParser jsonParser) {
 			return mapper.readTree(jsonParser);
 		}
-		else if (obj instanceof File file) {
+		else if (readVal instanceof File file) {
 			return mapper.readTree(file);
 		}
-		else if (obj instanceof URL url) {
+		else if (readVal instanceof URL url) {
 			return mapper.readTree(url);
 		}
-		else if (obj instanceof String json) {
+		else if (readVal instanceof String json) {
 			return mapper.readTree(json);
 		}
-		else if (obj instanceof Reader reader) {
+		else if (readVal instanceof Reader reader) {
 			return mapper.readTree(reader);
 		}
-		else if (obj instanceof InputStream inputStream) {
+		else if (readVal instanceof InputStream inputStream) {
 			return mapper.readTree(inputStream);
 		}
-		else if (obj instanceof byte[] bytes) {
+		else if (readVal instanceof byte[] bytes) {
 			return mapper.readTree(bytes);
 		}
-		return mapper.valueToTree(obj);
+		return mapper.valueToTree(readVal);
 	}
 
 	@Override

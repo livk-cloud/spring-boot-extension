@@ -62,20 +62,13 @@ class RedisModulesFactory {
 	}
 
 	public RedisURI createRedisURI(String node) {
-		Node parsedNode = asNode(node);
+		Node parsedNode = Node.asNode(node);
 		return createRedisURI(parsedNode);
 	}
 
 	public RedisURI createRedisURI(String host, int port) {
 		Node parsedNode = new Node(host, port);
 		return createRedisURI(parsedNode);
-	}
-
-	private Node asNode(String node) {
-		int portSeparatorIndex = node.lastIndexOf(':');
-		String host = node.substring(0, portSeparatorIndex);
-		int port = Integer.parseInt(node.substring(portSeparatorIndex + 1));
-		return new Node(host, port);
 	}
 
 	private RedisURI createRedisURI(Node node) {
@@ -86,7 +79,6 @@ class RedisModulesFactory {
 		mapper.from(credentials).as(StaticCredentialsProvider::new).to(redisURI::setCredentialsProvider);
 		mapper.from(properties::getDatabase).to(redisURI::setDatabase);
 		mapper.from(properties::getTimeout).to(redisURI::setTimeout);
-		mapper.from(properties::getSsl).to(redisURI::setSsl);
 		mapper.from(properties::getClientName).to(redisURI::setClientName);
 		return redisURI;
 	}
@@ -103,6 +95,13 @@ class RedisModulesFactory {
 	}
 
 	private record Node(String host, int port) {
+
+		static Node asNode(String node) {
+			int portSeparatorIndex = node.lastIndexOf(':');
+			String host = node.substring(0, portSeparatorIndex);
+			int port = Integer.parseInt(node.substring(portSeparatorIndex + 1));
+			return new Node(host, port);
+		}
 	}
 
 }

@@ -30,50 +30,50 @@ public interface JacksonOps {
 	/**
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
-	 * @param obj 待读取的数据
+	 * @param readVal 待读取的数据
 	 * @param type 返回相关类型
 	 * @return 相关实例
 	 */
-	<T> T readValue(Object obj, Class<T> type);
+	<T> T readValue(Object readVal, Class<T> type);
 
 	/**
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
-	 * @param obj 待读取的数据
+	 * @param readVal 待读取的数据
 	 * @param typeReference TypeReference包装的类型
 	 * @return 相关实例
 	 */
-	<T> T readValue(Object obj, TypeReference<T> typeReference);
+	<T> T readValue(Object readVal, TypeReference<T> typeReference);
 
 	/**
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
-	 * @param obj 待读取的数据
+	 * @param readVal 待读取的数据
 	 * @param type 相关类型
 	 * @return 相关实例
 	 */
-	<T> T readValue(Object obj, JavaType type);
+	<T> T readValue(Object readVal, JavaType type);
 
 	/**
 	 * obj序列化成string
-	 * @param obj obj
+	 * @param writeVal obj
 	 * @return json string
 	 */
-	String writeValueAsString(Object obj);
+	String writeValueAsString(Object writeVal);
 
 	/**
 	 * obj序列化成byte[]
-	 * @param obj the obj
+	 * @param writeVal the obj
 	 * @return the byte [ ]
 	 */
-	byte[] writeValueAsBytes(Object obj);
+	byte[] writeValueAsBytes(Object writeVal);
 
 	/**
 	 * obj读取数据转化成JsonNode
-	 * @param obj the obj
+	 * @param readVal the obj
 	 * @return the json node
 	 */
-	JsonNode readTree(Object obj);
+	JsonNode readTree(Object readVal);
 
 	/**
 	 * jackson数据转换

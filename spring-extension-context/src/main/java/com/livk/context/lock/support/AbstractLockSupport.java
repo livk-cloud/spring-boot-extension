@@ -47,9 +47,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			}
 			return isLocked;
 		}
-		catch (Exception e) {
+		catch (LockException e) {
 			threadLocal.remove();
-			throw new LockException(e);
+			throw e;
 		}
 	}
 
@@ -65,9 +65,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			}
 			threadLocal.set(lock);
 		}
-		catch (Exception e) {
+		catch (LockException e) {
 			threadLocal.remove();
-			throw new LockException(e);
+			throw e;
 		}
 	}
 
@@ -100,9 +100,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	 * @param leaseTime the lease time
 	 * @param waitTime the wait time
 	 * @return the boolean
-	 * @throws Exception the exception
+	 * @throws LockException the exception
 	 */
-	protected boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws Exception {
+	protected boolean tryLockAsync(T lock, long leaseTime, long waitTime) throws LockException {
 		throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
 	}
 
@@ -112,25 +112,25 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	 * @param leaseTime the lease time
 	 * @param waitTime the wait time
 	 * @return the boolean
-	 * @throws Exception the exception
+	 * @throws LockException the exception
 	 */
-	protected abstract boolean tryLock(T lock, long leaseTime, long waitTime) throws Exception;
+	protected abstract boolean tryLock(T lock, long leaseTime, long waitTime) throws LockException;
 
 	/**
 	 * Lock async.
 	 * @param lock the lock
-	 * @throws Exception the exception
+	 * @throws LockException the exception
 	 */
-	protected void lockAsync(T lock) throws Exception {
+	protected void lockAsync(T lock) throws LockException {
 		throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
 	}
 
 	/**
 	 * Lock.
 	 * @param lock the lock
-	 * @throws Exception the exception
+	 * @throws LockException the exception
 	 */
-	protected abstract void lock(T lock) throws Exception;
+	protected abstract void lock(T lock) throws LockException;
 
 	/**
 	 * Is locked boolean.

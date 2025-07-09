@@ -16,10 +16,13 @@
 
 package com.livk.autoconfigure.redisson;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.jackson.core.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
 import lombok.RequiredArgsConstructor;
@@ -87,7 +90,14 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
 				SimpleBeanPropertyFilter.filterOutAllExcept());
 
-		YAMLMapper.Builder builder = YAMLMapper.builder().filterProvider(filterProvider);
+		JsonInclude.Value value = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,
+				JsonInclude.Include.NON_NULL);
+
+		YAMLMapper.Builder builder = YAMLMapper.builder()
+			.addModule(new JavaTimeModule())
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+			.defaultPropertyInclusion(value)
+			.filterProvider(filterProvider);
 		REDISSON_MIXIN.forEach(builder::addMixIn);
 
 		support = new JacksonSupport(builder.build());
