@@ -75,11 +75,12 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 		try {
 			return callable.call();
 		}
+		catch (InterruptedException ie) {
+			log.error("interrupted", ie);
+			Thread.currentThread().interrupt();
+			throw new LockException(ie);
+		}
 		catch (Exception e) {
-			if (e instanceof InterruptedException) {
-				log.error("interrupted", e);
-				Thread.currentThread().interrupt();
-			}
 			throw new LockException(e);
 		}
 	}
