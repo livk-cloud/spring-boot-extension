@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.jackson.core.JacksonSupport;
+import com.livk.commons.jackson.support.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;

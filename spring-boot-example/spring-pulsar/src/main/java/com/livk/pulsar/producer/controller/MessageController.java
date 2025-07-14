@@ -17,7 +17,7 @@
 package com.livk.pulsar.producer.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.pulsar.producer.entity.PulsarMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.pulsar.client.api.MessageId;

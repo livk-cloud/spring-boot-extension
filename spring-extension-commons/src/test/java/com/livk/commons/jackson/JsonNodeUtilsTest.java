@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.util;
+package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;

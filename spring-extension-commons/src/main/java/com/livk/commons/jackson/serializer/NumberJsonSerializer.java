@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.support;
+package com.livk.commons.jackson.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;

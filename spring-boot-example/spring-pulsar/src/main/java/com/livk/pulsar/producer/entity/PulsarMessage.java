@@ -16,7 +16,7 @@
 
 package com.livk.pulsar.producer.entity;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import lombok.Data;
 
 import java.io.Serializable;

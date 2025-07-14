@@ -18,8 +18,8 @@ package com.livk.context.mybatis.type;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.jackson.core.JacksonOps;
-import com.livk.commons.jackson.core.JacksonSupport;
+import com.livk.commons.jackson.support.JacksonOps;
+import com.livk.commons.jackson.support.JacksonSupport;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;

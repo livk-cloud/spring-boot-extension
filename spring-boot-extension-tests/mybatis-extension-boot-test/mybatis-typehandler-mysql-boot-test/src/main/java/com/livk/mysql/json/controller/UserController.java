@@ -16,7 +16,7 @@
 
 package com.livk.mysql.json.controller;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.mysql.json.entity.User;
 import com.livk.mysql.json.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;

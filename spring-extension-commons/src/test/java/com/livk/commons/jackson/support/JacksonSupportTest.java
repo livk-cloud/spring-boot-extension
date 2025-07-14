@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.core;
+package com.livk.commons.jackson.support;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.common.collect.Streams;
-import com.livk.commons.jackson.util.TypeFactoryUtils;
+import com.livk.commons.jackson.TypeFactoryUtils;
 import com.livk.commons.util.Pair;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;

@@ -45,7 +45,6 @@ abstract class CuratorFactory {
 	 * @param optionalEnsembleProvider the optional ensemble provider
 	 * @param optionalTracerDriverProvider the optional tracer driver provider
 	 * @return the curator framework
-	 * @throws InterruptedException the exception
 	 */
 	public static CuratorFramework create(CuratorProperties properties, RetryPolicy retryPolicy,
 			Supplier<Stream<CuratorFrameworkBuilderCustomizer>> optionalCuratorFrameworkCustomizerProvider,

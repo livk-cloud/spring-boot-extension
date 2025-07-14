@@ -16,7 +16,7 @@
 
 package com.livk.redisearch.mvc.controller;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;

@@ -17,7 +17,7 @@
 package com.livk.commons.io;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 

@@ -19,7 +19,7 @@ package com.livk.admin.server.config;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.livk.commons.jackson.util.TypeFactoryUtils;
+import com.livk.commons.jackson.TypeFactoryUtils;
 import com.livk.context.redis.JacksonSerializerUtils;
 import com.livk.context.redis.ReactiveRedisOps;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;

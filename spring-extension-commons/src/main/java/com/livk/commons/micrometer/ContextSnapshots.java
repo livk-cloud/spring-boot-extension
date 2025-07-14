@@ -43,7 +43,7 @@ public class ContextSnapshots {
 	/**
 	 * 构建一个ContextSnapshotFactory
 	 */
-	public static final ContextSnapshotFactory CONTEXT_SNAPSHOT_FACTORY = ContextSnapshotFactory.builder()
+	public static final ContextSnapshotFactory CAPTURE_FACTORY = ContextSnapshotFactory.builder()
 		.contextRegistry(ContextRegistry.getInstance())
 		.clearMissing(false)
 		.captureKeyPredicate(key -> true)
@@ -52,17 +52,19 @@ public class ContextSnapshots {
 	/**
 	 * 创建一个Supplier ContextSnapshot
 	 * @return Supplier
+	 * @deprecated use {@link #CAPTURE_FACTORY ::captureAll()}
 	 */
+	@Deprecated(since = "1.5.2")
 	public static Supplier<ContextSnapshot> supplier() {
-		return CONTEXT_SNAPSHOT_FACTORY::captureAll;
+		return CAPTURE_FACTORY::captureAll;
 	}
 
 	/**
 	 * 创建一个ContextSnapshot
 	 * @return ContextSnapshot
 	 */
-	public static ContextSnapshot contextSnapshot() {
-		return CONTEXT_SNAPSHOT_FACTORY.captureAll();
+	public static ContextSnapshot capture() {
+		return CAPTURE_FACTORY.captureAll();
 	}
 
 	/**
@@ -71,7 +73,7 @@ public class ContextSnapshots {
 	 * @return Runnable
 	 */
 	public static Runnable wrap(Runnable runnable) {
-		return contextSnapshot().wrap(runnable);
+		return capture().wrap(runnable);
 	}
 
 	/**
@@ -81,7 +83,7 @@ public class ContextSnapshots {
 	 * @return Callable
 	 */
 	public static <T> Callable<T> wrap(Callable<T> callable) {
-		return contextSnapshot().wrap(callable);
+		return capture().wrap(callable);
 	}
 
 	/**
@@ -91,7 +93,7 @@ public class ContextSnapshots {
 	 * @return Consumer
 	 */
 	public static <T> Consumer<T> wrap(Consumer<T> consumer) {
-		return contextSnapshot().wrap(consumer);
+		return capture().wrap(consumer);
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class ContextSnapshots {
 	 * @return Executor
 	 */
 	public static Executor wrap(Executor executor) {
-		return contextSnapshot().wrapExecutor(executor);
+		return capture().wrapExecutor(executor);
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class ContextSnapshots {
 	 * @return ExecutorService
 	 */
 	public static ExecutorService wrap(ExecutorService service) {
-		return ContextExecutorService.wrap(service, supplier());
+		return ContextExecutorService.wrap(service, CAPTURE_FACTORY);
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class ContextSnapshots {
 	 * @return ScheduledExecutorService
 	 */
 	public static ScheduledExecutorService wrap(ScheduledExecutorService service) {
-		return ContextScheduledExecutorService.wrap(service, supplier());
+		return ContextScheduledExecutorService.wrap(service, CAPTURE_FACTORY);
 	}
 
 }

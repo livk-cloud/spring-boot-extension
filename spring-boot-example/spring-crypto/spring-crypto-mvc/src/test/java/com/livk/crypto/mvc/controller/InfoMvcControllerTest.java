@@ -16,7 +16,7 @@
 
 package com.livk.crypto.mvc.controller;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.crypto.CryptoType;
 import com.livk.crypto.support.AesSecurity;
 import org.junit.jupiter.api.Test;
