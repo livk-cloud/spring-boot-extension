@@ -82,6 +82,8 @@ abstract class CuratorFactory {
 					properties.getBlockUntilConnectedUnit());
 		}
 		catch (InterruptedException e) {
+			log.error("interrupted", e);
+			Thread.currentThread().interrupt();
 			throw new CuratorException(e);
 		}
 		if (log.isTraceEnabled()) {
