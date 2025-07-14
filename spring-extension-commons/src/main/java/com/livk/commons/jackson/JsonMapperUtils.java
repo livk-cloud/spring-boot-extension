@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.util;
+package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.livk.commons.jackson.core.JacksonSupport;
+import com.livk.commons.jackson.support.JacksonSupport;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

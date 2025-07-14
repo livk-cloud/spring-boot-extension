@@ -18,7 +18,7 @@ package com.livk.context.mybatis.type.mysql;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.testcontainers.containers.MysqlContainer;
 import com.mysql.cj.jdbc.Driver;
 import com.zaxxer.hikari.HikariDataSource;

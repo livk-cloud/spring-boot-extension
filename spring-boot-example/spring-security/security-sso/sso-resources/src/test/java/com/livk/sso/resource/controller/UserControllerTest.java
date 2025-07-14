@@ -18,7 +18,7 @@ package com.livk.sso.resource.controller;
 
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

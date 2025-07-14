@@ -17,7 +17,7 @@
 package com.livk.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.jackson.core.JacksonSupport;
+import com.livk.commons.jackson.support.JacksonSupport;
 import com.livk.rest.entity.User;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

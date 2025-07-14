@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.util;
+package com.livk.commons.jackson;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;

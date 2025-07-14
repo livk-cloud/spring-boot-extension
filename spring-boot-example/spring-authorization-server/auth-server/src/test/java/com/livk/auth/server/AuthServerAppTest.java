@@ -16,7 +16,7 @@
 
 package com.livk.auth.server;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.nimbusds.jose.util.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

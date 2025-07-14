@@ -45,7 +45,6 @@ abstract class CuratorFactory {
 	 * @param optionalEnsembleProvider the optional ensemble provider
 	 * @param optionalTracerDriverProvider the optional tracer driver provider
 	 * @return the curator framework
-	 * @throws InterruptedException the exception
 	 */
 	public static CuratorFramework create(CuratorProperties properties, RetryPolicy retryPolicy,
 			Supplier<Stream<CuratorFrameworkBuilderCustomizer>> optionalCuratorFrameworkCustomizerProvider,
@@ -83,6 +82,8 @@ abstract class CuratorFactory {
 					properties.getBlockUntilConnectedUnit());
 		}
 		catch (InterruptedException e) {
+			log.warn("interrupted", e);
+			Thread.currentThread().interrupt();
 			throw new CuratorException(e);
 		}
 		if (log.isTraceEnabled()) {

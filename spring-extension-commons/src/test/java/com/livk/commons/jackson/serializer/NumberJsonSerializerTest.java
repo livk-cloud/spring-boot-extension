@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.livk.commons.jackson.support;
+package com.livk.commons.jackson.serializer;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.BeanLambda;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;

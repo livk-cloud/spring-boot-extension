@@ -16,7 +16,7 @@
 
 package com.livk.redisearch.webflux.controller;
 
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;

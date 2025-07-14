@@ -18,7 +18,7 @@ package com.livk.context.mybatis.type.postgresql;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.testcontainers.containers.PostgresqlContainer;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;

@@ -17,7 +17,7 @@
 package com.livk.commons.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.web.HttpParameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -17,7 +17,7 @@
 package com.livk.qrcode.webflux.controller;
 
 import com.livk.commons.io.FileUtils;
-import com.livk.commons.jackson.util.JsonMapperUtils;
+import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QRCodeUtils;
 import org.junit.jupiter.api.Test;

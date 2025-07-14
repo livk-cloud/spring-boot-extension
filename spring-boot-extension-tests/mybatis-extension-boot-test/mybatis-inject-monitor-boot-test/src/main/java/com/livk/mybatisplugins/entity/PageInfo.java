@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
-import com.livk.commons.jackson.util.JsonNodeUtils;
+import com.livk.commons.jackson.JsonNodeUtils;
 import com.livk.commons.util.BeanLambda;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
