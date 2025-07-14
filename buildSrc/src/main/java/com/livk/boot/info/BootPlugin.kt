@@ -21,11 +21,8 @@ import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.bundling.Jar
-import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 /**
  * @author livk
@@ -34,18 +31,6 @@ abstract class BootPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.pluginManager.apply(JavaPlugin::class.java)
 		project.pluginManager.apply(SpringBootPlugin::class.java)
-
-		project.extensions.getByType(SpringBootExtension::class.java).apply {
-			buildInfo {
-				it.properties { build ->
-					build.group.set(project.group.toString())
-					build.version.set(project.version.toString())
-					build.time.set(
-						ZonedDateTime.now().plusHours(8).format(DateTimeFormatter.ISO_INSTANT)
-					)
-				}
-			}
-		}
 
 		project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME, BootJar::class.java) {
 			it.archiveBaseName.set(project.name)
