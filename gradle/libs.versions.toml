@@ -35,7 +35,7 @@ spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.47"
 okhttp = "5.1.0"
 spotbugs-annotations = "4.9.3"
-maven-publish-plugins = "0.33.0"
+maven-publish-plugins = "0.34.0"
 
 [libraries]
 spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
