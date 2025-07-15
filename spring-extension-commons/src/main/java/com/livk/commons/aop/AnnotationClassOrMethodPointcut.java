@@ -19,6 +19,7 @@ package com.livk.commons.aop;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.util.ReflectionUtils;
 import org.springframework.aop.MethodMatcher;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
@@ -39,7 +40,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </p>
  *
  * @author livk
+ * @deprecated use
+ * {@link org.springframework.aop.support.ComposablePointcut#union(Pointcut)}
  */
+@Deprecated(since = "1.5.2")
 final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut {
 
 	private final MethodMatcher methodResolver;

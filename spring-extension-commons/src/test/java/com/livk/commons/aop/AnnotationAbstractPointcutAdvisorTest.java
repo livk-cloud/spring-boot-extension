@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.Pointcut;
 import org.jspecify.annotations.NonNull;
+import org.springframework.aop.support.ComposablePointcut;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -45,8 +46,8 @@ class AnnotationAbstractPointcutAdvisorTest {
 
 		assertEquals(MyAnnotation.class, advisor.annotationType);
 		assertTrue(advisor.implementsInterface(IntroductionInterceptor.class));
-		assertEquals(AnnotationClassOrMethodPointcut.class, advisor.getPointcut().getClass());
-		assertEquals(new AnnotationClassOrMethodPointcut(MyAnnotation.class), advisor.getPointcut());
+		assertEquals(ComposablePointcut.class, advisor.getPointcut().getClass());
+		assertEquals(AnnotationPointcut.forTypeOrMethod().getPointcut(MyAnnotation.class), advisor.getPointcut());
 
 		assertTrue(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class));
 		assertTrue(advisor.getPointcut()
@@ -79,7 +80,7 @@ class AnnotationAbstractPointcutAdvisorTest {
 		@NonNull
 		@Override
 		public Pointcut getPointcut() {
-			return new AnnotationClassOrMethodPointcut(annotationType);
+			return AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType);
 		}
 
 	}
