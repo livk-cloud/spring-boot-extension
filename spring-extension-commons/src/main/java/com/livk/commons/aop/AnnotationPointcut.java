@@ -17,6 +17,7 @@
 package com.livk.commons.aop;
 
 import org.springframework.aop.Pointcut;
+import org.springframework.aop.support.ComposablePointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.lang.annotation.Annotation;
@@ -27,7 +28,7 @@ import java.lang.annotation.Annotation;
  * @author livk
  */
 @FunctionalInterface
-public interface AnnotationAutoPointcut {
+public interface AnnotationPointcut {
 
 	/**
 	 * 根据注解获取到切点
@@ -36,20 +37,36 @@ public interface AnnotationAutoPointcut {
 	 */
 	Pointcut getPointcut(Class<? extends Annotation> annotationType);
 
-	static AnnotationAutoPointcut type() {
+	static AnnotationPointcut forType() {
 		return AnnotationMatchingPointcut::forClassAnnotation;
 	}
 
-	static AnnotationAutoPointcut method() {
+	static AnnotationPointcut forType(boolean checkInherited) {
+		return annotationType -> new AnnotationMatchingPointcut(annotationType, checkInherited);
+	}
+
+	static AnnotationPointcut forMethod() {
 		return AnnotationMatchingPointcut::forMethodAnnotation;
 	}
 
-	static AnnotationAutoPointcut typeOrMethod() {
-		return AnnotationClassOrMethodPointcut::new;
+	static AnnotationPointcut forTypeOrMethod() {
+		return annotationType -> {
+			AnnotationMatchingPointcut cpc = AnnotationMatchingPointcut.forClassAnnotation(annotationType);
+			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
+			return new ComposablePointcut(cpc).union(mpc);
+		};
 	}
 
-	static AnnotationAutoPointcut auto() {
-		return AnnotationTarget.POINTCUT;
+	static AnnotationPointcut forTypeOrMethod(boolean checkInherited) {
+		return annotationType -> {
+			AnnotationMatchingPointcut cpc = new AnnotationMatchingPointcut(annotationType, checkInherited);
+			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
+			return new ComposablePointcut(cpc).union(mpc);
+		};
+	}
+
+	static AnnotationPointcut forTarget() {
+		return AnnotationTarget.TARGET_POINTCUT;
 	}
 
 }

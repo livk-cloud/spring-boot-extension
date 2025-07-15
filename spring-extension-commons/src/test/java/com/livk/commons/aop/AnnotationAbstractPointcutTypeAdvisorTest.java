@@ -74,8 +74,8 @@ class AnnotationAbstractPointcutTypeAdvisorTest {
 		}
 
 		@Override
-		protected AnnotationAutoPointcut autoPointcut() {
-			return AnnotationAutoPointcut.type();
+		protected AnnotationPointcut annotationPointcut() {
+			return AnnotationPointcut.forType();
 		}
 
 	}

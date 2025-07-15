@@ -21,7 +21,6 @@ import com.livk.commons.util.AnnotationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.aop.Pointcut;
-import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 final class AnnotationTarget<A extends Annotation> {
 
-	public static final AnnotationAutoPointcut POINTCUT = new AnnotationTargetPointcut();
+	public static final AnnotationPointcut TARGET_POINTCUT = new AnnotationTargetPointcut();
 
 	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
 
@@ -72,19 +71,19 @@ final class AnnotationTarget<A extends Annotation> {
 	}
 
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
-	static final class AnnotationTargetPointcut implements AnnotationAutoPointcut {
+	static final class AnnotationTargetPointcut implements AnnotationPointcut {
 
 		@Override
 		public Pointcut getPointcut(Class<? extends Annotation> annotationType) {
 			AnnotationTarget<?> target = AnnotationTarget.of(annotationType);
 			if (target.supportType() && target.supportMethod()) {
-				return new AnnotationClassOrMethodPointcut(annotationType);
+				return AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType);
 			}
 			else if (target.supportType()) {
-				return AnnotationMatchingPointcut.forClassAnnotation(annotationType);
+				return AnnotationPointcut.forType().getPointcut(annotationType);
 			}
 			else if (target.supportMethod()) {
-				return AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
+				return AnnotationPointcut.forMethod().getPointcut(annotationType);
 			}
 			else {
 				throw new IllegalArgumentException(

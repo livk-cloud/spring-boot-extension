@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author livk
  */
-class AnnotationAutoPointcutTest {
+class AnnotationPointcutTest {
 
 	@Test
 	void test() throws NoSuchMethodException {
@@ -44,14 +44,15 @@ class AnnotationAutoPointcutTest {
 		Class<?> type = AopProxyClass.class;
 		Method method = AopProxyClass.class.getDeclaredMethod("testAop");
 		{
-			AnnotationAutoPointcut pointcut = AnnotationAutoPointcut.auto();
-			assertEquals(new AnnotationClassOrMethodPointcut(annotationType), pointcut.getPointcut(annotationType));
+			AnnotationPointcut pointcut = AnnotationPointcut.forTarget();
+			assertEquals(AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType),
+					pointcut.getPointcut(annotationType));
 			assertTrue(pointcut.getPointcut(annotationType).getClassFilter().matches(type));
 			assertTrue(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type));
 		}
 
 		{
-			AnnotationAutoPointcut pointcut = AnnotationAutoPointcut.type();
+			AnnotationPointcut pointcut = AnnotationPointcut.forType();
 			assertEquals(AnnotationMatchingPointcut.forClassAnnotation(annotationType),
 					pointcut.getPointcut(annotationType));
 			assertTrue(pointcut.getPointcut(annotationType).getClassFilter().matches(type));
@@ -59,7 +60,7 @@ class AnnotationAutoPointcutTest {
 		}
 
 		{
-			AnnotationAutoPointcut pointcut = AnnotationAutoPointcut.method();
+			AnnotationPointcut pointcut = AnnotationPointcut.forMethod();
 			assertEquals(AnnotationMatchingPointcut.forMethodAnnotation(annotationType),
 					pointcut.getPointcut(annotationType));
 			assertTrue(pointcut.getPointcut(annotationType).getClassFilter().matches(type));
@@ -67,8 +68,9 @@ class AnnotationAutoPointcutTest {
 		}
 
 		{
-			AnnotationAutoPointcut pointcut = AnnotationAutoPointcut.typeOrMethod();
-			assertEquals(new AnnotationClassOrMethodPointcut(annotationType), pointcut.getPointcut(annotationType));
+			AnnotationPointcut pointcut = AnnotationPointcut.forTypeOrMethod();
+			assertEquals(AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType),
+					pointcut.getPointcut(annotationType));
 			assertTrue(pointcut.getPointcut(annotationType).getClassFilter().matches(type));
 			assertTrue(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type));
 		}

@@ -34,17 +34,17 @@ public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation
 	@NonNull
 	@Override
 	public Pointcut getPointcut() {
-		return autoPointcut().getPointcut(annotationType);
+		return annotationPointcut().getPointcut(annotationType);
 	}
 
 	/**
 	 * <p>
-	 * 用于指定不同的切点类型，默认为{@link AnnotationAutoPointcut#auto()}
+	 * 用于指定不同的切点类型，默认为{@link AnnotationPointcut#forTarget()}
 	 * </p>
 	 * @return the annotation pointcut type
 	 */
-	protected AnnotationAutoPointcut autoPointcut() {
-		return AnnotationAutoPointcut.auto();
+	protected AnnotationPointcut annotationPointcut() {
+		return AnnotationPointcut.forTarget();
 	}
 
 }
