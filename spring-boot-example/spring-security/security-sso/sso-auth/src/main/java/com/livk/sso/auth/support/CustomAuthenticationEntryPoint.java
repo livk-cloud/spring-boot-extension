@@ -16,7 +16,7 @@
 
 package com.livk.sso.auth.support;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) {
 		log.error("异常：{}", authException.getMessage(), authException);
-		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", authException.getMessage()));
+		HttpServletUtils.outJson(response,
+				Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", authException.getMessage()));
 	}
 
 }

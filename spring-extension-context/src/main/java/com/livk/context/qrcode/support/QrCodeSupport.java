@@ -31,7 +31,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -112,14 +111,6 @@ public abstract class QrCodeSupport {
 		catch (IOException e) {
 			throw new QrCodeException("The QRCode was written to failure", e);
 		}
-	}
-
-	protected String parser(InputStream inputStream) {
-		return qrCodeManager.parser(inputStream);
-	}
-
-	protected String parser(byte[] bytes) {
-		return qrCodeManager.parser(bytes);
 	}
 
 }

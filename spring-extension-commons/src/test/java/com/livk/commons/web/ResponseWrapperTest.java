@@ -17,7 +17,7 @@
 package com.livk.commons.web;
 
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -38,7 +38,7 @@ class ResponseWrapperTest {
 
 		Map<String, String> result = Map.of("username", "livk", "password", "123456");
 		ResponseWrapper wrapper = new ResponseWrapper(response);
-		WebUtils.outJson(wrapper, result);
+		HttpServletUtils.outJson(wrapper, result);
 
 		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(result), wrapper.getContentAsByteArray());
 		assertEquals(JsonMapperUtils.writeValueAsString(result), wrapper.getContentAsString());

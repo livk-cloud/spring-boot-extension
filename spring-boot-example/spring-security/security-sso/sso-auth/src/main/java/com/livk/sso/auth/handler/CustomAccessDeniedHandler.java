@@ -16,7 +16,7 @@
 
 package com.livk.sso.auth.handler;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) {
 		log.error("exception:{}", accessDeniedException.getMessage(), accessDeniedException);
-		WebUtils.outJson(response,
+		HttpServletUtils.outJson(response,
 				Map.of("code", HttpServletResponse.SC_FORBIDDEN, "msg", accessDeniedException.getMessage()));
 	}
 

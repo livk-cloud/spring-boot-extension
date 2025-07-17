@@ -18,10 +18,7 @@ package com.livk.commons.io;
 
 import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
-import org.springframework.http.codec.multipart.Part;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -85,16 +82,6 @@ public class FileUtils extends FileCopyUtils {
 			flag = parentFile.mkdirs();
 		}
 		return flag && file.createNewFile();
-	}
-
-	/**
-	 * 从ServerWebExchange读取文件转成Mono Part
-	 * @param name 文件参数
-	 * @param exchange the exchange
-	 * @return the part values
-	 */
-	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-		return exchange.getMultipartData().mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
 	}
 
 	/**

@@ -18,7 +18,7 @@ package com.livk.context.limit;
 
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.annotation.Limit;
 import lombok.RequiredArgsConstructor;
 
@@ -55,7 +55,7 @@ public class LimitSupport {
 		TimeUnit unit = limit.rateIntervalUnit();
 		String spELKey = resolver.evaluate(key, method, args);
 		if (limit.restrictIp()) {
-			String ip = WebUtils.realIp(WebUtils.request());
+			String ip = HttpServletUtils.realIp(HttpServletUtils.request());
 			spELKey = spELKey + "#" + ip;
 		}
 		return limitExecutor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));

@@ -17,7 +17,7 @@
 package com.livk.commons.web;
 
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -64,7 +64,7 @@ class RequestWrapperTest {
 		wrapper.addHeader(HttpHeaders.USER_AGENT, "test");
 		wrapper.addHeader(HttpHeaders.AGE, "20");
 
-		HttpHeaders headers = WebUtils.headers(wrapper);
+		HttpHeaders headers = HttpServletUtils.headers(wrapper);
 		assertEquals(MediaType.APPLICATION_JSON_VALUE, headers.getFirst(HttpHeaders.CONTENT_TYPE));
 		assertEquals("test", headers.getFirst(HttpHeaders.USER_AGENT));
 		assertEquals("20", headers.getFirst(HttpHeaders.AGE));
@@ -76,7 +76,7 @@ class RequestWrapperTest {
 		wrapper.addParameter("username", new String[] { "livk", "root", "admin" });
 		wrapper.addParameter("password", "123456");
 
-		HttpParameters parameters = WebUtils.params(wrapper);
+		HttpParameters parameters = HttpServletUtils.params(wrapper);
 		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
 		assertLinesMatch(List.of("123456"), parameters.get("password"));
 		assertEquals(2, parameters.size());

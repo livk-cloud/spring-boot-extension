@@ -25,7 +25,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationAttributes;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -80,24 +79,6 @@ class QrCodeSupportTest {
 		byte[] bytes = stream.toByteArray();
 		assertNotNull(bytes);
 		assertTrue(bytes.length > 0);
-	}
-
-	@Test
-	void parser() {
-		BufferedImage bufferedImage = support.toBufferedImage(returnValue, attributes);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		support.write(bufferedImage, "PNG", stream);
-		byte[] bytes = stream.toByteArray();
-		assertEquals("QrCode", support.parser(new ByteArrayInputStream(bytes)));
-	}
-
-	@Test
-	void testParser() {
-		BufferedImage bufferedImage = support.toBufferedImage(returnValue, attributes);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		support.write(bufferedImage, "PNG", stream);
-		byte[] bytes = stream.toByteArray();
-		assertEquals("QrCode", support.parser(bytes));
 	}
 
 	static class Support extends QrCodeSupport {

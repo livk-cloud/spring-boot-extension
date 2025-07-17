@@ -16,7 +16,7 @@
 
 package com.livk.redis.submit;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.lock.LockType;
 import com.livk.redis.submit.annotation.AutoRepeatedSubmit;
 import com.livk.redis.submit.support.LockSupport;
@@ -43,7 +43,7 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 			@NonNull Object handler) {
 		if (handler instanceof HandlerMethod handlerMethod
 				&& handlerMethod.hasMethodAnnotation(AutoRepeatedSubmit.class)) {
-			String token = WebUtils.request().getHeader(HttpHeaders.AUTHORIZATION);
+			String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 			if (StringUtils.hasText(token)) {
 				try {
 					if (LockSupport.tryLock(LockType.LOCK, token, 3, 3, false)) {
@@ -71,7 +71,7 @@ public class AutoRepeatedSubmitInterceptor implements HandlerInterceptor {
 
 	private boolean outJson(HttpServletResponse response, String message) {
 		Map<String, String> body = Map.of("status", "500", "message", message);
-		WebUtils.outJson(response, body);
+		HttpServletUtils.outJson(response, body);
 		return false;
 	}
 

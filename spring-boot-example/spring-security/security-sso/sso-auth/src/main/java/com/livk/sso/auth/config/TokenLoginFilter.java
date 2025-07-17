@@ -17,7 +17,7 @@
 package com.livk.sso.auth.config;
 
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.sso.commons.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,7 +64,7 @@ public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {
 		}
 		catch (IOException e) {
 			Map<String, Object> map = Map.of("code", HttpServletResponse.SC_UNAUTHORIZED, "msg", "用户名或者密码错误！");
-			WebUtils.outJson(response, map);
+			HttpServletUtils.outJson(response, map);
 			throw new UsernameNotFoundException("用户名或者密码错误");
 		}
 	}

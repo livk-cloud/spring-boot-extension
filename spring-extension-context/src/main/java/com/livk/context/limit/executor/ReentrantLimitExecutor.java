@@ -16,7 +16,7 @@
 
 package com.livk.context.limit.executor;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -45,7 +45,7 @@ public abstract class ReentrantLimitExecutor implements LimitExecutor {
 
 	@Override
 	public boolean tryAccess(String compositeKey, int rate, Duration rateInterval) {
-		HttpServletRequest request = WebUtils.request();
+		HttpServletRequest request = HttpServletUtils.request();
 		Object limitAttribute = request.getAttribute(ATTRIBUTE_NAME);
 		if (limitAttribute instanceof Boolean bool && bool) {
 			return true;
