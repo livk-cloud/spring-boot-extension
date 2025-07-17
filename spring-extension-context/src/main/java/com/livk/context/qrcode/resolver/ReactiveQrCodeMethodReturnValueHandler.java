@@ -19,11 +19,12 @@ package com.livk.context.qrcode.resolver;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.context.qrcode.PicType;
-import com.livk.context.qrcode.QRCodeEntity;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.annotation.ResponseQRCode;
-import com.livk.context.qrcode.exception.QRCodeException;
-import com.livk.context.qrcode.support.QRCodeGeneratorSupport;
+import com.livk.context.qrcode.QrCodeEntity;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.annotation.ResponseQrCode;
+import com.livk.context.qrcode.exception.QrCodeException;
+import com.livk.context.qrcode.support.QrCodeSupport;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapter;
@@ -34,7 +35,6 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.HandlerResultHandler;
@@ -52,23 +52,22 @@ import java.util.List;
  *
  * @author livk
  */
-public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
-		implements HandlerResultHandler, Ordered {
+public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implements HandlerResultHandler, Ordered {
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
 	/**
 	 * Instantiates a new Reactive qr code method return value handler.
-	 * @param qrCodeGenerator the qr code generator
+	 * @param qrCodeManager the qr code generator
 	 */
-	public ReactiveQRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
-		super(qrCodeGenerator);
+	public ReactiveQrCodeMethodReturnValueHandler(QrCodeManager qrCodeManager) {
+		super(qrCodeManager);
 	}
 
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
-		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQRCode.class)
-				|| result.getReturnType().isAssignableFrom(QRCodeEntity.class);
+		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQrCode.class)
+				|| result.getReturnType().isAssignableFrom(QrCodeEntity.class);
 	}
 
 	@NonNull
@@ -88,11 +87,11 @@ public class ReactiveQRCodeMethodReturnValueHandler extends QRCodeGeneratorSuppo
 		else {
 			return write(returnValue, result.getReturnTypeSource(), response);
 		}
-		throw new QRCodeException("current type is not supported:" + returnType.toClass());
+		throw new QrCodeException("current type is not supported:" + returnType.toClass());
 	}
 
 	private Mono<Void> write(Object value, MethodParameter parameter, ServerHttpResponse response) {
-		AnnotationAttributes attributes = createAttributes(value, parameter, ResponseQRCode.class);
+		AnnotationAttributes attributes = createAttributes(value, parameter);
 		PicType type = attributes.getEnum("type");
 		setResponse(type, response);
 		byte[] bytes = toByteArray(value, attributes);

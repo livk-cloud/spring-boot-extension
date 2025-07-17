@@ -19,20 +19,22 @@ package com.livk.context.qrcode;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * The interface Qr code generator.
  *
  * @author livk
  */
-public interface QRCodeGenerator {
+public interface QrCodeManager {
 
 	/**
 	 * 生成二维码
 	 * @param entity 二维码实体
 	 * @return BufferedImage
 	 */
-	BufferedImage generate(QRCodeEntity<?> entity);
+	BufferedImage generate(QrCodeEntity<?> entity);
 
 	/**
 	 * 生成二维码
@@ -56,5 +58,11 @@ public interface QRCodeGenerator {
 	 * @return BufferedImage
 	 */
 	BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type);
+
+	String parser(InputStream inputStream);
+
+	default String parser(byte[] input) {
+		return parser(new ByteArrayInputStream(input));
+	}
 
 }

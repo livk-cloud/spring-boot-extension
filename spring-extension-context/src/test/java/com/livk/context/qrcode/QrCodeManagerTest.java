@@ -18,7 +18,7 @@ package com.livk.context.qrcode;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
-import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
+import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -37,16 +37,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author livk
  */
-class QRCodeGeneratorTest {
+class QrCodeManagerTest {
 
 	final JsonMapper mapper = JsonMapper.builder().build();
 
-	final QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
+	final QrCodeManager manager = GoogleQrCodeManager.of(mapper);
 
 	@Test
 	void generateTextQRCode() throws IOException {
-		QRCodeEntity<String> entity = new QRCodeEntity<>("hello", 400, 400, new MatrixToImageConfig(), PicType.PNG);
-		BufferedImage image = generator.generate(entity);
+		QrCodeEntity<String> entity = new QrCodeEntity<>("hello", 400, 400, new MatrixToImageConfig(), PicType.PNG);
+		BufferedImage image = manager.generate(entity);
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -54,7 +54,7 @@ class QRCodeGeneratorTest {
 
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-		String text = QRCodeUtils.parseQRCode(inputStream);
+		String text = manager.parser(inputStream);
 
 		assertEquals("hello", text);
 	}
@@ -62,9 +62,9 @@ class QRCodeGeneratorTest {
 	@Test
 	void generateJsonQRCode() throws IOException {
 		Map<String, String> map = Map.of("username", "livk", "password", "123456");
-		QRCodeEntity<Map<String, String>> entity = new QRCodeEntity<>(map, 400, 400, new MatrixToImageConfig(),
+		QrCodeEntity<Map<String, String>> entity = new QrCodeEntity<>(map, 400, 400, new MatrixToImageConfig(),
 				PicType.PNG);
-		BufferedImage image = generator.generate(entity);
+		BufferedImage image = manager.generate(entity);
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -72,7 +72,7 @@ class QRCodeGeneratorTest {
 
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-		String text = QRCodeUtils.parseQRCode(inputStream);
+		String text = manager.parser(inputStream);
 
 		assertEquals(mapper.writeValueAsString(map), text);
 	}

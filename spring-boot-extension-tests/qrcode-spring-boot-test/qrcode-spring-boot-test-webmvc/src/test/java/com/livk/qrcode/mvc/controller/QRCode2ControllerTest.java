@@ -19,7 +19,7 @@ package com.livk.qrcode.mvc.controller;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.qrcode.PicType;
-import com.livk.context.qrcode.QRCodeUtils;
+import com.livk.context.qrcode.QrCodeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,6 +52,9 @@ class QRCode2ControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
+	@Autowired
+	QrCodeManager qrCodeManager;
+
 	@Test
 	void text() throws Exception {
 		String text = "Hello World!";
@@ -61,7 +64,7 @@ class QRCode2ControllerTest {
 		});
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(text, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -78,7 +81,7 @@ class QRCode2ControllerTest {
 			});
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(json, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());

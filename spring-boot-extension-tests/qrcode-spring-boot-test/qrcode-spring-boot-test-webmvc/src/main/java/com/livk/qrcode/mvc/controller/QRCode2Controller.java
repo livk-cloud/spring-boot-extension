@@ -18,7 +18,7 @@ package com.livk.qrcode.mvc.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.context.qrcode.annotation.QRCodeController;
+import com.livk.context.qrcode.annotation.QrCodeController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author livk
  */
-@QRCodeController
+@QrCodeController
 @RequestMapping("qrcode2")
 public class QRCode2Controller {
 

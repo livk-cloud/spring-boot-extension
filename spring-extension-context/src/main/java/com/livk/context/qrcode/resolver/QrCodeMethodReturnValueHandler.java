@@ -18,15 +18,15 @@ package com.livk.context.qrcode.resolver;
 
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.context.qrcode.PicType;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.annotation.ResponseQRCode;
-import com.livk.context.qrcode.support.QRCodeGeneratorSupport;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.annotation.ResponseQrCode;
+import com.livk.context.qrcode.support.QrCodeSupport;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.http.MediaType;
-import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandler;
@@ -42,20 +42,15 @@ import java.io.IOException;
  *
  * @author livk
  */
-public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
-		implements AsyncHandlerMethodReturnValueHandler {
+public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements AsyncHandlerMethodReturnValueHandler {
 
-	/**
-	 * Instantiates a new Qr code method return value handler.
-	 * @param qrCodeGenerator the qr code generator
-	 */
-	public QRCodeMethodReturnValueHandler(QRCodeGenerator qrCodeGenerator) {
-		super(qrCodeGenerator);
+	public QrCodeMethodReturnValueHandler(QrCodeManager qrCodeManager) {
+		super(qrCodeManager);
 	}
 
 	@Override
 	public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
+		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQrCode.class);
 	}
 
 	@Override
@@ -64,7 +59,7 @@ public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
 		mavContainer.setRequestHandled(true);
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 		Assert.notNull(response, "response not be null");
-		AnnotationAttributes attributes = createAttributes(returnValue, returnType, ResponseQRCode.class);
+		AnnotationAttributes attributes = createAttributes(returnValue, returnType);
 		PicType type = attributes.getEnum("type");
 		BufferedImage bufferedImage = toBufferedImage(returnValue, attributes);
 		try (ServletOutputStream outputStream = response.getOutputStream()) {
@@ -80,7 +75,7 @@ public class QRCodeMethodReturnValueHandler extends QRCodeGeneratorSupport
 
 	@Override
 	public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQRCode.class);
+		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQrCode.class);
 	}
 
 }

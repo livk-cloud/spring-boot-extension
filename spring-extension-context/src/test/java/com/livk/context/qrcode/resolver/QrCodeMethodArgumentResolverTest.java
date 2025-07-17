@@ -17,20 +17,17 @@
 package com.livk.context.qrcode.resolver;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.QrCodeManager;
-import com.livk.context.qrcode.annotation.ResponseQrCode;
+import com.livk.context.qrcode.annotation.RequestQrCodeText;
 import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.method.support.ModelAndViewContainer;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,44 +35,44 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author livk
  */
-class QRCodeMethodReturnValueHandlerTest {
-
-	static QrCodeMethodReturnValueHandler handler;
+class QrCodeMethodArgumentResolverTest {
 
 	static MethodParameter parameter;
 
-	static QrCodeManager manager;
+	static QrCodeMethodArgumentResolver resolver;
 
 	@BeforeAll
 	static void init() throws NoSuchMethodException {
+		parameter = MethodParameter.forExecutable(TestController.class.getDeclaredMethod("textCode", String.class), 0);
 		JsonMapper mapper = JsonMapper.builder().build();
-		manager = GoogleQrCodeManager.of(mapper);
-		handler = new QrCodeMethodReturnValueHandler(manager);
-		parameter = MethodParameter.forExecutable(QRCodeMethodReturnValueHandlerTest.class.getDeclaredMethod("qrcode"),
-				-1);
+		QrCodeManager manager = GoogleQrCodeManager.of(mapper);
+		resolver = new QrCodeMethodArgumentResolver(manager);
 	}
 
 	@Test
-	void supportsReturnType() {
-		assertTrue(handler.supportsReturnType(parameter));
+	void supportsParameter() {
+		assertTrue(resolver.supportsParameter(parameter));
 	}
 
 	@Test
-	void handleReturnValue() throws IOException {
-		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		ServletWebRequest webRequest = new ServletWebRequest(new MockHttpServletRequest(), response);
+	void resolveArgument() throws Exception {
+		MockMultipartFile file = new MockMultipartFile("file", new ClassPathResource("qrCode.png").getInputStream());
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		request.addFile(file);
 
-		handler.handleReturnValue("code", parameter, mavContainer, webRequest);
+		ServletWebRequest webRequest = new ServletWebRequest(request);
 
-		InputStream inputStream = new ByteArrayInputStream(response.getContentAsByteArray());
+		Object result = resolver.resolveArgument(parameter, null, webRequest, null);
 
-		assertEquals("code", manager.parser(inputStream));
+		assertEquals("QrCode", result);
 	}
 
-	@ResponseQrCode
-	String qrcode() {
-		return "code";
+	static class TestController {
+
+		QrCodeEntity<String> textCode(@RequestQrCodeText String text) {
+			return QrCodeEntity.builder(text).build();
+		}
+
 	}
 
 }

@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package com.livk.context.qrcode.support;
+package com.livk.qrcode.mvc.controller;
 
-import com.livk.context.qrcode.QRCodeEntity;
-import com.livk.context.qrcode.QRCodeGenerator;
-
-import java.awt.image.BufferedImage;
+import com.livk.context.qrcode.annotation.RequestQrCodeText;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The type Abstract qr code generator.
+ * <p>
+ * QRCodeController
+ * </p>
  *
  * @author livk
  */
-public abstract class AbstractQRCodeGenerator implements QRCodeGenerator {
+@RestController
+@RequestMapping("qrcode3")
+public class QRCode3Controller {
 
-	@Override
-	public final BufferedImage generate(QRCodeEntity<?> entity) {
-		return generate(convert(entity.content()), entity.width(), entity.height(), entity.config(), entity.type());
+	@PostMapping
+	public String textCode(@RequestQrCodeText String text) {
+		return text;
 	}
-
-	/**
-	 * Convert string.
-	 * @param content the content
-	 * @return the string
-	 */
-	protected abstract String convert(Object content);
 
 }
