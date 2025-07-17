@@ -19,7 +19,7 @@ package com.livk.qrcode.webflux.controller;
 import com.livk.commons.io.FileUtils;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.qrcode.PicType;
-import com.livk.context.qrcode.QRCodeUtils;
+import com.livk.context.qrcode.QrCodeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -46,10 +46,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest
 @AutoConfigureWebTestClient(timeout = "15000")
-class QRCodeControllerTest {
+class QrCodeControllerTest {
 
 	@Autowired
 	WebTestClient client;
+
+	@Autowired
+	QrCodeManager qrCodeManager;
 
 	final String text = "Hello World!";
 
@@ -70,7 +73,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(text, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -91,7 +94,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(text, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -112,7 +115,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(text, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -135,7 +138,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(json, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -158,7 +161,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(json, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());
@@ -181,7 +184,7 @@ class QRCodeControllerTest {
 		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, QRCodeUtils.parseQRCode(inputStream));
+			assertEquals(json, qrCodeManager.parser(inputStream));
 		}
 		assertTrue(outFile.exists());
 		assertTrue(outFile.delete());

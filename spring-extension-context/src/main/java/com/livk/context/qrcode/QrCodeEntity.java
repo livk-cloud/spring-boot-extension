@@ -26,7 +26,7 @@ import java.awt.Color;
  * @param <T> the type parameter
  * @author livk
  */
-public record QRCodeEntity<T>(T content, int width, int height, MatrixToImageConfig config, PicType type) {
+public record QrCodeEntity<T>(T content, int width, int height, MatrixToImageConfig config, PicType type) {
 
 	/**
 	 * Builder qr code entity builder.
@@ -139,9 +139,9 @@ public record QRCodeEntity<T>(T content, int width, int height, MatrixToImageCon
 		 * Build qr code entity.
 		 * @return the qr code entity
 		 */
-		public QRCodeEntity<T> build() {
+		public QrCodeEntity<T> build() {
 			MatrixToImageConfig imageConfig = new MatrixToImageConfig(this.onColor, this.offColor);
-			return new QRCodeEntity<>(this.content, this.width, this.height, imageConfig, this.type);
+			return new QrCodeEntity<>(this.content, this.width, this.height, imageConfig, this.type);
 		}
 
 	}

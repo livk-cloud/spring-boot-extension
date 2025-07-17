@@ -18,19 +18,33 @@ package com.livk.context.qrcode.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Binarizer;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.livk.commons.jackson.support.JacksonSupport;
 import com.livk.context.qrcode.PicType;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.exception.QRCodeException;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.exception.QrCodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -40,7 +54,7 @@ import java.util.function.Function;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QRCodeGenerator {
+public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCodeManager {
 
 	private final Function<Object, String> command;
 
@@ -48,9 +62,9 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 	 * Instantiates a new Google qrcode generator.
 	 * @param mapper the mapper
 	 */
-	public static GoogleQRCodeGenerator of(ObjectMapper mapper) {
+	public static GoogleQrCodeManager of(ObjectMapper mapper) {
 		JacksonSupport support = new JacksonSupport(mapper);
-		return new GoogleQRCodeGenerator(support::writeValueAsString);
+		return new GoogleQrCodeManager(support::writeValueAsString);
 	}
 
 	@Override
@@ -67,7 +81,24 @@ public class GoogleQRCodeGenerator extends AbstractQRCodeGenerator implements QR
 		}
 		catch (WriterException e) {
 			log.error("{}", e.getMessage(), e);
-			throw new QRCodeException("Failed to generate a QRCode", e);
+			throw new QrCodeException("Failed to generate a QRCode", e);
+		}
+	}
+
+	@Override
+	public String parser(InputStream inputStream) {
+		try {
+			BufferedImage image = ImageIO.read(inputStream);
+			LuminanceSource source = new BufferedImageLuminanceSource(image);
+			Binarizer binarizer = new HybridBinarizer(source);
+			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+			Map<DecodeHintType, Object> hints = new HashMap<>();
+			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
+			Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 解码
+			return result.getText();
+		}
+		catch (IOException | NotFoundException e) {
+			throw new QrCodeException(e);
 		}
 	}
 

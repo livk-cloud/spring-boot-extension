@@ -14,43 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.context.qrcode.exception;
+package com.livk.qrcode.webflux.controller;
 
-import lombok.Getter;
+import com.livk.context.qrcode.annotation.RequestQrCodeText;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * QRCodeException
- * </p>
- *
  * @author livk
  */
-@Getter
-public class QRCodeException extends RuntimeException {
+@RestController
+@RequestMapping("qrcode3")
+public class QRCode3Controller {
 
-	/**
-	 * Instantiates a new Qr code exception.
-	 * @param message the message
-	 */
-	public QRCodeException(String message) {
-		super(message);
-	}
-
-	/**
-	 * Instantiates a new Qr code exception.
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public QRCodeException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	/**
-	 * Instantiates a new Qr code exception.
-	 * @param cause the cause
-	 */
-	public QRCodeException(Throwable cause) {
-		super(cause);
+	@PostMapping
+	public Mono<String> textCode(@RequestQrCodeText Mono<String> text) {
+		return text.log();
 	}
 
 }

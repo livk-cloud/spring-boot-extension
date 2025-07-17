@@ -18,9 +18,10 @@ package com.livk.context.qrcode.support;
 
 import com.livk.commons.util.AnnotationUtils;
 import com.livk.commons.util.BeanUtils;
-import com.livk.context.qrcode.QRCodeEntity;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.exception.QRCodeException;
+import com.livk.context.qrcode.QrCodeEntity;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.annotation.ResponseQrCode;
+import com.livk.context.qrcode.exception.QrCodeException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -30,35 +31,34 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
- * The type Qr code generator support.
+ * The type Qr code support.
  *
  * @author livk
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class QRCodeGeneratorSupport {
+public abstract class QrCodeSupport {
 
-	private final QRCodeGenerator qrCodeGenerator;
+	private final QrCodeManager qrCodeManager;
 
 	/**
 	 * Create attributes annotation attributes.
 	 * @param returnValue the return value
 	 * @param parameter the parameter
-	 * @param annotationClass the annotation class
 	 * @return the annotation attributes
 	 */
-	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter,
-			Class<? extends Annotation> annotationClass) {
-		if (returnValue instanceof QRCodeEntity<?> entity) {
+	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter) {
+		if (returnValue instanceof QrCodeEntity<?> entity) {
 			Map<String, Object> map = BeanUtils.convert(entity);
 			return AnnotationAttributes.fromMap(map);
 		}
 		else {
-			Annotation annotation = AnnotationUtils.getAnnotationElement(parameter, annotationClass);
+			Annotation annotation = AnnotationUtils.getAnnotationElement(parameter, ResponseQrCode.class);
 			return AnnotationUtils.getAnnotationAttributes(parameter.getMethod(), annotation);
 		}
 	}
@@ -70,18 +70,18 @@ public abstract class QRCodeGeneratorSupport {
 	 * @return the buffered image
 	 */
 	protected BufferedImage toBufferedImage(Object returnValue, AnnotationAttributes attributes) {
-		if (returnValue instanceof QRCodeEntity<?> entity) {
-			return qrCodeGenerator.generate(entity);
+		if (returnValue instanceof QrCodeEntity<?> entity) {
+			return qrCodeManager.generate(entity);
 		}
 		else {
-			QRCodeEntity<?> entity = QRCodeEntity.builder(returnValue)
+			QrCodeEntity<?> entity = QrCodeEntity.builder(returnValue)
 				.height(attributes.getNumber("width").intValue())
 				.width(attributes.getNumber("height").intValue())
 				.onColor(attributes.getNumber("onColor").intValue())
 				.offColor(attributes.getNumber("offColor").intValue())
 				.type(attributes.getEnum("type"))
 				.build();
-			return qrCodeGenerator.generate(entity);
+			return qrCodeManager.generate(entity);
 		}
 	}
 
@@ -110,8 +110,16 @@ public abstract class QRCodeGeneratorSupport {
 			ImageIO.write(bufferedImage, formatName, stream);
 		}
 		catch (IOException e) {
-			throw new QRCodeException("The QRCode was written to failure", e);
+			throw new QrCodeException("The QRCode was written to failure", e);
 		}
+	}
+
+	protected String parser(InputStream inputStream) {
+		return qrCodeManager.parser(inputStream);
+	}
+
+	protected String parser(byte[] bytes) {
+		return qrCodeManager.parser(bytes);
 	}
 
 }

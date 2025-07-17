@@ -16,9 +16,9 @@
 
 package com.livk.autoconfigure.qrcode;
 
-import com.livk.context.qrcode.resolver.QRCodeMethodReturnValueHandler;
-import com.livk.context.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
-import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
+import com.livk.context.qrcode.resolver.QrCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.resolver.ReactiveQrCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
@@ -37,12 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QRCodeAutoConfigurationTest {
 
 	@Test
-	void googleQRCodeGenerator() {
+	void googleQRCodeManager() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
 			.withConfiguration(AutoConfigurations.of(QRCodeAutoConfiguration.class));
 
-		contextRunner.run((context) -> assertThat(context).hasSingleBean(GoogleQRCodeGenerator.class));
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(GoogleQrCodeManager.class));
 	}
 
 	@Test
@@ -54,7 +54,7 @@ class QRCodeAutoConfigurationTest {
 		contextRunner.run(context -> {
 			RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 			assertThat(adapter.getReturnValueHandlers()).isNotNull()
-				.hasAtLeastOneElementOfType(QRCodeMethodReturnValueHandler.class);
+				.hasAtLeastOneElementOfType(QrCodeMethodReturnValueHandler.class);
 		});
 	}
 
@@ -64,7 +64,7 @@ class QRCodeAutoConfigurationTest {
 			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
 			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
-		contextRunner.run(context -> assertThat(context).hasSingleBean(ReactiveQRCodeMethodReturnValueHandler.class));
+		contextRunner.run(context -> assertThat(context).hasSingleBean(ReactiveQrCodeMethodReturnValueHandler.class));
 	}
 
 }

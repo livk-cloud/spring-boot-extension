@@ -18,18 +18,22 @@ package com.livk.autoconfigure.qrcode;
 
 import com.google.zxing.common.BitMatrix;
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.resolver.QRCodeMethodReturnValueHandler;
-import com.livk.context.qrcode.resolver.ReactiveQRCodeMethodReturnValueHandler;
-import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.resolver.QrCodeMethodArgumentResolver;
+import com.livk.context.qrcode.resolver.QrCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.resolver.ReactiveQrCodeMethodArgumentResolver;
+import com.livk.context.qrcode.resolver.ReactiveQrCodeMethodReturnValueHandler;
+import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -52,8 +56,8 @@ public class QRCodeAutoConfiguration {
 	 * @return the qr code generator
 	 */
 	@Bean
-	public QRCodeGenerator googleQRCodeGenerator(Jackson2ObjectMapperBuilder builder) {
-		return GoogleQRCodeGenerator.of(builder.build());
+	public QrCodeManager googleQRCodeManager(Jackson2ObjectMapperBuilder builder) {
+		return GoogleQrCodeManager.of(builder.build());
 	}
 
 	/**
@@ -64,11 +68,16 @@ public class QRCodeAutoConfiguration {
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 	public static class WebMvcQRCodeAutoConfiguration implements WebMvcConfigurer {
 
-		private final QRCodeGenerator qrCodeGenerator;
+		private final QrCodeManager qrCodeManager;
 
 		@Override
 		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-			handlers.add(new QRCodeMethodReturnValueHandler(qrCodeGenerator));
+			handlers.add(new QrCodeMethodReturnValueHandler(qrCodeManager));
+		}
+
+		@Override
+		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+			resolvers.add(new QrCodeMethodArgumentResolver(qrCodeManager));
 		}
 
 	}
@@ -77,19 +86,25 @@ public class QRCodeAutoConfiguration {
 	 * The type Web flux qr code auto configuration.
 	 */
 	@AutoConfiguration
+	@RequiredArgsConstructor
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 	public static class WebFluxQRCodeAutoConfiguration implements WebFluxConfigurer {
+
+		private final QrCodeManager qrCodeManager;
 
 		/**
 		 * Reactive qr code method return value handler reactive qr code method return
 		 * value handler.
-		 * @param qrCodeGenerator the qr code generator
 		 * @return the reactive qr code method return value handler
 		 */
 		@Bean
-		public ReactiveQRCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler(
-				QRCodeGenerator qrCodeGenerator) {
-			return new ReactiveQRCodeMethodReturnValueHandler(qrCodeGenerator);
+		public ReactiveQrCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler() {
+			return new ReactiveQrCodeMethodReturnValueHandler(qrCodeManager);
+		}
+
+		@Override
+		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
+			configurer.addCustomResolver(new ReactiveQrCodeMethodArgumentResolver(qrCodeManager));
 		}
 
 	}

@@ -18,8 +18,8 @@ package com.livk.qrcode.webflux.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.context.qrcode.QRCodeEntity;
-import com.livk.context.qrcode.annotation.ResponseQRCode;
+import com.livk.context.qrcode.QrCodeEntity;
+import com.livk.context.qrcode.annotation.ResponseQrCode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,38 +40,38 @@ import java.util.Map;
 @RequestMapping("qrcode")
 public class QRCodeController {
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@GetMapping
 	public String text(String text) {
 		return text;
 	}
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@GetMapping("mono")
 	public Mono<String> textMono(String text) {
 		return Mono.just(text);
 	}
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@GetMapping("entity")
-	public QRCodeEntity<String> textCode(String text) {
-		return QRCodeEntity.builder(text).build();
+	public QrCodeEntity<String> textCode(String text) {
+		return QrCodeEntity.builder(text).build();
 	}
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@PostMapping("/entity/json")
-	public QRCodeEntity<Map<String, String>> jsonCode(@RequestBody JsonNode node) {
+	public QrCodeEntity<Map<String, String>> jsonCode(@RequestBody JsonNode node) {
 		Map<String, String> map = JsonMapperUtils.convertValueMap(node, String.class, String.class);
-		return QRCodeEntity.builder(map).build();
+		return QrCodeEntity.builder(map).build();
 	}
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@PostMapping("json")
 	public Map<String, String> json(@RequestBody JsonNode node) {
 		return JsonMapperUtils.convertValueMap(node, String.class, String.class);
 	}
 
-	@ResponseQRCode
+	@ResponseQrCode
 	@PostMapping("/json/mono")
 	public Mono<Map<String, String>> jsonMono(@RequestBody JsonNode node) {
 		return Mono.just(JsonMapperUtils.convertValueMap(node, String.class, String.class));

@@ -18,10 +18,9 @@ package com.livk.context.qrcode.resolver;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.livk.commons.io.DataBufferUtils;
-import com.livk.context.qrcode.QRCodeGenerator;
-import com.livk.context.qrcode.QRCodeUtils;
-import com.livk.context.qrcode.annotation.ResponseQRCode;
-import com.livk.context.qrcode.support.GoogleQRCodeGenerator;
+import com.livk.context.qrcode.QrCodeManager;
+import com.livk.context.qrcode.annotation.ResponseQrCode;
+import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
@@ -41,15 +40,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class ReactiveQRCodeMethodReturnValueHandlerTest {
 
-	static ReactiveQRCodeMethodReturnValueHandler handler;
+	static ReactiveQrCodeMethodReturnValueHandler handler;
 
 	static HandlerResult result;
+
+	static QrCodeManager manager;
 
 	@BeforeAll
 	static void init() throws NoSuchMethodException {
 		JsonMapper mapper = JsonMapper.builder().build();
-		QRCodeGenerator generator = GoogleQRCodeGenerator.of(mapper);
-		handler = new ReactiveQRCodeMethodReturnValueHandler(generator);
+		manager = GoogleQrCodeManager.of(mapper);
+		handler = new ReactiveQrCodeMethodReturnValueHandler(manager);
 		HandlerMethod handlerMethod = new HandlerMethod(new TestController(),
 				TestController.class.getDeclaredMethod("qrcode"));
 		result = new HandlerResult(handlerMethod, "code", handlerMethod.getReturnType());
@@ -65,7 +66,7 @@ class ReactiveQRCodeMethodReturnValueHandlerTest {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo"));
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		Mono<String> mono = DataBufferUtils.transform(exchange.getResponse().getBody()).map(QRCodeUtils::parseQRCode);
+		Mono<String> mono = DataBufferUtils.transform(exchange.getResponse().getBody()).map(manager::parser);
 
 		StepVerifier.create(mono).expectNext("code").verifyComplete();
 	}
@@ -73,7 +74,7 @@ class ReactiveQRCodeMethodReturnValueHandlerTest {
 	@RestController
 	private static class TestController {
 
-		@ResponseQRCode
+		@ResponseQrCode
 		String qrcode() {
 			return "code";
 		}
