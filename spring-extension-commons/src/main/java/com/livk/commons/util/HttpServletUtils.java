@@ -50,7 +50,7 @@ import java.util.Map;
  * @author livk
  */
 @UtilityClass
-public class WebUtils extends org.springframework.web.util.WebUtils {
+public class HttpServletUtils {
 
 	/**
 	 * 获取当前线程的request

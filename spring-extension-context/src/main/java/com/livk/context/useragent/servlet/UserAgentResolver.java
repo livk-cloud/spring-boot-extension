@@ -16,7 +16,7 @@
 
 package com.livk.context.useragent.servlet;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.useragent.UserAgent;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.annotation.UserAgentInfo;
@@ -55,7 +55,7 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 		if (agentContext == null) {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 			Assert.notNull(request, "request not be null!");
-			HttpHeaders headers = WebUtils.headers(request);
+			HttpHeaders headers = HttpServletUtils.headers(request);
 			agentContext = helper.convert(headers);
 			UserAgentContextHolder.withUserAgentContext(agentContext);
 		}

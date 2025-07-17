@@ -16,7 +16,7 @@
 
 package com.livk.sso.auth.handler;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.sso.commons.entity.User;
 import com.livk.sso.commons.util.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		String token = JwtUtils.generateToken(user);
 		log.info("登录成功user:{} token:{}", user, token);
 		Map<String, Object> map = Map.of("code", HttpServletResponse.SC_OK, "data", token);
-		WebUtils.outJson(response, map);
+		HttpServletUtils.outJson(response, map);
 	}
 
 }

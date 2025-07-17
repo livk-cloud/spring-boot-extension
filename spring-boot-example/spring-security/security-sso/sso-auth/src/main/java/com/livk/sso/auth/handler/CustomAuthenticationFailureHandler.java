@@ -16,7 +16,7 @@
 
 package com.livk.sso.auth.handler;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) {
 		log.error("异常：{}", exception.getMessage(), exception);
-		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_BAD_REQUEST, "msg",
+		HttpServletUtils.outJson(response, Map.of("code", HttpServletResponse.SC_BAD_REQUEST, "msg",
 				"login failed, username or password is incorrect"));
 	}
 

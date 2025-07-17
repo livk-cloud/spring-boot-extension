@@ -19,7 +19,7 @@ package com.livk.commons.web;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.livk.commons.util.ObjectUtils;
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -69,8 +69,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 */
 	public RequestWrapper(HttpServletRequest request) {
 		super(request);
-		headers.putAll(WebUtils.headers(request));
-		parameter.putAll(WebUtils.params(request));
+		headers.putAll(HttpServletUtils.headers(request));
+		parameter.putAll(HttpServletUtils.params(request));
 		contentType = request.getContentType();
 	}
 

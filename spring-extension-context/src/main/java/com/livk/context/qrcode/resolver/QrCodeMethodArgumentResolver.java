@@ -18,36 +18,27 @@ package com.livk.context.qrcode.resolver;
 
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.RequestQrCodeText;
-import com.livk.context.qrcode.support.QrCodeSupport;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 /**
  * @author livk
  */
+@RequiredArgsConstructor
 public class QrCodeMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final QrCodeHttpMessageReader reader;
-
-	public QrCodeMethodArgumentResolver(QrCodeManager qrCodeManager) {
-		this.reader = new QrCodeHttpMessageReader(qrCodeManager);
-	}
+	private final QrCodeManager codeManager;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -60,50 +51,18 @@ public class QrCodeMethodArgumentResolver implements HandlerMethodArgumentResolv
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 		RequestQrCodeText qrCodeText = parameter.getParameterAnnotation(RequestQrCodeText.class);
 		if (Objects.nonNull(qrCodeText) && Objects.nonNull(request)) {
-			if (reader.canRead(parameter.getParameterType(), MediaType.valueOf(request.getContentType()))) {
-				return reader.read(parameter.getParameterType(),
-						new RequestPartServletServerHttpRequest(request, qrCodeText.fileName()));
+			if (this.canRead(request)) {
+				HttpInputMessage part = new RequestPartServletServerHttpRequest(request, qrCodeText.fileName());
+				return codeManager.parser(part.getBody());
 			}
 		}
 		throw new IllegalArgumentException(
 				"QrCode upload request resolver error, @RequestQRCodeText parameter type error");
 	}
 
-	private static class QrCodeHttpMessageReader extends QrCodeSupport implements HttpMessageConverter<Object> {
-
-		private QrCodeHttpMessageReader(QrCodeManager qrCodeManager) {
-			super(qrCodeManager);
-		}
-
-		@Override
-		public boolean canRead(@NonNull Class<?> clazz, MediaType mediaType) {
-			return mediaType == null || mediaType.toString().startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
-		}
-
-		@Override
-		public boolean canWrite(@NonNull Class<?> type, MediaType mediaType) {
-			throw new UnsupportedOperationException();
-		}
-
-		@NonNull
-		@Override
-		public List<MediaType> getSupportedMediaTypes() {
-			return List.of();
-		}
-
-		@NonNull
-		@Override
-		public Object read(@NonNull Class<?> parameterType, HttpInputMessage inputMessage)
-				throws IOException, HttpMessageNotReadableException {
-			return super.parser(inputMessage.getBody());
-		}
-
-		@Override
-		public void write(@NonNull Object returnValue, MediaType contentType, @NonNull HttpOutputMessage outputMessage)
-				throws HttpMessageNotWritableException {
-			throw new UnsupportedOperationException();
-		}
-
+	private boolean canRead(HttpServletRequest request) {
+		String contentType = request.getContentType();
+		return contentType != null && contentType.startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);
 	}
 
 }

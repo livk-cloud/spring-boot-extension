@@ -16,7 +16,7 @@
 
 package com.livk.commons.web;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -38,7 +38,7 @@ class HttpParametersTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("username", "livk", "root", "admin");
 		request.addParameter("password", "123456");
-		HttpParameters parameters = WebUtils.params(request);
+		HttpParameters parameters = HttpServletUtils.params(request);
 		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
 		assertEquals("livk", parameters.getFirst("username"));
 		assertEquals("123456", parameters.getFirst("password"));

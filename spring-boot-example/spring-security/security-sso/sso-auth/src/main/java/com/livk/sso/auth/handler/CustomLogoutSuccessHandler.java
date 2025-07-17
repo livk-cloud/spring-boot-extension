@@ -16,7 +16,7 @@
 
 package com.livk.sso.auth.handler;
 
-import com.livk.commons.util.WebUtils;
+import com.livk.commons.util.HttpServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 			Authentication authentication) {
 		log.info("退出");
 		SecurityContextHolder.getContextHolderStrategy().clearContext();
-		WebUtils.outJson(response, Map.of("code", HttpServletResponse.SC_OK, "msg", "exit successfully"));
+		HttpServletUtils.outJson(response, Map.of("code", HttpServletResponse.SC_OK, "msg", "exit successfully"));
 	}
 
 }
