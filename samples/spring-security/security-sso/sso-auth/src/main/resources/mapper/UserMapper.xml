@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.livk.sso.auth.mapper.UserMapper">
+
+	<select id="getByUserName" resultType="com.livk.sso.commons.entity.User">
+		select id, username, password
+		from users
+		where username = #{userName}
+	</select>
+</mapper>

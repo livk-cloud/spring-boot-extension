@@ -39,7 +39,7 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
 
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
-link:spring-boot-example/example.adoc[示例详情] +
+link:samples/example.adoc[示例详情] +
 
 项目相关版本控制 +
 

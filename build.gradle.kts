@@ -4,7 +4,9 @@ plugins {
 }
 
 configurations.create("asciidoctorExtensions")
-dependencies.add("asciidoctorExtensions", libs.spring.asciidoctor)
+dependencies {
+	"asciidoctorExtensions"(libs.spring.asciidoctor)
+}
 
 tasks.asciidoctor {
 	configurations("asciidoctorExtensions")

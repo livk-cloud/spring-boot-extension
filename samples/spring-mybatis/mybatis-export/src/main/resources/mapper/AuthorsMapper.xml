@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.livk.export.mapper.AuthorsMapper">
+
+	<select id="select" fetchSize="-2147483648" resultType="com.livk.export.entity.Authors">
+		SELECT *
+		FROM ` authors `
+	</select>
+
+	<insert id="insertBatch">
+		insert into `authors` (first_name, last_name, email, birthdate, added)
+		values
+		<foreach collection="collection" item="item" separator=",">
+			(#{item.firstName},#{item.lastName},#{item.email},#{item.birthdate},#{item.added})
+		</foreach>
+	</insert>
+</mapper>
