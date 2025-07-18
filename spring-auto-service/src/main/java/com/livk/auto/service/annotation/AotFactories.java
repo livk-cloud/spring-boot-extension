@@ -25,6 +25,7 @@ import java.lang.annotation.Target;
 
 /**
  * 用于标记aot.factories文件生成接口.
+ *
  * @author livk open-source
  */
 @Documented
