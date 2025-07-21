@@ -15,8 +15,6 @@
 
     <module name="io.spring.javaformat.checkstyle.SpringChecks">
         <!--https://github.com/spring-io/spring-javaformat/tree/main/spring-javaformat/spring-javaformat-checkstyle/src/main/java/io/spring/javaformat/checkstyle/check-->
-        <property name="excludes"
-                  value="io.spring.javaformat.checkstyle.check.SpringAnnotationAttributeConciseValueCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringAnnotationLocationCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringAvoidStaticImportCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringCatchCheck"/>
