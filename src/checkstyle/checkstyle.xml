@@ -20,7 +20,6 @@
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringImportOrderCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLambdaCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodVisibilityCheck"/>
-        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringNoThisCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringNoWhitespaceBeforeCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringParenPadCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringTernaryCheck"/>
