@@ -73,6 +73,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.matcher.LatentMatcher;
 import net.bytebuddy.utility.AsmClassReader;
 import net.bytebuddy.utility.AsmClassWriter;
@@ -95,17 +96,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static net.bytebuddy.matcher.ElementMatchers.isConstructor;
-import static net.bytebuddy.matcher.ElementMatchers.isDefaultFinalizer;
-import static net.bytebuddy.matcher.ElementMatchers.isEquals;
-import static net.bytebuddy.matcher.ElementMatchers.isHashCode;
-import static net.bytebuddy.matcher.ElementMatchers.isSynthetic;
-import static net.bytebuddy.matcher.ElementMatchers.isToString;
-import static net.bytebuddy.matcher.ElementMatchers.named;
-import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
-import static net.bytebuddy.matcher.ElementMatchers.takesGenericArguments;
-import static net.bytebuddy.matcher.ElementMatchers.targetsElement;
 
 /**
  * 复制{@link net.bytebuddy.ByteBuddy} 调整，便于适配高版本JDK
@@ -263,7 +253,7 @@ public class GenericsByteBuddy {
 				MethodGraph.Compiler.DEFAULT, InstrumentedType.Factory.Default.MODIFIABLE, DEFAULT_TYPE_VALIDATION,
 				VisibilityBridgeStrategy.Default.ALWAYS, AsmClassReader.Factory.Default.IMPLICIT,
 				AsmClassWriter.Factory.Default.IMPLICIT,
-				new LatentMatcher.Resolved<>(isSynthetic().or(isDefaultFinalizer())));
+				new LatentMatcher.Resolved<>(ElementMatchers.isSynthetic().or(ElementMatchers.isDefaultFinalizer())));
 	}
 
 	protected GenericsByteBuddy(ClassFileVersion classFileVersion, NamingStrategy namingStrategy,
@@ -389,11 +379,11 @@ public class GenericsByteBuddy {
 				classFileVersion, auxiliaryTypeNamingStrategy, annotationValueFilterFactory, annotationRetention,
 				implementationContextFactory, methodGraphCompiler, typeValidation, visibilityBridgeStrategy,
 				classReaderFactory, classWriterFactory, ignoredMethods, RecordConstructorStrategy.INSTANCE)
-			.method(isHashCode())
+			.method(ElementMatchers.isHashCode())
 			.intercept(RecordObjectMethod.HASH_CODE)
-			.method(isEquals())
+			.method(ElementMatchers.isEquals())
 			.intercept(RecordObjectMethod.EQUALS)
-			.method(isToString())
+			.method(ElementMatchers.isToString())
 			.intercept(RecordObjectMethod.TO_STRING);
 	}
 
@@ -440,8 +430,8 @@ public class GenericsByteBuddy {
 			.withParameters(String.class)
 			.intercept(MethodCall
 				.invoke(enumType.getDeclaredMethods()
-					.filter(named(EnumerationImplementation.ENUM_VALUE_OF_METHOD_NAME)
-						.and(takesArguments(Class.class, String.class)))
+					.filter(ElementMatchers.named(EnumerationImplementation.ENUM_VALUE_OF_METHOD_NAME)
+						.and(ElementMatchers.takesArguments(Class.class, String.class)))
 					.getOnly())
 				.withOwnType()
 				.withArgument(0)
@@ -675,11 +665,11 @@ public class GenericsByteBuddy {
 			@NonNull public Size apply(@NonNull MethodVisitor methodVisitor, @NonNull Context implementationContext,
 					@NonNull MethodDescription instrumentedMethod) {
 				FieldDescription valuesField = instrumentedType.getDeclaredFields()
-					.filter(named(ENUM_VALUES))
+					.filter(ElementMatchers.named(ENUM_VALUES))
 					.getOnly();
 				MethodDescription cloneMethod = TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class)
 					.getDeclaredMethods()
-					.filter(named(CLONE_METHOD_NAME))
+					.filter(ElementMatchers.named(CLONE_METHOD_NAME))
 					.getOnly();
 				return new Size(new StackManipulation.Compound(FieldAccess.forField(valuesField).read(),
 						MethodInvocation.invoke(cloneMethod).virtual(valuesField.getType().asErasure()),
@@ -703,14 +693,15 @@ public class GenericsByteBuddy {
 					MethodDescription instrumentedMethod) {
 				TypeDescription instrumentedType = instrumentedMethod.getDeclaringType().asErasure();
 				MethodDescription enumConstructor = instrumentedType.getDeclaredMethods()
-					.filter(isConstructor().and(takesArguments(String.class, int.class)))
+					.filter(ElementMatchers.isConstructor()
+						.and(ElementMatchers.takesArguments(String.class, int.class)))
 					.getOnly();
 				int ordinal = 0;
 				StackManipulation stackManipulation = StackManipulation.Trivial.INSTANCE;
 				List<FieldDescription> enumerationFields = new ArrayList<>(values.size());
 				for (String value : values) {
 					FieldDescription fieldDescription = instrumentedType.getDeclaredFields()
-						.filter(named(value))
+						.filter(ElementMatchers.named(value))
 						.getOnly();
 					stackManipulation = new StackManipulation.Compound(stackManipulation,
 							TypeCreation.of(instrumentedType), Duplication.SINGLE, new TextConstant(value),
@@ -724,7 +715,10 @@ public class GenericsByteBuddy {
 				}
 				stackManipulation = new StackManipulation.Compound(stackManipulation,
 						ArrayFactory.forType(instrumentedType.asGenericType()).withValues(fieldGetters),
-						FieldAccess.forField(instrumentedType.getDeclaredFields().filter(named(ENUM_VALUES)).getOnly())
+						FieldAccess
+							.forField(instrumentedType.getDeclaredFields()
+								.filter(ElementMatchers.named(ENUM_VALUES))
+								.getOnly())
 							.write());
 				return new Size(stackManipulation.apply(methodVisitor, implementationContext).getMaximalSize(),
 						instrumentedMethod.getStackSize());
@@ -743,7 +737,8 @@ public class GenericsByteBuddy {
 			List<ParameterDescription.Token> tokens = new ArrayList<>(instrumentedType.getRecordComponents().size());
 			for (RecordComponentDescription.InDefinedShape recordComponent : instrumentedType.getRecordComponents()) {
 				tokens.add(new ParameterDescription.Token(recordComponent.getType(),
-						recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.CONSTRUCTOR)),
+						recordComponent.getDeclaredAnnotations()
+							.filter(ElementMatchers.targetsElement(ElementType.CONSTRUCTOR)),
 						recordComponent.getActualName(), ModifierContributor.EMPTY_MASK));
 			}
 			return Collections.singletonList(new MethodDescription.Token(MethodDescription.CONSTRUCTOR_INTERNAL_NAME,
@@ -755,8 +750,9 @@ public class GenericsByteBuddy {
 
 		@NonNull public MethodRegistry inject(TypeDescription instrumentedType, MethodRegistry methodRegistry) {
 			return methodRegistry.prepend(
-					new LatentMatcher.Resolved<MethodDescription>(isConstructor()
-						.and(takesGenericArguments(instrumentedType.getRecordComponents().asTypeList()))),
+					new LatentMatcher.Resolved<MethodDescription>(ElementMatchers.isConstructor()
+						.and(ElementMatchers
+							.takesGenericArguments(instrumentedType.getRecordComponents().asTypeList()))),
 					new MethodRegistry.Handler.ForImplementation(this),
 					MethodAttributeAppender.ForInstrumentedMethod.EXCLUDING_RECEIVER,
 					Transformer.ForMethod.NoOp.<MethodDescription>make());
@@ -771,11 +767,13 @@ public class GenericsByteBuddy {
 				instrumentedType = instrumentedType
 					.withField(new FieldDescription.Token(recordComponent.getActualName(),
 							Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL, recordComponent.getType(),
-							recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.FIELD))))
+							recordComponent.getDeclaredAnnotations()
+								.filter(ElementMatchers.targetsElement(ElementType.FIELD))))
 					.withMethod(new MethodDescription.Token(recordComponent.getActualName(), Opcodes.ACC_PUBLIC,
 							Collections.emptyList(), recordComponent.getType(), Collections.emptyList(),
 							Collections.emptyList(),
-							recordComponent.getDeclaredAnnotations().filter(targetsElement(ElementType.METHOD)),
+							recordComponent.getDeclaredAnnotations()
+								.filter(ElementMatchers.targetsElement(ElementType.METHOD)),
 							AnnotationValue.UNDEFINED, TypeDescription.Generic.UNDEFINED));
 			}
 			return instrumentedType;
@@ -793,9 +791,13 @@ public class GenericsByteBuddy {
 			@NonNull public Size apply(@NonNull MethodVisitor methodVisitor, @NonNull Context implementationContext,
 					MethodDescription instrumentedMethod) {
 				if (instrumentedMethod.isMethod()) {
-					return new Simple(MethodVariableAccess.loadThis(), FieldAccess.forField(
-							instrumentedType.getDeclaredFields().filter(named(instrumentedMethod.getName())).getOnly())
-						.read(), MethodReturn.of(instrumentedMethod.getReturnType()))
+					return new Simple(MethodVariableAccess.loadThis(),
+							FieldAccess
+								.forField(instrumentedType.getDeclaredFields()
+									.filter(ElementMatchers.named(instrumentedMethod.getName()))
+									.getOnly())
+								.read(),
+							MethodReturn.of(instrumentedMethod.getReturnType()))
 						.apply(methodVisitor, implementationContext, instrumentedMethod);
 				}
 				else {
@@ -813,7 +815,7 @@ public class GenericsByteBuddy {
 						stackManipulations.add(
 								FieldAccess
 									.forField(instrumentedType.getDeclaredFields()
-										.filter(named(recordComponent.getActualName()))
+										.filter(ElementMatchers.named(recordComponent.getActualName()))
 										.getOnly())
 									.write());
 						offset += recordComponent.getType().getStackSize().getSize();
@@ -865,7 +867,7 @@ public class GenericsByteBuddy {
 				stringBuilder.append(recordComponent.getActualName());
 				methodHandles.add(JavaConstant.MethodHandle.ofGetter(implementationTarget.getInstrumentedType()
 					.getDeclaredFields()
-					.filter(named(recordComponent.getActualName()))
+					.filter(ElementMatchers.named(recordComponent.getActualName()))
 					.getOnly()));
 			}
 			return new ByteCodeAppender.Simple(MethodVariableAccess.loadThis(), stackManipulation, MethodInvocation
