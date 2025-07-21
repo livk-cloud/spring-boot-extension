@@ -81,8 +81,8 @@ class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
 			objectOutputStream.flush();
 			return out.toByteArray();
 		}
-		catch (IOException e) {
-			throw new CodecException("Cannot serialize", e);
+		catch (IOException ex) {
+			throw new CodecException("Cannot serialize", ex);
 		}
 	}
 
@@ -92,8 +92,8 @@ class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
 			ObjectInputStream objectInputStream = new ConfigurableObjectInputStream(inputStream, this.classLoader);
 			return objectInputStream.readObject();
 		}
-		catch (IOException | ClassNotFoundException e) {
-			throw new CodecException("Cannot deserialize", e);
+		catch (IOException | ClassNotFoundException ex) {
+			throw new CodecException("Cannot deserialize", ex);
 		}
 	}
 

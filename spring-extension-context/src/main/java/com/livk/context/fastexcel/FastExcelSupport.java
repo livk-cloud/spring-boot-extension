@@ -76,8 +76,8 @@ public class FastExcelSupport {
 				builder.withTemplate(file);
 				templateWrite(builder, result);
 			}
-			catch (FileNotFoundException e) {
-				log.info("FastExcel uses the template error:{}", e.getMessage(), e);
+			catch (FileNotFoundException ex) {
+				log.info("FastExcel uses the template error:{}", ex.getMessage(), ex);
 			}
 		}
 		else {

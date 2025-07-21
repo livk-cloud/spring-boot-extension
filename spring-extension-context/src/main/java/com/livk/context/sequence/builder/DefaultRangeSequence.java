@@ -81,8 +81,8 @@ class DefaultRangeSequence implements Sequence {
 				currentRange = manager.nextRange(name);
 			}
 		}
-		catch (Exception e) {
-			throw new SequenceException("Failed to acquire new range for name: " + name, e);
+		catch (Exception ex) {
+			throw new SequenceException("Failed to acquire new range for name: " + name, ex);
 		}
 		finally {
 			lock.unlock();

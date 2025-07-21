@@ -47,8 +47,8 @@ public class CuratorHealthIndicator extends AbstractHealthIndicator {
 			builder.withDetail("connectionString", framework.getZookeeperClient().getCurrentConnectionString())
 				.withDetail("state", state);
 		}
-		catch (Exception e) {
-			builder.down(e);
+		catch (Exception ex) {
+			builder.down(ex);
 		}
 	}
 

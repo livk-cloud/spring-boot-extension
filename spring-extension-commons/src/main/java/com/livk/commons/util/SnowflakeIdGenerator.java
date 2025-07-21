@@ -135,7 +135,7 @@ public class SnowflakeIdGenerator {
 				// 添加适当的延迟，减少 CPU 占用，避免高频轮询
 				Thread.sleep(1); // 睡眠 1 毫秒，避免过多的 CPU 占用
 			}
-			catch (InterruptedException e) {
+			catch (InterruptedException ex) {
 				Thread.currentThread().interrupt(); // 恢复中断状态
 			}
 		}

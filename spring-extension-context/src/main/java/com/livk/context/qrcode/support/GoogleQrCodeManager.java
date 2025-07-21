@@ -80,9 +80,9 @@ public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCode
 			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);
 			return MatrixToImageWriter.toBufferedImage(matrix, config);
 		}
-		catch (WriterException e) {
-			log.error("{}", e.getMessage(), e);
-			throw new QrCodeException("Failed to generate a QRCode", e);
+		catch (WriterException ex) {
+			log.error("{}", ex.getMessage(), ex);
+			throw new QrCodeException("Failed to generate a QRCode", ex);
 		}
 	}
 
@@ -98,8 +98,8 @@ public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCode
 			Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 解码
 			return result.getText();
 		}
-		catch (IOException | NotFoundException e) {
-			throw new QrCodeException(e);
+		catch (IOException | NotFoundException ex) {
+			throw new QrCodeException(ex);
 		}
 	}
 

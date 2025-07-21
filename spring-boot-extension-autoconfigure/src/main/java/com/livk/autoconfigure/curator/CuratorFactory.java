@@ -82,10 +82,10 @@ abstract class CuratorFactory {
 			framework.blockUntilConnected(properties.getBlockUntilConnectedWait(),
 					properties.getBlockUntilConnectedUnit());
 		}
-		catch (InterruptedException e) {
-			log.warn("interrupted", e);
+		catch (InterruptedException ex) {
+			log.warn("interrupted", ex);
 			Thread.currentThread().interrupt();
-			throw new CuratorException(e);
+			throw new CuratorException(ex);
 		}
 		if (log.isTraceEnabled()) {
 			log.trace("connected to zookeeper");

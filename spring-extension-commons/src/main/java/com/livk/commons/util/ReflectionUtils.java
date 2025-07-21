@@ -76,8 +76,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getReadMethod();
 		}
-		catch (Exception e) {
-			log.error("Failed to get the get field method message: {}", e.getMessage(), e);
+		catch (Exception ex) {
+			log.error("Failed to get the get field method message: {}", ex.getMessage(), ex);
 			return null;
 		}
 	}
@@ -105,8 +105,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
 			return descriptor.getWriteMethod();
 		}
-		catch (Exception e) {
-			log.error("Failed to set the get field method message: {}", e.getMessage(), e);
+		catch (Exception ex) {
+			log.error("Failed to set the get field method message: {}", ex.getMessage(), ex);
 			return null;
 		}
 	}

@@ -109,8 +109,8 @@ public abstract class QrCodeSupport {
 		try {
 			ImageIO.write(bufferedImage, formatName, stream);
 		}
-		catch (IOException e) {
-			throw new QrCodeException("The QRCode was written to failure", e);
+		catch (IOException ex) {
+			throw new QrCodeException("The QRCode was written to failure", ex);
 		}
 	}
 

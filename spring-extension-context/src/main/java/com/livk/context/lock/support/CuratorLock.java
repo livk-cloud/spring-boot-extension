@@ -57,8 +57,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 			lock.release();
 			return !isLocked(lock);
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 
@@ -67,8 +67,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 		try {
 			return lock.acquire(waitTime, TimeUnit.SECONDS);
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 
@@ -77,8 +77,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 		try {
 			lock.acquire();
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 

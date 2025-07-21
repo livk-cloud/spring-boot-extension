@@ -86,7 +86,7 @@ public class MinioService extends AbstractService<MinioClient> {
 		try {
 			return client.statObject(StatObjectArgs.builder().bucket(bucketName).object(fileName).build()) != null;
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 	}

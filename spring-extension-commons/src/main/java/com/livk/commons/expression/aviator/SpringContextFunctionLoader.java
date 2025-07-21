@@ -49,7 +49,7 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 			}
 			return this.applicationContext.getBean(name, AviatorFunction.class);
 		}
-		catch (NoSuchBeanDefinitionException e) {
+		catch (NoSuchBeanDefinitionException ex) {
 			return null;
 		}
 	}

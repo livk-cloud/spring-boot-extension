@@ -126,8 +126,8 @@ public class CuratorTemplate implements CuratorOperations {
 		try {
 			return able.forPath(path, data);
 		}
-		catch (Exception e) {
-			throw new CuratorException(e);
+		catch (Exception ex) {
+			throw new CuratorException(ex);
 		}
 	}
 
@@ -135,8 +135,8 @@ public class CuratorTemplate implements CuratorOperations {
 		try {
 			return able.forPath(path);
 		}
-		catch (Exception e) {
-			throw new CuratorException(e);
+		catch (Exception ex) {
+			throw new CuratorException(ex);
 		}
 	}
 

@@ -81,8 +81,8 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 			Thread.currentThread().interrupt();
 			throw new LockException(ie);
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 

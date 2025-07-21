@@ -65,8 +65,8 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 
 				this.writeFile(allImportMap.asMap(), fileObject);
 			}
-			catch (IOException e) {
-				fatalError("Unable to create " + location + ", " + e);
+			catch (IOException ex) {
+				fatalError("Unable to create " + location + ", " + ex);
 			}
 		}
 	}
@@ -104,7 +104,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 			}
 			return providers;
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return LinkedHashMultimap.create();
 		}
 	}

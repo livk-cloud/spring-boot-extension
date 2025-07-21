@@ -53,8 +53,8 @@ final class FactoryProxySupport {
 		try {
 			return type.getConstructor(clientType).newInstance(client);
 		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		catch (Exception ex) {
+			throw new IllegalArgumentException(ex);
 		}
 	}
 
@@ -77,8 +77,8 @@ final class FactoryProxySupport {
 			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
 				.getLoaded();
 		}
-		catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException(e);
+		catch (NoSuchMethodException ex) {
+			throw new IllegalArgumentException(ex);
 		}
 	}
 

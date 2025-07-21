@@ -48,9 +48,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			}
 			return isLocked;
 		}
-		catch (LockException e) {
+		catch (LockException ex) {
 			threadLocal.remove();
-			throw e;
+			throw ex;
 		}
 	}
 
@@ -66,9 +66,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			}
 			threadLocal.set(lock);
 		}
-		catch (LockException e) {
+		catch (LockException ex) {
 			threadLocal.remove();
-			throw e;
+			throw ex;
 		}
 	}
 

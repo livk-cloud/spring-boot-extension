@@ -73,7 +73,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 		try {
 			ExcelDataType.match(type);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 		String contentType = request.getContentType();

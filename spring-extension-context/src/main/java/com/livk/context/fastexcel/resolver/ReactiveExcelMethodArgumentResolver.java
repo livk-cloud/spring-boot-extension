@@ -100,7 +100,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 			}
 			ExcelDataType.match(type.getRawClass());
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 		return mediaType.toString().startsWith(MediaType.MULTIPART_FORM_DATA_VALUE);

@@ -115,8 +115,8 @@ public class AnnotationMetadataResolver {
 					}
 				}
 			}
-			catch (IOException e) {
-				throw new ResourceAccessException("Failed to read metadata", e);
+			catch (IOException ex) {
+				throw new ResourceAccessException("Failed to read metadata", ex);
 			}
 		}
 		return result;

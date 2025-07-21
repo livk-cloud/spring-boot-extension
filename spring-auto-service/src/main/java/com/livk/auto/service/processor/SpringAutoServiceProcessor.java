@@ -80,8 +80,8 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 				this.writeFile(allImports, fileObject);
 			}
-			catch (IOException e) {
-				fatalError("Unable to create " + resourceFile + ", " + e);
+			catch (IOException ex) {
+				fatalError("Unable to create " + resourceFile + ", " + ex);
 				return;
 			}
 		}

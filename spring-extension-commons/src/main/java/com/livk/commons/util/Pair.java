@@ -184,7 +184,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		try {
 			return (Pair<K, V>) super.clone();
 		}
-		catch (CloneNotSupportedException e) {
+		catch (CloneNotSupportedException ex) {
 			throw new AssertionError();
 		}
 	}

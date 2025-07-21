@@ -73,8 +73,8 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.writeValueAsBytes(value);
 		}
-		catch (JsonProcessingException e) {
-			throw new CodecException("Could not serialize value", e);
+		catch (JsonProcessingException ex) {
+			throw new CodecException("Could not serialize value", ex);
 		}
 	}
 
@@ -82,8 +82,8 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.readValue(bytes, type);
 		}
-		catch (IOException e) {
-			throw new CodecException("Could not deserialize value", e);
+		catch (IOException ex) {
+			throw new CodecException("Could not deserialize value", ex);
 		}
 	}
 

@@ -70,8 +70,8 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 				template.process(context, result);
 				return returnType.cast(result.toString());
 			}
-			catch (IOException | TemplateException e) {
-				throw new IllegalArgumentException(e);
+			catch (IOException | TemplateException ex) {
+				throw new IllegalArgumentException(ex);
 			}
 		}
 		throw new UnsupportedOperationException("Classes other than String and its parent class are not supported");

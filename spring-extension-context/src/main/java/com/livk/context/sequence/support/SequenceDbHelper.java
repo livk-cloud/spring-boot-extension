@@ -60,8 +60,8 @@ class SequenceDbHelper {
 			DatabaseMetaData metaData = conn.getMetaData();
 			return metaData.getDatabaseProductName();
 		}
-		catch (Exception e) {
-			throw new IllegalStateException("Failed to determine database type", e);
+		catch (Exception ex) {
+			throw new IllegalStateException("Failed to determine database type", ex);
 		}
 	}
 

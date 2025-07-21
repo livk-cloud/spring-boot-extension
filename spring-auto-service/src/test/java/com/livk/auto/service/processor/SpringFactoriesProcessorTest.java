@@ -63,8 +63,8 @@ class SpringFactoriesProcessorTest {
 					assertTrue(pro.containsKey(factoryClass.getName()));
 					assertEquals(type.getName(), pro.get(factoryClass.getName()));
 				}
-				catch (IOException e) {
-					throw new CompilationException(e, SourceFile.forTestClass(type));
+				catch (IOException ex) {
+					throw new CompilationException(ex, SourceFile.forTestClass(type));
 				}
 			});
 	}

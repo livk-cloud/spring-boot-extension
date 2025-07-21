@@ -83,8 +83,8 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 				try {
 					sink.next(inputStream.readAllBytes());
 				}
-				catch (IOException e) {
-					sink.error(Exceptions.bubble(e));
+				catch (IOException ex) {
+					sink.error(Exceptions.bubble(ex));
 				}
 			});
 	}
