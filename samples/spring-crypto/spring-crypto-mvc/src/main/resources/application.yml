@@ -1,5 +1,0 @@
-spring:
-  crypto:
-    type: aes
-    metadata:
-      salt: livk-salt-id

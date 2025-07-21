@@ -1,7 +1,0 @@
-spring:
-  crypto:
-    type: pbe
-    metadata:
-      password: 12345678
-      salt: livksalt
-      interationCount: 1000
