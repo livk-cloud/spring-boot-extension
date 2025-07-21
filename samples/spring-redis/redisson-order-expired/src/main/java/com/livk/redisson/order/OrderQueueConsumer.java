@@ -22,6 +22,7 @@ import com.livk.redisson.order.entity.Employer;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.RedisException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,9 @@ public class OrderQueueConsumer implements Runnable, InitializingBean, Disposabl
 						employer.getPutTime());
 			}
 			catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				log.warn("interrupted", e);
+				Thread.currentThread().interrupt();
+				throw new RedisException(e);
 			}
 		}
 	}

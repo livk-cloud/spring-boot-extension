@@ -53,8 +53,9 @@ public class LockController {
 			log.info("{} is locked", id);
 			Thread.sleep(1000);
 		}
-		catch (InterruptedException ignored) {
-
+		catch (InterruptedException e) {
+			log.warn("interrupted", e);
+			Thread.currentThread().interrupt();
 		}
 		finally {
 			lock.unlock();
