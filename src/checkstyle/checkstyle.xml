@@ -19,7 +19,6 @@
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringHideUtilityClassConstructor"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringImportOrderCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLambdaCheck"/>
-        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLeadingWhitespaceCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodOrderCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodVisibilityCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringNoThisCheck"/>
