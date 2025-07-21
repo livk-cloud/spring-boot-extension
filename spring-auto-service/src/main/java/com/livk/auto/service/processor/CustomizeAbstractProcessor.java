@@ -101,7 +101,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	/**
 	 * Set supported annotations
-	 * @return Set class
+	 * @return set annotation class
 	 */
 	protected abstract Class<? extends Annotation> getSupportedAnnotation();
 

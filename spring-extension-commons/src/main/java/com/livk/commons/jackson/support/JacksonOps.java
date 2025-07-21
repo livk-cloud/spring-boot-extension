@@ -40,7 +40,7 @@ public interface JacksonOps {
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
 	 * @param readVal 待读取的数据
-	 * @param typeReference TypeReference包装的类型
+	 * @param typeReference typeReference包装的类型
 	 * @return 相关实例
 	 */
 	<T> T readValue(Object readVal, TypeReference<T> typeReference);

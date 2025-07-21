@@ -32,7 +32,7 @@ public interface QrCodeManager {
 	/**
 	 * 生成二维码
 	 * @param entity 二维码实体
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	BufferedImage generate(QrCodeEntity<?> entity);
 
@@ -42,7 +42,7 @@ public interface QrCodeManager {
 	 * @param width 二维码宽度
 	 * @param height 二维码高度
 	 * @param type 图片类型
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	default BufferedImage generate(String content, int width, int height, PicType type) {
 		return generate(content, width, height, new MatrixToImageConfig(), type);
@@ -55,7 +55,7 @@ public interface QrCodeManager {
 	 * @param height 二维码高度
 	 * @param config 二维码颜色配置
 	 * @param type 图片类型
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type);
 

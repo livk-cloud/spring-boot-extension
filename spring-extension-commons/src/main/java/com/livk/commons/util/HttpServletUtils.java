@@ -116,7 +116,7 @@ public class HttpServletUtils {
 	/**
 	 * 解析request的param转成MultiValueMap
 	 * @param request request
-	 * @return MultiValueMap
+	 * @return multiValueMap
 	 */
 	public HttpParameters params(HttpServletRequest request) {
 		Map<String, List<String>> map = Maps.transformValues(request.getParameterMap(), Lists::newArrayList);

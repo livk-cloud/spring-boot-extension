@@ -117,10 +117,10 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 
 	/**
 	 * 根据key获取AnnotationAttributes数据，并转成枚举数组
-	 * @param attributes AnnotationAttributes
+	 * @param attributes annotationAttributes
 	 * @param key key
 	 * @param <E> 枚举类型
-	 * @return E[]
+	 * @return enum[]
 	 */
 	@SuppressWarnings("unchecked")
 	public <E extends Enum<?>> E[] getValue(AnnotationAttributes attributes, String key) {

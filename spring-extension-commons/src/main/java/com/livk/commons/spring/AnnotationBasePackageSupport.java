@@ -71,7 +71,7 @@ public class AnnotationBasePackageSupport {
 
 	/**
 	 * 从 Spring BeanFactory 中获取自动配置的基础包路径。 如果 BeanFactory 未配置自动包路径，则返回空数组。
-	 * @param beanFactory Spring 的 BeanFactory 实例
+	 * @param beanFactory spring 的 BeanFactory 实例
 	 * @return 自动配置的基础包路径数组
 	 */
 	public String[] getBasePackages(BeanFactory beanFactory) {

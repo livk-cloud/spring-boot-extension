@@ -64,7 +64,7 @@ public class JsonMapperUtils {
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
 	 * @param obj 待读取的数据
-	 * @param typeReference TypeReference包装的类型
+	 * @param typeReference typeReference包装的类型
 	 * @return 相关实例
 	 */
 	public static <T> T readValue(Object obj, TypeReference<T> typeReference) {
@@ -114,8 +114,8 @@ public class JsonMapperUtils {
 	 * @param <K> the type parameter
 	 * @param <V> the type parameter
 	 * @param obj the obj
-	 * @param keyClass K Class
-	 * @param valueClass V Class
+	 * @param keyClass k Class
+	 * @param valueClass v Class
 	 * @return the map
 	 */
 	public static <K, V> Map<K, V> readValueMap(Object obj, Class<K> keyClass, Class<V> valueClass) {
@@ -170,7 +170,7 @@ public class JsonMapperUtils {
 	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
 	 * @param type 返回类型
-	 * @return List
+	 * @return list
 	 */
 	public static <T> List<T> convertValueList(Object fromValue, Class<T> type) {
 		CollectionType collectionType = TypeFactoryUtils.listType(type);
@@ -184,7 +184,7 @@ public class JsonMapperUtils {
 	 * @param fromValue the fromValue
 	 * @param keyClass the key class
 	 * @param valueClass the value class
-	 * @return MAP
+	 * @return map
 	 */
 	public static <K, V> Map<K, V> convertValueMap(Object fromValue, Class<K> keyClass, Class<V> valueClass) {
 		MapType mapType = TypeFactoryUtils.mapType(keyClass, valueClass);

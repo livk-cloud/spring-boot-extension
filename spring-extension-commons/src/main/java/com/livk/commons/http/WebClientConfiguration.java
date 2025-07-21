@@ -52,7 +52,7 @@ public class WebClientConfiguration {
 	 * spring官方建议使用{@link WebClient} <a href=
 	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
 	 * @param builder the web client builder
-	 * @return WebClient web client
+	 * @return webClient
 	 */
 	@Bean
 	@ConditionalOnMissingBean

@@ -111,7 +111,7 @@ public class JsonNodeUtils {
 	 * @param fieldName the field name
 	 * @param javaType the java type
 	 * @param mapper the mapper
-	 * @return T t
+	 * @return entity
 	 */
 	public <T> T findValue(JsonNode jsonNode, String fieldName, JavaType javaType, ObjectMapper mapper) {
 		if (jsonNode == null) {

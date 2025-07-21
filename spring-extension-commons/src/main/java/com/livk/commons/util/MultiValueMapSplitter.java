@@ -88,7 +88,7 @@ public final class MultiValueMapSplitter {
 	 * MultiValueMapSplitter.of("&amp;", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
 	 * "c"]}
 	 * @param sequence 待分割的字符串
-	 * @return MultiValueMap
+	 * @return multiValueMap
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence) {
 		return split(sequence, "^$");
@@ -103,7 +103,7 @@ public final class MultiValueMapSplitter {
 	 * "4"], a=["b", "c"]}
 	 * @param sequence 待分割的字符串
 	 * @param regex value分割符
-	 * @return MultiValueMap
+	 * @return multiValueMap
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence, String regex) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();

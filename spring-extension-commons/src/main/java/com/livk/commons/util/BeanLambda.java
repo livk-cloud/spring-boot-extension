@@ -35,7 +35,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	/**
 	 * 获取方法名称
 	 * @param <T> 相关泛型
-	 * @param function BeanLambdaFunc表达式
+	 * @param function beanLambdaFunc表达式
 	 * @return methodName
 	 */
 	static <T> String methodName(BeanLambda<T> function) {
@@ -45,7 +45,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	/**
 	 * 获取方法
 	 * @param <T> 相关泛型
-	 * @param function BeanLambdaFunc表达式
+	 * @param function beanLambdaFunc表达式
 	 * @return method
 	 */
 	static <T> Method method(BeanLambda<T> function) {
@@ -55,7 +55,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	/**
 	 * 获取字段名称
 	 * @param <T> 相关泛型
-	 * @param function BeanLambdaFunc表达式
+	 * @param function beanLambdaFunc表达式
 	 * @return fieldName
 	 */
 	@SneakyThrows
@@ -66,7 +66,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	/**
 	 * 获取字段
 	 * @param <T> 相关泛型
-	 * @param function BeanLambdaFunc表达式
+	 * @param function beanLambdaFunc表达式
 	 * @return field
 	 */
 	@SneakyThrows

@@ -51,7 +51,7 @@ public class ContextSnapshots {
 
 	/**
 	 * 创建一个Supplier ContextSnapshot
-	 * @return Supplier
+	 * @return supplier
 	 * @deprecated use {@link #CAPTURE_FACTORY ::captureAll()}
 	 */
 	@Deprecated(since = "1.5.2")
@@ -61,7 +61,7 @@ public class ContextSnapshots {
 
 	/**
 	 * 创建一个ContextSnapshot
-	 * @return ContextSnapshot
+	 * @return contextSnapshot
 	 */
 	public static ContextSnapshot capture() {
 		return CAPTURE_FACTORY.captureAll();
@@ -70,7 +70,7 @@ public class ContextSnapshots {
 	/**
 	 * 使用ContextSnapshot包装runnable
 	 * @param runnable 待包装的Runnable
-	 * @return Runnable
+	 * @return runnable
 	 */
 	public static Runnable wrap(Runnable runnable) {
 		return capture().wrap(runnable);
@@ -80,7 +80,7 @@ public class ContextSnapshots {
 	 * 使用ContextSnapshot包装Callable
 	 * @param <T> 泛型
 	 * @param callable 待包装的Callable
-	 * @return Callable
+	 * @return callable
 	 */
 	public static <T> Callable<T> wrap(Callable<T> callable) {
 		return capture().wrap(callable);
@@ -90,7 +90,7 @@ public class ContextSnapshots {
 	 * 使用ContextSnapshot包装Consumer
 	 * @param <T> 泛型
 	 * @param consumer 待包装的Consumer
-	 * @return Consumer
+	 * @return consumer
 	 */
 	public static <T> Consumer<T> wrap(Consumer<T> consumer) {
 		return capture().wrap(consumer);
@@ -99,7 +99,7 @@ public class ContextSnapshots {
 	/**
 	 * 使用ContextSnapshot包装Executor
 	 * @param executor 待包装的Executor
-	 * @return Executor
+	 * @return executor
 	 */
 	public static Executor wrap(Executor executor) {
 		return capture().wrapExecutor(executor);
@@ -108,7 +108,7 @@ public class ContextSnapshots {
 	/**
 	 * 使用ContextSnapshot包装ExecutorService
 	 * @param service 待包装的ExecutorService
-	 * @return ExecutorService
+	 * @return executorService
 	 */
 	public static ExecutorService wrap(ExecutorService service) {
 		return ContextExecutorService.wrap(service, CAPTURE_FACTORY);
@@ -117,7 +117,7 @@ public class ContextSnapshots {
 	/**
 	 * 使用ContextSnapshot包装ScheduledExecutorService
 	 * @param service 待包装的ScheduledExecutorService
-	 * @return ScheduledExecutorService
+	 * @return scheduledExecutorService
 	 */
 	public static ScheduledExecutorService wrap(ScheduledExecutorService service) {
 		return ContextScheduledExecutorService.wrap(service, CAPTURE_FACTORY);

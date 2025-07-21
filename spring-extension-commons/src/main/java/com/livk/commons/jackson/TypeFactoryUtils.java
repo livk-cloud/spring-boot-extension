@@ -41,7 +41,7 @@ public class TypeFactoryUtils {
 
 	/**
 	 * 获取TypeFactory
-	 * @return TypeFactory
+	 * @return typeFactory
 	 */
 	public static TypeFactory instance() {
 		return TypeFactory.defaultInstance();
@@ -50,7 +50,7 @@ public class TypeFactoryUtils {
 	/**
 	 * 构建一个JavaType
 	 * @param targetClass the target class
-	 * @return JavaType
+	 * @return javaType
 	 */
 	public static JavaType javaType(Class<?> targetClass) {
 		return instance().constructType(targetClass);
@@ -60,7 +60,7 @@ public class TypeFactoryUtils {
 	 * 构建一个含有泛型的JavaType
 	 * @param targetClass the target class
 	 * @param generics the generics
-	 * @return JavaType
+	 * @return javaType
 	 */
 	public static JavaType javaType(Class<?> targetClass, Class<?>... generics) {
 		return instance().constructParametricType(targetClass, generics);
@@ -70,7 +70,7 @@ public class TypeFactoryUtils {
 	 * 构建一个含有泛型的JavaType
 	 * @param targetClass the target class
 	 * @param generics the generics
-	 * @return JavaType
+	 * @return javaType
 	 */
 	public static JavaType javaType(Class<?> targetClass, JavaType... generics) {
 		return instance().constructParametricType(targetClass, generics);
@@ -79,7 +79,7 @@ public class TypeFactoryUtils {
 	/**
 	 * TypeReference转JavaType
 	 * @param typeReference the type reference
-	 * @return JavaType
+	 * @return javaType
 	 */
 	public static JavaType javaType(TypeReference<?> typeReference) {
 		return instance().constructType(typeReference);
@@ -88,7 +88,7 @@ public class TypeFactoryUtils {
 	/**
 	 * ResolvableType转成Jackson JavaType
 	 * @param resolvableType the resolvable type
-	 * @return JavaType
+	 * @return javaType
 	 * @see ResolvableType
 	 */
 	public static JavaType javaType(ResolvableType resolvableType) {
@@ -106,7 +106,7 @@ public class TypeFactoryUtils {
 	 * 构建一个CollectionType
 	 * @param <T> the type parameter
 	 * @param type the target class
-	 * @return CollectionType
+	 * @return collectionType
 	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
 	 */
 	@Deprecated(since = "1.4.3")
@@ -117,7 +117,7 @@ public class TypeFactoryUtils {
 	/**
 	 * 构建一个CollectionType
 	 * @param javaType the java type
-	 * @return CollectionType
+	 * @return collectionType
 	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
 	 */
 	@Deprecated(since = "1.4.3")
@@ -128,7 +128,7 @@ public class TypeFactoryUtils {
 	/**
 	 * 构建一个SetType
 	 * @param javaType the java type
-	 * @return SetType
+	 * @return setType
 	 */
 	public static CollectionType setType(JavaType javaType) {
 		return instance().constructCollectionType(Set.class, javaType);
@@ -138,7 +138,7 @@ public class TypeFactoryUtils {
 	 * 构建一个SetType
 	 * @param <T> the type parameter
 	 * @param type the target class
-	 * @return SetType
+	 * @return setType
 	 */
 	public static <T> CollectionType setType(Class<T> type) {
 		return instance().constructCollectionType(Set.class, type);
@@ -148,7 +148,7 @@ public class TypeFactoryUtils {
 	 * 构建一个ListType
 	 * @param <T> the type parameter
 	 * @param type the target class
-	 * @return ListType
+	 * @return listType
 	 */
 	public static <T> CollectionType listType(Class<T> type) {
 		return instance().constructCollectionType(List.class, type);
@@ -157,7 +157,7 @@ public class TypeFactoryUtils {
 	/**
 	 * 构建一个ListType
 	 * @param javaType the java type
-	 * @return ListType
+	 * @return listType
 	 */
 	public static CollectionType listType(JavaType javaType) {
 		return instance().constructCollectionType(List.class, javaType);
@@ -169,7 +169,7 @@ public class TypeFactoryUtils {
 	 * @param <V> the type parameter
 	 * @param keyClass the key class
 	 * @param valueClass the value class
-	 * @return MapType
+	 * @return mapType
 	 */
 	public static <K, V> MapType mapType(Class<K> keyClass, Class<V> valueClass) {
 		return instance().constructMapType(Map.class, keyClass, valueClass);
@@ -179,7 +179,7 @@ public class TypeFactoryUtils {
 	 * 构建一个MapType
 	 * @param kType the k type
 	 * @param vType the v type
-	 * @return MapType
+	 * @return mapType
 	 */
 	public static MapType mapType(JavaType kType, JavaType vType) {
 		return instance().constructMapType(Map.class, kType, vType);

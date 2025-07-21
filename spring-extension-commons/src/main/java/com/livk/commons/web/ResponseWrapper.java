@@ -92,8 +92,8 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * 根据默认编码获取response body数据
-	 * @return String
-	 * @see characterEncoding
+	 * @return string
+	 * @see #characterEncoding
 	 */
 	public String getContentAsString() {
 		return getContentAsString(this.characterEncoding);
@@ -102,7 +102,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	/**
 	 * 根据编码获取response body数据
 	 * @param charset 编码格式
-	 * @return String
+	 * @return string
 	 */
 	public String getContentAsString(Charset charset) {
 		return this.buffer.toString(charset);

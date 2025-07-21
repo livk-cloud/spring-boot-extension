@@ -15,9 +15,9 @@
 
     <module name="io.spring.javaformat.checkstyle.SpringChecks">
         <!--https://github.com/spring-io/spring-javaformat/tree/main/spring-javaformat/spring-javaformat-checkstyle/src/main/java/io/spring/javaformat/checkstyle/check-->
+		<!--	lombok.experimental.UtilityClass使用之后此条检查无法通过	-->
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringHideUtilityClassConstructor"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringImportOrderCheck"/>
-        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringJavadocCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLambdaCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLeadingWhitespaceCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodOrderCheck"/>

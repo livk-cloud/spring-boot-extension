@@ -82,7 +82,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	/**
 	 * 使用BeanWrapper将Bean转成Map
 	 * @param source bean
-	 * @return Map
+	 * @return map
 	 * @see BeanWrapper
 	 */
 	public static Map<String, Object> convert(Object source) {

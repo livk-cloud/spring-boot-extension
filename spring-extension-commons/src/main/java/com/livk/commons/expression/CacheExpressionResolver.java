@@ -79,7 +79,7 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 	/**
 	 * 对表达式进行处理生成EXPRESSION
 	 * @param value 表达式
-	 * @return EXPRESSION expression
+	 * @return expression
 	 */
 	protected abstract EXPRESSION compile(String value);
 

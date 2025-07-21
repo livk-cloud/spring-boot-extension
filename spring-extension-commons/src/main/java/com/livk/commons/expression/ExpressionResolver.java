@@ -33,7 +33,7 @@ public interface ExpressionResolver {
 	 * @param value 表达式
 	 * @param context 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Context context, Class<T> returnType);
 
@@ -43,7 +43,7 @@ public interface ExpressionResolver {
 	 * @param value 表达式
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
 
@@ -54,7 +54,7 @@ public interface ExpressionResolver {
 	 * @param method method
 	 * @param args args
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
 
@@ -66,7 +66,7 @@ public interface ExpressionResolver {
 	 * @param args args
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 * @see #evaluate(String, Context, Class)
 	 * @deprecated use {@link #evaluate(String, Context, Class)}
 	 */

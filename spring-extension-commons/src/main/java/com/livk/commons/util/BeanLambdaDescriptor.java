@@ -57,8 +57,8 @@ final class BeanLambdaDescriptor {
 	 * <p>
 	 * 使用缓存避免无效加载
 	 * @param <T> 相关泛型
-	 * @param function BeanLambdaFunc表达式
-	 * @return BeanLambdaDescriptor
+	 * @param function beanLambdaFunc表达式
+	 * @return beanLambdaDescriptor
 	 */
 	@SneakyThrows
 	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {

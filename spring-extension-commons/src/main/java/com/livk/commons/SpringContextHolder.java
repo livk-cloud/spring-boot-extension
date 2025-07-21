@@ -81,7 +81,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	/**
 	 * 根据BeanName获取Bean
 	 * @param <T> 泛型
-	 * @param name BeanName
+	 * @param name beanName
 	 * @return spring bean
 	 */
 	@SuppressWarnings("unchecked")
@@ -102,7 +102,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	/**
 	 * 根据BeanName和Bean Type获取Bean
 	 * @param <T> 泛型
-	 * @param name BeanName
+	 * @param name beanName
 	 * @param typeClass 类型
 	 * @return spring bean
 	 */
@@ -218,7 +218,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	/**
 	 * 注册bean
 	 * @param beanDefinition bean定义
-	 * @param beanName BeanName
+	 * @param beanName beanName
 	 */
 	public static void registerBean(BeanDefinition beanDefinition, String beanName) {
 		if (IOC.getBeanFactory() instanceof DefaultListableBeanFactory defaultBeanFactory) {

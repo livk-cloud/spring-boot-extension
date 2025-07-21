@@ -72,7 +72,7 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 添加一个子节点,出现相同ID则无法添加
-	 * @param treeNo TreeNode
+	 * @param treeNo treeNode
 	 * @return boolean
 	 */
 	public boolean addChild(TreeNode<I, T> treeNo) {
@@ -92,7 +92,7 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 设置子节点,会根据父子关系进行自动匹配
-	 * @param nodes TreeNode List
+	 * @param nodes treeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
 		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();
