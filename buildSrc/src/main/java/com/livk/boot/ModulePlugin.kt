@@ -23,7 +23,11 @@ import com.livk.boot.tasks.JacocoExpand
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.plugins.quality.CheckstyleExtension
+import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.tasks.bundling.Jar
+import java.io.File
 
 /**
  * @author livk
@@ -34,6 +38,23 @@ class ModulePlugin : Plugin<Project> {
 		project.pluginManager.apply(CorePlugin::class.java)
 		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
 		project.pluginManager.apply(JacocoExpand::class.java)
+
+		project.pluginManager.apply(CheckstylePlugin::class.java)
+
+		project.extensions.getByType(CheckstyleExtension::class.java).apply {
+			toolVersion = "9.3"
+			configFile = File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
+		}
+
+		val version = project.rootProject
+			.extensions
+			.getByType(VersionCatalogsExtension::class.java)
+			.named("libs")
+			.findVersion("spring-javaformat")
+			.get()
+			.displayName
+
+		project.dependencies.add("checkstyle", "io.spring.javaformat:spring-javaformat-checkstyle:${version}")
 
 		val extractResourcesProvider =
 			project.tasks.register("extractLegalResources", ExtractResources::class.java) {

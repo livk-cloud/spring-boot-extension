@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*[\\/]samples[\\/].*\.java$"/>
+    </module>
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*[\\/]spring-boot-extension-tests[\\/].*\.java$"/>
+    </module>
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*[\\/]protobuf[\\/].*\.java$"/>
+    </module>
+
+    <module name="io.spring.javaformat.checkstyle.SpringChecks">
+        <!--https://github.com/spring-io/spring-javaformat/tree/main/spring-javaformat/spring-javaformat-checkstyle/src/main/java/io/spring/javaformat/checkstyle/check-->
+        <property name="excludes"
+                  value="io.spring.javaformat.checkstyle.check.SpringAnnotationAttributeConciseValueCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringAnnotationLocationCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringAvoidStaticImportCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringCatchCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringDeprecatedCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringHeaderCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringHideUtilityClassConstructor"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringImportOrderCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringJavadocCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLambdaCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLeadingWhitespaceCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodOrderCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodVisibilityCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringNoThisCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringNoWhitespaceBeforeCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringParenPadCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringTernaryCheck"/>
+        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringTestFileNameCheck"/>
+
+        <!--https://github.com/checkstyle/checkstyle/tree/master/src/main/java/com/puppycrawl/tools/checkstyle/checks-->
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedJavaCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.AtclauseOrderCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedCheck"/>
+        <property name="excludes"
+                  value="com.puppycrawl.tools.checkstyle.checks.coding.UnnecessarySemicolonInEnumerationCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.blocks.AvoidNestedBlocksCheck"/>
+    </module>
+</module>
