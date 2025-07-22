@@ -31,11 +31,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -56,8 +54,10 @@ class HttpServletUtilsTests {
 	void request() {
 		ServletWebRequest servletWebRequest = new ServletWebRequest(request, response);
 		RequestContextHolder.setRequestAttributes(servletWebRequest);
+
 		HttpServletRequest req = HttpServletUtils.request();
-		assertEquals(request, req);
+		assertThat(req).isSameAs(request);
+
 		RequestContextHolder.resetRequestAttributes();
 	}
 
@@ -65,8 +65,10 @@ class HttpServletUtilsTests {
 	void response() {
 		ServletWebRequest servletWebRequest = new ServletWebRequest(request, response);
 		RequestContextHolder.setRequestAttributes(servletWebRequest);
+
 		HttpServletResponse resp = HttpServletUtils.response();
-		assertEquals(response, resp);
+		assertThat(resp).isSameAs(response);
+
 		RequestContextHolder.resetRequestAttributes();
 	}
 
@@ -76,9 +78,9 @@ class HttpServletUtilsTests {
 		request.addHeader(HttpHeaders.USER_AGENT, "test");
 
 		HttpHeaders headers = HttpServletUtils.headers(request);
-		assertEquals(MediaType.APPLICATION_JSON_VALUE, headers.getFirst(HttpHeaders.CONTENT_TYPE));
-		assertEquals("test", headers.getFirst(HttpHeaders.USER_AGENT));
-		assertEquals(2, headers.size());
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+		assertThat(headers.getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
+		assertThat(headers.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -87,9 +89,7 @@ class HttpServletUtilsTests {
 		request.setAttribute("password", "123456");
 
 		Map<String, Object> attributes = HttpServletUtils.attributes(request);
-		assertEquals("livk", attributes.get("username"));
-		assertEquals("123456", attributes.get("password"));
-		assertEquals(2, attributes.size());
+		assertThat(attributes).containsEntry("username", "livk").containsEntry("password", "123456").hasSize(2);
 	}
 
 	@Test
@@ -98,14 +98,14 @@ class HttpServletUtilsTests {
 		request.addParameter("password", "123456");
 
 		HttpParameters parameters = HttpServletUtils.params(request);
-		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
-		assertLinesMatch(List.of("123456"), parameters.get("password"));
-		assertEquals(2, parameters.size());
+		assertThat(parameters.get("username")).containsExactly("livk", "root", "admin");
+		assertThat(parameters.get("password")).containsExactly("123456");
+		assertThat(parameters).hasSize(2);
 	}
 
 	@Test
 	void realIp() {
-		assertEquals("127.0.0.1", HttpServletUtils.realIp(request));
+		assertThat(HttpServletUtils.realIp(request)).isEqualTo("127.0.0.1");
 	}
 
 	@Test
@@ -114,8 +114,8 @@ class HttpServletUtilsTests {
 		HttpServletUtils.outJson(response, result);
 
 		JsonNode node = JsonMapperUtils.readTree(response.getContentAsByteArray());
-		assertEquals("livk", node.get("username").asText());
-		assertEquals("123456", node.get("password").asText());
+		assertThat(node.get("username").asText()).isEqualTo("livk");
+		assertThat(node.get("password").asText()).isEqualTo("123456");
 	}
 
 	@Test
@@ -123,7 +123,7 @@ class HttpServletUtilsTests {
 		HttpServletUtils.out(response, "out buffer text", MediaType.TEXT_PLAIN_VALUE);
 
 		String result = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
-		assertEquals("out buffer text", result);
+		assertThat(result).isEqualTo("out buffer text");
 	}
 
 }

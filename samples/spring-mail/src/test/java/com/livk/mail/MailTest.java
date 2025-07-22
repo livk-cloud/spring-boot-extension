@@ -40,8 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -90,7 +89,7 @@ class MailTest {
 		Template template = configuration.getTemplate("ac.ftl");
 		String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, root);
 		System.out.println(text);
-		assertNotNull(text);
+		assertThat(text).isNotBlank();
 	}
 
 	@Test
@@ -100,9 +99,9 @@ class MailTest {
 		Template template = new Template("template", new StringReader(txt), configuration);
 		String result = "www.baidu.com -> 123456";
 		String s1 = FreemarkerUtils.processTemplateIntoString(template, map);
-		assertEquals(result, s1);
+		assertThat(s1).isNotBlank().isEqualTo(result);
 		String s2 = FreemarkerUtils.parse(txt, map);
-		assertEquals(result, s2);
+		assertThat(s2).isNotBlank().isEqualTo(result);
 	}
 
 	@Test
@@ -117,7 +116,7 @@ class MailTest {
 		String resultSql = "INSERT INTO sys_user(user_name,sex,age,address,status,create_time,update_time) VALUES (livk,1,26,shenzhen,1,"
 				+ format + "," + format + "),(livk,1,26,shenzhen,1," + format + "," + format + ")";
 		String parse = parse(sql, map);
-		assertEquals(resultSql, parse);
+		assertThat(parse).isNotBlank().isEqualTo(resultSql);
 	}
 
 	private String parse(String freemarker, Map<String, Object> model) {

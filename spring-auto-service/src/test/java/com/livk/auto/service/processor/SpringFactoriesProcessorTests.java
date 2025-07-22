@@ -30,8 +30,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -59,8 +58,11 @@ class SpringFactoriesProcessorTests {
 						properties.load(inputStream);
 						pro.putAll(properties);
 					}
-					assertTrue(pro.containsKey(factoryClass.getName()));
-					assertEquals(type.getName(), pro.get(factoryClass.getName()));
+					String key = factoryClass.getName();
+
+					assertThat(pro).containsKey(key);
+					assertThat(pro.get(key)).isEqualTo(type.getName());
+
 				}
 				catch (IOException ex) {
 					throw new CompilationException(ex, SourceFile.forTestClass(type));

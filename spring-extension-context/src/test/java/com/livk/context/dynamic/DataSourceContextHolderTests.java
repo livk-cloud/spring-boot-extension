@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -32,17 +31,19 @@ class DataSourceContextHolderTests {
 	@Test
 	void test() {
 
-		try (ExecutorService service = Executors.newFixedThreadPool(1)) {
+		try (ExecutorService service = Executors.newFixedThreadPool(2)) {
 			String datasource = "mysql";
 
 			DataSourceContextHolder.switchDataSource(datasource, true);
-			assertEquals(datasource, DataSourceContextHolder.getDataSource());
-			service.execute(() -> assertEquals(datasource, DataSourceContextHolder.getDataSource()));
+			assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource);
+			service.execute(() -> assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource));
 			DataSourceContextHolder.clear();
 
+			assertThat(DataSourceContextHolder.getDataSource()).isNull();
+
 			DataSourceContextHolder.switchDataSource(datasource, false);
-			assertEquals(datasource, DataSourceContextHolder.getDataSource());
-			service.execute(() -> assertNull(DataSourceContextHolder.getDataSource()));
+			assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource);
+			service.execute(() -> assertThat(DataSourceContextHolder.getDataSource()).isNull());
 			DataSourceContextHolder.clear();
 		}
 	}

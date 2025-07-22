@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -40,15 +40,15 @@ class GenericMapstructServiceTests {
 	void test() {
 		DoubleConverter converter = new DoubleConverter();
 
-		assertEquals(converter, service.addConverter(converter));
+		assertThat(service.addConverter(converter)).isEqualTo(converter);
 
-		assertEquals(123, service.convert("123", Integer.class));
-		assertEquals(123L, service.convert("123", Long.class));
-		assertEquals(123.1, service.convert("123.1", Double.class));
+		assertThat(service.convert("123", Integer.class)).isEqualTo(123);
+		assertThat(service.convert("123", Long.class)).isEqualTo(123L);
+		assertThat(service.convert("123.1", Double.class)).isEqualTo(123.1);
 
-		assertEquals("123", service.convert(123, String.class));
-		assertEquals("123", service.convert(123L, String.class));
-		assertEquals("123.1", service.convert(123.1, String.class));
+		assertThat(service.convert(123, String.class)).isEqualTo("123");
+		assertThat(service.convert(123L, String.class)).isEqualTo("123");
+		assertThat(service.convert(123.1, String.class)).isEqualTo("123.1");
 	}
 
 	@TestConfiguration

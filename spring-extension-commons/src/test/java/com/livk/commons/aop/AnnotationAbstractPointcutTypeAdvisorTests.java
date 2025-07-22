@@ -25,9 +25,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -38,13 +36,16 @@ class AnnotationAbstractPointcutTypeAdvisorTests {
 	void test() {
 		MyAnnotationAbstractPointcutTypeAdvisor advisor = new MyAnnotationAbstractPointcutTypeAdvisor();
 
-		assertEquals(AnnotationMatchingPointcut.class, advisor.getPointcut().getClass());
-		assertEquals(AnnotationMatchingPointcut.forClassAnnotation(MyAnnotation.class), advisor.getPointcut());
+		assertThat(advisor.getPointcut()).isInstanceOf(AnnotationMatchingPointcut.class);
 
-		assertTrue(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class));
-		assertFalse(advisor.getPointcut()
+		assertThat(advisor.getPointcut()).isEqualTo(AnnotationMatchingPointcut.forClassAnnotation(MyAnnotation.class));
+
+		assertThat(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class)).isTrue();
+
+		assertThat(advisor.getPointcut()
 			.getClassFilter()
-			.matches(AnnotationAbstractPointcutAdvisorTests.AopProxyClass.class));
+			.matches(AnnotationAbstractPointcutAdvisorTests.AopProxyClass.class)).isFalse();
+
 	}
 
 	@MyAnnotation

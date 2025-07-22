@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.livk.commons.util.Pair;
 import org.intellij.lang.annotations.Language;
@@ -41,9 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -67,210 +64,212 @@ class JsonMapperUtilsTests {
 		JsonFactory jsonFactory = new JsonFactory();
 		try (JsonParser parser = jsonFactory.createParser(json)) {
 			JsonNode parserJsonNode = JsonMapperUtils.readValue(parser, JsonNode.class);
-			assertNotNull(parserJsonNode);
-			assertEquals("1", parserJsonNode.get("c").asText());
-			assertEquals("2", parserJsonNode.get("a").asText());
-			assertEquals(3, parserJsonNode.get("b").get("c").asInt());
+			assertThat(parserJsonNode).isNotNull();
+			assertThat(parserJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(parserJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(parserJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 
 		try (JsonParser parser = jsonFactory.createParser(json)) {
 			JsonNode parserJsonNode = JsonMapperUtils.readValue(parser, new TypeReference<>() {
 			});
-			assertNotNull(parserJsonNode);
-			assertEquals("1", parserJsonNode.get("c").asText());
-			assertEquals("2", parserJsonNode.get("a").asText());
-			assertEquals(3, parserJsonNode.get("b").get("c").asInt());
+			assertThat(parserJsonNode).isNotNull();
+			assertThat(parserJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(parserJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(parserJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 
 		try (JsonParser parser = jsonFactory.createParser(json)) {
 			JsonNode parserJsonNode = JsonMapperUtils.readValue(parser, javaType);
-			assertNotNull(parserJsonNode);
-			assertEquals("1", parserJsonNode.get("c").asText());
-			assertEquals("2", parserJsonNode.get("a").asText());
-			assertEquals(3, parserJsonNode.get("b").get("c").asInt());
+			assertThat(parserJsonNode).isNotNull();
+			assertThat(parserJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(parserJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(parserJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 	}
 
 	@Test
 	void readValueFile() throws IOException {
 		File file = new ClassPathResource("input.json").getFile();
+
 		JsonNode fileJsonNode = JsonMapperUtils.readValue(file, JsonNode.class);
-		assertNotNull(fileJsonNode);
-		assertEquals("1", fileJsonNode.get("c").asText());
-		assertEquals("2", fileJsonNode.get("a").asText());
-		assertEquals(3, fileJsonNode.get("b").get("c").asInt());
+		assertThat(fileJsonNode).isNotNull();
+		assertThat(fileJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(fileJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(fileJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		fileJsonNode = JsonMapperUtils.readValue(file, new TypeReference<>() {
 		});
-		assertNotNull(fileJsonNode);
-		assertEquals("1", fileJsonNode.get("c").asText());
-		assertEquals("2", fileJsonNode.get("a").asText());
-		assertEquals(3, fileJsonNode.get("b").get("c").asInt());
+		assertThat(fileJsonNode).isNotNull();
+		assertThat(fileJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(fileJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(fileJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		fileJsonNode = JsonMapperUtils.readValue(file, javaType);
-		assertNotNull(fileJsonNode);
-		assertEquals("1", fileJsonNode.get("c").asText());
-		assertEquals("2", fileJsonNode.get("a").asText());
-		assertEquals(3, fileJsonNode.get("b").get("c").asInt());
+		assertThat(fileJsonNode).isNotNull();
+		assertThat(fileJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(fileJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(fileJsonNode.get("b").get("c").asInt()).isEqualTo(3);
+
 	}
 
 	@Test
 	void readValueURL() throws IOException {
 		URL url = new ClassPathResource("input.json").getURL();
+
 		JsonNode urlJsonNode = JsonMapperUtils.readValue(url, JsonNode.class);
-		assertNotNull(urlJsonNode);
-		assertEquals("1", urlJsonNode.get("c").asText());
-		assertEquals("2", urlJsonNode.get("a").asText());
-		assertEquals(3, urlJsonNode.get("b").get("c").asInt());
+		assertThat(urlJsonNode).isNotNull();
+		assertThat(urlJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(urlJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(urlJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		urlJsonNode = JsonMapperUtils.readValue(url, new TypeReference<>() {
 		});
-		assertNotNull(urlJsonNode);
-		assertEquals("1", urlJsonNode.get("c").asText());
-		assertEquals("2", urlJsonNode.get("a").asText());
-		assertEquals(3, urlJsonNode.get("b").get("c").asInt());
+		assertThat(urlJsonNode).isNotNull();
+		assertThat(urlJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(urlJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(urlJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		urlJsonNode = JsonMapperUtils.readValue(url, javaType);
-		assertNotNull(urlJsonNode);
-		assertEquals("1", urlJsonNode.get("c").asText());
-		assertEquals("2", urlJsonNode.get("a").asText());
-		assertEquals(3, urlJsonNode.get("b").get("c").asInt());
+		assertThat(urlJsonNode).isNotNull();
+		assertThat(urlJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(urlJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(urlJsonNode.get("b").get("c").asInt()).isEqualTo(3);
+
 	}
 
 	@Test
 	void readValueStr() {
 		JsonNode strJsonNode = JsonMapperUtils.readValue(json, JsonNode.class);
-		assertNotNull(strJsonNode);
-		assertEquals("1", strJsonNode.get("c").asText());
-		assertEquals("2", strJsonNode.get("a").asText());
-		assertEquals(3, strJsonNode.get("b").get("c").asInt());
+		assertThat(strJsonNode).isNotNull();
+		assertThat(strJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(strJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(strJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode typeReferenceJsonNode = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertNotNull(typeReferenceJsonNode);
-		assertEquals("1", typeReferenceJsonNode.get("c").asText());
-		assertEquals("2", typeReferenceJsonNode.get("a").asText());
-		assertEquals(3, typeReferenceJsonNode.get("b").get("c").asInt());
+		assertThat(typeReferenceJsonNode).isNotNull();
+		assertThat(typeReferenceJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(typeReferenceJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(typeReferenceJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode javaTypeJsonNode = JsonMapperUtils.readValue(json, javaType);
-		assertNotNull(javaTypeJsonNode);
-		assertEquals("1", javaTypeJsonNode.get("c").asText());
-		assertEquals("2", javaTypeJsonNode.get("a").asText());
-		assertEquals(3, javaTypeJsonNode.get("b").get("c").asInt());
+		assertThat(javaTypeJsonNode).isNotNull();
+		assertThat(javaTypeJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(javaTypeJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(javaTypeJsonNode.get("b").get("c").asInt()).isEqualTo(3);
+
 	}
 
 	@Test
 	void readValueReader() throws IOException {
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
-			InputStreamReader reader = new InputStreamReader(inputStream);
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+				InputStreamReader reader = new InputStreamReader(inputStream)) {
 			JsonNode readerJsonNode = JsonMapperUtils.readValue(reader, JsonNode.class);
-			assertNotNull(readerJsonNode);
-			assertEquals("1", readerJsonNode.get("c").asText());
-			assertEquals("2", readerJsonNode.get("a").asText());
-			assertEquals(3, readerJsonNode.get("b").get("c").asInt());
+			assertThat(readerJsonNode).isNotNull();
+			assertThat(readerJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(readerJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(readerJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
-			InputStreamReader reader = new InputStreamReader(inputStream);
+
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+				InputStreamReader reader = new InputStreamReader(inputStream)) {
 			JsonNode readerJsonNode = JsonMapperUtils.readValue(reader, new TypeReference<>() {
 			});
-			assertNotNull(readerJsonNode);
-			assertEquals("1", readerJsonNode.get("c").asText());
-			assertEquals("2", readerJsonNode.get("a").asText());
-			assertEquals(3, readerJsonNode.get("b").get("c").asInt());
+			assertThat(readerJsonNode).isNotNull();
+			assertThat(readerJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(readerJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(readerJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
-			InputStreamReader reader = new InputStreamReader(inputStream);
+
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+				InputStreamReader reader = new InputStreamReader(inputStream)) {
 			JsonNode readerJsonNode = JsonMapperUtils.readValue(reader, javaType);
-			assertNotNull(readerJsonNode);
-			assertEquals("1", readerJsonNode.get("c").asText());
-			assertEquals("2", readerJsonNode.get("a").asText());
-			assertEquals(3, readerJsonNode.get("b").get("c").asInt());
+			assertThat(readerJsonNode).isNotNull();
+			assertThat(readerJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(readerJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(readerJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 	}
 
 	@Test
 	void readValueInputStream() throws IOException {
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			JsonNode inputStreamJsonNode = JsonMapperUtils.readValue(inputStream, JsonNode.class);
-			assertNotNull(inputStreamJsonNode);
-			assertEquals("1", inputStreamJsonNode.get("c").asText());
-			assertEquals("2", inputStreamJsonNode.get("a").asText());
-			assertEquals(3, inputStreamJsonNode.get("b").get("c").asInt());
+			assertThat(inputStreamJsonNode).isNotNull();
+			assertThat(inputStreamJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(inputStreamJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(inputStreamJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			JsonNode inputStreamJsonNode = JsonMapperUtils.readValue(inputStream, new TypeReference<>() {
 			});
-			assertNotNull(inputStreamJsonNode);
-			assertEquals("1", inputStreamJsonNode.get("c").asText());
-			assertEquals("2", inputStreamJsonNode.get("a").asText());
-			assertEquals(3, inputStreamJsonNode.get("b").get("c").asInt());
+			assertThat(inputStreamJsonNode).isNotNull();
+			assertThat(inputStreamJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(inputStreamJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(inputStreamJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			JsonNode inputStreamJsonNode = JsonMapperUtils.readValue(inputStream, javaType);
-			assertNotNull(inputStreamJsonNode);
-			assertEquals("1", inputStreamJsonNode.get("c").asText());
-			assertEquals("2", inputStreamJsonNode.get("a").asText());
-			assertEquals(3, inputStreamJsonNode.get("b").get("c").asInt());
+			assertThat(inputStreamJsonNode).isNotNull();
+			assertThat(inputStreamJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(inputStreamJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(inputStreamJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 	}
 
 	@Test
 	void readValueByteArray() {
-		JsonNode byteArrayJsonNode = JsonMapperUtils.readValue(json.getBytes(), JsonNode.class);
-		assertNotNull(byteArrayJsonNode);
-		assertEquals("1", byteArrayJsonNode.get("c").asText());
-		assertEquals("2", byteArrayJsonNode.get("a").asText());
-		assertEquals(3, byteArrayJsonNode.get("b").get("c").asInt());
+		byte[] jsonBytes = json.getBytes();
 
-		byteArrayJsonNode = JsonMapperUtils.readValue(json.getBytes(), new TypeReference<>() {
+		JsonNode byteArrayJsonNode = JsonMapperUtils.readValue(jsonBytes, JsonNode.class);
+		assertThat(byteArrayJsonNode).isNotNull();
+		assertThat(byteArrayJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(byteArrayJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(byteArrayJsonNode.get("b").get("c").asInt()).isEqualTo(3);
+
+		byteArrayJsonNode = JsonMapperUtils.readValue(jsonBytes, new TypeReference<>() {
 		});
-		assertNotNull(byteArrayJsonNode);
-		assertEquals("1", byteArrayJsonNode.get("c").asText());
-		assertEquals("2", byteArrayJsonNode.get("a").asText());
-		assertEquals(3, byteArrayJsonNode.get("b").get("c").asInt());
+		assertThat(byteArrayJsonNode).isNotNull();
+		assertThat(byteArrayJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(byteArrayJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(byteArrayJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
-		byteArrayJsonNode = JsonMapperUtils.readValue(json.getBytes(), javaType);
-		assertNotNull(byteArrayJsonNode);
-		assertEquals("1", byteArrayJsonNode.get("c").asText());
-		assertEquals("2", byteArrayJsonNode.get("a").asText());
-		assertEquals(3, byteArrayJsonNode.get("b").get("c").asInt());
+		byteArrayJsonNode = JsonMapperUtils.readValue(jsonBytes, javaType);
+		assertThat(byteArrayJsonNode).isNotNull();
+		assertThat(byteArrayJsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(byteArrayJsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(byteArrayJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
 	@Test
 	void readValueDataInput() throws IOException {
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			DataInput dataInput = new DataInputStream(inputStream);
 			JsonNode dataInputJsonNode = JsonMapperUtils.readValue(dataInput, JsonNode.class);
-			assertNotNull(dataInputJsonNode);
-			assertEquals("1", dataInputJsonNode.get("c").asText());
-			assertEquals("2", dataInputJsonNode.get("a").asText());
-			assertEquals(3, dataInputJsonNode.get("b").get("c").asInt());
+			assertThat(dataInputJsonNode).isNotNull();
+			assertThat(dataInputJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(dataInputJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(dataInputJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			DataInput dataInput = new DataInputStream(inputStream);
-			JsonNode dataInputJsonNode = JsonMapperUtils.readValue(dataInput, new TypeReference<>() {
+			JsonNode jsonNode = JsonMapperUtils.readValue(dataInput, new TypeReference<JsonNode>() {
 			});
-			assertNotNull(dataInputJsonNode);
-			assertEquals("1", dataInputJsonNode.get("c").asText());
-			assertEquals("2", dataInputJsonNode.get("a").asText());
-			assertEquals(3, dataInputJsonNode.get("b").get("c").asInt());
+			assertThat(jsonNode).isNotNull();
+			assertThat(jsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(jsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(jsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-		{
-			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
+		try (InputStream inputStream = new ClassPathResource("input.json").getInputStream()) {
 			DataInput dataInput = new DataInputStream(inputStream);
-			JsonNode dataInputJsonNode = JsonMapperUtils.readValue(dataInput, javaType);
-			assertNotNull(dataInputJsonNode);
-			assertEquals("1", dataInputJsonNode.get("c").asText());
-			assertEquals("2", dataInputJsonNode.get("a").asText());
-			assertEquals(3, dataInputJsonNode.get("b").get("c").asInt());
+			JsonNode jsonNode = JsonMapperUtils.readValue(dataInput, javaType);
+			assertThat(jsonNode).isNotNull();
+			assertThat(jsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(jsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(jsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 	}
 
@@ -278,10 +277,10 @@ class JsonMapperUtilsTests {
 	void writeValueAsString() {
 		String result = JsonMapperUtils.writeValueAsString(Map.of("username", "password"));
 		String json = "{\"username\":\"password\"}";
-		assertEquals(json, result);
+		assertThat(result).isEqualTo(json);
 
 		byte[] bytes = JsonMapperUtils.writeValueAsBytes(Map.of("username", "password"));
-		assertArrayEquals(json.getBytes(), bytes);
+		assertThat(bytes).isEqualTo(json.getBytes());
 	}
 
 	@Test
@@ -297,26 +296,27 @@ class JsonMapperUtilsTests {
 				  }
 				]""";
 		List<JsonNode> result = JsonMapperUtils.readValueList(json, JsonNode.class);
-		assertNotNull(result);
-		assertEquals(1, result.get(0).get("a").asInt());
-		assertEquals(1, result.get(1).get("a").asInt());
+		assertThat(result).isNotNull();
+		assertThat(result.get(0).get("a").asInt()).isEqualTo(1);
+		assertThat(result.get(1).get("a").asInt()).isEqualTo(1);
+
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	void readValueMap() throws IOException {
 		Map<String, Object> result = JsonMapperUtils.readValueMap(json, String.class, Object.class);
-		assertNotNull(result);
-		assertEquals("1", result.get("c"));
-		assertEquals("2", result.get("a"));
-		assertEquals(3, ((Map<String, Object>) result.get("b")).get("c"));
+		assertThat(result).isNotNull();
+		assertThat(result).containsEntry("c", "1");
+		assertThat(result).containsEntry("a", "2");
+		assertThat((Map<String, Object>) result.get("b")).containsEntry("c", 3);
 
 		Map<String, Object> result1 = JsonMapperUtils.readValueMap(new ClassPathResource("input.json").getInputStream(),
 				String.class, Object.class);
-		assertNotNull(result1);
-		assertEquals("1", result1.get("c"));
-		assertEquals("2", result1.get("a"));
-		assertEquals(3, ((Map<String, Object>) result1.get("b")).get("c"));
+		assertThat(result1).isNotNull();
+		assertThat(result1).containsEntry("c", "1");
+		assertThat(result1).containsEntry("a", "2");
+		assertThat((Map<String, Object>) result1.get("b")).containsEntry("c", 3);
 	}
 
 	@Test
@@ -325,65 +325,58 @@ class JsonMapperUtilsTests {
 			JsonFactory jsonFactory = new JsonFactory();
 			try (JsonParser parser = jsonFactory.createParser(json)) {
 				JsonNode parserJsonNode = JsonMapperUtils.readTree(parser);
-				assertNotNull(parserJsonNode);
-				assertEquals("1", parserJsonNode.get("c").asText());
-				assertEquals("2", parserJsonNode.get("a").asText());
-				assertEquals(3, parserJsonNode.get("b").get("c").asInt());
+				assertThat(parserJsonNode).isNotNull();
+				assertThat(parserJsonNode.get("c").asText()).isEqualTo("1");
+				assertThat(parserJsonNode.get("a").asText()).isEqualTo("2");
+				assertThat(parserJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 			}
 		}
-
 		{
 			File file = new ClassPathResource("input.json").getFile();
 			JsonNode fileJsonNode = JsonMapperUtils.readTree(file);
-			assertNotNull(fileJsonNode);
-			assertEquals("1", fileJsonNode.get("c").asText());
-			assertEquals("2", fileJsonNode.get("a").asText());
-			assertEquals(3, fileJsonNode.get("b").get("c").asInt());
+			assertThat(fileJsonNode).isNotNull();
+			assertThat(fileJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(fileJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(fileJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-
 		{
 			URL url = new ClassPathResource("input.json").getURL();
 			JsonNode urlJsonNode = JsonMapperUtils.readTree(url);
-			assertNotNull(urlJsonNode);
-			assertEquals("1", urlJsonNode.get("c").asText());
-			assertEquals("2", urlJsonNode.get("a").asText());
-			assertEquals(3, urlJsonNode.get("b").get("c").asInt());
+			assertThat(urlJsonNode).isNotNull();
+			assertThat(urlJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(urlJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(urlJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-
 		{
 			JsonNode result = JsonMapperUtils.readTree(json);
-			assertNotNull(result);
-			assertEquals("1", result.get("c").asText());
-			assertEquals("2", result.get("a").asText());
-			assertEquals(3, result.get("b").get("c").asInt());
+			assertThat(result).isNotNull();
+			assertThat(result.get("c").asText()).isEqualTo("1");
+			assertThat(result.get("a").asText()).isEqualTo("2");
+			assertThat(result.get("b").get("c").asInt()).isEqualTo(3);
 		}
-
 		{
 			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 			InputStreamReader reader = new InputStreamReader(inputStream);
 			JsonNode readerJsonNode = JsonMapperUtils.readTree(reader);
-			assertNotNull(readerJsonNode);
-			assertEquals("1", readerJsonNode.get("c").asText());
-			assertEquals("2", readerJsonNode.get("a").asText());
-			assertEquals(3, readerJsonNode.get("b").get("c").asInt());
+			assertThat(readerJsonNode).isNotNull();
+			assertThat(readerJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(readerJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(readerJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-
 		{
 			InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 			JsonNode inputStreamJsonNode = JsonMapperUtils.readTree(inputStream);
-			assertNotNull(inputStreamJsonNode);
-			assertEquals("1", inputStreamJsonNode.get("c").asText());
-			assertEquals("2", inputStreamJsonNode.get("a").asText());
-			assertEquals(3, inputStreamJsonNode.get("b").get("c").asInt());
+			assertThat(inputStreamJsonNode).isNotNull();
+			assertThat(inputStreamJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(inputStreamJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(inputStreamJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
-
 		{
-
 			JsonNode byteArrayJsonNode = JsonMapperUtils.readTree(json.getBytes());
-			assertNotNull(byteArrayJsonNode);
-			assertEquals("1", byteArrayJsonNode.get("c").asText());
-			assertEquals("2", byteArrayJsonNode.get("a").asText());
-			assertEquals(3, byteArrayJsonNode.get("b").get("c").asInt());
+			assertThat(byteArrayJsonNode).isNotNull();
+			assertThat(byteArrayJsonNode.get("c").asText()).isEqualTo("1");
+			assertThat(byteArrayJsonNode.get("a").asText()).isEqualTo("2");
+			assertThat(byteArrayJsonNode.get("b").get("c").asInt()).isEqualTo(3);
 		}
 	}
 
@@ -391,14 +384,14 @@ class JsonMapperUtilsTests {
 	void convertValueList() {
 		Set<String> set = Set.of("username", "password");
 		List<String> list = JsonMapperUtils.convertValueList(set, String.class);
-		assertEquals(Lists.newArrayList(set), list);
+		assertThat(list).containsExactlyElementsOf(set);
 	}
 
 	@Test
 	void convertValueMap() {
 		Pair<String, String> pair = Pair.of("username", "password");
 		Map<String, String> map = JsonMapperUtils.convertValueMap(pair, String.class, String.class);
-		assertEquals(Map.of(pair.key(), pair.value()), map);
+		assertThat(map).containsExactly(Map.entry(pair.key(), pair.value()));
 	}
 
 	@Test
@@ -427,17 +420,25 @@ class JsonMapperUtilsTests {
 				"spring-boot-starter-json");
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
-		assertEquals(loggingDependency, JsonMapperUtils.convertValue(jsonNodeList.get(0), mapType));
-		assertEquals(jsonDependency, JsonMapperUtils.convertValue(jsonNodeList.get(1), mapType));
+
+		assertThat(JsonMapperUtils.<Map<String, String>>convertValue(jsonNodeList.get(0), mapType))
+			.containsExactlyInAnyOrderEntriesOf(loggingDependency);
+
+		assertThat(JsonMapperUtils.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType))
+			.containsExactlyInAnyOrderEntriesOf(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
-		assertEquals(dependencyList, JsonMapperUtils.convertValue(dependencyArray, collectionType));
+
+		assertThat(JsonMapperUtils.<List<Map<String, String>>>convertValue(dependencyArray, collectionType))
+			.containsExactlyElementsOf(dependencyList);
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
 		Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
-		assertEquals(dependencyManagement, JsonMapperUtils.convertValue(jsonNode, constructMapType));
+
+		assertThat(JsonMapperUtils.<Map<String, List<Map<String, String>>>>convertValue(jsonNode, constructMapType))
+			.containsExactlyEntriesOf(dependencyManagement);
 	}
 
 }

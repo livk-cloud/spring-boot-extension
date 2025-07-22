@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.LongStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,8 +69,8 @@ class Info2ControllerTests {
 				FileUtils.download(in, "./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 			});
 		File outFile = new File("./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -88,8 +88,8 @@ class Info2ControllerTests {
 				FileUtils.download(in, "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 			});
 		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 }

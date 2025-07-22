@@ -32,7 +32,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -55,7 +55,7 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 
 	@Test
 	void supports() {
-		assertTrue(handler.supports(result));
+		assertThat(handler.supports(result)).isTrue();
 	}
 
 	@Test

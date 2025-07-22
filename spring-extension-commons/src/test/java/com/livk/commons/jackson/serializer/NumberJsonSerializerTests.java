@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 /**
  * @author livk
@@ -40,20 +40,26 @@ class NumberJsonSerializerTests {
 		big.f = 0.333333f;
 		big.count = BigDecimal.valueOf(0.333333);
 		big.sunCount = BigDecimal.valueOf(0.333333);
+
 		String json = JsonMapperUtils.writeValueAsString(big);
 		Big bean = JsonMapperUtils.readValue(json, Big.class);
-		assertNotNull(bean);
-		assertEquals(33L, bean.l);
-		assertEquals(0.33d, bean.d);
-		assertEquals(0.3f, bean.f);
-		assertEquals(0.33d, bean.count.doubleValue());
-		assertEquals(0.333d, bean.sunCount.doubleValue());
+
+		assertThat(bean).isNotNull();
+		assertThat(bean.l).isEqualTo(33L);
+
+		assertThat(bean.d).isCloseTo(0.33d, within(0.0001));
+		assertThat(bean.f).isCloseTo(0.3f, within(0.0001f));
+		assertThat(bean.count.doubleValue()).isCloseTo(0.33d, within(0.0001));
+		assertThat(bean.sunCount.doubleValue()).isCloseTo(0.333d, within(0.0001));
+
 		JsonNode jsonNode = JsonMapperUtils.readTree(json);
-		assertEquals("0033", jsonNode.get(BeanLambda.fieldName(Big::getL)).asText());
-		assertEquals(0.33d, jsonNode.get(BeanLambda.fieldName(Big::getD)).asDouble());
-		assertEquals(0.3d, jsonNode.get(BeanLambda.fieldName(Big::getF)).asDouble());
-		assertEquals(0.33d, jsonNode.get(BeanLambda.fieldName(Big::getCount)).asDouble());
-		assertEquals(0.333d, jsonNode.get(BeanLambda.fieldName(Big::getSunCount)).asDouble());
+
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getL)).asText()).isEqualTo("0033");
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getD)).asDouble()).isCloseTo(0.33d, within(0.0001));
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getF)).asDouble()).isCloseTo(0.3d, within(0.0001));
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getCount)).asDouble()).isCloseTo(0.33d, within(0.0001));
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getSunCount)).asDouble()).isCloseTo(0.333d, within(0.0001));
+
 	}
 
 	@Getter

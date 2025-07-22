@@ -18,7 +18,7 @@ package com.livk.commons.http.annotation;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -28,9 +28,10 @@ class HttpClientTypeTests {
 	@Test
 	@SuppressWarnings("deprecation")
 	void annotationType() {
-		assertEquals(EnableRestClient.class, HttpClientType.REST_CLIENT.annotationType());
-		assertEquals(EnableRestTemplate.class, HttpClientType.REST_TEMPLATE.annotationType());
-		assertEquals(EnableWebClient.class, HttpClientType.WEB_CLIENT.annotationType());
+		assertThat(HttpClientType.REST_CLIENT.annotationType()).isEqualTo(EnableRestClient.class);
+		assertThat(HttpClientType.REST_TEMPLATE.annotationType()).isEqualTo(EnableRestTemplate.class);
+		assertThat(HttpClientType.WEB_CLIENT.annotationType()).isEqualTo(EnableWebClient.class);
+
 	}
 
 }

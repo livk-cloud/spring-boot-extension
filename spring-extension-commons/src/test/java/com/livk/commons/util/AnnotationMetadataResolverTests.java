@@ -27,9 +27,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -43,10 +42,11 @@ class AnnotationMetadataResolverTests {
 		contextRunner.run(ctx -> {
 			AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(ctx);
 
-			assertEquals(Set.of(A.class, TestController.class),
-					resolver.find(TestAnnotation.class, AnnotationMetadataResolverTests.class.getPackageName()));
+			assertThat(resolver.find(TestAnnotation.class, AnnotationMetadataResolverTests.class.getPackageName()))
+				.containsExactlyInAnyOrder(A.class, TestController.class);
 
-			assertEquals(Set.of(A.class, TestController.class), resolver.find(TestAnnotation.class, ctx));
+			assertThat(resolver.find(TestAnnotation.class, ctx)).containsExactlyInAnyOrder(A.class,
+					TestController.class);
 		});
 	}
 

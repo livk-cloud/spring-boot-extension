@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -90,7 +90,7 @@ class CacheControllerTest {
 				.getContentAsString();
 			result.add(newUUID);
 		}
-		assertEquals(1, result.size());
+		assertThat(result).hasSize(1);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ class CacheControllerTest {
 				.getContentAsString();
 			result.add(newUUID);
 		}
-		assertEquals(3, result.size());
+		assertThat(result).hasSize(3);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ class CacheControllerTest {
 		try (Cursor<String> scan = redisOps.scan(options)) {
 			Set<String> keys = scan.stream().limit(1).collect(Collectors.toSet());
 			log.info("keys:{}", keys);
-			assertEquals(1, keys.size());
+			assertThat(keys).hasSize(1);
 		}
 	}
 

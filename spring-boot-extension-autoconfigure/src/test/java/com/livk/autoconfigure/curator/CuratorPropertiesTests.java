@@ -22,8 +22,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -33,16 +32,16 @@ class CuratorPropertiesTests {
 	@Test
 	void curatorProperties() {
 		CuratorProperties properties = new CuratorProperties();
-		assertNotNull(properties);
+		assertThat(properties).isNotNull();
 
-		assertEquals("localhost:2181", properties.getConnectString());
-		assertEquals(50, properties.getBaseSleepTimeMs());
-		assertEquals(10, properties.getMaxRetries());
-		assertEquals(500, properties.getMaxSleepMs());
-		assertEquals(10, properties.getBlockUntilConnectedWait());
-		assertEquals(TimeUnit.SECONDS, properties.getBlockUntilConnectedUnit());
-		assertEquals(Duration.of(60 * 1000, ChronoUnit.MILLIS), properties.getSessionTimeout());
-		assertEquals(Duration.of(15 * 1000, ChronoUnit.MILLIS), properties.getConnectionTimeout());
+		assertThat(properties.getConnectString()).isEqualTo("localhost:2181");
+		assertThat(properties.getBaseSleepTimeMs()).isEqualTo(50);
+		assertThat(properties.getMaxRetries()).isEqualTo(10);
+		assertThat(properties.getMaxSleepMs()).isEqualTo(500);
+		assertThat(properties.getBlockUntilConnectedWait()).isEqualTo(10);
+		assertThat(properties.getBlockUntilConnectedUnit()).isEqualTo(TimeUnit.SECONDS);
+		assertThat(properties.getSessionTimeout()).isEqualTo(Duration.of(60 * 1000, ChronoUnit.MILLIS));
+		assertThat(properties.getConnectionTimeout()).isEqualTo(Duration.of(15 * 1000, ChronoUnit.MILLIS));
 	}
 
 }

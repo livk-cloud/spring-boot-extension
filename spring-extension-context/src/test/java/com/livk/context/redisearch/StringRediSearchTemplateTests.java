@@ -27,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -53,8 +53,8 @@ class StringRediSearchTemplateTests {
 	void test() throws Exception {
 		StringRediSearchTemplate template = new StringRediSearchTemplate(factory);
 
-		assertEquals("PONG", template.async().ping().get());
-		assertEquals("PONG", template.reactive().ping().block());
+		assertThat(template.async().ping().get()).isEqualTo("PONG");
+		assertThat(template.reactive().ping().block()).isEqualTo("PONG");
 	}
 
 }

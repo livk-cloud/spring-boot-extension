@@ -16,7 +16,6 @@
 
 package com.livk.context.redisearch.codec;
 
-import com.livk.commons.util.ObjectUtils;
 import io.lettuce.core.codec.RedisCodec;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -24,8 +23,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -39,9 +37,9 @@ class JdkRedisCodecTests {
 		String key = "redisKey";
 		byte[] bytes = RedisSerializer.java().serialize(key);
 
-		assertFalse(ObjectUtils.isEmpty(bytes));
-		assertEquals(ByteBuffer.wrap(bytes), codec.encodeKey(key));
-		assertEquals(key, codec.decodeKey(ByteBuffer.wrap(bytes)));
+		assertThat(bytes).isNotEmpty();
+		assertThat(codec.encodeKey(key)).isEqualTo(ByteBuffer.wrap(bytes));
+		assertThat(codec.decodeKey(ByteBuffer.wrap(bytes))).isEqualTo(key);
 	}
 
 	@Test
@@ -49,9 +47,9 @@ class JdkRedisCodecTests {
 		Map<String, String> map = Map.of("username", "password");
 		byte[] bytes = RedisSerializer.java().serialize(map);
 
-		assertFalse(ObjectUtils.isEmpty(bytes));
-		assertEquals(ByteBuffer.wrap(bytes), codec.encodeValue(map));
-		assertEquals(map, codec.decodeValue(ByteBuffer.wrap(bytes)));
+		assertThat(bytes).isNotEmpty();
+		assertThat(codec.encodeValue(map)).isEqualTo(ByteBuffer.wrap(bytes));
+		assertThat(codec.decodeValue(ByteBuffer.wrap(bytes))).isEqualTo(map);
 	}
 
 }

@@ -25,7 +25,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -41,7 +41,7 @@ class DisruptorFactoryBeanTests {
 		DisruptorFactoryBean<Entity> factoryBean = new DisruptorFactoryBean<>(Entity.class);
 		DisruptorEvent event = Entity.class.getAnnotation(DisruptorEvent.class);
 		factoryBean.setBeanFactory(beanFactory);
-		assertNotNull(event);
+		assertThat(event).isNotNull();
 		factoryBean.setBufferSize(event.bufferSize());
 		factoryBean.setProducerType(event.type());
 		factoryBean.setThreadFactory(BeanUtils.instantiateClass(event.threadFactory()));
@@ -50,7 +50,7 @@ class DisruptorFactoryBeanTests {
 		factoryBean.setWaitStrategy(BeanUtils.instantiateClass(event.strategy()));
 		factoryBean.setStrategyBeanName(event.strategyBeanName());
 		factoryBean.afterPropertiesSet();
-		assertNotNull(factoryBean.getObject());
+		assertThat(factoryBean.getObject()).isNotNull();
 	}
 
 }

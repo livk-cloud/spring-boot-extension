@@ -21,8 +21,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -32,15 +31,15 @@ class CuratorFactoryTests {
 	static final CuratorProperties properties = new CuratorProperties();
 
 	@Test
-	void create() throws InterruptedException {
+	void create() {
 		RetryPolicy retryPolicy = CuratorFactory.retryPolicy(properties);
 		CuratorFramework framework = CuratorFactory.create(properties, retryPolicy, () -> null, () -> null, () -> null);
-		assertNotNull(framework);
+		assertThat(framework).isNotNull();
 	}
 
 	@Test
 	void retryPolicy() {
-		assertInstanceOf(ExponentialBackoffRetry.class, CuratorFactory.retryPolicy(properties));
+		assertThat(CuratorFactory.retryPolicy(properties)).isInstanceOf(ExponentialBackoffRetry.class);
 	}
 
 }

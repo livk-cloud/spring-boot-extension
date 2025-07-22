@@ -22,7 +22,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -38,7 +38,7 @@ class HttpServiceRegistrarTests {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(HttpConfig.class);
 		registrar.registerBeanDefinitions(metadata, context);
 
-		assertEquals(1, context.getBeanProvider(HttpService.class).stream().count());
+		assertThat(context.getBeanProvider(HttpService.class)).hasSize(1);
 	}
 
 	@TestConfiguration

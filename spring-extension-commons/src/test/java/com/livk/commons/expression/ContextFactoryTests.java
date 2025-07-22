@@ -23,9 +23,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -45,23 +43,24 @@ class ContextFactoryTests {
 	void create() {
 		{
 			Context context = contextFactory.create(method, new String[] { "livk" });
-			assertEquals(map.size(), context.asMap().size());
-			assertEquals(map.keySet(), context.asMap().keySet());
-			assertEquals(map.entrySet(), context.asMap().entrySet());
+			assertThat(context.asMap()).hasSize(map.size());
+			assertThat(context.asMap().keySet()).isEqualTo(map.keySet());
+			assertThat(context.asMap().entrySet()).isEqualTo(map.entrySet());
 		}
 		{
 			HashMap<String, Object> contextMap = Maps
 				.newHashMap(contextFactory.create(method, new String[] { "root" }).asMap());
 			contextMap.putAll(map);
 			Context context = Context.create(contextMap);
-			assertEquals(1, context.asMap().size());
-			assertEquals(contextMap.keySet(), context.asMap().keySet());
-			assertEquals(contextMap.entrySet(), context.asMap().entrySet());
-			assertTrue(context.asMap().containsKey("username"));
-			assertFalse(context.asMap().containsValue("root"));
-			assertTrue(context.asMap().containsValue("livk"));
-			assertEquals("livk", context.asMap().get("username"));
+			assertThat(context.asMap()).hasSize(1);
+			assertThat(context.asMap().keySet()).isEqualTo(contextMap.keySet());
+			assertThat(context.asMap().entrySet()).isEqualTo(contextMap.entrySet());
+			assertThat(context.asMap()).containsKey("username");
+			assertThat(context.asMap()).doesNotContainValue("root");
+			assertThat(context.asMap()).containsValue("livk");
+			assertThat(context.asMap().get("username")).isEqualTo("livk");
 		}
+
 	}
 
 }

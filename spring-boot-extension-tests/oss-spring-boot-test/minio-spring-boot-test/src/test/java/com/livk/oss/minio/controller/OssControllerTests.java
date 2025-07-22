@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -76,8 +76,8 @@ class OssControllerTests {
 			FileUtils.download(stream, "./test.jpg");
 		}
 		File file = new File("./test.jpg");
-		assertTrue(file.exists());
-		assertTrue(file.delete());
+		assertThat(file).exists().isFile();
+		assertThat(file.delete()).isTrue();
 	}
 
 }

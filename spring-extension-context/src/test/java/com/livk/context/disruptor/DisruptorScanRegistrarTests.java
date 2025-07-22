@@ -25,7 +25,7 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -42,7 +42,7 @@ class DisruptorScanRegistrarTests {
 		registrar.registerBeanDefinitions(metadata, context, DefaultBeanNameGenerator.INSTANCE);
 
 		ResolvableType type = ResolvableType.forClassWithGenerics(SpringDisruptor.class, Entity.class);
-		assertEquals(1, context.getBeanProvider(type).stream().count());
+		assertThat(context.getBeanProvider(type)).hasSize(1);
 
 	}
 

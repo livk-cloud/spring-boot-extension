@@ -36,13 +36,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -51,20 +46,20 @@ class GenericsByteBuddyTests {
 
 	@Test
 	void testEnumWithoutValuesIsIllegal() {
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-				() -> new GenericsByteBuddy().makeEnumeration());
-		assertEquals("Require at least one enumeration constant", exception.getMessage());
+		assertThatThrownBy(() -> new GenericsByteBuddy().makeEnumeration()).isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("Require at least one enumeration constant");
 	}
 
 	@Test
-	void testEnumeration() {
+	void testEnumeration() throws Exception {
 		try (DynamicType.Unloaded<?> unloaded = new GenericsByteBuddy().makeEnumeration("foo").make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertTrue(Modifier.isPublic(type.getModifiers()));
-			assertTrue(type.isEnum());
-			assertFalse(type.isInterface());
-			assertFalse(type.isAnnotation());
+			assertThat(type.getModifiers())
+				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
+			assertThat(type.isEnum()).isTrue();
+			assertThat(type).isNotInterface();
+			assertThat(type).isNotAnnotation();
 		}
 	}
 
@@ -73,10 +68,11 @@ class GenericsByteBuddyTests {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().makeInterface().make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertTrue(Modifier.isPublic(type.getModifiers()));
-			assertFalse(type.isEnum());
-			assertTrue(type.isInterface());
-			assertFalse(type.isAnnotation());
+			assertThat(type.getModifiers())
+				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
+			assertThat(type.isEnum()).isFalse();
+			assertThat(type).isInterface();
+			assertThat(type).isNotAnnotation();
 		}
 	}
 
@@ -85,10 +81,11 @@ class GenericsByteBuddyTests {
 		try (DynamicType.Unloaded<Annotation> unloaded = new GenericsByteBuddy().makeAnnotation().make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertTrue(Modifier.isPublic(type.getModifiers()));
-			assertFalse(type.isEnum());
-			assertTrue(type.isInterface());
-			assertTrue(type.isAnnotation());
+			assertThat(type.getModifiers())
+				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
+			assertThat(type.isEnum()).isFalse();
+			assertThat(type).isInterface();
+			assertThat(type).isAnnotation();
 		}
 	}
 
@@ -99,13 +96,13 @@ class GenericsByteBuddyTests {
 			.make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertEquals(true, Class.class.getMethod("isRecord").invoke(type));
+			assertThat((Boolean) Class.class.getMethod("isRecord").invoke(type)).isTrue();
 			Object record = type.getConstructor().newInstance();
 
-			assertEquals(0, type.getMethod("hashCode").invoke(record));
-			assertEquals(false, type.getMethod("equals", Object.class).invoke(record, new Object()));
-			assertEquals(true, type.getMethod("equals", Object.class).invoke(record, record));
-			assertEquals(type.getSimpleName() + "[]", type.getMethod("toString").invoke(record));
+			assertThat((Integer) type.getMethod("hashCode").invoke(record)).isZero();
+			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, new Object())).isFalse();
+			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, record)).isTrue();
+			assertThat(type.getMethod("toString").invoke(record)).isEqualTo(type.getSimpleName() + "[]");
 		}
 	}
 
@@ -117,19 +114,20 @@ class GenericsByteBuddyTests {
 			.make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertEquals(true, Class.class.getMethod("isRecord").invoke(type));
+			assertThat((Boolean) Class.class.getMethod("isRecord").invoke(type)).isTrue();
 			Object record = type.getConstructor(String.class).newInstance("bar");
-			assertEquals("bar", type.getMethod("foo").invoke(record));
-			assertEquals("bar".hashCode(), type.getMethod("hashCode").invoke(record));
-			assertEquals(false, type.getMethod("equals", Object.class).invoke(record, new Object()));
-			assertEquals(true, type.getMethod("equals", Object.class).invoke(record, record));
-			assertEquals(type.getSimpleName() + "[foo=bar]", type.getMethod("toString").invoke(record));
-			Object[] parameter = (Object[]) Constructor.class.getMethod("getParameters")
+			assertThat(type.getMethod("foo").invoke(record)).isEqualTo("bar");
+			assertThat((Integer) type.getMethod("hashCode").invoke(record)).isEqualTo("bar".hashCode());
+			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, new Object())).isFalse();
+			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, record)).isTrue();
+			assertThat(type.getMethod("toString").invoke(record)).isEqualTo(type.getSimpleName() + "[foo=bar]");
+			Object[] parameters = (Object[]) Constructor.class.getMethod("getParameters")
 				.invoke(type.getDeclaredConstructor(String.class));
-			assertEquals(1, parameter.length);
-			assertEquals("foo", Class.forName("java.lang.reflect.Parameter").getMethod("getName").invoke(parameter[0]));
-			assertEquals(0,
-					Class.forName("java.lang.reflect.Parameter").getMethod("getModifiers").invoke(parameter[0]));
+			assertThat(parameters).hasSize(1);
+			assertThat(Class.forName("java.lang.reflect.Parameter").getMethod("getName").invoke(parameters[0]))
+				.isEqualTo("foo");
+			assertThat(Class.forName("java.lang.reflect.Parameter").getMethod("getModifiers").invoke(parameters[0]))
+				.isEqualTo(0);
 		}
 	}
 
@@ -142,8 +140,8 @@ class GenericsByteBuddyTests {
 			.make(new TypeResolutionStrategy.Active())) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertInstanceOf(type, type.getDeclaredConstructor().newInstance());
-			assertEquals(1, recorder.counter);
+			assertThat(type.getDeclaredConstructor().newInstance()).isInstanceOf(type);
+			assertThat(recorder.counter).isEqualTo(1);
 		}
 	}
 
@@ -151,7 +149,7 @@ class GenericsByteBuddyTests {
 	void testImplicitStrategyBootstrap() {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
 			Class<?> type = unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER).getLoaded();
-			assertNotNull(type.getClassLoader());
+			assertThat(type.getClassLoader()).isNotNull();
 		}
 	}
 
@@ -160,7 +158,7 @@ class GenericsByteBuddyTests {
 		ClassLoader classLoader = new URLClassLoader(new URL[0], ClassLoadingStrategy.BOOTSTRAP_LOADER);
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
 			Class<?> type = unloaded.load(classLoader).getLoaded();
-			assertNotEquals(classLoader, type.getClassLoader());
+			assertThat(type.getClassLoader()).isNotEqualTo(classLoader);
 		}
 	}
 
@@ -170,7 +168,7 @@ class GenericsByteBuddyTests {
 				Collections.emptyMap());
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
 			Class<?> type = unloaded.load(classLoader).getLoaded();
-			assertEquals(type.getClassLoader(), classLoader);
+			assertThat(type.getClassLoader()).isEqualTo(classLoader);
 		}
 	}
 
@@ -184,7 +182,8 @@ class GenericsByteBuddyTests {
 		try (DynamicType.Unloaded<?> make = builder.make()) {
 			Class<?> type = make.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertEquals(1000, type.getDeclaredMethods().length);
+			assertThat(type.getDeclaredMethods()).hasSize(1000);
+
 			DynamicType.Builder<?> subclassBuilder = new GenericsByteBuddy().subclass(type);
 			for (Method method : type.getDeclaredMethods()) {
 				subclassBuilder = subclassBuilder.method(ElementMatchers.is(method)).intercept(StubMethod.INSTANCE);
@@ -192,7 +191,7 @@ class GenericsByteBuddyTests {
 			try (DynamicType.Unloaded<?> unloaded = subclassBuilder.make()) {
 				Class<?> subclass = unloaded.load(type.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 					.getLoaded();
-				assertEquals(1000, subclass.getDeclaredMethods().length);
+				assertThat(subclass.getDeclaredMethods()).hasSize(1000);
 			}
 		}
 	}
@@ -202,10 +201,10 @@ class GenericsByteBuddyTests {
 		try (DynamicType.Unloaded<?> unloaded = new GenericsByteBuddy()
 			.redefine(Class.forName("com.livk.commons.util.GenericsByteBuddyTests$Jsr14Sample"))
 			.make()) {
-			assertNotNull(unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
+			assertThat(unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded()
 				.getConstructor()
-				.newInstance());
+				.newInstance()).isNotNull();
 		}
 	}
 
@@ -219,8 +218,9 @@ class GenericsByteBuddyTests {
 			.make()) {
 			Class<?> type = unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertEquals("foo.Bar$" + GenericsByteBuddyTests.class.getName().replace('.', '$')
-					+ "$testCallerSuffixNamingStrategy$SuffixedName", type.getName());
+			String expectedName = "foo.Bar$" + GenericsByteBuddyTests.class.getName().replace('.', '$')
+					+ "$testCallerSuffixNamingStrategy$SuffixedName";
+			assertThat(type.getName()).isEqualTo(expectedName);
 		}
 	}
 

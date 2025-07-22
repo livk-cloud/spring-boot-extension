@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -41,7 +41,7 @@ class TreeNodeTests {
 	void createRoot() {
 		root = TreeNode.createRoot(0L, "root");
 		log.info("{}", root);
-		assertNotNull(root);
+		assertThat(root).isNotNull();
 	}
 
 	@Order(2)
@@ -56,7 +56,7 @@ class TreeNodeTests {
 		root.setChildren(nodes);
 		log.info("{}", root);
 		log.info("{}", JsonMapperUtils.writeValueAsString(root));
-		assertNotNull(root);
+		assertThat(root).isNotNull();
 	}
 
 	@Order(3)

@@ -24,7 +24,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.ResolvableType;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -36,10 +36,10 @@ class ClassPathDisruptorScannerTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(context, DefaultBeanNameGenerator.INSTANCE);
 		int result = scanner.scan(ClassPathDisruptorScannerTests.class.getPackageName());
-		assertEquals(1, result);
+		assertThat(result).isEqualTo(1);
 
 		ResolvableType type = ResolvableType.forClassWithGenerics(SpringDisruptor.class, Entity.class);
-		assertEquals(1, context.getBeanProvider(type).stream().count());
+		assertThat(context.getBeanProvider(type)).hasSize(1);
 	}
 
 	@Test
@@ -47,9 +47,9 @@ class ClassPathDisruptorScannerTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(context, DefaultBeanNameGenerator.INSTANCE);
 		int result = scanner.scan(ClassPathDisruptorScannerTests.class.getPackageName() + ".empty");
-		assertEquals(0, result);
-		assertEquals(0, context.getBeanProvider(SpringDisruptor.class).stream().count());
-		assertEquals(0, context.getBeanNamesForType(DisruptorFactoryBean.class).length);
+		assertThat(result).isEqualTo(0);
+		assertThat(context.getBeanProvider(SpringDisruptor.class).stream()).isEmpty();
+		assertThat(context.getBeanNamesForType(DisruptorFactoryBean.class)).isEmpty();
 	}
 
 	@TestConfiguration

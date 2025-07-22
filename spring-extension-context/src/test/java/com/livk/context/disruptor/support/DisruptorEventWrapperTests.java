@@ -18,7 +18,7 @@ package com.livk.context.disruptor.support;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -29,9 +29,9 @@ class DisruptorEventWrapperTests {
 	void test() {
 		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
 		wrapper.wrap("root");
-		assertEquals("root", wrapper.unwrap());
+		assertThat(wrapper.unwrap()).isEqualTo("root");
 		wrapper.wrap("child");
-		assertEquals("root", wrapper.unwrap());
+		assertThat(wrapper.unwrap()).isEqualTo("root");
 	}
 
 }

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -33,9 +33,9 @@ class ClassPathHttpScannerTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathHttpScanner scanner = new ClassPathHttpScanner(context);
 		int result = scanner.scan(ClassPathHttpScannerTests.class.getPackageName());
-		assertEquals(1, result);
+		assertThat(result).isEqualTo(1);
 
-		assertEquals(1, context.getBeanProvider(HttpService.class).stream().count());
+		assertThat(context.getBeanProvider(HttpService.class)).hasSize(1);
 	}
 
 	@Test
@@ -43,9 +43,9 @@ class ClassPathHttpScannerTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathHttpScanner scanner = new ClassPathHttpScanner(context);
 		int result = scanner.scan(ClassPathHttpScannerTests.class.getPackageName() + ".empty");
-		assertEquals(0, result);
-		assertEquals(0, context.getBeanProvider(HttpService.class).stream().count());
-		assertEquals(0, context.getBeanNamesForType(HttpFactoryBean.class).length);
+		assertThat(result).isEqualTo(0);
+		assertThat(context.getBeanProvider(HttpService.class)).isEmpty();
+		assertThat(context.getBeanNamesForType(HttpFactoryBean.class)).isEmpty();
 	}
 
 	@TestConfiguration

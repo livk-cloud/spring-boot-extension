@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -43,7 +42,7 @@ class ReflectionUtilsTests {
 	void setFieldAndAccessibleTest() {
 		Maker maker = new Maker();
 		ReflectionUtils.setFieldAndAccessible(fieldNo, maker, 2);
-		assertEquals(2, maker.getNo());
+		assertThat(maker.getNo()).isEqualTo(2);
 	}
 
 	@Test
@@ -52,12 +51,12 @@ class ReflectionUtilsTests {
 		maker.setNo(10);
 		maker.setUsername("root");
 		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
-		assertEquals("getNo", readMethod.getName());
-		assertEquals(10, readMethod.invoke(maker));
+		assertThat(readMethod.getName()).isEqualTo("getNo");
+		assertThat(readMethod.invoke(maker)).isEqualTo(10);
 
 		Set<Method> readMethods = ReflectionUtils.getReadMethods(Maker.class);
-		Set<String> set = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
-		assertEquals(Set.of("getNo", "getUsername"), set);
+		Set<String> methodNames = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
+		assertThat(methodNames).containsExactlyInAnyOrder("getNo", "getUsername");
 	}
 
 	@Test
@@ -66,20 +65,21 @@ class ReflectionUtilsTests {
 		maker.setNo(10);
 		maker.setUsername("root");
 		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
-		assertEquals("setNo", writeMethod.getName());
+		assertThat(writeMethod.getName()).isEqualTo("setNo");
+
 		writeMethod.invoke(maker, 20);
-		assertEquals(20, maker.getNo());
+		assertThat(maker.getNo()).isEqualTo(20);
 
 		Set<Method> writeMethods = ReflectionUtils.getWriteMethods(Maker.class);
-		Set<String> set = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
-		assertEquals(Set.of("setNo", "setUsername"), set);
+		Set<String> methodNames = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
+		assertThat(methodNames).containsExactlyInAnyOrder("setNo", "setUsername");
 	}
 
 	@Test
 	void getAllFields() {
-		List<Field> fieldList = ReflectionUtils.getAllFields(Maker.class);
-		List<String> list = fieldList.stream().map(Field::getName).collect(Collectors.toList());
-		assertLinesMatch(List.of("no", "username"), list);
+		List<Field> fields = ReflectionUtils.getAllFields(Maker.class);
+		List<String> fieldNames = fields.stream().map(Field::getName).collect(Collectors.toList());
+		assertThat(fieldNames).containsExactly("no", "username");
 	}
 
 	@Data

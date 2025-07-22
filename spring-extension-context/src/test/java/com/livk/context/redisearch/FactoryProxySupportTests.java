@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -59,7 +59,7 @@ class FactoryProxySupportTests {
 	@Test
 	void newProxy() {
 		try (StatefulRedisModulesConnection<String, String> connect = factory.connect()) {
-			assertEquals("PONG", connect.sync().ping());
+			assertThat(connect.sync().ping()).isEqualTo("PONG");
 		}
 	}
 

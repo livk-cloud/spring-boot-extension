@@ -18,9 +18,7 @@ package com.livk.context.sequence;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -31,12 +29,12 @@ class SequenceRangeTests {
 	void test() {
 		SequenceRange range = new SequenceRange(1L, 10L);
 		for (int i = 1; i <= 10; i++) {
-			assertFalse(range.isOver());
-			assertEquals(i, range.getAndIncrement());
+			assertThat(range.isOver()).isFalse();
+			assertThat(range.getAndIncrement()).isEqualTo(i);
 		}
 
-		assertEquals(-1, range.getAndIncrement());
-		assertTrue(range.isOver());
+		assertThat(range.getAndIncrement()).isEqualTo(-1);
+		assertThat(range.isOver()).isTrue();
 	}
 
 }

@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -44,21 +44,21 @@ class JsonNodeUtilsTests {
 	@Test
 	void findStringValue() {
 		String username = JsonNodeUtils.findStringValue(node, "username");
-		assertEquals("root", username);
+		assertThat(username).isEqualTo("root");
 	}
 
 	@Test
 	void findValue() {
 		Map<String, Object> map = JsonNodeUtils.findValue(node, "info", JsonNodeUtils.STRING_OBJECT_MAP,
 				JsonMapper.builder().build());
-		assertEquals(Map.of("name", "livk", "email", "1375632510@qq.com"), map);
+		assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of("name", "livk", "email", "1375632510@qq.com"));
 	}
 
 	@Test
 	void findObjectNode() {
 		JsonNode jsonNode = JsonNodeUtils.findObjectNode(node, "info");
-		assertEquals("livk", jsonNode.get("name").asText());
-		assertEquals("1375632510@qq.com", jsonNode.get("email").asText());
+		assertThat(jsonNode.get("name").asText()).isEqualTo("livk");
+		assertThat(jsonNode.get("email").asText()).isEqualTo("1375632510@qq.com");
 	}
 
 }

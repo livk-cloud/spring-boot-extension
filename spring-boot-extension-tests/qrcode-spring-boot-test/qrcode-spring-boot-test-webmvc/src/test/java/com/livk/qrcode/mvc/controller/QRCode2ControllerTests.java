@@ -32,8 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,10 +59,10 @@ class QRCode2ControllerTests {
 		});
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -77,10 +76,10 @@ class QRCode2ControllerTests {
 			});
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 }

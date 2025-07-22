@@ -28,8 +28,7 @@ import org.springframework.core.env.Environment;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -56,45 +55,48 @@ class SpringExpressionResolverTests {
 	@Test
 	void evaluate() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
-		assertEquals("livk", resolver.evaluate("#username", method, args));
+		assertThat(resolver.evaluate("'livk'==#username", method, args, Boolean.class)).isTrue();
+		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
 
-		assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
-		assertEquals("livk", resolver.evaluate("#username", map));
+		assertThat(resolver.evaluate("'livk'==#username", map, Boolean.class)).isTrue();
+		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
 
-		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
-		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", context));
+		assertThat(resolver.evaluate("root:#{#username}", method, args)).isEqualTo("root:livk");
+		assertThat(resolver.evaluate("root:#{#username}:#{#password}", context)).isEqualTo("root:livk:123456");
 
-		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate(("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}"), map));
+		assertThat(resolver.evaluate("root:#{#username}", map)).isEqualTo("root:livk");
+		assertThat(resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map))
+			.isEqualTo("livk:" + System.getProperty("user.dir"));
 
-		assertEquals("root:livk", resolver.evaluate("root:#{#username}", method, args));
-		assertEquals("livk", resolver.evaluate("#username", method, args));
-		assertEquals("livk", resolver.evaluate("livk", method, args));
+		assertThat(resolver.evaluate("root:#{#username}", method, args)).isEqualTo("root:livk");
+		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
+		assertThat(resolver.evaluate("livk", method, args)).isEqualTo("livk");
 
-		assertEquals("root:livk:123456", resolver.evaluate("root:#{#username}:#{#password}", context));
-		assertEquals("livk123456", resolver.evaluate("#username+#password", context));
+		assertThat(resolver.evaluate("root:#{#username}:#{#password}", context)).isEqualTo("root:livk:123456");
+		assertThat(resolver.evaluate("#username+#password", context)).isEqualTo("livk123456");
 
-		assertEquals("root:livk", resolver.evaluate("root:#{#username}", map));
-		assertEquals("livk", resolver.evaluate("#username", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map));
+		assertThat(resolver.evaluate("root:#{#username}", map)).isEqualTo("root:livk");
+		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
+		assertThat(resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map))
+			.isEqualTo("livk:" + System.getProperty("user.dir"));
 
 		contextRunner.run(ctx -> {
-			assertEquals("livk:livk", resolver.evaluate(
+			assertThat(resolver.evaluate(
 					"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
-					map));
+					map))
+				.isEqualTo("livk:livk");
 
-			assertEquals("livk:livk", resolver.evaluate(
+			assertThat(resolver.evaluate(
 					"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
-					map));
+					map))
+				.isEqualTo("livk:livk");
 
 			Map<String, Object> envMap = Map.of("username", "livk", "env",
 					SpringContextHolder.getBean(Environment.class));
-			assertEquals("livk:livk",
-					resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap));
+			assertThat(resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap))
+				.isEqualTo("livk:livk");
 		});
+
 	}
 
 }

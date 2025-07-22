@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -42,20 +42,20 @@ class BeanLambdaTests {
 
 	@Test
 	void method() {
-		assertEquals(method1.getName(), BeanLambda.methodName(Maker::getNo));
-		assertEquals(method2.getName(), BeanLambda.methodName(Maker::getUsername));
+		assertThat(BeanLambda.methodName(Maker::getNo)).isEqualTo(method1.getName());
+		assertThat(BeanLambda.methodName(Maker::getUsername)).isEqualTo(method2.getName());
 
-		assertEquals(method1, BeanLambda.method(Maker::getNo));
-		assertEquals(method2, BeanLambda.method(Maker::getUsername));
+		assertThat(BeanLambda.method(Maker::getNo)).isEqualTo(method1);
+		assertThat(BeanLambda.method(Maker::getUsername)).isEqualTo(method2);
 	}
 
 	@Test
 	void field() {
-		assertEquals(field1.getName(), BeanLambda.fieldName(Maker::getNo));
-		assertEquals(field2.getName(), BeanLambda.fieldName(Maker::getUsername));
+		assertThat(BeanLambda.fieldName(Maker::getNo)).isEqualTo(field1.getName());
+		assertThat(BeanLambda.fieldName(Maker::getUsername)).isEqualTo(field2.getName());
 
-		assertEquals(field1, BeanLambda.field(Maker::getNo));
-		assertEquals(field2, BeanLambda.field(Maker::getUsername));
+		assertThat(BeanLambda.field(Maker::getNo)).isEqualTo(field1);
+		assertThat(BeanLambda.field(Maker::getUsername)).isEqualTo(field2);
 	}
 
 	@Data

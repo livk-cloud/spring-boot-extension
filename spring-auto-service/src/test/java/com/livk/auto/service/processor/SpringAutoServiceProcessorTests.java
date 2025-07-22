@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -65,7 +65,7 @@ class SpringAutoServiceProcessorTests {
 						String[] arr = new String(FileCopyUtils.copyToByteArray(inputStream)).split("\n");
 						configList.addAll(Arrays.stream(arr).map(String::trim).toList());
 					}
-					assertTrue(configList.contains(type.getName()));
+					assertThat(configList).contains(type.getName());
 				}
 				catch (IOException ex) {
 					throw new CompilationException(ex, SourceFile.forTestClass(type));

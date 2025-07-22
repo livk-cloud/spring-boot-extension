@@ -28,8 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -71,8 +70,7 @@ class AuthServerAppTest {
 			.getResponse()
 			.getContentAsString();
 		String accessToken = JsonMapperUtils.readTree(json).get("access_token").asText();
-		assertNotNull(accessToken);
-		assertFalse(accessToken.isBlank());
+		assertThat(accessToken).isNotNull().isNotBlank();
 	}
 
 	@Test
@@ -97,8 +95,7 @@ class AuthServerAppTest {
 			.getResponse()
 			.getContentAsString();
 		String accessToken = JsonMapperUtils.readTree(json).get("access_token").asText();
-		assertNotNull(accessToken);
-		assertFalse(accessToken.isBlank());
+		assertThat(accessToken).isNotNull().isNotBlank();
 	}
 
 }

@@ -27,10 +27,8 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RedisSequenceBuilderTests {
@@ -58,9 +56,9 @@ class RedisSequenceBuilderTests {
 	void testBuildSequenceWithRequiredParameters() {
 		RedisSequenceBuilder builder = new RedisSequenceBuilder(redisClient).bizName("test-sequence");
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, sequence.nextValue());
+			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
 	}
 
@@ -70,9 +68,9 @@ class RedisSequenceBuilderTests {
 			.step(10)
 			.stepStart(100);
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 101, sequence.nextValue());
+			assertThat(sequence.nextValue()).isEqualTo(i + 101);
 		}
 	}
 
@@ -82,9 +80,9 @@ class RedisSequenceBuilderTests {
 			.bizName("chain-sequence")
 			.stepStart(50)
 			.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 51, sequence.nextValue());
+			assertThat(sequence.nextValue()).isEqualTo(i + 51);
 		}
 	}
 
@@ -95,35 +93,36 @@ class RedisSequenceBuilderTests {
 		RedisSequenceBuilder builder = new RedisSequenceBuilder(
 				RedisClient.create("redis://localhost:" + unreachablePort))
 			.bizName("fail-sequence");
-		Exception exception = assertThrows(RedisConnectionException.class, builder::build);
-		assertTrue(exception.getMessage().contains("Unable to connect to localhost/<unresolved>:6399"));
+		Throwable exception = catchThrowable(builder::build);
+		assertThat(exception).isInstanceOf(RedisConnectionException.class);
+		assertThat(exception.getMessage()).contains("Unable to connect to localhost/<unresolved>:6399");
 	}
 
 	@Test
 	void testBuildSequenceWithInvalidStepOrStepStart() {
 		// step = 0 should fallback to default (1000)
 		Sequence zeroStepSequence = new RedisSequenceBuilder(redisClient).bizName("zero-step").step(0).build();
-		assertNotNull(zeroStepSequence);
+		assertThat(zeroStepSequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, zeroStepSequence.nextValue());
+			assertThat(zeroStepSequence.nextValue()).isEqualTo(i + 1);
 		}
 
 		// step < 0 should fallback to default (1000)
 		Sequence negativeStepSequence = new RedisSequenceBuilder(redisClient).bizName("negative-step")
 			.step(-10)
 			.build();
-		assertNotNull(negativeStepSequence);
+		assertThat(negativeStepSequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, negativeStepSequence.nextValue());
+			assertThat(negativeStepSequence.nextValue()).isEqualTo(i + 1);
 		}
 
 		// stepStart < 0 should fallback to default (0)
 		Sequence negativeStepStartSequence = new RedisSequenceBuilder(redisClient).bizName("negative-stepstart")
 			.stepStart(-100)
 			.build();
-		assertNotNull(negativeStepStartSequence);
+		assertThat(negativeStepStartSequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, negativeStepStartSequence.nextValue());
+			assertThat(negativeStepStartSequence.nextValue()).isEqualTo(i + 1);
 		}
 	}
 

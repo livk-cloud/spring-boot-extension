@@ -27,11 +27,9 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RedisRangeManagerTests {
@@ -62,7 +60,7 @@ class RedisRangeManagerTests {
 	@Test
 	void testInitWithValidConfiguration() {
 		RedisRangeManager manager = new RedisRangeManager(redisClient);
-		assertDoesNotThrow(manager::init);
+		assertThatCode(manager::init).doesNotThrowAnyException();
 	}
 
 	@Test
@@ -73,18 +71,20 @@ class RedisRangeManagerTests {
 		manager.stepStart(100);
 		String key = "test-sequence";
 		SequenceRange range = manager.nextRange(key);
-		assertNotNull(range);
-		assertEquals(101, range.getMin());
-		assertEquals(110, range.getMax());
+
+		assertThat(range).isNotNull();
+		assertThat(range.getMin()).isEqualTo(101);
+		assertThat(range.getMax()).isEqualTo(110);
 	}
 
 	@Test
 	void testNextRangeThrowsWhenRedisUnavailable() {
-		// Use an unreachable port to simulate connection failure
 		int unreachablePort = 6399;
 		RedisRangeManager manager = new RedisRangeManager(RedisClient.create("redis://localhost:" + unreachablePort));
-		Exception exception = assertThrows(RedisConnectionException.class, manager::init);
-		assertTrue(exception.getMessage().contains("Unable to connect to localhost/<unresolved>:6399"));
+
+		assertThatThrownBy(manager::init).isInstanceOf(RedisConnectionException.class)
+			.hasMessageContaining("Unable to connect to localhost")
+			.hasMessageContaining(":6399");
 	}
 
 	@Test
@@ -94,19 +94,18 @@ class RedisRangeManagerTests {
 		manager.step(5);
 		manager.stepStart(0);
 		String key = "repeat-key";
+
 		SequenceRange firstRange = manager.nextRange(key);
-		assertNotNull(firstRange);
+		assertThat(firstRange).isNotNull();
 		long max1 = firstRange.getMax();
 
-		// The keyAlreadyExist should now be true, so setIfAbsent should not be called
-		// again.
 		SequenceRange secondRange = manager.nextRange(key);
-		assertNotNull(secondRange);
+		assertThat(secondRange).isNotNull();
 		long min2 = secondRange.getMin();
 		long max2 = secondRange.getMax();
 
-		assertEquals(max1 + 1, min2);
-		assertEquals(max1 + manager.step, max2);
+		assertThat(min2).isEqualTo(max1 + 1);
+		assertThat(max2).isEqualTo(max1 + manager.step);
 	}
 
 }

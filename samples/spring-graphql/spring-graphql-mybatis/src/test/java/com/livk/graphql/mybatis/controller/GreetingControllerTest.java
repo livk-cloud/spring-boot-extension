@@ -22,13 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -53,15 +54,19 @@ class GreetingControllerTest {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
 	void greetings() {
 		// language=GraphQL
 		String document = """
 				subscription {
 				  greetings
 				}""";
-		Map result = tester.document(document).execute().path("upstreamPublisher").entity(Map.class).get();
-		assertNotNull(result);
+		Map<String, Object> result = tester.document(document)
+			.execute()
+			.path("upstreamPublisher")
+			.entity(new ParameterizedTypeReference<Map<String, Object>>() {
+			})
+			.get();
+		assertThat(result).isNotNull().isNotEmpty();
 	}
 
 }

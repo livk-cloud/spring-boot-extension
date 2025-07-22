@@ -25,12 +25,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -49,9 +46,9 @@ class RequestWrapperTests {
 		Map<String, String> map = Map.of("root", "root");
 		wrapper.body(JsonMapperUtils.writeValueAsBytes(map));
 
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(map), wrapper.getContentAsByteArray());
-		assertEquals(JsonMapperUtils.writeValueAsString(map), wrapper.getContentAsString());
-		assertEquals(MediaType.APPLICATION_JSON_VALUE, wrapper.getContentType());
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo(JsonMapperUtils.writeValueAsBytes(map));
+		assertThat(wrapper.getContentAsString()).isEqualTo(JsonMapperUtils.writeValueAsString(map));
+		assertThat(wrapper.getContentType()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	@Test
@@ -61,10 +58,10 @@ class RequestWrapperTests {
 		wrapper.addHeader(HttpHeaders.AGE, "20");
 
 		HttpHeaders headers = HttpServletUtils.headers(wrapper);
-		assertEquals(MediaType.APPLICATION_JSON_VALUE, headers.getFirst(HttpHeaders.CONTENT_TYPE));
-		assertEquals("test", headers.getFirst(HttpHeaders.USER_AGENT));
-		assertEquals("20", headers.getFirst(HttpHeaders.AGE));
-		assertEquals(3, headers.size());
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+		assertThat(headers.getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
+		assertThat(headers.getFirst(HttpHeaders.AGE)).isEqualTo("20");
+		assertThat(headers.size()).isEqualTo(3);
 	}
 
 	@Test
@@ -73,9 +70,9 @@ class RequestWrapperTests {
 		wrapper.addParameter("password", "123456");
 
 		HttpParameters parameters = HttpServletUtils.params(wrapper);
-		assertEquals(List.of("livk", "root", "admin"), parameters.get("username"));
-		assertLinesMatch(List.of("123456"), parameters.get("password"));
-		assertEquals(2, parameters.size());
+		assertThat(parameters.get("username")).containsExactly("livk", "root", "admin");
+		assertThat(parameters.get("password")).containsExactly("123456");
+		assertThat(parameters).hasSize(2);
 	}
 
 }

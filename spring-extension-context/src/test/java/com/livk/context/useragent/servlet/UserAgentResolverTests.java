@@ -37,11 +37,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -73,34 +69,33 @@ class UserAgentResolverTests {
 		Method method = this.getClass().getDeclaredMethod("test", UserAgent.class);
 		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test
 	void resolveArgument() throws Exception {
+		assertThat(UserAgentContextHolder.getUserAgentContext()).isNull();
 
-		assertNull(UserAgentContextHolder.getUserAgentContext());
 		Method method = this.getClass().getDeclaredMethod("test", UserAgent.class);
 		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
 		ServletWebRequest webRequest = new ServletWebRequest(request, response);
 		Object result = resolver.resolveArgument(parameter, null, webRequest, null);
 
-		assertInstanceOf(UserAgent.class, result);
+		assertThat(result).isInstanceOf(UserAgent.class).isEqualTo(UserAgentContextHolder.getUserAgentContext());
 
 		UserAgent userAgent = (UserAgent) result;
-		assertNotNull(userAgent);
-		assertEquals(request.getHeader(HttpHeaders.USER_AGENT), userAgent.userAgentStr());
-		assertEquals("Chrome", userAgent.browser());
-		assertEquals("Browser", userAgent.browserType());
-		assertEquals("120", userAgent.browserVersion());
-		assertEquals("Windows NT", userAgent.os());
-		assertEquals("Windows NT ??", userAgent.osVersion());
-		assertEquals("Desktop", userAgent.deviceType());
-		assertEquals("Desktop", userAgent.deviceName());
-		assertEquals("Unknown", userAgent.deviceBrand());
 
-		assertEquals(result, UserAgentContextHolder.getUserAgentContext());
+		assertThat(userAgent).isNotNull();
+		assertThat(userAgent.userAgentStr()).isEqualTo(request.getHeader(HttpHeaders.USER_AGENT));
+		assertThat(userAgent.browser()).isEqualTo("Chrome");
+		assertThat(userAgent.browserType()).isEqualTo("Browser");
+		assertThat(userAgent.browserVersion()).isEqualTo("120");
+		assertThat(userAgent.os()).isEqualTo("Windows NT");
+		assertThat(userAgent.osVersion()).isEqualTo("Windows NT ??");
+		assertThat(userAgent.deviceType()).isEqualTo("Desktop");
+		assertThat(userAgent.deviceName()).isEqualTo("Desktop");
+		assertThat(userAgent.deviceBrand()).isEqualTo("Unknown");
 
 		UserAgentContextHolder.cleanUserAgentContext();
 	}

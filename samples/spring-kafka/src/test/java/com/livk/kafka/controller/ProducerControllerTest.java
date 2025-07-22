@@ -36,7 +36,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,7 +66,7 @@ class ProducerControllerTest {
 	void producer() throws Exception {
 		mockMvc.perform(get("/kafka/send")).andDo(print()).andExpect(status().isOk());
 
-		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertEquals(3, this.messages.size()));
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertThat(messages).hasSize(3));
 	}
 
 	final List<String> messages = new ArrayList<>();

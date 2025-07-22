@@ -33,7 +33,7 @@ import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,7 +67,7 @@ class OrderControllerTest {
 	void create() throws Exception {
 		mockMvc.perform(post("/order/create")).andDo(print()).andExpect(status().isOk());
 
-		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertTrue(consumer.isEmpty()));
+		Awaitility.waitAtMost(Duration.ofMinutes(4)).untilAsserted(() -> assertThat(consumer.isEmpty()).isTrue());
 	}
 
 }

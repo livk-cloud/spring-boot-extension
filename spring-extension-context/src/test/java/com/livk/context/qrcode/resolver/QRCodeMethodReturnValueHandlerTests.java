@@ -32,8 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -57,7 +56,7 @@ class QRCodeMethodReturnValueHandlerTests {
 
 	@Test
 	void supportsReturnType() {
-		assertTrue(handler.supportsReturnType(parameter));
+		assertThat(handler.supportsReturnType(parameter)).isTrue();
 	}
 
 	@Test
@@ -70,7 +69,7 @@ class QRCodeMethodReturnValueHandlerTests {
 
 		InputStream inputStream = new ByteArrayInputStream(response.getContentAsByteArray());
 
-		assertEquals("code", manager.parser(inputStream));
+		assertThat(manager.parser(inputStream)).isEqualTo("code");
 	}
 
 	@ResponseQrCode

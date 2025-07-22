@@ -25,8 +25,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -42,11 +41,11 @@ class RedissonPropertiesTests {
 	@Test
 	void test() {
 		RedissonProperties properties = RedissonProperties.load(environment);
-		assertEquals("redis://livk.com:6379", properties.getConfig().useSingleServer().getAddress());
-		assertInstanceOf(JsonJacksonCodec.class, properties.getConfig().getCodec());
-		assertInstanceOf(DefaultNettyHook.class, properties.getConfig().getNettyHook());
-		assertInstanceOf(SequentialDnsAddressResolverFactory.class,
-				properties.getConfig().getAddressResolverGroupFactory());
+		assertThat(properties.getConfig().useSingleServer().getAddress()).isEqualTo("redis://livk.com:6379");
+		assertThat(properties.getConfig().getCodec()).isInstanceOf(JsonJacksonCodec.class);
+		assertThat(properties.getConfig().getNettyHook()).isInstanceOf(DefaultNettyHook.class);
+		assertThat(properties.getConfig().getAddressResolverGroupFactory())
+			.isInstanceOf(SequentialDnsAddressResolverFactory.class);
 	}
 
 }
