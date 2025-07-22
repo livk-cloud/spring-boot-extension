@@ -26,10 +26,6 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * <p>
- * UserMapper
- * </p>
- *
  * @author livk
  */
 @Mapper

@@ -28,10 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>
- * HeadersConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

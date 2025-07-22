@@ -22,10 +22,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * <p>
- * UsersMapper
- * </p>
- *
  * @author livk
  */
 @Mapper

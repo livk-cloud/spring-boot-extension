@@ -23,10 +23,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * <p>
- * MapstructService
- * </p>
- *
  * @author livk
  */
 public interface MapstructService {

@@ -53,10 +53,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * InfoController
- * </p>
- *
  * @author livk
  */
 @RestController

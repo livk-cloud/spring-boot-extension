@@ -30,10 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <p>
- * UserController
- * </p>
- *
  * @author livk
  */
 @RestController

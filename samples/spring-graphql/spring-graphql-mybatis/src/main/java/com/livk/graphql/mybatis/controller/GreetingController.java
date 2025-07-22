@@ -25,10 +25,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
- * <p>
- * GreetingController
- * </p>
- *
  * @author livk
  */
 @Controller

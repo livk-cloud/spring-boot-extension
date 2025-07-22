@@ -27,10 +27,6 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * AuthorController
- * </p>
- *
  * @author livk
  */
 @Controller

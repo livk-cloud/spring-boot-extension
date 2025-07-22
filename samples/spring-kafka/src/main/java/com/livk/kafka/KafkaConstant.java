@@ -19,10 +19,6 @@ package com.livk.kafka;
 import lombok.experimental.UtilityClass;
 
 /**
- * <p>
- * KafkaConstant
- * </p>
- *
  * @author livk
  */
 @UtilityClass

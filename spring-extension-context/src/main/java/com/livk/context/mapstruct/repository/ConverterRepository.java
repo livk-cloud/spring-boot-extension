@@ -20,10 +20,6 @@ import com.livk.context.mapstruct.converter.Converter;
 import com.livk.context.mapstruct.converter.ConverterPair;
 
 /**
- * <p>
- * AbstractFactory
- * </p>
- *
  * @author livk
  */
 public interface ConverterRepository extends MapstructLocator {

@@ -32,10 +32,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * <p>
- * AbstractUserAgentHandlerMethodArgumentResolver
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

@@ -25,10 +25,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * CuratorProperties
- * </p>
- *
  * @author livk
  */
 @Data

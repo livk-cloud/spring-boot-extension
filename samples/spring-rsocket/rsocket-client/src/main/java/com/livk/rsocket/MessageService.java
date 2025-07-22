@@ -24,10 +24,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * <p>
- * MessageService
- * </p>
- *
  * @author livk
  */
 public interface MessageService {

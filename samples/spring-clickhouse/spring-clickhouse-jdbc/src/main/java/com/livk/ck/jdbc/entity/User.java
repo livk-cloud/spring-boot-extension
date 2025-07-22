@@ -23,10 +23,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

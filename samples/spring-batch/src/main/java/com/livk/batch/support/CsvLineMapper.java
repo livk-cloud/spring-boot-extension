@@ -29,10 +29,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * <p>
- * CsvLineMapper
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

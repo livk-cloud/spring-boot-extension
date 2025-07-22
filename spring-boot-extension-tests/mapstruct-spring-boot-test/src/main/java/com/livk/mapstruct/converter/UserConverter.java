@@ -25,10 +25,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 /**
- * <p>
- * UserConverter
- * </p>
- *
  * @author livk
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)

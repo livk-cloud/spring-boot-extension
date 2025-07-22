@@ -38,10 +38,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
- * <p>
- * InfoServiceImpl
- * </p>
- *
  * @author livk
  */
 @Slf4j

@@ -19,10 +19,6 @@ package com.livk.dynamic.entity;
 import lombok.Data;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

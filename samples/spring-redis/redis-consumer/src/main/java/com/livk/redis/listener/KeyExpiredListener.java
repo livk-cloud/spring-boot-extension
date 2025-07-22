@@ -24,10 +24,6 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * <p>
- * KeyExpiredListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

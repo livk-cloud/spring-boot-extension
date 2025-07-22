@@ -23,10 +23,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * PulsarMessage
- * </p>
- *
  * @author livk
  */
 @Data

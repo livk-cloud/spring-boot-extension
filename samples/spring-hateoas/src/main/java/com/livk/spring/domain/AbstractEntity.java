@@ -20,10 +20,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 /**
- * <p>
- * AbstractEntity
- * </p>
- *
  * @author livk
  */
 public abstract class AbstractEntity<T> extends RepresentationModel<AbstractEntity<T>> {

@@ -26,10 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * CaffeineConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

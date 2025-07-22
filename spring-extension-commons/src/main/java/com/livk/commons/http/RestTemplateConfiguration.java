@@ -28,10 +28,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * <p>
- * HttpConfiguration
- * </p>
- *
  * @author livk
  */
 @Deprecated(since = "1.4.3")

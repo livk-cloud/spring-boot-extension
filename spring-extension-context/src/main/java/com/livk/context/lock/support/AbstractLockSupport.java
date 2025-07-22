@@ -22,10 +22,6 @@ import com.livk.context.lock.exception.LockException;
 import com.livk.context.lock.exception.UnSupportLockException;
 
 /**
- * <p>
- * AbstractLock
- * </p>
- *
  * @param <T> the type parameter
  * @author livk
  */

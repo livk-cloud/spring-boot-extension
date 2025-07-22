@@ -22,10 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * UserAgentInfo
- * </p>
- *
  * @author livk
  */
 @Target(ElementType.PARAMETER)

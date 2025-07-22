@@ -23,10 +23,6 @@ import javax.annotation.processing.Processor;
 import java.lang.annotation.Annotation;
 
 /**
- * <p>
- * SpringFactoriesProcessor
- * </p>
- *
  * @author livk
  */
 @AutoService(Processor.class)

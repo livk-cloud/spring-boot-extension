@@ -27,10 +27,6 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 /**
- * <p>
- * DynamicDatasourceProperties
- * </p>
- *
  * @author livk
  */
 @Slf4j

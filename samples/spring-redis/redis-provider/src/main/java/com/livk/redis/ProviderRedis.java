@@ -22,10 +22,6 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * <p>
- * ProviderRedis
- * </p>
- *
  * @author livk
  */
 @EnableRedisRepositories

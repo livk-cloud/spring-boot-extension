@@ -29,10 +29,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * AnnoConsumer
- * </p>
- *
  * @author livk
  */
 @Slf4j

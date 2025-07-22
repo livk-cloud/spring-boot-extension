@@ -27,10 +27,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 
 /**
- * <p>
- * SqlDataInjectionAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService(EnableSqlInjector.class)

@@ -27,10 +27,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 /**
- * <p>
- * RestClientConfiguration
- * </p>
- *
  * @author livk
  */
 @AutoConfiguration

@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * GreetingController
- * </p>
- *
  * @author livk
  */
 @RestController

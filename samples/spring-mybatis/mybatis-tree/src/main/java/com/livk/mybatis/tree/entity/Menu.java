@@ -19,10 +19,6 @@ package com.livk.mybatis.tree.entity;
 import com.livk.commons.util.TreeNode;
 
 /**
- * <p>
- * Menu
- * </p>
- *
  * @author livk
  */
 public class Menu extends TreeNode<Integer, String> {

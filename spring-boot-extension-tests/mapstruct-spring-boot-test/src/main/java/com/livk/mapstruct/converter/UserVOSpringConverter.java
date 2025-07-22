@@ -26,10 +26,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p>
- * UserVOSpringConverter
- * </p>
- *
  * @author livk
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)

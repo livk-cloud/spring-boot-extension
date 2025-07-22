@@ -28,10 +28,6 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * ScheduleHandler
- * </p>
- *
  * @author livk
  */
 @Slf4j

@@ -23,10 +23,6 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 
 /**
- * <p>
- * Message
- * </p>
- *
  * @author livk
  */
 @Data

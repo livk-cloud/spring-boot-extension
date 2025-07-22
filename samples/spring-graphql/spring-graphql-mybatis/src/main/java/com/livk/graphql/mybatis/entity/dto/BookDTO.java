@@ -19,10 +19,6 @@ package com.livk.graphql.mybatis.entity.dto;
 import lombok.Data;
 
 /**
- * <p>
- * BookInput
- * </p>
- *
  * @author livk
  */
 @Data

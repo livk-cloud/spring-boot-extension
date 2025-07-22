@@ -26,10 +26,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.jspecify.annotations.NonNull;
 
 /**
- * <p>
- * HttpFactory
- * </p>
- *
  * @author livk
  */
 public class HttpServiceRegistrar implements ImportBeanDefinitionRegistrar {

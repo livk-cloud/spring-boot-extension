@@ -35,10 +35,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * ZookeeperUtils
- * </p>
- *
  * @author livk
  */
 @Slf4j

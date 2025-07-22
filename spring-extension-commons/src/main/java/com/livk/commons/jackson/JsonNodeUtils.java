@@ -26,10 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>
- * JsonNodeUtils
- * </p>
- *
  * @author livk
  */
 @UtilityClass

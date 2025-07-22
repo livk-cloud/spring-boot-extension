@@ -19,10 +19,6 @@ package com.livk.mybatisplugins.handler;
 import com.livk.context.mybatis.handler.InjectHandle;
 
 /**
- * <p>
- * VersionFunction
- * </p>
- *
  * @author livk
  */
 public class VersionInject implements InjectHandle<Integer> {

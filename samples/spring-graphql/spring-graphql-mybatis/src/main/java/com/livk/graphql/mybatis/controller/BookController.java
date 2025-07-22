@@ -32,10 +32,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * BookController
- * </p>
- *
  * @author livk
  */
 @Controller

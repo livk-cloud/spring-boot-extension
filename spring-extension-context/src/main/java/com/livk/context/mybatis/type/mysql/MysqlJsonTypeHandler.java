@@ -28,10 +28,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * <p>
- * JsonTypeHandler
- * </p>
- *
  * @author livk
  */
 @MappedTypes(JsonNode.class)

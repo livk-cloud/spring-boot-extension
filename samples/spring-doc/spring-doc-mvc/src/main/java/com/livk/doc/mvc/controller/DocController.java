@@ -25,10 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * DocController
- * </p>
- *
  * @author livk
  */
 @Tag(name = "/文档")

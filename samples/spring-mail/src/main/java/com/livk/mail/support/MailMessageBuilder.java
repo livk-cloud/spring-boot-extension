@@ -28,10 +28,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 /**
- * <p>
- * MailMessageBuilder
- * </p>
- *
  * @author livk
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

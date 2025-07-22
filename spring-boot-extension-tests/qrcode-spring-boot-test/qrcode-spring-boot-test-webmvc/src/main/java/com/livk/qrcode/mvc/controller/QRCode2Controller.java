@@ -27,10 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 /**
- * <p>
- * QRCodeController
- * </p>
- *
  * @author livk
  */
 @QrCodeController

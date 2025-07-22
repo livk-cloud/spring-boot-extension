@@ -40,10 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>
- * UserControllerTest
- * </p>
- *
  * @author livk
  */
 @Disabled("需要启动授权服务器")

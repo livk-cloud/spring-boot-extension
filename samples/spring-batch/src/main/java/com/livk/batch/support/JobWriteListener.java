@@ -24,10 +24,6 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * <p>
- * JobWriteListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

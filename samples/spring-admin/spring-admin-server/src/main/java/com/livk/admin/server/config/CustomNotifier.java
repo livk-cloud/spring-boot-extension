@@ -27,10 +27,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * CustomNotifier
- * </p>
- *
  * @author livk
  */
 @Slf4j

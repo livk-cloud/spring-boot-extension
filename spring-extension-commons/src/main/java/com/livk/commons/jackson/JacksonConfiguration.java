@@ -26,10 +26,6 @@ import org.springframework.context.annotation.Bean;
 import java.util.Locale;
 
 /**
- * <p>
- * JacksonConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService

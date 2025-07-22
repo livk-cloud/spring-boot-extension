@@ -25,10 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * <p>
- * UserServiceImpl
- * </p>
- *
  * @author livk
  */
 @Service

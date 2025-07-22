@@ -39,10 +39,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
- * <p>
- * QRCodeAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @AutoConfiguration

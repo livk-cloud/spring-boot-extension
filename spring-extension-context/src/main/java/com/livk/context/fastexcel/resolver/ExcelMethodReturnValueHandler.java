@@ -38,10 +38,6 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * <p>
- * ExcelMethodResolver
- * </p>
- *
  * @author livk
  */
 public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {

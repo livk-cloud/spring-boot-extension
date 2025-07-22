@@ -24,10 +24,6 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
 
 /**
- * <p>
- * ConverterPair
- * </p>
- *
  * @author livk
  */
 @Getter

@@ -22,10 +22,6 @@ import lombok.experimental.Accessors;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

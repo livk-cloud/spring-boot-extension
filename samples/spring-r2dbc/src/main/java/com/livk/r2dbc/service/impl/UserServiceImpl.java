@@ -27,10 +27,6 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * <p>
- * UserServiceImpl
- * </p>
- *
  * @author livk
  */
 @Service

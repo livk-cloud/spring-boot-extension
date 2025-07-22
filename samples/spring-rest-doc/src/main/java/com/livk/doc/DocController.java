@@ -32,10 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * <p>
- * DocController
- * </p>
- *
  * @author livk
  */
 @RestController

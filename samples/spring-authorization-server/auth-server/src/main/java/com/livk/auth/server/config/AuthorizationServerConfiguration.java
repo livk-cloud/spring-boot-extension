@@ -58,10 +58,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
- * <p>
- * AuthorizationServerConfiguration
- * </p>
- *
  * @author livk
  */
 @Configuration

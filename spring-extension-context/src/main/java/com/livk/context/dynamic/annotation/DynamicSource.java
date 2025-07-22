@@ -22,10 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * DynamicSource
- * </p>
- *
  * @author livk
  */
 @Retention(RetentionPolicy.RUNTIME)

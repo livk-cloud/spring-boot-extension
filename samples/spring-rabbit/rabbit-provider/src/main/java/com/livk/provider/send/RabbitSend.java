@@ -32,10 +32,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * <p>
- * RabbitSend
- * </p>
- *
  * @author livk
  */
 @Component

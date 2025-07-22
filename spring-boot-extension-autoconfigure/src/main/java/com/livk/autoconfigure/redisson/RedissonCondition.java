@@ -28,10 +28,6 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import java.util.Map;
 
 /**
- * <p>
- * RedissonCondition
- * </p>
- *
  * @author livk
  */
 class RedissonCondition extends SpringBootCondition {

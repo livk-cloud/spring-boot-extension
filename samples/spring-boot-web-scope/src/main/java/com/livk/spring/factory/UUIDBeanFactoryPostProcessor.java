@@ -21,10 +21,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
- * <p>
- * UUIDBeanFactoryPostProcessor
- * </p>
- *
  * @author livk
  */
 public class UUIDBeanFactoryPostProcessor implements BeanFactoryPostProcessor {

@@ -21,10 +21,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

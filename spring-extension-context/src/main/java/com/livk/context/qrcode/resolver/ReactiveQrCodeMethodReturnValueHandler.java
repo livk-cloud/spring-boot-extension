@@ -46,10 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * <p>
- * ReactiveQRCodeMethodReturnValueHandler
- * </p>
- *
  * @author livk
  */
 public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implements HandlerResultHandler, Ordered {

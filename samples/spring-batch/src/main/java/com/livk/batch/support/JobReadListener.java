@@ -23,10 +23,6 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p>
- * JobReadListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

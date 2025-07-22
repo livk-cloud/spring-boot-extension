@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * DocController
- * </p>
- *
  * @author livk
  */
 @Tag(name = "/文档")

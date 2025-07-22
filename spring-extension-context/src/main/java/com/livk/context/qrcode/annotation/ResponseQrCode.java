@@ -25,10 +25,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * QRCode
- * </p>
- *
  * @author livk
  */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })

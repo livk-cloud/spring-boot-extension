@@ -29,10 +29,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * <p>
- * UserAgentController
- * </p>
- *
  * @author livk
  */
 @RestController

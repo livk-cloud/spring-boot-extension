@@ -33,10 +33,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * <p>
- * CuratorAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService

@@ -30,10 +30,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * <p>
- * RSocketClient
- * </p>
- *
  * @author livk
  */
 @Slf4j

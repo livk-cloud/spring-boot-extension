@@ -31,10 +31,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.Duration;
 
 /**
- * <p>
- * MqttTest
- * </p>
- *
  * @author livk
  */
 @SpringBootTest(classes = MqttApp.class)

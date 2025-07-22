@@ -27,10 +27,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * OrderListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

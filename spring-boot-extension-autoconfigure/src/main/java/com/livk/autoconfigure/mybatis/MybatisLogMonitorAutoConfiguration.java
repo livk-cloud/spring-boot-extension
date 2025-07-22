@@ -28,10 +28,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * <p>
- * MybatisLogMonitorAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService(EnableSqlMonitor.class)

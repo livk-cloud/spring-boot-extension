@@ -27,10 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.locks.Lock;
 
 /**
- * <p>
- * LockController
- * </p>
- *
  * @author livk
  */
 @Slf4j

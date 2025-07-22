@@ -28,10 +28,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * <p>
- * SentTask
- * </p>
- *
  * @author livk
  */
 @Slf4j

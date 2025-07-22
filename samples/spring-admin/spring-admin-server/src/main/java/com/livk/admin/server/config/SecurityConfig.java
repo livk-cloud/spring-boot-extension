@@ -31,10 +31,6 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 import java.util.UUID;
 
 /**
- * <p>
- * SecurityConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

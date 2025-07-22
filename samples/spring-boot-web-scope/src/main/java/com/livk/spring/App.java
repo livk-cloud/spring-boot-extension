@@ -27,10 +27,6 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * <p>
- * App
- * </p>
- *
  * @author livk
  */
 @Slf4j

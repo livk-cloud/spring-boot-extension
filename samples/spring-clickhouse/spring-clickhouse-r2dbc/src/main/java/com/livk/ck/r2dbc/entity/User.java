@@ -32,10 +32,6 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

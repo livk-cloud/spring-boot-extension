@@ -26,10 +26,6 @@ import org.springframework.batch.item.validator.Validator;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * CsvItemProcessor
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

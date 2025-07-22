@@ -33,10 +33,6 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <p>
- * HttpController
- * </p>
- *
  * @author livk
  */
 @Slf4j

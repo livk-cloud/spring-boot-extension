@@ -19,10 +19,6 @@ package com.livk.context.lock;
 import org.springframework.core.Ordered;
 
 /**
- * <p>
- * DistributedLock
- * </p>
- *
  * @author livk
  */
 public interface DistributedLock extends Ordered {

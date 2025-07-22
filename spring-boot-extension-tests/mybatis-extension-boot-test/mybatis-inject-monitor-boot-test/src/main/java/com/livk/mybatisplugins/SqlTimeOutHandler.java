@@ -23,10 +23,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * SqlTimeOutHandler
- * </p>
- *
  * @author livk
  */
 @Slf4j

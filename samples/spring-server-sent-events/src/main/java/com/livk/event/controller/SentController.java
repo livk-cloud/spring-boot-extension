@@ -34,10 +34,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * <p>
- * SentController
- * </p>
- *
  * @author livk
  */
 @Slf4j

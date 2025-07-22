@@ -38,10 +38,6 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * <p>
- * CustomizeAbstractProcessor
- * </p>
- *
  * @author livk
  */
 abstract class CustomizeAbstractProcessor extends AbstractProcessor {

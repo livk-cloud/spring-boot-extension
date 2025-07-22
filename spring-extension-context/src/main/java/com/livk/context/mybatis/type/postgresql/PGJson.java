@@ -23,10 +23,6 @@ import org.springframework.util.StringUtils;
 import java.sql.SQLException;
 
 /**
- * <p>
- * PGJson
- * </p>
- *
  * @author livk
  */
 class PGJson extends PGobject {

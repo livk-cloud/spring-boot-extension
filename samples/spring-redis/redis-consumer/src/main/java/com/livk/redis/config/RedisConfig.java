@@ -36,10 +36,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import java.util.List;
 
 /**
- * <p>
- * RedisConfig
- * </p>
- *
  * @author livk
  */
 @Slf4j

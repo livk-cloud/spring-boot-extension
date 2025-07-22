@@ -26,10 +26,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * <p>
- * Info
- * </p>
- *
  * @author livk
  */
 @Data

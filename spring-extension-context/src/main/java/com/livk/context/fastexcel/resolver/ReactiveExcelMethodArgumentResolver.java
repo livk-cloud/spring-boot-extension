@@ -38,10 +38,6 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * <p>
- * ReactiveExcelMethodArgumentResolver
- * </p>
- *
  * @author livk
  */
 public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {

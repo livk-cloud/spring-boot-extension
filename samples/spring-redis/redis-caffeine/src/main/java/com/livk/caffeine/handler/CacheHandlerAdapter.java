@@ -24,10 +24,6 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 /**
- * <p>
- * CacheHandlerAdapter
- * </p>
- *
  * @author livk
  */
 @Component

@@ -29,10 +29,6 @@ import java.io.Serial;
 import java.util.Collection;
 
 /**
- * <p>
- * Users
- * </p>
- *
  * @author livk
  */
 @Data

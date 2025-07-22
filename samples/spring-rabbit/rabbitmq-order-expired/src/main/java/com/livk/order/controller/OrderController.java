@@ -30,10 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * <p>
- * OrderController
- * </p>
- *
  * @author livk
  */
 @Slf4j

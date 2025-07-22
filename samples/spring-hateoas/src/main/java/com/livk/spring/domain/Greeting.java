@@ -25,10 +25,6 @@ import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 
 /**
- * <p>
- * Greeting
- * </p>
- *
  * @author livk
  */
 @EqualsAndHashCode(callSuper = false)

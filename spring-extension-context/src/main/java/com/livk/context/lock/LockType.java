@@ -17,10 +17,6 @@
 package com.livk.context.lock;
 
 /**
- * <p>
- * LockType
- * </p>
- *
  * @author livk
  */
 public enum LockType {

@@ -17,10 +17,6 @@
 package com.livk.context.mapstruct.converter;
 
 /**
- * <p>
- * Converter
- * </p>
- *
  * @param <S> the type parameter
  * @param <T> the type parameter
  * @author livk

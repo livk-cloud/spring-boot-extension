@@ -33,10 +33,6 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 /**
- * <p>
- * MessageController
- * </p>
- *
  * @author livk
  */
 @RestController

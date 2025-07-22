@@ -21,10 +21,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * RedisBloom
- * </p>
- *
  * @author livk
  */
 @Component

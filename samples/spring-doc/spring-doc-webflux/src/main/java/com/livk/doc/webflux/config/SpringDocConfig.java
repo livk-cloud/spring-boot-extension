@@ -24,10 +24,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>
- * SpringDocConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

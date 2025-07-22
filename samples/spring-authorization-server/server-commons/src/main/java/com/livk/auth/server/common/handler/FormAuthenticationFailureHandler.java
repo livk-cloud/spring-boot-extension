@@ -24,9 +24,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
- * <p>
- * </p>
- *
  * @author livk
  */
 @Slf4j

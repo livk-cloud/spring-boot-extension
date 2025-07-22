@@ -32,10 +32,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * OrderQueueConsumer
- * </p>
- *
  * @author livk
  */
 @Slf4j

@@ -36,10 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * MailController
- * </p>
- *
  * @author livk
  */
 @RequestMapping("mail")

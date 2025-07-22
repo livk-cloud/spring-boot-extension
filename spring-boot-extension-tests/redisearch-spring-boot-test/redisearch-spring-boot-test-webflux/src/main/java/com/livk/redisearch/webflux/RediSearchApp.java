@@ -35,10 +35,6 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * <p>
- * RediSearchApp
- * </p>
- *
  * @author livk
  */
 @Slf4j

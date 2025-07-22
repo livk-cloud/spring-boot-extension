@@ -23,10 +23,6 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * RedissonBloom
- * </p>
- *
  * @author livk
  */
 @Component

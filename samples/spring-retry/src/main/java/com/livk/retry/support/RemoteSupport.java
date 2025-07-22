@@ -25,10 +25,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * RemoteSupport
- * </p>
- *
  * @author livk
  */
 @Slf4j

@@ -24,10 +24,6 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>
- * ServiceFunctionLoader
- * </p>
- *
  * @author livk
  */
 public class ServiceFunctionLoader implements FunctionLoader {

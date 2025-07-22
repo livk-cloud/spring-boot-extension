@@ -21,10 +21,6 @@ import com.livk.context.mybatis.handler.InjectHandle;
 import java.util.Date;
 
 /**
- * <p>
- * DateFaction
- * </p>
- *
  * @author livk
  */
 public class DateInject implements InjectHandle<Date> {

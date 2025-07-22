@@ -34,10 +34,6 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * <p>
- * TokenLoginFilter
- * </p>
- *
  * @author livk
  */
 public class TokenLoginFilter extends AbstractAuthenticationProcessingFilter {

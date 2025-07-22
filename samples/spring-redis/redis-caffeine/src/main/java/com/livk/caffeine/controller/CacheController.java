@@ -27,10 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 /**
- * <p>
- * CacheController
- * </p>
- *
  * @author livk
  */
 @RestController

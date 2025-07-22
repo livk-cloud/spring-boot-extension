@@ -17,10 +17,6 @@
 package com.livk.context.lock.exception;
 
 /**
- * <p>
- * UnSupportLockException
- * </p>
- *
  * @author livk
  */
 public class UnSupportLockException extends RuntimeException {

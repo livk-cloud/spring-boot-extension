@@ -19,10 +19,6 @@ package com.livk.context.dynamic;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
- * <p>
- * DynamicDatasource
- * </p>
- *
  * @author livk
  */
 public class DynamicDatasource extends AbstractRoutingDataSource {

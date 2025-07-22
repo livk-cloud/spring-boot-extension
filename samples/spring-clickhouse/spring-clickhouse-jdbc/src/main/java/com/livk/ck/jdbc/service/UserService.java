@@ -22,10 +22,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
- * UserService
- * </p>
- *
  * @author livk
  */
 public interface UserService {

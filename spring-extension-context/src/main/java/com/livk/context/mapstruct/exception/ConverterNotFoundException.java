@@ -17,10 +17,6 @@
 package com.livk.context.mapstruct.exception;
 
 /**
- * <p>
- * ConverterNotFoundException
- * </p>
- *
  * @author livk
  */
 public class ConverterNotFoundException extends RuntimeException {

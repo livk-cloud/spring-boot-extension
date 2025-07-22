@@ -26,10 +26,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 /**
- * <p>
- * MqttSenderConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

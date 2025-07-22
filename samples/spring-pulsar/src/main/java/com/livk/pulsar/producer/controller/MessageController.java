@@ -34,10 +34,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * <p>
- * MessageController
- * </p>
- *
  * @author livk
  */
 @RestController

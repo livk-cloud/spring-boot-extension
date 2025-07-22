@@ -29,10 +29,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * User
- * </p>
- *
  * @author livk
  */
 @Data

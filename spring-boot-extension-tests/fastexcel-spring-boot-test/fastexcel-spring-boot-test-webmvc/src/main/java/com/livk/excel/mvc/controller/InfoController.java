@@ -37,10 +37,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * InfoController
- * </p>
- *
  * @author livk
  */
 @Slf4j

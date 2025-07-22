@@ -34,10 +34,6 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <p>
- * UserController
- * </p>
- *
  * @author livk
  */
 @RestController

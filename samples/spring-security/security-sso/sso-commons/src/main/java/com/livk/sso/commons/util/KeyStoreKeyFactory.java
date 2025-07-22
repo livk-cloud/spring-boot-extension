@@ -29,10 +29,6 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.spec.RSAPublicKeySpec;
 
 /**
- * <p>
- * KeyStoreKeyFactory
- * </p>
- *
  * @author livk
  */
 public class KeyStoreKeyFactory {

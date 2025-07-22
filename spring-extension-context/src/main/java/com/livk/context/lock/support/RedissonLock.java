@@ -28,10 +28,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * RedissonLock
- * </p>
- *
  * @author livk
  */
 @Slf4j

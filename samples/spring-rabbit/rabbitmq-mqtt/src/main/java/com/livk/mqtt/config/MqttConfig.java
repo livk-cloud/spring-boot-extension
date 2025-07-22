@@ -24,10 +24,6 @@ import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 
 /**
- * <p>
- * MqttConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

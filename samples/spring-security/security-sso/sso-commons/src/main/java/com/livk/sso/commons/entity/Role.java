@@ -24,10 +24,6 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * <p>
- * Role
- * </p>
- *
  * @author livk
  */
 @Data

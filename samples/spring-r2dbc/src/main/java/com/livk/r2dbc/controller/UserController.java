@@ -37,10 +37,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * UserController
- * </p>
- *
  * @author livk
  */
 @RestController

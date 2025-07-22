@@ -26,10 +26,6 @@ import org.jspecify.annotations.NonNull;
 import java.util.Set;
 
 /**
- * <p>
- * CsvBeanValidator
- * </p>
- *
  * @author livk
  */
 public class CsvBeanValidator<T> implements org.springframework.batch.item.validator.Validator<T> {

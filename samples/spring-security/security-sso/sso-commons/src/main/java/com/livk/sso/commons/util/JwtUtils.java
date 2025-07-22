@@ -34,10 +34,6 @@ import lombok.experimental.UtilityClass;
 import java.util.UUID;
 
 /**
- * <p>
- * JwtUtils
- * </p>
- *
  * @author livk
  */
 @UtilityClass

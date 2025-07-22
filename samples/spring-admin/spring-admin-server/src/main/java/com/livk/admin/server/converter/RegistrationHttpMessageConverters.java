@@ -24,10 +24,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * RegistrationHttpMessageConverters
- * </p>
- *
  * @author livk
  */
 @Component

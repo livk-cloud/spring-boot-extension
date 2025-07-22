@@ -27,10 +27,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * <p>
- * WebSecurityConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

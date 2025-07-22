@@ -31,10 +31,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * AbstractUserAgentHandlerMethodArgumentResolver
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

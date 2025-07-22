@@ -45,10 +45,6 @@ import javax.sql.DataSource;
 import java.io.FileNotFoundException;
 
 /**
- * <p>
- * BatchConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

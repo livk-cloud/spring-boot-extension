@@ -28,10 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * RabbitController
- * </p>
- *
  * @author livk
  */
 @RestController

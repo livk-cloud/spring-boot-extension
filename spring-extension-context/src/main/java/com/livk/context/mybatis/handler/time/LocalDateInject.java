@@ -21,10 +21,6 @@ import com.livk.context.mybatis.handler.InjectHandle;
 import java.time.LocalDate;
 
 /**
- * <p>
- * LocalDateFunction
- * </p>
- *
  * @author livk
  */
 public class LocalDateInject implements InjectHandle<LocalDate> {

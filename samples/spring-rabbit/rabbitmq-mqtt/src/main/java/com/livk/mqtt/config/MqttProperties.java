@@ -20,10 +20,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * <p>
- * MqttProperties
- * </p>
- *
  * @author livk
  */
 @Data

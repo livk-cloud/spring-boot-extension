@@ -30,10 +30,6 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 /**
- * <p>
- * QRCodeController
- * </p>
- *
  * @author livk
  */
 @RestController

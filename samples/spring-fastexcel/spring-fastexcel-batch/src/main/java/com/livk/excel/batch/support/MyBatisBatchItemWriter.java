@@ -25,10 +25,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.jspecify.annotations.NonNull;
 
 /**
- * <p>
- * MybatisBatchWrite
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

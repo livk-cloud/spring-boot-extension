@@ -23,10 +23,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * SpringFactories
- * </p>
- *
  * @author livk
  */
 @Documented

@@ -26,10 +26,6 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 /**
- * <p>
- * LuaStock
- * </p>
- *
  * @author livk
  */
 @Component

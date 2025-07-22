@@ -28,10 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <p>
- * MenuController
- * </p>
- *
  * @author livk
  */
 @RestController

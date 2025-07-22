@@ -26,10 +26,6 @@ import java.io.StringReader;
 import java.util.Map;
 
 /**
- * <p>
- * FreemarkerUtils
- * </p>
- *
  * @author livk
  */
 @Slf4j

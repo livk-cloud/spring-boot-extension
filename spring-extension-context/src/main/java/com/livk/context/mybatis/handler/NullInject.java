@@ -17,10 +17,6 @@
 package com.livk.context.mybatis.handler;
 
 /**
- * <p>
- * NullFunction
- * </p>
- *
  * @author livk
  */
 public class NullInject implements InjectHandle<Object> {

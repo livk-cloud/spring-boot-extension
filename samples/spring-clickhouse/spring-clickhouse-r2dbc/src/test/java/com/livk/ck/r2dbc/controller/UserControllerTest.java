@@ -39,10 +39,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * <p>
- * UserControllerTest
- * </p>
- *
  * @author livk
  */
 @SpringBootTest

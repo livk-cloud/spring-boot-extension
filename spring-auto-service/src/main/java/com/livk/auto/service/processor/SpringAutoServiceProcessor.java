@@ -39,10 +39,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * <p>
- * SpringAutoServiceProcessor
- * </p>
- *
  * @author livk
  */
 @AutoService(Processor.class)

@@ -21,10 +21,6 @@ import com.livk.mybatisplugins.entity.User;
 import java.util.List;
 
 /**
- * <p>
- * UserService
- * </p>
- *
  * @author livk
  */
 public interface UserService {

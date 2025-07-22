@@ -33,10 +33,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 
 /**
- * <p>
- * MybatisLogMonitor
- * </p>
- *
  * @author livk
  */
 @Slf4j

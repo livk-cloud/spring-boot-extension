@@ -20,10 +20,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>
- * MqttApp
- * </p>
- *
  * @author livk
  */
 @SpringBootApplication

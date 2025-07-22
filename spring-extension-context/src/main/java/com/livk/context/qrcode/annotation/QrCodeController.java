@@ -25,10 +25,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * QRController
- * </p>
- *
  * @author livk
  */
 @Target({ ElementType.TYPE })

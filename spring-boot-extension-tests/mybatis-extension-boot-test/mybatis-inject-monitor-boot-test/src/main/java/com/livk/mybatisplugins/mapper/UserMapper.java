@@ -20,10 +20,6 @@ import com.livk.mybatisplugins.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * <p>
- * UserMapper
- * </p>
- *
  * @author livk
  */
 @Mapper

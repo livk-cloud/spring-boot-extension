@@ -21,10 +21,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 /**
- * <p>
- * Person
- * </p>
- *
  * @author livk
  */
 @Data

@@ -22,10 +22,6 @@ import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 
 /**
- * <p>
- * MqttSender
- * </p>
- *
  * @author livk
  */
 @MessagingGateway(defaultRequestChannel = MqttSenderConfig.CHANNEL_NAME_OUT)

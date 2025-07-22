@@ -30,10 +30,6 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 /**
- * <p>
- * HttpAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @AutoConfiguration

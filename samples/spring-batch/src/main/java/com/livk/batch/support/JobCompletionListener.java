@@ -23,10 +23,6 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>
- * JobCompletionListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

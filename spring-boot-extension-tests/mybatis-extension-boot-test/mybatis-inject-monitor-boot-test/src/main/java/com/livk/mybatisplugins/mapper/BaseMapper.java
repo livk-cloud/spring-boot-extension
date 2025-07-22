@@ -22,10 +22,6 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>
- * BaseMapper
- * </p>
- *
  * @author livk
  */
 public interface BaseMapper<T> {

@@ -27,10 +27,6 @@ import java.io.Closeable;
 import java.util.List;
 
 /**
- * <p>
- * CuratorOperations
- * </p>
- *
  * @author livk
  */
 public interface CuratorOperations extends Closeable {

@@ -17,10 +17,6 @@
 package com.livk.context.mapstruct.converter;
 
 /**
- * <p>
- * MapstructFactory
- * </p>
- *
  * @author livk
  */
 public interface MapstructRegistry {

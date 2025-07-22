@@ -21,10 +21,6 @@ import com.livk.excel.mvc.entity.Info;
 import java.util.List;
 
 /**
- * <p>
- * InfoMapper
- * </p>
- *
  * @author livk
  */
 public interface InfoService {

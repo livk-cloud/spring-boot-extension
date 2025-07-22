@@ -25,10 +25,6 @@ import com.livk.context.mybatis.handler.time.TimestampInject;
 import lombok.RequiredArgsConstructor;
 
 /**
- * <p>
- * TimeEnum
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

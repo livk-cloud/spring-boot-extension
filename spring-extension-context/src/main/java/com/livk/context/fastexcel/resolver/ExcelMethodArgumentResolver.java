@@ -36,10 +36,6 @@ import org.springframework.web.multipart.support.RequestPartServletServerHttpReq
 import java.util.Objects;
 
 /**
- * <p>
- * ExcelMethodArgumentResolver
- * </p>
- *
  * @author livk
  */
 public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {

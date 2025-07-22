@@ -27,10 +27,6 @@ import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
 import java.util.List;
 
 /**
- * <p>
- * ZkLockType
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

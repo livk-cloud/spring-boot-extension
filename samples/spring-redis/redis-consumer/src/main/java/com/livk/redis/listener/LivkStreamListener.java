@@ -38,10 +38,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * LivkStreamListener
- * </p>
- *
  * @author livk
  */
 @Slf4j

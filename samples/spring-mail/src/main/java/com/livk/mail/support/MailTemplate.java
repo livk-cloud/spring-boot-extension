@@ -31,10 +31,6 @@ import java.io.File;
 import java.util.Map;
 
 /**
- * <p>
- * MailTemplate
- * </p>
- *
  * @author livk
  */
 @Slf4j

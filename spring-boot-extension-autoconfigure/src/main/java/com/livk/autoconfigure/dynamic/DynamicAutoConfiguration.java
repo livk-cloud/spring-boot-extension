@@ -28,10 +28,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * DynamicAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService(EnableDynamicDatasource.class)

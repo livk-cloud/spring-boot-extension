@@ -25,10 +25,6 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 
 /**
- * <p>
- * RSocketController
- * </p>
- *
  * @author livk
  */
 @Slf4j

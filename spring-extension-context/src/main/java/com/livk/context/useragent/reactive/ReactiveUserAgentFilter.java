@@ -26,10 +26,6 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
- * <p>
- * AbstractReactiveUserAgentFilter
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

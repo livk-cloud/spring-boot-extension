@@ -27,10 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * BuyController
- * </p>
- *
  * @author livk
  */
 @RestController

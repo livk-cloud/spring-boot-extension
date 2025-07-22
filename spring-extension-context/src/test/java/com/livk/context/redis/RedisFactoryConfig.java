@@ -26,10 +26,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 /**
- * <p>
- * RedisFactoryConfig
- * </p>
- *
  * @author livk
  */
 @TestConfiguration

@@ -30,10 +30,6 @@ import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * OrderController
- * </p>
- *
  * @author livk
  */
 @RestController

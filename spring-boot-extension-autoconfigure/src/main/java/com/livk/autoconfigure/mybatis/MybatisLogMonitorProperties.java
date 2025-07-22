@@ -24,10 +24,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 
 /**
- * <p>
- * MybatisLogMonitorProperties
- * </p>
- *
  * @author livk
  */
 @Data

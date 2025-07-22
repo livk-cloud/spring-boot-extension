@@ -21,10 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * Payload
- * </p>
- *
  * @author livk
  */
 @Data

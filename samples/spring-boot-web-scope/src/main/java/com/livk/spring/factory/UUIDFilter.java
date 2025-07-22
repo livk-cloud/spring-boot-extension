@@ -28,10 +28,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * <p>
- * UUIDFilter
- * </p>
- *
  * @author livk
  */
 @Component

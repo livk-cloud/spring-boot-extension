@@ -31,10 +31,6 @@ import java.time.Duration;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * MessageController
- * </p>
- *
  * @author livk
  */
 @Slf4j

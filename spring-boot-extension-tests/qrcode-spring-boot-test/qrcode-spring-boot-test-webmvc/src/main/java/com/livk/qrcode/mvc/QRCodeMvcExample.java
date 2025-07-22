@@ -20,10 +20,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>
- * QRCodeMvcExample
- * </p>
- *
  * @author livk
  */
 @SpringBootApplication

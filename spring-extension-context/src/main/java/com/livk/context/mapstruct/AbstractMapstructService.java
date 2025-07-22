@@ -31,10 +31,6 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.function.Predicate;
 
 /**
- * <p>
- * AbstractMapstructService
- * </p>
- *
  * @author livk
  */
 abstract class AbstractMapstructService implements MapstructService, MapstructRegistry, ApplicationContextAware {

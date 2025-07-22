@@ -27,10 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * <p>
- * RateLimiterController
- * </p>
- *
  * @author livk
  */
 @RestController

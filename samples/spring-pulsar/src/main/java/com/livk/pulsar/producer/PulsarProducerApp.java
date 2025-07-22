@@ -21,10 +21,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * <p>
- * PulsarProducerApp
- * </p>
- *
  * @author livk
  */
 @EnableScheduling

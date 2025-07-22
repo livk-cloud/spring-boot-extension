@@ -19,10 +19,6 @@ package com.livk.graphql.r2dbc.entity.dto;
 import lombok.Data;
 
 /**
- * <p>
- * BookInput
- * </p>
- *
  * @author livk
  */
 @Data

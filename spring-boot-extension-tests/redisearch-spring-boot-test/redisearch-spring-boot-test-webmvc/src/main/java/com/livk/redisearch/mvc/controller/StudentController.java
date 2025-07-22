@@ -32,10 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <p>
- * StudentController
- * </p>
- *
  * @author livk
  */
 @RestController

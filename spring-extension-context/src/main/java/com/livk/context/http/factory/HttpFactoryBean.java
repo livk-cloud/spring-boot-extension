@@ -29,10 +29,6 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
- * <p>
- * HttpFactoryBean
- * </p>
- *
  * @author livk
  */
 @Setter

@@ -37,10 +37,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * <p>
- * GreetingControllerTest
- * </p>
- *
  * @author livk
  */
 @SpringBootTest

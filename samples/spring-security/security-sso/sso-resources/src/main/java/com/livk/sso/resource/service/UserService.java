@@ -22,10 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * UserService
- * </p>
- *
  * @author livk
  */
 @Service

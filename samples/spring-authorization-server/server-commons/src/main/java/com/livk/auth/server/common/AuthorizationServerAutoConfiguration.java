@@ -25,10 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * <p>
- * AuthorizationServerAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @SpringAutoService

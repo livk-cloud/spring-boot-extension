@@ -21,10 +21,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.Map;
 
 /**
- * <p>
- * SseEmitterLocator
- * </p>
- *
  * @author livk
  */
 public interface SseEmitterLocator<K> {

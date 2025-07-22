@@ -30,10 +30,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * Info2Controller
- * </p>
- *
  * @author livk
  */
 @ExcelController

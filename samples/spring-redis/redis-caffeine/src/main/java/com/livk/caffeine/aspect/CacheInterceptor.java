@@ -29,10 +29,6 @@ import org.springframework.util.Assert;
 import java.util.concurrent.Callable;
 
 /**
- * <p>
- * CacheAspect
- * </p>
- *
  * @author livk
  */
 @Component

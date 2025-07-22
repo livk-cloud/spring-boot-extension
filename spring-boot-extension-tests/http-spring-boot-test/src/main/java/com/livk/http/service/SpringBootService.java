@@ -23,10 +23,6 @@ import org.springframework.web.service.annotation.GetExchange;
 import java.util.Map;
 
 /**
- * <p>
- * RemoteService
- * </p>
- *
  * @author livk
  */
 @HttpProvider(type = AdapterType.WEB_CLIENT, url = "http://localhost:${server.port:8080}/rpc")

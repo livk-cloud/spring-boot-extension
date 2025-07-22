@@ -21,7 +21,6 @@
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringLambdaCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringMethodVisibilityCheck"/>
         <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringTernaryCheck"/>
-        <property name="excludes" value="io.spring.javaformat.checkstyle.check.SpringTestFileNameCheck"/>
 
         <!--https://github.com/checkstyle/checkstyle/tree/master/src/main/java/com/puppycrawl/tools/checkstyle/checks-->
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck"/>

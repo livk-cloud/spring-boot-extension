@@ -23,10 +23,6 @@ import com.livk.context.mapstruct.repository.ConverterRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
- * <p>
- * Generic
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor

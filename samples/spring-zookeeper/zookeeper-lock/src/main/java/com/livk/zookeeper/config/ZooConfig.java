@@ -22,10 +22,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 
 /**
- * <p>
- * ZooConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

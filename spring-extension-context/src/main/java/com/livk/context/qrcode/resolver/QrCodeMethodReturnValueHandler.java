@@ -36,10 +36,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * <p>
- * QRCodeMethodReturnValueHandler
- * </p>
- *
  * @author livk
  */
 public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements AsyncHandlerMethodReturnValueHandler {

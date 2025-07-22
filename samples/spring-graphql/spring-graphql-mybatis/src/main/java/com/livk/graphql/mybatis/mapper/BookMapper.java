@@ -26,10 +26,6 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * <p>
- * BookMapper
- * </p>
- *
  * @author livk
  */
 @Mapper

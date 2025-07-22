@@ -28,10 +28,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import java.io.IOException;
 
 /**
- * <p>
- * RsaKeyProperties
- * </p>
- *
  * @author livk
  */
 @ConfigurationProperties(RsaKeyProperties.PREFIX)

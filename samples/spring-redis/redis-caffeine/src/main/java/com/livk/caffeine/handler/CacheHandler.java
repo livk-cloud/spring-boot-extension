@@ -17,10 +17,6 @@
 package com.livk.caffeine.handler;
 
 /**
- * <p>
- * CacheHandler
- * </p>
- *
  * @author livk
  */
 public interface CacheHandler<T> extends CacheReadHandler<T>, CacheWriteHandler<T> {

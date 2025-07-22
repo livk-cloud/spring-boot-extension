@@ -17,10 +17,6 @@
 package com.livk.caffeine.enums;
 
 /**
- * <p>
- * CacheType
- * </p>
- *
  * @author livk
  */
 public enum CacheType {

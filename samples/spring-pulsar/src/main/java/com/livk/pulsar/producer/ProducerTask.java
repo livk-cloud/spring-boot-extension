@@ -28,10 +28,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * <p>
- * ProducerTask
- * </p>
- *
  * @author livk
  */
 @Component

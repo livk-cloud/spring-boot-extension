@@ -21,10 +21,6 @@ import lombok.experimental.UtilityClass;
 import java.util.UUID;
 
 /**
- * <p>
- * UUIDConTextHolder
- * </p>
- *
  * @author livk
  */
 @UtilityClass

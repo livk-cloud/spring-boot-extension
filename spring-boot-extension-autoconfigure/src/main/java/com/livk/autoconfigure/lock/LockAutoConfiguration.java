@@ -32,10 +32,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 /**
- * <p>
- * LockAutoConfiguration
- * </p>
- *
  * @author livk
  */
 @AutoConfiguration

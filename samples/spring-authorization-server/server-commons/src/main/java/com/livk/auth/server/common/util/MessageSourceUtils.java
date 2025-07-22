@@ -23,10 +23,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import java.util.Locale;
 
 /**
- * <p>
- * MessageSourceUtils
- * </p>
- *
  * @author livk
  */
 @UtilityClass

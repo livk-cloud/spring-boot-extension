@@ -20,10 +20,6 @@ import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import com.livk.excel.mvc.entity.Info;
 
 /**
- * <p>
- * ExcelListener
- * </p>
- *
  * @author livk
  */
 public class InfoExcelListener extends TypeExcelMapReadListener<Info> {

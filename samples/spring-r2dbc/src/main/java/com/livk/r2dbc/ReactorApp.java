@@ -21,10 +21,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 /**
- * <p>
- * ReactorApp
- * </p>
- *
  * @author livk
  */
 @EnableWebFlux

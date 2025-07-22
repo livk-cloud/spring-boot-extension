@@ -21,10 +21,6 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.StringUtils;
 
 /**
- * <p>
- * DataSourceContextHolder
- * </p>
- *
  * @author livk
  */
 public class DataSourceContextHolder {

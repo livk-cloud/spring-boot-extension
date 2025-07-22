@@ -20,10 +20,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * <p>
- * ReactiveExcelApp
- * </p>
- *
  * @author livk
  */
 @SpringBootApplication

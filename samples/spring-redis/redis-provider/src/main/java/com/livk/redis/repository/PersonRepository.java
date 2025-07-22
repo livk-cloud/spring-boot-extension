@@ -21,10 +21,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * <p>
- * PersonRepository
- * </p>
- *
  * @author livk
  */
 @Repository

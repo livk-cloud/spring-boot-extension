@@ -19,10 +19,6 @@ package com.livk.context.fastexcel.exception;
 import lombok.Getter;
 
 /**
- * <p>
- * ExcelExportException
- * </p>
- *
  * @author livk
  */
 @Getter

@@ -26,10 +26,6 @@ import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 /**
- * <p>
- * ClickHouseR2dbcApp
- * </p>
- *
  * @author livk
  */
 @SpringBootApplication(exclude = { R2dbcAutoConfiguration.class, R2dbcDataAutoConfiguration.class })

@@ -38,10 +38,6 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import java.time.Duration;
 
 /**
- * <p>
- * JdbcConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

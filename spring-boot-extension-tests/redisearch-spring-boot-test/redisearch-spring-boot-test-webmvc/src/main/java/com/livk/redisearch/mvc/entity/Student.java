@@ -22,10 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * Student
- * </p>
- *
  * @author livk
  */
 @NoArgsConstructor

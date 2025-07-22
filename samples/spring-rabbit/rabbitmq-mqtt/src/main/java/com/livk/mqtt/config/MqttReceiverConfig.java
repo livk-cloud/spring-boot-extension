@@ -31,10 +31,6 @@ import org.springframework.messaging.MessageHandler;
 import java.util.Objects;
 
 /**
- * <p>
- * MqttReceiverConfig
- * </p>
- *
  * @author livk
  */
 @Slf4j

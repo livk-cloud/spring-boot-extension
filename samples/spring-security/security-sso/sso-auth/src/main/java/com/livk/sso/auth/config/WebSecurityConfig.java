@@ -36,10 +36,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
- * <p>
- * WebSecurityConfig
- * </p>
- *
  * @author livk
  */
 @Configuration

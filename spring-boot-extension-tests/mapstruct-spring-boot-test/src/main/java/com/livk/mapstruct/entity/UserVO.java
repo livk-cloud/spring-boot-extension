@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
- * <p>
- * UserVO
- * </p>
- *
  * @author livk
  */
 @Data

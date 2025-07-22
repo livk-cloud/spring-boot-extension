@@ -19,10 +19,6 @@ package com.livk.auto.service.processor;
 import org.springframework.core.test.tools.SourceFile;
 
 /**
- * <p>
- * CompilationException
- * </p>
- *
  * @author livk
  */
 class CompilationException extends RuntimeException {

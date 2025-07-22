@@ -32,10 +32,6 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * <p>
- * InfoController
- * </p>
- *
  * @author livk
  */
 @RestController

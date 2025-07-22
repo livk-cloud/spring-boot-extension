@@ -23,10 +23,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>
- * InMemoryConverterRepository
- * </p>
- *
  * @author livk
  */
 public class InMemoryConverterRepository implements ConverterRepository {

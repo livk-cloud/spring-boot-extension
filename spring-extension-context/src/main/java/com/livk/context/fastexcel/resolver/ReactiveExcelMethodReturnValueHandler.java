@@ -48,10 +48,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * <p>
- * ReactiveExcelMethodReturnValueHandler
- * </p>
- *
  * @author livk
  */
 public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
