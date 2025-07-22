@@ -40,10 +40,6 @@ public class Info implements Serializable {
 	@ExcelProperty(index = 0)
 	private String phone;
 
-	public static class InfoMapReadListener extends TypeExcelMapReadListener<Info> {
-
-	}
-
 	@SuppressWarnings("unused")
 	@RequestExcel
 	void resolveRequest(@ExcelParam List<Info> infos) {
@@ -64,6 +60,10 @@ public class Info implements Serializable {
 	@ResponseExcel(fileName = "file")
 	Flux<Info> resolveResponseReactive() {
 		return Flux.empty();
+	}
+
+	public static class InfoMapReadListener extends TypeExcelMapReadListener<Info> {
+
 	}
 
 }

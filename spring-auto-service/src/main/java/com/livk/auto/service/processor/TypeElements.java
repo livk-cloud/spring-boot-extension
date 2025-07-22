@@ -42,6 +42,27 @@ import java.util.stream.Collectors;
 class TypeElements {
 
 	/**
+	 * Gets binary name.
+	 * @param element the element
+	 * @return the binary name
+	 */
+	public String getBinaryName(TypeElement element) {
+		return getBinaryNameImpl(element, element.getSimpleName().toString());
+	}
+
+	private String getBinaryNameImpl(TypeElement element, String className) {
+		Element enclosingElement = element.getEnclosingElement();
+
+		if (enclosingElement instanceof PackageElement pkg) {
+			if (pkg.isUnnamed()) {
+				return className;
+			}
+			return pkg.getQualifiedName() + "." + className;
+		}
+		return getBinaryNameImpl((TypeElement) enclosingElement, enclosingElement.getSimpleName() + "$" + className);
+	}
+
+	/**
 	 * Gets annotation attributes.
 	 * @param <T> the type parameter
 	 * @param element the element
@@ -80,27 +101,6 @@ class TypeElements {
 				.collect(Collectors.toUnmodifiableSet());
 		}
 
-	}
-
-	/**
-	 * Gets binary name.
-	 * @param element the element
-	 * @return the binary name
-	 */
-	public String getBinaryName(TypeElement element) {
-		return getBinaryNameImpl(element, element.getSimpleName().toString());
-	}
-
-	private String getBinaryNameImpl(TypeElement element, String className) {
-		Element enclosingElement = element.getEnclosingElement();
-
-		if (enclosingElement instanceof PackageElement pkg) {
-			if (pkg.isUnnamed()) {
-				return className;
-			}
-			return pkg.getQualifiedName() + "." + className;
-		}
-		return getBinaryNameImpl((TypeElement) enclosingElement, enclosingElement.getSimpleName() + "$" + className);
 	}
 
 }
