@@ -41,7 +41,7 @@ class AnnotationBeanDefinitionScannerTests {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		ClassPathBeanDefinitionScanner scanner = new MyAnnotationBeanDefinitionScanner(registry);
 		scanner.scan("com.livk.commons.spring");
-		assertTrue(registry.containsBeanDefinition("annotationBeanDefinitionScannerTest.Config"));
+		assertTrue(registry.containsBeanDefinition("annotationBeanDefinitionScannerTests.Config"));
 	}
 
 	static class MyAnnotationBeanDefinitionScanner extends AnnotationBeanDefinitionScanner<MyAnnotationScanner> {
