@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.util;
@@ -73,7 +72,7 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 添加一个子节点,出现相同ID则无法添加
-	 * @param treeNo TreeNode
+	 * @param treeNo treeNode
 	 * @return boolean
 	 */
 	public boolean addChild(TreeNode<I, T> treeNo) {
@@ -93,7 +92,7 @@ public class TreeNode<I, T> {
 
 	/**
 	 * 设置子节点,会根据父子关系进行自动匹配
-	 * @param nodes TreeNode List
+	 * @param nodes treeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
 		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();

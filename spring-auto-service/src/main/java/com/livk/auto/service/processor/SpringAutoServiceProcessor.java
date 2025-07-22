@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.auto.service.processor;
@@ -40,10 +39,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * <p>
- * SpringAutoServiceProcessor
- * </p>
- *
  * @author livk
  */
 @AutoService(Processor.class)
@@ -80,8 +75,8 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 				this.writeFile(allImports, fileObject);
 			}
-			catch (IOException e) {
-				fatalError("Unable to create " + resourceFile + ", " + e);
+			catch (IOException ex) {
+				fatalError("Unable to create " + resourceFile + ", " + ex);
 				return;
 			}
 		}

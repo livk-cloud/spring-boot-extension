@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.jackson.support;
@@ -41,7 +40,7 @@ public interface JacksonOps {
 	 * 从obj读取json数据转成相应实体类
 	 * @param <T> 泛型
 	 * @param readVal 待读取的数据
-	 * @param typeReference TypeReference包装的类型
+	 * @param typeReference typeReference包装的类型
 	 * @return 相关实例
 	 */
 	<T> T readValue(Object readVal, TypeReference<T> typeReference);

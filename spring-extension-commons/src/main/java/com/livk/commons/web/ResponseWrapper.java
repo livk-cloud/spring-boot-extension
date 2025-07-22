@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.web;
@@ -93,8 +92,8 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
 	/**
 	 * 根据默认编码获取response body数据
-	 * @return String
-	 * @see characterEncoding
+	 * @return string
+	 * @see #characterEncoding
 	 */
 	public String getContentAsString() {
 		return getContentAsString(this.characterEncoding);
@@ -103,7 +102,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	/**
 	 * 根据编码获取response body数据
 	 * @param charset 编码格式
-	 * @return String
+	 * @return string
 	 */
 	public String getContentAsString(Charset charset) {
 		return this.buffer.toString(charset);

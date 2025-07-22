@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.context.lock.support;
@@ -28,10 +27,6 @@ import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>
- * CuratorLock
- * </p>
- *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -57,8 +52,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 			lock.release();
 			return !isLocked(lock);
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 
@@ -67,8 +62,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 		try {
 			return lock.acquire(waitTime, TimeUnit.SECONDS);
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 
@@ -77,8 +72,8 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 		try {
 			lock.acquire();
 		}
-		catch (Exception e) {
-			throw new LockException(e);
+		catch (Exception ex) {
+			throw new LockException(ex);
 		}
 	}
 

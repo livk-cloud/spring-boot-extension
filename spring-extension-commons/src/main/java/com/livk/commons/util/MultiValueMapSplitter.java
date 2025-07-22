@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,11 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.util;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,9 +24,6 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * 用于将字符串拆分成可迭代MultiValueMap对象，是线程安全不可变的
@@ -50,7 +47,7 @@ public final class MultiValueMapSplitter {
 
 	private MultiValueMapSplitter(Splitter outerSplitter, Splitter entrySplitter) {
 		this.outerSplitter = outerSplitter; // only "this" is passed
-		this.entrySplitter = checkNotNull(entrySplitter);
+		this.entrySplitter = Preconditions.checkNotNull(entrySplitter);
 	}
 
 	/**
@@ -91,7 +88,7 @@ public final class MultiValueMapSplitter {
 	 * MultiValueMapSplitter.of("&amp;", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
 	 * "c"]}
 	 * @param sequence 待分割的字符串
-	 * @return MultiValueMap
+	 * @return multiValueMap
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence) {
 		return split(sequence, "^$");
@@ -106,21 +103,21 @@ public final class MultiValueMapSplitter {
 	 * "4"], a=["b", "c"]}
 	 * @param sequence 待分割的字符串
 	 * @param regex value分割符
-	 * @return MultiValueMap
+	 * @return multiValueMap
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence, String regex) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		for (String entry : outerSplitter.split(sequence)) {
 			Iterator<String> entryFields = entrySplitter.split(entry).iterator();
 
-			checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
+			Preconditions.checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
 			String key = entryFields.next();
 
-			checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
+			Preconditions.checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
 
 			map.addAll(key, Arrays.asList(entryFields.next().split(regex)));
 
-			checkArgument(!entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
+			Preconditions.checkArgument(!entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
 		}
 		return CollectionUtils.unmodifiableMultiValueMap(map);
 	}

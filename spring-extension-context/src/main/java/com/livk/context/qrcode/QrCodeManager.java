@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.context.qrcode;
@@ -33,7 +32,7 @@ public interface QrCodeManager {
 	/**
 	 * 生成二维码
 	 * @param entity 二维码实体
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	BufferedImage generate(QrCodeEntity<?> entity);
 
@@ -43,7 +42,7 @@ public interface QrCodeManager {
 	 * @param width 二维码宽度
 	 * @param height 二维码高度
 	 * @param type 图片类型
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	default BufferedImage generate(String content, int width, int height, PicType type) {
 		return generate(content, width, height, new MatrixToImageConfig(), type);
@@ -56,7 +55,7 @@ public interface QrCodeManager {
 	 * @param height 二维码高度
 	 * @param config 二维码颜色配置
 	 * @param type 图片类型
-	 * @return BufferedImage
+	 * @return bufferedImage
 	 */
 	BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type);
 

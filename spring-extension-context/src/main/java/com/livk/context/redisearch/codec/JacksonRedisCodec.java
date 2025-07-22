@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.context.redisearch.codec;
@@ -73,8 +72,8 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.writeValueAsBytes(value);
 		}
-		catch (JsonProcessingException e) {
-			throw new CodecException("Could not serialize value", e);
+		catch (JsonProcessingException ex) {
+			throw new CodecException("Could not serialize value", ex);
 		}
 	}
 
@@ -82,8 +81,8 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.readValue(bytes, type);
 		}
-		catch (IOException e) {
-			throw new CodecException("Could not deserialize value", e);
+		catch (IOException ex) {
+			throw new CodecException("Could not deserialize value", ex);
 		}
 	}
 

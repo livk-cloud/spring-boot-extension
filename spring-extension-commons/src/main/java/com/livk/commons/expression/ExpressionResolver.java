@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.expression;
@@ -34,7 +33,7 @@ public interface ExpressionResolver {
 	 * @param value 表达式
 	 * @param context 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Context context, Class<T> returnType);
 
@@ -44,7 +43,7 @@ public interface ExpressionResolver {
 	 * @param value 表达式
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
 
@@ -55,7 +54,7 @@ public interface ExpressionResolver {
 	 * @param method method
 	 * @param args args
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 */
 	<T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
 
@@ -67,7 +66,7 @@ public interface ExpressionResolver {
 	 * @param args args
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
-	 * @return T
+	 * @return entity
 	 * @see #evaluate(String, Context, Class)
 	 * @deprecated use {@link #evaluate(String, Context, Class)}
 	 */

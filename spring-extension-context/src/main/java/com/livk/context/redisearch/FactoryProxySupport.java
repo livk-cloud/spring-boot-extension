@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.context.redisearch;
@@ -53,8 +52,8 @@ final class FactoryProxySupport {
 		try {
 			return type.getConstructor(clientType).newInstance(client);
 		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		catch (Exception ex) {
+			throw new IllegalArgumentException(ex);
 		}
 	}
 
@@ -77,8 +76,8 @@ final class FactoryProxySupport {
 			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
 				.getLoaded();
 		}
-		catch (NoSuchMethodException e) {
-			throw new IllegalArgumentException(e);
+		catch (NoSuchMethodException ex) {
+			throw new IllegalArgumentException(ex);
 		}
 	}
 

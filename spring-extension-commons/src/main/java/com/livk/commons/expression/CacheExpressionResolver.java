@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.expression;
@@ -80,7 +79,7 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 	/**
 	 * 对表达式进行处理生成EXPRESSION
 	 * @param value 表达式
-	 * @return EXPRESSION expression
+	 * @return expression
 	 */
 	protected abstract EXPRESSION compile(String value);
 

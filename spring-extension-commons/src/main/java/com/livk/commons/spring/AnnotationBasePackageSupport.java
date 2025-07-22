@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * you may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *      https://www.apache.org/licenses/LICENSE-2.0
  *
@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.livk.commons.spring;
@@ -72,7 +71,7 @@ public class AnnotationBasePackageSupport {
 
 	/**
 	 * 从 Spring BeanFactory 中获取自动配置的基础包路径。 如果 BeanFactory 未配置自动包路径，则返回空数组。
-	 * @param beanFactory Spring 的 BeanFactory 实例
+	 * @param beanFactory spring 的 BeanFactory 实例
 	 * @return 自动配置的基础包路径数组
 	 */
 	public String[] getBasePackages(BeanFactory beanFactory) {
