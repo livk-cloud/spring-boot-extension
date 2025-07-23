@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.builder;
+package com.livk.context.sequence.support.redis;
 
-import com.livk.context.sequence.support.DbRangeManager;
-import com.livk.context.sequence.support.RangeManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
-import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author livk
  */
 @RequiredArgsConstructor
-class DbSequenceBuilder extends AbstractSequenceBuilder<DbSequenceBuilder> implements SequenceBuilder {
+public class SpringSequenceRedisHelper implements SequenceRedisHelper {
 
-	/**
-	 * 数据库数据源[必选]
-	 */
-	private final DataSource dataSource;
+	private final RedisConnectionFactory factory;
+
+	private RedisConnection connection;
 
 	@Override
-	protected RangeManager createRangeManager() {
-		return new DbRangeManager(dataSource);
+	public Long incrBy(byte[] key, int step) {
+		return connection.stringCommands().incrBy(key, step);
+	}
+
+	@Override
+	public void setNx(byte[] key, long stepStart) {
+		connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
+	}
+
+	@Override
+	public void init() {
+		connection = factory.getConnection();
 	}
 
 }

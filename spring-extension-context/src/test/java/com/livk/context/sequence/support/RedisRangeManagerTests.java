@@ -17,6 +17,8 @@
 package com.livk.context.sequence.support;
 
 import com.livk.context.sequence.SequenceRange;
+import com.livk.context.sequence.support.redis.LettuceSequenceRedisHelper;
+import com.livk.context.sequence.support.redis.SequenceRedisHelper;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
 import io.lettuce.core.RedisClient;
@@ -39,10 +41,13 @@ class RedisRangeManagerTests {
 
 	static RedisClient redisClient;
 
+	static SequenceRedisHelper helper;
+
 	@BeforeAll
 	static void setUp() {
 		redis.start();
 		redisClient = RedisClient.create("redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
+		helper = new LettuceSequenceRedisHelper(redisClient);
 	}
 
 	@AfterAll
@@ -50,22 +55,18 @@ class RedisRangeManagerTests {
 		if (redisClient != null) {
 			redisClient.close();
 		}
-	}
-
-	@AfterAll
-	static void tearDown() {
 		redis.stop();
 	}
 
 	@Test
 	void testInitWithValidConfiguration() {
-		RedisRangeManager manager = new RedisRangeManager(redisClient);
+		RedisRangeManager manager = new RedisRangeManager(helper);
 		assertThatCode(manager::init).doesNotThrowAnyException();
 	}
 
 	@Test
 	void testNextRangeReturnsValidSequenceRangeForNewKey() {
-		RedisRangeManager manager = new RedisRangeManager(redisClient);
+		RedisRangeManager manager = new RedisRangeManager(helper);
 		manager.init();
 		manager.step(10);
 		manager.stepStart(100);
@@ -80,7 +81,9 @@ class RedisRangeManagerTests {
 	@Test
 	void testNextRangeThrowsWhenRedisUnavailable() {
 		int unreachablePort = 6399;
-		RedisRangeManager manager = new RedisRangeManager(RedisClient.create("redis://localhost:" + unreachablePort));
+		LettuceSequenceRedisHelper sequenceHelper = new LettuceSequenceRedisHelper(
+				RedisClient.create("redis://localhost:" + unreachablePort));
+		RedisRangeManager manager = new RedisRangeManager(sequenceHelper);
 
 		assertThatThrownBy(manager::init).isInstanceOf(RedisConnectionException.class)
 			.hasMessageContaining("Unable to connect to localhost")
@@ -89,7 +92,7 @@ class RedisRangeManagerTests {
 
 	@Test
 	void testNextRangeDoesNotReinitializeExistingKey() {
-		RedisRangeManager manager = new RedisRangeManager(redisClient);
+		RedisRangeManager manager = new RedisRangeManager(helper);
 		manager.init();
 		manager.step(5);
 		manager.stepStart(0);

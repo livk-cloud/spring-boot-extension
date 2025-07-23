@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.builder;
-
-import com.livk.context.sequence.support.RangeManager;
-import com.livk.context.sequence.support.RedisRangeManager;
-import io.lettuce.core.RedisClient;
-import lombok.RequiredArgsConstructor;
+package com.livk.context.sequence.support.redis;
 
 /**
  * @author livk
  */
-@RequiredArgsConstructor
-class RedisSequenceBuilder extends AbstractSequenceBuilder<RedisSequenceBuilder> implements SequenceBuilder {
+public interface SequenceRedisHelper {
 
-	private final RedisClient redisClient;
+	Long incrBy(byte[] key, int step);
 
-	@Override
-	protected RangeManager createRangeManager() {
-		return new RedisRangeManager(redisClient);
-	}
+	void setNx(byte[] key, long stepStart);
+
+	void init();
 
 }

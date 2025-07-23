@@ -18,11 +18,15 @@ package com.livk.context.sequence.builder;
 
 import com.livk.context.sequence.Sequence;
 import com.livk.context.sequence.support.RangeManager;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author livk
  */
-abstract class AbstractSequenceBuilder<T extends AbstractSequenceBuilder<T>> implements SequenceBuilder {
+@RequiredArgsConstructor
+class DefaultSequenceBuilder implements SequenceBuilder {
+
+	private final RangeManager manager;
 
 	/**
 	 * 业务名称[必选]
@@ -39,37 +43,30 @@ abstract class AbstractSequenceBuilder<T extends AbstractSequenceBuilder<T>> imp
 	 */
 	protected long stepStart = 0;
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public final T step(int step) {
+	public final SequenceBuilder step(int step) {
 		this.step = step;
-		return (T) this;
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public final T bizName(String bizName) {
+	public final SequenceBuilder bizName(String bizName) {
 		this.bizName = bizName;
-		return (T) this;
+		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public final T stepStart(long stepStart) {
+	public final SequenceBuilder stepStart(long stepStart) {
 		this.stepStart = stepStart;
-		return (T) this;
+		return this;
 	}
 
 	@Override
 	public final Sequence build() {
-		RangeManager manager = createRangeManager();
 		manager.step(this.step);
 		manager.stepStart(stepStart);
 		manager.init();
-		// 构建序列号生成器
 		return new DefaultRangeSequence(manager, bizName);
 	}
-
-	protected abstract RangeManager createRangeManager();
 
 }

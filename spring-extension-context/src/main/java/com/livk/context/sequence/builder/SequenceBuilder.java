@@ -17,9 +17,7 @@
 package com.livk.context.sequence.builder;
 
 import com.livk.context.sequence.Sequence;
-import io.lettuce.core.RedisClient;
-
-import javax.sql.DataSource;
+import com.livk.context.sequence.support.RangeManager;
 
 /**
  * @author livk
@@ -34,12 +32,8 @@ public interface SequenceBuilder {
 
 	Sequence build();
 
-	static SequenceBuilder builder(DataSource dataSource) {
-		return new DbSequenceBuilder(dataSource);
-	}
-
-	static SequenceBuilder builder(RedisClient redisClient) {
-		return new RedisSequenceBuilder(redisClient);
+	static SequenceBuilder builder(RangeManager manager) {
+		return new DefaultSequenceBuilder(manager);
 	}
 
 }

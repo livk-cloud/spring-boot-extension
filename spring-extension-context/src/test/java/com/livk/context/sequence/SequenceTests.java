@@ -17,6 +17,9 @@
 package com.livk.context.sequence;
 
 import com.livk.context.sequence.builder.SequenceBuilder;
+import com.livk.context.sequence.support.DbRangeManager;
+import com.livk.context.sequence.support.RedisRangeManager;
+import com.livk.context.sequence.support.redis.LettuceSequenceRedisHelper;
 import com.livk.testcontainers.DockerImageNames;
 import com.livk.testcontainers.containers.PostgresqlContainer;
 import com.redis.testcontainers.RedisContainer;
@@ -79,7 +82,7 @@ class SequenceTests {
 
 	@Test
 	void testDb() {
-		Sequence sequence = SequenceBuilder.builder(dataSource).bizName("test-sequence").build();
+		Sequence sequence = SequenceBuilder.builder(new DbRangeManager(dataSource)).bizName("test-sequence").build();
 		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
 			assertThat(sequence.nextValue()).isEqualTo(i + 1);
@@ -88,7 +91,8 @@ class SequenceTests {
 
 	@Test
 	void testRedis() {
-		Sequence sequence = SequenceBuilder.builder(redisClient).bizName("test-sequence").build();
+		LettuceSequenceRedisHelper helper = new LettuceSequenceRedisHelper(redisClient);
+		Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
 		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
 			assertThat(sequence.nextValue()).isEqualTo(i + 1);

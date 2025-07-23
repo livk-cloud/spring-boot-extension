@@ -39,7 +39,7 @@ class DbRangeManagerTests {
 	static void setupDataSource() {
 		dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
+		dataSource.setJdbcUrl("jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1");
 	}
 
 	@AfterAll
@@ -137,7 +137,6 @@ class DbRangeManagerTests {
 		// selectRange but false for updateRange
 		Field helperField = DbRangeManager.class.getDeclaredField("helper");
 		helperField.setAccessible(true);
-		SequenceDbHelper realHelper = (SequenceDbHelper) helperField.get(manager);
 
 		SequenceDbHelper failingHelper = new SequenceDbHelper(dataSource, "sequence_range") {
 			@Override

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.support.spi;
+package com.livk.context.sequence.support.db;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.jdbc.DatabaseDriver;
@@ -23,25 +23,24 @@ import org.springframework.boot.jdbc.DatabaseDriver;
  * @author livk
  */
 @SpringFactories
-public class PostgresProvider implements SqlProvider {
+public class MySqlProvider implements SqlProvider {
 
 	@Override
 	public DatabaseDriver type() {
-		return DatabaseDriver.POSTGRESQL;
+		return DatabaseDriver.MYSQL;
 	}
 
 	@Override
 	public String createTableSql(String tableName) {
-		return String.format("CREATE TABLE IF NOT EXISTS %s (" + "id BIGSERIAL PRIMARY KEY, " + "val BIGINT NOT NULL, "
-				+ "name VARCHAR(32) NOT NULL, " + "create_time TIMESTAMP NOT NULL, "
-				+ "update_time TIMESTAMP NOT NULL, " + "CONSTRAINT uk_name UNIQUE (name))", tableName);
+		return String.format("CREATE TABLE IF NOT EXISTS %s (" + "id BIGINT(20) NOT NULL AUTO_INCREMENT, "
+				+ "val BIGINT(20) NOT NULL, " + "name VARCHAR(32) NOT NULL, " + "create_time DATETIME NOT NULL, "
+				+ "update_time DATETIME NOT NULL, " + "PRIMARY KEY (id), UNIQUE uk_name (name))", tableName);
 	}
 
 	@Override
 	public String insertRangeSql(String tableName) {
 		return String.format(
-				"INSERT INTO %s (name, val, create_time, update_time) VALUES (:name, :val, :create_time, :update_time) "
-						+ "ON CONFLICT (name) DO NOTHING",
+				"INSERT IGNORE INTO %s (name, val, create_time, update_time) VALUES (:name, :val, :create_time, :update_time)",
 				tableName);
 	}
 
