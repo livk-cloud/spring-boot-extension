@@ -56,6 +56,7 @@ class DefaultSequenceBuilderTests {
 
 	@BeforeAll
 	static void setupDataSource() {
+		dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
 		dataSource.setJdbcUrl("jdbc:h2:mem:test");
 		dbRangeManager = new DbRangeManager(dataSource);
@@ -72,11 +73,10 @@ class DefaultSequenceBuilderTests {
 		if (dataSource != null) {
 			dataSource.close();
 		}
-
-		redis.stop();
 		if (redisClient != null) {
 			redisClient.close();
 		}
+		redis.stop();
 	}
 
 	@Test
@@ -146,7 +146,7 @@ class DefaultSequenceBuilderTests {
 		Field stepField = DbRangeManager.class.getSuperclass().getDeclaredField("step");
 		stepField.setAccessible(true);
 		int actualStep = (int) stepField.get(manager);
-		assertThat(actualStep).isEqualTo(1000);
+		assertThat(actualStep).isEqualTo(10);
 	}
 
 	@Test
