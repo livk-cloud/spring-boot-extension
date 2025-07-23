@@ -27,7 +27,7 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -46,8 +46,8 @@ class CuratorHealthIndicatorTests {
 			try (CuratorFramework framework = create(properties, retryPolicy)) {
 				CuratorHealthIndicator indicator = new CuratorHealthIndicator(framework);
 				Health health = indicator.health();
-				assertEquals(Status.DOWN, health.getStatus());
-				assertEquals(properties.getConnectString(), health.getDetails().get("connectionString"));
+				assertThat(health.getStatus()).isEqualTo(Status.DOWN);
+				assertThat(health.getDetails().get("connectionString")).isEqualTo(properties.getConnectString());
 			}
 		}
 	}
@@ -60,7 +60,7 @@ class CuratorHealthIndicatorTests {
 		try (CuratorFramework framework = create(properties, retryPolicy)) {
 			CuratorHealthIndicator indicator = new CuratorHealthIndicator(framework);
 			Health health = indicator.health();
-			assertEquals(Status.DOWN, health.getStatus());
+			assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		}
 	}
 

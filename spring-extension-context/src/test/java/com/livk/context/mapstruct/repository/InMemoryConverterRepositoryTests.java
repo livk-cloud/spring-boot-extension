@@ -22,10 +22,7 @@ import com.livk.context.mapstruct.converter.Converter;
 import com.livk.context.mapstruct.converter.ConverterPair;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -41,20 +38,21 @@ class InMemoryConverterRepositoryTests {
 		Converter<Long, String> result = repository.computeIfAbsent(ConverterPair.of(Long.class, String.class),
 				longConverter);
 
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 
-		assertTrue(repository.contains(ConverterPair.of(Integer.class, String.class)));
-		assertTrue(repository.contains(Integer.class, String.class));
-		assertFalse(repository.contains(ConverterPair.of(String.class, Integer.class)));
-		assertFalse(repository.contains(String.class, Integer.class));
+		assertThat(repository.contains(ConverterPair.of(Integer.class, String.class))).isTrue();
+		assertThat(repository.contains(Integer.class, String.class)).isTrue();
+		assertThat(repository.contains(ConverterPair.of(String.class, Integer.class))).isFalse();
+		assertThat(repository.contains(String.class, Integer.class)).isFalse();
 
-		assertTrue(repository.contains(ConverterPair.of(Long.class, String.class)));
-		assertTrue(repository.contains(Long.class, String.class));
-		assertFalse(repository.contains(ConverterPair.of(String.class, Long.class)));
-		assertFalse(repository.contains(String.class, Long.class));
+		assertThat(repository.contains(ConverterPair.of(Long.class, String.class))).isTrue();
+		assertThat(repository.contains(Long.class, String.class)).isTrue();
+		assertThat(repository.contains(ConverterPair.of(String.class, Long.class))).isFalse();
+		assertThat(repository.contains(String.class, Long.class)).isFalse();
 
-		assertEquals(intConverter, repository.<Integer, String>get(ConverterPair.of(Integer.class, String.class)));
-		assertEquals(longConverter, repository.<Long, String>get(ConverterPair.of(Long.class, String.class)));
+		assertThat(repository.<Integer, String>get(ConverterPair.of(Integer.class, String.class)))
+			.isEqualTo(intConverter);
+		assertThat(repository.<Long, String>get(ConverterPair.of(Long.class, String.class))).isEqualTo(longConverter);
 	}
 
 }

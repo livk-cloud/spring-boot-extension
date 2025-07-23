@@ -26,11 +26,9 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SequenceDbHelperTests {
 
@@ -54,13 +52,12 @@ class SequenceDbHelperTests {
 	void testCreateTableSuccess() throws Exception {
 		String tableName = "seq_table_create";
 		SequenceDbHelper helper = new SequenceDbHelper(dataSource, tableName);
-		assertDoesNotThrow(helper::createTable);
+		assertThatCode(helper::createTable).doesNotThrowAnyException();
 
-		// Verify table exists by inserting a row
 		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
 			int updated = stmt.executeUpdate("INSERT INTO " + tableName
 					+ " (name, val, create_time, update_time) VALUES ('foo', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-			assertEquals(1, updated);
+			assertThat(updated).isEqualTo(1);
 		}
 	}
 
@@ -70,15 +67,13 @@ class SequenceDbHelperTests {
 		SequenceDbHelper helper = new SequenceDbHelper(dataSource, tableName);
 		helper.createTable();
 
-		// Insert a row
 		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate("INSERT INTO " + tableName
 					+ " (name, val, create_time, update_time) VALUES ('bar', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 		}
 
 		Long value = helper.selectRange("bar", 1L);
-		assertNotNull(value);
-		assertEquals(42L, value);
+		assertThat(value).isNotNull().isEqualTo(42L);
 	}
 
 	@Test
@@ -87,21 +82,19 @@ class SequenceDbHelperTests {
 		SequenceDbHelper helper = new SequenceDbHelper(dataSource, tableName);
 		helper.createTable();
 
-		// Insert a row
 		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate("INSERT INTO " + tableName
 					+ " (name, val, create_time, update_time) VALUES ('baz', 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 		}
 
 		boolean updated = helper.updateRange("baz", 200L, 100L);
-		assertTrue(updated);
+		assertThat(updated).isTrue();
 
-		// Verify update
 		try (Connection conn = dataSource.getConnection();
 				Statement stmt = conn.createStatement();
 				var rs = stmt.executeQuery("SELECT val FROM " + tableName + " WHERE name = 'baz'")) {
-			assertTrue(rs.next());
-			assertEquals(200L, rs.getLong(1));
+			assertThat(rs.next()).isTrue();
+			assertThat(rs.getLong(1)).isEqualTo(200L);
 		}
 	}
 
@@ -111,14 +104,13 @@ class SequenceDbHelperTests {
 		SequenceDbHelper helper = new SequenceDbHelper(dataSource, tableName);
 		helper.createTable();
 
-		// Insert a row with negative value
 		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate("INSERT INTO " + tableName
 					+ " (name, val, create_time, update_time) VALUES ('neg', -5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 		}
 
-		SequenceException ex = assertThrows(SequenceException.class, () -> helper.selectRange("neg", 1L));
-		assertTrue(ex.getMessage().contains("cannot be less than zero"));
+		assertThatThrownBy(() -> helper.selectRange("neg", 1L)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("cannot be less than zero");
 	}
 
 	@Test
@@ -128,15 +120,14 @@ class SequenceDbHelperTests {
 		helper.createTable();
 
 		long overflowVal = Long.MAX_VALUE - 100_000_000L + 1;
-		// Insert a row with overflow value
 		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(
 					"INSERT INTO " + tableName + " (name, val, create_time, update_time) VALUES ('overflow', "
 							+ overflowVal + ", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 		}
 
-		SequenceException ex = assertThrows(SequenceException.class, () -> helper.selectRange("overflow", 1L));
-		assertTrue(ex.getMessage().contains("overflow"));
+		assertThatThrownBy(() -> helper.selectRange("overflow", 1L)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("overflow");
 	}
 
 }

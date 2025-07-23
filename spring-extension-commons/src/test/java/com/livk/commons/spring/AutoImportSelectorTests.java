@@ -25,7 +25,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -38,7 +38,7 @@ class AutoImportSelectorTests {
 	void test() {
 		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(Config.class));
 		String[] result = new String[] { ImportConfig.class.getName() };
-		assertArrayEquals(result, imports);
+		assertThat(imports).containsExactly(result);
 	}
 
 	@AutoImport

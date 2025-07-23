@@ -50,8 +50,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -78,9 +77,9 @@ class SqlDataInjectionTests {
 		userMapper.insert(user);
 
 		User copy = userMapper.getById(1);
-		assertEquals(user.getUsername(), copy.getUsername());
-		assertNotNull(copy.getInsertTime());
-		assertNotNull(copy.getUpdateTime());
+		assertThat(copy.getUsername()).isEqualTo(user.getUsername());
+		assertThat(copy.getInsertTime()).isNotNull();
+		assertThat(copy.getUpdateTime()).isNotNull();
 	}
 
 	@TestConfiguration

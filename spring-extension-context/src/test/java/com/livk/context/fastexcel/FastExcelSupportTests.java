@@ -23,9 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -37,11 +35,11 @@ class FastExcelSupportTests {
 		Map<String, List<Info>> data = Map.of("0", List.of(new Info("123456789"), new Info("987654321")));
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-		assertEquals(0, stream.toByteArray().length);
+		assertThat(stream.toByteArray()).isEmpty();
 
 		FastExcelSupport.write(stream, Info.class, null, data);
 
-		assertNotEquals(0, stream.toByteArray().length);
+		assertThat(stream.toByteArray()).isNotEmpty();
 	}
 
 	@Test
@@ -49,8 +47,8 @@ class FastExcelSupportTests {
 		ResponseExcel responseExcel = this.getClass()
 			.getDeclaredMethod("fileNameResponse")
 			.getAnnotation(ResponseExcel.class);
-		assertNotNull(responseExcel);
-		assertEquals("outFile.xls", ResponseExcel.Utils.parseName(responseExcel));
+		assertThat(responseExcel).isNotNull();
+		assertThat(ResponseExcel.Utils.parseName(responseExcel)).isEqualTo("outFile.xls");
 	}
 
 	@ResponseExcel(fileName = "outFile", suffix = ResponseExcel.Suffix.XLS)

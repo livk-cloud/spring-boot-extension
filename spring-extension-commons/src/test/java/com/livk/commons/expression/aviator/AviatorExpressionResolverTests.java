@@ -32,8 +32,7 @@ import org.springframework.context.annotation.Bean;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -57,38 +56,47 @@ class AviatorExpressionResolverTests {
 	@Test
 	void evaluate() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertTrue(resolver.evaluate("'livk'==#username", method, args, Boolean.class));
+		assertThat(resolver.evaluate("'livk'==#username", method, args, Boolean.class)).isTrue();
 
-		assertEquals("livk", resolver.evaluate("#username", method, args));
+		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
 
-		assertTrue(resolver.evaluate("'livk'==#username", map, Boolean.class));
-		assertEquals("livk", resolver.evaluate("#username", map));
+		assertThat(resolver.evaluate("'livk'==#username", map, Boolean.class)).isTrue();
 
-		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
-		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", context));
+		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
 
-		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+		assertThat(resolver.evaluate("'root:'+#username", method, args)).isEqualTo("root:livk");
 
-		assertEquals("root:livk", resolver.evaluate("'root:'+#username", method, args));
-		assertEquals("livk", resolver.evaluate("#username", method, args));
-		assertEquals("livk", resolver.evaluate("'livk'", method, args));
+		assertThat(resolver.evaluate("'root:'+#username+':'+#password", context)).isEqualTo("root:livk:123456");
 
-		assertEquals("root:livk:123456", resolver.evaluate("'root:'+#username+':'+#password", context));
-		assertEquals("livk123456", resolver.evaluate("#username+#password", context));
+		assertThat(resolver.evaluate("'root:'+#username", map)).isEqualTo("root:livk");
 
-		assertEquals("root:livk", resolver.evaluate("'root:'+#username", map));
-		assertEquals("livk", resolver.evaluate("#username", map));
-		assertEquals("livk:" + System.getProperty("user.dir"),
-				resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map));
+		assertThat(resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map))
+			.isEqualTo("livk:" + System.getProperty("user.dir"));
+
+		assertThat(resolver.evaluate("'root:'+#username", method, args)).isEqualTo("root:livk");
+
+		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
+
+		assertThat(resolver.evaluate("'livk'", method, args)).isEqualTo("livk");
+
+		assertThat(resolver.evaluate("'root:'+#username+':'+#password", context)).isEqualTo("root:livk:123456");
+
+		assertThat(resolver.evaluate("#username+#password", context)).isEqualTo("livk123456");
+
+		assertThat(resolver.evaluate("'root:'+#username", map)).isEqualTo("root:livk");
+
+		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
+
+		assertThat(resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map))
+			.isEqualTo("livk:" + System.getProperty("user.dir"));
 
 		contextRunner.run(ctx -> {
-			assertEquals("livk123", resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123")));
+			assertThat(resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123"))).isEqualTo("livk123");
 
-			assertEquals(4,
-					resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class));
+			assertThat(resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class))
+				.isEqualTo(4);
 		});
+
 	}
 
 	@TestConfiguration

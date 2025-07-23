@@ -36,7 +36,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -80,7 +80,7 @@ class RedissonClientFactoryTests {
 	void createTest() {
 		RedissonClient redissonClient = RedissonClientFactory.create(redissonProperties, configCustomizers);
 
-		assertNotNull(redissonClient);
+		assertThat(redissonClient).isNotNull();
 		redissonClient.shutdown();
 	}
 
@@ -88,7 +88,7 @@ class RedissonClientFactoryTests {
 	void createByRedisPropertiesTest() {
 		RedissonClient redissonClient = RedissonClientFactory.create(redisProperties, configCustomizers);
 
-		assertNotNull(redissonClient);
+		assertThat(redissonClient).isNotNull();
 		redissonClient.shutdown();
 	}
 

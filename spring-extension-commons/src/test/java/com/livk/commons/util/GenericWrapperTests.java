@@ -22,8 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -34,15 +33,16 @@ class GenericWrapperTests {
 	void test() {
 		String value = "livk";
 		StringBuilder builder = new StringBuilder(value).reverse();
+
 		GenericWrapper<String> wrapper = GenericWrapper.of(value);
-		assertEquals(value, wrapper.unwrap());
+		assertThat(wrapper.unwrap()).isEqualTo(value);
 
 		GenericWrapper<String> map = GenericWrapper.of(reverse(wrapper.unwrap()));
-		assertEquals(builder.toString(), map.unwrap());
-		assertNotEquals(value, map.unwrap());
+		assertThat(map.unwrap()).isEqualTo(builder.toString());
+		assertThat(map.unwrap()).isNotEqualTo(value);
 
 		GenericWrapper<String> flatmap = GenericWrapper.of(wrapper.unwrap());
-		assertEquals(value, flatmap.unwrap());
+		assertThat(flatmap.unwrap()).isEqualTo(value);
 	}
 
 	String reverse(String str) {

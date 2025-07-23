@@ -24,8 +24,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -40,14 +39,14 @@ class ResponseWrapperTests {
 		ResponseWrapper wrapper = new ResponseWrapper(response);
 		HttpServletUtils.outJson(wrapper, result);
 
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(result), wrapper.getContentAsByteArray());
-		assertEquals(JsonMapperUtils.writeValueAsString(result), wrapper.getContentAsString());
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo(JsonMapperUtils.writeValueAsBytes(result));
+		assertThat(wrapper.getContentAsString()).isEqualTo(JsonMapperUtils.writeValueAsString(result));
 
 		wrapper.replaceBody(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
 
-		assertArrayEquals(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")), wrapper.getContentAsByteArray());
-		assertEquals(JsonMapperUtils.writeValueAsString(Map.of("root", "root")), wrapper.getContentAsString());
-
+		assertThat(wrapper.getContentAsByteArray())
+			.isEqualTo(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+		assertThat(wrapper.getContentAsString()).isEqualTo(JsonMapperUtils.writeValueAsString(Map.of("root", "root")));
 	}
 
 }

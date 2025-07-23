@@ -17,6 +17,7 @@
 package com.livk.context.qrcode.support;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,9 +28,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -53,22 +52,21 @@ class QrCodeSupportTests {
 	@Test
 	void createAttributes() {
 		AnnotationAttributes attributes = support.createAttributes(returnValue, parameter);
-		assertEquals(returnValue.width(), attributes.getNumber("width").intValue());
-		assertEquals(returnValue.height(), attributes.getNumber("height").intValue());
-		assertEquals(returnValue.type(), attributes.getEnum("type"));
+		assertThat(attributes.getNumber("width").intValue()).isEqualTo(returnValue.width());
+		assertThat(attributes.getNumber("height").intValue()).isEqualTo(returnValue.height());
+		assertThat(attributes.<PicType>getEnum("type")).isEqualTo(returnValue.type());
 	}
 
 	@Test
 	void toBufferedImage() {
 		BufferedImage bufferedImage = support.toBufferedImage(returnValue, attributes);
-		assertNotNull(bufferedImage);
+		assertThat(bufferedImage).isNotNull();
 	}
 
 	@Test
 	void toByteArray() {
 		byte[] bytes = support.toByteArray(returnValue, attributes);
-		assertNotNull(bytes);
-		assertTrue(bytes.length > 0);
+		assertThat(bytes).isNotNull().isNotEmpty();
 	}
 
 	@Test
@@ -77,8 +75,7 @@ class QrCodeSupportTests {
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		support.write(bufferedImage, "PNG", stream);
 		byte[] bytes = stream.toByteArray();
-		assertNotNull(bytes);
-		assertTrue(bytes.length > 0);
+		assertThat(bytes).isNotNull().isNotEmpty();
 	}
 
 	static class Support extends QrCodeSupport {

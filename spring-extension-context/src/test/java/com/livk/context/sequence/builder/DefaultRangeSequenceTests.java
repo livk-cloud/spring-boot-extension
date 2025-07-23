@@ -20,7 +20,7 @@ import com.livk.context.sequence.SequenceRange;
 import com.livk.context.sequence.support.RangeManager;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -33,7 +33,7 @@ class DefaultRangeSequenceTests {
 	void nextValue() {
 		DefaultRangeSequence sequence = new DefaultRangeSequence(rangeManager, "test");
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, sequence.nextValue());
+			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
 	}
 

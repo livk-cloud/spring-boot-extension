@@ -26,10 +26,8 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 class DbSequenceBuilderTests {
 
@@ -53,9 +51,9 @@ class DbSequenceBuilderTests {
 	void testBuildSequenceWithAllRequiredParameters() {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("test-biz");
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 		for (int i = 0; i < 10; i++) {
-			assertEquals(i + 1, sequence.nextValue());
+			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
 	}
 
@@ -64,7 +62,7 @@ class DbSequenceBuilderTests {
 		int customStep = 123;
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("step-biz").step(customStep);
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 
 		// Use reflection to access the step value in DbRangeManager
 		Field managerField = sequence.getClass().getDeclaredField("manager");
@@ -73,7 +71,7 @@ class DbSequenceBuilderTests {
 		Field stepField = DbRangeManager.class.getSuperclass().getDeclaredField("step");
 		stepField.setAccessible(true);
 		int actualStep = (int) stepField.get(manager);
-		assertEquals(customStep, actualStep);
+		assertThat(actualStep).isEqualTo(customStep);
 	}
 
 	@Test
@@ -82,7 +80,7 @@ class DbSequenceBuilderTests {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("stepStart-biz")
 			.stepStart(customStepStart);
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 
 		// Use reflection to access the stepStart value in DbRangeManager
 		Field managerField = sequence.getClass().getDeclaredField("manager");
@@ -91,21 +89,22 @@ class DbSequenceBuilderTests {
 		Field stepStartField = DbRangeManager.class.getSuperclass().getDeclaredField("stepStart");
 		stepStartField.setAccessible(true);
 		long actualStepStart = (long) stepStartField.get(manager);
-		assertEquals(customStepStart, actualStepStart);
+		assertThat(actualStepStart).isEqualTo(customStepStart);
 	}
 
 	@Test
 	void testBuildThrowsExceptionWhenBizNameMissing() {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource);
-		Exception exception = assertThrows(IllegalArgumentException.class, builder::build);
-		assertTrue(exception.getMessage().contains("name is required"));
+		Throwable exception = catchThrowable(builder::build);
+		assertThat(exception).isInstanceOf(IllegalArgumentException.class);
+		assertThat(exception.getMessage()).contains("name is required");
 	}
 
 	@Test
 	void testNegativeStepValueIgnored() throws Exception {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("neg-step-biz").step(-100);
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 
 		// Should still use default step (1000)
 		Field managerField = sequence.getClass().getDeclaredField("manager");
@@ -114,14 +113,14 @@ class DbSequenceBuilderTests {
 		Field stepField = DbRangeManager.class.getSuperclass().getDeclaredField("step");
 		stepField.setAccessible(true);
 		int actualStep = (int) stepField.get(manager);
-		assertEquals(1000, actualStep);
+		assertThat(actualStep).isEqualTo(1000);
 	}
 
 	@Test
 	void testNegativeStepStartValueIgnored() throws Exception {
 		DbSequenceBuilder builder = new DbSequenceBuilder(dataSource).bizName("neg-stepStart-biz").stepStart(-99L);
 		Sequence sequence = builder.build();
-		assertNotNull(sequence);
+		assertThat(sequence).isNotNull();
 
 		// Should still use default stepStart (0)
 		Field managerField = sequence.getClass().getDeclaredField("manager");
@@ -130,7 +129,7 @@ class DbSequenceBuilderTests {
 		Field stepStartField = DbRangeManager.class.getSuperclass().getDeclaredField("stepStart");
 		stepStartField.setAccessible(true);
 		long actualStepStart = (long) stepStartField.get(manager);
-		assertEquals(0L, actualStepStart);
+		assertThat(actualStepStart).isEqualTo(0);
 	}
 
 }

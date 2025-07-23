@@ -23,7 +23,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -35,13 +35,13 @@ class HttpFactoryBeanTests {
 	BeanFactory beanFactory;
 
 	@Test
-	void test() throws Exception {
+	void test() {
 		HttpFactoryBean factoryBean = new HttpFactoryBean();
 		factoryBean.setType(HttpService.class);
 		factoryBean.setAdapterFactory(new RestClientAdapterFactory());
 		factoryBean.setBeanFactory(beanFactory);
 		factoryBean.afterPropertiesSet();
-		assertNotNull(factoryBean.getObject());
+		assertThat(factoryBean.getObject()).isNotNull();
 	}
 
 }

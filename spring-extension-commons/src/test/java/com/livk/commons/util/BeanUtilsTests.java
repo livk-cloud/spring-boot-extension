@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -40,21 +40,21 @@ class BeanUtilsTests {
 	void copy() {
 		TargetBean result = BeanUtils.copy(bean, TargetBean.class);
 		TargetBean targetBean = new TargetBean("source", 10);
-		assertEquals(result, targetBean);
+		assertThat(result).isEqualTo(targetBean);
 	}
 
 	@Test
 	void copySupplier() {
 		TargetBean result = BeanUtils.copy(bean, TargetBean::new);
 		TargetBean targetBean = new TargetBean("source", 10);
-		assertEquals(result, targetBean);
+		assertThat(result).isEqualTo(targetBean);
 	}
 
 	@Test
 	void copyList() {
 		List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
 		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10), new TargetBean("target", 9));
-		assertEquals(result, targetBeans);
+		assertThat(result).isEqualTo(targetBeans);
 	}
 
 	@Test
@@ -62,23 +62,23 @@ class BeanUtilsTests {
 		{
 			TargetBean source = new TargetBean("source", 10);
 			Map<String, Object> convert = BeanUtils.convert(source);
-			assertEquals("source", convert.get("beanName"));
-			assertEquals(10, convert.get("beanNo"));
-			assertEquals(TargetBean.class, convert.get("class"));
+			assertThat(convert).containsEntry("beanName", "source")
+				.containsEntry("beanNo", 10)
+				.containsEntry("class", TargetBean.class);
 
 			TargetBean target = BeanUtils.convert(convert);
-			assertEquals(source, target);
+			assertThat(target).isEqualTo(source);
 		}
 
 		{
 			SourceBean source = new SourceBean("source", 10);
 			Map<String, Object> convert = BeanUtils.convert(source);
-			assertEquals("source", convert.get("beanName"));
-			assertEquals(10, convert.get("beanNo"));
-			assertEquals(SourceBean.class, convert.get("class"));
+			assertThat(convert).containsEntry("beanName", "source")
+				.containsEntry("beanNo", 10)
+				.containsEntry("class", SourceBean.class);
 
-			assertThrowsExactly(IllegalArgumentException.class, () -> BeanUtils.convert(convert),
-					"Missing no-argument constructor");
+			assertThatThrownBy(() -> BeanUtils.convert(convert)).isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Missing no-argument constructor");
 		}
 	}
 

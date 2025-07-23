@@ -23,7 +23,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -37,11 +37,11 @@ class ResourceUtilsTests {
 
 		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
 
-		assertEquals(file, resource.getFile());
+		assertThat(resource.getFile()).isEqualTo(file);
 
 		Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + fileName);
 		for (Resource resourceObj : resources) {
-			assertEquals(file, resourceObj.getFile());
+			assertThat(resourceObj.getFile()).isEqualTo(file);
 		}
 	}
 

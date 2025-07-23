@@ -40,9 +40,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -78,20 +76,21 @@ class TypeElementsTests {
 	void getAnnotationAttributes() {
 		Optional<Set<TypeElement>> autoServiceOption = TypeElements
 			.getAnnotationAttributes(get(SpringFactoryServiceImpl.class), AutoService.class, MergedAnnotation.VALUE);
-		assertTrue(autoServiceOption.isPresent());
-		ArrayList<TypeElement> list = autoServiceOption.map(ArrayList::new).get();
-		assertFalse(list.isEmpty());
-		assertEquals(1, list.size());
-		assertEquals(SpringFactoryService.class.getName(), TypeElements.getBinaryName(list.getFirst()));
+		assertThat(autoServiceOption).isPresent().map(ArrayList::new).hasValueSatisfying(list -> {
+			assertThat(list).isNotEmpty().hasSize(1);
+			assertThat(TypeElements.getBinaryName(list.getFirst())).isEqualTo(SpringFactoryService.class.getName());
+		});
 	}
 
 	@Test
 	void getBinaryName() {
-		assertEquals(String.class.getName(), TypeElements.getBinaryName(get(String.class)));
-		assertEquals(SpringAutoContext.class.getName(), TypeElements.getBinaryName(get(SpringAutoContext.class)));
-		assertEquals(SpringContext.class.getName(), TypeElements.getBinaryName(get(SpringContext.class)));
-		assertEquals(SpringFactoryServiceImpl.class.getName(),
-				TypeElements.getBinaryName(get(SpringFactoryServiceImpl.class)));
+		List<Class<?>> classes = List.of(String.class, SpringAutoContext.class, SpringContext.class,
+				SpringFactoryServiceImpl.class);
+
+		for (Class<?> type : classes) {
+			assertThat(TypeElements.getBinaryName(get(type))).isEqualTo(type.getName());
+		}
+
 	}
 
 	static TypeElement get(Class<?> type) {

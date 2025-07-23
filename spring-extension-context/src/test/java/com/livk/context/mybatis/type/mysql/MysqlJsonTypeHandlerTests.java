@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -99,12 +99,13 @@ class MysqlJsonTypeHandlerTests {
 		user.setPassword("admin");
 		user.setDes(JsonMapperUtils.readTree(json));
 
-		assertEquals(1, userMapper.insert(user));
+		assertThat(userMapper.insert(user)).isEqualTo(1);
+
 		User first = userMapper.selectList().getFirst();
-		assertEquals(user.getUsername(), first.getUsername());
-		assertEquals(user.getPassword(), first.getPassword());
-		assertEquals(user.getDes(), first.getDes());
-		assertEquals("livk", first.getDes().get("mark").asText());
+		assertThat(first.getUsername()).isEqualTo(user.getUsername());
+		assertThat(first.getPassword()).isEqualTo(user.getPassword());
+		assertThat(first.getDes()).isEqualTo(user.getDes());
+		assertThat(first.getDes().get("mark").asText()).isEqualTo("livk");
 	}
 
 	@TestConfiguration

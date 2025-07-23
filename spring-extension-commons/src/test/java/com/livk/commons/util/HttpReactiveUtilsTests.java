@@ -33,9 +33,9 @@ import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author livk
@@ -45,17 +45,18 @@ class HttpReactiveUtilsTests {
 	@Test
 	void getPartValues() {
 		Part part = mock(Part.class);
-		when(part.name()).thenReturn("file");
+		given(part.name()).willReturn("file");
 
-		// mock ServerWebExchange
 		ServerWebExchange exchange = mock(ServerWebExchange.class);
 
 		MultiValueMap<String, Part> partMap = new LinkedMultiValueMap<>();
 		partMap.add("file", part);
 
-		when(exchange.getMultipartData()).thenReturn(Mono.just(partMap));
+		given(exchange.getMultipartData()).willReturn(Mono.just(partMap));
 
-		StepVerifier.create(HttpReactiveUtils.getPartValues("file", exchange)).expectNext(part).verifyComplete();
+		StepVerifier.create(HttpReactiveUtils.getPartValues("file", exchange))
+			.assertNext(p -> assertThat(p).isSameAs(part))
+			.verifyComplete();
 	}
 
 	@Test
@@ -63,34 +64,27 @@ class HttpReactiveUtilsTests {
 		String fileContent = "file content";
 		DataBuffer buffer = new DefaultDataBufferFactory().wrap(fileContent.getBytes(StandardCharsets.UTF_8));
 
-		// Mock Part
 		Part mockPart = mock(Part.class);
-		when(mockPart.headers()).thenReturn(new HttpHeaders());
-		when(mockPart.content()).thenReturn(Flux.just(buffer));
+		given(mockPart.headers()).willReturn(new HttpHeaders());
+		given(mockPart.content()).willReturn(Flux.just(buffer));
 
-		// Mock MultipartData
 		LinkedMultiValueMap<String, Part> partMap = new LinkedMultiValueMap<>();
 		partMap.add("file", mockPart);
 
-		// Mock Exchange
 		ServerHttpRequest originalRequest = MockServerHttpRequest.post("/upload").build();
 		ServerWebExchange exchange = mock(ServerWebExchange.class);
-		when(exchange.getRequest()).thenReturn(originalRequest);
-		when(exchange.getMultipartData()).thenReturn(Mono.just(partMap));
+		given(exchange.getRequest()).willReturn(originalRequest);
+		given(exchange.getMultipartData()).willReturn(Mono.just(partMap));
 
-		// Call method
 		Mono<ServerHttpRequestDecorator> resultMono = HttpReactiveUtils.getPartRequest("file", exchange);
 
-		// Verify
 		StepVerifier.create(resultMono).assertNext(decorator -> {
-			// headers must come from part
-			assertEquals(mockPart.headers(), decorator.getHeaders());
+			assertThat(decorator.getHeaders()).isSameAs(mockPart.headers());
 
-			// body must contain expected content
 			StepVerifier.create(decorator.getBody()).consumeNextWith(data -> {
 				byte[] bytes = new byte[data.readableByteCount()];
 				data.read(bytes);
-				assertEquals(fileContent, new String(bytes, StandardCharsets.UTF_8));
+				assertThat(new String(bytes, StandardCharsets.UTF_8)).isEqualTo(fileContent);
 			}).verifyComplete();
 		}).verifyComplete();
 	}

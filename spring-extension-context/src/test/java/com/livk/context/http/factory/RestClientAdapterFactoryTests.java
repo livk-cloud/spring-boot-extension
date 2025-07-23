@@ -22,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -39,17 +37,17 @@ class RestClientAdapterFactoryTests {
 
 	@Test
 	void support() {
-		assertTrue(factory.support());
+		assertThat(factory.support()).isTrue();
 	}
 
 	@Test
 	void create() {
-		assertNotNull(factory.create(beanFactory));
+		assertThat(factory.create(beanFactory)).isNotNull();
 	}
 
 	@Test
 	void type() {
-		assertEquals(AdapterType.REST_CLIENT, factory.type());
+		assertThat(factory.type()).isEqualTo(AdapterType.REST_CLIENT);
 	}
 
 	@TestConfiguration

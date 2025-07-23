@@ -16,9 +16,8 @@
 
 package com.livk.commons.util;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.jspecify.annotations.NonNull;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -27,7 +26,8 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -36,22 +36,22 @@ class ClassUtilsTests {
 
 	@Test
 	void toClassTest() {
-		assertEquals(String.class, ClassUtils.toClass(String.class));
+		assertThat(ClassUtils.toClass(String.class)).isEqualTo(String.class);
 
 		Type listType = new ListType();
-
-		assertEquals(List.class, ClassUtils.toClass(listType));
+		assertThat(ClassUtils.toClass(listType)).isEqualTo(List.class);
 
 		TypeVariable<?> typeVar = MyGeneric.class.getTypeParameters()[0];
-		assertEquals(Number.class, ClassUtils.toClass(typeVar));
+		assertThat(ClassUtils.toClass(typeVar)).isEqualTo(Number.class);
 
 		Type arrayType = new StringGenericArrayType();
-		assertEquals(String[].class, ClassUtils.toClass(arrayType));
+		assertThat(ClassUtils.toClass(arrayType)).isEqualTo(String[].class);
 
 		WildcardType wildcardType = new NumberWildcardType();
-		assertEquals(Number.class, ClassUtils.toClass(wildcardType));
+		assertThat(ClassUtils.toClass(wildcardType)).isEqualTo(Number.class);
 
-		Assertions.assertThrows(IllegalArgumentException.class, () -> ClassUtils.toClass(null), "Type cannot be null");
+		assertThatThrownBy(() -> ClassUtils.toClass(null)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("Type cannot be null");
 	}
 
 	static class NumberWildcardType implements WildcardType {

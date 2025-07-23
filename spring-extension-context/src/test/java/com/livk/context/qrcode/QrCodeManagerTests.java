@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -52,7 +52,7 @@ class QrCodeManagerTests {
 
 		String text = manager.parser(inputStream);
 
-		assertEquals("hello", text);
+		assertThat(text).isEqualTo("hello");
 	}
 
 	@Test
@@ -70,7 +70,7 @@ class QrCodeManagerTests {
 
 		String text = manager.parser(inputStream);
 
-		assertEquals(mapper.writeValueAsString(map), text);
+		assertThat(mapper.writeValueAsString(map)).isEqualTo(text);
 	}
 
 }

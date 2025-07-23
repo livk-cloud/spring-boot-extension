@@ -25,10 +25,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 /**
  * @author livk
@@ -44,16 +42,15 @@ class SpringBootServiceTests {
 
 	@BeforeEach
 	void setUp() {
-		when(bootService.springBoot()).thenReturn(Map.of("spring-boot-version", "1.0.0", "mockito", "true"));
+		given(bootService.springBoot()).willReturn(Map.of("spring-boot-version", "1.0.0", "mockito", "true"));
 	}
 
 	@Test
 	void springBoot() {
 		Map<String, String> result = service.springBoot();
 
-		assertNotEquals(result.get("spring-boot-version"), SpringBootVersion.getVersion());
-		assertEquals("1.0.0", result.get("spring-boot-version"));
-		assertTrue(Boolean.parseBoolean(result.get("mockito")));
+		assertThat(result.get("spring-boot-version")).isNotEqualTo(SpringBootVersion.getVersion()).isEqualTo("1.0.0");
+		assertThat(result.get("mockito")).asBoolean().isTrue();
 	}
 
 }

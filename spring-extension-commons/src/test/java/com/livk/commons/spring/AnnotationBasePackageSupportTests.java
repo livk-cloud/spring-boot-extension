@@ -29,7 +29,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -42,11 +42,11 @@ class AnnotationBasePackageSupportTests {
 	void getBasePackages() {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(Config.class);
 		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
-		assertArrayEquals(new String[] { "com.livk.commons.spring" }, basePackages);
+		assertThat(basePackages).containsExactly("com.livk.commons.spring");
 
 		contextRunner.run(context -> {
 			String[] packages = AnnotationBasePackageSupport.getBasePackages(context);
-			assertArrayEquals(new String[] { "com.livk.commons.spring" }, packages);
+			assertThat(packages).containsExactly("com.livk.commons.spring");
 		});
 	}
 

@@ -23,8 +23,7 @@ import io.lettuce.core.resource.ClientResources;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -36,22 +35,22 @@ class RedisModulesFactoryTests {
 	@Test
 	void getClient() {
 		AbstractRedisClient client = factory.getClient(ClientResources.builder().build());
-		assertInstanceOf(RedisModulesClient.class, client);
+		assertThat(client).isInstanceOf(RedisModulesClient.class);
 	}
 
 	@Test
 	void createRedisURI() {
 		RedisURI uri = factory.createRedisURI("127.0.0.1:6379");
-		assertEquals("127.0.0.1", uri.getHost());
-		assertEquals(6379, uri.getPort());
+		assertThat(uri.getHost()).isEqualTo("127.0.0.1");
+		assertThat(uri.getPort()).isEqualTo(6379);
 	}
 
 	@Test
 	void getPoolConfig() {
 		GenericObjectPoolConfig<?> config = factory.getPoolConfig();
-		assertEquals(8, config.getMaxTotal());
-		assertEquals(8, config.getMaxIdle());
-		assertEquals(0, config.getMinIdle());
+		assertThat(config.getMaxTotal()).isEqualTo(8);
+		assertThat(config.getMaxIdle()).isEqualTo(8);
+		assertThat(config.getMinIdle()).isEqualTo(0);
 	}
 
 }

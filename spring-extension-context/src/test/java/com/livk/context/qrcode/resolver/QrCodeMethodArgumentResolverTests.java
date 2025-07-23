@@ -29,8 +29,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -51,7 +50,7 @@ class QrCodeMethodArgumentResolverTests {
 
 	@Test
 	void supportsParameter() {
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test
@@ -64,7 +63,7 @@ class QrCodeMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(parameter, null, webRequest, null);
 
-		assertEquals("QrCode", result);
+		assertThat(result).isEqualTo("QrCode");
 	}
 
 	static class TestController {

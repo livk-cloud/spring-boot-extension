@@ -19,7 +19,7 @@ package com.livk.autoconfigure.redisearch;
 import io.lettuce.core.resource.ClientResources;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -31,7 +31,7 @@ class LettuceModConnectionFactoryTests {
 		RediSearchProperties properties = new RediSearchProperties();
 		ClientResources resources = ClientResources.builder().build();
 		LettuceModConnectionFactory factory = new LettuceModConnectionFactory(resources, properties);
-		assertNotNull(factory);
+		assertThat(factory).isNotNull();
 	}
 
 }

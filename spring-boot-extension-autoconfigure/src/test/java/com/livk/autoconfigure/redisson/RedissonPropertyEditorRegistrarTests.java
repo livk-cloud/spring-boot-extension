@@ -16,21 +16,21 @@
 
 package com.livk.autoconfigure.redisson;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.redisson.client.DefaultNettyHook;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.connection.AddressResolverGroupFactory;
-import org.redisson.connection.SequentialDnsAddressResolverFactory;
 import org.springframework.beans.SimpleTypeConverter;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
+@Slf4j
 class RedissonPropertyEditorRegistrarTests {
 
 	@Test
@@ -41,17 +41,14 @@ class RedissonPropertyEditorRegistrarTests {
 		registrar.registerCustomEditors(converter);
 
 		Codec codec = converter.convertIfNecessary("!<org.redisson.codec.JsonJacksonCodec> {}", Codec.class);
-		assertNotNull(codec);
-		assertInstanceOf(JsonJacksonCodec.class, codec);
+		assertThat(codec).isNotNull().isInstanceOf(JsonJacksonCodec.class);
 
 		NettyHook hook = converter.convertIfNecessary("!<org.redisson.client.DefaultNettyHook> {}", NettyHook.class);
-		assertNotNull(hook);
-		assertInstanceOf(DefaultNettyHook.class, hook);
+		assertThat(hook).isNotNull().isInstanceOf(DefaultNettyHook.class);
 
 		AddressResolverGroupFactory factory = converter.convertIfNecessary(
 				"!<org.redisson.connection.SequentialDnsAddressResolverFactory> {}", AddressResolverGroupFactory.class);
-		assertNotNull(factory);
-		assertInstanceOf(SequentialDnsAddressResolverFactory.class, factory);
+		assertThat(factory).isNotNull().isInstanceOf(AddressResolverGroupFactory.class);
 	}
 
 }

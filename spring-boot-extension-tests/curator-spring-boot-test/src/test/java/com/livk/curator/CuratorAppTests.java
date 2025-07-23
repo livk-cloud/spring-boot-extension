@@ -28,7 +28,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -55,8 +55,8 @@ class CuratorAppTests {
 
 	@Test
 	void test() {
-		assertNotNull(curatorFramework);
-		assertNotNull(curatorFramework);
+		assertThat(curatorFramework).isNotNull();
+		assertThat(curatorTemplate).isNotNull();
 	}
 
 }

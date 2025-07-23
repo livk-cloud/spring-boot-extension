@@ -43,8 +43,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -80,13 +79,13 @@ class CuratorLockTests {
 	@Test
 	void tryLock() throws ExecutionException, InterruptedException {
 		lock.lock(LockType.LOCK, "tryLock", false);
-		assertFalse(service.submit(() -> lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false)).get());
-		assertFalse(lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false));
-		assertTrue(lock.tryLock(LockType.LOCK, "key", 3, 3, false));
+		assertThat(service.submit(() -> lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false)).get()).isFalse();
+		assertThat(lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false)).isFalse();
+		assertThat(lock.tryLock(LockType.LOCK, "key", 3, 3, false)).isTrue();
 
 		lock.unlock();
 
-		assertTrue(lock.tryLock(LockType.LOCK, "key", 3, 3, false));
+		assertThat(lock.tryLock(LockType.LOCK, "key", 3, 3, false)).isTrue();
 
 		lock.unlock();
 	}

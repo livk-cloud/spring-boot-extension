@@ -23,7 +23,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -38,14 +38,16 @@ class MultiValueMapSplitterTests {
 
 			Map<String, List<String>> map = Map.of("names", List.of("admin", "root"), "password", List.of("123456"));
 
-			assertEquals(CollectionUtils.toMultiValueMap(map), valueMap);
+			assertThat(valueMap).isEqualTo(CollectionUtils.toMultiValueMap(map));
 		}
 
 		{
 			String str = "root=1,2,3&root=4&a=b&a=c";
 			Map<String, List<String>> map = Map.of("root", List.of("1", "2", "3", "4"), "a", List.of("b", "c"));
+
 			MultiValueMap<String, String> multiValueMap = MultiValueMapSplitter.of("&", "=").split(str, ",");
-			assertEquals(CollectionUtils.toMultiValueMap(map), multiValueMap);
+
+			assertThat(multiValueMap).isEqualTo(CollectionUtils.toMultiValueMap(map));
 		}
 	}
 

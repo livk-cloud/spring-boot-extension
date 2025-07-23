@@ -43,7 +43,7 @@ import reactor.test.StepVerifier;
 import java.lang.reflect.Method;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -72,7 +72,7 @@ class ReactiveUserAgentResolverTests {
 		Method method = this.getClass().getDeclaredMethod("test", Mono.class);
 		MethodParameter parameter = MethodParameter.forExecutable(method, 0);
 
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test

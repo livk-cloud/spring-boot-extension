@@ -28,8 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -40,20 +39,23 @@ class FileUtilsTests {
 	void download() throws IOException {
 		InputStream inputStream = new ByteArrayInputStream("livk".getBytes());
 		FileUtils.download(inputStream, "./username.txt");
-		assertTrue(new File("./username.txt").delete());
+		File file = new File("./username.txt");
+		assertThat(file.exists()).isTrue();
+		assertThat(file.delete()).isTrue();
 	}
 
 	@Test
 	void createNewFile() throws IOException {
 		File file = new File("./file.txt");
-		assertTrue(FileUtils.createNewFile(file));
-		assertTrue(file.delete());
+		assertThat(FileUtils.createNewFile(file)).isTrue();
+		assertThat(file.delete()).isTrue();
 	}
 
 	@Test
 	void gzip() throws IOException {
 		InputStream inputStream = new ClassPathResource("data.json").getInputStream();
 		String data = JsonMapperUtils.readValue(inputStream, JsonNode.class).toString();
+
 		File file = new File("./data.gzip");
 		FileUtils.createNewFile(file);
 		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -62,8 +64,8 @@ class FileUtilsTests {
 
 		try (FileInputStream fileInputStream = new FileInputStream(file)) {
 			String copyData = new String(FileUtils.gzipDecompress(fileInputStream));
-			assertEquals(data, copyData);
-			assertTrue(file.delete());
+			assertThat(copyData).isEqualTo(data);
+			assertThat(file.delete()).isTrue();
 		}
 	}
 

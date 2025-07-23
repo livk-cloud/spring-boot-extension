@@ -27,9 +27,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -49,7 +47,7 @@ class ExcelMethodArgumentResolverTests {
 
 	@Test
 	void supportsParameter() {
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test
@@ -62,12 +60,12 @@ class ExcelMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(parameter, null, webRequest, null);
 
-		assertInstanceOf(List.class, result);
+		assertThat(result).isInstanceOf(List.class);
 
 		@SuppressWarnings("unchecked")
 		List<Info> list = (List<Info>) result;
 
-		assertEquals(100, list.size());
+		assertThat(list).hasSize(100);
 	}
 
 }

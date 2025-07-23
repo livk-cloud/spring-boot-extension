@@ -26,8 +26,8 @@ import org.springframework.expression.ExpressionException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -48,26 +48,33 @@ class FreeMarkerExpressionResolverTests {
 	@Test
 	void evaluate() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertEquals("livk", resolver.evaluate("${username}", method, args));
+		assertThat(resolver.evaluate("${username}", method, args)).isEqualTo("livk");
 
-		assertEquals("livk", resolver.evaluate("${username}", map));
+		assertThat(resolver.evaluate("${username}", map)).isEqualTo("livk");
 
-		assertEquals("root:livk", resolver.evaluate("root:${username}", method, args));
-		assertEquals("root:livk:123456", resolver.evaluate("root:${username}:${password}", context));
+		assertThat(resolver.evaluate("root:${username}", method, args)).isEqualTo("root:livk");
 
-		assertEquals("root:livk", resolver.evaluate("root:${username}", map));
+		assertThat(resolver.evaluate("root:${username}:${password}", context)).isEqualTo("root:livk:123456");
 
-		assertEquals("root:livk", resolver.evaluate("root:${username}", method, args));
-		assertEquals("livk", resolver.evaluate("${username}", method, args));
-		assertEquals("livk", resolver.evaluate("livk", method, args));
+		assertThat(resolver.evaluate("root:${username}", map)).isEqualTo("root:livk");
 
-		assertEquals("root:livk:123456", resolver.evaluate("root:${username}:${password}", context));
-		assertEquals("livk123456", resolver.evaluate("${username}${password}", context));
+		assertThat(resolver.evaluate("root:${username}", method, args)).isEqualTo("root:livk");
 
-		assertEquals("root:livk", resolver.evaluate("root:${username}", map));
-		assertEquals("livk", resolver.evaluate("${username}", map));
+		assertThat(resolver.evaluate("${username}", method, args)).isEqualTo("livk");
 
-		assertThrowsExactly(ExpressionException.class, () -> resolver.evaluate("${username}", map, Integer.class));
+		assertThat(resolver.evaluate("livk", method, args)).isEqualTo("livk");
+
+		assertThat(resolver.evaluate("root:${username}:${password}", context)).isEqualTo("root:livk:123456");
+
+		assertThat(resolver.evaluate("${username}${password}", context)).isEqualTo("livk123456");
+
+		assertThat(resolver.evaluate("root:${username}", map)).isEqualTo("root:livk");
+
+		assertThat(resolver.evaluate("${username}", map)).isEqualTo("livk");
+
+		assertThatThrownBy(() -> resolver.evaluate("${username}", map, Integer.class))
+			.isExactlyInstanceOf(ExpressionException.class);
+
 	}
 
 }

@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -41,14 +41,14 @@ class YamlUtilsTests {
 	void convertMapToYaml() throws IOException {
 		Map<String, Object> load = new Yaml().load(yml.getInputStream());
 		Map<String, Object> result = YamlUtils.convertMapToYaml(map);
-		assertEquals(load, result);
+		assertThat(result).isEqualTo(load);
 	}
 
 	@Test
 	void convertYamlToMap() throws IOException {
 		Map<String, Object> load = new Yaml().load(yml.getInputStream());
 		Properties result = YamlUtils.convertYamlToMap(load);
-		assertEquals(map, result);
+		assertThat(result).isEqualTo(map);
 	}
 
 }

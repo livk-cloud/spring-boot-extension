@@ -16,12 +16,9 @@
 
 package com.livk.proto;
 
-import com.livk.commons.util.ObjectUtils;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -35,9 +32,9 @@ class UserConverterTest {
 		User user = new User(1L, "root", "123456@gmail.com", 0);
 
 		byte[] bytes = converter.convert(user);
-		assertNotNull(bytes);
-		assertFalse(ObjectUtils.isEmpty(bytes));
-		assertEquals(user, converter.convert(bytes));
+
+		assertThat(bytes).isNotNull().isNotEmpty();
+		assertThat(converter.convert(bytes)).isEqualTo(user);
 	}
 
 }

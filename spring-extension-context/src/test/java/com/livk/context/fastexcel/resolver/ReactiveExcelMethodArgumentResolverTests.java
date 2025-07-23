@@ -42,7 +42,7 @@ import reactor.test.StepVerifier;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -67,7 +67,7 @@ class ReactiveExcelMethodArgumentResolverTests {
 
 	@Test
 	void supportsParameter() {
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test

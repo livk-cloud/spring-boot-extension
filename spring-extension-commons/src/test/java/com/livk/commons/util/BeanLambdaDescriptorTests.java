@@ -22,8 +22,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -32,29 +31,29 @@ class BeanLambdaDescriptorTests {
 
 	@Test
 	void create() {
-		assertNotNull(BeanLambdaDescriptor.create(Maker::getNo));
+		assertThat(BeanLambdaDescriptor.create(Maker::getNo)).isNotNull();
 	}
 
 	@Test
 	void getFieldName() {
-		assertEquals("no", BeanLambdaDescriptor.create(Maker::getNo).getFieldName());
+		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getFieldName()).isEqualTo("no");
 	}
 
 	@Test
 	void getField() throws NoSuchFieldException {
 		Field field = Maker.class.getDeclaredField("no");
-		assertEquals(field, BeanLambdaDescriptor.create(Maker::getNo).getField());
+		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getField()).isEqualTo(field);
 	}
 
 	@Test
 	void getMethodName() {
-		assertEquals("getNo", BeanLambdaDescriptor.create(Maker::getNo).getMethodName());
+		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getMethodName()).isEqualTo("getNo");
 	}
 
 	@Test
 	void getMethod() throws NoSuchMethodException {
 		Method method = Maker.class.getMethod("getNo");
-		assertEquals(method, BeanLambdaDescriptor.create(Maker::getNo).getMethod());
+		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getMethod()).isEqualTo(method);
 	}
 
 	@Data

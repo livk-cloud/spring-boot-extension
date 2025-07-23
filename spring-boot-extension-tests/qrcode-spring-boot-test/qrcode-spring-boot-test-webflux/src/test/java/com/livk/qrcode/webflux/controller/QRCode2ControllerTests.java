@@ -33,9 +33,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -65,14 +63,14 @@ class QRCode2ControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -86,14 +84,14 @@ class QRCode2ControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(text, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -109,14 +107,14 @@ class QRCode2ControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -132,14 +130,14 @@ class QRCode2ControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
 		File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
 		try (FileInputStream inputStream = new FileInputStream(outFile)) {
-			assertEquals(json, qrCodeManager.parser(inputStream));
+			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 }

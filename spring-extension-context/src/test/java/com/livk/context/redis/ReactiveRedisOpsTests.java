@@ -31,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -63,7 +63,7 @@ class ReactiveRedisOpsTests {
 			.hashValue(JacksonSerializerUtils.json())
 			.build();
 		ReactiveRedisOps ops = new ReactiveRedisOps(connectionFactory, context);
-		assertEquals("PONG", ops.execute(ReactiveRedisConnection::ping).blockFirst());
+		assertThat(ops.execute(ReactiveRedisConnection::ping).blockFirst()).isEqualTo("PONG");
 	}
 
 }

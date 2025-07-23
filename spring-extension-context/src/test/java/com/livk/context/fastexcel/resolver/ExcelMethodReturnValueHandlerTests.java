@@ -28,9 +28,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -49,7 +47,7 @@ class ExcelMethodReturnValueHandlerTests {
 
 	@Test
 	void supportsReturnType() {
-		assertTrue(handler.supportsReturnType(parameter));
+		assertThat(handler.supportsReturnType(parameter)).isTrue();
 	}
 
 	@Test
@@ -58,12 +56,12 @@ class ExcelMethodReturnValueHandlerTests {
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		assertEquals(0, response.getContentAsByteArray().length);
+		assertThat(response.getContentAsByteArray()).isEmpty();
 
 		ServletWebRequest webRequest = new ServletWebRequest(new MockHttpServletRequest(), response);
 		handler.handleReturnValue(list, parameter, mavContainer, webRequest);
 
-		assertNotEquals(0, response.getContentAsByteArray().length);
+		assertThat(response.getContentAsByteArray()).isNotEmpty();
 	}
 
 }

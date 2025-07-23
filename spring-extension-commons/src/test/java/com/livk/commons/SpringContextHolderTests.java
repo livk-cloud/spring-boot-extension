@@ -27,8 +27,7 @@ import org.springframework.core.ResolvableType;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -45,9 +44,9 @@ class SpringContextHolderTests {
 	void getBean() {
 		contextRunner.run(ctx -> {
 			SpringContextHolder.registerBean(bean, "test");
-			assertEquals(bean, SpringContextHolder.getBean("test"));
-			assertEquals(bean, SpringContextHolder.getBean(BeanTest.class));
-			assertEquals(bean, SpringContextHolder.getBean("test", BeanTest.class));
+			assertThat(SpringContextHolder.<BeanTest>getBean("test")).isSameAs(bean);
+			assertThat(SpringContextHolder.getBean(BeanTest.class)).isSameAs(bean);
+			assertThat(SpringContextHolder.getBean("test", BeanTest.class)).isSameAs(bean);
 			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 				context.removeBeanDefinition("test");
 			}
@@ -59,8 +58,8 @@ class SpringContextHolderTests {
 		contextRunner.run(ctx -> {
 			SpringContextHolder.registerBean(bean, "test");
 			ResolvableType resolvableType = ResolvableType.forClass(BeanTest.class);
-			assertEquals(bean, SpringContextHolder.getBeanProvider(BeanTest.class).getIfAvailable());
-			assertEquals(bean, SpringContextHolder.getBeanProvider(resolvableType).getIfAvailable());
+			assertThat(SpringContextHolder.getBeanProvider(BeanTest.class).getIfAvailable()).isSameAs(bean);
+			assertThat(SpringContextHolder.getBeanProvider(resolvableType).getIfAvailable()).isSameAs(bean);
 			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 				context.removeBeanDefinition("test");
 			}
@@ -71,7 +70,7 @@ class SpringContextHolderTests {
 	void getBeansOfType() {
 		contextRunner.run(ctx -> {
 			SpringContextHolder.registerBean(bean, "test");
-			assertEquals(Map.of("test", bean), SpringContextHolder.getBeansOfType(BeanTest.class));
+			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class)).isEqualTo(Map.of("test", bean));
 			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 				context.removeBeanDefinition("test");
 			}
@@ -81,19 +80,19 @@ class SpringContextHolderTests {
 	@Test
 	void getProperty() {
 		contextRunner.run(ctx -> {
-			assertEquals("livk.com", SpringContextHolder.getProperty("spring.data.redis.host"));
-			assertEquals("livk.com", SpringContextHolder.getProperty("spring.data.redis.host", String.class));
-			assertEquals("livk.com",
-					SpringContextHolder.getProperty("spring.data.redis.host", String.class, "livk.cn"));
-			assertEquals("livk.cn",
-					SpringContextHolder.getProperty("spring.data.redisson.host", String.class, "livk.cn"));
+			assertThat(SpringContextHolder.getProperty("spring.data.redis.host")).isEqualTo("livk.com");
+			assertThat(SpringContextHolder.getProperty("spring.data.redis.host", String.class)).isEqualTo("livk.com");
+			assertThat(SpringContextHolder.getProperty("spring.data.redis.host", String.class, "livk.cn"))
+				.isEqualTo("livk.com");
+			assertThat(SpringContextHolder.getProperty("spring.data.redisson.host", String.class, "livk.cn"))
+				.isEqualTo("livk.cn");
 		});
 	}
 
 	@Test
 	void resolvePlaceholders() {
-		contextRunner
-			.run(ctx -> assertEquals("livk.com", SpringContextHolder.resolvePlaceholders("${spring.data.redis.host}")));
+		contextRunner.run(ctx -> assertThat(SpringContextHolder.resolvePlaceholders("${spring.data.redis.host}"))
+			.isEqualTo("livk.com"));
 	}
 
 	@Test
@@ -101,19 +100,20 @@ class SpringContextHolderTests {
 		contextRunner.run(ctx -> {
 			Binder binder = SpringContextHolder.binder();
 			BindResult<String> result = binder.bind("spring.data.redis.host", String.class);
-			assertTrue(result.isBound());
-			assertEquals("livk.com", result.get());
+			assertThat(result.isBound()).isTrue();
+			assertThat(result.get()).isEqualTo("livk.com");
 		});
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
+	@Test
 	void registerBean() {
 		contextRunner.run(ctx -> {
 			SpringContextHolder.registerBean(bean, "test1");
 			RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<BeanTest>) bean.getClass(), () -> bean);
 			SpringContextHolder.registerBean(beanDefinition, "test2");
-			assertEquals(Map.of("test1", bean, "test2", bean), SpringContextHolder.getBeansOfType(BeanTest.class));
+			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class))
+				.isEqualTo(Map.of("test1", bean, "test2", bean));
 			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
 				context.removeBeanDefinition("test1");
 				context.removeBeanDefinition("test2");

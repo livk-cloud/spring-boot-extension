@@ -44,8 +44,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -71,7 +70,7 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 
 	@Test
 	void supportsParameter() {
-		assertTrue(resolver.supportsParameter(parameter));
+		assertThat(resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test
@@ -89,7 +88,7 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 
 		MediaType contentType = clientRequest.getHeaders().getContentType();
 		Flux<DataBuffer> body = clientRequest.getBody();
-		assertNotNull(contentType);
+		assertThat(contentType).isNotNull();
 		MockServerHttpRequest serverRequest = MockServerHttpRequest.post("/").contentType(contentType).body(body);
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(serverRequest);

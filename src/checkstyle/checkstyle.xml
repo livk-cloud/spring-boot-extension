@@ -27,7 +27,6 @@
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck"/>
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck"/>
-        <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck"/>
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.annotation.MissingDeprecatedJavaCheck"/>
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck"/>
         <property name="excludes" value="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck"/>

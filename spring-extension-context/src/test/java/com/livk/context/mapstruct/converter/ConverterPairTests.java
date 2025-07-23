@@ -18,8 +18,7 @@ package com.livk.context.mapstruct.converter;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -30,14 +29,14 @@ class ConverterPairTests {
 	void of() {
 		ConverterPair pair = ConverterPair.of(String.class, Object.class);
 
-		assertEquals(String.class, pair.getSourceType());
-		assertEquals(Object.class, pair.getTargetType());
+		assertThat(pair.getSourceType()).isEqualTo(String.class);
+		assertThat(pair.getTargetType()).isEqualTo(Object.class);
 
 		ConverterPair converterPair = ConverterPair.of(new TestConverter());
 
-		assertNotNull(converterPair);
-		assertEquals(String.class, converterPair.getSourceType());
-		assertEquals(Object.class, converterPair.getTargetType());
+		assertThat(converterPair).isNotNull();
+		assertThat(converterPair.getSourceType()).isEqualTo(String.class);
+		assertThat(converterPair.getTargetType()).isEqualTo(Object.class);
 	}
 
 	static class TestConverter implements Converter<String, Object> {

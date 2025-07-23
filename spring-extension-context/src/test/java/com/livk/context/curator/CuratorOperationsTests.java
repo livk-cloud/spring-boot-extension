@@ -41,11 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -72,7 +68,7 @@ class CuratorOperationsTests {
 	@Order(1)
 	void createNode() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", data);
+		assertThat(data).isEqualTo("/node");
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -80,8 +76,8 @@ class CuratorOperationsTests {
 	@Order(2)
 	void getNode() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", data);
-		assertArrayEquals("data".getBytes(StandardCharsets.UTF_8), curatorOperations.getNode("/node"));
+		assertThat(data).isEqualTo("/node");
+		assertThat(curatorOperations.getNode("/node")).containsExactly("data".getBytes(StandardCharsets.UTF_8));
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -90,25 +86,25 @@ class CuratorOperationsTests {
 	void createTypeNode() {
 		String persistent = curatorOperations.createTypeNode(CreateMode.PERSISTENT, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", persistent);
+		assertThat(persistent).isEqualTo("/node");
 		curatorOperations.deleteNode("/node");
 
 		String persistentSequential = curatorOperations.createTypeNode(CreateMode.PERSISTENT_SEQUENTIAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(persistentSequential.startsWith("/node"));
+		assertThat(persistentSequential).startsWith("/node");
 
 		String ephemeral = curatorOperations.createTypeNode(CreateMode.EPHEMERAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", ephemeral);
+		assertThat(ephemeral).isEqualTo("/node");
 		curatorOperations.deleteNode("/node");
 
 		String ephemeralSequential = curatorOperations.createTypeNode(CreateMode.EPHEMERAL_SEQUENTIAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(ephemeralSequential.startsWith("/node"));
+		assertThat(ephemeralSequential).startsWith("/node");
 
 		String container = curatorOperations.createTypeNode(CreateMode.CONTAINER, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", container);
+		assertThat(container).isEqualTo("/node");
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -117,33 +113,33 @@ class CuratorOperationsTests {
 	void createTypeSeqNode() {
 		String persistent = curatorOperations.createTypeSeqNode(CreateMode.PERSISTENT, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(persistent.endsWith("node"));
+		assertThat(persistent).endsWith("node");
 
 		String persistentSequential = curatorOperations.createTypeSeqNode(CreateMode.PERSISTENT_SEQUENTIAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(persistentSequential.contains("node"));
+		assertThat(persistentSequential).contains("node");
 
 		String ephemeral = curatorOperations.createTypeSeqNode(CreateMode.EPHEMERAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(ephemeral.endsWith("node"));
+		assertThat(ephemeral).endsWith("node");
 
 		String ephemeralSequential = curatorOperations.createTypeSeqNode(CreateMode.EPHEMERAL_SEQUENTIAL, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(ephemeralSequential.contains("node"));
+		assertThat(ephemeralSequential).contains("node");
 
 		String container = curatorOperations.createTypeSeqNode(CreateMode.CONTAINER, "/node",
 				"data".getBytes(StandardCharsets.UTF_8));
-		assertTrue(container.endsWith("node"));
+		assertThat(container).endsWith("node");
 	}
 
 	@Test
 	@Order(5)
 	void setData() {
 		curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertArrayEquals("data".getBytes(StandardCharsets.UTF_8), curatorOperations.getNode("/node"));
+		assertThat(curatorOperations.getNode("/node")).containsExactly("data".getBytes(StandardCharsets.UTF_8));
 		Stat data = curatorOperations.setData("/node", "setData".getBytes(StandardCharsets.UTF_8));
-		assertNotNull(data);
-		assertArrayEquals("setData".getBytes(), curatorOperations.getNode("/node"));
+		assertThat(data).isNotNull();
+		assertThat(curatorOperations.getNode("/node")).containsExactly("setData".getBytes());
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -151,14 +147,16 @@ class CuratorOperationsTests {
 	@Order(6)
 	void setDataAsync() {
 		curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertArrayEquals("data".getBytes(), curatorOperations.getNode("/node"));
+		assertThat(curatorOperations.getNode("/node")).containsExactly("data".getBytes(StandardCharsets.UTF_8));
+
 		curatorOperations.setDataAsync("/node", "setData".getBytes(StandardCharsets.UTF_8), (client, event) -> {
 			if (CuratorEventType.SET_DATA.equals(event.getType())) {
-				assertEquals("/node", event.getPath());
-				assertNotNull(event.getStat());
+				assertThat(event.getPath()).isEqualTo("/node");
+				assertThat(event.getStat()).isNotNull();
 			}
 		});
-		assertArrayEquals("setData".getBytes(), curatorOperations.getNode("/node"));
+
+		assertThat(curatorOperations.getNode("/node")).containsExactly("setData".getBytes(StandardCharsets.UTF_8));
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -174,10 +172,11 @@ class CuratorOperationsTests {
 	void watchedGetChildren() {
 		for (int i = 0; i < 10; i++) {
 			String data = curatorOperations.createNode("/node/" + i, "data".getBytes(StandardCharsets.UTF_8));
-			assertEquals("/node/" + i, data);
+			assertThat(data).as("Created node path /node/%d", i).isEqualTo("/node/" + i);
 		}
+
 		List<String> paths = curatorOperations.watchedGetChildren("/node");
-		assertLinesMatch(List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"), paths);
+		assertThat(paths).as("Children of /node").containsExactly("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 		curatorOperations.deleteNode("/node");
 	}
 
@@ -186,14 +185,16 @@ class CuratorOperationsTests {
 	void testWatchedGetChildren() {
 		for (int i = 0; i < 10; i++) {
 			String data = curatorOperations.createNode("/node/" + i, "data".getBytes(StandardCharsets.UTF_8));
-			assertEquals("/node/" + i, data);
+			assertThat(data).as("Created node path /node/%d", i).isEqualTo("/node/" + i);
 		}
+
 		List<String> paths = curatorOperations.watchedGetChildren("/node", event -> {
-			assertEquals(Watcher.Event.KeeperState.SyncConnected, event.getState());
-			assertEquals(Watcher.Event.EventType.NodeChildrenChanged, event.getType());
-			assertEquals("/node", event.getPath());
+			assertThat(event.getState()).as("Watcher event state").isEqualTo(Watcher.Event.KeeperState.SyncConnected);
+			assertThat(event.getType()).as("Watcher event type").isEqualTo(Watcher.Event.EventType.NodeChildrenChanged);
+			assertThat(event.getPath()).as("Watcher event path").isEqualTo("/node");
 		});
-		assertLinesMatch(List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"), paths);
+
+		assertThat(paths).as("Children of /node").containsExactly("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 		curatorOperations.deleteNode("/node");
 	}
@@ -202,18 +203,18 @@ class CuratorOperationsTests {
 	@Order(10)
 	void getLock() throws Exception {
 		InterProcessLock lock = curatorOperations.getLock("/node/lock", ZkLockType.REENTRANT);
-		assertEquals(InterProcessMutex.class, lock.getClass());
-		assertTrue(lock.acquire(3, TimeUnit.SECONDS));
+		assertThat(lock.getClass()).isEqualTo(InterProcessMutex.class);
+		assertThat(lock.acquire(3, TimeUnit.SECONDS)).isTrue();
 		lock.release();
 
 		InterProcessLock read = curatorOperations.getLock("/node/lock", ZkLockType.READ);
-		assertEquals(InterProcessReadWriteLock.ReadLock.class, read.getClass());
-		assertTrue(read.acquire(3, TimeUnit.SECONDS));
+		assertThat(read.getClass()).isEqualTo(InterProcessReadWriteLock.ReadLock.class);
+		assertThat(read.acquire(3, TimeUnit.SECONDS)).isTrue();
 		read.release();
 
 		InterProcessLock write = curatorOperations.getLock("/node/lock", ZkLockType.WRITE);
-		assertEquals(InterProcessReadWriteLock.WriteLock.class, write.getClass());
-		assertTrue(write.acquire(3, TimeUnit.SECONDS));
+		assertThat(write.getClass()).isEqualTo(InterProcessReadWriteLock.WriteLock.class);
+		assertThat(write.acquire(3, TimeUnit.SECONDS)).isTrue();
 		write.release();
 
 		curatorOperations.deleteNode("/node");
@@ -223,9 +224,11 @@ class CuratorOperationsTests {
 	@Order(11)
 	void getDistributedId() {
 		String data = curatorOperations.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertEquals("/node", data);
+		assertThat(data).as("Created node path").isEqualTo("/node");
+
 		String distributedId = curatorOperations.getDistributedId("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertNotNull(distributedId);
+		assertThat(distributedId).as("Distributed ID").isNotNull();
+
 		curatorOperations.deleteNode("/node");
 	}
 

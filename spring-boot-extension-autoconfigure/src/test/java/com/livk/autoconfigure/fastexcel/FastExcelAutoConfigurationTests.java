@@ -35,7 +35,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author livk
@@ -67,7 +66,7 @@ class FastExcelAutoConfigurationTests {
 				.getBean(org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter.class);
 
 			Field customResolversField = ReflectionUtils.findField(ArgumentResolverConfigurer.class, "customResolvers");
-			assertNotNull(customResolversField);
+			assertThat(customResolversField).isNotNull();
 			List<HandlerMethodArgumentResolver> customResolvers = (List<HandlerMethodArgumentResolver>) ReflectionUtils
 				.getDeclaredFieldValue(customResolversField, adapter.getArgumentResolverConfigurer());
 			assertThat(customResolvers).isNotNull()

@@ -21,7 +21,7 @@ import com.livk.commons.http.annotation.HttpClientType;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -35,23 +35,24 @@ class HttpClientImportSelectorTests {
 		{
 			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(AllConfig.class));
 			@SuppressWarnings("deprecation")
-			String[] result = new String[] { WebClientConfiguration.class.getName(),
+			String[] expected = new String[] { WebClientConfiguration.class.getName(),
 					RestClientConfiguration.class.getName(), RestTemplateConfiguration.class.getName() };
-			assertArrayEquals(result, imports);
+			assertThat(imports).containsExactly(expected);
 		}
 
 		{
 			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(TwoConfig.class));
-			String[] result = new String[] { WebClientConfiguration.class.getName(),
+			String[] expected = new String[] { WebClientConfiguration.class.getName(),
 					RestClientConfiguration.class.getName() };
-			assertArrayEquals(result, imports);
+			assertThat(imports).containsExactly(expected);
 		}
 
 		{
 			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(OneConfig.class));
-			String[] result = new String[] { WebClientConfiguration.class.getName() };
-			assertArrayEquals(result, imports);
+			String[] expected = new String[] { WebClientConfiguration.class.getName() };
+			assertThat(imports).containsExactly(expected);
 		}
+
 	}
 
 	@SuppressWarnings("deprecation")

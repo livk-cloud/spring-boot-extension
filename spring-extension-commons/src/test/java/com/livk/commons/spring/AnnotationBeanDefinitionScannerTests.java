@@ -29,7 +29,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -41,7 +41,7 @@ class AnnotationBeanDefinitionScannerTests {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		ClassPathBeanDefinitionScanner scanner = new MyAnnotationBeanDefinitionScanner(registry);
 		scanner.scan("com.livk.commons.spring");
-		assertTrue(registry.containsBeanDefinition("annotationBeanDefinitionScannerTests.Config"));
+		assertThat(registry.containsBeanDefinition("annotationBeanDefinitionScannerTests.Config")).isTrue();
 	}
 
 	static class MyAnnotationBeanDefinitionScanner extends AnnotationBeanDefinitionScanner<MyAnnotationScanner> {

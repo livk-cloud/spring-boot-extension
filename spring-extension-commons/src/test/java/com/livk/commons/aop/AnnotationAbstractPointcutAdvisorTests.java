@@ -17,10 +17,10 @@
 package com.livk.commons.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.Pointcut;
-import org.jspecify.annotations.NonNull;
 import org.springframework.aop.support.ComposablePointcut;
 
 import java.lang.annotation.ElementType;
@@ -28,8 +28,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -40,15 +39,21 @@ class AnnotationAbstractPointcutAdvisorTests {
 	void test() throws NoSuchMethodException {
 		MyAnnotationAbstractPointcutAdvisor advisor = new MyAnnotationAbstractPointcutAdvisor();
 
-		assertEquals(MyAnnotation.class, advisor.annotationType);
-		assertTrue(advisor.implementsInterface(IntroductionInterceptor.class));
-		assertEquals(ComposablePointcut.class, advisor.getPointcut().getClass());
-		assertEquals(AnnotationPointcut.forTypeOrMethod().getPointcut(MyAnnotation.class), advisor.getPointcut());
+		assertThat(advisor.annotationType).isEqualTo(MyAnnotation.class);
 
-		assertTrue(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class));
-		assertTrue(advisor.getPointcut()
+		assertThat(advisor.implementsInterface(IntroductionInterceptor.class)).isTrue();
+
+		assertThat(advisor.getPointcut()).isInstanceOf(ComposablePointcut.class);
+
+		assertThat(advisor.getPointcut())
+			.isEqualTo(AnnotationPointcut.forTypeOrMethod().getPointcut(MyAnnotation.class));
+
+		assertThat(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class)).isTrue();
+
+		assertThat(advisor.getPointcut()
 			.getMethodMatcher()
-			.matches(AopProxyClass.class.getDeclaredMethod("testAop"), AopProxyClass.class));
+			.matches(AopProxyClass.class.getDeclaredMethod("testAop"), AopProxyClass.class)).isTrue();
+
 	}
 
 	@MyAnnotation

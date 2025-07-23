@@ -24,8 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -38,42 +37,41 @@ class PairTests {
 	void pairJsonSerializerTest() {
 		String json = "{\"livk\":123456}";
 		String result = JsonMapperUtils.writeValueAsString(pair);
-		assertEquals(json, result);
+		assertThat(result).isEqualTo(json);
 	}
 
 	@Test
 	void pairJsonDeserializerTest() {
-
 		Pair<String, Integer> empty = JsonMapperUtils.readValue("{}", new TypeReference<>() {
 		});
-		assertNull(empty.key());
-		assertNull(empty.value());
-		assertEquals(Pair.EMPTY, empty);
+		assertThat(empty.key()).isNull();
+		assertThat(empty.value()).isNull();
+		assertThat(empty).isEqualTo(Pair.EMPTY);
 
 		@Language("JSON")
 		String json = "{\"livk\":123456}";
 		Pair<String, Integer> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertEquals("livk", result.key());
-		assertEquals(123456, result.value());
-		assertEquals(pair, result);
+		assertThat(result.key()).isEqualTo("livk");
+		assertThat(result.value()).isEqualTo(123456);
+		assertThat(result).isEqualTo(pair);
 
 		@Language("JSON")
 		String json2 = """
 				{"livk": {"root": "username"}}""";
 		Pair<String, Pair<String, String>> result2 = JsonMapperUtils.readValue(json2, new TypeReference<>() {
 		});
-		assertEquals("livk", result2.key());
-		assertEquals("root", result2.value().key());
-		assertEquals("username", result2.value().value());
+		assertThat(result2.key()).isEqualTo("livk");
+		assertThat(result2.value().key()).isEqualTo("root");
+		assertThat(result2.value().value()).isEqualTo("username");
 
 		@Language("JSON")
 		String json3 = """
 				{"livk":  [1,2,3]}""";
 		Pair<String, List<Integer>> result3 = JsonMapperUtils.readValue(json3, new TypeReference<>() {
 		});
-		assertEquals("livk", result3.key());
-		assertEquals(List.of(1, 2, 3), result3.value());
+		assertThat(result3.key()).isEqualTo("livk");
+		assertThat(result3.value()).containsExactly(1, 2, 3);
 
 		@Language("JSON")
 		String json4 = """
@@ -85,8 +83,8 @@ class PairTests {
 				}""";
 		Pair<String, Map<String, String>> result4 = JsonMapperUtils.readValue(json4, new TypeReference<>() {
 		});
-		assertEquals("livk", result4.key());
-		assertEquals(Map.of("username", "root", "password", "root"), result4.value());
+		assertThat(result4.key()).isEqualTo("livk");
+		assertThat(result4.value()).containsAllEntriesOf(Map.of("username", "root", "password", "root"));
 	}
 
 }

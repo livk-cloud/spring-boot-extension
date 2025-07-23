@@ -37,9 +37,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -83,127 +81,127 @@ class JacksonSupportTests {
 
 	@Test
 	void javaType() {
-		assertEquals(String.class, TypeFactoryUtils.javaType(String.class).getRawClass());
-		assertEquals(Integer.class, TypeFactoryUtils.javaType(Integer.class).getRawClass());
-		assertEquals(Long.class, TypeFactoryUtils.javaType(Long.class).getRawClass());
+		assertThat(TypeFactoryUtils.javaType(String.class).getRawClass()).isEqualTo(String.class);
+		assertThat(TypeFactoryUtils.javaType(Integer.class).getRawClass()).isEqualTo(Integer.class);
+		assertThat(TypeFactoryUtils.javaType(Long.class).getRawClass()).isEqualTo(Long.class);
 
 		JavaType javaType = TypeFactoryUtils.javaType(Pair.class, String.class, Integer.class);
-		assertEquals(Pair.class, javaType.getRawClass());
-		assertEquals(String.class, javaType.getBindings().getBoundType(0).getRawClass());
-		assertEquals(Integer.class, javaType.getBindings().getBoundType(1).getRawClass());
+		assertThat(javaType.getRawClass()).isEqualTo(Pair.class);
+		assertThat(javaType.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+		assertThat(javaType.getBindings().getBoundType(1).getRawClass()).isEqualTo(Integer.class);
 
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Pair.class, String.class, Integer.class);
 		JavaType type = TypeFactoryUtils.javaType(resolvableType);
-		assertEquals(Pair.class, type.getRawClass());
-		assertEquals(String.class, type.getBindings().getBoundType(0).getRawClass());
-		assertEquals(Integer.class, type.getBindings().getBoundType(1).getRawClass());
+		assertThat(type.getRawClass()).isEqualTo(Pair.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+		assertThat(type.getBindings().getBoundType(1).getRawClass()).isEqualTo(Integer.class);
 
-		assertEquals(String.class, TypeFactoryUtils.listType(String.class).getBindings().getBoundType(0).getRawClass());
-		assertEquals(Integer.class,
-				TypeFactoryUtils.listType(Integer.class).getBindings().getBoundType(0).getRawClass());
-		assertEquals(Long.class, TypeFactoryUtils.setType(Long.class).getBindings().getBoundType(0).getRawClass());
+		assertThat(TypeFactoryUtils.listType(String.class).getBindings().getBoundType(0).getRawClass())
+			.isEqualTo(String.class);
+		assertThat(TypeFactoryUtils.listType(Integer.class).getBindings().getBoundType(0).getRawClass())
+			.isEqualTo(Integer.class);
+		assertThat(TypeFactoryUtils.setType(Long.class).getBindings().getBoundType(0).getRawClass())
+			.isEqualTo(Long.class);
 
-		assertEquals(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(String.class)),
-				TypeFactoryUtils.mapType(String.class, String.class).getBindings().getTypeParameters());
-		assertEquals(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(Integer.class)),
-				TypeFactoryUtils.mapType(String.class, Integer.class).getBindings().getTypeParameters());
-		assertEquals(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(String.class)),
-				TypeFactoryUtils.mapType(Integer.class, String.class).getBindings().getTypeParameters());
-		assertEquals(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(Integer.class)),
-				TypeFactoryUtils.mapType(Integer.class, Integer.class).getBindings().getTypeParameters());
+		assertThat(TypeFactoryUtils.mapType(String.class, String.class).getBindings().getTypeParameters())
+			.isEqualTo(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(String.class)));
+		assertThat(TypeFactoryUtils.mapType(String.class, Integer.class).getBindings().getTypeParameters())
+			.isEqualTo(List.of(TypeFactoryUtils.javaType(String.class), TypeFactoryUtils.javaType(Integer.class)));
+		assertThat(TypeFactoryUtils.mapType(Integer.class, String.class).getBindings().getTypeParameters())
+			.isEqualTo(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(String.class)));
+		assertThat(TypeFactoryUtils.mapType(Integer.class, Integer.class).getBindings().getTypeParameters())
+			.isEqualTo(List.of(TypeFactoryUtils.javaType(Integer.class), TypeFactoryUtils.javaType(Integer.class)));
 	}
 
 	@Test
 	void testJsonReadValue() throws IOException {
-
 		JsonNode result1 = JSON.readValue(json, JsonNode.class);
-		assertNotNull(result1);
-		assertEquals("1", result1.get("c").asText());
-		assertEquals("2", result1.get("a").asText());
-		assertEquals(3, result1.get("b").get("c").asInt());
+		assertThat(result1).isNotNull();
+		assertThat(result1.get("c").asText()).isEqualTo("1");
+		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 		JsonNode result2 = JSON.readValue(inputStream, JsonNode.class);
-		assertNotNull(result2);
-		assertEquals("1", result2.get("c").asText());
-		assertEquals("2", result2.get("a").asText());
-		assertEquals(3, result2.get("b").get("c").asInt());
+		assertThat(result2).isNotNull();
+		assertThat(result2.get("c").asText()).isEqualTo("1");
+		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = JSON.readValue(json, new TypeReference<>() {
 		});
-		assertNotNull(result3);
-		assertEquals("1", result3.get("c").asText());
-		assertEquals("2", result3.get("a").asText());
-		assertEquals(3, result3.get("b").get("c").asInt());
+		assertThat(result3).isNotNull();
+		assertThat(result3.get("c").asText()).isEqualTo("1");
+		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = JSON.readValue(json, javaType);
-		assertNotNull(result3);
-		assertEquals("1", result4.get("c").asText());
-		assertEquals("2", result4.get("a").asText());
-		assertEquals(3, result4.get("b").get("c").asInt());
+		assertThat(result4).isNotNull();
+		assertThat(result4.get("c").asText()).isEqualTo("1");
+		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
 	@Test
 	void testYamlReadValue() throws IOException {
-
 		JsonNode result1 = YAML.readValue(yaml, JsonNode.class);
-		assertNotNull(result1);
-		assertEquals("1", result1.get("c").asText());
-		assertEquals("2", result1.get("a").asText());
-		assertEquals(3, result1.get("b").get("c").asInt());
+		assertThat(result1).isNotNull();
+		assertThat(result1.get("c").asText()).isEqualTo("1");
+		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.yml").getInputStream();
 		JsonNode result2 = YAML.readValue(inputStream, JsonNode.class);
-		assertNotNull(result2);
-		assertEquals("1", result2.get("c").asText());
-		assertEquals("2", result2.get("a").asText());
-		assertEquals(3, result2.get("b").get("c").asInt());
+		assertThat(result2).isNotNull();
+		assertThat(result2.get("c").asText()).isEqualTo("1");
+		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = YAML.readValue(yaml, new TypeReference<>() {
 		});
-		assertNotNull(result3);
-		assertEquals("1", result3.get("c").asText());
-		assertEquals("2", result3.get("a").asText());
-		assertEquals(3, result3.get("b").get("c").asInt());
+		assertThat(result3).isNotNull();
+		assertThat(result3.get("c").asText()).isEqualTo("1");
+		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = YAML.readValue(yaml, javaType);
-		assertNotNull(result3);
-		assertEquals("1", result4.get("c").asText());
-		assertEquals("2", result4.get("a").asText());
-		assertEquals(3, result4.get("b").get("c").asInt());
+		assertThat(result4).isNotNull();
+		assertThat(result4.get("c").asText()).isEqualTo("1");
+		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
+
 	}
 
 	@Test
 	void testXmlReadValue() throws IOException {
-
 		JsonNode result1 = XML.readValue(xml, JsonNode.class);
-		assertNotNull(result1);
-		assertEquals("1", result1.get("c").asText());
-		assertEquals("2", result1.get("a").asText());
-		assertEquals(3, result1.get("b").get("c").asInt());
+		assertThat(result1).isNotNull();
+		assertThat(result1.get("c").asText()).isEqualTo("1");
+		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.xml").getInputStream();
 		JsonNode result2 = XML.readValue(inputStream, JsonNode.class);
-		assertNotNull(result2);
-		assertEquals("1", result2.get("c").asText());
-		assertEquals("2", result2.get("a").asText());
-		assertEquals(3, result2.get("b").get("c").asInt());
+		assertThat(result2).isNotNull();
+		assertThat(result2.get("c").asText()).isEqualTo("1");
+		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = XML.readValue(xml, new TypeReference<>() {
 		});
-		assertNotNull(result3);
-		assertEquals("1", result3.get("c").asText());
-		assertEquals("2", result3.get("a").asText());
-		assertEquals(3, result3.get("b").get("c").asInt());
+		assertThat(result3).isNotNull();
+		assertThat(result3.get("c").asText()).isEqualTo("1");
+		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = XML.readValue(xml, javaType);
-		assertNotNull(result3);
-		assertEquals("1", result4.get("c").asText());
-		assertEquals("2", result4.get("a").asText());
-		assertEquals(3, result4.get("b").get("c").asInt());
+		assertThat(result4).isNotNull();
+		assertThat(result4.get("c").asText()).isEqualTo("1");
+		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
 	@Test
@@ -211,10 +209,10 @@ class JacksonSupportTests {
 		String result = JSON.writeValueAsString(Map.of("username", "password"));
 		@Language("json")
 		String json = "{\"username\":\"password\"}";
-		assertEquals(json, result);
+		assertThat(result).isEqualTo(json);
 
 		byte[] bytes = JSON.writeValueAsBytes(Map.of("username", "password"));
-		assertArrayEquals(json.getBytes(), bytes);
+		assertThat(bytes).isEqualTo(json.getBytes());
 	}
 
 	@Test
@@ -225,10 +223,10 @@ class JacksonSupportTests {
 				---
 				username: "password"
 				""";
-		assertEquals(yml, result);
+		assertThat(result).isEqualTo(yml);
 
 		byte[] bytes = YAML.writeValueAsBytes(Map.of("username", "password"));
-		assertArrayEquals(yml.getBytes(), bytes);
+		assertThat(bytes).isEqualTo(yml.getBytes());
 	}
 
 	@Test
@@ -236,31 +234,31 @@ class JacksonSupportTests {
 		String result = XML.writeValueAsString(Map.of("username", "password"));
 		@Language("xml")
 		String xml = "<Map1><username>password</username></Map1>";
-		assertEquals(xml, result);
+		assertThat(result).isEqualTo(xml);
 
 		byte[] bytes = XML.writeValueAsBytes(Map.of("username", "password"));
-		assertArrayEquals(xml.getBytes(), bytes);
+		assertThat(bytes).isEqualTo(xml.getBytes());
 	}
 
 	@Test
 	void testReadTree() {
 		JsonNode jsonNode = JSON.readTree(json);
-		assertNotNull(jsonNode);
-		assertEquals("1", jsonNode.get("c").asText());
-		assertEquals("2", jsonNode.get("a").asText());
-		assertEquals(3, jsonNode.get("b").get("c").asInt());
+		assertThat(jsonNode).isNotNull();
+		assertThat(jsonNode.get("c").asText()).isEqualTo("1");
+		assertThat(jsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(jsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode yamlNode = YAML.readTree(yaml);
-		assertNotNull(yamlNode);
-		assertEquals("1", yamlNode.get("c").asText());
-		assertEquals("2", yamlNode.get("a").asText());
-		assertEquals(3, yamlNode.get("b").get("c").asInt());
+		assertThat(yamlNode).isNotNull();
+		assertThat(yamlNode.get("c").asText()).isEqualTo("1");
+		assertThat(yamlNode.get("a").asText()).isEqualTo("2");
+		assertThat(yamlNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode xmlNode = XML.readTree(xml);
-		assertNotNull(xmlNode);
-		assertEquals("1", xmlNode.get("c").asText());
-		assertEquals("2", xmlNode.get("a").asText());
-		assertEquals(3, xmlNode.get("b").get("c").asInt());
+		assertThat(xmlNode).isNotNull();
+		assertThat(xmlNode.get("c").asText()).isEqualTo("1");
+		assertThat(xmlNode.get("a").asText()).isEqualTo("2");
+		assertThat(xmlNode.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
 	@Test
@@ -287,19 +285,25 @@ class JacksonSupportTests {
 				"spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
 				"spring-boot-starter-json");
+
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
-		assertEquals(loggingDependency, JSON.convertValue(jsonNodeList.get(0), mapType));
-		assertEquals(jsonDependency, JSON.convertValue(jsonNodeList.get(1), mapType));
+
+		assertThat(JSON.<Map<String, String>>convertValue(jsonNodeList.get(0), mapType)).isEqualTo(loggingDependency);
+		assertThat(JSON.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
-		assertEquals(dependencyList, JSON.convertValue(dependencyArray, collectionType));
+
+		assertThat(JSON.<List<Map<String, String>>>convertValue(dependencyArray, collectionType))
+			.isEqualTo(dependencyList);
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
 		Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
-		assertEquals(dependencyManagement, JSON.convertValue(jsonNode, constructMapType));
+
+		assertThat(JSON.<Map<String, List<Map<String, String>>>>convertValue(jsonNode, constructMapType))
+			.isEqualTo(dependencyManagement);
 	}
 
 	@Test
@@ -320,19 +324,26 @@ class JacksonSupportTests {
 				"spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
 				"spring-boot-starter-json");
+
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
-		assertEquals(loggingDependency, YAML.convertValue(jsonNodeList.get(0), mapType));
-		assertEquals(jsonDependency, YAML.convertValue(jsonNodeList.get(1), mapType));
+
+		assertThat(YAML.<Map<String, String>>convertValue(jsonNodeList.getFirst(), mapType))
+			.isEqualTo(loggingDependency);
+		assertThat(YAML.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
-		assertEquals(dependencyList, YAML.convertValue(dependencyArray, collectionType));
+
+		assertThat(YAML.<List<Map<String, String>>>convertValue(dependencyArray, collectionType))
+			.isEqualTo(dependencyList);
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
 		Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
-		assertEquals(dependencyManagement, YAML.convertValue(jsonNode, constructMapType));
+
+		assertThat(YAML.<Map<String, List<Map<String, String>>>>convertValue(jsonNode, constructMapType))
+			.isEqualTo(dependencyManagement);
 	}
 
 	@Test
@@ -357,19 +368,26 @@ class JacksonSupportTests {
 				"spring-boot-starter-logging");
 		Map<String, String> jsonDependency = Map.of("groupId", "org.springframework.boot", "artifactId",
 				"spring-boot-starter-json");
+
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
 		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
-		assertEquals(loggingDependency, XML.convertValue(jsonNodeList.get(0), mapType));
-		assertEquals(jsonDependency, XML.convertValue(jsonNodeList.get(1), mapType));
+
+		assertThat(XML.<Map<String, String>>convertValue(jsonNodeList.get(0), mapType)).isEqualTo(loggingDependency);
+		assertThat(XML.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
-		assertEquals(dependencyList, XML.convertValue(dependencyArray, collectionType));
+
+		assertThat(XML.<List<Map<String, String>>>convertValue(dependencyArray, collectionType))
+			.isEqualTo(dependencyList);
 
 		JavaType javaType = TypeFactoryUtils.javaType(String.class);
 		Map<String, List<Map<String, String>>> dependencyManagement = Map.of("dependency", dependencyList);
 		MapType constructMapType = TypeFactoryUtils.mapType(javaType, collectionType);
-		assertEquals(dependencyManagement, XML.convertValue(jsonNode, constructMapType));
+
+		assertThat(XML.<Map<String, List<Map<String, String>>>>convertValue(jsonNode, constructMapType))
+			.isEqualTo(dependencyManagement);
+
 	}
 
 }

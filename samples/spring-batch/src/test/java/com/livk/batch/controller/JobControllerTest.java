@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +51,7 @@ class JobControllerTest {
 			.stream()
 			.map(map -> map.get("user_name").toString())
 			.toList();
-		assertLinesMatch(List.of("张三", "李四", "王雪", "孙云", "赵柳", "孙雪"), names);
+		assertThat(names).containsExactly("张三", "李四", "王雪", "孙云", "赵柳", "孙雪");
 	}
 
 }

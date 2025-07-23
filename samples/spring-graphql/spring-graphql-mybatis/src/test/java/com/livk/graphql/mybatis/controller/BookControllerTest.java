@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -34,8 +35,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -68,7 +68,6 @@ class BookControllerTest {
 
 	@Order(3)
 	@Test
-	@SuppressWarnings("rawtypes")
 	void list() {
 		// language=GraphQL
 		String document = """
@@ -80,8 +79,13 @@ class BookControllerTest {
 				        }
 				    }
 				}""";
-		List<Map> result = tester.document(document).execute().path("bookList").entityList(Map.class).get();
-		assertNotNull(result);
+		List<Map<String, Object>> result = tester.document(document)
+			.execute()
+			.path("bookList")
+			.entityList(new ParameterizedTypeReference<Map<String, Object>>() {
+			})
+			.get();
+		assertThat(result).isNotNull().isNotEmpty();
 
 		// language=GraphQL
 		String d1 = """
@@ -95,13 +99,17 @@ class BookControllerTest {
 				    }
 				  }
 				}""";
-		List<Map> r1 = tester.document(d1).execute().path("bookList").entityList(Map.class).get();
-		assertNotNull(r1);
+		List<Map<String, Object>> r1 = tester.document(d1)
+			.execute()
+			.path("bookList")
+			.entityList(new ParameterizedTypeReference<Map<String, Object>>() {
+			})
+			.get();
+		assertThat(r1).isNotNull().isNotEmpty();
 	}
 
 	@Order(4)
 	@Test
-	@SuppressWarnings("rawtypes")
 	void bookByIsbn() {
 		// language=GraphQL
 		String document = """
@@ -115,8 +123,13 @@ class BookControllerTest {
 				        }
 				    }
 				}""";
-		Map result = tester.document(document).execute().path("bookByIsbn").entity(Map.class).get();
-		assertNotNull(result);
+		Map<String, Object> result = tester.document(document)
+			.execute()
+			.path("bookByIsbn")
+			.entity(new ParameterizedTypeReference<Map<String, Object>>() {
+			})
+			.get();
+		assertThat(result).isNotNull().isNotEmpty();
 	}
 
 	@Order(2)
@@ -155,13 +168,13 @@ class BookControllerTest {
 				}""";
 
 		Boolean r1 = tester.document(d1).execute().path("createBook").entity(Boolean.class).get();
-		assertTrue(r1);
+		assertThat(r1).isTrue();
 
 		Boolean r2 = tester.document(d2).execute().path("createBook").entity(Boolean.class).get();
-		assertTrue(r2);
+		assertThat(r2).isTrue();
 
 		Boolean r3 = tester.document(d3).execute().path("createBook").entity(Boolean.class).get();
-		assertTrue(r3);
+		assertThat(r3).isTrue();
 	}
 
 	@Order(1)
@@ -178,7 +191,7 @@ class BookControllerTest {
 				    })
 				}""";
 		Boolean result = tester.document(document).execute().path("createAuthor").entity(Boolean.class).get();
-		assertTrue(result);
+		assertThat(result).isTrue();
 		// language=GraphQL
 		String d2 = """
 				mutation{
@@ -189,7 +202,7 @@ class BookControllerTest {
 				    )
 				}""";
 		Boolean result2 = tester.document(d2).execute().path("createAuthor").entity(Boolean.class).get();
-		assertTrue(result2);
+		assertThat(result2).isTrue();
 	}
 
 }

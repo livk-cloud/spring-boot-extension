@@ -25,8 +25,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -36,11 +35,11 @@ class SpringAbstractImportSelectorTests {
 	@Test
 	void testFindAnnotation() {
 		MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
-		assertEquals(MyAnnotation.class, selector.getAnnotationClass());
+		assertThat(selector.getAnnotationClass()).isEqualTo(MyAnnotation.class);
 
 		String[] imports = selector.selectImports(AnnotationMetadata.introspect(Config.class));
 		String[] result = new String[] { MyAnnotationConfig.class.getName() };
-		assertArrayEquals(result, imports);
+		assertThat(imports).containsExactly(result);
 	}
 
 	@Target(ElementType.TYPE)

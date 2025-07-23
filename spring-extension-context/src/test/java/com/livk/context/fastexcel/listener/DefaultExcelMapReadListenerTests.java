@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -42,11 +40,10 @@ class DefaultExcelMapReadListenerTests {
 		listener.execute(inputStream, Info.class, true);
 
 		Map<String, ? extends Collection<Object>> map = listener.getMapData();
-		assertFalse(map.isEmpty());
-
-		assertEquals(1, map.size());
-		assertEquals(Set.of("0"), map.keySet());
-		assertEquals(100, map.values().stream().mapToLong(Collection::size).sum());
+		assertThat(map).isNotEmpty();
+		assertThat(map).hasSize(1);
+		assertThat(map).containsKey("0");
+		assertThat(map.values().stream().mapToLong(Collection::size).sum()).isEqualTo(100);
 	}
 
 }

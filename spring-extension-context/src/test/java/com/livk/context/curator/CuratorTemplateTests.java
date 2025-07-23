@@ -35,9 +35,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -61,31 +59,31 @@ class CuratorTemplateTests {
 	CuratorTemplate template;
 
 	@Test
-	void setDataAsync() throws Exception {
+	void setDataAsync() {
 		template.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertArrayEquals("data".getBytes(), template.getNode("/node"));
+		assertThat(template.getNode("/node")).containsExactly("data".getBytes());
 		template.setDataAsync("/node", "setData".getBytes(StandardCharsets.UTF_8));
-		assertArrayEquals("setData".getBytes(), template.getNode("/node"));
+		assertThat(template.getNode("/node")).containsExactly("setData".getBytes());
 		template.deleteNode("/node");
 	}
 
 	@Test
 	void getLock() throws Exception {
 		InterProcessLock lock = template.getLock("/node/lock", ZkLockType.REENTRANT);
-		assertEquals(InterProcessMutex.class, lock.getClass());
-		assertTrue(lock.acquire(3, TimeUnit.SECONDS));
+		assertThat(lock.getClass()).isEqualTo(InterProcessMutex.class);
+		assertThat(lock.acquire(3, TimeUnit.SECONDS)).isTrue();
 		lock.release();
 		template.deleteNode("/node");
 
 		InterProcessLock read = template.getLock("/node/lock", ZkLockType.READ);
-		assertEquals(InterProcessReadWriteLock.ReadLock.class, read.getClass());
-		assertTrue(read.acquire(3, TimeUnit.SECONDS));
+		assertThat(read.getClass()).isEqualTo(InterProcessReadWriteLock.ReadLock.class);
+		assertThat(read.acquire(3, TimeUnit.SECONDS)).isTrue();
 		read.release();
 		template.deleteNode("/node");
 
 		InterProcessLock write = template.getLock("/node/lock", ZkLockType.WRITE);
-		assertEquals(InterProcessReadWriteLock.WriteLock.class, write.getClass());
-		assertTrue(write.acquire(3, TimeUnit.SECONDS));
+		assertThat(write.getClass()).isEqualTo(InterProcessReadWriteLock.WriteLock.class);
+		assertThat(write.acquire(3, TimeUnit.SECONDS)).isTrue();
 		write.release();
 
 		template.deleteNode("/node");

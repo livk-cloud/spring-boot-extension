@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -35,49 +35,49 @@ class DateUtilsTests {
 	@Test
 	void timestampTest() {
 		Long result = DateUtils.timestamp(LocalDateTime.now());
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void localDateTimeTest() {
 		LocalDateTime result = DateUtils.localDateTime(1663063303L);
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void dateTest() {
 		Date result = DateUtils.date(LocalDate.now());
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void testDateTest() {
 		Date result = DateUtils.date(LocalDateTime.now());
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void toLocalDateTimeTest() {
 		LocalDateTime result = DateUtils.localDateTime(new Date());
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void formatTest() {
 		String result = DateUtils.format(LocalDateTime.now(), DateTimeFormatter.ofPattern(DateUtils.YMD_HMS));
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void testFormatTest() {
 		String result = DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS);
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void parseTest() {
 		LocalDateTime result = DateUtils.parse("2022-09-13 18:05:12", DateUtils.YMD_HMS);
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 }

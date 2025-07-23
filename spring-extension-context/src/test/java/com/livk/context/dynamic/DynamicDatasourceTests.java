@@ -25,8 +25,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import java.sql.SQLException;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -51,21 +50,21 @@ class DynamicDatasourceTests {
 
 	@Test
 	void test() throws SQLException {
-		assertEquals(primary, dynamicDatasource.getResolvedDefaultDataSource());
-		assertEquals(primary, dynamicDatasource.unwrap(HikariDataSource.class));
-		assertTrue(dynamicDatasource.isWrapperFor(HikariDataSource.class));
+		assertThat(dynamicDatasource.getResolvedDefaultDataSource()).isEqualTo(primary);
+		assertThat(dynamicDatasource.unwrap(HikariDataSource.class)).isEqualTo(primary);
+		assertThat(dynamicDatasource.isWrapperFor(HikariDataSource.class)).isTrue();
 
 		DataSourceContextHolder.switchDataSource("slave1");
-		assertEquals(slave1, dynamicDatasource.unwrap(DriverManagerDataSource.class));
-		assertTrue(dynamicDatasource.isWrapperFor(DriverManagerDataSource.class));
+		assertThat(dynamicDatasource.unwrap(DriverManagerDataSource.class)).isEqualTo(slave1);
+		assertThat(dynamicDatasource.isWrapperFor(DriverManagerDataSource.class)).isTrue();
 
 		DataSourceContextHolder.switchDataSource("slave2");
-		assertEquals(slave2, dynamicDatasource.unwrap(SingleConnectionDataSource.class));
-		assertTrue(dynamicDatasource.isWrapperFor(SingleConnectionDataSource.class));
+		assertThat(dynamicDatasource.unwrap(SingleConnectionDataSource.class)).isEqualTo(slave2);
+		assertThat(dynamicDatasource.isWrapperFor(SingleConnectionDataSource.class)).isTrue();
 
 		DataSourceContextHolder.clear();
-		assertEquals(primary, dynamicDatasource.unwrap(HikariDataSource.class));
-		assertTrue(dynamicDatasource.isWrapperFor(HikariDataSource.class));
+		assertThat(dynamicDatasource.unwrap(HikariDataSource.class)).isEqualTo(primary);
+		assertThat(dynamicDatasource.isWrapperFor(HikariDataSource.class)).isTrue();
 	}
 
 }

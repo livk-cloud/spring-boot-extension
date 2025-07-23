@@ -33,7 +33,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -58,7 +58,7 @@ class ReactiveQRCodeMethodReturnValueHandlerTests {
 
 	@Test
 	void supports() {
-		assertTrue(handler.supports(result));
+		assertThat(handler.supports(result)).isTrue();
 	}
 
 	@Test

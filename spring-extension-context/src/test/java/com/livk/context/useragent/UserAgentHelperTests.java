@@ -34,8 +34,7 @@ import org.springframework.http.HttpHeaders;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -55,42 +54,42 @@ class UserAgentHelperTests {
 
 	@Test
 	void convertBrowscap() {
-
 		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class);
 
 		UserAgentHelper helper = new UserAgentHelper();
 		helper.setApplicationContext(applicationContext);
 		UserAgent userAgent = helper.convert(headers);
-		assertNotNull(userAgent);
-		assertEquals(userAgentStr, userAgent.userAgentStr());
-		assertEquals("Chrome", userAgent.browser());
-		assertEquals("Browser", userAgent.browserType());
-		assertEquals("120", userAgent.browserVersion());
-		assertEquals("Win10", userAgent.os());
-		assertEquals("10.0", userAgent.osVersion());
-		assertEquals("Desktop", userAgent.deviceType());
-		assertEquals("Windows Desktop", userAgent.deviceName());
-		assertEquals("Unknown", userAgent.deviceBrand());
+
+		assertThat(userAgent).isNotNull();
+		assertThat(userAgent.userAgentStr()).isEqualTo(userAgentStr);
+		assertThat(userAgent.browser()).isEqualTo("Chrome");
+		assertThat(userAgent.browserType()).isEqualTo("Browser");
+		assertThat(userAgent.browserVersion()).isEqualTo("120");
+		assertThat(userAgent.os()).isEqualTo("Win10");
+		assertThat(userAgent.osVersion()).isEqualTo("10.0");
+		assertThat(userAgent.deviceType()).isEqualTo("Desktop");
+		assertThat(userAgent.deviceName()).isEqualTo("Windows Desktop");
+		assertThat(userAgent.deviceBrand()).isEqualTo("Unknown");
 	}
 
 	@Test
 	void convertYauaa() {
-
 		applicationContext = new AnnotationConfigApplicationContext(YauaaConfig.class);
 
 		UserAgentHelper helper = new UserAgentHelper();
 		helper.setApplicationContext(applicationContext);
 		UserAgent userAgent = helper.convert(headers);
-		assertNotNull(userAgent);
-		assertEquals(userAgentStr, userAgent.userAgentStr());
-		assertEquals("Chrome", userAgent.browser());
-		assertEquals("Browser", userAgent.browserType());
-		assertEquals("120", userAgent.browserVersion());
-		assertEquals("Windows NT", userAgent.os());
-		assertEquals("Windows NT ??", userAgent.osVersion());
-		assertEquals("Desktop", userAgent.deviceType());
-		assertEquals("Desktop", userAgent.deviceName());
-		assertEquals("Unknown", userAgent.deviceBrand());
+
+		assertThat(userAgent).isNotNull();
+		assertThat(userAgent.userAgentStr()).isEqualTo(userAgentStr);
+		assertThat(userAgent.browser()).isEqualTo("Chrome");
+		assertThat(userAgent.browserType()).isEqualTo("Browser");
+		assertThat(userAgent.browserVersion()).isEqualTo("120");
+		assertThat(userAgent.os()).isEqualTo("Windows NT");
+		assertThat(userAgent.osVersion()).isEqualTo("Windows NT ??");
+		assertThat(userAgent.deviceType()).isEqualTo("Desktop");
+		assertThat(userAgent.deviceName()).isEqualTo("Desktop");
+		assertThat(userAgent.deviceBrand()).isEqualTo("Unknown");
 	}
 
 	@TestConfiguration

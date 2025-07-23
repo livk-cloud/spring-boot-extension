@@ -27,11 +27,9 @@ import org.junit.jupiter.api.Test;
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DbRangeManagerTests {
 
@@ -57,21 +55,21 @@ class DbRangeManagerTests {
 		manager.init();
 		String name = "test-seq";
 		SequenceRange range = manager.nextRange(name);
-		assertNotNull(range);
-		assertEquals(1, range.getMin());
-		assertEquals(1000, range.getMax());
-		assertFalse(range.isOver());
-		assertEquals(1, range.getAndIncrement());
-		assertEquals(2, range.getAndIncrement());
+		assertThat(range).isNotNull();
+		assertThat(range.getMin()).isEqualTo(1);
+		assertThat(range.getMax()).isEqualTo(1000);
+		assertThat(range.isOver()).isFalse();
+		assertThat(range.getAndIncrement()).isEqualTo(1);
+		assertThat(range.getAndIncrement()).isEqualTo(2);
 	}
 
 	@Test
 	void testInitCreatesTableSuccessfully() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
-		assertDoesNotThrow(manager::init);
-		// Try to allocate a range to ensure table exists and is usable
+		assertThatCode(manager::init).doesNotThrowAnyException();
+
 		SequenceRange range = manager.nextRange("init-table-seq");
-		assertNotNull(range);
+		assertThat(range).isNotNull();
 	}
 
 	@Test
@@ -81,28 +79,31 @@ class DbRangeManagerTests {
 		String name = "retry-seq";
 
 		SequenceRange firstRange = manager.nextRange(name);
-		assertNotNull(firstRange);
+		assertThat(firstRange).isNotNull();
 
 		Field helperField = DbRangeManager.class.getDeclaredField("helper");
 		helperField.setAccessible(true);
 		SequenceDbHelper helper = (SequenceDbHelper) helperField.get(manager);
-		assertNotNull(helper);
+		assertThat(helper).isNotNull();
 
 		DbRangeManager concurrentManager = new DbRangeManager(dataSource);
 		SequenceRange concurrentRange = concurrentManager.nextRange(name);
-		assertNotNull(concurrentRange);
+		assertThat(concurrentRange).isNotNull();
 
 		SequenceRange retriedRange = manager.nextRange(name);
-		assertNotNull(retriedRange);
-		assertEquals(concurrentRange.getMax() + 1, retriedRange.getMin());
+		assertThat(retriedRange).isNotNull();
+		assertThat(retriedRange.getMin()).isEqualTo(concurrentRange.getMax() + 1);
 	}
 
 	@Test
 	void testNextRangeThrowsOnEmptyName() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
 		manager.init();
-		assertThrows(SequenceException.class, () -> manager.nextRange(""));
-		assertThrows(SequenceException.class, () -> manager.nextRange(null));
+
+		assertThatThrownBy(() -> manager.nextRange("")).isInstanceOf(SequenceException.class);
+
+		assertThatThrownBy(() -> manager.nextRange(null)).isInstanceOf(SequenceException.class);
+
 	}
 
 	@Test
@@ -151,7 +152,7 @@ class DbRangeManagerTests {
 		};
 		helperField.set(manager, failingHelper);
 
-		assertThrows(SequenceException.class, () -> manager.nextRange("fail-retry-seq"));
+		assertThatThrownBy(() -> manager.nextRange("fail-retry-seq")).isInstanceOf(SequenceException.class);
 	}
 
 	@Test
@@ -180,7 +181,7 @@ class DbRangeManagerTests {
 		};
 		helperField.set(manager, nullHelper);
 
-		assertThrows(SequenceException.class, () -> manager.nextRange("null-helper-seq"));
+		assertThatThrownBy(() -> manager.nextRange("null-helper-seq")).isInstanceOf(SequenceException.class);
 	}
 
 }

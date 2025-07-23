@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -39,8 +39,8 @@ class JacksonRedisCodecTests {
 		String key = "redisKey";
 		byte[] bytes = mapper.writeValueAsBytes(key);
 
-		assertEquals(ByteBuffer.wrap(bytes), codec.encodeKey(key));
-		assertEquals(key, codec.decodeKey(ByteBuffer.wrap(bytes)));
+		assertThat(codec.encodeKey(key)).isEqualTo(ByteBuffer.wrap(bytes));
+		assertThat(codec.decodeKey(ByteBuffer.wrap(bytes))).isEqualTo(key);
 	}
 
 	@Test
@@ -48,8 +48,8 @@ class JacksonRedisCodecTests {
 		Map<String, String> map = Map.of("username", "password");
 		byte[] bytes = mapper.writeValueAsBytes(map);
 
-		assertEquals(ByteBuffer.wrap(bytes), codec.encodeValue(map));
-		assertEquals(map, codec.decodeValue(ByteBuffer.wrap(bytes)));
+		assertThat(codec.encodeValue(map)).isEqualTo(ByteBuffer.wrap(bytes));
+		assertThat(codec.decodeValue(ByteBuffer.wrap(bytes))).isEqualTo(map);
 	}
 
 }

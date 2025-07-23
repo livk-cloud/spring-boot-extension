@@ -32,8 +32,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
@@ -88,11 +87,11 @@ class InfoControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -107,11 +106,11 @@ class InfoControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 	@Test
@@ -126,11 +125,11 @@ class InfoControllerTests {
 			.returnResult()
 			.getResponseBody();
 
-		assertNotNull(resource);
+		assertThat(resource).isNotNull();
 		FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
 		File outFile = new File("./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
-		assertTrue(outFile.exists());
-		assertTrue(outFile.delete());
+		assertThat(outFile).exists().isFile();
+		assertThat(outFile.delete()).isTrue();
 	}
 
 }
