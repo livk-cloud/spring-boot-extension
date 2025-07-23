@@ -17,12 +17,11 @@
 package com.livk.context.sequence.support;
 
 import com.livk.context.sequence.SequenceRange;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
+import com.livk.context.sequence.support.redis.SequenceRedisHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -39,9 +38,7 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 	/**
 	 * redis客户端
 	 */
-	private final RedisClient redisClient;
-
-	private RedisCommands<String, String> commands;
+	private final SequenceRedisHelper helper;
 
 	/**
 	 * 标记业务key是否存在，如果false，在取nextRange时，会取check一把 这个boolean只为提高性能，不用每次都取redis check
@@ -50,12 +47,12 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 
 	@Override
 	public SequenceRange nextRange(String name) {
+		byte[] realKey = getRealKey(name);
 		if (keyAlreadyExist.compareAndSet(false, true)) {
-			String realKey = getRealKey(name);
-			commands.setnx(realKey, String.valueOf(stepStart));
+			helper.setNx(realKey, stepStart);
 		}
 
-		Long max = commands.incrby(getRealKey(name), step);
+		Long max = helper.incrBy(realKey, step);
 		Assert.notNull(max, "redis nextRange error");
 		long min = max - step + 1;
 		return new SequenceRange(min, max);
@@ -63,12 +60,11 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 
 	@Override
 	public void init() {
-		StatefulRedisConnection<String, String> connection = redisClient.connect();
-		commands = connection.sync();
+		helper.init();
 	}
 
-	private String getRealKey(String name) {
-		return KEY_PREFIX + name;
+	private byte[] getRealKey(String name) {
+		return (KEY_PREFIX + name).getBytes(StandardCharsets.UTF_8);
 	}
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.support.spi;
+package com.livk.context.sequence.support.db;
 
 import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.jdbc.DatabaseDriver;
@@ -23,25 +23,36 @@ import org.springframework.boot.jdbc.DatabaseDriver;
  * @author livk
  */
 @SpringFactories
-public class MySqlProvider implements SqlProvider {
+public class H2SqlProvider implements SqlProvider {
 
 	@Override
 	public DatabaseDriver type() {
-		return DatabaseDriver.MYSQL;
+		return DatabaseDriver.H2;
 	}
 
 	@Override
 	public String createTableSql(String tableName) {
-		return String.format("CREATE TABLE IF NOT EXISTS %s (" + "id BIGINT(20) NOT NULL AUTO_INCREMENT, "
-				+ "val BIGINT(20) NOT NULL, " + "name VARCHAR(32) NOT NULL, " + "create_time DATETIME NOT NULL, "
-				+ "update_time DATETIME NOT NULL, " + "PRIMARY KEY (id), UNIQUE uk_name (name))", tableName);
+		String constraintName = "uk_" + tableName.toLowerCase() + "_name";
+		return String.format("""
+				CREATE TABLE IF NOT EXISTS %s (
+				  id BIGINT NOT NULL AUTO_INCREMENT,
+				  val BIGINT NOT NULL,
+				  name VARCHAR(32) NOT NULL,
+				  create_time TIMESTAMP NOT NULL,
+				  update_time TIMESTAMP NOT NULL,
+				  PRIMARY KEY (id),
+				  CONSTRAINT %s UNIQUE (name)
+				);
+				""", tableName, constraintName);
 	}
 
 	@Override
 	public String insertRangeSql(String tableName) {
-		return String.format(
-				"INSERT IGNORE INTO %s (name, val, create_time, update_time) VALUES (:name, :val, :create_time, :update_time)",
-				tableName);
+		return String.format("""
+				MERGE INTO %s (name, val, create_time, update_time)
+				KEY(val)
+				VALUES (:name, :val, :create_time, :update_time)
+				""", tableName);
 	}
 
 	@Override

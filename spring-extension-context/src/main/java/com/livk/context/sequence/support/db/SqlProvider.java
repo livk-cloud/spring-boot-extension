@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.support.spi;
+package com.livk.context.sequence.support.db;
 
 import org.springframework.boot.jdbc.DatabaseDriver;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.util.List;
 
 /**
  * @author livk
@@ -32,5 +38,24 @@ public interface SqlProvider {
 	String updateRangeSql(String tableName);
 
 	String selectRangeSql(String tableName);
+
+	static SqlProvider fromDataSource(DataSource dataSource) {
+		String productName;
+		try (Connection conn = dataSource.getConnection()) {
+			DatabaseMetaData metaData = conn.getMetaData();
+			productName = metaData.getDatabaseProductName();
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException("Failed to determine database type", ex);
+		}
+		DatabaseDriver driver = DatabaseDriver.fromProductName(productName);
+		List<SqlProvider> factories = SpringFactoriesLoader.loadFactories(SqlProvider.class, null);
+		for (SqlProvider provider : factories) {
+			if (driver == provider.type()) {
+				return provider;
+			}
+		}
+		throw new IllegalStateException("No SqlProvider found for database type");
+	}
 
 }

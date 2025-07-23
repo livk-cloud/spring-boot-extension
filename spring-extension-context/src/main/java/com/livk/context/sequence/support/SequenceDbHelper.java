@@ -17,19 +17,14 @@
 package com.livk.context.sequence.support;
 
 import com.livk.context.sequence.exception.SequenceException;
-import com.livk.context.sequence.support.spi.SqlProvider;
-import org.springframework.boot.jdbc.DatabaseDriver;
-import org.springframework.core.io.support.SpringFactoriesLoader;
+import com.livk.context.sequence.support.db.SqlProvider;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,29 +45,8 @@ class SequenceDbHelper {
 	public SequenceDbHelper(DataSource dataSource, String tableName) {
 		this.jdbcClient = JdbcClient.create(dataSource);
 		this.transactionTemplate = new TransactionTemplate(new DataSourceTransactionManager(dataSource));
-		this.provider = load(dataSource);
+		this.provider = SqlProvider.fromDataSource(dataSource);
 		this.tableName = tableName;
-	}
-
-	public static String getDatabaseType(DataSource dataSource) {
-		try (Connection conn = dataSource.getConnection()) {
-			DatabaseMetaData metaData = conn.getMetaData();
-			return metaData.getDatabaseProductName();
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Failed to determine database type", ex);
-		}
-	}
-
-	private SqlProvider load(DataSource dataSource) {
-		DatabaseDriver driver = DatabaseDriver.fromProductName(getDatabaseType(dataSource));
-		List<SqlProvider> factories = SpringFactoriesLoader.loadFactories(SqlProvider.class, null);
-		for (SqlProvider provider : factories) {
-			if (driver == provider.type()) {
-				return provider;
-			}
-		}
-		throw new IllegalStateException("No SqlProvider found for database type");
 	}
 
 	public void createTable() {

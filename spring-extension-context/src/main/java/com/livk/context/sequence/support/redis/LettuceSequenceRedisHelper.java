@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-package com.livk.context.sequence.support;
+package com.livk.context.sequence.support.redis;
+
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.sync.RedisCommands;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author livk
  */
-public abstract class AbstractRangeManager implements RangeManager {
+@RequiredArgsConstructor
+public class LettuceSequenceRedisHelper implements SequenceRedisHelper {
 
-	/**
-	 * 区间步长
-	 */
-	protected int step = 1000;
+	private final RedisClient redisClient;
 
-	/**
-	 * 区间起始位置，真实从stepStart+1开始
-	 */
-	protected long stepStart = 0;
+	private RedisCommands<String, String> commands;
 
 	@Override
-	public void step(int step) {
-		if (step > 0) {
-			this.step = step;
-		}
+	public Long incrBy(byte[] key, int step) {
+		return commands.incrby(new String(key), step);
 	}
 
 	@Override
-	public void stepStart(long stepStart) {
-		if (stepStart >= 0) {
-			this.stepStart = stepStart;
-		}
+	public void setNx(byte[] key, long stepStart) {
+		commands.setnx(new String(key), String.valueOf(stepStart));
+	}
+
+	@Override
+	public void init() {
+		commands = redisClient.connect().sync();
 	}
 
 }
