@@ -1,6 +1,8 @@
 [[redisearch]]
 ==== redisearch
 
+封装RediSearchTemplate、StringRediSearchTemplate来操作redisearch
+
 ===== redisearch-spring-boot-starter
 
 artifactId: redisearch-spring-boot-starter

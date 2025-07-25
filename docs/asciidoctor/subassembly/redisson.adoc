@@ -2,3 +2,5 @@
 ==== redisson-spring-boot-starter
 
 artifactId: redisson-spring-boot-starter
+
+适配springboot yaml、properties配置文件,使用redisson的配置文件进行redisson的配置

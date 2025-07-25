@@ -31,3 +31,25 @@ public @interface Http{
 
 }
 ----
+
+===== AnnotationBasePackageSupport
+用于快速获取basePackage +
+使用注解方式获取，注解需包含basePackages和basePackageClasses
+
+示例:
+
+[source,java,indent=0]
+----
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DisruptorScan {
+
+	String[] basePackages() default {};
+
+	Class<?>[] basePackageClasses() default {};
+
+}
+----
+
+===== AnnotationBeanDefinitionScanner
+用于快速扫描bean，使用注解方式获取

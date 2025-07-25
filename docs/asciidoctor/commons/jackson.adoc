@@ -17,3 +17,11 @@ public static void main(String[] args){
 ===== @NumberJsonFormat
 
 Number类型数据Jackson序列化处理注解
+
+===== 各种工具类
+
+com.livk.commons.jackson.JsonMapperUtils 用于JsonMapper默认配置进行快速序列化和反序列化
+
+com.livk.commons.jackson.JsonNodeUtils 用于JsonNode快速操作
+
+com.livk.commons.jackson.TypeFactoryUtils 用于获取Jackson类型工具

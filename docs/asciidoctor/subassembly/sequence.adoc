@@ -16,13 +16,21 @@ public class Config{
 
    @Bean
    public Sequence dbSequence(DataSource dataSource) {
-     Sequence sequence = SequenceBuilder.builder(dataSource).bizName("test-sequence").build();
+     Sequence sequence = SequenceBuilder.builder(new DbRangeManager(dataSource)).bizName("test-sequence").build();
      return sequence;
    }
 
    @Bean
-   public Sequence redisSequence(RedisClient redisClient) {
-     Sequence sequence = SequenceBuilder.builder(redisClient).bizName("test-sequence").build();
+   public Sequence lettuceSequence(RedisClient redisClient) {
+     LettuceSequenceRedisHelper helper = new LettuceSequenceRedisHelper(redisClient);
+		 Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
+     return sequence;
+   }
+
+    @Bean
+   public Sequence redisSequence(RedisConnectionFactory factory) {
+     SpringSequenceRedisHelper helper = new SpringSequenceRedisHelper(redisClient);
+		 Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
      return sequence;
    }
 

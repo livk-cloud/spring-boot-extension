@@ -3,39 +3,39 @@
 
 ===== Excel导入
 
-使用注解 `@ExcelImport` 解析Excel(支持Spring Webflux) +
-fileName指定文件名称 +
+使用注解 `@PostMapping` 解析Excel(支持Spring Webflux) +
+@ExcelParam指定文件名称 +
 parse使用自定义封装FastExcel的解析器 `com.livk.excel.mvc.listener.InfoExcelListener` +
-paramName指定需要传递至那个参数 +
 
 [source,java,indent=0]
 ----
 @RestController
 public class InfoController {
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadList")
-    public HttpEntity<List<Info>> uploadList(List<Info> dataExcels) {
-        return ResponseEntity.ok(dataExcels);
-    }
+    @RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("uploadList")
+	public HttpEntity<List<Info>> uploadList(@ExcelParam List<Info> dataExcels) {
+		return ResponseEntity.ok(dataExcels);
+	}
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("upload")
-    public HttpEntity<List<Info>> upload(List<Info> dataExcels) {
-        return ResponseEntity.ok(dataExcels);
-    }
 
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadMono")
-    public Mono<HttpEntity<List<Info>>> uploadMono(Mono<List<Info>> dataExcels) {
-        return dataExcels.map(ResponseEntity::ok);
-    }
+    @RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("upload")
+	public HttpEntity<List<Info>> upload(@ExcelParam List<Info> dataExcels) {
+		return ResponseEntity.ok(dataExcels);
+	}
+
+	@RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("uploadMono")
+	public Mono<HttpEntity<List<Info>>> uploadMono(@ExcelParam Mono<List<Info>> dataExcels) {
+		return dataExcels.map(ResponseEntity::ok);
+	}
 }
 ----
 
 ===== Excel导出
 
-使用注解 `@ExcelReturn` 或者 `@ExcelController` 解析Excel(支持Spring Webflux) +
+使用注解 `@ResponseExcel` 或者 `@ExcelController` 解析Excel(支持Spring Webflux) +
 fileName指定下载文件名 +
 suffix指定Excel后缀 默认xlsm +
 使用ExcelController之后，fileName为out，suffix为xlsm
@@ -49,26 +49,26 @@ suffix指定Excel后缀 默认xlsm +
 @RequiredArgsConstructor
 public class InfoController {
 
-    @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadDownLoad")
-    public List<Info> uploadDownLoadMono(List<Info> dataExcels) {
-        return dataExcels;
-    }
+  @ResponseExcel(fileName = "outFile")
+	@RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("uploadDownLoad")
+	public List<Info> uploadDownLoadMono(@ExcelParam List<Info> dataExcels) {
+		return dataExcels;
+	}
 
-    @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadDownLoadMono")
-    public Mono<List<Info>> uploadDownLoadMono(Mono<List<Info>> dataExcels) {
-        return dataExcels;
-    }
+	@ResponseExcel(fileName = "outFile")
+	@RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("uploadDownLoadMono")
+	public Mono<List<Info>> uploadDownLoadMono(@ExcelParam Mono<List<Info>> dataExcels) {
+		return dataExcels;
+	}
 
-    @ExcelReturn(fileName = "outFile")
-    @ExcelImport(parse = InfoExcelListener.class, paramName = "dataExcels")
-    @PostMapping("uploadDownLoadFlux")
-    public Flux<Info> uploadDownLoadFlux(Mono<List<Info>> dataExcels) {
-        return dataExcels.flatMapMany(Flux::fromIterable);
-    }
+	@ResponseExcel(fileName = "outFile")
+	@RequestExcel(parse = InfoExcelListener.class)
+	@PostMapping("uploadDownLoadFlux")
+	public Flux<Info> uploadDownLoadFlux(@ExcelParam Mono<List<Info>> dataExcels) {
+		return dataExcels.flatMapMany(Flux::fromIterable);
+	}
 }
 ----
 

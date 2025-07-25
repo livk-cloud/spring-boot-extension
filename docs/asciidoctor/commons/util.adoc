@@ -60,6 +60,39 @@ public class Main{
 }
 ----
 
+===== GenericsByteBuddy
+
+根据ByteBuddy重新处理，适配泛型以及高版本JDK
+
+使用示例:
+
+[source,java,indent=0]
+----
+private static <S extends RediSearchConnectionFactory> Class<? extends S> createFactoryClass(
+			Class<? extends AbstractRedisClient> clientType) {
+		TypeDescription definitions = TypeDescription.ForLoadedType.of(RediSearchConnectionFactory.class);
+		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>subclass(definitions)
+			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
+					+ "$ProxyConnectionFactory")
+			.defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
+			.defineConstructor(Modifier.PUBLIC)
+			.withParameters(clientType)
+			.intercept(MethodCall.invoke(Object.class.getConstructor())
+				.andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
+			.method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(1)))
+			.intercept(MethodDelegation.to(ConnectWithCodecInterceptor.class))
+			.method(ElementMatchers.named("close"))
+			.intercept(MethodDelegation.to(CloseInterceptor.class))
+			.make()) {
+			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+				.getLoaded();
+		}
+		catch (NoSuchMethodException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+	}
+----
+
 ===== MultiValueMapSplitter
 
 字符串分割成MultiValueMap，例如String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
@@ -81,3 +114,44 @@ public class Main{
 }
 ----
 
+===== Pair
+
+一个简单的KV键值对，Jackson序列化进行Map.Entity一样的适配
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      Pair<String, String> pair = Pair.of("username", "password");
+    }
+}
+----
+
+
+===== SnowflakeIdGenerator
+
+雪花算法ID生成器
+
+使用示例:
+
+[source,java,indent=0]
+----
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main{
+    public static void main(String[] args){
+      SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2)；
+      long id = generator.nextId();
+    }
+}
+----
+
+===== TreeNode
+
+树形节点定义通用类

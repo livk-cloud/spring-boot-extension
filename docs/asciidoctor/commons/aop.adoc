@@ -46,11 +46,11 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
 }
 ----
 
-===== AnnotationPointcutType
+===== AnnotationPointcut
 
-提供四种可选方案
+提供多种可选方案
 
-. TYPE基于类级别的拦截等价于(@Around(@within(Annotation)))
-. METHOD基于方法级别的拦截等价于(@Around(@annotation(Annotation)))
-. TYPE_OR_METHOD基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))
-. AUTO根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)
+. forType基于类级别的拦截等价于(@Around(@within(Annotation)))
+. forMethod基于方法级别的拦截等价于(@Around(@annotation(Annotation)))
+. forTypeOrMethod基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))
+. forTarget根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)

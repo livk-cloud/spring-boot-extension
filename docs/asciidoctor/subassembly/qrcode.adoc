@@ -1,6 +1,49 @@
 [[qrcode]]
 ==== qrcode
 
+===== 二维码导入解析
+
+使用注解 `@PostMapping` 解析二维码(支持Spring Webflux) +
+RequestQrCodeText指定文件名称 +
+
+[source,java,indent=0]
+----
+@RestController
+@RequestMapping("qrcode")
+public class QRCodeController {
+
+	@PostMapping
+	public Mono<String> textCode(@RequestQrCodeText Mono<String> text) {
+		return text.log();
+	}
+
+}
+----
+
+===== 文本或者实体导入二维码
+
+使用注解 `ResponseQrCode` 或者 `QrCodeController` 解析Excel(支持Spring Webflux) +
+
+[source,java,indent=0]
+----
+@RestController
+@RequestMapping("qrcode")
+public class QRCodeController {
+
+	@ResponseQrCode
+	@GetMapping
+	public String text(String text) {
+		return text;
+	}
+
+	@ResponseQrCode
+	@GetMapping("mono")
+	public Mono<String> textMono(String text) {
+		return Mono.just(text);
+	}
+----
+
+
 ===== qrcode-spring-boot-starter
 
 artifactId: qrcode-spring-boot-starter
