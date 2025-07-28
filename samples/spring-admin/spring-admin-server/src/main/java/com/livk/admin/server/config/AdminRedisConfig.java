@@ -22,7 +22,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.jackson.TypeFactoryUtils;
 import com.livk.context.redis.JacksonSerializerUtils;
 import com.livk.context.redis.ReactiveRedisOps;
-import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import de.codecentric.boot.admin.server.domain.events.InstanceEvent;
 import de.codecentric.boot.admin.server.domain.values.InstanceId;
 import de.codecentric.boot.admin.server.utils.jackson.AdminServerModule;
@@ -42,12 +41,9 @@ import java.util.List;
 public class AdminRedisConfig {
 
 	@Bean
-	public ReactiveRedisOps reactiveRedisOps(AdminServerProperties adminServerProperties,
+	public ReactiveRedisOps reactiveRedisOps(AdminServerModule adminJacksonModule,
 			ReactiveRedisConnectionFactory redisConnectionFactory) {
-		JsonMapper mapper = JsonMapper.builder()
-			.addModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()))
-			.addModule(new JavaTimeModule())
-			.build();
+		JsonMapper mapper = JsonMapper.builder().addModule(adminJacksonModule).addModule(new JavaTimeModule()).build();
 		Jackson2JsonRedisSerializer<InstanceId> hashKeySerializer = new Jackson2JsonRedisSerializer<>(mapper,
 				InstanceId.class);
 		CollectionType collectionType = TypeFactoryUtils.listType(InstanceEvent.class);

@@ -34,13 +34,13 @@ jobs:
         run: ./gradlew build
 
       - name: Upload coverage reports to Codecov
-        if: ${{ matrix.java }} == '21'
+        if: ${{ matrix.java == 21 }}
         uses: codecov/codecov-action@v5.4.3
         env:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload coverage reports to Codecov
-        if: ${{ matrix.java }} == '21'
+        if: ${{ matrix.java == 21 }}
         uses: codecov/test-results-action@v1.1.1
         env:
           token: ${{ secrets.CODECOV_TOKEN }}

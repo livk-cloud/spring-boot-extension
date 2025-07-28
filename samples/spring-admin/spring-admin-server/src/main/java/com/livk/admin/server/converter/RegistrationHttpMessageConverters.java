@@ -16,7 +16,6 @@
 
 package com.livk.admin.server.converter;
 
-import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import de.codecentric.boot.admin.server.utils.jackson.AdminServerModule;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -29,14 +28,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrationHttpMessageConverters extends HttpMessageConverters {
 
-	public RegistrationHttpMessageConverters(AdminServerProperties adminServerProperties) {
-		super(jacksonHttpMessageConverter(adminServerProperties));
+	public RegistrationHttpMessageConverters(AdminServerModule adminJacksonModule) {
+		super(jacksonHttpMessageConverter(adminJacksonModule));
 	}
 
-	private static HttpMessageConverter<?> jacksonHttpMessageConverter(AdminServerProperties adminServerProperties) {
+	private static HttpMessageConverter<?> jacksonHttpMessageConverter(AdminServerModule adminJacksonModule) {
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.getObjectMapper()
-			.registerModule(new AdminServerModule(adminServerProperties.getMetadataKeysToSanitize()));
+		converter.getObjectMapper().registerModule(adminJacksonModule);
 		return converter;
 	}
 
