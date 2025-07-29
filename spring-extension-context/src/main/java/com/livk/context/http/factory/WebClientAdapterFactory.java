@@ -26,7 +26,7 @@ import org.springframework.web.reactive.function.client.support.WebClientAdapter
  * @author livk
  */
 @SpringFactories
-class WebClientAdapterFactory implements AdapterFactory<WebClientAdapter> {
+class WebClientAdapterFactory implements AdapterFactory {
 
 	@Override
 	public boolean support() {

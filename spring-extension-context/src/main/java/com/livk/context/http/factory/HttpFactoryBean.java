@@ -38,7 +38,7 @@ public class HttpFactoryBean implements FactoryBean<Object>, BeanFactoryAware, I
 
 	private Class<?> type;
 
-	private AdapterFactory<? extends HttpExchangeAdapter> adapterFactory;
+	private AdapterFactory adapterFactory;
 
 	private Object httpClient;
 

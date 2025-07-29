@@ -33,7 +33,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.Assert;
-import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -62,7 +61,7 @@ public class ClassPathHttpScanner extends AnnotationBeanDefinitionScanner<HttpPr
 	protected BeanDefinitionHolder generateHolder(AnnotationAttributes attributes, BeanDefinition candidateComponent,
 			BeanDefinitionRegistry registry) {
 		AdapterType type = attributes.getEnum("type");
-		AdapterFactory<? extends HttpExchangeAdapter> adapterFactory = this.getAdapterFactory(type);
+		AdapterFactory adapterFactory = this.getAdapterFactory(type);
 		String beanClassName = candidateComponent.getBeanClassName();
 		Assert.notNull(beanClassName, "beanClassName not be null");
 		Class<?> beanType = ClassUtils.resolveClassName(beanClassName, super.getResourceLoader().getClassLoader());
@@ -80,14 +79,13 @@ public class ClassPathHttpScanner extends AnnotationBeanDefinitionScanner<HttpPr
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
-	protected AdapterFactory<? extends HttpExchangeAdapter> getAdapterFactory(AdapterType type) {
+	protected AdapterFactory getAdapterFactory(AdapterType type) {
 		List<AdapterFactory> adapterFactories = SpringFactoriesLoader.loadFactories(AdapterFactory.class,
 				getResourceLoader().getClassLoader());
 		adapterFactories.sort(Comparator.comparingInt(AdapterFactory::getOrder));
 		for (AdapterFactory adapterFactory : adapterFactories) {
 			if (type == AdapterType.AUTO && adapterFactory.support() || adapterFactory.type() == type) {
-				return (AdapterFactory<? extends HttpExchangeAdapter>) adapterFactory;
+				return adapterFactory;
 			}
 		}
 		throw new HttpServiceRegistrarException("adapterFactory not be found");

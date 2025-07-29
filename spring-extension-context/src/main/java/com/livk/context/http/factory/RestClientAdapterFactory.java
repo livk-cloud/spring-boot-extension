@@ -26,7 +26,7 @@ import org.springframework.web.client.support.RestClientAdapter;
  * @author livk
  */
 @SpringFactories
-class RestClientAdapterFactory implements AdapterFactory<RestClientAdapter> {
+class RestClientAdapterFactory implements AdapterFactory {
 
 	@Override
 	public boolean support() {

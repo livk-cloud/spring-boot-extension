@@ -23,11 +23,11 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
 /**
  * @author livk
  */
-public interface AdapterFactory<H extends HttpExchangeAdapter> extends Ordered {
+public interface AdapterFactory extends Ordered {
 
 	boolean support();
 
-	H create(BeanFactory beanFactory);
+	HttpExchangeAdapter create(BeanFactory beanFactory);
 
 	AdapterType type();
 
