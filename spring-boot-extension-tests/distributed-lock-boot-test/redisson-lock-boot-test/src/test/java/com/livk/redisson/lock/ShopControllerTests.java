@@ -76,8 +76,8 @@ class ShopControllerTests {
 						mockMvc.perform(post("/shop/buy/distributed")).andExpect(status().isOk());
 						countDownLatch.countDown();
 					}
-					catch (Exception e) {
-						throw new RuntimeException(e);
+					catch (Exception ex) {
+						throw new RuntimeException(ex);
 					}
 				});
 			}

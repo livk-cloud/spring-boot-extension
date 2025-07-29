@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,7 +33,6 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,15 +58,17 @@ class InfoControllerTests {
 
 	@Test
 	void uploadList() throws Exception {
-		mockMvc.perform(multipart(POST, "/uploadList").file(file)).andDo(print()).andExpect(status().isOk());
+		mockMvc.perform(multipart(HttpMethod.POST, "/uploadList").file(file)).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(POST, "/uploadAndDownload").file(file)).andExpect(status().isOk()).andDo(result -> {
-			ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-			FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		});
+		mockMvc.perform(multipart(HttpMethod.POST, "/uploadAndDownload").file(file))
+			.andExpect(status().isOk())
+			.andDo(result -> {
+				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
+				FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
+			});
 		File outFile = new File("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertThat(outFile).exists().isFile();
 		assertThat(outFile.delete()).isTrue();

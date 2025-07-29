@@ -76,8 +76,8 @@ public class ZookeeperUtils {
 			log.info("create node :{} successfully", node);
 			return path;
 		}
-		catch (Exception e) {
-			log.error("create node for path: {} with createMode: {} failed!", path, createMode.name(), e);
+		catch (Exception ex) {
+			log.error("create node for path: {} with createMode: {} failed!", path, createMode.name(), ex);
 			return null;
 		}
 	}
@@ -111,9 +111,9 @@ public class ZookeeperUtils {
 			framework.create().creatingParentsIfNeeded().withMode(createMode).forPath(path, value.getBytes());
 			return path;
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("create node for path: {}, value: {}, with createMode: {} failed!", path, value,
-					createMode.name(), e);
+					createMode.name(), ex);
 		}
 		return null;
 	}
@@ -132,8 +132,8 @@ public class ZookeeperUtils {
 				return new String(bytes);
 			}
 		}
-		catch (Exception e) {
-			log.error("get value for path: {}, node: {} failed!", path, node, e);
+		catch (Exception ex) {
+			log.error("get value for path: {}, node: {} failed!", path, node, ex);
 		}
 		return null;
 	}
@@ -156,7 +156,7 @@ public class ZookeeperUtils {
 			framework.setData().forPath(path, value.getBytes());
 			return path;
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("update path: {} to value: {} failed!", path, value);
 		}
 		return null;
@@ -176,7 +176,7 @@ public class ZookeeperUtils {
 			framework.delete().deletingChildrenIfNeeded().forPath(path);
 			return true;
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("delete node for path: {} failed!", path);
 		}
 		return false;
@@ -185,7 +185,6 @@ public class ZookeeperUtils {
 	/**
 	 * 获取子节点
 	 * @param path 节点路径
-	 * @return
 	 */
 	public List<String> getChildren(String path) {
 		if (StringUtils.hasText(path)) {
@@ -196,8 +195,8 @@ public class ZookeeperUtils {
 			try {
 				return framework.getChildren().forPath(path);
 			}
-			catch (Exception e) {
-				log.error("get children path:{} error", path, e);
+			catch (Exception ex) {
+				log.error("get children path:{} error", path, ex);
 			}
 		}
 		return Collections.emptyList();
@@ -214,7 +213,7 @@ public class ZookeeperUtils {
 			List<String> list = getChildren(path);
 			return !CollectionUtils.isEmpty(list) && list.contains(node);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 	}
@@ -241,7 +240,7 @@ public class ZookeeperUtils {
 				log.error("获取锁超时：{}!", path);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("获取锁失败: {}!", path);
 		}
 	}
@@ -269,7 +268,7 @@ public class ZookeeperUtils {
 				log.error("获取锁超时：{}!", path);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("获取锁失败: {}!", path);
 		}
 		return null;
@@ -292,7 +291,7 @@ public class ZookeeperUtils {
 			});
 			curatorCache.start();
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			log.error("创建NodeCache监听失败, path={}", path);
 		}
 	}
@@ -308,8 +307,8 @@ public class ZookeeperUtils {
 			curatorCache.start();
 			curatorCache.listenable().addListener(listener);
 		}
-		catch (Exception e) {
-			log.error("watch children failed for path: {}", path, e);
+		catch (Exception ex) {
+			log.error("watch children failed for path: {}", path, ex);
 		}
 	}
 
@@ -325,8 +324,8 @@ public class ZookeeperUtils {
 			curatorCache.start();
 			curatorCache.listenable().addListener(listener);
 		}
-		catch (Exception e) {
-			log.error("watch tree failed for path: {}", path, e);
+		catch (Exception ex) {
+			log.error("watch tree failed for path: {}", path, ex);
 		}
 	}
 

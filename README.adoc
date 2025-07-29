@@ -18,15 +18,15 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
 请使用JDK21+ ，测试用例运行需使用docker环境 +
 如有需要请提出issue +
 
-#项目结构#
+.*项目结构*
 
 [source,text,indent=0]
 ----
 |--spring-boot-example
     |--buildSrc(Gradle自定义插件)
     |--gradle/libs.versions.toml(gradle Catalog依赖管理)
+    |--samples(示例项目)
     |--spring-auto-service(SpringBoot自动装配文件生成器)
-    |--spring-boot-example(示例项目)
     |--spring-boot-extension-autoconfigure(spring boot自动装配)
     |--spring-boot-extension-starters(starter集合包)
     |--spring-boot-extension-tests(测试用例集合)
@@ -41,11 +41,11 @@ link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:samples/example.adoc[示例详情] +
 
-项目相关版本控制 +
+.*项目相关版本控制*
 
 --
 [source,xml,indent=0,subs="verbatim,quotes",role="primary"]
-.Maven
+.*Maven*
 ----
 <dependencyManagement>
     <dependencies>
@@ -61,23 +61,23 @@ link:samples/example.adoc[示例详情] +
 ----
 
 [source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
-.Gradle-Groovy
+.*Gradle-Groovy*
 ----
 implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
 ----
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
-.Groovy-Kotlin
+.*Groovy-Kotlin*
 ----
 implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
 ----
 --
 
-最小BOM依赖
+.*最小BOM依赖*
 
 --
 [source,xml,indent=0,subs="verbatim,quotes",role="primary"]
-.Maven
+.*Maven*
 ----
 <dependencyManagement>
     <dependencies>
@@ -93,13 +93,13 @@ implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${ve
 ----
 
 [source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
-.Gradle-Groovy
+.*Gradle-Groovy*
 ----
 implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 ----
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
-.Groovy-Kotlin
+.*Groovy-Kotlin*
 ----
 implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 ----

@@ -7,9 +7,6 @@
         <property name="fileNamePattern" value=".*[\\/]samples[\\/].*\.java$"/>
     </module>
     <module name="BeforeExecutionExclusionFileFilter">
-        <property name="fileNamePattern" value=".*[\\/]spring-boot-extension-tests[\\/].*\.java$"/>
-    </module>
-    <module name="BeforeExecutionExclusionFileFilter">
         <property name="fileNamePattern" value=".*[\\/]protobuf[\\/].*\.java$"/>
     </module>
 

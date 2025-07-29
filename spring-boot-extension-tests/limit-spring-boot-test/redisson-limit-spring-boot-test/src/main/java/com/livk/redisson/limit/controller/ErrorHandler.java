@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ErrorHandler {
 
 	@ExceptionHandler(LimitException.class)
-	public HttpEntity<String> handleLimitException(LimitException e) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	public HttpEntity<String> handleLimitException(LimitException ex) {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
 	}
 
 }

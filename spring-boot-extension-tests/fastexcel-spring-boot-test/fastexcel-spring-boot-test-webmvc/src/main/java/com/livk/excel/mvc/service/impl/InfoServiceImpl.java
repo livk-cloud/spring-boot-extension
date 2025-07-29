@@ -57,8 +57,8 @@ public class InfoServiceImpl implements InfoService {
 			try {
 				infoMapper.insertBatch(infos);
 			}
-			catch (Exception e) {
-				log.error("msg:{}", e.getMessage(), e);
+			catch (Exception ex) {
+				log.error("msg:{}", ex.getMessage(), ex);
 				sqlSession.rollback();
 				break;
 			}
@@ -85,7 +85,7 @@ public class InfoServiceImpl implements InfoService {
 				try {
 					infoMapper.insertBatch(list);
 				}
-				catch (Exception e) {
+				catch (Exception ex) {
 					return () -> 0;
 				}
 			}
@@ -100,8 +100,8 @@ public class InfoServiceImpl implements InfoService {
 				}
 			}
 		}
-		catch (InterruptedException | ExecutionException e) {
-			throw new CompletionException(e);
+		catch (InterruptedException | ExecutionException ex) {
+			throw new CompletionException(ex);
 		}
 		sqlSession.commit();
 		sqlSession.clearCache();

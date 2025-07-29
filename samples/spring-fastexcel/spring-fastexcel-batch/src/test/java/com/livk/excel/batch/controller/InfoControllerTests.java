@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -69,7 +70,7 @@ class InfoControllerTests {
 		MockMultipartFile file = new MockMultipartFile("file", "mobile-test.xlsx", MediaType.MULTIPART_FORM_DATA_VALUE,
 				resource.getInputStream());
 
-		mockMvc.perform(multipart(POST, "/upload").file(file)).andDo(print()).andExpect(status().isOk());
+		mockMvc.perform(multipart(HttpMethod.POST, "/upload").file(file)).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test

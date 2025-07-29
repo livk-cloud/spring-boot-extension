@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,7 +62,7 @@ class Info2ControllerTests {
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(POST, "/info/uploadAndDownload").file(file))
+		mockMvc.perform(multipart(HttpMethod.POST, "/info/uploadAndDownload").file(file))
 			.andExpect(status().isOk())
 			.andDo(result -> {
 				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());

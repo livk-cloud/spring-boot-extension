@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  */
 @SpringFactories
 @Deprecated(since = "1.4.3", forRemoval = true)
-class RestTemplateAdapterFactory implements AdapterFactory<RestTemplateAdapter> {
+class RestTemplateAdapterFactory implements AdapterFactory {
 
 	@Override
 	public boolean support() {
