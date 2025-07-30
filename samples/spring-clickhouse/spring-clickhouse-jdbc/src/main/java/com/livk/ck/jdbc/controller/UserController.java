@@ -47,8 +47,9 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{regTime}")
-	public HttpEntity<Boolean> remove(@PathVariable String regTime) {
-		return ResponseEntity.ok(userService.remove(regTime));
+	public HttpEntity<Void> remove(@PathVariable String regTime) {
+		userService.remove(regTime);
+		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping

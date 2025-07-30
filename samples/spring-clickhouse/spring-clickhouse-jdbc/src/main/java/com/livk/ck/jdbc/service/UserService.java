@@ -28,7 +28,7 @@ public interface UserService {
 
 	List<User> list();
 
-	boolean remove(@Param("regTime") String regTime);
+	void remove(@Param("regTime") String regTime);
 
 	boolean save(User user);
 

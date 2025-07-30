@@ -39,6 +39,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -86,10 +87,13 @@ class UserControllerTest {
 	@Test
 	void testRemove() throws Exception {
 		String format = DateUtils.format(LocalDateTime.now(), "yyyy-MM-dd");
-		mockMvc.perform(delete("/user/" + format))
+		mockMvc.perform(delete("/user/" + format)).andDo(print()).andExpect(status().isOk());
+
+		mockMvc.perform(get("/user"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(content().string("true"));
+			.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$").value(hasSize(0)));
 	}
 
 	@Order(1)
