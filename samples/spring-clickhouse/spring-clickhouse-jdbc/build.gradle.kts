@@ -7,7 +7,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter")
 	implementation(variantOf(libs.clickhouse.jdbc) {
-		classifier("http")
+		classifier("all")
 	})
 	implementation("org.apache.httpcomponents.client5:httpclient5")
 
