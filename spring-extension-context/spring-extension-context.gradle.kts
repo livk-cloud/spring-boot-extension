@@ -28,6 +28,7 @@ dependencies {
 	optional("com.redis:lettucemod")
 	optional("org.apache.commons:commons-pool2")
 	optional("com.lmax:disruptor")
+	optional("io.minio:minio")
 	optional("org.redisson:redisson")
 	optional("org.springframework.boot:spring-boot")
 
@@ -42,6 +43,7 @@ dependencies {
 	testImplementation("net.bytebuddy:byte-buddy")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:mysql")
+	testImplementation("org.testcontainers:minio")
 	testImplementation("com.redis:testcontainers-redis")
 	testImplementation(project(":spring-testcontainers-support"))
 }

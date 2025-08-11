@@ -1,0 +1,6 @@
+spring:
+  storage:
+    access-key: admin
+    secret-key: 1375632510
+    endpoint: http://livk.com:9000
+    type: minio
