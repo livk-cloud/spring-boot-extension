@@ -17,6 +17,7 @@
 package com.livk.commons.spring;
 
 import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.ClassUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -25,14 +26,12 @@ import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -40,9 +39,8 @@ import java.util.Set;
  */
 public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> extends ClassPathBeanDefinitionScanner {
 
-	@SuppressWarnings("unchecked")
-	protected final Class<T> annotationClass = Objects.requireNonNull(
-			(Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), AnnotationBeanDefinitionScanner.class));
+	protected final Class<T> annotationClass = ClassUtils.resolveTypeArgument(this.getClass(),
+			AnnotationBeanDefinitionScanner.class);
 
 	protected final BeanNameGenerator beanNameGenerator;
 
