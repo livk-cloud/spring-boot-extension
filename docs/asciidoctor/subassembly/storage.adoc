@@ -1,0 +1,20 @@
+[[storage]]
+==== storage
+
+===== storage-spring-boot-starter
+
+artifactId: storage-spring-boot-starter
+
+提供Minio的存储服务装配
+
+[source,yaml,indent=0]
+----
+spring:
+  storage:
+    access-key: admin
+    secret-key: 1375632510
+    endpoint: http://localhost:9000
+    type: minio
+----
+
+即可直接使用AutoWire注入MinioClient和StorageTemplate
