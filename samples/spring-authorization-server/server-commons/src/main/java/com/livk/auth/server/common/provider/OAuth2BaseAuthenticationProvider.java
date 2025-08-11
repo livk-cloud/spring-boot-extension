@@ -22,9 +22,9 @@ import com.livk.auth.server.common.token.OAuth2BaseAuthenticationToken;
 import com.livk.auth.server.common.util.MessageSourceUtils;
 import com.livk.auth.server.common.util.OAuth2AuthenticationProviderUtils;
 import com.livk.auth.server.common.util.OAuth2ErrorCodesExpand;
+import com.livk.commons.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -119,9 +119,7 @@ public abstract class OAuth2BaseAuthenticationProvider<T extends OAuth2BaseAuthe
 	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
-		@SuppressWarnings("unchecked")
-		Class<T> childType = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
-				OAuth2BaseAuthenticationProvider.class);
+		Class<T> childType = ClassUtils.resolveTypeArgument(this.getClass(), OAuth2BaseAuthenticationProvider.class);
 		Assert.notNull(childType, "child Type is null");
 		return childType.isAssignableFrom(authentication);
 	}

@@ -16,13 +16,13 @@
 
 package com.livk.commons.aop;
 
+import com.livk.commons.util.ClassUtils;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.NonNull;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.Ordered;
-import org.jspecify.annotations.NonNull;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
@@ -40,8 +40,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	/**
 	 * 切点注解类型
 	 */
-	@SuppressWarnings("unchecked")
-	protected final Class<A> annotationType = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
+	protected final Class<A> annotationType = ClassUtils.resolveTypeArgument(this.getClass(),
 			AnnotationAbstractPointcutAdvisor.class);
 
 	@NonNull

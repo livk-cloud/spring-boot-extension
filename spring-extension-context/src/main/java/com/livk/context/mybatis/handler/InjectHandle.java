@@ -16,7 +16,7 @@
 
 package com.livk.context.mybatis.handler;
 
-import org.springframework.core.GenericTypeResolver;
+import com.livk.commons.util.ClassUtils;
 
 /**
  * @param <T> the type parameter
@@ -34,9 +34,8 @@ public interface InjectHandle<T> {
 	 * Gets type.
 	 * @return the type
 	 */
-	@SuppressWarnings("unchecked")
 	default Class<T> getType() {
-		return (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), InjectHandle.class);
+		return ClassUtils.resolveTypeArgument(this.getClass(), InjectHandle.class);
 	}
 
 }

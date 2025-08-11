@@ -24,6 +24,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,6 +53,26 @@ class ClassUtilsTests {
 
 		assertThatThrownBy(() -> ClassUtils.toClass(null)).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("Type cannot be null");
+	}
+
+	@Test
+	void resolveTypeArgument() {
+		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(NumberWildcardType.class, WildcardType.class))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("No type arguments found on generic interface [" + WildcardType.class.getName() + "]");
+
+		assertThat(ClassUtils.resolveTypeArgument(IntGeneric.class, MyGeneric.class)).isEqualTo(Integer.class);
+
+		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(TypeMap.class, HashMap.class))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	static class TypeMap extends HashMap<String, Type> {
+
+	}
+
+	static class IntGeneric extends MyGeneric<Integer> {
+
 	}
 
 	static class NumberWildcardType implements WildcardType {

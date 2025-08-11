@@ -17,6 +17,8 @@
 package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
@@ -34,6 +36,16 @@ import java.lang.reflect.WildcardType;
  */
 @UtilityClass
 public class ClassUtils extends org.springframework.util.ClassUtils {
+
+	public static <T> Class<T> resolveTypeArgument(Class<?> clazz, Class<?> genericType) {
+		ResolvableType resolvableType = ResolvableType.forClass(clazz).as(genericType);
+		if (!resolvableType.hasGenerics()) {
+			throw new IllegalArgumentException("No type arguments found on generic interface [" + resolvableType + "]");
+		}
+		Assert.isTrue(resolvableType.getGenerics().length == 1, () -> "Expected 1 type argument on generic interface ["
+				+ resolvableType + "] but found " + resolvableType.getGenerics().length);
+		return toClass(resolvableType.getGeneric().resolve());
+	}
 
 	/**
 	 * 将Type安全的转成Class

@@ -17,6 +17,7 @@
 package com.livk.autoconfigure.redisson;
 
 import com.livk.commons.util.BeanUtils;
+import com.livk.commons.util.ClassUtils;
 import io.netty.channel.EventLoopGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,10 +63,8 @@ import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
 import org.springframework.boot.context.properties.bind.PropertySourcesPlaceholdersResolver;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.util.Assert;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -504,9 +503,7 @@ public class RedissonProperties {
 		 * @return the t
 		 */
 		public T convert() {
-			@SuppressWarnings("unchecked")
-			Class<T> type = (Class<T>) GenericTypeResolver.resolveTypeArgument(this.getClass(), Base.class);
-			Assert.notNull(type, "type must not be null");
+			Class<T> type = ClassUtils.resolveTypeArgument(this.getClass(), Base.class);
 			return BeanUtils.copy(this, type);
 		}
 

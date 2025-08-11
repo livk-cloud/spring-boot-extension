@@ -16,6 +16,7 @@
 
 package com.livk.commons.spring;
 
+import com.livk.commons.util.ClassUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -23,7 +24,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DeferredImportSelector;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
@@ -53,10 +53,8 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	 */
 	private final Class<A> annotationClass;
 
-	@SuppressWarnings("unchecked")
 	protected SpringAbstractImportSelector() {
-		this.annotationClass = (Class<A>) GenericTypeResolver.resolveTypeArgument(this.getClass(),
-				SpringAbstractImportSelector.class);
+		this.annotationClass = ClassUtils.resolveTypeArgument(this.getClass(), SpringAbstractImportSelector.class);
 	}
 
 	@Override
@@ -66,7 +64,6 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 
 	@Override
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-		Assert.notNull(annotationClass, "annotation Class not be null");
 		List<String> configurations = ImportCandidates.load(annotationClass, getBeanClassLoader()).getCandidates();
 		Assert.notEmpty(configurations,
 				"No auto configuration classes found in META-INF/spring/" + annotationClass.getName()

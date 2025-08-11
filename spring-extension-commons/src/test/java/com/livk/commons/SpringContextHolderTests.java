@@ -105,12 +105,13 @@ class SpringContextHolderTests {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	void registerBean() {
 		contextRunner.run(ctx -> {
 			SpringContextHolder.registerBean(bean, "test1");
-			RootBeanDefinition beanDefinition = new RootBeanDefinition((Class<BeanTest>) bean.getClass(), () -> bean);
+			RootBeanDefinition beanDefinition = new RootBeanDefinition();
+			beanDefinition.setBeanClass(bean.getClass());
+			beanDefinition.setInstanceSupplier(() -> bean);
 			SpringContextHolder.registerBean(beanDefinition, "test2");
 			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class))
 				.isEqualTo(Map.of("test1", bean, "test2", bean));

@@ -46,25 +46,29 @@ public class AnnotationBasePackageSupport {
 	 * @return 去重后的基础包路径数组
 	 */
 	public String[] getBasePackages(AnnotationMetadata metadata, Class<? extends Annotation> annotationClass) {
+		Set<String> packagesToScan = new LinkedHashSet<>();
 		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, annotationClass);
-		if (CollectionUtils.isEmpty(attributes)) {
-			return new String[0];
-		}
-		String[] basePackages = attributes.getStringArray("basePackages");
-		Set<String> packagesToScan = new LinkedHashSet<>(Arrays.asList(basePackages));
-		log.debug("Loaded basePackages from annotation: {}", packagesToScan);
-		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
-		for (Class<?> basePackageClass : basePackageClasses) {
-			if (basePackageClass != null) {
-				String packageName = ClassUtils.getPackageName(basePackageClass);
-				packagesToScan.add(packageName);
-				log.debug("Added package from basePackageClasses: {}", packageName);
+		if (!CollectionUtils.isEmpty(attributes)) {
+			if (attributes.containsKey("basePackages")) {
+				String[] basePackages = attributes.getStringArray("basePackages");
+				packagesToScan.addAll(Arrays.asList(basePackages));
+				log.debug("Loaded basePackages from annotation: {}", packagesToScan);
 			}
-		}
-		if (packagesToScan.isEmpty() && metadata != null && StringUtils.hasText(metadata.getClassName())) {
-			String defaultPackage = ClassUtils.getPackageName(metadata.getClassName());
-			packagesToScan.add(defaultPackage);
-			log.debug("Using default package: {}", defaultPackage);
+			if (attributes.containsKey("basePackageClasses")) {
+				Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
+				for (Class<?> basePackageClass : basePackageClasses) {
+					if (basePackageClass != null) {
+						String packageName = ClassUtils.getPackageName(basePackageClass);
+						packagesToScan.add(packageName);
+						log.debug("Added package from basePackageClasses: {}", packageName);
+					}
+				}
+			}
+			if (packagesToScan.isEmpty() && metadata != null && StringUtils.hasText(metadata.getClassName())) {
+				String defaultPackage = ClassUtils.getPackageName(metadata.getClassName());
+				packagesToScan.add(defaultPackage);
+				log.debug("Using default package: {}", defaultPackage);
+			}
 		}
 		return StringUtils.toStringArray(packagesToScan);
 	}
