@@ -16,26 +16,19 @@
 
 package com.livk.sso.auth.controller;
 
-import com.livk.commons.jackson.JsonMapperUtils;
-import org.junit.jupiter.api.BeforeEach;
+import com.livk.sso.commons.entity.User;
+import com.livk.sso.commons.util.JwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -49,28 +42,10 @@ class UserControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
-	String token;
-
-	@BeforeEach
-	public void init() throws Exception {
-		Map<String, String> body = new HashMap<>();
-		body.put("username", "livk");
-		body.put("password", "123456");
-		MockHttpServletResponse response = mockMvc
-			.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
-				.content(JsonMapperUtils.writeValueAsString(body)))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("code").value(200))
-			.andReturn()
-			.getResponse();
-		token = "Bearer "
-				+ JsonMapperUtils.readValueMap(response.getContentAsString(), String.class, String.class).get("data");
-	}
-
 	@Test
 	void testList() throws Exception {
-		mockMvc.perform(get("/user/list").header(HttpHeaders.AUTHORIZATION, token))
+		User user = new User().setUsername("livk").setPassword("123456");
+		mockMvc.perform(get("/user/list").header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtils.generateToken(user)))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("list"));
@@ -78,7 +53,8 @@ class UserControllerTest {
 
 	@Test
 	void testUpdate() throws Exception {
-		mockMvc.perform(put("/user/update").header(HttpHeaders.AUTHORIZATION, token))
+		User user = new User().setUsername("livk").setPassword("123456");
+		mockMvc.perform(put("/user/update").header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtils.generateToken(user)))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(content().string("update"));
