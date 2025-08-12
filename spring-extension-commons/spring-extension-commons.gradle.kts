@@ -1,6 +1,7 @@
 plugins {
 	com.livk.common
 	com.livk.mvn.deployed
+	com.livk.jacoco
 }
 
 description = "spring commons packages"

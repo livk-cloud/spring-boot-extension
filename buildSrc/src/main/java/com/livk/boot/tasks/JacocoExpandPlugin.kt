@@ -25,7 +25,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
 /**
  * @author livk
  */
-abstract class JacocoExpand : Plugin<Project> {
+abstract class JacocoExpandPlugin : Plugin<Project> {
 	companion object {
 		private const val TASK_NAME = "jacocoTestReport"
 	}

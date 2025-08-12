@@ -48,6 +48,10 @@ gradlePlugin {
 			id = "google.protobuf"
 			implementationClass = "com.google.protobuf.gradle.ProtobufPlugin"
 		}
+		create("JacocoExpand") {
+			id = "com.livk.jacoco"
+			implementationClass = "com.livk.boot.tasks.JacocoExpandPlugin"
+		}
 	}
 }
 
