@@ -68,7 +68,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 				if (elementType.getRawClass() != null) {
 					ExcelDataType dataType = Flux.class.isAssignableFrom(elementType.getRawClass())
 							? ExcelDataType.COLLECTION : ExcelDataType.match(elementType.getRawClass());
-					Class<?> excelModelClass = dataType.getFunction().apply(elementType);
+					Class<?> excelModelClass = dataType.apply(elementType);
 					return Mono.just(request.getBody())
 						.flatMap(DataBufferUtils::transform)
 						.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))

@@ -16,7 +16,6 @@
 
 package com.livk.context.fastexcel;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
 
@@ -42,7 +41,6 @@ public enum ExcelDataType {
 	 */
 	MAP(resolvableType -> resolvableType.getGeneric(1).resolveGeneric(0), Map.class::isAssignableFrom);
 
-	@Getter
 	private final Function<ResolvableType, Class<?>> function;
 
 	private final Predicate<Class<?>> assignableFrom;
@@ -59,6 +57,10 @@ public enum ExcelDataType {
 			}
 		}
 		throw new IllegalArgumentException();
+	}
+
+	public Class<?> apply(ResolvableType type) {
+		return function.apply(type);
 	}
 
 }

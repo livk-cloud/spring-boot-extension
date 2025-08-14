@@ -67,6 +67,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 				.orElse("application/vnd.ms-excel");
 			response.setCharacterEncoding(UTF8);
 			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+			response.setContentType(contentType);
 			try (ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response)) {
 				if (returnValue instanceof Collection) {
 					Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);

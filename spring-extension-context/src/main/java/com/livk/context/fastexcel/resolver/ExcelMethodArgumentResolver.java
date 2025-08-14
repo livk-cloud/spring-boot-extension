@@ -55,7 +55,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(requestExcel.parse());
 			if (this.canRead(parameter.getParameterType(), request)) {
 				ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
-				Class<?> excelModelClass = dataType.getFunction().apply(ResolvableType.forMethodParameter(parameter));
+				Class<?> excelModelClass = dataType.apply(ResolvableType.forMethodParameter(parameter));
 				HttpInputMessage part = new RequestPartServletServerHttpRequest(request, excelParam.fileName());
 				listener.execute(part.getBody(), excelModelClass, requestExcel.ignoreEmptyRow());
 				return listener.getData(dataType);

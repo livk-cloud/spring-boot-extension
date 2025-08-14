@@ -28,6 +28,8 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -40,7 +42,7 @@ abstract class AbstractMapstructService implements MapstructService, MapstructRe
 	/**
 	 * The Application context.
 	 */
-	private MapstructLocator mapstructLocator;
+	private final PrioritizedMapstructLocator mapstructLocator = new PrioritizedMapstructLocator();
 
 	@Override
 	public <S, T> T convert(S source, Class<T> targetType) {
@@ -70,8 +72,28 @@ abstract class AbstractMapstructService implements MapstructService, MapstructRe
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		ObjectProvider<MapstructLocator> mapstructLocators = applicationContext.getBeanProvider(MapstructLocator.class);
-		this.mapstructLocator = new PrioritizedMapstructLocator(
-				mapstructLocators.orderedStream().filter(MATCH.negate()).toList());
+		mapstructLocators.orderedStream().filter(MATCH.negate()).forEach(mapstructLocator::add);
+	}
+
+	private static class PrioritizedMapstructLocator implements MapstructLocator {
+
+		private final List<MapstructLocator> mapstructLocators = new ArrayList<>();
+
+		@Override
+		public <S, T> Converter<S, T> get(ConverterPair converterPair) {
+			for (MapstructLocator mapstructLocator : mapstructLocators) {
+				Converter<S, T> converter = mapstructLocator.get(converterPair);
+				if (converter != null) {
+					return converter;
+				}
+			}
+			return null;
+		}
+
+		public void add(MapstructLocator mapstructLocator) {
+			this.mapstructLocators.add(mapstructLocator);
+		}
+
 	}
 
 }

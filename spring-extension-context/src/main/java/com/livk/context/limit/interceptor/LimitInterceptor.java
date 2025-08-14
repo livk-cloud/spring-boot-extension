@@ -17,14 +17,20 @@
 package com.livk.context.limit.interceptor;
 
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.expression.ExpressionResolver;
+import com.livk.commons.expression.spring.SpringExpressionResolver;
+import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
-import com.livk.context.limit.LimitSupport;
 import com.livk.context.limit.annotation.Limit;
 import com.livk.context.limit.exception.LimitException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The type Limit interceptor.
@@ -38,12 +44,25 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
 	/**
 	 * 执行器
 	 */
-	private final ObjectProvider<LimitExecutor> provider;
+	private final ObjectProvider<LimitExecutor> providers;
+
+	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
 	protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
-		LimitSupport limitSupport = LimitSupport.of(provider.getIfAvailable());
-		boolean status = limitSupport.exec(limit, invocation.getMethod(), invocation.getArguments());
+		String key = limit.key();
+		int rate = limit.rate();
+		int rateInterval = limit.rateInterval();
+		TimeUnit unit = limit.rateIntervalUnit();
+		String spELKey = resolver.evaluate(key, invocation.getMethod(), invocation.getArguments());
+		if (limit.restrictIp()) {
+			String ip = HttpServletUtils.realIp(HttpServletUtils.request());
+			spELKey = spELKey + "#" + ip;
+		}
+		LimitExecutor executor = providers.orderedStream()
+			.findFirst()
+			.orElseThrow(() -> new NoSuchBeanDefinitionException(LimitExecutor.class));
+		boolean status = executor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
 		if (status) {
 			return invocation.proceed();
 		}

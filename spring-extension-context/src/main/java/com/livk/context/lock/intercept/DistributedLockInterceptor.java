@@ -22,9 +22,9 @@ import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.annotation.DistLock;
 import com.livk.context.lock.exception.LockException;
-import com.livk.context.lock.exception.UnSupportLockException;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.Assert;
 
@@ -49,7 +49,7 @@ public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAd
 		Assert.notNull(lock, "lock is null");
 		DistributedLock distributedLock = distributedLockProvider.orderedStream()
 			.findFirst()
-			.orElseThrow(() -> new UnSupportLockException("Lack of implementation of DistributedLock"));
+			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistributedLock.class));
 		String key = resolver.evaluate(lock.key(), invocation.getMethod(), invocation.getArguments());
 		boolean isLock = distributedLock.tryLock(lock.type(), key, lock.leaseTime(), lock.waitTime(), lock.async());
 		try {
