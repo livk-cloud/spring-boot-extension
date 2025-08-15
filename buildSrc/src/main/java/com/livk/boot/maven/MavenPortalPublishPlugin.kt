@@ -22,12 +22,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * <p>
- * MavenPortalPublishPlugin
- * </p>
- *
  * @author livk
- * @date 2025/4/28
  */
 abstract class MavenPortalPublishPlugin : Plugin<Project> {
 

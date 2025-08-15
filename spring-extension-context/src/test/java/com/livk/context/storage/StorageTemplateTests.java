@@ -46,12 +46,7 @@ import java.io.InputStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * <p>
- * StorageTemplateTests
- * </p>
- *
  * @author livk
- * @date 2025/8/11
  */
 @SpringJUnitConfig(StorageTemplateTests.Config.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
