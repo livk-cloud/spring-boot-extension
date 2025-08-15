@@ -28,8 +28,6 @@ import java.lang.annotation.Annotation;
 @AutoService(Processor.class)
 public class SpringFactoriesProcessor extends AbstractFactoriesProcessor {
 
-	private static final Class<SpringFactories> SUPPORT_CLASS = SpringFactories.class;
-
 	static final String SPRING_LOCATION = "META-INF/spring.factories";
 
 	public SpringFactoriesProcessor() {
@@ -38,7 +36,7 @@ public class SpringFactoriesProcessor extends AbstractFactoriesProcessor {
 
 	@Override
 	protected Class<? extends Annotation> getSupportedAnnotation() {
-		return SUPPORT_CLASS;
+		return SpringFactories.class;
 	}
 
 }

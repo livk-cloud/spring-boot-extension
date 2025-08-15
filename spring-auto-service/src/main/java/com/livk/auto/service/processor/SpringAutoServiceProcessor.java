@@ -17,16 +17,12 @@
 package com.livk.auto.service.processor;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
 import com.livk.auto.service.annotation.SpringAutoService;
 
 import javax.annotation.processing.Processor;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -50,9 +46,6 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	static final String LOCATION = "META-INF/spring/%s.imports";
 
-	private final SetMultimap<String, String> importsMap = Multimaps
-		.synchronizedSetMultimap(LinkedHashMultimap.create());
-
 	@Override
 	protected Class<? extends Annotation> getSupportedAnnotation() {
 		return SUPPORT_CLASS;
@@ -60,25 +53,15 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 
 	@Override
 	protected void generateConfigFiles() {
-		for (Map.Entry<String, Collection<String>> entity : importsMap.asMap().entrySet()) {
+		for (Map.Entry<String, Collection<String>> entity : processorMap.asMap().entrySet()) {
 			String resourceFile = String.format(LOCATION, entity.getKey());
-			log("Working on resource file: " + resourceFile);
-			try {
-				FileObject resource = filer.getResource(out, "", resourceFile);
-				log("Looking for existing resource file at " + resource.toUri());
-				Set<String> exitImports = this.read(resource);
+			Set<String> exitImports = this.readFromResource(resourceFile);
+			if (!exitImports.isEmpty()) {
 				log("Existing service entries: " + exitImports);
-				Set<String> allImports = Stream.concat(exitImports.stream(), entity.getValue().stream())
-					.collect(Collectors.toSet());
-
-				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", resourceFile);
-
-				this.writeFile(allImports, fileObject);
 			}
-			catch (IOException ex) {
-				fatalError("Unable to create " + resourceFile + ", " + ex);
-				return;
-			}
+			Set<String> allImports = Stream.concat(exitImports.stream(), entity.getValue().stream())
+				.collect(Collectors.toSet());
+			this.writeFile(allImports, resourceFile);
 		}
 	}
 
@@ -87,21 +70,16 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 		return Set.of(elements.getTypeElement(AUTOCONFIGURATION));
 	}
 
-	@Override
-	protected void storage(String provider, String serviceImpl) {
-		importsMap.put(provider, serviceImpl);
-	}
-
-	/**
-	 * 从文件读取配置
-	 * @param fileObject 文件信息
-	 * @return set className
-	 */
-	private Set<String> read(FileObject fileObject) {
-		try (BufferedReader reader = bufferedReader(fileObject)) {
-			return reader.lines().map(String::trim).collect(Collectors.toUnmodifiableSet());
+	private Set<String> readFromResource(String resourceFile) {
+		try {
+			FileObject resource = filer.getResource(resourcesPath, "", resourceFile);
+			log("Looking for existing resource file at " + resource.toUri());
+			try (BufferedReader reader = bufferedReader(resource)) {
+				return reader.lines().map(String::trim).collect(Collectors.toUnmodifiableSet());
+			}
 		}
-		catch (Exception ignored) {
+		catch (Exception ex) {
+			log("Warning: Unable to read " + resourceFile + ", " + ex);
 			return Collections.emptySet();
 		}
 	}
@@ -109,15 +87,20 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	/**
 	 * 将配置信息写入到文件
 	 * @param services 实现类信息
-	 * @param fileObject 文件信息
 	 */
-	private void writeFile(Collection<String> services, FileObject fileObject) throws IOException {
-		try (BufferedWriter writer = bufferedWriter(fileObject)) {
-			for (String service : services) {
-				writer.write(service);
-				writer.newLine();
+	private void writeFile(Collection<String> services, String resourceFile) {
+		try {
+			FileObject fileObject = filer.createResource(resourcesPath, "", resourceFile);
+			try (BufferedWriter writer = bufferedWriter(fileObject)) {
+				for (String service : services) {
+					writer.write(service);
+					writer.newLine();
+				}
+				writer.flush();
 			}
-			writer.flush();
+		}
+		catch (IOException ex) {
+			fatalError("Unable to create " + resourceFile + ", " + ex);
 		}
 	}
 

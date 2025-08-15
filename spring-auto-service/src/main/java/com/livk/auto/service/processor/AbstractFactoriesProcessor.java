@@ -19,8 +19,6 @@ package com.livk.auto.service.processor;
 import com.google.auto.common.MoreTypes;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.SetMultimap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +26,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -45,28 +42,19 @@ import java.util.Set;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 
-	private final SetMultimap<String, String> factoriesMap = Multimaps
-		.synchronizedSetMultimap(LinkedHashMultimap.create());
-
 	private final String location;
 
 	@Override
 	protected void generateConfigFiles() {
-		if (!factoriesMap.isEmpty()) {
-			try {
-				FileObject resource = filer.getResource(out, "", location);
-				log("Looking for existing resource file at " + resource.toUri());
-				Multimap<String, String> allImportMap = this.read(resource);
-				for (Map.Entry<String, String> entry : factoriesMap.entries()) {
-					allImportMap.put(entry.getKey(), entry.getValue());
-				}
-				FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", location);
-
-				this.writeFile(allImportMap.asMap(), fileObject);
+		if (!processorMap.isEmpty()) {
+			Multimap<String, String> allImportMap = this.readFromResource();
+			if (!allImportMap.isEmpty()) {
+				log("Existing service entries: " + allImportMap);
 			}
-			catch (IOException ex) {
-				fatalError("Unable to create " + location + ", " + ex);
+			for (Map.Entry<String, String> entry : processorMap.entries()) {
+				allImportMap.put(entry.getKey(), entry.getValue());
 			}
+			this.writeFile(allImportMap.asMap());
 		}
 	}
 
@@ -81,29 +69,28 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 		return Set.of();
 	}
 
-	@Override
-	protected void storage(String provider, String serviceImpl) {
-		factoriesMap.put(provider, serviceImpl);
-	}
-
 	/**
 	 * 从文件读取某个接口的配置
-	 * @param fileObject 文件信息
 	 * @return set className
 	 */
-	private Multimap<String, String> read(FileObject fileObject) {
-		try (BufferedReader reader = bufferedReader(fileObject)) {
-			Properties properties = new Properties();
-			properties.load(reader);
-			Multimap<String, String> providers = LinkedHashMultimap.create();
-			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-				String factoryTypeName = ((String) entry.getKey()).trim();
-				String[] factoryImplementationNames = ((String) entry.getValue()).split(",");
-				providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
+	private Multimap<String, String> readFromResource() {
+		try {
+			FileObject resource = filer.getResource(resourcesPath, "", location);
+			log("Looking for existing resource file at " + resource.toUri());
+			try (BufferedReader reader = bufferedReader(resource)) {
+				Properties properties = new Properties();
+				properties.load(reader);
+				Multimap<String, String> providers = LinkedHashMultimap.create();
+				for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+					String factoryTypeName = ((String) entry.getKey()).trim();
+					String[] factoryImplementationNames = ((String) entry.getValue()).split(",");
+					providers.putAll(factoryTypeName, Arrays.asList(factoryImplementationNames));
+				}
+				return providers;
 			}
-			return providers;
 		}
 		catch (Exception ex) {
+			log("Warning: Unable to read " + location + ", " + ex);
 			return LinkedHashMultimap.create();
 		}
 	}
@@ -111,29 +98,33 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	/**
 	 * 将配置信息写入到文件
 	 * @param allImportMap 供应商接口及实现类信息
-	 * @param fileObject 文件信息
 	 */
-	private void writeFile(Map<String, ? extends Collection<String>> allImportMap, FileObject fileObject)
-			throws IOException {
-		try (BufferedWriter writer = bufferedWriter(fileObject)) {
-			for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
-				String providerInterface = entry.getKey();
-				Collection<String> services = entry.getValue();
-				writer.write(providerInterface);
-				writer.write("=\\");
-				writer.newLine();
-				String[] serviceArrays = services.toArray(String[]::new);
-				for (int i = 0; i < serviceArrays.length; i++) {
-					writer.write(serviceArrays[i]);
-					if (i != serviceArrays.length - 1) {
-						writer.write(",\\");
+	private void writeFile(Map<String, ? extends Collection<String>> allImportMap) {
+		try {
+			FileObject fileObject = filer.createResource(resourcesPath, "", location);
+			try (BufferedWriter writer = bufferedWriter(fileObject)) {
+				for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
+					String providerInterface = entry.getKey();
+					Collection<String> services = entry.getValue();
+					writer.write(providerInterface);
+					writer.write("=\\");
+					writer.newLine();
+					String[] serviceArrays = services.toArray(String[]::new);
+					for (int i = 0; i < serviceArrays.length; i++) {
+						writer.write(serviceArrays[i]);
+						if (i != serviceArrays.length - 1) {
+							writer.write(",\\");
+						}
+						writer.newLine();
 					}
 					writer.newLine();
 				}
 				writer.newLine();
+				writer.flush();
 			}
-			writer.newLine();
-			writer.flush();
+		}
+		catch (IOException ex) {
+			fatalError("Unable to create " + location + ", " + ex);
 		}
 	}
 

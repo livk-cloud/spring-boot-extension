@@ -16,6 +16,10 @@
 
 package com.livk.auto.service.processor;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -41,6 +45,9 @@ import java.util.Set;
  * @author livk
  */
 abstract class CustomizeAbstractProcessor extends AbstractProcessor {
+
+	protected final SetMultimap<String, String> processorMap = Multimaps
+		.synchronizedSetMultimap(LinkedHashMultimap.create());
 
 	protected static final String VALUE = "value";
 
@@ -72,12 +79,12 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	/**
 	 * The Out.
 	 */
-	protected StandardLocation out;
+	protected StandardLocation resourcesPath;
 
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
-		out = StandardLocation.CLASS_OUTPUT;
+		resourcesPath = StandardLocation.CLASS_OUTPUT;
 		filer = processingEnv.getFiler();
 		elements = processingEnv.getElementUtils();
 		messager = processingEnv.getMessager();
@@ -109,8 +116,6 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 		else {
 			Class<? extends Annotation> supportClass = getSupportedAnnotation();
 			Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(supportClass);
-			log(annotations.toString());
-			log(elements.toString());
 			for (Element element : elements) {
 				Optional<Set<TypeElement>> value = TypeElements.getAnnotationAttributes(element, supportClass, VALUE);
 				for (TypeElement typeElement : value.orElse(elseElement(element))) {
@@ -120,7 +125,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 								"current " + element + "missing " + supportClass + " 'value'");
 					}
 					String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
-					storage(provider, serviceImpl);
+					processorMap.put(provider, serviceImpl);
 				}
 			}
 		}
@@ -128,8 +133,6 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	}
 
 	protected abstract Set<TypeElement> elseElement(Element element);
-
-	protected abstract void storage(String provider, String serviceImpl);
 
 	/**
 	 * 生成文件
@@ -158,13 +161,14 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 
 	/**
 	 * 日志输出
+	 * <p>
+	 * 添加编译参数 -Adebug=true 即可打印日志
 	 * @param msg 待输出日志
 	 */
 	protected void log(String msg) {
 		if (this.processingEnv.getOptions().containsKey("debug")) {
 			this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
 		}
-
 	}
 
 	/**
