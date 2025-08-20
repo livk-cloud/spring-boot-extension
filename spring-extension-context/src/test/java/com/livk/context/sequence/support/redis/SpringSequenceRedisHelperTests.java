@@ -50,6 +50,9 @@ class SpringSequenceRedisHelperTests {
 
 	@AfterAll
 	static void close() {
+		if (helper != null) {
+			helper.close();
+		}
 		if (factory != null) {
 			factory.destroy();
 		}

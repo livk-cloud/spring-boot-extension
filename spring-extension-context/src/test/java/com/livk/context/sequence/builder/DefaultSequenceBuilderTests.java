@@ -54,6 +54,8 @@ class DefaultSequenceBuilderTests {
 
 	static RedisRangeManager redisRangeManager;
 
+	static LettuceSequenceRedisHelper helper;
+
 	@BeforeAll
 	static void setupDataSource() {
 		dataSource = new HikariDataSource();
@@ -64,7 +66,7 @@ class DefaultSequenceBuilderTests {
 		redis.start();
 		redisClient = RedisClient.create("redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 
-		LettuceSequenceRedisHelper helper = new LettuceSequenceRedisHelper(redisClient);
+		helper = new LettuceSequenceRedisHelper(redisClient);
 		redisRangeManager = new RedisRangeManager(helper);
 	}
 
@@ -72,6 +74,9 @@ class DefaultSequenceBuilderTests {
 	static void closeDataSource() {
 		if (dataSource != null) {
 			dataSource.close();
+		}
+		if (helper != null) {
+			helper.close();
 		}
 		if (redisClient != null) {
 			redisClient.close();

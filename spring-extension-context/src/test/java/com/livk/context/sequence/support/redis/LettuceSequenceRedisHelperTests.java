@@ -49,6 +49,9 @@ class LettuceSequenceRedisHelperTests {
 
 	@AfterAll
 	static void close() {
+		if (helper != null) {
+			helper.close();
+		}
 		if (redisClient != null) {
 			redisClient.close();
 		}

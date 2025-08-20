@@ -17,27 +17,32 @@
 package com.livk.context.sequence.support.redis;
 
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.api.StatefulRedisConnection;
 
 /**
  * @author livk
  */
-public class LettuceSequenceRedisHelper implements SequenceRedisHelper {
+public class LettuceSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {
 
-	private final RedisCommands<String, String> commands;
+	private final StatefulRedisConnection<String, String> connect;
 
 	public LettuceSequenceRedisHelper(RedisClient redisClient) {
-		this.commands = redisClient.connect().sync();
+		this.connect = redisClient.connect();
 	}
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
-		return commands.incrby(new String(key), step);
+		return connect.sync().incrby(new String(key), step);
 	}
 
 	@Override
 	public void setNx(byte[] key, long stepStart) {
-		commands.setnx(new String(key), String.valueOf(stepStart));
+		connect.sync().setnx(new String(key), String.valueOf(stepStart));
+	}
+
+	@Override
+	public void close() {
+		connect.close();
 	}
 
 }

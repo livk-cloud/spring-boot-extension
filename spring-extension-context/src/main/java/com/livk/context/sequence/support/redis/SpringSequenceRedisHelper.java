@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author livk
  */
-public class SpringSequenceRedisHelper implements SequenceRedisHelper {
+public class SpringSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {
 
 	private final RedisConnection connection;
 
@@ -40,6 +40,11 @@ public class SpringSequenceRedisHelper implements SequenceRedisHelper {
 	@Override
 	public void setNx(byte[] key, long stepStart) {
 		connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
+	}
+
+	@Override
+	public void close() {
+		connection.close();
 	}
 
 }
