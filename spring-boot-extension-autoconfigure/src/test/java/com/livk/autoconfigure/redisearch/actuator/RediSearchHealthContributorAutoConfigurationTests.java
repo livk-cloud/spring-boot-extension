@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.curator.actuator;
+package com.livk.autoconfigure.redisearch.actuator;
 
-import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
-import com.livk.autoconfigure.curator.CuratorProperties;
+import com.livk.autoconfigure.redisearch.RediSearchAutoConfiguration;
+import com.livk.autoconfigure.redisearch.RediSearchProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -30,25 +31,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class CuratorHealthContributorAutoConfigurationTests {
+class RediSearchHealthContributorAutoConfigurationTests {
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class)
-		.withConfiguration(AutoConfigurations.of(HealthContributorAutoConfiguration.class,
-				CuratorAutoConfiguration.class, CuratorHealthContributorAutoConfiguration.class));
+	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withUserConfiguration(RediSearchHealthContributorAutoConfigurationTests.Config.class)
+		.withConfiguration(
+				AutoConfigurations.of(HealthContributorAutoConfiguration.class, JacksonAutoConfiguration.class,
+						RediSearchAutoConfiguration.class, RediSearchHealthContributorAutoConfiguration.class));
 
 	@Test
 	void runShouldCreateHealthIndicator() {
-		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(CuratorHealthIndicator.class));
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(RediSearchHealthIndicator.class));
 	}
 
 	@Test
 	void runWhenDisabledShouldNotCreateIndicator() {
-		this.contextRunner.withPropertyValues("management.health.curator.enabled:false")
-			.run((context) -> assertThat(context).doesNotHaveBean(CuratorHealthIndicator.class));
+		this.contextRunner.withPropertyValues("management.health.redisearch.enabled:false")
+			.run((context) -> assertThat(context).doesNotHaveBean(RediSearchHealthIndicator.class));
 	}
 
 	@TestConfiguration(proxyBeanMethods = false)
-	@EnableConfigurationProperties(CuratorProperties.class)
+	@EnableConfigurationProperties(RediSearchProperties.class)
 	static class Config {
 
 	}

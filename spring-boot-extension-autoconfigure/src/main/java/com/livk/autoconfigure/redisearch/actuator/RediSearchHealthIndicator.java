@@ -43,9 +43,9 @@ public class RediSearchHealthIndicator extends AbstractHealthIndicator {
 
 				Properties props = new Properties();
 				props.load(new StringReader(propsFormat));
-				builder.withDetail("cluster_size", props.getProperty("cluster_size"));
-				builder.withDetail("slots_ok", props.getProperty("cluster_slots_ok"));
-				builder.withDetail("slots_fail", props.getProperty("cluster_slots_fail"));
+				builder.withDetail("cluster_size", Integer.parseInt(props.getProperty("cluster_size")));
+				builder.withDetail("slots_ok", Integer.parseInt(props.getProperty("cluster_slots_ok")));
+				builder.withDetail("slots_fail", Integer.parseInt(props.getProperty("cluster_slots_fail")));
 
 				if ("fail".equalsIgnoreCase(props.getProperty("cluster_state"))) {
 					builder.down();
