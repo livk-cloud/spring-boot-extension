@@ -18,17 +18,17 @@ package com.livk.context.sequence.support.redis;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.sync.RedisCommands;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author livk
  */
-@RequiredArgsConstructor
 public class LettuceSequenceRedisHelper implements SequenceRedisHelper {
 
-	private final RedisClient redisClient;
+	private final RedisCommands<String, String> commands;
 
-	private RedisCommands<String, String> commands;
+	public LettuceSequenceRedisHelper(RedisClient redisClient) {
+		this.commands = redisClient.connect().sync();
+	}
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
@@ -38,11 +38,6 @@ public class LettuceSequenceRedisHelper implements SequenceRedisHelper {
 	@Override
 	public void setNx(byte[] key, long stepStart) {
 		commands.setnx(new String(key), String.valueOf(stepStart));
-	}
-
-	@Override
-	public void init() {
-		commands = redisClient.connect().sync();
 	}
 
 }

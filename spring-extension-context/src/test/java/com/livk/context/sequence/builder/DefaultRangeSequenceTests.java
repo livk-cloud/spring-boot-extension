@@ -54,11 +54,6 @@ class DefaultRangeSequenceTests {
 
 		}
 
-		@Override
-		public void init() {
-
-		}
-
 	}
 
 }

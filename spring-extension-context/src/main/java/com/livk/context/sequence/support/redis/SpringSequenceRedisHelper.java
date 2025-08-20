@@ -16,7 +16,6 @@
 
 package com.livk.context.sequence.support.redis;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
@@ -25,12 +24,13 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author livk
  */
-@RequiredArgsConstructor
 public class SpringSequenceRedisHelper implements SequenceRedisHelper {
 
-	private final RedisConnectionFactory factory;
+	private final RedisConnection connection;
 
-	private RedisConnection connection;
+	public SpringSequenceRedisHelper(RedisConnectionFactory factory) {
+		this.connection = factory.getConnection();
+	}
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
@@ -40,11 +40,6 @@ public class SpringSequenceRedisHelper implements SequenceRedisHelper {
 	@Override
 	public void setNx(byte[] key, long stepStart) {
 		connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
-	}
-
-	@Override
-	public void init() {
-		connection = factory.getConnection();
 	}
 
 }

@@ -205,10 +205,8 @@ class DefaultSequenceBuilderTests {
 	void testBuildSequenceWithRedisConnectionFailure() {
 		// Use an unreachable port to simulate connection failure
 		int unreachablePort = 6399;
-		LettuceSequenceRedisHelper helper = new LettuceSequenceRedisHelper(
-				RedisClient.create("redis://localhost:" + unreachablePort));
-		SequenceBuilder builder = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("fail-sequence");
-		Throwable exception = catchThrowable(builder::build);
+		Throwable exception = catchThrowable(
+				() -> new LettuceSequenceRedisHelper(RedisClient.create("redis://localhost:" + unreachablePort)));
 		assertThat(exception).isInstanceOf(RedisConnectionException.class);
 		assertThat(exception.getMessage()).contains("Unable to connect to localhost/<unresolved>:6399");
 	}

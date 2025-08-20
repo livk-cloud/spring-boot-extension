@@ -71,9 +71,4 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 		throw new SequenceException("Retried too many times, retryTimes = " + retryTimes);
 	}
 
-	@Override
-	public void init() {
-		helper.createTable();
-	}
-
 }

@@ -60,14 +60,12 @@ class RedisRangeManagerTests {
 
 	@Test
 	void testInitWithValidConfiguration() {
-		RedisRangeManager manager = new RedisRangeManager(helper);
-		assertThatCode(manager::init).doesNotThrowAnyException();
+		assertThatCode(() -> new RedisRangeManager(helper)).doesNotThrowAnyException();
 	}
 
 	@Test
 	void testNextRangeReturnsValidSequenceRangeForNewKey() {
 		RedisRangeManager manager = new RedisRangeManager(helper);
-		manager.init();
 		manager.step(10);
 		manager.stepStart(100);
 		String key = "test-sequence";
@@ -81,11 +79,10 @@ class RedisRangeManagerTests {
 	@Test
 	void testNextRangeThrowsWhenRedisUnavailable() {
 		int unreachablePort = 6399;
-		LettuceSequenceRedisHelper sequenceHelper = new LettuceSequenceRedisHelper(
-				RedisClient.create("redis://localhost:" + unreachablePort));
-		RedisRangeManager manager = new RedisRangeManager(sequenceHelper);
 
-		assertThatThrownBy(manager::init).isInstanceOf(RedisConnectionException.class)
+		assertThatThrownBy(
+				() -> new LettuceSequenceRedisHelper(RedisClient.create("redis://localhost:" + unreachablePort)))
+			.isInstanceOf(RedisConnectionException.class)
 			.hasMessageContaining("Unable to connect to localhost")
 			.hasMessageContaining(":6399");
 	}
@@ -93,7 +90,6 @@ class RedisRangeManagerTests {
 	@Test
 	void testNextRangeDoesNotReinitializeExistingKey() {
 		RedisRangeManager manager = new RedisRangeManager(helper);
-		manager.init();
 		manager.step(5);
 		manager.stepStart(0);
 		String key = "repeat-key";

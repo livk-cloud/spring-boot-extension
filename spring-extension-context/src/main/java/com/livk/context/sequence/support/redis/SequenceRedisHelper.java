@@ -25,6 +25,4 @@ public interface SequenceRedisHelper {
 
 	void setNx(byte[] key, long stepStart);
 
-	void init();
-
 }
