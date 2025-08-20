@@ -52,6 +52,7 @@ abstract class OptionalPlugin : Plugin<Project> {
 							)
 						}
 					}
+					sourceSets.remove(sourceSets.getAt(OPTIONAL))
 				}
 			}
 
