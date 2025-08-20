@@ -47,6 +47,7 @@ class SequenceDbHelper {
 		this.transactionTemplate = new TransactionTemplate(new DataSourceTransactionManager(dataSource));
 		this.provider = SqlProvider.fromDataSource(dataSource);
 		this.tableName = tableName;
+		this.createTable();
 	}
 
 	public void createTable() {

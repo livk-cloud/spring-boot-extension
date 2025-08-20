@@ -58,11 +58,6 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 		return new SequenceRange(min, max);
 	}
 
-	@Override
-	public void init() {
-		helper.init();
-	}
-
 	private byte[] getRealKey(String name) {
 		return (KEY_PREFIX + name).getBytes(StandardCharsets.UTF_8);
 	}

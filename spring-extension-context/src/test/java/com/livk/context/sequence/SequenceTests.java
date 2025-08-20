@@ -97,6 +97,7 @@ class SequenceTests {
 		for (int i = 0; i < 10; i++) {
 			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
+		helper.close();
 	}
 
 	@Test

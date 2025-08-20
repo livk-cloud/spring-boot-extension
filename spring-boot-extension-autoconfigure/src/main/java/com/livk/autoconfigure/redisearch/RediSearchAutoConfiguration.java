@@ -28,6 +28,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -38,7 +39,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  * @author livk
  */
 @SpringAutoService
-@AutoConfiguration
+@AutoConfiguration(after = JacksonAutoConfiguration.class)
 @ConditionalOnClass(RedisModulesClient.class)
 @EnableConfigurationProperties(RediSearchProperties.class)
 public class RediSearchAutoConfiguration {

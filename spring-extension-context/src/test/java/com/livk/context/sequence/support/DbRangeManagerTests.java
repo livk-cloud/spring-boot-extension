@@ -52,7 +52,6 @@ class DbRangeManagerTests {
 	@Test
 	void testNextRangeReturnsValidSequenceRange() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
-		manager.init();
 		String name = "test-seq";
 		SequenceRange range = manager.nextRange(name);
 		assertThat(range).isNotNull();
@@ -65,17 +64,15 @@ class DbRangeManagerTests {
 
 	@Test
 	void testInitCreatesTableSuccessfully() {
-		DbRangeManager manager = new DbRangeManager(dataSource);
-		assertThatCode(manager::init).doesNotThrowAnyException();
+		assertThatCode(() -> new DbRangeManager(dataSource)).doesNotThrowAnyException();
 
-		SequenceRange range = manager.nextRange("init-table-seq");
+		SequenceRange range = new DbRangeManager(dataSource).nextRange("init-table-seq");
 		assertThat(range).isNotNull();
 	}
 
 	@Test
 	void testNextRangeSucceedsAfterRetries() throws Exception {
 		DbRangeManager manager = new DbRangeManager(dataSource);
-		manager.init();
 		String name = "retry-seq";
 
 		SequenceRange firstRange = manager.nextRange(name);
@@ -98,7 +95,6 @@ class DbRangeManagerTests {
 	@Test
 	void testNextRangeThrowsOnEmptyName() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
-		manager.init();
 
 		assertThatThrownBy(() -> manager.nextRange("")).isInstanceOf(SequenceException.class);
 
@@ -131,7 +127,6 @@ class DbRangeManagerTests {
 
 		}
 		FailingDbRangeManager manager = new FailingDbRangeManager(dataSource);
-		manager.init();
 
 		// Use reflection to replace helper with one that always returns true for
 		// selectRange but false for updateRange
@@ -166,7 +161,6 @@ class DbRangeManagerTests {
 
 		}
 		NullReturningDbRangeManager manager = new NullReturningDbRangeManager(dataSource);
-		manager.init();
 
 		// Use reflection to replace helper with one that always returns null for
 		// selectRange

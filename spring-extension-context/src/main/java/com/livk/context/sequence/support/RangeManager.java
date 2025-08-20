@@ -29,9 +29,4 @@ public interface RangeManager {
 
 	void stepStart(long stepStart);
 
-	/**
-	 * 初始化
-	 */
-	void init();
-
 }

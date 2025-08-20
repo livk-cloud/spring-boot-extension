@@ -19,12 +19,12 @@ package com.livk.context.sequence.support.redis;
 /**
  * @author livk
  */
-public interface SequenceRedisHelper {
+public interface SequenceRedisHelper extends AutoCloseable {
 
 	Long incrBy(byte[] key, int step);
 
 	void setNx(byte[] key, long stepStart);
 
-	void init();
+	void close();
 
 }

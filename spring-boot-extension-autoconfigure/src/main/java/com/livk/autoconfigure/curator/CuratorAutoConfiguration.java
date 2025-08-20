@@ -17,12 +17,16 @@
 package com.livk.autoconfigure.curator;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.context.curator.CuratorException;
 import com.livk.context.curator.CuratorTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.ensemble.fixed.FixedEnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.utils.DefaultTracerDriver;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -35,6 +39,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author livk
  */
+@Slf4j
 @SpringAutoService
 @AutoConfiguration
 @ConditionalOnClass(CuratorFramework.class)
@@ -56,8 +61,44 @@ public class CuratorAutoConfiguration {
 	public CuratorFramework curatorFramework(CuratorProperties properties, RetryPolicy retryPolicy,
 			ObjectProvider<CuratorFrameworkBuilderCustomizer> curatorFrameworkBuilderCustomizers,
 			ObjectProvider<EnsembleProvider> ensembleProviders, ObjectProvider<TracerDriver> tracerDrivers) {
-		return CuratorFactory.create(properties, retryPolicy, curatorFrameworkBuilderCustomizers::orderedStream,
-				ensembleProviders::getIfAvailable, tracerDrivers::getIfAvailable);
+		CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder();
+
+		EnsembleProvider ensembleProvider = ensembleProviders.getIfAvailable();
+		if (ensembleProvider != null) {
+			builder.ensembleProvider(ensembleProvider);
+		}
+		else {
+			builder.connectString(properties.getConnectString());
+		}
+		builder.sessionTimeoutMs((int) properties.getSessionTimeout().toMillis())
+			.connectionTimeoutMs((int) properties.getConnectionTimeout().toMillis())
+			.retryPolicy(retryPolicy);
+
+		curatorFrameworkBuilderCustomizers.orderedStream().forEach(customizer -> customizer.customize(builder));
+
+		CuratorFramework framework = builder.build();
+		TracerDriver tracerDriver = tracerDrivers.getIfAvailable();
+		if (tracerDriver != null && framework.getZookeeperClient() != null) {
+			framework.getZookeeperClient().setTracerDriver(tracerDriver);
+		}
+
+		if (log.isTraceEnabled()) {
+			log.trace("blocking until connected to zookeeper for {}{}", properties.getBlockUntilConnectedWait(),
+					properties.getBlockUntilConnectedUnit());
+		}
+		try {
+			framework.blockUntilConnected(properties.getBlockUntilConnectedWait(),
+					properties.getBlockUntilConnectedUnit());
+		}
+		catch (InterruptedException ex) {
+			log.warn("interrupted", ex);
+			Thread.currentThread().interrupt();
+			throw new CuratorException(ex);
+		}
+		if (log.isTraceEnabled()) {
+			log.trace("connected to zookeeper");
+		}
+		return framework;
 	}
 
 	@Bean
@@ -80,7 +121,8 @@ public class CuratorAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RetryPolicy exponentialBackoffRetry(CuratorProperties properties) {
-		return CuratorFactory.retryPolicy(properties);
+		return new ExponentialBackoffRetry(properties.getBaseSleepTimeMs(), properties.getMaxRetries(),
+				properties.getMaxSleepMs());
 	}
 
 	/**

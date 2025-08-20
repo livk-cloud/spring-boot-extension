@@ -45,11 +45,13 @@ class LettuceSequenceRedisHelperTests {
 		redis.start();
 		redisClient = RedisClient.create("redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 		helper = new LettuceSequenceRedisHelper(redisClient);
-		helper.init();
 	}
 
 	@AfterAll
 	static void close() {
+		if (helper != null) {
+			helper.close();
+		}
 		if (redisClient != null) {
 			redisClient.close();
 		}

@@ -46,11 +46,13 @@ class SpringSequenceRedisHelperTests {
 		factory = new LettuceConnectionFactory(redis.getHost(), redis.getFirstMappedPort());
 		factory.afterPropertiesSet();
 		helper = new SpringSequenceRedisHelper(factory);
-		helper.init();
 	}
 
 	@AfterAll
 	static void close() {
+		if (helper != null) {
+			helper.close();
+		}
 		if (factory != null) {
 			factory.destroy();
 		}

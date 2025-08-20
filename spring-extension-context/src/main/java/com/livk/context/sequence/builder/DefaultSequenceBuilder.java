@@ -65,7 +65,6 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 	public final Sequence build() {
 		manager.step(this.step);
 		manager.stepStart(stepStart);
-		manager.init();
 		return new DefaultRangeSequence(manager, bizName);
 	}
 
