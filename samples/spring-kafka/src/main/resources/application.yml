@@ -1,5 +1,0 @@
-spring:
-  kafka:
-    bootstrap-servers: livk.com:9092
-server:
-  port: 9876

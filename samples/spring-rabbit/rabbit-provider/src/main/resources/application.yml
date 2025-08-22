@@ -1,7 +1,0 @@
-server:
-  port: 9968
-spring:
-  rabbitmq:
-    host: livk.com
-    username: admin
-    password: admin

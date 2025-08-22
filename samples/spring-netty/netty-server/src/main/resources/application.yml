@@ -1,7 +1,0 @@
-server:
-  port: 9988
-
-spring:
-  netty:
-    server:
-      port: 12345

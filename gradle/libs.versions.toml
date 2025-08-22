@@ -8,7 +8,6 @@ mybatis-boot = "3.0.5"
 guava = "33.4.8-jre"
 fastexcel = "1.2.0"
 redisson = "3.50.0"
-clickhouse = "0.9.1"
 mapstruct = "1.6.3"
 mapstruct-lombok = "0.2.0"
 curator = "5.9.0"
@@ -16,18 +15,11 @@ asciidoctor-jvm = "4.0.4"
 browscap-java = "1.5.1"
 auto-service = "1.1.1"
 yauaa = "7.31.0"
-springdoc = "2.8.10"
 google-javase = "3.5.3"
-spring-admin = "3.5.2"
-nimbusds-jwt = "10.4.2"
 jsqlparser = "5.3"
 lettucemod = "4.4.0"
 minio = "8.5.17"
 aviator = "5.4.3"
-protobuf-java = "4.32.0"
-grpc-java = "1.75.0"
-google-protobuf-plugins = "0.9.5"
-google-osdetector-plugins = "1.7.3"
 jexl3 = "3.5.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
@@ -38,12 +30,7 @@ spotbugs-annotations = "4.9.4"
 maven-publish-plugins = "0.34.0"
 
 [libraries]
-spring-boot-admin-dependencies = { group = "de.codecentric", name = "spring-boot-admin-dependencies", version.ref = "spring-admin" }
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
-
-#springdoc-openapi-all
-openapi-webflux-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
-openapi-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 
 pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper-starter" }
 
@@ -58,11 +45,6 @@ redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starte
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-35", version.ref = "redisson" }
 
-#clickhouse-all
-clickhouse-jdbc = { group = "com.clickhouse", name = "clickhouse-jdbc", version.ref = "clickhouse" }
-clickhouse-r2dbc = { group = "com.clickhouse", name = "clickhouse-r2dbc", version.ref = "clickhouse" }
-clickhouse-client = { group = "com.clickhouse", name = "clickhouse-client", version.ref = "clickhouse" }
-
 #mapstruct-all
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
@@ -75,14 +57,10 @@ browscap-java = { group = "com.blueconic", name = "browscap-java", version.ref =
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "auto-service" }
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "google-javase" }
-nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbusds-jwt" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
-protobuf-java = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf-java" }
-protobuf-java-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf-java" }
-grpc-java = { group = "io.grpc", name = "protoc-gen-grpc-java", version.ref = "grpc-java" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
@@ -92,8 +70,6 @@ spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotat
 #plugin
 spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
 spring-javaformat-plugin = { group = "io.spring.javaformat", name = "spring-javaformat-gradle-plugin", version.ref = "spring-javaformat" }
-google-protobuf-plugin = { group = "com.google.protobuf", name = "protobuf-gradle-plugin", version.ref = "google-protobuf-plugins" }
-osdetector-gradle-plugin = { group = "com.google.gradle", name = "osdetector-gradle-plugin", version.ref = "google-osdetector-plugins" }
 maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "maven-publish-plugins" }
 
 [bundles]

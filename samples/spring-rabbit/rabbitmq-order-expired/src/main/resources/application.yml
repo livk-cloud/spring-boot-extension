@@ -1,9 +1,0 @@
-spring:
-  rabbitmq:
-    host: livk.com
-    username: admin
-    password: admin
-    port: 5672
-    listener:
-      simple:
-        acknowledge-mode: manual
