@@ -17,14 +17,14 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install openjdk-21-jdk
       - checkout
-      - run: ./gradlew build
+      - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
   jdk23:
     executor: ubuntu
     steps:
       - run: sudo apt-get update
       - run: sudo apt install openjdk-23-jdk
       - checkout
-      - run: ./gradlew build
+      - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
 
 workflows:
   gradle-build:
