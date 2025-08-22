@@ -13,8 +13,6 @@ repositories {
 dependencies {
 	implementation(libs.spring.boot.plugin)
 	implementation(libs.spring.javaformat.plugin)
-	implementation(libs.google.protobuf.plugin)
-	implementation(libs.osdetector.gradle.plugin)
 	implementation(libs.maven.publish.plugin)
 }
 
@@ -43,10 +41,6 @@ gradlePlugin {
 		create("deployedPlugin") {
 			id = "com.livk.mvn.deployed"
 			implementationClass = "com.livk.boot.maven.DeployedPlugin"
-		}
-		create("protobufPlugin") {
-			id = "google.protobuf"
-			implementationClass = "com.google.protobuf.gradle.ProtobufPlugin"
 		}
 		create("JacocoExpand") {
 			id = "com.livk.jacoco"

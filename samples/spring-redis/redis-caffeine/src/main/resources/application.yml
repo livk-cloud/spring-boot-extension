@@ -1,6 +1,0 @@
-spring:
-  data:
-    redis:
-      host: livk.com
-      timeout: 10000ms
-      password: 123456

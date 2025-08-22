@@ -1,9 +1,0 @@
-server:
-  port: 9997
-
-spring:
-  pulsar:
-    client:
-      service-url: pulsar://livk.com:6650
-    producer:
-      topic-name: livk-topic

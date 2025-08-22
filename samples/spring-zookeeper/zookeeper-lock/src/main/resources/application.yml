@@ -1,4 +1,0 @@
-spring:
-  zookeeper:
-    curator:
-      connect-string: livk.com:2181
