@@ -28,5 +28,6 @@ dependencies {
 		api(libs.commons.jexl3)
 		api(libs.mvel2)
 		api(libs.disruptor)
+		api(libs.elasticsearch)
 	}
 }

@@ -35,9 +35,11 @@ dependencies {
 	optional("org.apache.commons:commons-pool2")
 	optional("io.minio:minio")
 	optional("com.lmax:disruptor")
+	optional("co.elastic.clients:elasticsearch-java")
 	aptCompile(project(":spring-auto-service"))
 
 	testImplementation(project(":spring-testcontainers-support"))
 	testImplementation("com.zaxxer:HikariCP")
 	testImplementation("com.redis:testcontainers-redis")
+	testImplementation("org.testcontainers:elasticsearch")
 }

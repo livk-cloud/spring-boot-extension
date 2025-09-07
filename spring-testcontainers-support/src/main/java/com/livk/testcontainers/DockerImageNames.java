@@ -47,6 +47,8 @@ public class DockerImageNames {
 
 	public static final String MINIO_IMAGE = "minio/minio";
 
+	public static final String ELASTICSEARCH_IMAGE = "registry.cn-shenzhen.aliyuncs.com/koushenhai/elasticsearch9";
+
 	public static DockerImageName mysql() {
 		return mysql(LATEST_TAG);
 	}
@@ -125,6 +127,16 @@ public class DockerImageNames {
 
 	public static DockerImageName minio(String tag) {
 		return DockerImageName.parse(MINIO_IMAGE).withTag(tag);
+	}
+
+	public static DockerImageName elasticsearch(String tag) {
+		return DockerImageName.parse(ELASTICSEARCH_IMAGE)
+			.asCompatibleSubstituteFor("docker.elastic.co/elasticsearch/elasticsearch")
+			.withTag(tag);
+	}
+
+	public static DockerImageName elasticsearch() {
+		return elasticsearch("9.1.3");
 	}
 
 }
