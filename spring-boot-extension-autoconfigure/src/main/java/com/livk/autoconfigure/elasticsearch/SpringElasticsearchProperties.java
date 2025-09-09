@@ -39,6 +39,8 @@ public class SpringElasticsearchProperties {
 
 	private String password;
 
+	private String proxy;
+
 	private Duration connectionTimeout = Duration.ofSeconds(15L);
 
 	private Duration socketTimeout = Duration.ofSeconds(30L);

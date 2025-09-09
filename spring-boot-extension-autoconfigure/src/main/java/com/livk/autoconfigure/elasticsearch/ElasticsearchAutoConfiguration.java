@@ -21,7 +21,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.JsonpMapper;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.TransportOptions;
 import co.elastic.clients.transport.rest5_client.Rest5ClientOptions;
 import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
 import co.elastic.clients.transport.rest5_client.low_level.RequestOptions;
@@ -29,14 +28,17 @@ import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.livk.commons.util.SslUtils;
 import com.livk.context.elasticsearch.template.ElasticsearchTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.client5.http.auth.StandardAuthScheme;
+import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
+import org.apache.hc.client5.http.routing.HttpRoutePlanner;
 import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.message.BasicHeader;
 import org.apache.hc.core5.http.nio.ssl.BasicClientTlsStrategy;
@@ -49,9 +51,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.ssl.SslBundles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.charset.Charset;
+import java.net.URISyntaxException;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
@@ -70,7 +75,7 @@ import java.util.concurrent.TimeUnit;
 @AutoConfiguration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(SpringElasticsearchProperties.class)
-class ElasticsearchAutoConfiguration {
+public class ElasticsearchAutoConfiguration {
 
 	private final SpringElasticsearchProperties springElasticsearchProperties;
 
@@ -99,9 +104,7 @@ class ElasticsearchAutoConfiguration {
 	ElasticsearchTransport elasticsearchTransport(Rest5Client rest5Client, JsonpMapper jsonpMapper) {
 		Assert.notNull(rest5Client, "restClient must not be null");
 		Assert.notNull(jsonpMapper, "jsonpMapper must not be null");
-		Rest5ClientOptions.Builder rest5ClientOptionsBuilder = getRest5ClientOptionsBuilder(transportOptions());
-		rest5ClientOptionsBuilder.addHeader("Elasticsearch", getVersion());
-		return new Rest5ClientTransport(rest5Client, jsonpMapper, rest5ClientOptionsBuilder.build());
+		return new Rest5ClientTransport(rest5Client, jsonpMapper, getRest5ClientOptions());
 	}
 
 	@Bean
@@ -123,15 +126,32 @@ class ElasticsearchAutoConfiguration {
 	private Rest5ClientBuilder getRest5ClientBuilder(SslBundles sslBundles) {
 		Rest5ClientBuilder builder = Rest5Client.builder(getHttpHosts());
 		String pathPrefix = springElasticsearchProperties.getPathPrefix();
-		if (StringUtils.isNotEmpty(pathPrefix)) {
+		if (StringUtils.hasLength(pathPrefix)) {
 			builder.setPathPrefix(pathPrefix);
 		}
 		Header[] headers = getHeaders();
-		if (ArrayUtils.isNotEmpty(headers)) {
+		if (!ObjectUtils.isEmpty(headers)) {
 			builder.setDefaultHeaders(headers);
 		}
 		Duration connectionTimeout = springElasticsearchProperties.getConnectionTimeout();
 		Duration socketTimeout = springElasticsearchProperties.getSocketTimeout();
+
+		builder.setHttpClientConfigCallback(httpAsyncClientBuilder -> {
+			// 默认情况下，HTTP 客户端使用抢占式身份验证：它在初始请求中包含凭据。
+			// 您可能希望使用非抢占式身份验证，即发送不带凭据的请求，并在质询后使用标头重试401 Unauthorized。
+			// 为此，请设置一个HttpClientConfigCallback禁用身份验证缓存的参数。
+			httpAsyncClientBuilder.disableAuthCaching();
+			String proxy = springElasticsearchProperties.getProxy();
+			if (StringUtils.hasLength(proxy)) {
+				try {
+					HttpRoutePlanner proxyRoutePlanner = new DefaultProxyRoutePlanner(HttpHost.create(proxy));
+					httpAsyncClientBuilder.setRoutePlanner(proxyRoutePlanner);
+				}
+				catch (URISyntaxException ex) {
+					throw new IllegalArgumentException(ex);
+				}
+			}
+		});
 
 		builder.setConnectionConfigCallback(connectionConfigBuilder -> {
 			if (!connectionTimeout.isNegative()) {
@@ -143,22 +163,21 @@ class ElasticsearchAutoConfiguration {
 				connectionConfigBuilder.setSocketTimeout(soTimeout);
 			}
 			else {
-				connectionConfigBuilder.setSocketTimeout(Timeout.of(
-						co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder.DEFAULT_SOCKET_TIMEOUT_MILLIS,
-						TimeUnit.MILLISECONDS));
+				connectionConfigBuilder.setSocketTimeout(
+						Timeout.of(Rest5ClientBuilder.DEFAULT_SOCKET_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
 			}
 		});
 
 		builder.setConnectionManagerCallback(poolingAsyncClientConnectionManagerBuilder -> {
 			String sslBundle = springElasticsearchProperties.getRestclient().getSsl().getBundle();
 			try {
-				if (StringUtils.isNotEmpty(sslBundle)) {
+				if (StringUtils.hasLength(sslBundle)) {
 					poolingAsyncClientConnectionManagerBuilder
 						.setTlsStrategy(new BasicClientTlsStrategy(sslBundles.getBundle(sslBundle).createSslContext()));
 				}
 				else {
-					poolingAsyncClientConnectionManagerBuilder.setTlsStrategy(new DefaultClientTlsStrategy(
-							com.livk.commons.util.SslUtils.sslContext(), NoopHostnameVerifier.INSTANCE));
+					poolingAsyncClientConnectionManagerBuilder.setTlsStrategy(
+							new DefaultClientTlsStrategy(SslUtils.sslContext(), NoopHostnameVerifier.INSTANCE));
 				}
 			}
 			catch (KeyManagementException | NoSuchAlgorithmException ex) {
@@ -172,9 +191,8 @@ class ElasticsearchAutoConfiguration {
 				requestConfigBuilder.setConnectionRequestTimeout(soTimeout);
 			}
 			else {
-				requestConfigBuilder.setConnectionRequestTimeout(Timeout.of(
-						co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder.DEFAULT_RESPONSE_TIMEOUT_MILLIS,
-						TimeUnit.MILLISECONDS));
+				requestConfigBuilder.setConnectionRequestTimeout(
+						Timeout.of(Rest5ClientBuilder.DEFAULT_RESPONSE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
 			}
 		});
 		return builder;
@@ -194,9 +212,9 @@ class ElasticsearchAutoConfiguration {
 		List<Header> headers = new ArrayList<>();
 		String username = springElasticsearchProperties.getUsername();
 		String password = springElasticsearchProperties.getPassword();
-		if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
-			headers.add(new BasicHeader(org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION,
-					"Basic " + encodeBasicAuth(username, password)));
+		if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
+			headers.add(new BasicHeader(HttpHeaders.AUTHORIZATION,
+					StandardAuthScheme.BASIC + " " + encodeBasicAuth(username, password)));
 		}
 		return headers.toArray(new Header[0]);
 	}
@@ -208,36 +226,22 @@ class ElasticsearchAutoConfiguration {
 
 	private String encodeBasicAuth(String username, String password) {
 		Assert.notNull(username, "Username must not be null");
-		Assert.doesNotContain(username, ":", "Username must not contain a colon");
 		Assert.notNull(password, "Password must not be null");
-		Charset charset = StandardCharsets.ISO_8859_1;
-		CharsetEncoder encoder = charset.newEncoder();
+		CharsetEncoder encoder = StandardCharsets.UTF_8.newEncoder();
 		if (encoder.canEncode(username) && encoder.canEncode(password)) {
-			String credentialsString = username + ':' + password;
-			byte[] encodedBytes = Base64.getEncoder().encode(credentialsString.getBytes(charset));
-			return new String(encodedBytes, charset);
+			return Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
 		}
 		else {
-			throw new IllegalArgumentException(
-					"Username or password contains characters that cannot be encoded to " + charset.displayName());
+			throw new IllegalArgumentException("Username or password contains characters that cannot be encoded to "
+					+ StandardCharsets.UTF_8.displayName());
 		}
 	}
 
-	private TransportOptions transportOptions() {
-		return new Rest5ClientOptions(RequestOptions.DEFAULT, false);
-	}
-
-	private Rest5ClientOptions.Builder getRest5ClientOptionsBuilder(TransportOptions transportOptions) {
-		if (transportOptions instanceof Rest5ClientOptions rest5ClientOptions) {
-			return rest5ClientOptions.toBuilder();
-		}
-		Rest5ClientOptions.Builder builder = new Rest5ClientOptions.Builder(RequestOptions.DEFAULT.toBuilder());
-		if (transportOptions != null) {
-			transportOptions.headers().forEach(header -> builder.addHeader(header.getKey(), header.getValue()));
-			transportOptions.queryParameters().forEach(builder::setParameter);
-			builder.onWarnings(transportOptions.onWarnings());
-		}
-		return builder;
+	private Rest5ClientOptions getRest5ClientOptions() {
+		Rest5ClientOptions.Builder rest5ClientOptionsBuilder = new Rest5ClientOptions(RequestOptions.DEFAULT, false)
+			.toBuilder();
+		rest5ClientOptionsBuilder.addHeader("Elasticsearch", getVersion());
+		return rest5ClientOptionsBuilder.build();
 	}
 
 	private String getVersion() {

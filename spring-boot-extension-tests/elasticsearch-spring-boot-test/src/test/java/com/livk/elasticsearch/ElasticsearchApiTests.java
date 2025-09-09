@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package com.livk.autoconfigure.elasticsearch;
+package com.livk.elasticsearch;
 
 import co.elastic.clients.elasticsearch.indices.IndexState;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.livk.context.elasticsearch.annotation.Analysis;
-import com.livk.context.elasticsearch.annotation.Analyzer;
-import com.livk.context.elasticsearch.annotation.Args;
+import com.livk.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
 import com.livk.context.elasticsearch.annotation.Field;
-import com.livk.context.elasticsearch.annotation.Filter;
 import com.livk.context.elasticsearch.annotation.Index;
-import com.livk.context.elasticsearch.annotation.Option;
-import com.livk.context.elasticsearch.annotation.Setting;
 import com.livk.context.elasticsearch.annotation.Type;
 import com.livk.context.elasticsearch.entity.Page;
 import com.livk.context.elasticsearch.entity.Search;
 import com.livk.context.elasticsearch.template.ElasticsearchTemplate;
 import com.livk.testcontainers.DockerImageNames;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -75,8 +72,9 @@ class ElasticsearchApiTests {
 		.withPassword("123456789");
 
 	@BeforeAll
-	static void beforeAll() {
+	static void beforeAll() throws InterruptedException {
 		elasticsearch.start();
+		Thread.sleep(Duration.ofSeconds(10L));
 	}
 
 	@AfterAll
@@ -97,16 +95,16 @@ class ElasticsearchApiTests {
 	}
 
 	@Test
-	void test_elasticsearch() throws IOException, InterruptedException {
-		Thread.sleep(Duration.ofSeconds(2));
+	void test_elasticsearch() throws IOException {
 		assertThatNoException()
 			.isThrownBy(() -> elasticsearchTemplate.createIndex("iot_res_1", "iot_res", TestResource.class));
 
 		assertThatNoException()
 			.isThrownBy(() -> elasticsearchTemplate.createIndex("iot_pro_1", "iot_pro", TestProject.class));
 
-		assertThatNoException().isThrownBy(() -> elasticsearchTemplate.asyncCreateIndex("iot_resp_1", "iot_resp",
-				TestResp.class, Executors.newSingleThreadExecutor()));
+		assertThatNoException().isThrownBy(() -> elasticsearchTemplate
+			.asyncCreateIndex("iot_resp_1", "iot_resp", TestResp.class, Executors.newSingleThreadExecutor())
+			.join());
 
 		assertThatNoException().isThrownBy(
 				() -> elasticsearchTemplate.asyncCreateDocument("iot_res_1", "222", new TestResource("8888")).join());
@@ -151,21 +149,15 @@ class ElasticsearchApiTests {
 				() -> elasticsearchTemplate.deleteIndex(List.of("laokou_res_1", "laokou_pro_1", "laokou_resp_1")));
 	}
 
-	@Index(setting = @Setting(refreshInterval = "-1"),
-			analysis = @Analysis(
-					filters = { @Filter(name = "pinyin_filter",
-							options = { @Option(key = "type", value = "pinyin"),
-									@Option(key = "keep_full_pinyin", value = "false"),
-									@Option(key = "keep_joined_full_pinyin", value = "true"),
-									@Option(key = "keep_original", value = "true"),
-									@Option(key = "limit_first_letter_length", value = "16"),
-									@Option(key = "remove_duplicated_term", value = "true"),
-									@Option(key = "none_chinese_pinyin_tokenize", value = "false") }) },
-					analyzers = { @Analyzer(name = "ik_pinyin",
-							args = @Args(filter = "pinyin_filter", tokenizer = "ik_max_word")) }))
-	record TestResource(@Field(type = Type.TEXT, searchAnalyzer = "ik_smart", analyzer = "ik_pinyin") String name)
-			implements
-				Serializable {
+	@Data
+	@Index
+	@NoArgsConstructor
+	@AllArgsConstructor
+	static class TestResource implements Serializable {
+
+		@Field(type = Type.KEYWORD)
+		private String name;
+
 	}
 
 	@Data
