@@ -29,6 +29,7 @@ dependencies {
 	optional("com.redis:lettucemod")
 	optional("org.apache.commons:commons-pool2")
 	optional("com.lmax:disruptor")
+	optional("co.elastic.clients:elasticsearch-java")
 	optional("io.minio:minio")
 	optional("org.redisson:redisson")
 	optional("org.springframework.boot:spring-boot")
