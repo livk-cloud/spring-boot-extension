@@ -17,11 +17,8 @@
 package com.livk.autoconfigure.elasticsearch;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,9 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author laokou
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestConfiguration
-@SpringBootConfiguration
 class ElasticsearchAutoConfigurationTests {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

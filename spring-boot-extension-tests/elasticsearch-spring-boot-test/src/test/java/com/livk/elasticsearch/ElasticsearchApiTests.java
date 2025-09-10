@@ -30,19 +30,21 @@ import com.livk.testcontainers.DockerImageNames;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.TestConstructor;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -59,14 +61,16 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
  * @author laokou
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@RequiredArgsConstructor
 @TestConfiguration
 @ContextConfiguration(classes = { ElasticsearchAutoConfiguration.class, DefaultSslBundleRegistry.class })
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
 class ElasticsearchApiTests {
 
-	private final ElasticsearchTemplate elasticsearchTemplate;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
 
+	@Container
+	@ServiceConnection
 	static final ElasticsearchContainer elasticsearch = new ElasticsearchContainer(
 			DockerImageNames.elasticsearch("9.1.3"))
 		.withPassword("123456789");

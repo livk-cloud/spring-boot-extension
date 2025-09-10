@@ -28,6 +28,7 @@ import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.commons.util.SslUtils;
 import com.livk.context.elasticsearch.template.ElasticsearchTemplate;
 import lombok.RequiredArgsConstructor;
@@ -72,8 +73,10 @@ import java.util.concurrent.TimeUnit;
  * @author laokou
  */
 @Slf4j
+@SpringAutoService
 @AutoConfiguration
 @RequiredArgsConstructor
+@ConditionalOnClass({ ElasticsearchClient.class, ElasticsearchAsyncClient.class })
 @EnableConfigurationProperties(SpringElasticsearchProperties.class)
 public class ElasticsearchAutoConfiguration {
 
