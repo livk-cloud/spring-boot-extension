@@ -42,7 +42,7 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	/**
 	 * 获取区间失败重试次数
 	 */
-	private final static int retryTimes = 5;
+	private final static int RETRY_TIMES = 5;
 
 	private static final long DELTA = 100_000_000L;
 
@@ -50,12 +50,12 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 
 	private final TransactionTemplate transactionTemplate;
 
-	private final SequenceDbHelper provider;
+	private final SequenceDbHelper dbHelper;
 
 	public DbRangeManager(DataSource dataSource) {
 		this.jdbcClient = JdbcClient.create(dataSource);
 		this.transactionTemplate = new TransactionTemplate(new DataSourceTransactionManager(dataSource));
-		this.provider = SequenceDbHelper.fromDataSource(dataSource);
+		this.dbHelper = SequenceDbHelper.fromDataSource(dataSource);
 		this.createTable();
 	}
 
@@ -68,7 +68,7 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 		Long oldValue;
 		long newValue;
 
-		for (int i = 0; i < retryTimes; i++) {
+		for (int i = 0; i < RETRY_TIMES; i++) {
 			oldValue = this.selectRange(name, stepStart);
 
 			if (null == oldValue) {
@@ -84,16 +84,16 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 			// else 失败重试
 		}
 
-		throw new SequenceException("Retried too many times, retryTimes = " + retryTimes);
+		throw new SequenceException("Retried too many times, retryTimes = " + RETRY_TIMES);
 	}
 
 	protected void createTable() {
-		jdbcClient.sql(provider.createTableSql(TABLE_NAME)).update();
+		jdbcClient.sql(dbHelper.createTableSql(TABLE_NAME)).update();
 	}
 
 	protected Long selectRange(String name, long stepStart) {
 		return transactionTemplate.execute(status -> {
-			Optional<Long> result = jdbcClient.sql(provider.selectRangeSql(TABLE_NAME))
+			Optional<Long> result = jdbcClient.sql(dbHelper.selectRangeSql(TABLE_NAME))
 				.param("name", name)
 				.query(Long.class)
 				.optional();
@@ -111,7 +111,7 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 
 	protected boolean updateRange(String name, long newValue, long oldValue) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		int affectedRows = jdbcClient.sql(provider.updateRangeSql(TABLE_NAME))
+		int affectedRows = jdbcClient.sql(dbHelper.updateRangeSql(TABLE_NAME))
 			.param("new_val", newValue)
 			.param("update_time", now)
 			.param("name", name)
@@ -122,7 +122,7 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 
 	protected void insertRange(String name, long stepStart) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		jdbcClient.sql(provider.insertRangeSql(TABLE_NAME))
+		jdbcClient.sql(dbHelper.insertRangeSql(TABLE_NAME))
 			.param("name", name)
 			.param("val", stepStart)
 			.param("create_time", now)
