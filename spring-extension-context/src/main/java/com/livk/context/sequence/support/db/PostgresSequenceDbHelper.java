@@ -23,36 +23,26 @@ import org.springframework.boot.jdbc.DatabaseDriver;
  * @author livk
  */
 @SpringFactories
-public class H2SqlProvider implements SqlProvider {
+public class PostgresSequenceDbHelper implements SequenceDbHelper {
 
 	@Override
 	public DatabaseDriver type() {
-		return DatabaseDriver.H2;
+		return DatabaseDriver.POSTGRESQL;
 	}
 
 	@Override
 	public String createTableSql(String tableName) {
-		String constraintName = "uk_" + tableName.toLowerCase() + "_name";
-		return String.format("""
-				CREATE TABLE IF NOT EXISTS %s (
-				  id BIGINT NOT NULL AUTO_INCREMENT,
-				  val BIGINT NOT NULL,
-				  name VARCHAR(32) NOT NULL,
-				  create_time TIMESTAMP NOT NULL,
-				  update_time TIMESTAMP NOT NULL,
-				  PRIMARY KEY (id),
-				  CONSTRAINT %s UNIQUE (name)
-				);
-				""", tableName, constraintName);
+		return String.format("CREATE TABLE IF NOT EXISTS %s (" + "id BIGSERIAL PRIMARY KEY, " + "val BIGINT NOT NULL, "
+				+ "name VARCHAR(32) NOT NULL, " + "create_time TIMESTAMP NOT NULL, "
+				+ "update_time TIMESTAMP NOT NULL, " + "CONSTRAINT uk_name UNIQUE (name))", tableName);
 	}
 
 	@Override
 	public String insertRangeSql(String tableName) {
-		return String.format("""
-				MERGE INTO %s (name, val, create_time, update_time)
-				KEY(val)
-				VALUES (:name, :val, :create_time, :update_time)
-				""", tableName);
+		return String.format(
+				"INSERT INTO %s (name, val, create_time, update_time) VALUES (:name, :val, :create_time, :update_time) "
+						+ "ON CONFLICT (name) DO NOTHING",
+				tableName);
 	}
 
 	@Override

@@ -23,7 +23,7 @@ import org.springframework.boot.jdbc.DatabaseDriver;
  * @author livk
  */
 @SpringFactories
-public class MySqlProvider implements SqlProvider {
+public class MySequenceDbHelper implements SequenceDbHelper {
 
 	@Override
 	public DatabaseDriver type() {
