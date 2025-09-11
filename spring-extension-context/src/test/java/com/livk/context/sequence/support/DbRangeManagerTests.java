@@ -71,17 +71,12 @@ class DbRangeManagerTests {
 	}
 
 	@Test
-	void testNextRangeSucceedsAfterRetries() throws Exception {
+	void testNextRangeSucceedsAfterRetries() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
 		String name = "retry-seq";
 
 		SequenceRange firstRange = manager.nextRange(name);
 		assertThat(firstRange).isNotNull();
-
-		Field helperField = DbRangeManager.class.getDeclaredField("helper");
-		helperField.setAccessible(true);
-		SequenceDbHelper helper = (SequenceDbHelper) helperField.get(manager);
-		assertThat(helper).isNotNull();
 
 		DbRangeManager concurrentManager = new DbRangeManager(dataSource);
 		SequenceRange concurrentRange = concurrentManager.nextRange(name);
@@ -103,7 +98,7 @@ class DbRangeManagerTests {
 	}
 
 	@Test
-	void testNextRangeThrowsAfterMaxRetries() throws Exception {
+	void testNextRangeThrowsAfterMaxRetries() {
 		// We'll create a subclass that always fails updateRange to simulate retry
 		// exhaustion
 		class FailingDbRangeManager extends DbRangeManager {
@@ -125,32 +120,24 @@ class DbRangeManagerTests {
 				return super.nextRange(name);
 			}
 
-		}
-		FailingDbRangeManager manager = new FailingDbRangeManager(dataSource);
-
-		// Use reflection to replace helper with one that always returns true for
-		// selectRange but false for updateRange
-		Field helperField = DbRangeManager.class.getDeclaredField("helper");
-		helperField.setAccessible(true);
-
-		SequenceDbHelper failingHelper = new SequenceDbHelper(dataSource, "sequence_range") {
 			@Override
-			public Long selectRange(String name, long stepStart) {
+			protected Long selectRange(String name, long stepStart) {
 				return 0L;
 			}
 
 			@Override
-			public boolean updateRange(String name, long newValue, long oldValue) {
+			protected boolean updateRange(String name, long newValue, long oldValue) {
 				return false;
 			}
-		};
-		helperField.set(manager, failingHelper);
+
+		}
+		FailingDbRangeManager manager = new FailingDbRangeManager(dataSource);
 
 		assertThatThrownBy(() -> manager.nextRange("fail-retry-seq")).isInstanceOf(SequenceException.class);
 	}
 
 	@Test
-	void testNextRangeHandlesPersistentNullFromHelper() throws Exception {
+	void testNextRangeHandlesPersistentNullFromHelper() {
 		// We'll create a subclass that always returns null from selectRange to simulate
 		// persistent DB failure
 		class NullReturningDbRangeManager extends DbRangeManager {
@@ -159,20 +146,13 @@ class DbRangeManagerTests {
 				super(ds);
 			}
 
-		}
-		NullReturningDbRangeManager manager = new NullReturningDbRangeManager(dataSource);
-
-		// Use reflection to replace helper with one that always returns null for
-		// selectRange
-		Field helperField = DbRangeManager.class.getDeclaredField("helper");
-		helperField.setAccessible(true);
-		SequenceDbHelper nullHelper = new SequenceDbHelper(dataSource, "sequence_range") {
 			@Override
-			public Long selectRange(String name, long stepStart) {
+			protected Long selectRange(String name, long stepStart) {
 				return null;
 			}
-		};
-		helperField.set(manager, nullHelper);
+
+		}
+		NullReturningDbRangeManager manager = new NullReturningDbRangeManager(dataSource);
 
 		assertThatThrownBy(() -> manager.nextRange("null-helper-seq")).isInstanceOf(SequenceException.class);
 	}

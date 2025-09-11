@@ -16,15 +16,18 @@
 
 package com.livk.context.sequence.support.db;
 
+import com.livk.testcontainers.containers.PostgresqlContainer;
 import com.zaxxer.hikari.HikariDataSource;
-import org.h2.Driver;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.postgresql.Driver;
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -35,19 +38,28 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author livk
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class H2SqlProviderTests {
+@Testcontainers(disabledWithoutDocker = true, parallel = true)
+class PostgresSequenceDbHelperTests {
 
-	static SqlProvider provider;
+	@Container
+	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+		.withDatabaseName("sequence");
+
+	static SequenceDbHelper helper;
 
 	static JdbcClient jdbcClient;
 
 	@BeforeAll
 	static void setupDataSource() {
+		postgresql.start();
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:h2:mem:seqdb;DB_CLOSE_DELAY=-1");
+		dataSource.setJdbcUrl("jdbc:postgresql://" + postgresql.getHost() + ":" + postgresql.getFirstMappedPort() + "/"
+				+ postgresql.getDatabaseName());
+		dataSource.setUsername(postgresql.getUsername());
+		dataSource.setPassword(postgresql.getPassword());
 
-		provider = SqlProvider.fromDataSource(dataSource);
+		helper = SequenceDbHelper.fromDataSource(dataSource);
 
 		jdbcClient = JdbcClient.create(dataSource);
 	}
@@ -55,13 +67,13 @@ class H2SqlProviderTests {
 	@Order(1)
 	@Test
 	void type() {
-		assertThat(provider.type()).isEqualTo(DatabaseDriver.H2);
+		assertThat(helper.type()).isEqualTo(DatabaseDriver.POSTGRESQL);
 	}
 
 	@Order(2)
 	@Test
 	void createTableSql() {
-		String tableSql = provider.createTableSql("test");
+		String tableSql = helper.createTableSql("test");
 		assertThat(tableSql).startsWithIgnoringCase("CREATE TABLE").containsIgnoringCase("test");
 
 		assertThat(jdbcClient.sql(tableSql).update()).isEqualTo(0);
@@ -70,8 +82,8 @@ class H2SqlProviderTests {
 	@Order(3)
 	@Test
 	void insertRangeSql() {
-		String insertedRangeSql = provider.insertRangeSql("test");
-		assertThat(insertedRangeSql).startsWithIgnoringCase("MERGE INTO").containsIgnoringCase("test");
+		String insertedRangeSql = helper.insertRangeSql("test");
+		assertThat(insertedRangeSql).startsWithIgnoringCase("INSERT INTO").containsIgnoringCase("test");
 
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 		assertThat(jdbcClient.sql(insertedRangeSql)
@@ -85,7 +97,7 @@ class H2SqlProviderTests {
 	@Order(4)
 	@Test
 	void updateRangeSql() {
-		String updatedRangeSql = provider.updateRangeSql("test");
+		String updatedRangeSql = helper.updateRangeSql("test");
 		assertThat(updatedRangeSql).startsWithIgnoringCase("UPDATE").containsIgnoringCase("test");
 
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -100,7 +112,7 @@ class H2SqlProviderTests {
 	@Order(5)
 	@Test
 	void selectRangeSql() {
-		String selectRangeSql = provider.selectRangeSql("test");
+		String selectRangeSql = helper.selectRangeSql("test");
 		assertThat(selectRangeSql).startsWithIgnoringCase("SELECT").containsIgnoringCase("test");
 
 		assertThat(jdbcClient.sql(selectRangeSql).param("name", "testName").query(Long.class).single()).isEqualTo(2);

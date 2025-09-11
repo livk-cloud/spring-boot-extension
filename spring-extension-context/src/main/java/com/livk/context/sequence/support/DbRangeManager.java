@@ -19,8 +19,15 @@ package com.livk.context.sequence.support;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.sequence.SequenceRange;
 import com.livk.context.sequence.exception.SequenceException;
+import com.livk.context.sequence.support.db.SequenceDbHelper;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @author livk
@@ -35,12 +42,21 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	/**
 	 * 获取区间失败重试次数
 	 */
-	private final static int retryTimes = 5;
+	private final static int RETRY_TIMES = 5;
 
-	private final SequenceDbHelper helper;
+	private static final long DELTA = 100_000_000L;
+
+	private final JdbcClient jdbcClient;
+
+	private final TransactionTemplate transactionTemplate;
+
+	private final SequenceDbHelper dbHelper;
 
 	public DbRangeManager(DataSource dataSource) {
-		this.helper = new SequenceDbHelper(dataSource, TABLE_NAME);
+		this.jdbcClient = JdbcClient.create(dataSource);
+		this.transactionTemplate = new TransactionTemplate(new DataSourceTransactionManager(dataSource));
+		this.dbHelper = SequenceDbHelper.fromDataSource(dataSource);
+		this.createTable();
 	}
 
 	@Override
@@ -52,8 +68,8 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 		Long oldValue;
 		long newValue;
 
-		for (int i = 0; i < retryTimes; i++) {
-			oldValue = helper.selectRange(name, stepStart);
+		for (int i = 0; i < RETRY_TIMES; i++) {
+			oldValue = this.selectRange(name, stepStart);
 
 			if (null == oldValue) {
 				// 区间不存在，重试
@@ -62,13 +78,65 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 
 			newValue = oldValue + step;
 
-			if (helper.updateRange(name, newValue, oldValue)) {
+			if (this.updateRange(name, newValue, oldValue)) {
 				return new SequenceRange(oldValue + 1, newValue);
 			}
 			// else 失败重试
 		}
 
-		throw new SequenceException("Retried too many times, retryTimes = " + retryTimes);
+		throw new SequenceException("Retried too many times, retryTimes = " + RETRY_TIMES);
+	}
+
+	protected void createTable() {
+		jdbcClient.sql(dbHelper.createTableSql(TABLE_NAME)).update();
+	}
+
+	protected Long selectRange(String name, long stepStart) {
+		return transactionTemplate.execute(status -> {
+			Optional<Long> result = jdbcClient.sql(dbHelper.selectRangeSql(TABLE_NAME))
+				.param("name", name)
+				.query(Long.class)
+				.optional();
+			if (result.isPresent()) {
+				Long value = result.get();
+				validateValue(value);
+				return value;
+			}
+			else {
+				insertRange(name, stepStart);
+				return null;
+			}
+		});
+	}
+
+	protected boolean updateRange(String name, long newValue, long oldValue) {
+		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+		int affectedRows = jdbcClient.sql(dbHelper.updateRangeSql(TABLE_NAME))
+			.param("new_val", newValue)
+			.param("update_time", now)
+			.param("name", name)
+			.param("old_val", oldValue)
+			.update();
+		return affectedRows > 0;
+	}
+
+	protected void insertRange(String name, long stepStart) {
+		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+		jdbcClient.sql(dbHelper.insertRangeSql(TABLE_NAME))
+			.param("name", name)
+			.param("val", stepStart)
+			.param("create_time", now)
+			.param("update_time", now)
+			.update();
+	}
+
+	protected void validateValue(long value) {
+		if (value < 0) {
+			throw new SequenceException("Sequence val cannot be less than zero, val = " + value);
+		}
+		if (value > Long.MAX_VALUE - DELTA) {
+			throw new SequenceException("Sequence val overflow, val = " + value);
+		}
 	}
 
 }
