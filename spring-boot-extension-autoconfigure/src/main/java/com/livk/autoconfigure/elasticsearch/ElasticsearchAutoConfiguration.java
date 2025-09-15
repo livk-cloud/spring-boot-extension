@@ -63,6 +63,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -180,8 +181,8 @@ public class ElasticsearchAutoConfiguration {
 						.setTlsStrategy(new BasicClientTlsStrategy(sslBundles.getBundle(sslBundle).createSslContext()));
 				}
 				else {
-					SSLContext sslContext = SSLContext.getDefault();
-					sslContext.init(null, new TrustManager[0], null);
+					SSLContext sslContext = SSLContext.getInstance("TLSv1.3");
+					sslContext.init(null, new TrustManager[0], new SecureRandom());
 					poolingAsyncClientConnectionManagerBuilder
 						.setTlsStrategy(new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE));
 				}

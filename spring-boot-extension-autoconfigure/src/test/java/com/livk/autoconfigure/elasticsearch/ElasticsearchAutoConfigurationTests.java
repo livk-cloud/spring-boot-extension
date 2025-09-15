@@ -28,11 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ElasticsearchAutoConfigurationTests {
 
-	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(ElasticsearchAutoConfiguration.class, DefaultSslBundleRegistry.class));
-
 	@Test
 	void test() {
+		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+				AutoConfigurations.of(ElasticsearchAutoConfiguration.class, DefaultSslBundleRegistry.class));
 		contextRunner.run(context -> assertThat(context).hasSingleBean(ElasticsearchAutoConfiguration.class));
 	}
 
