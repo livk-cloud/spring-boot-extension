@@ -29,7 +29,6 @@ import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.util.SslUtils;
 import com.livk.context.elasticsearch.template.ElasticsearchTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +54,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -179,8 +180,10 @@ public class ElasticsearchAutoConfiguration {
 						.setTlsStrategy(new BasicClientTlsStrategy(sslBundles.getBundle(sslBundle).createSslContext()));
 				}
 				else {
-					poolingAsyncClientConnectionManagerBuilder.setTlsStrategy(
-							new DefaultClientTlsStrategy(SslUtils.sslContext(), NoopHostnameVerifier.INSTANCE));
+					SSLContext sslContext = SSLContext.getDefault();
+					sslContext.init(null, new TrustManager[0], null);
+					poolingAsyncClientConnectionManagerBuilder
+						.setTlsStrategy(new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE));
 				}
 			}
 			catch (KeyManagementException | NoSuchAlgorithmException ex) {
