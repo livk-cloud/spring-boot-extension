@@ -22,6 +22,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author laokou
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
@@ -35,12 +38,12 @@ public @interface Field {
 
 	String analyzer() default "";
 
-	boolean fielddata() default false;
-
 	boolean eagerGlobalOrdinals() default false;
 
 	String format() default "";
 
 	boolean index() default false;
+
+	SubField subField() default @SubField(ignoreAbove = 256);
 
 }

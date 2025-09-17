@@ -16,6 +16,9 @@
 
 package com.livk.context.elasticsearch.annotation;
 
+/**
+ * @author laokou
+ */
 public @interface Setting {
 
 	short shards() default 1;

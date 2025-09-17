@@ -18,243 +18,69 @@ package com.livk.autoconfigure.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.JsonpMapper;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest5_client.Rest5ClientOptions;
 import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
-import co.elastic.clients.transport.rest5_client.low_level.RequestOptions;
-import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
-import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.elasticsearch.template.ElasticsearchTemplate;
+import com.livk.context.elasticsearch.template.ElasticsearchDocumentTemplate;
+import com.livk.context.elasticsearch.template.ElasticsearchIndexTemplate;
+import com.livk.context.elasticsearch.template.ElasticsearchSearchTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.client5.http.auth.StandardAuthScheme;
-import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
-import org.apache.hc.client5.http.routing.HttpRoutePlanner;
-import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
-import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpHeaders;
-import org.apache.hc.core5.http.HttpHost;
-import org.apache.hc.core5.http.message.BasicHeader;
-import org.apache.hc.core5.http.nio.ssl.BasicClientTlsStrategy;
-import org.apache.hc.core5.util.Timeout;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.ssl.SslBundles;
 import org.springframework.context.annotation.Bean;
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import org.springframework.context.annotation.Import;
 
 /**
- * @author spring-data-elasticsearch
+ * @author spring project
  * @author laokou
  */
 @Slf4j
-@SpringAutoService
 @AutoConfiguration
 @RequiredArgsConstructor
-@ConditionalOnClass({ ElasticsearchClient.class, ElasticsearchAsyncClient.class })
+@Import({ ElasticsearchRest5ClientConfiguration.Rest5ClientBuilderConfig.class,
+		ElasticsearchRest5ClientConfiguration.Rest5ClientConfig.class,
+		ElasticsearchRest5ClientConfiguration.ElasticsearchTransportConfig.class,
+		ElasticsearchRest5ClientConfiguration.JacksonJsonpMapperConfig.class,
+		ElasticsearchRest5ClientConfiguration.Rest5ClientOptionsConfig.class })
+@ConditionalOnClass(SpringElasticsearchProperties.class)
 @EnableConfigurationProperties(SpringElasticsearchProperties.class)
 public class ElasticsearchAutoConfiguration {
 
-	private final SpringElasticsearchProperties springElasticsearchProperties;
-
 	@Bean(name = "elasticsearchClient", destroyMethod = "close")
 	@ConditionalOnMissingBean(ElasticsearchClient.class)
-	ElasticsearchClient elasticsearchClient(ElasticsearchTransport transport) {
-		Assert.notNull(transport, "transport must not be null");
-		return new ElasticsearchClient(transport);
+	ElasticsearchClient elasticsearchClient(Rest5ClientTransport rest5ClientTransport) {
+		return new ElasticsearchClient(rest5ClientTransport);
 	}
 
 	@Bean(name = "elasticsearchAsyncClient", destroyMethod = "close")
 	@ConditionalOnMissingBean(ElasticsearchAsyncClient.class)
-	ElasticsearchAsyncClient elasticsearchAsyncClient(ElasticsearchTransport transport) {
-		return new ElasticsearchAsyncClient(transport);
+	ElasticsearchAsyncClient elasticsearchAsyncClient(Rest5ClientTransport rest5ClientTransport) {
+		return new ElasticsearchAsyncClient(rest5ClientTransport);
 	}
 
-	@Bean(name = "elasticsearchTemplate")
-	@ConditionalOnMissingBean(ElasticsearchTemplate.class)
+	@Bean(name = "elasticsearchDocumentTemplate")
+	@ConditionalOnMissingBean(ElasticsearchDocumentTemplate.class)
 	@ConditionalOnClass({ ElasticsearchAsyncClient.class, ElasticsearchClient.class })
-	ElasticsearchTemplate elasticsearchTemplate(ElasticsearchClient elasticsearchClient,
+	ElasticsearchDocumentTemplate elasticsearchDocumentTemplate(ElasticsearchClient elasticsearchClient,
 			ElasticsearchAsyncClient elasticsearchAsyncClient) {
-		return new ElasticsearchTemplate(elasticsearchClient, elasticsearchAsyncClient);
+		return new ElasticsearchDocumentTemplate(elasticsearchClient, elasticsearchAsyncClient);
 	}
 
-	@Bean
-	ElasticsearchTransport elasticsearchTransport(Rest5Client rest5Client, JsonpMapper jsonpMapper) {
-		Assert.notNull(rest5Client, "restClient must not be null");
-		Assert.notNull(jsonpMapper, "jsonpMapper must not be null");
-		return new Rest5ClientTransport(rest5Client, jsonpMapper, getRest5ClientOptions());
+	@Bean(name = "elasticsearchIndexTemplate")
+	@ConditionalOnMissingBean(ElasticsearchIndexTemplate.class)
+	@ConditionalOnClass({ ElasticsearchAsyncClient.class, ElasticsearchClient.class })
+	ElasticsearchIndexTemplate elasticsearchIndexTemplate(ElasticsearchClient elasticsearchClient,
+			ElasticsearchAsyncClient elasticsearchAsyncClient) {
+		return new ElasticsearchIndexTemplate(elasticsearchClient, elasticsearchAsyncClient);
 	}
 
-	@Bean
-	JsonpMapper jsonpMapper() {
-		// we need to create our own objectMapper that keeps null values in order to
-		// provide the storeNullValue
-		// functionality. The one Elasticsearch would provide removes the nulls. We remove
-		// unwanted nulls before they get
-		// into this mapper, so we can safely keep them here.
-		ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.INDENT_OUTPUT, false);
-		return new JacksonJsonpMapper(objectMapper);
-	}
-
-	@Bean
-	Rest5Client elasticsearchRest5Client(ObjectProvider<SslBundles> sslBundles) {
-		return getRest5ClientBuilder(sslBundles.getObject()).build();
-	}
-
-	private Rest5ClientBuilder getRest5ClientBuilder(SslBundles sslBundles) {
-		Rest5ClientBuilder builder = Rest5Client.builder(getHttpHosts());
-		String pathPrefix = springElasticsearchProperties.getPathPrefix();
-		if (StringUtils.hasLength(pathPrefix)) {
-			builder.setPathPrefix(pathPrefix);
-		}
-		Header[] headers = getHeaders();
-		if (!ObjectUtils.isEmpty(headers)) {
-			builder.setDefaultHeaders(headers);
-		}
-		Duration connectionTimeout = springElasticsearchProperties.getConnectionTimeout();
-		Duration socketTimeout = springElasticsearchProperties.getSocketTimeout();
-
-		builder.setHttpClientConfigCallback(httpAsyncClientBuilder -> {
-			// 默认情况下，HTTP 客户端使用抢占式身份验证：它在初始请求中包含凭据。
-			// 您可能希望使用非抢占式身份验证，即发送不带凭据的请求，并在质询后使用标头重试401 Unauthorized。
-			// 为此，请设置一个HttpClientConfigCallback禁用身份验证缓存的参数。
-			httpAsyncClientBuilder.disableAuthCaching();
-			String proxy = springElasticsearchProperties.getProxy();
-			if (StringUtils.hasLength(proxy)) {
-				try {
-					HttpRoutePlanner proxyRoutePlanner = new DefaultProxyRoutePlanner(HttpHost.create(proxy));
-					httpAsyncClientBuilder.setRoutePlanner(proxyRoutePlanner);
-				}
-				catch (URISyntaxException ex) {
-					throw new IllegalArgumentException(ex);
-				}
-			}
-		});
-
-		builder.setConnectionConfigCallback(connectionConfigBuilder -> {
-			if (!connectionTimeout.isNegative()) {
-				connectionConfigBuilder.setConnectTimeout(
-						Timeout.of(Math.toIntExact(connectionTimeout.toMillis()), TimeUnit.MILLISECONDS));
-			}
-			if (!socketTimeout.isNegative()) {
-				Timeout soTimeout = Timeout.of(Math.toIntExact(socketTimeout.toMillis()), TimeUnit.MILLISECONDS);
-				connectionConfigBuilder.setSocketTimeout(soTimeout);
-			}
-			else {
-				connectionConfigBuilder.setSocketTimeout(
-						Timeout.of(Rest5ClientBuilder.DEFAULT_SOCKET_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
-			}
-		});
-
-		builder.setConnectionManagerCallback(poolingAsyncClientConnectionManagerBuilder -> {
-			String sslBundle = springElasticsearchProperties.getRestclient().getSsl().getBundle();
-			try {
-				if (StringUtils.hasLength(sslBundle)) {
-					poolingAsyncClientConnectionManagerBuilder
-						.setTlsStrategy(new BasicClientTlsStrategy(sslBundles.getBundle(sslBundle).createSslContext()));
-				}
-				else {
-					SSLContext sslContext = SSLContext.getInstance("TLSv1.3");
-					sslContext.init(null, new TrustManager[0], new SecureRandom());
-					poolingAsyncClientConnectionManagerBuilder
-						.setTlsStrategy(new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE));
-				}
-			}
-			catch (KeyManagementException | NoSuchAlgorithmException ex) {
-				throw new IllegalStateException("could not create the default ssl context", ex);
-			}
-		});
-
-		builder.setRequestConfigCallback(requestConfigBuilder -> {
-			if (!socketTimeout.isNegative()) {
-				Timeout soTimeout = Timeout.of(Math.toIntExact(socketTimeout.toMillis()), TimeUnit.MILLISECONDS);
-				requestConfigBuilder.setConnectionRequestTimeout(soTimeout);
-			}
-			else {
-				requestConfigBuilder.setConnectionRequestTimeout(
-						Timeout.of(Rest5ClientBuilder.DEFAULT_RESPONSE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
-			}
-		});
-		return builder;
-	}
-
-	private HttpHost[] getHttpHosts() {
-		List<InetSocketAddress> hosts = springElasticsearchProperties.getEndpoints().stream().map(this::parse).toList();
-		boolean useSsl = springElasticsearchProperties.isUseSsl();
-		return hosts.stream()
-			.map(it -> (useSsl ? "https" : "http") + "://" + it.getHostString() + ':' + it.getPort())
-			.map(URI::create)
-			.map(HttpHost::create)
-			.toArray(HttpHost[]::new);
-	}
-
-	private Header[] getHeaders() {
-		List<Header> headers = new ArrayList<>();
-		String username = springElasticsearchProperties.getUsername();
-		String password = springElasticsearchProperties.getPassword();
-		if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
-			headers.add(new BasicHeader(HttpHeaders.AUTHORIZATION,
-					StandardAuthScheme.BASIC + " " + encodeBasicAuth(username, password)));
-		}
-		return headers.toArray(new Header[0]);
-	}
-
-	private InetSocketAddress parse(String endpoint) {
-		String[] hostAndPort = endpoint.split(":");
-		return InetSocketAddress.createUnresolved(hostAndPort[0], Integer.parseInt(hostAndPort[1]));
-	}
-
-	private String encodeBasicAuth(String username, String password) {
-		Assert.notNull(username, "Username must not be null");
-		Assert.notNull(password, "Password must not be null");
-		CharsetEncoder encoder = StandardCharsets.UTF_8.newEncoder();
-		if (encoder.canEncode(username) && encoder.canEncode(password)) {
-			return Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
-		}
-		else {
-			throw new IllegalArgumentException("Username or password contains characters that cannot be encoded to "
-					+ StandardCharsets.UTF_8.displayName());
-		}
-	}
-
-	private Rest5ClientOptions getRest5ClientOptions() {
-		Rest5ClientOptions.Builder rest5ClientOptionsBuilder = new Rest5ClientOptions(RequestOptions.DEFAULT, false)
-			.toBuilder();
-		rest5ClientOptionsBuilder.addHeader("Elasticsearch", getVersion());
-		return rest5ClientOptionsBuilder.build();
-	}
-
-	private String getVersion() {
-		String version = springElasticsearchProperties.getVersion();
-		String clientVersion = springElasticsearchProperties.getClientVersion();
-		return String.format("elasticsearch %s / elasticsearch client %s / imperative", version, clientVersion);
+	@Bean(name = "elasticsearchSearchTemplate")
+	@ConditionalOnMissingBean(ElasticsearchSearchTemplate.class)
+	@ConditionalOnClass({ ElasticsearchAsyncClient.class, ElasticsearchClient.class })
+	ElasticsearchSearchTemplate elasticsearchSearchTemplate(ElasticsearchClient elasticsearchClient,
+			ElasticsearchAsyncClient elasticsearchAsyncClient) {
+		return new ElasticsearchSearchTemplate(elasticsearchClient, elasticsearchAsyncClient);
 	}
 
 }

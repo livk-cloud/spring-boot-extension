@@ -14,15 +14,36 @@
  * limitations under the License.
  */
 
-package com.livk.context.elasticsearch.annotation;
+package com.livk.autoconfigure.elasticsearch;
+
+import lombok.Getter;
 
 /**
  * @author laokou
  */
-public @interface Analysis {
+@Getter
+public enum ProtocolEnum {
 
-	Filter[] filters() default {};
+	HTTP("http", "HTTP协议"),
 
-	Analyzer[] analyzers() default {};
+	HTTPS("https", "HTTPS协议");
+
+	private final String scheme;
+
+	private final String description;
+
+	ProtocolEnum(String scheme, String description) {
+		this.scheme = scheme;
+		this.description = description;
+	}
+
+	public static ProtocolEnum forScheme(String scheme) {
+		for (ProtocolEnum protocol : values()) {
+			if (protocol.scheme.equals(scheme)) {
+				return protocol;
+			}
+		}
+		throw new IllegalArgumentException(String.format("Unknown protocol: %s", scheme));
+	}
 
 }

@@ -16,13 +16,16 @@
 
 package com.livk.context.elasticsearch.annotation;
 
-public final class Constant {
+/**
+ * @author laokou
+ */
+public final class Constants {
 
 	public static final String PRE_TAGS = "<font color='red'>";
 
 	public static final String POST_TAGS = "</font>";
 
-	private Constant() {
+	private Constants() {
 	}
 
 }

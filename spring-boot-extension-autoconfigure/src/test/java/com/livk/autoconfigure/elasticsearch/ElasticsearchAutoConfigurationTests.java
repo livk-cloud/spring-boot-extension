@@ -16,6 +16,9 @@
 
 package com.livk.autoconfigure.elasticsearch;
 
+import com.livk.context.elasticsearch.template.ElasticsearchDocumentTemplate;
+import com.livk.context.elasticsearch.template.ElasticsearchIndexTemplate;
+import com.livk.context.elasticsearch.template.ElasticsearchSearchTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
@@ -32,7 +35,12 @@ class ElasticsearchAutoConfigurationTests {
 	void test() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
 				AutoConfigurations.of(ElasticsearchAutoConfiguration.class, DefaultSslBundleRegistry.class));
-		contextRunner.run(context -> assertThat(context).hasSingleBean(ElasticsearchAutoConfiguration.class));
+		contextRunner.run(context -> {
+			assertThat(context).hasSingleBean(ElasticsearchAutoConfiguration.class);
+			assertThat(context).hasSingleBean(ElasticsearchIndexTemplate.class);
+			assertThat(context).hasSingleBean(ElasticsearchDocumentTemplate.class);
+			assertThat(context).hasSingleBean(ElasticsearchSearchTemplate.class);
+		});
 	}
 
 }

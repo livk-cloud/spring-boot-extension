@@ -19,10 +19,8 @@ package com.livk.context.elasticsearch.annotation;
 /**
  * @author laokou
  */
-public @interface Analysis {
+public @interface SubField {
 
-	Filter[] filters() default {};
-
-	Analyzer[] analyzers() default {};
+	int ignoreAbove();
 
 }

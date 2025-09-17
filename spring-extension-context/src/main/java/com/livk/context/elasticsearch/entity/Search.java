@@ -17,6 +17,7 @@
 package com.livk.context.elasticsearch.entity;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import com.livk.context.elasticsearch.annotation.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,9 +46,9 @@ public class Search {
 	@AllArgsConstructor
 	public static class Highlight {
 
-		private List<String> preTags = List.of(com.livk.context.elasticsearch.annotation.Constant.PRE_TAGS);
+		private List<String> preTags = List.of(Constants.PRE_TAGS);
 
-		private List<String> postTags = List.of(com.livk.context.elasticsearch.annotation.Constant.POST_TAGS);
+		private List<String> postTags = List.of(Constants.POST_TAGS);
 
 		private boolean requireFieldMatch;
 
