@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author livk
  */
-public interface SqlProvider {
+public interface SequenceDbHelper {
 
 	DatabaseDriver type();
 
@@ -39,7 +39,7 @@ public interface SqlProvider {
 
 	String selectRangeSql(String tableName);
 
-	static SqlProvider fromDataSource(DataSource dataSource) {
+	static SequenceDbHelper fromDataSource(DataSource dataSource) {
 		String productName;
 		try (Connection conn = dataSource.getConnection()) {
 			DatabaseMetaData metaData = conn.getMetaData();
@@ -49,8 +49,8 @@ public interface SqlProvider {
 			throw new IllegalStateException("Failed to determine database type", ex);
 		}
 		DatabaseDriver driver = DatabaseDriver.fromProductName(productName);
-		List<SqlProvider> factories = SpringFactoriesLoader.loadFactories(SqlProvider.class, null);
-		for (SqlProvider provider : factories) {
+		List<SequenceDbHelper> factories = SpringFactoriesLoader.loadFactories(SequenceDbHelper.class, null);
+		for (SequenceDbHelper provider : factories) {
 			if (driver == provider.type()) {
 				return provider;
 			}

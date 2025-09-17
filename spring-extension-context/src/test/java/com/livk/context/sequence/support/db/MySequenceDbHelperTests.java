@@ -16,14 +16,14 @@
 
 package com.livk.context.sequence.support.db;
 
-import com.livk.testcontainers.containers.PostgresqlContainer;
+import com.livk.testcontainers.containers.MysqlContainer;
+import com.mysql.cj.jdbc.Driver;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.postgresql.Driver;
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.testcontainers.junit.jupiter.Container;
@@ -39,27 +39,27 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
-class PostgresProviderTests {
+class MySequenceDbHelperTests {
 
 	@Container
-	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("sequence");
 
-	static SqlProvider provider;
+	static SequenceDbHelper helper;
 
 	static JdbcClient jdbcClient;
 
 	@BeforeAll
 	static void setupDataSource() {
-		postgresql.start();
+		mysql.start();
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(Driver.class.getName());
-		dataSource.setJdbcUrl("jdbc:postgresql://" + postgresql.getHost() + ":" + postgresql.getFirstMappedPort() + "/"
-				+ postgresql.getDatabaseName());
-		dataSource.setUsername(postgresql.getUsername());
-		dataSource.setPassword(postgresql.getPassword());
+		dataSource.setJdbcUrl(
+				"jdbc:mysql://" + mysql.getHost() + ":" + mysql.getFirstMappedPort() + "/" + mysql.getDatabaseName());
+		dataSource.setUsername(mysql.getUsername());
+		dataSource.setPassword(mysql.getPassword());
 
-		provider = SqlProvider.fromDataSource(dataSource);
+		helper = SequenceDbHelper.fromDataSource(dataSource);
 
 		jdbcClient = JdbcClient.create(dataSource);
 	}
@@ -67,13 +67,13 @@ class PostgresProviderTests {
 	@Order(1)
 	@Test
 	void type() {
-		assertThat(provider.type()).isEqualTo(DatabaseDriver.POSTGRESQL);
+		assertThat(helper.type()).isEqualTo(DatabaseDriver.MYSQL);
 	}
 
 	@Order(2)
 	@Test
 	void createTableSql() {
-		String tableSql = provider.createTableSql("test");
+		String tableSql = helper.createTableSql("test");
 		assertThat(tableSql).startsWithIgnoringCase("CREATE TABLE").containsIgnoringCase("test");
 
 		assertThat(jdbcClient.sql(tableSql).update()).isEqualTo(0);
@@ -82,8 +82,8 @@ class PostgresProviderTests {
 	@Order(3)
 	@Test
 	void insertRangeSql() {
-		String insertedRangeSql = provider.insertRangeSql("test");
-		assertThat(insertedRangeSql).startsWithIgnoringCase("INSERT INTO").containsIgnoringCase("test");
+		String insertedRangeSql = helper.insertRangeSql("test");
+		assertThat(insertedRangeSql).startsWithIgnoringCase("INSERT IGNORE INTO").containsIgnoringCase("test");
 
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 		assertThat(jdbcClient.sql(insertedRangeSql)
@@ -97,7 +97,7 @@ class PostgresProviderTests {
 	@Order(4)
 	@Test
 	void updateRangeSql() {
-		String updatedRangeSql = provider.updateRangeSql("test");
+		String updatedRangeSql = helper.updateRangeSql("test");
 		assertThat(updatedRangeSql).startsWithIgnoringCase("UPDATE").containsIgnoringCase("test");
 
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -112,7 +112,7 @@ class PostgresProviderTests {
 	@Order(5)
 	@Test
 	void selectRangeSql() {
-		String selectRangeSql = provider.selectRangeSql("test");
+		String selectRangeSql = helper.selectRangeSql("test");
 		assertThat(selectRangeSql).startsWithIgnoringCase("SELECT").containsIgnoringCase("test");
 
 		assertThat(jdbcClient.sql(selectRangeSql).param("name", "testName").query(Long.class).single()).isEqualTo(2);

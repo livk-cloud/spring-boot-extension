@@ -65,6 +65,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 			if (interfaces != null && interfaces.size() == 1) {
 				return Set.of(MoreTypes.asTypeElement(interfaces.getFirst()));
 			}
+			return Set.of(MoreTypes.asTypeElement(typeElement.getSuperclass()));
 		}
 		return Set.of();
 	}

@@ -37,7 +37,7 @@ import java.lang.reflect.WildcardType;
 @UtilityClass
 public class ClassUtils extends org.springframework.util.ClassUtils {
 
-	public static <T> Class<T> resolveTypeArgument(Class<?> clazz, Class<?> genericType) {
+	public static <T, G> Class<T> resolveTypeArgument(Class<? extends G> clazz, Class<G> genericType) {
 		ResolvableType resolvableType = ResolvableType.forClass(clazz).as(genericType);
 		if (!resolvableType.hasGenerics()) {
 			throw new IllegalArgumentException("No type arguments found on generic interface [" + resolvableType + "]");
