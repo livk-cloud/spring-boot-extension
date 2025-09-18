@@ -23,6 +23,7 @@ aviator = "5.4.3"
 jexl3 = "3.5.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
+elasticsearch = "9.1.3"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.47"
 okhttp = "5.1.0"
@@ -64,6 +65,7 @@ aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "a
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
+elasticsearch = { group = "co.elastic.clients", name = "elasticsearch-java", version.ref = "elasticsearch" }
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 

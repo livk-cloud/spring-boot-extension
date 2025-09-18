@@ -14,5 +14,6 @@ dependencies {
 	optional("org.testcontainers:mysql")
 	optional("org.testcontainers:postgresql")
 	optional("org.testcontainers:minio")
+	optional("org.testcontainers:elasticsearch")
 }
 
