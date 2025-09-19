@@ -37,14 +37,6 @@ public class DockerImageNames {
 
 	public static final String REDIS_STACK_IMAGE = "redis/redis-stack-server";
 
-	public static final String CLICKHOUSE_IMAGE = "clickhouse/clickhouse-server";
-
-	public static final String KAFKA_IMAGE = "apache/kafka";
-
-	public static final String RABBITMQ_IMAGE = "rabbitmq";
-
-	public static final String PULSAR_IMAGE = "apachepulsar/pulsar";
-
 	public static final String MINIO_IMAGE = "minio/minio";
 
 	public static DockerImageName mysql() {
@@ -85,38 +77,6 @@ public class DockerImageNames {
 
 	public static DockerImageName redisStack(String tag) {
 		return DockerImageName.parse(REDIS_STACK_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName clickhouse() {
-		return clickhouse(LATEST_TAG);
-	}
-
-	public static DockerImageName clickhouse(String tag) {
-		return DockerImageName.parse(CLICKHOUSE_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName kafka() {
-		return kafka(LATEST_TAG);
-	}
-
-	public static DockerImageName kafka(String tag) {
-		return DockerImageName.parse(KAFKA_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName rabbitmq() {
-		return rabbitmq(LATEST_TAG);
-	}
-
-	public static DockerImageName rabbitmq(String tag) {
-		return DockerImageName.parse(RABBITMQ_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName pulsar() {
-		return pulsar(LATEST_TAG);
-	}
-
-	public static DockerImageName pulsar(String tag) {
-		return DockerImageName.parse(PULSAR_IMAGE).withTag(tag);
 	}
 
 	public static DockerImageName minio() {
