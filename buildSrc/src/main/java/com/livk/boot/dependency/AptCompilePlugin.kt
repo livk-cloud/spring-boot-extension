@@ -46,7 +46,6 @@ abstract class AptCompilePlugin : Plugin<Project> {
 		val configurations = project.configurations
 		project.pluginManager.apply(JavaPlugin::class.java)
 		configurations.create(APT_COMPILE) { apt ->
-			apt.isVisible = false
 			apt.isCanBeResolved = false
 			apt.isCanBeConsumed = false
 			project.plugins.withType(JavaPlugin::class.java) {

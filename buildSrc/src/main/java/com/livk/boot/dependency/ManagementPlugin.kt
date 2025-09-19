@@ -38,7 +38,6 @@ abstract class ManagementPlugin : Plugin<Project> {
 		val configurations = project.configurations
 		project.pluginManager.apply(JavaPlugin::class.java)
 		configurations.create(MANAGEMENT) { management ->
-			management.isVisible = false
 			management.isCanBeResolved = false
 			management.isCanBeConsumed = false
 			val plugins = project.plugins
