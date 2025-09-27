@@ -29,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author livk
+ * @deprecated use 不需要进行bean加载
  */
 @Deprecated(since = "1.4.3")
 @AutoConfiguration

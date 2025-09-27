@@ -48,7 +48,6 @@ public @interface SqlInject {
 	SqlFill fill();
 
 	/**
-	 * 优先级低于{@link SqlInject#time()}
 	 * @return the class
 	 */
 	Class<? extends InjectHandle<?>> supplier() default NullInject.class;
@@ -56,6 +55,7 @@ public @interface SqlInject {
 	/**
 	 * 优先级高于 {@link SqlInject#supplier()}
 	 * @return the function enum
+	 * @deprecated use {@link SqlInject#supplier()}
 	 */
 	@Deprecated(since = "1.5.2")
 	InjectType time() default InjectType.DEFAULT;

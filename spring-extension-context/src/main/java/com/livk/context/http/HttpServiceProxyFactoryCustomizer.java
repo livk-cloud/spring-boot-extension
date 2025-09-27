@@ -21,6 +21,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
  * @author livk
+ * @deprecated use 无用方法
  */
 @Deprecated(since = "1.5.0")
 @FunctionalInterface

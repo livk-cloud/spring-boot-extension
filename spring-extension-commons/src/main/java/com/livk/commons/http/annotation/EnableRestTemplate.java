@@ -30,6 +30,7 @@ import java.lang.annotation.Target;
  * {@link HttpClientType#REST_TEMPLATE}
  *
  * @author livk
+ * @deprecated use {@link EnableRestClient}
  * @see EnableHttpClient
  * @see com.livk.commons.http.RestTemplateConfiguration
  */

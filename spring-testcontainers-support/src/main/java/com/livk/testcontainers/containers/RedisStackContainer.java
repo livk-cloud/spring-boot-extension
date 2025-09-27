@@ -21,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 
 /**
  * @author livk
+ * @deprecated 使用com.redis:testcontainers-redis
  */
 @Deprecated(since = "1.4.5")
 public class RedisStackContainer extends AbstractRedisContainer<RedisStackContainer> {

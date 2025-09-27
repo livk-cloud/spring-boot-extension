@@ -25,6 +25,7 @@ import java.util.Optional;
 
 /**
  * @author livk
+ * @deprecated 使用com.redis:testcontainers-redis
  */
 @Getter
 @Deprecated(since = "1.4.5")

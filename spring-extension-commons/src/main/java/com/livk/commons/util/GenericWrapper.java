@@ -44,6 +44,7 @@ public interface GenericWrapper<V> {
 	 * @param <T> 相关泛型
 	 * @param type 类信息
 	 * @return 相关实例
+	 * @deprecated use {@link #unwrap()}
 	 */
 	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <T> T unwrap(Class<T> type) {
@@ -57,6 +58,7 @@ public interface GenericWrapper<V> {
 	 * 判断是否可以进行转换
 	 * @param type 类信息
 	 * @return bool
+	 * @deprecated 无用方法
 	 */
 	@Deprecated(since = "1.4.3", forRemoval = true)
 	default boolean isWrapperFor(Class<?> type) {
@@ -68,6 +70,7 @@ public interface GenericWrapper<V> {
 	 * @param function fun
 	 * @param <R> 转换后泛型
 	 * @return wrapper
+	 * @deprecated 无用方法
 	 */
 	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <R> GenericWrapper<R> map(Function<V, R> function) {
@@ -79,6 +82,7 @@ public interface GenericWrapper<V> {
 	 * 进行flatmap转换
 	 * @param function fun
 	 * @return wrapper
+	 * @deprecated 无用方法
 	 */
 	@Deprecated(since = "1.4.0", forRemoval = true)
 	default <G extends GenericWrapper<?>> G flatmap(Function<V, G> function) {

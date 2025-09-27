@@ -113,7 +113,8 @@ public interface ExpressionResolver {
 	 * @param method method
 	 * @param args args
 	 * @param contextMap 解析上下文环境数据
-	 * @return string * @deprecated use {@link #evaluate(String, Context)}
+	 * @return string
+	 * @deprecated use {@link #evaluate(String, Context)}
 	 */
 	@Deprecated(since = "1.4.2", forRemoval = true)
 	default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {

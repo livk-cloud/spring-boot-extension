@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 
 /**
  * @author livk
+ * @deprecated use {@link RestClientAdapterFactory}
  */
 @SpringFactories
 @Deprecated(since = "1.4.3", forRemoval = true)
