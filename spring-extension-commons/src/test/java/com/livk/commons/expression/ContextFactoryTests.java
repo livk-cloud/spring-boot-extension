@@ -16,7 +16,6 @@
 
 package com.livk.commons.expression;
 
-import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -40,27 +39,28 @@ class ContextFactoryTests {
 	}
 
 	@Test
-	void create() {
-		{
-			Context context = contextFactory.create(method, new String[] { "livk" });
-			assertThat(context.asMap()).hasSize(map.size());
-			assertThat(context.asMap().keySet()).isEqualTo(map.keySet());
-			assertThat(context.asMap().entrySet()).isEqualTo(map.entrySet());
-		}
-		{
-			HashMap<String, Object> contextMap = Maps
-				.newHashMap(contextFactory.create(method, new String[] { "root" }).asMap());
-			contextMap.putAll(map);
-			Context context = Context.create(contextMap);
-			assertThat(context.asMap()).hasSize(1);
-			assertThat(context.asMap().keySet()).isEqualTo(contextMap.keySet());
-			assertThat(context.asMap().entrySet()).isEqualTo(contextMap.entrySet());
-			assertThat(context.asMap()).containsKey("username");
-			assertThat(context.asMap()).doesNotContainValue("root");
-			assertThat(context.asMap()).containsValue("livk");
-			assertThat(context.asMap().get("username")).isEqualTo("livk");
-		}
+	void testContextCreationFromFactory() {
+		Context context = contextFactory.create(method, new String[] { "livk" });
 
+		assertThat(context.asMap()).hasSize(map.size());
+		assertThat(context.asMap().keySet()).isEqualTo(map.keySet());
+		assertThat(context.asMap().entrySet()).isEqualTo(map.entrySet());
+	}
+
+	@Test
+	void testContextCreationFromMap() {
+		HashMap<String, Object> contextMap = new HashMap<>(
+				contextFactory.create(method, new String[] { "root" }).asMap());
+		contextMap.putAll(map);
+		Context context = Context.create(contextMap);
+
+		assertThat(context.asMap()).hasSize(1);
+		assertThat(context.asMap().keySet()).isEqualTo(contextMap.keySet());
+		assertThat(context.asMap().entrySet()).isEqualTo(contextMap.entrySet());
+		assertThat(context.asMap()).containsKey("username");
+		assertThat(context.asMap()).doesNotContainValue("root");
+		assertThat(context.asMap()).containsValue("livk");
+		assertThat(context.asMap().get("username")).isEqualTo("livk");
 	}
 
 }

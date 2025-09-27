@@ -58,28 +58,29 @@ class BeanUtilsTests {
 	}
 
 	@Test
-	void convert() {
-		{
-			TargetBean source = new TargetBean("source", 10);
-			Map<String, Object> convert = BeanUtils.convert(source);
-			assertThat(convert).containsEntry("beanName", "source")
-				.containsEntry("beanNo", 10)
-				.containsEntry("class", TargetBean.class);
+	void testConvertTargetBean() {
+		TargetBean source = new TargetBean("source", 10);
+		Map<String, Object> convert = BeanUtils.convert(source);
 
-			TargetBean target = BeanUtils.convert(convert);
-			assertThat(target).isEqualTo(source);
-		}
+		assertThat(convert).containsEntry("beanName", "source")
+			.containsEntry("beanNo", 10)
+			.containsEntry("class", TargetBean.class);
 
-		{
-			SourceBean source = new SourceBean("source", 10);
-			Map<String, Object> convert = BeanUtils.convert(source);
-			assertThat(convert).containsEntry("beanName", "source")
-				.containsEntry("beanNo", 10)
-				.containsEntry("class", SourceBean.class);
+		TargetBean target = BeanUtils.convert(convert);
+		assertThat(target).isEqualTo(source);
+	}
 
-			assertThatThrownBy(() -> BeanUtils.convert(convert)).isInstanceOf(IllegalArgumentException.class)
-				.hasMessage("Missing no-argument constructor");
-		}
+	@Test
+	void testConvertSourceBeanWithMissingNoArgConstructor() {
+		SourceBean source = new SourceBean("source", 10);
+		Map<String, Object> convert = BeanUtils.convert(source);
+
+		assertThat(convert).containsEntry("beanName", "source")
+			.containsEntry("beanNo", 10)
+			.containsEntry("class", SourceBean.class);
+
+		assertThatThrownBy(() -> BeanUtils.convert(convert)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("Missing no-argument constructor");
 	}
 
 	record SourceBean(String beanName, Integer beanNo) {

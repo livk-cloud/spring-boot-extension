@@ -31,28 +31,27 @@ class HttpClientImportSelectorTests {
 	final HttpClientImportSelector importSelector = new HttpClientImportSelector();
 
 	@Test
-	void test() {
-		{
-			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(AllConfig.class));
-			@SuppressWarnings("deprecation")
-			String[] expected = new String[] { WebClientConfiguration.class.getName(),
-					RestClientConfiguration.class.getName(), RestTemplateConfiguration.class.getName() };
-			assertThat(imports).containsExactly(expected);
-		}
+	void testSelectImportsForAllConfig() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(AllConfig.class));
+		@SuppressWarnings("deprecation")
+		String[] expected = new String[] { WebClientConfiguration.class.getName(),
+				RestClientConfiguration.class.getName(), RestTemplateConfiguration.class.getName() };
+		assertThat(imports).containsExactly(expected);
+	}
 
-		{
-			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(TwoConfig.class));
-			String[] expected = new String[] { WebClientConfiguration.class.getName(),
-					RestClientConfiguration.class.getName() };
-			assertThat(imports).containsExactly(expected);
-		}
+	@Test
+	void testSelectImportsForTwoConfig() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(TwoConfig.class));
+		String[] expected = new String[] { WebClientConfiguration.class.getName(),
+				RestClientConfiguration.class.getName() };
+		assertThat(imports).containsExactly(expected);
+	}
 
-		{
-			String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(OneConfig.class));
-			String[] expected = new String[] { WebClientConfiguration.class.getName() };
-			assertThat(imports).containsExactly(expected);
-		}
-
+	@Test
+	void testSelectImportsForOneConfig() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(OneConfig.class));
+		String[] expected = new String[] { WebClientConfiguration.class.getName() };
+		assertThat(imports).containsExactly(expected);
 	}
 
 	@SuppressWarnings("deprecation")

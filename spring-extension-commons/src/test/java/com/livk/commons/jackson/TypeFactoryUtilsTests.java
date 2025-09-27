@@ -39,49 +39,51 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class TypeFactoryUtilsTests {
 
+	static SimpleType strType = SimpleType.constructUnsafe(String.class);
+
 	@Test
 	void instance() {
 		assertThat(TypeFactoryUtils.instance()).isEqualTo(new ObjectMapper().getTypeFactory());
 	}
 
 	@Test
-	void javaType() {
-		SimpleType strType = SimpleType.constructUnsafe(String.class);
-		{
-			assertThat(TypeFactoryUtils.javaType(String.class)).isEqualTo(strType);
-			assertThat(TypeFactoryUtils.javaType(new TypeReference<String>() {
-			})).isEqualTo(strType);
-			assertThat(TypeFactoryUtils.javaType(ResolvableType.forClass(String.class))).isEqualTo(strType);
-		}
+	void testJavaTypeForSimpleType() {
+		assertThat(TypeFactoryUtils.javaType(String.class)).isEqualTo(strType);
+		assertThat(TypeFactoryUtils.javaType(new TypeReference<String>() {
+		})).isEqualTo(strType);
+		assertThat(TypeFactoryUtils.javaType(ResolvableType.forClass(String.class))).isEqualTo(strType);
+	}
 
-		{
-			TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
-			CollectionType collectionType = CollectionType.construct(List.class, bindings,
-					SimpleType.constructUnsafe(Collection.class), null, strType);
-			assertThat(TypeFactoryUtils.javaType(List.class, String.class)).isEqualTo(collectionType);
-			assertThat(TypeFactoryUtils.javaType(List.class, strType)).isEqualTo(collectionType);
-			assertThat(TypeFactoryUtils.javaType(new TypeReference<List<String>>() {
-			})).isEqualTo(collectionType);
-			assertThat(TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(List.class, String.class)))
-				.isEqualTo(collectionType);
-		}
+	@Test
+	void testJavaTypeForListType() {
+		TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
+		CollectionType collectionType = CollectionType.construct(List.class, bindings,
+				SimpleType.constructUnsafe(Collection.class), null, strType);
 
-		{
-			TypeBindings bindings = TypeBindings.createIfNeeded(Map.class, new JavaType[] { strType, strType });
-			MapType mapType = MapType.construct(Map.class, bindings, TypeFactory.unknownType(), null, strType, strType);
-			assertThat(TypeFactoryUtils.javaType(Map.class, String.class, String.class)).isEqualTo(mapType);
-			assertThat(TypeFactoryUtils.javaType(Map.class, strType, strType)).isEqualTo(mapType);
-			assertThat(TypeFactoryUtils.javaType(new TypeReference<Map<String, String>>() {
-			})).isEqualTo(mapType);
-			assertThat(TypeFactoryUtils
-				.javaType(ResolvableType.forClassWithGenerics(Map.class, String.class, String.class)))
-				.isEqualTo(mapType);
-		}
+		assertThat(TypeFactoryUtils.javaType(List.class, String.class)).isEqualTo(collectionType);
+		assertThat(TypeFactoryUtils.javaType(List.class, strType)).isEqualTo(collectionType);
+		assertThat(TypeFactoryUtils.javaType(new TypeReference<List<String>>() {
+		})).isEqualTo(collectionType);
+		assertThat(TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(List.class, String.class)))
+			.isEqualTo(collectionType);
+	}
+
+	@Test
+	void testJavaTypeForMapType() {
+		TypeBindings bindings = TypeBindings.createIfNeeded(Map.class, new JavaType[] { strType, strType });
+		MapType mapType = MapType.construct(Map.class, bindings, TypeFactory.unknownType(), null, strType, strType);
+
+		assertThat(TypeFactoryUtils.javaType(Map.class, String.class, String.class)).isEqualTo(mapType);
+		assertThat(TypeFactoryUtils.javaType(Map.class, strType, strType)).isEqualTo(mapType);
+		assertThat(TypeFactoryUtils.javaType(new TypeReference<Map<String, String>>() {
+		})).isEqualTo(mapType);
+		assertThat(
+				TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(Map.class, String.class, String.class)))
+			.isEqualTo(mapType);
 	}
 
 	@Test
 	void listType() {
-		SimpleType strType = SimpleType.constructUnsafe(String.class);
 		TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
 		CollectionType listType = CollectionType.construct(List.class, bindings,
 				SimpleType.constructUnsafe(Iterable.class), null, strType);
@@ -91,7 +93,6 @@ class TypeFactoryUtilsTests {
 
 	@Test
 	void setType() {
-		SimpleType strType = SimpleType.constructUnsafe(String.class);
 		TypeBindings bindings = TypeBindings.createIfNeeded(Set.class, strType);
 		CollectionType setType = CollectionType.construct(Set.class, bindings,
 				SimpleType.constructUnsafe(Iterable.class), null, strType);
@@ -101,7 +102,6 @@ class TypeFactoryUtilsTests {
 
 	@Test
 	void mapType() {
-		SimpleType strType = SimpleType.constructUnsafe(String.class);
 		TypeBindings bindings = TypeBindings.createIfNeeded(Map.class, new JavaType[] { strType, strType });
 		MapType mapType = MapType.construct(Map.class, bindings, TypeFactory.unknownType(), null, strType, strType);
 		assertThat(TypeFactoryUtils.mapType(String.class, String.class)).isEqualTo(mapType);
