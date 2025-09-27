@@ -108,8 +108,8 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	/**
 	 * 转成Map
 	 * @return the map
-	 * @see Map#of(Object, Object)
 	 * @deprecated use {@link Map#of()}
+	 * @see Map#of(Object, Object)
 	 */
 	@Deprecated(since = "1.5.0")
 	public Map<K, V> toMap() {

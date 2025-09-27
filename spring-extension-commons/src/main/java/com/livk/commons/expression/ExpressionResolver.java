@@ -67,8 +67,8 @@ public interface ExpressionResolver {
 	 * @param contextMap 解析上下文环境数据
 	 * @param returnType 返回类型
 	 * @return entity
-	 * @see #evaluate(String, Context, Class)
 	 * @deprecated use {@link #evaluate(String, Context, Class)}
+	 * @see #evaluate(String, Context, Class)
 	 */
 	@Deprecated(since = "1.4.2", forRemoval = true)
 	default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {

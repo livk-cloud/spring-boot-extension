@@ -39,8 +39,8 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author livk
- * @see org.springframework.http.HttpHeaders
  * @since 1.3.5
+ * @see org.springframework.http.HttpHeaders
  */
 public final class HttpParameters implements MultiValueMap<String, String>, Serializable {
 
@@ -60,10 +60,10 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	/**
+	 * @deprecated since 1.5.0 use {@link #HttpParameters(MultiValueMap)}
 	 * @see #HttpParameters(MultiValueMap)
 	 * @see CollectionUtils#toMultiValueMap
 	 * @see MultiValueMap#fromMultiValue(Map)
-	 * @deprecated since 1.5.0 use {@link #HttpParameters(MultiValueMap)}
 	 */
 	@Deprecated(since = "1.5.0")
 	public HttpParameters(Map<String, List<String>> map) {
