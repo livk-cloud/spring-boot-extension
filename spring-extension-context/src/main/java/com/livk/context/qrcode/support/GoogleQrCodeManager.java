@@ -94,7 +94,7 @@ public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCode
 			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
 			Map<DecodeHintType, Object> hints = new HashMap<>();
 			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
-			Result result = new MultiFormatReader().decode(binaryBitmap, hints);// 解码
+			Result result = new MultiFormatReader().decode(binaryBitmap, hints);
 			return result.getText();
 		}
 		catch (IOException | NotFoundException ex) {
