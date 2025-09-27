@@ -164,7 +164,7 @@ class PostgresJsonTypeHandlerTests {
 	}
 
 	@Data
-	static public class User {
+	static class User {
 
 		private Long id;
 

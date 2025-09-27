@@ -33,7 +33,7 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 	/**
 	 * 前缀防止key重复
 	 */
-	private final static String KEY_PREFIX = "x_sequence_";
+	private static final String KEY_PREFIX = "x_sequence_";
 
 	/**
 	 * redis客户端

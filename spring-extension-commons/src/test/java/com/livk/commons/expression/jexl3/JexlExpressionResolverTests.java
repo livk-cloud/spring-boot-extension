@@ -32,9 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class JexlExpressionResolverTests {
 
-	private final static Object[] args = new Object[] { "livk" };
+	private final Object[] args = new Object[] { "livk" };
 
-	private final static Map<String, String> map = Map.of("username", "livk");
+	private final Map<String, String> map = Map.of("username", "livk");
 
 	final ExpressionResolver resolver = new JexlExpressionResolver();
 

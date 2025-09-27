@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ContextFactoryTests {
 
-	private final static Map<String, String> map = Map.of("username", "livk");
+	private final Map<String, String> map = Map.of("username", "livk");
 
 	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 

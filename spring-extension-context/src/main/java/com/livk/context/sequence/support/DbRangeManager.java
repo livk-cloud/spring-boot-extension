@@ -37,12 +37,12 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	/**
 	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀
 	 */
-	private final static String TABLE_NAME = "sequence_range";
+	private static final String TABLE_NAME = "sequence_range";
 
 	/**
 	 * 获取区间失败重试次数
 	 */
-	private final static int RETRY_TIMES = 5;
+	private static final int RETRY_TIMES = 5;
 
 	private static final long DELTA = 100_000_000L;
 
