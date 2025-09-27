@@ -54,7 +54,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 	 * 用于类或者方法切点
 	 * @param annotationType 注解类型
 	 */
-	public AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
+	AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
 		this.methodResolver = new AnnotationMethodMatcher(annotationType);
 		setClassFilter(new AnnotationClassOrMethodFilter(annotationType));
 	}
@@ -105,7 +105,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 		 * 构造方法
 		 * @param annotationType 注解类型
 		 */
-		public AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
+		AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
 			this.annotationType = annotationType;
 		}
 

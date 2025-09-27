@@ -50,7 +50,7 @@ class DefaultRangeSequence implements Sequence {
 	 */
 	private final String name;
 
-	public DefaultRangeSequence(RangeManager manager, String name) {
+	DefaultRangeSequence(RangeManager manager, String name) {
 		Assert.notNull(name, "name is required");
 		this.manager = manager;
 		this.name = name;

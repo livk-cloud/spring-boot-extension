@@ -51,7 +51,7 @@ class ClassPathDisruptorScanner extends AnnotationBeanDefinitionScanner<Disrupto
 	 * @param registry the registry
 	 * @param beanNameGenerator the bean name generator
 	 */
-	public ClassPathDisruptorScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
+	ClassPathDisruptorScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 		super(registry, beanNameGenerator);
 	}
 

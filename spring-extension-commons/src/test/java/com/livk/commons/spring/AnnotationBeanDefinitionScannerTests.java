@@ -46,7 +46,7 @@ class AnnotationBeanDefinitionScannerTests {
 
 	static class MyAnnotationBeanDefinitionScanner extends AnnotationBeanDefinitionScanner<MyAnnotationScanner> {
 
-		public MyAnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
+		MyAnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
 			super(registry);
 		}
 

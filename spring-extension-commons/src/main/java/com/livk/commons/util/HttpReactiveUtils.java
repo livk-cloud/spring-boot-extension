@@ -51,7 +51,7 @@ public class HttpReactiveUtils {
 
 		private final Part part;
 
-		public PartServerHttpRequest(ServerHttpRequest delegate, Part part) {
+		PartServerHttpRequest(ServerHttpRequest delegate, Part part) {
 			super(delegate);
 			this.part = part;
 		}

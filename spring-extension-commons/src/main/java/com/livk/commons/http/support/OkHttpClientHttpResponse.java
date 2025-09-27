@@ -41,7 +41,7 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 	 * Instantiates a new Ok http client http response.
 	 * @param response the response
 	 */
-	public OkHttpClientHttpResponse(Response response) {
+	OkHttpClientHttpResponse(Response response) {
 		Assert.notNull(response, "Response must not be null");
 		this.response = response;
 	}

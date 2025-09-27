@@ -38,7 +38,7 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 
 	private final JavaType valueType;
 
-	public JacksonRedisCodec(ObjectMapper mapper, Class<K> type, Class<V> valueType) {
+	JacksonRedisCodec(ObjectMapper mapper, Class<K> type, Class<V> valueType) {
 		this.mapper = mapper;
 		this.keyType = getJavaType(type);
 		this.valueType = getJavaType(valueType);

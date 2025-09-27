@@ -43,7 +43,7 @@ class PGJson extends PGobject {
 	 * @param pGobject the p gobject
 	 * @throws SQLException the sql exception
 	 */
-	public PGJson(PGobject pGobject) throws SQLException {
+	PGJson(PGobject pGobject) throws SQLException {
 		super();
 		setType(TYPE_NAME);
 		setValue(pGobject.getValue());

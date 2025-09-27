@@ -37,14 +37,14 @@ class JdkRedisCodec extends AbstractRedisCodec<Object, Object> {
 	/**
 	 * Instantiates a new Jdk redis codec.
 	 */
-	public JdkRedisCodec() {
+	JdkRedisCodec() {
 	}
 
 	/**
 	 * Instantiates a new Jdk redis codec.
 	 * @param classLoader the class loader
 	 */
-	public JdkRedisCodec(ClassLoader classLoader) {
+	JdkRedisCodec(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 

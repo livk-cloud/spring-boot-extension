@@ -251,7 +251,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		 * 创建ByteArrayReader
 		 * @param bytes the bytes
 		 */
-		public ByteArrayReader(byte[] bytes) {
+		ByteArrayReader(byte[] bytes) {
 			super(new ByteArrayInputStream(bytes));
 		}
 
@@ -265,7 +265,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		 * 创建ByteArrayServletInputStream
 		 * @param body the json
 		 */
-		public ByteArrayServletInputStream(byte[] body) {
+		ByteArrayServletInputStream(byte[] body) {
 			in = new ByteArrayInputStream(body);
 		}
 

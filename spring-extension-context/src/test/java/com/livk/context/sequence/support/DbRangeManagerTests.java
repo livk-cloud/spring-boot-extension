@@ -103,7 +103,7 @@ class DbRangeManagerTests {
 		// exhaustion
 		class FailingDbRangeManager extends DbRangeManager {
 
-			public FailingDbRangeManager(DataSource ds) {
+			FailingDbRangeManager(DataSource ds) {
 				super(ds);
 			}
 
@@ -142,7 +142,7 @@ class DbRangeManagerTests {
 		// persistent DB failure
 		class NullReturningDbRangeManager extends DbRangeManager {
 
-			public NullReturningDbRangeManager(DataSource ds) {
+			NullReturningDbRangeManager(DataSource ds) {
 				super(ds);
 			}
 
