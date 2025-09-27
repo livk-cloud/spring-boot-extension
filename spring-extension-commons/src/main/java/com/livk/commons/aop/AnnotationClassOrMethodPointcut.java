@@ -75,6 +75,11 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 		return ObjectUtils.nullSafeEquals(this.methodResolver, otherAdvisor.methodResolver);
 	}
 
+	@Override
+	public int hashCode() {
+		return methodResolver.hashCode();
+	}
+
 	private static final class AnnotationClassOrMethodFilter extends AnnotationClassFilter {
 
 		private final AnnotationMethodsResolver methodResolver;
