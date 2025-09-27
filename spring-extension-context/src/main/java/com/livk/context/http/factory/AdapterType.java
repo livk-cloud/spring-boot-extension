@@ -31,6 +31,6 @@ public enum AdapterType {
 	/**
 	 * {@link AdapterFactory#getOrder()}进行排序
 	 */
-	AUTO;
+	AUTO
 
 }
