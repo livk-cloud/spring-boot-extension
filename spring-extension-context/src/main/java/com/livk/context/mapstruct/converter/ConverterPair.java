@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class ConverterPair {
+public final class ConverterPair {
 
 	private final Class<?> sourceType;
 
