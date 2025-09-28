@@ -16,7 +16,7 @@
 
 package com.livk.mapstruct.converter;
 
-import com.livk.commons.util.DateUtils;
+import com.livk.commons.util.LocalDateTimeUtils;
 import com.livk.context.mapstruct.converter.Converter;
 import com.livk.mapstruct.entity.User;
 import com.livk.mapstruct.entity.UserVO;
@@ -32,12 +32,12 @@ public interface UserConverter extends Converter<User, UserVO> {
 
 	@Mapping(target = "password", ignore = true)
 	@Mapping(target = "id", ignore = true)
-	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "createTime", source = "createTime", dateFormat = LocalDateTimeUtils.YMD_HMS)
 	@Mapping(target = "type", source = "type", numberFormat = "#")
 	@Override
 	User getSource(UserVO userVO);
 
-	@Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+	@Mapping(target = "createTime", source = "createTime", dateFormat = LocalDateTimeUtils.YMD_HMS)
 	@Mapping(target = "type", source = "type", numberFormat = "#")
 	@Override
 	UserVO getTarget(User user);
