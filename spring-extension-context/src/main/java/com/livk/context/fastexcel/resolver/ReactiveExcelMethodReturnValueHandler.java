@@ -50,7 +50,7 @@ import java.util.function.Function;
 /**
  * @author livk
  */
-public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandler, Ordered {
+public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport implements HandlerResultHandler, Ordered {
 
 	/**
 	 * The constant EXCEL_MEDIA_TYPE.
@@ -110,7 +110,7 @@ public class ReactiveExcelMethodReturnValueHandler implements HandlerResultHandl
 			Mono<Map<String, Collection<?>>> result) {
 		return result.flatMap(r -> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			FastExcelSupport.write(outputStream, excelModelClass, excelReturn.template(), r);
+			super.write(outputStream, excelModelClass, excelReturn.template(), r);
 			Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
 			return message.writeWith(bufferFlux);
 		});

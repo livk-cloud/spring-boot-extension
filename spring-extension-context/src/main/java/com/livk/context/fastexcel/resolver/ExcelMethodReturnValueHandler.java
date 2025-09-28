@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * @author livk
  */
-public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnValueHandler {
+public class ExcelMethodReturnValueHandler extends FastExcelSupport implements AsyncHandlerMethodReturnValueHandler {
 
 	/**
 	 * The constant UTF8.
@@ -71,7 +71,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 			try (ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response)) {
 				if (returnValue instanceof Collection) {
 					Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
-					FastExcelSupport.write(httpResponse.getBody(), excelModelClass, responseExcel.template(),
+					super.write(httpResponse.getBody(), excelModelClass, responseExcel.template(),
 							Map.of("sheet", (Collection<?>) returnValue));
 				}
 				else if (returnValue instanceof Map) {
@@ -80,7 +80,7 @@ public class ExcelMethodReturnValueHandler implements AsyncHandlerMethodReturnVa
 					Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType)
 						.getGeneric(1)
 						.resolveGeneric(0);
-					FastExcelSupport.write(httpResponse.getBody(), excelModelClass, responseExcel.template(), result);
+					super.write(httpResponse.getBody(), excelModelClass, responseExcel.template(), result);
 				}
 			}
 		}
