@@ -144,7 +144,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport impl
 		else {
 			type = elementType.resolve();
 		}
-		return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
+		return type != null && (Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type));
 	}
 
 }
