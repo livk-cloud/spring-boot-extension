@@ -32,12 +32,13 @@ class FastExcelSupportTests {
 
 	@Test
 	void write() {
+		CustomFastExcelSupport support = new CustomFastExcelSupport();
 		Map<String, List<Info>> data = Map.of("0", List.of(new Info("123456789"), new Info("987654321")));
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 		assertThat(stream.toByteArray()).isEmpty();
 
-		FastExcelSupport.write(stream, Info.class, null, data);
+		support.write(stream, Info.class, null, data);
 
 		assertThat(stream.toByteArray()).isNotEmpty();
 	}
@@ -53,6 +54,10 @@ class FastExcelSupportTests {
 
 	@ResponseExcel(fileName = "outFile", suffix = ResponseExcel.Suffix.XLS)
 	void fileNameResponse() {
+
+	}
+
+	static class CustomFastExcelSupport extends FastExcelSupport {
 
 	}
 

@@ -27,12 +27,12 @@ import com.livk.commons.io.ResourceUtils;
 import com.livk.commons.util.StreamUtils;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
@@ -42,8 +42,7 @@ import java.util.Map;
  * The type Easy excel utils.
  */
 @Slf4j
-@UtilityClass
-public class FastExcelSupport {
+public abstract class FastExcelSupport {
 
 	/**
 	 * Read.
@@ -71,11 +70,11 @@ public class FastExcelSupport {
 		ExcelWriterBuilder builder = FastExcel.write(outputStream);
 		if (StringUtils.hasText(location)) {
 			try {
-				File file = ResourceUtils.getFile(location);
-				builder.withTemplate(file);
+				Resource resource = ResourceUtils.getResource(location);
+				builder.withTemplate(resource.getInputStream());
 				templateWrite(builder, result);
 			}
-			catch (FileNotFoundException ex) {
+			catch (IOException ex) {
 				log.info("FastExcel uses the template error:{}", ex.getMessage(), ex);
 			}
 		}
@@ -85,7 +84,7 @@ public class FastExcelSupport {
 		}
 	}
 
-	private void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
+	protected void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
 		try (ExcelWriter writer = builder.build()) {
 			for (Map.Entry<String, ? extends Collection<?>> entry : result.entrySet()) {
 				WriteSheet sheet = FastExcel.writerSheet(entry.getKey()).build();
@@ -95,17 +94,11 @@ public class FastExcelSupport {
 		}
 	}
 
-	private void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
+	protected void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
 		try (ExcelWriter writer = builder.build()) {
 			result.entrySet().forEach(StreamUtils.forEachWithIndex(0, (entry, index) -> {
 				WriteSheet writeSheet = FastExcel.writerSheet(index, entry.getKey())
-					.registerWriteHandler(new SheetWriteHandler() {
-						@Override
-						public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder,
-								WriteSheetHolder writeSheetHolder) {
-							writeWorkbookHolder.getCachedWorkbook().setSheetName(index, entry.getKey());
-						}
-					})
+					.registerWriteHandler(new TemplateSheetWriteHandler(index, entry.getKey()))
 					.build();
 				writer.write(entry.getValue(), writeSheet);
 			}));
@@ -122,6 +115,20 @@ public class FastExcelSupport {
 	@Deprecated(since = "1.4.5")
 	public String fileName(ResponseExcel excelReturn) {
 		return ResponseExcel.Utils.parseName(excelReturn);
+	}
+
+	@RequiredArgsConstructor
+	private static class TemplateSheetWriteHandler implements SheetWriteHandler {
+
+		private final Integer sheetIndex;
+
+		private final String sheetName;
+
+		@Override
+		public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
+			writeWorkbookHolder.getCachedWorkbook().setSheetName(sheetIndex, sheetName);
+		}
+
 	}
 
 }
