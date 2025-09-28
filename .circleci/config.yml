@@ -6,7 +6,7 @@ executors:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2404:2024.11.1
+      image: ubuntu-2404:2025.09.1
       docker_layer_caching: true
     resource_class: arm.large
 
@@ -14,15 +14,29 @@ jobs:
   jdk21:
     executor: ubuntu
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt install openjdk-21-jdk
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg apt-transport-https
+          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
+            sudo tee /etc/apt/sources.list.d/adoptium.list
+          sudo apt-get update
+          sudo apt-get install -y temurin-21-jdk
       - checkout
       - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
-  jdk23:
+  jdk24:
     executor: ubuntu
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt install openjdk-23-jdk
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg apt-transport-https
+          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
+            sudo tee /etc/apt/sources.list.d/adoptium.list
+          sudo apt-get update
+          sudo apt-get install -y temurin-24-jdk
       - checkout
       - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
 
@@ -30,4 +44,4 @@ workflows:
   gradle-build:
     jobs:
       - jdk21
-      - jdk23
+      - jdk24
