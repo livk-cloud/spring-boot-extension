@@ -22,6 +22,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -32,6 +34,8 @@ import java.time.format.DateTimeFormatter;
  */
 @UtilityClass
 public class LocalDateTimeUtils {
+
+	private static final Map<String, DateTimeFormatter> FORMATTER_CACHE = new ConcurrentHashMap<>();
 
 	/**
 	 * YMD.
@@ -89,23 +93,24 @@ public class LocalDateTimeUtils {
 	/**
 	 * 日期 格式化
 	 * @param localDateTime the local date time
-	 * @param patten the patten
+	 * @param pattern the patten
 	 * @return the string
 	 */
-	public static String format(LocalDateTime localDateTime, String patten) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten);
+	public static String format(LocalDateTime localDateTime, String pattern) {
+		DateTimeFormatter formatter = FORMATTER_CACHE.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
 		return format(localDateTime, formatter);
 	}
 
 	/**
 	 * 日期 格式化
 	 * @param localDateTime the local date time
-	 * @param patten the patten
+	 * @param pattern the patten
 	 * @param zoneId zoneId
 	 * @return the string
 	 */
-	public static String format(LocalDateTime localDateTime, String patten, ZoneId zoneId) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patten).withZone(zoneId);
+	public static String format(LocalDateTime localDateTime, String pattern, ZoneId zoneId) {
+		DateTimeFormatter formatter = FORMATTER_CACHE.computeIfAbsent(pattern, DateTimeFormatter::ofPattern)
+			.withZone(zoneId);
 		return format(localDateTime, formatter);
 	}
 
@@ -126,7 +131,7 @@ public class LocalDateTimeUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+		DateTimeFormatter dateTimeFormatter = FORMATTER_CACHE.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
 		return LocalDateTime.parse(localDateTime, dateTimeFormatter);
 	}
 
@@ -138,7 +143,8 @@ public class LocalDateTimeUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern, ZoneId zoneId) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern).withZone(zoneId);
+		DateTimeFormatter dateTimeFormatter = FORMATTER_CACHE.computeIfAbsent(pattern, DateTimeFormatter::ofPattern)
+			.withZone(zoneId);
 		return LocalDateTime.parse(localDateTime, dateTimeFormatter);
 	}
 
