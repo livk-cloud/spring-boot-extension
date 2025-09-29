@@ -1,6 +1,5 @@
 [versions]
 spring-boot = "3.5.6"
-kotlin = "2.2.20"
 pagehelper-starter = "2.1.1"
 mybatis = "3.5.19"
 mybatis-spring = "3.0.5"
@@ -78,5 +77,4 @@ redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
 mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }

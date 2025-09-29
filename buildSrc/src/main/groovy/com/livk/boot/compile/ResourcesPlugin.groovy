@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.boot.maven
+package com.livk.boot.compile
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.plugins.signing.SigningPlugin
+import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.tasks.compile.JavaCompile
 
 /**
  * @author livk
  */
-abstract class DeployedPlugin : Plugin<Project> {
+abstract class ResourcesPlugin implements Plugin<Project> {
 
-	override fun apply(project: Project) {
-		project.pluginManager.apply(SigningPlugin::class.java)
-		project.pluginManager.apply(MavenRepositoryPlugin::class.java)
-		project.pluginManager.apply(MavenPortalPublishPlugin::class.java)
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaLibraryPlugin)
+		project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaCompile) { task ->
+			task.dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
+		}
 	}
 }

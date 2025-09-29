@@ -24,10 +24,12 @@ import org.gradle.api.plugins.JavaPlugin
 /**
  * @author livk
  */
-class ServicePlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(JavaPlugin::class.java)
-		project.pluginManager.apply(ModulePlugin::class.java)
-		project.pluginManager.apply(BootPlugin::class.java)
+class ServicePlugin implements Plugin<Project> {
+
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlugin)
+		project.pluginManager.apply(ModulePlugin)
+		project.pluginManager.apply(BootPlugin)
 	}
 }

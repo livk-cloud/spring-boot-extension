@@ -16,18 +16,24 @@
 
 package com.livk.boot
 
-import com.livk.boot.compile.ResourcesPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.tasks.bundling.Jar
 
 /**
  * @author livk
  */
-class CommonPlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(JavaLibraryPlugin::class.java)
-		project.pluginManager.apply(ModulePlugin::class.java)
-		project.pluginManager.apply(ResourcesPlugin::class.java)
+class RootPlugin implements Plugin<Project> {
+
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(BasePlugin)
+		project.pluginManager.apply(CorePlugin)
+
+		project.tasks.withType(Jar).configureEach { jar ->
+			jar.enabled = false
+		}
 	}
 }
+
