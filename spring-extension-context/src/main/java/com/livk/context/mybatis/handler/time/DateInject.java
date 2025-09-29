@@ -22,7 +22,9 @@ import java.util.Date;
 
 /**
  * @author livk
+ * @deprecated 停止支持{@link Date} use {@link LocalDateInject} or {@link LocalDateTimeInject}
  */
+@Deprecated(since = "1.5.5")
 public class DateInject implements InjectHandle<Date> {
 
 	@Override

@@ -19,10 +19,8 @@ package com.livk.commons.util;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,53 +28,36 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author livk
  */
 @Slf4j
-class DateUtilsTests {
+class LocalDateTimeUtilsTests {
 
 	@Test
 	void timestampTest() {
-		Long result = DateUtils.timestamp(LocalDateTime.now());
+		Long result = LocalDateTimeUtils.timestamp(LocalDateTime.now());
 		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void localDateTimeTest() {
-		LocalDateTime result = DateUtils.localDateTime(1663063303L);
-		assertThat(result).isNotNull();
-	}
-
-	@Test
-	void dateTest() {
-		Date result = DateUtils.date(LocalDate.now());
-		assertThat(result).isNotNull();
-	}
-
-	@Test
-	void testDateTest() {
-		Date result = DateUtils.date(LocalDateTime.now());
-		assertThat(result).isNotNull();
-	}
-
-	@Test
-	void toLocalDateTimeTest() {
-		LocalDateTime result = DateUtils.localDateTime(new Date());
+		LocalDateTime result = LocalDateTimeUtils.localDateTime(1663063303L);
 		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void formatTest() {
-		String result = DateUtils.format(LocalDateTime.now(), DateTimeFormatter.ofPattern(DateUtils.YMD_HMS));
+		String result = LocalDateTimeUtils.format(LocalDateTime.now(),
+				DateTimeFormatter.ofPattern(LocalDateTimeUtils.YMD_HMS));
 		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void testFormatTest() {
-		String result = DateUtils.format(LocalDateTime.now(), DateUtils.YMD_HMS);
+		String result = LocalDateTimeUtils.format(LocalDateTime.now(), LocalDateTimeUtils.YMD_HMS);
 		assertThat(result).isNotNull();
 	}
 
 	@Test
 	void parseTest() {
-		LocalDateTime result = DateUtils.parse("2022-09-13 18:05:12", DateUtils.YMD_HMS);
+		LocalDateTime result = LocalDateTimeUtils.parse("2022-09-13 18:05:12", LocalDateTimeUtils.YMD_HMS);
 		assertThat(result).isNotNull();
 	}
 

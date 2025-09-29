@@ -24,6 +24,8 @@ import com.livk.context.mybatis.handler.time.LocalDateTimeInject;
 import com.livk.context.mybatis.handler.time.TimestampInject;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author livk
  */
@@ -36,7 +38,9 @@ public enum InjectType implements InjectHandle<Object> {
 	DEFAULT(new NullInject()),
 	/**
 	 * The Date.
+	 * @deprecated 停止支持{@link Date} use {@link #LOCAL_DATE} or {@link #LOCAL_DATE_TIME}
 	 */
+	@Deprecated(since = "1.5.5")
 	DATE(new DateInject()),
 	/**
 	 * The Local date.
