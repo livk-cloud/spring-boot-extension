@@ -24,29 +24,30 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 /**
  * @author livk
  */
-abstract class MavenRepositoryPlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(MavenPublishPlugin::class.java)
-		project.extensions.getByType(PublishingExtension::class.java).apply {
+abstract class MavenRepositoryPlugin implements Plugin<Project> {
+
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(MavenPublishPlugin)
+
+		project.extensions.getByType(PublishingExtension).tap {
 			repositories.mavenLocal()
 			try {
-				val releasesRepoUrl = project.property("mvn.releasesRepoUrl").toString()
-				val snapshotsRepoUrl = project.property("mvn.releasesRepoUrl").toString()
+				def releasesRepoUrl = project.property('mvn.releasesRepoUrl').toString()
+				def snapshotsRepoUrl = project.property('mvn.releasesRepoUrl').toString()
 				repositories.maven { maven ->
-					//使用不安全的http请求、也就是缺失SSL
-					maven.name = "CustomizeMaven"
-					maven.isAllowInsecureProtocol = true
-					val url = if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-					maven.setUrl(url)
+					maven.name = 'CustomizeMaven'
+					maven.allowInsecureProtocol = true
+					def url = project.version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+					maven.url = url
 					maven.credentials {
-						it.username = project.property("mvn.username").toString()
-						it.password = project.property("mvn.password").toString()
+						it.username = project.property('mvn.username').toString()
+						it.password = project.property('mvn.password').toString()
 					}
 				}
-			} catch (_: Exception) {
-
+			} catch (Exception ignored) {
+				// 忽略异常
 			}
 		}
 	}
-
 }

@@ -27,20 +27,22 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 /**
  * @author livk
  */
-abstract class BootPlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(JavaPlugin::class.java)
-		project.pluginManager.apply(SpringBootPlugin::class.java)
+abstract class BootPlugin implements Plugin<Project> {
 
-		project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME, BootJar::class.java) {
-			it.archiveBaseName.set(project.name)
-			it.archiveFileName.set("${it.archiveBaseName.get()}.${it.archiveExtension.get()}")
-			it.launchScript()
-			it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlugin)
+		project.pluginManager.apply(SpringBootPlugin)
+
+		project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME, BootJar) { bootJar ->
+			bootJar.archiveBaseName.set(project.name)
+			bootJar.archiveFileName.set("${bootJar.archiveBaseName.get()}.${bootJar.archiveExtension.get()}")
+			bootJar.launchScript()
+			bootJar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 		}
 
-		project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar::class.java) {
-			it.enabled = false
+		project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar) { jar ->
+			jar.enabled = false
 		}
 	}
 }

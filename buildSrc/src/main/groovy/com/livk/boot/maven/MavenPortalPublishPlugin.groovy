@@ -24,19 +24,17 @@ import org.gradle.api.Project
 /**
  * @author livk
  */
-abstract class MavenPortalPublishPlugin : Plugin<Project> {
+abstract class MavenPortalPublishPlugin implements Plugin<Project> {
 
-	override fun apply(project: Project) {
-		project.pluginManager.apply(MavenPublishPlugin::class.java)
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(MavenPublishPlugin)
 
-		val group = project.group.toString()
+		def group = project.group.toString()
 
-		project.extensions.getByType(MavenPublishBaseExtension::class.java).apply {
-
+		project.extensions.getByType(MavenPublishBaseExtension).tap {
 			publishToMavenCentral()
-
 			signAllPublications()
-
 			coordinates(group, project.name, project.version.toString())
 
 			pom { pom ->
@@ -44,17 +42,17 @@ abstract class MavenPortalPublishPlugin : Plugin<Project> {
 					pom.name.set(project.name)
 					pom.description.set(project.description)
 				}
-				pom.url.set("https://github.com/livk-cloud/" + project.rootProject.name)
+				pom.url.set("https://github.com/livk-cloud/${project.rootProject.name}")
 				pom.licenses { licenses ->
 					licenses.license { license ->
-						license.name.set("The Apache License, Version 2.0")
-						license.url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+						license.name.set('The Apache License, Version 2.0')
+						license.url.set('https://www.apache.org/licenses/LICENSE-2.0.txt')
 					}
 				}
 				pom.developers { developers ->
 					developers.developer { developer ->
-						developer.name.set("livk")
-						developer.email.set("livk.cloud@gmail.com")
+						developer.name.set('livk')
+						developer.email.set('livk.cloud@gmail.com')
 					}
 				}
 				pom.scm { scm ->

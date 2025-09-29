@@ -16,25 +16,20 @@
 
 package com.livk.boot
 
-import com.livk.boot.dependency.AptCompilePlugin
-import com.livk.boot.dependency.ManagementPlugin
-import com.livk.boot.dependency.OptionalPlugin
-import com.livk.boot.info.ManifestPlugin
-import com.livk.boot.tasks.DeleteExpand
+import com.livk.boot.compile.ResourcesPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaLibraryPlugin
 
 /**
  * @author livk
  */
-class CorePlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(DeleteExpand::class.java)
-		project.pluginManager.apply(ManagementPlugin::class.java)
-		project.pluginManager.apply(OptionalPlugin::class.java)
-		project.pluginManager.apply(AptCompilePlugin::class.java)
-		project.pluginManager.apply(ManifestPlugin::class.java)
+class CommonPlugin implements Plugin<Project> {
+
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaLibraryPlugin)
+		project.pluginManager.apply(ModulePlugin)
+		project.pluginManager.apply(ResourcesPlugin)
 	}
-
 }
-

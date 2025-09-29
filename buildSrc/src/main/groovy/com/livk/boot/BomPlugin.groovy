@@ -25,11 +25,12 @@ import org.gradle.api.plugins.JavaPlatformPlugin
 /**
  * @author livk
  */
-class BomPlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(JavaPlatformPlugin::class.java)
-		project.pluginManager.apply(DeployedPlugin::class.java)
+class BomPlugin implements Plugin<Project> {
 
-		project.extensions.getByType(JavaPlatformExtension::class.java).allowDependencies()
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(JavaPlatformPlugin)
+		project.pluginManager.apply(DeployedPlugin)
+		project.extensions.getByType(JavaPlatformExtension).allowDependencies()
 	}
 }

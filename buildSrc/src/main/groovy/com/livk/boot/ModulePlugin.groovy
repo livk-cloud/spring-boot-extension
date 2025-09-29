@@ -25,46 +25,45 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.tasks.bundling.Jar
-import java.io.File
 
 /**
  * @author livk
  */
-class ModulePlugin : Plugin<Project> {
-	override fun apply(project: Project) {
-		project.pluginManager.apply(CompileArgsPlugin::class.java)
-		project.pluginManager.apply(CorePlugin::class.java)
-		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
+class ModulePlugin implements Plugin<Project> {
 
-		project.pluginManager.apply(CheckstylePlugin::class.java)
+	@Override
+	void apply(Project project) {
+		project.pluginManager.apply(CompileArgsPlugin)
+		project.pluginManager.apply(CorePlugin)
+		project.pluginManager.apply(SpringJavaFormatPlugin)
+		project.pluginManager.apply(CheckstylePlugin)
 
-		project.extensions.getByType(CheckstyleExtension::class.java).apply {
-			toolVersion = "9.3"
-			configFile = File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
+		project.extensions.getByType(CheckstyleExtension).with {
+			toolVersion = '9.3'
+			configFile = new File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
 		}
 
-		val version = project.rootProject
+		def version = project.rootProject
 			.extensions
-			.getByType(VersionCatalogsExtension::class.java)
-			.named("libs")
-			.findVersion("spring-javaformat")
+			.getByType(VersionCatalogsExtension)
+			.named('libs')
+			.findVersion('spring-javaformat')
 			.get()
 			.displayName
 
-		project.dependencies.add("checkstyle", "io.spring.javaformat:spring-javaformat-checkstyle:${version}")
+		project.dependencies.add('checkstyle', "io.spring.javaformat:spring-javaformat-checkstyle:${version}")
 
-		project.tasks.register("checkstyle") { checkstyle ->
-			checkstyle.group = "other"
-			checkstyle.dependsOn("checkstyleMain", "checkstyleTest", "checkFormat")
+		project.tasks.register('checkstyle') { checkstyle ->
+			checkstyle.group = 'other'
+			checkstyle.dependsOn('checkstyleMain', 'checkstyleTest', 'checkFormat')
 		}
 
-		val extractResourcesProvider =
-			project.tasks.register("extractLegalResources", ExtractResources::class.java) {
-				it.getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
-				it.setResourcesNames(listOf("LICENSE.txt"))
-			}
+		def extractResourcesProvider = project.tasks.register('extractLegalResources', ExtractResources) { task ->
+			task.destinationDirectory.set(project.layout.buildDirectory.dir('legal'))
+			task.resourceNames = ['LICENSE.txt']
+		}
 
-		project.tasks.withType(Jar::class.java) { jar ->
+		project.tasks.withType(Jar).configureEach { jar ->
 			jar.dependsOn(extractResourcesProvider)
 			jar.metaInf { metaInf ->
 				metaInf.from(extractResourcesProvider)
