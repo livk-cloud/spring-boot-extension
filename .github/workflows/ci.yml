@@ -32,7 +32,7 @@ jobs:
             ~/*.gradle*
             ~/**/gradle-wrapper.properties
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4.4.3
+        uses: gradle/actions/setup-gradle@v4.4.4
 
       - name: Gradle Run Build
         run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
