@@ -20,6 +20,7 @@ import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
+import io.lettuce.core.search.SearchReply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,9 @@ public class StudentController {
 	public HttpEntity<Flux<Student>> list(@RequestParam(defaultValue = "*") String query) {
 		RedisModulesReactiveCommands<String, String> search = template.reactive();
 		Flux<Student> flux = search.ftSearch(Student.INDEX, query)
+			.map(SearchReply::getResults)
 			.flatMapMany(Flux::fromIterable)
-			.map(document -> JsonMapperUtils.convertValue(document, Student.class));
+			.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class));
 		return ResponseEntity.ok(flux);
 	}
 

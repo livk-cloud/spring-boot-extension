@@ -21,8 +21,9 @@ import com.livk.commons.util.BeanLambda;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
-import com.redis.lettucemod.search.Field;
-import com.redis.lettucemod.search.SearchResults;
+import io.lettuce.core.search.SearchReply;
+import io.lettuce.core.search.arguments.TagFieldArgs;
+import io.lettuce.core.search.arguments.TextFieldArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -46,7 +48,6 @@ public class RediSearchApp {
 	}
 
 	@Bean
-	@SuppressWarnings("unchecked")
 	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
 		return (args) -> {
 			RedisModulesReactiveCommands<String, String> reactive = template.reactive();
@@ -54,11 +55,20 @@ public class RediSearchApp {
 			Mono<Void> createIndex = reactive.ftList()
 				.any(index -> index.equals(Student.INDEX))
 				.filter(exists -> !exists)
-				.flatMap(exists -> reactive
-					.ftCreate(Student.INDEX, Field.text(BeanLambda.fieldName(Student::getName)).weight(5.0).build(),
-							Field.text(BeanLambda.fieldName(Student::getSex)).build(),
-							Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build())
-					.then());
+				.flatMap(exist -> {
+					TextFieldArgs<String> nameArg = TextFieldArgs.<String>builder()
+						.name(BeanLambda.fieldName(Student::getName))
+						.weight(5)
+						.build();
+					TextFieldArgs<String> sexArg = TextFieldArgs.<String>builder()
+						.name(BeanLambda.fieldName(Student::getSex))
+						.build();
+					TextFieldArgs<String> descArg = TextFieldArgs.<String>builder()
+						.name(BeanLambda.fieldName(Student::getDesc))
+						.build();
+					TagFieldArgs<String> tagArg = TagFieldArgs.<String>builder().name("class").build();
+					return reactive.ftCreate(Student.INDEX, List.of(nameArg, sexArg, descArg, tagArg)).then();
+				});
 			ThreadLocalRandom random = ThreadLocalRandom.current();
 			Flux<Student> studentFlux = Flux.range(0, 10).map(i -> {
 				int randomNum = random.nextInt(2);
@@ -74,12 +84,13 @@ public class RediSearchApp {
 				return reactive.hmset(key, body);
 			});
 
-			Mono<SearchResults<String, String>> searchResult = reactive.ftSearch(Student.INDEX, "*");
+			Mono<SearchReply<String, String>> searchResult = reactive.ftSearch(Student.INDEX, "*");
 
 			createIndex.thenMany(insertData)
 				.then(searchResult)
+				.map(SearchReply::getResults)
 				.flatMapMany(Flux::fromIterable)
-				.map(document -> JsonMapperUtils.convertValue(document, Student.class))
+				.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class))
 				.doOnNext(student -> log.info("{}", student))
 				.subscribe();
 		};
