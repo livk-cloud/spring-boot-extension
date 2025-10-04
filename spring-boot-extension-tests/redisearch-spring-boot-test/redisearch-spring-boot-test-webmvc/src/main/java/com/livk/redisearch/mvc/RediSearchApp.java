@@ -21,15 +21,16 @@ import com.livk.commons.util.BeanLambda;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
-import com.redis.lettucemod.search.Document;
-import com.redis.lettucemod.search.Field;
-import com.redis.lettucemod.search.SearchResults;
+import io.lettuce.core.search.SearchReply;
+import io.lettuce.core.search.arguments.TagFieldArgs;
+import io.lettuce.core.search.arguments.TextFieldArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -51,9 +52,18 @@ public class RediSearchApp {
 			RedisModulesCommands<String, String> search = template.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
-				search.ftCreate(Student.INDEX, Field.text(BeanLambda.fieldName(Student::getName)).weight(5.0).build(),
-						Field.text(BeanLambda.fieldName(Student::getSex)).build(),
-						Field.text(BeanLambda.fieldName(Student::getDesc)).build(), Field.tag("class").build());
+				TextFieldArgs<String> nameArg = TextFieldArgs.<String>builder()
+					.name(BeanLambda.fieldName(Student::getName))
+					.weight(5)
+					.build();
+				TextFieldArgs<String> sexArg = TextFieldArgs.<String>builder()
+					.name(BeanLambda.fieldName(Student::getSex))
+					.build();
+				TextFieldArgs<String> descArg = TextFieldArgs.<String>builder()
+					.name(BeanLambda.fieldName(Student::getDesc))
+					.build();
+				TagFieldArgs<String> tagArg = TagFieldArgs.<String>builder().name("class").build();
+				search.ftCreate(Student.INDEX, List.of(nameArg, sexArg, descArg, tagArg));
 			}
 			ThreadLocalRandom random = ThreadLocalRandom.current();
 			for (int i = 0; i < 10; i++) {
@@ -65,9 +75,9 @@ public class RediSearchApp {
 				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
 				search.hmset("00" + i, body);
 			}
-			SearchResults<String, String> result = search.ftSearch(Student.INDEX, "*");
-			for (Document<String, String> document : result) {
-				Student bean = JsonMapperUtils.convertValue(document, Student.class);
+			SearchReply<String, String> result = search.ftSearch(Student.INDEX, "*");
+			for (SearchReply.SearchResult<String, String> resultResult : result.getResults()) {
+				Student bean = JsonMapperUtils.convertValue(resultResult.getFields(), Student.class);
 				log.info("{}", bean);
 			}
 		};

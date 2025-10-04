@@ -20,7 +20,7 @@ import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.redisearch.StringRediSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
-import com.redis.lettucemod.search.SearchResults;
+import io.lettuce.core.search.SearchReply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -44,9 +44,10 @@ public class StudentController {
 	@GetMapping
 	public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
 		RedisModulesCommands<String, String> search = template.sync();
-		SearchResults<String, String> result = search.ftSearch(Student.INDEX, query);
-		List<Student> studentList = result.stream()
-			.map(document -> JsonMapperUtils.convertValue(document, Student.class))
+		SearchReply<String, String> result = search.ftSearch(Student.INDEX, query);
+		List<Student> studentList = result.getResults()
+			.stream()
+			.map(searchResult -> JsonMapperUtils.convertValue(searchResult.getFields(), Student.class))
 			.toList();
 		return ResponseEntity.ok(studentList);
 	}
