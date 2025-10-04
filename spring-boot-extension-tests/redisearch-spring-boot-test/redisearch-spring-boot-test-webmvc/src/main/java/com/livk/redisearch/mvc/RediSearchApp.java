@@ -46,7 +46,6 @@ public class RediSearchApp {
 	}
 
 	@Bean
-	@SuppressWarnings("unchecked")
 	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
 		return (args) -> {
 			RedisModulesCommands<String, String> search = template.sync();
