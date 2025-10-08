@@ -31,48 +31,48 @@ import java.util.Date;
  * </p>
  *
  * @author livk
- * @deprecated 停止支持{@link Date} use {@link LocalDateTimeUtils}
+ * @deprecated 停止支持{@link Date} use {@link Jsr310Utils}
  */
 @UtilityClass
 @Deprecated(since = "1.5.5")
 public class DateUtils {
 
 	/**
-	 * LocalDateTime 转时间戳
+	 * LocalDateTime 转秒级时间戳
 	 * @param localDateTime the local date time
 	 * @return the long
 	 */
 	public static Long timestamp(LocalDateTime localDateTime) {
-		return LocalDateTimeUtils.timestamp(localDateTime);
+		return Jsr310Utils.timestamp(localDateTime);
 	}
 
 	/**
-	 * LocalDateTime 转时间戳
+	 * LocalDateTime 转秒级时间戳
 	 * @param localDateTime the local date time
 	 * @param zoneId zoneId
 	 * @return the long
 	 */
 	public static Long timestamp(LocalDateTime localDateTime, ZoneId zoneId) {
-		return LocalDateTimeUtils.timestamp(localDateTime, zoneId);
+		return Jsr310Utils.timestamp(localDateTime, zoneId);
 	}
 
 	/**
-	 * 时间戳转LocalDateTime
+	 * 秒级时间戳转LocalDateTime
 	 * @param timeStamp the time stamp
 	 * @return the local date time
 	 */
 	public static LocalDateTime localDateTime(Long timeStamp) {
-		return LocalDateTimeUtils.localDateTime(timeStamp);
+		return Jsr310Utils.datetime(timeStamp);
 	}
 
 	/**
-	 * 时间戳转LocalDateTime
+	 * 秒级时间戳转LocalDateTime
 	 * @param timeStamp the time stamp
 	 * @param zoneId zoneId
 	 * @return the local date time
 	 */
 	public static LocalDateTime localDateTime(Long timeStamp, ZoneId zoneId) {
-		return LocalDateTimeUtils.localDateTime(timeStamp, zoneId);
+		return Jsr310Utils.datetime(timeStamp, zoneId);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class DateUtils {
 	 * @return the string
 	 */
 	public static String format(LocalDateTime localDateTime, String patten) {
-		return LocalDateTimeUtils.format(localDateTime, patten);
+		return Jsr310Utils.format(localDateTime, patten);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DateUtils {
 	 * @return the string
 	 */
 	public static String format(LocalDateTime localDateTime, String patten, ZoneId zoneId) {
-		return LocalDateTimeUtils.format(localDateTime, patten, zoneId);
+		return Jsr310Utils.format(localDateTime, patten, zoneId);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class DateUtils {
 	 * @return the string
 	 */
 	public static String format(LocalDateTime localDateTime, DateTimeFormatter formatter) {
-		return LocalDateTimeUtils.format(localDateTime, formatter);
+		return Jsr310Utils.format(localDateTime, formatter);
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class DateUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern) {
-		return LocalDateTimeUtils.parse(localDateTime, pattern);
+		return Jsr310Utils.parseDateTime(localDateTime, pattern);
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class DateUtils {
 	 * @return the local date time
 	 */
 	public static LocalDateTime parse(String localDateTime, String pattern, ZoneId zoneId) {
-		return LocalDateTimeUtils.parse(localDateTime, pattern, zoneId);
+		return Jsr310Utils.parseDateTime(localDateTime, pattern, zoneId);
 	}
 
 }

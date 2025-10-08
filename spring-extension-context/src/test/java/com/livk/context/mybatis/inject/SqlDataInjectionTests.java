@@ -17,7 +17,7 @@
 package com.livk.context.mybatis.inject;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.livk.commons.util.LocalDateTimeUtils;
+import com.livk.commons.util.Jsr310Utils;
 import com.livk.context.mybatis.SqlDataInjection;
 import com.livk.context.mybatis.annotation.SqlInject;
 import com.livk.context.mybatis.enums.SqlFill;
@@ -143,11 +143,11 @@ class SqlDataInjectionTests {
 
 		private String username;
 
-		@JsonFormat(pattern = LocalDateTimeUtils.YMD_HMS, timezone = "GMT+8")
+		@JsonFormat(pattern = Jsr310Utils.NORM_DATETIME_PATTERN, timezone = "GMT+8")
 		@SqlInject(fill = SqlFill.INSERT)
 		private LocalDateTime insertTime;
 
-		@JsonFormat(pattern = LocalDateTimeUtils.YMD_HMS, timezone = "GMT+8")
+		@JsonFormat(pattern = Jsr310Utils.NORM_DATETIME_PATTERN, timezone = "GMT+8")
 		@SqlInject(fill = SqlFill.INSERT_UPDATE)
 		private LocalDateTime updateTime;
 

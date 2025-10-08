@@ -16,7 +16,7 @@
 
 package com.livk.mapstruct.converter;
 
-import com.livk.commons.util.LocalDateTimeUtils;
+import com.livk.commons.util.Jsr310Utils;
 import com.livk.mapstruct.entity.User;
 import com.livk.mapstruct.entity.UserVO;
 import org.jspecify.annotations.Nullable;
@@ -33,7 +33,7 @@ public interface UserVOSpringConverter extends Converter<UserVO, User> {
 
 	@Mapping(target = "password", ignore = true)
 	@Mapping(target = "id", ignore = true)
-	@Mapping(target = "createTime", source = "createTime", dateFormat = LocalDateTimeUtils.YMD_HMS)
+	@Mapping(target = "createTime", source = "createTime", dateFormat = Jsr310Utils.NORM_DATETIME_PATTERN)
 	@Mapping(target = "type", source = "type", numberFormat = "#")
 	@Override
 	User convert(@Nullable UserVO source);
