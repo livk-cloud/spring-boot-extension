@@ -24,7 +24,7 @@ mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.47"
-okhttp = "5.2.0"
+okhttp = "5.2.1"
 spotbugs-annotations = "4.9.6"
 maven-publish-plugins = "0.34.0"
 
