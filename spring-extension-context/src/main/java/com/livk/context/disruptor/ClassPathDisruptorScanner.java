@@ -16,7 +16,7 @@
 
 package com.livk.context.disruptor;
 
-import com.livk.commons.spring.AnnotationBeanDefinitionScanner;
+import com.livk.commons.annotation.AnnotationBeanDefinitionScanner;
 import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.ClassUtils;
 import com.livk.context.disruptor.annotation.DisruptorEvent;

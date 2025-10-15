@@ -16,7 +16,7 @@
 
 package com.livk.context.http;
 
-import com.livk.commons.spring.AnnotationBeanDefinitionScanner;
+import com.livk.commons.annotation.AnnotationBeanDefinitionScanner;
 import com.livk.commons.util.ClassUtils;
 import com.livk.context.http.annotation.HttpProvider;
 import com.livk.context.http.exception.HttpServiceRegistrarException;

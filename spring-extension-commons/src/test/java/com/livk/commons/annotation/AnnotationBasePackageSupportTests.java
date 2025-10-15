@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.annotation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
@@ -42,11 +42,11 @@ class AnnotationBasePackageSupportTests {
 	void getBasePackages() {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(Config.class);
 		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
-		assertThat(basePackages).containsExactly("com.livk.commons.spring");
+		assertThat(basePackages).containsExactly(AnnotationBasePackageSupportTests.class.getPackageName());
 
 		contextRunner.run(context -> {
 			String[] packages = AnnotationBasePackageSupport.getBasePackages(context);
-			assertThat(packages).containsExactly("com.livk.commons.spring");
+			assertThat(packages).containsExactly(AnnotationBasePackageSupportTests.class.getPackageName());
 		});
 	}
 
