@@ -21,6 +21,7 @@ import com.livk.context.mybatis.handler.NullInject;
 import com.livk.context.mybatis.handler.time.DateInject;
 import com.livk.context.mybatis.handler.time.LocalDateInject;
 import com.livk.context.mybatis.handler.time.LocalDateTimeInject;
+import com.livk.context.mybatis.handler.time.LocalTimeInject;
 import com.livk.context.mybatis.handler.time.TimestampInject;
 import lombok.RequiredArgsConstructor;
 
@@ -43,13 +44,17 @@ public enum InjectType implements InjectHandle<Object> {
 	@Deprecated(since = "1.5.5")
 	DATE(new DateInject()),
 	/**
-	 * The Local date.
+	 * The date.
 	 */
 	LOCAL_DATE(new LocalDateInject()),
 	/**
-	 * The Local date time.
+	 * The datetime.
 	 */
 	LOCAL_DATE_TIME(new LocalDateTimeInject()),
+	/**
+	 * The time
+	 */
+	LOCAL_TIME(new LocalTimeInject()),
 	/**
 	 * The Timestamp.
 	 */

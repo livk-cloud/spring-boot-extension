@@ -451,7 +451,7 @@ public class Jsr310Utils {
 	 * @param end 结束时间
 	 * @return 相差的秒数（end - start）
 	 */
-	public static long secondsBetween(LocalDateTime start, LocalDateTime end) {
+	public static long secondsBetween(Temporal start, Temporal end) {
 		return ChronoUnit.SECONDS.between(start, end);
 	}
 
@@ -461,7 +461,7 @@ public class Jsr310Utils {
 	 * @param end 结束时间
 	 * @return 相差的分钟数（end - start）
 	 */
-	public static long minutesBetween(LocalDateTime start, LocalDateTime end) {
+	public static long minutesBetween(Temporal start, Temporal end) {
 		return ChronoUnit.MINUTES.between(start, end);
 	}
 
@@ -471,7 +471,7 @@ public class Jsr310Utils {
 	 * @param end 结束时间
 	 * @return 相差的小时数（end - start）
 	 */
-	public static long hoursBetween(LocalDateTime start, LocalDateTime end) {
+	public static long hoursBetween(Temporal start, Temporal end) {
 		return ChronoUnit.HOURS.between(start, end);
 	}
 
@@ -481,7 +481,7 @@ public class Jsr310Utils {
 	 * @param end 结束时间
 	 * @return 相差的天数（end - start）
 	 */
-	public static long daysBetween(LocalDateTime start, LocalDateTime end) {
+	public static long daysBetween(Temporal start, Temporal end) {
 		return ChronoUnit.DAYS.between(start, end);
 	}
 
