@@ -16,7 +16,7 @@
 
 package com.livk.context.http;
 
-import com.livk.commons.spring.AnnotationBasePackageSupport;
+import com.livk.commons.annotation.AnnotationBasePackageSupport;
 import com.livk.commons.util.ObjectUtils;
 import com.livk.context.disruptor.DisruptorScan;
 import com.livk.context.disruptor.exception.DisruptorRegistrarException;

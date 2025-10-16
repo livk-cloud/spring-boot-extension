@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.annotation;
 
 import org.springframework.context.annotation.Import;
 

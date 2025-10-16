@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.annotation;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import org.junit.jupiter.api.Test;
@@ -30,30 +30,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class AutoImportSelectorTests {
-
-	final AutoImportSelector importSelector = new AutoImportSelector();
+class SpringAbstractImportSelectorTests {
 
 	@Test
-	void test() {
-		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(Config.class));
-		String[] result = new String[] { ImportConfig.class.getName() };
+	void testFindAnnotation() {
+		MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
+		assertThat(selector.getAnnotationClass()).isEqualTo(MyAnnotation.class);
+
+		String[] imports = selector.selectImports(AnnotationMetadata.introspect(Config.class));
+		String[] result = new String[] { MyAnnotationConfig.class.getName() };
 		assertThat(imports).containsExactly(result);
 	}
 
-	@AutoImport
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface AutoServiceImport {
+	@interface MyAnnotation {
 
 	}
 
-	@SpringAutoService(AutoServiceImport.class)
-	static class ImportConfig {
+	static class MyAnnotationImportSelector extends SpringAbstractImportSelector<MyAnnotation> {
 
 	}
 
-	@AutoServiceImport
+	@SpringAutoService(MyAnnotation.class)
+	static class MyAnnotationConfig {
+
+	}
+
+	@MyAnnotation
 	static class Config {
 
 	}

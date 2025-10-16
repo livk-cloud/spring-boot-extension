@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.spring;
+package com.livk.commons.annotation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -40,7 +40,7 @@ class AnnotationBeanDefinitionScannerTests {
 	void test() {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		ClassPathBeanDefinitionScanner scanner = new MyAnnotationBeanDefinitionScanner(registry);
-		scanner.scan("com.livk.commons.spring");
+		scanner.scan(AnnotationBeanDefinitionScannerTests.class.getPackageName());
 		assertThat(registry.containsBeanDefinition("annotationBeanDefinitionScannerTests.Config")).isTrue();
 	}
 
