@@ -17,12 +17,12 @@
 package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.HttpReactiveUtils;
 import com.livk.context.fastexcel.ExcelDataType;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
+import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapter;
@@ -62,7 +62,7 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 		if (requestExcel != null && excelParam != null
 				&& this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
 			mono = HttpReactiveUtils.getPartRequest(excelParam.fileName(), exchange).flatMap(request -> {
-				ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(requestExcel.parse());
+				ExcelMapReadListener<?> listener = new TypeExcelMapReadListener<>();
 				ResolvableType elementType = Objects.equals(resolvableType.resolve(), Mono.class)
 						? resolvableType.getGeneric(0) : resolvableType;
 				if (elementType.getRawClass() != null) {

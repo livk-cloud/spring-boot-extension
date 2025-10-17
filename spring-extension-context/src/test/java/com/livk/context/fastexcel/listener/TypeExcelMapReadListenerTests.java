@@ -30,16 +30,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class DefaultExcelMapReadListenerTests {
+class TypeExcelMapReadListenerTests {
 
-	static final DefaultExcelMapReadListener listener = new DefaultExcelMapReadListener();
+	static final ExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
 
 	@Test
 	void test() throws IOException {
 		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
 		listener.execute(inputStream, Info.class, true);
 
-		Map<String, ? extends Collection<Object>> map = listener.getMapData();
+		Map<String, ? extends Collection<Info>> map = listener.getMapData();
 		assertThat(map).isNotEmpty();
 		assertThat(map).hasSize(1);
 		assertThat(map).containsKey("0");

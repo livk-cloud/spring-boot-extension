@@ -18,6 +18,8 @@ package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.context.fastexcel.Info;
+import com.livk.context.fastexcel.listener.ExcelMapReadListener;
+import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
@@ -60,7 +62,7 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 
 	@Test
 	void handleResult() {
-		Info.InfoMapReadListener listener = new Info.InfoMapReadListener();
+		ExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo"));
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 

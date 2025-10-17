@@ -20,7 +20,6 @@ import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
 import com.livk.excel.reactive.entity.Info;
-import com.livk.excel.reactive.listener.InfoExcelListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -38,34 +37,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InfoController {
 
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("upload")
 	public HttpEntity<List<Info>> upload(@ExcelParam List<Info> dataExcels) {
 		return ResponseEntity.ok(dataExcels);
 	}
 
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadMono")
 	public Mono<HttpEntity<List<Info>>> uploadMono(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels.map(ResponseEntity::ok);
 	}
 
 	@ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadDownLoad")
 	public List<Info> uploadDownLoadMono(@ExcelParam List<Info> dataExcels) {
 		return dataExcels;
 	}
 
 	@ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadDownLoadMono")
 	public Mono<List<Info>> uploadDownLoadMono(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels;
 	}
 
 	@ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadDownLoadFlux")
 	public Flux<Info> uploadDownLoadFlux(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels.flatMapMany(Flux::fromIterable);

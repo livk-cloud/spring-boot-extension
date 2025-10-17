@@ -21,7 +21,6 @@ import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
 import com.livk.excel.mvc.entity.Info;
-import com.livk.excel.mvc.listener.InfoExcelListener;
 import com.livk.excel.mvc.service.InfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,7 @@ public class InfoController {
 
 	private final InfoService infoService;
 
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("upload")
 	public HttpEntity<Boolean> upload(@ExcelParam List<Info> dataExcels,
 			@RequestParam(defaultValue = "false") Boolean async, @RequestParam(defaultValue = "1") Integer multiple) {
@@ -69,7 +68,7 @@ public class InfoController {
 		return ts;
 	}
 
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadList")
 	public HttpEntity<List<Info>> uploadList(@ExcelParam List<Info> dataExcels) {
 		return ResponseEntity.ok(dataExcels);
