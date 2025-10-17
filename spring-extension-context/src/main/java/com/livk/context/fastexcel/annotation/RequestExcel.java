@@ -16,9 +16,6 @@
 
 package com.livk.context.fastexcel.annotation;
 
-import com.livk.context.fastexcel.listener.DefaultExcelMapReadListener;
-import com.livk.context.fastexcel.listener.ExcelMapReadListener;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -49,12 +46,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestExcel {
-
-	/**
-	 * Parse class.
-	 * @return the class
-	 */
-	Class<? extends ExcelMapReadListener<?>> parse() default DefaultExcelMapReadListener.class;
 
 	/**
 	 * Ignore empty row boolean.

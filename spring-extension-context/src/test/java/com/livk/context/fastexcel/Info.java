@@ -20,7 +20,6 @@ import cn.idev.excel.annotation.ExcelProperty;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
-import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -60,10 +59,6 @@ public class Info implements Serializable {
 	@ResponseExcel(fileName = "file")
 	Flux<Info> resolveResponseReactive() {
 		return Flux.empty();
-	}
-
-	public static class InfoMapReadListener extends TypeExcelMapReadListener<Info> {
-
 	}
 
 }

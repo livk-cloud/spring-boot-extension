@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author livk
  */
-public abstract class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T> {
+public final class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T> {
 
 	private final Map<String, Collection<T>> mapData = new HashMap<>();
 

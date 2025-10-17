@@ -16,11 +16,11 @@
 
 package com.livk.context.fastexcel.resolver;
 
-import com.livk.commons.util.BeanUtils;
 import com.livk.context.fastexcel.ExcelDataType;
 import com.livk.context.fastexcel.annotation.ExcelParam;
 import com.livk.context.fastexcel.annotation.RequestExcel;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
+import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
@@ -52,7 +52,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 		RequestExcel requestExcel = parameter.getMethodAnnotation(RequestExcel.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		if (Objects.nonNull(requestExcel) && Objects.nonNull(request) && Objects.nonNull(excelParam)) {
-			ExcelMapReadListener<?> listener = BeanUtils.instantiateClass(requestExcel.parse());
+			ExcelMapReadListener<?> listener = new TypeExcelMapReadListener<>();
 			if (this.canRead(parameter.getParameterType(), request)) {
 				ExcelDataType dataType = ExcelDataType.match(parameter.getParameterType());
 				Class<?> excelModelClass = dataType.apply(ResolvableType.forMethodParameter(parameter));
