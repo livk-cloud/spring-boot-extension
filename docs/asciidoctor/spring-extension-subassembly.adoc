@@ -100,6 +100,8 @@ include::{basedir}/redisson.adoc[]
 
 include::{basedir}/sequence.adoc[]
 
+include::{basedir}/storage.adoc[]
+
 include::{basedir}/useragent.adoc[]
 
 

@@ -1,5 +1,5 @@
-[[spring]]
-==== spring
+[[annotation]]
+==== annotation
 
 ===== SpringAbstractImportSelector
 

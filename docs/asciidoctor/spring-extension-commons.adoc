@@ -35,6 +35,8 @@
 ----
 --
 
+include::{basedir}/annotation.adoc[]
+
 include::{basedir}/aop.adoc[]
 
 include::{basedir}/expression.adoc[]
@@ -42,6 +44,8 @@ include::{basedir}/expression.adoc[]
 include::{basedir}/http.adoc[]
 
 include::{basedir}/jackson.adoc[]
+
+include::{basedir}/micrometer.adoc[]
 
 include::{basedir}/util.adoc[]
 
