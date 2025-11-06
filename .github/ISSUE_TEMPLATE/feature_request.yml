@@ -24,5 +24,3 @@ body:
       label: 功能改进
       description: 请详细描述需要改进或者添加的功能。
       placeholder: "功能改进"
-    validations:
-      required: true
