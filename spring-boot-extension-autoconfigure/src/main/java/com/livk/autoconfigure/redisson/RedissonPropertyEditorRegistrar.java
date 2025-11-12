@@ -16,7 +16,13 @@
 
 package com.livk.autoconfigure.redisson;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -35,14 +41,18 @@ import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
 import org.redisson.codec.ReferenceCodecProvider;
 import org.redisson.config.BaseMasterSlaveServersConfig;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.CommandMapper;
 import org.redisson.config.Config;
-import org.redisson.config.ConfigSupport;
 import org.redisson.config.CredentialsResolver;
 import org.redisson.config.DecorrelatedJitterDelay;
 import org.redisson.config.DelayStrategy;
 import org.redisson.config.EqualJitterDelay;
 import org.redisson.config.FullJitterDelay;
+import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.ReplicatedServersConfig;
+import org.redisson.config.SentinelServersConfig;
+import org.redisson.config.SingleServerConfig;
 import org.redisson.connection.AddressResolverGroupFactory;
 import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
@@ -52,6 +62,7 @@ import org.springframework.beans.PropertyEditorRegistry;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.beans.PropertyEditorSupport;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
@@ -61,28 +72,19 @@ import java.util.concurrent.ExecutorService;
 final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	private static final Map<Class<?>, Class<?>> REDISSON_MIXIN = Map.ofEntries(
-			Map.entry(Config.class, ConfigSupport.ConfigMixIn.class),
-			Map.entry(BaseMasterSlaveServersConfig.class, ConfigSupport.ConfigPropsMixIn.class),
-			Map.entry(ReferenceCodecProvider.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(AddressResolverGroupFactory.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(Codec.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(RedissonNodeInitializer.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(LoadBalancer.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(NatMapper.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(NameMapper.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(NettyHook.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(CredentialsResolver.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(EventLoopGroup.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(ConnectionListener.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(ExecutorService.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(KeyManagerFactory.class, ConfigSupport.IgnoreMixIn.class),
-			Map.entry(TrustManagerFactory.class, ConfigSupport.IgnoreMixIn.class),
-			Map.entry(CommandMapper.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(FailedNodeDetector.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(DelayStrategy.class, ConfigSupport.ClassMixIn.class),
-			Map.entry(EqualJitterDelay.class, ConfigSupport.DelayMixin.class),
-			Map.entry(FullJitterDelay.class, ConfigSupport.DelayMixin.class),
-			Map.entry(DecorrelatedJitterDelay.class, ConfigSupport.DelayMixin.class));
+			Map.entry(Config.class, ConfigMixIn.class),
+			Map.entry(BaseMasterSlaveServersConfig.class, ConfigPropsMixIn.class),
+			Map.entry(ReferenceCodecProvider.class, ClassMixIn.class),
+			Map.entry(AddressResolverGroupFactory.class, ClassMixIn.class), Map.entry(Codec.class, ClassMixIn.class),
+			Map.entry(RedissonNodeInitializer.class, ClassMixIn.class), Map.entry(LoadBalancer.class, ClassMixIn.class),
+			Map.entry(NatMapper.class, ClassMixIn.class), Map.entry(NameMapper.class, ClassMixIn.class),
+			Map.entry(NettyHook.class, ClassMixIn.class), Map.entry(CredentialsResolver.class, ClassMixIn.class),
+			Map.entry(EventLoopGroup.class, ClassMixIn.class), Map.entry(ConnectionListener.class, ClassMixIn.class),
+			Map.entry(ExecutorService.class, ClassMixIn.class), Map.entry(KeyManagerFactory.class, IgnoreMixIn.class),
+			Map.entry(TrustManagerFactory.class, IgnoreMixIn.class), Map.entry(CommandMapper.class, ClassMixIn.class),
+			Map.entry(FailedNodeDetector.class, ClassMixIn.class), Map.entry(DelayStrategy.class, ClassMixIn.class),
+			Map.entry(EqualJitterDelay.class, DelayMixin.class), Map.entry(FullJitterDelay.class, DelayMixin.class),
+			Map.entry(DecorrelatedJitterDelay.class, DelayMixin.class));
 
 	private static final JacksonSupport support;
 
@@ -119,6 +121,50 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		public void setAsText(String text) {
 			setValue(support.readValue(text, type));
 		}
+
+	}
+
+	@JsonIgnoreType
+	private static class IgnoreMixIn {
+
+	}
+
+	@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
+	@JsonFilter("classFilter")
+	public static class ClassMixIn {
+
+	}
+
+	@JsonIgnoreProperties({ "slaveNotUsed" })
+	private static class ConfigPropsMixIn {
+
+	}
+
+	private static class DelayMixin {
+
+		@JsonCreator
+		DelayMixin(@JsonProperty("baseDelay") Duration baseDelay, @JsonProperty("maxDelay") Duration maxDelay) {
+		}
+
+	}
+
+	@JsonIgnoreProperties({ "clusterConfig", "sentinelConfig", "singleConfig" })
+	private static class ConfigMixIn {
+
+		@JsonProperty
+		SentinelServersConfig sentinelServersConfig;
+
+		@JsonProperty
+		MasterSlaveServersConfig masterSlaveServersConfig;
+
+		@JsonProperty
+		SingleServerConfig singleServerConfig;
+
+		@JsonProperty
+		ClusterServersConfig clusterServersConfig;
+
+		@JsonProperty
+		ReplicatedServersConfig replicatedServersConfig;
 
 	}
 
