@@ -131,7 +131,7 @@ public class DisruptorFactoryBean<T>
 		disruptor.shutdown();
 	}
 
-	private static class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
+	private static final class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
 
 		public DisruptorEventWrapper<T> newInstance() {
 			return new DisruptorEventWrapper<>();
@@ -168,7 +168,7 @@ public class DisruptorFactoryBean<T>
 	}
 
 	@RequiredArgsConstructor
-	private static class VirtualThreadFactory implements ThreadFactory {
+	private static final class VirtualThreadFactory implements ThreadFactory {
 
 		private final ThreadFactory delegate;
 

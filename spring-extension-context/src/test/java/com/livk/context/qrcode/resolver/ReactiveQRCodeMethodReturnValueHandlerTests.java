@@ -72,7 +72,7 @@ class ReactiveQRCodeMethodReturnValueHandlerTests {
 	}
 
 	@RestController
-	private static class TestController {
+	private static final class TestController {
 
 		@ResponseQrCode
 		String qrcode() {

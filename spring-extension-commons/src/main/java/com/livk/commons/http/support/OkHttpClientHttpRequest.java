@@ -110,7 +110,7 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements Strea
 	}
 
 	@RequiredArgsConstructor
-	private static class BodyRequestBody extends RequestBody {
+	private static final class BodyRequestBody extends RequestBody {
 
 		private final HttpHeaders headers;
 

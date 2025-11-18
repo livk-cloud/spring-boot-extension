@@ -23,6 +23,9 @@ import com.livk.boot.info.ManifestPlugin
 import com.livk.boot.tasks.DeleteExpand
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.plugins.quality.CheckstyleExtension
+import org.gradle.api.plugins.quality.CheckstylePlugin
 
 /**
  * @author livk
@@ -36,6 +39,19 @@ class CorePlugin implements Plugin<Project> {
 		project.pluginManager.apply(OptionalPlugin)
 		project.pluginManager.apply(AptCompilePlugin)
 		project.pluginManager.apply(ManifestPlugin)
+		project.pluginManager.apply(CheckstylePlugin)
+
+		project.extensions.getByType(CheckstyleExtension).with {
+			def checkstyleVersion = project.rootProject
+				.extensions
+				.getByType(VersionCatalogsExtension)
+				.named('libs')
+				.findVersion('checkstyle')
+				.get()
+				.displayName
+			toolVersion = checkstyleVersion
+			configFile = new File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
+		}
 	}
 }
 

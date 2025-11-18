@@ -257,7 +257,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 		SpringContextHolder.IOC.clear();
 	}
 
-	private static class SpringIoC implements GenericWrapper<ApplicationContext> {
+	private static final class SpringIoC implements GenericWrapper<ApplicationContext> {
 
 		private volatile ApplicationContext context;
 

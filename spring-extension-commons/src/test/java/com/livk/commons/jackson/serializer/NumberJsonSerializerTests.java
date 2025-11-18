@@ -63,7 +63,7 @@ class NumberJsonSerializerTests {
 	}
 
 	@Getter
-	private static class Big {
+	private static final class Big {
 
 		@NumberJsonFormat(pattern = "0000")
 		private long l;

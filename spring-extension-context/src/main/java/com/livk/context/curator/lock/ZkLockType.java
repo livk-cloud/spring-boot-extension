@@ -60,7 +60,7 @@ public enum ZkLockType implements LockProcess {
 		return new InterProcessMultiLock(locks);
 	}
 
-	private static class ReentrantLockProcess implements LockProcess {
+	private static final class ReentrantLockProcess implements LockProcess {
 
 		@Override
 		public InterProcessLock getLock(CuratorFramework framework, String path) {
@@ -69,7 +69,7 @@ public enum ZkLockType implements LockProcess {
 
 	}
 
-	private static class NonReentrantLockProcess implements LockProcess {
+	private static final class NonReentrantLockProcess implements LockProcess {
 
 		@Override
 		public InterProcessLock getLock(CuratorFramework framework, String path) {
@@ -78,7 +78,7 @@ public enum ZkLockType implements LockProcess {
 
 	}
 
-	private static class ReadLockProcess implements LockProcess {
+	private static final class ReadLockProcess implements LockProcess {
 
 		@Override
 		public InterProcessLock getLock(CuratorFramework framework, String path) {
@@ -87,7 +87,7 @@ public enum ZkLockType implements LockProcess {
 
 	}
 
-	private static class WriteLockProcess implements LockProcess {
+	private static final class WriteLockProcess implements LockProcess {
 
 		@Override
 		public InterProcessLock getLock(CuratorFramework framework, String path) {

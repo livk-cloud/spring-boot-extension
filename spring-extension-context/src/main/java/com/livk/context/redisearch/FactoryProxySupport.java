@@ -81,7 +81,7 @@ final class FactoryProxySupport {
 		}
 	}
 
-	private static class ConnectWithCodecInterceptor {
+	private static final class ConnectWithCodecInterceptor {
 
 		@SuppressWarnings({ "unchecked", "unused" })
 		@RuntimeType
@@ -93,7 +93,7 @@ final class FactoryProxySupport {
 
 	}
 
-	private static class CloseInterceptor {
+	private static final class CloseInterceptor {
 
 		@SuppressWarnings("unused")
 		@RuntimeType

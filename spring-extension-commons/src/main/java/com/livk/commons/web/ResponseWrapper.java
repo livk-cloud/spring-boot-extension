@@ -143,7 +143,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	@RequiredArgsConstructor
-	private static class WrapperOutputStream extends ServletOutputStream {
+	private static final class WrapperOutputStream extends ServletOutputStream {
 
 		private final ByteArrayOutputStream outputStream;
 
