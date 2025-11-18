@@ -54,6 +54,10 @@ configure(module) {
 	afterEvaluate {
 		dependencies {
 			compileOnly(libs.spotbugs.annotations)
+			checkstyle(libs.spring.javaformat.checkstyle) {
+				exclude(group = "com.puppycrawl.tools", module = "checkstyle")
+			}
+			checkstyle(libs.checkstyle)
 		}
 	}
 }

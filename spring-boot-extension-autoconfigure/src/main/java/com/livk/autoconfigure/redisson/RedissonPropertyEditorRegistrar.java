@@ -113,7 +113,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 	}
 
 	@RequiredArgsConstructor
-	private static class RedissonTypePropertyEditor extends PropertyEditorSupport {
+	private static final class RedissonTypePropertyEditor extends PropertyEditorSupport {
 
 		private final Class<?> type;
 
@@ -125,22 +125,22 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 	}
 
 	@JsonIgnoreType
-	private static class IgnoreMixIn {
+	private static final class IgnoreMixIn {
 
 	}
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
 	@JsonFilter("classFilter")
-	public static class ClassMixIn {
+	public static final class ClassMixIn {
 
 	}
 
 	@JsonIgnoreProperties({ "slaveNotUsed" })
-	private static class ConfigPropsMixIn {
+	private static final class ConfigPropsMixIn {
 
 	}
 
-	private static class DelayMixin {
+	private static final class DelayMixin {
 
 		@JsonCreator
 		DelayMixin(@JsonProperty("baseDelay") Duration baseDelay, @JsonProperty("maxDelay") Duration maxDelay) {
@@ -149,7 +149,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 	}
 
 	@JsonIgnoreProperties({ "clusterConfig", "sentinelConfig", "singleConfig" })
-	private static class ConfigMixIn {
+	private static final class ConfigMixIn {
 
 		@JsonProperty
 		SentinelServersConfig sentinelServersConfig;

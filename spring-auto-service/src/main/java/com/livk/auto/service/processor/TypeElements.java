@@ -87,7 +87,8 @@ class TypeElements {
 		throw new IllegalArgumentException(element + " not has annotation:" + targetClass);
 	}
 
-	private static class SimpleAnnotationValueVisitor extends SimpleAnnotationValueVisitor14<Set<TypeElement>, Void> {
+	private static final class SimpleAnnotationValueVisitor
+			extends SimpleAnnotationValueVisitor14<Set<TypeElement>, Void> {
 
 		@Override
 		public Set<TypeElement> visitType(TypeMirror t, Void v) {

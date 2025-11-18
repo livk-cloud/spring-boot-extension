@@ -118,7 +118,7 @@ public abstract class FastExcelSupport {
 	}
 
 	@RequiredArgsConstructor
-	private static class TemplateSheetWriteHandler implements SheetWriteHandler {
+	private static final class TemplateSheetWriteHandler implements SheetWriteHandler {
 
 		private final Integer sheetIndex;
 

@@ -75,7 +75,7 @@ abstract class AbstractMapstructService implements MapstructService, MapstructRe
 		mapstructLocators.orderedStream().filter(MATCH.negate()).forEach(mapstructLocator::add);
 	}
 
-	private static class PrioritizedMapstructLocator implements MapstructLocator {
+	private static final class PrioritizedMapstructLocator implements MapstructLocator {
 
 		private final List<MapstructLocator> mapstructLocators = new ArrayList<>();
 

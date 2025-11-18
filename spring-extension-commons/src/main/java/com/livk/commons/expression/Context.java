@@ -61,7 +61,7 @@ public sealed interface Context permits Context.ContextImpl {
 
 	Map<String, Object> asMap();
 
-	non-sealed class ContextImpl implements Context {
+	final class ContextImpl implements Context {
 
 		private final Map<String, Object> variables;
 

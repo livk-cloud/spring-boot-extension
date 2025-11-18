@@ -21,11 +21,7 @@ import com.livk.boot.info.ExtractResources
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.plugins.quality.CheckstyleExtension
-import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.api.tasks.bundling.Jar
-
 /**
  * @author livk
  */
@@ -36,22 +32,6 @@ class ModulePlugin implements Plugin<Project> {
 		project.pluginManager.apply(CompileArgsPlugin)
 		project.pluginManager.apply(CorePlugin)
 		project.pluginManager.apply(SpringJavaFormatPlugin)
-		project.pluginManager.apply(CheckstylePlugin)
-
-		project.extensions.getByType(CheckstyleExtension).with {
-			toolVersion = '9.3'
-			configFile = new File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
-		}
-
-		def version = project.rootProject
-			.extensions
-			.getByType(VersionCatalogsExtension)
-			.named('libs')
-			.findVersion('spring-javaformat')
-			.get()
-			.displayName
-
-		project.dependencies.add('checkstyle', "io.spring.javaformat:spring-javaformat-checkstyle:${version}")
 
 		project.tasks.register('checkstyle') { checkstyle ->
 			checkstyle.group = 'other'
