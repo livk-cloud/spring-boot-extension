@@ -82,7 +82,7 @@ implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 |version |支持情况
 |Jdk21以下
 | ✗
-|Jdk21-Jdk24
+|Jdk21-Jdk25
 | ✔
 |===
 
