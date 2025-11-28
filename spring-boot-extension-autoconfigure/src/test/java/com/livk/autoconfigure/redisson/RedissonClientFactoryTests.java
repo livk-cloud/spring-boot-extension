@@ -23,8 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
@@ -67,13 +67,13 @@ class RedissonClientFactoryTests {
 
 	RedissonProperties redissonProperties;
 
-	RedisProperties redisProperties;
+	DataRedisProperties redisProperties;
 
 	@BeforeEach
 	void before() {
 		this.redissonProperties = RedissonProperties.load(environment);
 
-		this.redisProperties = Binder.get(environment).bind("spring.data.redis", RedisProperties.class).get();
+		this.redisProperties = Binder.get(environment).bind("spring.data.redis", DataRedisProperties.class).get();
 	}
 
 	@Test

@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RediSearchAutoConfigurationTests {
 
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
+		.withBean(JsonMapper.Builder.class, JsonMapper::builder)
 		.withConfiguration(AutoConfigurations.of(RediSearchAutoConfiguration.class))
 		.withUserConfiguration(Config.class);
 

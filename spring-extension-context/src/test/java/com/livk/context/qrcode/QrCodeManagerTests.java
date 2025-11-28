@@ -16,7 +16,7 @@
 
 package com.livk.context.qrcode;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.Test;

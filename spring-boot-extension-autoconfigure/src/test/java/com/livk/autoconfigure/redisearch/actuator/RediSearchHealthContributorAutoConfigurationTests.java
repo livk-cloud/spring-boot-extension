@@ -19,10 +19,10 @@ package com.livk.autoconfigure.redisearch.actuator;
 import com.livk.autoconfigure.redisearch.RediSearchAutoConfiguration;
 import com.livk.autoconfigure.redisearch.RediSearchProperties;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.health.autoconfigure.contributor.HealthContributorAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 

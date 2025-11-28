@@ -20,8 +20,8 @@ import com.livk.context.redisearch.RediSearchConnectionFactory;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.cluster.api.StatefulRedisModulesClusterConnection;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.health.contributor.AbstractHealthIndicator;
+import org.springframework.boot.health.contributor.Health;
 
 import java.io.IOException;
 import java.io.StringReader;

@@ -37,8 +37,6 @@ public class DockerImageNames {
 
 	public static final String REDIS_STACK_IMAGE = "redis/redis-stack-server";
 
-	public static final String MINIO_IMAGE = "minio/minio";
-
 	public static DockerImageName mysql() {
 		return mysql(LATEST_TAG);
 	}
@@ -77,14 +75,6 @@ public class DockerImageNames {
 
 	public static DockerImageName redisStack(String tag) {
 		return DockerImageName.parse(REDIS_STACK_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName minio() {
-		return minio(LATEST_TAG);
-	}
-
-	public static DockerImageName minio(String tag) {
-		return DockerImageName.parse(MINIO_IMAGE).withTag(tag);
 	}
 
 }

@@ -1,9 +1,9 @@
 [versions]
-spring-boot = "3.5.8"
+spring-boot = "4.0.0"
 pagehelper-starter = "2.1.1"
 mybatis = "3.5.19"
 mybatis-spring = "3.0.5"
-mybatis-boot = "3.0.5"
+mybatis-boot = "4.0.0-SNAPSHOT"
 guava = "33.5.0-jre"
 fastexcel = "1.3.0"
 redisson = "3.52.0"
@@ -17,7 +17,6 @@ yauaa = "7.32.0"
 google-javase = "3.5.4"
 jsqlparser = "5.3"
 lettucemod = "4.5.0"
-minio = "8.6.0"
 aviator = "5.4.3"
 jexl3 = "3.6.0"
 mvel2 = "2.5.2.Final"
@@ -59,7 +58,6 @@ yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "ya
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "google-javase" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
 lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
-minio = { group = "io.minio", name = "minio", version.ref = "minio" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }

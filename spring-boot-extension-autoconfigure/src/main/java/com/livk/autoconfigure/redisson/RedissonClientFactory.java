@@ -16,12 +16,14 @@
 
 package com.livk.autoconfigure.redisson;
 
+import org.jspecify.annotations.Nullable;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -46,14 +48,14 @@ abstract class RedissonClientFactory {
 		return Redisson.create(config);
 	}
 
-	public static RedissonClient create(RedisProperties redisProperties,
+	public static RedissonClient create(DataRedisProperties redisProperties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		Config config = createConfig(redisProperties);
 		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
 		return Redisson.create(config);
 	}
 
-	private static Config createConfig(RedisProperties redisProperties) {
+	private static Config createConfig(DataRedisProperties redisProperties) {
 		Config config;
 		Duration duration = redisProperties.getTimeout();
 		int timeout = duration == null ? 10000 : (int) duration.toMillis();
@@ -92,7 +94,10 @@ abstract class RedissonClientFactory {
 		return config;
 	}
 
-	private static String[] convert(List<String> nodesObject) {
+	private static String[] convert(@Nullable List<String> nodesObject) {
+		if (CollectionUtils.isEmpty(nodesObject)) {
+			return new String[0];
+		}
 		List<String> nodes = new ArrayList<>(nodesObject.size());
 		for (String node : nodesObject) {
 			if (!node.startsWith(REDIS_PROTOCOL_PREFIX) && !node.startsWith(REDISS_PROTOCOL_PREFIX)) {

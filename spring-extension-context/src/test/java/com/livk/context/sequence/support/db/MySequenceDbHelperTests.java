@@ -16,7 +16,7 @@
 
 package com.livk.context.sequence.support.db;
 
-import com.livk.testcontainers.containers.MysqlContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.mysql.cj.jdbc.Driver;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +28,7 @@ import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mysql.MySQLContainer;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -42,7 +43,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MySequenceDbHelperTests {
 
 	@Container
-	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+	static final MySQLContainer mysql = new MySQLContainer(DockerImageNames.mysql())
+		.withExposedPorts(MySQLContainer.MYSQL_PORT)
+		.withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("sequence");
 
 	static SequenceDbHelper helper;

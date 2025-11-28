@@ -17,7 +17,6 @@
 package com.livk.commons.expression;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * 上下键创建工厂
@@ -37,19 +36,5 @@ public interface ContextFactory {
 	 * @return the context
 	 */
 	Context create(Method method, Object[] args);
-
-	/**
-	 * 合并上下文
-	 * @param method the method
-	 * @param args the args
-	 * @param expandMap the expand map
-	 * @return the map
-	 * @deprecated use {@link Context#putAll(Map)}
-	 */
-	@Deprecated(since = "1.4.2", forRemoval = true)
-	default Context merge(Method method, Object[] args, Map<String, ?> expandMap) {
-		Context context = create(method, args);
-		return context.putAll(expandMap);
-	}
 
 }

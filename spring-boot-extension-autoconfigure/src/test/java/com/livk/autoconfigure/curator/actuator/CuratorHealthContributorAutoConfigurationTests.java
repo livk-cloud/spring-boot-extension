@@ -19,9 +19,9 @@ package com.livk.autoconfigure.curator.actuator;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
 import com.livk.autoconfigure.curator.CuratorProperties;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.actuate.autoconfigure.health.HealthContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.health.autoconfigure.contributor.HealthContributorAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 

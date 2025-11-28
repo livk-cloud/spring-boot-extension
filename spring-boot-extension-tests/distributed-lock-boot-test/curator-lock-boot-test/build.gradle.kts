@@ -8,4 +8,5 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
 	testImplementation(project(":spring-testcontainers-support"))
+	testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }

@@ -16,14 +16,14 @@
 
 package com.livk.context.mybatis.type;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.commons.jackson.support.JacksonOps;
 import com.livk.commons.jackson.support.JacksonSupport;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.MapperBuilder;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -47,7 +47,7 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	 * Instantiates a new Abstract json type handler.
 	 * @param builder the builder
 	 */
-	protected AbstractJsonTypeHandler(Jackson2ObjectMapperBuilder builder) {
+	protected AbstractJsonTypeHandler(MapperBuilder<?, ?> builder) {
 		ObjectMapper mapper = builder.build();
 		jacksonOps = new JacksonSupport(mapper);
 	}

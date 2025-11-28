@@ -16,7 +16,7 @@
 
 package com.livk.context.sequence.support.db;
 
-import com.livk.testcontainers.containers.PostgresqlContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -28,6 +28,7 @@ import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -42,7 +43,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostgresSequenceDbHelperTests {
 
 	@Container
-	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+	static final PostgreSQLContainer postgresql = new PostgreSQLContainer(DockerImageNames.postgres())
+		.withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT)
+		.withEnv("POSTGRES_PASSWORD", "123456")
 		.withDatabaseName("sequence");
 
 	static SequenceDbHelper helper;

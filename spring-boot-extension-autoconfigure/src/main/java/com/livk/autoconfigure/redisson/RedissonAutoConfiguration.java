@@ -26,9 +26,9 @@ import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Fallback;
@@ -40,8 +40,8 @@ import org.springframework.context.annotation.Fallback;
  */
 @SpringAutoService
 @ConditionalOnClass(Redisson.class)
-@AutoConfiguration(before = RedisAutoConfiguration.class)
-@EnableConfigurationProperties({ RedissonProperties.class, RedisProperties.class })
+@AutoConfiguration(before = DataRedisAutoConfiguration.class)
+@EnableConfigurationProperties({ RedissonProperties.class, DataRedisProperties.class })
 public class RedissonAutoConfiguration {
 
 	@Bean
@@ -68,7 +68,7 @@ public class RedissonAutoConfiguration {
 	@Fallback
 	@Bean(value = "redissonClient", destroyMethod = "shutdown")
 	@ConditionalOnMissingBean
-	public RedissonClient fallbackRedissonClient(RedisProperties properties,
+	public RedissonClient fallbackRedissonClient(DataRedisProperties properties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		return RedissonClientFactory.create(properties, configCustomizers);
 	}

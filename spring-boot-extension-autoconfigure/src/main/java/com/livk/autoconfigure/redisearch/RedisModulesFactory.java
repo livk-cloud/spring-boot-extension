@@ -38,7 +38,7 @@ class RedisModulesFactory {
 
 	private final RediSearchProperties properties;
 
-	private final PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+	private final PropertyMapper mapper = PropertyMapper.get();
 
 	public final AbstractRedisClient getClient(ClientResources clientResources) {
 		if (properties.getCluster() != null && properties.getCluster().getEnabled()) {
@@ -51,7 +51,6 @@ class RedisModulesFactory {
 			ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
 			mapper.from(properties::getCluster)
 				.as(RediSearchProperties.Cluster::getMaxRedirects)
-				.whenNonNull()
 				.to(builder::maxRedirects);
 			clusterClient.setOptions(builder.build());
 			return clusterClient;

@@ -17,20 +17,21 @@
 package com.livk.mysql.json.controller;
 
 import com.livk.mysql.json.MySQLTypeHandlerExampleApp;
-import com.livk.testcontainers.containers.MysqlContainer;
+import com.livk.testcontainers.DockerImageNames;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mysql.MySQLContainer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,7 +50,9 @@ class UserControllerTests {
 
 	@Container
 	@ServiceConnection
-	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+	static final MySQLContainer mysql = new MySQLContainer(DockerImageNames.mysql())
+		.withExposedPorts(MySQLContainer.MYSQL_PORT)
+		.withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("mybatis");
 
 	@DynamicPropertySource

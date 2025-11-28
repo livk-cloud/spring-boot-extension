@@ -28,10 +28,10 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * The type RediSearch autoconfiguration.
@@ -78,7 +78,7 @@ public class RediSearchAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(name = "rediSearchTemplate")
 	public RediSearchTemplate<String, Object> rediSearchTemplate(RediSearchConnectionFactory factory,
-			Jackson2ObjectMapperBuilder builder) {
+			JsonMapper.Builder builder) {
 		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build());
 		return new RediSearchTemplate<>(factory, redisCodec);
 	}

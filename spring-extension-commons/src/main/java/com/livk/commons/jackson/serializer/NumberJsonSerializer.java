@@ -16,16 +16,14 @@
 
 package com.livk.commons.jackson.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +36,7 @@ import java.util.Set;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualSerializer {
+class NumberJsonSerializer extends ValueSerializer<Number> {
 
 	private static final Set<Class<?>> SUPPORT_PRIMITIVE_CLASS = Set.of(byte.class, short.class, int.class, long.class,
 			float.class, double.class);
@@ -46,20 +44,19 @@ class NumberJsonSerializer extends JsonSerializer<Number> implements ContextualS
 	private String format;
 
 	@Override
-	public void serialize(Number value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+	public void serialize(Number value, JsonGenerator gen, SerializationContext context) throws JacksonException {
 		gen.writeString(new DecimalFormat(format).format(value));
 	}
 
 	@Override
-	public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
-			throws JsonMappingException {
+	public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) {
 		Class<?> rawClass = property.getType().getRawClass();
 		NumberJsonFormat jsonFormat = Optional.ofNullable(property.getAnnotation((NumberJsonFormat.class)))
 			.orElse(property.getContextAnnotation(NumberJsonFormat.class));
 		if (Number.class.isAssignableFrom(rawClass) || this.simpleTypeSupport(rawClass)) {
 			return new NumberJsonSerializer(jsonFormat.pattern());
 		}
-		return prov.findValueSerializer(property.getType(), property);
+		return context.findContentValueSerializer(property.getType(), property);
 	}
 
 	private boolean simpleTypeSupport(Class<?> rawClass) {

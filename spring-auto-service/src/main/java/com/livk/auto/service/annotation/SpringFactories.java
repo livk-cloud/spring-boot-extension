@@ -36,12 +36,4 @@ public @interface SpringFactories {
 	 */
 	Class<?> value() default Void.class;
 
-	/**
-	 * 将spring.factories文件调整至aot.factories
-	 * @return the boolean
-	 * @deprecated use {@link AotFactories}
-	 */
-	@Deprecated(since = "1.4.5")
-	boolean aot() default false;
-
 }

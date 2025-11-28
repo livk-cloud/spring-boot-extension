@@ -23,12 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.jackson.support.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +52,10 @@ import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
+import tools.jackson.databind.ser.FilterProvider;
+import tools.jackson.databind.ser.std.SimpleBeanPropertyFilter;
+import tools.jackson.databind.ser.std.SimpleFilterProvider;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -92,13 +90,11 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("classFilter",
 				SimpleBeanPropertyFilter.filterOutAllExcept());
 
-		JsonInclude.Value value = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,
+		JsonInclude.Value includeValue = JsonInclude.Value.construct(JsonInclude.Include.NON_NULL,
 				JsonInclude.Include.NON_NULL);
 
 		YAMLMapper.Builder builder = YAMLMapper.builder()
-			.addModule(new JavaTimeModule())
-			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-			.defaultPropertyInclusion(value)
+			.changeDefaultPropertyInclusion(value -> value.withOverrides(includeValue))
 			.filterProvider(filterProvider);
 		REDISSON_MIXIN.forEach(builder::addMixIn);
 

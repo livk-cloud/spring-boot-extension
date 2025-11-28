@@ -8,4 +8,6 @@ dependencies {
 
 	testImplementation(project(":spring-testcontainers-support"))
 	testImplementation("com.redis:testcontainers-redis")
+	testImplementation("org.springframework.boot:spring-boot-data-redis")
+	testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }

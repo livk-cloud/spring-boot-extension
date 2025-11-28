@@ -16,8 +16,8 @@
 
 package com.livk.commons.jackson.support;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.type.TypeFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 

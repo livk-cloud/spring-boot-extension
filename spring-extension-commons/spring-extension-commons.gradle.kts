@@ -9,8 +9,11 @@ description = "spring commons packages"
 dependencies {
 	optional("org.springframework:spring-webflux")
 	optional("org.springframework:spring-tx")
-	optional("io.projectreactor.netty:reactor-netty-http")
 	optional("org.springframework.boot:spring-boot-starter")
+	optional("org.springframework.boot:spring-boot-restclient")
+	optional("org.springframework.boot:spring-boot-webclient")
+
+	optional("io.projectreactor.netty:reactor-netty-http")
 	optional("com.github.jsqlparser:jsqlparser")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	optional("com.squareup.okhttp3:okhttp")
@@ -20,12 +23,14 @@ dependencies {
 	optional("org.freemarker:freemarker")
 	optional("io.micrometer:micrometer-tracing")
 	optional("net.bytebuddy:byte-buddy")
-	api("com.google.guava:guava")
+
 	api("org.springframework:spring-core")
-	api("com.fasterxml.jackson.core:jackson-databind")
-	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	api("com.google.guava:guava")
+	api("tools.jackson.core:jackson-databind")
+
 	aptCompile(project(":spring-auto-service"))
+
 	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
-	testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml")
+	testImplementation("tools.jackson.dataformat:jackson-dataformat-xml")
+	testImplementation("tools.jackson.dataformat:jackson-dataformat-yaml")
 }

@@ -16,29 +16,25 @@
 
 package com.livk.commons.util;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
-import com.fasterxml.jackson.databind.type.TypeBindings;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.KeyDeserializer;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.deser.std.StdScalarDeserializer;
+import tools.jackson.databind.ser.std.StdScalarSerializer;
+import tools.jackson.databind.type.TypeBindings;
 
-import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
@@ -196,9 +192,9 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	/**
 	 * Pair Jackson序列化工具
 	 */
-	static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> implements ContextualSerializer {
+	static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> {
 
-		private JsonSerializer<Object> keySerializer;
+		private ValueSerializer<Object> keySerializer;
 
 		/**
 		 * 构造器
@@ -208,18 +204,16 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		}
 
 		@Override
-		public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializerProvider provider)
-				throws IOException {
+		public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializationContext context)
+				throws JacksonException {
 			gen.writeStartObject(pair);
-			keySerializer.serialize(pair.key(), gen, provider);
-			gen.writeObject(pair.value());
-			gen.writeEndObject();
+			keySerializer.serialize(pair.key(), gen, context);
+			gen.writePOJO(pair.value()).writeEndObject();
 		}
 
 		@Override
-		public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
-				throws JsonMappingException {
-			keySerializer = prov.findKeySerializer(Object.class, property);
+		public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) {
+			keySerializer = context.findKeySerializer(Object.class, property);
 			return this;
 		}
 
@@ -228,8 +222,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	/**
 	 * Pair Jackson反序列化工具
 	 */
-	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>>
-			implements ContextualDeserializer {
+	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> {
 
 		private KeyDeserializer keyDeserializer;
 
@@ -243,17 +236,17 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		}
 
 		@Override
-		public Pair<Object, Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
+		public Pair<Object, Object> deserialize(JsonParser p, DeserializationContext context) {
 			p.nextToken();
 			String name = p.currentName();
 			JsonNode valueNode = context.readTree(p).get(name);
-			ObjectMapper mapper = (ObjectMapper) p.getCodec();
-			return Pair.of(keyDeserializer.deserializeKey(name, context), mapper.convertValue(valueNode, valueType));
+			p.finishToken();
+			return Pair.of(keyDeserializer.deserializeKey(name, context),
+					context.readTreeAsValue(valueNode, valueType));
 		}
 
 		@Override
-		public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property)
-				throws JsonMappingException {
+		public ValueDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) {
 			JavaType contextualType = context.getContextualType();
 			TypeBindings bindings = contextualType.getBindings();
 			JavaType keyType = bindings.getBoundType(0);

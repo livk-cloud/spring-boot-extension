@@ -16,8 +16,8 @@
 
 package com.livk.autoconfigure.mybatis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.mybatis.type.mysql.MysqlJsonTypeHandler;
 import com.livk.context.mybatis.type.postgresql.PostgresJsonTypeHandler;

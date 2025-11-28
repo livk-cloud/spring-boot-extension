@@ -21,7 +21,6 @@ import com.livk.context.sequence.support.DbRangeManager;
 import com.livk.context.sequence.support.RedisRangeManager;
 import com.livk.context.sequence.support.redis.LettuceSequenceRedisHelper;
 import com.livk.testcontainers.DockerImageNames;
-import com.livk.testcontainers.containers.PostgresqlContainer;
 import com.redis.testcontainers.RedisContainer;
 import com.zaxxer.hikari.HikariDataSource;
 import io.lettuce.core.RedisClient;
@@ -40,6 +39,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import javax.sql.DataSource;
 import java.util.HashSet;
@@ -56,7 +56,9 @@ class SequenceTests {
 
 	@Container
 	@ServiceConnection
-	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+	static final PostgreSQLContainer postgresql = new PostgreSQLContainer(DockerImageNames.postgres())
+		.withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT)
+		.withEnv("POSTGRES_PASSWORD", "123456")
 		.withDatabaseName("sequence");
 
 	@Container

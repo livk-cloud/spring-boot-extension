@@ -16,7 +16,6 @@
 
 package com.livk.commons.io;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -54,7 +53,7 @@ class FileUtilsTests {
 	@Test
 	void gzip() throws IOException {
 		InputStream inputStream = new ClassPathResource("data.json").getInputStream();
-		String data = JsonMapperUtils.readValue(inputStream, JsonNode.class).toString();
+		String data = JsonMapperUtils.readTree(inputStream).toString();
 
 		File file = new File("./data.gzip");
 		FileUtils.createNewFile(file);

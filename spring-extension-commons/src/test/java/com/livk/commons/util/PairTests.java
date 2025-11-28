@@ -16,10 +16,10 @@
 
 package com.livk.commons.util;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.livk.commons.jackson.JsonMapperUtils;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.util.List;
 import java.util.Map;

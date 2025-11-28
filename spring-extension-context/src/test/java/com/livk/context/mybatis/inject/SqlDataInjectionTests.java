@@ -59,7 +59,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SqlDataInjectionTests {
 
 	@Autowired
-	UserMapper userMapper;
+	UsersMapper usersMapper;
 
 	@Autowired
 	DataSource dataSource;
@@ -71,12 +71,12 @@ class SqlDataInjectionTests {
 
 	@Test
 	void test() {
-		User user = new User();
+		Users user = new Users();
 		user.setUsername("livk");
 
-		userMapper.insert(user);
+		usersMapper.insert(user);
 
-		User copy = userMapper.getById(1);
+		Users copy = usersMapper.getById(1);
 		assertThat(copy.getUsername()).isEqualTo(user.getUsername());
 		assertThat(copy.getInsertTime()).isNotNull();
 		assertThat(copy.getUpdateTime()).isNotNull();
@@ -122,19 +122,19 @@ class SqlDataInjectionTests {
 	}
 
 	@Mapper
-	interface UserMapper {
+	interface UsersMapper {
 
-		@Select("select * from `user` where id = #{id}")
-		User getById(@Param("id") Integer id);
+		@Select("select * from users where id = #{id}")
+		Users getById(@Param("id") Integer id);
 
-		@Insert("insert into `user`(username, insert_time, update_time) "
-				+ "values(#{user.username}, #{user.insertTime}, #{user.updateTime})")
-		void insert(@Param("user") User user);
+		@Insert("insert into users(username, insert_time, update_time) "
+				+ "values(#{users.username}, #{users.insertTime}, #{users.updateTime})")
+		void insert(@Param("users") Users users);
 
 	}
 
 	@Data
-	public static class User implements Serializable {
+	public static class Users implements Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;

@@ -16,10 +16,8 @@
 
 package com.livk.context.mybatis.type.postgresql;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.testcontainers.containers.PostgresqlContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 import org.apache.ibatis.annotations.Insert;
@@ -50,6 +48,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.postgresql.PostgreSQLContainer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -66,7 +67,9 @@ class PostgresJsonTypeHandlerTests {
 
 	@Container
 	@ServiceConnection
-	static final PostgresqlContainer postgresql = new PostgresqlContainer().withEnv("POSTGRES_PASSWORD", "123456")
+	static final PostgreSQLContainer postgresql = new PostgreSQLContainer(DockerImageNames.postgres())
+		.withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT)
+		.withEnv("POSTGRES_PASSWORD", "123456")
 		.withDatabaseName("mybatis");
 
 	@DynamicPropertySource
@@ -104,7 +107,7 @@ class PostgresJsonTypeHandlerTests {
 		assertThat(first.getUsername()).isEqualTo(user.getUsername());
 		assertThat(first.getPassword()).isEqualTo(user.getPassword());
 		assertThat(first.getDes()).isEqualTo(user.getDes());
-		assertThat(first.getDes().get("mark").asText()).isEqualTo("livk");
+		assertThat(first.getDes().get("mark").asString()).isEqualTo("livk");
 	}
 
 	@TestConfiguration

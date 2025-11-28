@@ -16,7 +16,6 @@
 
 package com.livk.postgres.json.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.postgres.json.entity.User;
 import com.livk.postgres.json.mapper.UserMapper;
@@ -47,7 +46,7 @@ public class UserController {
 		User user = new User();
 		user.setUsername("admin");
 		user.setPassword("admin");
-		user.setDes(JsonMapperUtils.readValue(json, JsonNode.class));
+		user.setDes(JsonMapperUtils.readTree(json));
 		return ResponseEntity.ok(userMapper.insert(user) != 0);
 	}
 

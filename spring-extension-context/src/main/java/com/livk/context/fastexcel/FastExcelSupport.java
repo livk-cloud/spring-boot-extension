@@ -25,15 +25,12 @@ import cn.idev.excel.write.metadata.holder.WriteSheetHolder;
 import cn.idev.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.livk.commons.io.ResourceUtils;
 import com.livk.commons.util.StreamUtils;
-import com.livk.context.fastexcel.annotation.ResponseExcel;
-import com.livk.context.fastexcel.listener.ExcelMapReadListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Map;
@@ -43,20 +40,6 @@ import java.util.Map;
  */
 @Slf4j
 public abstract class FastExcelSupport {
-
-	/**
-	 * Read.
-	 * @param in the in
-	 * @param excelModelClass the excel model class
-	 * @param listener the listener
-	 * @param ignoreEmptyRow the ignore empty row
-	 * @deprecated use {@link ExcelMapReadListener#execute(InputStream, Class, Boolean)}
-	 */
-	@Deprecated(since = "1.4.5")
-	public void read(InputStream in, Class<?> excelModelClass, ExcelMapReadListener<?> listener,
-			Boolean ignoreEmptyRow) {
-		listener.execute(in, excelModelClass, ignoreEmptyRow);
-	}
 
 	/**
 	 * Write.
@@ -104,17 +87,6 @@ public abstract class FastExcelSupport {
 			}));
 			writer.finish();
 		}
-	}
-
-	/**
-	 * File name string.
-	 * @param excelReturn the excel return
-	 * @return the string
-	 * @deprecated use {@link ResponseExcel.Utils#parseName(ResponseExcel)}
-	 */
-	@Deprecated(since = "1.4.5")
-	public String fileName(ResponseExcel excelReturn) {
-		return ResponseExcel.Utils.parseName(excelReturn);
 	}
 
 	@RequiredArgsConstructor

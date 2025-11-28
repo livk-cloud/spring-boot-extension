@@ -26,10 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HttpClientTypeTests {
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void annotationType() {
 		assertThat(HttpClientType.REST_CLIENT.annotationType()).isEqualTo(EnableRestClient.class);
-		assertThat(HttpClientType.REST_TEMPLATE.annotationType()).isEqualTo(EnableRestTemplate.class);
 		assertThat(HttpClientType.WEB_CLIENT.annotationType()).isEqualTo(EnableWebClient.class);
 
 	}

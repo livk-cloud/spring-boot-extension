@@ -16,7 +16,7 @@
 
 package com.livk.context.qrcode.support;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.annotation.ResponseQrCode;

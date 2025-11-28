@@ -27,7 +27,6 @@ import java.lang.annotation.Target;
  * <p>
  * {@code @SpringAutoService(EnableRestClient.class)}
  * <p>
- * {@link HttpClientType#REST_TEMPLATE}
  *
  * @author livk
  * @see EnableHttpClient

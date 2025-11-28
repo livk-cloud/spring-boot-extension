@@ -16,7 +16,7 @@
 
 package com.livk.context.redisearch;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.livk.context.redisearch.codec.RedisCodecs;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisStackContainer;

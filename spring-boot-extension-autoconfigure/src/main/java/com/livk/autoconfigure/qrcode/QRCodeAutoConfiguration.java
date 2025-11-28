@@ -29,12 +29,12 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class QRCodeAutoConfiguration {
 	 * @return the qr code generator
 	 */
 	@Bean
-	public QrCodeManager googleQRCodeManager(Jackson2ObjectMapperBuilder builder) {
+	public QrCodeManager googleQRCodeManager(JsonMapper.Builder builder) {
 		return GoogleQrCodeManager.of(builder.build());
 	}
 

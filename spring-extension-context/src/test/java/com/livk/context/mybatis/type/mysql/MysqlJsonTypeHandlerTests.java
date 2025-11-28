@@ -16,10 +16,8 @@
 
 package com.livk.context.mybatis.type.mysql;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.testcontainers.containers.MysqlContainer;
+import com.livk.testcontainers.DockerImageNames;
 import com.mysql.cj.jdbc.Driver;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
@@ -50,6 +48,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mysql.MySQLContainer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -66,7 +67,9 @@ class MysqlJsonTypeHandlerTests {
 
 	@Container
 	@ServiceConnection
-	static final MysqlContainer mysql = new MysqlContainer().withEnv("MYSQL_ROOT_PASSWORD", "123456")
+	static final MySQLContainer mysql = new MySQLContainer(DockerImageNames.mysql())
+		.withExposedPorts(MySQLContainer.MYSQL_PORT)
+		.withEnv("MYSQL_ROOT_PASSWORD", "123456")
 		.withDatabaseName("mybatis");
 
 	@DynamicPropertySource
@@ -105,7 +108,7 @@ class MysqlJsonTypeHandlerTests {
 		assertThat(first.getUsername()).isEqualTo(user.getUsername());
 		assertThat(first.getPassword()).isEqualTo(user.getPassword());
 		assertThat(first.getDes()).isEqualTo(user.getDes());
-		assertThat(first.getDes().get("mark").asText()).isEqualTo("livk");
+		assertThat(first.getDes().get("mark").asString()).isEqualTo("livk");
 	}
 
 	@TestConfiguration

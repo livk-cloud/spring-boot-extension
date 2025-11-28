@@ -16,8 +16,8 @@
 
 package com.livk.commons.jackson;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -57,8 +57,8 @@ class JsonNodeUtilsTests {
 	@Test
 	void findObjectNode() {
 		JsonNode jsonNode = JsonNodeUtils.findObjectNode(node, "info");
-		assertThat(jsonNode.get("name").asText()).isEqualTo("livk");
-		assertThat(jsonNode.get("email").asText()).isEqualTo("1375632510@qq.com");
+		assertThat(jsonNode.get("name").asString()).isEqualTo("livk");
+		assertThat(jsonNode.get("email").asString()).isEqualTo("1375632510@qq.com");
 	}
 
 }

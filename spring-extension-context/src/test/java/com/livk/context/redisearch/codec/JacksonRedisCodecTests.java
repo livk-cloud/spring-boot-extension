@@ -16,7 +16,7 @@
 
 package com.livk.context.redisearch.codec;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.lettuce.core.codec.RedisCodec;
 import org.junit.jupiter.api.Test;
 

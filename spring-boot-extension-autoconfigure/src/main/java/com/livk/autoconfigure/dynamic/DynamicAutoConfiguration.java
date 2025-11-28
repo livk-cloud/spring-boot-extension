@@ -20,8 +20,8 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.dynamic.DynamicDatasource;
 import com.livk.context.dynamic.intercept.DataSourceInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Map;

@@ -19,14 +19,15 @@ package com.livk.autoconfigure.curator.actuator;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
 import org.apache.curator.framework.CuratorFramework;
-import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthContributorConfiguration;
-import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
-import org.springframework.boot.actuate.health.HealthContributor;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.health.autoconfigure.contributor.CompositeHealthContributorConfiguration;
+import org.springframework.boot.health.autoconfigure.contributor.ConditionalOnEnabledHealthIndicator;
+import org.springframework.boot.health.contributor.HealthContributor;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Map;
@@ -42,7 +43,7 @@ import java.util.Map;
 @ConditionalOnBean(CuratorFramework.class)
 @ConditionalOnEnabledHealthIndicator("curator")
 public class CuratorHealthContributorAutoConfiguration
-		extends CompositeHealthContributorConfiguration<CuratorHealthIndicator, CuratorFramework> {
+		extends CompositeHealthContributorConfiguration<@NonNull CuratorHealthIndicator, @NonNull CuratorFramework> {
 
 	/**
 	 * Instantiates a new Curator health contributor auto configuration.

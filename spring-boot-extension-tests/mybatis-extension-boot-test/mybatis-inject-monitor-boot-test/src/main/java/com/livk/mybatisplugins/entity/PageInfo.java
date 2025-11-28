@@ -16,26 +16,20 @@
 
 package com.livk.mybatisplugins.entity;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.github.pagehelper.Page;
-import com.livk.commons.jackson.JsonNodeUtils;
 import com.livk.commons.util.BeanLambda;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.std.StdScalarDeserializer;
+import tools.jackson.databind.type.TypeBindings;
 
-import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -50,7 +44,6 @@ import java.util.function.Function;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-@JsonDeserialize(using = PageInfo.PageInfoJsonDeserializer.class)
 public class PageInfo<T> implements Serializable {
 
 	@Serial
@@ -120,8 +113,7 @@ public class PageInfo<T> implements Serializable {
 	/**
 	 * {@link PageInfo} 反序列化器
 	 */
-	static class PageInfoJsonDeserializer extends StdScalarDeserializer<PageInfo<Object>>
-			implements ContextualDeserializer {
+	static class PageInfoJsonDeserializer extends StdScalarDeserializer<PageInfo<Object>> {
 
 		private JavaType javaType;
 
@@ -133,20 +125,24 @@ public class PageInfo<T> implements Serializable {
 		}
 
 		@Override
-		public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) throws IOException {
+		public PageInfo<Object> deserialize(JsonParser p, DeserializationContext context) {
 			JsonNode jsonNode = context.readTree(p);
-			ObjectMapper mapper = (ObjectMapper) p.getCodec();
+
 			String listFieldName = BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getList);
-			CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, javaType);
-			List<Object> list = JsonNodeUtils.findValue(jsonNode, listFieldName, collectionType, mapper);
+
+			JavaType collectionType = context.getTypeFactory().constructCollectionType(List.class, javaType);
+
+			List<Object> list = context.readTreeAsValue(jsonNode.get(listFieldName), collectionType);
+
 			int pageNum = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getPageNum)).asInt();
 			int pageSize = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getPageSize)).asInt();
 			long total = jsonNode.get(BeanLambda.<PageInfo<Object>>fieldName(PageInfo::getTotal)).asLong();
+
 			return new PageInfo<>(list, pageNum, pageSize, total);
 		}
 
 		@Override
-		public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) {
+		public ValueDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) {
 			JavaType contextualType = context.getContextualType();
 			TypeBindings bindings = contextualType.getBindings();
 			javaType = bindings.getBoundType(0);

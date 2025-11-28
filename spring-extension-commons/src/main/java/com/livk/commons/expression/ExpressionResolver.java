@@ -59,24 +59,6 @@ public interface ExpressionResolver {
 	<T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
 
 	/**
-	 * 根据Method和Map环境信息将表达式解析，并转成相对应的类型
-	 * @param <T> 泛型
-	 * @param value 表达式
-	 * @param method method
-	 * @param args args
-	 * @param contextMap 解析上下文环境数据
-	 * @param returnType 返回类型
-	 * @return entity
-	 * @deprecated use {@link #evaluate(String, Context, Class)}
-	 * @see #evaluate(String, Context, Class)
-	 */
-	@Deprecated(since = "1.4.2", forRemoval = true)
-	default <T> T evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap, Class<T> returnType) {
-		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(contextMap);
-		return evaluate(value, context, returnType);
-	}
-
-	/**
 	 * 根据Method将表达式解析，并转成String
 	 * @param value 表达式
 	 * @param method method
@@ -105,20 +87,6 @@ public interface ExpressionResolver {
 	 */
 	default String evaluate(String value, Map<String, ?> contextMap) {
 		return evaluate(value, contextMap, String.class);
-	}
-
-	/**
-	 * 根据Method和Map环境信息将表达式解析，并转成String
-	 * @param value 表达式
-	 * @param method method
-	 * @param args args
-	 * @param contextMap 解析上下文环境数据
-	 * @return string
-	 * @deprecated use {@link #evaluate(String, Context)}
-	 */
-	@Deprecated(since = "1.4.2", forRemoval = true)
-	default String evaluate(String value, Method method, Object[] args, Map<String, ?> contextMap) {
-		return evaluate(value, method, args, contextMap, String.class);
 	}
 
 }

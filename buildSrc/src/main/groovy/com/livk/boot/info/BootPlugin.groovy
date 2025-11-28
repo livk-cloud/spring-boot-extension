@@ -37,7 +37,6 @@ abstract class BootPlugin implements Plugin<Project> {
 		project.tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME, BootJar) { bootJar ->
 			bootJar.archiveBaseName.set(project.name)
 			bootJar.archiveFileName.set("${bootJar.archiveBaseName.get()}.${bootJar.archiveExtension.get()}")
-			bootJar.launchScript()
 			bootJar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 		}
 

@@ -16,21 +16,20 @@
 
 package com.livk.commons.jackson.support;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.google.common.collect.Streams;
 import com.livk.commons.jackson.TypeFactoryUtils;
 import com.livk.commons.util.Pair;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.type.CollectionType;
+import tools.jackson.databind.type.MapType;
+import tools.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -117,29 +116,29 @@ class JacksonSupportTests {
 	void testJsonReadValue() throws IOException {
 		JsonNode result1 = JSON.readValue(json, JsonNode.class);
 		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asText()).isEqualTo("1");
-		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("c").asString()).isEqualTo("1");
+		assertThat(result1.get("a").asString()).isEqualTo("2");
 		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.json").getInputStream();
 		JsonNode result2 = JSON.readValue(inputStream, JsonNode.class);
 		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asText()).isEqualTo("1");
-		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("c").asString()).isEqualTo("1");
+		assertThat(result2.get("a").asString()).isEqualTo("2");
 		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = JSON.readValue(json, new TypeReference<>() {
 		});
 		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asText()).isEqualTo("1");
-		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("c").asString()).isEqualTo("1");
+		assertThat(result3.get("a").asString()).isEqualTo("2");
 		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = JSON.readValue(json, javaType);
 		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asText()).isEqualTo("1");
-		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("c").asString()).isEqualTo("1");
+		assertThat(result4.get("a").asString()).isEqualTo("2");
 		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
@@ -147,29 +146,29 @@ class JacksonSupportTests {
 	void testYamlReadValue() throws IOException {
 		JsonNode result1 = YAML.readValue(yaml, JsonNode.class);
 		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asText()).isEqualTo("1");
-		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("c").asString()).isEqualTo("1");
+		assertThat(result1.get("a").asString()).isEqualTo("2");
 		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.yml").getInputStream();
 		JsonNode result2 = YAML.readValue(inputStream, JsonNode.class);
 		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asText()).isEqualTo("1");
-		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("c").asString()).isEqualTo("1");
+		assertThat(result2.get("a").asString()).isEqualTo("2");
 		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = YAML.readValue(yaml, new TypeReference<>() {
 		});
 		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asText()).isEqualTo("1");
-		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("c").asString()).isEqualTo("1");
+		assertThat(result3.get("a").asString()).isEqualTo("2");
 		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = YAML.readValue(yaml, javaType);
 		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asText()).isEqualTo("1");
-		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("c").asString()).isEqualTo("1");
+		assertThat(result4.get("a").asString()).isEqualTo("2");
 		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
 
 	}
@@ -178,29 +177,29 @@ class JacksonSupportTests {
 	void testXmlReadValue() throws IOException {
 		JsonNode result1 = XML.readValue(xml, JsonNode.class);
 		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asText()).isEqualTo("1");
-		assertThat(result1.get("a").asText()).isEqualTo("2");
+		assertThat(result1.get("c").asString()).isEqualTo("1");
+		assertThat(result1.get("a").asString()).isEqualTo("2");
 		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
 
 		InputStream inputStream = new ClassPathResource("input.xml").getInputStream();
 		JsonNode result2 = XML.readValue(inputStream, JsonNode.class);
 		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asText()).isEqualTo("1");
-		assertThat(result2.get("a").asText()).isEqualTo("2");
+		assertThat(result2.get("c").asString()).isEqualTo("1");
+		assertThat(result2.get("a").asString()).isEqualTo("2");
 		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode result3 = XML.readValue(xml, new TypeReference<>() {
 		});
 		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asText()).isEqualTo("1");
-		assertThat(result3.get("a").asText()).isEqualTo("2");
+		assertThat(result3.get("c").asString()).isEqualTo("1");
+		assertThat(result3.get("a").asString()).isEqualTo("2");
 		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
 		JsonNode result4 = XML.readValue(xml, javaType);
 		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asText()).isEqualTo("1");
-		assertThat(result4.get("a").asText()).isEqualTo("2");
+		assertThat(result4.get("c").asString()).isEqualTo("1");
+		assertThat(result4.get("a").asString()).isEqualTo("2");
 		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
@@ -244,20 +243,20 @@ class JacksonSupportTests {
 	void testReadTree() {
 		JsonNode jsonNode = JSON.readTree(json);
 		assertThat(jsonNode).isNotNull();
-		assertThat(jsonNode.get("c").asText()).isEqualTo("1");
-		assertThat(jsonNode.get("a").asText()).isEqualTo("2");
+		assertThat(jsonNode.get("c").asString()).isEqualTo("1");
+		assertThat(jsonNode.get("a").asString()).isEqualTo("2");
 		assertThat(jsonNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode yamlNode = YAML.readTree(yaml);
 		assertThat(yamlNode).isNotNull();
-		assertThat(yamlNode.get("c").asText()).isEqualTo("1");
-		assertThat(yamlNode.get("a").asText()).isEqualTo("2");
+		assertThat(yamlNode.get("c").asString()).isEqualTo("1");
+		assertThat(yamlNode.get("a").asString()).isEqualTo("2");
 		assertThat(yamlNode.get("b").get("c").asInt()).isEqualTo(3);
 
 		JsonNode xmlNode = XML.readTree(xml);
 		assertThat(xmlNode).isNotNull();
-		assertThat(xmlNode.get("c").asText()).isEqualTo("1");
-		assertThat(xmlNode.get("a").asText()).isEqualTo("2");
+		assertThat(xmlNode.get("c").asString()).isEqualTo("1");
+		assertThat(xmlNode.get("a").asString()).isEqualTo("2");
 		assertThat(xmlNode.get("b").get("c").asInt()).isEqualTo(3);
 	}
 
@@ -287,10 +286,10 @@ class JacksonSupportTests {
 				"spring-boot-starter-json");
 
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 
-		assertThat(JSON.<Map<String, String>>convertValue(jsonNodeList.get(0), mapType)).isEqualTo(loggingDependency);
-		assertThat(JSON.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
+		assertThat(JSON.<Map<String, String>>convertValue(dependencyArray.get(0), mapType))
+			.isEqualTo(loggingDependency);
+		assertThat(JSON.<Map<String, String>>convertValue(dependencyArray.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
@@ -326,11 +325,10 @@ class JacksonSupportTests {
 				"spring-boot-starter-json");
 
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 
-		assertThat(YAML.<Map<String, String>>convertValue(jsonNodeList.getFirst(), mapType))
+		assertThat(YAML.<Map<String, String>>convertValue(dependencyArray.get(0), mapType))
 			.isEqualTo(loggingDependency);
-		assertThat(YAML.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
+		assertThat(YAML.<Map<String, String>>convertValue(dependencyArray.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);
@@ -370,10 +368,9 @@ class JacksonSupportTests {
 				"spring-boot-starter-json");
 
 		MapType mapType = TypeFactoryUtils.mapType(String.class, String.class);
-		List<JsonNode> jsonNodeList = Streams.stream(dependencyArray.elements()).toList();
 
-		assertThat(XML.<Map<String, String>>convertValue(jsonNodeList.get(0), mapType)).isEqualTo(loggingDependency);
-		assertThat(XML.<Map<String, String>>convertValue(jsonNodeList.get(1), mapType)).isEqualTo(jsonDependency);
+		assertThat(XML.<Map<String, String>>convertValue(dependencyArray.get(0), mapType)).isEqualTo(loggingDependency);
+		assertThat(XML.<Map<String, String>>convertValue(dependencyArray.get(1), mapType)).isEqualTo(jsonDependency);
 
 		List<Map<String, String>> dependencyList = List.of(loggingDependency, jsonDependency);
 		CollectionType collectionType = TypeFactoryUtils.listType(mapType);

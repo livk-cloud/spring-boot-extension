@@ -21,13 +21,13 @@ import com.livk.context.qrcode.resolver.ReactiveQrCodeMethodReturnValueHandler;
 import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +39,7 @@ class QRCodeAutoConfigurationTests {
 	@Test
 	void googleQRCodeManager() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
+			.withBean(JsonMapper.Builder.class, JsonMapper::builder)
 			.withConfiguration(AutoConfigurations.of(QRCodeAutoConfiguration.class));
 
 		contextRunner.run((context) -> assertThat(context).hasSingleBean(GoogleQrCodeManager.class));
@@ -48,7 +48,7 @@ class QRCodeAutoConfigurationTests {
 	@Test
 	void testServlet() {
 		WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
+			.withBean(JsonMapper.Builder.class, JsonMapper::builder)
 			.withConfiguration(AutoConfigurations.of(WebMvcAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
 		contextRunner.run(context -> {
@@ -61,7 +61,7 @@ class QRCodeAutoConfigurationTests {
 	@Test
 	void testReactive() {
 		ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner()
-			.withBean(Jackson2ObjectMapperBuilder.class, Jackson2ObjectMapperBuilder::new)
+			.withBean(JsonMapper.Builder.class, JsonMapper::builder)
 			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class, QRCodeAutoConfiguration.class));
 
 		contextRunner.run(context -> assertThat(context).hasSingleBean(ReactiveQrCodeMethodReturnValueHandler.class));

@@ -29,12 +29,6 @@ import java.lang.annotation.Annotation;
 public enum HttpClientType {
 
 	/**
-	 * RestTemplate
-	 * @deprecated use {@link HttpClientType#REST_CLIENT}
-	 */
-	@Deprecated(since = "1.4.3")
-	REST_TEMPLATE(EnableRestTemplate.class),
-	/**
 	 * WebClient
 	 */
 	WEB_CLIENT(EnableWebClient.class),

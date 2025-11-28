@@ -33,11 +33,18 @@ dependencies {
 	optional("nl.basjes.parse.useragent:yauaa")
 	optional("com.redis:lettucemod")
 	optional("org.apache.commons:commons-pool2")
-	optional("io.minio:minio")
 	optional("com.lmax:disruptor")
+	optional("org.springframework.boot:spring-boot-health")
+	optional("org.springframework.boot:spring-boot-jdbc")
+	optional("org.springframework.boot:spring-boot-data-redis")
+	optional("org.springframework.boot:spring-boot-jackson")
+	optional("tools.jackson.dataformat:jackson-dataformat-yaml")
+
 	aptCompile(project(":spring-auto-service"))
 
 	testImplementation(project(":spring-testcontainers-support"))
 	testImplementation("com.zaxxer:HikariCP")
 	testImplementation("com.redis:testcontainers-redis")
+	testImplementation("org.springframework.boot:spring-boot-webmvc")
+	testImplementation("org.springframework.boot:spring-boot-webflux")
 }

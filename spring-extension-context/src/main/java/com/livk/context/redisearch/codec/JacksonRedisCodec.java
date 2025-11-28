@@ -16,13 +16,11 @@
 
 package com.livk.context.redisearch.codec;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.livk.commons.jackson.TypeFactoryUtils;
 import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * The type Jackson redis codec.
@@ -40,12 +38,8 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 
 	JacksonRedisCodec(ObjectMapper mapper, Class<K> type, Class<V> valueType) {
 		this.mapper = mapper;
-		this.keyType = getJavaType(type);
-		this.valueType = getJavaType(valueType);
-	}
-
-	private JavaType getJavaType(Class<?> clazz) {
-		return TypeFactory.defaultInstance().constructType(clazz);
+		this.keyType = TypeFactoryUtils.javaType(type);
+		this.valueType = TypeFactoryUtils.javaType(valueType);
 	}
 
 	@Override
@@ -72,7 +66,7 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.writeValueAsBytes(value);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			throw new CodecException("Could not serialize value", ex);
 		}
 	}
@@ -81,7 +75,7 @@ class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
 		try {
 			return mapper.readValue(bytes, type);
 		}
-		catch (IOException ex) {
+		catch (JacksonException ex) {
 			throw new CodecException("Could not deserialize value", ex);
 		}
 	}

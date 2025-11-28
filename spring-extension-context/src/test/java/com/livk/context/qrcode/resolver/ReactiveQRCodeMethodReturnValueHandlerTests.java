@@ -16,7 +16,7 @@
 
 package com.livk.context.qrcode.resolver;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
