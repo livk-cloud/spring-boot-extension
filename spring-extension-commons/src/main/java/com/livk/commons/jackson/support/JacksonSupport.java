@@ -22,9 +22,7 @@ import tools.jackson.core.JsonParser;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.util.TokenBuffer;
 
-import java.io.DataInput;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
@@ -80,12 +78,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		else if (readVal instanceof byte[] bytes) {
 			return mapper.readValue(bytes, type);
 		}
-		else if (readVal instanceof DataInput dataInput) {
-			return mapper.readValue(dataInput, type);
-		}
-		else if (readVal instanceof TokenBuffer tokenBuffer) {
-			return mapper.readValue(tokenBuffer, type);
-		}
 		throw new UnsupportedOperationException("Unsupported type: " + readVal.getClass().getName());
 	}
 
@@ -130,9 +122,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		}
 		else if (readVal instanceof byte[] bytes) {
 			return mapper.readTree(bytes);
-		}
-		else if (readVal instanceof TokenBuffer tokenBuffer) {
-			return mapper.readTree(tokenBuffer);
 		}
 		return mapper.valueToTree(readVal);
 	}
