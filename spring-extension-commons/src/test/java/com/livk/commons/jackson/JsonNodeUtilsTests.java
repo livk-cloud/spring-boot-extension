@@ -19,6 +19,8 @@ package com.livk.commons.jackson;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.Map;
 
@@ -45,6 +47,7 @@ class JsonNodeUtilsTests {
 	void findStringValue() {
 		String username = JsonNodeUtils.findStringValue(node, "username");
 		assertThat(username).isEqualTo("root");
+		assertThat(JsonNodeUtils.findStringValue(null, "username")).isNull();
 	}
 
 	@Test
@@ -52,10 +55,16 @@ class JsonNodeUtilsTests {
 		Map<String, Object> map = JsonNodeUtils.findValue(node, "info", JsonNodeUtils.STRING_OBJECT_MAP,
 				JsonMapper.builder().build());
 		assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of("name", "livk", "email", "1375632510@qq.com"));
+
+		JsonNode nodeMap = JsonNodeUtils.findValue(node, "info", JsonNode.class, JsonMapper.builder().build());
+		ObjectNode valNode = new ObjectNode(JsonNodeFactory.instance).put("name", "livk")
+			.put("email", "1375632510@qq.com");
+		assertThat(nodeMap).isNotNull().isEqualTo(valNode);
 	}
 
 	@Test
 	void findObjectNode() {
+		assertThat(JsonNodeUtils.findObjectNode(null, "info")).isNull();
 		JsonNode jsonNode = JsonNodeUtils.findObjectNode(node, "info");
 		assertThat(jsonNode.get("name").asString()).isEqualTo("livk");
 		assertThat(jsonNode.get("email").asString()).isEqualTo("1375632510@qq.com");
