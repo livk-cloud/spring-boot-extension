@@ -1,0 +1,1469 @@
+{
+  "groups": [
+    {
+      "name": "spring.redisson",
+      "type": "com.livk.autoconfigure.redisson.RedissonProperties",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties"
+    },
+    {
+      "name": "spring.redisson.config",
+      "type": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties",
+      "sourceMethod": "getConfig()"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config",
+      "type": "org.redisson.config.ClusterServersConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceMethod": "getClusterServersConfig()"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config",
+      "type": "org.redisson.config.MasterSlaveServersConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceMethod": "getMasterSlaveServersConfig()"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config",
+      "type": "org.redisson.config.ReplicatedServersConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceMethod": "getReplicatedServersConfig()"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config",
+      "type": "org.redisson.config.SentinelServersConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceMethod": "getSentinelServersConfig()"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config",
+      "type": "org.redisson.config.SingleServerConfig",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig",
+      "sourceMethod": "getSingleServerConfig()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.redisson.config.address-resolver-group-factory",
+      "type": "org.redisson.connection.AddressResolverGroupFactory",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.check-lock-synced-slaves",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.clean-up-keys-amount",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.check-master-link-status",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.check-slots-coverage",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.client-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.command-mapper",
+      "type": "org.redisson.config.CommandMapper",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.connect-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.credentials-resolver",
+      "type": "org.redisson.config.CredentialsResolver",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.dns-monitoring-interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.failed-slave-node-detector",
+      "type": "org.redisson.client.FailedNodeDetector",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.failed-slave-reconnection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.keep-alive",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.load-balancer",
+      "type": "org.redisson.connection.balancer.LoadBalancer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.master-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.master-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.name-mapper",
+      "type": "org.redisson.api.NameMapper",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.nat-mapper",
+      "type": "org.redisson.api.NatMapper",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.node-addresses",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ping-connection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.read-mode",
+      "type": "org.redisson.config.ReadMode",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.reconnection-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.retry-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.scan-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.sharded-subscription-mode",
+      "type": "org.redisson.config.ShardedSubscriptionMode",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.slave-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.slave-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-ciphers",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-key-manager-factory",
+      "type": "javax.net.ssl.KeyManagerFactory",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-keystore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-keystore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-keystore-type",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-protocols",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-provider",
+      "type": "org.redisson.config.SslProvider",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-trust-manager-factory",
+      "type": "javax.net.ssl.TrustManagerFactory",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-truststore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-truststore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-verification-mode",
+      "type": "org.redisson.config.SslVerificationMode",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.subscription-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.subscription-mode",
+      "type": "org.redisson.config.SubscriptionMode",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.subscription-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.subscriptions-per-connection",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.tcp-keep-alive-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.tcp-keep-alive-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.tcp-keep-alive-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.tcp-no-delay",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.tcp-user-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ClusterServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.codec",
+      "type": "org.redisson.client.codec.Codec",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.connection-listener",
+      "type": "org.redisson.connection.ConnectionListener",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.event-loop-group",
+      "type": "io.netty.channel.EventLoopGroup",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.executor",
+      "type": "java.util.concurrent.ExecutorService",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.fair-lock-wait-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.keep-pub-sub-order",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.lazy-initialization",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.lock-watchdog-batch-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.lock-watchdog-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.client-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.command-mapper",
+      "type": "org.redisson.config.CommandMapper",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.connect-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.credentials-resolver",
+      "type": "org.redisson.config.CredentialsResolver",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.database",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.dns-monitoring-interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.failed-slave-node-detector",
+      "type": "org.redisson.client.FailedNodeDetector",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.failed-slave-reconnection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.keep-alive",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.load-balancer",
+      "type": "org.redisson.connection.balancer.LoadBalancer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.master-address",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.master-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.master-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.name-mapper",
+      "type": "org.redisson.api.NameMapper",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ping-connection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.read-mode",
+      "type": "org.redisson.config.ReadMode",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.reconnection-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.retry-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.slave-addresses",
+      "type": "java.util.Set<java.lang.String>",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.slave-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.slave-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-ciphers",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-key-manager-factory",
+      "type": "javax.net.ssl.KeyManagerFactory",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-keystore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-keystore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-keystore-type",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-protocols",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-provider",
+      "type": "org.redisson.config.SslProvider",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-trust-manager-factory",
+      "type": "javax.net.ssl.TrustManagerFactory",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-truststore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-truststore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-verification-mode",
+      "type": "org.redisson.config.SslVerificationMode",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.subscription-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.subscription-mode",
+      "type": "org.redisson.config.SubscriptionMode",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.subscription-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.subscriptions-per-connection",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.tcp-keep-alive-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.tcp-keep-alive-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.tcp-keep-alive-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.tcp-no-delay",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.tcp-user-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.max-clean-up-delay",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.min-clean-up-delay",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.netty-executor",
+      "type": "java.util.concurrent.Executor",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.netty-hook",
+      "type": "org.redisson.client.NettyHook",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.netty-threads",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.protocol",
+      "type": "org.redisson.config.Protocol",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.reference-enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.reliable-topic-watchdog-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.client-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.command-mapper",
+      "type": "org.redisson.config.CommandMapper",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.connect-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.credentials-resolver",
+      "type": "org.redisson.config.CredentialsResolver",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.database",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.dns-monitoring-interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.failed-slave-node-detector",
+      "type": "org.redisson.client.FailedNodeDetector",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.failed-slave-reconnection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.keep-alive",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.load-balancer",
+      "type": "org.redisson.connection.balancer.LoadBalancer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.master-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.master-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.monitor-i-p-changes",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.name-mapper",
+      "type": "org.redisson.api.NameMapper",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.node-addresses",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ping-connection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.read-mode",
+      "type": "org.redisson.config.ReadMode",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.reconnection-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.retry-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.scan-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.slave-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.slave-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-ciphers",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-key-manager-factory",
+      "type": "javax.net.ssl.KeyManagerFactory",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-keystore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-keystore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-keystore-type",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-protocols",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-provider",
+      "type": "org.redisson.config.SslProvider",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-trust-manager-factory",
+      "type": "javax.net.ssl.TrustManagerFactory",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-truststore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-truststore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-verification-mode",
+      "type": "org.redisson.config.SslVerificationMode",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.subscription-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.subscription-mode",
+      "type": "org.redisson.config.SubscriptionMode",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.subscription-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.subscriptions-per-connection",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.tcp-keep-alive-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.tcp-keep-alive-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.tcp-keep-alive-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.tcp-no-delay",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.tcp-user-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.check-sentinels-list",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.check-slave-status-with-syncing",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.client-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.command-mapper",
+      "type": "org.redisson.config.CommandMapper",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.connect-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.credentials-resolver",
+      "type": "org.redisson.config.CredentialsResolver",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.database",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.dns-monitoring-interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.failed-slave-node-detector",
+      "type": "org.redisson.client.FailedNodeDetector",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.failed-slave-reconnection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.keep-alive",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.load-balancer",
+      "type": "org.redisson.connection.balancer.LoadBalancer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.master-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.master-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.master-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.name-mapper",
+      "type": "org.redisson.api.NameMapper",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.nat-mapper",
+      "type": "org.redisson.api.NatMapper",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ping-connection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.read-mode",
+      "type": "org.redisson.config.ReadMode",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.reconnection-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.retry-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.scan-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.sentinel-addresses",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.sentinel-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.sentinel-username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.sentinels-discovery",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.slave-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.slave-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-ciphers",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-key-manager-factory",
+      "type": "javax.net.ssl.KeyManagerFactory",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-keystore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-keystore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-keystore-type",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-protocols",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-provider",
+      "type": "org.redisson.config.SslProvider",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-trust-manager-factory",
+      "type": "javax.net.ssl.TrustManagerFactory",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-truststore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-truststore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-verification-mode",
+      "type": "org.redisson.config.SslVerificationMode",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.subscription-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.subscription-mode",
+      "type": "org.redisson.config.SubscriptionMode",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.subscription-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.subscriptions-per-connection",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.tcp-keep-alive-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.tcp-keep-alive-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.tcp-keep-alive-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.tcp-no-delay",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.tcp-user-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SentinelServersConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.address",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.client-name",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.command-mapper",
+      "type": "org.redisson.config.CommandMapper",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.connect-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.credentials-resolver",
+      "type": "org.redisson.config.CredentialsResolver",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.database",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.dns-monitoring-interval",
+      "type": "java.lang.Long",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.keep-alive",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.name-mapper",
+      "type": "org.redisson.api.NameMapper",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ping-connection-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.reconnection-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.retry-attempts",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.retry-delay",
+      "type": "org.redisson.config.DelayStrategy",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-ciphers",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-key-manager-factory",
+      "type": "javax.net.ssl.KeyManagerFactory",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-keystore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-keystore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-keystore-type",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-protocols",
+      "type": "java.lang.String[]",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-provider",
+      "type": "org.redisson.config.SslProvider",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-trust-manager-factory",
+      "type": "javax.net.ssl.TrustManagerFactory",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-truststore",
+      "type": "java.net.URL",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-truststore-password",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-verification-mode",
+      "type": "org.redisson.config.SslVerificationMode",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.subscription-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.subscription-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.subscriptions-per-connection",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.tcp-keep-alive-count",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.tcp-keep-alive-idle",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.tcp-keep-alive-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.tcp-no-delay",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.tcp-user-timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.timeout",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.username",
+      "type": "java.lang.String",
+      "sourceType": "org.redisson.config.SingleServerConfig"
+    },
+    {
+      "name": "spring.redisson.config.slaves-sync-timeout",
+      "type": "java.lang.Long",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.threads",
+      "type": "java.lang.Integer",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.transport-mode",
+      "type": "org.redisson.config.TransportMode",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.use-script-cache",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.use-thread-class-loader",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.valkey-capabilities",
+      "type": "java.util.Set<org.redisson.config.ValkeyCapability>",
+      "sourceType": "com.livk.autoconfigure.redisson.RedissonProperties$RedissonConfig"
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.failed-slave-check-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.retry-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ClusterServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.cluster-servers-config.ssl-enable-endpoint-identification",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ClusterServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.failed-slave-check-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.retry-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.master-slave-servers-config.ssl-enable-endpoint-identification",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.MasterSlaveServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.failed-slave-check-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.retry-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.replicated-servers-config.ssl-enable-endpoint-identification",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.ReplicatedServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.failed-slave-check-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.retry-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SentinelServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.sentinel-servers-config.ssl-enable-endpoint-identification",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SentinelServersConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.retry-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "org.redisson.config.SingleServerConfig",
+      "deprecated": true,
+      "deprecation": {}
+    },
+    {
+      "name": "spring.redisson.config.single-server-config.ssl-enable-endpoint-identification",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.redisson.config.SingleServerConfig",
+      "deprecated": true,
+      "deprecation": {}
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}

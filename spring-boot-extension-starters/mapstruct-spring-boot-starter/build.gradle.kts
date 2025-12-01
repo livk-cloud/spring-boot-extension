@@ -1,5 +1,5 @@
 description = "mapstruct spring boot starter"
 
 dependencies {
-	api("org.mapstruct:mapstruct")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-mapstruct"))
 }

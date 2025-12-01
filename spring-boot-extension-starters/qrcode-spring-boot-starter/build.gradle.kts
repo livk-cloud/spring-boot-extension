@@ -1,5 +1,5 @@
 description = "qrcode spring boot starter"
 
 dependencies {
-	api("com.google.zxing:javase")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-qrcode"))
 }

@@ -1,5 +1,5 @@
 description = "curator spring boot starter"
 
 dependencies {
-	api("org.apache.curator:curator-recipes")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-curator"))
 }

@@ -8,8 +8,16 @@ dependencies {
 	constraints {
 		api(project(":spring-auto-service"))
 		api(project(":spring-extension-commons"))
-		api(project(":spring-extension-context"))
-		api(project(":spring-boot-extension-autoconfigure"))
+		project(":spring-extension-context") {
+			subprojects {
+				api(this)
+			}
+		}
+		project(":spring-boot-extension-autoconfigure") {
+			subprojects {
+				api(this)
+			}
+		}
 		project(":spring-boot-extension-starters") {
 			subprojects {
 				api(this)

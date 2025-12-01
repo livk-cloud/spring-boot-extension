@@ -34,7 +34,11 @@ tasks.asciidoctor {
 	}
 }
 
-val root = setOf(project(":spring-boot-extension-starters"))
+val root = setOf(
+	project(":spring-boot-extension-autoconfigure"),
+	project(":spring-boot-extension-starters"),
+	project(":spring-extension-context")
+)
 val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
 val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
 

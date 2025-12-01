@@ -1,7 +1,5 @@
 description = "redisearch spring boot starter"
 
 dependencies {
-	api("com.redis:lettucemod")
-	api("net.bytebuddy:byte-buddy")
-	api("org.apache.commons:commons-pool2")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-redisearch"))
 }
