@@ -16,17 +16,16 @@
 
 package com.livk.commons.jackson;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.ResolvableType;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.type.CollectionType;
+import tools.jackson.databind.type.MapType;
+import tools.jackson.databind.type.TypeFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +43,7 @@ public class TypeFactoryUtils {
 	 * @return typeFactory
 	 */
 	public static TypeFactory instance() {
-		return TypeFactory.defaultInstance();
+		return TypeFactory.createDefaultInstance();
 	}
 
 	/**
@@ -100,29 +99,6 @@ public class TypeFactoryUtils {
 			return instance().constructParametricType(rawClass, javaTypes);
 		}
 		return javaType(rawClass);
-	}
-
-	/**
-	 * 构建一个CollectionType
-	 * @param <T> the type parameter
-	 * @param type the target class
-	 * @return collectionType
-	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
-	 */
-	@Deprecated(since = "1.4.3")
-	public static <T> CollectionType collectionType(Class<T> type) {
-		return instance().constructCollectionType(Collection.class, type);
-	}
-
-	/**
-	 * 构建一个CollectionType
-	 * @param javaType the java type
-	 * @return collectionType
-	 * @deprecated use {@link #listType(JavaType)} or {@link #setType(JavaType)}
-	 */
-	@Deprecated(since = "1.4.3")
-	public static CollectionType collectionType(JavaType javaType) {
-		return instance().constructCollectionType(Collection.class, javaType);
 	}
 
 	/**

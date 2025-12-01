@@ -1,6 +1,5 @@
 description = "redisson spring boot starter"
 
 dependencies {
-	api("org.redisson:redisson")
-	api("org.redisson:redisson-spring-data-35")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-redisson"))
 }

@@ -16,7 +16,6 @@
 
 package com.livk.commons.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.web.HttpParameters;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +28,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
+import tools.jackson.databind.JsonNode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -114,8 +114,8 @@ class HttpServletUtilsTests {
 		HttpServletUtils.outJson(response, result);
 
 		JsonNode node = JsonMapperUtils.readTree(response.getContentAsByteArray());
-		assertThat(node.get("username").asText()).isEqualTo("livk");
-		assertThat(node.get("password").asText()).isEqualTo("123456");
+		assertThat(node.get("username").asString()).isEqualTo("livk");
+		assertThat(node.get("password").asString()).isEqualTo("123456");
 	}
 
 	@Test

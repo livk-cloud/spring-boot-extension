@@ -210,11 +210,11 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public Enumeration<String> getHeaderNames() {
-		Set<String> headerNames = headers.keySet();
+		Set<String> headerNames = headers.headerNames();
 		if (bodyReviseStatus) {
 			headerNames.add(HttpHeaders.CONTENT_TYPE);
 		}
-		return Collections.enumeration(headers.keySet());
+		return Collections.enumeration(headerNames);
 	}
 
 	@Override

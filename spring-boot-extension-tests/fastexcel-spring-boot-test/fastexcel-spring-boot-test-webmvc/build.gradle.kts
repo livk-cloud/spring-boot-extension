@@ -8,4 +8,5 @@ dependencies {
 	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter")
 	implementation("com.mysql:mysql-connector-j")
 	testImplementation("com.h2database:h2")
+	testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }

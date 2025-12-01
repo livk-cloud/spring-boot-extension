@@ -16,10 +16,10 @@
 
 package com.livk.commons.jackson;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 
 import java.util.Map;
@@ -54,7 +54,7 @@ public class JsonNodeUtils {
 			return null;
 		}
 		JsonNode value = jsonNode.findValue(fieldName);
-		return (value != null && value.isTextual()) ? value.asText() : null;
+		return (value != null && value.isString()) ? value.asString() : null;
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class JsonNodeUtils {
 			return null;
 		}
 		JsonNode value = jsonNode.findValue(fieldName);
-		return (value != null && value.isContainerNode()) ? mapper.convertValue(value, javaType) : null;
+		return (value != null && value.isContainer()) ? mapper.convertValue(value, javaType) : null;
 	}
 
 }

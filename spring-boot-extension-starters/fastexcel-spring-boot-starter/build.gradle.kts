@@ -1,5 +1,5 @@
 description = "fastexcel spring boot starter"
 
 dependencies {
-	api("cn.idev.excel:fastexcel")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-fastexcel"))
 }

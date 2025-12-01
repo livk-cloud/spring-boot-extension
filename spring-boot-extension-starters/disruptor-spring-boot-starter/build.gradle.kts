@@ -1,5 +1,5 @@
 description = "disruptor spring boot starter"
 
 dependencies {
-	api("com.lmax:disruptor")
+	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-disruptor"))
 }

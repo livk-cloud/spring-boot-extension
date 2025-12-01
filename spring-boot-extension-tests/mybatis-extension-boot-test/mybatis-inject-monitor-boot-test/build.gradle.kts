@@ -8,4 +8,5 @@ dependencies {
 	implementation("com.mysql:mysql-connector-j")
 	implementation(libs.pagehelper.starter)
 	testImplementation("com.h2database:h2")
+	testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }

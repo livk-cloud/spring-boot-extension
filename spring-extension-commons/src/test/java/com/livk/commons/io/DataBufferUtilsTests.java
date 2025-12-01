@@ -16,7 +16,6 @@
 
 package com.livk.commons.io;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -40,13 +39,13 @@ class DataBufferUtilsTests {
 		ClassPathResource resource = new ClassPathResource("input.json");
 		StepVerifier
 			.create(toMonoStr(DataBufferUtils.transform(resource.getInputStream())).map(JsonMapperUtils::readTree))
-			.expectNext(JsonMapperUtils.readValue(resource.getInputStream(), JsonNode.class))
+			.expectNext(JsonMapperUtils.readTree(resource.getInputStream()))
 			.verifyComplete();
 
 		StepVerifier
 			.create(toMonoStr(DataBufferUtils.transform(Mono.just(resource.getInputStream())))
 				.map(JsonMapperUtils::readTree))
-			.expectNext(JsonMapperUtils.readValue(resource.getInputStream(), JsonNode.class))
+			.expectNext(JsonMapperUtils.readTree(resource.getInputStream()))
 			.verifyComplete();
 	}
 

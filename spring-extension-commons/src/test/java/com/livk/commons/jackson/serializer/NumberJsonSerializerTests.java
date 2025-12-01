@@ -16,11 +16,11 @@
 
 package com.livk.commons.jackson.serializer;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.BeanLambda;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.math.BigDecimal;
 
@@ -54,7 +54,7 @@ class NumberJsonSerializerTests {
 
 		JsonNode jsonNode = JsonMapperUtils.readTree(json);
 
-		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getL)).asText()).isEqualTo("0033");
+		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getL)).asString()).isEqualTo("0033");
 		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getD)).asDouble()).isCloseTo(0.33d, within(0.0001));
 		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getF)).asDouble()).isCloseTo(0.3d, within(0.0001));
 		assertThat(jsonNode.get(BeanLambda.fieldName(Big::getCount)).asDouble()).isCloseTo(0.33d, within(0.0001));

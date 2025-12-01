@@ -1,4 +1,0 @@
-[[redis-ops-boot-starter]]
-==== redis-ops-boot-starter
-
-artifactId: redis-ops-boot-starter

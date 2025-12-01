@@ -16,8 +16,8 @@
 
 package com.livk.mysql.json.entity;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
+import tools.jackson.databind.JsonNode;
 
 /**
  * @author livk

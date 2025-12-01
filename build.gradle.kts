@@ -34,7 +34,11 @@ tasks.asciidoctor {
 	}
 }
 
-val root = setOf(project(":spring-boot-extension-starters"))
+val root = setOf(
+	project(":spring-boot-extension-autoconfigure"),
+	project(":spring-boot-extension-starters"),
+	project(":spring-extension-context")
+)
 val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
 val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
 
@@ -65,6 +69,7 @@ configure(module) {
 allprojects {
 	repositories {
 		mavenCentral()
+		maven("https://central.sonatype.com/repository/maven-snapshots")
 //		国内镜像源，海外CI拉取容易失败，在国内构建项目使用即可
 //		maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
 	}

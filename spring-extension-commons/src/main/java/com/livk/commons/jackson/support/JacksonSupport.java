@@ -16,19 +16,19 @@
 
 package com.livk.commons.jackson.support;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.livk.commons.util.GenericWrapper;
 import lombok.SneakyThrows;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.DataInput;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Jackson操作默认实现
@@ -46,7 +46,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 	public JacksonSupport(ObjectMapper mapper) {
 		super(mapper.getTypeFactory());
 		this.mapper = mapper;
-		this.mapper.registerModules(new JavaTimeModule());
 	}
 
 	@SneakyThrows
@@ -62,7 +61,10 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 			return mapper.readValue(file, type);
 		}
 		else if (readVal instanceof URL url) {
-			return mapper.readValue(url, type);
+			return this.readValue(Paths.get(url.toURI()), type);
+		}
+		else if (readVal instanceof Path path) {
+			return mapper.readValue(path, type);
 		}
 		else if (readVal instanceof String json) {
 			return mapper.readValue(json, type);
@@ -75,9 +77,6 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		}
 		else if (readVal instanceof byte[] bytes) {
 			return mapper.readValue(bytes, type);
-		}
-		else if (readVal instanceof DataInput dataInput) {
-			return mapper.readValue(dataInput, type);
 		}
 		throw new UnsupportedOperationException("Unsupported type: " + readVal.getClass().getName());
 	}
@@ -107,7 +106,10 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 			return mapper.readTree(file);
 		}
 		else if (readVal instanceof URL url) {
-			return mapper.readTree(url);
+			return this.readTree(Paths.get(url.toURI()));
+		}
+		else if (readVal instanceof Path path) {
+			return mapper.readTree(path);
 		}
 		else if (readVal instanceof String json) {
 			return mapper.readTree(json);
