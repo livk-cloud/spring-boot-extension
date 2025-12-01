@@ -16,6 +16,7 @@ spring:
         connectionMinimumIdleSize: 32
         connectionPoolSize: 64
         dnsMonitoringInterval: 5000
+        retry-delay: "!<org.redisson.config.FullJitterDelay> {baseDelay: 2h,maxDelay: 2h}"
       threads: 0
       nettyThreads: 0
       codec: "!<org.redisson.codec.JsonJacksonCodec> {}"

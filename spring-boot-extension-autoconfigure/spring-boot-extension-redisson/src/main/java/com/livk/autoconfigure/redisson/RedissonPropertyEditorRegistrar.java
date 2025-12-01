@@ -52,6 +52,12 @@ import org.redisson.connection.ConnectionListener;
 import org.redisson.connection.balancer.LoadBalancer;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.format.annotation.DurationFormat;
+import org.springframework.format.datetime.standard.DurationFormatterUtils;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.FilterProvider;
 import tools.jackson.databind.ser.std.SimpleBeanPropertyFilter;
 import tools.jackson.databind.ser.std.SimpleFilterProvider;
@@ -96,6 +102,9 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		YAMLMapper.Builder builder = YAMLMapper.builder()
 			.changeDefaultPropertyInclusion(value -> value.withOverrides(includeValue))
 			.filterProvider(filterProvider);
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(Duration.class, new SpringDurationDeserializer());
+		builder.addModule(module);
 		REDISSON_MIXIN.forEach(builder::addMixIn);
 
 		support = new JacksonSupport(builder.build());
@@ -161,6 +170,16 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 		@JsonProperty
 		ReplicatedServersConfig replicatedServersConfig;
+
+	}
+
+	public static class SpringDurationDeserializer extends ValueDeserializer<Duration> {
+
+		@Override
+		public Duration deserialize(JsonParser p, DeserializationContext ctxt) {
+			String text = p.getString().trim();
+			return DurationFormatterUtils.parse(text, DurationFormat.Style.SIMPLE);
+		}
 
 	}
 
