@@ -17,10 +17,11 @@
 package com.livk.context.mybatis;
 
 import com.livk.commons.SpringContextHolder;
-import com.livk.commons.util.SqlParserUtils;
 import com.livk.context.mybatis.event.MonitorSQLInfo;
 import com.livk.context.mybatis.event.MonitorSQLTimeOutEvent;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
@@ -48,7 +49,7 @@ public class MybatisSqlMonitor implements Interceptor {
 		Object proceed = invocation.proceed();
 		if (properties != null) {
 			long time = System.currentTimeMillis() - start;
-			String sql = SqlParserUtils.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
+			String sql = this.formatSql(((StatementHandler) invocation.getTarget()).getBoundSql().getSql());
 			if (time > timeOut()) {
 				log.warn("{SQL execution timeout SQL:[{}],Time:[{}ms]}", sql, time);
 				MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time, proceed);
@@ -70,6 +71,11 @@ public class MybatisSqlMonitor implements Interceptor {
 
 	private long timeOut() {
 		return ((ChronoUnit) properties.get("unit")).getDuration().toMillis() * (Long) properties.get("timeOut");
+	}
+
+	@SneakyThrows
+	public String formatSql(String sql) {
+		return CCJSqlParserUtil.parse(sql).toString();
 	}
 
 }

@@ -4,6 +4,7 @@ dependencies {
 	api("org.mybatis:mybatis-spring")
 	api("org.mybatis:mybatis")
 	api("org.springframework:spring-context")
+	api("com.github.jsqlparser:jsqlparser")
 	optional("org.postgresql:postgresql")
 
 	testImplementation(project(":spring-testcontainers-support"))
