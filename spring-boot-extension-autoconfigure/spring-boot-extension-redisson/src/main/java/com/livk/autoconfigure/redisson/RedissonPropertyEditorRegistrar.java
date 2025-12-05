@@ -145,6 +145,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static final class DelayMixin {
 
 		@JsonCreator
@@ -153,6 +154,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	}
 
+	@SuppressWarnings("unused")
 	@JsonIgnoreProperties({ "clusterConfig", "sentinelConfig", "singleConfig" })
 	private static final class ConfigMixIn {
 
@@ -173,10 +175,10 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	}
 
-	public static class SpringDurationDeserializer extends ValueDeserializer<Duration> {
+	private static final class SpringDurationDeserializer extends ValueDeserializer<Duration> {
 
 		@Override
-		public Duration deserialize(JsonParser p, DeserializationContext ctxt) {
+		public Duration deserialize(JsonParser p, DeserializationContext context) {
 			String text = p.getString().trim();
 			return DurationFormatterUtils.parse(text, DurationFormat.Style.SIMPLE);
 		}

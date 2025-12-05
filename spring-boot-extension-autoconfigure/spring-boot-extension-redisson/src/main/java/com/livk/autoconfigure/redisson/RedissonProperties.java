@@ -52,7 +52,7 @@ public class RedissonProperties {
 
 	private RedissonConfig config = new RedissonConfig();
 
-	public static RedissonProperties load(ConfigurableEnvironment environment) {
+	static RedissonProperties load(ConfigurableEnvironment environment) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		ConfigurableConversionService conversionService = environment.getConversionService();
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
@@ -96,35 +96,30 @@ public class RedissonProperties {
 
 		@Override
 		@NestedConfigurationProperty
-
 		public SingleServerConfig getSingleServerConfig() {
 			return super.getSingleServerConfig();
 		}
 
 		@Override
 		@NestedConfigurationProperty
-
 		public MasterSlaveServersConfig getMasterSlaveServersConfig() {
 			return super.getMasterSlaveServersConfig();
 		}
 
 		@Override
 		@NestedConfigurationProperty
-
 		public ClusterServersConfig getClusterServersConfig() {
 			return super.getClusterServersConfig();
 		}
 
 		@Override
 		@NestedConfigurationProperty
-
 		public ReplicatedServersConfig getReplicatedServersConfig() {
 			return super.getReplicatedServersConfig();
 		}
 
 		@Override
 		@NestedConfigurationProperty
-
 		public SentinelServersConfig getSentinelServersConfig() {
 			return super.getSentinelServersConfig();
 		}
