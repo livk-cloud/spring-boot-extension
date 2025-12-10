@@ -103,7 +103,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param values the values
 	 */
 	public void addHeader(String name, List<String> values) {
-		parameter.addAll(name, values);
+		headers.addAll(name, values);
 	}
 
 	/**
