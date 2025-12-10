@@ -19,15 +19,13 @@ package com.livk.commons.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -41,22 +39,18 @@ import java.util.Map;
 @Slf4j
 @Data
 @Accessors(chain = true)
-@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TreeNode<I, T> {
 
-	private I id;
+	private final I id;
 
 	private T node;
 
 	private I pid;
 
 	private List<TreeNode<I, T>> children;
-
-	private static final Map<Object, TreeNode<?, ?>> idCache = new HashMap<>(); // 节点 ID
-
-	// 缓存
 
 	/**
 	 * 创建一个root树形节点
@@ -107,20 +101,14 @@ public class TreeNode<I, T> {
 	 * @param id id
 	 * @return tree node
 	 */
-	@SuppressWarnings("unchecked")
 	public TreeNode<I, T> findById(I id) {
-		if (idCache.containsKey(id)) {
-			return (TreeNode<I, T>) idCache.get(id);
-		}
-		if (this.id.equals(id)) {
-			idCache.put(id, this);
+		if (this.id != null && this.id.equals(id)) {
 			return this;
 		}
 		if (!CollectionUtils.isEmpty(children)) {
 			for (TreeNode<I, T> child : children) {
 				TreeNode<I, T> treeNo = child.findById(id);
 				if (treeNo != null) {
-					idCache.put(id, treeNo);
 					return treeNo;
 				}
 			}
