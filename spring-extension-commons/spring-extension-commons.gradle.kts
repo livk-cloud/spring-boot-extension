@@ -12,7 +12,6 @@ dependencies {
 	optional("org.springframework.boot:spring-boot-starter")
 	optional("org.springframework.boot:spring-boot-restclient")
 	optional("org.springframework.boot:spring-boot-webclient")
-
 	optional("io.projectreactor.netty:reactor-netty-http")
 	optional("jakarta.servlet:jakarta.servlet-api")
 	optional("com.squareup.okhttp3:okhttp")
