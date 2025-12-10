@@ -27,7 +27,7 @@
 ## Gradle Dependency API
 
 - **management platform** - 用于添加BOM
-- **compileProcessor** - 用于编译器的注解处理器
+- **aptCompile** - 用于编译器的注解处理器
 - **optional** - 等同于Maven中的optional
 - **api** - 可传递的依赖引用
 - **implementation** - 不可传递的依赖引用
