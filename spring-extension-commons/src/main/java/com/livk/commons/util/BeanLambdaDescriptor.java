@@ -47,7 +47,7 @@ final class BeanLambdaDescriptor {
 		Class<?> type = method.getDeclaringClass();
 		PropertyDescriptor propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
 		if (propertyDescriptor == null) {
-			throw new IllegalStateException("propertyDescriptor must not be null");
+			throw new IllegalStateException("No PropertyDescriptor found for method: " + method);
 		}
 		return propertyDescriptor;
 	}
@@ -81,7 +81,10 @@ final class BeanLambdaDescriptor {
 		String fieldName = propertyDescriptor.getName();
 		Class<?> fieldType = propertyDescriptor.getPropertyType();
 		Class<?> type = method.getDeclaringClass();
-		return ReflectionUtils.findField(type, fieldName, fieldType);
+		Field field = ReflectionUtils.findField(type, fieldName, fieldType);
+		Assert.notNull(field, "Field '" + fieldName + "' of type '" + fieldType.getName() + "' not found on class: "
+				+ type.getName());
+		return field;
 	}
 
 	public String getMethodName() {

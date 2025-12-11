@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -73,16 +72,6 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	public List<String> getOrEmpty(Object parameterName) {
 		List<String> values = get(parameterName);
 		return (values != null ? values : Collections.emptyList());
-	}
-
-	@Override
-	public void forEach(BiConsumer<? super String, ? super List<String>> action) {
-		this.parameters.forEach(action);
-	}
-
-	@Override
-	public List<String> putIfAbsent(String key, List<String> value) {
-		return this.parameters.putIfAbsent(key, value);
 	}
 
 	@Override

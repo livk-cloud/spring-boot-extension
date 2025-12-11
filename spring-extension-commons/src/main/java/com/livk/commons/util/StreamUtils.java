@@ -17,6 +17,7 @@
 package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -153,7 +154,9 @@ public class StreamUtils {
 	@SuppressWarnings("varargs")
 	@SafeVarargs
 	public <T, R> Stream<R> zip(Function<Stream<T>, Stream<R>> combinator, Stream<T>... streams) {
-		return ObjectUtils.isEmpty(streams) ? Stream.empty() : Stream.of(streams).flatMap(combinator);
+		Assert.notNull(combinator, "combinator must not be null");
+		return ObjectUtils.isEmpty(streams) ? Stream.empty()
+				: Stream.of(streams).filter(Objects::nonNull).flatMap(combinator);
 	}
 
 	/**
@@ -174,6 +177,7 @@ public class StreamUtils {
 	 * @return stream
 	 */
 	public <T> Stream<T> convert(Enumeration<T> enumeration) {
+		Assert.notNull(enumeration, "enumeration must not be null");
 		return StreamSupport.stream(EnumerationSpliterator.spliteratorUnknownSize(enumeration), false);
 	}
 
@@ -186,6 +190,7 @@ public class StreamUtils {
 	 * @return function
 	 */
 	public <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
+		Assert.notNull(biFunction, "biFunction must not be null");
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
 		return t -> biFunction.apply(t, atomicInteger.getAndIncrement());
 	}
@@ -198,6 +203,7 @@ public class StreamUtils {
 	 * @return consumer
 	 */
 	public <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
+		Assert.notNull(biConsumer, "biConsumer must not be null");
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
 		return t -> biConsumer.accept(t, atomicInteger.getAndIncrement());
 	}

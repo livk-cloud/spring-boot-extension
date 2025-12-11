@@ -228,7 +228,8 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 			registerBean(context, beanDefinition, beanName);
 		}
 		else {
-			throw new BeanCreationNotAllowedException(beanName, "missing created bean factory");
+			throw new BeanCreationNotAllowedException(beanName,
+					"The current BeanFactory does not support dynamic bean registration");
 		}
 	}
 
@@ -264,12 +265,24 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 		private volatile BeanFactory factory;
 
 		private ListableBeanFactory getBeanFactory() {
-			return factory instanceof ListableBeanFactory beanFactory ? beanFactory : context;
+			BeanFactory currentFactory = this.factory;
+			ApplicationContext currentContext = this.context;
+			if (currentFactory == null && currentContext == null) {
+				throw new IllegalStateException("SpringContextHolder is not initialized yet");
+			}
+			return currentFactory instanceof ListableBeanFactory beanFactory ? beanFactory : currentContext;
 		}
 
 		@Override
 		public ApplicationContext unwrap() {
-			return factory instanceof ApplicationContext contextFactory ? contextFactory : context;
+			BeanFactory currentFactory = this.factory;
+			ApplicationContext currentContext = this.context;
+			ApplicationContext applicationContext = currentFactory instanceof ApplicationContext contextFactory
+					? contextFactory : currentContext;
+			if (applicationContext == null) {
+				throw new IllegalStateException("SpringContextHolder is not initialized yet");
+			}
+			return applicationContext;
 		}
 
 		public void beanFactory(BeanFactory beanFactory) {

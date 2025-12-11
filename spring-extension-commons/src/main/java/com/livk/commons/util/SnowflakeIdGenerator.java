@@ -16,6 +16,8 @@
 
 package com.livk.commons.util;
 
+import org.springframework.util.Assert;
+
 /**
  * <p>
  * 雪花算法生成器
@@ -55,7 +57,7 @@ public class SnowflakeIdGenerator {
 
 	private long sequence = 0L; // 当前序列号
 
-	private volatile long lastTimestamp = -1L; // 上一次生成 ID 的时间戳，使用 volatile 保证可见性
+	private long lastTimestamp = -1L; // 上一次生成 ID 的时间戳
 
 	/**
 	 * 构造方法
@@ -63,12 +65,9 @@ public class SnowflakeIdGenerator {
 	 * @param machineId 机器 ID
 	 */
 	public SnowflakeIdGenerator(long dataCenterId, long machineId) {
-		if (dataCenterId > MAX_DATA_CENTER_ID || dataCenterId < 0) {
-			throw new IllegalArgumentException("DataCenter ID exceeds range: 0-" + MAX_DATA_CENTER_ID);
-		}
-		if (machineId > MAX_MACHINE_ID || machineId < 0) {
-			throw new IllegalArgumentException("Machine ID exceeds range: 0-" + MAX_MACHINE_ID);
-		}
+		Assert.isTrue(dataCenterId <= MAX_DATA_CENTER_ID && dataCenterId > 0,
+				"DataCenter ID exceeds range: 0-" + MAX_DATA_CENTER_ID);
+		Assert.isTrue(machineId <= MAX_MACHINE_ID & machineId > 0, "Machine ID exceeds range: 0-" + MAX_MACHINE_ID);
 		this.dataCenterId = dataCenterId;
 		this.machineId = machineId;
 	}
@@ -82,7 +81,7 @@ public class SnowflakeIdGenerator {
 
 		if (currentTimestamp < lastTimestamp) {
 			// 时间回拨，建议重试而不是抛出异常
-			waitForNextMillisecond(lastTimestamp);
+			currentTimestamp = waitForNextMillisecond(lastTimestamp);
 		}
 
 		if (currentTimestamp == lastTimestamp) {
@@ -122,7 +121,7 @@ public class SnowflakeIdGenerator {
 	 * 等待下一毫秒
 	 * @param lastTimestamp 上一毫秒
 	 */
-	private void waitForNextMillisecond(long lastTimestamp) {
+	private long waitForNextMillisecond(long lastTimestamp) {
 		long currentTimestamp = System.currentTimeMillis();
 		// 设置一个较高的最大重试次数，允许系统时间回拨一定范围
 		int maxRetries = 20; // 根据具体场景调整
@@ -141,6 +140,7 @@ public class SnowflakeIdGenerator {
 		if (retries >= maxRetries) {
 			throw new IllegalStateException("Time moved backwards and exceeded retry limit.");
 		}
+		return currentTimestamp;
 	}
 
 }

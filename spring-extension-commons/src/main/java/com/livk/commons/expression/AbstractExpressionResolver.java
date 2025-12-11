@@ -16,9 +16,10 @@
 
 package com.livk.commons.expression;
 
+import org.springframework.util.Assert;
+
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 使用{@link ContextFactory}解析或者合并成{@link Context}
@@ -35,7 +36,8 @@ public abstract class AbstractExpressionResolver implements ExpressionResolver {
 	protected final ContextFactory contextFactory;
 
 	protected AbstractExpressionResolver(ContextFactory contextFactory) {
-		this.contextFactory = Objects.requireNonNull(contextFactory, "ContextFactory must not be null");
+		Assert.notNull(contextFactory, "ContextFactory must not be null");
+		this.contextFactory = contextFactory;
 	}
 
 	protected AbstractExpressionResolver() {
