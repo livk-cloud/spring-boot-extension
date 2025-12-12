@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "commitBody": "Signed-off-by: Renovate Bot <bot@renovateapp.com>",
   "extends": [
     "config:recommended"
   ]
