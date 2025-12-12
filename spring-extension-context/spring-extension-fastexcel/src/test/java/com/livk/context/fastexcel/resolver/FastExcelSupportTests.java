@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package com.livk.context.fastexcel;
+package com.livk.context.fastexcel.resolver;
 
+import com.livk.context.fastexcel.ExcelDataType;
+import com.livk.context.fastexcel.Info;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
+import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +46,15 @@ class FastExcelSupportTests {
 		support.write(stream, Info.class, null, data);
 
 		assertThat(stream.toByteArray()).isNotEmpty();
+	}
+
+	@Test
+	void getExcelData() throws IOException {
+		TypeExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+		listener.execute(new ClassPathResource("outFile.xls").getInputStream(), Info.class, true);
+		CustomFastExcelSupport support = new CustomFastExcelSupport();
+		assertThat(support.getExcelData(listener, ExcelDataType.LIST)).isEqualTo(listener.toListData());
+		assertThat(support.getExcelData(listener, ExcelDataType.MAP)).isEqualTo(listener.toMapData());
 	}
 
 	@Test

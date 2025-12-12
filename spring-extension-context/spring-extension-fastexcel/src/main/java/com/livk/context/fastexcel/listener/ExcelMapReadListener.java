@@ -21,10 +21,8 @@ import cn.idev.excel.FastExcel;
 import cn.idev.excel.context.AnalysisContext;
 import cn.idev.excel.read.listener.ReadListener;
 import cn.idev.excel.read.metadata.ReadSheet;
-import com.livk.context.fastexcel.ExcelDataType;
 
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -42,30 +40,18 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 	}
 
 	/**
-	 * Get collection data collection.
-	 * @return the collection
+	 * Get List data
+	 * @return the List
 	 */
-	default Collection<T> getCollectionData() {
-		return getMapData().values().stream().flatMap(Collection::stream).toList();
+	default List<T> toListData() {
+		return toMapData().values().stream().flatMap(List::stream).toList();
 	}
 
 	/**
 	 * 获取数据集合
-	 * @return collection collection data
+	 * @return map data
 	 */
-	Map<String, ? extends Collection<T>> getMapData();
-
-	/**
-	 * Get data object.
-	 * @param type the type
-	 * @return the object
-	 */
-	default Object getData(ExcelDataType type) {
-		return switch (type) {
-			case MAP -> getMapData();
-			case COLLECTION -> getCollectionData();
-		};
-	}
+	Map<String, ? extends List<T>> toMapData();
 
 	default void execute(InputStream in, Class<?> excelModelClass, Boolean ignoreEmptyRow) {
 		try (ExcelReader excelReader = FastExcel.read(in, this).ignoreEmptyRow(ignoreEmptyRow).build()) {

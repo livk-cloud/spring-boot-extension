@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.fastexcel;
+package com.livk.context.fastexcel.resolver;
 
 import cn.idev.excel.ExcelWriter;
 import cn.idev.excel.FastExcel;
@@ -25,6 +25,8 @@ import cn.idev.excel.write.metadata.holder.WriteSheetHolder;
 import cn.idev.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.livk.commons.io.ResourceUtils;
 import com.livk.commons.util.StreamUtils;
+import com.livk.context.fastexcel.ExcelDataType;
+import com.livk.context.fastexcel.listener.ExcelMapReadListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -32,14 +34,14 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
  * The type Easy excel utils.
  */
 @Slf4j
-public abstract class FastExcelSupport {
+abstract class FastExcelSupport {
 
 	/**
 	 * Write.
@@ -48,8 +50,8 @@ public abstract class FastExcelSupport {
 	 * @param location the location
 	 * @param result the result
 	 */
-	public void write(OutputStream outputStream, Class<?> excelModelClass, String location,
-			Map<String, ? extends Collection<?>> result) {
+	void write(OutputStream outputStream, Class<?> excelModelClass, String location,
+			Map<String, ? extends List<?>> result) {
 		ExcelWriterBuilder builder = FastExcel.write(outputStream);
 		if (StringUtils.hasText(location)) {
 			try {
@@ -67,9 +69,16 @@ public abstract class FastExcelSupport {
 		}
 	}
 
-	protected void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
+	<T> Object getExcelData(ExcelMapReadListener<T> listener, ExcelDataType type) {
+		return switch (type) {
+			case MAP -> listener.toMapData();
+			case LIST -> listener.toListData();
+		};
+	}
+
+	protected void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends List<?>> result) {
 		try (ExcelWriter writer = builder.build()) {
-			for (Map.Entry<String, ? extends Collection<?>> entry : result.entrySet()) {
+			for (Map.Entry<String, ? extends List<?>> entry : result.entrySet()) {
 				WriteSheet sheet = FastExcel.writerSheet(entry.getKey()).build();
 				writer.write(entry.getValue(), sheet);
 			}
@@ -77,7 +86,7 @@ public abstract class FastExcelSupport {
 		}
 	}
 
-	protected void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends Collection<?>> result) {
+	protected void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends List<?>> result) {
 		try (ExcelWriter writer = builder.build()) {
 			result.entrySet().forEach(StreamUtils.forEachWithIndex(0, (entry, index) -> {
 				WriteSheet writeSheet = FastExcel.writerSheet(index, entry.getKey())

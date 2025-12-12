@@ -40,7 +40,7 @@ import java.util.Objects;
 /**
  * @author livk
  */
-public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class ReactiveExcelMethodArgumentResolver extends FastExcelSupport implements HandlerMethodArgumentResolver {
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
@@ -66,13 +66,13 @@ public class ReactiveExcelMethodArgumentResolver implements HandlerMethodArgumen
 				ResolvableType elementType = Objects.equals(resolvableType.resolve(), Mono.class)
 						? resolvableType.getGeneric(0) : resolvableType;
 				if (elementType.getRawClass() != null) {
-					ExcelDataType dataType = Flux.class.isAssignableFrom(elementType.getRawClass())
-							? ExcelDataType.COLLECTION : ExcelDataType.match(elementType.getRawClass());
+					ExcelDataType dataType = Flux.class.isAssignableFrom(elementType.getRawClass()) ? ExcelDataType.LIST
+							: ExcelDataType.match(elementType.getRawClass());
 					Class<?> excelModelClass = dataType.apply(elementType);
 					return Mono.just(request.getBody())
 						.flatMap(DataBufferUtils::transform)
 						.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
-						.map(in -> listener.getData(dataType));
+						.map(in -> super.getExcelData(listener, dataType));
 				}
 				return Mono.empty();
 			});

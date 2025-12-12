@@ -31,7 +31,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,9 +65,9 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo"));
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		Mono<Collection<Info>> mono = DataBufferUtils.transform(exchange.getResponse().getBody())
+		Mono<List<Info>> mono = DataBufferUtils.transform(exchange.getResponse().getBody())
 			.doOnSuccess(in -> listener.execute(in, Info.class, true))
-			.map(in -> listener.getCollectionData());
+			.map(in -> listener.toListData());
 
 		StepVerifier.create(mono).expectNext(List.of(new Info("123456789"), new Info("987654321"))).verifyComplete();
 	}
