@@ -38,7 +38,7 @@ import java.util.Objects;
 /**
  * @author livk
  */
-public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class ExcelMethodArgumentResolver extends FastExcelSupport implements HandlerMethodArgumentResolver {
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -58,7 +58,7 @@ public class ExcelMethodArgumentResolver implements HandlerMethodArgumentResolve
 				Class<?> excelModelClass = dataType.apply(ResolvableType.forMethodParameter(parameter));
 				HttpInputMessage part = new RequestPartServletServerHttpRequest(request, excelParam.fileName());
 				listener.execute(part.getBody(), excelModelClass, requestExcel.ignoreEmptyRow());
-				return listener.getData(dataType);
+				return super.getExcelData(listener, dataType);
 			}
 		}
 		throw new IllegalArgumentException("Excel upload request resolver error, @ExcelParam parameter type error");

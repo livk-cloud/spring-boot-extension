@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 在Mvc的环境下支持{@link java.util.Collection}、
+ * 在Mvc的环境下支持{@link java.util.List}、
  * </p>
  * <p>
  * {@link java.util.Map}
@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
  * {example Map String, List }
  * </p>
  * <p>
- * 在Reactive的环境下支持{@link java.util.Collection}、
+ * 在Reactive的环境下支持{@link java.util.List}、
  * </p>
  * <p>
  * {@link java.util.Map}、

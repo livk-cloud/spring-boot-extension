@@ -19,7 +19,7 @@ package com.livk.context.fastexcel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -33,9 +33,9 @@ import java.util.function.Predicate;
 public enum ExcelDataType {
 
 	/**
-	 * Collection excel data type.
+	 * List excel data type.
 	 */
-	COLLECTION(resolvableType -> resolvableType.resolveGeneric(0), Collection.class::isAssignableFrom),
+	LIST(resolvableType -> resolvableType.resolveGeneric(0), List.class::isAssignableFrom),
 	/**
 	 * Map excel data type.
 	 */
