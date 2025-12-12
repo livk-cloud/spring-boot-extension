@@ -17,31 +17,31 @@ dependencies {
 
 gradlePlugin {
 	plugins {
-		create("bomPlugin") {
+		create("bomPlugin").apply {
 			id = "com.livk.bom"
 			implementationClass = "com.livk.boot.BomPlugin"
 		}
-		create("modulePlugin") {
+		create("modulePlugin").apply {
 			id = "com.livk.module"
 			implementationClass = "com.livk.boot.ModulePlugin"
 		}
-		create("commonPlugin") {
+		create("commonPlugin").apply {
 			id = "com.livk.common"
 			implementationClass = "com.livk.boot.CommonPlugin"
 		}
-		create("rootProjectPlugin") {
+		create("rootProjectPlugin").apply {
 			id = "com.livk.root"
 			implementationClass = "com.livk.boot.RootPlugin"
 		}
-		create("servicePlugin") {
+		create("servicePlugin").apply {
 			id = "com.livk.service"
 			implementationClass = "com.livk.boot.ServicePlugin"
 		}
-		create("deployedPlugin") {
+		create("deployedPlugin").apply {
 			id = "com.livk.mvn.deployed"
 			implementationClass = "com.livk.boot.maven.DeployedPlugin"
 		}
-		create("JacocoExpand") {
+		create("JacocoExpand").apply {
 			id = "com.livk.jacoco"
 			implementationClass = "com.livk.boot.tasks.JacocoExpandPlugin"
 		}
