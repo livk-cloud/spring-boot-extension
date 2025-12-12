@@ -11,26 +11,24 @@ dependencies {
 tasks.asciidoctor {
 	configurations("asciidoctorExtensions")
 	baseDirFollowsSourceDir()
-	sourceDir(file("./docs/asciidoctor"))
+	val docsDir = layout.projectDirectory.dir("docs")
+	sourceDir(docsDir.dir("asciidoctor"))
 	sources {
 		include("spring-boot-extension.adoc")
 	}
-	setOutputDir(file("./docs"))
+	setOutputDir(docsDir)
 	outputOptions {
 		backends("spring-html")
 	}
 	doLast {
 		copy {
-			from("./docs/img/banner-logo-copy.svg")
-			into("./docs/img")
+			from(docsDir.file("img/banner-logo-copy.svg"))
+			into(docsDir.dir("img"))
 			rename { "banner-logo.svg" }
 		}
-		copy {
-			from("./docs/spring-boot-extension.html")
-			into("./docs")
-			rename { "spring-boot-extension-${findProperty("version")}.html" }
-		}
-		delete("./docs/fonts", "./docs/spring-boot-extension.html")
+		file(docsDir.file("spring-boot-extension.html"))
+			.renameTo(file(docsDir.file("spring-boot-extension-${project.version}.html")))
+		delete(docsDir.dir("fonts"))
 	}
 }
 
@@ -39,7 +37,10 @@ val root = setOf(
 	project(":spring-boot-extension-starters"),
 	project(":spring-extension-context")
 )
-val bom = setOf(project(":spring-extension-bom"), project(":spring-extension-dependencies"))
+val bom = setOf(
+	project(":spring-extension-bom"),
+	project(":spring-extension-dependencies")
+)
 val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
 
 configure(module) {
