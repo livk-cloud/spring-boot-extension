@@ -18,7 +18,6 @@ package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.commons.util.AnnotationUtils;
-import com.livk.context.fastexcel.FastExcelSupport;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
 import com.livk.context.fastexcel.exception.ExcelExportException;
 import org.jspecify.annotations.NonNull;
@@ -42,7 +41,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,7 +55,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport impl
 	 */
 	public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
-	private static final Function<Collection<?>, Map<String, Collection<?>>> defaultFunction = c -> Map.of("sheet", c);
+	private static final Function<List<?>, Map<String, List<?>>> defaultFunction = c -> Map.of("sheet", c);
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
@@ -82,32 +80,33 @@ public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport impl
 				Publisher<?> inputStream = adapter != null ? (Publisher<?>) returnValue : Mono.just(returnValue);
 				if (inputStream instanceof Flux<?> flux) {
 					Class<?> excelModelClass = returnType.resolveGeneric(0);
-					Mono<Map<String, Collection<?>>> mono = flux.collectList().map(defaultFunction);
+					Mono<Map<String, List<?>>> mono = flux.collectList().map(defaultFunction);
 					return this.write(responseExcel, exchange.getResponse(), excelModelClass, mono);
 				}
 				else if (inputStream instanceof Mono<?>) {
 					ResolvableType type = Mono.class.isAssignableFrom(returnType.toClass()) ? returnType.getGeneric(0)
 							: returnType;
-					if (Collection.class.isAssignableFrom(type.toClass())) {
+					if (List.class.isAssignableFrom(type.toClass())) {
 						Class<?> excelModelClass = type.resolveGeneric(0);
-						Mono<Map<String, Collection<?>>> mono = ((Mono<Collection<?>>) inputStream)
-							.map(defaultFunction);
+						Mono<Map<String, List<?>>> mono = ((Mono<List<?>>) inputStream).map(defaultFunction);
 						return this.write(responseExcel, exchange.getResponse(), excelModelClass, mono);
 					}
 					else if (Map.class.isAssignableFrom(type.toClass())) {
 						Class<?> excelModelClass = type.resolveGeneric(1);
-						Mono<Map<String, Collection<?>>> mono = (Mono<Map<String, Collection<?>>>) inputStream;
+						Mono<Map<String, List<?>>> mono = (Mono<Map<String, List<?>>>) inputStream;
 						return this.write(responseExcel, exchange.getResponse(), excelModelClass, mono);
 					}
 				}
-				throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+			}
+			else {
+				throw new ExcelExportException("the return class is not java.util.List or java.util.Map");
 			}
 		}
 		return Mono.empty();
 	}
 
 	private Mono<Void> write(ResponseExcel excelReturn, ReactiveHttpOutputMessage message, Class<?> excelModelClass,
-			Mono<Map<String, Collection<?>>> result) {
+			Mono<Map<String, List<?>>> result) {
 		return result.flatMap(r -> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			super.write(outputStream, excelModelClass, excelReturn.template(), r);
@@ -144,7 +143,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport impl
 		else {
 			type = elementType.resolve();
 		}
-		return type != null && (Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type));
+		return type != null && (List.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type));
 	}
 
 }

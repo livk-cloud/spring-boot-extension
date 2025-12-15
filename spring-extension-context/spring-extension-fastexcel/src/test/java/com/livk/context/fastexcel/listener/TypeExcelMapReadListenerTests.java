@@ -22,7 +22,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,11 +39,11 @@ class TypeExcelMapReadListenerTests {
 		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
 		listener.execute(inputStream, Info.class, true);
 
-		Map<String, ? extends Collection<Info>> map = listener.getMapData();
+		Map<String, ? extends List<Info>> map = listener.toMapData();
 		assertThat(map).isNotEmpty();
 		assertThat(map).hasSize(1);
 		assertThat(map).containsKey("0");
-		assertThat(map.values().stream().mapToLong(Collection::size).sum()).isEqualTo(100);
+		assertThat(map.values().stream().mapToLong(List::size).sum()).isEqualTo(100);
 	}
 
 }

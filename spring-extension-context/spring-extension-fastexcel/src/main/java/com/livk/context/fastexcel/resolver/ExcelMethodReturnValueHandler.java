@@ -17,7 +17,6 @@
 package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.util.AnnotationUtils;
-import com.livk.context.fastexcel.FastExcelSupport;
 import com.livk.context.fastexcel.annotation.ResponseExcel;
 import com.livk.context.fastexcel.exception.ExcelExportException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +33,7 @@ import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandl
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,14 +68,14 @@ public class ExcelMethodReturnValueHandler extends FastExcelSupport implements A
 			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
 			response.setContentType(contentType);
 			try (ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response)) {
-				if (returnValue instanceof Collection) {
+				if (returnValue instanceof List) {
 					Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType).resolveGeneric(0);
 					super.write(httpResponse.getBody(), excelModelClass, responseExcel.template(),
-							Map.of("sheet", (Collection<?>) returnValue));
+							Map.of("sheet", (List<?>) returnValue));
 				}
 				else if (returnValue instanceof Map) {
 					@SuppressWarnings("unchecked")
-					Map<String, Collection<?>> result = (Map<String, Collection<?>>) returnValue;
+					Map<String, List<?>> result = (Map<String, List<?>>) returnValue;
 					Class<?> excelModelClass = ResolvableType.forMethodParameter(returnType)
 						.getGeneric(1)
 						.resolveGeneric(0);
@@ -85,7 +84,7 @@ public class ExcelMethodReturnValueHandler extends FastExcelSupport implements A
 			}
 		}
 		else {
-			throw new ExcelExportException("the return class is not java.util.Collection or java.util.Map");
+			throw new ExcelExportException("the return class is not java.util.List or java.util.Map");
 		}
 	}
 
@@ -95,7 +94,7 @@ public class ExcelMethodReturnValueHandler extends FastExcelSupport implements A
 	}
 
 	private boolean canWrite(@NonNull Class<?> type) {
-		return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
+		return List.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
 	}
 
 }

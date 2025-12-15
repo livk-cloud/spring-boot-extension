@@ -39,8 +39,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -93,7 +93,7 @@ class ReactiveExcelMethodArgumentResolverTests {
 		Mono<Object> result = resolver.resolveArgument(parameter, bindContext, exchange);
 
 		StepVerifier.create(result.filter(Flux.class::isInstance).flatMap(o -> {
-			Flux<Collection<?>> flux = (Flux<Collection<?>>) o;
+			Flux<List<?>> flux = (Flux<List<?>>) o;
 			return flux.flatMap(objects -> Flux.fromStream(objects.stream())).collectList();
 		}).flatMapMany(Flux::fromIterable)).expectNextCount(100).verifyComplete();
 	}

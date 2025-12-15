@@ -23,13 +23,13 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 在Mvc的环境下支持{@link java.util.Collection}
+ * 在Mvc的环境下支持{@link java.util.List}
  * </p>
  * <p>
  * {example List}
  * </p>
  * <p>
- * 在Reactive的环境下支持 {@link java.util.Collection}、
+ * 在Reactive的环境下支持 {@link java.util.List}、
  * </p>
  * <p>
  * {@link reactor.core.publisher.Mono}

@@ -19,8 +19,8 @@ package com.livk.context.fastexcel.listener;
 import cn.idev.excel.context.AnalysisContext;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,17 +28,17 @@ import java.util.Map;
  */
 public final class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T> {
 
-	private final Map<String, Collection<T>> mapData = new HashMap<>();
+	private final Map<String, List<T>> mapData = new HashMap<>();
 
 	@Override
-	public Map<String, ? extends Collection<T>> getMapData() {
+	public Map<String, ? extends List<T>> toMapData() {
 		return mapData;
 	}
 
 	@Override
 	public void invoke(T data, AnalysisContext context) {
 		String sheetName = context.readSheetHolder().getSheetName();
-		Collection<T> infos = mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
+		List<T> infos = mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
 		infos.add(data);
 	}
 
