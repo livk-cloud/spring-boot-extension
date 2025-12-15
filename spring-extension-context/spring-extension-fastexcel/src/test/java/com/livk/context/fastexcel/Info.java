@@ -24,9 +24,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author livk
@@ -57,8 +59,26 @@ public class Info implements Serializable {
 
 	@SuppressWarnings("unused")
 	@ResponseExcel(fileName = "file")
-	Flux<Info> resolveResponseReactive() {
+	Map<String, List<Info>> resolveResponseMap() {
+		return Map.of();
+	}
+
+	@SuppressWarnings("unused")
+	@ResponseExcel(fileName = "file")
+	public Flux<Info> resolveResponseReactive() {
 		return Flux.empty();
+	}
+
+	@SuppressWarnings("unused")
+	@ResponseExcel(fileName = "file")
+	public Mono<List<Info>> getMonoList() {
+		return Mono.empty();
+	}
+
+	@SuppressWarnings("unused")
+	@ResponseExcel(fileName = "file")
+	public Mono<Map<String, List<Info>>> getMonoMap() {
+		return Mono.empty();
 	}
 
 }

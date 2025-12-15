@@ -27,6 +27,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,6 +63,31 @@ class ExcelMethodReturnValueHandlerTests {
 		handler.handleReturnValue(list, parameter, mavContainer, webRequest);
 
 		assertThat(response.getContentAsByteArray()).isNotEmpty();
+		assertThat(response.getHeader("Content-Disposition")).contains("attachment;filename=file.xlsm");
+	}
+
+	@Test
+	void handleReturnValueWithMap() throws Exception {
+		// Prepare test data with multiple sheets
+		Map<String, List<Info>> sheetData = Map.of("Sheet1", List.of(new Info("A1"), new Info("A2")), "Sheet2",
+				List.of(new Info("B1"), new Info("B2")));
+
+		// Create method parameter for a method that returns Map
+		MethodParameter mapParameter = MethodParameter.forExecutable(Info.class.getDeclaredMethod("resolveResponseMap"),
+				-1);
+
+		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+
+		assertThat(response.getContentAsByteArray()).isEmpty();
+
+		// Execute
+		ServletWebRequest webRequest = new ServletWebRequest(new MockHttpServletRequest(), response);
+		handler.handleReturnValue(sheetData, mapParameter, mavContainer, webRequest);
+
+		// Verify
+		assertThat(response.getContentAsByteArray()).isNotEmpty();
+		assertThat(response.getHeader("Content-Disposition")).contains("attachment;filename=file.xlsm");
 	}
 
 }
