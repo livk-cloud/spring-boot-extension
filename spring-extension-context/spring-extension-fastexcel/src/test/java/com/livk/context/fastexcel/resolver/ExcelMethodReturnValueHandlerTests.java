@@ -19,6 +19,7 @@ package com.livk.context.fastexcel.resolver;
 import com.livk.context.fastexcel.Info;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import com.livk.context.fastexcel.exception.ExcelExportException;
 import org.springframework.core.MethodParameter;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -88,6 +90,25 @@ class ExcelMethodReturnValueHandlerTests {
 		// Verify
 		assertThat(response.getContentAsByteArray()).isNotEmpty();
 		assertThat(response.getHeader("Content-Disposition")).contains("attachment;filename=file.xlsm");
+	}
+
+	@Test
+	void handleReturnValueWithUnsupportedType() throws Exception {
+		// Create a method parameter for a method that returns an unsupported type
+		// (String)
+		MethodParameter unsupportedParameter = MethodParameter
+			.forExecutable(Info.class.getDeclaredMethod("unsupportedReturnType"), -1);
+
+		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ServletWebRequest webRequest = new ServletWebRequest(new MockHttpServletRequest(), response);
+
+		// Execute and verify that ExcelExportException is thrown
+		String unsupportedValue = "unsupported value";
+		assertThatThrownBy(
+				() -> handler.handleReturnValue(unsupportedValue, unsupportedParameter, mavContainer, webRequest))
+			.isInstanceOf(ExcelExportException.class)
+			.hasMessage("the return class is not java.util.List or java.util.Map");
 	}
 
 }

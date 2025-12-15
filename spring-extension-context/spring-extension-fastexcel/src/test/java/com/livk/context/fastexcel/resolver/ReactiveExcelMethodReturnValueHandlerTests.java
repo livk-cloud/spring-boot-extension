@@ -18,6 +18,7 @@ package com.livk.context.fastexcel.resolver;
 
 import com.livk.commons.io.DataBufferUtils;
 import com.livk.context.fastexcel.Info;
+import com.livk.context.fastexcel.exception.ExcelExportException;
 import com.livk.context.fastexcel.listener.ExcelMapReadListener;
 import com.livk.context.fastexcel.listener.TypeExcelMapReadListener;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -124,6 +126,23 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 
 		assertThat(exchange.getResponse().getHeaders().getContentDisposition())
 			.isEqualTo(ContentDisposition.parse("attachment;filename=file.xlsm"));
+	}
+
+	@Test
+	void handleResultWithUnsupportedTypeShouldThrowException() throws Exception {
+		// Create a method that returns an unsupported type (String)
+		Method method = Info.class.getMethod("unsupportedReturnType");
+		HandlerMethod handlerMethod = new HandlerMethod(new Info(), method);
+
+		// Create HandlerResult with unsupported return type
+		HandlerResult unsupportedResult = new HandlerResult(handlerMethod, new Info(), handlerMethod.getReturnType());
+
+		// Execute and verify
+		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/unsupported"));
+
+		assertThatThrownBy(() -> handler.handleResult(exchange, unsupportedResult).block())
+			.isInstanceOf(ExcelExportException.class)
+			.hasMessage("the return class is not java.util.List or java.util.Map");
 	}
 
 }

@@ -97,6 +97,8 @@ public class ReactiveExcelMethodReturnValueHandler extends FastExcelSupport impl
 						return this.write(responseExcel, exchange.getResponse(), excelModelClass, mono);
 					}
 				}
+			}
+			else {
 				throw new ExcelExportException("the return class is not java.util.List or java.util.Map");
 			}
 		}

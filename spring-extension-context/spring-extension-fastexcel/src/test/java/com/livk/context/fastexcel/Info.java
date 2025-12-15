@@ -81,4 +81,10 @@ public class Info implements Serializable {
 		return Mono.empty();
 	}
 
+	@SuppressWarnings("unused")
+	@ResponseExcel(fileName = "file")
+	public Info unsupportedReturnType() {
+		return null;
+	}
+
 }
