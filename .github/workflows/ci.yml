@@ -45,6 +45,6 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.java == 21 }}
-        uses: codecov/test-results-action@v1.1.1
+        uses: codecov/test-results-action@v1.2.1
         env:
           token: ${{ secrets.CODECOV_TOKEN }}
