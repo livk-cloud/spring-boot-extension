@@ -52,14 +52,6 @@ public class JsonJackson3Codec extends BaseCodec {
 
 	public static final JsonJackson3Codec INSTANCE = new JsonJackson3Codec();
 
-	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NON_PRIVATE,
-			getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.NONE,
-			isGetterVisibility = JsonAutoDetect.Visibility.NONE)
-	public static class ThrowableMixIn {
-
-	}
-
 	protected final JsonMapper objectMapper;
 
 	private final Encoder encoder;
@@ -76,9 +68,9 @@ public class JsonJackson3Codec extends BaseCodec {
 
 	public JsonJackson3Codec(JsonMapper.Builder builder) {
 		this.objectMapper = init(builder);
-		warmup();
 		this.encoder = new Jackson3Encoder(objectMapper);
 		this.decoder = new Jackson3Decoder(objectMapper);
+		warmup();
 	}
 
 	private static volatile boolean warmedUp = false;
@@ -94,8 +86,8 @@ public class JsonJackson3Codec extends BaseCodec {
 			buf = getValueEncoder().encode("test");
 			getValueDecoder().decode(buf, null);
 		}
-		catch (IOException e) {
-			log.error("Warmup failed", e);
+		catch (IOException ex) {
+			log.error("Warmup failed", ex);
 		}
 		finally {
 			if (buf != null) {
@@ -146,6 +138,14 @@ public class JsonJackson3Codec extends BaseCodec {
 		return objectMapper;
 	}
 
+	@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NON_PRIVATE,
+			getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.NONE,
+			isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+	public static class ThrowableMixIn {
+
+	}
+
 	private static class Jackson3Encoder implements Encoder {
 
 		private final JsonMapper objectMapper;
@@ -161,13 +161,13 @@ public class JsonJackson3Codec extends BaseCodec {
 				objectMapper.writeValue((OutputStream) os, in);
 				return os.buffer();
 			}
-			catch (IOException e) {
+			catch (IOException ex) {
 				out.release();
-				throw e;
+				throw ex;
 			}
-			catch (Exception e) {
+			catch (Exception ex) {
 				out.release();
-				throw new IOException(e);
+				throw new IOException(ex);
 			}
 		}
 

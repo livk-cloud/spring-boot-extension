@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.livk.autoconfigure.redisson;
 
 import org.junit.jupiter.api.Test;
@@ -14,17 +30,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 class JsonJackson3CodecTests {
 
-	static class Bean {
-
-		public int id;
-
-		public Object obj;
-
-	}
-
 	@Test
 	void test() {
-		String JSON = """
+		String json = """
 				{'id': 124,
 				 'obj':[ 'com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl',
 				  {
@@ -36,7 +44,7 @@ class JsonJackson3CodecTests {
 				}""".replace("'", "\"");
 
 		JsonJackson3Codec codec = new JsonJackson3Codec();
-		assertThatThrownBy(() -> codec.getObjectMapper().readValue(JSON, Bean.class))
+		assertThatThrownBy(() -> codec.getObjectMapper().readValue(json, Bean.class))
 			.isInstanceOf(InvalidTypeIdException.class);
 	}
 
@@ -75,6 +83,14 @@ class JsonJackson3CodecTests {
 
 		assertThat(codec.getObjectMapper().deserializationConfig().isEnabled(DeserializationFeature.UNWRAP_ROOT_VALUE))
 			.isFalse();
+	}
+
+	static class Bean {
+
+		public int id;
+
+		public Object obj;
+
 	}
 
 }
