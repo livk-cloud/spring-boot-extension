@@ -51,6 +51,7 @@ class DisruptorFactoryBeanTests {
 		factoryBean.setStrategyBeanName(event.strategyBeanName());
 		factoryBean.afterPropertiesSet();
 		assertThat(factoryBean.getObject()).isNotNull();
+		factoryBean.destroy();
 	}
 
 }
