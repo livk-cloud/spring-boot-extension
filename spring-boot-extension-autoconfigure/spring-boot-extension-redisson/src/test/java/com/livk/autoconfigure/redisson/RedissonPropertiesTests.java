@@ -18,7 +18,6 @@ package com.livk.autoconfigure.redisson;
 
 import org.junit.jupiter.api.Test;
 import org.redisson.client.DefaultNettyHook;
-import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.connection.SequentialDnsAddressResolverFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -32,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringJUnitConfig
 @TestPropertySource(properties = { "spring.redisson.config.single-server-config.address=redis://livk.com:6379",
-		"spring.redisson.config.codec=!<org.redisson.codec.JsonJacksonCodec> {}" })
+		"spring.redisson.config.codec=!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}" })
 class RedissonPropertiesTests {
 
 	@Autowired
@@ -42,7 +41,7 @@ class RedissonPropertiesTests {
 	void test() {
 		RedissonProperties properties = RedissonProperties.load(environment);
 		assertThat(properties.getConfig().useSingleServer().getAddress()).isEqualTo("redis://livk.com:6379");
-		assertThat(properties.getConfig().getCodec()).isInstanceOf(JsonJacksonCodec.class);
+		assertThat(properties.getConfig().getCodec()).isInstanceOf(JsonJackson3Codec.class);
 		assertThat(properties.getConfig().getNettyHook()).isInstanceOf(DefaultNettyHook.class);
 		assertThat(properties.getConfig().getAddressResolverGroupFactory())
 			.isInstanceOf(SequentialDnsAddressResolverFactory.class);

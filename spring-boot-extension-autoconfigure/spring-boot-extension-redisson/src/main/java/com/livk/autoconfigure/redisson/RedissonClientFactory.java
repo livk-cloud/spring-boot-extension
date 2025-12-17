@@ -63,21 +63,21 @@ abstract class RedissonClientFactory {
 			List<String> nodeList = redisProperties.getSentinel().getNodes();
 			String[] nodes = convert(nodeList);
 			config = new Config();
-			config.useSentinelServers()
+			config.setPassword(redisProperties.getPassword())
+				.useSentinelServers()
 				.setMasterName(redisProperties.getSentinel().getMaster())
 				.addSentinelAddress(nodes)
 				.setDatabase(redisProperties.getDatabase())
-				.setConnectTimeout(timeout)
-				.setPassword(redisProperties.getPassword());
+				.setConnectTimeout(timeout);
 		}
 		else if (redisProperties.getCluster() != null) {
 			List<String> nodeList = redisProperties.getCluster().getNodes();
 			String[] nodes = convert(nodeList);
 			config = new Config();
-			config.useClusterServers()
+			config.setPassword(redisProperties.getPassword())
+				.useClusterServers()
 				.addNodeAddress(nodes)
-				.setConnectTimeout(timeout)
-				.setPassword(redisProperties.getPassword());
+				.setConnectTimeout(timeout);
 		}
 		else {
 			config = new Config();
@@ -85,11 +85,11 @@ abstract class RedissonClientFactory {
 			if (redisProperties.getSsl().isEnabled()) {
 				prefix = REDISS_PROTOCOL_PREFIX;
 			}
-			config.useSingleServer()
+			config.setPassword(redisProperties.getPassword())
+				.useSingleServer()
 				.setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
 				.setConnectTimeout(timeout)
-				.setDatabase(redisProperties.getDatabase())
-				.setPassword(redisProperties.getPassword());
+				.setDatabase(redisProperties.getDatabase());
 		}
 		return config;
 	}

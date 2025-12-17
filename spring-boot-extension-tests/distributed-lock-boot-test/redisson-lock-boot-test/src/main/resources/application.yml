@@ -18,5 +18,5 @@ spring:
         dnsMonitoringInterval: 5000
       threads: 0
       nettyThreads: 0
-      codec: '!org.redisson.codec.JsonJacksonCodec { }'
+      codec: '!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}'
       transportMode: "NIO"
