@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.redisson.client.DefaultNettyHook;
 import org.redisson.client.NettyHook;
 import org.redisson.client.codec.Codec;
-import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.DelayStrategy;
 import org.redisson.config.FullJitterDelay;
 import org.redisson.connection.AddressResolverGroupFactory;
@@ -46,8 +45,9 @@ class RedissonPropertyEditorRegistrarTests {
 				"!<org.redisson.config.FullJitterDelay> {baseDelay: 2h,maxDelay: 2h}", DelayStrategy.class);
 		assertThat(fullJitterDelay).isInstanceOf(FullJitterDelay.class);
 
-		Codec codec = converter.convertIfNecessary("!<org.redisson.codec.JsonJacksonCodec> {}", Codec.class);
-		assertThat(codec).isNotNull().isInstanceOf(JsonJacksonCodec.class);
+		Codec codec = converter.convertIfNecessary("!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}",
+				Codec.class);
+		assertThat(codec).isNotNull().isInstanceOf(JsonJackson3Codec.class);
 
 		NettyHook hook = converter.convertIfNecessary("!<org.redisson.client.DefaultNettyHook> {}", NettyHook.class);
 		assertThat(hook).isNotNull().isInstanceOf(DefaultNettyHook.class);

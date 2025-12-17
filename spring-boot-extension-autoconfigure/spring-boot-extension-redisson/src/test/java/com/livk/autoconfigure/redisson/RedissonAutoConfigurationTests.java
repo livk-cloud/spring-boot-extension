@@ -54,7 +54,7 @@ class RedissonAutoConfigurationTests {
 	static void redisProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.redisson.config.single-server-config.address",
 				() -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
-		registry.add("spring.redisson.config.codec", () -> "!<org.redisson.codec.JsonJacksonCodec> {}");
+		registry.add("spring.redisson.config.codec", () -> "!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}");
 	}
 
 	@Autowired
