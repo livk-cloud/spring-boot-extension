@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadFactory;
  * @param <T> the type parameter
  * @author livk
  */
-public class SpringDisruptor<T> extends Disruptor<DisruptorEventWrapper<T>> {
+public final class SpringDisruptor<T> extends Disruptor<DisruptorEventWrapper<T>> {
 
 	/**
 	 * Instantiates a new Spring disruptor.
