@@ -6,7 +6,7 @@ dependencies {
 	implementation(project(":spring-boot-extension-starters:mybatis-extension-boot-starter"))
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.mysql:mysql-connector-j")
-	implementation(libs.pagehelper.starter)
+	implementation(libs.pagehelper)
 	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }

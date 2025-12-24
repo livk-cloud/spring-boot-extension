@@ -1,6 +1,6 @@
 [versions]
 spring-boot = "4.0.1"
-pagehelper-starter = "2.1.1"
+pagehelper = "6.1.1"
 mybatis = "3.5.19"
 mybatis-spring = "4.0.0"
 mybatis-boot = "4.0.0"
@@ -30,20 +30,15 @@ checkstyle = "12.3.0"
 
 [libraries]
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
-
-pagehelper-starter = { group = "com.github.pagehelper", name = "pagehelper-spring-boot-starter", version.ref = "pagehelper-starter" }
-
 #mybatis-all
 mybatis-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis-boot" }
 mybatis-autoconfigure = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-autoconfigure", version.ref = "mybatis-boot" }
 mybatis-spring = { group = "org.mybatis", name = "mybatis-spring", version.ref = "mybatis-spring" }
 mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
-
 #redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-40", version.ref = "redisson" }
-
 #mapstruct-all
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
@@ -66,6 +61,7 @@ spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 spring-javaformat-checkstyle = { group = "io.spring.javaformat", name = "spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
+pagehelper= { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 
 #plugin
 spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
