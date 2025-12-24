@@ -16,11 +16,10 @@
 
 package com.livk.autoconfigure.mybatis;
 
-import com.livk.commons.util.BeanLambda;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
 import java.util.Properties;
 
 /**
@@ -35,34 +34,11 @@ public class MybatisLogMonitorProperties {
 	 */
 	public static final String PREFIX = "mybatis.log.monitor";
 
-	private long timeOut = 1L;
+	private Duration timeOut = Duration.ofSeconds(1);
 
-	private ChronoUnit unit = ChronoUnit.SECONDS;
-
-	/**
-	 * Time out name string.
-	 * @return the string
-	 */
-	public static String timeOutName() {
-		return BeanLambda.fieldName(MybatisLogMonitorProperties::getTimeOut);
-	}
-
-	/**
-	 * Unit name string.
-	 * @return the string
-	 */
-	public static String unitName() {
-		return BeanLambda.fieldName(MybatisLogMonitorProperties::getUnit);
-	}
-
-	/**
-	 * Properties properties.
-	 * @return the properties
-	 */
 	public Properties properties() {
 		Properties properties = new Properties();
-		properties.put(timeOutName(), timeOut);
-		properties.put(unitName(), unit);
+		properties.put("timeOut", timeOut);
 		return properties;
 	}
 

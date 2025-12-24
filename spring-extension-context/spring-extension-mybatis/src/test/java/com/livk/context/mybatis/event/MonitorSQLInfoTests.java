@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.mybatisplugins;
+package com.livk.context.mybatis.event;
 
-import com.livk.context.mybatis.event.MonitorSQLInfo;
-import com.livk.context.mybatis.event.MonitorSQLTimeOutEvent;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
-@Slf4j
-@Component
-public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutEvent> {
+class MonitorSQLInfoTests {
 
-	@Override
-	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
-		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms]}", info.sql(), info.timeout());
+	@Test
+	void test() {
+		String sql = "select * from user";
+		long time = 1000L;
+		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
+		assertThat(info.sql()).isEqualTo(sql);
+		assertThat(info.timeout()).isEqualTo(time);
 	}
 
 }

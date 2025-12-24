@@ -16,10 +16,13 @@
 
 package com.livk.mybatisplugins;
 
+import com.github.pagehelper.PageInterceptor;
 import com.livk.autoconfigure.mybatis.EnableSqlInjector;
 import com.livk.autoconfigure.mybatis.EnableSqlMonitor;
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author livk
@@ -31,6 +34,12 @@ public class MybatisApp {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MybatisApp.class, args);
+	}
+
+	@Bean
+	public ConfigurationCustomizer pageConfigurationCustomizer() {
+		PageInterceptor interceptor = new PageInterceptor();
+		return configuration -> configuration.addInterceptor(interceptor);
 	}
 
 }

@@ -180,7 +180,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 		@Override
 		public Duration deserialize(JsonParser p, DeserializationContext context) {
 			String text = p.getString().trim();
-			return DurationFormatterUtils.parse(text, DurationFormat.Style.SIMPLE);
+			return DurationFormatterUtils.parse(text, DurationFormat.Style.COMPOSITE);
 		}
 
 	}
