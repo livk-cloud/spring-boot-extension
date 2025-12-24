@@ -21,6 +21,6 @@ package com.livk.context.mybatis.event;
  *
  * @author livk
  */
-public record MonitorSQLInfo(String sql, Long timeout, Object result) {
+public record MonitorSQLInfo(String sql, Long timeout) {
 
 }

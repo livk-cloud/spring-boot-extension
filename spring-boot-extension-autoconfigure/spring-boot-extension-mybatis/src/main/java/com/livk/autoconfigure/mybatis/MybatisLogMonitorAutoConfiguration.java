@@ -25,6 +25,7 @@ import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -43,8 +44,8 @@ public class MybatisLogMonitorAutoConfiguration {
 	 */
 	@Bean
 	public ConfigurationCustomizer mybatisLogMonitorConfigurationCustomizer(
-			MybatisLogMonitorProperties monitorProperties) {
-		MybatisSqlMonitor logMonitor = new MybatisSqlMonitor();
+			MybatisLogMonitorProperties monitorProperties, ApplicationContext applicationContext) {
+		MybatisSqlMonitor logMonitor = new MybatisSqlMonitor(applicationContext);
 		logMonitor.setProperties(monitorProperties.properties());
 		return configuration -> configuration.addInterceptor(logMonitor);
 	}

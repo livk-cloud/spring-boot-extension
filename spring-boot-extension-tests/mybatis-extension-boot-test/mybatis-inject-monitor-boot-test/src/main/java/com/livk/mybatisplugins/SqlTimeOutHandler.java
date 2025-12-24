@@ -32,7 +32,7 @@ public class SqlTimeOutHandler implements ApplicationListener<MonitorSQLTimeOutE
 	@Override
 	public void onApplicationEvent(MonitorSQLTimeOutEvent event) {
 		MonitorSQLInfo info = event.getSource();
-		log.error("{SQL超时 SQL:[{}],Time:[{}ms],result:[{}]}", info.sql(), info.timeout(), info.result());
+		log.error("{SQL超时 SQL:[{}],Time:[{}ms]}", info.sql(), info.timeout());
 	}
 
 }
