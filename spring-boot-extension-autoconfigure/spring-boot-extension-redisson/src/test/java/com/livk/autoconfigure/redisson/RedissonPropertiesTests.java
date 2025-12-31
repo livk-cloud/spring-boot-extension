@@ -18,6 +18,7 @@ package com.livk.autoconfigure.redisson;
 
 import org.junit.jupiter.api.Test;
 import org.redisson.client.DefaultNettyHook;
+import org.redisson.codec.JsonJackson3Codec;
 import org.redisson.connection.SequentialDnsAddressResolverFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringJUnitConfig
 @TestPropertySource(properties = { "spring.redisson.config.single-server-config.address=redis://livk.com:6379",
-		"spring.redisson.config.codec=!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}" })
+		"spring.redisson.config.codec=!<org.redisson.codec.JsonJackson3Codec> {}" })
 class RedissonPropertiesTests {
 
 	@Autowired

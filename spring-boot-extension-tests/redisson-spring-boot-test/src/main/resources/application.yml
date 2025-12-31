@@ -19,5 +19,5 @@ spring:
         retry-delay: "!<org.redisson.config.FullJitterDelay> {baseDelay: 2h,maxDelay: 2h}"
       threads: 0
       nettyThreads: 0
-      codec: "!<com.livk.autoconfigure.redisson.JsonJackson3Codec> {}"
+      codec: "!<org.redisson.codec.JsonJackson3Codec> {}"
       transportMode: "NIO"
