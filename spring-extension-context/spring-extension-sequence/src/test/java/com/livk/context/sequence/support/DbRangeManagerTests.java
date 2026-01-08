@@ -117,7 +117,7 @@ class DbRangeManagerTests {
 				}
 				catch (Exception ignored) {
 				}
-				return super.nextRange(name);
+				return super.buildNextRange(name);
 			}
 
 			@Override
