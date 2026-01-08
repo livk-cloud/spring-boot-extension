@@ -16,10 +16,10 @@
 
 package com.livk.context.sequence.support;
 
-import com.livk.commons.util.ObjectUtils;
 import com.livk.context.sequence.SequenceRange;
 import com.livk.context.sequence.exception.SequenceException;
 import com.livk.context.sequence.support.db.SequenceDbHelper;
+import lombok.Setter;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -42,7 +42,8 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	/**
 	 * 获取区间失败重试次数
 	 */
-	private static final int RETRY_TIMES = 5;
+	@Setter
+	private int retryTimes = 5;
 
 	private static final long DELTA = 100_000_000L;
 
@@ -60,31 +61,19 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	}
 
 	@Override
-	public SequenceRange nextRange(String name) {
-		if (ObjectUtils.isEmpty(name)) {
-			throw new SequenceException("[DbSeqRangeMgr-nextRange] name is empty.");
-		}
-
-		Long oldValue;
-		long newValue;
-
-		for (int i = 0; i < RETRY_TIMES; i++) {
-			oldValue = this.selectRange(name, stepStart);
-
+	public SequenceRange buildNextRange(String name) {
+		for (int i = 0; i < retryTimes; i++) {
+			Long oldValue = this.selectRange(name, stepStart);
 			if (null == oldValue) {
 				// 区间不存在，重试
 				continue;
 			}
-
-			newValue = oldValue + step;
-
+			long newValue = oldValue + step;
 			if (this.updateRange(name, newValue, oldValue)) {
 				return new SequenceRange(oldValue + 1, newValue);
 			}
-			// else 失败重试
 		}
-
-		throw new SequenceException("Retried too many times, retryTimes = " + RETRY_TIMES);
+		throw new SequenceException("Retried too many times, retryTimes = " + retryTimes);
 	}
 
 	protected void createTable() {

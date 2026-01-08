@@ -16,6 +16,10 @@
 
 package com.livk.context.sequence.support;
 
+import com.livk.context.sequence.SequenceRange;
+import com.livk.context.sequence.exception.SequenceException;
+import org.springframework.util.StringUtils;
+
 /**
  * @author livk
  */
@@ -44,5 +48,23 @@ public abstract class AbstractRangeManager implements RangeManager {
 			this.stepStart = stepStart;
 		}
 	}
+
+	@Override
+	public final SequenceRange nextRange(String name) {
+		if (!StringUtils.hasText(name)) {
+			throw new SequenceException("[RangeManager-nextRange] name is empty.");
+		}
+		try {
+			return buildNextRange(name);
+		}
+		catch (SequenceException ex) {
+			throw ex;
+		}
+		catch (Exception ex) {
+			throw new SequenceException("[RangeManager-nextRange] buildNextRange error.", ex);
+		}
+	}
+
+	protected abstract SequenceRange buildNextRange(String name);
 
 }

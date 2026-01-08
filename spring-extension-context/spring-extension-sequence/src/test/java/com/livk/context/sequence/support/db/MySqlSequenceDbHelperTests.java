@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
-class MySequenceDbHelperTests {
+class MySqlSequenceDbHelperTests {
 
 	@Container
 	static final MySQLContainer mysql = new MySQLContainer(DockerImageNames.mysql())
