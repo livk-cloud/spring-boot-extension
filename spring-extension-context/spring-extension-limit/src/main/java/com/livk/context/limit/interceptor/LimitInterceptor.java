@@ -19,10 +19,11 @@ package com.livk.context.limit.interceptor;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
+import com.livk.commons.util.BeanUtils;
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
 import com.livk.context.limit.annotation.Limit;
-import com.livk.context.limit.exception.LimitException;
+import com.livk.context.limit.exception.LimitExceededHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;
@@ -67,8 +68,10 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
 			return invocation.proceed();
 		}
 		else {
-			throw new LimitException("key=" + limit.key() + " is reach max limited access count=" + limit.rate()
-					+ " within period=" + limit.rateInterval() + " " + limit.rateIntervalUnit().name());
+			Class<? extends LimitExceededHandler> handlerType = limit.handler();
+			LimitExceededHandler handler = handlerType == LimitExceededHandler.class ? LimitExceededHandler.DEFAULT
+					: BeanUtils.instantiateClass(handlerType);
+			throw handler.buildException(limit);
 		}
 	}
 

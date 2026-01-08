@@ -108,7 +108,7 @@ class DbRangeManagerTests {
 			}
 
 			@Override
-			public SequenceRange nextRange(String name) {
+			public SequenceRange buildNextRange(String name) {
 				// Use reflection to set step to 1 for faster test
 				try {
 					Field stepField = AbstractRangeManager.class.getDeclaredField("step");
@@ -117,7 +117,7 @@ class DbRangeManagerTests {
 				}
 				catch (Exception ignored) {
 				}
-				return super.nextRange(name);
+				return super.buildNextRange(name);
 			}
 
 			@Override

@@ -17,12 +17,11 @@
 package com.livk.context.sequence.support;
 
 import com.livk.context.sequence.SequenceRange;
+import com.livk.context.sequence.exception.SequenceException;
 import com.livk.context.sequence.support.redis.SequenceRedisHelper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.Assert;
 
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author livk
@@ -40,20 +39,14 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 	 */
 	private final SequenceRedisHelper helper;
 
-	/**
-	 * 标记业务key是否存在，如果false，在取nextRange时，会取check一把 这个boolean只为提高性能，不用每次都取redis check
-	 */
-	private final AtomicBoolean keyAlreadyExist = new AtomicBoolean(false);
-
 	@Override
-	public SequenceRange nextRange(String name) {
+	public SequenceRange buildNextRange(String name) {
 		byte[] realKey = getRealKey(name);
-		if (keyAlreadyExist.compareAndSet(false, true)) {
-			helper.setNx(realKey, stepStart);
-		}
-
+		helper.setNx(realKey, stepStart);
 		Long max = helper.incrBy(realKey, step);
-		Assert.notNull(max, "redis nextRange error");
+		if (max == null) {
+			throw new SequenceException("Failed to increment sequence for: " + name);
+		}
 		long min = max - step + 1;
 		return new SequenceRange(min, max);
 	}

@@ -27,7 +27,7 @@ import java.time.Duration;
  *
  * @author livk
  */
-public abstract class ReentrantLimitExecutor implements LimitExecutor {
+public abstract class WebRequestReentrantLimitExecutor implements LimitExecutor {
 
 	/**
 	 * The constant ATTRIBUTE_NAME.
@@ -46,15 +46,14 @@ public abstract class ReentrantLimitExecutor implements LimitExecutor {
 	@Override
 	public boolean tryAccess(String compositeKey, int rate, Duration rateInterval) {
 		HttpServletRequest request = HttpServletUtils.request();
-		Object limitAttribute = request.getAttribute(ATTRIBUTE_NAME);
-		if (limitAttribute instanceof Boolean bool && bool) {
+		String attrKey = ATTRIBUTE_NAME + ":" + compositeKey;
+		Object accessed = request.getAttribute(attrKey);
+		if (Boolean.TRUE.equals(accessed)) {
 			return true;
 		}
-		else {
-			boolean bool = reentrantTryAccess(compositeKey, rate, rateInterval);
-			request.setAttribute(ATTRIBUTE_NAME, bool);
-			return bool;
-		}
+		boolean allowed = reentrantTryAccess(compositeKey, rate, rateInterval);
+		request.setAttribute(attrKey, allowed);
+		return allowed;
 	}
 
 }
