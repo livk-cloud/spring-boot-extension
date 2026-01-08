@@ -26,24 +26,37 @@ import org.redisson.api.RedissonClient;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author livk
+ * @author livk Note:
+ * <ul>
+ * <li>{@code compositeKey} must be bounded and stable, otherwise the internal cache
+ * maygrow indefinitely.</li>
+ * <li>For the same {@code compositeKey}, {@code rate} and {@code rateInterval} mustremain
+ * consistent.</li>
+ * </ul>
  */
 @Slf4j
 @RequiredArgsConstructor
-public class RedissonLimitExecutor extends ReentrantLimitExecutor implements LimitExecutor {
+public class RedissonLimitExecutor extends WebRequestReentrantLimitExecutor implements LimitExecutor {
 
 	private final RedissonClient redissonClient;
 
+	private final Map<String, RRateLimiter> limiterCache = new ConcurrentHashMap<>();
+
 	@Override
 	protected boolean reentrantTryAccess(String compositeKey, int rate, Duration rateInterval) {
-		if (StringUtils.hasText(compositeKey)) {
-			RRateLimiter limiter = redissonClient.getRateLimiter(compositeKey);
-			limiter.trySetRate(RateType.OVERALL, rate, rateInterval);
-			return limiter.tryAcquire(1);
+		if (!StringUtils.hasText(compositeKey)) {
+			throw new LimitException("Composite key must not be null or empty");
 		}
-		throw new LimitException("Composite key is null or empty");
+		RRateLimiter limiter = limiterCache.computeIfAbsent(compositeKey, redissonClient::getRateLimiter);
+		// 幂等设置，失败也不影响后续 acquire
+		if (!limiter.trySetRate(RateType.OVERALL, rate, rateInterval)) {
+			log.debug("RateLimiter trySetRate failed, compositeKey: {}", compositeKey);
+		}
+		return limiter.tryAcquire();
 	}
 
 }

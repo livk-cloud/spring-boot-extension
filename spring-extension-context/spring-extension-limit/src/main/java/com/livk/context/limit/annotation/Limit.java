@@ -16,6 +16,8 @@
 
 package com.livk.context.limit.annotation;
 
+import com.livk.context.limit.exception.LimitExceededHandler;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -60,5 +62,10 @@ public @interface Limit {
 	 * @return boolean boolean
 	 */
 	boolean restrictIp() default false;
+
+	/**
+	 * 异常处理器
+	 */
+	Class<? extends LimitExceededHandler> handler() default LimitExceededHandler.class;
 
 }
