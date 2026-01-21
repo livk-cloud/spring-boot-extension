@@ -9,6 +9,7 @@ body:
     attributes:
       label: Module
       description: 在提交功能之前, 请确认模块
+      multiple: true
       options:
         - spring-auto-service
         - spring-boot-extension-autoconfigure

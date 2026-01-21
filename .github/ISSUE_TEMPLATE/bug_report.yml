@@ -9,6 +9,7 @@ body:
     attributes:
       label: Module
       description: 在提交 issue 之前, 请确认你问题出现的模块
+      multiple: true
       options:
         - spring-auto-service
         - spring-boot-extension-autoconfigure
@@ -19,27 +20,19 @@ body:
     attributes:
       label: 当前程序版本
       description: 遇到问题时程序所在的版本号
-    validations:
-      required: true
   - type: input
     id: jdk-version
     attributes:
       label: 当前JDK版本
       description: 遇到问题时程序所在的JDK版本
-    validations:
-      required: true
   - type: input
     id: spring-boot-version
     attributes:
       label: 当前SpringBoot版本
       description: 遇到问题时程序所在的SpringBoot版本
-    validations:
-      required: true
   - type: textarea
     id: bug-description
     attributes:
       label: BUG描述
       description: 请描述你碰到的问题
       placeholder: "BUG描述"
-    validations:
-      required: true
