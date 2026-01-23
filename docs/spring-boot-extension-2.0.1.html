@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Asciidoctor 2.0.18">
+  <meta name="author" content="Livk">
+  <title>spring boot extension doc</title>
+  <link rel="stylesheet" href="css/site.css">
+  <script src="js/setup.js"></script>
+  <script defer src="js/site.js"></script>
+
+</head>
+<body id="spring-boot-extension-doc" class="book toc2 toc-left">
+<div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox"/>
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
+      <div id="header">
+        <h1>spring boot extension doc</h1>
+        <div class="details">
+          <span id="author" class="author">Livk</span><br>
+          <span id="revnumber">version 2.0.1,</span>
+          <span id="revdate">2026-01-23</span>
+        </div>
+        <div id="toc" class="toc2">
+          <div id="toctitle">Table of Contents</div>
+          <span id="back-to-index"><a href="index.html">Back to index</a></span>
+          <ul class="sectlevel1">
+            <li><a href="#_关于">1. 关于</a>
+              <ul class="sectlevel2">
+                <li><a href="#_简介">1.1. 简介</a></li>
+              </ul>
+            </li>
+            <li><a href="#_安装">2. 安装</a>
+              <ul class="sectlevel2">
+                <li><a href="#_依赖相关">2.1. 依赖相关</a></li>
+                <li><a href="#_支持的java版本">2.2. 支持的Java版本</a></li>
+              </ul>
+            </li>
+            <li><a href="#_使用指导">3. 使用指导</a>
+              <ul class="sectlevel2">
+                <li><a href="#spring-auto-service">3.1. spring boot装配文件自动生成</a>
+                  <ul class="sectlevel3">
+                    <li><a href="#_springautoservice使用示例">3.1.1. @SpringAutoService使用示例</a></li>
+                    <li><a href="#_springfactories_使用示例">3.1.2. @SpringFactories 使用示例</a></li>
+                    <li><a href="#_aotfactories_使用示例">3.1.3. @AotFactories 使用示例</a></li>
+                  </ul>
+                </li>
+                <li><a href="#_spring-extension-commons">3.2. spring通用工具拓展</a>
+                  <ul class="sectlevel3">
+                    <li><a href="#annotation">3.2.1. annotation</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_springabstractimportselector">SpringAbstractImportSelector</a></li>
+                        <li><a href="#_autoimport">@AutoImport</a></li>
+                        <li><a href="#_annotationbasepackagesupport">AnnotationBasePackageSupport</a></li>
+                        <li><a href="#_annotationbeandefinitionscanner">AnnotationBeanDefinitionScanner</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#aop">3.2.2. aop</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_annotationabstractpointcutadvisor">AnnotationAbstractPointcutAdvisor</a></li>
+                        <li><a href="#_annotationabstractpointcuttypeadvisor">AnnotationAbstractPointcutTypeAdvisor</a>
+                        </li>
+                        <li><a href="#_annotationpointcut">AnnotationPointcut</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#expression">3.2.3. expression</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_abstractexpressionresolver">AbstractExpressionResolver</a></li>
+                        <li><a href="#_cacheexpressionresolver">CacheExpressionResolver</a></li>
+                        <li><a href="#_内置expressionresolver">内置ExpressionResolver</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#http">3.2.4. http</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_enablehttpclient">EnableHttpClient</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#jackson">3.2.5. jackson</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_jacksonsupport">JacksonSupport</a></li>
+                        <li><a href="#_numberjsonformat">@NumberJsonFormat</a></li>
+                        <li><a href="#_各种工具类">各种工具类</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#micrometer">3.2.6. micrometer</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_contextsnapshots">ContextSnapshots</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#util">3.2.7. util</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_annotationmetadataresolver">AnnotationMetadataResolver</a></li>
+                        <li><a href="#_beanlambda">BeanLambda</a></li>
+                        <li><a href="#_genericwrapper">GenericWrapper</a></li>
+                        <li><a href="#_genericsbytebuddy">GenericsByteBuddy</a></li>
+                        <li><a href="#_multivaluemapsplitter">MultiValueMapSplitter</a></li>
+                        <li><a href="#_pair">Pair</a></li>
+                        <li><a href="#_snowflakeidgenerator">SnowflakeIdGenerator</a></li>
+                        <li><a href="#_treenode">TreeNode</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#web">3.2.8. web</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_httpparameters">HttpParameters</a></li>
+                        <li><a href="#_requestwrapper">RequestWrapper</a></li>
+                        <li><a href="#_responsewrapper">ResponseWrapper</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li><a href="#_spring-extension-subassembly">3.3. spring 组件拓展</a>
+                  <ul class="sectlevel3">
+                    <li><a href="#curator">3.3.1. curator</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_curatoroperations">CuratorOperations</a></li>
+                        <li><a href="#_curator_spring_boot_starter">curator-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#disruptor">3.3.2. disruptor</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_disruptorscan">DisruptorScan</a></li>
+                        <li><a href="#_disruptoreventproducer">DisruptorEventProducer</a></li>
+                        <li><a href="#_disruptoreventconsumer">DisruptorEventConsumer</a></li>
+                        <li><a href="#_disruptor_spring_boot_starter">disruptor-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#dynamic">3.3.3. dynamic</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_dynamicsource">DynamicSource</a></li>
+                        <li><a href="#_datasourceinterceptor">DataSourceInterceptor</a></li>
+                        <li><a href="#_dynamicdatasource">DynamicDatasource</a></li>
+                        <li><a href="#_dynamic_datasource_boot_starter">dynamic-datasource-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#fastexcel">3.3.4. fastexcel</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_excel导入">Excel导入</a></li>
+                        <li><a href="#_excel导出">Excel导出</a></li>
+                        <li><a href="#_fastexcel_spring_boot_starter">fastexcel-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#limit">3.3.5. limit</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_limit注解">Limit注解</a></li>
+                        <li><a href="#_limitexecutor">LimitExecutor</a></li>
+                        <li><a href="#_limitinterceptor">LimitInterceptor</a></li>
+                        <li><a href="#_limit_spring_boot_starter">limit-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#lock">3.3.6. lock</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_distlock注解">DistLock注解</a></li>
+                        <li><a href="#_distributedlock">DistributedLock</a></li>
+                        <li><a href="#_distributedlockinterceptor">DistributedLockInterceptor</a></li>
+                        <li><a href="#_distributed_lock_boot_starter">distributed-lock-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#mapstruct">3.3.7. mapstruct</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_mapstruct_spring_boot_starter">mapstruct-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#mybatis">3.3.8. mybatis</a></li>
+                    <li><a href="#_内置sql数据注入工具">3.3.9. 内置SQL数据注入工具</a></li>
+                    <li><a href="#_数据库json类型转换处理目前只支持mysqlpostgres">3.3.10.
+                      数据库JSON类型转换处理(目前只支持MySQL、Postgres)</a></li>
+                    <li><a href="#_mybatis_sql监控">3.3.11. mybatis sql监控</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_mybatis_extension_boot_starter">mybatis-extension-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#qrcode">3.3.12. qrcode</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_二维码导入解析">二维码导入解析</a></li>
+                        <li><a href="#_文本或者实体导入二维码">文本或者实体导入二维码</a></li>
+                        <li><a href="#_qrcode_spring_boot_starter">qrcode-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#redisearch">3.3.13. redisearch</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_redisearch_spring_boot_starter">redisearch-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="#redisson-spring-boot-starter">3.3.14. redisson-spring-boot-starter</a></li>
+                    <li><a href="#sequence">3.3.15. sequence</a></li>
+                    <li><a href="#useragent">3.3.16. useragent</a>
+                      <ul class="sectlevel4">
+                        <li><a href="#_browscap_spring_boot_starter">browscap-spring-boot-starter</a></li>
+                        <li><a href="#_yauaa_spring_boot_starter">yauaa-spring-boot-starter</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li><a href="#_spring-extension-testcontainers">3.4. spring testcontainers support容器拓展</a></li>
+              </ul>
+            </li>
+            <li><a href="#_问题">4. 问题</a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="content">
+        <div id="preamble">
+          <div class="sectionbody">
+            <div class="paragraph">
+              <p>提供spring boot扩展包,包含自动装配、starter、一些工具类等。</p>
+            </div>
+          </div>
+        </div>
+        <div class="sect1">
+          <h2 id="_关于"><a class="anchor" href="#_关于"></a>1. 关于</h2>
+          <div class="sectionbody">
+            <div class="sect2">
+              <h3 id="_简介"><a class="anchor" href="#_简介"></a>1.1. 简介</h3>
+              <div class="paragraph">
+                <p>spring-boot-extension是一个拓展Spring Boot的库，内置一些SpringBoot未包含的Starter包<br>
+                  同时也补充的各种工具类，用于简化开发、提升开发效率</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sect1">
+          <h2 id="_安装"><a class="anchor" href="#_安装"></a>2. 安装</h2>
+          <div class="sectionbody">
+            <div class="sect2">
+              <h3 id="_依赖相关"><a class="anchor" href="#_依赖相关"></a>2.1. 依赖相关</h3>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-extension-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${version}&lt;/version&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="paragraph">
+                <p>最小BOM依赖</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-extension-bom&lt;/artifactId&gt;
+            &lt;version&gt;${version}&lt;/version&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sect2">
+              <h3 id="_支持的java版本"><a class="anchor" href="#_支持的java版本"></a>2.2. 支持的Java版本</h3>
+              <table class="tableblock frame-all grid-all stretch">
+                <colgroup>
+                  <col style="width: 50%;">
+                  <col style="width: 50%;">
+                </colgroup>
+                <tbody>
+                <tr>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">支持情况</p></td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">Jdk21以下</p></td>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">✗</p></td>
+                </tr>
+                <tr>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">Jdk21-Jdk25</p></td>
+                  <td class="tableblock halign-left valign-top"><p class="tableblock">✔</p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="sect1">
+          <h2 id="_使用指导"><a class="anchor" href="#_使用指导"></a>3. 使用指导</h2>
+          <div class="sectionbody">
+            <div class="sect2">
+              <h3 id="spring-auto-service"><a class="anchor" href="#spring-auto-service"></a>3.1. spring boot装配文件自动生成
+              </h3>
+              <div class="paragraph">
+                <p>根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-auto-service&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">compileOnly 'io.github.livk-cloud:spring-auto-service:${version}'
+annotationProcessor 'io.github.livk-cloud:spring-auto-service:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">compileOnly("io.github.livk-cloud:spring-auto-service:${version}")
+annotationProcessor("io.github.livk-cloud:spring-auto-service:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="_springautoservice使用示例"><a class="anchor" href="#_springautoservice使用示例"></a>3.1.1.
+                  @SpringAutoService使用示例</h4>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
+@SpringAutoService
+public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+                    <pre class="highlight"><code class="language-txt" data-lang="txt">com.livk.commons.spring.context.SpringContextHolder</code></pre>
+                  </div>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AutoConfiguration
+@ConditionalOnClass(WebClient.class)
+@SpringAutoService(com.livk.commons.http.annotation.EnableWebClient.class)
+public class WebClientConfiguration {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring/com.livk.commons.http.annotation.EnableWebClient.imports</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+                    <pre class="highlight"><code class="language-txt" data-lang="txt">com.livk.commons.http.WebClientConfiguration</code></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="_springfactories_使用示例"><a class="anchor" href="#_springfactories_使用示例"></a>3.1.2.
+                  @SpringFactories 使用示例</h4>
+                <div class="paragraph">
+                  <p>指定接口为spring.factories的Key</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringFactories(org.springframework.boot.env.EnvironmentPostProcessor)
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring.factories</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
+    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>当前类如果仅仅只有一个接口，可以不指定，自动生成</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringFactories
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring.factories</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
+    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="_aotfactories_使用示例"><a class="anchor" href="#_aotfactories_使用示例"></a>3.1.3.
+                  @AotFactories 使用示例</h4>
+                <div class="paragraph">
+                  <p>指定接口为aot.factories的Key</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AotFactories(org.springframework.boot.env.EnvironmentPostProcessor)
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring/aot.factories</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
+    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>当前类如果仅仅只有一个接口，可以不指定，自动生成</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AotFactories
+public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>生成文件 META-INF/spring/aot.factories</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
+    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sect2">
+              <h3 id="_spring-extension-commons"><a class="anchor" href="#_spring-extension-commons"></a>3.2.
+                spring通用工具拓展</h3>
+              <div class="paragraph">
+                <p>提供一些通用、工具类方便开发</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-extension-commons&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-extension-commons:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-extension-commons:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="annotation"><a class="anchor" href="#annotation"></a>3.2.1. annotation</h4>
+                <div class="sect4">
+                  <h5 id="_springabstractimportselector"><a class="anchor" href="#_springabstractimportselector"></a>SpringAbstractImportSelector
+                  </h5>
+                  <div class="paragraph">
+                    <p>
+                      通过继承AutoConfigurationImportSelector，可以实现自动导入spring的配置文件，导入文件为META-INF/spring/{annotationClass}.imports,需要使用org.springframework.context.annotation.Import进行注册</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public @interface Http{
+
+}
+
+public class HttpImportSelector extends SpringAbstractImportSelector&lt;Http&gt;{
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_autoimport"><a class="anchor" href="#_autoimport"></a>@AutoImport</h5>
+                  <div class="paragraph">
+                    <p>使用AutoImport自动进行注册，作用于注解上，功能同SpringAbstractImportSelector类似</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AutoImport
+public @interface Http{
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_annotationbasepackagesupport"><a class="anchor" href="#_annotationbasepackagesupport"></a>AnnotationBasePackageSupport
+                  </h5>
+                  <div class="paragraph">
+                    <p>用于快速获取basePackage<br>
+                      使用注解方式获取，注解需包含basePackages和basePackageClasses</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DisruptorScan {
+
+    String[] basePackages() default {};
+
+    Class&lt;?&gt;[] basePackageClasses() default {};
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_annotationbeandefinitionscanner"><a class="anchor"
+                                                               href="#_annotationbeandefinitionscanner"></a>AnnotationBeanDefinitionScanner
+                  </h5>
+                  <div class="paragraph">
+                    <p>用于快速扫描bean，使用注解方式获取</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="aop"><a class="anchor" href="#aop"></a>3.2.2. aop</h4>
+                <div class="sect4">
+                  <h5 id="_annotationabstractpointcutadvisor"><a class="anchor"
+                                                                 href="#_annotationabstractpointcutadvisor"></a>AnnotationAbstractPointcutAdvisor
+                  </h5>
+                  <div class="paragraph">
+                    <p>使用注解处理AOP的通用切点及表达式</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class LockInterceptor extends AnnotationAbstractPointcutAdvisor&lt;OnLock&gt;{
+    @Override
+    protected Object invoke(MethodInvocation invocation, OnLock onLock){
+        //AOP处理等同于org.aspectj.lang.annotation.Around
+    }
+
+    @Override
+    public Pointcut getPointcut(){
+        //实现切入点
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                  <div class="paragraph">
+                    <p>将注解作为泛型，自动获取到注解信息</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_annotationabstractpointcuttypeadvisor"><a class="anchor"
+                                                                     href="#_annotationabstractpointcuttypeadvisor"></a>AnnotationAbstractPointcutTypeAdvisor
+                  </h5>
+                  <div class="paragraph">
+                    <p>定制化拓展</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor&lt;OnLock&gt;{
+    @Override
+    protected Object invoke(MethodInvocation invocation, OnLock onLock){
+        //
+    }
+
+    @Override
+    protected AnnotationPointcutType pointcutType() {
+        //默认实现
+        return AnnotationAutoPointcut.auto();
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_annotationpointcut"><a class="anchor" href="#_annotationpointcut"></a>AnnotationPointcut</h5>
+                  <div class="paragraph">
+                    <p>提供多种可选方案</p>
+                  </div>
+                  <div class="olist arabic">
+                    <ol class="arabic">
+                      <li>
+                        <p>forType基于类级别的拦截等价于(@Around(@within(Annotation)))</p>
+                      </li>
+                      <li>
+                        <p>forMethod基于方法级别的拦截等价于(@Around(@annotation(Annotation)))</p>
+                      </li>
+                      <li>
+                        <p>
+                          forTypeOrMethod基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))</p>
+                      </li>
+                      <li>
+                        <p>forTarget根据Annotation
+                          Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)</p>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="expression"><a class="anchor" href="#expression"></a>3.2.3. expression</h4>
+                <div class="sect4">
+                  <h5 id="_abstractexpressionresolver"><a class="anchor" href="#_abstractexpressionresolver"></a>AbstractExpressionResolver
+                  </h5>
+                  <div class="paragraph">
+                    <p>ExpressionResolver抽象实现<br>
+                      将Map或者Method等信息转成Context<br></p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends AbstractExpressionResolver {
+    @Override
+    public &lt;T&gt; T evaluate(String value, Context context, Class&lt;T&gt; returnType) {
+        //TODO:解析表达式
+    }
+
+    //重写此方法用于调整Context的解析
+    public MyExpressionResolver(ContextFactory contextFactory){
+    super(contextFactory);
+    }
+
+  //也可以使用默认
+  public MyExpressionResolver(){
+
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_cacheexpressionresolver"><a class="anchor" href="#_cacheexpressionresolver"></a>CacheExpressionResolver
+                  </h5>
+                  <div class="paragraph">
+                    <p>用于对表达式解析进行缓存构建<br>
+                      同时添加spring-environment的支持<br></p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends CacheExpressionResolver&lt;Expression&gt; {
+  //将表达式转成不同组件的表达式类
+    @Override
+    protected Expression compile(String value) throws Throwable {
+        return null;
+    }
+
+  //根据组件的表达式进行计算
+    @Override
+    protected &lt;T&gt; T calculate(Expression expression, Context context, Class&lt;T&gt; returnType) throws Throwable {
+        return null;
+    }
+
+  //将上下文转成组件的上下文
+    @Override
+    protected EvaluationContext transform(Context context) {
+        return null;
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_内置expressionresolver"><a class="anchor" href="#_内置expressionresolver"></a>内置ExpressionResolver
+                  </h5>
+                  <div class="olist arabic">
+                    <ol class="arabic">
+                      <li>
+                        <p>SpringExpressionResolver &#8594; 根据SpringEL表达式进行解析<br></p>
+                      </li>
+                      <li>
+                        <p>AviatorExpressionResolver &#8594; 根据Aviator表达式进行解析(需要重新引入jar)<br></p>
+                      </li>
+                      <li>
+                        <p>FreeMarkerExpressionResolver &#8594; 根据FreeMarker表达式进行解析(需要重新引入jar) <br></p>
+                      </li>
+                      <li>
+                        <p>JexlExpressionResolver &#8594; 根据Apache Commons Jexl3表达式进行解析(需要重新引入jar) <br>
+                        </p>
+                      </li>
+                      <li>
+                        <p>MvelExpressionResolver &#8594; 根据Mvel 2表达式进行解析(需要重新引入jar) <br></p>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="http"><a class="anchor" href="#http"></a>3.2.4. http</h4>
+                <div class="sect4">
+                  <h5 id="_enablehttpclient"><a class="anchor" href="#_enablehttpclient"></a>EnableHttpClient</h5>
+                  <div class="paragraph">
+                    <p>EnableHttpClient会根据value值自动导入对应的http客户端</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Slf4j
+@EnableHttpClient({
+    HttpClientType.WEB_CLIENT,
+    HttpClientType.REST_CLIENT
+})
+public class App {
+
+    @Bean
+    public ApplicationRunner applicationRunner(WebClient webClient,
+                                             RestClient restClient) {
+        return args -&gt; {
+            log.info("webClient:{}", webClient);
+            log.info("restClient:{}", restClient);
+        };
+    }
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                  <div class="paragraph">
+                    <p>同时提供了@EnableRestClient、@EnableWebClient作为快捷方式</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="jackson"><a class="anchor" href="#jackson"></a>3.2.5. jackson</h4>
+                <div class="sect4">
+                  <h5 id="_jacksonsupport"><a class="anchor" href="#_jacksonsupport"></a>JacksonSupport</h5>
+                  <div class="paragraph">
+                    <p>Jackson便捷开发工具，通过包装ObjectMapper实现各种JSON转换</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static void main(String[] args){
+  JacksonSupport json = new JacksonSupport(new JsonMapper());
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_numberjsonformat"><a class="anchor" href="#_numberjsonformat"></a>@NumberJsonFormat</h5>
+                  <div class="paragraph">
+                    <p>Number类型数据Jackson序列化处理注解</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_各种工具类"><a class="anchor" href="#_各种工具类"></a>各种工具类</h5>
+                  <div class="paragraph">
+                    <p>com.livk.commons.jackson.JsonMapperUtils 用于JsonMapper默认配置进行快速序列化和反序列化</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>com.livk.commons.jackson.JsonNodeUtils 用于JsonNode快速操作</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>com.livk.commons.jackson.TypeFactoryUtils 用于获取Jackson类型工具</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="micrometer"><a class="anchor" href="#micrometer"></a>3.2.6. micrometer</h4>
+                <div class="sect4">
+                  <h5 id="_contextsnapshots"><a class="anchor" href="#_contextsnapshots"></a>ContextSnapshots</h5>
+                  <div class="paragraph">
+                    <p>ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+</span><span class="fold-block">public static void main(String[] args){
+  ExecutorService service = Executors.newCachedThreadPool();
+  ExecutorService wrap = ContextSnapshots.wrap(service);
+  wrap.submit(()-&gt;{});
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="util"><a class="anchor" href="#util"></a>3.2.7. util</h4>
+                <div class="sect4">
+                  <h5 id="_annotationmetadataresolver"><a class="anchor" href="#_annotationmetadataresolver"></a>AnnotationMetadataResolver
+                  </h5>
+                  <div class="paragraph">
+                    <p>根据包名查找含有某些注解的类</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+      resolver.find(MyAnnotation.class,"com.livk.resolver");
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_beanlambda"><a class="anchor" href="#_beanlambda"></a>BeanLambda</h5>
+                  <div class="paragraph">
+                    <p>根据lambda解析Field和Method</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      String methodName = BeanLambda.methodName(Maker::getNo);
+      Method method = BeanLambda.method(Maker::getNo);
+      String fieldName = BeanLambda.fieldName(Maker::getNo);
+      Field field = BeanLambda.field(Maker::getNo);
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_genericwrapper"><a class="anchor" href="#_genericwrapper"></a>GenericWrapper</h5>
+                  <div class="paragraph">
+                    <p>进行类包装</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      GenericWrapper&lt;?&gt; wrapper = GenericWrapper.of("123");
+      wrapper.unwrap()
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_genericsbytebuddy"><a class="anchor" href="#_genericsbytebuddy"></a>GenericsByteBuddy</h5>
+                  <div class="paragraph">
+                    <p>根据ByteBuddy重新处理，适配泛型以及高版本JDK</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private static &lt;S extends RediSearchConnectionFactory&gt; Class&lt;? extends S&gt; createFactoryClass(
+            Class&lt;? extends AbstractRedisClient&gt; clientType) {
+        TypeDescription definitions = TypeDescription.ForLoadedType.of(RediSearchConnectionFactory.class);
+        try (DynamicType.Unloaded&lt;S&gt; unloaded = new GenericsByteBuddy().&lt;S&gt;subclass(definitions)
+            .name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
+                    + "$ProxyConnectionFactory")
+            .defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
+            .defineConstructor(Modifier.PUBLIC)
+            .withParameters(clientType)
+            .intercept(MethodCall.invoke(Object.class.getConstructor())
+                .andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
+            .method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(1)))
+            .intercept(MethodDelegation.to(ConnectWithCodecInterceptor.class))
+            .method(ElementMatchers.named("close"))
+            .intercept(MethodDelegation.to(CloseInterceptor.class))
+            .make()) {
+            return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
+                .getLoaded();
+        }
+        catch (NoSuchMethodException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_multivaluemapsplitter"><a class="anchor" href="#_multivaluemapsplitter"></a>MultiValueMapSplitter
+                  </h5>
+                  <div class="paragraph">
+                    <p>字符串分割成MultiValueMap，例如String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c";
+            Map&lt;String, List&lt;String&gt;&gt; map = Map.of("root", List.of("1", "2", "3", "4"), "a", List.of("b", "c"));
+            MultiValueMap&lt;String, String&gt; multiValueMap = MultiValueMapSplitter.of("&amp;", "=").split(str, ",");
+            assertEquals(CollectionUtils.toMultiValueMap(map), multiValueMap);
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_pair"><a class="anchor" href="#_pair"></a>Pair</h5>
+                  <div class="paragraph">
+                    <p>一个简单的KV键值对，Jackson序列化进行Map.Entity一样的适配</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      Pair&lt;String, String&gt; pair = Pair.of("username", "password");
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_snowflakeidgenerator"><a class="anchor" href="#_snowflakeidgenerator"></a>SnowflakeIdGenerator
+                  </h5>
+                  <div class="paragraph">
+                    <p>雪花算法ID生成器</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+</span><span class="fold-block">public class Main{
+    public static void main(String[] args){
+      SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2)；
+      long id = generator.nextId();
+    }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_treenode"><a class="anchor" href="#_treenode"></a>TreeNode</h5>
+                  <div class="paragraph">
+                    <p>树形节点定义通用类</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="web"><a class="anchor" href="#web"></a>3.2.8. web</h4>
+                <div class="sect4">
+                  <h5 id="_httpparameters"><a class="anchor" href="#_httpparameters"></a>HttpParameters</h5>
+                  <div class="paragraph">
+                    <p>http请求Parameter参数,类似于org.springframework.http.HttpHeaders</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Main{
+    public static void main(String[] args){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+            request.addParameter("username", "livk", "root", "admin");
+            request.addParameter("password", "123456");
+            MultiValueMap&lt;String, String&gt; params = WebUtils.params(request);
+            HttpParameters parameters = new HttpParameters(params);
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_requestwrapper"><a class="anchor" href="#_requestwrapper"></a>RequestWrapper</h5>
+                  <div class="paragraph">
+                    <p>HttpServletRequest包装类，用于修改body、添加header、添加param</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Main{
+    public static void main(String[] args){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+            RequestWrapper wrapper = new RequestWrapper(request);
+        wrapper.body(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+        wrapper.addHeader("Content-Type", "application/json");
+        wrapper.addParameter("username", "livk");
+        wrapper.addParameter("username", new String[]{"root", "admin"});
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_responsewrapper"><a class="anchor" href="#_responsewrapper"></a>ResponseWrapper</h5>
+                  <div class="paragraph">
+                    <p>HttpServletResponse包装类，用于修改body</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class Main{
+    public static void main(String[] args){
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        ResponseWrapper wrapper = new ResponseWrapper(response);
+        wrapper.replaceBody(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sect2">
+              <h3 id="_spring-extension-subassembly"><a class="anchor" href="#_spring-extension-subassembly"></a>3.3.
+                spring 组件拓展</h3>
+              <div class="paragraph">
+                <p><strong>兼容Spring的基础包</strong><br>
+                  提供一些第三方包与spring整合的拓展,包括一些自定义拓展</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-extension-context&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-extension-context:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-extension-context:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="paragraph">
+                <p><strong>兼容SpringBoot的拓展包</strong><br>
+                  使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置</p>
+              </div>
+              <div class="openblock primary">
+                <div class="title">Maven</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.github.livk-cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-extension-autoconfigure&lt;/artifactId&gt;
+    &lt;version&gt;${version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Gradle-Groovy</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">implementation 'io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}'
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="openblock secondary">
+                <div class="title">Groovy-Kotlin</div>
+                <div class="content">
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">implementation("io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}")
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="curator"><a class="anchor" href="#curator"></a>3.3.1. curator</h4>
+                <div class="sect4">
+                  <h5 id="_curatoroperations"><a class="anchor" href="#_curatoroperations"></a>CuratorOperations</h5>
+                  <div class="paragraph">
+                    <p>Curator相关所有对zookeeper的操作<br>
+                      由CuratorTemplate进行实现<br>
+                      采用CuratorFramework作为底层实现</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static void main(String[] args){
+  CuratorFramework framework = createFramework();
+  framework.start();
+  CuratorTemplate template = new CuratorTemplate(framework);
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_curator_spring_boot_starter"><a class="anchor" href="#_curator_spring_boot_starter"></a>curator-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: curator-spring-boot-starter</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>根据CuratorProperties自动注册CuratorFramework、RetryPolicy、CuratorTemplate以及Curator Actuator</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="disruptor"><a class="anchor" href="#disruptor"></a>3.3.2. disruptor</h4>
+                <div class="sect4">
+                  <h5 id="_disruptorscan"><a class="anchor" href="#_disruptorscan"></a>DisruptorScan</h5>
+                  <div class="paragraph">
+                    <p>类似于MyBatisScan用与扫描DisruptorEvent标记的实体<br>
+                      根据实体和DisruptorEvent生成SpringDisruptor&lt;DisruptorEventWrapper&lt;T&gt;&gt;队列</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@DisruptorScan("com.livk.disruptor")
+public class Config{
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_disruptoreventproducer"><a class="anchor" href="#_disruptoreventproducer"></a>DisruptorEventProducer
+                  </h5>
+                  <div class="paragraph">
+                    <p>Disruptor生产者</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@org.springframework.stereotype.Component
+public class DisruptorMqServiceImpl implements DisruptorMqService {
+
+    private final DisruptorEventProducer&lt;MessageModel&gt; producer;
+
+    public DisruptorMqServiceImpl(SpringDisruptor&lt;MessageModel&gt; disruptor) {
+        producer = new DisruptorEventProducer&lt;&gt;(disruptor);
+    }
+
+    @Override
+    public void send(String message) {
+        log.info("record the message: {}", message);
+        producer.send(toMessageModel(message));
+    }
+
+    @Override
+    public void batch(List&lt;String&gt; messages) {
+        List&lt;MessageModel&gt; messageModels = messages.stream().map(this::toMessageModel).toList();
+        producer.sendBatch(messageModels);
+    }
+
+    private MessageModel toMessageModel(String message) {
+        return MessageModel.builder().message(message).build();
+    }
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_disruptoreventconsumer"><a class="anchor" href="#_disruptoreventconsumer"></a>DisruptorEventConsumer
+                  </h5>
+                  <div class="paragraph">
+                    <p>Disruptor消费者</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@org.springframework.stereotype.Component
+public class Consumerimplements DisruptorEventConsumer&lt;MessageModel&gt; {
+
+    private final ApplicationContext applicationContext;
+
+    @Override
+    public void onEvent(MessageModel wrapper, long sequence, boolean endOfBatch) {
+        log.info("消费者消费的信息是：{} :{} :{} id:{}", wrapper, sequence, endOfBatch, applicationContext.getId());
+    }
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_disruptor_spring_boot_starter"><a class="anchor" href="#_disruptor_spring_boot_starter"></a>disruptor-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: disruptor-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="dynamic"><a class="anchor" href="#dynamic"></a>3.3.3. dynamic</h4>
+                <div class="sect4">
+                  <h5 id="_dynamicsource"><a class="anchor" href="#_dynamicsource"></a>DynamicSource</h5>
+                  <div class="paragraph">
+                    <p>标记Service方法上,动态数据源切换</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@DynamicSource("mysql")
+public class UserService{
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_datasourceinterceptor"><a class="anchor" href="#_datasourceinterceptor"></a>DataSourceInterceptor
+                  </h5>
+                  <div class="paragraph">
+                    <p>动态数据源切换拦截器,注册为Spring Bean即可</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_dynamicdatasource"><a class="anchor" href="#_dynamicdatasource"></a>DynamicDatasource</h5>
+                  <div class="paragraph">
+                    <p>动态数据源,使用DataSourceContextHolder进行数据源切换</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
+public class Config {
+  @Bean
+    public DynamicDatasource dynamicDatasource() {
+        DynamicDatasource dynamicDatasource = new DynamicDatasource();
+        dynamicDatasource.setTargetDataSources(datasourceMap);
+        dynamicDatasource.setDefaultTargetDataSource(datasourcePrimary);
+        return dynamicDatasource;
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_dynamic_datasource_boot_starter"><a class="anchor"
+                                                               href="#_dynamic_datasource_boot_starter"></a>dynamic-datasource-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: dynamic-datasource-boot-starter</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>根据DynamicDatasourceProperties注册DynamicDatasource和DataSourceInterceptor</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>需要添加EnableDynamicDatasource到Spring Configuration</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="fastexcel"><a class="anchor" href="#fastexcel"></a>3.3.4. fastexcel</h4>
+                <div class="sect4">
+                  <h5 id="_excel导入"><a class="anchor" href="#_excel导入"></a>Excel导入</h5>
+                  <div class="paragraph">
+                    <p>使用注解 <code>@PostMapping</code> 解析Excel(支持Spring Webflux)<br>
+                      @ExcelParam指定文件名称<br>
+                      parse使用自定义封装FastExcel的解析器
+                      <code>com.livk.excel.mvc.listener.InfoExcelListener</code><br></p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+public class InfoController {
+
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("uploadList")
+    public HttpEntity&lt;List&lt;Info&gt;&gt; uploadList(@ExcelParam List&lt;Info&gt; dataExcels) {
+        return ResponseEntity.ok(dataExcels);
+    }
+
+
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("upload")
+    public HttpEntity&lt;List&lt;Info&gt;&gt; upload(@ExcelParam List&lt;Info&gt; dataExcels) {
+        return ResponseEntity.ok(dataExcels);
+    }
+
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("uploadMono")
+    public Mono&lt;HttpEntity&lt;List&lt;Info&gt;&gt;&gt; uploadMono(@ExcelParam Mono&lt;List&lt;Info&gt;&gt; dataExcels) {
+        return dataExcels.map(ResponseEntity::ok);
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_excel导出"><a class="anchor" href="#_excel导出"></a>Excel导出</h5>
+                  <div class="paragraph">
+                    <p>使用注解 <code>@ResponseExcel</code> 或者 <code>@ExcelController</code> 解析Excel(支持Spring
+                      Webflux)<br>
+                      fileName指定下载文件名<br>
+                      suffix指定Excel后缀 默认xlsm<br>
+                      使用ExcelController之后，fileName为out，suffix为xlsm</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>返回结果为 <code>List&lt;?&gt;</code> <code>Mono&lt;List&lt;?&gt;&gt;</code>
+                      <code>Flux&lt;?&gt;</code> 是sheet名称即为sheet<br>
+                      返回结果为 <code>Map&lt;String,?&gt;</code> <code>Mono&lt;Map&lt;String,?&gt;&gt;</code>
+                      是sheet名称即为map key<br></p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequiredArgsConstructor
+public class InfoController {
+
+  @ResponseExcel(fileName = "outFile")
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("uploadDownLoad")
+    public List&lt;Info&gt; uploadDownLoadMono(@ExcelParam List&lt;Info&gt; dataExcels) {
+        return dataExcels;
+    }
+
+    @ResponseExcel(fileName = "outFile")
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("uploadDownLoadMono")
+    public Mono&lt;List&lt;Info&gt;&gt; uploadDownLoadMono(@ExcelParam Mono&lt;List&lt;Info&gt;&gt; dataExcels) {
+        return dataExcels;
+    }
+
+    @ResponseExcel(fileName = "outFile")
+    @RequestExcel(parse = InfoExcelListener.class)
+    @PostMapping("uploadDownLoadFlux")
+    public Flux&lt;Info&gt; uploadDownLoadFlux(@ExcelParam Mono&lt;List&lt;Info&gt;&gt; dataExcels) {
+        return dataExcels.flatMapMany(Flux::fromIterable);
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@ExcelController
+public class Info2Controller {
+
+    @PostMapping("download")
+    public Map&lt;String, List&lt;Info&gt;&gt; download(@RequestBody List&lt;Info&gt; dataExcels) {
+        return dataExcels.stream()
+                .collect(Collectors.groupingBy(info -&gt; String.valueOf(Long.parseLong(info.getPhone()) % 10)));
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_fastexcel_spring_boot_starter"><a class="anchor" href="#_fastexcel_spring_boot_starter"></a>fastexcel-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: fastexcel-spring-boot-starter</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>根据Servlet环境自动注册 <strong>ExcelMethodArgumentResolver</strong> 和 <strong>ExcelMethodReturnValueHandler</strong><br>
+                    </p>
+                  </div>
+                  <div class="paragraph">
+                    <p>或Reactive环境自动注册 <strong>ReactiveExcelMethodReturnValueHandler</strong> 和 <strong>ReactiveExcelMethodArgumentResolver</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="limit"><a class="anchor" href="#limit"></a>3.3.5. limit</h4>
+                <div class="sect4">
+                  <h5 id="_limit注解"><a class="anchor" href="#_limit注解"></a>Limit注解</h5>
+                  <div class="paragraph">
+                    <p>标记方法,用于对此方法进行限流</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class UserService {
+
+  @Limit(key = "livk:user", rate = 2, rateInterval = 30)
+  public void save(User user) {
+
+  }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_limitexecutor"><a class="anchor" href="#_limitexecutor"></a>LimitExecutor</h5>
+                  <div class="paragraph">
+                    <p>限流执行器基类,实现注册为Spring Bean即可 提供RedissonLimitExecutor作为实现，需要Redisson依赖</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_limitinterceptor"><a class="anchor" href="#_limitinterceptor"></a>LimitInterceptor</h5>
+                  <div class="paragraph">
+                    <p>限流拦截器,注册为Spring Bean即，使用AOP实现</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_limit_spring_boot_starter"><a class="anchor" href="#_limit_spring_boot_starter"></a>limit-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: limit-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="lock"><a class="anchor" href="#lock"></a>3.3.6. lock</h4>
+                <div class="sect4">
+                  <h5 id="_distlock注解"><a class="anchor" href="#_distlock注解"></a>DistLock注解</h5>
+                  <div class="paragraph">
+                    <p>标记方法,用于对此方法进行分布式锁</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例 key支持SpEL表达式，同时支持公平锁、读锁、写锁，并支持异步<br>
+                      在方法上添加 <code>@OnLock(scope = LockScope.DISTRIBUTED_LOCK)</code> (当前分布式锁仅支持Redisson、Curator)+
+                    </p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class UserService {
+  @PostMapping("/buy/distributed")
+    @DistLock(key = "shop")
+    public void buyLocal(@RequestParam(defaultValue = "2") Integer count) {
+
+    }
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_distributedlock"><a class="anchor" href="#_distributedlock"></a>DistributedLock</h5>
+                  <div class="paragraph">
+                    <p>分布式锁基类,实现注册为Spring Bean即可 提供RedissonLock作为实现，需要Redisson依赖
+                      提供CuratorLock作为实现，需要Curator依赖</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_distributedlockinterceptor"><a class="anchor" href="#_distributedlockinterceptor"></a>DistributedLockInterceptor
+                  </h5>
+                  <div class="paragraph">
+                    <p>分布式锁拦截器,注册为Spring Bean即，使用AOP实现</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_distributed_lock_boot_starter"><a class="anchor" href="#_distributed_lock_boot_starter"></a>distributed-lock-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: distributed-lock-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="mapstruct"><a class="anchor" href="#mapstruct"></a>3.3.7. mapstruct</h4>
+                <div class="paragraph">
+                  <p>使用示例<br>
+                    自定义转换器<br>
+                    继承 <code>com.livk.autoconfigure.mapstruct.converter.Converter</code><br>
+                    并添加注解 <code>@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)</code></p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+public interface UserConverter extends Converter&lt;User, UserVO&gt; {
+
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+    @Mapping(target = "type", source = "type", numberFormat = "#")
+    @Override
+    User getSource(UserVO userVO);
+
+    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+    @Mapping(target = "type", source = "type", numberFormat = "#")
+    @Override
+    UserVO getTarget(User user);
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>Spring转换器 继承 <code>org.springframework.core.convert.converter.Converter</code><br>
+                    并添加注解 <code>@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)</code></p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+public interface UserSpringConverter extends Converter&lt;User, UserVO&gt; {
+
+    @Mapping(target = "createTime", source = "createTime", dateFormat = DateUtils.YMD_HMS)
+    @Mapping(target = "type", source = "type", numberFormat = "#")
+    @Override
+    UserVO convert(@Nullable User user);
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>使用 `MapstructService`操作转换自定义转换器<br>
+                    使用 `ConversionService`操作转换Spring转换器<br></p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping("user")
+@RequiredArgsConstructor
+public class UserController {
+
+    public static final List&lt;User&gt; USERS = List.of(
+            new User().setId(1).setUsername("livk").setPassword("123456").setType(1).setCreateTime(new Date()),
+            new User().setId(2).setUsername("livk2").setPassword("123456").setType(2).setCreateTime(new Date()),
+            new User().setId(3).setUsername("livk3").setPassword("123456").setType(3).setCreateTime(new Date()));
+
+    // 自定义双向转换
+    private final MapstructService service;
+
+    // spring单向转换
+    private final ConversionService conversionService;
+
+    private final ConversionServiceAdapter conversionServiceAdapter;
+
+    @PostConstruct
+    public void init() {
+        System.out.println(conversionService.convert(USERS.get(0), UserVO.class));
+        service.convert(USERS, UserVO.class).forEach(System.out::println);
+        SpringContextHolder.getBean(MapstructService.class).convert(USERS, UserVO.class).forEach(System.out::println);
+    }
+
+    @GetMapping
+    public HttpEntity&lt;Map&lt;String, List&lt;UserVO&gt;&gt;&gt; list() {
+        List&lt;UserVO&gt; userVOS = USERS.stream().map(user -&gt; conversionService.convert(user, UserVO.class))
+                .filter(Objects::nonNull).toList();
+        return ResponseEntity
+                .ok(Map.of("spring", userVOS,
+                        "customize", service.convert(USERS, UserVO.class).toList()));
+    }
+
+    @GetMapping("/{id}")
+    public HttpEntity&lt;Map&lt;String, UserVO&gt;&gt; getById(@PathVariable Integer id) {
+        User u = USERS.stream().filter(user -&gt; user.getId().equals(id)).findFirst().orElse(new User());
+        UserVO userVOSpring = conversionService.convert(u, UserVO.class);
+        return ResponseEntity.ok(Map.of("customize", service.convert(u, UserVO.class),
+                "spring", userVOSpring,
+                "adapter", conversionServiceAdapter.mapUserToUserVO(u)));
+    }
+
+}
+</code></pre>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_mapstruct_spring_boot_starter"><a class="anchor" href="#_mapstruct_spring_boot_starter"></a>mapstruct-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: mapstruct-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="mybatis"><a class="anchor" href="#mybatis"></a>3.3.8. mybatis</h4>
+
+              </div>
+              <div class="sect3">
+                <h4 id="_内置sql数据注入工具"><a class="anchor" href="#_内置sql数据注入工具"></a>3.3.9. 内置SQL数据注入工具
+                </h4>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import javax.sql.DataSource;
+
+</span><span class="fold-block">@Data
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
+
+    private String username;
+
+    @JsonIgnore
+    @SqlInject(fill = SqlFill.INSERT, supplier = VersionInject.class)
+    private Integer version;
+
+    @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
+    @SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
+    private Date insertTime;
+
+    @JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
+    @SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
+    private Date updateTime;
+
+}
+</span></code></pre>
+                  </div>
+                </div>
+                <div class="paragraph">
+                  <p>并且添加com.livk.context.mybatis.SqlDataInjection至MyBatis</p>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="_数据库json类型转换处理目前只支持mysqlpostgres"><a class="anchor"
+                                                                           href="#_数据库json类型转换处理目前只支持mysqlpostgres"></a>3.3.10.
+                  数据库JSON类型转换处理(目前只支持MySQL、Postgres)</h4>
+                <div class="paragraph">
+                  <p>com.livk.context.mybatis.type.mysql.MysqlJsonTypeHandler</p>
+                </div>
+                <div class="paragraph">
+                  <p>com.livk.context.mybatis.type.postgres.PostgresJsonTypeHandler</p>
+                </div>
+                <div class="paragraph">
+                  <p>添加至MyBatis</p>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="_mybatis_sql监控"><a class="anchor" href="#_mybatis_sql监控"></a>3.3.11. mybatis sql监控</h4>
+                <div class="paragraph">
+                  <p>添加com.livk.context.mybatis.MybatisSqlMonitor至MyBatis</p>
+                </div>
+                <div class="paragraph">
+                  <p>并且配置timeOut和unit至Properties</p>
+                </div>
+                <div class="sect4">
+                  <h5 id="_mybatis_extension_boot_starter"><a class="anchor"
+                                                              href="#_mybatis_extension_boot_starter"></a>mybatis-extension-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: mybatis-extension-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="qrcode"><a class="anchor" href="#qrcode"></a>3.3.12. qrcode</h4>
+                <div class="sect4">
+                  <h5 id="_二维码导入解析"><a class="anchor" href="#_二维码导入解析"></a>二维码导入解析</h5>
+                  <div class="paragraph">
+                    <p>使用注解 <code>@PostMapping</code> 解析二维码(支持Spring Webflux)<br>
+                      RequestQrCodeText指定文件名称<br></p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping("qrcode")
+public class QRCodeController {
+
+    @PostMapping
+    public Mono&lt;String&gt; textCode(@RequestQrCodeText Mono&lt;String&gt; text) {
+        return text.log();
+    }
+
+}
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_文本或者实体导入二维码"><a class="anchor" href="#_文本或者实体导入二维码"></a>文本或者实体导入二维码
+                  </h5>
+                  <div class="paragraph">
+                    <p>使用注解 <code>ResponseQrCode</code> 或者 <code>QrCodeController</code> 解析Excel(支持Spring
+                      Webflux)<br></p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RestController
+@RequestMapping("qrcode")
+public class QRCodeController {
+
+    @ResponseQrCode
+    @GetMapping
+    public String text(String text) {
+        return text;
+    }
+
+    @ResponseQrCode
+    @GetMapping("mono")
+    public Mono&lt;String&gt; textMono(String text) {
+        return Mono.just(text);
+    }
+</code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_qrcode_spring_boot_starter"><a class="anchor" href="#_qrcode_spring_boot_starter"></a>qrcode-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: qrcode-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="redisearch"><a class="anchor" href="#redisearch"></a>3.3.13. redisearch</h4>
+                <div class="paragraph">
+                  <p>封装RediSearchTemplate、StringRediSearchTemplate来操作redisearch</p>
+                </div>
+                <div class="sect4">
+                  <h5 id="_redisearch_spring_boot_starter"><a class="anchor"
+                                                              href="#_redisearch_spring_boot_starter"></a>redisearch-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: redisearch-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="redisson-spring-boot-starter"><a class="anchor" href="#redisson-spring-boot-starter"></a>3.3.14.
+                  redisson-spring-boot-starter</h4>
+                <div class="paragraph">
+                  <p>artifactId: redisson-spring-boot-starter</p>
+                </div>
+                <div class="paragraph">
+                  <p>适配springboot yaml、properties配置文件,使用redisson的配置文件进行redisson的配置</p>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="sequence"><a class="anchor" href="#sequence"></a>3.3.15. sequence</h4>
+                <div class="paragraph">
+                  <p>发号器，可自定义datasource、redis、snowflake等发号策略</p>
+                </div>
+                <div class="paragraph">
+                  <p>datasource发号器内置Postgres、Mysql、H2等数据库发号策略</p>
+                </div>
+                <div class="paragraph">
+                  <p>未支持的数据库实现 <strong>com.livk.context.sequence.support.spi.SqlProvider</strong> 并注册到
+                    <strong>META-INF/spring.factories</strong> 文件</p>
+                </div>
+                <div class="listingblock">
+                  <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import javax.sql.DataSource;
+
+</span><span class="fold-block">@Configuration
+public class Config{
+
+   @Bean
+   public Sequence dbSequence(DataSource dataSource) {
+     Sequence sequence = SequenceBuilder.builder(new DbRangeManager(dataSource)).bizName("test-sequence").build();
+     return sequence;
+   }
+
+   @Bean
+   public Sequence lettuceSequence(RedisClient redisClient) {
+     LettuceSequenceRedisHelper helper = new LettuceSequenceRedisHelper(redisClient);
+         Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
+     return sequence;
+   }
+
+    @Bean
+   public Sequence redisSequence(RedisConnectionFactory factory) {
+     SpringSequenceRedisHelper helper = new SpringSequenceRedisHelper(redisClient);
+         Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
+     return sequence;
+   }
+
+   @Bean
+   public Sequence snowflakeSequence() {
+     Sequence sequence = Sequence.snowflake(1, 2);
+     return sequence;
+   }
+}
+</span></code></pre>
+                  </div>
+                </div>
+              </div>
+              <div class="sect3">
+                <h4 id="useragent"><a class="anchor" href="#useragent"></a>3.3.16. useragent</h4>
+                <div class="sect4">
+                  <h5 id="_browscap_spring_boot_starter"><a class="anchor" href="#_browscap_spring_boot_starter"></a>browscap-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: browscap-spring-boot-starter</p>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_yauaa_spring_boot_starter"><a class="anchor" href="#_yauaa_spring_boot_starter"></a>yauaa-spring-boot-starter
+                  </h5>
+                  <div class="paragraph">
+                    <p>artifactId: yauaa-spring-boot-starter</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sect2">
+              <h3 id="_spring-extension-testcontainers"><a class="anchor" href="#_spring-extension-testcontainers"></a>3.4.
+                spring testcontainers support容器拓展</h3>
+              <div class="paragraph">
+                <p>提供自定义testcontainers与spring boot的支持</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sect1">
+          <h2 id="_问题"><a class="anchor" href="#_问题"></a>4. 问题</h2>
+          <div class="sectionbody">
+
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <div id="footer-text">
+          Version 2.0.1<br>
+          Last updated 2026-01-23 +0800
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

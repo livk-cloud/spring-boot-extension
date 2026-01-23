@@ -15,32 +15,6 @@
       text-align: center;
     }
 
-    #version-links {
-      margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #version-links div {
-      margin-bottom: 30px;
-    }
-
-    #version-links a {
-      margin: 0 10px;
-      font-size: 1rem;
-      color: #4CAF50;
-      text-decoration: none;
-      padding: 5px 15px;
-      border: 1px solid #4CAF50;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
-
-    #version-links a:hover {
-      background-color: #4CAF50;
-      color: white;
-    }
-
     footer {
       text-align: center;
       padding: 10px 0;
@@ -68,6 +42,38 @@
     .github-button:hover {
       background-color: #0366d6;
     }
+
+    .version-card {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: #eef3f9;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .06);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .versions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      flex-direction: column;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .version-card a {
+      display: inline-block;
+      margin: 4px 6px 0 0;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #eef3f9;
+      text-decoration: none;
+
+      font-size: 1rem;
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+      transition: all 0.3s ease;
+    }
   </style>
 </head>
 <body id="spring-boot-extension-doc" class="book toc2 toc-left">
@@ -93,25 +99,31 @@
   <p>要开始使用，请在下方选择一个版本:</p>
 
   <!-- Version Links -->
-  <div id="version-links">
-    <div>
-      <a href="spring-boot-extension-1.4.0.html">1.4.0</a>
-      <a href="spring-boot-extension-1.4.1.html">1.4.1</a>
-      <a href="spring-boot-extension-1.4.2.html">1.4.2</a>
-      <a href="spring-boot-extension-1.4.3.html">1.4.3</a>
-      <a href="spring-boot-extension-1.4.4.html">1.4.4</a>
-      <a href="spring-boot-extension-1.4.5.html">1.4.5</a>
-    </div>
-    <div>
-      <a href="spring-boot-extension-1.5.0.html">1.5.0</a>
-      <a href="spring-boot-extension-1.5.1.html">1.5.1</a>
-      <a href="spring-boot-extension-1.5.2.html">1.5.2</a>
-      <a href="spring-boot-extension-1.5.3.html">1.5.3</a>
-      <a href="spring-boot-extension-1.5.4.html">1.5.4</a>
-      <a href="spring-boot-extension-1.5.5.html">1.5.5</a>
-    </div>
-    <div>
+  <div class="versions">
+    <div class="version-card">
+      <h3>2.0.x</h3>
+      <a href="spring-boot-extension-2.0.1.html">2.0.1</a>
       <a href="spring-boot-extension-2.0.0.html">2.0.0</a>
+    </div>
+
+    <div class="version-card">
+      <h3>1.5.x</h3>
+      <a href="spring-boot-extension-1.5.5.html">1.5.5</a>
+      <a href="spring-boot-extension-1.5.4.html">1.5.4</a>
+      <a href="spring-boot-extension-1.5.3.html">1.5.3</a>
+      <a href="spring-boot-extension-1.5.2.html">1.5.2</a>
+      <a href="spring-boot-extension-1.5.1.html">1.5.1</a>
+      <a href="spring-boot-extension-1.5.0.html">1.5.0</a>
+    </div>
+
+    <div class="version-card">
+      <h3>1.4.x</h3>
+      <a href="spring-boot-extension-1.4.5.html">1.4.5</a>
+      <a href="spring-boot-extension-1.4.4.html">1.4.4</a>
+      <a href="spring-boot-extension-1.4.3.html">1.4.3</a>
+      <a href="spring-boot-extension-1.4.2.html">1.4.2</a>
+      <a href="spring-boot-extension-1.4.1.html">1.4.1</a>
+      <a href="spring-boot-extension-1.4.0.html">1.4.0</a>
     </div>
   </div>
 </div>
