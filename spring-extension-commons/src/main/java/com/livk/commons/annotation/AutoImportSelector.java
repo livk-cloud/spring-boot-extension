@@ -39,13 +39,10 @@ class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 	@Override
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
 		Set<String> names = new HashSet<>();
-		Class<AutoImport> annotationClass = getAnnotationClass();
-		if (annotationClass != null) {
-			for (String annotationType : metadata.getAnnotationTypes()) {
-				Class<?> type = ClassUtils.resolveClassName(annotationType, getBeanClassLoader());
-				if (type.isAnnotation() && type.isAnnotationPresent(annotationClass)) {
-					names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
-				}
+		for (String annotationType : metadata.getAnnotationTypes()) {
+			Class<?> type = ClassUtils.resolveClassName(annotationType, getBeanClassLoader());
+			if (type.isAnnotation() && type.isAnnotationPresent(getAnnotationClass())) {
+				names.addAll(ImportCandidates.load(type, getBeanClassLoader()).getCandidates());
 			}
 		}
 		return new ArrayList<>(names);
