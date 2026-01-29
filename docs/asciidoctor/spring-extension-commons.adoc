@@ -45,8 +45,6 @@ include::{basedir}/http.adoc[]
 
 include::{basedir}/jackson.adoc[]
 
-include::{basedir}/micrometer.adoc[]
-
 include::{basedir}/util.adoc[]
 
 include::{basedir}/web.adoc[]
