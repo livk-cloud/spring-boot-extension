@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.commons.micrometer;
+package com.livk.commons.util;
 
 import io.micrometer.context.ContextExecutorService;
 import io.micrometer.context.ContextRegistry;
