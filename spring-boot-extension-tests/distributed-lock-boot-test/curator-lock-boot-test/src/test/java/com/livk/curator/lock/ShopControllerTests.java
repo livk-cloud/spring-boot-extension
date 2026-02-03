@@ -27,7 +27,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -35,11 +35,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -61,7 +57,7 @@ class ShopControllerTests {
 	}
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Order(1)
 	@Test
@@ -70,13 +66,8 @@ class ShopControllerTests {
 			CountDownLatch countDownLatch = new CountDownLatch(10);
 			for (int i = 0; i < 10; i++) {
 				service.execute(() -> {
-					try {
-						mockMvc.perform(post("/shop/buy/distributed")).andExpect(status().isOk());
-						countDownLatch.countDown();
-					}
-					catch (Exception ex) {
-						throw new RuntimeException(ex);
-					}
+					tester.post().uri("/shop/buy/distributed").assertThat().hasStatusOk();
+					countDownLatch.countDown();
 				});
 			}
 			countDownLatch.await();
@@ -86,13 +77,14 @@ class ShopControllerTests {
 
 	@Order(2)
 	@Test
-	void testResult() throws Exception {
-		mockMvc.perform(get("/shop/result"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("curator.buyCount").value(10))
-			.andExpect(jsonPath("curator.buySucCount").value(10))
-			.andExpect(jsonPath("curator.num").value(480));
+	void testResult() {
+		tester.get()
+			.uri("/shop/result")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("curator.buyCount").value(10))
+			.matches(jsonPath("curator.buySucCount").value(10))
+			.matches(jsonPath("curator.num").value(480));
 	}
 
 }

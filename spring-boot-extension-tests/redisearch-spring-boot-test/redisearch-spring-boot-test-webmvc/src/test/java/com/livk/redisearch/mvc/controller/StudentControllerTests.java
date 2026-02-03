@@ -25,14 +25,11 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -53,46 +50,51 @@ class StudentControllerTests {
 	}
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
-	void testList() throws Exception {
-		mockMvc.perform(get("/student"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("[0].name").value("livk-0"))
-			.andExpect(jsonPath("[1].name").value("livk-1"))
-			.andExpect(jsonPath("[2].name").value("livk-2"))
-			.andExpect(jsonPath("[3].name").value("livk-3"))
-			.andExpect(jsonPath("[4].name").value("livk-4"))
-			.andExpect(jsonPath("[5].name").value("livk-5"))
-			.andExpect(jsonPath("[6].name").value("livk-6"))
-			.andExpect(jsonPath("[7].name").value("livk-7"))
-			.andExpect(jsonPath("[8].name").value("livk-8"))
-			.andExpect(jsonPath("[9].name").value("livk-9"));
+	void testList() {
+		tester.get()
+			.uri("/student")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("[0].name").value("livk-0"))
+			.matches(jsonPath("[1].name").value("livk-1"))
+			.matches(jsonPath("[2].name").value("livk-2"))
+			.matches(jsonPath("[3].name").value("livk-3"))
+			.matches(jsonPath("[4].name").value("livk-4"))
+			.matches(jsonPath("[5].name").value("livk-5"))
+			.matches(jsonPath("[6].name").value("livk-6"))
+			.matches(jsonPath("[7].name").value("livk-7"))
+			.matches(jsonPath("[8].name").value("livk-8"))
+			.matches(jsonPath("[9].name").value("livk-9"));
 
-		mockMvc.perform(get("/student").param("query", "@class:{1班}"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("[0].name").value("livk-0"));
+		tester.get()
+			.uri("/student")
+			.param("query", "@class:{1班}")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("[0].name").value("livk-0"));
 
-		mockMvc.perform(get("/student").param("query", "livk"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("[0].name").value("livk-0"))
-			.andExpect(jsonPath("[1].name").value("livk-1"))
-			.andExpect(jsonPath("[2].name").value("livk-2"))
-			.andExpect(jsonPath("[3].name").value("livk-3"))
-			.andExpect(jsonPath("[4].name").value("livk-4"))
-			.andExpect(jsonPath("[5].name").value("livk-5"))
-			.andExpect(jsonPath("[6].name").value("livk-6"))
-			.andExpect(jsonPath("[7].name").value("livk-7"))
-			.andExpect(jsonPath("[8].name").value("livk-8"))
-			.andExpect(jsonPath("[9].name").value("livk-9"));
+		tester.get()
+			.uri("/student")
+			.param("query", "livk")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("[0].name").value("livk-0"))
+			.matches(jsonPath("[1].name").value("livk-1"))
+			.matches(jsonPath("[2].name").value("livk-2"))
+			.matches(jsonPath("[3].name").value("livk-3"))
+			.matches(jsonPath("[4].name").value("livk-4"))
+			.matches(jsonPath("[5].name").value("livk-5"))
+			.matches(jsonPath("[6].name").value("livk-6"))
+			.matches(jsonPath("[7].name").value("livk-7"))
+			.matches(jsonPath("[8].name").value("livk-8"))
+			.matches(jsonPath("[9].name").value("livk-9"));
 
-		mockMvc.perform(get("/student").param("query", "女")).andExpect(status().isOk()).andDo(print());
+		tester.get().uri("/student").param("query", "女").assertThat().hasStatusOk();
 
-		mockMvc.perform(get("/student").param("query", "是一个学生")).andExpect(status().isOk()).andDo(print());
+		tester.get().uri("/student").param("query", "是一个学生").assertThat().hasStatusOk();
 	}
 
 }

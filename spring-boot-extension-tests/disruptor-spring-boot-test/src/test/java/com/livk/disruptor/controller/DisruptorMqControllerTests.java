@@ -20,11 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 /**
  * @author livk
@@ -34,16 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DisruptorMqControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
-	void send() throws Exception {
-		mockMvc.perform(post("/msg")).andDo(print()).andExpect(status().isOk());
+	void send() {
+		tester.post().uri("/msg").assertThat().hasStatusOk();
 	}
 
 	@Test
-	void sendBatch() throws Exception {
-		mockMvc.perform(post("/msg/batch")).andDo(print()).andExpect(status().isOk());
+	void sendBatch() {
+		tester.post().uri("/msg/batch").assertThat().hasStatusOk();
 	}
 
 }

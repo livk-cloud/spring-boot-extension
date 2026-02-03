@@ -25,11 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -38,8 +36,6 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -50,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class Info2ControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	final ClassPathResource resource = new ClassPathResource("outFile.xls");
 
@@ -62,12 +58,16 @@ class Info2ControllerTests {
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(HttpMethod.POST, "/info/uploadAndDownload").file(file))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-			});
+		byte[] body = tester.post()
+			.uri("/info/uploadAndDownload")
+			.multipart()
+			.file(file)
+			.assertThat()
+			.hasStatusOk()
+			.body()
+			.actual();
+		FileUtils.download(new ByteArrayInputStream(body),
+				"./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		File outFile = new File("./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertThat(outFile).exists().isFile();
 		assertThat(outFile.delete()).isTrue();
@@ -78,15 +78,15 @@ class Info2ControllerTests {
 		List<Info> infos = LongStream.rangeClosed(1, 100)
 			.mapToObj(i -> new Info(i, String.valueOf(13_000_000_000L + i)))
 			.toList();
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/info/download")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(JsonMapperUtils.writeValueAsString(infos)))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-			});
+		byte[] body = tester.post()
+			.uri("/info/download")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(JsonMapperUtils.writeValueAsString(infos))
+			.assertThat()
+			.hasStatusOk()
+			.body()
+			.actual();
+		FileUtils.download(new ByteArrayInputStream(body), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
 		assertThat(outFile).exists().isFile();
 		assertThat(outFile.delete()).isTrue();
