@@ -25,18 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -48,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	final Integer id = 10;
 
@@ -56,58 +49,63 @@ class UserControllerTests {
 
 	@Order(3)
 	@Test
-	void testGetById() throws Exception {
-		mockMvc.perform(get("/user/{id}", id))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("id").value(id))
-			.andExpect(jsonPath("insertTime").isNotEmpty())
-			.andExpect(jsonPath("updateTime").isNotEmpty());
+	void testGetById() {
+		tester.get()
+			.uri("/user/{id}", id)
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("id").value(id))
+			.matches(jsonPath("insertTime").isNotEmpty())
+			.matches(jsonPath("updateTime").isNotEmpty());
 	}
 
 	@Order(2)
 	@Test
-	void testUpdateById() throws Exception {
+	void testUpdateById() {
 		User user = new User();
 		user.setUsername("livk https");
-		mockMvc
-			.perform(put("/user/{id}", id).contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writeValueAsString(user)))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(content().string("true"));
+		tester.put()
+			.uri("/user/{id}", id)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(mapper.writeValueAsString(user))
+			.assertThat()
+			.hasStatusOk()
+			.bodyText()
+			.isEqualTo("true");
 	}
 
 	@Order(1)
 	@Test
-	void testSave() throws Exception {
+	void testSave() {
 		User user = new User();
 		user.setId(id);
 		user.setUsername("livk");
-		mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(user)))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(content().string("true"));
+		tester.post()
+			.uri("/user")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(mapper.writeValueAsString(user))
+			.assertThat()
+			.hasStatusOk()
+			.bodyText()
+			.isEqualTo("true");
 	}
 
 	@Order(5)
 	@Test
-	void testDeleteById() throws Exception {
-		mockMvc.perform(delete("/user/{id}", id))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(content().string("true"));
+	void testDeleteById() {
+		tester.delete().uri("/user/{id}", id).assertThat().hasStatusOk().bodyText().isEqualTo("true");
 	}
 
 	@Order(4)
 	@Test
-	void testList() throws Exception {
-		mockMvc.perform(get("/user"))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(jsonPath("list.[*].id").value(id))
-			.andExpect(jsonPath("pageNum").value(1))
-			.andExpect(jsonPath("pageSize").value(10));
+	void testList() {
+		tester.get()
+			.uri("/user")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("list.[*].id").value(id))
+			.matches(jsonPath("pageNum").value(1))
+			.matches(jsonPath("pageSize").value(10));
 	}
 
 }

@@ -20,12 +20,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -35,41 +32,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
-	void testList() throws Exception {
-		mockMvc.perform(get("/user"))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("customize[0].username").value("livk1"))
-			.andExpect(jsonPath("customize[1].username").value("livk2"))
-			.andExpect(jsonPath("customize[2].username").value("livk3"))
-			.andExpect(jsonPath("customize[0].type").value(1))
-			.andExpect(jsonPath("customize[1].type").value(2))
-			.andExpect(jsonPath("customize[2].type").value(3))
-			.andExpect(jsonPath("customize[0:2].createTime").exists())
-			.andExpect(jsonPath("spring[0].username").value("livk1"))
-			.andExpect(jsonPath("spring[1].username").value("livk2"))
-			.andExpect(jsonPath("spring[2].username").value("livk3"))
-			.andExpect(jsonPath("spring[0].type").value(1))
-			.andExpect(jsonPath("spring[1].type").value(2))
-			.andExpect(jsonPath("spring[2].type").value(3))
-			.andExpect(jsonPath("spring[0:2].createTime").exists());
+	void testList() {
+		tester.get()
+			.uri("/user")
+			.assertThat()
+			.hasStatusOk()
+			.matches(jsonPath("customize[0].username").value("livk1"))
+			.matches(jsonPath("customize[1].username").value("livk2"))
+			.matches(jsonPath("customize[2].username").value("livk3"))
+			.matches(jsonPath("customize[0].type").value(1))
+			.matches(jsonPath("customize[1].type").value(2))
+			.matches(jsonPath("customize[2].type").value(3))
+			.matches(jsonPath("customize[0:2].createTime").exists())
+			.matches(jsonPath("spring[0].username").value("livk1"))
+			.matches(jsonPath("spring[1].username").value("livk2"))
+			.matches(jsonPath("spring[2].username").value("livk3"))
+			.matches(jsonPath("spring[0].type").value(1))
+			.matches(jsonPath("spring[1].type").value(2))
+			.matches(jsonPath("spring[2].type").value(3))
+			.matches(jsonPath("spring[0:2].createTime").exists());
 	}
 
 	@Test
-	void testGetById() throws Exception {
+	void testGetById() {
 		for (int i = 1; i <= 3; i++) {
-			mockMvc.perform(get("/user/{id}", i))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("customize.username").value("livk" + i))
-				.andExpect(jsonPath("customize.type").value(i))
-				.andExpect(jsonPath("customize.createTime").exists())
-				.andExpect(jsonPath("spring.username").value("livk" + i))
-				.andExpect(jsonPath("spring.type").value(i))
-				.andExpect(jsonPath("spring.createTime").exists());
+			tester.get()
+				.uri("/user/{id}", i)
+				.assertThat()
+				.hasStatusOk()
+				.matches(jsonPath("customize.username").value("livk" + i))
+				.matches(jsonPath("customize.type").value(i))
+				.matches(jsonPath("customize.createTime").exists())
+				.matches(jsonPath("spring.username").value("livk" + i))
+				.matches(jsonPath("spring.type").value(i))
+				.matches(jsonPath("spring.createTime").exists());
 		}
 	}
 

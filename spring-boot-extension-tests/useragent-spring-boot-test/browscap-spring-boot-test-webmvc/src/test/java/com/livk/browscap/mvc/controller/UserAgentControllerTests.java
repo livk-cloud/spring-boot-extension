@@ -20,11 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 /**
  * @author livk
@@ -34,11 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserAgentControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
-	void getTest() throws Exception {
-		mockMvc.perform(get("/user-agent")).andExpect(status().isOk()).andDo(print());
+	void getTest() {
+		tester.get().uri("/user-agent").assertThat().hasStatusOk();
 	}
 
 }

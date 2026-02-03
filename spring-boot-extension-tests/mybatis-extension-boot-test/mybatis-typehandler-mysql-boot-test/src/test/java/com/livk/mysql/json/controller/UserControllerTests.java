@@ -28,16 +28,10 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mysql.MySQLContainer;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -64,18 +58,18 @@ class UserControllerTests {
 	}
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Order(1)
 	@Test
-	void testSave() throws Exception {
-		mockMvc.perform(post("/user")).andDo(print()).andExpect(status().isOk()).andExpect(content().string("true"));
+	void testSave() {
+		tester.post().uri("/user").assertThat().hasStatusOk().bodyText().isEqualTo("true");
 	}
 
 	@Order(2)
 	@Test
-	void testUsers() throws Exception {
-		mockMvc.perform(get("/user")).andDo(print()).andExpect(status().isOk());
+	void testUsers() {
+		tester.get().uri("/user").assertThat().hasStatusOk();
 	}
 
 }

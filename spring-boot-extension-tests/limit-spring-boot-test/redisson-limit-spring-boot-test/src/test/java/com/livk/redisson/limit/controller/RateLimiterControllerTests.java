@@ -23,16 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -54,21 +50,14 @@ class RateLimiterControllerTests {
 	}
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
-	void rate() throws Exception {
+	void rate() {
 		for (int i = 0; i < 2; i++) {
-			mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andDo(print())
-				.andReturn();
+			tester.get().uri("/limit").assertThat().hasStatusOk();
 		}
-
-		mockMvc.perform(get("/limit").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().is5xxServerError())
-			.andDo(print())
-			.andReturn();
+		tester.get().uri("/limit").assertThat().hasStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

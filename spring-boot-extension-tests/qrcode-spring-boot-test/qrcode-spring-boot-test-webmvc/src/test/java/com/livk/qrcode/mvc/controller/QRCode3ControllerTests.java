@@ -21,15 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 /**
  * @author livk
@@ -39,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class QRCode3ControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	@Test
 	void textCode() throws Exception {
@@ -47,10 +41,7 @@ class QRCode3ControllerTests {
 
 		MockMultipartFile file = new MockMultipartFile("file", "qrCode.png", MediaType.MULTIPART_FORM_DATA_VALUE,
 				resource.getInputStream());
-		mockMvc.perform(multipart(HttpMethod.POST, "/qrcode3").file(file))
-			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(content().string("QrCode"));
+		tester.post().uri("/qrcode3").multipart().file(file).assertThat().hasStatusOk().bodyText().isEqualTo("QrCode");
 	}
 
 }

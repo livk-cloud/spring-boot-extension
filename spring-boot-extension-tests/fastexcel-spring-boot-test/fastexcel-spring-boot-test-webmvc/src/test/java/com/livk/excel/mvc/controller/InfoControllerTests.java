@@ -23,19 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author livk
@@ -46,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class InfoControllerTests {
 
 	@Autowired
-	MockMvc mockMvc;
+	MockMvcTester tester;
 
 	final ClassPathResource resource = new ClassPathResource("outFile.xls");
 
@@ -57,18 +53,22 @@ class InfoControllerTests {
 	}
 
 	@Test
-	void uploadList() throws Exception {
-		mockMvc.perform(multipart(HttpMethod.POST, "/uploadList").file(file)).andDo(print()).andExpect(status().isOk());
+	void uploadList() {
+		tester.post().uri("/uploadList").multipart().file(file).assertThat().hasStatusOk();
 	}
 
 	@Test
 	void uploadAndDownload() throws Exception {
-		mockMvc.perform(multipart(HttpMethod.POST, "/uploadAndDownload").file(file))
-			.andExpect(status().isOk())
-			.andDo(result -> {
-				ByteArrayInputStream in = new ByteArrayInputStream(result.getResponse().getContentAsByteArray());
-				FileUtils.download(in, "./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-			});
+		byte[] body = tester.post()
+			.uri("/uploadAndDownload")
+			.multipart()
+			.file(file)
+			.assertThat()
+			.hasStatusOk()
+			.body()
+			.actual();
+		FileUtils.download(new ByteArrayInputStream(body),
+				"./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		File outFile = new File("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
 		assertThat(outFile).exists().isFile();
 		assertThat(outFile.delete()).isTrue();
