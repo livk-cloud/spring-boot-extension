@@ -17,7 +17,6 @@
 package com.livk.context.fesod.resolver;
 
 import com.livk.commons.io.ResourceUtils;
-import com.livk.commons.util.StreamUtils;
 import com.livk.context.fesod.ExcelDataType;
 import com.livk.context.fesod.listener.ExcelMapReadListener;
 import lombok.RequiredArgsConstructor;
@@ -51,22 +50,28 @@ abstract class FesodSupport {
 	 * @param result the result
 	 */
 	void write(OutputStream outputStream, Class<?> excelModelClass, String location,
-			Map<String, ? extends List<?>> result) {
-		ExcelWriterBuilder builder = FesodSheet.write(outputStream);
+			Map<String, ? extends List<?>> result) throws IOException {
+		ExcelWriterBuilder builder = FesodSheet.write(outputStream, excelModelClass);
 		if (StringUtils.hasText(location)) {
-			try {
-				Resource resource = ResourceUtils.getResource(location);
-				builder.withTemplate(resource.getInputStream());
-				templateWrite(builder, result);
-			}
-			catch (IOException ex) {
-				log.info("Fesod Sheet uses the template error:{}", ex.getMessage(), ex);
+			Resource resource = ResourceUtils.getResource(location);
+			builder.withTemplate(resource.getInputStream());
+		}
+		try (ExcelWriter writer = builder.build()) {
+			int index = 0;
+			for (Map.Entry<String, ? extends List<?>> entry : result.entrySet()) {
+				WriteSheet sheet = buildSheet(location, entry, index++);
+				writer.write(entry.getValue(), sheet);
 			}
 		}
-		else {
-			builder.head(excelModelClass);
-			ordinaryWrite(FesodSheet.write(outputStream, excelModelClass), result);
+	}
+
+	protected WriteSheet buildSheet(String location, Map.Entry<String, ? extends List<?>> entry, int index) {
+		if (StringUtils.hasText(location)) {
+			return FesodSheet.writerSheet(index, entry.getKey())
+				.registerWriteHandler(new TemplateSheetWriteHandler(index, entry.getKey()))
+				.build();
 		}
+		return FesodSheet.writerSheet(entry.getKey()).build();
 	}
 
 	<T> Object getExcelData(ExcelMapReadListener<T> listener, ExcelDataType type) {
@@ -74,28 +79,6 @@ abstract class FesodSupport {
 			case MAP -> listener.toMapData();
 			case LIST -> listener.toListData();
 		};
-	}
-
-	protected void ordinaryWrite(ExcelWriterBuilder builder, Map<String, ? extends List<?>> result) {
-		try (ExcelWriter writer = builder.build()) {
-			for (Map.Entry<String, ? extends List<?>> entry : result.entrySet()) {
-				WriteSheet sheet = FesodSheet.writerSheet(entry.getKey()).build();
-				writer.write(entry.getValue(), sheet);
-			}
-			writer.finish();
-		}
-	}
-
-	protected void templateWrite(ExcelWriterBuilder builder, Map<String, ? extends List<?>> result) {
-		try (ExcelWriter writer = builder.build()) {
-			result.entrySet().forEach(StreamUtils.forEachWithIndex(0, (entry, index) -> {
-				WriteSheet writeSheet = FesodSheet.writerSheet(index, entry.getKey())
-					.registerWriteHandler(new TemplateSheetWriteHandler(index, entry.getKey()))
-					.build();
-				writer.write(entry.getValue(), writeSheet);
-			}));
-			writer.finish();
-		}
 	}
 
 	@RequiredArgsConstructor

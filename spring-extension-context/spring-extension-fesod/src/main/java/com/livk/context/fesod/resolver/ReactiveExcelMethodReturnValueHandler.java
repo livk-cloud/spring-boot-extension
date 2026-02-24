@@ -38,6 +38,7 @@ import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -107,12 +108,16 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 
 	private Mono<Void> write(ResponseExcel excelReturn, ReactiveHttpOutputMessage message, Class<?> excelModelClass,
 			Mono<Map<String, List<?>>> result) {
-		return result.flatMap(r -> {
+		return result.flatMap(r -> Mono.fromCallable(() -> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			super.write(outputStream, excelModelClass, excelReturn.template(), r);
-			Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(outputStream.toByteArray());
-			return message.writeWith(bufferFlux);
-		});
+			return outputStream.toByteArray();
+		})
+			.subscribeOn(Schedulers.boundedElastic()) // ⭐ 非常关键
+			.flatMap(bytes -> {
+				Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
+				return message.writeWith(bufferFlux);
+			}));
 	}
 
 	private void setResponse(ResponseExcel responseExcel, ServerHttpResponse response) {

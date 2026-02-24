@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FesodSupportTests {
 
 	@Test
-	void write() {
+	void write() throws Exception {
 		CustomFesodSupport support = new CustomFesodSupport();
 		Map<String, List<Info>> data = Map.of("0", List.of(new Info("123456789"), new Info("987654321")));
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
