@@ -15,7 +15,7 @@ dependencies {
 		api(libs.bundles.redisson.all)
 		api(libs.bundles.mapstruct.all)
 		api(libs.guava)
-		api(libs.fastexcel)
+		api(libs.fesod.sheet)
 		api(libs.curator.recipes)
 		api(libs.browscap.java)
 		api(libs.auto.service)
