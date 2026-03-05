@@ -37,7 +37,6 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * <p>
@@ -175,10 +174,12 @@ public class StreamUtils {
 	 * @param <T> type parameter
 	 * @param enumeration enumeration
 	 * @return stream
+	 * @deprecated use {@link Collections#list(Enumeration)}
 	 */
+	@Deprecated(since = "2.0.3", forRemoval = true)
 	public <T> Stream<T> convert(Enumeration<T> enumeration) {
 		Assert.notNull(enumeration, "enumeration must not be null");
-		return StreamSupport.stream(EnumerationSpliterator.spliteratorUnknownSize(enumeration), false);
+		return Collections.list(enumeration).stream();
 	}
 
 	/**

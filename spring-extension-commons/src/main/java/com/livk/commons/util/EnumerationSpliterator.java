@@ -16,6 +16,7 @@
 
 package com.livk.commons.util;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Spliterator;
@@ -30,7 +31,9 @@ import java.util.function.Consumer;
  * @param <T> the type parameter
  * @author livk
  * @see StreamUtils#convert(Enumeration)
+ * @deprecated use {@link Collections#list(Enumeration)}
  */
+@Deprecated(since = "2.0.3", forRemoval = true)
 final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T> {
 
 	private final Enumeration<T> enumeration;
