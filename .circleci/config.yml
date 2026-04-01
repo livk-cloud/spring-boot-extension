@@ -10,38 +10,43 @@ executors:
       docker_layer_caching: true
     resource_class: arm.large
 
+commands:
+  install-jdk:
+    parameters:
+      version:
+        type: string
+    steps:
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg apt-transport-https
+          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
+            sudo tee /etc/apt/sources.list.d/adoptium.list
+          sudo apt-get update
+          sudo apt-get install -y temurin-<< parameters.version >>-jdk
+
 jobs:
-  jdk21:
+  build:
     executor: ubuntu
+    parameters:
+      jdk:
+        type: string
     steps:
-      - run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg apt-transport-https
-          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
-            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
-          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
-            sudo tee /etc/apt/sources.list.d/adoptium.list
-          sudo apt-get update
-          sudo apt-get install -y temurin-21-jdk
       - checkout
-      - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
-  jdk25:
-    executor: ubuntu
-    steps:
-      - run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg apt-transport-https
-          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
-            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
-          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
-            sudo tee /etc/apt/sources.list.d/adoptium.list
-          sudo apt-get update
-          sudo apt-get install -y temurin-25-jdk
-      - checkout
+      - install-jdk:
+          version: << parameters.jdk >>
       - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
 
 workflows:
   gradle-build:
     jobs:
-      - jdk21
-      - jdk25
+      - build:
+          name: jdk21
+          jdk: "21"
+      - build:
+          name: jdk25
+          jdk: "25"
+      - build:
+          name: jdk26
+          jdk: "26"
