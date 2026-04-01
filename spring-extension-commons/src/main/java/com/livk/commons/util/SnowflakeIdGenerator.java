@@ -65,9 +65,9 @@ public class SnowflakeIdGenerator {
 	 * @param machineId 机器 ID
 	 */
 	public SnowflakeIdGenerator(long dataCenterId, long machineId) {
-		Assert.isTrue(dataCenterId <= MAX_DATA_CENTER_ID && dataCenterId > 0,
+		Assert.isTrue(dataCenterId <= MAX_DATA_CENTER_ID && dataCenterId >= 0,
 				"DataCenter ID exceeds range: 0-" + MAX_DATA_CENTER_ID);
-		Assert.isTrue(machineId <= MAX_MACHINE_ID & machineId > 0, "Machine ID exceeds range: 0-" + MAX_MACHINE_ID);
+		Assert.isTrue(machineId <= MAX_MACHINE_ID && machineId >= 0, "Machine ID exceeds range: 0-" + MAX_MACHINE_ID);
 		this.dataCenterId = dataCenterId;
 		this.machineId = machineId;
 	}
