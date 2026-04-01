@@ -39,9 +39,24 @@ jobs:
           sudo apt-get install -y temurin-25-jdk
       - checkout
       - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
+  jdk26:
+    executor: ubuntu
+    steps:
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg apt-transport-https
+          wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | \
+            sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg
+          echo "deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(lsb_release -sc) main" | \
+            sudo tee /etc/apt/sources.list.d/adoptium.list
+          sudo apt-get update
+          sudo apt-get install -y temurin-26-jdk
+      - checkout
+      - run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
 
 workflows:
   gradle-build:
     jobs:
       - jdk21
       - jdk25
+      - jdk26
