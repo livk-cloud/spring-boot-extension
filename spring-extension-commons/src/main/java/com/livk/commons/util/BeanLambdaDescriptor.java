@@ -17,7 +17,6 @@
 package com.livk.commons.util;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.springframework.util.Assert;
 
 import java.beans.PropertyDescriptor;
@@ -35,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 final class BeanLambdaDescriptor {
 
-	private static final Map<Method, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
+	private static final Map<String, BeanLambdaDescriptor> cache = new ConcurrentHashMap<>(128);
 
 	private final Method method;
 
@@ -60,16 +59,29 @@ final class BeanLambdaDescriptor {
 	 * @param function beanLambdaFunc表达式
 	 * @return beanLambdaDescriptor
 	 */
-	@SneakyThrows
 	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {
-		Method writeReplace = function.getClass().getDeclaredMethod("writeReplace");
-		writeReplace.setAccessible(true);
-		SerializedLambda serializedLambda = (SerializedLambda) writeReplace.invoke(function);
+		SerializedLambda serializedLambda = resolveSerializedLambda(function);
+		String key = serializedLambda.getImplClass() + "#" + serializedLambda.getImplMethodName();
+		return cache.computeIfAbsent(key, k -> doCreate(serializedLambda));
+	}
+
+	private static SerializedLambda resolveSerializedLambda(BeanLambda<?> function) {
+		try {
+			Method writeReplace = function.getClass().getDeclaredMethod("writeReplace");
+			writeReplace.setAccessible(true);
+			return (SerializedLambda) writeReplace.invoke(function);
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException("Failed to resolve lambda: " + function, ex);
+		}
+	}
+
+	private static BeanLambdaDescriptor doCreate(SerializedLambda serializedLambda) {
 		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
 		Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
 		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
-		Assert.notNull(method, "method must not be null");
-		return cache.computeIfAbsent(method, BeanLambdaDescriptor::new);
+		Assert.notNull(method, "Cannot find method: " + serializedLambda.getImplMethodName() + " on " + className);
+		return new BeanLambdaDescriptor(method);
 	}
 
 	public String getFieldName() {

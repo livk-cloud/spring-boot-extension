@@ -26,6 +26,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -89,10 +91,17 @@ public class TreeNode<I, T> {
 	 * @param nodes treeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
-		List<TreeNode<I, T>> treeNodeList = nodes.stream().filter(node -> id.equals(node.pid)).toList();
-		if (!CollectionUtils.isEmpty(treeNodeList)) {
-			children = new ArrayList<>(treeNodeList);
-			children.forEach(child -> child.setChildren(nodes));
+		Map<I, List<TreeNode<I, T>>> grouped = nodes.stream()
+			.filter(n -> n.pid != null)
+			.collect(Collectors.groupingBy(n -> n.pid));
+		setChildrenFromMap(grouped);
+	}
+
+	private void setChildrenFromMap(Map<I, List<TreeNode<I, T>>> grouped) {
+		List<TreeNode<I, T>> childList = grouped.get(this.id);
+		if (childList != null && !childList.isEmpty()) {
+			this.children = new ArrayList<>(childList);
+			this.children.forEach(child -> child.setChildrenFromMap(grouped));
 		}
 	}
 

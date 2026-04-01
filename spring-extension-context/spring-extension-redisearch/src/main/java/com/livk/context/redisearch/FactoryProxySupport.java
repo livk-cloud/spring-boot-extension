@@ -33,6 +33,7 @@ import net.bytebuddy.implementation.bind.annotation.FieldValue;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -43,18 +44,48 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class FactoryProxySupport {
 
-	private static final Map<Class<? extends AbstractRedisClient>, Class<? extends RediSearchConnectionFactory>> FACTORY_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Class<? extends AbstractRedisClient>, Constructor<? extends RediSearchConnectionFactory>> CONSTRUCTOR_CACHE = new ConcurrentHashMap<>();
+
+	private static final Map<Class<?>, Method> CONNECT_METHOD_CACHE = new ConcurrentHashMap<>();
+
+	private static final Constructor<Object> OBJECT_CONSTRUCTOR;
+
+	static {
+		try {
+			OBJECT_CONSTRUCTOR = Object.class.getConstructor();
+		}
+		catch (NoSuchMethodException ex) {
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T extends AbstractRedisClient, S extends RediSearchConnectionFactory> S newProxy(T client) {
 		Class<T> clientType = (Class<T>) client.getClass();
-		Class<S> type = (Class<S>) FACTORY_CACHE.computeIfAbsent(clientType, FactoryProxySupport::createFactoryClass);
+		Constructor<S> constructor = (Constructor<S>) CONSTRUCTOR_CACHE.computeIfAbsent(clientType,
+				FactoryProxySupport::createFactoryAndCacheConstructor);
 		try {
-			return type.getConstructor(clientType).newInstance(client);
+			return constructor.newInstance(client);
 		}
 		catch (Exception ex) {
 			throw new IllegalArgumentException(ex);
 		}
+	}
+
+	private static Constructor<? extends RediSearchConnectionFactory> createFactoryAndCacheConstructor(
+			Class<? extends AbstractRedisClient> clientType) {
+		Class<? extends RediSearchConnectionFactory> factoryClass = createFactoryClass(clientType);
+		try {
+			return factoryClass.getConstructor(clientType);
+		}
+		catch (NoSuchMethodException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+	}
+
+	static Method resolveConnectMethod(Class<?> clientType) {
+		return CONNECT_METHOD_CACHE.computeIfAbsent(clientType,
+				type -> ClassUtils.getMethod(type, "connect", RedisCodec.class));
 	}
 
 	private static <S extends RediSearchConnectionFactory> Class<? extends S> createFactoryClass(
@@ -66,8 +97,7 @@ final class FactoryProxySupport {
 			.defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
 			.defineConstructor(Modifier.PUBLIC)
 			.withParameters(clientType)
-			.intercept(MethodCall.invoke(Object.class.getConstructor())
-				.andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
+			.intercept(MethodCall.invoke(OBJECT_CONSTRUCTOR).andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
 			.method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(1)))
 			.intercept(MethodDelegation.to(ConnectWithCodecInterceptor.class))
 			.method(ElementMatchers.named("close"))
@@ -75,9 +105,6 @@ final class FactoryProxySupport {
 			.make()) {
 			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
 				.getLoaded();
-		}
-		catch (NoSuchMethodException ex) {
-			throw new IllegalArgumentException(ex);
 		}
 	}
 
@@ -87,7 +114,7 @@ final class FactoryProxySupport {
 		@RuntimeType
 		public static <K, V> StatefulRedisModulesConnection<K, V> connect(@FieldValue("client") Object client,
 				@Argument(0) RedisCodec<K, V> codec) {
-			Method connect = ClassUtils.getMethod(client.getClass(), "connect", RedisCodec.class);
+			Method connect = resolveConnectMethod(client.getClass());
 			return (StatefulRedisModulesConnection<K, V>) ReflectionUtils.invokeMethod(connect, client, codec);
 		}
 
