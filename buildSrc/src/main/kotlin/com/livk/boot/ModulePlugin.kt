@@ -22,6 +22,7 @@ import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Jar
+import org.gradle.internal.impldep.org.bouncycastle.LICENSE
 
 /**
  * @author livk
@@ -40,7 +41,7 @@ class ModulePlugin : Plugin<Project> {
 
 		val extractResourcesProvider = project.tasks.register("extractLegalResources", ExtractResources::class.java) {
 			getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
-			setResourcesNames(listOf("LICENSE.txt"))
+			getResourceNames().add("LICENSE.txt")
 		}
 
 		project.tasks.withType(Jar::class.java).configureEach {

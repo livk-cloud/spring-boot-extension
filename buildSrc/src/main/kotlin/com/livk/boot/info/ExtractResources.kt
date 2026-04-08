@@ -29,30 +29,21 @@ import java.io.OutputStream
 /**
  * @author livk
  */
-open class ExtractResources : DefaultTask() {
-
-
-	private var destinationDirectory: DirectoryProperty = project.objects.directoryProperty()
-
-	private var resourceNames: List<String> = ArrayList()
+abstract class ExtractResources : DefaultTask() {
 
 	@Input
-	fun getResourceNames(): List<String> = this.resourceNames
-
-	fun setResourcesNames(resourceNames: List<String>) {
-		this.resourceNames = resourceNames
-	}
+	abstract fun getResourceNames(): ListProperty<String>
 
 	@OutputDirectory
-	fun getDestinationDirectory(): DirectoryProperty = this.destinationDirectory
+	abstract fun getDestinationDirectory(): DirectoryProperty
 
 	@TaskAction
 	fun extractResources() {
-		for (resourceName in this.resourceNames) {
+		for (resourceName in getResourceNames().get()) {
 			javaClass.classLoader.resources(resourceName).forEach { url ->
 				if (url.path.contains("buildSrc")) {
 					url.openStream().use {
-						copy(it, FileOutputStream(destinationDirectory.file(resourceName).get().asFile))
+						copy(it, FileOutputStream(getDestinationDirectory().file(resourceName).get().asFile))
 					}
 				}
 			}
