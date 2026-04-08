@@ -18,30 +18,29 @@ package com.livk.boot.tasks
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
-import org.gradle.testing.jacoco.plugins.JacocoPlugin
-import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.gradle.api.internal.provider.ValueSupplier.ValueProducer.task
+import org.gradle.api.tasks.Delete
 
 /**
  * @author livk
  */
-abstract class JacocoExpandPlugin implements Plugin<Project> {
+abstract class DeleteExpand : Plugin<Project> {
 
-	static final String TASK_NAME = 'jacocoTestReport'
+	companion object {
+		val CLEAN_FILES = setOf(
+			"build",
+			"out",
+			"bin",
+			"src/main/generated",
+			"src/test/generated_tests"
+		)
+	}
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(JacocoPlugin)
+	override fun apply(project: Project) {
 
-		project.tasks.withType(Test).configureEach { test ->
-			test.finalizedBy(TASK_NAME)
-		}
-
-		project.tasks.named(TASK_NAME, JacocoReport) { jacocoReport ->
-			jacocoReport.dependsOn('test')
-			jacocoReport.reports { reports ->
-				reports.xml.required.set(true)
-				reports.html.required.set(false)
+		project.tasks.withType(Delete::class.java) {
+			CLEAN_FILES.forEach { path ->
+				delete(project.layout.projectDirectory.dir(path))
 			}
 		}
 	}

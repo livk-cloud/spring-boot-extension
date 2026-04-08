@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package com.livk.boot.compile
+package com.livk.boot
 
+import com.livk.boot.info.BootPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.tasks.compile.JavaCompile
 
 /**
  * @author livk
  */
-abstract class ResourcesPlugin implements Plugin<Project> {
+class ServicePlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(JavaLibraryPlugin)
-		project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaCompile) { task ->
-			task.dependsOn(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
-		}
+	override fun apply(project: Project) {
+		project.pluginManager.apply(JavaPlugin::class.java)
+		project.pluginManager.apply(ModulePlugin::class.java)
+		project.pluginManager.apply(BootPlugin::class.java)
 	}
 }

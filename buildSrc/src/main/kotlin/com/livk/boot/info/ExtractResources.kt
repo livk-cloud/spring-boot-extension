@@ -18,53 +18,52 @@ package com.livk.boot.info
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 /**
  * @author livk
  */
-class ExtractResources extends DefaultTask {
+open class ExtractResources : DefaultTask() {
 
-	private final DirectoryProperty destinationDirectory = project.objects.directoryProperty()
-	private List<String> resourceNames = []
+
+	private var destinationDirectory: DirectoryProperty = project.objects.directoryProperty()
+
+	private var resourceNames: List<String> = ArrayList()
 
 	@Input
-	List<String> getResourceNames() {
-		return resourceNames
-	}
+	fun getResourceNames(): List<String> = this.resourceNames
 
-	void setResourceNames(List<String> resourceNames) {
+	fun setResourcesNames(resourceNames: List<String>) {
 		this.resourceNames = resourceNames
 	}
 
 	@OutputDirectory
-	DirectoryProperty getDestinationDirectory() {
-		return destinationDirectory
-	}
+	fun getDestinationDirectory(): DirectoryProperty = this.destinationDirectory
 
 	@TaskAction
-	void extractResources() {
-		resourceNames.each { resourceName ->
-			getClass().classLoader.getResources(resourceName).each { url ->
-				if (url.path.contains('buildSrc')) {
-					url.openStream().withCloseable { input ->
-						def outputFile = destinationDirectory.file(resourceName).get().asFile
-						new FileOutputStream(outputFile).withCloseable { output ->
-							copy(input, output)
-						}
+	fun extractResources() {
+		for (resourceName in this.resourceNames) {
+			javaClass.classLoader.resources(resourceName).forEach { url ->
+				if (url.path.contains("buildSrc")) {
+					url.openStream().use {
+						copy(it, FileOutputStream(destinationDirectory.file(resourceName).get().asFile))
 					}
 				}
 			}
 		}
 	}
 
-	static int copy(InputStream input, OutputStream output) {
-		input.withCloseable {
-			output.withCloseable {
-				def count = input.transferTo(output) as int
-				output.flush()
+	fun copy(input: InputStream, out: OutputStream): Int {
+		input.use {
+			out.use {
+				val count = input.transferTo(out).toInt()
+				out.flush()
 				return count
 			}
 		}

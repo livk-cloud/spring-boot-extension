@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package com.livk.boot.maven
+package com.livk.boot
 
+import com.livk.boot.maven.DeployedPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.plugins.signing.SigningPlugin
+import org.gradle.api.plugins.JavaPlatformExtension
+import org.gradle.api.plugins.JavaPlatformPlugin
 
 /**
  * @author livk
  */
-abstract class DeployedPlugin implements Plugin<Project> {
+class BomPlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(SigningPlugin)
-		project.pluginManager.apply(MavenRepositoryPlugin)
-		project.pluginManager.apply(MavenPortalPublishPlugin)
+	override fun apply(project: Project) {
+		project.pluginManager.apply(JavaPlatformPlugin::class.java)
+		project.pluginManager.apply(DeployedPlugin::class.java)
+		project.extensions.getByType(JavaPlatformExtension::class.java).allowDependencies()
 	}
 }

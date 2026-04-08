@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package com.livk.boot.tasks
+package com.livk.boot
 
+import com.livk.boot.compile.ResourcesPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Delete
+import org.gradle.api.plugins.JavaLibraryPlugin
 
 /**
  * @author livk
  */
-abstract class DeleteExpand implements Plugin<Project> {
+class CommonPlugin : Plugin<Project> {
 
-	static final Set<String> cleanFiles = ['build', 'out', 'bin', 'src/main/generated', 'src/test/generated_tests']
-
-	@Override
-	void apply(Project project) {
-		project.tasks.withType(Delete).configureEach { task ->
-			cleanFiles.each { fileName ->
-				task.delete("${project.projectDir.absolutePath}/${fileName}")
-			}
-		}
+	override fun apply(project: Project) {
+		project.pluginManager.apply(JavaLibraryPlugin::class.java)
+		project.pluginManager.apply(ModulePlugin::class.java)
+		project.pluginManager.apply(ResourcesPlugin::class.java)
 	}
 }
