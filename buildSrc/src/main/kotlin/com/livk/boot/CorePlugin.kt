@@ -26,31 +26,31 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.plugins.quality.CheckstylePlugin
+import java.io.File
 
 /**
  * @author livk
  */
-class CorePlugin implements Plugin<Project> {
+class CorePlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(DeleteExpand)
-		project.pluginManager.apply(ManagementPlugin)
-		project.pluginManager.apply(OptionalPlugin)
-		project.pluginManager.apply(AptCompilePlugin)
-		project.pluginManager.apply(ManifestPlugin)
-		project.pluginManager.apply(CheckstylePlugin)
+	override fun apply(project: Project) {
+		project.pluginManager.apply(DeleteExpand::class.java)
+		project.pluginManager.apply(ManagementPlugin::class.java)
+		project.pluginManager.apply(OptionalPlugin::class.java)
+		project.pluginManager.apply(AptCompilePlugin::class.java)
+		project.pluginManager.apply(ManifestPlugin::class.java)
+		project.pluginManager.apply(CheckstylePlugin::class.java)
 
-		project.extensions.getByType(CheckstyleExtension).with {
-			def checkstyleVersion = project.rootProject
+		project.extensions.getByType(CheckstyleExtension::class.java).run {
+			val checkstyleVersion = project.rootProject
 				.extensions
-				.getByType(VersionCatalogsExtension)
-				.named('libs')
-				.findVersion('checkstyle')
+				.getByType(VersionCatalogsExtension::class.java)
+				.named("libs")
+				.findVersion("checkstyle")
 				.get()
 				.displayName
 			toolVersion = checkstyleVersion
-			configFile = new File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
+			configFile = File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
 		}
 	}
 }

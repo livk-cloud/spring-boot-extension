@@ -16,21 +16,19 @@
 
 package com.livk.boot
 
-import com.livk.boot.maven.DeployedPlugin
+import com.livk.boot.compile.ResourcesPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlatformExtension
-import org.gradle.api.plugins.JavaPlatformPlugin
+import org.gradle.api.plugins.JavaLibraryPlugin
 
 /**
  * @author livk
  */
-class BomPlugin implements Plugin<Project> {
+class CommonPlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(JavaPlatformPlugin)
-		project.pluginManager.apply(DeployedPlugin)
-		project.extensions.getByType(JavaPlatformExtension).allowDependencies()
+	override fun apply(project: Project) {
+		project.pluginManager.apply(JavaLibraryPlugin::class.java)
+		project.pluginManager.apply(ModulePlugin::class.java)
+		project.pluginManager.apply(ResourcesPlugin::class.java)
 	}
 }

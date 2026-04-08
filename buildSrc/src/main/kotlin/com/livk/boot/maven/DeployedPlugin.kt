@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package com.livk.boot
+package com.livk.boot.maven
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.tasks.bundling.Jar
+import org.gradle.plugins.signing.SigningPlugin
 
 /**
  * @author livk
  */
-class RootPlugin implements Plugin<Project> {
+abstract class DeployedPlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(BasePlugin)
-		project.pluginManager.apply(CorePlugin)
-
-		project.tasks.withType(Jar).configureEach { jar ->
-			jar.enabled = false
-		}
+	override fun apply(project: Project) {
+		project.pluginManager.apply(SigningPlugin::class.java)
+		project.pluginManager.apply(MavenRepositoryPlugin::class.java)
+		project.pluginManager.apply(MavenPortalPublishPlugin::class.java)
 	}
 }
-

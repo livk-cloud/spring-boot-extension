@@ -22,31 +22,31 @@ import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Jar
+
 /**
  * @author livk
  */
-class ModulePlugin implements Plugin<Project> {
+class ModulePlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(CompileArgsPlugin)
-		project.pluginManager.apply(CorePlugin)
-		project.pluginManager.apply(SpringJavaFormatPlugin)
+	override fun apply(project: Project) {
+		project.pluginManager.apply(CompileArgsPlugin::class.java)
+		project.pluginManager.apply(CorePlugin::class.java)
+		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
 
-		project.tasks.register('checkstyle') { checkstyle ->
-			checkstyle.group = 'other'
-			checkstyle.dependsOn('checkstyleMain', 'checkstyleTest', 'checkFormat')
+		project.tasks.register("checkstyle") {
+			group = "other"
+			dependsOn("checkstyleMain", "checkstyleTest", "checkFormat")
 		}
 
-		def extractResourcesProvider = project.tasks.register('extractLegalResources', ExtractResources) { task ->
-			task.destinationDirectory.set(project.layout.buildDirectory.dir('legal'))
-			task.resourceNames = ['LICENSE.txt']
+		val extractResourcesProvider = project.tasks.register("extractLegalResources", ExtractResources::class.java) {
+			getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
+			getResourceNames().add("LICENSE.txt")
 		}
 
-		project.tasks.withType(Jar).configureEach { jar ->
-			jar.dependsOn(extractResourcesProvider)
-			jar.metaInf { metaInf ->
-				metaInf.from(extractResourcesProvider)
+		project.tasks.withType(Jar::class.java).configureEach {
+			dependsOn(extractResourcesProvider)
+			metaInf {
+				from(extractResourcesProvider)
 			}
 		}
 	}

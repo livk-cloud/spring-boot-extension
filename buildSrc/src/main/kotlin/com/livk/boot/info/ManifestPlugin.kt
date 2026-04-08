@@ -14,34 +14,28 @@
  * limitations under the License.
  */
 
-package com.livk.boot.tasks
+package com.livk.boot.info
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
-import org.gradle.testing.jacoco.plugins.JacocoPlugin
-import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.tasks.bundling.Jar
+import org.gradle.util.GradleVersion
 
 /**
  * @author livk
  */
-abstract class JacocoExpandPlugin implements Plugin<Project> {
+abstract class ManifestPlugin : Plugin<Project> {
 
-	static final String TASK_NAME = 'jacocoTestReport'
-
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(JacocoPlugin)
-
-		project.tasks.withType(Test).configureEach { test ->
-			test.finalizedBy(TASK_NAME)
-		}
-
-		project.tasks.named(TASK_NAME, JacocoReport) { jacocoReport ->
-			jacocoReport.dependsOn('test')
-			jacocoReport.reports { reports ->
-				reports.xml.required.set(true)
-				reports.html.required.set(false)
+	override fun apply(project: Project) {
+		project.pluginManager.apply(JavaPlugin::class.java)
+		project.tasks.withType(Jar::class.java).configureEach {
+			manifest {
+				attributes.putIfAbsent("Implementation-Group", project.group)
+				attributes.putIfAbsent("Implementation-Title", project.name)
+				attributes.putIfAbsent("Implementation-Version", project.version)
+				attributes.putIfAbsent("Created-Jdk", System.getProperty("java.version"))
+				attributes.putIfAbsent("Gradle-Version", GradleVersion.current())
 			}
 		}
 	}

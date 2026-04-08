@@ -14,21 +14,33 @@
  * limitations under the License.
  */
 
-package com.livk.boot.maven
+package com.livk.boot.tasks
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.plugins.signing.SigningPlugin
+import org.gradle.api.tasks.Delete
 
 /**
  * @author livk
  */
-abstract class DeployedPlugin implements Plugin<Project> {
+abstract class DeleteExpand : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(SigningPlugin)
-		project.pluginManager.apply(MavenRepositoryPlugin)
-		project.pluginManager.apply(MavenPortalPublishPlugin)
+	companion object {
+		val CLEAN_FILES = setOf(
+			"build",
+			"out",
+			"bin",
+			"src/main/generated",
+			"src/test/generated_tests"
+		)
+	}
+
+	override fun apply(project: Project) {
+
+		project.tasks.withType(Delete::class.java) {
+			CLEAN_FILES.forEach { path ->
+				delete(project.layout.projectDirectory.dir(path))
+			}
+		}
 	}
 }

@@ -16,20 +16,23 @@
 
 package com.livk.boot
 
-import com.livk.boot.info.BootPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.tasks.bundling.Jar
 
 /**
  * @author livk
  */
-class ServicePlugin implements Plugin<Project> {
+class RootPlugin : Plugin<Project> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply(JavaPlugin)
-		project.pluginManager.apply(ModulePlugin)
-		project.pluginManager.apply(BootPlugin)
+	override fun apply(project: Project) {
+		project.pluginManager.apply(BasePlugin::class.java)
+		project.pluginManager.apply(CorePlugin::class.java)
+
+		project.tasks.withType(Jar::class.java).configureEach {
+			enabled = false
+		}
 	}
 }
+
