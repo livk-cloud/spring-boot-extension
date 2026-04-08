@@ -20,7 +20,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.tasks.bundling.Jar
-import sun.tools.jar.resources.jar
 
 /**
  * @author livk
