@@ -35,43 +35,117 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 class ClassUtilsTests {
 
+	// --- toClass ---
+
 	@Test
-	void toClassTest() {
+	void toClassFromPlainClass() {
 		assertThat(ClassUtils.toClass(String.class)).isEqualTo(String.class);
+	}
 
-		Type listType = new ListType();
-		assertThat(ClassUtils.toClass(listType)).isEqualTo(List.class);
+	@Test
+	void toClassFromParameterizedType() {
+		assertThat(ClassUtils.toClass(new ListType())).isEqualTo(List.class);
+	}
 
+	@Test
+	void toClassFromTypeVariable() {
 		TypeVariable<?> typeVar = MyGeneric.class.getTypeParameters()[0];
 		assertThat(ClassUtils.toClass(typeVar)).isEqualTo(Number.class);
+	}
 
-		Type arrayType = new StringGenericArrayType();
-		assertThat(ClassUtils.toClass(arrayType)).isEqualTo(String[].class);
+	@Test
+	void toClassFromTypeVariableWithObjectBoundReturnsObject() {
+		TypeVariable<?> typeVar = UnboundedGeneric.class.getTypeParameters()[0];
+		assertThat(ClassUtils.toClass(typeVar)).isEqualTo(Object.class);
+	}
 
-		WildcardType wildcardType = new NumberWildcardType();
-		assertThat(ClassUtils.toClass(wildcardType)).isEqualTo(Number.class);
+	@Test
+	void toClassFromGenericArrayType() {
+		assertThat(ClassUtils.toClass(new StringGenericArrayType())).isEqualTo(String[].class);
+	}
 
+	@Test
+	void toClassFromWildcardTypeWithUpperBound() {
+		assertThat(ClassUtils.toClass(new NumberWildcardType())).isEqualTo(Number.class);
+	}
+
+	@Test
+	void toClassFromWildcardTypeWithLowerBound() {
+		WildcardType lowerBounded = new WildcardType() {
+			@NonNull
+			@Override
+			public Type[] getUpperBounds() {
+				return new Type[] { Object.class };
+			}
+
+			@NonNull
+			@Override
+			public Type[] getLowerBounds() {
+				return new Type[] { String.class };
+			}
+		};
+		assertThat(ClassUtils.toClass(lowerBounded)).isEqualTo(String.class);
+	}
+
+	@Test
+	void toClassWithNullThrows() {
 		assertThatThrownBy(() -> ClassUtils.toClass(null)).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("Type cannot be null");
 	}
 
+	// --- resolveTypeArgument ---
+
 	@Test
-	void resolveTypeArgument() {
+	void resolveTypeArgumentResolvesConcreteGeneric() {
+		assertThat(ClassUtils.resolveTypeArgument(IntGeneric.class, MyGeneric.class)).isEqualTo(Integer.class);
+	}
+
+	@Test
+	void resolveTypeArgumentThrowsWhenNoGenerics() {
 		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(NumberWildcardType.class, WildcardType.class))
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("No type arguments found on generic interface [" + WildcardType.class.getName() + "]");
-
-		assertThat(ClassUtils.resolveTypeArgument(IntGeneric.class, MyGeneric.class)).isEqualTo(Integer.class);
-
-		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(TypeMap.class, HashMap.class))
-			.isInstanceOf(IllegalArgumentException.class);
+			.hasMessageContaining("No type arguments found");
 	}
+
+	@Test
+	void resolveTypeArgumentThrowsWhenMultipleGenerics() {
+		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(TypeMap.class, HashMap.class))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("Expected 1 type argument");
+	}
+
+	// --- resolveClassName / isPresent ---
+
+	@Test
+	void resolveClassNameResolvesExistingClass() {
+		assertThat(ClassUtils.resolveClassName("java.lang.String")).isEqualTo(String.class);
+	}
+
+	@Test
+	void isPresentReturnsTrueForExistingClass() {
+		assertThat(ClassUtils.isPresent("java.lang.String")).isTrue();
+	}
+
+	@Test
+	void isPresentReturnsFalseForNonexistentClass() {
+		assertThat(ClassUtils.isPresent("com.livk.nonexistent.FakeClass")).isFalse();
+	}
+
+	// --- test helper types ---
 
 	static class TypeMap extends HashMap<String, Type> {
 
 	}
 
 	static class IntGeneric extends MyGeneric<Integer> {
+
+	}
+
+	static class MyGeneric<T extends Number> {
+
+	}
+
+	static class UnboundedGeneric<T> {
 
 	}
 
@@ -119,10 +193,6 @@ class ClassUtilsTests {
 		public Type getOwnerType() {
 			return null;
 		}
-
-	}
-
-	static class MyGeneric<T extends Number> {
 
 	}
 

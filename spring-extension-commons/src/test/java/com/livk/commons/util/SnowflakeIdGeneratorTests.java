@@ -69,15 +69,22 @@ class SnowflakeIdGeneratorTests {
 	}
 
 	@Test
-	void testTimeRollbackHandling() throws InterruptedException {
+	void testTimeRollbackHandling() {
+		// Generate an ID to set lastTimestamp
 		long id1 = generator.nextId();
 
-		System.setProperty("user.timezone", "UTC"); // 模拟时区变化
-		Thread.sleep(1000);
-
+		// Verify that IDs generated in quick succession are still unique
+		// (exercises the same-millisecond and sequence overflow paths)
 		long id2 = generator.nextId();
+		long id3 = generator.nextId();
 
-		assertThat(id1).isNotEqualTo(id2).withFailMessage("生成的 ID 相同，时间回拨没有处理正确");
+		assertThat(id1).isNotEqualTo(id2);
+		assertThat(id2).isNotEqualTo(id3);
+
+		// Note: true time rollback testing requires abstracting the time source
+		// (e.g., injecting a Clock or Supplier<Long>) to simulate backward time movement.
+		// System.setProperty("user.timezone", ...) does not affect
+		// System.currentTimeMillis().
 	}
 
 	@Test

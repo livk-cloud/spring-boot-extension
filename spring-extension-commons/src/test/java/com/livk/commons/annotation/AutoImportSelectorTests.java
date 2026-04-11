@@ -26,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -35,16 +36,33 @@ class AutoImportSelectorTests {
 	final AutoImportSelector importSelector = new AutoImportSelector();
 
 	@Test
-	void test() {
+	void selectImportsWithAutoImportAnnotation() {
 		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(Config.class));
-		String[] result = new String[] { ImportConfig.class.getName() };
-		assertThat(imports).containsExactly(result);
+		assertThat(imports).containsExactly(ImportConfig.class.getName());
+	}
+
+	@Test
+	void selectImportsWithoutAutoImportAnnotationThrows() {
+		AnnotationMetadata metadata = AnnotationMetadata.introspect(PlainConfig.class);
+		assertThatThrownBy(() -> importSelector.selectImports(metadata)).isInstanceOf(IllegalStateException.class);
+	}
+
+	@Test
+	void selectImportsIgnoresNonAutoImportAnnotations() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(MixedConfig.class));
+		assertThat(imports).containsExactly(ImportConfig.class.getName());
 	}
 
 	@AutoImport
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface AutoServiceImport {
+
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface NonAutoImportAnnotation {
 
 	}
 
@@ -55,6 +73,16 @@ class AutoImportSelectorTests {
 
 	@AutoServiceImport
 	static class Config {
+
+	}
+
+	static class PlainConfig {
+
+	}
+
+	@AutoServiceImport
+	@NonAutoImportAnnotation
+	static class MixedConfig {
 
 	}
 

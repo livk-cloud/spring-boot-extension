@@ -16,12 +16,12 @@
 
 package com.livk.commons.util;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.codec.multipart.Part;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
@@ -42,51 +42,64 @@ import static org.mockito.Mockito.mock;
  */
 class HttpReactiveUtilsTests {
 
-	@Test
-	void getPartValues() {
-		Part part = mock(Part.class);
-		given(part.name()).willReturn("file");
+	static final String FILE_CONTENT = "file content";
 
-		ServerWebExchange exchange = mock(ServerWebExchange.class);
+	Part mockPart;
+
+	ServerWebExchange exchange;
+
+	@BeforeEach
+	void setUp() {
+		DataBuffer buffer = new DefaultDataBufferFactory().wrap(FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
+
+		mockPart = mock(Part.class);
+		given(mockPart.name()).willReturn("file");
+		given(mockPart.headers()).willReturn(new HttpHeaders());
+		given(mockPart.content()).willReturn(Flux.just(buffer));
 
 		MultiValueMap<String, Part> partMap = new LinkedMultiValueMap<>();
-		partMap.add("file", part);
+		partMap.add("file", mockPart);
 
+		exchange = mock(ServerWebExchange.class);
+		given(exchange.getRequest()).willReturn(MockServerHttpRequest.post("/upload").build());
 		given(exchange.getMultipartData()).willReturn(Mono.just(partMap));
+	}
 
+	@Test
+	void getPartValuesReturnsMatchingPart() {
 		StepVerifier.create(HttpReactiveUtils.getPartValues("file", exchange))
-			.assertNext(p -> assertThat(p).isSameAs(part))
+			.assertNext(p -> assertThat(p).isSameAs(mockPart))
 			.verifyComplete();
 	}
 
 	@Test
-	void getPartRequest() {
-		String fileContent = "file content";
-		DataBuffer buffer = new DefaultDataBufferFactory().wrap(fileContent.getBytes(StandardCharsets.UTF_8));
+	void getPartValuesWithMissingNameCompletesEmpty() {
+		StepVerifier.create(HttpReactiveUtils.getPartValues("nonexistent", exchange)).verifyComplete();
+	}
 
-		Part mockPart = mock(Part.class);
-		given(mockPart.headers()).willReturn(new HttpHeaders());
-		given(mockPart.content()).willReturn(Flux.just(buffer));
+	@Test
+	void getPartRequestReturnsDecoratorWithPartHeaders() {
+		StepVerifier.create(HttpReactiveUtils.getPartRequest("file", exchange)).assertNext(decorator -> {
+			assertThat(decorator.getHeaders()).isSameAs(mockPart.headers());
+		}).verifyComplete();
+	}
 
-		LinkedMultiValueMap<String, Part> partMap = new LinkedMultiValueMap<>();
-		partMap.add("file", mockPart);
-
-		ServerHttpRequest originalRequest = MockServerHttpRequest.post("/upload").build();
-		ServerWebExchange exchange = mock(ServerWebExchange.class);
-		given(exchange.getRequest()).willReturn(originalRequest);
-		given(exchange.getMultipartData()).willReturn(Mono.just(partMap));
-
+	@Test
+	void getPartRequestReturnsDecoratorWithPartBody() {
 		Mono<ServerHttpRequestDecorator> resultMono = HttpReactiveUtils.getPartRequest("file", exchange);
 
 		StepVerifier.create(resultMono).assertNext(decorator -> {
-			assertThat(decorator.getHeaders()).isSameAs(mockPart.headers());
-
 			StepVerifier.create(decorator.getBody()).consumeNextWith(data -> {
 				byte[] bytes = new byte[data.readableByteCount()];
 				data.read(bytes);
-				assertThat(new String(bytes, StandardCharsets.UTF_8)).isEqualTo(fileContent);
+				assertThat(new String(bytes, StandardCharsets.UTF_8)).isEqualTo(FILE_CONTENT);
 			}).verifyComplete();
 		}).verifyComplete();
+	}
+
+	@Test
+	void getPartRequestWithMissingNameCompletesEmpty() {
+		StepVerifier.create(HttpReactiveUtils.getPartRequest("nonexistent", exchange)).verifyComplete();
 	}
 
 }

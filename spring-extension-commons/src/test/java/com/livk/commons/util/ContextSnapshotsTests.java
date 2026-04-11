@@ -84,20 +84,26 @@ class ContextSnapshotsTests {
 	}
 
 	@Test
-	void testWrapExecutorService() {
+	void testWrapExecutorService() throws Exception {
 		ExecutorService service = Executors.newSingleThreadExecutor();
 		ExecutorService wrapped = ContextSnapshots.wrap(service);
 
 		assertThat(wrapped).isNotNull();
+		AtomicBoolean executed = new AtomicBoolean(false);
+		wrapped.submit(() -> executed.set(true)).get();
+		assertThat(executed.get()).isTrue();
 		wrapped.shutdown();
 	}
 
 	@Test
-	void testWrapScheduledExecutorService() {
+	void testWrapScheduledExecutorService() throws Exception {
 		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 		ScheduledExecutorService wrapped = ContextSnapshots.wrap(service);
 
 		assertThat(wrapped).isNotNull();
+		AtomicBoolean executed = new AtomicBoolean(false);
+		wrapped.submit(() -> executed.set(true)).get();
+		assertThat(executed.get()).isTrue();
 		wrapped.shutdown();
 	}
 

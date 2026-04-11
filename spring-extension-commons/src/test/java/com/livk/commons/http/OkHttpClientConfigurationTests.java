@@ -32,9 +32,12 @@ class OkHttpClientConfigurationTests {
 		.withConfiguration(AutoConfigurations.of(OkHttpClientConfiguration.class));
 
 	@Test
-	void test() {
+	void defaultOkHttpClientHttpRequestFactoryIsRegistered() {
 		contextRunner.run(context -> assertThat(context).hasBean("defaultOkHttpClientHttpRequestFactory"));
+	}
 
+	@Test
+	void customOkHttpClientUsesCustomFactory() {
 		contextRunner.withBean("okHttpClient", OkHttpClient.class, OkHttpClient::new)
 			.run(context -> assertThat(context).hasBean("okHttpClientHttpRequestFactory"));
 	}

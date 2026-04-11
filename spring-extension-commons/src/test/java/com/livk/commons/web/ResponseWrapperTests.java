@@ -16,13 +16,13 @@
 
 package com.livk.commons.web;
 
-import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.commons.util.HttpServletUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,22 +31,87 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ResponseWrapperTests {
 
+	ResponseWrapper wrapper;
+
+	@BeforeEach
+	void setUp() {
+		wrapper = new ResponseWrapper(new MockHttpServletResponse());
+	}
+
+	// --- write via OutputStream ---
+
 	@Test
-	void replaceBody() throws IOException {
+	void writeViaOutputStreamAndReadBack() throws IOException {
+		wrapper.getOutputStream().write("hello".getBytes(StandardCharsets.UTF_8));
+		wrapper.getOutputStream().flush();
+		assertThat(wrapper.getContentAsString()).isEqualTo("hello");
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo("hello".getBytes(StandardCharsets.UTF_8));
+	}
+
+	// --- write via Writer ---
+
+	@Test
+	void writeViaWriterAndReadBack() throws IOException {
+		PrintWriter writer = wrapper.getWriter();
+		writer.print("world");
+		writer.flush();
+		assertThat(wrapper.getContentAsString()).isEqualTo("world");
+	}
+
+	// --- getContentAsString with charset ---
+
+	@Test
+	void getContentAsStringWithCharset() throws IOException {
+		byte[] utf8Bytes = "你好".getBytes(StandardCharsets.UTF_8);
+		wrapper.getOutputStream().write(utf8Bytes);
+		assertThat(wrapper.getContentAsString(StandardCharsets.UTF_8)).isEqualTo("你好");
+	}
+
+	// --- getCharacterEncoding ---
+
+	@Test
+	void getCharacterEncodingReturnsResponseEncoding() {
 		MockHttpServletResponse response = new MockHttpServletResponse();
+		response.setCharacterEncoding("UTF-8");
+		ResponseWrapper w = new ResponseWrapper(response);
+		assertThat(w.getCharacterEncoding()).isEqualTo("UTF-8");
+	}
 
-		Map<String, String> result = Map.of("username", "livk", "password", "123456");
-		ResponseWrapper wrapper = new ResponseWrapper(response);
-		HttpServletUtils.outJson(wrapper, result);
+	// --- replaceBody(byte[]) ---
 
-		assertThat(wrapper.getContentAsByteArray()).isEqualTo(JsonMapperUtils.writeValueAsBytes(result));
-		assertThat(wrapper.getContentAsString()).isEqualTo(JsonMapperUtils.writeValueAsString(result));
+	@Test
+	void replaceBodyWithBytesReplacesContent() throws IOException {
+		wrapper.getOutputStream().write("original".getBytes(StandardCharsets.UTF_8));
+		wrapper.replaceBody("replaced".getBytes(StandardCharsets.UTF_8));
+		assertThat(wrapper.getContentAsString()).isEqualTo("replaced");
+	}
 
-		wrapper.replaceBody(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
+	// --- replaceBody(String) ---
 
-		assertThat(wrapper.getContentAsByteArray())
-			.isEqualTo(JsonMapperUtils.writeValueAsBytes(Map.of("root", "root")));
-		assertThat(wrapper.getContentAsString()).isEqualTo(JsonMapperUtils.writeValueAsString(Map.of("root", "root")));
+	@Test
+	void replaceBodyWithStringReplacesContent() throws IOException {
+		wrapper.getOutputStream().write("original".getBytes(StandardCharsets.UTF_8));
+		wrapper.replaceBody("replaced");
+		assertThat(wrapper.getContentAsString()).isEqualTo("replaced");
+	}
+
+	// --- replaceBody(String, Charset) ---
+
+	@Test
+	void replaceBodyWithStringAndCharsetReplacesContent() throws IOException {
+		wrapper.getOutputStream().write("original".getBytes(StandardCharsets.UTF_8));
+		wrapper.replaceBody("replaced", StandardCharsets.UTF_8);
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo("replaced".getBytes(StandardCharsets.UTF_8));
+	}
+
+	// --- reset ---
+
+	@Test
+	void resetClearsBuffer() throws IOException {
+		wrapper.getOutputStream().write("data".getBytes(StandardCharsets.UTF_8));
+		assertThat(wrapper.getContentAsByteArray()).isNotEmpty();
+		wrapper.reset();
+		assertThat(wrapper.getContentAsByteArray()).isEmpty();
 	}
 
 }

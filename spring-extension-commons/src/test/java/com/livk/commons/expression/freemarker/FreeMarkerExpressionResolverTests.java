@@ -46,35 +46,41 @@ class FreeMarkerExpressionResolverTests {
 	}
 
 	@Test
-	void evaluate() {
+	void evaluateWithMethodArgs() {
+		assertThat(resolver.evaluate("${username}", method, args)).isEqualTo("livk");
+	}
+
+	@Test
+	void evaluateWithMap() {
+		assertThat(resolver.evaluate("${username}", map)).isEqualTo("livk");
+	}
+
+	@Test
+	void evaluateTemplateWithMethodArgs() {
+		assertThat(resolver.evaluate("root:${username}", method, args)).isEqualTo("root:livk");
+	}
+
+	@Test
+	void evaluateTemplateWithContext() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertThat(resolver.evaluate("${username}", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("${username}", map)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("root:${username}", method, args)).isEqualTo("root:livk");
-
 		assertThat(resolver.evaluate("root:${username}:${password}", context)).isEqualTo("root:livk:123456");
+	}
 
-		assertThat(resolver.evaluate("root:${username}", map)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("root:${username}", method, args)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("${username}", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("livk", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("root:${username}:${password}", context)).isEqualTo("root:livk:123456");
-
+	@Test
+	void evaluateConcatenationWithContext() {
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
 		assertThat(resolver.evaluate("${username}${password}", context)).isEqualTo("livk123456");
+	}
 
-		assertThat(resolver.evaluate("root:${username}", map)).isEqualTo("root:livk");
+	@Test
+	void evaluatePlainStringPassesThrough() {
+		assertThat(resolver.evaluate("livk", method, args)).isEqualTo("livk");
+	}
 
-		assertThat(resolver.evaluate("${username}", map)).isEqualTo("livk");
-
+	@Test
+	void evaluateWithNonStringReturnTypeThrows() {
 		assertThatThrownBy(() -> resolver.evaluate("${username}", map, Integer.class))
 			.isExactlyInstanceOf(ExpressionException.class);
-
 	}
 
 }

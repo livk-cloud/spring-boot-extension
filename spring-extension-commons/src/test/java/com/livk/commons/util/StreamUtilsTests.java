@@ -106,12 +106,13 @@ class StreamUtilsTests {
 
 	@Test
 	void forEachWithIndex() {
-		// 这里断言不涉及状态变化，所以保留打印；如果需要断言，可以用Mockito等捕获调用
-		List.of("root", "livk", "admin")
-			.forEach(StreamUtils.forEachWithIndex(0, (s, i) -> System.out.println("index:" + i + " data:" + s)));
+		List<String> results1 = new java.util.ArrayList<>();
+		List.of("root", "livk", "admin").forEach(StreamUtils.forEachWithIndex(0, (s, i) -> results1.add(i + ":" + s)));
+		assertThat(results1).containsExactly("0:root", "1:livk", "2:admin");
 
-		List.of("root", "livk", "admin")
-			.forEach(StreamUtils.forEachWithIndex(10, (s, i) -> System.out.println("index:" + i + " data:" + s)));
+		List<String> results2 = new java.util.ArrayList<>();
+		List.of("root", "livk", "admin").forEach(StreamUtils.forEachWithIndex(10, (s, i) -> results2.add(i + ":" + s)));
+		assertThat(results2).containsExactly("10:root", "11:livk", "12:admin");
 	}
 
 	@Test

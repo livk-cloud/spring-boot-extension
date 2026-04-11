@@ -16,12 +16,8 @@
 
 package com.livk.commons.util;
 
-import com.livk.commons.jackson.JsonMapperUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.List;
 
@@ -30,23 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-@Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TreeNodeTests {
 
-	static TreeNode<Long, String> root;
+	TreeNode<Long, String> root;
 
-	@Order(1)
-	@Test
-	void createRoot() {
+	@BeforeEach
+	void setUp() {
 		root = TreeNode.createRoot(0L, "root");
-		log.info("{}", root);
-		assertThat(root).isNotNull();
-	}
-
-	@Order(2)
-	@Test
-	void setChildren() {
 		var nodes = List.of(new TreeNode<Long, String>(1L).setNode("1").setPid(0L),
 				new TreeNode<Long, String>(2L).setNode("2").setPid(0L),
 				new TreeNode<Long, String>(3L).setNode("3").setPid(1L),
@@ -54,25 +40,65 @@ class TreeNodeTests {
 				new TreeNode<Long, String>(5L).setNode("5").setPid(2L),
 				new TreeNode<Long, String>(6L).setNode("6").setPid(3L));
 		root.setChildren(nodes);
-		log.info("{}", root);
-		log.info("{}", JsonMapperUtils.writeValueAsString(root));
-		assertThat(root).isNotNull();
 	}
 
-	@Order(3)
+	@Test
+	void createRoot() {
+		TreeNode<Long, String> newRoot = TreeNode.createRoot(0L, "root");
+		assertThat(newRoot).isNotNull();
+		assertThat(newRoot.getId()).isEqualTo(0L);
+		assertThat(newRoot.getNode()).isEqualTo("root");
+		assertThat(newRoot.getChildren()).isNotNull().isEmpty();
+	}
+
+	@Test
+	void setChildren() {
+		assertThat(root.getChildren()).isNotNull().hasSize(2);
+		assertThat(root.getChildren().get(0).getId()).isEqualTo(1L);
+		assertThat(root.getChildren().get(1).getId()).isEqualTo(2L);
+
+		TreeNode<Long, String> child1 = root.findById(1L);
+		assertThat(child1).isNotNull();
+		assertThat(child1.getChildren()).hasSize(2);
+	}
+
 	@Test
 	void addChild() {
 		TreeNode<Long, String> node = new TreeNode<Long, String>(7L).setNode("7").setPid(4L);
-		root.addChild(node);
-		log.info("{}", root);
-		log.info("{}", JsonMapperUtils.writeValueAsString(root));
+		boolean added = root.addChild(node);
+		assertThat(added).isTrue();
+
+		TreeNode<Long, String> found = root.findById(7L);
+		assertThat(found).isNotNull();
+		assertThat(found.getNode()).isEqualTo("7");
 	}
 
-	@Order(4)
+	@Test
+	void addChildWithDuplicateIdReturnsFalse() {
+		TreeNode<Long, String> duplicate = new TreeNode<Long, String>(3L).setNode("dup").setPid(1L);
+		boolean added = root.addChild(duplicate);
+		assertThat(added).isFalse();
+	}
+
+	@Test
+	void addChildWithInvalidParentReturnsFalse() {
+		TreeNode<Long, String> orphan = new TreeNode<Long, String>(99L).setNode("orphan").setPid(999L);
+		boolean added = root.addChild(orphan);
+		assertThat(added).isFalse();
+	}
+
 	@Test
 	void findById() {
 		TreeNode<Long, String> childNode = root.findById(3L);
-		log.info("{}", childNode);
+		assertThat(childNode).isNotNull();
+		assertThat(childNode.getNode()).isEqualTo("3");
+		assertThat(childNode.getPid()).isEqualTo(1L);
+	}
+
+	@Test
+	void findByIdReturnsNullForMissingId() {
+		TreeNode<Long, String> missing = root.findById(999L);
+		assertThat(missing).isNull();
 	}
 
 }

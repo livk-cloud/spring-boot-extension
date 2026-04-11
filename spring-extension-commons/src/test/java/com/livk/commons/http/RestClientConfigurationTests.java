@@ -35,7 +35,7 @@ class RestClientConfigurationTests {
 		.withConfiguration(AutoConfigurations.of(RestClientConfiguration.class, RestClientAutoConfiguration.class));
 
 	@Test
-	void test() {
+	void restClientBeansAreRegistered() {
 		contextRunner.run(context -> {
 			assertThat(context).hasSingleBean(RestClient.class);
 			assertThat(context).hasBean("restClientCustomizer");
