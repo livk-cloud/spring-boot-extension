@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.mybatis.handler;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class NullInjectTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void handlerReturnsNull() {
+		NullInject nullInject = new NullInject();
+		assertThat(nullInject.handler()).isNull();
+	}
+
+	@Test
+	void getTypeReturnsObjectClass() {
+		NullInject nullInject = new NullInject();
+		assertThat(nullInject.getType()).isEqualTo(Object.class);
 	}
 
 }

@@ -23,15 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class MonitorSQLTimeOutEventTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void getSourceReturnsMonitorSQLInfo() {
+		MonitorSQLInfo info = new MonitorSQLInfo("select 1", 100L);
+		MonitorSQLTimeOutEvent event = new MonitorSQLTimeOutEvent(info);
+		assertThat(event.getSource()).isSameAs(info);
+		assertThat(event.getSource().sql()).isEqualTo("select 1");
+		assertThat(event.getSource().timeout()).isEqualTo(100L);
+	}
+
+	@Test
+	void isApplicationEvent() {
+		MonitorSQLInfo info = new MonitorSQLInfo("select 1", 100L);
+		MonitorSQLTimeOutEvent event = new MonitorSQLTimeOutEvent(info);
+		assertThat(event).isInstanceOf(org.springframework.context.ApplicationEvent.class);
 	}
 
 }

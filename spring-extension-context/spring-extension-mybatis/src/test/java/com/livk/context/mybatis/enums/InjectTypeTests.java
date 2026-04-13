@@ -32,7 +32,7 @@ class InjectTypeTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	void test() {
+	void handlerReturnsCorrectTypeForEachEnum() {
 		assertThat(InjectType.DEFAULT.handler()).isNull();
 		assertThat(InjectType.DEFAULT.type()).isEqualTo(Object.class);
 
@@ -53,7 +53,7 @@ class InjectTypeTests {
 	}
 
 	@Test
-	void testHandler() {
+	void handlerByClassReturnsCorrectType() {
 		assertThat(InjectType.handler(Date.class)).isInstanceOf(Date.class);
 		assertThat(InjectType.handler(LocalDate.class)).isInstanceOf(LocalDate.class);
 		assertThat(InjectType.handler(LocalDateTime.class)).isInstanceOf(LocalDateTime.class);
