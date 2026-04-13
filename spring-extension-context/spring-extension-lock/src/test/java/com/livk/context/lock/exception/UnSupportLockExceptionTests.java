@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.lock.exception;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class UnSupportLockExceptionTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void constructWithMessage() {
+		UnSupportLockException ex = new UnSupportLockException("not supported");
+		assertThat(ex.getMessage()).isEqualTo("not supported");
+	}
+
+	@Test
+	void constructWithMessageAndCause() {
+		RuntimeException cause = new RuntimeException("root");
+		UnSupportLockException ex = new UnSupportLockException("not supported", cause);
+		assertThat(ex.getMessage()).isEqualTo("not supported");
+		assertThat(ex.getCause()).isSameAs(cause);
+	}
+
+	@Test
+	void isRuntimeException() {
+		assertThat(new UnSupportLockException("test")).isInstanceOf(RuntimeException.class);
 	}
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.disruptor.factory;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class DisruptorThreadFactoryTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void newThreadReturnsThreadWithDisruptorName() {
+		DisruptorThreadFactory factory = new DisruptorThreadFactory();
+		Thread thread = factory.newThread(() -> {
+		});
+		assertThat(thread.getName()).isEqualTo("disruptor");
+	}
+
+	@Test
+	void newThreadIsNotStarted() {
+		DisruptorThreadFactory factory = new DisruptorThreadFactory();
+		Thread thread = factory.newThread(() -> {
+		});
+		assertThat(thread.getState()).isEqualTo(Thread.State.NEW);
 	}
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.redisearch.codec;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class CodecExceptionTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void constructWithMessage() {
+		CodecException ex = new CodecException("codec error");
+		assertThat(ex.getMessage()).isEqualTo("codec error");
+		assertThat(ex.getCause()).isNull();
+	}
+
+	@Test
+	void constructWithMessageAndCause() {
+		RuntimeException cause = new RuntimeException("root");
+		CodecException ex = new CodecException("codec error", cause);
+		assertThat(ex.getMessage()).isEqualTo("codec error");
+		assertThat(ex.getCause()).isSameAs(cause);
+	}
+
+	@Test
+	void isRuntimeException() {
+		assertThat(new CodecException("test")).isInstanceOf(RuntimeException.class);
 	}
 
 }

@@ -32,18 +32,32 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class TypeExcelMapReadListenerTests {
 
-	static final ExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+	@Test
+	void executePopulatesMapData() throws IOException {
+		TypeExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+		try (InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream()) {
+			listener.execute(inputStream, Info.class, true);
+		}
+		Map<String, ? extends List<Info>> map = listener.toMapData();
+		assertThat(map).hasSize(1).containsKey("0");
+		assertThat(map.get("0")).hasSize(100);
+	}
 
 	@Test
-	void test() throws IOException {
-		InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream();
-		listener.execute(inputStream, Info.class, true);
+	void toListDataFlattensAllSheets() throws IOException {
+		TypeExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+		try (InputStream inputStream = new ClassPathResource("outFile.xls").getInputStream()) {
+			listener.execute(inputStream, Info.class, true);
+		}
+		List<Info> list = listener.toListData();
+		assertThat(list).hasSize(100);
+	}
 
-		Map<String, ? extends List<Info>> map = listener.toMapData();
-		assertThat(map).isNotEmpty();
-		assertThat(map).hasSize(1);
-		assertThat(map).containsKey("0");
-		assertThat(map.values().stream().mapToLong(List::size).sum()).isEqualTo(100);
+	@Test
+	void emptyListenerReturnsEmptyData() {
+		TypeExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+		assertThat(listener.toMapData()).isEmpty();
+		assertThat(listener.toListData()).isEmpty();
 	}
 
 }

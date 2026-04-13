@@ -14,37 +14,41 @@
  * limitations under the License.
  */
 
-package com.livk.context.disruptor.support;
+package com.livk.context.limit.exception;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
  */
-class DisruptorEventWrapperTests {
+class LimitExceptionTests {
 
 	@Test
-	void wrapAndUnwrapReturnsValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("root");
-		assertThat(wrapper.unwrap()).isEqualTo("root");
+	void constructDefault() {
+		LimitException ex = new LimitException();
+		assertThat(ex.getMessage()).isNull();
+		assertThat(ex.getCause()).isNull();
 	}
 
 	@Test
-	void wrapOnlyAcceptsFirstValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("first");
-		wrapper.wrap("second");
-		assertThat(wrapper.unwrap()).isEqualTo("first");
+	void constructWithMessage() {
+		LimitException ex = new LimitException("rate exceeded");
+		assertThat(ex.getMessage()).isEqualTo("rate exceeded");
 	}
 
 	@Test
-	void unwrapWithoutWrapThrows() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		assertThatThrownBy(wrapper::unwrap).isInstanceOf(IllegalArgumentException.class);
+	void constructWithMessageAndCause() {
+		RuntimeException cause = new RuntimeException("root");
+		LimitException ex = new LimitException("rate exceeded", cause);
+		assertThat(ex.getMessage()).isEqualTo("rate exceeded");
+		assertThat(ex.getCause()).isSameAs(cause);
+	}
+
+	@Test
+	void isRuntimeException() {
+		assertThat(new LimitException()).isInstanceOf(RuntimeException.class);
 	}
 
 }

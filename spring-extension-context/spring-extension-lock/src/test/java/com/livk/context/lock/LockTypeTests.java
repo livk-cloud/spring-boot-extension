@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.lock;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class LockTypeTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void enumValuesCount() {
+		assertThat(LockType.values()).hasSize(4);
+	}
+
+	@Test
+	void enumContainsExpectedValues() {
+		assertThat(LockType.values()).containsExactly(LockType.LOCK, LockType.FAIR, LockType.READ, LockType.WRITE);
+	}
+
+	@Test
+	void valueOfReturnsCorrectEnum() {
+		assertThat(LockType.valueOf("LOCK")).isEqualTo(LockType.LOCK);
+		assertThat(LockType.valueOf("FAIR")).isEqualTo(LockType.FAIR);
+		assertThat(LockType.valueOf("READ")).isEqualTo(LockType.READ);
+		assertThat(LockType.valueOf("WRITE")).isEqualTo(LockType.WRITE);
 	}
 
 }

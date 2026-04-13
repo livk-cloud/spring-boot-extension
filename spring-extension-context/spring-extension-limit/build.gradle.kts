@@ -6,4 +6,5 @@ dependencies {
 	api("jakarta.servlet:jakarta.servlet-api")
 
 	testImplementation(project(":spring-testcontainers-support"))
+	testImplementation("org.springframework:spring-web")
 }

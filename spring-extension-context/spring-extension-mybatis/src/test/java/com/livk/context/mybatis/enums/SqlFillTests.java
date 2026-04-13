@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.mybatis.enums;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class SqlFillTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void enumValuesCount() {
+		assertThat(SqlFill.values()).hasSize(2);
+	}
+
+	@Test
+	void enumContainsExpectedValues() {
+		assertThat(SqlFill.values()).containsExactly(SqlFill.INSERT, SqlFill.INSERT_UPDATE);
 	}
 
 }

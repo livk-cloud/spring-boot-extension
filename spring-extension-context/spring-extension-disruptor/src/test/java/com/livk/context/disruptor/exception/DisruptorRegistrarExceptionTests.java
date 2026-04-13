@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.livk.context.mybatis.event;
+package com.livk.context.disruptor.exception;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class MonitorSQLInfoTests {
+class DisruptorRegistrarExceptionTests {
 
 	@Test
-	void recordHoldsSqlAndTimeout() {
-		String sql = "select * from user";
-		long time = 1000L;
-		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);
-		assertThat(info.sql()).isEqualTo(sql);
-		assertThat(info.timeout()).isEqualTo(time);
+	void constructWithMessage() {
+		DisruptorRegistrarException ex = new DisruptorRegistrarException("test error");
+		assertThat(ex.getMessage()).isEqualTo("test error");
+	}
+
+	@Test
+	void isRuntimeException() {
+		assertThat(new DisruptorRegistrarException("test")).isInstanceOf(RuntimeException.class);
 	}
 
 }

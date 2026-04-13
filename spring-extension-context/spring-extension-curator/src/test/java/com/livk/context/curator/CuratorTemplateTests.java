@@ -16,14 +16,8 @@
 
 package com.livk.context.curator;
 
-import com.livk.context.curator.lock.ZkLockType;
 import com.livk.testcontainers.containers.ZookeeperContainer;
-import org.apache.curator.framework.recipes.locks.InterProcessLock;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
-import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -33,15 +27,16 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Tests for {@link CuratorTemplate}-specific methods not covered by
+ * {@link CuratorOperationsTests}.
+ *
  * @author livk
  */
 @SpringJUnitConfig(CuratorConfig.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class CuratorTemplateTests {
 
@@ -59,34 +54,16 @@ class CuratorTemplateTests {
 	CuratorTemplate template;
 
 	@Test
-	void setDataAsync() {
-		template.createNode("/node", "data".getBytes(StandardCharsets.UTF_8));
-		assertThat(template.getNode("/node")).containsExactly("data".getBytes());
-		template.setDataAsync("/node", "setData".getBytes(StandardCharsets.UTF_8));
-		assertThat(template.getNode("/node")).containsExactly("setData".getBytes());
-		template.deleteNode("/node");
+	void setDataAsyncWithoutListener() {
+		template.createNode("/asyncNoListener", "data".getBytes(StandardCharsets.UTF_8));
+		template.setDataAsync("/asyncNoListener", "updated".getBytes(StandardCharsets.UTF_8));
+		assertThat(template.getNode("/asyncNoListener")).isEqualTo("updated".getBytes(StandardCharsets.UTF_8));
+		template.deleteNode("/asyncNoListener");
 	}
 
 	@Test
-	void getLock() throws Exception {
-		InterProcessLock lock = template.getLock("/node/lock", ZkLockType.REENTRANT);
-		assertThat(lock.getClass()).isEqualTo(InterProcessMutex.class);
-		assertThat(lock.acquire(3, TimeUnit.SECONDS)).isTrue();
-		lock.release();
-		template.deleteNode("/node");
-
-		InterProcessLock read = template.getLock("/node/lock", ZkLockType.READ);
-		assertThat(read.getClass()).isEqualTo(InterProcessReadWriteLock.ReadLock.class);
-		assertThat(read.acquire(3, TimeUnit.SECONDS)).isTrue();
-		read.release();
-		template.deleteNode("/node");
-
-		InterProcessLock write = template.getLock("/node/lock", ZkLockType.WRITE);
-		assertThat(write.getClass()).isEqualTo(InterProcessReadWriteLock.WriteLock.class);
-		assertThat(write.acquire(3, TimeUnit.SECONDS)).isTrue();
-		write.release();
-
-		template.deleteNode("/node");
+	void closeDoesNotThrowOnStartedFramework() {
+		assertThat(template.getNode("/")).isNotNull();
 	}
 
 }
