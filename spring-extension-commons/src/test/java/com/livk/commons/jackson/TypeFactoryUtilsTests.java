@@ -22,11 +22,8 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.type.CollectionType;
 import tools.jackson.databind.type.MapType;
-import tools.jackson.databind.type.SimpleType;
-import tools.jackson.databind.type.TypeBindings;
 import tools.jackson.databind.type.TypeFactory;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,73 +35,151 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class TypeFactoryUtilsTests {
 
-	static SimpleType strType = SimpleType.constructUnsafe(String.class);
+	@Test
+	void instanceReturnsTypeFactory() {
+		assertThat(TypeFactoryUtils.instance()).isNotNull().isInstanceOf(TypeFactory.class);
+	}
+
+	// --- javaType from Class ---
 
 	@Test
-	void instance() {
-		assertThat(TypeFactoryUtils.instance()).isNotNull();
+	void javaTypeFromClass() {
+		JavaType type = TypeFactoryUtils.javaType(String.class);
+		assertThat(type.getRawClass()).isEqualTo(String.class);
+		assertThat(type.hasGenericTypes()).isFalse();
 	}
 
 	@Test
-	void testJavaTypeForSimpleType() {
-		assertThat(TypeFactoryUtils.javaType(String.class)).isEqualTo(strType);
-		assertThat(TypeFactoryUtils.javaType(new TypeReference<String>() {
-		})).isEqualTo(strType);
-		assertThat(TypeFactoryUtils.javaType(ResolvableType.forClass(String.class))).isEqualTo(strType);
+	void javaTypeFromClassWithClassGenerics() {
+		JavaType type = TypeFactoryUtils.javaType(List.class, String.class);
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
 	}
 
 	@Test
-	void testJavaTypeForListType() {
-		TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
-		CollectionType collectionType = CollectionType.construct(List.class, bindings,
-				SimpleType.constructUnsafe(Collection.class), null, strType);
+	void javaTypeFromClassWithJavaTypeGenerics() {
+		JavaType strType = TypeFactoryUtils.javaType(String.class);
+		JavaType type = TypeFactoryUtils.javaType(List.class, strType);
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0)).isEqualTo(strType);
+	}
 
-		assertThat(TypeFactoryUtils.javaType(List.class, String.class)).isEqualTo(collectionType);
-		assertThat(TypeFactoryUtils.javaType(List.class, strType)).isEqualTo(collectionType);
-		assertThat(TypeFactoryUtils.javaType(new TypeReference<List<String>>() {
-		})).isEqualTo(collectionType);
-		assertThat(TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(List.class, String.class)))
-			.isEqualTo(collectionType);
+	// --- javaType from TypeReference ---
+
+	@Test
+	void javaTypeFromTypeReferenceSimple() {
+		JavaType type = TypeFactoryUtils.javaType(new TypeReference<String>() {
+		});
+		assertThat(type.getRawClass()).isEqualTo(String.class);
 	}
 
 	@Test
-	void testJavaTypeForMapType() {
-		TypeBindings bindings = TypeBindings.createIfNeeded(Map.class, new JavaType[] { strType, strType });
-		MapType mapType = MapType.construct(Map.class, bindings, TypeFactory.unknownType(), null, strType, strType);
-
-		assertThat(TypeFactoryUtils.javaType(Map.class, String.class, String.class)).isEqualTo(mapType);
-		assertThat(TypeFactoryUtils.javaType(Map.class, strType, strType)).isEqualTo(mapType);
-		assertThat(TypeFactoryUtils.javaType(new TypeReference<Map<String, String>>() {
-		})).isEqualTo(mapType);
-		assertThat(
-				TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(Map.class, String.class, String.class)))
-			.isEqualTo(mapType);
+	void javaTypeFromTypeReferenceParameterized() {
+		JavaType type = TypeFactoryUtils.javaType(new TypeReference<List<String>>() {
+		});
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
 	}
 
 	@Test
-	void listType() {
-		TypeBindings bindings = TypeBindings.createIfNeeded(List.class, strType);
-		CollectionType listType = CollectionType.construct(List.class, bindings,
-				SimpleType.constructUnsafe(Iterable.class), null, strType);
-		assertThat(TypeFactoryUtils.listType(String.class)).isEqualTo(listType);
-		assertThat(TypeFactoryUtils.listType(strType)).isEqualTo(listType);
+	void javaTypeFromTypeReferenceMap() {
+		JavaType type = TypeFactoryUtils.javaType(new TypeReference<Map<String, Integer>>() {
+		});
+		assertThat(type.getRawClass()).isEqualTo(Map.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+		assertThat(type.getBindings().getBoundType(1).getRawClass()).isEqualTo(Integer.class);
+	}
+
+	// --- javaType from ResolvableType ---
+
+	@Test
+	void javaTypeFromResolvableTypeSimple() {
+		JavaType type = TypeFactoryUtils.javaType(ResolvableType.forClass(String.class));
+		assertThat(type.getRawClass()).isEqualTo(String.class);
 	}
 
 	@Test
-	void setType() {
-		TypeBindings bindings = TypeBindings.createIfNeeded(Set.class, strType);
-		CollectionType setType = CollectionType.construct(Set.class, bindings,
-				SimpleType.constructUnsafe(Iterable.class), null, strType);
-		assertThat(TypeFactoryUtils.setType(String.class)).isEqualTo(setType);
-		assertThat(TypeFactoryUtils.setType(strType)).isEqualTo(setType);
+	void javaTypeFromResolvableTypeParameterized() {
+		JavaType type = TypeFactoryUtils.javaType(ResolvableType.forClassWithGenerics(List.class, String.class));
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
 	}
 
 	@Test
-	void mapType() {
-		TypeBindings bindings = TypeBindings.createIfNeeded(Map.class, new JavaType[] { strType, strType });
-		MapType mapType = MapType.construct(Map.class, bindings, TypeFactory.unknownType(), null, strType, strType);
-		assertThat(TypeFactoryUtils.mapType(String.class, String.class)).isEqualTo(mapType);
-		assertThat(TypeFactoryUtils.mapType(strType, strType)).isEqualTo(mapType);
+	void javaTypeFromResolvableTypeMap() {
+		JavaType type = TypeFactoryUtils
+			.javaType(ResolvableType.forClassWithGenerics(Map.class, String.class, Integer.class));
+		assertThat(type.getRawClass()).isEqualTo(Map.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+		assertThat(type.getBindings().getBoundType(1).getRawClass()).isEqualTo(Integer.class);
+	}
+
+	// --- listType ---
+
+	@Test
+	void listTypeFromClass() {
+		CollectionType type = TypeFactoryUtils.listType(String.class);
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+	}
+
+	@Test
+	void listTypeFromJavaType() {
+		JavaType strType = TypeFactoryUtils.javaType(String.class);
+		CollectionType type = TypeFactoryUtils.listType(strType);
+		assertThat(type.getRawClass()).isEqualTo(List.class);
+		assertThat(type.getBindings().getBoundType(0)).isEqualTo(strType);
+	}
+
+	// --- setType ---
+
+	@Test
+	void setTypeFromClass() {
+		CollectionType type = TypeFactoryUtils.setType(String.class);
+		assertThat(type.getRawClass()).isEqualTo(Set.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+	}
+
+	@Test
+	void setTypeFromJavaType() {
+		JavaType strType = TypeFactoryUtils.javaType(String.class);
+		CollectionType type = TypeFactoryUtils.setType(strType);
+		assertThat(type.getRawClass()).isEqualTo(Set.class);
+		assertThat(type.getBindings().getBoundType(0)).isEqualTo(strType);
+	}
+
+	// --- mapType ---
+
+	@Test
+	void mapTypeFromClasses() {
+		MapType type = TypeFactoryUtils.mapType(String.class, Integer.class);
+		assertThat(type.getRawClass()).isEqualTo(Map.class);
+		assertThat(type.getBindings().getBoundType(0).getRawClass()).isEqualTo(String.class);
+		assertThat(type.getBindings().getBoundType(1).getRawClass()).isEqualTo(Integer.class);
+	}
+
+	@Test
+	void mapTypeFromJavaTypes() {
+		JavaType strType = TypeFactoryUtils.javaType(String.class);
+		JavaType intType = TypeFactoryUtils.javaType(Integer.class);
+		MapType type = TypeFactoryUtils.mapType(strType, intType);
+		assertThat(type.getRawClass()).isEqualTo(Map.class);
+		assertThat(type.getBindings().getBoundType(0)).isEqualTo(strType);
+		assertThat(type.getBindings().getBoundType(1)).isEqualTo(intType);
+	}
+
+	// --- cross-method consistency ---
+
+	@Test
+	void allJavaTypeOverloadsProduceConsistentResults() {
+		JavaType fromClass = TypeFactoryUtils.javaType(List.class, String.class);
+		JavaType fromTypeRef = TypeFactoryUtils.javaType(new TypeReference<List<String>>() {
+		});
+		JavaType fromResolvable = TypeFactoryUtils
+			.javaType(ResolvableType.forClassWithGenerics(List.class, String.class));
+
+		assertThat(fromClass).isEqualTo(fromTypeRef);
+		assertThat(fromTypeRef).isEqualTo(fromResolvable);
 	}
 
 }

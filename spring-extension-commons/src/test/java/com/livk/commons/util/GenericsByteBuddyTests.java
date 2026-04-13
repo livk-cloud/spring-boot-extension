@@ -29,9 +29,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
@@ -44,95 +44,98 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 class GenericsByteBuddyTests {
 
+	// --- makeEnumeration ---
+
 	@Test
-	void testEnumWithoutValuesIsIllegal() {
+	void makeEnumerationWithoutValuesThrows() {
 		assertThatThrownBy(() -> new GenericsByteBuddy().makeEnumeration()).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("Require at least one enumeration constant");
 	}
 
 	@Test
-	void testEnumeration() throws Exception {
+	void makeEnumerationCreatesEnumType() throws Exception {
 		try (DynamicType.Unloaded<?> unloaded = new GenericsByteBuddy().makeEnumeration("foo").make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertThat(type.getModifiers())
-				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
+			assertThat(Modifier.isPublic(type.getModifiers())).isTrue();
 			assertThat(type.isEnum()).isTrue();
 			assertThat(type).isNotInterface();
-			assertThat(type).isNotAnnotation();
 		}
 	}
 
+	// --- makeInterface ---
+
 	@Test
-	void testInterface() {
+	void makeInterfaceCreatesInterfaceType() {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().makeInterface().make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertThat(type.getModifiers())
-				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
-			assertThat(type.isEnum()).isFalse();
+			assertThat(Modifier.isPublic(type.getModifiers())).isTrue();
 			assertThat(type).isInterface();
+			assertThat(type.isEnum()).isFalse();
 			assertThat(type).isNotAnnotation();
 		}
 	}
 
+	// --- makeAnnotation ---
+
 	@Test
-	void testAnnotation() {
+	void makeAnnotationCreatesAnnotationType() {
 		try (DynamicType.Unloaded<Annotation> unloaded = new GenericsByteBuddy().makeAnnotation().make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertThat(type.getModifiers())
-				.satisfiesAnyOf(modifiers -> assertThat(Modifier.isPublic(modifiers)).isTrue());
-			assertThat(type.isEnum()).isFalse();
-			assertThat(type).isInterface();
+			assertThat(Modifier.isPublic(type.getModifiers())).isTrue();
 			assertThat(type).isAnnotation();
 		}
 	}
 
+	// --- makeRecord ---
+
 	@Test
-	void testRecordWithoutMember() throws Exception {
+	void makeRecordWithoutMember() throws Exception {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().with(ClassFileVersion.JAVA_V21)
 			.makeRecord()
 			.make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertThat((Boolean) Class.class.getMethod("isRecord").invoke(type)).isTrue();
+			assertThat(type.isRecord()).isTrue();
 			Object record = type.getConstructor().newInstance();
 
-			assertThat((Integer) type.getMethod("hashCode").invoke(record)).isZero();
-			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, new Object())).isFalse();
-			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, record)).isTrue();
-			assertThat(type.getMethod("toString").invoke(record)).isEqualTo(type.getSimpleName() + "[]");
+			assertThat(record.hashCode()).isZero();
+			assertThat(record.equals(new Object())).isFalse();
+			assertThat(record.equals(record)).isTrue();
+			assertThat(record.toString()).isEqualTo(type.getSimpleName() + "[]");
 		}
 	}
 
 	@Test
-	void testRecordWithMember() throws Exception {
+	void makeRecordWithMember() throws Exception {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().with(ClassFileVersion.JAVA_V21)
 			.makeRecord()
 			.defineRecordComponent("foo", String.class)
 			.make()) {
 			Class<?> type = unloaded.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
-			assertThat((Boolean) Class.class.getMethod("isRecord").invoke(type)).isTrue();
+			assertThat(type.isRecord()).isTrue();
+
 			Object record = type.getConstructor(String.class).newInstance("bar");
 			assertThat(type.getMethod("foo").invoke(record)).isEqualTo("bar");
-			assertThat((Integer) type.getMethod("hashCode").invoke(record)).isEqualTo("bar".hashCode());
-			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, new Object())).isFalse();
-			assertThat((Boolean) type.getMethod("equals", Object.class).invoke(record, record)).isTrue();
-			assertThat(type.getMethod("toString").invoke(record)).isEqualTo(type.getSimpleName() + "[foo=bar]");
-			Object[] parameters = (Object[]) Constructor.class.getMethod("getParameters")
-				.invoke(type.getDeclaredConstructor(String.class));
+			assertThat(record.hashCode()).isEqualTo("bar".hashCode());
+			assertThat(record.equals(new Object())).isFalse();
+			assertThat(record.equals(record)).isTrue();
+			assertThat(record.toString()).isEqualTo(type.getSimpleName() + "[foo=bar]");
+
+			Parameter[] parameters = type.getDeclaredConstructor(String.class).getParameters();
 			assertThat(parameters).hasSize(1);
-			assertThat(Class.forName("java.lang.reflect.Parameter").getMethod("getName").invoke(parameters[0]))
-				.isEqualTo("foo");
-			assertThat(Class.forName("java.lang.reflect.Parameter").getMethod("getModifiers").invoke(parameters[0]))
-				.isEqualTo(0);
+			assertThat(parameters[0].getName()).isEqualTo("foo");
+			assertThat(parameters[0].getModifiers()).isZero();
 		}
 	}
 
+	// --- type initializer ---
+
 	@Test
-	void testTypeInitializerInstrumentation() throws Exception {
+	void typeInitializerInstrumentationExecutesOnLoad() throws Exception {
 		Recorder recorder = new Recorder();
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class)
 			.invokable(ElementMatchers.isTypeInitializer())
@@ -145,8 +148,10 @@ class GenericsByteBuddyTests {
 		}
 	}
 
+	// --- class loading strategies ---
+
 	@Test
-	void testImplicitStrategyBootstrap() {
+	void implicitStrategyBootstrapUsesNonNullClassLoader() {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
 			Class<?> type = unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER).getLoaded();
 			assertThat(type.getClassLoader()).isNotNull();
@@ -154,7 +159,7 @@ class GenericsByteBuddyTests {
 	}
 
 	@Test
-	void testImplicitStrategyNonBootstrap() {
+	void implicitStrategyNonBootstrapUsesNewClassLoader() {
 		ClassLoader classLoader = new URLClassLoader(new URL[0], ClassLoadingStrategy.BOOTSTRAP_LOADER);
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
 			Class<?> type = unloaded.load(classLoader).getLoaded();
@@ -163,7 +168,7 @@ class GenericsByteBuddyTests {
 	}
 
 	@Test
-	void testImplicitStrategyInjectable() {
+	void implicitStrategyInjectableUsesProvidedClassLoader() {
 		ClassLoader classLoader = new ByteArrayClassLoader(ClassLoadingStrategy.BOOTSTRAP_LOADER, false,
 				Collections.emptyMap());
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class).make()) {
@@ -172,8 +177,10 @@ class GenericsByteBuddyTests {
 		}
 	}
 
+	// --- many methods ---
+
 	@Test
-	void testClassWithManyMethods() {
+	void classWithManyMethodsDefinesAllMethods() {
 		DynamicType.Builder<?> builder = new GenericsByteBuddy().subclass(Object.class);
 		for (int index = 0; index < 1000; index++) {
 			builder = builder.defineMethod("method" + index, void.class, Visibility.PUBLIC)
@@ -183,6 +190,19 @@ class GenericsByteBuddyTests {
 			Class<?> type = make.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
 			assertThat(type.getDeclaredMethods()).hasSize(1000);
+		}
+	}
+
+	@Test
+	void subclassWithManyMethodsOverridesAllMethods() {
+		DynamicType.Builder<?> builder = new GenericsByteBuddy().subclass(Object.class);
+		for (int index = 0; index < 1000; index++) {
+			builder = builder.defineMethod("method" + index, void.class, Visibility.PUBLIC)
+				.intercept(StubMethod.INSTANCE);
+		}
+		try (DynamicType.Unloaded<?> make = builder.make()) {
+			Class<?> type = make.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
+				.getLoaded();
 
 			DynamicType.Builder<?> subclassBuilder = new GenericsByteBuddy().subclass(type);
 			for (Method method : type.getDeclaredMethods()) {
@@ -196,8 +216,10 @@ class GenericsByteBuddyTests {
 		}
 	}
 
+	// --- redefine / naming ---
+
 	@Test
-	void testClassCompiledToJsr14() throws Exception {
+	void redefineJsr14ClassSucceeds() throws Exception {
 		try (DynamicType.Unloaded<?> unloaded = new GenericsByteBuddy()
 			.redefine(Class.forName("com.livk.commons.util.GenericsByteBuddyTests$Jsr14Sample"))
 			.make()) {
@@ -209,7 +231,7 @@ class GenericsByteBuddyTests {
 	}
 
 	@Test
-	void testCallerSuffixNamingStrategy() {
+	void callerSuffixNamingStrategyProducesExpectedName() {
 		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy()
 			.with(new NamingStrategy.Suffixing("SuffixedName",
 					new GenericsByteBuddy.WithCallerSuffix(
@@ -219,10 +241,12 @@ class GenericsByteBuddyTests {
 			Class<?> type = unloaded.load(ClassLoadingStrategy.BOOTSTRAP_LOADER, ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
 			String expectedName = "foo.Bar$" + GenericsByteBuddyTests.class.getName().replace('.', '$')
-					+ "$testCallerSuffixNamingStrategy$SuffixedName";
+					+ "$callerSuffixNamingStrategyProducesExpectedName$SuffixedName";
 			assertThat(type.getName()).isEqualTo(expectedName);
 		}
 	}
+
+	// --- helper types ---
 
 	@SuppressWarnings("unused")
 	public static class Recorder {

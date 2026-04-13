@@ -29,37 +29,79 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class BeanLambdaDescriptorTests {
 
+	final BeanLambdaDescriptor noDescriptor = BeanLambdaDescriptor.create(Maker::getNo);
+
+	final BeanLambdaDescriptor usernameDescriptor = BeanLambdaDescriptor.create(Maker::getUsername);
+
 	@Test
-	void create() {
-		assertThat(BeanLambdaDescriptor.create(Maker::getNo)).isNotNull();
+	void createReturnsNonNull() {
+		assertThat(noDescriptor).isNotNull();
+		assertThat(usernameDescriptor).isNotNull();
 	}
 
 	@Test
-	void getFieldName() {
-		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getFieldName()).isEqualTo("no");
+	void createReturnsCachedInstance() {
+		BeanLambdaDescriptor another = BeanLambdaDescriptor.create(Maker::getNo);
+		assertThat(another).isSameAs(noDescriptor);
 	}
 
 	@Test
-	void getField() throws NoSuchFieldException {
-		Field field = Maker.class.getDeclaredField("no");
-		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getField()).isEqualTo(field);
+	void createReturnsDifferentInstancesForDifferentLambdas() {
+		assertThat(noDescriptor).isNotSameAs(usernameDescriptor);
 	}
 
 	@Test
-	void getMethodName() {
-		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getMethodName()).isEqualTo("getNo");
+	void getFieldNameForNo() {
+		assertThat(noDescriptor.getFieldName()).isEqualTo("no");
 	}
 
 	@Test
-	void getMethod() throws NoSuchMethodException {
-		Method method = Maker.class.getMethod("getNo");
-		assertThat(BeanLambdaDescriptor.create(Maker::getNo).getMethod()).isEqualTo(method);
+	void getFieldNameForUsername() {
+		assertThat(usernameDescriptor.getFieldName()).isEqualTo("username");
+	}
+
+	@Test
+	void getFieldReturnsCorrectField() throws NoSuchFieldException {
+		Field expected = Maker.class.getDeclaredField("no");
+		assertThat(noDescriptor.getField()).isEqualTo(expected);
+		assertThat(noDescriptor.getField().getType()).isEqualTo(Integer.class);
+	}
+
+	@Test
+	void getFieldForUsernameReturnsCorrectField() throws NoSuchFieldException {
+		Field expected = Maker.class.getDeclaredField("username");
+		assertThat(usernameDescriptor.getField()).isEqualTo(expected);
+		assertThat(usernameDescriptor.getField().getType()).isEqualTo(String.class);
+	}
+
+	@Test
+	void getMethodNameForNo() {
+		assertThat(noDescriptor.getMethodName()).isEqualTo("getNo");
+	}
+
+	@Test
+	void getMethodNameForUsername() {
+		assertThat(usernameDescriptor.getMethodName()).isEqualTo("getUsername");
+	}
+
+	@Test
+	void getMethodReturnsCorrectMethod() throws NoSuchMethodException {
+		Method expected = Maker.class.getMethod("getNo");
+		assertThat(noDescriptor.getMethod()).isEqualTo(expected);
+	}
+
+	@Test
+	void getMethodForUsernameReturnsCorrectMethod() throws NoSuchMethodException {
+		Method expected = Maker.class.getMethod("getUsername");
+		assertThat(usernameDescriptor.getMethod()).isEqualTo(expected);
 	}
 
 	@Data
 	static class Maker {
 
 		private Integer no;
+
+		private String username;
 
 	}
 

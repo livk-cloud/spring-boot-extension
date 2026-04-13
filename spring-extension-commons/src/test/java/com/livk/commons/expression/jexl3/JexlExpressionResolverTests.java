@@ -44,36 +44,40 @@ class JexlExpressionResolverTests {
 	}
 
 	@Test
-	void evaluate() {
-		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
+	void evaluateEqualityWithMethodArgs() {
 		assertThat(resolver.evaluate("'livk'==username", method, args, Boolean.class)).isTrue();
+	}
 
+	@Test
+	void evaluateVariableWithMethodArgs() {
 		assertThat(resolver.evaluate("username", method, args)).isEqualTo("livk");
+	}
 
+	@Test
+	void evaluateEqualityWithMap() {
 		assertThat(resolver.evaluate("'livk'==username", map, Boolean.class)).isTrue();
+	}
 
+	@Test
+	void evaluateVariableWithMap() {
 		assertThat(resolver.evaluate("username", map)).isEqualTo("livk");
+	}
 
+	@Test
+	void evaluateConcatenationWithMethodArgs() {
 		assertThat(resolver.evaluate("'root:'+username", method, args)).isEqualTo("root:livk");
+	}
 
+	@Test
+	void evaluateConcatenationWithContext() {
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
 		assertThat(resolver.evaluate("'root:'+username+':'+password", context)).isEqualTo("root:livk:123456");
-
-		assertThat(resolver.evaluate("'root:'+username", map)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("'root:'+username", method, args)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("username", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("'livk'", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("'root:'+username+':'+password", context)).isEqualTo("root:livk:123456");
-
 		assertThat(resolver.evaluate("username+password", context)).isEqualTo("livk123456");
+	}
 
-		assertThat(resolver.evaluate("'root:'+username", map)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("username", map)).isEqualTo("livk");
-
+	@Test
+	void evaluatePlainStringPassesThrough() {
+		assertThat(resolver.evaluate("'livk'", method, args)).isEqualTo("livk");
 	}
 
 }

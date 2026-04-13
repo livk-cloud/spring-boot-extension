@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.within;
 class NumberJsonSerializerTests {
 
 	@Test
-	void test() {
+	void serializesNumberFieldsWithCustomFormat() {
 		Big big = new Big();
 		big.l = 33L;
 		big.d = 0.333333d;

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -34,52 +35,90 @@ class BeanUtilsTests {
 
 	static final SourceBean bean = new SourceBean("source", 10);
 
-	static final List<SourceBean> beanList = List.of(new SourceBean("source", 10), new SourceBean("target", 9));
+	// --- copy(Object, Class) ---
 
 	@Test
-	void copy() {
+	void copyWithClass() {
 		TargetBean result = BeanUtils.copy(bean, TargetBean.class);
-		TargetBean targetBean = new TargetBean("source", 10);
-		assertThat(result).isEqualTo(targetBean);
+		assertThat(result).isEqualTo(new TargetBean("source", 10));
 	}
 
 	@Test
-	void copySupplier() {
-		TargetBean result = BeanUtils.copy(bean, TargetBean::new);
-		TargetBean targetBean = new TargetBean("source", 10);
-		assertThat(result).isEqualTo(targetBean);
+	void copyWithNullSourceReturnsEmptyTarget() {
+		TargetBean result = BeanUtils.copy(null, TargetBean.class);
+		assertThat(result).isNotNull();
+		assertThat(result.getBeanName()).isNull();
+		assertThat(result.getBeanNo()).isNull();
 	}
+
+	// --- copy(Object, Supplier) ---
+
+	@Test
+	void copyWithSupplier() {
+		TargetBean result = BeanUtils.copy(bean, TargetBean::new);
+		assertThat(result).isEqualTo(new TargetBean("source", 10));
+	}
+
+	@Test
+	void copyWithNullSupplierReturnsNull() {
+		TargetBean result = BeanUtils.copy(bean, (Supplier<TargetBean>) null);
+		assertThat(result).isNull();
+	}
+
+	// --- copyList ---
 
 	@Test
 	void copyList() {
-		List<TargetBean> result = BeanUtils.copyList(beanList, TargetBean.class);
-		List<TargetBean> targetBeans = List.of(new TargetBean("source", 10), new TargetBean("target", 9));
-		assertThat(result).isEqualTo(targetBeans);
+		List<SourceBean> sourceList = List.of(new SourceBean("source", 10), new SourceBean("target", 9));
+		List<TargetBean> result = BeanUtils.copyList(sourceList, TargetBean.class);
+		assertThat(result).containsExactly(new TargetBean("source", 10), new TargetBean("target", 9));
 	}
 
 	@Test
-	void testConvertTargetBean() {
-		TargetBean source = new TargetBean("source", 10);
-		Map<String, Object> convert = BeanUtils.convert(source);
+	void copyListWithEmptyListReturnsEmpty() {
+		List<TargetBean> result = BeanUtils.copyList(List.of(), TargetBean.class);
+		assertThat(result).isEmpty();
+	}
 
-		assertThat(convert).containsEntry("beanName", "source")
+	// --- convert(Object) -> Map ---
+
+	@Test
+	void convertBeanToMap() {
+		TargetBean source = new TargetBean("source", 10);
+		Map<String, Object> map = BeanUtils.convert(source);
+		assertThat(map).containsEntry("beanName", "source")
 			.containsEntry("beanNo", 10)
 			.containsEntry("class", TargetBean.class);
+	}
 
-		TargetBean target = BeanUtils.convert(convert);
+	@Test
+	void convertBeanToMapIsUnmodifiable() {
+		Map<String, Object> map = BeanUtils.convert(new TargetBean("x", 1));
+		assertThatThrownBy(() -> map.put("new", "value")).isInstanceOf(UnsupportedOperationException.class);
+	}
+
+	// --- convert(Map) -> Bean ---
+
+	@Test
+	void convertMapToBean() {
+		TargetBean source = new TargetBean("source", 10);
+		Map<String, Object> map = BeanUtils.convert(source);
+		TargetBean target = BeanUtils.convert(map);
 		assertThat(target).isEqualTo(source);
 	}
 
 	@Test
-	void testConvertSourceBeanWithMissingNoArgConstructor() {
+	void convertMapWithoutClassKeyThrows() {
+		Map<String, Object> map = Map.of("beanName", "source");
+		assertThatThrownBy(() -> BeanUtils.convert(map)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("class must not be null");
+	}
+
+	@Test
+	void convertMapWithNoArgConstructorMissingThrows() {
 		SourceBean source = new SourceBean("source", 10);
-		Map<String, Object> convert = BeanUtils.convert(source);
-
-		assertThat(convert).containsEntry("beanName", "source")
-			.containsEntry("beanNo", 10)
-			.containsEntry("class", SourceBean.class);
-
-		assertThatThrownBy(() -> BeanUtils.convert(convert)).isInstanceOf(IllegalArgumentException.class)
+		Map<String, Object> map = BeanUtils.convert(source);
+		assertThatThrownBy(() -> BeanUtils.convert(map)).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("Missing no-argument constructor");
 	}
 

@@ -16,9 +16,9 @@
 
 package com.livk.commons.jackson;
 
+import org.junit.jupiter.api.Test;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
-import org.junit.jupiter.api.Test;
 import tools.jackson.databind.node.JsonNodeFactory;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -35,6 +35,7 @@ class JsonNodeUtilsTests {
 			{
 			  "username": "root",
 			  "password": "root",
+			  "count": 42,
 			  "info": {
 			    "name": "livk",
 			    "email": "1375632510@qq.com"
@@ -43,31 +44,85 @@ class JsonNodeUtilsTests {
 
 	static final JsonNode node = JsonMapperUtils.readTree(json);
 
+	static final JsonMapper mapper = JsonMapper.builder().build();
+
 	@Test
-	void findStringValue() {
-		String username = JsonNodeUtils.findStringValue(node, "username");
-		assertThat(username).isEqualTo("root");
+	void findStringValueReturnsValue() {
+		assertThat(JsonNodeUtils.findStringValue(node, "username")).isEqualTo("root");
+	}
+
+	@Test
+	void findStringValueWithNullNodeReturnsNull() {
 		assertThat(JsonNodeUtils.findStringValue(null, "username")).isNull();
 	}
 
 	@Test
-	void findValue() {
-		Map<String, Object> map = JsonNodeUtils.findValue(node, "info", JsonNodeUtils.STRING_OBJECT_MAP,
-				JsonMapper.builder().build());
-		assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of("name", "livk", "email", "1375632510@qq.com"));
-
-		JsonNode nodeMap = JsonNodeUtils.findValue(node, "info", JsonNode.class, JsonMapper.builder().build());
-		ObjectNode valNode = new ObjectNode(JsonNodeFactory.instance).put("name", "livk")
-			.put("email", "1375632510@qq.com");
-		assertThat(nodeMap).isNotNull().isEqualTo(valNode);
+	void findStringValueWithMissingFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findStringValue(node, "nonexistent")).isNull();
 	}
 
 	@Test
-	void findObjectNode() {
-		assertThat(JsonNodeUtils.findObjectNode(null, "info")).isNull();
+	void findStringValueWithNonStringFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findStringValue(node, "count")).isNull();
+	}
+
+	@Test
+	void findObjectNodeReturnsObjectNode() {
 		JsonNode jsonNode = JsonNodeUtils.findObjectNode(node, "info");
+		assertThat(jsonNode).isNotNull();
 		assertThat(jsonNode.get("name").asString()).isEqualTo("livk");
 		assertThat(jsonNode.get("email").asString()).isEqualTo("1375632510@qq.com");
+	}
+
+	@Test
+	void findObjectNodeWithNullNodeReturnsNull() {
+		assertThat(JsonNodeUtils.findObjectNode(null, "info")).isNull();
+	}
+
+	@Test
+	void findObjectNodeWithMissingFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findObjectNode(node, "nonexistent")).isNull();
+	}
+
+	@Test
+	void findObjectNodeWithNonObjectFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findObjectNode(node, "username")).isNull();
+	}
+
+	@Test
+	void findValueWithTypeReference() {
+		Map<String, Object> map = JsonNodeUtils.findValue(node, "info", JsonNodeUtils.STRING_OBJECT_MAP, mapper);
+		assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of("name", "livk", "email", "1375632510@qq.com"));
+	}
+
+	@Test
+	void findValueWithClassType() {
+		JsonNode result = JsonNodeUtils.findValue(node, "info", JsonNode.class, mapper);
+		ObjectNode expected = new ObjectNode(JsonNodeFactory.instance).put("name", "livk")
+			.put("email", "1375632510@qq.com");
+		assertThat(result).isNotNull().isEqualTo(expected);
+	}
+
+	@Test
+	void findValueWithJavaType() {
+		Map<String, Object> map = JsonNodeUtils.findValue(node, "info",
+				TypeFactoryUtils.javaType(JsonNodeUtils.STRING_OBJECT_MAP), mapper);
+		assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of("name", "livk", "email", "1375632510@qq.com"));
+	}
+
+	@Test
+	void findValueWithNullNodeReturnsNull() {
+		assertThat(JsonNodeUtils.findValue(null, "info", JsonNodeUtils.STRING_OBJECT_MAP, mapper)).isNull();
+	}
+
+	@Test
+	void findValueWithMissingFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findValue(node, "nonexistent", JsonNodeUtils.STRING_OBJECT_MAP, mapper)).isNull();
+	}
+
+	@Test
+	void findValueWithNonContainerFieldReturnsNull() {
+		assertThat(JsonNodeUtils.findValue(node, "username", JsonNodeUtils.STRING_OBJECT_MAP, mapper)).isNull();
 	}
 
 }

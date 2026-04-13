@@ -78,6 +78,13 @@ class JacksonSupportTests {
 			</pro>
 			""";
 
+	private static void assertJsonContent(JsonNode node) {
+		assertThat(node).isNotNull();
+		assertThat(node.get("c").asString()).isEqualTo("1");
+		assertThat(node.get("a").asString()).isEqualTo("2");
+		assertThat(node.get("b").get("c").asInt()).isEqualTo(3);
+	}
+
 	@Test
 	void javaType() {
 		assertThat(TypeFactoryUtils.javaType(String.class).getRawClass()).isEqualTo(String.class);
@@ -114,93 +121,44 @@ class JacksonSupportTests {
 
 	@Test
 	void testJsonReadValue() throws IOException {
-		JsonNode result1 = JSON.readValue(json, JsonNode.class);
-		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asString()).isEqualTo("1");
-		assertThat(result1.get("a").asString()).isEqualTo("2");
-		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(JSON.readValue(json, JsonNode.class));
 
 		InputStream inputStream = new ClassPathResource("input.json").getInputStream();
-		JsonNode result2 = JSON.readValue(inputStream, JsonNode.class);
-		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asString()).isEqualTo("1");
-		assertThat(result2.get("a").asString()).isEqualTo("2");
-		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(JSON.readValue(inputStream, JsonNode.class));
 
-		JsonNode result3 = JSON.readValue(json, new TypeReference<>() {
-		});
-		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asString()).isEqualTo("1");
-		assertThat(result3.get("a").asString()).isEqualTo("2");
-		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(JSON.readValue(json, new TypeReference<>() {
+		}));
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
-		JsonNode result4 = JSON.readValue(json, javaType);
-		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asString()).isEqualTo("1");
-		assertThat(result4.get("a").asString()).isEqualTo("2");
-		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(JSON.readValue(json, javaType));
 	}
 
 	@Test
 	void testYamlReadValue() throws IOException {
-		JsonNode result1 = YAML.readValue(yaml, JsonNode.class);
-		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asString()).isEqualTo("1");
-		assertThat(result1.get("a").asString()).isEqualTo("2");
-		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(YAML.readValue(yaml, JsonNode.class));
 
 		InputStream inputStream = new ClassPathResource("input.yml").getInputStream();
-		JsonNode result2 = YAML.readValue(inputStream, JsonNode.class);
-		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asString()).isEqualTo("1");
-		assertThat(result2.get("a").asString()).isEqualTo("2");
-		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(YAML.readValue(inputStream, JsonNode.class));
 
-		JsonNode result3 = YAML.readValue(yaml, new TypeReference<>() {
-		});
-		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asString()).isEqualTo("1");
-		assertThat(result3.get("a").asString()).isEqualTo("2");
-		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(YAML.readValue(yaml, new TypeReference<>() {
+		}));
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
-		JsonNode result4 = YAML.readValue(yaml, javaType);
-		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asString()).isEqualTo("1");
-		assertThat(result4.get("a").asString()).isEqualTo("2");
-		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
-
+		assertJsonContent(YAML.readValue(yaml, javaType));
 	}
 
 	@Test
 	void testXmlReadValue() throws IOException {
-		JsonNode result1 = XML.readValue(xml, JsonNode.class);
-		assertThat(result1).isNotNull();
-		assertThat(result1.get("c").asString()).isEqualTo("1");
-		assertThat(result1.get("a").asString()).isEqualTo("2");
-		assertThat(result1.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(XML.readValue(xml, JsonNode.class));
 
 		InputStream inputStream = new ClassPathResource("input.xml").getInputStream();
-		JsonNode result2 = XML.readValue(inputStream, JsonNode.class);
-		assertThat(result2).isNotNull();
-		assertThat(result2.get("c").asString()).isEqualTo("1");
-		assertThat(result2.get("a").asString()).isEqualTo("2");
-		assertThat(result2.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(XML.readValue(inputStream, JsonNode.class));
 
-		JsonNode result3 = XML.readValue(xml, new TypeReference<>() {
-		});
-		assertThat(result3).isNotNull();
-		assertThat(result3.get("c").asString()).isEqualTo("1");
-		assertThat(result3.get("a").asString()).isEqualTo("2");
-		assertThat(result3.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(XML.readValue(xml, new TypeReference<>() {
+		}));
 
 		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
-		JsonNode result4 = XML.readValue(xml, javaType);
-		assertThat(result4).isNotNull();
-		assertThat(result4.get("c").asString()).isEqualTo("1");
-		assertThat(result4.get("a").asString()).isEqualTo("2");
-		assertThat(result4.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(XML.readValue(xml, javaType));
 	}
 
 	@Test
@@ -241,23 +199,9 @@ class JacksonSupportTests {
 
 	@Test
 	void testReadTree() {
-		JsonNode jsonNode = JSON.readTree(json);
-		assertThat(jsonNode).isNotNull();
-		assertThat(jsonNode.get("c").asString()).isEqualTo("1");
-		assertThat(jsonNode.get("a").asString()).isEqualTo("2");
-		assertThat(jsonNode.get("b").get("c").asInt()).isEqualTo(3);
-
-		JsonNode yamlNode = YAML.readTree(yaml);
-		assertThat(yamlNode).isNotNull();
-		assertThat(yamlNode.get("c").asString()).isEqualTo("1");
-		assertThat(yamlNode.get("a").asString()).isEqualTo("2");
-		assertThat(yamlNode.get("b").get("c").asInt()).isEqualTo(3);
-
-		JsonNode xmlNode = XML.readTree(xml);
-		assertThat(xmlNode).isNotNull();
-		assertThat(xmlNode.get("c").asString()).isEqualTo("1");
-		assertThat(xmlNode.get("a").asString()).isEqualTo("2");
-		assertThat(xmlNode.get("b").get("c").asInt()).isEqualTo(3);
+		assertJsonContent(JSON.readTree(json));
+		assertJsonContent(YAML.readTree(yaml));
+		assertJsonContent(XML.readTree(xml));
 	}
 
 	@Test

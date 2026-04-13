@@ -17,11 +17,9 @@
 package com.livk.commons.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -32,23 +30,82 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class YamlUtilsTests {
 
-	final Resource yml = new ClassPathResource("yamlData.yml");
-
-	final Map<String, Object> map = Map.of("spring.redis.host", "livk.com", "spring.redis.port", 5672, "spring.env[0]",
-			1, "spring.env[1]", 2);
+	// --- convertMapToYaml ---
 
 	@Test
-	void convertMapToYaml() throws IOException {
-		Map<String, Object> load = new Yaml().load(yml.getInputStream());
-		Map<String, Object> result = YamlUtils.convertMapToYaml(map);
-		assertThat(result).isEqualTo(load);
+	void convertMapToYamlWithSimpleKeys() {
+		Map<String, Object> flat = Map.of("spring.redis.host", "livk.com", "spring.redis.port", 5672);
+		Map<String, Object> result = YamlUtils.convertMapToYaml(flat);
+
+		assertThat(result).containsKey("spring");
+		@SuppressWarnings("unchecked")
+		Map<String, Object> spring = (Map<String, Object>) result.get("spring");
+		@SuppressWarnings("unchecked")
+		Map<String, Object> redis = (Map<String, Object>) spring.get("redis");
+		assertThat(redis).containsEntry("host", "livk.com").containsEntry("port", 5672);
 	}
 
 	@Test
-	void convertYamlToMap() throws IOException {
-		Map<String, Object> load = new Yaml().load(yml.getInputStream());
-		Properties result = YamlUtils.convertYamlToMap(load);
-		assertThat(result).isEqualTo(map);
+	void convertMapToYamlWithArrayIndexKeys() {
+		Map<String, Object> flat = Map.of("spring.env[0]", 1, "spring.env[1]", 2);
+		Map<String, Object> result = YamlUtils.convertMapToYaml(flat);
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> spring = (Map<String, Object>) result.get("spring");
+		assertThat(spring.get("env")).isEqualTo(List.of(1, 2));
+	}
+
+	// --- convertYamlToMap ---
+
+	@Test
+	void convertYamlToMapWithNestedMap() {
+		Map<String, Object> yaml = Map.of("spring", Map.of("redis", Map.of("host", "livk.com", "port", 5672)));
+		Properties result = YamlUtils.convertYamlToMap(yaml);
+		assertThat(result).containsEntry("spring.redis.host", "livk.com").containsEntry("spring.redis.port", 5672);
+	}
+
+	@Test
+	void convertYamlToMapWithList() {
+		Map<String, Object> yaml = Map.of("spring", Map.of("env", List.of(1, 2)));
+		Properties result = YamlUtils.convertYamlToMap(yaml);
+		assertThat(result).containsEntry("spring.env[0]", 1).containsEntry("spring.env[1]", 2);
+	}
+
+	@Test
+	void convertYamlToMapWithEmptyCollection() {
+		Map<String, Object> yaml = Map.of("tags", Collections.emptyList());
+		Properties result = YamlUtils.convertYamlToMap(yaml);
+		assertThat(result).containsEntry("tags", "");
+	}
+
+	// --- toYml ---
+
+	@Test
+	void toYmlProducesValidYamlString() {
+		Map<String, Object> flat = Map.of("a.b", "value");
+		String yml = YamlUtils.toYml(flat);
+		assertThat(yml).contains("a:").contains("b: value");
+	}
+
+	@Test
+	void toYmlWithEmptyMapReturnsEmptyString() {
+		assertThat(YamlUtils.toYml(Collections.emptyMap())).isEmpty();
+	}
+
+	@Test
+	void toYmlWithNullMapReturnsEmptyString() {
+		assertThat(YamlUtils.toYml(null)).isEmpty();
+	}
+
+	// --- round-trip ---
+
+	@Test
+	void roundTripConversion() {
+		Map<String, Object> flat = Map.of("spring.redis.host", "livk.com", "spring.redis.port", 5672, "spring.env[0]",
+				1, "spring.env[1]", 2);
+		Map<String, Object> yamlMap = YamlUtils.convertMapToYaml(flat);
+		Properties backToFlat = YamlUtils.convertYamlToMap(yamlMap);
+		assertThat(backToFlat).containsAllEntriesOf(flat);
 	}
 
 }

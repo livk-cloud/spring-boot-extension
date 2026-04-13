@@ -32,20 +32,33 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AnnotationAbstractPointcutTypeAdvisorTests {
 
+	final MyAnnotationAbstractPointcutTypeAdvisor advisor = new MyAnnotationAbstractPointcutTypeAdvisor();
+
 	@Test
-	void test() {
-		MyAnnotationAbstractPointcutTypeAdvisor advisor = new MyAnnotationAbstractPointcutTypeAdvisor();
-
+	void pointcutIsAnnotationMatchingPointcut() {
 		assertThat(advisor.getPointcut()).isInstanceOf(AnnotationMatchingPointcut.class);
+	}
 
+	@Test
+	void pointcutMatchesForClassAnnotation() {
 		assertThat(advisor.getPointcut()).isEqualTo(AnnotationMatchingPointcut.forClassAnnotation(MyAnnotation.class));
+	}
 
+	@Test
+	void classFilterMatchesAnnotatedClass() {
 		assertThat(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class)).isTrue();
+	}
 
+	@Test
+	void classFilterDoesNotMatchDifferentAnnotatedClass() {
 		assertThat(advisor.getPointcut()
 			.getClassFilter()
 			.matches(AnnotationAbstractPointcutAdvisorTests.AopProxyClass.class)).isFalse();
+	}
 
+	@Test
+	void classFilterDoesNotMatchUnannotatedClass() {
+		assertThat(advisor.getPointcut().getClassFilter().matches(UnannotatedClass.class)).isFalse();
 	}
 
 	@MyAnnotation
@@ -54,6 +67,10 @@ class AnnotationAbstractPointcutTypeAdvisorTests {
 		@SuppressWarnings("unused")
 		void testAop() {
 		}
+
+	}
+
+	static class UnannotatedClass {
 
 	}
 

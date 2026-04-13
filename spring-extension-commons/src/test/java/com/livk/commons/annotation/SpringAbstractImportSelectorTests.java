@@ -32,14 +32,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class SpringAbstractImportSelectorTests {
 
-	@Test
-	void testFindAnnotation() {
-		MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
-		assertThat(selector.getAnnotationClass()).isEqualTo(MyAnnotation.class);
+	final MyAnnotationImportSelector selector = new MyAnnotationImportSelector();
 
+	@Test
+	void resolvesAnnotationClassFromGenericTypeArgument() {
+		assertThat(selector.getAnnotationClass()).isEqualTo(MyAnnotation.class);
+	}
+
+	@Test
+	void selectImportsReturnsCandidateConfigurations() {
 		String[] imports = selector.selectImports(AnnotationMetadata.introspect(Config.class));
-		String[] result = new String[] { MyAnnotationConfig.class.getName() };
-		assertThat(imports).containsExactly(result);
+		assertThat(imports).containsExactly(MyAnnotationConfig.class.getName());
 	}
 
 	@Target(ElementType.TYPE)

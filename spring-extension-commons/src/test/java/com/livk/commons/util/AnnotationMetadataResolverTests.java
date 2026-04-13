@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Controller;
 
 import java.lang.annotation.ElementType;
@@ -35,18 +36,64 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AnnotationMetadataResolverTests {
 
+	static final String CURRENT_PACKAGE = AnnotationMetadataResolverTests.class.getPackageName();
+
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class);
 
 	@Test
-	void find() {
+	void findByAnnotationAndPackages() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.find(TestAnnotation.class, CURRENT_PACKAGE)).containsExactlyInAnyOrder(A.class,
+				TestController.class);
+	}
+
+	@Test
+	void findByAnnotationAndBeanFactory() {
 		contextRunner.run(ctx -> {
 			AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(ctx);
-
-			assertThat(resolver.find(TestAnnotation.class, AnnotationMetadataResolverTests.class.getPackageName()))
-				.containsExactlyInAnyOrder(A.class, TestController.class);
-
 			assertThat(resolver.find(TestAnnotation.class, ctx)).containsExactlyInAnyOrder(A.class,
 					TestController.class);
+		});
+	}
+
+	@Test
+	void findByTypeFilter() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.find(new AnnotationTypeFilter(TestAnnotation.class), CURRENT_PACKAGE))
+			.containsExactlyInAnyOrder(A.class, TestController.class);
+	}
+
+	@Test
+	void findWithEmptyPackagesReturnsEmpty() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.find(TestAnnotation.class)).isEmpty();
+	}
+
+	@Test
+	void findWithNonexistentPackageReturnsEmpty() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.find(TestAnnotation.class, "com.livk.nonexistent")).isEmpty();
+	}
+
+	@Test
+	void findDetectsMetaAnnotation() {
+		// A is annotated with @TestController which is meta-annotated with
+		// @TestAnnotation
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.find(TestAnnotation.class, CURRENT_PACKAGE)).contains(A.class);
+	}
+
+	@Test
+	void defaultConstructorUsesDefaultResourceLoader() {
+		AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+		assertThat(resolver.getResourceLoader()).isNotNull();
+	}
+
+	@Test
+	void resourceLoaderConstructorPreservesLoader() {
+		contextRunner.run(ctx -> {
+			AnnotationMetadataResolver resolver = new AnnotationMetadataResolver(ctx);
+			assertThat(resolver.getResourceLoader()).isSameAs(ctx);
 		});
 	}
 

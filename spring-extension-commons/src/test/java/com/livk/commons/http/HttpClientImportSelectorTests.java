@@ -31,27 +31,48 @@ class HttpClientImportSelectorTests {
 	final HttpClientImportSelector importSelector = new HttpClientImportSelector();
 
 	@Test
-	void testSelectImportsForTwoConfig() {
-		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(TwoConfig.class));
-		String[] expected = new String[] { WebClientConfiguration.class.getName(),
-				RestClientConfiguration.class.getName() };
-		assertThat(imports).containsExactly(expected);
+	void selectImportsWithWebClientOnly() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(WebClientOnlyConfig.class));
+		assertThat(imports).containsExactly(WebClientConfiguration.class.getName());
 	}
 
 	@Test
-	void testSelectImportsForOneConfig() {
-		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(OneConfig.class));
-		String[] expected = new String[] { WebClientConfiguration.class.getName() };
-		assertThat(imports).containsExactly(expected);
+	void selectImportsWithRestClientOnly() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(RestClientOnlyConfig.class));
+		assertThat(imports).containsExactly(RestClientConfiguration.class.getName());
+	}
+
+	@Test
+	void selectImportsWithBothClientsPreservesOrder() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(BothClientsConfig.class));
+		assertThat(imports).containsExactly(WebClientConfiguration.class.getName(),
+				RestClientConfiguration.class.getName());
+	}
+
+	@Test
+	void selectImportsWithReversedOrderPreservesAnnotationOrder() {
+		String[] imports = importSelector.selectImports(AnnotationMetadata.introspect(ReversedOrderConfig.class));
+		assertThat(imports).containsExactly(RestClientConfiguration.class.getName(),
+				WebClientConfiguration.class.getName());
+	}
+
+	@EnableHttpClient(HttpClientType.WEB_CLIENT)
+	static class WebClientOnlyConfig {
+
+	}
+
+	@EnableHttpClient(HttpClientType.REST_CLIENT)
+	static class RestClientOnlyConfig {
+
 	}
 
 	@EnableHttpClient({ HttpClientType.WEB_CLIENT, HttpClientType.REST_CLIENT })
-	static class TwoConfig {
+	static class BothClientsConfig {
 
 	}
 
-	@EnableHttpClient({ HttpClientType.WEB_CLIENT })
-	static class OneConfig {
+	@EnableHttpClient({ HttpClientType.REST_CLIENT, HttpClientType.WEB_CLIENT })
+	static class ReversedOrderConfig {
 
 	}
 

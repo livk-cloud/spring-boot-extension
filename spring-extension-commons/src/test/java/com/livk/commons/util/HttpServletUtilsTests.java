@@ -109,6 +109,24 @@ class HttpServletUtilsTests {
 	}
 
 	@Test
+	void realIpWithXForwardedFor() {
+		request.addHeader("X-Forwarded-For", "10.0.0.1, 192.168.1.1");
+		assertThat(HttpServletUtils.realIp(request)).isEqualTo("10.0.0.1");
+	}
+
+	@Test
+	void realIpWithXRealIp() {
+		request.addHeader("X-Real-IP", "172.16.0.1");
+		assertThat(HttpServletUtils.realIp(request)).isEqualTo("172.16.0.1");
+	}
+
+	@Test
+	void realIpIgnoresUnknownHeader() {
+		request.addHeader("X-Forwarded-For", "unknown");
+		assertThat(HttpServletUtils.realIp(request)).isEqualTo("127.0.0.1");
+	}
+
+	@Test
 	void outJson() {
 		Map<String, String> result = Map.of("username", "livk", "password", "123456");
 		HttpServletUtils.outJson(response, result);

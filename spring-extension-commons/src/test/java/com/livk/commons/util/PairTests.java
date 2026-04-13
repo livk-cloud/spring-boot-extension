@@ -33,58 +33,109 @@ class PairTests {
 
 	static final Pair<String, Integer> pair = Pair.of("livk", 123456);
 
+	// --- basic accessors ---
+
 	@Test
-	void pairJsonSerializerTest() {
-		String json = "{\"livk\":123456}";
-		String result = JsonMapperUtils.writeValueAsString(pair);
-		assertThat(result).isEqualTo(json);
+	void keyAndValueReturnConstructorArgs() {
+		assertThat(pair.key()).isEqualTo("livk");
+		assertThat(pair.value()).isEqualTo(123456);
 	}
 
 	@Test
-	void pairJsonDeserializerTest() {
+	void ofFromMapEntry() {
+		Map.Entry<String, Integer> entry = Map.entry("livk", 123456);
+		Pair<String, Integer> result = Pair.of(entry);
+		assertThat(result.key()).isEqualTo("livk");
+		assertThat(result.value()).isEqualTo(123456);
+		assertThat(result).isEqualTo(pair);
+	}
+
+	// --- equals / hashCode / toString / clone ---
+
+	@Test
+	void equalsAndHashCode() {
+		Pair<String, Integer> same = Pair.of("livk", 123456);
+		Pair<String, Integer> different = Pair.of("other", 0);
+		assertThat(pair).isEqualTo(same);
+		assertThat(pair.hashCode()).isEqualTo(same.hashCode());
+		assertThat(pair).isNotEqualTo(different);
+	}
+
+	@Test
+	void toStringFormat() {
+		assertThat(pair.toString()).isEqualTo("{livk:123456}");
+	}
+
+	@Test
+	void cloneReturnsCopy() {
+		Pair<String, Integer> cloned = pair.clone();
+		assertThat(cloned).isEqualTo(pair).isNotSameAs(pair);
+	}
+
+	// --- serialization ---
+
+	@Test
+	void serializesToJson() {
+		assertThat(JsonMapperUtils.writeValueAsString(pair)).isEqualTo("{\"livk\":123456}");
+	}
+
+	// --- deserialization ---
+
+	@Test
+	void deserializesEmptyObjectToEmptyPair() {
 		Pair<String, Integer> empty = JsonMapperUtils.readValue("{}", new TypeReference<>() {
 		});
 		assertThat(empty.key()).isNull();
 		assertThat(empty.value()).isNull();
 		assertThat(empty).isEqualTo(Pair.EMPTY);
+	}
 
+	@Test
+	void deserializesSimpleKeyValue() {
 		@Language("JSON")
 		String json = "{\"livk\":123456}";
 		Pair<String, Integer> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertThat(result.key()).isEqualTo("livk");
-		assertThat(result.value()).isEqualTo(123456);
 		assertThat(result).isEqualTo(pair);
+	}
 
+	@Test
+	void deserializesNestedPairValue() {
 		@Language("JSON")
-		String json2 = """
+		String json = """
 				{"livk": {"root": "username"}}""";
-		Pair<String, Pair<String, String>> result2 = JsonMapperUtils.readValue(json2, new TypeReference<>() {
+		Pair<String, Pair<String, String>> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertThat(result2.key()).isEqualTo("livk");
-		assertThat(result2.value().key()).isEqualTo("root");
-		assertThat(result2.value().value()).isEqualTo("username");
+		assertThat(result.key()).isEqualTo("livk");
+		assertThat(result.value().key()).isEqualTo("root");
+		assertThat(result.value().value()).isEqualTo("username");
+	}
 
+	@Test
+	void deserializesListValue() {
 		@Language("JSON")
-		String json3 = """
-				{"livk":  [1,2,3]}""";
-		Pair<String, List<Integer>> result3 = JsonMapperUtils.readValue(json3, new TypeReference<>() {
+		String json = """
+				{"livk": [1,2,3]}""";
+		Pair<String, List<Integer>> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertThat(result3.key()).isEqualTo("livk");
-		assertThat(result3.value()).containsExactly(1, 2, 3);
+		assertThat(result.key()).isEqualTo("livk");
+		assertThat(result.value()).containsExactly(1, 2, 3);
+	}
 
+	@Test
+	void deserializesMapValue() {
 		@Language("JSON")
-		String json4 = """
+		String json = """
 				{
 				  "livk": {
 				    "username": "root",
 				    "password": "root"
 				  }
 				}""";
-		Pair<String, Map<String, String>> result4 = JsonMapperUtils.readValue(json4, new TypeReference<>() {
+		Pair<String, Map<String, String>> result = JsonMapperUtils.readValue(json, new TypeReference<>() {
 		});
-		assertThat(result4.key()).isEqualTo("livk");
-		assertThat(result4.value()).containsAllEntriesOf(Map.of("username", "root", "password", "root"));
+		assertThat(result.key()).isEqualTo("livk");
+		assertThat(result.value()).containsAllEntriesOf(Map.of("username", "root", "password", "root"));
 	}
 
 }
