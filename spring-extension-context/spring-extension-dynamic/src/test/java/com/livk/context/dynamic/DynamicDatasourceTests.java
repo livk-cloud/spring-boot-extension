@@ -17,6 +17,7 @@
 package com.livk.context.dynamic;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -48,23 +49,52 @@ class DynamicDatasourceTests {
 		dynamicDatasource.afterPropertiesSet();
 	}
 
+	@AfterEach
+	void tearDown() {
+		DataSourceContextHolder.clear();
+	}
+
 	@Test
-	void test() throws SQLException {
+	void defaultDataSourceIsPrimary() {
 		assertThat(dynamicDatasource.getResolvedDefaultDataSource()).isEqualTo(primary);
+	}
+
+	@Test
+	void determineCurrentLookupKeyReturnsContextValue() {
+		DataSourceContextHolder.switchDataSource("slave1");
+		assertThat(dynamicDatasource.determineCurrentLookupKey()).isEqualTo("slave1");
+	}
+
+	@Test
+	void determineCurrentLookupKeyReturnsNullWhenNotSet() {
+		assertThat(dynamicDatasource.determineCurrentLookupKey()).isNull();
+	}
+
+	@Test
+	void resolvesToPrimaryWhenNoContextSet() throws SQLException {
 		assertThat(dynamicDatasource.unwrap(HikariDataSource.class)).isEqualTo(primary);
 		assertThat(dynamicDatasource.isWrapperFor(HikariDataSource.class)).isTrue();
+	}
 
+	@Test
+	void resolvesToSlave1WhenContextSet() throws SQLException {
 		DataSourceContextHolder.switchDataSource("slave1");
 		assertThat(dynamicDatasource.unwrap(DriverManagerDataSource.class)).isEqualTo(slave1);
 		assertThat(dynamicDatasource.isWrapperFor(DriverManagerDataSource.class)).isTrue();
+	}
 
+	@Test
+	void resolvesToSlave2WhenContextSet() throws SQLException {
 		DataSourceContextHolder.switchDataSource("slave2");
 		assertThat(dynamicDatasource.unwrap(SingleConnectionDataSource.class)).isEqualTo(slave2);
 		assertThat(dynamicDatasource.isWrapperFor(SingleConnectionDataSource.class)).isTrue();
+	}
 
+	@Test
+	void resolvesBackToPrimaryAfterClear() throws SQLException {
+		DataSourceContextHolder.switchDataSource("slave1");
 		DataSourceContextHolder.clear();
 		assertThat(dynamicDatasource.unwrap(HikariDataSource.class)).isEqualTo(primary);
-		assertThat(dynamicDatasource.isWrapperFor(HikariDataSource.class)).isTrue();
 	}
 
 }
