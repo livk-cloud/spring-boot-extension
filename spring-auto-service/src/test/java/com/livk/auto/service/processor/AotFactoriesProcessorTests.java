@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AotFactoriesProcessorTests {
 
 	@Test
-	void test() {
+	void aotFactoriesFileContainsRegistrar() {
 		compile(AotRuntimeHintsRegistrar.class, RuntimeHintsRegistrar.class);
 	}
 
