@@ -14,37 +14,26 @@
  * limitations under the License.
  */
 
-package com.livk.context.disruptor.support;
+package com.livk.context.disruptor.exception;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
  */
-class DisruptorEventWrapperTests {
+class DisruptorRegistrarExceptionTests {
 
 	@Test
-	void wrapAndUnwrapReturnsValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("root");
-		assertThat(wrapper.unwrap()).isEqualTo("root");
+	void constructWithMessage() {
+		DisruptorRegistrarException ex = new DisruptorRegistrarException("test error");
+		assertThat(ex.getMessage()).isEqualTo("test error");
 	}
 
 	@Test
-	void wrapOnlyAcceptsFirstValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("first");
-		wrapper.wrap("second");
-		assertThat(wrapper.unwrap()).isEqualTo("first");
-	}
-
-	@Test
-	void unwrapWithoutWrapThrows() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		assertThatThrownBy(wrapper::unwrap).isInstanceOf(IllegalArgumentException.class);
+	void isRuntimeException() {
+		assertThat(new DisruptorRegistrarException("test")).isInstanceOf(RuntimeException.class);
 	}
 
 }
