@@ -16,6 +16,7 @@
 
 package com.livk.context.mapstruct.converter;
 
+import com.livk.context.mapstruct.IntConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,31 +27,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ConverterPairTests {
 
 	@Test
-	void of() {
-		ConverterPair pair = ConverterPair.of(String.class, Object.class);
-
+	void ofWithClasses() {
+		ConverterPair pair = ConverterPair.of(String.class, Integer.class);
 		assertThat(pair.getSourceType()).isEqualTo(String.class);
-		assertThat(pair.getTargetType()).isEqualTo(Object.class);
-
-		ConverterPair converterPair = ConverterPair.of(new TestConverter());
-
-		assertThat(converterPair).isNotNull();
-		assertThat(converterPair.getSourceType()).isEqualTo(String.class);
-		assertThat(converterPair.getTargetType()).isEqualTo(Object.class);
+		assertThat(pair.getTargetType()).isEqualTo(Integer.class);
 	}
 
-	static class TestConverter implements Converter<String, Object> {
+	@Test
+	void ofWithConverter() {
+		ConverterPair pair = ConverterPair.of(new IntConverter());
+		assertThat(pair).isNotNull();
+		assertThat(pair.getSourceType()).isEqualTo(Integer.class);
+		assertThat(pair.getTargetType()).isEqualTo(String.class);
+	}
 
-		@Override
-		public String getSource(Object o) {
-			return o.toString();
-		}
+	@Test
+	void equalsAndHashCode() {
+		ConverterPair a = ConverterPair.of(String.class, Integer.class);
+		ConverterPair b = ConverterPair.of(String.class, Integer.class);
+		assertThat(a).isEqualTo(b);
+		assertThat(a.hashCode()).isEqualTo(b.hashCode());
+	}
 
-		@Override
-		public Object getTarget(String s) {
-			return s;
-		}
-
+	@Test
+	void notEqualWhenDifferent() {
+		ConverterPair a = ConverterPair.of(String.class, Integer.class);
+		ConverterPair b = ConverterPair.of(String.class, Long.class);
+		assertThat(a).isNotEqualTo(b);
 	}
 
 }
