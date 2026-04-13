@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SpringFactoriesProcessorTests {
 
 	@Test
-	void test() {
+	void springFactoriesFileContainsServiceImpl() {
 		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class);
 	}
 
