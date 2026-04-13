@@ -29,19 +29,45 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class CuratorPropertiesTests {
 
-	@Test
-	void curatorProperties() {
-		CuratorProperties properties = new CuratorProperties();
-		assertThat(properties).isNotNull();
+	final CuratorProperties properties = new CuratorProperties();
 
+	@Test
+	void defaultConnectString() {
 		assertThat(properties.getConnectString()).isEqualTo("localhost:2181");
+	}
+
+	@Test
+	void defaultRetryPolicy() {
 		assertThat(properties.getBaseSleepTimeMs()).isEqualTo(50);
 		assertThat(properties.getMaxRetries()).isEqualTo(10);
 		assertThat(properties.getMaxSleepMs()).isEqualTo(500);
+	}
+
+	@Test
+	void defaultBlockUntilConnected() {
 		assertThat(properties.getBlockUntilConnectedWait()).isEqualTo(10);
 		assertThat(properties.getBlockUntilConnectedUnit()).isEqualTo(TimeUnit.SECONDS);
+	}
+
+	@Test
+	void defaultSessionTimeout() {
 		assertThat(properties.getSessionTimeout()).isEqualTo(Duration.of(60 * 1000, ChronoUnit.MILLIS));
+	}
+
+	@Test
+	void defaultConnectionTimeout() {
 		assertThat(properties.getConnectionTimeout()).isEqualTo(Duration.of(15 * 1000, ChronoUnit.MILLIS));
+	}
+
+	@Test
+	void setAndGetConnectString() {
+		properties.setConnectString("zk1:2181,zk2:2181");
+		assertThat(properties.getConnectString()).isEqualTo("zk1:2181,zk2:2181");
+	}
+
+	@Test
+	void prefixIsCorrect() {
+		assertThat(CuratorProperties.PREFIX).isEqualTo("spring.zookeeper.curator");
 	}
 
 }
