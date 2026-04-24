@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="">
 <head>
   <meta charset="UTF-8">
@@ -7,9 +7,9 @@
   <meta name="generator" content="Asciidoctor 2.0.18">
   <meta name="author" content="Livk">
   <title>spring boot extension doc</title>
-  <link rel="stylesheet" href="css/site.css">
-  <script src="js/setup.js"></script>
-  <script defer src="js/site.js"></script>
+  <link rel="stylesheet" href="../css/site.css">
+  <script src="../js/setup.js"></script>
+  <script defer src="../js/site.js"></script>
 
 </head>
 <body id="spring-boot-extension-doc" class="book toc2 toc-left">
@@ -33,12 +33,12 @@
         <h1>spring boot extension doc</h1>
         <div class="details">
           <span id="author" class="author">Livk</span><br>
-          <span id="revnumber">version 2.0.1,</span>
-          <span id="revdate">2026-01-23</span>
+          <span id="revnumber">version 2.0.4,</span>
+          <span id="revdate">2026-04-24</span>
         </div>
         <div id="toc" class="toc2">
           <div id="toctitle">Table of Contents</div>
-          <span id="back-to-index"><a href="index.html">Back to index</a></span>
+          <span id="back-to-index"><a href="../index.html">Back to index</a></span>
           <ul class="sectlevel1">
             <li><a href="#_关于">1. 关于</a>
               <ul class="sectlevel2">
@@ -97,15 +97,11 @@
                         <li><a href="#_各种工具类">各种工具类</a></li>
                       </ul>
                     </li>
-                    <li><a href="#micrometer">3.2.6. micrometer</a>
-                      <ul class="sectlevel4">
-                        <li><a href="#_contextsnapshots">ContextSnapshots</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#util">3.2.7. util</a>
+                    <li><a href="#util">3.2.6. util</a>
                       <ul class="sectlevel4">
                         <li><a href="#_annotationmetadataresolver">AnnotationMetadataResolver</a></li>
                         <li><a href="#_beanlambda">BeanLambda</a></li>
+                        <li><a href="#_contextsnapshots">ContextSnapshots</a></li>
                         <li><a href="#_genericwrapper">GenericWrapper</a></li>
                         <li><a href="#_genericsbytebuddy">GenericsByteBuddy</a></li>
                         <li><a href="#_multivaluemapsplitter">MultiValueMapSplitter</a></li>
@@ -114,7 +110,7 @@
                         <li><a href="#_treenode">TreeNode</a></li>
                       </ul>
                     </li>
-                    <li><a href="#web">3.2.8. web</a>
+                    <li><a href="#web">3.2.7. web</a>
                       <ul class="sectlevel4">
                         <li><a href="#_httpparameters">HttpParameters</a></li>
                         <li><a href="#_requestwrapper">RequestWrapper</a></li>
@@ -147,11 +143,11 @@
                         <li><a href="#_dynamic_datasource_boot_starter">dynamic-datasource-boot-starter</a></li>
                       </ul>
                     </li>
-                    <li><a href="#fastexcel">3.3.4. fastexcel</a>
+                    <li><a href="#fesod">3.3.4. fesod</a>
                       <ul class="sectlevel4">
                         <li><a href="#_excel导入">Excel导入</a></li>
                         <li><a href="#_excel导出">Excel导出</a></li>
-                        <li><a href="#_fastexcel_spring_boot_starter">fastexcel-spring-boot-starter</a></li>
+                        <li><a href="#_fesod_spring_boot_starter">fesod-spring-boot-starter</a></li>
                       </ul>
                     </li>
                     <li><a href="#limit">3.3.5. limit</a>
@@ -907,32 +903,7 @@ public class App {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="micrometer"><a class="anchor" href="#micrometer"></a>3.2.6. micrometer</h4>
-                <div class="sect4">
-                  <h5 id="_contextsnapshots"><a class="anchor" href="#_contextsnapshots"></a>ContextSnapshots</h5>
-                  <div class="paragraph">
-                    <p>ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>使用示例:</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-</span><span class="fold-block">public static void main(String[] args){
-  ExecutorService service = Executors.newCachedThreadPool();
-  ExecutorService wrap = ContextSnapshots.wrap(service);
-  wrap.submit(()-&gt;{});
-}
-</span></code></pre>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="sect3">
-                <h4 id="util"><a class="anchor" href="#util"></a>3.2.7. util</h4>
+                <h4 id="util"><a class="anchor" href="#util"></a>3.2.6. util</h4>
                 <div class="sect4">
                   <h5 id="_annotationmetadataresolver"><a class="anchor" href="#_annotationmetadataresolver"></a>AnnotationMetadataResolver
                   </h5>
@@ -977,6 +948,28 @@ import java.lang.reflect.Method;
       String fieldName = BeanLambda.fieldName(Maker::getNo);
       Field field = BeanLambda.field(Maker::getNo);
     }
+}
+</span></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="sect4">
+                  <h5 id="_contextsnapshots"><a class="anchor" href="#_contextsnapshots"></a>ContextSnapshots</h5>
+                  <div class="paragraph">
+                    <p>ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播</p>
+                  </div>
+                  <div class="paragraph">
+                    <p>使用示例:</p>
+                  </div>
+                  <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+</span><span class="fold-block">public static void main(String[] args){
+  ExecutorService service = Executors.newCachedThreadPool();
+  ExecutorService wrap = ContextSnapshots.wrap(service);
+  wrap.submit(()-&gt;{});
 }
 </span></code></pre>
                     </div>
@@ -1122,7 +1115,7 @@ import java.lang.reflect.Method;
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="web"><a class="anchor" href="#web"></a>3.2.8. web</h4>
+                <h4 id="web"><a class="anchor" href="#web"></a>3.2.7. web</h4>
                 <div class="sect4">
                   <h5 id="_httpparameters"><a class="anchor" href="#_httpparameters"></a>HttpParameters</h5>
                   <div class="paragraph">
@@ -1473,14 +1466,14 @@ public class Config {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="fastexcel"><a class="anchor" href="#fastexcel"></a>3.3.4. fastexcel</h4>
+                <h4 id="fesod"><a class="anchor" href="#fesod"></a>3.3.4. fesod</h4>
                 <div class="sect4">
                   <h5 id="_excel导入"><a class="anchor" href="#_excel导入"></a>Excel导入</h5>
                   <div class="paragraph">
                     <p>使用注解 <code>@PostMapping</code> 解析Excel(支持Spring Webflux)<br>
                       @ExcelParam指定文件名称<br>
-                      parse使用自定义封装FastExcel的解析器
-                      <code>com.livk.excel.mvc.listener.InfoExcelListener</code><br></p>
+                      parse使用自定义封装fesod的解析器 <code>com.livk.excel.mvc.listener.InfoExcelListener</code><br>
+                    </p>
                   </div>
                   <div class="listingblock">
                     <div class="content">
@@ -1571,10 +1564,10 @@ public class Info2Controller {
                   </div>
                 </div>
                 <div class="sect4">
-                  <h5 id="_fastexcel_spring_boot_starter"><a class="anchor" href="#_fastexcel_spring_boot_starter"></a>fastexcel-spring-boot-starter
+                  <h5 id="_fesod_spring_boot_starter"><a class="anchor" href="#_fesod_spring_boot_starter"></a>fesod-spring-boot-starter
                   </h5>
                   <div class="paragraph">
-                    <p>artifactId: fastexcel-spring-boot-starter</p>
+                    <p>artifactId: fesod-spring-boot-starter</p>
                   </div>
                   <div class="paragraph">
                     <p>根据Servlet环境自动注册 <strong>ExcelMethodArgumentResolver</strong> 和 <strong>ExcelMethodReturnValueHandler</strong><br>
@@ -2025,8 +2018,8 @@ public class Config{
       </div>
       <div id="footer">
         <div id="footer-text">
-          Version 2.0.1<br>
-          Last updated 2026-01-23 +0800
+          Version 2.0.4<br>
+          Last updated 2026-04-24 +0800
         </div>
       </div>
     </div>

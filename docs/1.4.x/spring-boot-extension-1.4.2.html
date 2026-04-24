@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="">
 <head>
   <meta charset="UTF-8">
@@ -7,9 +7,9 @@
   <meta name="generator" content="Asciidoctor 2.0.18">
   <meta name="author" content="Livk">
   <title>spring boot extension doc</title>
-  <link rel="stylesheet" href="css/site.css">
-  <script src="js/setup.js"></script>
-  <script defer src="js/site.js"></script>
+  <link rel="stylesheet" href="../css/site.css">
+  <script src="../js/setup.js"></script>
+  <script defer src="../js/site.js"></script>
 
 </head>
 <body id="spring-boot-extension-doc" class="book toc2 toc-left">
@@ -33,12 +33,12 @@
         <h1>spring boot extension doc</h1>
         <div class="details">
           <span id="author" class="author">Livk</span><br>
-          <span id="revnumber">version 1.4.5,</span>
-          <span id="revdate">2025-04-25</span>
+          <span id="revnumber">version 1.4.2,</span>
+          <span id="revdate">2025-01-25</span>
         </div>
         <div id="toc" class="toc2">
           <div id="toctitle">Table of Contents</div>
-          <span id="back-to-index"><a href="index.html">Back to index</a></span>
+          <span id="back-to-index"><a href="../index.html">Back to index</a></span>
           <ul class="sectlevel1">
             <li><a href="#_关于">1. 关于</a>
               <ul class="sectlevel2">
@@ -57,7 +57,6 @@
                   <ul class="sectlevel3">
                     <li><a href="#_springautoservice使用示例">3.1.1. @SpringAutoService使用示例</a></li>
                     <li><a href="#_springfactories_使用示例">3.1.2. @SpringFactories 使用示例</a></li>
-                    <li><a href="#_aotfactories_使用示例">3.1.3. @AotFactories 使用示例</a></li>
                   </ul>
                 </li>
                 <li><a href="#_spring-extension-commons">3.2. spring通用工具拓展</a>
@@ -74,7 +73,7 @@
                       <ul class="sectlevel4">
                         <li><a href="#_abstractexpressionresolver">AbstractExpressionResolver</a></li>
                         <li><a href="#_cacheexpressionresolver">CacheExpressionResolver</a></li>
-                        <li><a href="#_cacheexpressionresolver_2">CacheExpressionResolver</a></li>
+                        <li><a href="#_converterexpressionresolver">ConverterExpressionResolver</a></li>
                         <li><a href="#_内置expressionresolver">内置ExpressionResolver</a></li>
                       </ul>
                     </li>
@@ -427,6 +426,9 @@ public class WebClientConfiguration {
                 <h4 id="_springfactories_使用示例"><a class="anchor" href="#_springfactories_使用示例"></a>3.1.2.
                   @SpringFactories 使用示例</h4>
                 <div class="paragraph">
+                  <p>@SpringFactories支持生成aot.factories原理基本同下，只需指定属性aot=true</p>
+                </div>
+                <div class="paragraph">
                   <p>指定接口为spring.factories的Key</p>
                 </div>
                 <div class="listingblock">
@@ -461,52 +463,6 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
                 </div>
                 <div class="paragraph">
                   <p>生成文件 META-INF/spring.factories</p>
-                </div>
-                <div class="listingblock">
-                  <div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
-    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
-                  </div>
-                </div>
-              </div>
-              <div class="sect3">
-                <h4 id="_aotfactories_使用示例"><a class="anchor" href="#_aotfactories_使用示例"></a>3.1.3.
-                  @AotFactories 使用示例</h4>
-                <div class="paragraph">
-                  <p>指定接口为aot.factories的Key</p>
-                </div>
-                <div class="listingblock">
-                  <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AotFactories(org.springframework.boot.env.EnvironmentPostProcessor)
-public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
-
-}
-</code></pre>
-                  </div>
-                </div>
-                <div class="paragraph">
-                  <p>生成文件 META-INF/spring/aot.factories</p>
-                </div>
-                <div class="listingblock">
-                  <div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties">org.springframework.boot.env.EnvironmentPostProcessor=\
-    com.livk.commons.spring.TraceEnvironmentPostProcessor</code></pre>
-                  </div>
-                </div>
-                <div class="paragraph">
-                  <p>当前类如果仅仅只有一个接口，可以不指定，自动生成</p>
-                </div>
-                <div class="listingblock">
-                  <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AotFactories
-public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
-
-}
-</code></pre>
-                  </div>
-                </div>
-                <div class="paragraph">
-                  <p>生成文件 META-INF/spring/aot.factories</p>
                 </div>
                 <div class="listingblock">
                   <div class="content">
@@ -704,16 +660,15 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
                   </div>
                 </div>
                 <div class="sect4">
-                  <h5 id="_cacheexpressionresolver_2"><a class="anchor" href="#_cacheexpressionresolver_2"></a>CacheExpressionResolver
+                  <h5 id="_converterexpressionresolver"><a class="anchor" href="#_converterexpressionresolver"></a>ConverterExpressionResolver
                   </h5>
                   <div class="paragraph">
                     <p>用于适配不同的解析工具<br>
-                      将Context转成相对于的上下文环境<br>
-                      并添加部分转换缓存<br></p>
+                      将Context转成相对于的上下文环境<br></p>
                   </div>
                   <div class="listingblock">
                     <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends CacheExpressionResolver&lt;EvaluationContext, Expression&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyExpressionResolver extends ConverterExpressionResolver&lt;EvaluationContext, Expression&gt; {
   //将上下文转成组件的上下文
     @Override
     protected EvaluationContext transform(Context context) {
@@ -763,6 +718,7 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
                     <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Slf4j
 @EnableHttpClient({
+    HttpClientType.REST_TEMPLATE,
     HttpClientType.WEB_CLIENT,
     HttpClientType.REST_CLIENT
 })
@@ -770,8 +726,10 @@ public class App {
 
     @Bean
     public ApplicationRunner applicationRunner(WebClient webClient,
+                                             RestTemplate restTemplate,
                                              RestClient restClient) {
         return args -&gt; {
+            log.info("restTemplate:{}", restTemplate);
             log.info("webClient:{}", webClient);
             log.info("restClient:{}", restClient);
         };
@@ -782,7 +740,7 @@ public class App {
                     </div>
                   </div>
                   <div class="paragraph">
-                    <p>同时提供了@EnableRestClient、@EnableWebClient作为快捷方式</p>
+                    <p>同时提供了@EnableRestClient、@EnableRestTemplate和@EnableWebClient作为快捷方式</p>
                   </div>
                 </div>
               </div>
@@ -1719,8 +1677,8 @@ public class UserController {
       </div>
       <div id="footer">
         <div id="footer-text">
-          Version 1.4.5<br>
-          Last updated 2025-04-25 +0800
+          Version 1.4.2<br>
+          Last updated 2025-01-25 +0800
         </div>
       </div>
     </div>

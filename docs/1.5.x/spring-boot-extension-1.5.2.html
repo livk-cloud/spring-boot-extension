@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="">
 <head>
   <meta charset="UTF-8">
@@ -7,9 +7,9 @@
   <meta name="generator" content="Asciidoctor 2.0.18">
   <meta name="author" content="Livk">
   <title>spring boot extension doc</title>
-  <link rel="stylesheet" href="css/site.css">
-  <script src="js/setup.js"></script>
-  <script defer src="js/site.js"></script>
+  <link rel="stylesheet" href="../css/site.css">
+  <script src="../js/setup.js"></script>
+  <script defer src="../js/site.js"></script>
 
 </head>
 <body id="spring-boot-extension-doc" class="book toc2 toc-left">
@@ -33,12 +33,12 @@
         <h1>spring boot extension doc</h1>
         <div class="details">
           <span id="author" class="author">Livk</span><br>
-          <span id="revnumber">version 1.5.5,</span>
-          <span id="revdate">2025-10-24</span>
+          <span id="revnumber">version 1.5.2,</span>
+          <span id="revdate">2025-07-25</span>
         </div>
         <div id="toc" class="toc2">
           <div id="toctitle">Table of Contents</div>
-          <span id="back-to-index"><a href="index.html">Back to index</a></span>
+          <span id="back-to-index"><a href="../index.html">Back to index</a></span>
           <ul class="sectlevel1">
             <li><a href="#_关于">1. 关于</a>
               <ul class="sectlevel2">
@@ -62,15 +62,7 @@
                 </li>
                 <li><a href="#_spring-extension-commons">3.2. spring通用工具拓展</a>
                   <ul class="sectlevel3">
-                    <li><a href="#annotation">3.2.1. annotation</a>
-                      <ul class="sectlevel4">
-                        <li><a href="#_springabstractimportselector">SpringAbstractImportSelector</a></li>
-                        <li><a href="#_autoimport">@AutoImport</a></li>
-                        <li><a href="#_annotationbasepackagesupport">AnnotationBasePackageSupport</a></li>
-                        <li><a href="#_annotationbeandefinitionscanner">AnnotationBeanDefinitionScanner</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#aop">3.2.2. aop</a>
+                    <li><a href="#aop">3.2.1. aop</a>
                       <ul class="sectlevel4">
                         <li><a href="#_annotationabstractpointcutadvisor">AnnotationAbstractPointcutAdvisor</a></li>
                         <li><a href="#_annotationabstractpointcuttypeadvisor">AnnotationAbstractPointcutTypeAdvisor</a>
@@ -78,31 +70,26 @@
                         <li><a href="#_annotationpointcut">AnnotationPointcut</a></li>
                       </ul>
                     </li>
-                    <li><a href="#expression">3.2.3. expression</a>
+                    <li><a href="#expression">3.2.2. expression</a>
                       <ul class="sectlevel4">
                         <li><a href="#_abstractexpressionresolver">AbstractExpressionResolver</a></li>
                         <li><a href="#_cacheexpressionresolver">CacheExpressionResolver</a></li>
                         <li><a href="#_内置expressionresolver">内置ExpressionResolver</a></li>
                       </ul>
                     </li>
-                    <li><a href="#http">3.2.4. http</a>
+                    <li><a href="#http">3.2.3. http</a>
                       <ul class="sectlevel4">
                         <li><a href="#_enablehttpclient">EnableHttpClient</a></li>
                       </ul>
                     </li>
-                    <li><a href="#jackson">3.2.5. jackson</a>
+                    <li><a href="#jackson">3.2.4. jackson</a>
                       <ul class="sectlevel4">
                         <li><a href="#_jacksonsupport">JacksonSupport</a></li>
                         <li><a href="#_numberjsonformat">@NumberJsonFormat</a></li>
                         <li><a href="#_各种工具类">各种工具类</a></li>
                       </ul>
                     </li>
-                    <li><a href="#micrometer">3.2.6. micrometer</a>
-                      <ul class="sectlevel4">
-                        <li><a href="#_contextsnapshots">ContextSnapshots</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#util">3.2.7. util</a>
+                    <li><a href="#util">3.2.5. util</a>
                       <ul class="sectlevel4">
                         <li><a href="#_annotationmetadataresolver">AnnotationMetadataResolver</a></li>
                         <li><a href="#_beanlambda">BeanLambda</a></li>
@@ -114,7 +101,7 @@
                         <li><a href="#_treenode">TreeNode</a></li>
                       </ul>
                     </li>
-                    <li><a href="#web">3.2.8. web</a>
+                    <li><a href="#web">3.2.6. web</a>
                       <ul class="sectlevel4">
                         <li><a href="#_httpparameters">HttpParameters</a></li>
                         <li><a href="#_requestwrapper">RequestWrapper</a></li>
@@ -185,9 +172,9 @@
                         <li><a href="#_mybatis_extension_boot_starter">mybatis-extension-boot-starter</a></li>
                       </ul>
                     </li>
-                    <li><a href="#storage">3.3.13. storage</a>
+                    <li><a href="#oss">3.3.13. oss</a>
                       <ul class="sectlevel4">
-                        <li><a href="#_storage_spring_boot_starter">storage-spring-boot-starter</a></li>
+                        <li><a href="#_oss_spring_boot_starter">oss-spring-boot-starter</a></li>
                       </ul>
                     </li>
                     <li><a href="#qrcode">3.3.14. qrcode</a>
@@ -205,12 +192,7 @@
                     </li>
                     <li><a href="#redisson-spring-boot-starter">3.3.17. redisson-spring-boot-starter</a></li>
                     <li><a href="#sequence">3.3.18. sequence</a></li>
-                    <li><a href="#storage">3.3.19. storage</a>
-                      <ul class="sectlevel4">
-                        <li><a href="#_storage_spring_boot_starter_2">storage-spring-boot-starter</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#useragent">3.3.20. useragent</a>
+                    <li><a href="#useragent">3.3.19. useragent</a>
                       <ul class="sectlevel4">
                         <li><a href="#_browscap_spring_boot_starter">browscap-spring-boot-starter</a></li>
                         <li><a href="#_yauaa_spring_boot_starter">yauaa-spring-boot-starter</a></li>
@@ -588,84 +570,7 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="annotation"><a class="anchor" href="#annotation"></a>3.2.1. annotation</h4>
-                <div class="sect4">
-                  <h5 id="_springabstractimportselector"><a class="anchor" href="#_springabstractimportselector"></a>SpringAbstractImportSelector
-                  </h5>
-                  <div class="paragraph">
-                    <p>
-                      通过继承AutoConfigurationImportSelector，可以实现自动导入spring的配置文件，导入文件为META-INF/spring/{annotationClass}.imports,需要使用org.springframework.context.annotation.Import进行注册</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>使用示例:</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public @interface Http{
-
-}
-
-public class HttpImportSelector extends SpringAbstractImportSelector&lt;Http&gt;{
-
-}
-</code></pre>
-                    </div>
-                  </div>
-                </div>
-                <div class="sect4">
-                  <h5 id="_autoimport"><a class="anchor" href="#_autoimport"></a>@AutoImport</h5>
-                  <div class="paragraph">
-                    <p>使用AutoImport自动进行注册，作用于注解上，功能同SpringAbstractImportSelector类似</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>使用示例:</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AutoImport
-public @interface Http{
-
-}
-</code></pre>
-                    </div>
-                  </div>
-                </div>
-                <div class="sect4">
-                  <h5 id="_annotationbasepackagesupport"><a class="anchor" href="#_annotationbasepackagesupport"></a>AnnotationBasePackageSupport
-                  </h5>
-                  <div class="paragraph">
-                    <p>用于快速获取basePackage<br>
-                      使用注解方式获取，注解需包含basePackages和basePackageClasses</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>示例:</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface DisruptorScan {
-
-    String[] basePackages() default {};
-
-    Class&lt;?&gt;[] basePackageClasses() default {};
-
-}
-</code></pre>
-                    </div>
-                  </div>
-                </div>
-                <div class="sect4">
-                  <h5 id="_annotationbeandefinitionscanner"><a class="anchor"
-                                                               href="#_annotationbeandefinitionscanner"></a>AnnotationBeanDefinitionScanner
-                  </h5>
-                  <div class="paragraph">
-                    <p>用于快速扫描bean，使用注解方式获取</p>
-                  </div>
-                </div>
-              </div>
-              <div class="sect3">
-                <h4 id="aop"><a class="anchor" href="#aop"></a>3.2.2. aop</h4>
+                <h4 id="aop"><a class="anchor" href="#aop"></a>3.2.1. aop</h4>
                 <div class="sect4">
                   <h5 id="_annotationabstractpointcutadvisor"><a class="anchor"
                                                                  href="#_annotationabstractpointcutadvisor"></a>AnnotationAbstractPointcutAdvisor
@@ -750,7 +655,7 @@ public @interface DisruptorScan {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="expression"><a class="anchor" href="#expression"></a>3.2.3. expression</h4>
+                <h4 id="expression"><a class="anchor" href="#expression"></a>3.2.2. expression</h4>
                 <div class="sect4">
                   <h5 id="_abstractexpressionresolver"><a class="anchor" href="#_abstractexpressionresolver"></a>AbstractExpressionResolver
                   </h5>
@@ -844,7 +749,7 @@ public @interface DisruptorScan {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="http"><a class="anchor" href="#http"></a>3.2.4. http</h4>
+                <h4 id="http"><a class="anchor" href="#http"></a>3.2.3. http</h4>
                 <div class="sect4">
                   <h5 id="_enablehttpclient"><a class="anchor" href="#_enablehttpclient"></a>EnableHttpClient</h5>
                   <div class="paragraph">
@@ -881,7 +786,7 @@ public class App {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="jackson"><a class="anchor" href="#jackson"></a>3.2.5. jackson</h4>
+                <h4 id="jackson"><a class="anchor" href="#jackson"></a>3.2.4. jackson</h4>
                 <div class="sect4">
                   <h5 id="_jacksonsupport"><a class="anchor" href="#_jacksonsupport"></a>JacksonSupport</h5>
                   <div class="paragraph">
@@ -919,32 +824,7 @@ public class App {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="micrometer"><a class="anchor" href="#micrometer"></a>3.2.6. micrometer</h4>
-                <div class="sect4">
-                  <h5 id="_contextsnapshots"><a class="anchor" href="#_contextsnapshots"></a>ContextSnapshots</h5>
-                  <div class="paragraph">
-                    <p>ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>使用示例:</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-</span><span class="fold-block">public static void main(String[] args){
-  ExecutorService service = Executors.newCachedThreadPool();
-  ExecutorService wrap = ContextSnapshots.wrap(service);
-  wrap.submit(()-&gt;{});
-}
-</span></code></pre>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="sect3">
-                <h4 id="util"><a class="anchor" href="#util"></a>3.2.7. util</h4>
+                <h4 id="util"><a class="anchor" href="#util"></a>3.2.5. util</h4>
                 <div class="sect4">
                   <h5 id="_annotationmetadataresolver"><a class="anchor" href="#_annotationmetadataresolver"></a>AnnotationMetadataResolver
                   </h5>
@@ -1134,7 +1014,7 @@ import java.lang.reflect.Method;
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="web"><a class="anchor" href="#web"></a>3.2.8. web</h4>
+                <h4 id="web"><a class="anchor" href="#web"></a>3.2.6. web</h4>
                 <div class="sect4">
                   <h5 id="_httpparameters"><a class="anchor" href="#_httpparameters"></a>HttpParameters</h5>
                   <div class="paragraph">
@@ -1917,20 +1797,20 @@ public class User implements Serializable {
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="storage"><a class="anchor" href="#storage"></a>3.3.13. storage</h4>
+                <h4 id="oss"><a class="anchor" href="#oss"></a>3.3.13. oss</h4>
                 <div class="sect4">
-                  <h5 id="_storage_spring_boot_starter"><a class="anchor" href="#_storage_spring_boot_starter"></a>storage-spring-boot-starter
+                  <h5 id="_oss_spring_boot_starter"><a class="anchor" href="#_oss_spring_boot_starter"></a>oss-spring-boot-starter
                   </h5>
                   <div class="paragraph">
-                    <p>artifactId: storage-spring-boot-starter</p>
+                    <p>artifactId: oss-spring-boot-starter</p>
                   </div>
                   <div class="paragraph">
-                    <p>提供Minio的存储服务装配</p>
+                    <p>提供Minio的OSS服务装配</p>
                   </div>
                   <div class="listingblock">
                     <div class="content">
 <pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
-  storage:
+  oss:
     access-key: admin
     secret-key: 1375632510
     endpoint: http://localhost:9000
@@ -1938,7 +1818,7 @@ public class User implements Serializable {
                     </div>
                   </div>
                   <div class="paragraph">
-                    <p>即可直接使用AutoWire注入MinioClient和StorageTemplate</p>
+                    <p>即可直接使用AutoWire注入MinioClient和OSSTemplate</p>
                   </div>
                 </div>
               </div>
@@ -2083,33 +1963,7 @@ public class Config{
                 </div>
               </div>
               <div class="sect3">
-                <h4 id="storage"><a class="anchor" href="#storage"></a>3.3.19. storage</h4>
-                <div class="sect4">
-                  <h5 id="_storage_spring_boot_starter_2"><a class="anchor" href="#_storage_spring_boot_starter_2"></a>storage-spring-boot-starter
-                  </h5>
-                  <div class="paragraph">
-                    <p>artifactId: storage-spring-boot-starter</p>
-                  </div>
-                  <div class="paragraph">
-                    <p>提供Minio的存储服务装配</p>
-                  </div>
-                  <div class="listingblock">
-                    <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">spring:
-  storage:
-    access-key: admin
-    secret-key: 1375632510
-    endpoint: http://localhost:9000
-    type: minio</code></pre>
-                    </div>
-                  </div>
-                  <div class="paragraph">
-                    <p>即可直接使用AutoWire注入MinioClient和StorageTemplate</p>
-                  </div>
-                </div>
-              </div>
-              <div class="sect3">
-                <h4 id="useragent"><a class="anchor" href="#useragent"></a>3.3.20. useragent</h4>
+                <h4 id="useragent"><a class="anchor" href="#useragent"></a>3.3.19. useragent</h4>
                 <div class="sect4">
                   <h5 id="_browscap_spring_boot_starter"><a class="anchor" href="#_browscap_spring_boot_starter"></a>browscap-spring-boot-starter
                   </h5>
@@ -2144,8 +1998,8 @@ public class Config{
       </div>
       <div id="footer">
         <div id="footer-text">
-          Version 1.5.5<br>
-          Last updated 2025-10-24 +0800
+          Version 1.5.2<br>
+          Last updated 2025-07-25 +0800
         </div>
       </div>
     </div>
