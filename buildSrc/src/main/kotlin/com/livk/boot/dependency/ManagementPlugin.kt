@@ -42,15 +42,26 @@ abstract class ManagementPlugin : Plugin<Project> {
 			isCanBeConsumed = false
 			val plugins = project.plugins
 			plugins.withType(JavaPlugin::class.java).configureEach {
-				project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.forEach { sourceSet ->
-					configurations.getByName(sourceSet.compileClasspathConfigurationName).extendsFrom(this@create)
-					configurations.getByName(sourceSet.runtimeClasspathConfigurationName).extendsFrom(this@create)
-					configurations.getByName(sourceSet.annotationProcessorConfigurationName).extendsFrom(this@create)
-				}
+				project.extensions.getByType(JavaPluginExtension::class.java)
+					.sourceSets.configureEach {
+						configurations.named(compileClasspathConfigurationName) {
+							extendsFrom(this@create)
+						}
+						configurations.named(runtimeClasspathConfigurationName) {
+							extendsFrom(this@create)
+						}
+						configurations.named(annotationProcessorConfigurationName) {
+							extendsFrom(this@create)
+						}
+					}
 			}
-			plugins.withType(JavaTestFixturesPlugin::class.java) {
-				configurations.getByName("testFixturesCompileClasspath").extendsFrom(this@create)
-				configurations.getByName("testFixturesRuntimeClasspath").extendsFrom(this@create)
+			plugins.withType(JavaTestFixturesPlugin::class.java).configureEach {
+				configurations.named("testFixturesCompileClasspath") {
+					extendsFrom(this@create)
+				}
+				configurations.named("testFixturesRuntimeClasspath") {
+					extendsFrom(this@create)
+				}
 			}
 			plugins.withType(MavenPublishPlugin::class.java) {
 				project.extensions.getByType(PublishingExtension::class.java).publications
