@@ -30,19 +30,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ResourceUtilsTests {
 
+	static final String FILE_NAME = "input.json";
+
 	@Test
-	void getResource() throws IOException {
-		String fileName = "input.json";
-		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
-
-		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
-
+	void getResourceReturnsMatchingFile() throws IOException {
+		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
+		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
 		assertThat(resource.getFile()).isEqualTo(file);
+	}
 
-		Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + fileName);
-		for (Resource resourceObj : resources) {
-			assertThat(resourceObj.getFile()).isEqualTo(file);
-		}
+	@Test
+	void getResourcesReturnsMatchingFiles() throws IOException {
+		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
+		Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + FILE_NAME);
+		assertThat(resources).hasSize(1).extracting(Resource::getFile).containsExactly(file);
 	}
 
 }

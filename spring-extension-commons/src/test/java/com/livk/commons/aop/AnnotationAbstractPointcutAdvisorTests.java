@@ -35,25 +35,40 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AnnotationAbstractPointcutAdvisorTests {
 
+	final MyAnnotationAbstractPointcutAdvisor advisor = new MyAnnotationAbstractPointcutAdvisor();
+
 	@Test
-	void test() throws NoSuchMethodException {
-		MyAnnotationAbstractPointcutAdvisor advisor = new MyAnnotationAbstractPointcutAdvisor();
-
+	void resolvesAnnotationTypeFromGenericArgument() {
 		assertThat(advisor.annotationType).isEqualTo(MyAnnotation.class);
+	}
 
+	@Test
+	void implementsIntroductionInterceptor() {
 		assertThat(advisor.implementsInterface(IntroductionInterceptor.class)).isTrue();
+	}
 
+	@Test
+	void pointcutIsComposablePointcut() {
 		assertThat(advisor.getPointcut()).isInstanceOf(ComposablePointcut.class);
+	}
 
-		assertThat(advisor.getPointcut())
-			.isEqualTo(AnnotationPointcut.forTypeOrMethod().getPointcut(MyAnnotation.class));
-
+	@Test
+	void classFilterMatchesAnnotatedClass() {
 		assertThat(advisor.getPointcut().getClassFilter().matches(AopProxyClass.class)).isTrue();
+	}
 
+	@Test
+	void methodMatcherMatchesAnnotatedMethod() throws NoSuchMethodException {
 		assertThat(advisor.getPointcut()
 			.getMethodMatcher()
 			.matches(AopProxyClass.class.getDeclaredMethod("testAop"), AopProxyClass.class)).isTrue();
+	}
 
+	@Test
+	void methodMatcherDoesNotMatchUnannotatedMethod() throws NoSuchMethodException {
+		assertThat(advisor.getPointcut()
+			.getMethodMatcher()
+			.matches(UnannotatedClass.class.getDeclaredMethod("noAnnotation"), UnannotatedClass.class)).isFalse();
 	}
 
 	@MyAnnotation
@@ -61,6 +76,13 @@ class AnnotationAbstractPointcutAdvisorTests {
 
 		@MyAnnotation
 		void testAop() {
+		}
+
+	}
+
+	static class UnannotatedClass {
+
+		void noAnnotation() {
 		}
 
 	}

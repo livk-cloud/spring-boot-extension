@@ -16,10 +16,12 @@
 
 package com.livk.context.dynamic;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,24 +30,77 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class DataSourceContextHolderTests {
 
+	@AfterEach
+	void tearDown() {
+		DataSourceContextHolder.clear();
+	}
+
 	@Test
-	void test() {
+	void switchDataSourceSetsValue() {
+		DataSourceContextHolder.switchDataSource("mysql");
+		assertThat(DataSourceContextHolder.getDataSource()).isEqualTo("mysql");
+	}
 
-		try (ExecutorService service = Executors.newFixedThreadPool(2)) {
-			String datasource = "mysql";
+	@Test
+	void switchDataSourceNonInheritableNotVisibleInChildThread() throws Exception {
+		DataSourceContextHolder.switchDataSource("mysql", false);
+		assertThat(DataSourceContextHolder.getDataSource()).isEqualTo("mysql");
 
-			DataSourceContextHolder.switchDataSource(datasource, true);
-			assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource);
-			service.execute(() -> assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource));
-			DataSourceContextHolder.clear();
-
-			assertThat(DataSourceContextHolder.getDataSource()).isNull();
-
-			DataSourceContextHolder.switchDataSource(datasource, false);
-			assertThat(DataSourceContextHolder.getDataSource()).isEqualTo(datasource);
-			service.execute(() -> assertThat(DataSourceContextHolder.getDataSource()).isNull());
-			DataSourceContextHolder.clear();
+		try (ExecutorService service = Executors.newSingleThreadExecutor()) {
+			Future<String> future = service.submit(DataSourceContextHolder::getDataSource);
+			assertThat(future.get()).isNull();
 		}
+	}
+
+	@Test
+	void switchDataSourceInheritableVisibleInChildThread() throws Exception {
+		DataSourceContextHolder.switchDataSource("mysql", true);
+		assertThat(DataSourceContextHolder.getDataSource()).isEqualTo("mysql");
+
+		try (ExecutorService service = Executors.newSingleThreadExecutor()) {
+			Future<String> future = service.submit(DataSourceContextHolder::getDataSource);
+			assertThat(future.get()).isEqualTo("mysql");
+		}
+	}
+
+	@Test
+	void clearRemovesDataSource() {
+		DataSourceContextHolder.switchDataSource("mysql");
+		DataSourceContextHolder.clear();
+		assertThat(DataSourceContextHolder.getDataSource()).isNull();
+	}
+
+	@Test
+	void switchDataSourceWithEmptyStringClears() {
+		DataSourceContextHolder.switchDataSource("mysql");
+		DataSourceContextHolder.switchDataSource("");
+		assertThat(DataSourceContextHolder.getDataSource()).isNull();
+	}
+
+	@Test
+	void switchDataSourceWithNullClears() {
+		DataSourceContextHolder.switchDataSource("mysql");
+		DataSourceContextHolder.switchDataSource(null);
+		assertThat(DataSourceContextHolder.getDataSource()).isNull();
+	}
+
+	@Test
+	void getDataSourceReturnsNullWhenNotSet() {
+		assertThat(DataSourceContextHolder.getDataSource()).isNull();
+	}
+
+	@Test
+	void switchToInheritableClearsNonInheritable() {
+		DataSourceContextHolder.switchDataSource("mysql", false);
+		DataSourceContextHolder.switchDataSource("postgres", true);
+		assertThat(DataSourceContextHolder.getDataSource()).isEqualTo("postgres");
+	}
+
+	@Test
+	void switchToNonInheritableClearsInheritable() {
+		DataSourceContextHolder.switchDataSource("mysql", true);
+		DataSourceContextHolder.switchDataSource("postgres", false);
+		assertThat(DataSourceContextHolder.getDataSource()).isEqualTo("postgres");
 	}
 
 }

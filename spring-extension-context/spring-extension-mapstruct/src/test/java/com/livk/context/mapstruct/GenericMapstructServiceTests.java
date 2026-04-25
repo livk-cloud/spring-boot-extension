@@ -17,6 +17,7 @@
 package com.livk.context.mapstruct;
 
 import com.livk.context.mapstruct.converter.Converter;
+import com.livk.context.mapstruct.exception.ConverterNotFoundException;
 import com.livk.context.mapstruct.repository.InMemoryConverterRepository;
 import com.livk.context.mapstruct.repository.SpringMapstructLocator;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,11 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.List;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -37,18 +42,48 @@ class GenericMapstructServiceTests {
 	private GenericMapstructService service;
 
 	@Test
-	void test() {
+	void addConverterReturnsConverter() {
 		DoubleConverter converter = new DoubleConverter();
+		assertThat(service.addConverter(converter)).isNotNull().isInstanceOf(DoubleConverter.class);
+	}
 
-		assertThat(service.addConverter(converter)).isEqualTo(converter);
-
+	@Test
+	void convertStringToInteger() {
 		assertThat(service.convert("123", Integer.class)).isEqualTo(123);
-		assertThat(service.convert("123", Long.class)).isEqualTo(123L);
-		assertThat(service.convert("123.1", Double.class)).isEqualTo(123.1);
+	}
 
+	@Test
+	void convertStringToLong() {
+		assertThat(service.convert("123", Long.class)).isEqualTo(123L);
+	}
+
+	@Test
+	void convertIntegerToString() {
 		assertThat(service.convert(123, String.class)).isEqualTo("123");
-		assertThat(service.convert(123L, String.class)).isEqualTo("123");
+	}
+
+	@Test
+	void convertWithDynamicallyAddedConverter() {
+		service.addConverter(new DoubleConverter());
+		assertThat(service.convert("123.1", Double.class)).isEqualTo(123.1);
 		assertThat(service.convert(123.1, String.class)).isEqualTo("123.1");
+	}
+
+	@Test
+	void convertListReturnsConvertedList() {
+		List<Integer> result = service.convertList(List.of("1", "2", "3"), Integer.class);
+		assertThat(result).containsExactly(1, 2, 3);
+	}
+
+	@Test
+	void convertSetReturnsConvertedSet() {
+		Set<Integer> result = service.convertSet(List.of("1", "2", "3"), Integer.class);
+		assertThat(result).containsExactlyInAnyOrder(1, 2, 3);
+	}
+
+	@Test
+	void convertWithUnknownTypeThrows() {
+		assertThatThrownBy(() -> service.convert("test", Float.class)).isInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@TestConfiguration

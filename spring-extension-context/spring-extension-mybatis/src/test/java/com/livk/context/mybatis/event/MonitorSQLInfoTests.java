@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MonitorSQLInfoTests {
 
 	@Test
-	void test() {
+	void recordHoldsSqlAndTimeout() {
 		String sql = "select * from user";
 		long time = 1000L;
 		MonitorSQLInfo info = new MonitorSQLInfo(sql, time);

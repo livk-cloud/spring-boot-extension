@@ -19,9 +19,6 @@ package com.livk.commons.util;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -29,33 +26,34 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class BeanLambdaTests {
 
-	final Field field1 = Maker.class.getDeclaredField("no");
-
-	final Field field2 = Maker.class.getDeclaredField("username");
-
-	final Method method1 = Maker.class.getMethod("getNo");
-
-	final Method method2 = Maker.class.getMethod("getUsername");
-
-	BeanLambdaTests() throws NoSuchFieldException, NoSuchMethodException {
+	@Test
+	void methodNameReturnsGetterName() {
+		assertThat(BeanLambda.methodName(Maker::getNo)).isEqualTo("getNo");
+		assertThat(BeanLambda.methodName(Maker::getUsername)).isEqualTo("getUsername");
 	}
 
 	@Test
-	void method() {
-		assertThat(BeanLambda.methodName(Maker::getNo)).isEqualTo(method1.getName());
-		assertThat(BeanLambda.methodName(Maker::getUsername)).isEqualTo(method2.getName());
-
-		assertThat(BeanLambda.method(Maker::getNo)).isEqualTo(method1);
-		assertThat(BeanLambda.method(Maker::getUsername)).isEqualTo(method2);
+	void methodReturnsGetterMethod() throws NoSuchMethodException {
+		assertThat(BeanLambda.method(Maker::getNo)).isEqualTo(Maker.class.getMethod("getNo"));
+		assertThat(BeanLambda.method(Maker::getUsername)).isEqualTo(Maker.class.getMethod("getUsername"));
 	}
 
 	@Test
-	void field() {
-		assertThat(BeanLambda.fieldName(Maker::getNo)).isEqualTo(field1.getName());
-		assertThat(BeanLambda.fieldName(Maker::getUsername)).isEqualTo(field2.getName());
+	void fieldNameReturnsPropertyName() {
+		assertThat(BeanLambda.fieldName(Maker::getNo)).isEqualTo("no");
+		assertThat(BeanLambda.fieldName(Maker::getUsername)).isEqualTo("username");
+	}
 
-		assertThat(BeanLambda.field(Maker::getNo)).isEqualTo(field1);
-		assertThat(BeanLambda.field(Maker::getUsername)).isEqualTo(field2);
+	@Test
+	void fieldReturnsMatchingDeclaredField() throws NoSuchFieldException {
+		assertThat(BeanLambda.field(Maker::getNo)).isEqualTo(Maker.class.getDeclaredField("no"));
+		assertThat(BeanLambda.field(Maker::getUsername)).isEqualTo(Maker.class.getDeclaredField("username"));
+	}
+
+	@Test
+	void fieldTypeMatchesPropertyType() {
+		assertThat(BeanLambda.field(Maker::getNo).getType()).isEqualTo(Integer.class);
+		assertThat(BeanLambda.field(Maker::getUsername).getType()).isEqualTo(String.class);
 	}
 
 	@Data

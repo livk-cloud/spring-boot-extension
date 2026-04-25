@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ClassPathDisruptorScannerTests {
 
 	@Test
-	void test() {
+	void scanFindsAnnotatedClassAndRegistersBean() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(context, DefaultBeanNameGenerator.INSTANCE);
 		int result = scanner.scan(ClassPathDisruptorScannerTests.class.getPackageName());
@@ -43,7 +43,7 @@ class ClassPathDisruptorScannerTests {
 	}
 
 	@Test
-	void testEmptyPackage() {
+	void scanEmptyPackageRegistersNothing() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		ClassPathDisruptorScanner scanner = new ClassPathDisruptorScanner(context, DefaultBeanNameGenerator.INSTANCE);
 		int result = scanner.scan(ClassPathDisruptorScannerTests.class.getPackageName() + ".empty");

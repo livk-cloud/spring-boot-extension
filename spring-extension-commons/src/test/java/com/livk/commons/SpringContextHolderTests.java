@@ -22,7 +22,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
 
 import java.util.Map;
@@ -38,42 +37,34 @@ class SpringContextHolderTests {
 		.withPropertyValues("spring.data.redis.host=livk.com")
 		.withBean(SpringContextHolder.class, SpringContextHolder::new);
 
-	final BeanTest bean = new BeanTest();
-
 	@Test
 	void getBean() {
 		contextRunner.run(ctx -> {
+			BeanTest bean = new BeanTest();
 			SpringContextHolder.registerBean(bean, "test");
 			assertThat(SpringContextHolder.<BeanTest>getBean("test")).isSameAs(bean);
 			assertThat(SpringContextHolder.getBean(BeanTest.class)).isSameAs(bean);
 			assertThat(SpringContextHolder.getBean("test", BeanTest.class)).isSameAs(bean);
-			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
-				context.removeBeanDefinition("test");
-			}
 		});
 	}
 
 	@Test
 	void getBeanProvider() {
 		contextRunner.run(ctx -> {
+			BeanTest bean = new BeanTest();
 			SpringContextHolder.registerBean(bean, "test");
 			ResolvableType resolvableType = ResolvableType.forClass(BeanTest.class);
 			assertThat(SpringContextHolder.getBeanProvider(BeanTest.class).getIfAvailable()).isSameAs(bean);
 			assertThat(SpringContextHolder.getBeanProvider(resolvableType).getIfAvailable()).isSameAs(bean);
-			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
-				context.removeBeanDefinition("test");
-			}
 		});
 	}
 
 	@Test
 	void getBeansOfType() {
 		contextRunner.run(ctx -> {
+			BeanTest bean = new BeanTest();
 			SpringContextHolder.registerBean(bean, "test");
 			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class)).isEqualTo(Map.of("test", bean));
-			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
-				context.removeBeanDefinition("test");
-			}
 		});
 	}
 
@@ -108,6 +99,7 @@ class SpringContextHolderTests {
 	@Test
 	void registerBean() {
 		contextRunner.run(ctx -> {
+			BeanTest bean = new BeanTest();
 			SpringContextHolder.registerBean(bean, "test1");
 			RootBeanDefinition beanDefinition = new RootBeanDefinition();
 			beanDefinition.setBeanClass(bean.getClass());
@@ -115,10 +107,6 @@ class SpringContextHolderTests {
 			SpringContextHolder.registerBean(beanDefinition, "test2");
 			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class))
 				.isEqualTo(Map.of("test1", bean, "test2", bean));
-			if (SpringContextHolder.fetch() instanceof GenericApplicationContext context) {
-				context.removeBeanDefinition("test1");
-				context.removeBeanDefinition("test2");
-			}
 		});
 	}
 

@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         distribution: [ temurin ]
-        java: [ 21 ,25 ]
+        java: [ 21 ,25 ,26 ]
 
     name: JDK ${{ matrix.java }}
 
@@ -32,14 +32,14 @@ jobs:
             ~/*.gradle*
             ~/**/gradle-wrapper.properties
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5.0.2
+        uses: gradle/actions/setup-gradle@v6.1.0
 
       - name: Gradle Run Build
         run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
 
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.java == 21 }}
-        uses: codecov/codecov-action@v5.5.3
+        uses: codecov/codecov-action@v6.0.0
         env:
           token: ${{ secrets.CODECOV_TOKEN }}
 

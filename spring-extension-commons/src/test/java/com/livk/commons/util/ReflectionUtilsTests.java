@@ -17,10 +17,10 @@
 package com.livk.commons.util;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
@@ -38,49 +38,101 @@ class ReflectionUtilsTests {
 	ReflectionUtilsTests() throws NoSuchFieldException {
 	}
 
+	// --- setFieldAndAccessible ---
+
 	@Test
-	void setFieldAndAccessibleTest() {
+	void setFieldAndAccessible() {
 		Maker maker = new Maker();
 		ReflectionUtils.setFieldAndAccessible(fieldNo, maker, 2);
 		assertThat(maker.getNo()).isEqualTo(2);
 	}
 
-	@Test
-	void getReadMethod() throws InvocationTargetException, IllegalAccessException {
-		Maker maker = new Maker();
-		maker.setNo(10);
-		maker.setUsername("root");
-		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
-		assertThat(readMethod.getName()).isEqualTo("getNo");
-		assertThat(readMethod.invoke(maker)).isEqualTo(10);
+	// --- getReadMethod / getReadMethods ---
 
-		Set<Method> readMethods = ReflectionUtils.getReadMethods(Maker.class);
-		Set<String> methodNames = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
-		assertThat(methodNames).containsExactlyInAnyOrder("getNo", "getUsername");
+	@Test
+	void getReadMethodReturnsGetter() {
+		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
+		assertThat(readMethod).isNotNull();
+		assertThat(readMethod.getName()).isEqualTo("getNo");
 	}
 
 	@Test
-	void getWriteMethod() throws InvocationTargetException, IllegalAccessException {
+	void getReadMethodInvokesCorrectly() throws Exception {
 		Maker maker = new Maker();
 		maker.setNo(10);
-		maker.setUsername("root");
-		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
-		assertThat(writeMethod.getName()).isEqualTo("setNo");
+		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
+		assertThat(readMethod.invoke(maker)).isEqualTo(10);
+	}
 
+	@Test
+	void getReadMethodsReturnsAllGetters() {
+		Set<Method> readMethods = ReflectionUtils.getReadMethods(Maker.class);
+		Set<String> names = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
+		assertThat(names).containsExactlyInAnyOrder("getNo", "getUsername");
+	}
+
+	// --- getWriteMethod / getWriteMethods ---
+
+	@Test
+	void getWriteMethodReturnsSetter() {
+		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
+		assertThat(writeMethod).isNotNull();
+		assertThat(writeMethod.getName()).isEqualTo("setNo");
+	}
+
+	@Test
+	void getWriteMethodInvokesCorrectly() throws Exception {
+		Maker maker = new Maker();
+		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
 		writeMethod.invoke(maker, 20);
 		assertThat(maker.getNo()).isEqualTo(20);
-
-		Set<Method> writeMethods = ReflectionUtils.getWriteMethods(Maker.class);
-		Set<String> methodNames = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
-		assertThat(methodNames).containsExactlyInAnyOrder("setNo", "setUsername");
 	}
 
 	@Test
-	void getAllFields() {
-		List<Field> fields = ReflectionUtils.getAllFields(Maker.class);
-		List<String> fieldNames = fields.stream().map(Field::getName).collect(Collectors.toList());
+	void getWriteMethodsReturnsAllSetters() {
+		Set<Method> writeMethods = ReflectionUtils.getWriteMethods(Maker.class);
+		Set<String> names = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
+		assertThat(names).containsExactlyInAnyOrder("setNo", "setUsername");
+	}
+
+	// --- getAllFields ---
+
+	@Test
+	void getAllFieldsReturnsDeclaredFields() {
+		List<String> fieldNames = ReflectionUtils.getAllFields(Maker.class)
+			.stream()
+			.map(Field::getName)
+			.collect(Collectors.toList());
 		assertThat(fieldNames).containsExactly("no", "username");
 	}
+
+	@Test
+	void getAllFieldsIncludesParentFields() {
+		List<String> fieldNames = ReflectionUtils.getAllFields(SubMaker.class)
+			.stream()
+			.map(Field::getName)
+			.collect(Collectors.toList());
+		assertThat(fieldNames).containsExactly("extra", "no", "username");
+	}
+
+	// --- getDeclaredFieldValue ---
+
+	@Test
+	void getDeclaredFieldValueReadsPrivateField() {
+		Maker maker = new Maker();
+		maker.setNo(42);
+		Object value = ReflectionUtils.getDeclaredFieldValue(fieldNo, maker);
+		assertThat(value).isEqualTo(42);
+	}
+
+	@Test
+	void getDeclaredFieldValueReturnsNullForUnsetField() {
+		Maker maker = new Maker();
+		Object value = ReflectionUtils.getDeclaredFieldValue(fieldNo, maker);
+		assertThat(value).isNull();
+	}
+
+	// --- test helper types ---
 
 	@Data
 	static class Maker {
@@ -88,6 +140,14 @@ class ReflectionUtilsTests {
 		private Integer no;
 
 		private String username;
+
+	}
+
+	@Data
+	@EqualsAndHashCode(callSuper = true)
+	static class SubMaker extends Maker {
+
+		private String extra;
 
 	}
 

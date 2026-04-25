@@ -19,17 +19,15 @@ package com.livk.commons.expression;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
  */
 class ContextFactoryTests {
-
-	private final Map<String, String> map = Map.of("username", "livk");
 
 	private final Method method = ParseMethod.class.getDeclaredMethod("parseMethod", String.class);
 
@@ -39,28 +37,58 @@ class ContextFactoryTests {
 	}
 
 	@Test
-	void testContextCreationFromFactory() {
+	void createFromMethodAndArgs() {
 		Context context = contextFactory.create(method, new String[] { "livk" });
-
-		assertThat(context.asMap()).hasSize(map.size());
-		assertThat(context.asMap().keySet()).isEqualTo(map.keySet());
-		assertThat(context.asMap().entrySet()).isEqualTo(map.entrySet());
+		assertThat(context.asMap()).containsExactlyInAnyOrderEntriesOf(Map.of("username", "livk"));
 	}
 
 	@Test
-	void testContextCreationFromMap() {
-		HashMap<String, Object> contextMap = new HashMap<>(
-				contextFactory.create(method, new String[] { "root" }).asMap());
-		contextMap.putAll(map);
-		Context context = Context.create(contextMap);
+	void createWithNullArgsReturnsEmptyContext() {
+		Context context = contextFactory.create(method, null);
+		assertThat(context.asMap()).isEmpty();
+	}
 
-		assertThat(context.asMap()).hasSize(1);
-		assertThat(context.asMap().keySet()).isEqualTo(contextMap.keySet());
-		assertThat(context.asMap().entrySet()).isEqualTo(contextMap.entrySet());
-		assertThat(context.asMap()).containsKey("username");
-		assertThat(context.asMap()).doesNotContainValue("root");
-		assertThat(context.asMap()).containsValue("livk");
-		assertThat(context.asMap().get("username")).isEqualTo("livk");
+	@Test
+	void createWithMismatchedArgsLengthReturnsEmptyContext() {
+		Context context = contextFactory.create(method, new Object[] { "a", "b" });
+		assertThat(context.asMap()).isEmpty();
+	}
+
+	@Test
+	void createEmptyContext() {
+		Context context = Context.create();
+		assertThat(context.asMap()).isEmpty();
+	}
+
+	@Test
+	void createFromMap() {
+		Context context = Context.create(Map.of("key", "value"));
+		assertThat(context.asMap()).containsExactlyInAnyOrderEntriesOf(Map.of("key", "value"));
+	}
+
+	@Test
+	void putAddsEntry() {
+		Context context = Context.create().put("username", "livk").put("password", "123456");
+		assertThat(context.asMap()).containsEntry("username", "livk").containsEntry("password", "123456").hasSize(2);
+	}
+
+	@Test
+	void putAllMergesEntries() {
+		Context context = Context.create().put("username", "root").putAll(Map.of("username", "livk", "extra", "val"));
+		assertThat(context.asMap()).containsEntry("username", "livk").containsEntry("extra", "val").hasSize(2);
+	}
+
+	@Test
+	void asMapReturnsUnmodifiableMap() {
+		Context context = Context.create(Map.of("key", "value"));
+		assertThatThrownBy(() -> context.asMap().put("new", "entry")).isInstanceOf(UnsupportedOperationException.class);
+	}
+
+	@Test
+	void defaultFactoryConstantIsNotNull() {
+		assertThat(ContextFactory.DEFAULT_FACTORY).isNotNull();
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, new String[] { "livk" });
+		assertThat(context.asMap()).containsEntry("username", "livk");
 	}
 
 }

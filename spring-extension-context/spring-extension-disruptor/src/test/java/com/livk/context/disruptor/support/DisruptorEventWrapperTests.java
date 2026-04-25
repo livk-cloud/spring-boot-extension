@@ -19,6 +19,7 @@ package com.livk.context.disruptor.support;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -26,12 +27,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DisruptorEventWrapperTests {
 
 	@Test
-	void test() {
+	void wrapAndUnwrapReturnsValue() {
 		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
 		wrapper.wrap("root");
 		assertThat(wrapper.unwrap()).isEqualTo("root");
-		wrapper.wrap("child");
-		assertThat(wrapper.unwrap()).isEqualTo("root");
+	}
+
+	@Test
+	void wrapOnlyAcceptsFirstValue() {
+		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
+		wrapper.wrap("first");
+		wrapper.wrap("second");
+		assertThat(wrapper.unwrap()).isEqualTo("first");
+	}
+
+	@Test
+	void unwrapWithoutWrapThrows() {
+		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
+		assertThatThrownBy(wrapper::unwrap).isInstanceOf(IllegalArgumentException.class);
 	}
 
 }

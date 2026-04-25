@@ -36,7 +36,7 @@ class WebClientConfigurationTests {
 		.withConfiguration(AutoConfigurations.of(WebClientConfiguration.class, WebClientAutoConfiguration.class));
 
 	@Test
-	void test() {
+	void webClientBeansAreRegistered() {
 		contextRunner.run(context -> {
 			assertThat(context).hasSingleBean(WebClient.class);
 			assertThat(context).hasSingleBean(WebClientCustomizer.class);

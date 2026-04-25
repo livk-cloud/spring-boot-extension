@@ -37,196 +37,268 @@ class Jsr310UtilsTests {
 
 	private static final ZoneId ZONE = ZoneId.systemDefault();
 
-	@Test
-	void testTimestamp() {
-		LocalDateTime dt = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
-		long seconds = Jsr310Utils.timestamp(dt);
-		long expected = dt.atZone(ZONE).toEpochSecond();
+	private static final ZoneId UTC = ZoneId.of("UTC");
 
-		assertThat(seconds).isEqualTo(expected);
+	private static final ZoneId TOKYO = ZoneId.of("Asia/Tokyo");
+
+	// --- timestamp ---
+
+	@Test
+	void timestamp() {
+		LocalDateTime dt = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+		assertThat(Jsr310Utils.timestamp(dt)).isEqualTo(dt.atZone(ZONE).toEpochSecond());
 	}
 
 	@Test
-	void testTimestampWithZone() {
-		ZoneId utc = ZoneId.of("UTC");
+	void timestampWithZone() {
 		LocalDateTime dt = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
-		long seconds = Jsr310Utils.timestamp(dt, utc);
-		assertThat(seconds).isEqualTo(dt.atZone(utc).toEpochSecond());
+		assertThat(Jsr310Utils.timestamp(dt, UTC)).isEqualTo(dt.atZone(UTC).toEpochSecond());
 	}
 
 	@Test
-	void testTimestampMillis() {
+	void timestampMillis() {
 		LocalDateTime dt = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
-		long millis = Jsr310Utils.timestampMillis(dt);
-		assertThat(millis).isEqualTo(dt.atZone(ZONE).toInstant().toEpochMilli());
+		assertThat(Jsr310Utils.timestampMillis(dt)).isEqualTo(dt.atZone(ZONE).toInstant().toEpochMilli());
 	}
 
 	@Test
-	void testTimestampMillisWithZone() {
-		ZoneId utc = ZoneId.of("UTC");
+	void timestampMillisWithZone() {
 		LocalDateTime dt = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
-		long millis = Jsr310Utils.timestampMillis(dt, utc);
-		assertThat(millis).isEqualTo(dt.atZone(utc).toInstant().toEpochMilli());
+		assertThat(Jsr310Utils.timestampMillis(dt, UTC)).isEqualTo(dt.atZone(UTC).toInstant().toEpochMilli());
 	}
 
+	// --- datetime from timestamp ---
+
 	@Test
-	void testDatetime() {
+	void datetimeFromSeconds() {
 		long now = Instant.now().getEpochSecond();
 		assertThat(Jsr310Utils.datetime(now)).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochSecond(now), ZONE));
 	}
 
 	@Test
-	void testDatetimeWithZone() {
+	void datetimeFromSecondsWithZone() {
 		long now = Instant.now().getEpochSecond();
-		ZoneId utc = ZoneId.of("UTC");
-		assertThat(Jsr310Utils.datetime(now, utc)).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochSecond(now), utc));
+		assertThat(Jsr310Utils.datetime(now, UTC)).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochSecond(now), UTC));
 	}
 
 	@Test
-	void testDatetimeMillis() {
+	void datetimeFromMillis() {
 		long now = Instant.now().toEpochMilli();
 		assertThat(Jsr310Utils.dateTimeMillis(now)).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(now), ZONE));
 	}
 
 	@Test
-	void testDatetimeMillisWithZone() {
+	void datetimeFromMillisWithZone() {
 		long now = Instant.now().toEpochMilli();
-		ZoneId utc = ZoneId.of("UTC");
-		assertThat(Jsr310Utils.dateTimeMillis(now, utc))
-			.isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(now), utc));
+		assertThat(Jsr310Utils.dateTimeMillis(now, UTC))
+			.isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(now), UTC));
 	}
 
+	// --- format ---
+
 	@Test
-	void testFormatWithPattern() {
+	void formatWithPattern() {
 		LocalDateTime dt = LocalDateTime.of(2025, 5, 20, 12, 34, 56);
-		String formatted = Jsr310Utils.format(dt, "yyyy/MM/dd HH:mm");
-		assertThat(formatted).isEqualTo("2025/05/20 12:34");
+		assertThat(Jsr310Utils.format(dt, "yyyy/MM/dd HH:mm")).isEqualTo("2025/05/20 12:34");
 	}
 
 	@Test
-	void testFormatWithPatternAndZone() {
+	void formatWithPatternAndZone() {
 		Instant instant = Instant.parse("2025-05-20T12:34:56Z");
-		String formatted = Jsr310Utils.format(instant, "yyyy-MM-dd HH:mm:ss", ZoneId.of("UTC"));
-		assertThat(formatted).isEqualTo("2025-05-20 12:34:56");
+		assertThat(Jsr310Utils.format(instant, "yyyy-MM-dd HH:mm:ss", UTC)).isEqualTo("2025-05-20 12:34:56");
 	}
 
 	@Test
-	void testFormatWithGetFormatter() {
+	void formatWithDateTimeFormatter() {
 		LocalDateTime dt = LocalDateTime.of(2025, 5, 20, 12, 34, 56);
-		String formatted = Jsr310Utils.format(dt, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-		assertThat(formatted).isEqualTo("20250520123456");
+		assertThat(Jsr310Utils.format(dt, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))).isEqualTo("20250520123456");
 	}
 
 	@Test
-	void testFormatShortcuts() {
+	void formatDate() {
 		LocalDateTime dt = LocalDateTime.of(2025, 5, 20, 12, 34, 56);
 		assertThat(Jsr310Utils.formatDate(dt)).isEqualTo("2025-05-20");
+	}
+
+	@Test
+	void formatDateTime() {
+		LocalDateTime dt = LocalDateTime.of(2025, 5, 20, 12, 34, 56);
 		assertThat(Jsr310Utils.formatDateTime(dt)).isEqualTo("2025-05-20 12:34:56");
+	}
+
+	@Test
+	void formatTime() {
+		LocalDateTime dt = LocalDateTime.of(2025, 5, 20, 12, 34, 56);
 		assertThat(Jsr310Utils.formatTime(dt)).isEqualTo("12:34:56");
 	}
 
 	@Test
-	void testParseDateTimeShortcuts() {
+	void formatDateWithZoneId() {
+		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
+		assertThat(Jsr310Utils.formatDate(instant, UTC)).isEqualTo("2025-05-20");
+		assertThat(Jsr310Utils.formatDate(instant, TOKYO)).isEqualTo("2025-05-20");
+	}
+
+	@Test
+	void formatDateTimeWithZoneId() {
+		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
+		assertThat(Jsr310Utils.formatDateTime(instant, UTC)).isEqualTo("2025-05-20 00:00:00");
+		assertThat(Jsr310Utils.formatDateTime(instant, TOKYO)).isEqualTo("2025-05-20 09:00:00");
+	}
+
+	@Test
+	void formatTimeWithZoneId() {
+		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
+		assertThat(Jsr310Utils.formatTime(instant, UTC)).isEqualTo("00:00:00");
+		assertThat(Jsr310Utils.formatTime(instant, TOKYO)).isEqualTo("09:00:00");
+	}
+
+	// --- parse ---
+
+	@Test
+	void parseDateTimeWithDefaultPattern() {
 		assertThat(Jsr310Utils.parseDateTime("2025-05-20 12:34:56"))
 			.isEqualTo(LocalDateTime.of(2025, 5, 20, 12, 34, 56));
+	}
 
+	@Test
+	void parseDateTimeWithCustomPattern() {
+		assertThat(Jsr310Utils.parseDateTime("20250520123456", "yyyyMMddHHmmss"))
+			.isEqualTo(LocalDateTime.of(2025, 5, 20, 12, 34, 56));
+	}
+
+	@Test
+	void parseDateWithDefaultPattern() {
 		assertThat(Jsr310Utils.parseDate("2025-05-20")).isEqualTo(LocalDate.of(2025, 5, 20));
+	}
 
+	@Test
+	void parseDateWithCustomPattern() {
+		assertThat(Jsr310Utils.parseDate("20250520", "yyyyMMdd")).isEqualTo(LocalDate.of(2025, 5, 20));
+	}
+
+	@Test
+	void parseTimeWithDefaultPattern() {
 		assertThat(Jsr310Utils.parseTime("12:34:56")).isEqualTo(LocalTime.of(12, 34, 56));
 	}
 
 	@Test
-	void testPlusMinus() {
+	void parseTimeWithCustomPattern() {
+		assertThat(Jsr310Utils.parseTime("123456", "HHmmss")).isEqualTo(LocalTime.of(12, 34, 56));
+	}
+
+	// --- plus / minus ---
+
+	@Test
+	void plusDays() {
 		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.plusDays(base, 2)).isEqualTo(base.plusDays(2));
+	}
+
+	@Test
+	void minusDays() {
+		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.minusDays(base, 2)).isEqualTo(base.minusDays(2));
+	}
+
+	@Test
+	void plusHours() {
+		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.plusHours(base, 3)).isEqualTo(base.plusHours(3));
+	}
+
+	@Test
+	void minusHours() {
+		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.minusHours(base, 3)).isEqualTo(base.minusHours(3));
+	}
+
+	@Test
+	void plusMinutes() {
+		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.plusMinutes(base, 15)).isEqualTo(base.plusMinutes(15));
+	}
+
+	@Test
+	void minusMinutes() {
+		LocalDateTime base = LocalDateTime.of(2025, 1, 1, 0, 0);
 		assertThat(Jsr310Utils.minusMinutes(base, 15)).isEqualTo(base.minusMinutes(15));
 	}
 
+	// --- day boundaries ---
+
 	@Test
-	void testStartAndEndOfDay() {
+	void startOfDay() {
 		LocalDate date = LocalDate.of(2025, 5, 20);
 		assertThat(Jsr310Utils.startOfDay(date)).isEqualTo(date.atStartOfDay());
+	}
+
+	@Test
+	void endOfDay() {
+		LocalDate date = LocalDate.of(2025, 5, 20);
 		assertThat(Jsr310Utils.endOfDay(date)).isEqualTo(date.atTime(LocalTime.MAX));
 	}
 
+	// --- month boundaries ---
+
 	@Test
-	void testMonthBoundaries() {
-		LocalDate date = LocalDate.of(2025, 2, 15);
-		assertThat(Jsr310Utils.firstDayOfMonth(date)).isEqualTo(LocalDate.of(2025, 2, 1));
-		assertThat(Jsr310Utils.lastDayOfMonth(date)).isEqualTo(LocalDate.of(2025, 2, 28));
+	void firstDayOfMonth() {
+		assertThat(Jsr310Utils.firstDayOfMonth(LocalDate.of(2025, 2, 15))).isEqualTo(LocalDate.of(2025, 2, 1));
 	}
 
 	@Test
-	void testFirstDayOfWeek() {
+	void lastDayOfMonth() {
+		assertThat(Jsr310Utils.lastDayOfMonth(LocalDate.of(2025, 2, 15))).isEqualTo(LocalDate.of(2025, 2, 28));
+	}
+
+	@Test
+	void firstDayOfWeek() {
 		LocalDate wednesday = LocalDate.of(2025, 5, 21);
-		LocalDate monday = Jsr310Utils.firstDayOfWeek(wednesday);
-		assertThat(monday.getDayOfWeek()).isEqualTo(DayOfWeek.MONDAY);
+		assertThat(Jsr310Utils.firstDayOfWeek(wednesday).getDayOfWeek()).isEqualTo(DayOfWeek.MONDAY);
+	}
+
+	// --- before / after now ---
+
+	@Test
+	void isBeforeNow() {
+		assertThat(Jsr310Utils.isBeforeNow(LocalDateTime.now().minusDays(1))).isTrue();
+		assertThat(Jsr310Utils.isBeforeNow(LocalDateTime.now().plusDays(1))).isFalse();
 	}
 
 	@Test
-	void testBeforeAfterNow() {
-		LocalDateTime past = LocalDateTime.now().minusDays(1);
-		LocalDateTime future = LocalDateTime.now().plusDays(1);
-
-		assertThat(Jsr310Utils.isBeforeNow(past)).isTrue();
-		assertThat(Jsr310Utils.isAfterNow(future)).isTrue();
+	void isAfterNow() {
+		assertThat(Jsr310Utils.isAfterNow(LocalDateTime.now().plusDays(1))).isTrue();
+		assertThat(Jsr310Utils.isAfterNow(LocalDateTime.now().minusDays(1))).isFalse();
 	}
 
+	// --- between calculations ---
+
 	@Test
-	void testBetweenCalculations() {
+	void secondsBetween() {
 		LocalDateTime start = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
 		LocalDateTime end = LocalDateTime.of(2025, 1, 2, 1, 1, 1);
-
 		assertThat(Jsr310Utils.secondsBetween(start, end)).isEqualTo(Duration.between(start, end).getSeconds());
+	}
+
+	@Test
+	void minutesBetween() {
+		LocalDateTime start = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+		LocalDateTime end = LocalDateTime.of(2025, 1, 2, 1, 1, 1);
 		assertThat(Jsr310Utils.minutesBetween(start, end)).isEqualTo(Duration.between(start, end).toMinutes());
+	}
+
+	@Test
+	void hoursBetween() {
+		LocalDateTime start = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+		LocalDateTime end = LocalDateTime.of(2025, 1, 2, 1, 1, 1);
 		assertThat(Jsr310Utils.hoursBetween(start, end)).isEqualTo(Duration.between(start, end).toHours());
+	}
+
+	@Test
+	void daysBetween() {
+		LocalDateTime start = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+		LocalDateTime end = LocalDateTime.of(2025, 1, 2, 1, 1, 1);
 		assertThat(Jsr310Utils.daysBetween(start, end)).isEqualTo(ChronoUnit.DAYS.between(start, end));
-	}
-
-	@Test
-	void testFormatDateWithZoneId() {
-		// UTC 时间 2025-05-20T00:00Z，在东京（+9）应是 2025-05-20 09:00
-		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
-		ZoneId utc = ZoneId.of("UTC");
-		ZoneId tokyo = ZoneId.of("Asia/Tokyo");
-
-		String utcDate = Jsr310Utils.formatDate(instant, utc);
-		String tokyoDate = Jsr310Utils.formatDate(instant, tokyo);
-
-		assertThat(utcDate).isEqualTo("2025-05-20");
-		// 注意：在东京是当天早上9点，仍是同一天
-		assertThat(tokyoDate).isEqualTo("2025-05-20");
-	}
-
-	@Test
-	void testFormatDateTimeWithZoneId() {
-		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
-		ZoneId utc = ZoneId.of("UTC");
-		ZoneId tokyo = ZoneId.of("Asia/Tokyo");
-
-		String utcDateTime = Jsr310Utils.formatDateTime(instant, utc);
-		String tokyoDateTime = Jsr310Utils.formatDateTime(instant, tokyo);
-
-		assertThat(utcDateTime).isEqualTo("2025-05-20 00:00:00");
-		// UTC+9 → 09:00:00
-		assertThat(tokyoDateTime).isEqualTo("2025-05-20 09:00:00");
-	}
-
-	@Test
-	void testFormatTimeWithZoneId() {
-		Instant instant = Instant.parse("2025-05-20T00:00:00Z");
-		ZoneId utc = ZoneId.of("UTC");
-		ZoneId tokyo = ZoneId.of("Asia/Tokyo");
-
-		String utcTime = Jsr310Utils.formatTime(instant, utc);
-		String tokyoTime = Jsr310Utils.formatTime(instant, tokyo);
-
-		assertThat(utcTime).isEqualTo("00:00:00");
-		assertThat(tokyoTime).isEqualTo("09:00:00");
 	}
 
 }

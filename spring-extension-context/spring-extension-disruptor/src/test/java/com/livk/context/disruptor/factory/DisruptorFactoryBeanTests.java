@@ -19,6 +19,7 @@ package com.livk.context.disruptor.factory;
 import com.livk.context.disruptor.DisruptorConfig;
 import com.livk.context.disruptor.Entity;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
+import com.livk.context.disruptor.support.SpringDisruptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
@@ -37,11 +38,36 @@ class DisruptorFactoryBeanTests {
 	BeanFactory beanFactory;
 
 	@Test
-	void test() {
+	void afterPropertiesSetCreatesDisruptor() {
+		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
+		factoryBean.afterPropertiesSet();
+		assertThat(factoryBean.getObject()).isNotNull();
+		factoryBean.destroy();
+	}
+
+	@Test
+	void getObjectTypeReturnsSpringDisruptorClass() {
+		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
+		assertThat(factoryBean.getObjectType()).isEqualTo(SpringDisruptor.class);
+	}
+
+	@Test
+	void getObjectReturnsNullBeforeInit() {
+		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
+		assertThat(factoryBean.getObject()).isNull();
+	}
+
+	@Test
+	void destroyDoesNotThrow() {
+		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
+		factoryBean.afterPropertiesSet();
+		factoryBean.destroy();
+	}
+
+	private DisruptorFactoryBean<Entity> createFactoryBean() {
 		DisruptorFactoryBean<Entity> factoryBean = new DisruptorFactoryBean<>(Entity.class);
 		DisruptorEvent event = Entity.class.getAnnotation(DisruptorEvent.class);
 		factoryBean.setBeanFactory(beanFactory);
-		assertThat(event).isNotNull();
 		factoryBean.setBufferSize(event.bufferSize());
 		factoryBean.setProducerType(event.type());
 		factoryBean.setThreadFactory(BeanUtils.instantiateClass(event.threadFactory()));
@@ -49,9 +75,7 @@ class DisruptorFactoryBeanTests {
 		factoryBean.setUseVirtualThreads(event.useVirtualThreads());
 		factoryBean.setWaitStrategy(BeanUtils.instantiateClass(event.strategy()));
 		factoryBean.setStrategyBeanName(event.strategyBeanName());
-		factoryBean.afterPropertiesSet();
-		assertThat(factoryBean.getObject()).isNotNull();
-		factoryBean.destroy();
+		return factoryBean;
 	}
 
 }

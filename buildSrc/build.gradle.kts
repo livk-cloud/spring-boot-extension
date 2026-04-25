@@ -1,5 +1,9 @@
 plugins {
-	id("java-gradle-plugin")
+	`kotlin-dsl`
+}
+
+kotlin {
+	jvmToolchain(21)
 }
 
 repositories {

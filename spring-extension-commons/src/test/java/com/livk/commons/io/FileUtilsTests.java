@@ -18,6 +18,7 @@ package com.livk.commons.io;
 
 import com.livk.commons.jackson.JsonMapperUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayInputStream;
@@ -26,6 +27,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,20 +37,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class FileUtilsTests {
 
+	@TempDir
+	Path tempDir;
+
 	@Test
 	void download() throws IOException {
 		InputStream inputStream = new ByteArrayInputStream("livk".getBytes());
-		FileUtils.download(inputStream, "./username.txt");
-		File file = new File("./username.txt");
-		assertThat(file.exists()).isTrue();
-		assertThat(file.delete()).isTrue();
+		String filePath = tempDir.resolve("username.txt").toString();
+		FileUtils.download(inputStream, filePath);
+		File file = new File(filePath);
+		assertThat(file).exists();
+		assertThat(Files.readString(file.toPath())).isEqualTo("livk");
 	}
 
 	@Test
 	void createNewFile() throws IOException {
-		File file = new File("./file.txt");
+		File file = tempDir.resolve("file.txt").toFile();
 		assertThat(FileUtils.createNewFile(file)).isTrue();
-		assertThat(file.delete()).isTrue();
+		assertThat(file).exists();
 	}
 
 	@Test
@@ -55,7 +62,7 @@ class FileUtilsTests {
 		InputStream inputStream = new ClassPathResource("data.json").getInputStream();
 		String data = JsonMapperUtils.readTree(inputStream).toString();
 
-		File file = new File("./data.gzip");
+		File file = tempDir.resolve("data.gzip").toFile();
 		FileUtils.createNewFile(file);
 		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 			FileUtils.gzipCompress(data.getBytes(), fileOutputStream);
@@ -64,7 +71,6 @@ class FileUtilsTests {
 		try (FileInputStream fileInputStream = new FileInputStream(file)) {
 			String copyData = new String(FileUtils.gzipDecompress(fileInputStream));
 			assertThat(copyData).isEqualTo(data);
-			assertThat(file.delete()).isTrue();
 		}
 	}
 

@@ -26,10 +26,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HttpClientTypeTests {
 
 	@Test
-	void annotationType() {
-		assertThat(HttpClientType.REST_CLIENT.annotationType()).isEqualTo(EnableRestClient.class);
+	void webClientAnnotationType() {
 		assertThat(HttpClientType.WEB_CLIENT.annotationType()).isEqualTo(EnableWebClient.class);
+		assertThat(HttpClientType.WEB_CLIENT.annotationType()).isAnnotation();
+	}
 
+	@Test
+	void restClientAnnotationType() {
+		assertThat(HttpClientType.REST_CLIENT.annotationType()).isEqualTo(EnableRestClient.class);
+		assertThat(HttpClientType.REST_CLIENT.annotationType()).isAnnotation();
+	}
+
+	@Test
+	void allEnumValuesHaveAnnotationType() {
+		for (HttpClientType type : HttpClientType.values()) {
+			assertThat(type.annotationType()).isNotNull().isAnnotation();
+		}
+	}
+
+	@Test
+	void enumValuesCount() {
+		assertThat(HttpClientType.values()).hasSize(2);
 	}
 
 }

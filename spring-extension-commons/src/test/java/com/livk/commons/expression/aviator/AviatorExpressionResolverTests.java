@@ -54,49 +54,61 @@ class AviatorExpressionResolverTests {
 		.withUserConfiguration(SpringConfig.class);
 
 	@Test
-	void evaluate() {
-		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
+	void evaluateEqualityWithMethodArgs() {
 		assertThat(resolver.evaluate("'livk'==#username", method, args, Boolean.class)).isTrue();
+	}
 
+	@Test
+	void evaluateVariableWithMethodArgs() {
 		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
+	}
 
+	@Test
+	void evaluateEqualityWithMap() {
 		assertThat(resolver.evaluate("'livk'==#username", map, Boolean.class)).isTrue();
+	}
 
+	@Test
+	void evaluateVariableWithMap() {
 		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
+	}
 
+	@Test
+	void evaluateConcatenationWithMethodArgs() {
 		assertThat(resolver.evaluate("'root:'+#username", method, args)).isEqualTo("root:livk");
+	}
 
+	@Test
+	void evaluateConcatenationWithContext() {
+		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
 		assertThat(resolver.evaluate("'root:'+#username+':'+#password", context)).isEqualTo("root:livk:123456");
-
-		assertThat(resolver.evaluate("'root:'+#username", map)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map))
-			.isEqualTo("livk:" + System.getProperty("user.dir"));
-
-		assertThat(resolver.evaluate("'root:'+#username", method, args)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("'livk'", method, args)).isEqualTo("livk");
-
-		assertThat(resolver.evaluate("'root:'+#username+':'+#password", context)).isEqualTo("root:livk:123456");
-
 		assertThat(resolver.evaluate("#username+#password", context)).isEqualTo("livk123456");
+	}
 
-		assertThat(resolver.evaluate("'root:'+#username", map)).isEqualTo("root:livk");
-
-		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
-
+	@Test
+	void evaluateWithSystemProperty() {
 		assertThat(resolver.evaluate("#username+':'+System.getProperty(\"user.dir\")", map))
 			.isEqualTo("livk:" + System.getProperty("user.dir"));
+	}
 
+	@Test
+	void evaluatePlainStringPassesThrough() {
+		assertThat(resolver.evaluate("'livk'", method, args)).isEqualTo("livk");
+	}
+
+	@Test
+	void evaluateWithSpringContextCustomFunction() {
 		contextRunner.run(ctx -> {
 			assertThat(resolver.evaluate("add(x,y)", Map.of("x", "livk", "y", "123"))).isEqualTo("livk123");
+		});
+	}
 
+	@Test
+	void evaluateWithSpringContextIfElseFunction() {
+		contextRunner.run(ctx -> {
 			assertThat(resolver.evaluate("ifElse(a==c,b,d)", Map.of("a", 1, "b", 2, "c", 3, "d", 4), Integer.class))
 				.isEqualTo(4);
 		});
-
 	}
 
 	@TestConfiguration

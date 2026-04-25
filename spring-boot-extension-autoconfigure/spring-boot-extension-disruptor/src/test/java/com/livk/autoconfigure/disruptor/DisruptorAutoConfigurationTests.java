@@ -35,7 +35,7 @@ class DisruptorAutoConfigurationTests {
 		.withConfiguration(AutoConfigurations.of(DisruptorAutoConfiguration.class));
 
 	@Test
-	void test() {
+	void autoConfigurationRegistersDisruptorBean() {
 		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(SpringDisruptor.class);
 			assertThat(context).hasBean("disruptorEntity");

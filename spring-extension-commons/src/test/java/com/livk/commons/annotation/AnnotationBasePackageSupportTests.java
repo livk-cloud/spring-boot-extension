@@ -36,24 +36,80 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AnnotationBasePackageSupportTests {
 
+	static final String CURRENT_PACKAGE = AnnotationBasePackageSupportTests.class.getPackageName();
+
 	final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class);
 
 	@Test
-	void getBasePackages() {
+	void getBasePackagesFromBasePackageClasses() {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(Config.class);
 		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
-		assertThat(basePackages).containsExactly(AnnotationBasePackageSupportTests.class.getPackageName());
+		assertThat(basePackages).containsExactly(CURRENT_PACKAGE);
+	}
 
+	@Test
+	void getBasePackagesFromBasePackagesAttribute() {
+		AnnotationMetadata metadata = AnnotationMetadata.introspect(ExplicitPackageConfig.class);
+		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
+		assertThat(basePackages).containsExactly("com.livk.custom");
+	}
+
+	@Test
+	void getBasePackagesFallsBackToDeclaringClassPackage() {
+		AnnotationMetadata metadata = AnnotationMetadata.introspect(EmptyAnnotationConfig.class);
+		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
+		assertThat(basePackages).containsExactly(CURRENT_PACKAGE);
+	}
+
+	@Test
+	void getBasePackagesMergesBothAttributes() {
+		AnnotationMetadata metadata = AnnotationMetadata.introspect(CombinedConfig.class);
+		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, AnnotationScan.class);
+		assertThat(basePackages).containsExactlyInAnyOrder("com.livk.explicit", CURRENT_PACKAGE);
+	}
+
+	@Test
+	void getBasePackagesFromBeanFactory() {
 		contextRunner.run(context -> {
 			String[] packages = AnnotationBasePackageSupport.getBasePackages(context);
-			assertThat(packages).containsExactly(AnnotationBasePackageSupportTests.class.getPackageName());
+			assertThat(packages).containsExactly(CURRENT_PACKAGE);
 		});
+	}
+
+	@Test
+	void getBasePackagesFromBeanFactoryWithoutAutoConfigurationReturnsEmpty() {
+		new ApplicationContextRunner().run(context -> {
+			String[] packages = AnnotationBasePackageSupport.getBasePackages(context);
+			assertThat(packages).isEmpty();
+		});
+	}
+
+	@Test
+	void getBasePackagesWithUnrelatedAnnotationReturnsEmpty() {
+		AnnotationMetadata metadata = AnnotationMetadata.introspect(Config.class);
+		String[] basePackages = AnnotationBasePackageSupport.getBasePackages(metadata, Override.class);
+		assertThat(basePackages).isEmpty();
 	}
 
 	@TestConfiguration
 	@AnnotationScan(basePackageClasses = Config.class)
 	@AutoConfigurationPackage
 	static class Config {
+
+	}
+
+	@AnnotationScan(basePackages = "com.livk.custom")
+	static class ExplicitPackageConfig {
+
+	}
+
+	@AnnotationScan
+	static class EmptyAnnotationConfig {
+
+	}
+
+	@AnnotationScan(basePackages = "com.livk.explicit", basePackageClasses = CombinedConfig.class)
+	static class CombinedConfig {
 
 	}
 

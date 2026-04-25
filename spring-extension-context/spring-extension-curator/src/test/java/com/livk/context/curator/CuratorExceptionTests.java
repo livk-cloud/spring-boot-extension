@@ -1,0 +1,55 @@
+/*
+ * Copyright 2021-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.livk.context.curator;
+
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * @author livk
+ */
+class CuratorExceptionTests {
+
+	@Test
+	void constructWithMessage() {
+		CuratorException ex = new CuratorException("test error");
+		assertThat(ex.getMessage()).isEqualTo("test error");
+		assertThat(ex.getCause()).isNull();
+	}
+
+	@Test
+	void constructWithMessageAndCause() {
+		RuntimeException cause = new RuntimeException("root cause");
+		CuratorException ex = new CuratorException("test error", cause);
+		assertThat(ex.getMessage()).isEqualTo("test error");
+		assertThat(ex.getCause()).isSameAs(cause);
+	}
+
+	@Test
+	void constructWithCause() {
+		RuntimeException cause = new RuntimeException("root cause");
+		CuratorException ex = new CuratorException(cause);
+		assertThat(ex.getCause()).isSameAs(cause);
+	}
+
+	@Test
+	void isRuntimeException() {
+		assertThat(new CuratorException("test")).isInstanceOf(RuntimeException.class);
+	}
+
+}

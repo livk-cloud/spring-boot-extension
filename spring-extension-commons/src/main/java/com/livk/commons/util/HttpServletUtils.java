@@ -136,7 +136,7 @@ public class HttpServletUtils {
 			String headerIp = request.getHeader(header);
 			if (headerIp != null && !headerIp.isBlank() && !"unknown".equalsIgnoreCase(headerIp)) {
 				// 处理多IP的情况（只取第一个IP）
-				Splitter.on(",").splitToList(headerIp).getFirst();
+				return Splitter.on(",").trimResults().splitToList(headerIp).getFirst();
 			}
 		}
 		return request.getRemoteAddr();

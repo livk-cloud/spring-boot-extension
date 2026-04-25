@@ -24,6 +24,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author livk
  */
@@ -34,13 +36,34 @@ class DisruptorEventProducerTests {
 	SpringDisruptor<Entity> disruptor;
 
 	@Test
-	void test() {
+	void sendSingleEvent() {
 		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
 		Entity entity = new Entity();
 		entity.setName("livk");
 		producer.send(entity);
+		assertThat(disruptor.getRingBuffer().getCursor()).isGreaterThanOrEqualTo(0);
+	}
+
+	@Test
+	void sendBatchWithList() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		Entity e1 = new Entity();
+		e1.setName("a");
+		Entity e2 = new Entity();
+		e2.setName("b");
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+		producer.sendBatch(List.of(e1, e2));
+		assertThat(disruptor.getRingBuffer().getCursor()).isGreaterThan(cursorBefore);
+	}
+
+	@Test
+	void sendBatchWithVarargs() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		Entity entity = new Entity();
+		entity.setName("varargs");
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
 		producer.sendBatch(entity);
-		producer.sendBatch(List.of(entity));
+		assertThat(disruptor.getRingBuffer().getCursor()).isGreaterThan(cursorBefore);
 	}
 
 }

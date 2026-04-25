@@ -30,19 +30,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GenericWrapperTests {
 
 	@Test
-	void test() {
+	void unwrapReturnsOriginalValue() {
 		String value = "livk";
-		StringBuilder builder = new StringBuilder(value).reverse();
-
 		GenericWrapper<String> wrapper = GenericWrapper.of(value);
 		assertThat(wrapper.unwrap()).isEqualTo(value);
+	}
 
-		GenericWrapper<String> map = GenericWrapper.of(reverse(wrapper.unwrap()));
-		assertThat(map.unwrap()).isEqualTo(builder.toString());
-		assertThat(map.unwrap()).isNotEqualTo(value);
+	@Test
+	void wrapTransformedValueReturnsTransformedResult() {
+		String value = "livk";
+		String reversed = new StringBuilder(value).reverse().toString();
 
-		GenericWrapper<String> flatmap = GenericWrapper.of(wrapper.unwrap());
-		assertThat(flatmap.unwrap()).isEqualTo(value);
+		GenericWrapper<String> wrapper = GenericWrapper.of(reverse(value));
+		assertThat(wrapper.unwrap()).isEqualTo(reversed);
+		assertThat(wrapper.unwrap()).isNotEqualTo(value);
+	}
+
+	@Test
+	void rewrapReturnsSameValue() {
+		String value = "livk";
+		GenericWrapper<String> wrapper = GenericWrapper.of(value);
+		GenericWrapper<String> rewrapped = GenericWrapper.of(wrapper.unwrap());
+		assertThat(rewrapped.unwrap()).isEqualTo(value);
+	}
+
+	@Test
+	void optionalReturnsNonEmptyForWrappedValue() {
+		GenericWrapper<String> wrapper = GenericWrapper.of("livk");
+		assertThat(wrapper.optional()).isPresent().hasValue("livk");
 	}
 
 	String reverse(String str) {
