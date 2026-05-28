@@ -18,8 +18,8 @@ package com.livk.commons.web;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.livk.commons.util.ObjectUtils;
 import com.livk.commons.util.HttpServletUtils;
+import com.livk.commons.util.ObjectUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,6 @@ import org.springframework.util.StreamUtils;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -259,7 +258,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	private static class ByteArrayServletInputStream extends ServletInputStream {
 
-		private final InputStream in;
+		private final ByteArrayInputStream in;
 
 		/**
 		 * 创建ByteArrayServletInputStream
@@ -271,12 +270,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		@Override
 		public boolean isFinished() {
-			return false;
+				return in.available() == 0;
 		}
 
 		@Override
 		public boolean isReady() {
-			return false;
+			return true;
 		}
 
 		@Override
