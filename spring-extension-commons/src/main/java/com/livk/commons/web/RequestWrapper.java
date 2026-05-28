@@ -160,7 +160,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		if (ObjectUtils.isEmpty(body)) {
 			body = StreamUtils.copyToByteArray(super.getInputStream());
 		}
-		return new BufferedReader(new ByteArrayReader(body));
+		return new BufferedReader(new ByteArrayReader(body, Charset.forName(getCharacterEncoding())));
 	}
 
 	@Override
@@ -209,7 +209,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public Enumeration<String> getHeaderNames() {
-		Set<String> headerNames = headers.headerNames();
+		Set<String> headerNames = new HashSet<>(headers.headerNames());
 		if (bodyReviseStatus) {
 			headerNames.add(HttpHeaders.CONTENT_TYPE);
 		}
@@ -249,9 +249,10 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		/**
 		 * 创建ByteArrayReader
 		 * @param bytes the bytes
+		 * @param charset the charset
 		 */
-		ByteArrayReader(byte[] bytes) {
-			super(new ByteArrayInputStream(bytes));
+		ByteArrayReader(byte[] bytes, Charset charset) {
+			super(new ByteArrayInputStream(bytes), charset);
 		}
 
 	}
