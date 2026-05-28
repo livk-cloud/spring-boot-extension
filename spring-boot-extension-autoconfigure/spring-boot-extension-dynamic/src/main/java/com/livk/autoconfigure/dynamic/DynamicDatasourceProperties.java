@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Map;
@@ -45,6 +46,9 @@ public class DynamicDatasourceProperties implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
+		if (CollectionUtils.isEmpty(datasource)) {
+			throw new PrimaryNotFountException("The 'datasource' configuration is missing!");
+		}
 		if (StringUtils.hasText(primary)) {
 			if (!datasource.containsKey(primary)) {
 				throw new PrimaryNotFountException(
