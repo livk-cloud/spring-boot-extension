@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -62,6 +63,19 @@ class DisruptorFactoryBeanTests {
 		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
 		factoryBean.afterPropertiesSet();
 		factoryBean.destroy();
+	}
+
+	@Test
+	void afterPropertiesSetFailsFastWhenVirtualThreadDelegateIsMissing() {
+		DisruptorFactoryBean<Entity> factoryBean = new DisruptorFactoryBean<>(Entity.class);
+		DisruptorEvent event = Entity.class.getAnnotation(DisruptorEvent.class);
+		factoryBean.setBeanFactory(beanFactory);
+		factoryBean.setProducerType(event.type());
+		factoryBean.setUseVirtualThreads(true);
+		factoryBean.setWaitStrategy(BeanUtils.instantiateClass(event.strategy()));
+
+		assertThatThrownBy(factoryBean::afterPropertiesSet).isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("threadFactory must not be null");
 	}
 
 	private DisruptorFactoryBean<Entity> createFactoryBean() {

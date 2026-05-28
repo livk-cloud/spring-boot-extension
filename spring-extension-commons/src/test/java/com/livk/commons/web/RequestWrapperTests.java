@@ -26,6 +26,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +91,18 @@ class RequestWrapperTests {
 	}
 
 	@Test
+	void getReaderUsesRequestCharacterEncoding() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setCharacterEncoding("GBK");
+		RequestWrapper encodedWrapper = new RequestWrapper(request);
+		String text = "中文";
+
+		encodedWrapper.body(text.getBytes(Charset.forName("GBK")), MediaType.TEXT_PLAIN_VALUE);
+
+		assertThat(encodedWrapper.getReader().readLine()).isEqualTo(text);
+	}
+
+	@Test
 	void getContentLengthReflectsBodySize() throws IOException {
 		wrapper.body(BODY_BYTES);
 		assertThat(wrapper.getContentLength()).isEqualTo(BODY_BYTES.length);
@@ -115,6 +129,13 @@ class RequestWrapperTests {
 		wrapper.addHeader(HttpHeaders.ACCEPT, new String[] { "text/html", "application/json" });
 		HttpHeaders headers = HttpServletUtils.headers(wrapper);
 		assertThat(headers.get(HttpHeaders.ACCEPT)).contains("text/html", "application/json");
+	}
+
+	@Test
+	void getHeaderNamesIncludesContentTypeAfterBodyChanged() {
+		wrapper.body(BODY_BYTES);
+
+		assertThat(Collections.list(wrapper.getHeaderNames())).contains(HttpHeaders.CONTENT_TYPE);
 	}
 
 	// --- parameters ---

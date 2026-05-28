@@ -23,6 +23,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 
+import java.time.Duration;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -60,6 +61,7 @@ class LimitInterceptorTests {
 
 		assertThat(result).isEqualTo("result");
 		verify(invocation).proceed();
+		verify(executor).tryAccess("testKey", 10, Duration.ofSeconds(60));
 	}
 
 	@Test

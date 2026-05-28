@@ -60,6 +60,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	public Set<Method> getReadMethods(Class<?> targetClass) {
 		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
 			.map(PropertyDescriptor::getReadMethod)
+			.filter(Objects::nonNull)
 			.filter(method -> !method.getName().equals("getClass"))
 			.collect(Collectors.toSet());
 	}

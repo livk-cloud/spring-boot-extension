@@ -57,7 +57,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the mono
 	 */
 	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-		return join(dataBufferFlux).map(DataBuffer::asInputStream);
+		return join(dataBufferFlux).map(dataBuffer -> dataBuffer.asInputStream(true));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 		return DataBufferUtils.transform(bufferFlux)
 			.publishOn(Schedulers.boundedElastic())
 			.handle((inputStream, sink) -> {
-				try {
+				try (inputStream) {
 					sink.next(inputStream.readAllBytes());
 				}
 				catch (IOException ex) {
