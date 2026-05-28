@@ -271,7 +271,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		@Override
 		public boolean isFinished() {
-				return in.available() == 0;
+			return in.available() == 0;
 		}
 
 		@Override
