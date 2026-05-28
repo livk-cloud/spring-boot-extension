@@ -23,6 +23,7 @@ import org.h2.Driver;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.dao.DuplicateKeyException;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -85,6 +86,34 @@ class DbRangeManagerTests {
 		SequenceRange retriedRange = manager.nextRange(name);
 		assertThat(retriedRange).isNotNull();
 		assertThat(retriedRange.getMin()).isEqualTo(concurrentRange.getMax() + 1);
+	}
+
+	@Test
+	void testNextRangeRetriesWhenConcurrentInsertWins() {
+		class DuplicateKeyOnceDbRangeManager extends DbRangeManager {
+
+			private boolean duplicateKeyThrown;
+
+			DuplicateKeyOnceDbRangeManager(DataSource ds) {
+				super(ds);
+			}
+
+			@Override
+			protected void insertRange(String name, long stepStart) {
+				super.insertRange(name, stepStart);
+				if (!duplicateKeyThrown) {
+					duplicateKeyThrown = true;
+					throw new DuplicateKeyException("concurrent insert");
+				}
+			}
+
+		}
+		DuplicateKeyOnceDbRangeManager manager = new DuplicateKeyOnceDbRangeManager(dataSource);
+
+		SequenceRange range = manager.nextRange("duplicate-key-retry-seq");
+
+		assertThat(range.getMin()).isEqualTo(1);
+		assertThat(range.getMax()).isEqualTo(1000);
 	}
 
 	@Test

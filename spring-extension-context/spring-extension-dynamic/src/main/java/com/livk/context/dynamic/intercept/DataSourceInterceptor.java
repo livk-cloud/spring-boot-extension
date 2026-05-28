@@ -31,9 +31,12 @@ public class DataSourceInterceptor extends AnnotationAbstractPointcutTypeAdvisor
 		if (dynamicSource != null) {
 			DataSourceContextHolder.switchDataSource(dynamicSource.value());
 		}
-		Object proceed = invocation.proceed();
-		DataSourceContextHolder.clear();
-		return proceed;
+		try {
+			return invocation.proceed();
+		}
+		finally {
+			DataSourceContextHolder.clear();
+		}
 	}
 
 }

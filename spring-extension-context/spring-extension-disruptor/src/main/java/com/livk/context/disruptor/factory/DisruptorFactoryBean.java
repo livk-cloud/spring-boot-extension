@@ -106,6 +106,7 @@ public class DisruptorFactoryBean<T>
 		if (StringUtils.hasText(threadFactoryBeanName)) {
 			factory = beanFactory.getBean(threadFactoryBeanName, ThreadFactory.class);
 		}
+		Assert.notNull(factory, "threadFactory must not be null");
 		if (useVirtualThreads) {
 			factory = new VirtualThreadFactory(factory);
 		}

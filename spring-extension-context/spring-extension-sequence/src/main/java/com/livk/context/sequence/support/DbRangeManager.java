@@ -20,6 +20,7 @@ import com.livk.context.sequence.SequenceRange;
 import com.livk.context.sequence.exception.SequenceException;
 import com.livk.context.sequence.support.db.SequenceDbHelper;
 import lombok.Setter;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -92,7 +93,12 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 				return value;
 			}
 			else {
-				insertRange(name, stepStart);
+				try {
+					insertRange(name, stepStart);
+				}
+				catch (DuplicateKeyException ex) {
+					return null;
+				}
 				return null;
 			}
 		});

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -81,6 +82,18 @@ class DataSourceInterceptorTests {
 
 		interceptor.invoke(invocation, annotation);
 
+		assertThat(DataSourceContextHolder.getDataSource()).isNull();
+	}
+
+	@Test
+	void invokeClearsDataSourceWhenProceedThrows() throws Throwable {
+		DynamicSource annotation = mock(DynamicSource.class);
+		given(annotation.value()).willReturn("slave3");
+
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		given(invocation.proceed()).willThrow(new IllegalStateException("boom"));
+
+		assertThatThrownBy(() -> interceptor.invoke(invocation, annotation)).isInstanceOf(IllegalStateException.class);
 		assertThat(DataSourceContextHolder.getDataSource()).isNull();
 	}
 
