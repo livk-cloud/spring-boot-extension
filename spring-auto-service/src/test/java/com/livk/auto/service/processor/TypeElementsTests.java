@@ -85,7 +85,7 @@ class TypeElementsTests {
 	@Test
 	void getBinaryName() {
 		List<Class<?>> classes = List.of(String.class, SpringAutoContext.class, SpringContext.class,
-				SpringFactoryServiceImpl.class);
+				SpringFactoryServiceImpl.class, NestedSpringFactoryServiceImpl.class);
 
 		for (Class<?> type : classes) {
 			assertThat(TypeElements.getBinaryName(get(type))).isEqualTo(type.getName());
@@ -95,6 +95,10 @@ class TypeElementsTests {
 
 	static TypeElement get(Class<?> type) {
 		return elements.getTypeElement(type.getCanonicalName());
+	}
+
+	static class NestedSpringFactoryServiceImpl implements SpringFactoryService {
+
 	}
 
 }
