@@ -18,6 +18,7 @@ package com.livk.boot
 
 import com.livk.boot.compile.CompileArgsPlugin
 import com.livk.boot.info.ExtractResources
+import com.livk.boot.test.IntegrationTestPlugin
 import io.spring.javaformat.gradle.SpringJavaFormatPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -32,6 +33,7 @@ class ModulePlugin : Plugin<Project> {
 		project.pluginManager.apply(CompileArgsPlugin::class.java)
 		project.pluginManager.apply(CorePlugin::class.java)
 		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
+		project.pluginManager.apply(IntegrationTestPlugin::class.java)
 
 		project.tasks.register("checkstyle") {
 			group = "other"
