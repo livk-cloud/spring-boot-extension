@@ -35,7 +35,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6.1.0
 
       - name: Gradle Run Build
-        run: ./gradlew build --no-daemon -Dorg.gradle.workers.max=2
+        run: ./gradlew build integrationTest --no-daemon -Dorg.gradle.workers.max=2
 
       - name: Upload coverage reports to Codecov
         if: ${{ matrix.java == 21 }}
