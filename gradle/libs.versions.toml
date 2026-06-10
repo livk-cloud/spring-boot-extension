@@ -24,7 +24,7 @@ disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.47"
 okhttp = "5.4.0"
-spotbugs-annotations = "4.9.8"
+spotbugs-annotations = "4.10.2"
 maven-publish-plugins = "0.36.0"
 checkstyle = "13.5.0"
 
