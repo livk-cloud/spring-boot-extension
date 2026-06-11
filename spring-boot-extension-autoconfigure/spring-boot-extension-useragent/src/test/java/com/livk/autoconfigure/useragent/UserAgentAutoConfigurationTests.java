@@ -58,6 +58,13 @@ class UserAgentAutoConfigurationTests {
 	}
 
 	@Test
+	void customUserAgentHelperBacksOffAutoConfiguredHelper() {
+		UserAgentHelper helper = new UserAgentHelper();
+		this.contextRunner.withBean(UserAgentHelper.class, () -> helper)
+			.run((context) -> assertThat(context).getBean(UserAgentHelper.class).isSameAs(helper));
+	}
+
+	@Test
 	void testBrowscap() {
 		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(UserAgentParser.class);

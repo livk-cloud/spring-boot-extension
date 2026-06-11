@@ -25,6 +25,7 @@ import com.livk.context.useragent.servlet.UserAgentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,7 @@ public class UserAgentConfiguration {
 	 * @return the user agent helper
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public UserAgentHelper userAgentHelper() {
 		return new UserAgentHelper();
 	}

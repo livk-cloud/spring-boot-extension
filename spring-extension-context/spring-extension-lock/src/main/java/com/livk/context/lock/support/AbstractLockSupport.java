@@ -30,14 +30,14 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	/**
 	 * The Thread local.
 	 */
-	protected final ThreadLocal<T> threadLocal = new InheritableThreadLocal<>();
+	protected final ThreadLocal<T> threadLocal = new ThreadLocal<>();
 
 	@Override
 	public final boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
 		T lock = getLock(type, key);
 		try {
 			boolean isLocked = supportAsync() && async ? tryLockAsync(lock, leaseTime, waitTime)
-					: tryLock(lock, waitTime, leaseTime);
+					: tryLock(lock, leaseTime, waitTime);
 			if (isLocked) {
 				threadLocal.set(lock);
 			}

@@ -59,19 +59,19 @@ abstract class FesodSupport {
 		try (ExcelWriter writer = builder.build()) {
 			int index = 0;
 			for (Map.Entry<String, ? extends List<?>> entry : result.entrySet()) {
-				WriteSheet sheet = buildSheet(location, entry, index++);
+				WriteSheet sheet = buildSheet(location, entry.getKey(), index++);
 				writer.write(entry.getValue(), sheet);
 			}
 		}
 	}
 
-	protected WriteSheet buildSheet(String location, Map.Entry<String, ? extends List<?>> entry, int index) {
+	protected WriteSheet buildSheet(String location, String sheetName, int index) {
 		if (StringUtils.hasText(location)) {
-			return FesodSheet.writerSheet(index, entry.getKey())
-				.registerWriteHandler(new TemplateSheetWriteHandler(index, entry.getKey()))
+			return FesodSheet.writerSheet(index, sheetName)
+				.registerWriteHandler(new TemplateSheetWriteHandler(index, sheetName))
 				.build();
 		}
-		return FesodSheet.writerSheet(entry.getKey()).build();
+		return FesodSheet.writerSheet(sheetName).build();
 	}
 
 	<T> Object getExcelData(ExcelMapReadListener<T> listener, ExcelDataType type) {

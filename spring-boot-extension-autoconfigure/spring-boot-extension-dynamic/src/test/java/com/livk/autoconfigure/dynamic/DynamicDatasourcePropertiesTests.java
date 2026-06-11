@@ -52,6 +52,14 @@ class DynamicDatasourcePropertiesTests {
 	}
 
 	@Test
+	void afterPropertiesSetWithMissingDatasourceThrows() {
+		DynamicDatasourceProperties properties = new DynamicDatasourceProperties();
+		properties.setPrimary("master");
+		assertThatThrownBy(properties::afterPropertiesSet).isInstanceOf(PrimaryNotFountException.class)
+			.hasMessage("The 'datasource' configuration is missing!");
+	}
+
+	@Test
 	void afterPropertiesSetWithNullPrimaryThrows() {
 		DynamicDatasourceProperties properties = new DynamicDatasourceProperties();
 		properties.setDatasource(Map.of("master", new DataSourceProperties()));
