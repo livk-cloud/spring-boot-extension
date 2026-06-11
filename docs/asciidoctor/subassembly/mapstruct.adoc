@@ -1,9 +1,14 @@
 [[mapstruct]]
 ==== mapstruct
 
+MapStruct 组件提供两类转换方式：
+
+* 自定义双向转换器：继承 `com.livk.context.mapstruct.converter.Converter`，通过 `MapstructService` 使用。
+* Spring 单向转换器：继承 `org.springframework.core.convert.converter.Converter`，通过 Spring `ConversionService` 使用。
+
 使用示例 +
 自定义转换器 +
-继承 `com.livk.autoconfigure.mapstruct.converter.Converter` +
+继承 `com.livk.context.mapstruct.converter.Converter` +
 并添加注解 `@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)`
 
 [source,java,indent=0]
@@ -97,3 +102,15 @@ public class UserController {
 
 artifactId: mapstruct-spring-boot-starter
 
+starter 会注册 `MapstructService`、`ConverterRepository` 和 `MapstructLocator`。 +
+`MapstructService` 会优先从 Spring 容器查找匹配的 `Converter<S, T>`，找到后缓存到仓库中。
+
+===== 集合转换
+
+`MapstructService` 内置集合转换方法：
+
+* `convert(Collection<S>, Class<T>)`：返回 `Stream<T>`。
+* `convertList(Collection<S>, Class<T>)`：返回 `List<T>`。
+* `convertSet(Collection<S>, Class<T>)`：返回 `Set<T>`。
+
+如果没有找到匹配转换器，会抛出 `ConverterNotFoundException`。

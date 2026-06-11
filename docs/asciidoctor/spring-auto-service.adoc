@@ -3,6 +3,9 @@
 
 根据代码定义生成spring boot的自动装配文件和spring.factories、aot.factories
 
+该模块是编译期注解处理器，注解保留策略为 `SOURCE`。 +
+它不会在运行时参与逻辑，只负责在编译阶段根据注解生成 Spring 约定位置的资源文件。
+
 [primary]
 .Maven
 --
@@ -38,6 +41,15 @@
 --
 
 ==== @SpringAutoService使用示例
+
+`@SpringAutoService` 默认生成 Spring Boot 自动配置导入文件：
+
+[source,txt,indent=0]
+----
+META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+----
+
+如果传入自定义注解类型，会生成该注解对应的 imports 文件，适合配合 `@AutoImport` 或 `SpringAbstractImportSelector` 使用。
 
 [source,java,indent=0]
 ----
@@ -129,6 +141,13 @@ public class TraceEnvironmentPostProcessor implements EnvironmentPostProcessor {
 org.springframework.boot.env.EnvironmentPostProcessor=\
 	com.livk.commons.spring.TraceEnvironmentPostProcessor
 ----
+
+==== 使用注意
+
+* 当前类只实现一个接口时，`@SpringFactories` 和 `@AotFactories` 可以自动推断 key。
+* 当前类实现多个接口时，建议显式指定 `value`，避免生成结果不符合预期。
+* `@SpringAutoService` 标记的类通常也会带有 Spring Boot 的 `@AutoConfiguration` 或普通配置类注解。
+* Gradle 项目需要同时配置 `compileOnly` 与 `annotationProcessor`，否则编译期无法执行处理器。
 
 当前类如果仅仅只有一个接口，可以不指定，自动生成
 

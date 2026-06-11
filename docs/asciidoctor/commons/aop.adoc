@@ -1,6 +1,8 @@
 [[aop]]
 ==== aop
 
+`aop` 包封装了基于注解的 Advisor 模板，减少重复编写 `Pointcut`、`MethodInterceptor` 和注解解析逻辑。
+
 ===== AnnotationAbstractPointcutAdvisor
 
 使用注解处理AOP的通用切点及表达式
@@ -54,3 +56,12 @@ public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLoc
 . forMethod基于方法级别的拦截等价于(@Around(@annotation(Annotation)))
 . forTypeOrMethod基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))
 . forTarget根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)
+
+===== 使用建议
+
+自定义拦截器时只需要关注两个点：
+
+* 注解应该拦截类、方法还是两者都拦截。
+* `invoke` 中如何根据注解属性包装原方法调用。
+
+如果注解只允许标记方法，优先选择 `AnnotationPointcut.forMethod`；如果注解同时允许标记类和方法，使用 `forTypeOrMethod` 或 `forTarget` 更省心。

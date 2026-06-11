@@ -1,6 +1,8 @@
 [[annotation]]
 ==== annotation
 
+`annotation` 包用于简化基于注解的 Spring 扩展开发，适合自定义 `@EnableXxx`、扫描器或自动导入配置类的场景。
+
 ===== SpringAbstractImportSelector
 
 通过继承AutoConfigurationImportSelector，可以实现自动导入spring的配置文件，导入文件为META-INF/spring/{annotationClass}.imports,需要使用org.springframework.context.annotation.Import进行注册
@@ -32,6 +34,15 @@ public @interface Http{
 }
 ----
 
+编译后的配置文件示例：
+
+[source,txt,indent=0]
+----
+META-INF/spring/com.example.Http.imports
+----
+
+文件内容为需要导入的配置类全限定名，每行一个。
+
 ===== AnnotationBasePackageSupport
 用于快速获取basePackage +
 使用注解方式获取，注解需包含basePackages和basePackageClasses
@@ -53,3 +64,6 @@ public @interface DisruptorScan {
 
 ===== AnnotationBeanDefinitionScanner
 用于快速扫描bean，使用注解方式获取
+
+通常和 `AnnotationBasePackageSupport` 配合使用：先从注解中解析扫描包，再扫描指定注解或接口的候选 BeanDefinition。 +
+适合 Disruptor、MapStruct 等需要“按包扫描并注册基础设施 Bean”的组件。

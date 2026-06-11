@@ -1,0 +1,115 @@
+=== starter 选择指南
+
+`spring-boot-extension-starters` 按功能拆分 starter，业务项目建议按需引入。 +
+starter 会带上对应的 context 与 autoconfigure 模块，通常不需要再手动引入底层模块。
+
+==== starter 与功能对应关系
+
+|===
+|starter |核心能力 |常见依赖/前置条件
+
+|curator-spring-boot-starter
+|Zookeeper Curator 客户端、`CuratorTemplate`、Actuator 健康检查
+|需要可访问的 Zookeeper
+
+|disruptor-spring-boot-starter
+|Disruptor 事件队列扫描、生产者与消费者集成
+|需要声明 `@DisruptorScan`
+
+|dynamic-datasource-spring-boot-starter
+|动态数据源、数据源切换 AOP
+|需要配置 `spring.dynamic.primary` 与多个 datasource
+
+|fesod-spring-boot-starter
+|Excel 导入导出，支持 MVC 与 WebFlux
+|需要定义 Excel 解析 listener
+
+|limit-spring-boot-starter
+|方法级限流
+|分布式场景建议配合 Redisson
+
+|distributed-lock-spring-boot-starter
+|方法级分布式锁
+|需要 Redisson 或 Curator 作为锁实现
+
+|mapstruct-spring-boot-starter
+|MapStruct 转换器发现、缓存和 `MapstructService`
+|需要 MapStruct 生成转换器 Bean
+
+|mybatis-extension-boot-starter
+|MyBatis 字段注入、SQL 耗时监控、JSON 类型处理支持
+|需要 MyBatis 环境
+
+|qrcode-spring-boot-starter
+|二维码请求解析与响应渲染
+|支持 MVC 与 WebFlux
+
+|redisearch-spring-boot-starter
+|RediSearch 连接工厂与模板
+|需要 Redis Stack / RediSearch 服务
+
+|redisson-spring-boot-starter
+|RedissonClient 自动配置
+|需要 Redis 或 Redis Cluster
+
+|browscap-spring-boot-starter
+|基于 BrowsCap 的 User-Agent 解析
+|适合使用 BrowsCap 数据的项目
+
+|yauaa-spring-boot-starter
+|基于 YAUAA 的 User-Agent 解析
+|适合需要 YAUAA 解析能力的项目
+|===
+
+==== 依赖示例
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>redisson-spring-boot-starter</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>distributed-lock-spring-boot-starter</artifactId>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+implementation 'io.github.livk-cloud:redisson-spring-boot-starter'
+implementation 'io.github.livk-cloud:distributed-lock-spring-boot-starter'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation("io.github.livk-cloud:redisson-spring-boot-starter")
+implementation("io.github.livk-cloud:distributed-lock-spring-boot-starter")
+----
+--
+
+==== 选择建议
+
+如果只使用通用工具类，选择 `spring-extension-commons`。 +
+如果需要手动组装基础能力，选择 `spring-extension-context`。 +
+如果是 Spring Boot 业务项目，优先选择具体 starter。
+
+多个 starter 可以组合使用，例如：
+
+* `redisson-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Redisson 分布式锁。
+* `redisson-spring-boot-starter` + `limit-spring-boot-starter`：使用 Redisson 做分布式限流。
+* `curator-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Curator 分布式锁。
+* `browscap-spring-boot-starter` 或 `yauaa-spring-boot-starter`：二选一接入 User-Agent 解析。
+
+不建议一次性引入所有 starter。按功能引入可以减少无关第三方依赖，也能避免多个同类 Bean 同时存在导致自动配置选择不符合预期。

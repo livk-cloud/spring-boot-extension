@@ -1,6 +1,9 @@
 [[limit]]
 ==== limit
 
+限流组件通过 `@Limit` 标记方法，并由 `LimitInterceptor` 拦截执行。 +
+默认提供 `RedissonLimitExecutor`，适合多实例部署下共享限流状态。
+
 ===== Limit注解
 
 标记方法,用于对此方法进行限流
@@ -18,9 +21,21 @@ public class UserService {
 }
 ----
 
+`@Limit` 常用属性：
+
+* `key`：限流资源 key，建议按业务域命名。
+* `rate`：单位时间内允许的令牌数。
+* `rateInterval`：单位时间长度。
+* `rateIntervalUnit`：时间单位，默认 `SECONDS`。
+* `restrictIp`：是否按请求 IP 追加限制维度。
+* `handler`：触发限流后的自定义处理器。
+
 ===== LimitExecutor
 
 限流执行器基类,实现注册为Spring Bean即可 提供RedissonLimitExecutor作为实现，需要Redisson依赖
+
+自定义限流存储时，实现 `LimitExecutor` 并注册为 Spring Bean 即可。 +
+如果使用 Redisson 实现，需要先引入并配置 `redisson-spring-boot-starter`。
 
 ===== LimitInterceptor
 
@@ -29,3 +44,5 @@ public class UserService {
 ===== limit-spring-boot-starter
 
 artifactId: limit-spring-boot-starter
+
+引入 starter 后会自动注册限流拦截器。业务只需要在需要保护的方法上添加 `@Limit`。

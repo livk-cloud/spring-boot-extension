@@ -1,6 +1,9 @@
 [[qrcode]]
 ==== qrcode
 
+二维码组件基于 ZXing，支持二维码文本解析和将接口返回值渲染为二维码图片。 +
+同时支持 Spring MVC 与 Spring WebFlux。
+
 ===== 二维码导入解析
 
 使用注解 `@PostMapping` 解析二维码(支持Spring Webflux) +
@@ -13,7 +16,7 @@ RequestQrCodeText指定文件名称 +
 public class QRCodeController {
 
 	@PostMapping
-	public Mono<String> textCode(@RequestQrCodeText Mono<String> text) {
+	public Mono<String> textCode(@RequestQrCodeText(fileName = "file") Mono<String> text) {
 		return text.log();
 	}
 
@@ -41,9 +44,25 @@ public class QRCodeController {
 	public Mono<String> textMono(String text) {
 		return Mono.just(text);
 	}
+}
 ----
+
+`@ResponseQrCode` 支持配置二维码尺寸、颜色和图片类型：
+
+[source,java,indent=0]
+----
+@ResponseQrCode(width = 300, height = 300, type = PicType.PNG)
+@GetMapping("png")
+public String png(String text) {
+	return text;
+}
+----
+
+也可以直接返回 `QrCodeEntity` 以便在代码中动态设置尺寸和颜色。
 
 
 ===== qrcode-spring-boot-starter
 
 artifactId: qrcode-spring-boot-starter
+
+引入 starter 后会注册二维码参数解析器和返回值处理器。

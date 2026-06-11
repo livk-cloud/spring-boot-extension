@@ -3,3 +3,70 @@
 :basedir: testcontainers
 
 提供自定义testcontainers与spring boot的支持
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>spring-testcontainers-support</artifactId>
+    <version>${version}</version>
+    <scope>test</scope>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+    testImplementation 'io.github.livk-cloud:spring-testcontainers-support:${version}'
+----
+--
+
+[secondary]
+.Groovy-Kotlin
+--
+[source,kotlin,indent=0]
+----
+    testImplementation("io.github.livk-cloud:spring-testcontainers-support:${version}")
+----
+--
+
+==== DockerImageNames
+
+提供常用容器镜像名称构造方法：
+
+* `DockerImageNames.mysql()`
+* `DockerImageNames.postgres()`
+* `DockerImageNames.redis()`
+* `DockerImageNames.redisStack()`
+* `DockerImageNames.zookeeper()`
+
+每个方法都提供默认 `latest` 标签，也可以传入指定 tag。
+
+==== ZookeeperContainer
+
+封装 Zookeeper Testcontainers 容器，默认暴露 `2181` 端口。
+
+[source,java,indent=0]
+----
+@TestConfiguration(proxyBeanMethods = false)
+class ContainerConfiguration {
+
+	@Bean
+	@ServiceConnection
+	ZookeeperContainer zookeeperContainer() {
+		return new ZookeeperContainer();
+	}
+
+}
+----
+
+==== ServiceConnection
+
+`spring-testcontainers-support` 会通过 `ConnectionDetailsFactory` 为 `ZookeeperContainer` 生成连接信息。 +
+在 Spring Boot 测试中使用 `@ServiceConnection` 后，可以自动获得 Zookeeper 的 `host:mappedPort` 连接串。

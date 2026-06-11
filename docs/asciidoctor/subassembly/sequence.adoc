@@ -5,7 +5,19 @@
 
 datasource发号器内置Postgres、Mysql、H2等数据库发号策略
 
-未支持的数据库实现 *com.livk.context.sequence.support.spi.SqlProvider* 并注册到 *META-INF/spring.factories* 文件
+未支持的数据库实现 `com.livk.context.sequence.support.db.SequenceDbHelper` 并注册到 `META-INF/spring.factories` 文件
+
+===== 发号模式
+
+* `Sequence.snowflake(dataCenterId, machineId)`：本地雪花算法，不依赖外部存储。
+* `DbRangeManager`：基于数据库分段取号，内置 MySQL、PostgreSQL、H2。
+* `RedisRangeManager`：基于 Redis `INCRBY` 分段取号，可使用 Lettuce 或 Spring Data Redis 连接。
+
+`SequenceBuilder` 支持设置：
+
+* `bizName`：业务名称，必填，不同业务使用不同号段。
+* `step`：每次申请的号段步长，默认 `1000`。
+* `stepStart`：初始值，默认 `0`，真实发号从 `stepStart + 1` 开始。
 
 [source,java,indent=0]
 ----
@@ -29,7 +41,7 @@ public class Config{
 
     @Bean
    public Sequence redisSequence(RedisConnectionFactory factory) {
-     SpringSequenceRedisHelper helper = new SpringSequenceRedisHelper(redisClient);
+     SpringSequenceRedisHelper helper = new SpringSequenceRedisHelper(factory);
 		 Sequence sequence = SequenceBuilder.builder(new RedisRangeManager(helper)).bizName("test-sequence").build();
      return sequence;
    }
@@ -41,3 +53,8 @@ public class Config{
    }
 }
 ----
+
+===== 注意事项
+
+数据库模式会自动创建 `sequence_range` 表，并通过乐观更新获取下一段区间。 +
+Redis 模式会使用 `x_sequence_` 前缀生成 key。部署多实例时，所有实例必须连接同一套数据库或 Redis，才能保证全局递增。

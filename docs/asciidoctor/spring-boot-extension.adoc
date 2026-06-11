@@ -22,6 +22,7 @@ include::install.adoc[]
 == 使用指导 ==
 
 include::spring-auto-service.adoc[]
+include::spring-boot-extension-starters.adoc[]
 [#_spring-extension-commons]
 include::spring-extension-commons.adoc[]
 [#_spring-extension-subassembly]

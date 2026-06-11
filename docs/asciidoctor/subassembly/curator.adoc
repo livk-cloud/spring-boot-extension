@@ -23,3 +23,24 @@ public static void main(String[] args){
 artifactId: curator-spring-boot-starter
 
 根据CuratorProperties自动注册CuratorFramework、RetryPolicy、CuratorTemplate以及Curator Actuator
+
+===== 配置
+
+配置前缀为 `spring.zookeeper.curator`。
+
+[source,yaml,indent=0]
+----
+spring:
+  zookeeper:
+    curator:
+      connect-string: localhost:2181
+      base-sleep-time-ms: 50
+      max-retries: 10
+      max-sleep-ms: 500
+      block-until-connected-wait: 10
+      block-until-connected-unit: seconds
+      session-timeout: 60s
+      connection-timeout: 15s
+----
+
+注册 starter 后可直接注入 `CuratorFramework` 或 `CuratorTemplate` 使用；Actuator 存在时会注册 Curator 健康检查。

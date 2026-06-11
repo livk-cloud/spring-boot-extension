@@ -1,0 +1,30 @@
+=== 常见问题
+
+==== 为什么 starter 引入后没有生效
+
+请先确认已经引入对应 starter，而不是只引入了 `spring-extension-context`。 +
+`spring-extension-context` 提供基础 API，starter 才会引入对应自动配置模块并注册 Spring Bean。
+
+==== 自动配置文件没有生成
+
+`spring-auto-service` 是编译期注解处理器，需要同时加入 `compileOnly` 和 `annotationProcessor`。 +
+如果使用 Kotlin，需要按项目的 Kotlin KAPT/KSP 配置接入注解处理器。
+
+==== Redisson、Curator、Redisearch 连接失败
+
+先检查配置前缀是否正确：
+
+* Redisson：`spring.redisson`
+* Curator：`spring.zookeeper.curator`
+* RediSearch：`spring.redisearch`
+
+再确认中间件地址、端口、认证信息与本地网络环境。使用 Testcontainers 时，可优先使用 `@ServiceConnection` 或测试配置注入连接信息。
+
+==== WebMVC 与 WebFlux 能力如何选择
+
+大部分 Web 能力会根据类路径自动适配。Servlet 项目使用 Spring MVC 类型，响应式项目使用 WebFlux 类型。 +
+如果同一个工程同时存在两套 Web 依赖，请明确使用对应的 starter 和控制器参数类型，避免解析器匹配不符合预期。
+
+==== 表达式解析器如何选择
+
+默认可以使用 Spring EL。Aviator、FreeMarker、Jexl3、Mvel2 等解析器依赖对应第三方库，业务项目需要自行引入相应依赖。

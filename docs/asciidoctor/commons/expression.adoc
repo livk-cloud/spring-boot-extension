@@ -1,6 +1,9 @@
 [[expression]]
 ==== expression
 
+`expression` 包提供统一的表达式解析接口，将方法参数、Map、Spring Environment 等上下文包装为 `Context`，再交给不同表达式引擎计算。 +
+限流、分布式锁等组件可以用它解析动态 key。
+
 ===== AbstractExpressionResolver
 
 ExpressionResolver抽象实现 +
@@ -65,3 +68,16 @@ public class MyExpressionResolver extends CacheExpressionResolver<Expression> {
 . FreeMarkerExpressionResolver -> 根据FreeMarker表达式进行解析(需要重新引入jar)  +
 . JexlExpressionResolver -> 根据Apache Commons Jexl3表达式进行解析(需要重新引入jar)  +
 . MvelExpressionResolver -> 根据Mvel 2表达式进行解析(需要重新引入jar)  +
+
+===== Context
+
+`ContextFactory` 用于把运行时信息转换成表达式上下文。常见输入包括：
+
+* `Map<String, Object>`：直接作为变量集合。
+* `Method` 与参数数组：按参数名、参数索引等方式暴露变量。
+* Spring `Environment`：支持读取配置属性。
+
+===== 选择建议
+
+Spring 项目优先使用 `SpringExpressionResolver`。如果业务已有 Aviator、FreeMarker、Jexl3 或 Mvel2 规则资产，可以引入对应依赖后使用相应 resolver。 +
+需要高频解析时，优先继承 `CacheExpressionResolver`，避免每次都重新编译表达式。

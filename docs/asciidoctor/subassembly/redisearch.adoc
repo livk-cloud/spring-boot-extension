@@ -1,7 +1,65 @@
 [[redisearch]]
 ==== redisearch
 
-封装RediSearchTemplate、StringRediSearchTemplate来操作redisearch
+封装 `RediSearchTemplate`、`StringRediSearchTemplate` 来操作 RediSearch。 +
+自动配置基于 lettuce-mod 创建 `RediSearchConnectionFactory`，并在存在 Jackson 时提供 JSON 序列化的模板。
+
+===== 配置
+
+配置前缀为 `spring.redisearch`，默认连接 `localhost:6379` 的 `0` 号库。
+
+[source,yaml,indent=0]
+----
+spring:
+  redisearch:
+    host: localhost
+    port: 6379
+    database: 0
+    username:
+    password:
+    ssl: false
+    timeout: 3s
+    client-name: redisearch-client
+    pool:
+      enabled: true
+      max-active: 8
+      max-idle: 8
+      min-idle: 0
+      max-wait: -1ms
+----
+
+集群模式可启用 `cluster` 配置：
+
+[source,yaml,indent=0]
+----
+spring:
+  redisearch:
+    cluster:
+      enabled: true
+      nodes:
+        - 127.0.0.1:6379
+        - 127.0.0.1:6380
+      max-redirects: 3
+----
+
+===== 使用模板
+
+`RediSearchTemplate<String, Object>` 适合对象读写，`StringRediSearchTemplate` 适合字符串场景。 +
+如果需要调整 lettuce 的底层资源，可以注册 `ClientResourcesBuilderCustomizer`。
+
+[source,java,indent=0]
+----
+@Service
+public class ArticleSearchService {
+
+	private final StringRediSearchTemplate stringRediSearchTemplate;
+
+	public ArticleSearchService(StringRediSearchTemplate stringRediSearchTemplate) {
+		this.stringRediSearchTemplate = stringRediSearchTemplate;
+	}
+
+}
+----
 
 ===== redisearch-spring-boot-starter
 

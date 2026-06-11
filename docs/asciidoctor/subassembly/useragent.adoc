@@ -1,6 +1,52 @@
 [[useragent]]
 ==== useragent
 
+提供 User-Agent 解析能力，支持 Spring MVC 与 Spring WebFlux。 +
+通过 `@UserAgentInfo` 注入解析后的 `UserAgent`，也可以从上下文持有器中获取当前请求的结果。
+
+===== MVC 使用
+
+[source,java,indent=0]
+----
+@RestController
+@RequestMapping("user-agent")
+public class UserAgentController {
+
+	@GetMapping
+	public HttpEntity<Map<String, UserAgent>> get(@UserAgentInfo UserAgent userAgent) {
+		Map<String, UserAgent> map = Map.of("argument", userAgent,
+				"context", UserAgentContextHolder.getUserAgentContext());
+		return ResponseEntity.ok(map);
+	}
+
+}
+----
+
+===== WebFlux 使用
+
+[source,java,indent=0]
+----
+@RestController
+@RequestMapping("user-agent")
+public class ReactiveUserAgentController {
+
+	@GetMapping
+	public Mono<UserAgent> get(@UserAgentInfo Mono<UserAgent> userAgent) {
+		return userAgent;
+	}
+
+}
+----
+
+===== 解析器选择
+
+starter 根据类路径自动注册解析器：
+
+* 引入 `browscap-spring-boot-starter` 时，使用 BrowsCap 的 `UserAgentParser`。
+* 引入 `yauaa-spring-boot-starter` 时，使用 YAUAA 的 `UserAgentAnalyzer`。
+
+如果项目中同时存在多个 `UserAgentConverter`，`UserAgentHelper` 会按 Spring Bean 顺序依次尝试转换，返回第一个非空结果。
+
 ===== browscap-spring-boot-starter
 
 artifactId: browscap-spring-boot-starter
