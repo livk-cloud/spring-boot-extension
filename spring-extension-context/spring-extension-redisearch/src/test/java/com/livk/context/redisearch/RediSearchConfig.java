@@ -38,7 +38,7 @@ class RediSearchConfig {
 			@Value("${redisearch.port}") Integer port) {
 		ClientResources resources = ClientResources.builder().build();
 		RedisModulesClient client = RedisModulesClient.create(resources, RedisURI.create(host, port));
-		return FactoryProxySupport.newProxy(client);
+		return RediSearchConnectionFactory.create(client);
 	}
 
 }
