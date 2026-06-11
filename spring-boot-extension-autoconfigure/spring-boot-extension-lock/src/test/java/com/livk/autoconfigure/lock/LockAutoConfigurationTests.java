@@ -16,16 +16,12 @@
 
 package com.livk.autoconfigure.lock;
 
-import com.livk.commons.util.ClassUtils;
-import com.livk.commons.util.GenericsByteBuddy;
 import com.livk.context.lock.intercept.DistributedLockInterceptor;
 import com.livk.context.lock.support.CuratorLock;
 import com.livk.context.lock.support.RedissonLock;
 import com.livk.testcontainers.DockerImageNames;
 import com.livk.testcontainers.containers.ZookeeperContainer;
 import com.redis.testcontainers.RedisContainer;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -63,16 +59,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class LockAutoConfigurationTests {
-
-	static {
-		try (DynamicType.Unloaded<Object> unloaded = new GenericsByteBuddy().subclass(Object.class)
-			.name("com.livk.lock.marker.LockMarker")
-			.make()) {
-			Class<?> loaded = unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
-				.getLoaded();
-			assertThat(loaded).isNotNull();
-		}
-	}
 
 	@Container
 	@ServiceConnection

@@ -2,3 +2,14 @@
 
 spring-boot-extension是一个拓展Spring Boot的库，内置一些SpringBoot未包含的Starter包 +
 同时也补充的各种工具类，用于简化开发、提升开发效率
+
+项目按职责拆分为几个部分：
+
+* `spring-auto-service`：编译期注解处理器，用于生成 Spring Boot 自动装配文件、`spring.factories` 和 `aot.factories`。
+* `spring-extension-commons`：通用工具、表达式解析、Jackson、HTTP 客户端、Servlet 包装等基础能力。
+* `spring-extension-context`：第三方组件与 Spring 的集成能力，例如 Curator、Disruptor、动态数据源、限流、分布式锁、二维码、MapStruct、MyBatis 等。
+* `spring-boot-extension-autoconfigure`：面向 Spring Boot 的自动配置模块。
+* `spring-boot-extension-starters`：按功能拆分的 starter，便于业务项目按需引入。
+* `spring-testcontainers-support`：补充 Testcontainers 与 Spring Boot service connection 的适配。
+
+推荐业务项目优先引入 BOM，然后只引入需要的 starter。需要自定义扩展时，再直接使用 `spring-extension-commons` 或 `spring-extension-context` 中的基础 API。

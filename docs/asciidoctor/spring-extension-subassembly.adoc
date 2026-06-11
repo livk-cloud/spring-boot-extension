@@ -5,6 +5,9 @@
 *兼容Spring的基础包* +
 提供一些第三方包与spring整合的拓展,包括一些自定义拓展
 
+如果只需要基础 API、自定义 Bean 或手动装配，可以引入 `spring-extension-context`。 +
+如果希望交给 Spring Boot 自动配置，业务项目通常直接引入对应 starter。
+
 [primary]
 .Maven
 --
@@ -38,6 +41,62 @@
 
 *兼容SpringBoot的拓展包* +
 使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置
+
+`spring-boot-extension-autoconfigure` 通常由 starter 间接引入。直接引入该模块时，需要自行保证第三方依赖存在，例如 Redisson、Curator、MyBatis、ZXing 等。
+
+==== starter 快速索引
+
+|===
+|功能 |starter |说明
+
+|Curator
+|curator-spring-boot-starter
+|注册 CuratorFramework、CuratorTemplate 和健康检查
+
+|Disruptor
+|disruptor-spring-boot-starter
+|扫描事件并注册 SpringDisruptor
+
+|动态数据源
+|dynamic-datasource-boot-starter
+|注册 DynamicDatasource 与切换拦截器
+
+|Excel
+|fesod-spring-boot-starter
+|注册 Excel 参数解析器和返回值处理器
+
+|限流
+|limit-spring-boot-starter
+|注册限流 AOP 拦截器
+
+|分布式锁
+|distributed-lock-boot-starter
+|注册分布式锁 AOP 拦截器
+
+|MapStruct
+|mapstruct-spring-boot-starter
+|注册 MapstructService 与转换器仓库
+
+|MyBatis
+|mybatis-extension-boot-starter
+|注册字段注入、SQL 监控等扩展
+
+|二维码
+|qrcode-spring-boot-starter
+|注册二维码请求解析和响应渲染
+
+|RediSearch
+|redisearch-spring-boot-starter
+|注册 RediSearchConnectionFactory 和模板
+
+|Redisson
+|redisson-spring-boot-starter
+|注册 RedissonClient
+
+|UserAgent
+|browscap-spring-boot-starter / yauaa-spring-boot-starter
+|注册 User-Agent 解析器
+|===
 
 [primary]
 .Maven
@@ -95,5 +154,3 @@ include::{basedir}/redisson.adoc[]
 include::{basedir}/sequence.adoc[]
 
 include::{basedir}/useragent.adoc[]
-
-

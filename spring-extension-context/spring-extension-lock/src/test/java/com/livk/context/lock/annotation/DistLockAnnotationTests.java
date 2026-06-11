@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package com.livk.lock.marker;
+package com.livk.context.lock.annotation;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.livk.context.lock.LockType;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author livk
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public abstract class LockMarker {
+class DistLockAnnotationTests {
+
+	@Test
+	void defaults() throws Exception {
+		assertThat(DistLock.class.getDeclaredMethod("type").getDefaultValue()).isEqualTo(LockType.LOCK);
+		assertThat(DistLock.class.getDeclaredMethod("leaseTime").getDefaultValue()).isEqualTo(10L);
+		assertThat(DistLock.class.getDeclaredMethod("waitTime").getDefaultValue()).isEqualTo(3L);
+		assertThat(DistLock.class.getDeclaredMethod("async").getDefaultValue()).isEqualTo(false);
+	}
 
 }

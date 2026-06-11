@@ -1,6 +1,9 @@
 [[lock]]
 ==== lock
 
+分布式锁组件通过 `@DistLock` 标记方法，并由 `DistributedLockInterceptor` 统一执行加锁、释放锁和异常处理。 +
+内置 Redisson 与 Curator 两类实现。
+
 ===== DistLock注解
 
 标记方法,用于对此方法进行分布式锁
@@ -19,9 +22,20 @@ public class UserService {
 }
 ----
 
+`@DistLock` 常用属性：
+
+* `key`：锁名称，支持表达式生成动态 key。
+* `type`：锁类型，支持 `LOCK`、`FAIR`、`READ`、`WRITE`。
+* `leaseTime`：锁租约时间，默认 `10`。
+* `waitTime`：等待获取锁时间，默认 `3`。
+* `async`：是否使用异步锁能力。
+
 ===== DistributedLock
 
 分布式锁基类,实现注册为Spring Bean即可 提供RedissonLock作为实现，需要Redisson依赖 提供CuratorLock作为实现，需要Curator依赖
+
+使用 Redisson 锁时需要配置 `RedissonClient`；使用 Curator 锁时需要配置 `CuratorFramework`。 +
+如果两种实现同时存在，建议业务显式保留一个 `DistributedLock` Bean，避免锁实现选择不符合预期。
 
 ===== DistributedLockInterceptor
 
@@ -30,3 +44,5 @@ public class UserService {
 ===== distributed-lock-boot-starter
 
 artifactId: distributed-lock-boot-starter
+
+starter 会注册拦截器和可用的锁实现。方法执行完成或异常退出时都会释放锁。

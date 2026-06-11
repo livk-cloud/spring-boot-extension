@@ -36,7 +36,6 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration
 @SpringAutoService
-@ConditionalOnClass(name = "com.livk.lock.marker.LockMarker")
 public class LockAutoConfiguration {
 
 	/**

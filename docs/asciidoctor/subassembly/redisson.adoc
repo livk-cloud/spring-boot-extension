@@ -3,4 +3,66 @@
 
 artifactId: redisson-spring-boot-starter
 
-适配springboot yaml、properties配置文件,使用redisson的配置文件进行redisson的配置
+适配 Spring Boot 的 `yaml`、`properties` 配置文件，使用 Redisson 原生 `Config` 模型完成配置绑定。 +
+自动配置会注册 `RedissonClient`，并优先读取 `spring.redisson.config` 下的 Redisson 配置；未配置时会回退到 Spring Boot Redis 单机配置创建客户端。
+
+===== 单机配置
+
+[source,yaml,indent=0]
+----
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password:
+  redisson:
+    config:
+      single-server-config:
+        address: redis://127.0.0.1:6379
+        database: 0
+        connection-pool-size: 64
+        connection-minimum-idle-size: 24
+----
+
+===== 集群配置
+
+[source,yaml,indent=0]
+----
+spring:
+  redisson:
+    config:
+      cluster-servers-config:
+        node-addresses:
+          - redis://127.0.0.1:6379
+          - redis://127.0.0.1:6380
+        scan-interval: 2000
+----
+
+===== 使用
+
+引入 starter 后可直接注入 `RedissonClient`，分布式锁、限流等组件也可以复用同一个客户端。
+
+[source,java,indent=0]
+----
+@Service
+public class LockService {
+
+	private final RedissonClient redissonClient;
+
+	public LockService(RedissonClient redissonClient) {
+		this.redissonClient = redissonClient;
+	}
+
+	public void lock() {
+		RLock lock = redissonClient.getLock("demo:lock");
+		lock.lock();
+		try {
+			// business
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+
+}
+----

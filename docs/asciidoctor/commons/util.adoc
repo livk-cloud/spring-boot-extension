@@ -1,6 +1,14 @@
 [[util]]
 ==== util
 
+`util` 包收纳通用工具类，可以按用途大致分为：
+
+* 注解与反射：`AnnotationMetadataResolver`、`AnnotationValueExtractor`、`ReflectionUtils`、`ClassUtils`。
+* Bean 与泛型：`BeanLambda`、`BeanUtils`、`GenericWrapper`、`GenericsByteBuddy`。
+* Web 辅助：`HttpServletUtils`、`HttpReactiveUtils`、`MultiValueMapSplitter`。
+* 数据结构与 ID：`Pair`、`TreeNode`、`SnowflakeIdGenerator`。
+* 配置与上下文：`YamlUtils`、`ContextSnapshots`。
+
 ===== AnnotationMetadataResolver
 
 根据包名查找含有某些注解的类
@@ -173,3 +181,7 @@ public class Main{
 ===== TreeNode
 
 树形节点定义通用类
+
+===== 使用建议
+
+工具类优先用于基础设施代码或边界适配代码中。业务代码中如果只是简单调用，建议保持局部使用，避免把业务模型过度包装成通用结构。

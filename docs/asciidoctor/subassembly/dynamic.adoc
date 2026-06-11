@@ -1,6 +1,9 @@
 [[dynamic]]
 ==== dynamic
 
+动态数据源组件基于 `DynamicDatasource` 和 AOP 拦截器完成数据源切换。 +
+手动模式可以直接注册 `DynamicDatasource`，Spring Boot 项目推荐使用 `dynamic-datasource-boot-starter` 和 `@EnableDynamicDatasource`。
+
 ===== DynamicSource
 
 标记Service方法上,动态数据源切换
@@ -46,3 +49,36 @@ artifactId: dynamic-datasource-boot-starter
 根据DynamicDatasourceProperties注册DynamicDatasource和DataSourceInterceptor
 
 需要添加EnableDynamicDatasource到Spring Configuration
+
+===== 配置
+
+配置前缀为 `spring.dynamic`，其中 `primary` 必须指向 `datasource` 中已存在的数据源名称。
+
+[source,yaml,indent=0]
+----
+spring:
+  dynamic:
+    primary: mysql
+    datasource:
+      mysql:
+        url: jdbc:mysql://localhost:3306/demo
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      pgsql:
+        url: jdbc:postgresql://localhost:5432/demo
+        username: postgres
+        password: 123456
+        driver-class-name: org.postgresql.Driver
+----
+
+[source,java,indent=0]
+----
+@EnableDynamicDatasource
+@SpringBootApplication
+public class DynamicApplication {
+
+}
+----
+
+`@DynamicSource` 可标记在类或方法上，方法级别通常用于覆盖类级别默认数据源。

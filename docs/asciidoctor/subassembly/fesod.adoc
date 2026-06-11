@@ -1,6 +1,8 @@
 [[fesod]]
 ==== fesod
 
+Fesod 组件封装 FastExcel 的导入导出能力，并接入 Spring MVC / WebFlux 方法参数解析和返回值处理。
+
 ===== Excel导入
 
 使用注解 `@PostMapping` 解析Excel(支持Spring Webflux) +
@@ -32,6 +34,9 @@ public class InfoController {
 	}
 }
 ----
+
+`@RequestExcel` 用于声明上传 Excel 的解析器，`@ExcelParam` 用于绑定解析后的数据。 +
+WebFlux 场景可以使用 `Mono<List<T>>` 接收解析结果。
 
 ===== Excel导出
 
@@ -85,6 +90,13 @@ public class Info2Controller {
 }
 ----
 
+`@ResponseExcel` 可以标记在方法上；`@ExcelController` 可以标记在类上，对类内返回结果统一进行 Excel 输出处理。 +
+返回 `Map<String, ?>` 时，map key 会作为 sheet 名称。
+
+===== 文件名和后缀
+
+`@ResponseExcel` 支持指定 `fileName` 和 `suffix`。如果使用 `@ExcelController` 默认配置，文件名为 `out`，后缀为 `xlsm`。
+
 ===== fesod-spring-boot-starter
 
 artifactId: fesod-spring-boot-starter
@@ -92,3 +104,8 @@ artifactId: fesod-spring-boot-starter
 根据Servlet环境自动注册 *ExcelMethodArgumentResolver* 和 *ExcelMethodReturnValueHandler* +
 
 或Reactive环境自动注册 *ReactiveExcelMethodReturnValueHandler* 和 *ReactiveExcelMethodArgumentResolver*
+
+===== 注意事项
+
+导入大文件时建议使用流式解析器，并在 listener 中控制内存占用。 +
+导出多 sheet 时建议返回 `Map<String, List<?>>`，便于明确 sheet 名称。

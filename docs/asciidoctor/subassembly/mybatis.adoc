@@ -1,7 +1,9 @@
 [[mybatis]]
 ==== mybatis
 
-==== 内置SQL数据注入工具
+MyBatis 扩展提供 SQL 字段自动注入、JSON 类型处理器和 SQL 执行耗时监控。
+
+===== 内置SQL数据注入工具
 
 [source,java,indent=0]
 ----
@@ -34,7 +36,13 @@ public class User implements Serializable {
 
 并且添加com.livk.context.mybatis.SqlDataInjection至MyBatis
 
-==== 数据库JSON类型转换处理(目前只支持MySQL、Postgres)
+`@SqlInject` 常用属性：
+
+* `fill`：填充时机，`INSERT` 只在插入时填充，`INSERT_UPDATE` 在插入和更新时填充。
+* `supplier`：自定义填充值提供器，推荐使用。
+* `time`：旧版时间类型填充方式，已废弃，建议迁移到 `supplier`。
+
+===== 数据库JSON类型转换处理(目前只支持MySQL、Postgres)
 
 com.livk.context.mybatis.type.mysql.MysqlJsonTypeHandler
 
@@ -42,12 +50,24 @@ com.livk.context.mybatis.type.postgres.PostgresJsonTypeHandler
 
 添加至MyBatis
 
-==== mybatis sql监控
+===== mybatis sql监控
 
 添加com.livk.context.mybatis.MybatisSqlMonitor至MyBatis
 
 并且配置timeOut和unit至Properties
 
+Spring Boot starter 中配置前缀为 `mybatis.log.monitor`：
+
+[source,yaml,indent=0]
+----
+mybatis:
+  log:
+    monitor:
+      time-out: 1s
+----
+
 ===== mybatis-extension-boot-starter
 
 artifactId: mybatis-extension-boot-starter
+
+starter 会自动注册 `SqlDataInjection` 和 SQL 监控相关配置。JSON TypeHandler 仍需要在 MyBatis 类型处理器配置中按需使用。

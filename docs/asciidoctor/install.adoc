@@ -82,7 +82,24 @@ implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
 |version |支持情况
 |Jdk21以下
 | ✗
-|Jdk21-Jdk25
+|Jdk21-Jdk26
 | ✔
 |===
 
+=== 使用建议
+
+`spring-extension-dependencies` 管理项目自身依赖及常用第三方依赖版本，适合直接接入业务项目。 +
+`spring-extension-bom` 更轻量，只管理 spring-boot-extension 发布的模块版本，适合已经有统一依赖治理的平台项目。
+
+引入 BOM 后，业务模块中的 starter 可以省略版本：
+
+[source,kotlin,indent=0]
+----
+dependencies {
+	implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
+	implementation("io.github.livk-cloud:redisson-spring-boot-starter")
+	implementation("io.github.livk-cloud:distributed-lock-spring-boot-starter")
+}
+----
+
+如果只是使用工具类，不需要 Spring Boot 自动配置，可以只引入 `spring-extension-commons`。

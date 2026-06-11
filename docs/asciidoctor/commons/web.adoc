@@ -1,6 +1,9 @@
 [[web]]
 ==== web
 
+`web` 包主要面向 Servlet 场景，提供请求参数、请求体和响应体包装能力。 +
+适合在 Filter、Interceptor 或测试中改写请求/响应内容。
+
 ===== HttpParameters
 
 http请求Parameter参数,类似于org.springframework.http.HttpHeaders
@@ -56,3 +59,8 @@ public class Main{
     }
 }
 ----
+
+===== 注意事项
+
+`RequestWrapper` 修改 body 后，下游组件读取到的是包装后的内容。 +
+`ResponseWrapper` 替换响应体后，需要确保过滤器链结束前将包装结果写回真实响应，避免客户端拿不到修改后的内容。

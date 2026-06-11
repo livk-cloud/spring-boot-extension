@@ -1,6 +1,8 @@
 [[http]]
 ==== http
 
+`http` 包提供 HTTP 客户端自动导入注解，可按需创建 `WebClient`、`RestClient` 或 OkHttp 支持组件。
+
 ===== EnableHttpClient
 
 EnableHttpClient会根据value值自动导入对应的http客户端
@@ -29,3 +31,24 @@ public class App {
 ----
 
 同时提供了@EnableRestClient、@EnableWebClient作为快捷方式
+
+===== HttpClientType
+
+`EnableHttpClient` 的 `value` 支持多个客户端类型：
+
+* `WEB_CLIENT`：注册响应式 `WebClient`。
+* `REST_CLIENT`：注册 Spring `RestClient`。
+* `OKHTTP`：注册 OkHttp 相关配置。
+
+只需要单个客户端时，推荐使用快捷注解：
+
+[source,java,indent=0]
+----
+@EnableWebClient
+@Configuration
+public class WebClientConfig {
+
+}
+----
+
+如果业务已经注册同类型 Bean，可以通过 Spring Bean 覆盖默认配置。

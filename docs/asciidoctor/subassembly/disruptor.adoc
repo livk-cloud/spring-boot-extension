@@ -1,6 +1,9 @@
 [[disruptor]]
 ==== disruptor
 
+Disruptor 组件用于在 Spring 中注册基于 LMAX Disruptor 的事件队列。 +
+通过 `@DisruptorScan` 扫描事件模型，再通过生产者发送事件，由消费者处理。
+
 ===== DisruptorScan
 
 类似于MyBatisScan用与扫描DisruptorEvent标记的实体 +
@@ -12,6 +15,17 @@
 ----
 @DisruptorScan("com.livk.disruptor")
 public class Config{
+
+}
+----
+
+通常在启动类或配置类上声明扫描包：
+
+[source,java,indent=0]
+----
+@SpringBootApplication
+@DisruptorScan(basePackages = "com.example.disruptor")
+public class DisruptorApplication {
 
 }
 ----
@@ -61,7 +75,7 @@ Disruptor消费者
 [source,java,indent=0]
 ----
 @org.springframework.stereotype.Component
-public class Consumerimplements DisruptorEventConsumer<MessageModel> {
+public class Consumer implements DisruptorEventConsumer<MessageModel> {
 
 	private final ApplicationContext applicationContext;
 
@@ -76,3 +90,10 @@ public class Consumerimplements DisruptorEventConsumer<MessageModel> {
 ===== disruptor-spring-boot-starter
 
 artifactId: disruptor-spring-boot-starter
+
+引入 starter 后，扫描到的事件会注册对应 `SpringDisruptor` Bean。 +
+业务代码可以注入 `SpringDisruptor<T>` 创建 `DisruptorEventProducer<T>`，也可以把生产者封装为领域服务。
+
+===== 使用建议
+
+Disruptor 适合高吞吐、低延迟的内存事件处理场景。消费者执行逻辑应尽量短小，耗时 IO 建议转交给独立线程池或下游队列。

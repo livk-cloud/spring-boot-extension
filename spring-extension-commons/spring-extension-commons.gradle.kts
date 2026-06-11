@@ -20,7 +20,6 @@ dependencies {
 	optional("org.mvel:mvel2")
 	optional("org.freemarker:freemarker")
 	optional("io.micrometer:micrometer-tracing")
-	optional("net.bytebuddy:byte-buddy")
 
 	api("org.springframework:spring-core")
 	api("com.google.guava:guava")

@@ -40,7 +40,7 @@ public interface RediSearchConnectionFactory {
 	}
 
 	static RediSearchConnectionFactory create(AbstractRedisClient client) {
-		return FactoryProxySupport.newProxy(client);
+		return new DefaultRediSearchConnectionFactory(client);
 	}
 
 }
