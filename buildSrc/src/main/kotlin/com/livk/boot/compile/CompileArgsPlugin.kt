@@ -42,12 +42,6 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 			"-parameters"
 		)
 
-		const val MAPSTRUCT_PROCESSOR_NAME = "mapstruct-processor"
-
-		val MAPSTRUCT_COMPILER_ARGS = listOf(
-			"-Amapstruct.unmappedTargetPolicy=IGNORE"
-		)
-
 		const val UTF_8 = "UTF-8"
 	}
 
@@ -77,23 +71,6 @@ abstract class CompileArgsPlugin : Plugin<Project> {
 		// Test
 		project.tasks.withType(Test::class.java).configureEach {
 			useJUnitPlatform()
-		}
-
-		// MapStruct 检测
-		project.afterEvaluate {
-			val dependencyNames = mutableSetOf<String>()
-			project.configurations.forEach { config ->
-				dependencyNames.addAll(config.dependencies.map { it.name })
-			}
-
-			if (dependencyNames.contains(MAPSTRUCT_PROCESSOR_NAME)) {
-				project.tasks.named(
-					JavaPlugin.COMPILE_JAVA_TASK_NAME,
-					JavaCompile::class.java
-				) {
-					options.compilerArgs.addAll(MAPSTRUCT_COMPILER_ARGS)
-				}
-			}
 		}
 	}
 

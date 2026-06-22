@@ -13,7 +13,6 @@ dependencies {
 	constraints {
 		api(libs.bundles.mybatis.all)
 		api(libs.bundles.redisson.all)
-		api(libs.bundles.mapstruct.all)
 		api(libs.guava)
 		api(libs.fesod.sheet)
 		api(libs.curator.recipes)

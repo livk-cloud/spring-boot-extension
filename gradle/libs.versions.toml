@@ -7,8 +7,6 @@ mybatis-boot = "4.0.1"
 guava = "33.6.0-jre"
 fesod = "2.0.2-incubating"
 redisson = "4.6.1"
-mapstruct = "1.6.3"
-mapstruct-lombok = "0.2.0"
 curator = "5.9.0"
 asciidoctor-jvm = "4.0.5"
 browscap-java = "1.5.1"
@@ -39,10 +37,6 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-40", version.ref = "redisson" }
-#mapstruct-all
-mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
-mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
-lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstruct-lombok" }
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fesod-sheet = { group = "org.apache.fesod", name = "fesod-sheet", version.ref = "fesod" }
@@ -71,7 +65,6 @@ maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.van
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
-mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
