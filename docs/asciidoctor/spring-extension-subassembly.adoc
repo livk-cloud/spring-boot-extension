@@ -73,10 +73,6 @@
 |distributed-lock-boot-starter
 |注册分布式锁 AOP 拦截器
 
-|MapStruct
-|mapstruct-spring-boot-starter
-|注册 MapstructService 与转换器仓库
-
 |MyBatis
 |mybatis-extension-boot-starter
 |注册字段注入、SQL 监控等扩展
@@ -140,8 +136,6 @@ include::{basedir}/fesod.adoc[]
 include::{basedir}/limit.adoc[]
 
 include::{basedir}/lock.adoc[]
-
-include::{basedir}/mapstruct.adoc[]
 
 include::{basedir}/mybatis.adoc[]
 
