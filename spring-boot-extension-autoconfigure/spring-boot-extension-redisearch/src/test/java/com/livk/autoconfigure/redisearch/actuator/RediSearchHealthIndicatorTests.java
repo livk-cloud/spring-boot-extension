@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.redisearch.actuator;
 
-import com.livk.context.redisearch.RediSearchConnectionFactory;
+import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.lettucemod.cluster.api.StatefulRedisModulesClusterConnection;
@@ -68,7 +68,7 @@ class RediSearchHealthIndicatorTests {
 
 	@Test
 	void healthWhenClusterStateIsAbsentShouldBeUp() {
-		RediSearchConnectionFactory connectionFactory = createClusterConnectionFactory(null);
+		RedisSearchConnectionFactory connectionFactory = createClusterConnectionFactory(null);
 		RediSearchHealthIndicator healthIndicator = new RediSearchHealthIndicator(connectionFactory);
 		Health health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -80,7 +80,7 @@ class RediSearchHealthIndicatorTests {
 
 	@Test
 	void healthWhenClusterStateIsOkShouldBeUp() {
-		RediSearchConnectionFactory connectionFactory = createClusterConnectionFactory("ok");
+		RedisSearchConnectionFactory connectionFactory = createClusterConnectionFactory("ok");
 		RediSearchHealthIndicator healthIndicator = new RediSearchHealthIndicator(connectionFactory);
 		Health health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -92,7 +92,7 @@ class RediSearchHealthIndicatorTests {
 
 	@Test
 	void healthWhenClusterStateIsFailShouldBeDown() {
-		RediSearchConnectionFactory connectionFactory = createClusterConnectionFactory("fail");
+		RedisSearchConnectionFactory connectionFactory = createClusterConnectionFactory("fail");
 		RediSearchHealthIndicator healthIndicator = new RediSearchHealthIndicator(connectionFactory);
 		Health health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
@@ -103,13 +103,13 @@ class RediSearchHealthIndicatorTests {
 	}
 
 	private RediSearchHealthIndicator createHealthIndicator(StatefulRedisModulesConnection<String, String> connection) {
-		RediSearchConnectionFactory factory = mock(RediSearchConnectionFactory.class);
+		RedisSearchConnectionFactory factory = mock(RedisSearchConnectionFactory.class);
 		given(factory.connect()).willReturn(connection);
 		return new RediSearchHealthIndicator(factory);
 	}
 
 	@SuppressWarnings("unchecked")
-	private RediSearchConnectionFactory createClusterConnectionFactory(String state) {
+	private RedisSearchConnectionFactory createClusterConnectionFactory(String state) {
 		StringBuilder clusterInfo = new StringBuilder();
 		if (state != null) {
 			clusterInfo.append("cluster_state").append(":").append(state).append("\n");
@@ -124,7 +124,7 @@ class RediSearchHealthIndicatorTests {
 		StatefulRedisModulesClusterConnection<String, String> connection = mock(
 				StatefulRedisModulesClusterConnection.class);
 		given(connection.sync()).willReturn(commands);
-		RediSearchConnectionFactory redisConnectionFactory = mock(RediSearchConnectionFactory.class);
+		RedisSearchConnectionFactory redisConnectionFactory = mock(RedisSearchConnectionFactory.class);
 		given(redisConnectionFactory.connect()).willReturn(connection);
 		return redisConnectionFactory;
 	}

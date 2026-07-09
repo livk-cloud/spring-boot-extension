@@ -17,9 +17,8 @@
 package com.livk.redisearch.webflux.controller;
 
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.context.redisearch.StringRediSearchTemplate;
+import com.livk.context.redisearch.StringRedisSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
-import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import io.lettuce.core.search.SearchReply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -38,16 +37,17 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class StudentController {
 
-	private final StringRediSearchTemplate template;
+	private final StringRedisSearchTemplate template;
 
 	@GetMapping
 	public HttpEntity<Flux<Student>> list(@RequestParam(defaultValue = "*") String query) {
-		RedisModulesReactiveCommands<String, String> search = template.reactive();
-		Flux<Student> flux = search.ftSearch(Student.INDEX, query)
-			.map(SearchReply::getResults)
-			.flatMapMany(Flux::fromIterable)
-			.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class));
-		return ResponseEntity.ok(flux);
+		return template.executeReactive(reactive -> {
+			Flux<Student> flux = reactive.ftSearch(Student.INDEX, query)
+				.map(SearchReply::getResults)
+				.flatMapMany(Flux::fromIterable)
+				.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class));
+			return ResponseEntity.ok(flux);
+		});
 	}
 
 }

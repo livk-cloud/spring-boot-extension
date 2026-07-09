@@ -25,31 +25,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class RedisCodecsTests {
+class RedisSearchCodecsTests {
 
 	@Test
 	void jdkReturnsNonNull() {
-		RedisCodec<Object, Object> codec = RedisCodecs.jdk();
+		RedisCodec<Object, Object> codec = RedisSearchCodecs.jdk();
 		assertThat(codec).isNotNull().isInstanceOf(JdkRedisCodec.class);
 	}
 
 	@Test
 	void jdkWithClassLoaderReturnsNonNull() {
-		RedisCodec<Object, Object> codec = RedisCodecs.jdk(Thread.currentThread().getContextClassLoader());
+		RedisCodec<Object, Object> codec = RedisSearchCodecs.jdk(Thread.currentThread().getContextClassLoader());
 		assertThat(codec).isNotNull().isInstanceOf(JdkRedisCodec.class);
 	}
 
 	@Test
 	void jsonWithMapperReturnsNonNull() {
 		JsonMapper mapper = JsonMapper.builder().build();
-		RedisCodec<String, Object> codec = RedisCodecs.json(mapper);
+		RedisCodec<String, Object> codec = RedisSearchCodecs.json(mapper);
 		assertThat(codec).isNotNull().isInstanceOf(JacksonRedisCodec.class);
 	}
 
 	@Test
 	void jsonWithMapperAndClassTypesReturnsNonNull() {
 		JsonMapper mapper = JsonMapper.builder().build();
-		RedisCodec<String, String> codec = RedisCodecs.json(mapper, String.class, String.class);
+		RedisCodec<String, String> codec = RedisSearchCodecs.json(mapper, String.class, String.class);
 		assertThat(codec).isNotNull().isInstanceOf(JacksonRedisCodec.class);
 	}
 

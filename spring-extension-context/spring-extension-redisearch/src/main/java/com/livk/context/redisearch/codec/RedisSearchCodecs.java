@@ -23,7 +23,7 @@ import io.lettuce.core.codec.RedisCodec;
 /**
  * @author livk
  */
-public class RedisCodecs {
+public class RedisSearchCodecs {
 
 	public static <K, V> RedisCodec<K, V> json(ObjectMapper mapper, Class<K> keyType, Class<V> valueType) {
 		return new JacksonRedisCodec<>(mapper, keyType, valueType);

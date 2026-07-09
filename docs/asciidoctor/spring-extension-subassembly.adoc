@@ -83,7 +83,7 @@
 
 |RediSearch
 |redisearch-spring-boot-starter
-|注册 RediSearchConnectionFactory 和模板
+|注册 RedisSearchConnectionFactory 和模板
 
 |Redisson
 |redisson-spring-boot-starter

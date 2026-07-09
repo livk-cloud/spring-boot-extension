@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.redisearch.actuator;
 
-import com.livk.context.redisearch.RediSearchConnectionFactory;
+import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.cluster.api.StatefulRedisModulesClusterConnection;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class RediSearchHealthIndicator extends AbstractHealthIndicator {
 
-	private final RediSearchConnectionFactory connectionFactory;
+	private final RedisSearchConnectionFactory connectionFactory;
 
 	@Override
 	protected void doHealthCheck(Health.Builder builder) throws IOException {

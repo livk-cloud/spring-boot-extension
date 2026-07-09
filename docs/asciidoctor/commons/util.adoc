@@ -94,9 +94,9 @@ public class Main{
 
 [source,java,indent=0]
 ----
-private static <S extends RediSearchConnectionFactory> Class<? extends S> createFactoryClass(
+private static <S extends RedisSearchConnectionFactory> Class<? extends S> createFactoryClass(
 			Class<? extends AbstractRedisClient> clientType) {
-		TypeDescription definitions = TypeDescription.ForLoadedType.of(RediSearchConnectionFactory.class);
+		TypeDescription definitions = TypeDescription.ForLoadedType.of(RedisSearchConnectionFactory.class);
 		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>subclass(definitions)
 			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
 					+ "$ProxyConnectionFactory")

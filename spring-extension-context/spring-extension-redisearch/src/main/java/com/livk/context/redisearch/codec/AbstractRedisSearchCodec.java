@@ -16,7 +16,6 @@
 
 package com.livk.context.redisearch.codec;
 
-import com.livk.commons.util.ObjectUtils;
 import io.lettuce.core.codec.RedisCodec;
 
 import java.nio.ByteBuffer;
@@ -29,7 +28,7 @@ import java.util.function.Function;
  * @param <V> the type parameter
  * @author livk
  */
-public abstract class AbstractRedisCodec<K, V> implements RedisCodec<K, V> {
+public abstract class AbstractRedisSearchCodec<K, V> implements RedisCodec<K, V> {
 
 	@Override
 	public final ByteBuffer encodeKey(K key) {
@@ -52,11 +51,11 @@ public abstract class AbstractRedisCodec<K, V> implements RedisCodec<K, V> {
 	}
 
 	private <T> T decode(ByteBuffer bytes, Function<byte[], T> function) {
-		ByteBuffer allocate = ByteBuffer.allocate(bytes.capacity());
-		byte[] array = allocate.put(bytes).array();
-		if (ObjectUtils.isEmpty(array)) {
+		if (!bytes.hasRemaining()) {
 			return null;
 		}
+		byte[] array = new byte[bytes.remaining()];
+		bytes.get(array);
 		return function.apply(array);
 	}
 

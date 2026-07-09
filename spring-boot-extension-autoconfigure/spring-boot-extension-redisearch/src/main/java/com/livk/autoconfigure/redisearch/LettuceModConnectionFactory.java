@@ -16,7 +16,7 @@
 
 package com.livk.autoconfigure.redisearch;
 
-import com.livk.context.redisearch.RediSearchConnectionFactory;
+import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.resource.ClientResources;
 import lombok.experimental.Delegate;
@@ -25,10 +25,10 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 /**
  * @author livk
  */
-public class LettuceModConnectionFactory implements RediSearchConnectionFactory {
+public class LettuceModConnectionFactory implements RedisSearchConnectionFactory {
 
 	@Delegate
-	private final RediSearchConnectionFactory factory;
+	private final RedisSearchConnectionFactory factory;
 
 	private final RedisModulesFactory support;
 
@@ -37,13 +37,12 @@ public class LettuceModConnectionFactory implements RediSearchConnectionFactory 
 		this.factory = init(resources);
 	}
 
-	private RediSearchConnectionFactory init(ClientResources resources) {
+	private RedisSearchConnectionFactory init(ClientResources resources) {
 		AbstractRedisClient client = support.getClient(resources);
-		return RediSearchConnectionFactory.create(client);
+		return RedisSearchConnectionFactory.create(client);
 	}
 
-	@Override
-	public final <T> GenericObjectPoolConfig<T> getPoolConfig() {
+	public <T> GenericObjectPoolConfig<T> getPoolConfig() {
 		return support.getPoolConfig();
 	}
 
