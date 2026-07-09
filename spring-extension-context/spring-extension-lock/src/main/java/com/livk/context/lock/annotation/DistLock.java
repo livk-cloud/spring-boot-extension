@@ -46,7 +46,7 @@ public @interface DistLock {
 	 * Lease time long.
 	 * @return the long
 	 */
-	long leaseTime() default 10;
+	long leaseTime() default -1;
 
 	/**
 	 * Wait time long.
