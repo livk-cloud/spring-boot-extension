@@ -17,10 +17,9 @@
 package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.context.redisearch.RediSearchConnectionFactory;
-import com.livk.context.redisearch.RediSearchTemplate;
-import com.livk.context.redisearch.StringRediSearchTemplate;
-import com.livk.context.redisearch.codec.RedisCodecs;
+import com.livk.context.redisearch.RedisSearchTemplate;
+import com.livk.context.redisearch.StringRedisSearchTemplate;
+import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.redis.lettucemod.RedisModulesClient;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.resource.ClientResources;
@@ -64,7 +63,7 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RediSearchConnectionFactory lettuceConnectionFactory(RediSearchProperties properties,
+	public LettuceModConnectionFactory lettuceConnectionFactory(RediSearchProperties properties,
 			ClientResources clientResources) {
 		return new LettuceModConnectionFactory(clientResources, properties);
 	}
@@ -76,11 +75,13 @@ public class RediSearchAutoConfiguration {
 	 * @return the redi search template
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "rediSearchTemplate")
-	public RediSearchTemplate<String, Object> rediSearchTemplate(RediSearchConnectionFactory factory,
+	@ConditionalOnMissingBean(name = "RedisSearchTemplate")
+	public RedisSearchTemplate<String, Object> RedisSearchTemplate(LettuceModConnectionFactory factory,
 			JsonMapper.Builder builder) {
-		RedisCodec<String, Object> redisCodec = RedisCodecs.json(builder.build());
-		return new RediSearchTemplate<>(factory, redisCodec);
+		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(builder.build());
+		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(factory, redisCodec);
+		template.setPoolConfig(factory.getPoolConfig());
+		return template;
 	}
 
 	/**
@@ -90,8 +91,10 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public StringRediSearchTemplate stringRediSearchTemplate(RediSearchConnectionFactory factory) {
-		return new StringRediSearchTemplate(factory);
+	public StringRedisSearchTemplate StringRedisSearchTemplate(LettuceModConnectionFactory factory) {
+		StringRedisSearchTemplate template = new StringRedisSearchTemplate(factory);
+		template.setPoolConfig(factory.getPoolConfig());
+		return template;
 	}
 
 }

@@ -16,14 +16,15 @@
 
 package com.livk.redisson.lock;
 
+import com.livk.commons.io.ResourceUtils;
 import com.livk.context.lock.annotation.DistLock;
 import jakarta.annotation.PostConstruct;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
+import org.redisson.api.RMap;
+import org.redisson.api.RScript;
+import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.Codec;
+import org.redisson.client.codec.StringCodec;
+import org.redisson.codec.CompositeCodec;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -42,41 +45,43 @@ import java.util.Map;
 @RequestMapping("shop")
 public class ShopController {
 
-	private final HashOperations<Object, Object, Object> forHash;
+	private final RedissonClient redissonClient;
 
-	private final RedisTemplate<Object, Object> redisTemplate;
+	private final RMap<String, Object> shop;
 
-	public ShopController(RedisTemplate<Object, Object> redisTemplate) {
-		redisTemplate.setKeySerializer(RedisSerializer.string());
-		redisTemplate.setHashKeySerializer(RedisSerializer.string());
-		redisTemplate.setHashValueSerializer(RedisSerializer.json());
-		this.forHash = redisTemplate.opsForHash();
-		this.redisTemplate = redisTemplate;
+	public ShopController(RedissonClient redissonClient) {
+		this.redissonClient = redissonClient;
+		Codec mapCodec = new CompositeCodec(StringCodec.INSTANCE, StringCodec.INSTANCE,
+				redissonClient.getConfig().getCodec());
+		this.shop = redissonClient.getMap("shop", mapCodec);
 	}
 
 	@PostConstruct
 	public void init() {
-		redisTemplate.delete("shop");
-		forHash.put("shop", "num", 500);
+		shop.delete();
+		shop.put("num", 500);
 	}
 
 	@PostMapping("/buy/distributed")
 	@DistLock(key = "shop:lock")
-	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) {
-		RedisScript<Long> redisScript = RedisScript.of(new ClassPathResource("script/buy.lua"), Long.class);
-		Long result = redisTemplate.execute(redisScript, RedisSerializer.string(),
-				new GenericToStringSerializer<>(Long.class), List.of("shop", "num", "buySucCount", "buyCount"),
-				String.valueOf(count));
+	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) throws IOException {
+		String luaScript = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "script/buy.lua")
+			.getContentAsString(StandardCharsets.UTF_8);
+		List<Object> keys = List.of("shop", "num", "buySucCount", "buyCount");
+		RScript script = redissonClient.getScript();
+
+		Long result = script.eval(RScript.Mode.READ_WRITE, luaScript, RScript.ReturnType.LONG, keys, count);
+
 		if (result == 1) {
 			return ResponseEntity.ok(Map.of("code", "200", "msg", "购买成功，数量：" + count));
 		}
+
 		return ResponseEntity.ok(Map.of("code", "500", "msg", "数量超出库存！"));
 	}
 
 	@GetMapping("result")
 	public HttpEntity<Map<String, Object>> result() {
-		Map<Object, Object> distributed = forHash.entries("shop");
-		return ResponseEntity.ok(Map.of("redisson", distributed));
+		return ResponseEntity.ok(Map.of("redisson", shop.readAllMap()));
 	}
 
 }

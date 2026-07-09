@@ -28,7 +28,7 @@ import tools.jackson.databind.ObjectMapper;
  * @author livk
  */
 @RequiredArgsConstructor
-class JacksonRedisCodec<K, V> extends AbstractRedisCodec<K, V> {
+class JacksonRedisCodec<K, V> extends AbstractRedisSearchCodec<K, V> {
 
 	private final ObjectMapper mapper;
 

@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package com.livk.context.lock.annotation;
+package com.livk.context.redisearch;
 
-import com.livk.context.lock.LockType;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.lettuce.core.codec.StringCodec;
 
 /**
  * @author livk
  */
-class DistLockAnnotationTests {
+public class StringRedisSearchTemplate extends RedisSearchTemplate<String, String> {
 
-	@Test
-	void defaults() throws Exception {
-		assertThat(DistLock.class.getDeclaredMethod("type").getDefaultValue()).isEqualTo(LockType.LOCK);
-		assertThat(DistLock.class.getDeclaredMethod("leaseTime").getDefaultValue()).isEqualTo(-1L);
-		assertThat(DistLock.class.getDeclaredMethod("waitTime").getDefaultValue()).isEqualTo(3L);
-		assertThat(DistLock.class.getDeclaredMethod("async").getDefaultValue()).isEqualTo(false);
+	public StringRedisSearchTemplate(RedisSearchConnectionFactory factory) {
+		super(factory, StringCodec.UTF8);
 	}
 
 }

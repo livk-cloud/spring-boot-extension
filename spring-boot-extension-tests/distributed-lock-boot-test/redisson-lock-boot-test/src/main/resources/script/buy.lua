@@ -5,6 +5,8 @@ local buyCount = KEYS[4]
 local count = tonumber(ARGV[1])
 redis.call('HINCRBY',key,buyCount,1)
 local num = tonumber(redis.call('HGET',key,numKey))
+assert(num ~= nil, "num is nil")
+assert(count ~= nil, "count is nil")
 if(num <= 0 or num < count) then
     return 0
 else

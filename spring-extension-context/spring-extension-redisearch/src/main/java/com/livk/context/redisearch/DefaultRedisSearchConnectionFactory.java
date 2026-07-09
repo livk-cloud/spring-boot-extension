@@ -16,31 +16,37 @@
 
 package com.livk.context.redisearch;
 
+import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import com.redis.lettucemod.cluster.RedisModulesClusterClient;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
-import io.lettuce.core.codec.StringCodec;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
  * @author livk
  */
-public interface RediSearchConnectionFactory {
+final class DefaultRedisSearchConnectionFactory implements RedisSearchConnectionFactory {
 
-	default StatefulRedisModulesConnection<String, String> connect() {
-		return this.connect(StringCodec.UTF8);
+	private final AbstractRedisClient client;
+
+	DefaultRedisSearchConnectionFactory(AbstractRedisClient client) {
+		this.client = client;
 	}
 
-	<K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec);
-
-	void close();
-
-	default <T> GenericObjectPoolConfig<T> getPoolConfig() {
-		return new GenericObjectPoolConfig<>();
+	@Override
+	public <K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec) {
+		if (client instanceof RedisModulesClient modulesClient) {
+			return modulesClient.connect(codec);
+		}
+		else if (client instanceof RedisModulesClusterClient clusterClient) {
+			return clusterClient.connect(codec);
+		}
+		throw new IllegalStateException("Unsupported client type: " + client.getClass().getName());
 	}
 
-	static RediSearchConnectionFactory create(AbstractRedisClient client) {
-		return new DefaultRediSearchConnectionFactory(client);
+	@Override
+	public void close() {
+		client.close();
 	}
 
 }

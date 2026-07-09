@@ -18,7 +18,7 @@ package com.livk.autoconfigure.redisearch.actuator;
 
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.redisearch.RediSearchAutoConfiguration;
-import com.livk.context.redisearch.RediSearchConnectionFactory;
+import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,11 +36,11 @@ import java.util.Map;
  */
 @SpringAutoService
 @AutoConfiguration(after = { RediSearchAutoConfiguration.class })
-@ConditionalOnClass({ RediSearchConnectionFactory.class, HealthIndicator.class })
-@ConditionalOnBean(RediSearchConnectionFactory.class)
+@ConditionalOnClass({ RedisSearchConnectionFactory.class, HealthIndicator.class })
+@ConditionalOnBean(RedisSearchConnectionFactory.class)
 @ConditionalOnEnabledHealthIndicator("redisearch")
 public class RediSearchHealthContributorAutoConfiguration
-		extends CompositeHealthContributorConfiguration<RediSearchHealthIndicator, RediSearchConnectionFactory> {
+		extends CompositeHealthContributorConfiguration<RediSearchHealthIndicator, RedisSearchConnectionFactory> {
 
 	public RediSearchHealthContributorAutoConfiguration() {
 		super(RediSearchHealthIndicator::new);
@@ -49,7 +49,7 @@ public class RediSearchHealthContributorAutoConfiguration
 	@Bean
 	@ConditionalOnMissingBean(name = { "redisearchHealthIndicator", "redisearchHealthContributor" })
 	public HealthContributor redisearchHealthContributor(
-			Map<String, RediSearchConnectionFactory> rediSearchConnectionFactoryMap) {
+			Map<String, RedisSearchConnectionFactory> rediSearchConnectionFactoryMap) {
 		return createContributor(rediSearchConnectionFactoryMap);
 	}
 

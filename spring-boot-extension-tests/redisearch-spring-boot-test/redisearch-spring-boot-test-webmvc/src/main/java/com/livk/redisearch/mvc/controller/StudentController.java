@@ -17,9 +17,8 @@
 package com.livk.redisearch.mvc.controller;
 
 import com.livk.commons.jackson.JsonMapperUtils;
-import com.livk.context.redisearch.StringRediSearchTemplate;
+import com.livk.context.redisearch.StringRedisSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
-import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import io.lettuce.core.search.SearchReply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -39,17 +38,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
 
-	private final StringRediSearchTemplate template;
+	private final StringRedisSearchTemplate template;
 
 	@GetMapping
 	public HttpEntity<List<Student>> list(@RequestParam(defaultValue = "*") String query) {
-		RedisModulesCommands<String, String> search = template.sync();
-		SearchReply<String, String> result = search.ftSearch(Student.INDEX, query);
-		List<Student> studentList = result.getResults()
-			.stream()
-			.map(searchResult -> JsonMapperUtils.convertValue(searchResult.getFields(), Student.class))
-			.toList();
-		return ResponseEntity.ok(studentList);
+		return template.executeSync(search -> {
+			SearchReply<String, String> result = search.ftSearch(Student.INDEX, query);
+			List<Student> studentList = result.getResults()
+				.stream()
+				.map(searchResult -> JsonMapperUtils.convertValue(searchResult.getFields(), Student.class))
+				.toList();
+			return ResponseEntity.ok(studentList);
+		});
 	}
 
 }

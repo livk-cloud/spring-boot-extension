@@ -16,12 +16,14 @@
 
 package com.livk.context.redisearch;
 
+import com.redis.lettucemod.RedisModulesClient;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import io.lettuce.core.AbstractRedisClient;
-import io.lettuce.core.codec.RedisCodec;
+import io.lettuce.core.codec.StringCodec;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,50 +31,45 @@ import static org.mockito.Mockito.verify;
 /**
  * @author livk
  */
-class DefaultRediSearchConnectionFactoryTests {
+class DefaultRedisSearchConnectionFactoryTests {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	void shouldDelegateConnect() {
-		RedisClientStub client = mock(RedisClientStub.class);
-
-		RedisCodec<String, String> codec = mock(RedisCodec.class);
+	void shouldDelegateConnectForModulesClient() {
+		RedisModulesClient client = mock(RedisModulesClient.class);
 
 		StatefulRedisModulesConnection<String, String> connection = mock(StatefulRedisModulesConnection.class);
 
-		given(client.connect(codec)).willReturn(connection);
+		given(client.connect(StringCodec.UTF8)).willReturn(connection);
 
-		DefaultRediSearchConnectionFactory factory = new DefaultRediSearchConnectionFactory(client);
+		DefaultRedisSearchConnectionFactory factory = new DefaultRedisSearchConnectionFactory(client);
 
-		StatefulRedisModulesConnection<String, String> result = factory.connect(codec);
+		StatefulRedisModulesConnection<String, String> result = factory.connect(StringCodec.UTF8);
 
 		assertThat(result).isSameAs(connection);
 
-		verify(client).connect(codec);
+		verify(client).connect(StringCodec.UTF8);
 	}
 
 	@Test
 	void shouldDelegateClose() {
-		RedisClientStub client = mock(RedisClientStub.class);
+		RedisModulesClient client = mock(RedisModulesClient.class);
 
-		DefaultRediSearchConnectionFactory factory = new DefaultRediSearchConnectionFactory(client);
+		DefaultRedisSearchConnectionFactory factory = new DefaultRedisSearchConnectionFactory(client);
 
 		factory.close();
 
 		verify(client).close();
 	}
 
-	/**
-	 * 测试专用 Stub。
-	 */
-	abstract static class RedisClientStub extends AbstractRedisClient {
+	@Test
+	void shouldThrowForUnsupportedClientType() {
+		AbstractRedisClient client = mock(AbstractRedisClient.class);
 
-		protected RedisClientStub() {
-			super(null);
-		}
+		DefaultRedisSearchConnectionFactory factory = new DefaultRedisSearchConnectionFactory(client);
 
-		public abstract <K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec);
-
+		assertThatIllegalStateException().isThrownBy(() -> factory.connect(StringCodec.UTF8))
+			.withMessageContaining("Unsupported client type");
 	}
 
 }

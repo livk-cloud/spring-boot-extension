@@ -16,8 +16,11 @@
 
 package com.livk.context.redisearch;
 
+import tools.jackson.databind.json.JsonMapper;
+import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisStackContainer;
+import io.lettuce.core.codec.RedisCodec;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -34,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringJUnitConfig(RediSearchConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
-class StringRediSearchTemplateTests {
+class RedisSearchTemplateTests {
 
 	@Container
 	@ServiceConnection
@@ -47,14 +50,16 @@ class StringRediSearchTemplateTests {
 	}
 
 	@Autowired
-	RediSearchConnectionFactory factory;
+	RedisSearchConnectionFactory factory;
 
 	@Test
 	void test() throws Exception {
-		StringRediSearchTemplate template = new StringRediSearchTemplate(factory);
+		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(new JsonMapper());
+		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(factory, redisCodec);
+		template.afterPropertiesSet();
 
-		assertThat(template.async().ping().get()).isEqualTo("PONG");
-		assertThat(template.reactive().ping().block()).isEqualTo("PONG");
+		assertThat(template.executeAsync(commands -> commands.ping()).get()).isEqualTo("PONG");
+		assertThat(template.executeReactive(commands -> commands.ping()).block()).isEqualTo("PONG");
 	}
 
 }

@@ -16,16 +16,26 @@
 
 package com.livk.context.redisearch;
 
+import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import io.lettuce.core.AbstractRedisClient;
+import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 
 /**
  * @author livk
  */
-public class StringRediSearchTemplate extends RediSearchTemplate<String, String> {
+public interface RedisSearchConnectionFactory {
 
-	public StringRediSearchTemplate(RediSearchConnectionFactory factory) {
-		super(factory, StringCodec.UTF8);
-		super.afterPropertiesSet();
+	default StatefulRedisModulesConnection<String, String> connect() {
+		return this.connect(StringCodec.UTF8);
+	}
+
+	<K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec);
+
+	void close();
+
+	static RedisSearchConnectionFactory create(AbstractRedisClient client) {
+		return new DefaultRedisSearchConnectionFactory(client);
 	}
 
 }
