@@ -16,8 +16,8 @@
 
 package com.livk.context.qrcode.support;
 
-import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.BeanUtils;
+import com.livk.commons.util.AnnotationFinder;
+import com.livk.commons.util.BeanConverter;
 import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
@@ -53,12 +53,13 @@ public abstract class QrCodeSupport {
 	 */
 	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter) {
 		if (returnValue instanceof QrCodeEntity<?> entity) {
-			Map<String, Object> map = BeanUtils.convert(entity);
+			Map<String, Object> map = BeanConverter.toMap(entity);
 			return AnnotationAttributes.fromMap(map);
 		}
 		else {
-			Annotation annotation = AnnotationUtils.getAnnotationElement(parameter, ResponseQrCode.class);
-			return AnnotationUtils.getAnnotationAttributes(parameter.getMethod(), annotation);
+			Annotation annotation = AnnotationFinder.getAnnotationElement(parameter, ResponseQrCode.class);
+			return org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes(parameter.getMethod(),
+					annotation);
 		}
 	}
 

@@ -32,7 +32,7 @@ public abstract class AbstractRedisSearchCodec<K, V> implements RedisCodec<K, V>
 
 	@Override
 	public final ByteBuffer encodeKey(K key) {
-		return encode(this::serializeKey, key);
+		return encode(key, this::serializeKey);
 	}
 
 	@Override
@@ -47,24 +47,23 @@ public abstract class AbstractRedisSearchCodec<K, V> implements RedisCodec<K, V>
 
 	@Override
 	public final ByteBuffer encodeValue(V value) {
-		return encode(this::serializeValue, value);
+		return encode(value, this::serializeValue);
 	}
 
-	private <T> T decode(ByteBuffer bytes, Function<byte[], T> function) {
-		if (!bytes.hasRemaining()) {
+	private <T> T decode(ByteBuffer buffer, Function<byte[], T> decoder) {
+		if (!buffer.hasRemaining()) {
 			return null;
 		}
-		byte[] array = new byte[bytes.remaining()];
-		bytes.get(array);
-		return function.apply(array);
+		byte[] bytes = new byte[buffer.remaining()];
+		buffer.get(bytes);
+		return decoder.apply(bytes);
 	}
 
-	private <T> ByteBuffer encode(Function<T, byte[]> function, T value) {
+	private <T> ByteBuffer encode(T value, Function<T, byte[]> encoder) {
 		if (value == null) {
-			return ByteBuffer.wrap(new byte[0]);
+			return ByteBuffer.allocate(0);
 		}
-		byte[] bytes = function.apply(value);
-		return ByteBuffer.wrap(bytes);
+		return ByteBuffer.wrap(encoder.apply(value));
 	}
 
 	/**

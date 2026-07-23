@@ -16,15 +16,10 @@
 
 package com.livk.commons.util;
 
-import com.google.common.collect.Maps;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
-import java.beans.PropertyDescriptor;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -35,8 +30,10 @@ import java.util.function.Supplier;
  * </p>
  *
  * @author livk
+ * @deprecated use {@link BeanConverter}
  */
 @UtilityClass
+@Deprecated(since = "2.1.1")
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
@@ -86,29 +83,11 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	 * @see BeanWrapper
 	 */
 	public static Map<String, Object> convert(Object source) {
-		BeanWrapper beanWrapper = new BeanWrapperImpl(source);
-		Map<String, Object> map = new HashMap<>();
-		for (PropertyDescriptor descriptor : beanWrapper.getPropertyDescriptors()) {
-			String name = descriptor.getName();
-			Object propertyValue = beanWrapper.getPropertyValue(name);
-			map.put(name, propertyValue);
-		}
-		return Collections.unmodifiableMap(map);
+		return BeanConverter.toMap(source);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T convert(Map<String, Object> map) {
-		if (!map.containsKey("class")) {
-			throw new IllegalArgumentException("class must not be null");
-		}
-		HashMap<String, Object> target = Maps.newHashMap(map);
-		Class<T> targetClass = (Class<T>) target.remove("class");
-		if (BeanUtils.getResolvableConstructor(targetClass).getParameterCount() != 0) {
-			throw new IllegalArgumentException("Missing no-argument constructor");
-		}
-		BeanWrapper beanWrapper = new BeanWrapperImpl(targetClass);
-		beanWrapper.setPropertyValues(target);
-		return (T) beanWrapper.getWrappedInstance();
+		return BeanConverter.fromMap(map);
 	}
 
 }

@@ -16,7 +16,7 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.AnnotationFinder;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import com.livk.context.fesod.exception.ExcelExportException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,7 +48,7 @@ public class ExcelMethodReturnValueHandler extends FesodSupport implements Async
 
 	@Override
 	public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseExcel.class);
+		return AnnotationFinder.hasAnnotationElement(returnType, ResponseExcel.class);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ExcelMethodReturnValueHandler extends FesodSupport implements Async
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws IOException {
 		mavContainer.setRequestHandled(true);
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-		ResponseExcel responseExcel = AnnotationUtils.getAnnotationElement(returnType, ResponseExcel.class);
+		ResponseExcel responseExcel = AnnotationFinder.getAnnotationElement(returnType, ResponseExcel.class);
 		Assert.notNull(response, "response not be null");
 		Assert.notNull(responseExcel, "responseExcel not be null");
 		if (this.canWrite(returnType.getParameterType())) {
@@ -90,7 +90,7 @@ public class ExcelMethodReturnValueHandler extends FesodSupport implements Async
 
 	@Override
 	public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseExcel.class);
+		return AnnotationFinder.hasAnnotationElement(returnType, ResponseExcel.class);
 	}
 
 	private boolean canWrite(@NonNull Class<?> type) {

@@ -16,7 +16,7 @@
 
 package com.livk.commons.aop;
 
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.TypeUtils;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jspecify.annotations.NonNull;
@@ -40,7 +40,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	/**
 	 * 切点注解类型
 	 */
-	protected final Class<A> annotationType = ClassUtils.resolveTypeArgument(this.getClass(),
+	protected final Class<A> annotationType = TypeUtils.resolveTypeArgument(this.getClass(),
 			AnnotationAbstractPointcutAdvisor.class);
 
 	@NonNull

@@ -16,7 +16,7 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.io.ResourceUtils;
+import com.livk.commons.io.ResourceScanner;
 import com.livk.context.fesod.ExcelDataType;
 import com.livk.context.fesod.listener.ExcelMapReadListener;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ abstract class FesodSupport {
 			Map<String, ? extends List<?>> result) throws IOException {
 		ExcelWriterBuilder builder = FesodSheet.write(outputStream, excelModelClass);
 		if (StringUtils.hasText(location)) {
-			Resource resource = ResourceUtils.getResource(location);
+			Resource resource = ResourceScanner.getResource(location);
 			builder.withTemplate(resource.getInputStream());
 		}
 		try (ExcelWriter writer = builder.build()) {

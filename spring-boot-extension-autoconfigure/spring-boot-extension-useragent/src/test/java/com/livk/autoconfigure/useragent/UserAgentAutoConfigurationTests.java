@@ -17,7 +17,7 @@
 package com.livk.autoconfigure.useragent;
 
 import com.blueconic.browscap.UserAgentParser;
-import com.livk.commons.util.ReflectionUtils;
+import com.livk.commons.util.FieldUtils;
 import com.livk.context.useragent.UserAgentHelper;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
@@ -35,6 +35,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.core.ResolvableType;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -111,7 +112,7 @@ class UserAgentAutoConfigurationTests {
 
 			Field customResolversField = ReflectionUtils.findField(ArgumentResolverConfigurer.class, "customResolvers");
 			assertThat(customResolversField).isNotNull();
-			List<HandlerMethodArgumentResolver> customResolvers = (List<HandlerMethodArgumentResolver>) ReflectionUtils
+			List<HandlerMethodArgumentResolver> customResolvers = (List<HandlerMethodArgumentResolver>) FieldUtils
 				.getDeclaredFieldValue(customResolversField, adapter.getArgumentResolverConfigurer());
 			assertThat(customResolvers).isNotNull().hasAtLeastOneElementOfType(ReactiveUserAgentResolver.class);
 

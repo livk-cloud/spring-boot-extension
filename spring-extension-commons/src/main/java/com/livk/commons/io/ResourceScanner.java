@@ -19,20 +19,21 @@ package com.livk.commons.io;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
 
 /**
- * 资源操作工具类
+ * 资源扫描工具类
  *
  * @author livk
  * @see org.springframework.core.io.Resource
  * @see PathMatchingResourcePatternResolver
- * @deprecated use {@link ResourceScanner}
  */
 @UtilityClass
-@Deprecated(since = "2.1.1")
-public class ResourceUtils extends org.springframework.util.ResourceUtils {
+public class ResourceScanner {
+
+	private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
 
 	/**
 	 * 获取单个资源
@@ -40,7 +41,7 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	 * @return the resource
 	 */
 	public Resource getResource(String location) {
-		return ResourceScanner.getResource(location);
+		return resourceResolver.getResource(location);
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	 * @throws IOException the io exception
 	 */
 	public Resource[] getResources(String location) throws IOException {
-		return ResourceScanner.getResources(location);
+		return resourceResolver.getResources(location);
 	}
 
 }

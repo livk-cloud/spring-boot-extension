@@ -16,7 +16,7 @@
 
 package com.livk.redisson.lock;
 
-import com.livk.commons.io.ResourceUtils;
+import com.livk.commons.io.ResourceScanner;
 import com.livk.context.lock.annotation.DistLock;
 import jakarta.annotation.PostConstruct;
 import org.redisson.api.RMap;
@@ -65,7 +65,8 @@ public class ShopController {
 	@PostMapping("/buy/distributed")
 	@DistLock(key = "shop:lock")
 	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) throws IOException {
-		String luaScript = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "script/buy.lua")
+		String luaScript = ResourceScanner
+			.getResource(org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX + "script/buy.lua")
 			.getContentAsString(StandardCharsets.UTF_8);
 		List<Object> keys = List.of("shop", "num", "buySucCount", "buyCount");
 		RScript script = redissonClient.getScript();

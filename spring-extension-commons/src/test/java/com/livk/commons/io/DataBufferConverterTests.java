@@ -29,28 +29,30 @@ import java.io.IOException;
 /**
  * @author livk
  */
-class DataBufferUtilsTests {
+class DataBufferConverterTests {
 
 	@Test
 	void transform() throws IOException {
 		String text = "123456";
-		StepVerifier.create(toMonoStr(DataBufferUtils.transform(text.getBytes()))).expectNext(text).verifyComplete();
+		StepVerifier.create(toMonoStr(DataBufferConverter.transform(text.getBytes())))
+			.expectNext(text)
+			.verifyComplete();
 
 		ClassPathResource resource = new ClassPathResource("input.json");
 		StepVerifier
-			.create(toMonoStr(DataBufferUtils.transform(resource.getInputStream())).map(JsonMapperUtils::readTree))
+			.create(toMonoStr(DataBufferConverter.transform(resource.getInputStream())).map(JsonMapperUtils::readTree))
 			.expectNext(JsonMapperUtils.readTree(resource.getInputStream()))
 			.verifyComplete();
 
 		StepVerifier
-			.create(toMonoStr(DataBufferUtils.transform(Mono.just(resource.getInputStream())))
+			.create(toMonoStr(DataBufferConverter.transform(Mono.just(resource.getInputStream())))
 				.map(JsonMapperUtils::readTree))
 			.expectNext(JsonMapperUtils.readTree(resource.getInputStream()))
 			.verifyComplete();
 	}
 
 	private Mono<String> toMonoStr(Flux<DataBuffer> bufferFlux) {
-		return DataBufferUtils.transformByte(bufferFlux).map(String::new);
+		return DataBufferConverter.transformByte(bufferFlux).map(String::new);
 	}
 
 }

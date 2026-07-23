@@ -18,24 +18,29 @@ package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ReflectionUtils;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
- * 反射相关工具类
+ * Field相关工具类
  * </p>
  *
  * @author livk
- * @deprecated use {@link FieldUtils}
  */
 @Slf4j
 @UtilityClass
-@Deprecated(since = "2.1.1")
-public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
+public class FieldUtils {
 
 	/**
 	 * 给field设置accessible为true,并且设置一个值
@@ -44,7 +49,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @param value value
 	 */
 	public void setFieldAndAccessible(Field field, Object parameter, Object value) {
-		FieldUtils.setFieldAndAccessible(field, parameter, value);
+		field.setAccessible(true);
+		ReflectionUtils.setField(field, parameter, value);
 	}
 
 	/**
@@ -53,7 +59,11 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return read methods
 	 */
 	public Set<Method> getReadMethods(Class<?> targetClass) {
-		return FieldUtils.getReadMethods(targetClass);
+		return Arrays.stream(org.springframework.beans.BeanUtils.getPropertyDescriptors(targetClass))
+			.map(PropertyDescriptor::getReadMethod)
+			.filter(Objects::nonNull)
+			.filter(method -> !method.getName().equals("getClass"))
+			.collect(Collectors.toSet());
 	}
 
 	/**
@@ -63,7 +73,14 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return read method
 	 */
 	public Method getReadMethod(Class<?> targetClass, Field field) {
-		return FieldUtils.getReadMethod(targetClass, field);
+		try {
+			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
+			return descriptor.getReadMethod();
+		}
+		catch (Exception ex) {
+			log.error("Failed to get the get field method message: {}", ex.getMessage(), ex);
+			return null;
+		}
 	}
 
 	/**
@@ -72,7 +89,10 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return write methods
 	 */
 	public Set<Method> getWriteMethods(Class<?> targetClass) {
-		return FieldUtils.getWriteMethods(targetClass);
+		return Arrays.stream(org.springframework.beans.BeanUtils.getPropertyDescriptors(targetClass))
+			.map(PropertyDescriptor::getWriteMethod)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toSet());
 	}
 
 	/**
@@ -82,7 +102,14 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return method
 	 */
 	public Method getWriteMethod(Class<?> targetClass, Field field) {
-		return FieldUtils.getWriteMethod(targetClass, field);
+		try {
+			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
+			return descriptor.getWriteMethod();
+		}
+		catch (Exception ex) {
+			log.error("Failed to set the get field method message: {}", ex.getMessage(), ex);
+			return null;
+		}
 	}
 
 	/**
@@ -91,7 +118,14 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return fields
 	 */
 	public List<Field> getAllFields(Class<?> targetClass) {
-		return FieldUtils.getAllFields(targetClass);
+		List<Field> allFields = new ArrayList<>();
+		Class<?> currentClass = targetClass;
+		while (currentClass != null) {
+			Field[] declaredFields = currentClass.getDeclaredFields();
+			Collections.addAll(allFields, declaredFields);
+			currentClass = currentClass.getSuperclass();
+		}
+		return allFields;
 	}
 
 	/**
@@ -101,7 +135,8 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	 * @return declared field value
 	 */
 	public static Object getDeclaredFieldValue(Field field, Object target) {
-		return FieldUtils.getDeclaredFieldValue(field, target);
+		field.setAccessible(true);
+		return ReflectionUtils.getField(field, target);
 	}
 
 }

@@ -16,8 +16,8 @@
 
 package com.livk.commons.annotation;
 
-import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.AnnotationFinder;
+import org.springframework.util.ClassUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
@@ -47,7 +47,7 @@ public class AnnotationBasePackageSupport {
 	 */
 	public String[] getBasePackages(AnnotationMetadata metadata, Class<? extends Annotation> annotationClass) {
 		Set<String> packagesToScan = new LinkedHashSet<>();
-		AnnotationAttributes attributes = AnnotationUtils.attributesFor(metadata, annotationClass);
+		AnnotationAttributes attributes = AnnotationFinder.attributesFor(metadata, annotationClass);
 		if (!CollectionUtils.isEmpty(attributes)) {
 			if (attributes.containsKey("basePackages")) {
 				String[] basePackages = attributes.getStringArray("basePackages");

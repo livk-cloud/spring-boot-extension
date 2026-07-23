@@ -16,7 +16,7 @@
 
 package com.livk.context.mybatis.handler;
 
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.TypeUtils;
 
 /**
  * @param <T> the type parameter
@@ -35,7 +35,7 @@ public interface InjectHandle<T> {
 	 * @return the type
 	 */
 	default Class<T> getType() {
-		return ClassUtils.resolveTypeArgument(this.getClass(), InjectHandle.class);
+		return TypeUtils.resolveTypeArgument(this.getClass(), InjectHandle.class);
 	}
 
 }

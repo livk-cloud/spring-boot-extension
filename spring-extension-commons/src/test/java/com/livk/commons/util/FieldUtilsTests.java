@@ -31,27 +31,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class ReflectionUtilsTests {
+class FieldUtilsTests {
 
 	final Field fieldNo = Maker.class.getDeclaredField("no");
 
-	ReflectionUtilsTests() throws NoSuchFieldException {
+	FieldUtilsTests() throws NoSuchFieldException {
 	}
-
-	// --- setFieldAndAccessible ---
 
 	@Test
 	void setFieldAndAccessible() {
 		Maker maker = new Maker();
-		ReflectionUtils.setFieldAndAccessible(fieldNo, maker, 2);
+		FieldUtils.setFieldAndAccessible(fieldNo, maker, 2);
 		assertThat(maker.getNo()).isEqualTo(2);
 	}
 
-	// --- getReadMethod / getReadMethods ---
-
 	@Test
 	void getReadMethodReturnsGetter() {
-		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
+		Method readMethod = FieldUtils.getReadMethod(Maker.class, fieldNo);
 		assertThat(readMethod).isNotNull();
 		assertThat(readMethod.getName()).isEqualTo("getNo");
 	}
@@ -60,22 +56,20 @@ class ReflectionUtilsTests {
 	void getReadMethodInvokesCorrectly() throws Exception {
 		Maker maker = new Maker();
 		maker.setNo(10);
-		Method readMethod = ReflectionUtils.getReadMethod(Maker.class, fieldNo);
+		Method readMethod = FieldUtils.getReadMethod(Maker.class, fieldNo);
 		assertThat(readMethod.invoke(maker)).isEqualTo(10);
 	}
 
 	@Test
 	void getReadMethodsReturnsAllGetters() {
-		Set<Method> readMethods = ReflectionUtils.getReadMethods(Maker.class);
+		Set<Method> readMethods = FieldUtils.getReadMethods(Maker.class);
 		Set<String> names = readMethods.stream().map(Method::getName).collect(Collectors.toSet());
 		assertThat(names).containsExactlyInAnyOrder("getNo", "getUsername");
 	}
 
-	// --- getWriteMethod / getWriteMethods ---
-
 	@Test
 	void getWriteMethodReturnsSetter() {
-		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
+		Method writeMethod = FieldUtils.getWriteMethod(Maker.class, fieldNo);
 		assertThat(writeMethod).isNotNull();
 		assertThat(writeMethod.getName()).isEqualTo("setNo");
 	}
@@ -83,23 +77,21 @@ class ReflectionUtilsTests {
 	@Test
 	void getWriteMethodInvokesCorrectly() throws Exception {
 		Maker maker = new Maker();
-		Method writeMethod = ReflectionUtils.getWriteMethod(Maker.class, fieldNo);
+		Method writeMethod = FieldUtils.getWriteMethod(Maker.class, fieldNo);
 		writeMethod.invoke(maker, 20);
 		assertThat(maker.getNo()).isEqualTo(20);
 	}
 
 	@Test
 	void getWriteMethodsReturnsAllSetters() {
-		Set<Method> writeMethods = ReflectionUtils.getWriteMethods(Maker.class);
+		Set<Method> writeMethods = FieldUtils.getWriteMethods(Maker.class);
 		Set<String> names = writeMethods.stream().map(Method::getName).collect(Collectors.toSet());
 		assertThat(names).containsExactlyInAnyOrder("setNo", "setUsername");
 	}
 
-	// --- getAllFields ---
-
 	@Test
 	void getAllFieldsReturnsDeclaredFields() {
-		List<String> fieldNames = ReflectionUtils.getAllFields(Maker.class)
+		List<String> fieldNames = FieldUtils.getAllFields(Maker.class)
 			.stream()
 			.map(Field::getName)
 			.collect(Collectors.toList());
@@ -108,31 +100,27 @@ class ReflectionUtilsTests {
 
 	@Test
 	void getAllFieldsIncludesParentFields() {
-		List<String> fieldNames = ReflectionUtils.getAllFields(SubMaker.class)
+		List<String> fieldNames = FieldUtils.getAllFields(SubMaker.class)
 			.stream()
 			.map(Field::getName)
 			.collect(Collectors.toList());
 		assertThat(fieldNames).containsExactly("extra", "no", "username");
 	}
 
-	// --- getDeclaredFieldValue ---
-
 	@Test
 	void getDeclaredFieldValueReadsPrivateField() {
 		Maker maker = new Maker();
 		maker.setNo(42);
-		Object value = ReflectionUtils.getDeclaredFieldValue(fieldNo, maker);
+		Object value = FieldUtils.getDeclaredFieldValue(fieldNo, maker);
 		assertThat(value).isEqualTo(42);
 	}
 
 	@Test
 	void getDeclaredFieldValueReturnsNullForUnsetField() {
 		Maker maker = new Maker();
-		Object value = ReflectionUtils.getDeclaredFieldValue(fieldNo, maker);
+		Object value = FieldUtils.getDeclaredFieldValue(fieldNo, maker);
 		assertThat(value).isNull();
 	}
-
-	// --- test helper types ---
 
 	@Data
 	static class Maker {

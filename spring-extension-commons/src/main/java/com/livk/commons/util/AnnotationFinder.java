@@ -18,23 +18,24 @@ package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 /**
  * <p>
- * Annotation工具类
+ * 注解查找工具类
  * </p>
  *
  * @author livk
- * @deprecated use {@link AnnotationFinder}
  */
 @UtilityClass
-@Deprecated(since = "2.1.1")
-public class AnnotationUtils extends org.springframework.core.annotation.AnnotationUtils {
+public class AnnotationFinder {
 
 	/**
 	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
@@ -44,7 +45,12 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return annotation annotation element
 	 */
 	public <A extends Annotation> A getAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
-		return AnnotationFinder.getAnnotationElement(methodParameter, annotationClass);
+		A annotation = AnnotationUtils.getAnnotation(methodParameter.getAnnotatedElement(), annotationClass);
+		if (annotation == null) {
+			Class<?> containingClass = methodParameter.getContainingClass();
+			annotation = AnnotationUtils.getAnnotation(containingClass, annotationClass);
+		}
+		return annotation;
 	}
 
 	/**
@@ -55,7 +61,11 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return annotation annotation element
 	 */
 	public <A extends Annotation> A getAnnotationElement(Method method, Class<A> annotationClass) {
-		return AnnotationFinder.getAnnotationElement(method, annotationClass);
+		A annotation = AnnotationUtils.getAnnotation(method, annotationClass);
+		if (annotation == null) {
+			annotation = AnnotationUtils.getAnnotation(method.getDeclaringClass(), annotationClass);
+		}
+		return annotation;
 	}
 
 	/**
@@ -67,7 +77,9 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter,
 			Class<A> annotationClass) {
-		return AnnotationFinder.hasAnnotationElement(methodParameter, annotationClass);
+		Class<?> containingClass = methodParameter.getContainingClass();
+		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass)
+				|| AnnotatedElementUtils.hasAnnotation(methodParameter.getAnnotatedElement(), annotationClass));
 	}
 
 	/**
@@ -78,7 +90,8 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return bool boolean
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
-		return AnnotationFinder.hasAnnotationElement(method, annotationClass);
+		return AnnotatedElementUtils.hasAnnotation(method, annotationClass)
+				|| AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
 	}
 
 	/**
@@ -88,7 +101,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @return the annotation attributes
 	 */
 	public AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) {
-		return AnnotationFinder.attributesFor(metadata, annotationClassName);
+		return AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(annotationClassName));
 	}
 
 	/**
@@ -100,7 +113,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 */
 	public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata,
 			Class<A> annotationClass) {
-		return AnnotationFinder.attributesFor(metadata, annotationClass);
+		return attributesFor(metadata, annotationClass.getName());
 	}
 
 	/**
@@ -110,8 +123,15 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 * @param <E> 枚举类型
 	 * @return enum[]
 	 */
+	@SuppressWarnings("unchecked")
 	public <E extends Enum<?>> E[] getValue(AnnotationAttributes attributes, String key) {
-		return AnnotationFinder.getValue(attributes, key);
+		Object value = attributes.get(key);
+		if (!(value instanceof Enum<?>[]) && Enum[].class.getComponentType().isInstance(value)) {
+			Object array = Array.newInstance(Enum[].class.getComponentType(), 1);
+			Array.set(array, 0, value);
+			value = array;
+		}
+		return (E[]) value;
 	}
 
 }

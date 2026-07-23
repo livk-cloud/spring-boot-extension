@@ -19,6 +19,7 @@ package com.livk.commons.io;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +29,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class ResourceUtilsTests {
+class ResourceScannerTests {
 
 	static final String FILE_NAME = "input.json";
 
 	@Test
 	void getResourceReturnsMatchingFile() throws IOException {
-		Resource resource = ResourceUtils.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
+		Resource resource = ResourceScanner.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
 		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
 		assertThat(resource.getFile()).isEqualTo(file);
 	}
@@ -42,7 +43,8 @@ class ResourceUtilsTests {
 	@Test
 	void getResourcesReturnsMatchingFiles() throws IOException {
 		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
-		Resource[] resources = ResourceUtils.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + FILE_NAME);
+		Resource[] resources = ResourceScanner
+			.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + FILE_NAME);
 		assertThat(resources).hasSize(1).extracting(Resource::getFile).containsExactly(file);
 	}
 
