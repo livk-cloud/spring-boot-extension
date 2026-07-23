@@ -19,7 +19,7 @@ package com.livk.context.limit.interceptor;
 import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
-import com.livk.commons.util.BeanUtils;
+import org.springframework.beans.BeanUtils;
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
 import com.livk.context.limit.annotation.Limit;

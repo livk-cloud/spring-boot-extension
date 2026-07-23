@@ -36,84 +36,73 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class AnnotationUtilsTests {
+class AnnotationFinderTests {
 
 	private final Method method = AnnotationTestClass.class.getDeclaredMethod("parseMethod", String.class);
 
 	private final MethodParameter methodParameter = new MethodParameter(method, 0);
 
-	AnnotationUtilsTests() throws NoSuchMethodException {
+	AnnotationFinderTests() throws NoSuchMethodException {
 	}
-
-	// --- getAnnotationElement(MethodParameter, Class) ---
 
 	@Test
 	void getAnnotationElementFromMethodParameterFindsMethodAnnotation() {
-		assertThat(AnnotationUtils.getAnnotationElement(methodParameter, GetMapping.class)).isNotNull();
-		assertThat(AnnotationUtils.getAnnotationElement(methodParameter, RequestMapping.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(methodParameter, GetMapping.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(methodParameter, RequestMapping.class)).isNotNull();
 	}
 
 	@Test
 	void getAnnotationElementFromMethodParameterFallsBackToClassAnnotation() {
-		// @Controller and @RestController are on the class, not the method
-		assertThat(AnnotationUtils.getAnnotationElement(methodParameter, Controller.class)).isNotNull();
-		assertThat(AnnotationUtils.getAnnotationElement(methodParameter, RestController.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(methodParameter, Controller.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(methodParameter, RestController.class)).isNotNull();
 	}
 
 	@Test
 	void getAnnotationElementFromMethodParameterReturnsNullWhenAbsent() {
-		assertThat(AnnotationUtils.getAnnotationElement(methodParameter, RequestBody.class)).isNull();
+		assertThat(AnnotationFinder.getAnnotationElement(methodParameter, RequestBody.class)).isNull();
 	}
-
-	// --- getAnnotationElement(Method, Class) ---
 
 	@Test
 	void getAnnotationElementFromMethodFindsMethodAnnotation() {
-		assertThat(AnnotationUtils.getAnnotationElement(method, GetMapping.class)).isNotNull();
-		assertThat(AnnotationUtils.getAnnotationElement(method, RequestMapping.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(method, GetMapping.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(method, RequestMapping.class)).isNotNull();
 	}
 
 	@Test
 	void getAnnotationElementFromMethodFallsBackToClassAnnotation() {
-		assertThat(AnnotationUtils.getAnnotationElement(method, Controller.class)).isNotNull();
-		assertThat(AnnotationUtils.getAnnotationElement(method, RestController.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(method, Controller.class)).isNotNull();
+		assertThat(AnnotationFinder.getAnnotationElement(method, RestController.class)).isNotNull();
 	}
 
 	@Test
 	void getAnnotationElementFromMethodReturnsNullWhenAbsent() {
-		assertThat(AnnotationUtils.getAnnotationElement(method, RequestBody.class)).isNull();
+		assertThat(AnnotationFinder.getAnnotationElement(method, RequestBody.class)).isNull();
 	}
-
-	// --- hasAnnotationElement(MethodParameter, Class) ---
 
 	@Test
 	void hasAnnotationElementFromMethodParameterReturnsTrueForPresent() {
-		assertThat(AnnotationUtils.hasAnnotationElement(methodParameter, RequestMapping.class)).isTrue();
-		assertThat(AnnotationUtils.hasAnnotationElement(methodParameter, GetMapping.class)).isTrue();
-		assertThat(AnnotationUtils.hasAnnotationElement(methodParameter, Controller.class)).isTrue();
-		assertThat(AnnotationUtils.hasAnnotationElement(methodParameter, RestController.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(methodParameter, RequestMapping.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(methodParameter, GetMapping.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(methodParameter, Controller.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(methodParameter, RestController.class)).isTrue();
 	}
 
 	@Test
 	void hasAnnotationElementFromMethodParameterReturnsFalseForAbsent() {
-		assertThat(AnnotationUtils.hasAnnotationElement(methodParameter, RequestBody.class)).isFalse();
+		assertThat(AnnotationFinder.hasAnnotationElement(methodParameter, RequestBody.class)).isFalse();
 	}
-
-	// --- hasAnnotationElement(Method, Class) ---
 
 	@Test
 	void hasAnnotationElementFromMethodReturnsTrueForPresent() {
-		assertThat(AnnotationUtils.hasAnnotationElement(method, RequestMapping.class)).isTrue();
-		assertThat(AnnotationUtils.hasAnnotationElement(method, Controller.class)).isTrue();
-		assertThat(AnnotationUtils.hasAnnotationElement(method, RestController.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(method, RequestMapping.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(method, Controller.class)).isTrue();
+		assertThat(AnnotationFinder.hasAnnotationElement(method, RestController.class)).isTrue();
 	}
 
 	@Test
 	void hasAnnotationElementFromMethodReturnsFalseForAbsent() {
-		assertThat(AnnotationUtils.hasAnnotationElement(method, RequestBody.class)).isFalse();
+		assertThat(AnnotationFinder.hasAnnotationElement(method, RequestBody.class)).isFalse();
 	}
-
-	// --- attributesFor ---
 
 	@Test
 	void attributesForWithClassReturnsAttributes() {
@@ -121,7 +110,7 @@ class AnnotationUtilsTests {
 		Set<MethodMetadata> methods = metadata.getAnnotatedMethods(RequestMapping.class.getName());
 		assertThat(methods).isNotEmpty();
 		for (MethodMetadata methodMetadata : methods) {
-			AnnotationAttributes attributes = AnnotationUtils.attributesFor(methodMetadata, RequestMapping.class);
+			AnnotationAttributes attributes = AnnotationFinder.attributesFor(methodMetadata, RequestMapping.class);
 			assertThat(attributes).isNotNull();
 		}
 	}
@@ -132,21 +121,19 @@ class AnnotationUtilsTests {
 		Set<MethodMetadata> methods = metadata.getAnnotatedMethods(RequestMapping.class.getName());
 		assertThat(methods).isNotEmpty();
 		for (MethodMetadata methodMetadata : methods) {
-			AnnotationAttributes attributes = AnnotationUtils.attributesFor(methodMetadata,
+			AnnotationAttributes attributes = AnnotationFinder.attributesFor(methodMetadata,
 					RequestMapping.class.getName());
 			assertThat(attributes).isNotNull();
 		}
 	}
-
-	// --- getValue ---
 
 	@Test
 	void getValueExtractsEnumArray() {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(AnnotationTestClass.class);
 		Set<MethodMetadata> methods = metadata.getAnnotatedMethods(RequestMapping.class.getName());
 		for (MethodMetadata methodMetadata : methods) {
-			AnnotationAttributes attributes = AnnotationUtils.attributesFor(methodMetadata, RequestMapping.class);
-			RequestMethod[] requestMethods = AnnotationUtils.getValue(attributes, "method");
+			AnnotationAttributes attributes = AnnotationFinder.attributesFor(methodMetadata, RequestMapping.class);
+			RequestMethod[] requestMethods = AnnotationFinder.getValue(attributes, "method");
 			assertThat(requestMethods).containsExactly(RequestMethod.GET);
 		}
 	}

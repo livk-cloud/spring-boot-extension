@@ -16,7 +16,7 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
+import com.livk.commons.io.DataBufferConverter;
 import com.livk.commons.util.HttpReactiveUtils;
 import com.livk.context.fesod.ExcelDataType;
 import com.livk.context.fesod.annotation.ExcelParam;
@@ -70,7 +70,7 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 							: ExcelDataType.match(elementType.getRawClass());
 					Class<?> excelModelClass = dataType.apply(elementType);
 					return Mono.just(request.getBody())
-						.flatMap(DataBufferUtils::transform)
+						.flatMap(DataBufferConverter::transform)
 						.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
 						.map(in -> super.getExcelData(listener, dataType));
 				}

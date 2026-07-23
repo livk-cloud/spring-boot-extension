@@ -16,7 +16,7 @@
 
 package com.livk.commons.annotation;
 
-import com.livk.commons.util.ClassUtils;
+import org.springframework.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;

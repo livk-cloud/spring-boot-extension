@@ -1,0 +1,108 @@
+/*
+ * Copyright 2021-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.livk.commons.util;
+
+import lombok.experimental.UtilityClass;
+import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+
+/**
+ * <p>
+ * Type相关工具类，提供Type到Class的转换和泛型参数解析能力
+ * </p>
+ *
+ * @author livk
+ */
+@UtilityClass
+public class TypeUtils {
+
+	/**
+	 * 解析指定类在泛型接口/父类上的类型参数（仅支持单泛型参数）
+	 * @param <T> 类型参数
+	 * @param <G> 泛型接口/父类
+	 * @param clazz 目标类
+	 * @param genericType 泛型接口/父类
+	 * @return 解析出的Class
+	 */
+	public static <T, G> Class<T> resolveTypeArgument(Class<? extends G> clazz, Class<G> genericType) {
+		ResolvableType resolvableType = ResolvableType.forClass(clazz).as(genericType);
+		if (!resolvableType.hasGenerics()) {
+			throw new IllegalArgumentException("No type arguments found on generic interface [" + resolvableType + "]");
+		}
+		Assert.isTrue(resolvableType.getGenerics().length == 1, () -> "Expected 1 type argument on generic interface ["
+				+ resolvableType + "] but found " + resolvableType.getGenerics().length);
+		return toClass(resolvableType.getGeneric().resolve());
+	}
+
+	/**
+	 * 将Type安全的转成Class
+	 * @param <T> type parameter
+	 * @param type type
+	 * @return class
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> Class<T> toClass(Type type) {
+		return switch (type) {
+			case null -> throw new IllegalArgumentException("Type cannot be null");
+			case ParameterizedType parameterizedType -> toClass(parameterizedType.getRawType());
+			case TypeVariable<?> typeVariable -> handleTypeVariable(typeVariable);
+			case GenericArrayType genericArrayType -> handleGenericArrayType(genericArrayType);
+			case WildcardType wildcardType -> handleWildcardType(wildcardType);
+			case Class<?> ignored -> (Class<T>) type;
+			default -> throw new IllegalArgumentException(
+					"Unsupported Type: " + type.getClass().getName() + ", type: " + type);
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleTypeVariable(TypeVariable<?> typeVariable) {
+		for (Type bound : typeVariable.getBounds()) {
+			if (bound != Object.class) {
+				return toClass(bound);
+			}
+		}
+		return (Class<T>) Object.class;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleGenericArrayType(GenericArrayType genericArrayType) {
+		Type componentType = genericArrayType.getGenericComponentType();
+		Class<?> componentClass = toClass(componentType);
+		return (Class<T>) Array.newInstance(componentClass, 0).getClass();
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Class<T> handleWildcardType(WildcardType wildcardType) {
+		Type[] upperBounds = wildcardType.getUpperBounds();
+		if (upperBounds.length > 0 && upperBounds[0] != Object.class) {
+			return toClass(upperBounds[0]);
+		}
+		Type[] lowerBounds = wildcardType.getLowerBounds();
+		if (lowerBounds.length > 0) {
+			return toClass(lowerBounds[0]);
+		}
+		return (Class<T>) Object.class;
+	}
+
+}

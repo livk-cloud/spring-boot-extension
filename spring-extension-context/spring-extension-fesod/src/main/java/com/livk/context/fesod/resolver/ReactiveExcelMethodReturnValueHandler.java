@@ -16,8 +16,8 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.io.DataBufferConverter;
+import com.livk.commons.util.AnnotationFinder;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import com.livk.context.fesod.exception.ExcelExportException;
 import org.jspecify.annotations.NonNull;
@@ -62,7 +62,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
-		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseExcel.class);
+		return AnnotationFinder.hasAnnotationElement(result.getReturnTypeSource(), ResponseExcel.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 	public Mono<Void> handleResult(@NonNull ServerWebExchange exchange, HandlerResult result) {
 		Object returnValue = result.getReturnValue();
 		if (returnValue != null) {
-			ResponseExcel responseExcel = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(),
+			ResponseExcel responseExcel = AnnotationFinder.getAnnotationElement(result.getReturnTypeSource(),
 					ResponseExcel.class);
 			ServerHttpResponse response = exchange.getResponse();
 			setResponse(responseExcel, response);
@@ -115,7 +115,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 		})
 			.subscribeOn(Schedulers.boundedElastic()) // ⭐ 非常关键
 			.flatMap(bytes -> {
-				Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
+				Flux<DataBuffer> bufferFlux = DataBufferConverter.transform(bytes);
 				return message.writeWith(bufferFlux);
 			}));
 	}

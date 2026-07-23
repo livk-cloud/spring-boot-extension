@@ -16,8 +16,8 @@
 
 package com.livk.context.mybatis;
 
-import com.livk.commons.util.BeanUtils;
-import com.livk.commons.util.ReflectionUtils;
+import org.springframework.beans.BeanUtils;
+import com.livk.commons.util.FieldUtils;
 import com.livk.context.mybatis.annotation.SqlInject;
 import com.livk.context.mybatis.enums.InjectType;
 import com.livk.context.mybatis.enums.SqlFill;
@@ -54,11 +54,11 @@ public class SqlDataInjection implements Interceptor {
 		Map<Object, List<Field>> map = new HashMap<>();
 		if (parameter instanceof MapperMethod.ParamMap<?> paramMap) {
 			for (Object value : paramMap.values()) {
-				map.putIfAbsent(value, ReflectionUtils.getAllFields(value.getClass()));
+				map.putIfAbsent(value, FieldUtils.getAllFields(value.getClass()));
 			}
 		}
 		else {
-			map.putIfAbsent(parameter, ReflectionUtils.getAllFields(parameter.getClass()));
+			map.putIfAbsent(parameter, FieldUtils.getAllFields(parameter.getClass()));
 		}
 
 		for (Map.Entry<Object, List<Field>> entry : map.entrySet()) {
@@ -73,7 +73,7 @@ public class SqlDataInjection implements Interceptor {
 						// insert或者update并且SqlFill.INSERT_UPDATE
 						if (SqlCommandType.INSERT.equals(sqlCommandType)
 								|| sqlFunction.fill().equals(SqlFill.INSERT_UPDATE)) {
-							Method writeMethod = ReflectionUtils.getWriteMethod(entry.getKey().getClass(), field);
+							Method writeMethod = FieldUtils.getWriteMethod(entry.getKey().getClass(), field);
 							writeMethod.invoke(entry.getKey(), value);
 						}
 					}

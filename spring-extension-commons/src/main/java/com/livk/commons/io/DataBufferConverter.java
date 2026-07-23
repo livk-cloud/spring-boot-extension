@@ -17,23 +17,40 @@
 package com.livk.commons.io;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferFactory;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.util.StreamUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * <p>
- * DataBufferUtils功能拓展
+ * DataBuffer格式转换工具类
  * </p>
  *
  * @author livk
- * @deprecated use {@link com.livk.commons.io.DataBufferConverter}
  */
 @UtilityClass
-@Deprecated(since = "2.1.1")
-public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
+public class DataBufferConverter {
+
+	/**
+	 * 设置默认BUFFER_SIZE
+	 */
+	public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
+
+	/**
+	 * 设置默认DEFAULT_FACTORY.
+	 */
+	public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
 
 	/**
 	 * 转换Flux DataBuffer成Mono InputStream
@@ -41,7 +58,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the mono
 	 */
 	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-		return DataBufferConverter.transform(dataBufferFlux);
+		return DataBufferUtils.join(dataBufferFlux).map(dataBuffer -> dataBuffer.asInputStream(true));
 	}
 
 	/**
@@ -50,7 +67,8 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(byte[] array) {
-		return DataBufferConverter.transform(array);
+		ByteArrayResource resource = new ByteArrayResource(array);
+		return DataBufferUtils.read(resource, DEFAULT_FACTORY, BUFFER_SIZE);
 	}
 
 	/**
@@ -59,7 +77,16 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the mono
 	 */
 	public Mono<byte[]> transformByte(Flux<DataBuffer> bufferFlux) {
-		return DataBufferConverter.transformByte(bufferFlux);
+		return DataBufferConverter.transform(bufferFlux)
+			.publishOn(Schedulers.boundedElastic())
+			.handle((inputStream, sink) -> {
+				try (inputStream) {
+					sink.next(inputStream.readAllBytes());
+				}
+				catch (IOException ex) {
+					sink.error(Exceptions.bubble(ex));
+				}
+			});
 	}
 
 	/**
@@ -68,7 +95,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(InputStream inputStream) {
-		return DataBufferConverter.transform(inputStream);
+		return DataBufferUtils.read(new InputStreamResource(inputStream), DEFAULT_FACTORY, BUFFER_SIZE);
 	}
 
 	/**
@@ -77,7 +104,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(Mono<InputStream> inputStreamMono) {
-		return DataBufferConverter.transform(inputStreamMono);
+		return inputStreamMono.flatMapMany(DataBufferConverter::transform);
 	}
 
 }

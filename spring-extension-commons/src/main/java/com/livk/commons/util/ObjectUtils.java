@@ -24,8 +24,10 @@ import lombok.experimental.UtilityClass;
  * </p>
  *
  * @author livk
+ * @deprecated use {@link org.springframework.util.ObjectUtils}
  */
 @UtilityClass
+@Deprecated(since = "2.1.1")
 public class ObjectUtils extends org.springframework.util.ObjectUtils {
 
 }

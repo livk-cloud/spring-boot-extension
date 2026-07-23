@@ -17,7 +17,7 @@
 package com.livk.context.qrcode.resolver;
 
 import tools.jackson.databind.json.JsonMapper;
-import com.livk.commons.io.DataBufferUtils;
+import com.livk.commons.io.DataBufferConverter;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
 import com.livk.context.qrcode.support.GoogleQrCodeManager;
@@ -66,7 +66,7 @@ class ReactiveQRCodeMethodReturnValueHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo"));
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		Mono<String> mono = DataBufferUtils.transform(exchange.getResponse().getBody()).map(manager::parser);
+		Mono<String> mono = DataBufferConverter.transform(exchange.getResponse().getBody()).map(manager::parser);
 
 		StepVerifier.create(mono).expectNext("code").verifyComplete();
 	}

@@ -16,8 +16,8 @@
 
 package com.livk.commons.annotation;
 
-import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.AnnotationFinder;
+import com.livk.commons.util.TypeUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> extends ClassPathBeanDefinitionScanner {
 
-	protected final Class<T> annotationClass = ClassUtils.resolveTypeArgument(this.getClass(),
+	protected final Class<T> annotationClass = TypeUtils.resolveTypeArgument(this.getClass(),
 			AnnotationBeanDefinitionScanner.class);
 
 	protected final BeanNameGenerator beanNameGenerator;
@@ -65,7 +65,7 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
 			for (BeanDefinition candidateComponent : candidateComponents) {
 				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
-					AnnotationAttributes attributes = AnnotationUtils
+					AnnotationAttributes attributes = AnnotationFinder
 						.attributesFor(scannedGenericBeanDefinition.getMetadata(), annotationClass);
 					BeanDefinitionHolder holder = generateHolder(attributes, candidateComponent, registry);
 					if (holder != null) {

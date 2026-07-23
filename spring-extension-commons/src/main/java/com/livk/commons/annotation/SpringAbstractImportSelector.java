@@ -16,7 +16,7 @@
 
 package com.livk.commons.annotation;
 
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.TypeUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -54,7 +54,7 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	private final Class<A> annotationClass;
 
 	protected SpringAbstractImportSelector() {
-		this.annotationClass = ClassUtils.resolveTypeArgument(this.getClass(), SpringAbstractImportSelector.class);
+		this.annotationClass = TypeUtils.resolveTypeArgument(this.getClass(), SpringAbstractImportSelector.class);
 	}
 
 	@Override

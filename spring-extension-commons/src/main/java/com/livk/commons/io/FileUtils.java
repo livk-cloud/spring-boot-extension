@@ -16,21 +16,16 @@
 
 package com.livk.commons.io;
 
-import com.livk.commons.util.ObjectUtils;
 import lombok.experimental.UtilityClass;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * 文件相关工具类
@@ -38,7 +33,7 @@ import java.util.zip.GZIPOutputStream;
  * @author livk
  */
 @UtilityClass
-public class FileUtils extends FileCopyUtils {
+public class FileUtils {
 
 	/**
 	 * 文件下载
@@ -82,34 +77,6 @@ public class FileUtils extends FileCopyUtils {
 			flag = parentFile.mkdirs();
 		}
 		return flag && file.createNewFile();
-	}
-
-	/**
-	 * 使用GZip进行压缩
-	 * <p>
-	 * 把数据压缩至OutputStream
-	 * @param bytes 待压缩数据
-	 * @param outputStream 输出流
-	 * @throws IOException io exception
-	 */
-	public static void gzipCompress(byte[] bytes, OutputStream outputStream) throws IOException {
-		if (!ObjectUtils.isEmpty(bytes)) {
-			try (GZIPOutputStream stream = new GZIPOutputStream(outputStream)) {
-				stream.write(bytes);
-			}
-		}
-	}
-
-	/**
-	 * 使用GZip进行解压缩
-	 * @param inputStream 输入流
-	 * @return byte[]
-	 * @throws IOException io exception
-	 */
-	public static byte[] gzipDecompress(InputStream inputStream) throws IOException {
-		try (GZIPInputStream stream = new GZIPInputStream(inputStream)) {
-			return FileUtils.copyToByteArray(stream);
-		}
 	}
 
 }

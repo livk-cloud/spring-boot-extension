@@ -44,7 +44,7 @@ final class BeanLambdaDescriptor {
 
 	private PropertyDescriptor getPropertyDescriptor() {
 		Class<?> type = method.getDeclaringClass();
-		PropertyDescriptor propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
+		PropertyDescriptor propertyDescriptor = org.springframework.beans.BeanUtils.findPropertyForMethod(method, type);
 		if (propertyDescriptor == null) {
 			throw new IllegalStateException("No PropertyDescriptor found for method: " + method);
 		}
@@ -77,9 +77,11 @@ final class BeanLambdaDescriptor {
 	}
 
 	private static BeanLambdaDescriptor doCreate(SerializedLambda serializedLambda) {
-		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
-		Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
-		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
+		String className = org.springframework.util.ClassUtils
+			.convertResourcePathToClassName(serializedLambda.getImplClass());
+		Class<?> type = org.springframework.util.ClassUtils.resolveClassName(className,
+				org.springframework.util.ClassUtils.getDefaultClassLoader());
+		Method method = org.springframework.util.ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
 		Assert.notNull(method, "Cannot find method: " + serializedLambda.getImplMethodName() + " on " + className);
 		return new BeanLambdaDescriptor(method);
 	}
@@ -93,7 +95,7 @@ final class BeanLambdaDescriptor {
 		String fieldName = propertyDescriptor.getName();
 		Class<?> fieldType = propertyDescriptor.getPropertyType();
 		Class<?> type = method.getDeclaringClass();
-		Field field = ReflectionUtils.findField(type, fieldName, fieldType);
+		Field field = org.springframework.util.ReflectionUtils.findField(type, fieldName, fieldType);
 		Assert.notNull(field, "Field '" + fieldName + "' of type '" + fieldType.getName() + "' not found on class: "
 				+ type.getName());
 		return field;

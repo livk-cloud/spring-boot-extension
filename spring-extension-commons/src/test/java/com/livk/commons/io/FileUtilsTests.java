@@ -65,11 +65,11 @@ class FileUtilsTests {
 		File file = tempDir.resolve("data.gzip").toFile();
 		FileUtils.createNewFile(file);
 		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-			FileUtils.gzipCompress(data.getBytes(), fileOutputStream);
+			GzipUtils.compress(data.getBytes(), fileOutputStream);
 		}
 
 		try (FileInputStream fileInputStream = new FileInputStream(file)) {
-			String copyData = new String(FileUtils.gzipDecompress(fileInputStream));
+			String copyData = new String(GzipUtils.decompress(fileInputStream));
 			assertThat(copyData).isEqualTo(data);
 		}
 	}

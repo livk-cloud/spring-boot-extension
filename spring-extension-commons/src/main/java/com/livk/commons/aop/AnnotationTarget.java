@@ -17,7 +17,7 @@
 package com.livk.commons.aop;
 
 import com.google.common.collect.Sets;
-import com.livk.commons.util.AnnotationUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.aop.Pointcut;

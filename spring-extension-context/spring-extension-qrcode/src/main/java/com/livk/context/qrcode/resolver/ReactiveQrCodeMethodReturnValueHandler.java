@@ -16,8 +16,8 @@
 
 package com.livk.context.qrcode.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.io.DataBufferConverter;
+import com.livk.commons.util.AnnotationFinder;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.QrCodeManager;
@@ -62,7 +62,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
-		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseQrCode.class)
+		return AnnotationFinder.hasAnnotationElement(result.getReturnTypeSource(), ResponseQrCode.class)
 				|| result.getReturnType().isAssignableFrom(QrCodeEntity.class);
 	}
 
@@ -91,7 +91,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 		PicType type = attributes.getEnum("type");
 		setResponse(type, response);
 		byte[] bytes = toByteArray(value, attributes);
-		Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
+		Flux<DataBuffer> bufferFlux = DataBufferConverter.transform(bytes);
 		return response.writeWith(bufferFlux);
 	}
 

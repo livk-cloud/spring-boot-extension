@@ -18,6 +18,7 @@ package com.livk.commons.util;
 
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -33,40 +34,40 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * @author livk
  */
-class ClassUtilsTests {
+class TypeUtilsTests {
 
 	// --- toClass ---
 
 	@Test
 	void toClassFromPlainClass() {
-		assertThat(ClassUtils.toClass(String.class)).isEqualTo(String.class);
+		assertThat(TypeUtils.toClass(String.class)).isEqualTo(String.class);
 	}
 
 	@Test
 	void toClassFromParameterizedType() {
-		assertThat(ClassUtils.toClass(new ListType())).isEqualTo(List.class);
+		assertThat(TypeUtils.toClass(new ListType())).isEqualTo(List.class);
 	}
 
 	@Test
 	void toClassFromTypeVariable() {
 		TypeVariable<?> typeVar = MyGeneric.class.getTypeParameters()[0];
-		assertThat(ClassUtils.toClass(typeVar)).isEqualTo(Number.class);
+		assertThat(TypeUtils.toClass(typeVar)).isEqualTo(Number.class);
 	}
 
 	@Test
 	void toClassFromTypeVariableWithObjectBoundReturnsObject() {
 		TypeVariable<?> typeVar = UnboundedGeneric.class.getTypeParameters()[0];
-		assertThat(ClassUtils.toClass(typeVar)).isEqualTo(Object.class);
+		assertThat(TypeUtils.toClass(typeVar)).isEqualTo(Object.class);
 	}
 
 	@Test
 	void toClassFromGenericArrayType() {
-		assertThat(ClassUtils.toClass(new StringGenericArrayType())).isEqualTo(String[].class);
+		assertThat(TypeUtils.toClass(new StringGenericArrayType())).isEqualTo(String[].class);
 	}
 
 	@Test
 	void toClassFromWildcardTypeWithUpperBound() {
-		assertThat(ClassUtils.toClass(new NumberWildcardType())).isEqualTo(Number.class);
+		assertThat(TypeUtils.toClass(new NumberWildcardType())).isEqualTo(Number.class);
 	}
 
 	@Test
@@ -84,12 +85,12 @@ class ClassUtilsTests {
 				return new Type[] { String.class };
 			}
 		};
-		assertThat(ClassUtils.toClass(lowerBounded)).isEqualTo(String.class);
+		assertThat(TypeUtils.toClass(lowerBounded)).isEqualTo(String.class);
 	}
 
 	@Test
 	void toClassWithNullThrows() {
-		assertThatThrownBy(() -> ClassUtils.toClass(null)).isInstanceOf(IllegalArgumentException.class)
+		assertThatThrownBy(() -> TypeUtils.toClass(null)).isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("Type cannot be null");
 	}
 
@@ -97,38 +98,40 @@ class ClassUtilsTests {
 
 	@Test
 	void resolveTypeArgumentResolvesConcreteGeneric() {
-		assertThat(ClassUtils.resolveTypeArgument(IntGeneric.class, MyGeneric.class)).isEqualTo(Integer.class);
+		assertThat(TypeUtils.resolveTypeArgument(IntGeneric.class, MyGeneric.class)).isEqualTo(Integer.class);
 	}
 
 	@Test
 	void resolveTypeArgumentThrowsWhenNoGenerics() {
-		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(NumberWildcardType.class, WildcardType.class))
+		assertThatThrownBy(() -> TypeUtils.resolveTypeArgument(NumberWildcardType.class, WildcardType.class))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("No type arguments found");
 	}
 
 	@Test
 	void resolveTypeArgumentThrowsWhenMultipleGenerics() {
-		assertThatThrownBy(() -> ClassUtils.resolveTypeArgument(TypeMap.class, HashMap.class))
+		assertThatThrownBy(() -> TypeUtils.resolveTypeArgument(TypeMap.class, HashMap.class))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("Expected 1 type argument");
 	}
 
-	// --- resolveClassName / isPresent ---
+	// --- resolveClassName / isPresent (Spring ClassUtils) ---
 
 	@Test
 	void resolveClassNameResolvesExistingClass() {
-		assertThat(ClassUtils.resolveClassName("java.lang.String")).isEqualTo(String.class);
+		assertThat(ClassUtils.resolveClassName("java.lang.String", ClassUtils.getDefaultClassLoader()))
+			.isEqualTo(String.class);
 	}
 
 	@Test
 	void isPresentReturnsTrueForExistingClass() {
-		assertThat(ClassUtils.isPresent("java.lang.String")).isTrue();
+		assertThat(ClassUtils.isPresent("java.lang.String", ClassUtils.getDefaultClassLoader())).isTrue();
 	}
 
 	@Test
 	void isPresentReturnsFalseForNonexistentClass() {
-		assertThat(ClassUtils.isPresent("com.livk.nonexistent.FakeClass")).isFalse();
+		assertThat(ClassUtils.isPresent("com.livk.nonexistent.FakeClass", ClassUtils.getDefaultClassLoader()))
+			.isFalse();
 	}
 
 	// --- test helper types ---

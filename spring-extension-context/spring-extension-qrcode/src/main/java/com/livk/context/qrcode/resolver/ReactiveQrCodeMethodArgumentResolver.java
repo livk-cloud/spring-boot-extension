@@ -16,7 +16,7 @@
 
 package com.livk.context.qrcode.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
+import com.livk.commons.io.DataBufferConverter;
 import com.livk.commons.util.HttpReactiveUtils;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.RequestQrCodeText;
@@ -61,7 +61,7 @@ public class ReactiveQrCodeMethodArgumentResolver implements HandlerMethodArgume
 		if (qrCodeText != null && this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
 			mono = HttpReactiveUtils.getPartRequest(qrCodeText.fileName(), exchange)
 				.flatMap(request -> Mono.just(request.getBody())
-					.flatMap(DataBufferUtils::transformByte)
+					.flatMap(DataBufferConverter::transformByte)
 					.map(codeManager::parser));
 		}
 
