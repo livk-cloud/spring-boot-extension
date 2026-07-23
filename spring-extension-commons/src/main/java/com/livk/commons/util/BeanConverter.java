@@ -80,4 +80,5 @@ public class BeanConverter {
 		Class<T> targetClass = (Class<T>) target.remove("class");
 		return BeanConverter.fromMap(target, targetClass);
 	}
+
 }
