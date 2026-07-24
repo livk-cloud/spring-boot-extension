@@ -50,10 +50,22 @@ class DefaultRangeSequence implements Sequence {
 	 */
 	private final String name;
 
-	DefaultRangeSequence(RangeManager manager, String name) {
+	/**
+	 * 获取区间的步长
+	 */
+	private final int step;
+
+	/**
+	 * 序列号分配起始值
+	 */
+	private final long stepStart;
+
+	DefaultRangeSequence(RangeManager manager, String name, int step, long stepStart) {
 		Assert.notNull(name, "name is required");
 		this.manager = manager;
 		this.name = name;
+		this.step = step;
+		this.stepStart = stepStart;
 	}
 
 	@Override
@@ -65,11 +77,11 @@ class DefaultRangeSequence implements Sequence {
 				refreshRange();
 				continue;
 			}
-			long id = range.getAndIncrement();
+			long id = range.next();
 			if (id >= 0) {
 				return id;
 			}
-			// 如果 getAndIncrement() 返回 <0，说明已用尽 → 循环刷新
+			// 如果 next() 返回 <0，说明已用尽 → 循环刷新
 		}
 	}
 
@@ -77,7 +89,7 @@ class DefaultRangeSequence implements Sequence {
 		lock.lock();
 		try {
 			if (currentRange == null || currentRange.isOver()) {
-				currentRange = manager.nextRange(name);
+				currentRange = manager.nextRange(name, step, stepStart);
 			}
 		}
 		catch (Exception ex) {

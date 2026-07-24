@@ -17,7 +17,6 @@
 package com.livk.context.sequence;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author livk
  */
 @ToString
-public class SequenceRange {
+public final class SequenceRange {
 
 	/**
 	 * 区间的序列号开始值
@@ -45,13 +44,6 @@ public class SequenceRange {
 	 */
 	private final AtomicLong value;
 
-	/**
-	 * 区间的序列号是否分配完毕，每次分配完毕就会去重新获取一个新的区间
-	 */
-	@Setter
-	@Getter
-	private volatile boolean over = false;
-
 	public SequenceRange(long min, long max) {
 		this.min = min;
 		this.max = max;
@@ -62,14 +54,17 @@ public class SequenceRange {
 	 * 返回并递增下一个序列号
 	 * @return 下一个序列号，如果返回-1表示序列号分配完毕
 	 */
-	public long getAndIncrement() {
-		long currentValue = value.getAndIncrement();
-		if (currentValue > max) {
-			over = true;
-			return -1;
-		}
+	public long next() {
+		long current = value.getAndIncrement();
+		return current <= max ? current : -1;
+	}
 
-		return currentValue;
+	/**
+	 * 区间的序列号是否分配完毕，每次分配完毕就会去重新获取一个新的区间
+	 * @return true表示区间已分配完毕
+	 */
+	public boolean isOver() {
+		return value.get() > max;
 	}
 
 }
