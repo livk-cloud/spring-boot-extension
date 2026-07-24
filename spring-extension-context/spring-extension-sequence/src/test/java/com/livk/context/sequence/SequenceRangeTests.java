@@ -30,10 +30,10 @@ class SequenceRangeTests {
 		SequenceRange range = new SequenceRange(1L, 10L);
 		for (int i = 1; i <= 10; i++) {
 			assertThat(range.isOver()).isFalse();
-			assertThat(range.getAndIncrement()).isEqualTo(i);
+			assertThat(range.next()).isEqualTo(i);
 		}
 
-		assertThat(range.getAndIncrement()).isEqualTo(-1);
+		assertThat(range.next()).isEqualTo(-1);
 		assertThat(range.isOver()).isTrue();
 	}
 

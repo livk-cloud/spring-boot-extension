@@ -45,7 +45,10 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 
 	@Override
 	public final SequenceBuilder step(int step) {
-		this.step = step;
+		// 非法步长忽略，保留默认值
+		if (step > 0) {
+			this.step = step;
+		}
 		return this;
 	}
 
@@ -57,15 +60,16 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 
 	@Override
 	public final SequenceBuilder stepStart(long stepStart) {
-		this.stepStart = stepStart;
+		// 非法起始值忽略，保留默认值
+		if (stepStart >= 0) {
+			this.stepStart = stepStart;
+		}
 		return this;
 	}
 
 	@Override
 	public final Sequence build() {
-		manager.step(this.step);
-		manager.stepStart(stepStart);
-		return new DefaultRangeSequence(manager, bizName);
+		return new DefaultRangeSequence(manager, bizName, step, stepStart);
 	}
 
 }

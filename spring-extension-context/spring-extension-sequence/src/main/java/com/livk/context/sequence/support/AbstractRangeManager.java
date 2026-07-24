@@ -25,37 +25,13 @@ import org.springframework.util.StringUtils;
  */
 public abstract class AbstractRangeManager implements RangeManager {
 
-	/**
-	 * 区间步长
-	 */
-	protected int step = 1000;
-
-	/**
-	 * 区间起始位置，真实从stepStart+1开始
-	 */
-	protected long stepStart = 0;
-
 	@Override
-	public void step(int step) {
-		if (step > 0) {
-			this.step = step;
-		}
-	}
-
-	@Override
-	public void stepStart(long stepStart) {
-		if (stepStart >= 0) {
-			this.stepStart = stepStart;
-		}
-	}
-
-	@Override
-	public final SequenceRange nextRange(String name) {
+	public final SequenceRange nextRange(String name, int step, long stepStart) {
 		if (!StringUtils.hasText(name)) {
 			throw new SequenceException("[RangeManager-nextRange] name is empty.");
 		}
 		try {
-			return buildNextRange(name);
+			return buildNextRange(name, step, stepStart);
 		}
 		catch (SequenceException ex) {
 			throw ex;
@@ -65,6 +41,6 @@ public abstract class AbstractRangeManager implements RangeManager {
 		}
 	}
 
-	protected abstract SequenceRange buildNextRange(String name);
+	protected abstract SequenceRange buildNextRange(String name, int step, long stepStart);
 
 }

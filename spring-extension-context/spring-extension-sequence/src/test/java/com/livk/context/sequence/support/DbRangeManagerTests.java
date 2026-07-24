@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -54,20 +53,20 @@ class DbRangeManagerTests {
 	void testNextRangeReturnsValidSequenceRange() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
 		String name = "test-seq";
-		SequenceRange range = manager.nextRange(name);
+		SequenceRange range = manager.nextRange(name, 1000, 0);
 		assertThat(range).isNotNull();
 		assertThat(range.getMin()).isEqualTo(1);
 		assertThat(range.getMax()).isEqualTo(1000);
 		assertThat(range.isOver()).isFalse();
-		assertThat(range.getAndIncrement()).isEqualTo(1);
-		assertThat(range.getAndIncrement()).isEqualTo(2);
+		assertThat(range.next()).isEqualTo(1);
+		assertThat(range.next()).isEqualTo(2);
 	}
 
 	@Test
 	void testInitCreatesTableSuccessfully() {
 		assertThatCode(() -> new DbRangeManager(dataSource)).doesNotThrowAnyException();
 
-		SequenceRange range = new DbRangeManager(dataSource).nextRange("init-table-seq");
+		SequenceRange range = new DbRangeManager(dataSource).nextRange("init-table-seq", 1000, 0);
 		assertThat(range).isNotNull();
 	}
 
@@ -76,14 +75,14 @@ class DbRangeManagerTests {
 		DbRangeManager manager = new DbRangeManager(dataSource);
 		String name = "retry-seq";
 
-		SequenceRange firstRange = manager.nextRange(name);
+		SequenceRange firstRange = manager.nextRange(name, 1000, 0);
 		assertThat(firstRange).isNotNull();
 
 		DbRangeManager concurrentManager = new DbRangeManager(dataSource);
-		SequenceRange concurrentRange = concurrentManager.nextRange(name);
+		SequenceRange concurrentRange = concurrentManager.nextRange(name, 1000, 0);
 		assertThat(concurrentRange).isNotNull();
 
-		SequenceRange retriedRange = manager.nextRange(name);
+		SequenceRange retriedRange = manager.nextRange(name, 1000, 0);
 		assertThat(retriedRange).isNotNull();
 		assertThat(retriedRange.getMin()).isEqualTo(concurrentRange.getMax() + 1);
 	}
@@ -110,7 +109,7 @@ class DbRangeManagerTests {
 		}
 		DuplicateKeyOnceDbRangeManager manager = new DuplicateKeyOnceDbRangeManager(dataSource);
 
-		SequenceRange range = manager.nextRange("duplicate-key-retry-seq");
+		SequenceRange range = manager.nextRange("duplicate-key-retry-seq", 1000, 0);
 
 		assertThat(range.getMin()).isEqualTo(1);
 		assertThat(range.getMax()).isEqualTo(1000);
@@ -120,9 +119,9 @@ class DbRangeManagerTests {
 	void testNextRangeThrowsOnEmptyName() {
 		DbRangeManager manager = new DbRangeManager(dataSource);
 
-		assertThatThrownBy(() -> manager.nextRange("")).isInstanceOf(SequenceException.class);
+		assertThatThrownBy(() -> manager.nextRange("", 1000, 0)).isInstanceOf(SequenceException.class);
 
-		assertThatThrownBy(() -> manager.nextRange(null)).isInstanceOf(SequenceException.class);
+		assertThatThrownBy(() -> manager.nextRange(null, 1000, 0)).isInstanceOf(SequenceException.class);
 
 	}
 
@@ -134,19 +133,6 @@ class DbRangeManagerTests {
 
 			FailingDbRangeManager(DataSource ds) {
 				super(ds);
-			}
-
-			@Override
-			public SequenceRange buildNextRange(String name) {
-				// Use reflection to set step to 1 for faster test
-				try {
-					Field stepField = AbstractRangeManager.class.getDeclaredField("step");
-					stepField.setAccessible(true);
-					stepField.setInt(this, 1);
-				}
-				catch (Exception ignored) {
-				}
-				return super.buildNextRange(name);
 			}
 
 			@Override
@@ -162,7 +148,7 @@ class DbRangeManagerTests {
 		}
 		FailingDbRangeManager manager = new FailingDbRangeManager(dataSource);
 
-		assertThatThrownBy(() -> manager.nextRange("fail-retry-seq")).isInstanceOf(SequenceException.class);
+		assertThatThrownBy(() -> manager.nextRange("fail-retry-seq", 1, 0)).isInstanceOf(SequenceException.class);
 	}
 
 	@Test
@@ -183,7 +169,7 @@ class DbRangeManagerTests {
 		}
 		NullReturningDbRangeManager manager = new NullReturningDbRangeManager(dataSource);
 
-		assertThatThrownBy(() -> manager.nextRange("null-helper-seq")).isInstanceOf(SequenceException.class);
+		assertThatThrownBy(() -> manager.nextRange("null-helper-seq", 1000, 0)).isInstanceOf(SequenceException.class);
 	}
 
 }

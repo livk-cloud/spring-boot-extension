@@ -33,7 +33,7 @@ import java.util.Optional;
 /**
  * @author livk
  */
-public class DbRangeManager extends AbstractRangeManager implements RangeManager {
+public class DbRangeManager extends AbstractRangeManager {
 
 	/**
 	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀
@@ -62,7 +62,7 @@ public class DbRangeManager extends AbstractRangeManager implements RangeManager
 	}
 
 	@Override
-	public SequenceRange buildNextRange(String name) {
+	public SequenceRange buildNextRange(String name, int step, long stepStart) {
 		for (int i = 0; i < retryTimes; i++) {
 			Long oldValue = this.selectRange(name, stepStart);
 			if (null == oldValue) {

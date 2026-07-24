@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
  * @author livk
  */
 @RequiredArgsConstructor
-public class RedisRangeManager extends AbstractRangeManager implements RangeManager {
+public class RedisRangeManager extends AbstractRangeManager {
 
 	/**
 	 * 前缀防止key重复
@@ -40,7 +40,7 @@ public class RedisRangeManager extends AbstractRangeManager implements RangeMana
 	private final SequenceRedisHelper helper;
 
 	@Override
-	public SequenceRange buildNextRange(String name) {
+	public SequenceRange buildNextRange(String name, int step, long stepStart) {
 		byte[] realKey = getRealKey(name);
 		helper.setNx(realKey, stepStart);
 		Long max = helper.incrBy(realKey, step);
