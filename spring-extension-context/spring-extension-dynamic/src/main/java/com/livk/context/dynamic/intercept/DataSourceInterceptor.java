@@ -16,7 +16,7 @@
 
 package com.livk.context.dynamic.intercept;
 
-import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.context.dynamic.DataSourceContextHolder;
 import com.livk.context.dynamic.annotation.DynamicSource;
 import org.aopalliance.intercept.MethodInvocation;
@@ -24,10 +24,10 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author livk
  */
-public class DataSourceInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DynamicSource> {
+public class DataSourceInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<DynamicSource> {
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, DynamicSource dynamicSource) throws Throwable {
+	protected Object doInvoke(MethodInvocation invocation, DynamicSource dynamicSource) throws Throwable {
 		if (dynamicSource != null) {
 			DataSourceContextHolder.switchDataSource(dynamicSource.value());
 		}

@@ -16,7 +16,7 @@
 
 package com.livk.context.limit.interceptor;
 
-import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limit> {
+public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<Limit> {
 
 	/**
 	 * 执行器
@@ -50,7 +50,7 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
+	protected Object doInvoke(MethodInvocation invocation, Limit limit) throws Throwable {
 		String key = limit.key();
 		int rate = limit.rate();
 		int rateInterval = limit.rateInterval();

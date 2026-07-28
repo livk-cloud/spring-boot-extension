@@ -33,9 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class AnnotationAbstractPointcutAdvisorTests {
+class AbstractAnnotationAdvisorTests {
 
-	final MyAnnotationAbstractPointcutAdvisor advisor = new MyAnnotationAbstractPointcutAdvisor();
+	final MyAbstractAnnotationAdvisor advisor = new MyAbstractAnnotationAdvisor();
 
 	@Test
 	void resolvesAnnotationTypeFromGenericArgument() {
@@ -93,17 +93,17 @@ class AnnotationAbstractPointcutAdvisorTests {
 
 	}
 
-	static class MyAnnotationAbstractPointcutAdvisor extends AnnotationAbstractPointcutAdvisor<MyAnnotation> {
+	static class MyAbstractAnnotationAdvisor extends AbstractAnnotationAdvisor<MyAnnotation> {
 
 		@Override
-		protected Object invoke(MethodInvocation invocation, MyAnnotation annotation) throws Throwable {
+		protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) throws Throwable {
 			return invocation.proceed();
 		}
 
 		@NonNull
 		@Override
 		public Pointcut getPointcut() {
-			return AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType);
+			return AnnotationPointcutFactory.forTypeOrMethod().create(annotationType);
 		}
 
 	}

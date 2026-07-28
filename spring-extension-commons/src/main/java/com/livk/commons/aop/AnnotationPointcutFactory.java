@@ -28,36 +28,38 @@ import java.lang.annotation.Annotation;
  * @author livk
  */
 @FunctionalInterface
-public interface AnnotationPointcut {
+public interface AnnotationPointcutFactory {
 
 	/**
-	 * 根据注解获取到切点
+	 * 根据指定注解类型创建 Pointcut。
 	 * @param annotationType 注解类信息
 	 * @return 切点
+	 * @deprecated since 2.1.1, use {@link #create(Class)} instead.
 	 */
-	Pointcut getPointcut(Class<? extends Annotation> annotationType);
+	@Deprecated(since = "2.1.1")
+	default Pointcut getPointcut(Class<? extends Annotation> annotationType) {
+		return create(annotationType);
+	}
 
-	static AnnotationPointcut forType() {
+	Pointcut create(Class<? extends Annotation> annotationType);
+
+	static AnnotationPointcutFactory forType() {
 		return AnnotationMatchingPointcut::forClassAnnotation;
 	}
 
-	static AnnotationPointcut forType(boolean checkInherited) {
+	static AnnotationPointcutFactory forType(boolean checkInherited) {
 		return annotationType -> new AnnotationMatchingPointcut(annotationType, checkInherited);
 	}
 
-	static AnnotationPointcut forMethod() {
+	static AnnotationPointcutFactory forMethod() {
 		return AnnotationMatchingPointcut::forMethodAnnotation;
 	}
 
-	static AnnotationPointcut forTypeOrMethod() {
-		return annotationType -> {
-			AnnotationMatchingPointcut cpc = AnnotationMatchingPointcut.forClassAnnotation(annotationType);
-			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
-			return new ComposablePointcut(cpc).union(mpc);
-		};
+	static AnnotationPointcutFactory forTypeOrMethod() {
+		return forTypeOrMethod(false);
 	}
 
-	static AnnotationPointcut forTypeOrMethod(boolean checkInherited) {
+	static AnnotationPointcutFactory forTypeOrMethod(boolean checkInherited) {
 		return annotationType -> {
 			AnnotationMatchingPointcut cpc = new AnnotationMatchingPointcut(annotationType, checkInherited);
 			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
@@ -65,7 +67,7 @@ public interface AnnotationPointcut {
 		};
 	}
 
-	static AnnotationPointcut forTarget() {
+	static AnnotationPointcutFactory forTarget() {
 		return AnnotationTarget.TARGET_POINTCUT;
 	}
 

@@ -27,6 +27,7 @@ import org.redisson.client.codec.StringCodec;
 import org.redisson.codec.CompositeCodec;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,8 +66,7 @@ public class ShopController {
 	@PostMapping("/buy/distributed")
 	@DistLock(key = "shop:lock")
 	public HttpEntity<Map<String, Object>> buy(@RequestParam(defaultValue = "2") Integer count) throws IOException {
-		String luaScript = ResourceScanner
-			.getResource(org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX + "script/buy.lua")
+		String luaScript = ResourceScanner.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "script/buy.lua")
 			.getContentAsString(StandardCharsets.UTF_8);
 		List<Object> keys = List.of("shop", "num", "buySucCount", "buyCount");
 		RScript script = redissonClient.getScript();

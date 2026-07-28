@@ -30,9 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class AnnotationAbstractPointcutTypeAdvisorTests {
+class AbstractAnnotationPointcutStrategyAdvisorTests {
 
-	final MyAnnotationAbstractPointcutTypeAdvisor advisor = new MyAnnotationAbstractPointcutTypeAdvisor();
+	final MyAbstractAnnotationTypeAdvisor advisor = new MyAbstractAnnotationTypeAdvisor();
 
 	@Test
 	void pointcutIsAnnotationMatchingPointcut() {
@@ -51,9 +51,8 @@ class AnnotationAbstractPointcutTypeAdvisorTests {
 
 	@Test
 	void classFilterDoesNotMatchDifferentAnnotatedClass() {
-		assertThat(advisor.getPointcut()
-			.getClassFilter()
-			.matches(AnnotationAbstractPointcutAdvisorTests.AopProxyClass.class)).isFalse();
+		assertThat(advisor.getPointcut().getClassFilter().matches(AbstractAnnotationAdvisorTests.AopProxyClass.class))
+			.isFalse();
 	}
 
 	@Test
@@ -80,16 +79,16 @@ class AnnotationAbstractPointcutTypeAdvisorTests {
 
 	}
 
-	static class MyAnnotationAbstractPointcutTypeAdvisor extends AnnotationAbstractPointcutTypeAdvisor<MyAnnotation> {
+	static class MyAbstractAnnotationTypeAdvisor extends AbstractAnnotationPointcutStrategyAdvisor<MyAnnotation> {
 
 		@Override
-		protected Object invoke(MethodInvocation invocation, MyAnnotation annotation) throws Throwable {
+		protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) throws Throwable {
 			return invocation.proceed();
 		}
 
 		@Override
-		protected AnnotationPointcut annotationPointcut() {
-			return AnnotationPointcut.forType();
+		protected AnnotationPointcutFactory pointcutStrategy() {
+			return AnnotationPointcutFactory.forType();
 		}
 
 	}
