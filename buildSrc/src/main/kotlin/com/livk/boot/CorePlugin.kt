@@ -23,7 +23,6 @@ import com.livk.boot.info.ManifestPlugin
 import com.livk.boot.tasks.DeleteExpand
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import java.io.File
@@ -42,14 +41,7 @@ class CorePlugin : Plugin<Project> {
 		project.pluginManager.apply(CheckstylePlugin::class.java)
 
 		project.extensions.getByType(CheckstyleExtension::class.java).run {
-			val checkstyleVersion = project.rootProject
-				.extensions
-				.getByType(VersionCatalogsExtension::class.java)
-				.named("libs")
-				.findVersion("checkstyle")
-				.get()
-				.displayName
-			toolVersion = checkstyleVersion
+			toolVersion = "9.3"
 			configFile = File("${project.rootDir.path}/src/checkstyle/checkstyle.xml")
 		}
 	}
