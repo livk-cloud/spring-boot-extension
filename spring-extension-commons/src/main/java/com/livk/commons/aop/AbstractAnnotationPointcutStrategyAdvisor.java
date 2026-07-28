@@ -26,25 +26,23 @@ import java.lang.annotation.Annotation;
  *
  * @param <A> the type parameter
  * @author livk
- * @see AnnotationAbstractPointcutAdvisor
+ * @see AbstractAnnotationAdvisor
  */
-public abstract class AnnotationAbstractPointcutTypeAdvisor<A extends Annotation>
-		extends AnnotationAbstractPointcutAdvisor<A> {
+public abstract class AbstractAnnotationPointcutStrategyAdvisor<A extends Annotation>
+		extends AbstractAnnotationAdvisor<A> {
 
 	@NonNull
 	@Override
-	public Pointcut getPointcut() {
-		return annotationPointcut().getPointcut(annotationType);
+	public final Pointcut getPointcut() {
+		return pointcutStrategy().create(annotationType);
 	}
 
 	/**
-	 * <p>
-	 * 用于指定不同的切点类型，默认为{@link AnnotationPointcut#forTarget()}
-	 * </p>
-	 * @return the annotation pointcut type
+	 * Returns the strategy used to create the {@link Pointcut} for the configured
+	 * annotation.
 	 */
-	protected AnnotationPointcut annotationPointcut() {
-		return AnnotationPointcut.forTarget();
+	protected AnnotationPointcutFactory pointcutStrategy() {
+		return AnnotationPointcutFactory.forTarget();
 	}
 
 }

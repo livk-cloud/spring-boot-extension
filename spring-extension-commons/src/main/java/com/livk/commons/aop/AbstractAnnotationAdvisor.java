@@ -34,18 +34,18 @@ import java.lang.reflect.Method;
  * @param <A> 注解
  * @author livk
  */
-public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> extends AbstractPointcutAdvisor
+public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends AbstractPointcutAdvisor
 		implements IntroductionInterceptor {
 
 	/**
 	 * 切点注解类型
 	 */
 	protected final Class<A> annotationType = TypeUtils.resolveTypeArgument(this.getClass(),
-			AnnotationAbstractPointcutAdvisor.class);
+			AbstractAnnotationAdvisor.class);
 
 	@NonNull
 	@Override
-	public Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
+	public final Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
 		Assert.notNull(annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
 		AnnotationTarget<A> target = AnnotationTarget.of(annotationType);
@@ -53,7 +53,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 		if (annotation == null && invocation.getThis() != null) {
 			annotation = target.getAnnotation(invocation.getThis().getClass());
 		}
-		return invoke(invocation, annotation);
+		return doInvoke(invocation, annotation);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public abstract class AnnotationAbstractPointcutAdvisor<A extends Annotation> ex
 	 * @return 方法返回结果 object
 	 * @throws Throwable the throwable
 	 */
-	protected abstract Object invoke(MethodInvocation invocation, A annotation) throws Throwable;
+	protected abstract Object doInvoke(MethodInvocation invocation, A annotation) throws Throwable;
 
 	@Override
 	public boolean implementsInterface(@NonNull Class<?> intf) {

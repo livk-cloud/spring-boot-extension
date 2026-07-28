@@ -16,17 +16,17 @@
 
 package com.livk.commons.aop;
 
-import com.google.common.collect.Sets;
-import org.springframework.core.annotation.AnnotationUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.aop.Pointcut;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 final class AnnotationTarget<A extends Annotation> {
 
-	public static final AnnotationPointcut TARGET_POINTCUT = new AnnotationTargetPointcut();
+	public static final AnnotationPointcutFactory TARGET_POINTCUT = new AnnotationTargetPointcut();
 
 	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
 
@@ -46,49 +46,51 @@ final class AnnotationTarget<A extends Annotation> {
 
 	private final Class<A> annotationType;
 
-	private final Set<ElementType> elementTypes;
+	private final EnumSet<ElementType> elementTypes;
 
 	private AnnotationTarget(Class<A> annotationType) {
 		this.annotationType = annotationType;
 		Target target = annotationType.getAnnotation(Target.class);
-		this.elementTypes = Sets.newHashSet(target.value());
+		this.elementTypes = (target == null) ? EnumSet.allOf(ElementType.class)
+				: EnumSet.copyOf(Arrays.asList(target.value()));
 	}
 
 	public A getAnnotation(Method method) {
-		return supportMethod() ? AnnotationUtils.getAnnotation(method, annotationType) : null;
+		return supports(ElementType.METHOD) ? AnnotationUtils.getAnnotation(method, annotationType) : null;
 	}
 
 	public A getAnnotation(Class<?> clazz) {
-		return supportType() ? AnnotationUtils.getAnnotation(clazz, annotationType) : null;
+		return supports(ElementType.TYPE) ? AnnotationUtils.getAnnotation(clazz, annotationType) : null;
 	}
 
-	private boolean supportMethod() {
-		return elementTypes.contains(ElementType.METHOD);
-	}
-
-	private boolean supportType() {
-		return elementTypes.contains(ElementType.TYPE);
+	/**
+	 * 是否支持指定的 ElementType。
+	 */
+	boolean supports(ElementType elementType) {
+		return elementTypes.contains(elementType);
 	}
 
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
-	static final class AnnotationTargetPointcut implements AnnotationPointcut {
+	static final class AnnotationTargetPointcut implements AnnotationPointcutFactory {
 
 		@Override
-		public Pointcut getPointcut(Class<? extends Annotation> annotationType) {
+		public Pointcut create(Class<? extends Annotation> annotationType) {
 			AnnotationTarget<?> target = AnnotationTarget.of(annotationType);
-			if (target.supportType() && target.supportMethod()) {
-				return AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType);
+
+			if (target.supports(ElementType.TYPE) && target.supports(ElementType.METHOD)) {
+				return AnnotationPointcutFactory.forTypeOrMethod().create(annotationType);
 			}
-			else if (target.supportType()) {
-				return AnnotationPointcut.forType().getPointcut(annotationType);
+
+			if (target.supports(ElementType.TYPE)) {
+				return AnnotationPointcutFactory.forType().create(annotationType);
 			}
-			else if (target.supportMethod()) {
-				return AnnotationPointcut.forMethod().getPointcut(annotationType);
+
+			if (target.supports(ElementType.METHOD)) {
+				return AnnotationPointcutFactory.forMethod().create(annotationType);
 			}
-			else {
-				throw new IllegalArgumentException(
-						"annotation:" + annotationType + " Missing " + Target.class + " TYPE or METHOD information");
-			}
+
+			throw new IllegalArgumentException("Annotation '" + annotationType.getName()
+					+ "' must support ElementType.TYPE and/or ElementType.METHOD.");
 		}
 
 	}

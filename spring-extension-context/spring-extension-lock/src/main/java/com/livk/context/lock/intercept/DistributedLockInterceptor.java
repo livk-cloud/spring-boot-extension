@@ -16,7 +16,7 @@
 
 package com.livk.context.lock.intercept;
 
-import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.context.lock.DistributedLock;
@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  * @author livk
  */
 @RequiredArgsConstructor
-public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DistLock> {
+public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<DistLock> {
 
 	/**
 	 * lock的实现类集合
@@ -45,7 +45,7 @@ public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAd
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, DistLock lock) throws Throwable {
+	protected Object doInvoke(MethodInvocation invocation, DistLock lock) throws Throwable {
 		Assert.notNull(lock, "lock is null");
 		DistributedLock distributedLock = distributedLockProvider.orderedStream()
 			.findFirst()

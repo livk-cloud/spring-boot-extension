@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class AnnotationPointcutTests {
+class AnnotationPointcutFactoryTests {
 
 	static final Class<? extends Annotation> annotationType = MyAnnotation.class;
 	static final Class<?> type = AopProxyClass.class;
@@ -45,50 +45,50 @@ class AnnotationPointcutTests {
 
 	@Test
 	void testAnnotationPointcutForTarget() {
-		AnnotationPointcut pointcut = AnnotationPointcut.forTarget();
+		AnnotationPointcutFactory pointcut = AnnotationPointcutFactory.forTarget();
 
-		assertThat(pointcut.getPointcut(annotationType))
-			.isEqualTo(AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType));
+		assertThat(pointcut.create(annotationType))
+			.isEqualTo(AnnotationPointcutFactory.forTypeOrMethod().create(annotationType));
 
-		assertThat(pointcut.getPointcut(annotationType).getClassFilter().matches(type)).isTrue();
+		assertThat(pointcut.create(annotationType).getClassFilter().matches(type)).isTrue();
 
-		assertThat(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type)).isTrue();
+		assertThat(pointcut.create(annotationType).getMethodMatcher().matches(method, type)).isTrue();
 	}
 
 	@Test
 	void testAnnotationPointcutForType() {
-		AnnotationPointcut pointcut = AnnotationPointcut.forType();
+		AnnotationPointcutFactory pointcut = AnnotationPointcutFactory.forType();
 
-		assertThat(pointcut.getPointcut(annotationType))
+		assertThat(pointcut.create(annotationType))
 			.isEqualTo(AnnotationMatchingPointcut.forClassAnnotation(annotationType));
 
-		assertThat(pointcut.getPointcut(annotationType).getClassFilter().matches(type)).isTrue();
+		assertThat(pointcut.create(annotationType).getClassFilter().matches(type)).isTrue();
 
-		assertThat(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type)).isTrue();
+		assertThat(pointcut.create(annotationType).getMethodMatcher().matches(method, type)).isTrue();
 	}
 
 	@Test
 	void testAnnotationPointcutForMethod() {
-		AnnotationPointcut pointcut = AnnotationPointcut.forMethod();
+		AnnotationPointcutFactory pointcut = AnnotationPointcutFactory.forMethod();
 
-		assertThat(pointcut.getPointcut(annotationType))
+		assertThat(pointcut.create(annotationType))
 			.isEqualTo(AnnotationMatchingPointcut.forMethodAnnotation(annotationType));
 
-		assertThat(pointcut.getPointcut(annotationType).getClassFilter().matches(type)).isTrue();
+		assertThat(pointcut.create(annotationType).getClassFilter().matches(type)).isTrue();
 
-		assertThat(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type)).isTrue();
+		assertThat(pointcut.create(annotationType).getMethodMatcher().matches(method, type)).isTrue();
 	}
 
 	@Test
 	void testAnnotationPointcutForTypeOrMethod() {
-		AnnotationPointcut pointcut = AnnotationPointcut.forTypeOrMethod();
+		AnnotationPointcutFactory pointcut = AnnotationPointcutFactory.forTypeOrMethod();
 
-		assertThat(pointcut.getPointcut(annotationType))
-			.isEqualTo(AnnotationPointcut.forTypeOrMethod().getPointcut(annotationType));
+		assertThat(pointcut.create(annotationType))
+			.isEqualTo(AnnotationPointcutFactory.forTypeOrMethod().create(annotationType));
 
-		assertThat(pointcut.getPointcut(annotationType).getClassFilter().matches(type)).isTrue();
+		assertThat(pointcut.create(annotationType).getClassFilter().matches(type)).isTrue();
 
-		assertThat(pointcut.getPointcut(annotationType).getMethodMatcher().matches(method, type)).isTrue();
+		assertThat(pointcut.create(annotationType).getMethodMatcher().matches(method, type)).isTrue();
 	}
 
 	@MyAnnotation
