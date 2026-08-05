@@ -20,8 +20,8 @@ import com.livk.context.mybatis.event.MonitorSQLInfo;
 import com.livk.context.mybatis.event.MonitorSQLTimeOutEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -113,12 +113,7 @@ public class MybatisSqlMonitor implements Interceptor {
 		throw new IllegalArgumentException("Invalid timeOut value: " + value);
 	}
 
-	@SneakyThrows
-	private String formatSql(String sql) {
-		return CCJSqlParserUtil.parse(sql).toString();
-	}
-
-	private String getCompleteSql(BoundSql boundSql) {
+	private String getCompleteSql(BoundSql boundSql) throws JSQLParserException {
 		String sql = boundSql.getSql().replaceAll("\\s+", " ");
 
 		Object parameterObject = boundSql.getParameterObject();
@@ -147,7 +142,7 @@ public class MybatisSqlMonitor implements Interceptor {
 			sql = sql.replaceFirst("\\?", formatParameter(value));
 		}
 
-		return formatSql(sql);
+		return CCJSqlParserUtil.parse(sql).toString();
 	}
 
 	private String formatParameter(Object value) {

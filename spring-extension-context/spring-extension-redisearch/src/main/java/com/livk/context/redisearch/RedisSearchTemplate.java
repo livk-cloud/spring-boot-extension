@@ -21,10 +21,10 @@ import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.async.RedisModulesAsyncCommands;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
+import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.InitializingBean;
@@ -68,8 +68,7 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 		this.delegate = ConnectionPoolSupport.createGenericObjectPool(supplier, getPoolConfig());
 	}
 
-	@SneakyThrows
-	private StatefulRedisModulesConnection<K, V> borrowObject() {
+	private StatefulRedisModulesConnection<K, V> borrowObject() throws Exception {
 		Assert.notNull(delegate, "GenericObjectPool must not be null, call afterPropertiesSet");
 		return delegate.borrowObject();
 	}
@@ -138,11 +137,17 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 		try (StatefulRedisModulesConnection<K, V> borrowed = this.borrowObject()) {
 			return command.apply(borrowed);
 		}
+		catch (Exception ex) {
+			throw new RedisConnectionException("Error executing Redis command", ex);
+		}
 	}
 
 	private void doExecute(Consumer<StatefulRedisModulesConnection<K, V>> command) {
 		try (StatefulRedisModulesConnection<K, V> borrowed = this.borrowObject()) {
 			command.accept(borrowed);
+		}
+		catch (Exception ex) {
+			throw new RedisConnectionException("Error executing Redis command", ex);
 		}
 	}
 

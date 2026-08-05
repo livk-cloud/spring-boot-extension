@@ -16,8 +16,6 @@
 
 package com.livk.commons.util;
 
-import lombok.SneakyThrows;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -58,7 +56,6 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	 * @param function beanLambdaFunc表达式
 	 * @return fieldName
 	 */
-	@SneakyThrows
 	static <T> String fieldName(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getFieldName();
 	}
@@ -69,7 +66,6 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	 * @param function beanLambdaFunc表达式
 	 * @return field
 	 */
-	@SneakyThrows
 	static <T> Field field(BeanLambda<T> function) {
 		return BeanLambdaDescriptor.create(function).getField();
 	}
