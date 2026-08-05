@@ -35,7 +35,7 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 #redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-40", version.ref = "redisson" }
+redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-41", version.ref = "redisson" }
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fesod-sheet = { group = "org.apache.fesod", name = "fesod-sheet", version.ref = "fesod" }
