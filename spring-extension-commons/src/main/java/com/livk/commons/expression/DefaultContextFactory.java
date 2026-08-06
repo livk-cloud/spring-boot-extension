@@ -28,12 +28,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * {@link Context}默认解析工厂
+ * Default {@link ContextFactory} implementation that uses Spring's
+ * {@link DefaultParameterNameDiscoverer} to resolve method parameter names.
  * <p>
- * 使用spring DefaultParameterNameDiscoverer进行解析
+ * Parameter names are cached per method to avoid repeated reflection lookups.
  *
  * @author livk
  * @see DefaultParameterNameDiscoverer
+ * @see ContextFactory
  */
 class DefaultContextFactory implements ContextFactory {
 
@@ -43,7 +45,7 @@ class DefaultContextFactory implements ContextFactory {
 
 	@Override
 	public Context create(Method method, Object[] args) {
-		Assert.notNull(method, "method not be null");
+		Assert.notNull(method, "Method must not be null");
 		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
 		if (ObjectUtils.isEmpty(parameterNames)) {
 			return Context.create();

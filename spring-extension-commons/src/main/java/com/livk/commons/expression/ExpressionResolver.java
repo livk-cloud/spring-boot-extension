@@ -20,73 +20,90 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 表达式通用解析器
+ * Fluent expression resolver that supports multiple expression engines.
+ * <p>
+ * Usage example: <pre>{@code
+ * ExpressionResolver resolver = new SpringExpressionResolver();
+ * String result = resolver.resolve("#username")
+ *     .method(method, args)
+ *     .evaluate();
+ * }</pre>
  *
  * @author livk
+ * @see CacheExpressionResolver
  * @see Context
+ * @see ContextFactory
  */
 public interface ExpressionResolver {
 
 	/**
-	 * 根据context信息将表达式解析，并转成相应的类型
-	 * @param <T> 泛型
-	 * @param value 表达式
-	 * @param context 解析上下文环境数据
-	 * @param returnType 返回类型
-	 * @return entity
+	 * Start resolving the given expression string.
+	 * @param expression the expression to resolve
+	 * @return an {@link ExpressionSpec} for further configuration and evaluation
 	 */
-	<T> T evaluate(String value, Context context, Class<T> returnType);
+	ExpressionSpec resolve(String expression);
 
 	/**
-	 * 根据Map环境信息将表达式解析，并转成相应的类型
-	 * @param <T> 泛型
-	 * @param value 表达式
-	 * @param contextMap 解析上下文环境数据
-	 * @param returnType 返回类型
-	 * @return entity
+	 * Specification interface that combines context configuration with evaluation
+	 * capabilities.
+	 * <p>
+	 * Extends {@link EvaluateSpec} so callers can directly evaluate without setting
+	 * context (defaults to an empty context).
 	 */
-	<T> T evaluate(String value, Map<String, ?> contextMap, Class<T> returnType);
+	interface ExpressionSpec extends EvaluateSpec {
 
-	/**
-	 * 根据Method将表达式解析，并转成相对应的类型
-	 * @param <T> 泛型
-	 * @param value 表达式
-	 * @param method method
-	 * @param args args
-	 * @param returnType 返回类型
-	 * @return entity
-	 */
-	<T> T evaluate(String value, Method method, Object[] args, Class<T> returnType);
+		/**
+		 * Override the default {@link ContextFactory} used when resolving context from
+		 * method parameters.
+		 * @param contextFactory the context factory to use
+		 * @return this spec for further configuration
+		 */
+		ExpressionSpec contextFactory(ContextFactory contextFactory);
 
-	/**
-	 * 根据Method将表达式解析，并转成String
-	 * @param value 表达式
-	 * @param method method
-	 * @param args args
-	 * @return string
-	 */
-	default String evaluate(String value, Method method, Object[] args) {
-		return evaluate(value, method, args, String.class);
+		/**
+		 * Set the evaluation context directly.
+		 * @param context the context containing variables for expression evaluation
+		 * @return an {@link EvaluateSpec} ready for evaluation
+		 */
+		EvaluateSpec context(Context context);
+
+		/**
+		 * Set the evaluation context from a map.
+		 * @param context the map containing variables for expression evaluation
+		 * @return an {@link EvaluateSpec} ready for evaluation
+		 */
+		EvaluateSpec context(Map<String, ?> context);
+
+		/**
+		 * Build the evaluation context by extracting parameter names from the given
+		 * method and pairing them with the provided arguments.
+		 * @param method the method whose parameter names define variable names
+		 * @param args the argument values corresponding to the method parameters
+		 * @return an {@link EvaluateSpec} ready for evaluation
+		 */
+		EvaluateSpec method(Method method, Object... args);
+
 	}
 
 	/**
-	 * 根据context信息将表达式解析，并转成String
-	 * @param value 表达式
-	 * @param context 解析上下文环境数据
-	 * @return string
+	 * Terminal interface for evaluating a fully-configured expression.
 	 */
-	default String evaluate(String value, Context context) {
-		return evaluate(value, context, String.class);
-	}
+	interface EvaluateSpec {
 
-	/**
-	 * 根据Map环境信息将表达式解析，并转成String
-	 * @param value 表达式
-	 * @param contextMap 解析上下文环境数据
-	 * @return string
-	 */
-	default String evaluate(String value, Map<String, ?> contextMap) {
-		return evaluate(value, contextMap, String.class);
+		/**
+		 * Evaluate the expression and return the result as a {@link String}.
+		 * @return the evaluation result as a string
+		 */
+		String evaluate();
+
+		/**
+		 * Evaluate the expression and return the result cast to the specified type.
+		 * @param <T> the expected return type
+		 * @param returnType the class of the expected return type
+		 * @return the evaluation result
+		 */
+		<T> T evaluate(Class<T> returnType);
+
 	}
 
 }

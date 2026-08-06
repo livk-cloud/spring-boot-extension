@@ -24,41 +24,59 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 解析器上下文
+ * Expression evaluation context that holds variable bindings.
+ * <p>
+ * A sealed interface with a single permitted implementation, providing a fluent API for
+ * building variable maps used during expression evaluation.
+ * <p>
+ * Usage example: <pre>{@code
+ * Context context = Context.create()
+ *     .put("username", "livk")
+ *     .put("password", "123456");
+ * }</pre>
  *
  * @author livk
+ * @see ContextFactory
+ * @see ExpressionResolver
  */
 public sealed interface Context permits Context.ContextImpl {
 
 	/**
-	 * Instantiates a new Context.
+	 * Create a new empty context.
+	 * @return a new empty {@link Context} instance
 	 */
 	static Context create() {
 		return new ContextImpl();
 	}
 
 	/**
-	 * Instantiates a new Context.
-	 * @param map the map
+	 * Create a new context initialized with the entries from the given map.
+	 * @param map the initial variable bindings
+	 * @return a new {@link Context} instance containing the map entries
 	 */
 	static Context create(Map<String, ?> map) {
 		return new ContextImpl(map);
 	}
 
 	/**
-	 * Put all.
-	 * @param m the m
+	 * Add all entries from the given map to this context.
+	 * @param m the map whose entries are to be added
+	 * @return this context for method chaining
 	 */
 	Context putAll(Map<? extends String, ?> m);
 
 	/**
-	 * Put object.
-	 * @param key the key
-	 * @param value the value
-	 * @return the object
+	 * Add a single variable binding to this context.
+	 * @param key the variable name
+	 * @param value the variable value
+	 * @return this context for method chaining
 	 */
 	Context put(String key, Object value);
 
+	/**
+	 * Return an unmodifiable view of this context as a {@link Map}.
+	 * @return unmodifiable map of all variable bindings
+	 */
 	Map<String, Object> asMap();
 
 	final class ContextImpl implements Context {
