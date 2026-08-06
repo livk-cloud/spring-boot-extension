@@ -3,11 +3,7 @@ image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extensi
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud/spring-extension-dependencies"]
 image:https://deepwiki.com/badge.svg[Ask DeepWiki,link="https://deepwiki.com/livk-cloud/spring-boot-extension"]
 
-image:https://img.icons8.com/?size=100&id=90519&format=png&color=000000[link="https://spring.io/projects/spring-framework"]
-image:https://img.icons8.com/?size=100&id=2oBx9FpXcbLa&format=png&color=000000[link="https://spring.io/projects/spring-boot"]
-image:https://logo.svgcdn.com/d/gradle-original.png[link="https://gradle.org/"]
-
-link:https://spring-boot-extension.netlify.app[netlify文档] +
+link:https://spring-boot-extension.netlify.app[Netlify文档] +
 link:https://livk-cloud.github.io/spring-boot-extension[Github文档] +
 
 这是一个springboot与spring功能拓展 +
@@ -16,7 +12,6 @@ link:https://livk-cloud.github.io/spring-boot-extension[Github文档] +
 MockMvc与WebclientTest测试覆盖大部分功能 +
 测试用例执行使用 https://github.com/testcontainers/testcontainers-java[testcontainers-java] +
 请使用JDK21+ ，测试用例运行需使用docker环境 +
-如有需要请提出issue +
 
 .*项目结构*
 
