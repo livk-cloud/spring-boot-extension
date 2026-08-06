@@ -63,7 +63,7 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void lockAsync(RLock lock) throws LockException {
+	protected void doLockAsync(RLock lock) throws LockException {
 		doFuture(lock.lockAsync());
 	}
 
@@ -86,7 +86,7 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void lock(RLock lock) {
+	protected void doLock(RLock lock) {
 		lock.lock();
 	}
 

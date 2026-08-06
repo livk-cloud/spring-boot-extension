@@ -28,10 +28,29 @@ class AbstractLockSupportTests {
 	void tryLockPassesLeaseTimeBeforeWaitTime() {
 		TestLockSupport support = new TestLockSupport();
 
-		assertThat(support.tryLock(LockType.LOCK, "key", 10, 20, false)).isTrue();
+		assertThat(support.lock("key").leaseTime(10).waitTime(20).tryLock()).isTrue();
 
 		assertThat(support.leaseTime).isEqualTo(10);
 		assertThat(support.waitTime).isEqualTo(20);
+	}
+
+	@Test
+	void tryLockUsesDefaultValues() {
+		TestLockSupport support = new TestLockSupport();
+
+		assertThat(support.lock("key").tryLock()).isTrue();
+
+		assertThat(support.leaseTime).isEqualTo(-1);
+		assertThat(support.waitTime).isEqualTo(3);
+	}
+
+	@Test
+	void lockSpecTypeCanBeConfigured() {
+		TestLockSupport support = new TestLockSupport();
+
+		assertThat(support.lock("key").type(LockType.FAIR).tryLock()).isTrue();
+
+		assertThat(support.usedType).isEqualTo(LockType.FAIR);
 	}
 
 	private static final class TestLockSupport extends AbstractLockSupport<String> {
@@ -40,8 +59,11 @@ class AbstractLockSupportTests {
 
 		private long waitTime;
 
+		private LockType usedType;
+
 		@Override
 		protected String getLock(LockType type, String key) {
+			this.usedType = type;
 			return key;
 		}
 
@@ -58,7 +80,7 @@ class AbstractLockSupportTests {
 		}
 
 		@Override
-		protected void lock(String lock) throws LockException {
+		protected void doLock(String lock) throws LockException {
 		}
 
 		@Override
