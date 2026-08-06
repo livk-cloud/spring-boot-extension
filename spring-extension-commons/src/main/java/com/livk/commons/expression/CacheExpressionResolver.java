@@ -16,51 +16,74 @@
 
 package com.livk.commons.expression;
 
-import org.springframework.util.ObjectUtils;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionException;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 使用缓存机制，减少重新构建EXPRESSION表达式的次数
+ * Abstract base class for {@link ExpressionResolver} implementations that caches compiled
+ * expressions to avoid repeated parsing overhead.
+ * <p>
+ * Subclasses only need to implement three template methods:
+ * <ul>
+ * <li>{@link #compile(String)} — parse the expression string into framework-specific
+ * form</li>
+ * <li>{@link #transform(Context)} — convert the generic {@link Context} into framework
+ * context</li>
+ * <li>{@link #calculate(Object, Object, Class)} — evaluate the compiled expression</li>
+ * </ul>
+ * <p>
+ * Optionally, subclasses may override {@link #wrapIfNecessary(String)} to pre-process the
+ * raw expression string before compilation.
  *
- * @param <EXPRESSION> 表达式泛型
+ * @param <CONTEXT> the framework-specific context type (e.g., {@code EvaluationContext}
+ * for SpEL)
+ * @param <EXPRESSION> the compiled expression type (e.g., {@code Expression} for SpEL)
  * @author livk
- * @see com.livk.commons.expression.aviator.AviatorExpressionResolver
- * @see Environment
+ * @see ExpressionResolver
+ * @see Context
  */
-public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends AbstractExpressionResolver {
+public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> implements ExpressionResolver {
 
 	private final Map<String, EXPRESSION> expressionCache = new ConcurrentHashMap<>(256);
-
-	protected CacheExpressionResolver(ContextFactory contextFactory) {
-		super(contextFactory);
-	}
-
-	protected CacheExpressionResolver() {
-	}
 
 	@Setter
 	private Environment environment;
 
 	@Override
-	public <T> T evaluate(String value, Context context, Class<T> returnType) {
-		if (ObjectUtils.isEmpty(value)) {
+	public ExpressionSpec resolve(String expression) {
+		return new DefaultExpressionSpec(expression);
+	}
+
+	/**
+	 * Core evaluation logic: wraps, resolves placeholders, compiles (with caching),
+	 * transforms context, and calculates the result.
+	 * @param <T> the expected return type
+	 * @param expression the expression string
+	 * @param context the evaluation context
+	 * @param returnType the class of the expected return type
+	 * @return the evaluation result, or {@code null} if the expression is empty
+	 * @throws ExpressionException if evaluation fails
+	 */
+	protected <T> T doEvaluate(String expression, Context context, Class<T> returnType) {
+		if (ObjectUtils.isEmpty(expression)) {
 			return null;
 		}
 		try {
-			value = wrapIfNecessary(value);
-			if (environment != null) {
-				value = environment.resolvePlaceholders(value);
+			expression = wrapIfNecessary(expression);
+			if (this.environment != null) {
+				expression = this.environment.resolvePlaceholders(expression);
 			}
-			EXPRESSION expression = this.expressionCache.computeIfAbsent(value, this::compile);
+			EXPRESSION compiledExpression = this.expressionCache.computeIfAbsent(expression, this::compile);
 			CONTEXT frameworkContext = transform(context);
-			Assert.notNull(frameworkContext, "frameworkContext not be null");
-			return calculate(expression, frameworkContext, returnType);
+			Assert.notNull(frameworkContext, "FrameworkContext must not be null");
+			return calculate(compiledExpression, frameworkContext, returnType);
 		}
 		catch (Throwable ex) {
 			throw new ExpressionException("Expression parsing failed", ex);
@@ -68,36 +91,88 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> extends Abstr
 	}
 
 	/**
-	 * 对表达式进行数据包装，如果有必要
-	 * @param expression 表达式
-	 * @return 包装后的表达式 string
+	 * Pre-process the raw expression before compilation. Override to add
+	 * framework-specific wrapping (e.g., SpEL template syntax {@code #{...}}).
+	 * @param expression the raw expression string
+	 * @return the potentially wrapped expression string
 	 */
 	protected String wrapIfNecessary(String expression) {
 		return expression;
 	}
 
 	/**
-	 * 对表达式进行处理生成EXPRESSION
-	 * @param value 表达式
-	 * @return expression
+	 * Compile the expression string into the framework-specific compiled form.
+	 * @param expression the (possibly wrapped) expression string
+	 * @return the compiled expression object
 	 */
-	protected abstract EXPRESSION compile(String value);
+	protected abstract EXPRESSION compile(String expression);
 
 	/**
-	 * 从Context装换成框架的上下文
-	 * @param context context
-	 * @return the c
+	 * Transform the generic {@link Context} into the framework-specific context type.
+	 * @param context the generic expression context
+	 * @return the framework-specific context
 	 */
 	protected abstract CONTEXT transform(Context context);
 
 	/**
-	 * 对表达式进行计算
-	 * @param <T> 泛型
-	 * @param expression 表达式
-	 * @param context 上下文
-	 * @param returnType 返回类型
-	 * @return 计算结果相关实例
+	 * Evaluate the compiled expression against the given context.
+	 * @param <T> the expected return type
+	 * @param expression the compiled expression
+	 * @param context the framework-specific context
+	 * @param returnType the class of the expected return type
+	 * @return the evaluation result
 	 */
 	protected abstract <T> T calculate(EXPRESSION expression, CONTEXT context, Class<T> returnType);
+
+	private final class DefaultExpressionSpec implements ExpressionSpec {
+
+		private final String expression;
+
+		private ContextFactory contextFactory = ContextFactory.DEFAULT_FACTORY;
+
+		private Context context;
+
+		private DefaultExpressionSpec(String expression) {
+			this.expression = expression;
+		}
+
+		@Override
+		public ExpressionSpec contextFactory(ContextFactory contextFactory) {
+			Assert.notNull(contextFactory, "ContextFactory must not be null");
+			this.contextFactory = contextFactory;
+			return this;
+		}
+
+		@Override
+		public EvaluateSpec context(Context context) {
+			Assert.notNull(context, "Context must not be null");
+			this.context = context;
+			return this;
+		}
+
+		@Override
+		public EvaluateSpec context(Map<String, ?> context) {
+			Assert.notNull(context, "Context must not be null");
+			return context(Context.create(context));
+		}
+
+		@Override
+		public EvaluateSpec method(Method method, Object... args) {
+			Assert.notNull(method, "Method must not be null");
+			return context(this.contextFactory.create(method, args));
+		}
+
+		@Override
+		public String evaluate() {
+			return evaluate(String.class);
+		}
+
+		@Override
+		public <T> T evaluate(Class<T> returnType) {
+			Context evaluationContext = this.context != null ? this.context : Context.create();
+			return doEvaluate(this.expression, evaluationContext, returnType);
+		}
+
+	}
 
 }

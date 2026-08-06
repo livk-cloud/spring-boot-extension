@@ -50,8 +50,13 @@ public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrate
 		DistributedLock distributedLock = distributedLockProvider.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistributedLock.class));
-		String key = resolver.evaluate(lock.key(), invocation.getMethod(), invocation.getArguments());
-		boolean isLock = distributedLock.tryLock(lock.type(), key, lock.leaseTime(), lock.waitTime(), lock.async());
+		String key = resolver.resolve(lock.key()).method(invocation.getMethod(), invocation.getArguments()).evaluate();
+		boolean isLock = distributedLock.lock(key)
+			.type(lock.type())
+			.leaseTime(lock.leaseTime())
+			.waitTime(lock.waitTime())
+			.async(lock.async())
+			.tryLock();
 		try {
 			if (isLock) {
 				return invocation.proceed();

@@ -17,7 +17,6 @@
 package com.livk.context.lock.support;
 
 import com.livk.context.lock.DistributedLock;
-import com.livk.context.lock.LockType;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.AfterAll;
@@ -77,14 +76,14 @@ class RedissonLockTests {
 
 	@Test
 	void tryLock() throws ExecutionException, InterruptedException {
-		lock.lock(LockType.LOCK, "tryLock", false);
-		assertThat(service.submit(() -> lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false)).get()).isFalse();
-		assertThat(lock.tryLock(LockType.LOCK, "tryLock", 3, 3, false)).isTrue();
-		assertThat(lock.tryLock(LockType.LOCK, "key", 3, 3, false)).isTrue();
+		lock.lock("tryLock").lock();
+		assertThat(service.submit(() -> lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).get()).isFalse();
+		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isTrue();
+		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
 		lock.unlock();
 
-		assertThat(lock.tryLock(LockType.LOCK, "key", 3, 3, false)).isTrue();
+		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
 		lock.unlock();
 	}

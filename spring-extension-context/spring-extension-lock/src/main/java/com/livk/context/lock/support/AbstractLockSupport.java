@@ -20,6 +20,7 @@ import com.livk.context.lock.DistributedLock;
 import com.livk.context.lock.LockType;
 import com.livk.context.lock.exception.LockException;
 import com.livk.context.lock.exception.UnSupportLockException;
+import org.springframework.util.Assert;
 
 /**
  * @param <T> the type parameter
@@ -33,38 +34,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	protected final ThreadLocal<T> threadLocal = new ThreadLocal<>();
 
 	@Override
-	public final boolean tryLock(LockType type, String key, long leaseTime, long waitTime, boolean async) {
-		T lock = getLock(type, key);
-		try {
-			boolean isLocked = supportAsync() && async ? tryLockAsync(lock, leaseTime, waitTime)
-					: tryLock(lock, leaseTime, waitTime);
-			if (isLocked) {
-				threadLocal.set(lock);
-			}
-			return isLocked;
-		}
-		catch (LockException ex) {
-			threadLocal.remove();
-			throw ex;
-		}
-	}
-
-	@Override
-	public final void lock(LockType type, String key, boolean async) {
-		T lock = getLock(type, key);
-		try {
-			if (supportAsync() && async) {
-				lockAsync(lock);
-			}
-			else {
-				lock(lock);
-			}
-			threadLocal.set(lock);
-		}
-		catch (LockException ex) {
-			threadLocal.remove();
-			throw ex;
-		}
+	public LockSpec lock(String key) {
+		Assert.hasText(key, "Lock key must not be empty");
+		return new DefaultLockSpec(key);
 	}
 
 	@Override
@@ -115,18 +87,20 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	/**
 	 * Lock async.
 	 * @param lock the lock
+	 * @param leaseTime the lease time, {@code -1} for no expiration
 	 * @throws LockException the exception
 	 */
-	protected void lockAsync(T lock) throws LockException {
+	protected void doLockAsync(T lock, long leaseTime) throws LockException {
 		throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
 	}
 
 	/**
-	 * Lock.
+	 * Perform the actual blocking lock acquisition.
 	 * @param lock the lock
+	 * @param leaseTime the lease time, {@code -1} for no expiration
 	 * @throws LockException the exception
 	 */
-	protected abstract void lock(T lock) throws LockException;
+	protected abstract void doLock(T lock, long leaseTime) throws LockException;
 
 	/**
 	 * Is locked boolean.
@@ -141,6 +115,84 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	 */
 	protected boolean supportAsync() {
 		return false;
+	}
+
+	private final class DefaultLockSpec implements LockSpec {
+
+		private final String key;
+
+		private LockType type = LockType.LOCK;
+
+		private long leaseTime = -1;
+
+		private long waitTime = 3;
+
+		private boolean async = false;
+
+		private DefaultLockSpec(String key) {
+			this.key = key;
+		}
+
+		@Override
+		public LockSpec type(LockType type) {
+			Assert.notNull(type, "LockType must not be null");
+			this.type = type;
+			return this;
+		}
+
+		@Override
+		public LockSpec leaseTime(long leaseTime) {
+			this.leaseTime = leaseTime;
+			return this;
+		}
+
+		@Override
+		public LockSpec waitTime(long waitTime) {
+			this.waitTime = waitTime;
+			return this;
+		}
+
+		@Override
+		public LockSpec async(boolean async) {
+			this.async = async;
+			return this;
+		}
+
+		@Override
+		public boolean tryLock() {
+			T lock = getLock(this.type, this.key);
+			try {
+				boolean isLocked = supportAsync() && this.async ? tryLockAsync(lock, this.leaseTime, this.waitTime)
+						: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
+				if (isLocked) {
+					threadLocal.set(lock);
+				}
+				return isLocked;
+			}
+			catch (LockException ex) {
+				threadLocal.remove();
+				throw ex;
+			}
+		}
+
+		@Override
+		public void lock() {
+			T lock = getLock(this.type, this.key);
+			try {
+				if (supportAsync() && this.async) {
+					doLockAsync(lock, this.leaseTime);
+				}
+				else {
+					doLock(lock, this.leaseTime);
+				}
+				threadLocal.set(lock);
+			}
+			catch (LockException ex) {
+				threadLocal.remove();
+				throw ex;
+			}
+		}
+
 	}
 
 }

@@ -19,21 +19,28 @@ package com.livk.commons.expression;
 import java.lang.reflect.Method;
 
 /**
- * 上下键创建工厂
+ * Factory for creating {@link Context} instances from method metadata.
+ * <p>
+ * Implementations extract parameter names from the given method and pair them with the
+ * corresponding argument values to produce a populated {@link Context}.
  *
  * @author livk
  * @see DefaultContextFactory
+ * @see Context
  */
 @FunctionalInterface
 public interface ContextFactory {
 
+	/**
+	 * The default factory instance that uses Spring's {@code ParameterNameDiscoverer}.
+	 */
 	ContextFactory DEFAULT_FACTORY = new DefaultContextFactory();
 
 	/**
-	 * 根据方法与参数创建上下文
-	 * @param method the method
-	 * @param args the args
-	 * @return the context
+	 * Create a {@link Context} by mapping method parameter names to argument values.
+	 * @param method the method whose parameter names are used as variable names
+	 * @param args the argument values corresponding to the method parameters
+	 * @return a populated {@link Context}
 	 */
 	Context create(Method method, Object[] args);
 

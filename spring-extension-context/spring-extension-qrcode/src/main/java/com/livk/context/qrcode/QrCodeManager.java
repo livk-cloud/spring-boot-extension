@@ -16,8 +16,6 @@
 
 package com.livk.context.qrcode;
 
-import com.google.zxing.client.j2se.MatrixToImageConfig;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -37,30 +35,17 @@ public interface QrCodeManager {
 	BufferedImage generate(QrCodeEntity<?> entity);
 
 	/**
-	 * 生成二维码
-	 * @param content 二维码内容
-	 * @param width 二维码宽度
-	 * @param height 二维码高度
-	 * @param type 图片类型
-	 * @return bufferedImage
+	 * 解析二维码
+	 * @param inputStream 输入流
+	 * @return string
 	 */
-	default BufferedImage generate(String content, int width, int height, PicType type) {
-		return generate(content, width, height, new MatrixToImageConfig(), type);
-	}
-
-	/**
-	 * 生成二维码
-	 * @param content 二维码内容
-	 * @param width 二维码宽度
-	 * @param height 二维码高度
-	 * @param config 二维码颜色配置
-	 * @param type 图片类型
-	 * @return bufferedImage
-	 */
-	BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type);
-
 	String parser(InputStream inputStream);
 
+	/**
+	 * 解析二维码
+	 * @param input 输入流
+	 * @return string
+	 */
 	default String parser(byte[] input) {
 		return parser(new ByteArrayInputStream(input));
 	}

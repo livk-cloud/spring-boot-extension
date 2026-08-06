@@ -29,9 +29,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -50,7 +47,13 @@ class DistributedLockInterceptorTests {
 	@Test
 	void doInvokeAllowsAccessWhenLockAcquired() throws Throwable {
 		DistributedLock distributedLock = mock(DistributedLock.class);
-		given(distributedLock.tryLock(any(), anyString(), anyLong(), anyLong(), anyBoolean())).willReturn(true);
+		DistributedLock.LockSpec lockSpec = mock(DistributedLock.LockSpec.class);
+		given(distributedLock.lock(anyString())).willReturn(lockSpec);
+		given(lockSpec.type(LockType.LOCK)).willReturn(lockSpec);
+		given(lockSpec.leaseTime(30L)).willReturn(lockSpec);
+		given(lockSpec.waitTime(10L)).willReturn(lockSpec);
+		given(lockSpec.async(false)).willReturn(lockSpec);
+		given(lockSpec.tryLock()).willReturn(true);
 		given(provider.orderedStream()).willReturn(Stream.of(distributedLock));
 
 		DistLock distLock = createDistLock();
@@ -67,7 +70,13 @@ class DistributedLockInterceptorTests {
 	@Test
 	void doInvokeThrowsLockExceptionWhenLockNotAcquired() throws Throwable {
 		DistributedLock distributedLock = mock(DistributedLock.class);
-		given(distributedLock.tryLock(any(), anyString(), anyLong(), anyLong(), anyBoolean())).willReturn(false);
+		DistributedLock.LockSpec lockSpec = mock(DistributedLock.LockSpec.class);
+		given(distributedLock.lock(anyString())).willReturn(lockSpec);
+		given(lockSpec.type(LockType.LOCK)).willReturn(lockSpec);
+		given(lockSpec.leaseTime(30L)).willReturn(lockSpec);
+		given(lockSpec.waitTime(10L)).willReturn(lockSpec);
+		given(lockSpec.async(false)).willReturn(lockSpec);
+		given(lockSpec.tryLock()).willReturn(false);
 		given(provider.orderedStream()).willReturn(Stream.of(distributedLock));
 
 		DistLock distLock = createDistLock();
@@ -80,7 +89,13 @@ class DistributedLockInterceptorTests {
 	@Test
 	void doInvokeUnlocksEvenWhenProceedThrows() throws Throwable {
 		DistributedLock distributedLock = mock(DistributedLock.class);
-		given(distributedLock.tryLock(any(), anyString(), anyLong(), anyLong(), anyBoolean())).willReturn(true);
+		DistributedLock.LockSpec lockSpec = mock(DistributedLock.LockSpec.class);
+		given(distributedLock.lock(anyString())).willReturn(lockSpec);
+		given(lockSpec.type(LockType.LOCK)).willReturn(lockSpec);
+		given(lockSpec.leaseTime(30L)).willReturn(lockSpec);
+		given(lockSpec.waitTime(10L)).willReturn(lockSpec);
+		given(lockSpec.async(false)).willReturn(lockSpec);
+		given(lockSpec.tryLock()).willReturn(true);
 		given(provider.orderedStream()).willReturn(Stream.of(distributedLock));
 
 		DistLock distLock = createDistLock();

@@ -16,7 +16,6 @@
 
 package com.livk.context.qrcode.support;
 
-import tools.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Binarizer;
 import com.google.zxing.BinaryBitmap;
@@ -27,17 +26,17 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.livk.commons.jackson.support.JacksonSupport;
-import com.livk.context.qrcode.PicType;
+import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.exception.QrCodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -54,7 +53,7 @@ import java.util.function.Function;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCodeManager {
+public class GoogleQrCodeManager implements QrCodeManager {
 
 	private final Function<Object, String> command;
 
@@ -68,16 +67,12 @@ public class GoogleQrCodeManager extends AbstractQrCodeManager implements QrCode
 	}
 
 	@Override
-	protected String convert(Object content) {
-		return command.apply(content);
-	}
-
-	@Override
-	public BufferedImage generate(String content, int width, int height, MatrixToImageConfig config, PicType type) {
+	public BufferedImage generate(QrCodeEntity<?> entity) {
 		try {
 			QRCodeWriter writer = new QRCodeWriter();
-			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);
-			return MatrixToImageWriter.toBufferedImage(matrix, config);
+			String content = command.apply(entity.content());
+			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, entity.width(), entity.height());
+			return MatrixToImageWriter.toBufferedImage(matrix, entity.config());
 		}
 		catch (WriterException ex) {
 			log.error("{}", ex.getMessage(), ex);
