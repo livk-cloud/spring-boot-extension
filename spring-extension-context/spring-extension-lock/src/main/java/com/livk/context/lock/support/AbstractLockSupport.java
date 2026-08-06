@@ -87,18 +87,20 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 	/**
 	 * Lock async.
 	 * @param lock the lock
+	 * @param leaseTime the lease time, {@code -1} for no expiration
 	 * @throws LockException the exception
 	 */
-	protected void doLockAsync(T lock) throws LockException {
+	protected void doLockAsync(T lock, long leaseTime) throws LockException {
 		throw new UnSupportLockException("Async lock of " + this.getClass().getSimpleName() + " isn't support");
 	}
 
 	/**
 	 * Perform the actual blocking lock acquisition.
 	 * @param lock the lock
+	 * @param leaseTime the lease time, {@code -1} for no expiration
 	 * @throws LockException the exception
 	 */
-	protected abstract void doLock(T lock) throws LockException;
+	protected abstract void doLock(T lock, long leaseTime) throws LockException;
 
 	/**
 	 * Is locked boolean.
@@ -178,10 +180,10 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 			T lock = getLock(this.type, this.key);
 			try {
 				if (supportAsync() && this.async) {
-					doLockAsync(lock);
+					doLockAsync(lock, this.leaseTime);
 				}
 				else {
-					doLock(lock);
+					doLock(lock, this.leaseTime);
 				}
 				threadLocal.set(lock);
 			}

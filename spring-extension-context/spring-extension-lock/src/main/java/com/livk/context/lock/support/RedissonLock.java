@@ -63,8 +63,13 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void doLockAsync(RLock lock) throws LockException {
-		doFuture(lock.lockAsync());
+	protected void doLockAsync(RLock lock, long leaseTime) throws LockException {
+		if (leaseTime > 0) {
+			doFuture(lock.lockAsync(leaseTime, TimeUnit.SECONDS));
+		}
+		else {
+			doFuture(lock.lockAsync());
+		}
 	}
 
 	private <V> V doCallable(Callable<V> callable) {
@@ -86,8 +91,13 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void doLock(RLock lock) {
-		lock.lock();
+	protected void doLock(RLock lock, long leaseTime) {
+		if (leaseTime > 0) {
+			lock.lock(leaseTime, TimeUnit.SECONDS);
+		}
+		else {
+			lock.lock();
+		}
 	}
 
 	@Override

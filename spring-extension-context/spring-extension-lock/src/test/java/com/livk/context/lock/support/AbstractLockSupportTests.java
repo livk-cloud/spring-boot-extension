@@ -80,7 +80,7 @@ class AbstractLockSupportTests {
 		}
 
 		@Override
-		protected void doLock(String lock) throws LockException {
+		protected void doLock(String lock, long leaseTime) throws LockException {
 		}
 
 		@Override

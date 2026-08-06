@@ -68,7 +68,7 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 	}
 
 	@Override
-	protected void doLock(InterProcessLock lock) throws LockException {
+	protected void doLock(InterProcessLock lock, long leaseTime) throws LockException {
 		try {
 			lock.acquire();
 		}
