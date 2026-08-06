@@ -2,6 +2,7 @@ image:https://github.com/livk-cloud/spring-boot-example/actions/workflows/ci.yml
 image:https://dl.circleci.com/status-badge/img/gh/livk-cloud/spring-boot-extension/tree/main.svg?style=svg["CircleCI",link="https://dl.circleci.com/status-badge/redirect/gh/livk-cloud/spring-boot-extension/tree/main"]
 image:https://img.shields.io/maven-central/v/io.github.livk-cloud/spring-extension-dependencies[link="https://mvnrepository.com/artifact/io.github.livk-cloud/spring-extension-dependencies"]
 image:https://deepwiki.com/badge.svg[Ask DeepWiki,link="https://deepwiki.com/livk-cloud/spring-boot-extension"]
+image:https://codecov.io/gh/livk-cloud/spring-boot-extension/branch/main/graph/badge.svg?token=OA6j1PHzsI["codecov",link="https://codecov.io/gh/livk-cloud/spring-boot-extension"]
 
 link:https://spring-boot-extension.netlify.app[Netlify文档] +
 link:https://livk-cloud.github.io/spring-boot-extension[Github文档] +
@@ -28,76 +29,12 @@ MockMvc与WebclientTest测试覆盖大部分功能 +
     |--spring-extension-commons(通用基础工具包)
     |--spring-extension-context(拓展核心包)
     |--spring-extension-dependencies(依赖版本管理)
-    |--spring-extension-testcontainers(testcontainers测试工具包)
+    |--spring-testcontainers-support(testcontainers测试工具包)
 ----
 
 link:gradle.properties[项目信息] +
 link:gradle/libs.versions.toml[版本控制] +
 link:https://github.com/livk-cloud/spring-boot-extension-samples[示例详情] +
-
-.*项目相关版本控制*
-
---
-[source,xml,indent=0,subs="verbatim,quotes",role="primary"]
-.*Maven*
-----
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.github.livk-cloud</groupId>
-            <artifactId>spring-extension-dependencies</artifactId>
-            <version>${version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-----
-
-[source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
-.*Gradle-Groovy*
-----
-implementation platform('io.github.livk-cloud:spring-extension-dependencies:$version')
-----
-
-[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
-.*Groovy-Kotlin*
-----
-implementation(platform("io.github.livk-cloud:spring-extension-dependencies:${version}"))
-----
---
-
-.*最小BOM依赖*
-
---
-[source,xml,indent=0,subs="verbatim,quotes",role="primary"]
-.*Maven*
-----
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.github.livk-cloud</groupId>
-            <artifactId>spring-extension-bom</artifactId>
-            <version>${version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-----
-
-[source,groovy,indent=0,subs="verbatim,quotes",role="secondary"]
-.*Gradle-Groovy*
-----
-implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
-----
-
-[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
-.*Groovy-Kotlin*
-----
-implementation(platform("io.github.livk-cloud:spring-extension-bom:${version}"))
-----
---
 
 == 其他支持
 
