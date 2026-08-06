@@ -26,6 +26,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,8 +131,7 @@ class MysqlJsonTypeHandlerTests {
 		@Bean
 		public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
 			Environment environment = new Environment("mybatis", new SpringManagedTransactionFactory(), dataSource);
-			org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration(
-					environment);
+			Configuration configuration = new Configuration(environment);
 			configuration.setMapUnderscoreToCamelCase(true);
 			configuration.setLogImpl(StdOutImpl.class);
 			MysqlJsonTypeHandler typeHandler = new MysqlJsonTypeHandler(new ObjectMapper());

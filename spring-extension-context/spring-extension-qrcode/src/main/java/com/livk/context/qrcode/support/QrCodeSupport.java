@@ -26,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -58,8 +59,7 @@ public abstract class QrCodeSupport {
 		}
 		else {
 			Annotation annotation = AnnotationFinder.getAnnotationElement(parameter, ResponseQrCode.class);
-			return org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes(parameter.getMethod(),
-					annotation);
+			return AnnotationUtils.getAnnotationAttributes(parameter.getMethod(), annotation);
 		}
 	}
 

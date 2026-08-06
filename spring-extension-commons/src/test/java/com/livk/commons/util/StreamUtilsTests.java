@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -106,11 +107,11 @@ class StreamUtilsTests {
 
 	@Test
 	void forEachWithIndex() {
-		List<String> results1 = new java.util.ArrayList<>();
+		List<String> results1 = new ArrayList<>();
 		List.of("root", "livk", "admin").forEach(StreamUtils.forEachWithIndex(0, (s, i) -> results1.add(i + ":" + s)));
 		assertThat(results1).containsExactly("0:root", "1:livk", "2:admin");
 
-		List<String> results2 = new java.util.ArrayList<>();
+		List<String> results2 = new ArrayList<>();
 		List.of("root", "livk", "admin").forEach(StreamUtils.forEachWithIndex(10, (s, i) -> results2.add(i + ":" + s)));
 		assertThat(results2).containsExactly("10:root", "11:livk", "12:admin");
 	}

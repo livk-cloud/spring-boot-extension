@@ -61,6 +61,6 @@ public @interface ResponseQrCode {
 	 * 图片类型
 	 * @return the pic type
 	 */
-	PicType type() default PicType.JPG;
+	PicType type() default PicType.PNG;
 
 }
