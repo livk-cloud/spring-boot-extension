@@ -47,7 +47,7 @@ class QrCodeAnnotationTests {
 			.isEqualTo(MatrixToImageConfig.BLACK);
 		assertThat(ResponseQrCode.class.getDeclaredMethod("offColor").getDefaultValue())
 			.isEqualTo(MatrixToImageConfig.WHITE);
-		assertThat(ResponseQrCode.class.getDeclaredMethod("type").getDefaultValue()).isEqualTo(PicType.JPG);
+		assertThat(ResponseQrCode.class.getDeclaredMethod("type").getDefaultValue()).isEqualTo(PicType.PNG);
 	}
 
 }
