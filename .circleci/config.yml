@@ -6,9 +6,9 @@ executors:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
     machine:
-      image: ubuntu-2404:2025.09.1
+      image: ubuntu-2604:2026.07.1
       docker_layer_caching: true
-    resource_class: arm.large
+    resource_class: large.gen2
 
 commands:
   install-jdk:
