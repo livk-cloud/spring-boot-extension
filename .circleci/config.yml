@@ -8,7 +8,7 @@ executors:
     machine:
       image: ubuntu-2604:2026.07.1
       docker_layer_caching: true
-    resource_class: large.gen2
+    resource_class: arm.large.gen2
 
 commands:
   install-jdk:
