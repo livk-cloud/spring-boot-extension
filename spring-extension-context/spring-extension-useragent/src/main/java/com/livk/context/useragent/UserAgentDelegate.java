@@ -16,21 +16,24 @@
 
 package com.livk.context.useragent;
 
-import lombok.Setter;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.jspecify.annotations.NonNull;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpHeaders;
+
+import java.util.List;
 
 /**
  * The type User agent helper.
  *
  * @author livk
  */
-@Setter
-public class UserAgentHelper implements ApplicationContextAware {
+public class UserAgentDelegate implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
+
+	private volatile List<UserAgentConverter> converters;
 
 	/**
 	 * Convert user agent.
@@ -38,13 +41,33 @@ public class UserAgentHelper implements ApplicationContextAware {
 	 * @return the user agent
 	 */
 	public UserAgent convert(HttpHeaders headers) {
-		for (UserAgentConverter converter : applicationContext.getBeanProvider(UserAgentConverter.class)) {
+		for (UserAgentConverter converter : getConverters()) {
 			UserAgent userAgent = converter.convert(headers);
 			if (userAgent != null) {
 				return userAgent;
 			}
 		}
-		throw new NoSuchBeanDefinitionException(UserAgentConverter.class);
+		throw new IllegalStateException(
+				"No UserAgentConverter could convert User-Agent: " + headers.getFirst(HttpHeaders.USER_AGENT));
+	}
+
+	private List<UserAgentConverter> getConverters() {
+		List<UserAgentConverter> result = this.converters;
+		if (result == null) {
+			synchronized (this) {
+				result = this.converters;
+				if (result == null) {
+					result = applicationContext.getBeanProvider(UserAgentConverter.class).orderedStream().toList();
+					this.converters = result;
+				}
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 
 }

@@ -24,13 +24,11 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -57,6 +55,7 @@ public class UserAgentAutoConfiguration {
 		 * @throws ParseException the parse exception
 		 */
 		@Bean
+		@ConditionalOnMissingBean
 		public UserAgentParser userAgentParser() throws IOException, ParseException {
 			return new UserAgentService().loadParser(Arrays.asList(BrowsCapField.values()));
 		}
@@ -86,7 +85,7 @@ public class UserAgentAutoConfiguration {
 		 * @return the user agent analyzer
 		 */
 		@Bean
-		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+		@ConditionalOnMissingBean
 		public UserAgentAnalyzer userAgentAnalyzer() {
 			return UserAgentAnalyzer.newBuilder().hideMatcherLoadStats().withCache(10000).build();
 		}

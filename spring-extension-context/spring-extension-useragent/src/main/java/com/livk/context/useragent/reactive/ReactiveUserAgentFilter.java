@@ -16,9 +16,9 @@
 
 package com.livk.context.useragent.reactive;
 
-import com.livk.context.useragent.UserAgentHelper;
+import com.livk.context.useragent.UserAgent;
+import com.livk.context.useragent.UserAgentDelegate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.jspecify.annotations.NonNull;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -31,17 +31,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ReactiveUserAgentFilter implements WebFilter {
 
-	private final UserAgentHelper helper;
+	private final UserAgentDelegate userAgentDelegate;
 
 	@NonNull
 	@Override
 	public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		exchange.getResponse()
-			.beforeCommit(() -> Mono.deferContextual(Mono::just)
-				.contextWrite(ReactiveUserAgentContextHolder.clearContext())
-				.then());
-		HttpHeaders headers = exchange.getRequest().getHeaders();
-		return chain.filter(exchange).contextWrite(ReactiveUserAgentContextHolder.withContext(helper.convert(headers)));
+		UserAgent userAgent = userAgentDelegate.convert(exchange.getRequest().getHeaders());
+		return chain.filter(exchange).contextWrite(ReactiveUserAgentContextHolder.withContext(userAgent));
 	}
 
 }

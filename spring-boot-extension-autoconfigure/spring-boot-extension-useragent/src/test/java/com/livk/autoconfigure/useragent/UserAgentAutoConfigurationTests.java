@@ -18,7 +18,7 @@ package com.livk.autoconfigure.useragent;
 
 import com.blueconic.browscap.UserAgentParser;
 import com.livk.commons.util.FieldUtils;
-import com.livk.context.useragent.UserAgentHelper;
+import com.livk.context.useragent.UserAgentDelegate;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
@@ -55,14 +55,14 @@ class UserAgentAutoConfigurationTests {
 
 	@Test
 	void test() {
-		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentHelper.class));
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentDelegate.class));
 	}
 
 	@Test
 	void customUserAgentHelperBacksOffAutoConfiguredHelper() {
-		UserAgentHelper helper = new UserAgentHelper();
-		this.contextRunner.withBean(UserAgentHelper.class, () -> helper)
-			.run((context) -> assertThat(context).getBean(UserAgentHelper.class).isSameAs(helper));
+		UserAgentDelegate userAgentDelegate = new UserAgentDelegate();
+		this.contextRunner.withBean(UserAgentDelegate.class, () -> userAgentDelegate)
+			.run((context) -> assertThat(context).getBean(UserAgentDelegate.class).isSameAs(userAgentDelegate));
 	}
 
 	@Test

@@ -18,7 +18,7 @@ package com.livk.context.useragent.reactive;
 
 import com.livk.context.useragent.UserAgent;
 import com.livk.context.useragent.UserAgentConverter;
-import com.livk.context.useragent.UserAgentHelper;
+import com.livk.context.useragent.UserAgentDelegate;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
@@ -63,8 +63,8 @@ class ReactiveUserAgentResolverTests {
 	}
 
 	@Autowired
-	ReactiveUserAgentResolverTests(UserAgentHelper helper) {
-		this.resolver = new ReactiveUserAgentResolver(helper);
+	ReactiveUserAgentResolverTests(UserAgentDelegate userAgentDelegate) {
+		this.resolver = new ReactiveUserAgentResolver(userAgentDelegate);
 	}
 
 	@Test
@@ -127,8 +127,8 @@ class ReactiveUserAgentResolverTests {
 		}
 
 		@Bean
-		public UserAgentHelper userAgentHelper() {
-			return new UserAgentHelper();
+		public UserAgentDelegate userAgentDelegate() {
+			return new UserAgentDelegate();
 		}
 
 	}
