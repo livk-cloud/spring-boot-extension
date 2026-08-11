@@ -17,7 +17,7 @@
 package com.livk.context.useragent.reactive;
 
 import com.livk.context.useragent.UserAgent;
-import com.livk.context.useragent.UserAgentHelper;
+import com.livk.context.useragent.UserAgentDelegate;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -38,7 +38,7 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
-	private final UserAgentHelper helper;
+	private final UserAgentDelegate userAgentDelegate;
 
 	@Override
 	public final boolean supportsParameter(MethodParameter parameter) {
@@ -53,7 +53,7 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 
 		Mono<UserAgent> mono = ReactiveUserAgentContextHolder.get()
-			.switchIfEmpty(Mono.justOrEmpty(helper.convert(exchange.getRequest().getHeaders())));
+			.switchIfEmpty(Mono.justOrEmpty(userAgentDelegate.convert(exchange.getRequest().getHeaders())));
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
 	}
 
