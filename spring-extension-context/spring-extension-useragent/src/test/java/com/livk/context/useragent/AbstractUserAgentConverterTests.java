@@ -39,13 +39,13 @@ class AbstractUserAgentConverterTests {
 	}
 
 	@Test
-	void convertCachesResultForSameUserAgent() {
+	void convertCreatesNewResultForSameUserAgent() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.USER_AGENT, "TestAgent/1.0");
 		UserAgent first = converter.convert(headers);
 		UserAgent second = converter.convert(headers);
-		assertThat(first).isSameAs(second);
-		assertThat(converter.createCount).isEqualTo(1);
+		assertThat(first).isNotSameAs(second);
+		assertThat(converter.createCount).isEqualTo(2);
 	}
 
 	@Test
