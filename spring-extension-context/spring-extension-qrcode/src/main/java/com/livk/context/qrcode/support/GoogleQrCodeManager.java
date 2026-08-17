@@ -71,7 +71,7 @@ public class GoogleQrCodeManager implements QrCodeManager {
 	public BufferedImage generate(QrCodeEntity<?> entity) {
 		try {
 			QRCodeWriter writer = new QRCodeWriter();
-			String content = command.apply(entity.content());
+			String content = this.command.apply(entity.content());
 			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, entity.width(), entity.height());
 			return MatrixToImageWriter.toBufferedImage(matrix, entity.config());
 		}

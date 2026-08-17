@@ -33,7 +33,7 @@ public class YauaaUserAgentConverter extends AbstractUserAgentConverter<UserAgen
 
 	@Override
 	protected UserAgent create(String useragent) {
-		return userAgentAnalyzer.parse(useragent);
+		return this.userAgentAnalyzer.parse(useragent);
 	}
 
 	@Override

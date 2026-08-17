@@ -71,7 +71,7 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 
 	@Override
 	public final Sequence build() {
-		return new DefaultRangeSequence(manager, bizName, step, stepStart);
+		return new DefaultRangeSequence(this.manager, this.bizName, this.step, this.stepStart);
 	}
 
 }

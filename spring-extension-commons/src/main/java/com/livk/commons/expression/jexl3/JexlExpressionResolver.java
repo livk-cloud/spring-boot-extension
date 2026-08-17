@@ -47,7 +47,7 @@ public class JexlExpressionResolver extends CacheExpressionResolver<JexlContext,
 
 	@Override
 	protected JexlExpression compile(String value) {
-		return engine.createExpression(value);
+		return this.engine.createExpression(value);
 	}
 
 	@Override

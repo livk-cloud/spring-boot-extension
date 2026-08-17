@@ -83,8 +83,8 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements Strea
 			this.body = outputStream -> this.bodyStream.writeTo(outputStream);
 		}
 		RequestBody requestBody;
-		if (body != null) {
-			requestBody = new BodyRequestBody(headers, body);
+		if (this.body != null) {
+			requestBody = new BodyRequestBody(headers, this.body);
 		}
 		else if (okhttp3.internal.http.HttpMethod.requiresRequestBody(getMethod().name())) {
 			String header = headers.getFirst(HttpHeaders.CONTENT_TYPE);

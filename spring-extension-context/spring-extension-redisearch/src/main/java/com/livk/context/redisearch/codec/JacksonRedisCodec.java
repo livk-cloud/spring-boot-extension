@@ -49,7 +49,7 @@ class JacksonRedisCodec<K, V> extends AbstractRedisSearchCodec<K, V> {
 
 	@Override
 	protected K deserializeKey(byte[] bytes) throws CodecException {
-		return deserialize(bytes, keyType);
+		return deserialize(bytes, this.keyType);
 	}
 
 	@Override
@@ -59,12 +59,12 @@ class JacksonRedisCodec<K, V> extends AbstractRedisSearchCodec<K, V> {
 
 	@Override
 	protected V deserializeValue(byte[] bytes) throws CodecException {
-		return deserialize(bytes, valueType);
+		return deserialize(bytes, this.valueType);
 	}
 
 	private byte[] serialize(Object value) throws CodecException {
 		try {
-			return mapper.writeValueAsBytes(value);
+			return this.mapper.writeValueAsBytes(value);
 		}
 		catch (JacksonException ex) {
 			throw new CodecException("Could not serialize value", ex);
@@ -73,7 +73,7 @@ class JacksonRedisCodec<K, V> extends AbstractRedisSearchCodec<K, V> {
 
 	private <T> T deserialize(byte[] bytes, JavaType type) throws CodecException {
 		try {
-			return mapper.readValue(bytes, type);
+			return this.mapper.readValue(bytes, type);
 		}
 		catch (JacksonException ex) {
 			throw new CodecException("Could not deserialize value", ex);

@@ -40,12 +40,12 @@ public class LettuceModConnectionFactory implements RedisSearchConnectionFactory
 	}
 
 	private RedisSearchConnectionFactory init(ClientResources resources) {
-		AbstractRedisClient client = support.getClient(resources);
+		AbstractRedisClient client = this.support.getClient(resources);
 		return RedisSearchConnectionFactory.create(client);
 	}
 
 	public <T> GenericObjectPoolConfig<T> getPoolConfig() {
-		return support.getPoolConfig();
+		return this.support.getPoolConfig();
 	}
 
 }

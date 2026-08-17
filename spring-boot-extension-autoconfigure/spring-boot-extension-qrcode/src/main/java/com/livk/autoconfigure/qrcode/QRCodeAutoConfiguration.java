@@ -72,12 +72,12 @@ public class QRCodeAutoConfiguration {
 
 		@Override
 		public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
-			handlers.add(new QrCodeMethodReturnValueHandler(qrCodeManager));
+			handlers.add(new QrCodeMethodReturnValueHandler(this.qrCodeManager));
 		}
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-			resolvers.add(new QrCodeMethodArgumentResolver(qrCodeManager));
+			resolvers.add(new QrCodeMethodArgumentResolver(this.qrCodeManager));
 		}
 
 	}
@@ -99,12 +99,12 @@ public class QRCodeAutoConfiguration {
 		 */
 		@Bean
 		public ReactiveQrCodeMethodReturnValueHandler reactiveQRCodeMethodReturnValueHandler() {
-			return new ReactiveQrCodeMethodReturnValueHandler(qrCodeManager);
+			return new ReactiveQrCodeMethodReturnValueHandler(this.qrCodeManager);
 		}
 
 		@Override
 		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-			configurer.addCustomResolver(new ReactiveQrCodeMethodArgumentResolver(qrCodeManager));
+			configurer.addCustomResolver(new ReactiveQrCodeMethodArgumentResolver(this.qrCodeManager));
 		}
 
 	}

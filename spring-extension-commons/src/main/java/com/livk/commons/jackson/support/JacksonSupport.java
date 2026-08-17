@@ -48,28 +48,28 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 	@Override
 	public <T> T readValue(Object readVal, JavaType type) {
 		if (readVal instanceof JsonParser jsonParser) {
-			return mapper.readValue(jsonParser, type);
+			return this.mapper.readValue(jsonParser, type);
 		}
 		if (readVal instanceof JsonNode jsonNode) {
-			return mapper.treeToValue(jsonNode, type);
+			return this.mapper.treeToValue(jsonNode, type);
 		}
 		else if (readVal instanceof File file) {
-			return mapper.readValue(file, type);
+			return this.mapper.readValue(file, type);
 		}
 		else if (readVal instanceof Path path) {
-			return mapper.readValue(path, type);
+			return this.mapper.readValue(path, type);
 		}
 		else if (readVal instanceof String json) {
-			return mapper.readValue(json, type);
+			return this.mapper.readValue(json, type);
 		}
 		else if (readVal instanceof Reader reader) {
-			return mapper.readValue(reader, type);
+			return this.mapper.readValue(reader, type);
 		}
 		else if (readVal instanceof InputStream inputStream) {
-			return mapper.readValue(inputStream, type);
+			return this.mapper.readValue(inputStream, type);
 		}
 		else if (readVal instanceof byte[] bytes) {
-			return mapper.readValue(bytes, type);
+			return this.mapper.readValue(bytes, type);
 		}
 		throw new UnsupportedOperationException("Unsupported type: " + readVal.getClass().getName());
 	}
@@ -79,48 +79,48 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 		if (writeVal instanceof String str) {
 			return str;
 		}
-		return mapper.writeValueAsString(writeVal);
+		return this.mapper.writeValueAsString(writeVal);
 	}
 
 	@Override
 	public byte[] writeValueAsBytes(Object writeVal) {
-		return mapper.writeValueAsBytes(writeVal);
+		return this.mapper.writeValueAsBytes(writeVal);
 	}
 
 	@Override
 	public JsonNode readTree(Object readVal) {
 		if (readVal instanceof JsonParser jsonParser) {
-			return mapper.readTree(jsonParser);
+			return this.mapper.readTree(jsonParser);
 		}
 		else if (readVal instanceof File file) {
-			return mapper.readTree(file);
+			return this.mapper.readTree(file);
 		}
 		else if (readVal instanceof Path path) {
-			return mapper.readTree(path);
+			return this.mapper.readTree(path);
 		}
 		else if (readVal instanceof String json) {
-			return mapper.readTree(json);
+			return this.mapper.readTree(json);
 		}
 		else if (readVal instanceof Reader reader) {
-			return mapper.readTree(reader);
+			return this.mapper.readTree(reader);
 		}
 		else if (readVal instanceof InputStream inputStream) {
-			return mapper.readTree(inputStream);
+			return this.mapper.readTree(inputStream);
 		}
 		else if (readVal instanceof byte[] bytes) {
-			return mapper.readTree(bytes);
+			return this.mapper.readTree(bytes);
 		}
 		throw new UnsupportedOperationException("Unsupported type: " + readVal.getClass().getName());
 	}
 
 	@Override
 	public <T> T convertValue(Object fromValue, JavaType javaType) {
-		return mapper.convertValue(fromValue, javaType);
+		return this.mapper.convertValue(fromValue, javaType);
 	}
 
 	@Override
 	public ObjectMapper unwrap() {
-		return mapper;
+		return this.mapper;
 	}
 
 }

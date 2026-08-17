@@ -106,11 +106,11 @@ public class AnnotationMetadataResolver {
 		for (String packageStr : packages) {
 			String basePackage = ClassUtils.convertClassNameToResourcePath(packageStr);
 			try {
-				Resource[] resources = resolver
+				Resource[] resources = this.resolver
 					.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + basePackage + "/**/*.class");
 				for (Resource resource : resources) {
-					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
+					MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
+					if (typeFilter.match(metadataReader, this.metadataReaderFactory)) {
 						Class<?> type = toType(metadataReader);
 						result.add(type);
 					}
@@ -125,7 +125,7 @@ public class AnnotationMetadataResolver {
 
 	private Class<?> toType(MetadataReader metadataReader) {
 		String className = metadataReader.getClassMetadata().getClassName();
-		return ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
+		return ClassUtils.resolveClassName(className, this.resourceLoader.getClassLoader());
 	}
 
 }

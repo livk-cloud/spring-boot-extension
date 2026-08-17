@@ -34,13 +34,13 @@ public final class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T
 
 	@Override
 	public Map<String, ? extends List<T>> toMapData() {
-		return mapData;
+		return this.mapData;
 	}
 
 	@Override
 	public void invoke(T data, AnalysisContext context) {
 		String sheetName = context.readSheetHolder().getSheetName();
-		List<T> infos = mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
+		List<T> infos = this.mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
 		infos.add(data);
 	}
 

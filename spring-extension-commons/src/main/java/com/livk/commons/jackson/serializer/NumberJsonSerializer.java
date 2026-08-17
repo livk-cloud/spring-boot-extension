@@ -45,7 +45,7 @@ class NumberJsonSerializer extends ValueSerializer<Number> {
 
 	@Override
 	public void serialize(Number value, JsonGenerator gen, SerializationContext context) throws JacksonException {
-		gen.writeString(new DecimalFormat(format).format(value));
+		gen.writeString(new DecimalFormat(this.format).format(value));
 	}
 
 	@Override

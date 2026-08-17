@@ -23,6 +23,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.http.client.autoconfigure.reactive.ClientHttpConnectorBuilderCustomizer;
 import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder;
 import org.springframework.http.client.ReactorResourceFactory;
@@ -79,29 +80,29 @@ public final class ReactorClientCustomizer
 
 	public ReactorClientCustomizer addChannelHandler(ChannelHandler... handlers) {
 		for (ChannelHandler handler : handlers) {
-			if (!handlerList.contains(handler) && handler != null) {
-				handlerList.add(handler);
+			if (!this.handlerList.contains(handler) && handler != null) {
+				this.handlerList.add(handler);
 			}
 		}
 		return this;
 	}
 
 	@Override
-	public ReactorClientHttpConnectorBuilder customize(ReactorClientHttpConnectorBuilder builder) {
+	public @NonNull ReactorClientHttpConnectorBuilder customize(ReactorClientHttpConnectorBuilder builder) {
 		SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient();
 		return builder.withHttpClientCustomizer(httpClient -> httpClient
-			.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout)
-			.runOn(reactorResourceFactory.getLoopResources())
+			.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, this.connectTimeout)
+			.runOn(this.reactorResourceFactory.getLoopResources())
 			.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL, StandardCharsets.UTF_8)
-			.responseTimeout(Duration.ofSeconds(responseTimeout))
+			.responseTimeout(Duration.ofSeconds(this.responseTimeout))
 			.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
 			.doOnConnected(connection -> getHandlerList().forEach(connection::addHandlerLast)));
 	}
 
 	private List<ChannelHandler> getHandlerList() {
-		handlerList.addFirst(new ReadTimeoutHandler(readTimeout));
-		handlerList.addFirst(new WriteTimeoutHandler(writeTimeout));
-		return handlerList;
+		this.handlerList.addFirst(new ReadTimeoutHandler(this.readTimeout));
+		this.handlerList.addFirst(new WriteTimeoutHandler(this.writeTimeout));
+		return this.handlerList;
 	}
 
 }

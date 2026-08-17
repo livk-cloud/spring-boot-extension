@@ -87,12 +87,12 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
-		resourcesPath = StandardLocation.CLASS_OUTPUT;
-		filer = processingEnv.getFiler();
-		elements = processingEnv.getElementUtils();
-		messager = processingEnv.getMessager();
-		options = processingEnv.getOptions();
-		types = processingEnv.getTypeUtils();
+		this.resourcesPath = StandardLocation.CLASS_OUTPUT;
+		this.filer = processingEnv.getFiler();
+		this.elements = processingEnv.getElementUtils();
+		this.messager = processingEnv.getMessager();
+		this.options = processingEnv.getOptions();
+		this.types = processingEnv.getTypeUtils();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 								"current " + element + "missing " + supportClass + " 'value'");
 					}
 					String serviceImpl = TypeElements.getBinaryName((TypeElement) element);
-					processorMap.put(provider, serviceImpl);
+					this.processorMap.put(provider, serviceImpl);
 				}
 			}
 		}

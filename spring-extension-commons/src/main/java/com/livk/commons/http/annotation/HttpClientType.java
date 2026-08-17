@@ -45,7 +45,7 @@ public enum HttpClientType {
 	 * @return the class
 	 */
 	public Class<? extends Annotation> annotationType() {
-		return annotationType;
+		return this.annotationType;
 	}
 
 }

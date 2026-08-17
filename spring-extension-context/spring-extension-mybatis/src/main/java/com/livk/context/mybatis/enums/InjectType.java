@@ -65,12 +65,12 @@ public enum InjectType implements InjectHandle<Object> {
 	private final InjectHandle<?> function;
 
 	public Class<?> type() {
-		return function.getType();
+		return this.function.getType();
 	}
 
 	@Override
 	public Object handler() {
-		return function.handler();
+		return this.function.handler();
 	}
 
 	public static Object handler(Class<?> type) {

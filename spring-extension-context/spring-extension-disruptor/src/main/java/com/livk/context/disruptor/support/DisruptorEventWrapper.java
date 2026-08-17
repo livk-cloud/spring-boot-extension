@@ -41,8 +41,8 @@ public class DisruptorEventWrapper<V> implements GenericWrapper<V> {
 
 	@Override
 	public V unwrap() {
-		Assert.notNull(real, "real must not be null");
-		return real;
+		Assert.notNull(this.real, "real must not be null");
+		return this.real;
 	}
 
 }

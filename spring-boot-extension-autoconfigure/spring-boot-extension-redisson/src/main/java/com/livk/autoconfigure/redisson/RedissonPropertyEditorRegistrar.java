@@ -127,7 +127,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 		@Override
 		public void setAsText(String text) {
-			setValue(support.readValue(text, type));
+			setValue(support.readValue(text, this.type));
 		}
 
 	}

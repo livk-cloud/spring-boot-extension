@@ -49,7 +49,7 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 		super(registry, false);
 		this.beanNameGenerator = beanNameGenerator;
-		addIncludeFilter(new AnnotationTypeFilter(annotationClass));
+		addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));
 	}
 
 	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
@@ -67,7 +67,7 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 			for (BeanDefinition candidateComponent : candidateComponents) {
 				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
 					AnnotationAttributes attributes = AnnotationFinder
-						.attributesFor(scannedGenericBeanDefinition.getMetadata(), annotationClass);
+						.attributesFor(scannedGenericBeanDefinition.getMetadata(), this.annotationClass);
 					BeanDefinitionHolder holder = generateHolder(attributes, candidateComponent, registry);
 					if (holder != null) {
 						beanDefinitions.add(holder);

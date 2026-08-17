@@ -55,7 +55,7 @@ public class QrCodeMethodArgumentResolver implements HandlerMethodArgumentResolv
 		if (Objects.nonNull(qrCodeText) && Objects.nonNull(request)) {
 			if (this.canRead(request)) {
 				HttpInputMessage part = new RequestPartServletServerHttpRequest(request, qrCodeText.fileName());
-				return codeManager.parser(part.getBody());
+				return this.codeManager.parser(part.getBody());
 			}
 		}
 		throw new IllegalArgumentException(

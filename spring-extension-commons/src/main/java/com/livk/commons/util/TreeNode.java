@@ -115,8 +115,8 @@ public class TreeNode<I, T> {
 		if (this.id != null && this.id.equals(id)) {
 			return this;
 		}
-		if (!CollectionUtils.isEmpty(children)) {
-			for (TreeNode<I, T> child : children) {
+		if (!CollectionUtils.isEmpty(this.children)) {
+			for (TreeNode<I, T> child : this.children) {
 				TreeNode<I, T> treeNo = child.findById(id);
 				if (treeNo != null) {
 					return treeNo;

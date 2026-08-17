@@ -73,7 +73,7 @@ class DefaultRangeSequence implements Sequence {
 	@Override
 	public long nextValue() {
 		while (true) {
-			SequenceRange range = currentRange;
+			SequenceRange range = this.currentRange;
 			// 如果没有区间或已用尽，则加锁重新获取
 			if (range == null || range.isOver()) {
 				refreshRange();
@@ -88,17 +88,17 @@ class DefaultRangeSequence implements Sequence {
 	}
 
 	private void refreshRange() {
-		lock.lock();
+		this.lock.lock();
 		try {
-			if (currentRange == null || currentRange.isOver()) {
-				currentRange = manager.nextRange(name, step, stepStart);
+			if (this.currentRange == null || this.currentRange.isOver()) {
+				this.currentRange = this.manager.nextRange(this.name, this.step, this.stepStart);
 			}
 		}
 		catch (Exception ex) {
-			throw new SequenceException("Failed to acquire new range for name: " + name, ex);
+			throw new SequenceException("Failed to acquire new range for name: " + this.name, ex);
 		}
 		finally {
-			lock.unlock();
+			this.lock.unlock();
 		}
 	}
 

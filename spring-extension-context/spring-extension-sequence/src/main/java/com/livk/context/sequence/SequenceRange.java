@@ -57,8 +57,8 @@ public final class SequenceRange {
 	 * @return 下一个序列号，如果返回-1表示序列号分配完毕
 	 */
 	public long next() {
-		long current = value.getAndIncrement();
-		return current <= max ? current : -1;
+		long current = this.value.getAndIncrement();
+		return current <= this.max ? current : -1;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public final class SequenceRange {
 	 * @return true表示区间已分配完毕
 	 */
 	public boolean isOver() {
-		return value.get() > max;
+		return this.value.get() > this.max;
 	}
 
 }

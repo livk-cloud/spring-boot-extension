@@ -78,7 +78,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 			ServerHttpResponse response = exchange.getResponse();
 			setResponse(responseExcel, response);
 			ResolvableType returnType = result.getReturnType();
-			ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+			ReactiveAdapter adapter = this.adapterRegistry.getAdapter(returnType.resolve(), returnValue);
 			if (this.canWrite(returnType)) {
 				Publisher<?> inputStream = adapter != null ? (Publisher<?>) returnValue : Mono.just(returnValue);
 				if (inputStream instanceof Flux<?> flux) {

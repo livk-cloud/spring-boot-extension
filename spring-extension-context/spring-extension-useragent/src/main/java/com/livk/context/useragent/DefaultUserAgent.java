@@ -66,8 +66,8 @@ record DefaultUserAgent(String userAgentStr, String browser, String browserType,
 		 */
 		@Override
 		public UserAgent build() {
-			return new DefaultUserAgent(userAgentStr, browser, browserType, browserVersion, os, osVersion, deviceType,
-					deviceName, deviceBrand);
+			return new DefaultUserAgent(this.userAgentStr, this.browser, this.browserType, this.browserVersion, this.os,
+					this.osVersion, this.deviceType, this.deviceName, this.deviceBrand);
 		}
 
 	}

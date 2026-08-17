@@ -37,7 +37,7 @@ public class ReactiveUserAgentFilter implements WebFilter {
 
 	@Override
 	public final @NonNull Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		UserAgent userAgent = userAgentDelegate.convert(exchange.getRequest().getHeaders());
+		UserAgent userAgent = this.userAgentDelegate.convert(exchange.getRequest().getHeaders());
 		return chain.filter(exchange).contextWrite(ReactiveUserAgentContextHolder.withContext(userAgent));
 	}
 

@@ -71,7 +71,7 @@ public abstract class QrCodeSupport {
 	 */
 	protected BufferedImage toBufferedImage(Object returnValue, AnnotationAttributes attributes) {
 		if (returnValue instanceof QrCodeEntity<?> entity) {
-			return qrCodeManager.generate(entity);
+			return this.qrCodeManager.generate(entity);
 		}
 		else {
 			QrCodeEntity<?> entity = QrCodeEntity.builder(returnValue)
@@ -81,7 +81,7 @@ public abstract class QrCodeSupport {
 				.offColor(attributes.getNumber("offColor").intValue())
 				.type(attributes.getEnum("type"))
 				.build();
-			return qrCodeManager.generate(entity);
+			return this.qrCodeManager.generate(entity);
 		}
 	}
 

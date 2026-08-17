@@ -34,7 +34,7 @@ public class BrowscapUserAgentConverter extends AbstractUserAgentConverter<Capab
 
 	@Override
 	protected Capabilities create(String useragent) {
-		return userAgentParser.parse(useragent);
+		return this.userAgentParser.parse(useragent);
 	}
 
 	@Override

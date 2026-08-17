@@ -38,7 +38,7 @@ public class ServiceFunctionLoader implements FunctionLoader {
 
 	@Override
 	public AviatorFunction onFunctionNotFound(String name) {
-		return functions.get(name);
+		return this.functions.get(name);
 	}
 
 	public void load() {

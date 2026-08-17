@@ -45,9 +45,9 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 
 	@Override
 	public final @NonNull Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
-		Assert.notNull(annotationType, "annotationType must not be null");
+		Assert.notNull(this.annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
-		AnnotationTarget<A> target = AnnotationTarget.of(annotationType);
+		AnnotationTarget<A> target = AnnotationTarget.of(this.annotationType);
 		A annotation = target.getAnnotation(method);
 		if (annotation == null && invocation.getThis() != null) {
 			annotation = target.getAnnotation(invocation.getThis().getClass());

@@ -54,7 +54,7 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 	@Override
 	protected Template compile(String value) {
 		try {
-			return new Template(TEMPLATE_NAME, value, configuration);
+			return new Template(TEMPLATE_NAME, value, this.configuration);
 		}
 		catch (IOException ex) {
 			throw new IllegalArgumentException(ex);

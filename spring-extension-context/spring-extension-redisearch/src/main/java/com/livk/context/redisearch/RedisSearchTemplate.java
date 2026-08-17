@@ -63,21 +63,21 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	@SuppressWarnings("unchecked")
 	@Override
 	public final void afterPropertiesSet() {
-		if (redisCodec == null) {
-			redisCodec = (RedisCodec<K, V>) RedisSearchCodecs.jdk();
+		if (this.redisCodec == null) {
+			this.redisCodec = (RedisCodec<K, V>) RedisSearchCodecs.jdk();
 		}
-		Supplier<StatefulRedisModulesConnection<K, V>> supplier = () -> factory.connect(redisCodec);
+		Supplier<StatefulRedisModulesConnection<K, V>> supplier = () -> this.factory.connect(this.redisCodec);
 		this.delegate = ConnectionPoolSupport.createGenericObjectPool(supplier, getPoolConfig());
 	}
 
 	private StatefulRedisModulesConnection<K, V> borrowObject() throws Exception {
-		Assert.notNull(delegate, "GenericObjectPool must not be null, call afterPropertiesSet");
-		return delegate.borrowObject();
+		Assert.notNull(this.delegate, "GenericObjectPool must not be null, call afterPropertiesSet");
+		return this.delegate.borrowObject();
 	}
 
 	private GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> getPoolConfig() {
-		if (poolConfig != null) {
-			return poolConfig;
+		if (this.poolConfig != null) {
+			return this.poolConfig;
 		}
 		return new GenericObjectPoolConfig<>();
 	}

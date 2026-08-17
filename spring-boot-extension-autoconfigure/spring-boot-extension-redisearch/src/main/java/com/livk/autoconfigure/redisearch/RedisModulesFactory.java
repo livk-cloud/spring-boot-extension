@@ -43,22 +43,22 @@ class RedisModulesFactory {
 	private final PropertyMapper mapper = PropertyMapper.get();
 
 	public final AbstractRedisClient getClient(ClientResources clientResources) {
-		if (properties.getCluster() != null && properties.getCluster().getEnabled()) {
-			List<RedisURI> clusterNodes = properties.getCluster()
+		if (this.properties.getCluster() != null && this.properties.getCluster().getEnabled()) {
+			List<RedisURI> clusterNodes = this.properties.getCluster()
 				.getNodes()
 				.stream()
 				.map(this::createRedisURI)
 				.toList();
 			RedisModulesClusterClient clusterClient = RedisModulesClusterClient.create(clientResources, clusterNodes);
 			ClusterClientOptions.Builder builder = ((ClusterClientOptions) clusterClient.getOptions()).mutate();
-			mapper.from(properties::getCluster)
+			this.mapper.from(this.properties::getCluster)
 				.as(RediSearchProperties.Cluster::getMaxRedirects)
 				.to(builder::maxRedirects);
 			clusterClient.setOptions(builder.build());
 			return clusterClient;
 		}
 		else {
-			RedisURI standaloneNode = createRedisURI(properties.getHost(), properties.getPort());
+			RedisURI standaloneNode = createRedisURI(this.properties.getHost(), this.properties.getPort());
 			return RedisModulesClient.create(clientResources, standaloneNode);
 		}
 	}
@@ -75,24 +75,25 @@ class RedisModulesFactory {
 
 	private RedisURI createRedisURI(Node node) {
 		RedisURI.Builder builder = RedisURI.builder().withHost(node.host).withPort(node.port);
-		mapper.from(properties::getSsl).to(builder::withSsl);
+		this.mapper.from(this.properties::getSsl).to(builder::withSsl);
 		RedisURI redisURI = builder.build();
-		RedisCredentials credentials = RedisCredentials.just(properties.getUsername(), properties.getPassword());
-		mapper.from(credentials).as(StaticCredentialsProvider::new).to(redisURI::setCredentialsProvider);
-		mapper.from(properties::getDatabase).to(redisURI::setDatabase);
-		mapper.from(properties::getTimeout).to(redisURI::setTimeout);
-		mapper.from(properties::getClientName).to(redisURI::setClientName);
+		RedisCredentials credentials = RedisCredentials.just(this.properties.getUsername(),
+				this.properties.getPassword());
+		this.mapper.from(credentials).as(StaticCredentialsProvider::new).to(redisURI::setCredentialsProvider);
+		this.mapper.from(this.properties::getDatabase).to(redisURI::setDatabase);
+		this.mapper.from(this.properties::getTimeout).to(redisURI::setTimeout);
+		this.mapper.from(this.properties::getClientName).to(redisURI::setClientName);
 		return redisURI;
 	}
 
 	public <T> GenericObjectPoolConfig<T> getPoolConfig() {
 		GenericObjectPoolConfig<T> config = new GenericObjectPoolConfig<>();
 		config.setJmxEnabled(false);
-		RediSearchProperties.Pool pool = properties.getPool();
-		mapper.from(pool::getMaxActive).to(config::setMaxTotal);
-		mapper.from(pool::getMaxIdle).to(config::setMaxIdle);
-		mapper.from(pool::getMinIdle).to(config::setMinIdle);
-		mapper.from(pool::getMaxWait).to(config::setMaxWait);
+		RediSearchProperties.Pool pool = this.properties.getPool();
+		this.mapper.from(pool::getMaxActive).to(config::setMaxTotal);
+		this.mapper.from(pool::getMaxIdle).to(config::setMaxIdle);
+		this.mapper.from(pool::getMinIdle).to(config::setMinIdle);
+		this.mapper.from(pool::getMaxWait).to(config::setMaxWait);
 		return config;
 	}
 

@@ -61,11 +61,11 @@ final class AnnotationTarget<A extends Annotation> {
 	}
 
 	public A getAnnotation(Method method) {
-		return supports(ElementType.METHOD) ? AnnotationUtils.getAnnotation(method, annotationType) : null;
+		return supports(ElementType.METHOD) ? AnnotationUtils.getAnnotation(method, this.annotationType) : null;
 	}
 
 	public A getAnnotation(Class<?> clazz) {
-		return supports(ElementType.TYPE) ? AnnotationUtils.getAnnotation(clazz, annotationType) : null;
+		return supports(ElementType.TYPE) ? AnnotationUtils.getAnnotation(clazz, this.annotationType) : null;
 	}
 
 	/**
@@ -74,7 +74,7 @@ final class AnnotationTarget<A extends Annotation> {
 	 * @return true if the element type is supported
 	 */
 	boolean supports(ElementType elementType) {
-		return elementTypes.contains(elementType);
+		return this.elementTypes.contains(elementType);
 	}
 
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)

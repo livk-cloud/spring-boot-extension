@@ -55,7 +55,7 @@ public enum ZkLockType implements LockProcess {
 
 	@Override
 	public InterProcessLock getLock(CuratorFramework framework, String path) {
-		return delegate.getLock(framework, path);
+		return this.delegate.getLock(framework, path);
 	}
 
 	public static InterProcessMultiLock multiLock(List<InterProcessLock> locks) {

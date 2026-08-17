@@ -53,7 +53,7 @@ public class RedissonLimitExecutor extends WebRequestReentrantLimitExecutor impl
 		if (!StringUtils.hasText(compositeKey)) {
 			throw new LimitException("Composite key must not be null or empty");
 		}
-		RRateLimiter limiter = limiterCache.computeIfAbsent(compositeKey, redissonClient::getRateLimiter);
+		RRateLimiter limiter = this.limiterCache.computeIfAbsent(compositeKey, this.redissonClient::getRateLimiter);
 		// 幂等设置，失败也不影响后续 acquire
 		if (!limiter.trySetRate(RateType.OVERALL, rate, rateInterval)) {
 			log.debug("RateLimiter trySetRate failed, compositeKey: {}", compositeKey);

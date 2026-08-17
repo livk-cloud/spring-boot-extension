@@ -73,7 +73,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 		Object returnValue = result.getReturnValue();
 		ServerHttpResponse response = exchange.getResponse();
 		ResolvableType returnType = result.getReturnType();
-		ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+		ReactiveAdapter adapter = this.adapterRegistry.getAdapter(returnType.resolve(), returnValue);
 		if (adapter != null) {
 			if (Mono.class.isAssignableFrom(returnType.toClass())) {
 				Mono<?> mono = (Mono<?>) returnValue;

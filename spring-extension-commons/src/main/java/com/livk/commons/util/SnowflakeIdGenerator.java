@@ -79,29 +79,29 @@ public class SnowflakeIdGenerator {
 	public synchronized long nextId() {
 		long currentTimestamp = System.currentTimeMillis();
 
-		if (currentTimestamp < lastTimestamp) {
+		if (currentTimestamp < this.lastTimestamp) {
 			// 时间回拨，建议重试而不是抛出异常
-			currentTimestamp = waitForNextMillisecond(lastTimestamp);
+			currentTimestamp = waitForNextMillisecond(this.lastTimestamp);
 		}
 
-		if (currentTimestamp == lastTimestamp) {
+		if (currentTimestamp == this.lastTimestamp) {
 			// 同一毫秒内
-			sequence = (sequence + 1) & MAX_SEQUENCE;
-			if (sequence == 0L) {
+			this.sequence = (this.sequence + 1) & MAX_SEQUENCE;
+			if (this.sequence == 0L) {
 				// 序列号溢出，阻塞到下一毫秒
-				currentTimestamp = getNextMillisecond(lastTimestamp);
+				currentTimestamp = getNextMillisecond(this.lastTimestamp);
 			}
 		}
 		else {
 			// 不同毫秒，重置序列号
-			sequence = 0L;
+			this.sequence = 0L;
 		}
 
-		lastTimestamp = currentTimestamp;
+		this.lastTimestamp = currentTimestamp;
 
 		// 组合生成 ID
-		return ((currentTimestamp - START_TIMESTAMP) << TIMESTAMP_SHIFT) | (dataCenterId << DATA_CENTER_SHIFT)
-				| (machineId << MACHINE_SHIFT) | sequence;
+		return ((currentTimestamp - START_TIMESTAMP) << TIMESTAMP_SHIFT) | (this.dataCenterId << DATA_CENTER_SHIFT)
+				| (this.machineId << MACHINE_SHIFT) | this.sequence;
 	}
 
 	/**

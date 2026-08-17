@@ -42,32 +42,33 @@ public class CuratorTemplate implements CuratorOperations {
 
 	@Override
 	public String createNode(String path, byte[] data) {
-		return forPath(framework.create().creatingParentsIfNeeded(), path, data);
+		return forPath(this.framework.create().creatingParentsIfNeeded(), path, data);
 	}
 
 	@Override
 	public byte[] getNode(String path) {
-		return forPath(framework.getData(), path);
+		return forPath(this.framework.getData(), path);
 	}
 
 	@Override
 	public String createTypeNode(CreateMode nodeType, String path, byte[] data) {
-		return forPath(framework.create().creatingParentsIfNeeded().withMode(nodeType), path, data);
+		return forPath(this.framework.create().creatingParentsIfNeeded().withMode(nodeType), path, data);
 	}
 
 	@Override
 	public String createTypeSeqNode(CreateMode nodeType, String path, byte[] data) {
-		return forPath(framework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType), path, data);
+		return forPath(this.framework.create().creatingParentsIfNeeded().withProtection().withMode(nodeType), path,
+				data);
 	}
 
 	@Override
 	public Stat setData(String path, byte[] data) {
-		return forPath(framework.setData(), path, data);
+		return forPath(this.framework.setData(), path, data);
 	}
 
 	@Override
 	public Stat setDataAsync(String path, byte[] data, CuratorListener listener) {
-		framework.getCuratorListenable().addListener(listener);
+		this.framework.getCuratorListenable().addListener(listener);
 		return setDataAsync(path, data);
 	}
 
@@ -78,27 +79,27 @@ public class CuratorTemplate implements CuratorOperations {
 	 * @return the data async @ the exception
 	 */
 	public Stat setDataAsync(String path, byte[] data) {
-		return forPath(framework.setData().inBackground(), path, data);
+		return forPath(this.framework.setData().inBackground(), path, data);
 	}
 
 	@Override
 	public void deleteNode(String path) {
-		forPath(framework.delete().deletingChildrenIfNeeded(), path);
+		forPath(this.framework.delete().deletingChildrenIfNeeded(), path);
 	}
 
 	@Override
 	public List<String> watchedGetChildren(String path) {
-		return forPath(framework.getChildren().watched(), path);
+		return forPath(this.framework.getChildren().watched(), path);
 	}
 
 	@Override
 	public List<String> watchedGetChildren(String path, Watcher watcher) {
-		return forPath(framework.getChildren().usingWatcher(watcher), path);
+		return forPath(this.framework.getChildren().usingWatcher(watcher), path);
 	}
 
 	@Override
 	public InterProcessLock getLock(String path, ZkLockType type) {
-		return type.getLock(framework, path);
+		return type.getLock(this.framework, path);
 	}
 
 	@Override
@@ -114,8 +115,8 @@ public class CuratorTemplate implements CuratorOperations {
 
 	@Override
 	public void close() {
-		if (framework.getState() == CuratorFrameworkState.STARTED) {
-			framework.close();
+		if (this.framework.getState() == CuratorFrameworkState.STARTED) {
+			this.framework.close();
 		}
 	}
 

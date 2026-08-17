@@ -17,6 +17,7 @@
 package com.livk.commons.annotation;
 
 import com.livk.commons.util.TypeUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -56,26 +57,28 @@ public abstract class SpringAbstractImportSelector<A extends Annotation> extends
 	}
 
 	@Override
-	protected Class<A> getAnnotationClass() {
-		return annotationClass;
+	protected @NonNull Class<A> getAnnotationClass() {
+		return this.annotationClass;
 	}
 
 	@Override
-	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-		List<String> configurations = ImportCandidates.load(annotationClass, getBeanClassLoader()).getCandidates();
+	protected @NonNull List<String> getCandidateConfigurations(@NonNull AnnotationMetadata metadata,
+			AnnotationAttributes attributes) {
+		List<String> configurations = ImportCandidates.load(this.annotationClass, getBeanClassLoader()).getCandidates();
 		Assert.notEmpty(configurations,
-				"No auto configuration classes found in META-INF/spring/" + annotationClass.getName()
+				"No auto configuration classes found in META-INF/spring/" + this.annotationClass.getName()
 						+ ".imports. If you are using a custom packaging, make sure that file is correct.");
 		return configurations;
 	}
 
 	@Override
-	protected List<String> getExcludeAutoConfigurationsProperty() {
+	protected @NonNull List<String> getExcludeAutoConfigurationsProperty() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	protected Set<String> getExclusions(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+	protected @NonNull Set<String> getExclusions(@NonNull AnnotationMetadata metadata,
+			AnnotationAttributes attributes) {
 		return Collections.emptySet();
 	}
 

@@ -107,8 +107,8 @@ public final class MultiValueMapSplitter {
 	 */
 	public MultiValueMap<String, String> split(CharSequence sequence, String regex) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-		for (String entry : outerSplitter.split(sequence)) {
-			Iterator<String> entryFields = entrySplitter.split(entry).iterator();
+		for (String entry : this.outerSplitter.split(sequence)) {
+			Iterator<String> entryFields = this.entrySplitter.split(entry).iterator();
 
 			Preconditions.checkArgument(entryFields.hasNext(), INVALID_ENTRY_MESSAGE, entry);
 			String key = entryFields.next();

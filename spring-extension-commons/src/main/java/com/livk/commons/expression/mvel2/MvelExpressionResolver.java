@@ -61,7 +61,7 @@ public class MvelExpressionResolver extends CacheExpressionResolver<VariableReso
 
 	@Override
 	protected <T> T calculate(String expression, VariableResolverFactory context, Class<T> returnType) {
-		MVELInterpretedRuntime runtime = new MVELInterpretedRuntime(expression, null, context, parserContext);
+		MVELInterpretedRuntime runtime = new MVELInterpretedRuntime(expression, null, context, this.parserContext);
 		return DataConversion.convert(runtime.parse(), returnType);
 	}
 

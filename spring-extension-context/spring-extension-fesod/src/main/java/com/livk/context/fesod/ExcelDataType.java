@@ -60,7 +60,7 @@ public enum ExcelDataType {
 	}
 
 	public Class<?> apply(ResolvableType type) {
-		return function.apply(type);
+		return this.function.apply(type);
 	}
 
 }

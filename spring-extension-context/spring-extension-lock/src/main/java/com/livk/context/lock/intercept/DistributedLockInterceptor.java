@@ -49,10 +49,12 @@ public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrate
 	@Override
 	protected Object doInvoke(MethodInvocation invocation, DistLock lock) throws Throwable {
 		Assert.notNull(lock, "lock is null");
-		DistributedLock distributedLock = distributedLockProvider.orderedStream()
+		DistributedLock distributedLock = this.distributedLockProvider.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistributedLock.class));
-		String key = resolver.resolve(lock.key()).method(invocation.getMethod(), invocation.getArguments()).evaluate();
+		String key = this.resolver.resolve(lock.key())
+			.method(invocation.getMethod(), invocation.getArguments())
+			.evaluate();
 		boolean isLock = distributedLock.lock(key)
 			.type(lock.type())
 			.leaseTime(lock.leaseTime())

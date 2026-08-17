@@ -55,8 +55,8 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 
 	@Override
 	public boolean tryAdvance(Consumer<? super T> action) {
-		if (enumeration.hasMoreElements()) {
-			action.accept(enumeration.nextElement());
+		if (this.enumeration.hasMoreElements()) {
+			action.accept(this.enumeration.nextElement());
 			return true;
 		}
 		return false;
@@ -64,8 +64,8 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 
 	@Override
 	public void forEachRemaining(Consumer<? super T> action) {
-		while (enumeration.hasMoreElements()) {
-			action.accept(enumeration.nextElement());
+		while (this.enumeration.hasMoreElements()) {
+			action.accept(this.enumeration.nextElement());
 		}
 	}
 

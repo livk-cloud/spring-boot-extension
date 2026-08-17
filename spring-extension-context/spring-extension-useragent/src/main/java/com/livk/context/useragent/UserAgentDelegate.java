@@ -57,7 +57,7 @@ public class UserAgentDelegate implements ApplicationContextAware {
 			synchronized (this) {
 				result = this.converters;
 				if (result == null) {
-					result = applicationContext.getBeanProvider(UserAgentConverter.class).orderedStream().toList();
+					result = this.applicationContext.getBeanProvider(UserAgentConverter.class).orderedStream().toList();
 					this.converters = result;
 				}
 			}

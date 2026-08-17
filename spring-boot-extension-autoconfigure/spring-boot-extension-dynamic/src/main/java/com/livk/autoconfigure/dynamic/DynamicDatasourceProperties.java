@@ -48,14 +48,14 @@ public class DynamicDatasourceProperties implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		if (CollectionUtils.isEmpty(datasource)) {
+		if (CollectionUtils.isEmpty(this.datasource)) {
 			throw new PrimaryNotFountException("The 'datasource' configuration is missing!");
 		}
-		if (StringUtils.hasText(primary)) {
-			if (!datasource.containsKey(primary)) {
+		if (StringUtils.hasText(this.primary)) {
+			if (!this.datasource.containsKey(this.primary)) {
 				throw new PrimaryNotFountException(
-						primary + "The data source does not exist!\\nThe current data source does not exist:"
-								+ datasource.keySet());
+						this.primary + "The data source does not exist!\\nThe current data source does not exist:"
+								+ this.datasource.keySet());
 			}
 		}
 		else {

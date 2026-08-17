@@ -55,7 +55,7 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 	public @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
 			@NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+		ReactiveAdapter adapter = (resolvedType != null ? this.adapterRegistry.getAdapter(resolvedType) : null);
 		RequestExcel requestExcel = parameter.getMethodAnnotation(RequestExcel.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);

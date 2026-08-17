@@ -16,6 +16,7 @@
 
 package com.livk.commons.annotation;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.ClassUtils;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -37,7 +38,8 @@ import java.util.Set;
 class AutoImportSelector extends SpringAbstractImportSelector<AutoImport> {
 
 	@Override
-	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
+	protected @NonNull List<String> getCandidateConfigurations(@NonNull AnnotationMetadata metadata,
+			AnnotationAttributes attributes) {
 		Set<String> names = new HashSet<>();
 		for (String annotationType : metadata.getAnnotationTypes()) {
 			Class<?> type = ClassUtils.resolveClassName(annotationType, getBeanClassLoader());

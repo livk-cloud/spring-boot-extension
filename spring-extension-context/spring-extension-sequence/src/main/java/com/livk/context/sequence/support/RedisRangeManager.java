@@ -44,8 +44,8 @@ public class RedisRangeManager extends AbstractRangeManager {
 	@Override
 	public SequenceRange buildNextRange(String name, int step, long stepStart) {
 		byte[] realKey = getRealKey(name);
-		helper.setNx(realKey, stepStart);
-		Long max = helper.incrBy(realKey, step);
+		this.helper.setNx(realKey, stepStart);
+		Long max = this.helper.incrBy(realKey, step);
 		if (max == null) {
 			throw new SequenceException("Failed to increment sequence for: " + name);
 		}

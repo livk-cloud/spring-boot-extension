@@ -37,18 +37,18 @@ final class DefaultRedisSearchConnectionFactory implements RedisSearchConnection
 
 	@Override
 	public <K, V> StatefulRedisModulesConnection<K, V> connect(RedisCodec<K, V> codec) {
-		if (client instanceof RedisModulesClient modulesClient) {
+		if (this.client instanceof RedisModulesClient modulesClient) {
 			return modulesClient.connect(codec);
 		}
-		else if (client instanceof RedisModulesClusterClient clusterClient) {
+		else if (this.client instanceof RedisModulesClusterClient clusterClient) {
 			return clusterClient.connect(codec);
 		}
-		throw new IllegalStateException("Unsupported client type: " + client.getClass().getName());
+		throw new IllegalStateException("Unsupported client type: " + this.client.getClass().getName());
 	}
 
 	@Override
 	public void close() {
-		client.close();
+		this.client.close();
 	}
 
 }

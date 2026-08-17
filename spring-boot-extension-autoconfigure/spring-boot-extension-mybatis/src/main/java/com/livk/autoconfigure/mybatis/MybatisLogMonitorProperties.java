@@ -40,7 +40,7 @@ public class MybatisLogMonitorProperties {
 
 	public Properties properties() {
 		Properties properties = new Properties();
-		properties.put("timeOut", timeOut);
+		properties.put("timeOut", this.timeOut);
 		return properties;
 	}
 

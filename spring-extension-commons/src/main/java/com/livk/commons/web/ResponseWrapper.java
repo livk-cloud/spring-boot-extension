@@ -75,7 +75,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 			Writer targetWriter = new OutputStreamWriter(this.buffer, getCharacterEncoding());
 			this.writer = new PrintWriter(targetWriter);
 		}
-		return writer;
+		return this.writer;
 	}
 
 	@Override

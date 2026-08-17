@@ -42,9 +42,9 @@ public class CuratorLock extends AbstractLockSupport<InterProcessLock> {
 			key = "/".concat(key);
 		}
 		return switch (type) {
-			case LOCK, FAIR -> new InterProcessMutex(framework, key);
-			case READ -> new InterProcessReadWriteLock(framework, key).readLock();
-			case WRITE -> new InterProcessReadWriteLock(framework, key).writeLock();
+			case LOCK, FAIR -> new InterProcessMutex(this.framework, key);
+			case READ -> new InterProcessReadWriteLock(this.framework, key).readLock();
+			case WRITE -> new InterProcessReadWriteLock(this.framework, key).writeLock();
 		};
 	}
 

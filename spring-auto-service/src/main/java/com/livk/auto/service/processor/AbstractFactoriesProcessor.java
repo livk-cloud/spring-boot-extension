@@ -48,12 +48,12 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 
 	@Override
 	protected void generateConfigFiles() {
-		if (!processorMap.isEmpty()) {
+		if (!this.processorMap.isEmpty()) {
 			Multimap<String, String> allImportMap = this.readFromResource();
 			if (!allImportMap.isEmpty()) {
 				log("Existing service entries: " + allImportMap);
 			}
-			for (Map.Entry<String, String> entry : processorMap.entries()) {
+			for (Map.Entry<String, String> entry : this.processorMap.entries()) {
 				allImportMap.put(entry.getKey(), entry.getValue());
 			}
 			this.writeFile(allImportMap.asMap());
@@ -64,7 +64,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	protected Set<TypeElement> elseElement(Element element) {
 		if (element instanceof TypeElement typeElement) {
 			List<? extends TypeMirror> interfaces = typeElement.getInterfaces();
-			if (interfaces != null && interfaces.size() == 1) {
+			if (interfaces.size() == 1) {
 				return Set.of(MoreTypes.asTypeElement(interfaces.getFirst()));
 			}
 			return Set.of(MoreTypes.asTypeElement(typeElement.getSuperclass()));
@@ -78,7 +78,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	 */
 	private Multimap<String, String> readFromResource() {
 		try {
-			FileObject resource = filer.getResource(resourcesPath, "", location);
+			FileObject resource = filer.getResource(resourcesPath, "", this.location);
 			log("Looking for existing resource file at " + resource.toUri());
 			try (BufferedReader reader = bufferedReader(resource)) {
 				Properties properties = new Properties();
@@ -93,7 +93,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 			}
 		}
 		catch (Exception ex) {
-			log("Warning: Unable to read " + location + ", " + ex);
+			log("Warning: Unable to read " + this.location + ", " + ex);
 			return LinkedHashMultimap.create();
 		}
 	}
@@ -104,7 +104,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	 */
 	private void writeFile(Map<String, ? extends Collection<String>> allImportMap) {
 		try {
-			FileObject fileObject = filer.createResource(resourcesPath, "", location);
+			FileObject fileObject = filer.createResource(resourcesPath, "", this.location);
 			try (BufferedWriter writer = bufferedWriter(fileObject)) {
 				for (Map.Entry<String, ? extends Collection<String>> entry : allImportMap.entrySet()) {
 					String providerInterface = entry.getKey();
@@ -127,7 +127,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 			}
 		}
 		catch (IOException ex) {
-			fatalError("Unable to create " + location + ", " + ex);
+			fatalError("Unable to create " + this.location + ", " + ex);
 		}
 	}
 

@@ -73,7 +73,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 
 	@Override
 	public int hashCode() {
-		return methodResolver.hashCode();
+		return this.methodResolver.hashCode();
 	}
 
 	private static final class AnnotationClassOrMethodFilter extends AnnotationClassFilter {
@@ -119,7 +119,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 				if (found.get()) {
 					return;
 				}
-				Annotation annotation = AnnotationUtils.findAnnotation(method, annotationType);
+				Annotation annotation = AnnotationUtils.findAnnotation(method, this.annotationType);
 				if (annotation != null) {
 					found.set(true);
 				}

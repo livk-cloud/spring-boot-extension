@@ -51,10 +51,10 @@ public class ReactiveUserAgentResolver implements HandlerMethodArgumentResolver 
 	public final @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
 			@NonNull BindingContext bindingContext, ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+		ReactiveAdapter adapter = (resolvedType != null ? this.adapterRegistry.getAdapter(resolvedType) : null);
 
 		Mono<UserAgent> mono = ReactiveUserAgentContextHolder.get()
-			.switchIfEmpty(Mono.justOrEmpty(userAgentDelegate.convert(exchange.getRequest().getHeaders())));
+			.switchIfEmpty(Mono.justOrEmpty(this.userAgentDelegate.convert(exchange.getRequest().getHeaders())));
 		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
 	}
 

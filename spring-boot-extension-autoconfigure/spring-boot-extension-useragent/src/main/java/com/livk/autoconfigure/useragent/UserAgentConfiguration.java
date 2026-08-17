@@ -71,7 +71,7 @@ public class UserAgentConfiguration {
 		@Bean
 		public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
 			FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
-			registrationBean.setFilter(new UserAgentFilter(userAgentDelegate));
+			registrationBean.setFilter(new UserAgentFilter(this.userAgentDelegate));
 			registrationBean.addUrlPatterns("/*");
 			registrationBean.setName("userAgentFilter");
 			registrationBean.setOrder(1);
@@ -80,7 +80,7 @@ public class UserAgentConfiguration {
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-			resolvers.add(new UserAgentResolver(userAgentDelegate));
+			resolvers.add(new UserAgentResolver(this.userAgentDelegate));
 		}
 
 	}
@@ -101,12 +101,12 @@ public class UserAgentConfiguration {
 		 */
 		@Bean
 		public ReactiveUserAgentFilter reactiveUserAgentFilter() {
-			return new ReactiveUserAgentFilter(userAgentDelegate);
+			return new ReactiveUserAgentFilter(this.userAgentDelegate);
 		}
 
 		@Override
 		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-			configurer.addCustomResolver(new ReactiveUserAgentResolver(userAgentDelegate));
+			configurer.addCustomResolver(new ReactiveUserAgentResolver(this.userAgentDelegate));
 		}
 
 	}

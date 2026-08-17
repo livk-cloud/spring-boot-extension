@@ -43,10 +43,11 @@ final class BeanLambdaDescriptor {
 	}
 
 	private PropertyDescriptor getPropertyDescriptor() {
-		Class<?> type = method.getDeclaringClass();
-		PropertyDescriptor propertyDescriptor = org.springframework.beans.BeanUtils.findPropertyForMethod(method, type);
+		Class<?> type = this.method.getDeclaringClass();
+		PropertyDescriptor propertyDescriptor = org.springframework.beans.BeanUtils.findPropertyForMethod(this.method,
+				type);
 		if (propertyDescriptor == null) {
-			throw new IllegalStateException("No PropertyDescriptor found for method: " + method);
+			throw new IllegalStateException("No PropertyDescriptor found for method: " + this.method);
 		}
 		return propertyDescriptor;
 	}
@@ -94,7 +95,7 @@ final class BeanLambdaDescriptor {
 		PropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 		String fieldName = propertyDescriptor.getName();
 		Class<?> fieldType = propertyDescriptor.getPropertyType();
-		Class<?> type = method.getDeclaringClass();
+		Class<?> type = this.method.getDeclaringClass();
 		Field field = org.springframework.util.ReflectionUtils.findField(type, fieldName, fieldType);
 		Assert.notNull(field, "Field '" + fieldName + "' of type '" + fieldType.getName() + "' not found on class: "
 				+ type.getName());
@@ -102,7 +103,7 @@ final class BeanLambdaDescriptor {
 	}
 
 	public String getMethodName() {
-		return method.getName();
+		return this.method.getName();
 	}
 
 }

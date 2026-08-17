@@ -46,7 +46,7 @@ class DefaultContextFactory implements ContextFactory {
 	@Override
 	public Context create(Method method, Object[] args) {
 		Assert.notNull(method, "Method must not be null");
-		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, discoverer::getParameterNames);
+		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, this.discoverer::getParameterNames);
 		if (ObjectUtils.isEmpty(parameterNames)) {
 			return Context.create();
 		}
