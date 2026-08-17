@@ -20,7 +20,7 @@ import lombok.experimental.UtilityClass;
 
 /**
  * <p>
- * 常用Object相关工具类
+ * 常用Object相关工具类.
  * </p>
  *
  * @author livk

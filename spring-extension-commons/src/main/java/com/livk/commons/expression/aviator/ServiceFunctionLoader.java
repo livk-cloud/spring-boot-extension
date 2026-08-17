@@ -24,6 +24,8 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * FunctionLoader that loads AviatorFunction via ServiceLoader.
+ *
  * @author livk
  */
 public class ServiceFunctionLoader implements FunctionLoader {

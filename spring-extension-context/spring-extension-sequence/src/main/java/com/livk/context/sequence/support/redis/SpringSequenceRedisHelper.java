@@ -22,6 +22,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * The Spring Sequence Redis Helper.
+ *
  * @author livk
  */
 public class SpringSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {

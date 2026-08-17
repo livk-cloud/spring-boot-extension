@@ -33,7 +33,7 @@ import java.util.Map;
  * Context context = Context.create()
  *     .put("username", "livk")
  *     .put("password", "123456");
- * }</pre>
+ * }</pre>.
  *
  * @author livk
  * @see ContextFactory

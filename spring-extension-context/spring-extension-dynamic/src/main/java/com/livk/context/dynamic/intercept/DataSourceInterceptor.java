@@ -22,6 +22,8 @@ import com.livk.context.dynamic.annotation.DynamicSource;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
+ * The Data Source Interceptor.
+ *
  * @author livk
  */
 public class DataSourceInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<DynamicSource> {

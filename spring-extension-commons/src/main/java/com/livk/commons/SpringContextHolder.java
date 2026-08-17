@@ -52,9 +52,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * <p>
- * spring context静态操作工具
- * </p>
+ * Static utility for accessing the Spring application context.
  *
  * @author livk
  */
@@ -64,14 +62,15 @@ import java.util.Map;
 public class SpringContextHolder implements BeanFactoryAware, ApplicationContextAware, DisposableBean {
 
 	/**
-	 * SpringContextHolder bean name
+	 * SpringContextHolder bean name.
 	 */
 	public static final String BEAN_NAME = "com.livk.commons.SpringContextHolder";
 
 	private static final SpringIoC IOC = new SpringIoC();
 
 	/**
-	 * Spring事件发布
+	 * Publishes a Spring application event.
+	 * @param <E> the event type
 	 * @param event 事件
 	 */
 	public static <E extends ApplicationEvent> void publishEvent(E event) {
@@ -79,7 +78,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据BeanName获取Bean
+	 * Gets a bean by name.
 	 * @param <T> 泛型
 	 * @param name beanName
 	 * @return spring bean
@@ -90,7 +89,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据Bean Type获取Bean
+	 * Gets a bean by type.
 	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean
@@ -100,7 +99,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据BeanName和Bean Type获取Bean
+	 * Gets a bean by name and type.
 	 * @param <T> 泛型
 	 * @param name beanName
 	 * @param typeClass 类型
@@ -111,9 +110,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据Bean Type获取到ObjectFactory
-	 * <p>
-	 * 可用于延时加载
+	 * Gets an ObjectProvider by type for lazy loading.
 	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean provider
@@ -123,9 +120,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据ResolvableType获取到ObjectFactory
-	 * <p>
-	 * 可用于延时加载
+	 * Gets an ObjectProvider by ResolvableType for lazy loading.
 	 * @param <T> 泛型
 	 * @param resolvableType 类型相关
 	 * @return spring bean provider
@@ -135,9 +130,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据Bean Type获取到map
-	 * <p>
-	 * key为BeanName, value为对应的spring bean
+	 * Gets beans of the specified type as a map.
 	 * @param <T> 泛型
 	 * @param typeClass 类型
 	 * @return spring bean map
@@ -147,7 +140,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据key获取到相关的环境信息
+	 * Gets an environment property value by key.
 	 * @param key key
 	 * @return string
 	 */
@@ -156,7 +149,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据key获取到相关的环境信息,并转化成对应的类型
+	 * Gets an environment property value by key and converts to the required type.
 	 * @param <T> 泛型
 	 * @param key key
 	 * @param requiredType 返回类型
@@ -167,9 +160,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 根据key获取到相关的环境信息,并转化成对应的类型
-	 * <p>
-	 * 如果没有相关的key，则返回defaultValue
+	 * Gets a property value with a default fallback.
 	 * @param <T> 泛型
 	 * @param key key
 	 * @param requiredType 返回类型
@@ -181,7 +172,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 解析文本占位符${**}
+	 * Resolves placeholders in the given text.
 	 * @param text string
 	 * @return value
 	 */
@@ -190,7 +181,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * {@link Binder#get(Environment)}的补充、用户添加数据转换器
+	 * Creates a Binder with additional converters.
 	 * @param converters 添加转换器
 	 * @return binder
 	 */
@@ -204,7 +195,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 注册bean
+	 * Registers a bean instance in the application context.
 	 * @param <T> bean类型
 	 * @param bean bean实例
 	 * @param beanName beanName可为空，为空会自动生成
@@ -216,7 +207,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 	}
 
 	/**
-	 * 注册bean
+	 * Registers a bean definition in the application context.
 	 * @param beanDefinition bean定义
 	 * @param beanName beanName
 	 */

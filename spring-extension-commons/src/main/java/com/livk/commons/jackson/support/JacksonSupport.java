@@ -28,7 +28,7 @@ import java.io.Reader;
 import java.nio.file.Path;
 
 /**
- * Jackson操作默认实现
+ * Default implementation of Jackson operations.
  *
  * @author livk
  */
@@ -37,7 +37,7 @@ public final class JacksonSupport extends AbstractJacksonOps implements JacksonO
 	private final ObjectMapper mapper;
 
 	/**
-	 * 构造JacksonSupport
+	 * Constructs a JacksonSupport instance.
 	 * @param mapper jacksonMapper
 	 */
 	public JacksonSupport(ObjectMapper mapper) {

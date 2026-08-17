@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * raw expression string before compilation.
  *
  * @param <CONTEXT> the framework-specific context type (e.g., {@code EvaluationContext}
- * for SpEL)
+ * for SpEL).
  * @param <EXPRESSION> the compiled expression type (e.g., {@code Expression} for SpEL)
  * @author livk
  * @see ExpressionResolver

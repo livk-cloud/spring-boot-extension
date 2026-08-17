@@ -32,6 +32,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * The User Agent Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

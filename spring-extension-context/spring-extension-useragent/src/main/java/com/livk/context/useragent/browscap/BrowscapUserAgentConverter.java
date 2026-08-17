@@ -23,6 +23,8 @@ import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * The Browscap User Agent Converter.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

@@ -28,6 +28,8 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import java.util.Map;
 
 /**
+ * Condition that checks if Redisson configuration properties are bound.
+ *
  * @author livk
  */
 class RedissonCondition extends SpringBootCondition {

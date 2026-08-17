@@ -37,9 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * 仅支持Mybatis
- * </p>
+ * 仅支持Mybatis.
  *
  * @author livk
  */

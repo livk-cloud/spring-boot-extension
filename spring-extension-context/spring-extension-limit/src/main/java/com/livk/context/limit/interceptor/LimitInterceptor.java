@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<Limit> {
 
 	/**
-	 * 执行器
+	 * 执行器.
 	 */
 	private final ObjectProvider<LimitExecutor> providers;
 

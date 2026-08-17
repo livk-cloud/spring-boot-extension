@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * The Mybatis Sql Monitor.
+ *
  * @author livk
  */
 @Slf4j

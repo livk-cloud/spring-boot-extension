@@ -24,7 +24,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import java.io.IOException;
 
 /**
- * 资源扫描工具类
+ * Utility class for scanning classpath resources.
  *
  * @author livk
  * @see org.springframework.core.io.Resource
@@ -36,7 +36,7 @@ public class ResourceScanner {
 	private static final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
 
 	/**
-	 * 获取单个资源
+	 * Retrieves a single resource by location.
 	 * @param location 资源地址
 	 * @return the resource
 	 */
@@ -45,7 +45,7 @@ public class ResourceScanner {
 	}
 
 	/**
-	 * 获取多个资源
+	 * Retrieves multiple resources matching the location pattern.
 	 * @param location 资源地址
 	 * @return the resource[]
 	 * @throws IOException the io exception

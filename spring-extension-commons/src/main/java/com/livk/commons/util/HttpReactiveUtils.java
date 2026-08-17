@@ -28,13 +28,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
+ * WebFlux响应式HTTP请求工具类.
+ *
  * @author livk
  */
 @UtilityClass
 public class HttpReactiveUtils {
 
 	/**
-	 * 从ServerWebExchange读取文件转成Mono Part
+	 * 从ServerWebExchange读取文件转成Mono Part.
 	 * @param name 文件参数
 	 * @param exchange the exchange
 	 * @return the part values
@@ -56,11 +58,13 @@ public class HttpReactiveUtils {
 			this.part = part;
 		}
 
-		@NonNull public HttpHeaders getHeaders() {
+		@Override
+		public @NonNull HttpHeaders getHeaders() {
 			return this.part.headers();
 		}
 
-		@NonNull public Flux<DataBuffer> getBody() {
+		@Override
+		public @NonNull Flux<DataBuffer> getBody() {
 			return this.part.content();
 		}
 

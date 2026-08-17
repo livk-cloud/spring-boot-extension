@@ -53,15 +53,13 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements Strea
 
 	private FastByteArrayOutputStream bodyStream;
 
-	@NonNull
 	@Override
-	public HttpMethod getMethod() {
+	public @NonNull HttpMethod getMethod() {
 		return this.method;
 	}
 
-	@NonNull
 	@Override
-	public URI getURI() {
+	public @NonNull URI getURI() {
 		return this.uri;
 	}
 
@@ -71,18 +69,16 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements Strea
 		this.body = body;
 	}
 
-	@NonNull
 	@Override
-	protected OutputStream getBodyInternal(@NonNull HttpHeaders headers) {
+	protected @NonNull OutputStream getBodyInternal(@NonNull HttpHeaders headers) {
 		if (this.bodyStream == null) {
 			this.bodyStream = new FastByteArrayOutputStream(1024);
 		}
 		return this.bodyStream;
 	}
 
-	@NonNull
 	@Override
-	protected ClientHttpResponse executeInternal(@NonNull HttpHeaders headers) throws IOException {
+	protected @NonNull ClientHttpResponse executeInternal(@NonNull HttpHeaders headers) throws IOException {
 		if (this.body == null && this.bodyStream != null) {
 			this.body = outputStream -> this.bodyStream.writeTo(outputStream);
 		}

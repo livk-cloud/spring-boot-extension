@@ -31,10 +31,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * Utility for resolving annotations based on their declared target element types.
+ *
  * @author livk
  */
 final class AnnotationTarget<A extends Annotation> {
 
+	/**
+	 * The pointcut factory that resolves annotations based on their target element types.
+	 */
 	public static final AnnotationPointcutFactory TARGET_POINTCUT = new AnnotationTargetPointcut();
 
 	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
@@ -64,7 +69,9 @@ final class AnnotationTarget<A extends Annotation> {
 	}
 
 	/**
-	 * 是否支持指定的 ElementType。
+	 * Checks whether the specified ElementType is supported.
+	 * @param elementType the element type to check
+	 * @return true if the element type is supported
 	 */
 	boolean supports(ElementType elementType) {
 		return elementTypes.contains(elementType);

@@ -31,6 +31,8 @@ import org.apache.zookeeper.data.Stat;
 import java.util.List;
 
 /**
+ * The Curator Template.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

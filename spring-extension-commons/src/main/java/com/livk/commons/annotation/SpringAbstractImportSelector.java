@@ -17,12 +17,10 @@
 package com.livk.commons.annotation;
 
 import com.livk.commons.util.TypeUtils;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.annotation.ImportCandidates;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
@@ -34,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 导入普通的{@link Configuration}或者{@link AutoConfiguration}
+ * Abstract import selector for importing Configuration or AutoConfiguration classes.
  * <p>
  * 具备识别 {@link AutoConfigureAfter}和{@link AutoConfigureBefore}的能力
  * <p>

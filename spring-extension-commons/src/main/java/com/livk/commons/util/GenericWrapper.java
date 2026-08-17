@@ -19,7 +19,7 @@ package com.livk.commons.util;
 import java.util.Optional;
 
 /**
- * 带有泛型的包装器
+ * 带有泛型的包装器.
  *
  * @param <V> the type parameter
  * @author livk
@@ -27,7 +27,7 @@ import java.util.Optional;
 public interface GenericWrapper<V> {
 
 	/**
-	 * 构建一个GenericWrapper包装器
+	 * 构建一个GenericWrapper包装器.
 	 * @param <T> 相关泛型
 	 * @param delegate the value
 	 * @return the delegating wrapper
@@ -37,7 +37,7 @@ public interface GenericWrapper<V> {
 	}
 
 	/**
-	 * 转成optional
+	 * 转成optional.
 	 * @return optional
 	 */
 	default Optional<V> optional() {
@@ -45,7 +45,7 @@ public interface GenericWrapper<V> {
 	}
 
 	/**
-	 * 解析成泛型相关实例
+	 * 解析成泛型相关实例.
 	 * @return 带有泛型的相关实例
 	 */
 	V unwrap();

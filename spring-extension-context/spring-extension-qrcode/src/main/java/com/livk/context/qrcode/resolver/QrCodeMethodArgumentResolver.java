@@ -33,6 +33,8 @@ import org.springframework.web.multipart.support.RequestPartServletServerHttpReq
 import java.util.Objects;
 
 /**
+ * The Qr Code Method Argument Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

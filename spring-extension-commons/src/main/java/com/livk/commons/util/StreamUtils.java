@@ -41,7 +41,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- * Stream工具类
+ * Stream工具类.
  * </p>
  *
  * @author livk
@@ -50,7 +50,7 @@ import java.util.stream.Stream;
 public class StreamUtils {
 
 	/**
-	 * 合并Map,key相同的则合并成List
+	 * 合并Map,key相同的则合并成List.
 	 * @param <K> key type parameter
 	 * @param <V> value type parameter
 	 * @param maps maps
@@ -70,7 +70,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并数组
+	 * 合并数组.
 	 * @param <T> type parameter
 	 * @param ts the ts
 	 * @return stream
@@ -85,7 +85,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并string数组
+	 * 合并string数组.
 	 * @param distinct 是否去重
 	 * @param strArr str[]
 	 * @return string []
@@ -99,7 +99,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并string数组并去重
+	 * 合并string数组并去重.
 	 * @param strArr str[]
 	 * @return string []
 	 */
@@ -108,7 +108,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并int数组
+	 * 合并int数组.
 	 * @param intArray int array
 	 * @return int []
 	 */
@@ -120,7 +120,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并long数组
+	 * 合并long数组.
 	 * @param longArray long array
 	 * @return long []
 	 */
@@ -132,7 +132,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 合并double数组
+	 * 合并double数组.
 	 * @param doubleArray double array
 	 * @return double []
 	 */
@@ -144,7 +144,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 通过function合并多个Stream
+	 * 通过function合并多个Stream.
 	 * @param <T> 转换前泛型
 	 * @param <R> 转换后泛型
 	 * @param combinator 转换Function
@@ -160,7 +160,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * 根据某个条件进行去重
+	 * 根据某个条件进行去重.
 	 * @param <T> type parameter
 	 * @param function 去重条件
 	 * @return predicate
@@ -171,7 +171,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * Enumeration转化成Stream
+	 * Enumeration转化成Stream.
 	 * @param <T> type parameter
 	 * @param enumeration enumeration
 	 * @return stream
@@ -184,7 +184,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * Stream.map()产生出index序号
+	 * Stream.map()产生出index序号.
 	 * @param <T> type parameter
 	 * @param <R> type parameter
 	 * @param initValue 初始值
@@ -198,7 +198,7 @@ public class StreamUtils {
 	}
 
 	/**
-	 * Foreach中产生index序号
+	 * Foreach中产生index序号.
 	 * @param <T> type parameter
 	 * @param initValue 初始值
 	 * @param biConsumer bi consumer

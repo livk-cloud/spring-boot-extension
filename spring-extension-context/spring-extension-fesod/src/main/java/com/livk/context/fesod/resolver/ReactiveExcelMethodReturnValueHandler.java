@@ -47,6 +47,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * The Reactive Excel Method Return Value Handler.
+ *
  * @author livk
  */
 public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implements HandlerResultHandler, Ordered {

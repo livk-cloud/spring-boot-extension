@@ -35,6 +35,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Abstract base class for scanning bean definitions annotated with a specific annotation.
+ *
  * @author livk
  */
 public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> extends ClassPathBeanDefinitionScanner {
@@ -54,9 +56,8 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 		this(registry, new AnnotationBeanNameGenerator());
 	}
 
-	@NonNull
 	@Override
-	protected final Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
+	protected final @NonNull Set<BeanDefinitionHolder> doScan(String @NonNull ... basePackages) {
 		BeanDefinitionRegistry registry = super.getRegistry();
 		Assert.notNull(registry, "registry not be null");
 		Assert.notEmpty(basePackages, "At least one base package must be specified");

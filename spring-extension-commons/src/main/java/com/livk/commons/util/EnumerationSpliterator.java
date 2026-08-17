@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 
 /**
  * <p>
- * 用于Enumeration转换Stream
+ * 用于Enumeration转换Stream.
  * </p>
  *
  * @param <T> the type parameter
@@ -44,7 +44,7 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 	}
 
 	/**
-	 * 根据Enumeration构造Spliterator
+	 * 根据Enumeration构造Spliterator.
 	 * @param <T> type parameter
 	 * @param enumeration enumeration
 	 * @return spliterator

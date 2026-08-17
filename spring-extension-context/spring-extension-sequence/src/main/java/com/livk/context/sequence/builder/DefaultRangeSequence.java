@@ -26,37 +26,39 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * The Default Range Sequence.
+ *
  * @author livk
  */
 class DefaultRangeSequence implements Sequence {
 
 	/**
-	 * 获取区间是加一把独占锁防止资源冲突
+	 * 获取区间是加一把独占锁防止资源冲突.
 	 */
 	private final Lock lock = new ReentrantLock();
 
 	/**
-	 * 序列号区间管理器
+	 * 序列号区间管理器.
 	 */
 	private final RangeManager manager;
 
 	/**
-	 * 当前序列号区间
+	 * 当前序列号区间.
 	 */
 	private volatile SequenceRange currentRange;
 
 	/**
-	 * 需要获取区间的业务名称
+	 * 需要获取区间的业务名称.
 	 */
 	private final String name;
 
 	/**
-	 * 获取区间的步长
+	 * 获取区间的步长.
 	 */
 	private final int step;
 
 	/**
-	 * 序列号分配起始值
+	 * 序列号分配起始值.
 	 */
 	private final long stepStart;
 

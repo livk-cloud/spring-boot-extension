@@ -22,7 +22,7 @@ import org.jspecify.annotations.NonNull;
 import java.lang.annotation.Annotation;
 
 /**
- * 使用{@see AnnotationPointcutType}的注解型切点处理器
+ * Annotation-based pointcut advisor using {@link AnnotationPointcutFactory} strategy.
  *
  * @param <A> the type parameter
  * @author livk
@@ -31,15 +31,15 @@ import java.lang.annotation.Annotation;
 public abstract class AbstractAnnotationPointcutStrategyAdvisor<A extends Annotation>
 		extends AbstractAnnotationAdvisor<A> {
 
-	@NonNull
 	@Override
-	public final Pointcut getPointcut() {
+	public final @NonNull Pointcut getPointcut() {
 		return pointcutStrategy().create(annotationType);
 	}
 
 	/**
 	 * Returns the strategy used to create the {@link Pointcut} for the configured
 	 * annotation.
+	 * @return the annotation pointcut factory
 	 */
 	protected AnnotationPointcutFactory pointcutStrategy() {
 		return AnnotationPointcutFactory.forTarget();

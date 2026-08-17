@@ -37,6 +37,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
+ * Auto-configuration for Apache Curator framework with Zookeeper.
+ *
  * @author livk
  */
 @Slf4j

@@ -20,6 +20,8 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 
 /**
+ * The Lettuce Sequence Redis Helper.
+ *
  * @author livk
  */
 public class LettuceSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {

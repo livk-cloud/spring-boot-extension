@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * 用于将字符串拆分成可迭代MultiValueMap对象，是线程安全不可变的
+ * 用于将字符串拆分成可迭代MultiValueMap对象，是线程安全不可变的.
  * <p>
  * {@link com.google.common.base.Splitter.MapSplitter}的补充版
  * <p>
@@ -51,7 +51,7 @@ public final class MultiValueMapSplitter {
 	}
 
 	/**
-	 * 静态构造器
+	 * 静态构造器.
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -61,7 +61,7 @@ public final class MultiValueMapSplitter {
 	}
 
 	/**
-	 * 静态构造器
+	 * 静态构造器.
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -71,7 +71,7 @@ public final class MultiValueMapSplitter {
 	}
 
 	/**
-	 * 静态构造器
+	 * 静态构造器.
 	 * @param outerSplitter the outer splitter
 	 * @param entrySplitter the entry splitter
 	 * @return the multi value map splitter
@@ -81,12 +81,12 @@ public final class MultiValueMapSplitter {
 	}
 
 	/**
-	 * 拆分CharSequence成一个MultiValueMap
+	 * 拆分CharSequence成一个MultiValueMap.
 	 * <p>
 	 * 示例: String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
 	 * <p>
 	 * MultiValueMapSplitter.of("&amp;", "=").split(str) -> {root=["1,2,3", "4"], a=["b",
-	 * "c"]}
+	 * "c"]}.
 	 * @param sequence 待分割的字符串
 	 * @return multiValueMap
 	 */
@@ -95,12 +95,12 @@ public final class MultiValueMapSplitter {
 	}
 
 	/**
-	 * 拆分CharSequence成一个MultiValueMap
+	 * 拆分CharSequence成一个MultiValueMap.
 	 * <p>
 	 * 示例: String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
 	 * <p>
 	 * MultiValueMapSplitter.of("&amp;", "=").split(str,",") -> {root=["1", "2", "3",
-	 * "4"], a=["b", "c"]}
+	 * "4"], a=["b", "c"]}.
 	 * @param sequence 待分割的字符串
 	 * @param regex value分割符
 	 * @return multiValueMap

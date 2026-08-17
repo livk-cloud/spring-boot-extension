@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Auto-configuration for dynamic multi-datasource routing support.
+ *
  * @author livk
  */
 @SpringAutoService(EnableDynamicDatasource.class)

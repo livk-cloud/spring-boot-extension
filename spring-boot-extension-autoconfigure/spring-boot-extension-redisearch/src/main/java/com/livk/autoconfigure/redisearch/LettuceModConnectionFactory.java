@@ -23,6 +23,8 @@ import lombok.experimental.Delegate;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
+ * Lettuce-based implementation of {@link RedisSearchConnectionFactory} for Redis modules.
+ *
  * @author livk
  */
 public class LettuceModConnectionFactory implements RedisSearchConnectionFactory {

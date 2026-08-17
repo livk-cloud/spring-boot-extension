@@ -20,6 +20,8 @@ import com.livk.context.sequence.Sequence;
 import com.livk.context.sequence.support.RangeManager;
 
 /**
+ * The Sequence Builder.
+ *
  * @author livk
  */
 public interface SequenceBuilder {

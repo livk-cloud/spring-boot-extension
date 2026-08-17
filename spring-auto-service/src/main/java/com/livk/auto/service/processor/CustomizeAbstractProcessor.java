@@ -42,6 +42,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
+ * Base annotation processor providing shared infrastructure for factories file
+ * generation.
+ *
  * @author livk
  */
 abstract class CustomizeAbstractProcessor extends AbstractProcessor {
@@ -103,7 +106,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	}
 
 	/**
-	 * Set supported annotations
+	 * Set supported annotations.
 	 * @return set annotation class
 	 */
 	protected abstract Class<? extends Annotation> getSupportedAnnotation();
@@ -135,12 +138,12 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	protected abstract Set<TypeElement> elseElement(Element element);
 
 	/**
-	 * 生成文件
+	 * 生成文件.
 	 */
 	protected abstract void generateConfigFiles();
 
 	/**
-	 * buffered reader.
+	 * Creates a buffered reader for the given file object.
 	 * @param fileObject the file object
 	 * @return the buffered reader
 	 * @throws IOException the io exception
@@ -150,7 +153,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	}
 
 	/**
-	 * buffered writer.
+	 * Creates a buffered writer for the given file object.
 	 * @param fileObject the file object
 	 * @return the buffered writer
 	 * @throws IOException the io exception
@@ -160,9 +163,9 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	}
 
 	/**
-	 * 日志输出
+	 * 日志输出.
 	 * <p>
-	 * 添加编译参数 -Adebug=true 即可打印日志
+	 * 添加编译参数 -Adebug=true 即可打印日志.
 	 * @param msg 待输出日志
 	 */
 	protected void log(String msg) {
@@ -172,7 +175,7 @@ abstract class CustomizeAbstractProcessor extends AbstractProcessor {
 	}
 
 	/**
-	 * 错误信息输出
+	 * 错误信息输出.
 	 * @param msg 错误信息
 	 */
 	protected void fatalError(String msg) {

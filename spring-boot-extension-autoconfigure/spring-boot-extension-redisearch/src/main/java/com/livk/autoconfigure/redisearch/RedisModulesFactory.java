@@ -31,6 +31,8 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import java.util.List;
 
 /**
+ * Factory for creating Redis modules clients and connection pool configurations.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

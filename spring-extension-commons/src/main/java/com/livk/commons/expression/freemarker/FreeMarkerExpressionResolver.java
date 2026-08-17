@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * 使用FreeMarker实现的表达式解析器
+ * Expression resolver implementation using FreeMarker template engine.
  *
  * @author livk
  * @deprecated since 2.1.1

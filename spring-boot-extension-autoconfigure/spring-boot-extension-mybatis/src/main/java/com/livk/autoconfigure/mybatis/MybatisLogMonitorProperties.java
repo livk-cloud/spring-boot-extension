@@ -23,6 +23,8 @@ import java.time.Duration;
 import java.util.Properties;
 
 /**
+ * Configuration properties for Mybatis SQL log monitoring.
+ *
  * @author livk
  */
 @Data

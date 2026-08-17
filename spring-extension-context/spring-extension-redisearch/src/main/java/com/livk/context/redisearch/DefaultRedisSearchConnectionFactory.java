@@ -23,6 +23,8 @@ import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.codec.RedisCodec;
 
 /**
+ * The Default Redis Search Connection Factory.
+ *
  * @author livk
  */
 final class DefaultRedisSearchConnectionFactory implements RedisSearchConnectionFactory {

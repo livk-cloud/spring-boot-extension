@@ -35,6 +35,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
+ * The Reactive Qr Code Method Argument Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -49,10 +51,9 @@ public class ReactiveQrCodeMethodArgumentResolver implements HandlerMethodArgume
 		return parameter.hasParameterAnnotation(RequestQrCodeText.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext,
-			@NonNull ServerWebExchange exchange) {
+	public @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
+			@NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 		RequestQrCodeText qrCodeText = parameter.getParameterAnnotation(RequestQrCodeText.class);

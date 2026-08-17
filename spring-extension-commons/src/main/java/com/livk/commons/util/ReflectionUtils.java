@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * <p>
- * 反射相关工具类
+ * 反射相关工具类.
  * </p>
  *
  * @author livk
@@ -38,7 +38,7 @@ import java.util.Set;
 public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
-	 * 给field设置accessible为true,并且设置一个值
+	 * 给field设置accessible为true,并且设置一个值.
 	 * @param field field
 	 * @param parameter parameter
 	 * @param value value
@@ -48,7 +48,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个类的所有的Get方法
+	 * 获取一个类的所有的Get方法.
 	 * @param targetClass class
 	 * @return read methods
 	 */
@@ -57,7 +57,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个类的Field Get方法
+	 * 获取一个类的Field Get方法.
 	 * @param targetClass class
 	 * @param field field
 	 * @return read method
@@ -67,7 +67,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个类的所有的Set方法
+	 * 获取一个类的所有的Set方法.
 	 * @param targetClass target class
 	 * @return write methods
 	 */
@@ -76,7 +76,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个类的Field Set方法
+	 * 获取一个类的Field Set方法.
 	 * @param targetClass class
 	 * @param field field
 	 * @return method
@@ -86,7 +86,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个类的所有Field,包括所有的父类
+	 * 获取一个类的所有Field,包括所有的父类.
 	 * @param targetClass class
 	 * @return fields
 	 */
@@ -95,7 +95,7 @@ public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 	}
 
 	/**
-	 * 获取一个私有属性的值
+	 * 获取一个私有属性的值.
 	 * @param field field
 	 * @param target target
 	 * @return declared field value

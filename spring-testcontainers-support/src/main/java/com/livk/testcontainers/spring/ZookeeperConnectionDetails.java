@@ -19,6 +19,8 @@ package com.livk.testcontainers.spring;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 
 /**
+ * Connection details interface for Zookeeper testcontainers integration.
+ *
  * @author livk
  */
 public interface ZookeeperConnectionDetails extends ConnectionDetails {

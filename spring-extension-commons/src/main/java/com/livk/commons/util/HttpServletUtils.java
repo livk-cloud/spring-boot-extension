@@ -44,7 +44,7 @@ import java.util.Map;
 
 /**
  * <p>
- * web、servlet相关工具类
+ * web、servlet相关工具类.
  * </p>
  *
  * @author livk
@@ -53,7 +53,7 @@ import java.util.Map;
 public class HttpServletUtils {
 
 	/**
-	 * 获取当前线程的request
+	 * 获取当前线程的request.
 	 * @return http servlet request
 	 */
 	public HttpServletRequest request() {
@@ -83,7 +83,7 @@ public class HttpServletUtils {
 	}
 
 	/**
-	 * 将request header转成HttpHeaders
+	 * 将request header转成HttpHeaders.
 	 * @param request request
 	 * @return http headers
 	 */
@@ -99,7 +99,7 @@ public class HttpServletUtils {
 	}
 
 	/**
-	 * 获取当前request所有的attributes
+	 * 获取当前request所有的attributes.
 	 * @param request request
 	 * @return attributes
 	 */
@@ -114,7 +114,7 @@ public class HttpServletUtils {
 	}
 
 	/**
-	 * 解析request的param转成MultiValueMap
+	 * 解析request的param转成MultiValueMap.
 	 * @param request request
 	 * @return multiValueMap
 	 */
@@ -125,7 +125,7 @@ public class HttpServletUtils {
 	}
 
 	/**
-	 * 解析request获取真实IP
+	 * 解析request获取真实IP.
 	 * @param request request
 	 * @return ip
 	 */
@@ -143,22 +143,22 @@ public class HttpServletUtils {
 	}
 
 	/**
-	 * 以JSON的格式写出数据到response
+	 * 以JSON的格式写出数据到response.
 	 * @param response response
 	 * @param data 需要写出的数据
 	 * @see JsonMapperUtils
 	 */
-	public void outJson(HttpServletResponse response, Object data) {
-		out(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
+	public void writerJson(HttpServletResponse response, Object data) {
+		writer(response, JsonMapperUtils.writeValueAsString(data), MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	/**
-	 * 根据response写入返回值
+	 * 根据response写入返回值.
 	 * @param response response
 	 * @param message 写入的信息
 	 * @param contentType contentType {@link MediaType}
 	 */
-	public void out(HttpServletResponse response, String message, String contentType) {
+	public void writer(HttpServletResponse response, String message, String contentType) {
 		response.setContentType(contentType);
 		response.setCharacterEncoding("UTF-8");
 		try (PrintWriter out = response.getWriter()) {

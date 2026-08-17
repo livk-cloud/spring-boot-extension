@@ -28,21 +28,21 @@ import java.io.InputStream;
 public interface QrCodeManager {
 
 	/**
-	 * 生成二维码
+	 * 生成二维码.
 	 * @param entity 二维码实体
 	 * @return bufferedImage
 	 */
 	BufferedImage generate(QrCodeEntity<?> entity);
 
 	/**
-	 * 解析二维码
+	 * 解析二维码.
 	 * @param inputStream 输入流
 	 * @return string
 	 */
 	String parser(InputStream inputStream);
 
 	/**
-	 * 解析二维码
+	 * 解析二维码.
 	 * @param input 输入流
 	 * @return string
 	 */

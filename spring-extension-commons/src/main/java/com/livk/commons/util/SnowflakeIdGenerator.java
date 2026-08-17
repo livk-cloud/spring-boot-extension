@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
 
 /**
  * <p>
- * 雪花算法生成器
+ * 雪花算法生成器.
  * </p>
  *
  * @author livk
@@ -60,7 +60,7 @@ public class SnowflakeIdGenerator {
 	private long lastTimestamp = -1L; // 上一次生成 ID 的时间戳
 
 	/**
-	 * 构造方法
+	 * 构造方法.
 	 * @param dataCenterId 数据中心 ID
 	 * @param machineId 机器 ID
 	 */
@@ -73,7 +73,7 @@ public class SnowflakeIdGenerator {
 	}
 
 	/**
-	 * 生成下一个唯一 ID
+	 * 生成下一个唯一 ID.
 	 * @return 唯一 ID
 	 */
 	public synchronized long nextId() {
@@ -105,7 +105,7 @@ public class SnowflakeIdGenerator {
 	}
 
 	/**
-	 * 阻塞直到下一毫秒
+	 * 阻塞直到下一毫秒.
 	 * @param lastTimestamp 上一毫秒
 	 * @return 当前时间戳
 	 */
@@ -118,8 +118,9 @@ public class SnowflakeIdGenerator {
 	}
 
 	/**
-	 * 等待下一毫秒
+	 * 等待下一毫秒.
 	 * @param lastTimestamp 上一毫秒
+	 * @return 当前时间戳
 	 */
 	private long waitForNextMillisecond(long lastTimestamp) {
 		long currentTimestamp = System.currentTimeMillis();

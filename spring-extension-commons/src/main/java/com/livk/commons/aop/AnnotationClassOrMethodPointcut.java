@@ -31,9 +31,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <p>
- * 类注解或者方法注解的切点
- * </p>
+ * Pointcut matching class-level or method-level annotations.
  * <p>
  * 参考
  * {@see org.springframework.retry.annotation.RetryConfiguration.AnnotationClassOrMethodPointcut}
@@ -49,9 +47,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 	private final MethodMatcher methodResolver;
 
 	/**
-	 * 构造方法
-	 * <p>
-	 * 用于类或者方法切点
+	 * Constructor for class or method pointcut.
 	 * @param annotationType 注解类型
 	 */
 	AnnotationClassOrMethodPointcut(Class<? extends Annotation> annotationType) {
@@ -85,9 +81,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 		private final AnnotationMethodsResolver methodResolver;
 
 		/**
-		 * 构造方法
-		 * <p>
-		 * 用于匹配的ClassFilter
+		 * Constructor for annotation class or method filter.
 		 * @param annotationType 注解类型
 		 */
 		AnnotationClassOrMethodFilter(Class<? extends Annotation> annotationType) {
@@ -107,7 +101,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 		private final Class<? extends Annotation> annotationType;
 
 		/**
-		 * 构造方法
+		 * Constructor for annotation methods resolver.
 		 * @param annotationType 注解类型
 		 */
 		AnnotationMethodsResolver(Class<? extends Annotation> annotationType) {
@@ -115,7 +109,7 @@ final class AnnotationClassOrMethodPointcut extends StaticMethodMatcherPointcut 
 		}
 
 		/**
-		 * 判断类是否包含注解
+		 * Checks whether the class has annotated methods.
 		 * @param clazz 类信息
 		 * @return boolean
 		 */

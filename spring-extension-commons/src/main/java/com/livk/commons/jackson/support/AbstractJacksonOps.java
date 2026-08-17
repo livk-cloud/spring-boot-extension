@@ -22,7 +22,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Jackson相关操作抽象类
+ * Abstract base class for Jackson operations.
  *
  * @author livk
  */

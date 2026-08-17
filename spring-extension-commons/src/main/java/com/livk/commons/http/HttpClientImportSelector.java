@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Http相关配置Selector进行IOC注入
+ * Import selector for HTTP client configurations.
  * <p>
  * 根据{@link EnableHttpClient}注解的value值加载对应的配置数据
  *

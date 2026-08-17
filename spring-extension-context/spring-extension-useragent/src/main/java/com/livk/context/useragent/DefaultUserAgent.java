@@ -20,6 +20,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
+ * The Default User Agent.
+ *
  * @author livk
  */
 record DefaultUserAgent(String userAgentStr, String browser, String browserType, String browserVersion, String os,

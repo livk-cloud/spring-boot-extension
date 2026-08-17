@@ -28,6 +28,8 @@ import java.io.StringReader;
 import java.util.Properties;
 
 /**
+ * Health indicator that checks the status of a RediSearch connection.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

@@ -28,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 
 /**
+ * The Inject Type.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public enum InjectType implements InjectHandle<Object> {
 	 */
 	LOCAL_DATE_TIME(new LocalDateTimeInject()),
 	/**
-	 * The time
+	 * The time.
 	 */
 	LOCAL_TIME(new LocalTimeInject()),
 	/**

@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
+ * The Reactive Excel Method Argument Resolver.
+ *
  * @author livk
  */
 public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements HandlerMethodArgumentResolver {
@@ -49,10 +51,9 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 		return parameter.hasMethodAnnotation(RequestExcel.class) && parameter.hasParameterAnnotation(ExcelParam.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext,
-			@NonNull ServerWebExchange exchange) {
+	public @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
+			@NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
 		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
 		RequestExcel requestExcel = parameter.getMethodAnnotation(RequestExcel.class);

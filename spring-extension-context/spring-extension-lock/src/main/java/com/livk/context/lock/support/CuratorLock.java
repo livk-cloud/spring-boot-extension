@@ -27,6 +27,8 @@ import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The Curator Lock.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

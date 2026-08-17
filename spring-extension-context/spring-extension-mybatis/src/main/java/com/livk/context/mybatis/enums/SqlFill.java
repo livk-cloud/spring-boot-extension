@@ -17,6 +17,8 @@
 package com.livk.context.mybatis.enums;
 
 /**
+ * The Sql Fill.
+ *
  * @author livk
  */
 public enum SqlFill {

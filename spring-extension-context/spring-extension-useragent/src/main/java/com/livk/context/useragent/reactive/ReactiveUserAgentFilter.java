@@ -26,6 +26,8 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
+ * The Reactive User Agent Filter.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -33,9 +35,8 @@ public class ReactiveUserAgentFilter implements WebFilter {
 
 	private final UserAgentDelegate userAgentDelegate;
 
-	@NonNull
 	@Override
-	public final Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+	public final @NonNull Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		UserAgent userAgent = userAgentDelegate.convert(exchange.getRequest().getHeaders());
 		return chain.filter(exchange).contextWrite(ReactiveUserAgentContextHolder.withContext(userAgent));
 	}

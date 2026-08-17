@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation for reading Excel data from request parameters.
  * <p>
  * 在Mvc的环境下支持{@link java.util.List}
  * </p>

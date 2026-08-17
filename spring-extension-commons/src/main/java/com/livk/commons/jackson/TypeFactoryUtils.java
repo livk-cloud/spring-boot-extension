@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * TypeFactory工具类
+ * Utility class for Jackson TypeFactory operations.
  *
  * @author livk
  */
@@ -39,7 +39,7 @@ import java.util.Set;
 public class TypeFactoryUtils {
 
 	/**
-	 * 获取TypeFactory
+	 * Returns the default TypeFactory instance.
 	 * @return typeFactory
 	 */
 	public static TypeFactory instance() {
@@ -47,7 +47,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个JavaType
+	 * Constructs a JavaType from the given class.
 	 * @param targetClass the target class
 	 * @return javaType
 	 */
@@ -56,7 +56,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个含有泛型的JavaType
+	 * Constructs a parametric JavaType with generics.
 	 * @param targetClass the target class
 	 * @param generics the generics
 	 * @return javaType
@@ -66,7 +66,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个含有泛型的JavaType
+	 * Constructs a parametric JavaType with JavaType generics.
 	 * @param targetClass the target class
 	 * @param generics the generics
 	 * @return javaType
@@ -76,7 +76,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * TypeReference转JavaType
+	 * Converts TypeReference to JavaType.
 	 * @param typeReference the type reference
 	 * @return javaType
 	 */
@@ -85,7 +85,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * ResolvableType转成Jackson JavaType
+	 * Converts ResolvableType to Jackson JavaType.
 	 * @param resolvableType the resolvable type
 	 * @return javaType
 	 * @see ResolvableType
@@ -102,7 +102,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个SetType
+	 * Constructs a Set CollectionType from JavaType.
 	 * @param javaType the java type
 	 * @return setType
 	 */
@@ -111,7 +111,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个SetType
+	 * Constructs a Set CollectionType from Class.
 	 * @param <T> the type parameter
 	 * @param type the target class
 	 * @return setType
@@ -121,7 +121,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个ListType
+	 * Constructs a List CollectionType from Class.
 	 * @param <T> the type parameter
 	 * @param type the target class
 	 * @return listType
@@ -131,7 +131,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个ListType
+	 * Constructs a List CollectionType from JavaType.
 	 * @param javaType the java type
 	 * @return listType
 	 */
@@ -140,7 +140,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个MapType
+	 * Constructs a MapType from key and value classes.
 	 * @param <K> the type parameter
 	 * @param <V> the type parameter
 	 * @param keyClass the key class
@@ -152,7 +152,7 @@ public class TypeFactoryUtils {
 	}
 
 	/**
-	 * 构建一个MapType
+	 * Constructs a MapType from key and value JavaTypes.
 	 * @param kType the k type
 	 * @param vType the v type
 	 * @return mapType

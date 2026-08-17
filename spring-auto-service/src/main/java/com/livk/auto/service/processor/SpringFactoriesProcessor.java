@@ -23,6 +23,8 @@ import javax.annotation.processing.Processor;
 import java.lang.annotation.Annotation;
 
 /**
+ * Annotation processor for generating META-INF/spring.factories configuration.
+ *
  * @author livk
  */
 @AutoService(Processor.class)

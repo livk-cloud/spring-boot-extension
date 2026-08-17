@@ -37,6 +37,8 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
+ * Abstract base processor for generating Spring factories configuration files.
+ *
  * @author livk
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -71,7 +73,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	}
 
 	/**
-	 * 从文件读取某个接口的配置
+	 * 从文件读取某个接口的配置.
 	 * @return set className
 	 */
 	private Multimap<String, String> readFromResource() {
@@ -97,7 +99,7 @@ abstract class AbstractFactoriesProcessor extends CustomizeAbstractProcessor {
 	}
 
 	/**
-	 * 将配置信息写入到文件
+	 * 将配置信息写入到文件.
 	 * @param allImportMap 供应商接口及实现类信息
 	 */
 	private void writeFile(Map<String, ? extends Collection<String>> allImportMap) {

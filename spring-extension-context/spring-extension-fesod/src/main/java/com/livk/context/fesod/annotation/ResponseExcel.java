@@ -27,6 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation for writing Excel data to the response.
  * <p>
  * 在Mvc的环境下支持{@link java.util.List}、
  * </p>

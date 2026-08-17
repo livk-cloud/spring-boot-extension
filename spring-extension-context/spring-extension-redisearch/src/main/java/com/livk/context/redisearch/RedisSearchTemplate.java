@@ -35,6 +35,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
+ * The Redis Search Template.
+ *
  * @author livk
  */
 public class RedisSearchTemplate<K, V> implements InitializingBean {

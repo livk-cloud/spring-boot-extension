@@ -28,6 +28,8 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 
 /**
+ * Configuration properties for dynamic datasource routing.
+ *
  * @author livk
  */
 @Slf4j

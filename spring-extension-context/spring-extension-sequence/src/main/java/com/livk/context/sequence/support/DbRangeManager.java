@@ -31,17 +31,19 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
+ * The Db Range Manager.
+ *
  * @author livk
  */
 public class DbRangeManager extends AbstractRangeManager {
 
 	/**
-	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀
+	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀.
 	 */
 	private static final String TABLE_NAME = "sequence_range";
 
 	/**
-	 * 获取区间失败重试次数
+	 * 获取区间失败重试次数.
 	 */
 	@Setter
 	private int retryTimes = 5;

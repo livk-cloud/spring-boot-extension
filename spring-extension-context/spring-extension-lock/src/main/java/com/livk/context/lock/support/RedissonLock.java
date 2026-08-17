@@ -28,6 +28,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The Redisson Lock.
+ *
  * @author livk
  */
 @Slf4j

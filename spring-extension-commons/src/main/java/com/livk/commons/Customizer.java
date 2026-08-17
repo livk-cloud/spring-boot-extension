@@ -17,7 +17,7 @@
 package com.livk.commons;
 
 /**
- * 自定义回调接口
+ * Callback interface for customizing objects.
  *
  * @param <T> the type parameter
  * @author livk
@@ -26,7 +26,7 @@ package com.livk.commons;
 public interface Customizer<T> {
 
 	/**
-	 * 执行回调过程
+	 * Performs the customization on the given object.
 	 * @param t 待执行数据
 	 */
 	void customize(T t);

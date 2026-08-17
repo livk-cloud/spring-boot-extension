@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * The Type Excel Map Read Listener.
+ *
  * @author livk
  */
 public final class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T> {

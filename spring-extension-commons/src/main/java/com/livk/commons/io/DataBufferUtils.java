@@ -24,9 +24,7 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 
 /**
- * <p>
- * DataBufferUtils功能拓展
- * </p>
+ * Extended utilities for DataBuffer operations.
  *
  * @author livk
  * @deprecated use {@link com.livk.commons.io.DataBufferConverter}
@@ -36,7 +34,7 @@ import java.io.InputStream;
 public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
 
 	/**
-	 * 转换Flux DataBuffer成Mono InputStream
+	 * Converts Flux DataBuffer to Mono InputStream.
 	 * @param dataBufferFlux the data buffer flux
 	 * @return the mono
 	 */
@@ -45,7 +43,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * 转换byte[]成Flux DataBuffer
+	 * Converts byte array to Flux DataBuffer.
 	 * @param array the array
 	 * @return the flux
 	 */
@@ -54,7 +52,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * 转换Flux DataBuffer 成Mono byte[]
+	 * Converts Flux DataBuffer to Mono byte array.
 	 * @param bufferFlux the buffer flux
 	 * @return the mono
 	 */
@@ -63,7 +61,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * InputStream转换成Flux DataBuffer
+	 * Converts InputStream to Flux DataBuffer.
 	 * @param inputStream the input stream
 	 * @return the flux
 	 */
@@ -72,7 +70,7 @@ public class DataBufferUtils extends org.springframework.core.io.buffer.DataBuff
 	}
 
 	/**
-	 * Mono InputStream 转换成Flux DataBuffer
+	 * Converts Mono InputStream to Flux DataBuffer.
 	 * @param inputStreamMono the input stream mono
 	 * @return the flux
 	 */

@@ -17,6 +17,8 @@
 package com.livk.context.sequence.support.redis;
 
 /**
+ * The Sequence Redis Helper.
+ *
  * @author livk
  */
 public interface SequenceRedisHelper extends AutoCloseable {

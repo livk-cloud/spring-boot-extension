@@ -23,6 +23,8 @@ import com.livk.context.lock.exception.UnSupportLockException;
 import org.springframework.util.Assert;
 
 /**
+ * Abstract lock support implementation.
+ *
  * @param <T> the type parameter
  * @author livk
  */

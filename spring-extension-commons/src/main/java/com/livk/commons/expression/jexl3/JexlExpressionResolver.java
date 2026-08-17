@@ -28,7 +28,8 @@ import org.apache.commons.jexl3.internal.Engine;
 import java.util.Optional;
 
 /**
- * 使用<a href="https://github.com/apache/commons-jexl">Apache Commons Jexl3</a>实现的表达式解析器
+ * Expression resolver implementation using
+ * <a href="https://github.com/apache/commons-jexl">Apache Commons Jexl3</a>.
  *
  * @author livk
  */

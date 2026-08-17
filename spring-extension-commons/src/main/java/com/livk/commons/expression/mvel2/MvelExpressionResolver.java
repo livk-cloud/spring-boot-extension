@@ -28,7 +28,8 @@ import org.mvel2.integration.impl.CachingMapVariableResolverFactory;
 import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 /**
- * 使用<a href="https://github.com/mvel/mvel">Mvel 2</a>实现的表达式解析器
+ * Expression resolver implementation using <a href="https://github.com/mvel/mvel">Mvel
+ * 2</a>.
  *
  * @author livk
  */
@@ -38,7 +39,7 @@ public class MvelExpressionResolver extends CacheExpressionResolver<VariableReso
 	private final ParserContext parserContext;
 
 	/**
-	 * 使用默认的ParserContext
+	 * Instantiates with default ParserContext.
 	 *
 	 * @see ParserContext
 	 */

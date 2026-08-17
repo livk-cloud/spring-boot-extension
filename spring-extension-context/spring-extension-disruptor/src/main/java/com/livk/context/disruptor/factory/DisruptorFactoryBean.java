@@ -40,6 +40,8 @@ import org.springframework.util.StringUtils;
 import java.util.concurrent.ThreadFactory;
 
 /**
+ * The Disruptor Factory Bean.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

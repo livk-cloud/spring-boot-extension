@@ -20,6 +20,8 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
 
 /**
+ * The Lock Process.
+ *
  * @author livk
  */
 public interface LockProcess {

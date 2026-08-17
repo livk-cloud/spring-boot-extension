@@ -37,9 +37,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * <p>
- * WebClient相关装配
- * </p>
+ * Auto-configuration for WebClient.
  *
  * @author livk
  */
@@ -49,8 +47,10 @@ import reactor.netty.http.client.HttpClient;
 public class WebClientConfiguration {
 
 	/**
+	 * Creates a WebClient using the provided builder.
+	 * <p>
 	 * spring官方建议使用{@link WebClient} <a href=
-	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>
+	 * "https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#webmvc-client">Spring文档</a>.
 	 * @param builder the web client builder
 	 * @return webClient
 	 */
@@ -61,7 +61,7 @@ public class WebClientConfiguration {
 	}
 
 	/**
-	 * Reactor client配置
+	 * Reactor client auto-configuration.
 	 */
 	@AutoConfiguration
 	@ConditionalOnClass(HttpClient.class)

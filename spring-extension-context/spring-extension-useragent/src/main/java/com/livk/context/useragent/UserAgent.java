@@ -17,6 +17,8 @@
 package com.livk.context.useragent;
 
 /**
+ * The User Agent.
+ *
  * @author livk
  */
 public interface UserAgent {

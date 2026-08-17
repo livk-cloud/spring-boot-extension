@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * BeanLambda的相关方法或者字段处理
+ * BeanLambda的相关方法或者字段处理.
  *
  * @author livk
  */
@@ -52,9 +52,9 @@ final class BeanLambdaDescriptor {
 	}
 
 	/**
-	 * 静态构建根据{@link BeanLambdaDescriptor}
+	 * 静态构建根据{@link BeanLambdaDescriptor}.
 	 * <p>
-	 * 使用缓存避免无效加载
+	 * 使用缓存避免无效加载.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return beanLambdaDescriptor

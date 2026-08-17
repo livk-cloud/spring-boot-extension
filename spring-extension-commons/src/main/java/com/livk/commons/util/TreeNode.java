@@ -17,6 +17,7 @@
 package com.livk.commons.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 树形检点,无法出现相同的ID节点
+ * 树形检点,无法出现相同的ID节点.
  * </p>
  *
  * @param <I> 树形节点ID相关type
@@ -43,7 +44,7 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @RequiredArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class TreeNode<I, T> {
 
 	private final I id;
@@ -55,7 +56,7 @@ public class TreeNode<I, T> {
 	private List<TreeNode<I, T>> children;
 
 	/**
-	 * 创建一个root树形节点
+	 * 创建一个root树形节点.
 	 * @param <I> 树形节点ID相关type
 	 * @param <T> 树形节点数据相关type
 	 * @param id id
@@ -67,7 +68,7 @@ public class TreeNode<I, T> {
 	}
 
 	/**
-	 * 添加一个子节点,出现相同ID则无法添加
+	 * 添加一个子节点,出现相同ID则无法添加.
 	 * @param treeNo treeNode
 	 * @return boolean
 	 */
@@ -87,7 +88,7 @@ public class TreeNode<I, T> {
 	}
 
 	/**
-	 * 设置子节点,会根据父子关系进行自动匹配
+	 * 设置子节点,会根据父子关系进行自动匹配.
 	 * @param nodes treeNode List
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
@@ -106,7 +107,7 @@ public class TreeNode<I, T> {
 	}
 
 	/**
-	 * 根据ID查找一个节点
+	 * 根据ID查找一个节点.
 	 * @param id id
 	 * @return tree node
 	 */

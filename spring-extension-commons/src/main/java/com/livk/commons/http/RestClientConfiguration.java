@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.restclient.RestClientCustomizer;
 import org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -29,17 +30,19 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 /**
+ * Auto-configuration for RestClient.
+ *
  * @author livk
  */
 @ConditionalOnClass(RestClient.class)
 @AutoConfiguration(after = RestClientAutoConfiguration.class)
 @SpringAutoService(EnableRestClient.class)
 @ImportAutoConfiguration(OkHttpClientConfiguration.class)
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnWebApplication(type = Type.SERVLET)
 public class RestClientConfiguration {
 
 	/**
-	 * Rest client
+	 * Creates a RestClient instance.
 	 * @param builder builder
 	 * @return client
 	 */

@@ -20,21 +20,29 @@ import lombok.experimental.UtilityClass;
 import org.testcontainers.utility.DockerImageName;
 
 /**
+ * Utility class providing Docker image name constants and factory methods.
+ *
  * @author livk
  */
 @UtilityClass
 public class DockerImageNames {
 
+	/** The latest tag constant. */
 	public static final String LATEST_TAG = "latest";
 
+	/** The MySQL Docker image name. */
 	public static final String MYSQL_IMAGE = "mysql";
 
+	/** The PostgreSQL Docker image name. */
 	public static final String POSTGRES_IMAGE = "postgres";
 
+	/** The Zookeeper Docker image name. */
 	public static final String ZOOKEEPER_IMAGE = "zookeeper";
 
+	/** The Redis Docker image name. */
 	public static final String REDIS_IMAGE = "redis";
 
+	/** The Redis Stack Docker image name. */
 	public static final String REDIS_STACK_IMAGE = "redis/redis-stack-server";
 
 	public static DockerImageName mysql() {

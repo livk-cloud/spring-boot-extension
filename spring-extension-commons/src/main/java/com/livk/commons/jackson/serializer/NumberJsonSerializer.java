@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * NumberJsonFormat序列化处理
+ * Serializer implementation for NumberJsonFormat annotation.
  *
  * @author livk
  * @see NumberJsonFormat

@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -58,7 +59,7 @@ public class UserAgentConfiguration {
 	 */
 	@AutoConfiguration
 	@RequiredArgsConstructor
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	@ConditionalOnWebApplication(type = Type.SERVLET)
 	public static class UserAgentMvcAutoConfiguration implements WebMvcConfigurer {
 
 		private final UserAgentDelegate userAgentDelegate;
@@ -89,7 +90,7 @@ public class UserAgentConfiguration {
 	 */
 	@AutoConfiguration
 	@RequiredArgsConstructor
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	@ConditionalOnWebApplication(type = Type.REACTIVE)
 	public static class UserAgentReactiveAutoConfiguration implements WebFluxConfigurer {
 
 		private final UserAgentDelegate userAgentDelegate;

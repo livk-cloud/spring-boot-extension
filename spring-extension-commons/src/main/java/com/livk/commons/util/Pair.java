@@ -43,7 +43,7 @@ import java.util.function.Function;
 
 /**
  * <p>
- * 通用键值对
+ * 通用键值对.
  * </p>
  *
  * @param <K> key type parameter
@@ -57,7 +57,7 @@ import java.util.function.Function;
 public final class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
-	 * 默认的空Pair
+	 * 默认的空Pair.
 	 */
 	public static final Pair<?, ?> EMPTY = Pair.of(null, null);
 
@@ -65,17 +65,17 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2303547536834226401L;
 
 	/**
-	 * key
+	 * key.
 	 */
 	private final K key;
 
 	/**
-	 * value
+	 * value.
 	 */
 	private final V value;
 
 	/**
-	 * 静态构造Map.Entry转Pair
+	 * 静态构造Map.Entry转Pair.
 	 * @param <K> key type parameter
 	 * @param <V> value type parameter
 	 * @param entry entry
@@ -86,7 +86,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 获取Key
+	 * 获取Key.
 	 * @return key
 	 */
 	public K key() {
@@ -94,7 +94,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 获取value
+	 * 获取value.
 	 * @return value
 	 */
 	public V value() {
@@ -102,7 +102,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 转成Map
+	 * 转成Map.
 	 * @return the map
 	 * @deprecated use {@link Map#of()}
 	 * @see Map#of(Object, Object)
@@ -113,7 +113,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 转成Map.Entry
+	 * 转成Map.Entry.
 	 * @return entry
 	 * @deprecated use {@link Map#entry(Object, Object)}
 	 */
@@ -123,7 +123,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 进行map转换
+	 * 进行map转换.
 	 * @param <S> key转换后type
 	 * @param <U> value转换后type
 	 * @param keyFunction key function
@@ -137,7 +137,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Key进行map转换
+	 * Key进行map转换.
 	 * @param <S> key转换后type
 	 * @param keyFunction key function
 	 * @return pair
@@ -149,7 +149,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Value进行map转换
+	 * Value进行map转换.
 	 * @param <U> value转换后type
 	 * @param valueFunction value function
 	 * @return pair
@@ -161,7 +161,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 进行flatmap转换
+	 * 进行flatmap转换.
 	 * @param <S> key转换后type
 	 * @param <U> value转换后type
 	 * @param biFunction bi function
@@ -190,14 +190,14 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Pair Jackson序列化工具
+	 * Pair Jackson序列化工具.
 	 */
 	static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> {
 
 		private ValueSerializer<Object> keySerializer;
 
 		/**
-		 * 构造器
+		 * 构造器.
 		 */
 		protected PairJsonSerializer() {
 			super(Pair.class, false);
@@ -220,7 +220,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Pair Jackson反序列化工具
+	 * Pair Jackson反序列化工具.
 	 */
 	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> {
 
@@ -229,7 +229,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		private JavaType valueType;
 
 		/**
-		 * 构造器
+		 * 构造器.
 		 */
 		protected PairJsonDeserializer() {
 			super(Pair.class);

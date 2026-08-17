@@ -30,6 +30,8 @@ import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
+ * Auto-configuration for registering Mybatis JSON type handlers for MySQL and PostgreSQL.
+ *
  * @author livk
  */
 @SpringAutoService

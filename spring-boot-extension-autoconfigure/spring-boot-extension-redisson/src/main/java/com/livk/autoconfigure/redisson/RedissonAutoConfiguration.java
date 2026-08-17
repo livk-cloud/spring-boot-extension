@@ -52,7 +52,7 @@ public class RedissonAutoConfiguration {
 	}
 
 	/**
-	 * RedissonClient
+	 * Creates a RedissonClient bean.
 	 * @param properties the config properties
 	 * @param configCustomizers the config customizers
 	 * @return the redisson client

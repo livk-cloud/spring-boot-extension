@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 使用注解的方式代替 XXXImportSelector
+ * Import selector that replaces XXXImportSelector pattern.
  * <p>
  * 减少XXXImportSelector继承 {@link SpringAbstractImportSelector}却不重写方法
  *

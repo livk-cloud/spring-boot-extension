@@ -129,7 +129,7 @@ class HttpServletUtilsTests {
 	@Test
 	void outJson() {
 		Map<String, String> result = Map.of("username", "livk", "password", "123456");
-		HttpServletUtils.outJson(response, result);
+		HttpServletUtils.writerJson(response, result);
 
 		JsonNode node = JsonMapperUtils.readTree(response.getContentAsByteArray());
 		assertThat(node.get("username").asString()).isEqualTo("livk");
@@ -138,7 +138,7 @@ class HttpServletUtilsTests {
 
 	@Test
 	void out() {
-		HttpServletUtils.out(response, "out buffer text", MediaType.TEXT_PLAIN_VALUE);
+		HttpServletUtils.writer(response, "out buffer text", MediaType.TEXT_PLAIN_VALUE);
 
 		String result = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
 		assertThat(result).isEqualTo("out buffer text");

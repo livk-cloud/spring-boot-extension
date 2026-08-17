@@ -46,6 +46,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
+ * The Reactive Qr Code Method Return Value Handler.
+ *
  * @author livk
  */
 public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implements HandlerResultHandler, Ordered {
@@ -66,9 +68,8 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 				|| result.getReturnType().isAssignableFrom(QrCodeEntity.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+	public @NonNull Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
 		Object returnValue = result.getReturnValue();
 		ServerHttpResponse response = exchange.getResponse();
 		ResolvableType returnType = result.getReturnType();

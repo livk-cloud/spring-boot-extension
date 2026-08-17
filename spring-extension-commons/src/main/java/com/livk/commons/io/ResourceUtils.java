@@ -23,7 +23,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.IOException;
 
 /**
- * 资源操作工具类
+ * Utility class for resource operations.
  *
  * @author livk
  * @see org.springframework.core.io.Resource
@@ -35,7 +35,7 @@ import java.io.IOException;
 public class ResourceUtils extends org.springframework.util.ResourceUtils {
 
 	/**
-	 * 获取单个资源
+	 * Retrieves a single resource by location.
 	 * @param location 资源地址
 	 * @return the resource
 	 */
@@ -44,7 +44,7 @@ public class ResourceUtils extends org.springframework.util.ResourceUtils {
 	}
 
 	/**
-	 * 获取多个资源
+	 * Retrieves multiple resources matching the location pattern.
 	 * @param location 资源地址
 	 * @return the resource[]
 	 * @throws IOException the io exception

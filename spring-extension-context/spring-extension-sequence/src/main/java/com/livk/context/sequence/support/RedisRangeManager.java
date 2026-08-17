@@ -24,18 +24,20 @@ import lombok.RequiredArgsConstructor;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * The Redis Range Manager.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
 public class RedisRangeManager extends AbstractRangeManager {
 
 	/**
-	 * 前缀防止key重复
+	 * 前缀防止key重复.
 	 */
 	private static final String KEY_PREFIX = "x_sequence_";
 
 	/**
-	 * redis客户端
+	 * redis客户端.
 	 */
 	private final SequenceRedisHelper helper;
 

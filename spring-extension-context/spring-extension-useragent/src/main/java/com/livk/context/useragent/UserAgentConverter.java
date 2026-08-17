@@ -19,6 +19,8 @@ package com.livk.context.useragent;
 import org.springframework.http.HttpHeaders;
 
 /**
+ * The User Agent Converter.
+ *
  * @author livk
  */
 public interface UserAgentConverter {

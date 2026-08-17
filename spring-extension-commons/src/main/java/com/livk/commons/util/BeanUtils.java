@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 
 /**
  * <p>
- * Bean相关操作工具类
+ * Bean相关操作工具类.
  * </p>
  *
  * @author livk
@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 	/**
-	 * 基于BeanUtils的复制
+	 * 基于BeanUtils的复制.
 	 * @param <T> 类型
 	 * @param source 目标源
 	 * @param targetClass 需复制的结果类型
@@ -48,7 +48,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * 基于BeanUtils的复制
+	 * 基于BeanUtils的复制.
 	 * @param <T> 类型
 	 * @param source 目标源
 	 * @param supplier 供应商
@@ -66,7 +66,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * list类型复制
+	 * list类型复制.
 	 * @param <T> 类型
 	 * @param sourceList 目标list
 	 * @param targetClass class类型
@@ -77,7 +77,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 	}
 
 	/**
-	 * 使用BeanWrapper将Bean转成Map
+	 * 使用BeanWrapper将Bean转成Map.
 	 * @param source bean
 	 * @return map
 	 * @see BeanWrapper

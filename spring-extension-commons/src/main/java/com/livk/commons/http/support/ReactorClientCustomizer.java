@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Customizer for Reactor Netty HTTP client connector.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

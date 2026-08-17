@@ -23,6 +23,8 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 
 /**
+ * Failure analyzer for Disruptor registrar configuration errors.
+ *
  * @author livk
  */
 @SpringFactories(FailureAnalyzer.class)

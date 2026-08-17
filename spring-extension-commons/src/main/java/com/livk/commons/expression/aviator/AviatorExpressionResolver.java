@@ -24,7 +24,8 @@ import com.livk.commons.expression.Context;
 import java.util.Map;
 
 /**
- * 使用<a href="https://github.com/killme2008/aviator">Aviator</a>实现的表达式解析器
+ * Expression resolver implementation using
+ * <a href="https://github.com/killme2008/aviator">Aviator</a>.
  *
  * @author livk
  * @see AviatorEvaluator

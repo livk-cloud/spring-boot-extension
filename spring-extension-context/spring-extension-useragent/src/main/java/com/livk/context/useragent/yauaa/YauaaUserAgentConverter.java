@@ -22,6 +22,8 @@ import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 
 /**
+ * The Yauaa User Agent Converter.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

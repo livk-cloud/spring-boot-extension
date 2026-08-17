@@ -34,7 +34,7 @@ import java.util.Properties;
 
 /**
  * <p>
- * YAML相关工具类
+ * YAML相关工具类.
  * </p>
  *
  * @author livk
@@ -44,9 +44,9 @@ import java.util.Properties;
 public class YamlUtils {
 
 	/**
-	 * properties map转 yaml
+	 * properties map转 yaml.
 	 * <p>
-	 * {example Map.of(" a.b.c ", " 1 ") -> YAML}
+	 * {example Map.of(" a.b.c ", " 1 ") -> YAML}.
 	 * @param map properties key map
 	 * @return yml str
 	 */
@@ -59,9 +59,9 @@ public class YamlUtils {
 	}
 
 	/**
-	 * properties map转 yaml map
+	 * properties map转 yaml map.
 	 * <p>
-	 * example Map.of(" a.b.c ", " 1 ") -> Map.of("a",Map.of("b",Map.of("c","1")))
+	 * example Map.of(" a.b.c ", " 1 ") -> Map.of("a",Map.of("b",Map.of("c","1"))).
 	 * @param map properties key map
 	 * @return yml map
 	 */
@@ -131,7 +131,7 @@ public class YamlUtils {
 
 	/**
 	 * yaml map转 properties map example Map.of("a",Map.of("b",Map.of("c","1"))) ->
-	 * Map.of(" a.b.c ", " 1 ")
+	 * Map.of(" a.b.c ", " 1 ").
 	 * <p>
 	 * {@see org.springframework.beans.factory.config.YamlProcessor#getFlattenedMap(java.util.Map)}
 	 * @param source the map

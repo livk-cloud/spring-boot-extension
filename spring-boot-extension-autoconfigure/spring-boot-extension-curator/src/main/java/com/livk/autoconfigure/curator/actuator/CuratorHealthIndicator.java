@@ -23,6 +23,8 @@ import org.springframework.boot.health.contributor.AbstractHealthIndicator;
 import org.springframework.boot.health.contributor.Health;
 
 /**
+ * Health indicator for monitoring the Curator/Zookeeper connection state.
+ *
  * @author livk
  */
 @RequiredArgsConstructor

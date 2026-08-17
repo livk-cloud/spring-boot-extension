@@ -60,6 +60,7 @@ public class GoogleQrCodeManager implements QrCodeManager {
 	/**
 	 * Instantiates a new Google qrcode generator.
 	 * @param mapper the mapper
+	 * @return the google qrcode manager
 	 */
 	public static GoogleQrCodeManager of(ObjectMapper mapper) {
 		JacksonSupport support = new JacksonSupport(mapper);

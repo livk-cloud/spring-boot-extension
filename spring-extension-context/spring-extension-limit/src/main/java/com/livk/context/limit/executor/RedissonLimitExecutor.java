@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * The Redisson Limit Executor.
+ *
  * @author livk Note:
  * <ul>
  * <li>{@code compositeKey} must be bounded and stable, otherwise the internal cache

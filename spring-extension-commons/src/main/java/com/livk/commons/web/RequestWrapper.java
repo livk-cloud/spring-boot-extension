@@ -43,9 +43,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Request包装器
- * <p>
- * 用于修改body、添加header、添加param
+ * Wrapper for HttpServletRequest allowing body, header and parameter modifications.
  *
  * @author livk
  * @see org.springframework.web.util.ContentCachingRequestWrapper
@@ -63,7 +61,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private String contentType;
 
 	/**
-	 * 构建一个RequestWrapper
+	 * Constructs a RequestWrapper from a request.
 	 * @param request the request
 	 */
 	public RequestWrapper(HttpServletRequest request) {
@@ -74,7 +72,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * 设置request body
+	 * Sets the request body.
 	 * @param body the body
 	 */
 	public void body(byte[] body) {
@@ -106,7 +104,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * 添加http header
+	 * Adds an HTTP header.
 	 * @param name the name
 	 * @param value the value
 	 */
@@ -247,7 +245,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private static class ByteArrayReader extends InputStreamReader {
 
 		/**
-		 * 创建ByteArrayReader
+		 * Constructs a ByteArrayReader.
 		 * @param bytes the bytes
 		 * @param charset the charset
 		 */
@@ -262,7 +260,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		private final ByteArrayInputStream in;
 
 		/**
-		 * 创建ByteArrayServletInputStream
+		 * Constructs a ByteArrayServletInputStream.
 		 * @param body the json
 		 */
 		ByteArrayServletInputStream(byte[] body) {

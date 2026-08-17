@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * 根据{@link org.springframework.http.HttpHeaders}改造
+ * Multi-value map for HTTP parameters based on
+ * {@link org.springframework.http.HttpHeaders} design.
  * <p>
  * 用于HttpParam，适用于Query和FORM请求数据存储
  * </p>
@@ -59,6 +59,8 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	/**
+	 * Constructs HttpParameters from a raw map.
+	 * @param map the raw map
 	 * @deprecated since 1.5.0 use {@link #HttpParameters(MultiValueMap)}
 	 * @see #HttpParameters(MultiValueMap)
 	 * @see CollectionUtils#toMultiValueMap

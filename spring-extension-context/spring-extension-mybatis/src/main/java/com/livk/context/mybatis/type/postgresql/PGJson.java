@@ -23,6 +23,8 @@ import org.springframework.util.StringUtils;
 import java.sql.SQLException;
 
 /**
+ * The P G Json.
+ *
  * @author livk
  */
 class PGJson extends PGobject {

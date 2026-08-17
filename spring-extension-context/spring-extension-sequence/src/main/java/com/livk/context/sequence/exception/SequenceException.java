@@ -19,6 +19,8 @@ package com.livk.context.sequence.exception;
 import java.io.Serial;
 
 /**
+ * The Sequence Exception.
+ *
  * @author livk
  */
 public class SequenceException extends RuntimeException {

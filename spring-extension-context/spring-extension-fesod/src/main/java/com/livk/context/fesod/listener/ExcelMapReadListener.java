@@ -40,7 +40,7 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 	}
 
 	/**
-	 * Get List data
+	 * Get List data.
 	 * @return the List
 	 */
 	default List<T> toListData() {
@@ -48,7 +48,7 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 	}
 
 	/**
-	 * 获取数据集合
+	 * 获取数据集合.
 	 * @return map data
 	 */
 	Map<String, ? extends List<T>> toMapData();

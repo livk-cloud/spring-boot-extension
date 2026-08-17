@@ -17,6 +17,8 @@
 package com.livk.context.qrcode;
 
 /**
+ * The Pic Type.
+ *
  * @author livk
  */
 public enum PicType {

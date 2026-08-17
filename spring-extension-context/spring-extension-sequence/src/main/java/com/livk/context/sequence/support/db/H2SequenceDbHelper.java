@@ -20,6 +20,8 @@ import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.jdbc.DatabaseDriver;
 
 /**
+ * The H2 Sequence Db Helper.
+ *
  * @author livk
  */
 @SpringFactories
