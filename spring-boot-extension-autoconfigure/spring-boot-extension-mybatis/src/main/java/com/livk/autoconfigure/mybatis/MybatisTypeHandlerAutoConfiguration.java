@@ -54,7 +54,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 		@Bean
 		public ConfigurationCustomizer mysqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
 			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-			return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
+			return (configuration) -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
 		}
 
 	}
@@ -74,7 +74,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 		@Bean
 		public ConfigurationCustomizer postgresqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
 			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-			return configuration -> configuration.getTypeHandlerRegistry()
+			return (configuration) -> configuration.getTypeHandlerRegistry()
 				.register(new PostgresJsonTypeHandler(mapper));
 		}
 

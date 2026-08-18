@@ -103,7 +103,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 				JsonInclude.Include.NON_NULL);
 
 		YAMLMapper.Builder builder = YAMLMapper.builder()
-			.changeDefaultPropertyInclusion(value -> value.withOverrides(includeValue))
+			.changeDefaultPropertyInclusion((value) -> value.withOverrides(includeValue))
 			.filterProvider(filterProvider);
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(Duration.class, new SpringDurationDeserializer());

@@ -44,14 +44,14 @@ abstract class RedissonClientFactory {
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		Config config = properties.getConfig();
 		Assert.notNull(config, "Redisson config must not be null");
-		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		configCustomizers.orderedStream().forEach((customizer) -> customizer.customize(config));
 		return Redisson.create(config);
 	}
 
 	public static RedissonClient create(DataRedisProperties redisProperties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		Config config = createConfig(redisProperties);
-		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		configCustomizers.orderedStream().forEach((customizer) -> customizer.customize(config));
 		return Redisson.create(config);
 	}
 

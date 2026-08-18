@@ -63,7 +63,7 @@ final class BeanLambdaDescriptor {
 	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {
 		SerializedLambda serializedLambda = resolveSerializedLambda(function);
 		String key = serializedLambda.getImplClass() + "#" + serializedLambda.getImplMethodName();
-		return cache.computeIfAbsent(key, k -> doCreate(serializedLambda));
+		return cache.computeIfAbsent(key, (k) -> doCreate(serializedLambda));
 	}
 
 	private static SerializedLambda resolveSerializedLambda(BeanLambda<?> function) {

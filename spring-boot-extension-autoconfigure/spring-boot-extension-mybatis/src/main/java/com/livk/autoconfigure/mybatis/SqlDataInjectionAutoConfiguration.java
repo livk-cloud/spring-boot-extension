@@ -42,7 +42,7 @@ public class SqlDataInjectionAutoConfiguration {
 	 */
 	@Bean
 	public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
-		return configuration -> configuration.addInterceptor(new SqlDataInjection());
+		return (configuration) -> configuration.addInterceptor(new SqlDataInjection());
 	}
 
 }

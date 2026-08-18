@@ -56,7 +56,7 @@ public class RedissonProperties {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		ConfigurableConversionService conversionService = environment.getConversionService();
 		PlaceholdersResolver resolver = new PropertySourcesPlaceholdersResolver(environment);
-		Consumer<PropertyEditorRegistry> consumer = registry -> new RedissonPropertyEditorRegistrar()
+		Consumer<PropertyEditorRegistry> consumer = (registry) -> new RedissonPropertyEditorRegistrar()
 			.registerCustomEditors(registry);
 		Binder binder = new Binder(sources, resolver, conversionService, consumer);
 		return binder.bind(RedissonProperties.PREFIX, RedissonProperties.class).orElse(new RedissonProperties());

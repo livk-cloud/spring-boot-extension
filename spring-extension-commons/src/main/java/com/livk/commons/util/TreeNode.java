@@ -93,8 +93,8 @@ public class TreeNode<I, T> {
 	 */
 	public void setChildren(List<TreeNode<I, T>> nodes) {
 		Map<I, List<TreeNode<I, T>>> grouped = nodes.stream()
-			.filter(n -> n.pid != null)
-			.collect(Collectors.groupingBy(n -> n.pid));
+			.filter((n) -> n.pid != null)
+			.collect(Collectors.groupingBy((n) -> n.pid));
 		setChildrenFromMap(grouped);
 	}
 
@@ -102,7 +102,7 @@ public class TreeNode<I, T> {
 		List<TreeNode<I, T>> childList = grouped.get(this.id);
 		if (childList != null && !childList.isEmpty()) {
 			this.children = new ArrayList<>(childList);
-			this.children.forEach(child -> child.setChildrenFromMap(grouped));
+			this.children.forEach((child) -> child.setChildrenFromMap(grouped));
 		}
 	}
 

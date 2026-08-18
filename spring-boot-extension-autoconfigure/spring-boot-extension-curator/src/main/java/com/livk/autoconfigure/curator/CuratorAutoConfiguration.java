@@ -76,7 +76,7 @@ public class CuratorAutoConfiguration {
 			.connectionTimeoutMs((int) properties.getConnectionTimeout().toMillis())
 			.retryPolicy(retryPolicy);
 
-		curatorFrameworkBuilderCustomizers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		curatorFrameworkBuilderCustomizers.orderedStream().forEach((customizer) -> customizer.customize(builder));
 
 		CuratorFramework framework = builder.build();
 		TracerDriver tracerDriver = tracerDrivers.getIfAvailable();

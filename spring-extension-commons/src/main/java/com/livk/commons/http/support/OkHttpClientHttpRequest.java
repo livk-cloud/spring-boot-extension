@@ -80,7 +80,7 @@ class OkHttpClientHttpRequest extends AbstractClientHttpRequest implements Strea
 	@Override
 	protected @NonNull ClientHttpResponse executeInternal(@NonNull HttpHeaders headers) throws IOException {
 		if (this.body == null && this.bodyStream != null) {
-			this.body = outputStream -> this.bodyStream.writeTo(outputStream);
+			this.body = (outputStream) -> this.bodyStream.writeTo(outputStream);
 		}
 		RequestBody requestBody;
 		if (this.body != null) {

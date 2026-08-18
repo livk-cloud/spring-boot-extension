@@ -58,7 +58,7 @@ public interface ExcelMapReadListener<T> extends ReadListener<T> {
 			List<ReadSheet> readSheets = excelReader.excelExecutor()
 				.sheetList()
 				.stream()
-				.map(sheet -> FesodSheet.readSheet(sheet.getSheetNo(), sheet.getSheetName())
+				.map((sheet) -> FesodSheet.readSheet(sheet.getSheetNo(), sheet.getSheetName())
 					.head(excelModelClass)
 					.build())
 				.toList();

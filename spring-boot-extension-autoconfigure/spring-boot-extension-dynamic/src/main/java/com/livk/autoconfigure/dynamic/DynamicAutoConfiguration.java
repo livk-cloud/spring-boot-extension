@@ -48,7 +48,7 @@ public class DynamicAutoConfiguration {
 			.entrySet()
 			.stream()
 			.collect(Collectors.toMap(Map.Entry::getKey,
-					entry -> entry.getValue().initializeDataSourceBuilder().build()));
+					(entry) -> entry.getValue().initializeDataSourceBuilder().build()));
 		DynamicDatasource dynamicDatasource = new DynamicDatasource();
 		dynamicDatasource.setTargetDataSources(datasourceMap);
 		dynamicDatasource.setDefaultTargetDataSource(datasourceMap.get(datasourceProperties.getPrimary()));

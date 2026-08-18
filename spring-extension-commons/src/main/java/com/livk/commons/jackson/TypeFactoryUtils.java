@@ -94,7 +94,7 @@ public class TypeFactoryUtils {
 		Class<?> rawClass = resolvableType.getRawClass();
 		if (resolvableType.getType() instanceof ParameterizedType parameterizedType) {
 			JavaType[] javaTypes = Arrays.stream(parameterizedType.getActualTypeArguments())
-				.map(type -> javaType(ResolvableType.forType(type)))
+				.map((type) -> javaType(ResolvableType.forType(type)))
 				.toArray(JavaType[]::new);
 			return instance().constructParametricType(rawClass, javaTypes);
 		}

@@ -185,7 +185,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
-		return Maps.transformValues(this.parameter, parameterValues -> parameterValues.toArray(String[]::new));
+		return Maps.transformValues(this.parameter, (parameterValues) -> parameterValues.toArray(String[]::new));
 	}
 
 	@Override

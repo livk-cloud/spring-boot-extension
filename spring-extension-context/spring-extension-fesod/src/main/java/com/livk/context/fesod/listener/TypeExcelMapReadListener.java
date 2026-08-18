@@ -40,7 +40,7 @@ public final class TypeExcelMapReadListener<T> implements ExcelMapReadListener<T
 	@Override
 	public void invoke(T data, AnalysisContext context) {
 		String sheetName = context.readSheetHolder().getSheetName();
-		List<T> infos = this.mapData.computeIfAbsent(sheetName, s -> new ArrayList<>());
+		List<T> infos = this.mapData.computeIfAbsent(sheetName, (s) -> new ArrayList<>());
 		infos.add(data);
 	}
 

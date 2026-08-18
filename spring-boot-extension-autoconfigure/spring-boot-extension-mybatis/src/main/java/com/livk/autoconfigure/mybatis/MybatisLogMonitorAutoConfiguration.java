@@ -50,7 +50,7 @@ public class MybatisLogMonitorAutoConfiguration {
 			MybatisLogMonitorProperties monitorProperties, ApplicationContext applicationContext) {
 		MybatisSqlMonitor logMonitor = new MybatisSqlMonitor(applicationContext);
 		logMonitor.setProperties(monitorProperties.properties());
-		return configuration -> configuration.addInterceptor(logMonitor);
+		return (configuration) -> configuration.addInterceptor(logMonitor);
 	}
 
 }

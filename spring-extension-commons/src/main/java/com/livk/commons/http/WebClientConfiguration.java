@@ -72,9 +72,9 @@ public class WebClientConfiguration {
 		@Order(0)
 		public WebClientCustomizer clientConnectorCustomizer(
 				ObjectProvider<ClientHttpConnectorBuilderCustomizer<ReactorClientHttpConnectorBuilder>> customizers) {
-			return builder -> {
+			return (builder) -> {
 				ReactorClientHttpConnectorBuilder connectorBuilder = ClientHttpConnectorBuilder.reactor();
-				customizers.orderedStream().forEach(customizer -> customizer.customize(connectorBuilder));
+				customizers.orderedStream().forEach((customizer) -> customizer.customize(connectorBuilder));
 				ReactorClientHttpConnector connector = connectorBuilder.build();
 				builder.clientConnector(connector);
 			};

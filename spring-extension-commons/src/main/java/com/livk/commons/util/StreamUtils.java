@@ -64,7 +64,7 @@ public class StreamUtils {
 		}
 		return Arrays.stream(maps)
 			.filter(Objects::nonNull)
-			.flatMap(map -> map.entrySet().stream())
+			.flatMap((map) -> map.entrySet().stream())
 			.collect(Collectors.groupingBy(Map.Entry::getKey,
 					Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 	}
@@ -167,7 +167,7 @@ public class StreamUtils {
 	 */
 	public <T> Predicate<T> distinct(Function<? super T, ?> function) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-		return t -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
+		return (t) -> seen.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class StreamUtils {
 	public <T, R> Function<T, R> mapWithIndex(int initValue, BiFunction<T, Integer, R> biFunction) {
 		Assert.notNull(biFunction, "biFunction must not be null");
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
-		return t -> biFunction.apply(t, atomicInteger.getAndIncrement());
+		return (t) -> biFunction.apply(t, atomicInteger.getAndIncrement());
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class StreamUtils {
 	public <T> Consumer<T> forEachWithIndex(int initValue, BiConsumer<T, Integer> biConsumer) {
 		Assert.notNull(biConsumer, "biConsumer must not be null");
 		AtomicInteger atomicInteger = new AtomicInteger(initValue);
-		return t -> biConsumer.accept(t, atomicInteger.getAndIncrement());
+		return (t) -> biConsumer.accept(t, atomicInteger.getAndIncrement());
 	}
 
 }

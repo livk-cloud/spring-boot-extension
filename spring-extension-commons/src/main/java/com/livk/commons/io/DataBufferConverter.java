@@ -56,7 +56,7 @@ public class DataBufferConverter {
 	 * @return the mono
 	 */
 	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-		return DataBufferUtils.join(dataBufferFlux).map(dataBuffer -> dataBuffer.asInputStream(true));
+		return DataBufferUtils.join(dataBufferFlux).map((dataBuffer) -> dataBuffer.asInputStream(true));
 	}
 
 	/**

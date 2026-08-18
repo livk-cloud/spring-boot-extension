@@ -53,7 +53,7 @@ public class RestClientConfiguration {
 
 	@Bean
 	public RestClientCustomizer restClientCustomizer(ClientHttpRequestFactory requestFactory) {
-		return builder -> builder.requestFactory(requestFactory);
+		return (builder) -> builder.requestFactory(requestFactory);
 	}
 
 }

@@ -90,7 +90,7 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	 * @return the result of the callback
 	 */
 	public <T> T executeSync(Function<RedisModulesCommands<K, V>, T> callback) {
-		return submit(connection -> callback.apply(connection.sync()));
+		return submit((connection) -> callback.apply(connection.sync()));
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	 * @return the result of the callback
 	 */
 	public <T> T executeAsync(Function<RedisModulesAsyncCommands<K, V>, T> callback) {
-		return submit(connection -> callback.apply(connection.async()));
+		return submit((connection) -> callback.apply(connection.async()));
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	 * @return the result of the callback
 	 */
 	public <T> T executeReactive(Function<RedisModulesReactiveCommands<K, V>, T> callback) {
-		return submit(connection -> callback.apply(connection.reactive()));
+		return submit((connection) -> callback.apply(connection.reactive()));
 	}
 
 	/**

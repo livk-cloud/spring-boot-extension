@@ -84,7 +84,7 @@ public class DbRangeManager extends AbstractRangeManager {
 	}
 
 	protected Long selectRange(String name, long stepStart) {
-		return this.transactionTemplate.execute(status -> {
+		return this.transactionTemplate.execute((status) -> {
 			Optional<Long> result = this.jdbcClient.sql(this.dbHelper.selectRangeSql(TABLE_NAME))
 				.param("name", name)
 				.query(Long.class)

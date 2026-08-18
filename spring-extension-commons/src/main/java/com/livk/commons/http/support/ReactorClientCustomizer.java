@@ -90,13 +90,13 @@ public final class ReactorClientCustomizer
 	@Override
 	public @NonNull ReactorClientHttpConnectorBuilder customize(ReactorClientHttpConnectorBuilder builder) {
 		SslProvider.GenericSslContextSpec<SslContextBuilder> spec = DefaultSslContextSpec.forClient();
-		return builder.withHttpClientCustomizer(httpClient -> httpClient
+		return builder.withHttpClientCustomizer((httpClient) -> httpClient
 			.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, this.connectTimeout)
 			.runOn(this.reactorResourceFactory.getLoopResources())
 			.wiretap(WebClient.class.getName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL, StandardCharsets.UTF_8)
 			.responseTimeout(Duration.ofSeconds(this.responseTimeout))
-			.secure(sslContextSpec -> sslContextSpec.sslContext(spec))
-			.doOnConnected(connection -> getHandlerList().forEach(connection::addHandlerLast)));
+			.secure((sslContextSpec) -> sslContextSpec.sslContext(spec))
+			.doOnConnected((connection) -> getHandlerList().forEach(connection::addHandlerLast)));
 	}
 
 	private List<ChannelHandler> getHandlerList() {

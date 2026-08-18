@@ -58,7 +58,7 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 	 */
 	public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
-	private static final Function<List<?>, Map<String, List<?>>> defaultFunction = c -> Map.of("sheet", c);
+	private static final Function<List<?>, Map<String, List<?>>> defaultFunction = (c) -> Map.of("sheet", c);
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
@@ -110,13 +110,13 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 
 	private Mono<Void> write(ResponseExcel excelReturn, ReactiveHttpOutputMessage message, Class<?> excelModelClass,
 			Mono<Map<String, List<?>>> result) {
-		return result.flatMap(r -> Mono.fromCallable(() -> {
+		return result.flatMap((r) -> Mono.fromCallable(() -> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			super.write(outputStream, excelModelClass, excelReturn.template(), r);
 			return outputStream.toByteArray();
 		})
 			.subscribeOn(Schedulers.boundedElastic()) // ⭐ 非常关键
-			.flatMap(bytes -> {
+			.flatMap((bytes) -> {
 				Flux<DataBuffer> bufferFlux = DataBufferConverter.transform(bytes);
 				return message.writeWith(bufferFlux);
 			}));

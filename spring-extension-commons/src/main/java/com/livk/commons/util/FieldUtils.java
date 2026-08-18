@@ -62,7 +62,7 @@ public class FieldUtils {
 		return Arrays.stream(org.springframework.beans.BeanUtils.getPropertyDescriptors(targetClass))
 			.map(PropertyDescriptor::getReadMethod)
 			.filter(Objects::nonNull)
-			.filter(method -> !method.getName().equals("getClass"))
+			.filter((method) -> !method.getName().equals("getClass"))
 			.collect(Collectors.toSet());
 	}
 

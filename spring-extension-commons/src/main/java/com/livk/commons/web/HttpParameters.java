@@ -99,11 +99,11 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	public static String formatParameters(MultiValueMap<String, String> parameters) {
-		return parameters.entrySet().stream().map(entry -> {
+		return parameters.entrySet().stream().map((entry) -> {
 			List<String> values = entry.getValue();
 			return entry.getKey() + ":"
 					+ ((values.size() != 1)
-							? values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", "))
+							? values.stream().map((s) -> "\"" + s + "\"").collect(Collectors.joining(", "))
 							: "\"" + values.getFirst() + "\"");
 		}).collect(Collectors.joining(", ", "[", "]"));
 	}

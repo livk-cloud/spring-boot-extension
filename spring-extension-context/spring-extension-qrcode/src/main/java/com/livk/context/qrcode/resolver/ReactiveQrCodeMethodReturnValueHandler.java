@@ -78,7 +78,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 			if (Mono.class.isAssignableFrom(returnType.toClass())) {
 				Mono<?> mono = (Mono<?>) returnValue;
 				Assert.notNull(mono, "mono not be null");
-				return mono.flatMap(o -> write(o, result.getReturnTypeSource(), response));
+				return mono.flatMap((o) -> write(o, result.getReturnTypeSource(), response));
 			}
 		}
 		else {

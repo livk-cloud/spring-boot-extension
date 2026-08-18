@@ -46,7 +46,7 @@ public class ContextSnapshots {
 	public static final ContextSnapshotFactory CAPTURE_FACTORY = ContextSnapshotFactory.builder()
 		.contextRegistry(ContextRegistry.getInstance())
 		.clearMissing(false)
-		.captureKeyPredicate(key -> true)
+		.captureKeyPredicate((key) -> true)
 		.build();
 
 	/**

@@ -61,7 +61,7 @@ public class ReactiveQrCodeMethodArgumentResolver implements HandlerMethodArgume
 		Mono<?> mono = Mono.empty();
 		if (qrCodeText != null && this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
 			mono = HttpReactiveUtils.getPartRequest(qrCodeText.fileName(), exchange)
-				.flatMap(request -> Mono.just(request.getBody())
+				.flatMap((request) -> Mono.just(request.getBody())
 					.flatMap(DataBufferConverter::transformByte)
 					.map(this.codeManager::parser));
 		}

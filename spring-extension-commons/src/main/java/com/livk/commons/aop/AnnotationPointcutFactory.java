@@ -48,7 +48,7 @@ public interface AnnotationPointcutFactory {
 	}
 
 	static AnnotationPointcutFactory forType(boolean checkInherited) {
-		return annotationType -> new AnnotationMatchingPointcut(annotationType, checkInherited);
+		return (annotationType) -> new AnnotationMatchingPointcut(annotationType, checkInherited);
 	}
 
 	static AnnotationPointcutFactory forMethod() {
@@ -60,7 +60,7 @@ public interface AnnotationPointcutFactory {
 	}
 
 	static AnnotationPointcutFactory forTypeOrMethod(boolean checkInherited) {
-		return annotationType -> {
+		return (annotationType) -> {
 			AnnotationMatchingPointcut cpc = new AnnotationMatchingPointcut(annotationType, checkInherited);
 			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
 			return new ComposablePointcut(cpc).union(mpc);

@@ -42,11 +42,11 @@ public class HttpReactiveUtils {
 	 * @return the part values
 	 */
 	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-		return exchange.getMultipartData().mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
+		return exchange.getMultipartData().mapNotNull((multiValueMap) -> multiValueMap.getFirst(name));
 	}
 
 	public Mono<ServerHttpRequestDecorator> getPartRequest(String name, ServerWebExchange exchange) {
-		return getPartValues(name, exchange).map(part -> new PartServerHttpRequest(exchange.getRequest(), part));
+		return getPartValues(name, exchange).map((part) -> new PartServerHttpRequest(exchange.getRequest(), part));
 	}
 
 	private static class PartServerHttpRequest extends ServerHttpRequestDecorator {

@@ -62,7 +62,7 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 		Mono<?> mono = Mono.empty();
 		if (requestExcel != null && excelParam != null
 				&& this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
-			mono = HttpReactiveUtils.getPartRequest(excelParam.fileName(), exchange).flatMap(request -> {
+			mono = HttpReactiveUtils.getPartRequest(excelParam.fileName(), exchange).flatMap((request) -> {
 				ExcelMapReadListener<?> listener = new TypeExcelMapReadListener<>();
 				ResolvableType elementType = Objects.equals(resolvableType.resolve(), Mono.class)
 						? resolvableType.getGeneric(0) : resolvableType;
@@ -72,8 +72,8 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 					Class<?> excelModelClass = dataType.apply(elementType);
 					return Mono.just(request.getBody())
 						.flatMap(DataBufferConverter::transform)
-						.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
-						.map(in -> super.getExcelData(listener, dataType));
+						.doOnSuccess((in) -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
+						.map((in) -> super.getExcelData(listener, dataType));
 				}
 				return Mono.empty();
 			});

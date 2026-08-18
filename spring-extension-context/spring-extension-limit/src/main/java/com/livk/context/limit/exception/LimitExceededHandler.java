@@ -30,7 +30,7 @@ public interface LimitExceededHandler {
 	/**
 	 * The default handler that throws a {@link LimitException} with rate limit details.
 	 */
-	LimitExceededHandler DEFAULT = limit -> new LimitException("Limit exceeded: key=%s, max=%d, interval=%d %s"
+	LimitExceededHandler DEFAULT = (limit) -> new LimitException("Limit exceeded: key=%s, max=%d, interval=%d %s"
 		.formatted(limit.key(), limit.rate(), limit.rateInterval(), limit.rateIntervalUnit()));
 
 }
