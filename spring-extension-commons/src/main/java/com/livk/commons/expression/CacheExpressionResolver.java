@@ -169,7 +169,7 @@ public abstract class CacheExpressionResolver<CONTEXT, EXPRESSION> implements Ex
 
 		@Override
 		public <T> T evaluate(Class<T> returnType) {
-			Context evaluationContext = this.context != null ? this.context : Context.create();
+			Context evaluationContext = (this.context != null) ? this.context : Context.create();
 			return doEvaluate(this.expression, evaluationContext, returnType);
 		}
 

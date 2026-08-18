@@ -67,7 +67,7 @@ public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements Asy
 	}
 
 	private void setResponse(PicType type, HttpServletResponse response) {
-		response.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG_VALUE : MediaType.IMAGE_PNG_VALUE);
+		response.setContentType((type != PicType.JPG) ? MediaType.IMAGE_PNG_VALUE : MediaType.IMAGE_JPEG_VALUE);
 		response.setCharacterEncoding("UTF-8");
 	}
 

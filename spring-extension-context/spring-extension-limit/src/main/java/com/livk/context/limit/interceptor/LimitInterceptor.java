@@ -71,8 +71,8 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 		}
 		else {
 			Class<? extends LimitExceededHandler> handlerType = limit.handler();
-			LimitExceededHandler handler = handlerType == LimitExceededHandler.class ? LimitExceededHandler.DEFAULT
-					: BeanUtils.instantiateClass(handlerType);
+			LimitExceededHandler handler = (handlerType != LimitExceededHandler.class)
+					? BeanUtils.instantiateClass(handlerType) : LimitExceededHandler.DEFAULT;
 			throw handler.buildException(limit);
 		}
 	}

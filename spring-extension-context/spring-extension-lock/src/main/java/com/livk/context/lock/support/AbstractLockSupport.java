@@ -164,7 +164,7 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 		public boolean tryLock() {
 			T lock = getLock(this.type, this.key);
 			try {
-				boolean isLocked = supportAsync() && this.async ? tryLockAsync(lock, this.leaseTime, this.waitTime)
+				boolean isLocked = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
 						: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
 				if (isLocked) {
 					AbstractLockSupport.this.threadLocal.set(lock);

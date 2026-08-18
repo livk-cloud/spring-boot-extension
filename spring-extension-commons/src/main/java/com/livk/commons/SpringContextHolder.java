@@ -261,14 +261,14 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 			if (currentFactory == null && currentContext == null) {
 				throw new IllegalStateException("SpringContextHolder is not initialized yet");
 			}
-			return currentFactory instanceof ListableBeanFactory beanFactory ? beanFactory : currentContext;
+			return (currentFactory instanceof ListableBeanFactory beanFactory) ? beanFactory : currentContext;
 		}
 
 		@Override
 		public ApplicationContext unwrap() {
 			BeanFactory currentFactory = this.factory;
 			ApplicationContext currentContext = this.context;
-			ApplicationContext applicationContext = currentFactory instanceof ApplicationContext contextFactory
+			ApplicationContext applicationContext = (currentFactory instanceof ApplicationContext contextFactory)
 					? contextFactory : currentContext;
 			if (applicationContext == null) {
 				throw new IllegalStateException("SpringContextHolder is not initialized yet");

@@ -58,7 +58,7 @@ public final class SequenceRange {
 	 */
 	public long next() {
 		long current = this.value.getAndIncrement();
-		return current <= this.max ? current : -1;
+		return (current <= this.max) ? current : -1;
 	}
 
 	/**

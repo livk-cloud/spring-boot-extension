@@ -125,7 +125,7 @@ public class MybatisSqlMonitor implements Interceptor {
 			return sql;
 		}
 
-		MetaObject metaObject = parameterObject == null ? null : SystemMetaObject.forObject(parameterObject);
+		MetaObject metaObject = (parameterObject != null) ? SystemMetaObject.forObject(parameterObject) : null;
 
 		for (ParameterMapping mapping : parameterMappings) {
 			String propertyName = mapping.getProperty();

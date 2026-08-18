@@ -73,7 +73,7 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 
 	public List<String> getOrEmpty(Object parameterName) {
 		List<String> values = get(parameterName);
-		return (values != null ? values : Collections.emptyList());
+		return (values != null) ? values : Collections.emptyList();
 	}
 
 	@Override
@@ -101,8 +101,10 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	public static String formatParameters(MultiValueMap<String, String> parameters) {
 		return parameters.entrySet().stream().map(entry -> {
 			List<String> values = entry.getValue();
-			return entry.getKey() + ":" + (values.size() == 1 ? "\"" + values.getFirst() + "\""
-					: values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
+			return entry.getKey() + ":"
+					+ ((values.size() != 1)
+							? values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", "))
+							: "\"" + values.getFirst() + "\"");
 		}).collect(Collectors.joining(", ", "[", "]"));
 	}
 

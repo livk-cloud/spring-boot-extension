@@ -58,7 +58,7 @@ abstract class RedissonClientFactory {
 	private static Config createConfig(DataRedisProperties redisProperties) {
 		Config config;
 		Duration duration = redisProperties.getTimeout();
-		int timeout = duration == null ? 10000 : (int) duration.toMillis();
+		int timeout = (duration != null) ? (int) duration.toMillis() : 10000;
 		if (redisProperties.getSentinel() != null) {
 			List<String> nodeList = redisProperties.getSentinel().getNodes();
 			String[] nodes = convert(nodeList);

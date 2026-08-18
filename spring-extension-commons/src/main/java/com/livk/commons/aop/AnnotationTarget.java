@@ -56,8 +56,8 @@ final class AnnotationTarget<A extends Annotation> {
 	private AnnotationTarget(Class<A> annotationType) {
 		this.annotationType = annotationType;
 		Target target = annotationType.getAnnotation(Target.class);
-		this.elementTypes = (target == null) ? EnumSet.allOf(ElementType.class)
-				: EnumSet.copyOf(Arrays.asList(target.value()));
+		this.elementTypes = (target != null) ? EnumSet.copyOf(Arrays.asList(target.value()))
+				: EnumSet.allOf(ElementType.class);
 	}
 
 	public A getAnnotation(Method method) {

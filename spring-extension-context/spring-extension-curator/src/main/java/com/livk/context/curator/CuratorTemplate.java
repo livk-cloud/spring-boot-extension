@@ -108,7 +108,7 @@ public class CuratorTemplate implements CuratorOperations {
 		int index = seqNode.lastIndexOf(path);
 		if (index >= 0) {
 			index += path.length();
-			return index <= seqNode.length() ? seqNode.substring(index) : "";
+			return (index <= seqNode.length()) ? seqNode.substring(index) : "";
 		}
 		return seqNode;
 	}

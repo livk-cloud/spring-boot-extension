@@ -150,7 +150,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	@Override
 	public String getCharacterEncoding() {
 		String enc = super.getCharacterEncoding();
-		return enc != null ? enc : "UTF-8";
+		return (enc != null) ? enc : "UTF-8";
 	}
 
 	@Override
@@ -163,12 +163,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public int getContentLength() {
-		return this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body) ? this.body.length : super.getContentLength();
+		return (this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body)) ? this.body.length : super.getContentLength();
 	}
 
 	@Override
 	public long getContentLengthLong() {
-		return this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body) ? this.body.length
+		return (this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body)) ? this.body.length
 				: super.getContentLengthLong();
 	}
 

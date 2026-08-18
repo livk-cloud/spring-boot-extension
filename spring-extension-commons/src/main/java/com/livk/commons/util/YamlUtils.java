@@ -171,7 +171,7 @@ public class YamlUtils {
 						}
 					}
 				}
-				case null, default -> result.put(key, (value != null ? value : ""));
+				case null, default -> result.put(key, (value != null) ? value : "");
 			}
 		});
 	}

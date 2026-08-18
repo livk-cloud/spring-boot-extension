@@ -98,7 +98,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 
 	private void setResponse(PicType type, ServerHttpResponse response) {
 		HttpHeaders headers = response.getHeaders();
-		headers.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG);
+		headers.setContentType((type != PicType.JPG) ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG);
 		headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
 	}
 

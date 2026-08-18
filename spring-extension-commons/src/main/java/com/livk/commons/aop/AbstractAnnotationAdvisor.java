@@ -58,7 +58,7 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 	@Override
 	public int getOrder() {
 		int order = super.getOrder();
-		return order == Ordered.LOWEST_PRECEDENCE ? Ordered.LOWEST_PRECEDENCE - 1 : order;
+		return (order != Ordered.LOWEST_PRECEDENCE) ? order : Ordered.LOWEST_PRECEDENCE - 1;
 	}
 
 	/**
