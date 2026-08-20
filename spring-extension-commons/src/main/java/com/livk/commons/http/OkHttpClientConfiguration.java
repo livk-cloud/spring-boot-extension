@@ -28,6 +28,8 @@ import org.springframework.context.annotation.Fallback;
 import org.springframework.http.client.ClientHttpRequestFactory;
 
 /**
+ * Auto-configuration for OkHttpClient request factory.
+ *
  * @author livk
  */
 @AutoConfiguration

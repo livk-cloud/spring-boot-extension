@@ -21,6 +21,8 @@ import com.livk.context.mybatis.handler.InjectHandle;
 import java.util.Date;
 
 /**
+ * The Date Inject.
+ *
  * @author livk
  * @deprecated 停止支持{@link Date} use {@link LocalDateInject} or {@link LocalDateTimeInject}
  */

@@ -26,9 +26,9 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 /**
- * FunctionLoader spring拓展
+ * Spring-based FunctionLoader for Aviator.
  * <p>
- * 从IOC容器中获取AviatorFunction
+ * 从IOC容器中获取AviatorFunction.
  *
  * @author livk
  * @see AviatorFunction

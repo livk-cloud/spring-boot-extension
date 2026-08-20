@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * The Mybatis Sql Monitor.
+ *
  * @author livk
  */
 @Slf4j
@@ -61,7 +63,7 @@ public class MybatisSqlMonitor implements Interceptor {
 	public Object intercept(Invocation invocation) throws Throwable {
 		long start = System.currentTimeMillis();
 		Object proceed = invocation.proceed();
-		if (properties != null) {
+		if (this.properties != null) {
 			long time = System.currentTimeMillis() - start;
 			StatementHandler handler = (StatementHandler) invocation.getTarget();
 			BoundSql boundSql = handler.getBoundSql();
@@ -69,7 +71,7 @@ public class MybatisSqlMonitor implements Interceptor {
 			if (time > timeOut()) {
 				log.warn("{SQL execution timeout SQL:[{}],Time:[{}ms]}", sql, time);
 				MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time);
-				applicationContext.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
+				this.applicationContext.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
 			}
 		}
 		else {
@@ -79,7 +81,7 @@ public class MybatisSqlMonitor implements Interceptor {
 	}
 
 	private long timeOut() {
-		Object raw = properties.get("timeOut");
+		Object raw = this.properties.get("timeOut");
 		if (raw instanceof Duration d) {
 			return d.toMillis();
 		}
@@ -123,7 +125,7 @@ public class MybatisSqlMonitor implements Interceptor {
 			return sql;
 		}
 
-		MetaObject metaObject = parameterObject == null ? null : SystemMetaObject.forObject(parameterObject);
+		MetaObject metaObject = (parameterObject != null) ? SystemMetaObject.forObject(parameterObject) : null;
 
 		for (ParameterMapping mapping : parameterMappings) {
 			String propertyName = mapping.getProperty();

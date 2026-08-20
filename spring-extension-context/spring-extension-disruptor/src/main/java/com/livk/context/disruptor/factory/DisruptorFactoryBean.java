@@ -40,6 +40,8 @@ import org.springframework.util.StringUtils;
 import java.util.concurrent.ThreadFactory;
 
 /**
+ * The Disruptor Factory Bean.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -75,7 +77,7 @@ public class DisruptorFactoryBean<T>
 
 	@Override
 	public SpringDisruptor<T> getObject() {
-		return disruptor;
+		return this.disruptor;
 	}
 
 	@Override
@@ -95,19 +97,19 @@ public class DisruptorFactoryBean<T>
 		Assert.notNull(factory, "threadFactory must not be null");
 		WaitStrategy strategy = getWaitStrategy();
 		Assert.notNull(strategy, "waitStrategy must not be null");
-		Assert.notNull(producerType, "producerType must not be null");
-		disruptor = new SpringDisruptor<>(eventFactory, bufferSize, factory, producerType, strategy);
-		disruptor.handleEventsWith(createEventHandler(beanFactory, type));
-		disruptor.start();
+		Assert.notNull(this.producerType, "producerType must not be null");
+		this.disruptor = new SpringDisruptor<>(eventFactory, this.bufferSize, factory, this.producerType, strategy);
+		this.disruptor.handleEventsWith(createEventHandler(this.beanFactory, this.type));
+		this.disruptor.start();
 	}
 
 	private ThreadFactory getThreadFactory() {
 		ThreadFactory factory = this.threadFactory;
-		if (StringUtils.hasText(threadFactoryBeanName)) {
-			factory = beanFactory.getBean(threadFactoryBeanName, ThreadFactory.class);
+		if (StringUtils.hasText(this.threadFactoryBeanName)) {
+			factory = this.beanFactory.getBean(this.threadFactoryBeanName, ThreadFactory.class);
 		}
 		Assert.notNull(factory, "threadFactory must not be null");
-		if (useVirtualThreads) {
+		if (this.useVirtualThreads) {
 			factory = new VirtualThreadFactory(factory);
 		}
 		return factory;
@@ -115,8 +117,8 @@ public class DisruptorFactoryBean<T>
 
 	private WaitStrategy getWaitStrategy() {
 		WaitStrategy strategy = this.waitStrategy;
-		if (StringUtils.hasText(strategyBeanName)) {
-			strategy = beanFactory.getBean(strategyBeanName, WaitStrategy.class);
+		if (StringUtils.hasText(this.strategyBeanName)) {
+			strategy = this.beanFactory.getBean(this.strategyBeanName, WaitStrategy.class);
 		}
 		return strategy;
 	}
@@ -129,7 +131,7 @@ public class DisruptorFactoryBean<T>
 
 	@Override
 	public void destroy() {
-		disruptor.shutdown();
+		this.disruptor.shutdown();
 	}
 
 	private static final class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
@@ -147,21 +149,21 @@ public class DisruptorFactoryBean<T>
 
 		@Override
 		public void onEvent(DisruptorEventWrapper<T> event, long sequence, boolean endOfBatch) throws Exception {
-			for (DisruptorEventConsumer<T> eventConsumer : consumerObjectProvider) {
+			for (DisruptorEventConsumer<T> eventConsumer : this.consumerObjectProvider) {
 				eventConsumer.onEvent(event.unwrap(), sequence, endOfBatch);
 			}
 		}
 
 		@Override
 		public void onStart() {
-			for (EventHandler<T> eventHandler : consumerObjectProvider) {
+			for (EventHandler<T> eventHandler : this.consumerObjectProvider) {
 				eventHandler.onStart();
 			}
 		}
 
 		@Override
 		public void onShutdown() {
-			for (EventHandler<T> eventHandler : consumerObjectProvider) {
+			for (EventHandler<T> eventHandler : this.consumerObjectProvider) {
 				eventHandler.onShutdown();
 			}
 		}
@@ -175,7 +177,7 @@ public class DisruptorFactoryBean<T>
 
 		@Override
 		public Thread newThread(@NonNull Runnable r) {
-			Thread thread = delegate.newThread(r);
+			Thread thread = this.delegate.newThread(r);
 			return Thread.ofVirtual()
 				.name("virtual-" + thread.getName())
 				.inheritInheritableThreadLocals(true)

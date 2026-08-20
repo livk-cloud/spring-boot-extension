@@ -17,6 +17,8 @@
 package com.livk.context.curator;
 
 /**
+ * The Curator Exception.
+ *
  * @author livk
  */
 public class CuratorException extends RuntimeException {

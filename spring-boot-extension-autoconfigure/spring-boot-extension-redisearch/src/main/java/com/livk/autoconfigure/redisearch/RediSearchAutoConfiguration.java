@@ -51,7 +51,7 @@ public class RediSearchAutoConfiguration {
 	@Bean(destroyMethod = "shutdown")
 	public ClientResources clientResources(ObjectProvider<ClientResourcesBuilderCustomizer> providers) {
 		ClientResources.Builder builder = ClientResources.builder();
-		providers.orderedStream().forEach(customizer -> customizer.customize(builder));
+		providers.orderedStream().forEach((customizer) -> customizer.customize(builder));
 		return builder.build();
 	}
 

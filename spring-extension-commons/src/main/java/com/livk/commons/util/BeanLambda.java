@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 
 /**
- * 用于使用lambda获取相关字段已经方法
+ * 用于使用lambda获取相关字段已经方法.
  *
  * @param <T> the type parameter
  * @author livk
@@ -31,7 +31,7 @@ import java.util.function.Function;
 public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 
 	/**
-	 * 获取方法名称
+	 * 获取方法名称.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return methodName
@@ -41,7 +41,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	}
 
 	/**
-	 * 获取方法
+	 * 获取方法.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return method
@@ -51,7 +51,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	}
 
 	/**
-	 * 获取字段名称
+	 * 获取字段名称.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return fieldName
@@ -61,7 +61,7 @@ public interface BeanLambda<T> extends Function<T, Object>, Serializable {
 	}
 
 	/**
-	 * 获取字段
+	 * 获取字段.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return field

@@ -46,6 +46,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
+ * The Reactive Qr Code Method Return Value Handler.
+ *
  * @author livk
  */
 public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implements HandlerResultHandler, Ordered {
@@ -66,18 +68,17 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 				|| result.getReturnType().isAssignableFrom(QrCodeEntity.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
+	public @NonNull Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
 		Object returnValue = result.getReturnValue();
 		ServerHttpResponse response = exchange.getResponse();
 		ResolvableType returnType = result.getReturnType();
-		ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+		ReactiveAdapter adapter = this.adapterRegistry.getAdapter(returnType.resolve(), returnValue);
 		if (adapter != null) {
 			if (Mono.class.isAssignableFrom(returnType.toClass())) {
 				Mono<?> mono = (Mono<?>) returnValue;
 				Assert.notNull(mono, "mono not be null");
-				return mono.flatMap(o -> write(o, result.getReturnTypeSource(), response));
+				return mono.flatMap((o) -> write(o, result.getReturnTypeSource(), response));
 			}
 		}
 		else {
@@ -97,7 +98,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 
 	private void setResponse(PicType type, ServerHttpResponse response) {
 		HttpHeaders headers = response.getHeaders();
-		headers.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG);
+		headers.setContentType((type != PicType.JPG) ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG);
 		headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
 	}
 

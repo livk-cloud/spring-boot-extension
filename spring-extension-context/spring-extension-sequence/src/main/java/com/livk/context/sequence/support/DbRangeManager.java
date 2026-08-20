@@ -31,17 +31,19 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
+ * The Db Range Manager.
+ *
  * @author livk
  */
 public class DbRangeManager extends AbstractRangeManager {
 
 	/**
-	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀
+	 * 表名前缀，为防止数据库表名冲突，默认带上这个前缀.
 	 */
 	private static final String TABLE_NAME = "sequence_range";
 
 	/**
-	 * 获取区间失败重试次数
+	 * 获取区间失败重试次数.
 	 */
 	@Setter
 	private int retryTimes = 5;
@@ -63,7 +65,7 @@ public class DbRangeManager extends AbstractRangeManager {
 
 	@Override
 	public SequenceRange buildNextRange(String name, int step, long stepStart) {
-		for (int i = 0; i < retryTimes; i++) {
+		for (int i = 0; i < this.retryTimes; i++) {
 			Long oldValue = this.selectRange(name, stepStart);
 			if (null == oldValue) {
 				// 区间不存在，重试
@@ -74,16 +76,16 @@ public class DbRangeManager extends AbstractRangeManager {
 				return new SequenceRange(oldValue + 1, newValue);
 			}
 		}
-		throw new SequenceException("Retried too many times, retryTimes = " + retryTimes);
+		throw new SequenceException("Retried too many times, retryTimes = " + this.retryTimes);
 	}
 
 	protected void createTable() {
-		jdbcClient.sql(dbHelper.createTableSql(TABLE_NAME)).update();
+		this.jdbcClient.sql(this.dbHelper.createTableSql(TABLE_NAME)).update();
 	}
 
 	protected Long selectRange(String name, long stepStart) {
-		return transactionTemplate.execute(status -> {
-			Optional<Long> result = jdbcClient.sql(dbHelper.selectRangeSql(TABLE_NAME))
+		return this.transactionTemplate.execute((status) -> {
+			Optional<Long> result = this.jdbcClient.sql(this.dbHelper.selectRangeSql(TABLE_NAME))
 				.param("name", name)
 				.query(Long.class)
 				.optional();
@@ -106,7 +108,7 @@ public class DbRangeManager extends AbstractRangeManager {
 
 	protected boolean updateRange(String name, long newValue, long oldValue) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		int affectedRows = jdbcClient.sql(dbHelper.updateRangeSql(TABLE_NAME))
+		int affectedRows = this.jdbcClient.sql(this.dbHelper.updateRangeSql(TABLE_NAME))
 			.param("new_val", newValue)
 			.param("update_time", now)
 			.param("name", name)
@@ -117,7 +119,7 @@ public class DbRangeManager extends AbstractRangeManager {
 
 	protected void insertRange(String name, long stepStart) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		jdbcClient.sql(dbHelper.insertRangeSql(TABLE_NAME))
+		this.jdbcClient.sql(this.dbHelper.insertRangeSql(TABLE_NAME))
 			.param("name", name)
 			.param("val", stepStart)
 			.param("create_time", now)

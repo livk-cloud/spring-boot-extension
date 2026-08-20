@@ -43,7 +43,7 @@ import java.util.function.Function;
 
 /**
  * <p>
- * 通用键值对
+ * 通用键值对.
  * </p>
  *
  * @param <K> key type parameter
@@ -57,7 +57,7 @@ import java.util.function.Function;
 public final class Pair<K, V> implements Serializable, Cloneable {
 
 	/**
-	 * 默认的空Pair
+	 * 默认的空Pair.
 	 */
 	public static final Pair<?, ?> EMPTY = Pair.of(null, null);
 
@@ -65,17 +65,17 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2303547536834226401L;
 
 	/**
-	 * key
+	 * key.
 	 */
 	private final K key;
 
 	/**
-	 * value
+	 * value.
 	 */
 	private final V value;
 
 	/**
-	 * 静态构造Map.Entry转Pair
+	 * 静态构造Map.Entry转Pair.
 	 * @param <K> key type parameter
 	 * @param <V> value type parameter
 	 * @param entry entry
@@ -86,44 +86,44 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 获取Key
+	 * 获取Key.
 	 * @return key
 	 */
 	public K key() {
-		return key;
+		return this.key;
 	}
 
 	/**
-	 * 获取value
+	 * 获取value.
 	 * @return value
 	 */
 	public V value() {
-		return value;
+		return this.value;
 	}
 
 	/**
-	 * 转成Map
+	 * 转成Map.
 	 * @return the map
 	 * @deprecated use {@link Map#of()}
 	 * @see Map#of(Object, Object)
 	 */
 	@Deprecated(since = "1.5.0")
 	public Map<K, V> toMap() {
-		return Map.of(key, value);
+		return Map.of(this.key, this.value);
 	}
 
 	/**
-	 * 转成Map.Entry
+	 * 转成Map.Entry.
 	 * @return entry
 	 * @deprecated use {@link Map#entry(Object, Object)}
 	 */
 	@Deprecated(since = "1.5.0")
 	public Map.Entry<K, V> toEntry() {
-		return Map.entry(key, value);
+		return Map.entry(this.key, this.value);
 	}
 
 	/**
-	 * 进行map转换
+	 * 进行map转换.
 	 * @param <S> key转换后type
 	 * @param <U> value转换后type
 	 * @param keyFunction key function
@@ -133,11 +133,11 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 */
 	@Deprecated(since = "1.5.0")
 	public <S, U> Pair<S, U> map(Function<K, S> keyFunction, Function<V, U> valueFunction) {
-		return of(keyFunction.apply(key), valueFunction.apply(value));
+		return of(keyFunction.apply(this.key), valueFunction.apply(this.value));
 	}
 
 	/**
-	 * Key进行map转换
+	 * Key进行map转换.
 	 * @param <S> key转换后type
 	 * @param keyFunction key function
 	 * @return pair
@@ -149,7 +149,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Value进行map转换
+	 * Value进行map转换.
 	 * @param <U> value转换后type
 	 * @param valueFunction value function
 	 * @return pair
@@ -161,7 +161,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 进行flatmap转换
+	 * 进行flatmap转换.
 	 * @param <S> key转换后type
 	 * @param <U> value转换后type
 	 * @param biFunction bi function
@@ -170,7 +170,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 	 */
 	@Deprecated(since = "1.5.0")
 	public <S, U> Pair<S, U> flatMap(BiFunction<K, V, Pair<S, U>> biFunction) {
-		return biFunction.apply(key, value);
+		return biFunction.apply(this.key, this.value);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -186,18 +186,18 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "{" + key + ":" + value + "}";
+		return "{" + this.key + ":" + this.value + "}";
 	}
 
 	/**
-	 * Pair Jackson序列化工具
+	 * Pair Jackson序列化工具.
 	 */
 	static class PairJsonSerializer extends StdScalarSerializer<Pair<Object, Object>> {
 
 		private ValueSerializer<Object> keySerializer;
 
 		/**
-		 * 构造器
+		 * 构造器.
 		 */
 		protected PairJsonSerializer() {
 			super(Pair.class, false);
@@ -207,20 +207,20 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		public void serialize(Pair<Object, Object> pair, JsonGenerator gen, SerializationContext context)
 				throws JacksonException {
 			gen.writeStartObject(pair);
-			keySerializer.serialize(pair.key(), gen, context);
+			this.keySerializer.serialize(pair.key(), gen, context);
 			gen.writePOJO(pair.value()).writeEndObject();
 		}
 
 		@Override
 		public ValueSerializer<?> createContextual(SerializationContext context, BeanProperty property) {
-			keySerializer = context.findKeySerializer(Object.class, property);
+			this.keySerializer = context.findKeySerializer(Object.class, property);
 			return this;
 		}
 
 	}
 
 	/**
-	 * Pair Jackson反序列化工具
+	 * Pair Jackson反序列化工具.
 	 */
 	static class PairJsonDeserializer extends StdScalarDeserializer<Pair<Object, Object>> {
 
@@ -229,7 +229,7 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 		private JavaType valueType;
 
 		/**
-		 * 构造器
+		 * 构造器.
 		 */
 		protected PairJsonDeserializer() {
 			super(Pair.class);
@@ -241,8 +241,8 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 			String name = p.currentName();
 			JsonNode valueNode = context.readTree(p).get(name);
 			p.finishToken();
-			return Pair.of(keyDeserializer.deserializeKey(name, context),
-					context.readTreeAsValue(valueNode, valueType));
+			return Pair.of(this.keyDeserializer.deserializeKey(name, context),
+					context.readTreeAsValue(valueNode, this.valueType));
 		}
 
 		@Override
@@ -250,8 +250,8 @@ public final class Pair<K, V> implements Serializable, Cloneable {
 			JavaType contextualType = context.getContextualType();
 			TypeBindings bindings = contextualType.getBindings();
 			JavaType keyType = bindings.getBoundType(0);
-			valueType = bindings.getBoundType(1);
-			keyDeserializer = context.findKeyDeserializer(keyType, property);
+			this.valueType = bindings.getBoundType(1);
+			this.keyDeserializer = context.findKeyDeserializer(keyType, property);
 			return this;
 		}
 

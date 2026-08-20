@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用于声明http客户端
+ * Annotation for declaring HTTP client types.
  *
  * @author livk
  */
@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
 public @interface EnableHttpClient {
 
 	/**
-	 * 声明客户端类型
+	 * Specifies the HTTP client types to enable.
 	 * @return the http client type [ ]
 	 */
 	HttpClientType[] value();

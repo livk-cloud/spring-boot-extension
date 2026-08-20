@@ -29,7 +29,7 @@ import java.lang.reflect.WildcardType;
 
 /**
  * <p>
- * Type相关工具类，提供Type到Class的转换和泛型参数解析能力
+ * Type相关工具类，提供Type到Class的转换和泛型参数解析能力.
  * </p>
  *
  * @author livk
@@ -38,7 +38,7 @@ import java.lang.reflect.WildcardType;
 public class TypeUtils {
 
 	/**
-	 * 解析指定类在泛型接口/父类上的类型参数（仅支持单泛型参数）
+	 * 解析指定类在泛型接口/父类上的类型参数（仅支持单泛型参数）.
 	 * @param <T> 类型参数
 	 * @param <G> 泛型接口/父类
 	 * @param clazz 目标类
@@ -56,7 +56,7 @@ public class TypeUtils {
 	}
 
 	/**
-	 * 将Type安全的转成Class
+	 * 将Type安全的转成Class.
 	 * @param <T> type parameter
 	 * @param type type
 	 * @return class

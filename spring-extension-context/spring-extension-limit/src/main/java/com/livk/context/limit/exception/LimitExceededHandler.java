@@ -19,13 +19,18 @@ package com.livk.context.limit.exception;
 import com.livk.context.limit.annotation.Limit;
 
 /**
+ * The Limit Exceeded Handler.
+ *
  * @author livk
  */
 public interface LimitExceededHandler {
 
 	RuntimeException buildException(Limit limit);
 
-	LimitExceededHandler DEFAULT = limit -> new LimitException("Limit exceeded: key=%s, max=%d, interval=%d %s"
+	/**
+	 * The default handler that throws a {@link LimitException} with rate limit details.
+	 */
+	LimitExceededHandler DEFAULT = (limit) -> new LimitException("Limit exceeded: key=%s, max=%d, interval=%d %s"
 		.formatted(limit.key(), limit.rate(), limit.rateInterval(), limit.rateIntervalUnit()));
 
 }

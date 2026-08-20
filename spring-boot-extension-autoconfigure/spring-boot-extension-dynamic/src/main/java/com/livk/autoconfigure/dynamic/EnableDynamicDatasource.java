@@ -24,6 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to enable dynamic multi-datasource routing.
+ *
  * @author livk
  */
 @AutoImport

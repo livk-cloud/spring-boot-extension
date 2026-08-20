@@ -35,6 +35,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
+ * The Reactive Qr Code Method Argument Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -49,23 +51,22 @@ public class ReactiveQrCodeMethodArgumentResolver implements HandlerMethodArgume
 		return parameter.hasParameterAnnotation(RequestQrCodeText.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext,
-			@NonNull ServerWebExchange exchange) {
+	public @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
+			@NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+		ReactiveAdapter adapter = (resolvedType != null) ? this.adapterRegistry.getAdapter(resolvedType) : null;
 		RequestQrCodeText qrCodeText = parameter.getParameterAnnotation(RequestQrCodeText.class);
 		ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
 		Mono<?> mono = Mono.empty();
 		if (qrCodeText != null && this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
 			mono = HttpReactiveUtils.getPartRequest(qrCodeText.fileName(), exchange)
-				.flatMap(request -> Mono.just(request.getBody())
+				.flatMap((request) -> Mono.just(request.getBody())
 					.flatMap(DataBufferConverter::transformByte)
-					.map(codeManager::parser));
+					.map(this.codeManager::parser));
 		}
 
-		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+		return (adapter != null) ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono);
 	}
 
 	private boolean canRead(@NonNull ResolvableType elementType, MediaType mediaType) {

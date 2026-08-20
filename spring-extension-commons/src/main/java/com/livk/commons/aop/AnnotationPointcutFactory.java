@@ -23,7 +23,7 @@ import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import java.lang.annotation.Annotation;
 
 /**
- * 根据注解类型构建{@link Pointcut}的通用接口
+ * Factory interface for creating {@link Pointcut} based on annotation type.
  *
  * @author livk
  */
@@ -31,7 +31,7 @@ import java.lang.annotation.Annotation;
 public interface AnnotationPointcutFactory {
 
 	/**
-	 * 根据指定注解类型创建 Pointcut。
+	 * Creates a Pointcut for the specified annotation type.
 	 * @param annotationType 注解类信息
 	 * @return 切点
 	 * @deprecated since 2.1.1, use {@link #create(Class)} instead.
@@ -48,7 +48,7 @@ public interface AnnotationPointcutFactory {
 	}
 
 	static AnnotationPointcutFactory forType(boolean checkInherited) {
-		return annotationType -> new AnnotationMatchingPointcut(annotationType, checkInherited);
+		return (annotationType) -> new AnnotationMatchingPointcut(annotationType, checkInherited);
 	}
 
 	static AnnotationPointcutFactory forMethod() {
@@ -60,7 +60,7 @@ public interface AnnotationPointcutFactory {
 	}
 
 	static AnnotationPointcutFactory forTypeOrMethod(boolean checkInherited) {
-		return annotationType -> {
+		return (annotationType) -> {
 			AnnotationMatchingPointcut cpc = new AnnotationMatchingPointcut(annotationType, checkInherited);
 			AnnotationMatchingPointcut mpc = AnnotationMatchingPointcut.forMethodAnnotation(annotationType);
 			return new ComposablePointcut(cpc).union(mpc);

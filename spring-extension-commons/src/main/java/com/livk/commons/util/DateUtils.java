@@ -27,7 +27,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 日期相关工具类
+ * 日期相关工具类.
  * </p>
  *
  * @author livk
@@ -38,7 +38,7 @@ import java.util.Date;
 public class DateUtils {
 
 	/**
-	 * LocalDateTime 转秒级时间戳
+	 * LocalDateTime 转秒级时间戳.
 	 * @param localDateTime the local date time
 	 * @return the long
 	 */
@@ -47,7 +47,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * LocalDateTime 转秒级时间戳
+	 * LocalDateTime 转秒级时间戳.
 	 * @param localDateTime the local date time
 	 * @param zoneId zoneId
 	 * @return the long
@@ -57,7 +57,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 秒级时间戳转LocalDateTime
+	 * 秒级时间戳转LocalDateTime.
 	 * @param timeStamp the time stamp
 	 * @return the local date time
 	 */
@@ -66,7 +66,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 秒级时间戳转LocalDateTime
+	 * 秒级时间戳转LocalDateTime.
 	 * @param timeStamp the time stamp
 	 * @param zoneId zoneId
 	 * @return the local date time
@@ -76,7 +76,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * LocalDateTime 转 Date
+	 * LocalDateTime 转 Date.
 	 * @param localDateTime the local date time
 	 * @return the date
 	 */
@@ -85,7 +85,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * LocalDateTime 转 Date
+	 * LocalDateTime 转 Date.
 	 * @param localDateTime the local date time
 	 * @param zoneId zoneId
 	 * @return the date
@@ -95,7 +95,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * LocalDate 转 Date
+	 * LocalDate 转 Date.
 	 * @param localDate the local date
 	 * @return the date
 	 */
@@ -104,7 +104,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * LocalDate 转 Date
+	 * LocalDate 转 Date.
 	 * @param localDate the local date
 	 * @param zoneId zoneId
 	 * @return the date
@@ -114,7 +114,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * Date转 LocalDateTime
+	 * Date转 LocalDateTime.
 	 * @param date the date
 	 * @return the local date time
 	 */
@@ -123,7 +123,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * Date转 LocalDateTime
+	 * Date转 LocalDateTime.
 	 * @param date the date
 	 * @param zoneId zoneId
 	 * @return the local date time
@@ -133,7 +133,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 日期 格式化
+	 * 日期 格式化.
 	 * @param localDateTime the local date time
 	 * @param patten the patten
 	 * @return the string
@@ -143,7 +143,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 日期 格式化
+	 * 日期 格式化.
 	 * @param localDateTime the local date time
 	 * @param patten the patten
 	 * @param zoneId zoneId
@@ -154,7 +154,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 日期 格式化
+	 * 日期 格式化.
 	 * @param localDateTime the local date time
 	 * @param formatter the formatter
 	 * @return the string
@@ -164,7 +164,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 字符串转 LocalDateTime
+	 * 字符串转 LocalDateTime.
 	 * @param localDateTime the local date time
 	 * @param pattern the pattern
 	 * @return the local date time
@@ -174,7 +174,7 @@ public class DateUtils {
 	}
 
 	/**
-	 * 字符串转 LocalDateTime
+	 * 字符串转 LocalDateTime.
 	 * @param localDateTime the local date time
 	 * @param pattern the pattern
 	 * @param zoneId zoneId

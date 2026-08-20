@@ -17,6 +17,8 @@
 package com.livk.context.redisearch.codec;
 
 /**
+ * The Codec Exception.
+ *
  * @author livk
  */
 public class CodecException extends RuntimeException {

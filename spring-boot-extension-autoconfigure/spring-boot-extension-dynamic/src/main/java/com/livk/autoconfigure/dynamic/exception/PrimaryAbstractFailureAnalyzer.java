@@ -22,6 +22,8 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 
 /**
+ * Failure analyzer for primary datasource configuration errors.
+ *
  * @author livk
  */
 @SpringFactories(FailureAnalyzer.class)

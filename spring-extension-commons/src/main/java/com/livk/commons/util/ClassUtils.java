@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
 
 /**
  * <p>
- * class相关工具类
+ * class相关工具类.
  * </p>
  *
  * @author livk
@@ -37,7 +37,7 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 	}
 
 	/**
-	 * 将Type安全的转成Class
+	 * 将Type安全的转成Class.
 	 * @param <T> type parameter
 	 * @param type type
 	 * @return class
@@ -47,7 +47,7 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 	}
 
 	/**
-	 * 将class全类名转成class
+	 * 将class全类名转成class.
 	 * @param className class name
 	 * @return class
 	 */
@@ -56,7 +56,7 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
 	}
 
 	/**
-	 * 判定当前类是否被加载
+	 * 判定当前类是否被加载.
 	 * @param className class name
 	 * @return boolean
 	 */

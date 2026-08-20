@@ -19,7 +19,7 @@ package com.livk.commons.util;
 import org.springframework.util.Assert;
 
 /**
- * 使用record进行默认实现
+ * 使用record进行默认实现.
  *
  * @param <V> 相关实例
  * @author livk

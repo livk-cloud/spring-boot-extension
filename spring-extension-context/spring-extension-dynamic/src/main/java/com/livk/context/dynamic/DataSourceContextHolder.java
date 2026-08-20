@@ -21,6 +21,8 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.StringUtils;
 
 /**
+ * The Data Source Context Holder.
+ *
  * @author livk
  */
 public class DataSourceContextHolder {

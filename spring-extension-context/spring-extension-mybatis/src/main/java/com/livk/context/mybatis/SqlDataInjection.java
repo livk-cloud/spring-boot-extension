@@ -37,9 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * 仅支持Mybatis
- * </p>
+ * 仅支持Mybatis.
  *
  * @author livk
  */
@@ -85,7 +83,7 @@ public class SqlDataInjection implements Interceptor {
 
 	private Object getValue(SqlInject inject, Field field) {
 		Object value = BeanUtils.instantiateClass(inject.supplier()).handler();
-		return value != null ? value : InjectType.handler(field.getType());
+		return (value != null) ? value : InjectType.handler(field.getType());
 	}
 
 }

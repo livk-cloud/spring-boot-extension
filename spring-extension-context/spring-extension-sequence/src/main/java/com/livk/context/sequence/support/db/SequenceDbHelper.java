@@ -25,6 +25,8 @@ import java.sql.DatabaseMetaData;
 import java.util.List;
 
 /**
+ * The Sequence Db Helper.
+ *
  * @author livk
  */
 public interface SequenceDbHelper {

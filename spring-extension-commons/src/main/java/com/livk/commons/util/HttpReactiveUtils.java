@@ -28,23 +28,25 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
+ * WebFlux响应式HTTP请求工具类.
+ *
  * @author livk
  */
 @UtilityClass
 public class HttpReactiveUtils {
 
 	/**
-	 * 从ServerWebExchange读取文件转成Mono Part
+	 * 从ServerWebExchange读取文件转成Mono Part.
 	 * @param name 文件参数
 	 * @param exchange the exchange
 	 * @return the part values
 	 */
 	public Mono<Part> getPartValues(String name, ServerWebExchange exchange) {
-		return exchange.getMultipartData().mapNotNull(multiValueMap -> multiValueMap.getFirst(name));
+		return exchange.getMultipartData().mapNotNull((multiValueMap) -> multiValueMap.getFirst(name));
 	}
 
 	public Mono<ServerHttpRequestDecorator> getPartRequest(String name, ServerWebExchange exchange) {
-		return getPartValues(name, exchange).map(part -> new PartServerHttpRequest(exchange.getRequest(), part));
+		return getPartValues(name, exchange).map((part) -> new PartServerHttpRequest(exchange.getRequest(), part));
 	}
 
 	private static class PartServerHttpRequest extends ServerHttpRequestDecorator {
@@ -56,11 +58,13 @@ public class HttpReactiveUtils {
 			this.part = part;
 		}
 
-		@NonNull public HttpHeaders getHeaders() {
+		@Override
+		public @NonNull HttpHeaders getHeaders() {
 			return this.part.headers();
 		}
 
-		@NonNull public Flux<DataBuffer> getBody() {
+		@Override
+		public @NonNull Flux<DataBuffer> getBody() {
 			return this.part.content();
 		}
 

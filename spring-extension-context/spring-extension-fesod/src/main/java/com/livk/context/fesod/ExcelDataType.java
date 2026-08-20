@@ -35,11 +35,11 @@ public enum ExcelDataType {
 	/**
 	 * List excel data type.
 	 */
-	LIST(resolvableType -> resolvableType.resolveGeneric(0), List.class::isAssignableFrom),
+	LIST((resolvableType) -> resolvableType.resolveGeneric(0), List.class::isAssignableFrom),
 	/**
 	 * Map excel data type.
 	 */
-	MAP(resolvableType -> resolvableType.getGeneric(1).resolveGeneric(0), Map.class::isAssignableFrom);
+	MAP((resolvableType) -> resolvableType.getGeneric(1).resolveGeneric(0), Map.class::isAssignableFrom);
 
 	private final Function<ResolvableType, Class<?>> function;
 
@@ -60,7 +60,7 @@ public enum ExcelDataType {
 	}
 
 	public Class<?> apply(ResolvableType type) {
-		return function.apply(type);
+		return this.function.apply(type);
 	}
 
 }

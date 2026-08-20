@@ -142,9 +142,8 @@ public class OkHttpClientHttpRequestFactory implements ClientHttpRequestFactory,
 		return this;
 	}
 
-	@NonNull
 	@Override
-	public ClientHttpRequest createRequest(@NonNull URI uri, @NonNull HttpMethod httpMethod) {
+	public @NonNull ClientHttpRequest createRequest(@NonNull URI uri, @NonNull HttpMethod httpMethod) {
 		return new OkHttpClientHttpRequest(this.client, uri, httpMethod);
 	}
 

@@ -19,6 +19,8 @@ package com.livk.context.redisearch;
 import io.lettuce.core.codec.StringCodec;
 
 /**
+ * The String Redis Search Template.
+ *
  * @author livk
  */
 public class StringRedisSearchTemplate extends RedisSearchTemplate<String, String> {

@@ -20,6 +20,8 @@ import com.livk.commons.Customizer;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 
 /**
+ * Callback interface for customizing the CuratorFrameworkFactory builder.
+ *
  * @author livk
  */
 @FunctionalInterface

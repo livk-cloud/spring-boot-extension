@@ -26,6 +26,8 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.jspecify.annotations.NonNull;
 
 /**
+ * The Disruptor Scan Registrar.
+ *
  * @author livk
  */
 public class DisruptorScanRegistrar implements ImportBeanDefinitionRegistrar {

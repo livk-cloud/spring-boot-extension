@@ -20,6 +20,8 @@ import com.livk.testcontainers.DockerImageNames;
 import org.testcontainers.containers.GenericContainer;
 
 /**
+ * Testcontainers wrapper for Apache Zookeeper.
+ *
  * @author livk
  */
 public class ZookeeperContainer extends GenericContainer<ZookeeperContainer> {

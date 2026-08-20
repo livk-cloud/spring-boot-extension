@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<Limit> {
 
 	/**
-	 * 执行器
+	 * 执行器.
 	 */
 	private final ObjectProvider<LimitExecutor> providers;
 
@@ -55,12 +55,14 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 		int rate = limit.rate();
 		int rateInterval = limit.rateInterval();
 		TimeUnit unit = limit.rateIntervalUnit();
-		String spELKey = resolver.resolve(key).method(invocation.getMethod(), invocation.getArguments()).evaluate();
+		String spELKey = this.resolver.resolve(key)
+			.method(invocation.getMethod(), invocation.getArguments())
+			.evaluate();
 		if (limit.restrictIp()) {
 			String ip = HttpServletUtils.realIp(HttpServletUtils.request());
 			spELKey = spELKey + "#" + ip;
 		}
-		LimitExecutor executor = providers.orderedStream()
+		LimitExecutor executor = this.providers.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(LimitExecutor.class));
 		boolean status = executor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
@@ -69,8 +71,8 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 		}
 		else {
 			Class<? extends LimitExceededHandler> handlerType = limit.handler();
-			LimitExceededHandler handler = handlerType == LimitExceededHandler.class ? LimitExceededHandler.DEFAULT
-					: BeanUtils.instantiateClass(handlerType);
+			LimitExceededHandler handler = (handlerType != LimitExceededHandler.class)
+					? BeanUtils.instantiateClass(handlerType) : LimitExceededHandler.DEFAULT;
 			throw handler.buildException(limit);
 		}
 	}

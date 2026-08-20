@@ -33,6 +33,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Utility class for resolving base packages from annotation metadata.
+ *
  * @author livk
  */
 @Slf4j
@@ -40,7 +42,9 @@ import java.util.Set;
 public class AnnotationBasePackageSupport {
 
 	/**
-	 * 从注解元数据中提取基础包路径。 支持从注解的 basePackages 和 basePackageClasses 属性获取，并以声明类的包路径作为默认值。
+	 * Extracts base package paths from annotation metadata.
+	 * <p>
+	 * 支持从注解的 basePackages 和 basePackageClasses 属性获取，并以声明类的包路径作为默认值。
 	 * @param metadata 注解元数据，通常来自类或方法的注解
 	 * @param annotationClass 要解析的注解类型
 	 * @return 去重后的基础包路径数组
@@ -74,7 +78,9 @@ public class AnnotationBasePackageSupport {
 	}
 
 	/**
-	 * 从 Spring BeanFactory 中获取自动配置的基础包路径。 如果 BeanFactory 未配置自动包路径，则返回空数组。
+	 * Retrieves auto-configuration base packages from Spring BeanFactory.
+	 * <p>
+	 * 如果 BeanFactory 未配置自动包路径，则返回空数组。
 	 * @param beanFactory spring 的 BeanFactory 实例
 	 * @return 自动配置的基础包路径数组
 	 */

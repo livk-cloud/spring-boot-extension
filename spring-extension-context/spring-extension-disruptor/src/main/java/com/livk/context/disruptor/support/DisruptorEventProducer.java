@@ -36,7 +36,7 @@ public class DisruptorEventProducer<T> {
 	 * @param disruptor the disruptor
 	 */
 	public DisruptorEventProducer(SpringDisruptor<T> disruptor) {
-		ringBuffer = disruptor.getRingBuffer();
+		this.ringBuffer = disruptor.getRingBuffer();
 	}
 
 	/**
@@ -44,13 +44,13 @@ public class DisruptorEventProducer<T> {
 	 * @param data the data
 	 */
 	public final void send(T data) {
-		long sequence = ringBuffer.next();
+		long sequence = this.ringBuffer.next();
 		try {
-			DisruptorEventWrapper<T> event = ringBuffer.get(sequence);
+			DisruptorEventWrapper<T> event = this.ringBuffer.get(sequence);
 			event.wrap(data);
 		}
 		finally {
-			ringBuffer.publish(sequence);
+			this.ringBuffer.publish(sequence);
 		}
 	}
 
@@ -60,15 +60,15 @@ public class DisruptorEventProducer<T> {
 	 */
 	public final void sendBatch(List<T> dataList) {
 		int n = dataList.size();
-		long hi = ringBuffer.next(n);
+		long hi = this.ringBuffer.next(n);
 		long lo = hi - (n - 1);
 		try {
 			for (int i = 0; i < dataList.size(); i++) {
-				ringBuffer.get(i + lo).wrap(dataList.get(i));
+				this.ringBuffer.get(i + lo).wrap(dataList.get(i));
 			}
 		}
 		finally {
-			ringBuffer.publish(lo, hi);
+			this.ringBuffer.publish(lo, hi);
 		}
 	}
 

@@ -29,6 +29,8 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 /**
+ * Auto-configuration for LMAX Disruptor event handler scanning.
+ *
  * @author livk
  */
 @SpringAutoService

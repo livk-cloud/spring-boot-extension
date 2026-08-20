@@ -21,6 +21,8 @@ import com.livk.context.sequence.exception.SequenceException;
 import org.springframework.util.StringUtils;
 
 /**
+ * The Abstract Range Manager.
+ *
  * @author livk
  */
 public abstract class AbstractRangeManager implements RangeManager {

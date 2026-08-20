@@ -29,7 +29,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * 注解型切点处理器
+ * Annotation-based pointcut advisor.
  *
  * @param <A> 注解
  * @author livk
@@ -38,17 +38,16 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 		implements IntroductionInterceptor {
 
 	/**
-	 * 切点注解类型
+	 * The annotation type for pointcut matching.
 	 */
 	protected final Class<A> annotationType = TypeUtils.resolveTypeArgument(this.getClass(),
 			AbstractAnnotationAdvisor.class);
 
-	@NonNull
 	@Override
-	public final Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
-		Assert.notNull(annotationType, "annotationType must not be null");
+	public final @NonNull Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
+		Assert.notNull(this.annotationType, "annotationType must not be null");
 		Method method = invocation.getMethod();
-		AnnotationTarget<A> target = AnnotationTarget.of(annotationType);
+		AnnotationTarget<A> target = AnnotationTarget.of(this.annotationType);
 		A annotation = target.getAnnotation(method);
 		if (annotation == null && invocation.getThis() != null) {
 			annotation = target.getAnnotation(invocation.getThis().getClass());
@@ -59,11 +58,11 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 	@Override
 	public int getOrder() {
 		int order = super.getOrder();
-		return order == Ordered.LOWEST_PRECEDENCE ? Ordered.LOWEST_PRECEDENCE - 1 : order;
+		return (order != Ordered.LOWEST_PRECEDENCE) ? order : Ordered.LOWEST_PRECEDENCE - 1;
 	}
 
 	/**
-	 * 执行拦截的方法
+	 * Executes the intercepted method with annotation context.
 	 * @param invocation 方法相关信息
 	 * @param annotation 注解信息
 	 * @return 方法返回结果 object
@@ -76,9 +75,8 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 		return intf.isAssignableFrom(this.getClass());
 	}
 
-	@NonNull
 	@Override
-	public Advice getAdvice() {
+	public @NonNull Advice getAdvice() {
 		return this;
 	}
 

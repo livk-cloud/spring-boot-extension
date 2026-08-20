@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Bean与Map之间的转换工具类
+ * Bean与Map之间的转换工具类.
  * </p>
  *
  * @author livk
@@ -37,7 +37,7 @@ import java.util.Map;
 public class BeanConverter {
 
 	/**
-	 * 使用BeanWrapper将Bean转成Map
+	 * 使用BeanWrapper将Bean转成Map.
 	 * @param bean bean对象
 	 * @return map
 	 * @see BeanWrapper
@@ -54,7 +54,7 @@ public class BeanConverter {
 	}
 
 	/**
-	 * 使用BeanWrapper将Map转成Bean
+	 * 使用BeanWrapper将Map转成Bean.
 	 * @param <T> 类型
 	 * @param map map数据
 	 * @param clazz 目标类型

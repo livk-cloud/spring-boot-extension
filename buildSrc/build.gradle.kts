@@ -49,6 +49,10 @@ gradlePlugin {
 			id = "com.livk.jacoco"
 			implementationClass = "com.livk.boot.tasks.JacocoExpandPlugin"
 		}
+		create("checkstyleExpand") {
+			id = "com.livk.checkstyle"
+			implementationClass = "com.livk.boot.tasks.CheckstyleExpandPlugin"
+		}
 	}
 }
 

@@ -29,6 +29,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 /**
+ * Auto-configuration for Mybatis SQL log monitoring interceptor.
+ *
  * @author livk
  */
 @SpringAutoService(EnableSqlMonitor.class)
@@ -40,6 +42,7 @@ public class MybatisLogMonitorAutoConfiguration {
 	/**
 	 * Mybatis log monitor configuration customizer configuration customizer.
 	 * @param monitorProperties the properties
+	 * @param applicationContext the application context
 	 * @return the configuration customizer
 	 */
 	@Bean
@@ -47,7 +50,7 @@ public class MybatisLogMonitorAutoConfiguration {
 			MybatisLogMonitorProperties monitorProperties, ApplicationContext applicationContext) {
 		MybatisSqlMonitor logMonitor = new MybatisSqlMonitor(applicationContext);
 		logMonitor.setProperties(monitorProperties.properties());
-		return configuration -> configuration.addInterceptor(logMonitor);
+		return (configuration) -> configuration.addInterceptor(logMonitor);
 	}
 
 }

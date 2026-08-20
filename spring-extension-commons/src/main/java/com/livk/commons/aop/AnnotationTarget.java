@@ -31,10 +31,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * Utility for resolving annotations based on their declared target element types.
+ *
  * @author livk
  */
 final class AnnotationTarget<A extends Annotation> {
 
+	/**
+	 * The pointcut factory that resolves annotations based on their target element types.
+	 */
 	public static final AnnotationPointcutFactory TARGET_POINTCUT = new AnnotationTargetPointcut();
 
 	private static final ConcurrentMap<Class<? extends Annotation>, AnnotationTarget<?>> CACHE = new ConcurrentHashMap<>();
@@ -51,23 +56,25 @@ final class AnnotationTarget<A extends Annotation> {
 	private AnnotationTarget(Class<A> annotationType) {
 		this.annotationType = annotationType;
 		Target target = annotationType.getAnnotation(Target.class);
-		this.elementTypes = (target == null) ? EnumSet.allOf(ElementType.class)
-				: EnumSet.copyOf(Arrays.asList(target.value()));
+		this.elementTypes = (target != null) ? EnumSet.copyOf(Arrays.asList(target.value()))
+				: EnumSet.allOf(ElementType.class);
 	}
 
 	public A getAnnotation(Method method) {
-		return supports(ElementType.METHOD) ? AnnotationUtils.getAnnotation(method, annotationType) : null;
+		return supports(ElementType.METHOD) ? AnnotationUtils.getAnnotation(method, this.annotationType) : null;
 	}
 
 	public A getAnnotation(Class<?> clazz) {
-		return supports(ElementType.TYPE) ? AnnotationUtils.getAnnotation(clazz, annotationType) : null;
+		return supports(ElementType.TYPE) ? AnnotationUtils.getAnnotation(clazz, this.annotationType) : null;
 	}
 
 	/**
-	 * 是否支持指定的 ElementType。
+	 * Checks whether the specified ElementType is supported.
+	 * @param elementType the element type to check
+	 * @return true if the element type is supported
 	 */
 	boolean supports(ElementType elementType) {
-		return elementTypes.contains(elementType);
+		return this.elementTypes.contains(elementType);
 	}
 
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)

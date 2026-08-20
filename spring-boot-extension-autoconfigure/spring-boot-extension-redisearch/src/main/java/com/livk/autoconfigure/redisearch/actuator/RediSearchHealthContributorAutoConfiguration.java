@@ -32,6 +32,8 @@ import org.springframework.context.annotation.Bean;
 import java.util.Map;
 
 /**
+ * Auto-configuration for RediSearch health contributors.
+ *
  * @author livk
  */
 @SpringAutoService

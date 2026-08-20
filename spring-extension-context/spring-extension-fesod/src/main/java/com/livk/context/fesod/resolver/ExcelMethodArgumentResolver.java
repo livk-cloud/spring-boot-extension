@@ -36,6 +36,8 @@ import org.springframework.web.multipart.support.RequestPartServletServerHttpReq
 import java.util.Objects;
 
 /**
+ * The Excel Method Argument Resolver.
+ *
  * @author livk
  */
 public class ExcelMethodArgumentResolver extends FesodSupport implements HandlerMethodArgumentResolver {

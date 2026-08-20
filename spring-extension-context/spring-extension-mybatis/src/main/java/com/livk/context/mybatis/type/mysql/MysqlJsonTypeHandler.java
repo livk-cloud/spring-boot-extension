@@ -28,6 +28,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * The Mysql Json Type Handler.
+ *
  * @author livk
  */
 @MappedTypes(JsonNode.class)

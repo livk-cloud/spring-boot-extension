@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * 使用FreeMarker实现的表达式解析器
+ * Expression resolver implementation using FreeMarker template engine.
  *
  * @author livk
  * @deprecated since 2.1.1
@@ -54,7 +54,7 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 	@Override
 	protected Template compile(String value) {
 		try {
-			return new Template(TEMPLATE_NAME, value, configuration);
+			return new Template(TEMPLATE_NAME, value, this.configuration);
 		}
 		catch (IOException ex) {
 			throw new IllegalArgumentException(ex);

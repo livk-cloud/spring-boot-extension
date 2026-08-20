@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 
 /**
  * <p>
- * 用于Enumeration转换Stream
+ * 用于Enumeration转换Stream.
  * </p>
  *
  * @param <T> the type parameter
@@ -44,7 +44,7 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 	}
 
 	/**
-	 * 根据Enumeration构造Spliterator
+	 * 根据Enumeration构造Spliterator.
 	 * @param <T> type parameter
 	 * @param enumeration enumeration
 	 * @return spliterator
@@ -55,8 +55,8 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 
 	@Override
 	public boolean tryAdvance(Consumer<? super T> action) {
-		if (enumeration.hasMoreElements()) {
-			action.accept(enumeration.nextElement());
+		if (this.enumeration.hasMoreElements()) {
+			action.accept(this.enumeration.nextElement());
 			return true;
 		}
 		return false;
@@ -64,8 +64,8 @@ final class EnumerationSpliterator<T> extends Spliterators.AbstractSpliterator<T
 
 	@Override
 	public void forEachRemaining(Consumer<? super T> action) {
-		while (enumeration.hasMoreElements()) {
-			action.accept(enumeration.nextElement());
+		while (this.enumeration.hasMoreElements()) {
+			action.accept(this.enumeration.nextElement());
 		}
 	}
 

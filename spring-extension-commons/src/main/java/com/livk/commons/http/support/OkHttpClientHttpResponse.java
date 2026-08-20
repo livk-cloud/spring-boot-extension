@@ -35,7 +35,7 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 
 	private final Response response;
 
-	@Nullable private volatile HttpHeaders headers;
+	private volatile @Nullable HttpHeaders headers;
 
 	/**
 	 * Instantiates a new Ok http client http response.
@@ -46,27 +46,23 @@ class OkHttpClientHttpResponse implements ClientHttpResponse {
 		this.response = response;
 	}
 
-	@NonNull
 	@Override
-	public HttpStatusCode getStatusCode() {
+	public @NonNull HttpStatusCode getStatusCode() {
 		return HttpStatusCode.valueOf(this.response.code());
 	}
 
-	@NonNull
 	@Override
-	public String getStatusText() {
+	public @NonNull String getStatusText() {
 		return this.response.message();
 	}
 
-	@NonNull
 	@Override
-	public InputStream getBody() {
+	public @NonNull InputStream getBody() {
 		return this.response.body().byteStream();
 	}
 
-	@NonNull
 	@Override
-	public HttpHeaders getHeaders() {
+	public @NonNull HttpHeaders getHeaders() {
 		HttpHeaders headers = this.headers;
 		if (headers == null) {
 			headers = new HttpHeaders();

@@ -28,7 +28,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
 /**
- * 文件相关工具类
+ * Utility class for file operations.
  *
  * @author livk
  */
@@ -36,9 +36,9 @@ import java.nio.channels.ReadableByteChannel;
 public class FileUtils {
 
 	/**
-	 * 文件下载
+	 * Downloads content from an InputStream to a file.
 	 * <p>
-	 * 路径不存在则自动创建
+	 * 路径不存在则自动创建.
 	 * @param stream the stream
 	 * @param filePath 文件路径
 	 * @throws IOException the io exception
@@ -63,9 +63,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * 创建文件
-	 * <p>
-	 * 路径不存在则自动创建
+	 * Creates a new file, auto-creating parent directories if needed.
 	 * @param file the file
 	 * @return the boolean
 	 * @throws IOException the io exception

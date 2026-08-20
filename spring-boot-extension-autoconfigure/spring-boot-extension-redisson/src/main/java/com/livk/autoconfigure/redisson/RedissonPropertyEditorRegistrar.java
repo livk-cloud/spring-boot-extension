@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.livk.commons.jackson.support.JacksonSupport;
 import io.netty.channel.EventLoopGroup;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * Property editor registrar for Redisson configuration types.
+ *
  * @author livk
  */
 final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
@@ -100,7 +103,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 				JsonInclude.Include.NON_NULL);
 
 		YAMLMapper.Builder builder = YAMLMapper.builder()
-			.changeDefaultPropertyInclusion(value -> value.withOverrides(includeValue))
+			.changeDefaultPropertyInclusion((value) -> value.withOverrides(includeValue))
 			.filterProvider(filterProvider);
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(Duration.class, new SpringDurationDeserializer());
@@ -124,7 +127,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 		@Override
 		public void setAsText(String text) {
-			setValue(support.readValue(text, type));
+			setValue(support.readValue(text, this.type));
 		}
 
 	}
@@ -134,7 +137,7 @@ final class RedissonPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
 	}
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "class")
+	@JsonTypeInfo(use = Id.CLASS, property = "class")
 	@JsonFilter("classFilter")
 	public static final class ClassMixIn {
 

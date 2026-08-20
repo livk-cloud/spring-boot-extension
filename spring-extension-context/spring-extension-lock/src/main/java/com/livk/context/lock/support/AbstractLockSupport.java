@@ -23,6 +23,8 @@ import com.livk.context.lock.exception.UnSupportLockException;
 import org.springframework.util.Assert;
 
 /**
+ * Abstract lock support implementation.
+ *
  * @param <T> the type parameter
  * @author livk
  */
@@ -41,9 +43,9 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 
 	@Override
 	public final void unlock() {
-		T lock = threadLocal.get();
+		T lock = this.threadLocal.get();
 		if (lock != null && isLocked(lock) && unlock(lock)) {
-			threadLocal.remove();
+			this.threadLocal.remove();
 		}
 	}
 
@@ -162,15 +164,15 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 		public boolean tryLock() {
 			T lock = getLock(this.type, this.key);
 			try {
-				boolean isLocked = supportAsync() && this.async ? tryLockAsync(lock, this.leaseTime, this.waitTime)
+				boolean isLocked = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
 						: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
 				if (isLocked) {
-					threadLocal.set(lock);
+					AbstractLockSupport.this.threadLocal.set(lock);
 				}
 				return isLocked;
 			}
 			catch (LockException ex) {
-				threadLocal.remove();
+				AbstractLockSupport.this.threadLocal.remove();
 				throw ex;
 			}
 		}
@@ -185,10 +187,10 @@ public abstract class AbstractLockSupport<T> implements DistributedLock {
 				else {
 					doLock(lock, this.leaseTime);
 				}
-				threadLocal.set(lock);
+				AbstractLockSupport.this.threadLocal.set(lock);
 			}
 			catch (LockException ex) {
-				threadLocal.remove();
+				AbstractLockSupport.this.threadLocal.remove();
 				throw ex;
 			}
 		}

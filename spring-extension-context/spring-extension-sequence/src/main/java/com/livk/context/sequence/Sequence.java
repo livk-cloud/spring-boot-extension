@@ -19,6 +19,8 @@ package com.livk.context.sequence;
 import com.livk.commons.util.SnowflakeIdGenerator;
 
 /**
+ * The Sequence.
+ *
  * @author livk
  */
 public interface Sequence {

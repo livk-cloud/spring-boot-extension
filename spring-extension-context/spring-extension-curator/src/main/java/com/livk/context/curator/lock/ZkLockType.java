@@ -27,25 +27,27 @@ import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
 import java.util.List;
 
 /**
+ * The Zk Lock Type.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
 public enum ZkLockType implements LockProcess {
 
 	/**
-	 * 可重入锁
+	 * 可重入锁.
 	 */
 	REENTRANT(new ReentrantLockProcess()),
 	/**
-	 * 不可重入锁
+	 * 不可重入锁.
 	 */
 	NON_REENTRANT(new NonReentrantLockProcess()),
 	/**
-	 * 读锁
+	 * 读锁.
 	 */
 	READ(new ReadLockProcess()),
 	/**
-	 * 写锁
+	 * 写锁.
 	 */
 	WRITE(new WriteLockProcess());
 
@@ -53,7 +55,7 @@ public enum ZkLockType implements LockProcess {
 
 	@Override
 	public InterProcessLock getLock(CuratorFramework framework, String path) {
-		return delegate.getLock(framework, path);
+		return this.delegate.getLock(framework, path);
 	}
 
 	public static InterProcessMultiLock multiLock(List<InterProcessLock> locks) {

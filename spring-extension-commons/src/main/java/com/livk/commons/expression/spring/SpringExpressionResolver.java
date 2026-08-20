@@ -34,7 +34,7 @@ import org.springframework.expression.spel.support.StandardTypeConverter;
 import org.springframework.expression.spel.support.StandardTypeLocator;
 
 /**
- * 使用Spring EL实现的表达式解析器
+ * Expression resolver implementation using Spring EL.
  *
  * @author livk
  * @see SpelExpressionParser

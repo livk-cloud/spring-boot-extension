@@ -19,6 +19,8 @@ package com.livk.context.mybatis.handler;
 import com.livk.commons.util.TypeUtils;
 
 /**
+ * The inject handle interface.
+ *
  * @param <T> the type parameter
  * @author livk
  */

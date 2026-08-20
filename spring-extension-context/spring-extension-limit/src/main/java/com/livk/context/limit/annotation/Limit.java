@@ -34,37 +34,38 @@ import java.util.concurrent.TimeUnit;
 public @interface Limit {
 
 	/**
-	 * 资源的key
-	 * @return String string
+	 * 资源的key.
+	 * @return string
 	 */
 	String key() default "";
 
 	/**
-	 * 单位时间
+	 * 单位时间.
 	 * @return int int
 	 */
 	int rateInterval();
 
 	/**
-	 * 单位(默认秒)
-	 * @return TimeUnit time unit
+	 * 单位(默认秒).
+	 * @return time unit
 	 */
 	TimeUnit rateIntervalUnit() default TimeUnit.SECONDS;
 
 	/**
-	 * 单位时间产生的令牌个数
+	 * 单位时间产生的令牌个数.
 	 * @return int int
 	 */
 	int rate();
 
 	/**
-	 * 是否限制IP
+	 * 是否限制IP.
 	 * @return boolean boolean
 	 */
 	boolean restrictIp() default false;
 
 	/**
-	 * 异常处理器
+	 * 异常处理器.
+	 * @return the handler class
 	 */
 	Class<? extends LimitExceededHandler> handler() default LimitExceededHandler.class;
 

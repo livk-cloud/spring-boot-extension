@@ -44,21 +44,21 @@ abstract class RedissonClientFactory {
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		Config config = properties.getConfig();
 		Assert.notNull(config, "Redisson config must not be null");
-		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		configCustomizers.orderedStream().forEach((customizer) -> customizer.customize(config));
 		return Redisson.create(config);
 	}
 
 	public static RedissonClient create(DataRedisProperties redisProperties,
 			ObjectProvider<ConfigCustomizer> configCustomizers) {
 		Config config = createConfig(redisProperties);
-		configCustomizers.orderedStream().forEach(customizer -> customizer.customize(config));
+		configCustomizers.orderedStream().forEach((customizer) -> customizer.customize(config));
 		return Redisson.create(config);
 	}
 
 	private static Config createConfig(DataRedisProperties redisProperties) {
 		Config config;
 		Duration duration = redisProperties.getTimeout();
-		int timeout = duration == null ? 10000 : (int) duration.toMillis();
+		int timeout = (duration != null) ? (int) duration.toMillis() : 10000;
 		if (redisProperties.getSentinel() != null) {
 			List<String> nodeList = redisProperties.getSentinel().getNodes();
 			String[] nodes = convert(nodeList);

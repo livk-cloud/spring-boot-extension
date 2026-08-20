@@ -20,6 +20,8 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 
 /**
+ * The Lettuce Sequence Redis Helper.
+ *
  * @author livk
  */
 public class LettuceSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {
@@ -32,17 +34,17 @@ public class LettuceSequenceRedisHelper implements SequenceRedisHelper, AutoClos
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
-		return connect.sync().incrby(new String(key), step);
+		return this.connect.sync().incrby(new String(key), step);
 	}
 
 	@Override
 	public void setNx(byte[] key, long stepStart) {
-		connect.sync().setnx(new String(key), String.valueOf(stepStart));
+		this.connect.sync().setnx(new String(key), String.valueOf(stepStart));
 	}
 
 	@Override
 	public void close() {
-		connect.close();
+		this.connect.close();
 	}
 
 }

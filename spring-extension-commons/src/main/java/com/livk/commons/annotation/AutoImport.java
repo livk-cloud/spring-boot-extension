@@ -25,9 +25,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自动装配相关注解
+ * Annotation for auto-importing related configurations.
  * <p>
- * 适用与EnableXXXX
+ * 适用与EnableXXXX.
  *
  * @author livk
  */

@@ -33,9 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * <p>
- * DataBuffer格式转换工具类
- * </p>
+ * Utility class for DataBuffer format conversion.
  *
  * @author livk
  */
@@ -43,26 +41,26 @@ import java.io.InputStream;
 public class DataBufferConverter {
 
 	/**
-	 * 设置默认BUFFER_SIZE
+	 * Default buffer size constant.
 	 */
 	public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
 
 	/**
-	 * 设置默认DEFAULT_FACTORY.
+	 * Default DataBufferFactory instance.
 	 */
 	public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
 
 	/**
-	 * 转换Flux DataBuffer成Mono InputStream
+	 * Converts Flux DataBuffer to Mono InputStream.
 	 * @param dataBufferFlux the data buffer flux
 	 * @return the mono
 	 */
 	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-		return DataBufferUtils.join(dataBufferFlux).map(dataBuffer -> dataBuffer.asInputStream(true));
+		return DataBufferUtils.join(dataBufferFlux).map((dataBuffer) -> dataBuffer.asInputStream(true));
 	}
 
 	/**
-	 * 转换byte[]成Flux DataBuffer
+	 * Converts byte array to Flux DataBuffer.
 	 * @param array the array
 	 * @return the flux
 	 */
@@ -72,7 +70,7 @@ public class DataBufferConverter {
 	}
 
 	/**
-	 * 转换Flux DataBuffer 成Mono byte[]
+	 * Converts Flux DataBuffer to Mono byte array.
 	 * @param bufferFlux the buffer flux
 	 * @return the mono
 	 */
@@ -90,7 +88,7 @@ public class DataBufferConverter {
 	}
 
 	/**
-	 * InputStream转换成Flux DataBuffer
+	 * Converts InputStream to Flux DataBuffer.
 	 * @param inputStream the input stream
 	 * @return the flux
 	 */
@@ -99,7 +97,7 @@ public class DataBufferConverter {
 	}
 
 	/**
-	 * Mono InputStream 转换成Flux DataBuffer
+	 * Converts Mono InputStream to Flux DataBuffer.
 	 * @param inputStreamMono the input stream mono
 	 * @return the flux
 	 */

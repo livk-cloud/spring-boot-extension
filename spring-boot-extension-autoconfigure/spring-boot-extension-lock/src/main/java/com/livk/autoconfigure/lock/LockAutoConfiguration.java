@@ -32,6 +32,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 /**
+ * Auto-configuration for distributed lock support.
+ *
  * @author livk
  */
 @AutoConfiguration
@@ -39,7 +41,7 @@ import org.springframework.context.annotation.Bean;
 public class LockAutoConfiguration {
 
 	/**
-	 * DistributedLockInterceptor
+	 * Creates the distributed lock interceptor.
 	 * @param distributedLockProvider the distributed lock provider
 	 * @return the lock aspect
 	 */

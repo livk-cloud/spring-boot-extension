@@ -19,10 +19,13 @@ package com.livk.autoconfigure.curator.actuator;
 import lombok.RequiredArgsConstructor;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.health.contributor.AbstractHealthIndicator;
 import org.springframework.boot.health.contributor.Health;
 
 /**
+ * Health indicator for monitoring the Curator/Zookeeper connection state.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -31,19 +34,19 @@ public class CuratorHealthIndicator extends AbstractHealthIndicator {
 	private final CuratorFramework framework;
 
 	@Override
-	protected void doHealthCheck(Health.Builder builder) {
+	protected void doHealthCheck(Health.@NonNull Builder builder) {
 		try {
-			CuratorFrameworkState state = framework.getState();
+			CuratorFrameworkState state = this.framework.getState();
 			if (state != CuratorFrameworkState.STARTED) {
 				builder.down().withDetail("error", "Client not started");
 			}
-			else if (framework.checkExists().forPath("/") == null) {
+			else if (this.framework.checkExists().forPath("/") == null) {
 				builder.down().withDetail("error", "Root for namespace does not exist");
 			}
 			else {
 				builder.up();
 			}
-			builder.withDetail("connectionString", framework.getZookeeperClient().getCurrentConnectionString())
+			builder.withDetail("connectionString", this.framework.getZookeeperClient().getCurrentConnectionString())
 				.withDetail("state", state);
 		}
 		catch (Exception ex) {

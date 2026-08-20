@@ -22,8 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * 用于生成配置文件
+ * Enables WebClient configuration.
  * <p>
  * {@code @SpringAutoService(EnableWebClient.class)}
  * <p>

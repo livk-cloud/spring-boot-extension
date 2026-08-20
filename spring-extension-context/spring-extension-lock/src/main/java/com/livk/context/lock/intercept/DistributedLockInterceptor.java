@@ -29,28 +29,32 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.Assert;
 
 /**
+ * The Distributed Lock Interceptor.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
 public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<DistLock> {
 
 	/**
-	 * lock的实现类集合
+	 * lock的实现类集合.
 	 */
 	private final ObjectProvider<DistributedLock> distributedLockProvider;
 
 	/**
-	 * SpEL表达式解析器
+	 * SpEL表达式解析器.
 	 */
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
 	protected Object doInvoke(MethodInvocation invocation, DistLock lock) throws Throwable {
 		Assert.notNull(lock, "lock is null");
-		DistributedLock distributedLock = distributedLockProvider.orderedStream()
+		DistributedLock distributedLock = this.distributedLockProvider.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistributedLock.class));
-		String key = resolver.resolve(lock.key()).method(invocation.getMethod(), invocation.getArguments()).evaluate();
+		String key = this.resolver.resolve(lock.key())
+			.method(invocation.getMethod(), invocation.getArguments())
+			.evaluate();
 		boolean isLock = distributedLock.lock(key)
 			.type(lock.type())
 			.leaseTime(lock.leaseTime())

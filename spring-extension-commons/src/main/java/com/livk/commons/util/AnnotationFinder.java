@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 
 /**
  * <p>
- * 注解查找工具类
+ * 注解查找工具类.
  * </p>
  *
  * @author livk
@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 public class AnnotationFinder {
 
 	/**
-	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
+	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
@@ -54,7 +54,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
+	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param method method
 	 * @param annotationClass annotation
@@ -69,7 +69,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
+	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
@@ -83,7 +83,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
+	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param method method
 	 * @param annotationClass annotation
@@ -95,7 +95,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 构建AnnotationAttributes
+	 * 构建AnnotationAttributes.
 	 * @param metadata the metadata
 	 * @param annotationClassName the annotation class name
 	 * @return the annotation attributes
@@ -105,7 +105,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 构建AnnotationAttributes
+	 * 构建AnnotationAttributes.
 	 * @param <A> 注解类型
 	 * @param metadata the metadata
 	 * @param annotationClass the annotation class
@@ -117,7 +117,7 @@ public class AnnotationFinder {
 	}
 
 	/**
-	 * 根据key获取AnnotationAttributes数据，并转成枚举数组
+	 * 根据key获取AnnotationAttributes数据，并转成枚举数组.
 	 * @param attributes annotationAttributes
 	 * @param key key
 	 * @param <E> 枚举类型

@@ -26,37 +26,39 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * The Default Range Sequence.
+ *
  * @author livk
  */
 class DefaultRangeSequence implements Sequence {
 
 	/**
-	 * 获取区间是加一把独占锁防止资源冲突
+	 * 获取区间是加一把独占锁防止资源冲突.
 	 */
 	private final Lock lock = new ReentrantLock();
 
 	/**
-	 * 序列号区间管理器
+	 * 序列号区间管理器.
 	 */
 	private final RangeManager manager;
 
 	/**
-	 * 当前序列号区间
+	 * 当前序列号区间.
 	 */
 	private volatile SequenceRange currentRange;
 
 	/**
-	 * 需要获取区间的业务名称
+	 * 需要获取区间的业务名称.
 	 */
 	private final String name;
 
 	/**
-	 * 获取区间的步长
+	 * 获取区间的步长.
 	 */
 	private final int step;
 
 	/**
-	 * 序列号分配起始值
+	 * 序列号分配起始值.
 	 */
 	private final long stepStart;
 
@@ -71,7 +73,7 @@ class DefaultRangeSequence implements Sequence {
 	@Override
 	public long nextValue() {
 		while (true) {
-			SequenceRange range = currentRange;
+			SequenceRange range = this.currentRange;
 			// 如果没有区间或已用尽，则加锁重新获取
 			if (range == null || range.isOver()) {
 				refreshRange();
@@ -86,17 +88,17 @@ class DefaultRangeSequence implements Sequence {
 	}
 
 	private void refreshRange() {
-		lock.lock();
+		this.lock.lock();
 		try {
-			if (currentRange == null || currentRange.isOver()) {
-				currentRange = manager.nextRange(name, step, stepStart);
+			if (this.currentRange == null || this.currentRange.isOver()) {
+				this.currentRange = this.manager.nextRange(this.name, this.step, this.stepStart);
 			}
 		}
 		catch (Exception ex) {
-			throw new SequenceException("Failed to acquire new range for name: " + name, ex);
+			throw new SequenceException("Failed to acquire new range for name: " + this.name, ex);
 		}
 		finally {
-			lock.unlock();
+			this.lock.unlock();
 		}
 	}
 

@@ -43,9 +43,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Request包装器
- * <p>
- * 用于修改body、添加header、添加param
+ * Wrapper for HttpServletRequest allowing body, header and parameter modifications.
  *
  * @author livk
  * @see org.springframework.web.util.ContentCachingRequestWrapper
@@ -63,18 +61,18 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private String contentType;
 
 	/**
-	 * 构建一个RequestWrapper
+	 * Constructs a RequestWrapper from a request.
 	 * @param request the request
 	 */
 	public RequestWrapper(HttpServletRequest request) {
 		super(request);
-		headers.putAll(HttpServletUtils.headers(request));
-		parameter.putAll(HttpServletUtils.params(request));
-		contentType = request.getContentType();
+		this.headers.putAll(HttpServletUtils.headers(request));
+		this.parameter.putAll(HttpServletUtils.params(request));
+		this.contentType = request.getContentType();
 	}
 
 	/**
-	 * 设置request body
+	 * Sets the request body.
 	 * @param body the body
 	 */
 	public void body(byte[] body) {
@@ -82,7 +80,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	public void body(byte[] body, String contentType) {
-		bodyReviseStatus = true;
+		this.bodyReviseStatus = true;
 		this.body = body;
 		this.contentType = contentType;
 	}
@@ -102,16 +100,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param values the values
 	 */
 	public void addHeader(String name, List<String> values) {
-		headers.addAll(name, values);
+		this.headers.addAll(name, values);
 	}
 
 	/**
-	 * 添加http header
+	 * Adds an HTTP header.
 	 * @param name the name
 	 * @param value the value
 	 */
 	public void addHeader(String name, String value) {
-		headers.add(name, value);
+		this.headers.add(name, value);
 	}
 
 	/**
@@ -129,7 +127,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param values the values
 	 */
 	public void addParameter(String name, List<String> values) {
-		parameter.addAll(name, values);
+		this.parameter.addAll(name, values);
 	}
 
 	/**
@@ -138,44 +136,45 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 * @param value the value
 	 */
 	public void addParameter(String name, String value) {
-		parameter.add(name, value);
+		this.parameter.add(name, value);
 	}
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		if (ObjectUtils.isEmpty(body)) {
-			body = StreamUtils.copyToByteArray(super.getInputStream());
+		if (ObjectUtils.isEmpty(this.body)) {
+			this.body = StreamUtils.copyToByteArray(super.getInputStream());
 		}
-		return new ByteArrayServletInputStream(body);
+		return new ByteArrayServletInputStream(this.body);
 	}
 
 	@Override
 	public String getCharacterEncoding() {
 		String enc = super.getCharacterEncoding();
-		return enc != null ? enc : "UTF-8";
+		return (enc != null) ? enc : "UTF-8";
 	}
 
 	@Override
 	public BufferedReader getReader() throws IOException {
-		if (ObjectUtils.isEmpty(body)) {
-			body = StreamUtils.copyToByteArray(super.getInputStream());
+		if (ObjectUtils.isEmpty(this.body)) {
+			this.body = StreamUtils.copyToByteArray(super.getInputStream());
 		}
-		return new BufferedReader(new ByteArrayReader(body, Charset.forName(getCharacterEncoding())));
+		return new BufferedReader(new ByteArrayReader(this.body, Charset.forName(getCharacterEncoding())));
 	}
 
 	@Override
 	public int getContentLength() {
-		return bodyReviseStatus && !ObjectUtils.isEmpty(body) ? body.length : super.getContentLength();
+		return (this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body)) ? this.body.length : super.getContentLength();
 	}
 
 	@Override
 	public long getContentLengthLong() {
-		return bodyReviseStatus && !ObjectUtils.isEmpty(body) ? body.length : super.getContentLengthLong();
+		return (this.bodyReviseStatus && !ObjectUtils.isEmpty(this.body)) ? this.body.length
+				: super.getContentLengthLong();
 	}
 
 	@Override
 	public String getContentType() {
-		return contentType;
+		return this.contentType;
 	}
 
 	@Override
@@ -186,12 +185,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
-		return Maps.transformValues(parameter, parameterValues -> parameterValues.toArray(String[]::new));
+		return Maps.transformValues(this.parameter, (parameterValues) -> parameterValues.toArray(String[]::new));
 	}
 
 	@Override
 	public Enumeration<String> getParameterNames() {
-		return Collections.enumeration(parameter.keySet());
+		return Collections.enumeration(this.parameter.keySet());
 	}
 
 	@Override
@@ -201,16 +200,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String getHeader(String name) {
-		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
+		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && this.bodyReviseStatus) {
 			return getContentType();
 		}
-		return headers.getFirst(name);
+		return this.headers.getFirst(name);
 	}
 
 	@Override
 	public Enumeration<String> getHeaderNames() {
-		Set<String> headerNames = new HashSet<>(headers.headerNames());
-		if (bodyReviseStatus) {
+		Set<String> headerNames = new HashSet<>(this.headers.headerNames());
+		if (this.bodyReviseStatus) {
 			headerNames.add(HttpHeaders.CONTENT_TYPE);
 		}
 		return Collections.enumeration(headerNames);
@@ -219,10 +218,10 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	@Override
 	public Enumeration<String> getHeaders(String name) {
 		Set<String> headerValues = new HashSet<>();
-		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && bodyReviseStatus) {
+		if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(name) && this.bodyReviseStatus) {
 			headerValues.add(getContentType());
 		}
-		List<String> list = headers.get(name);
+		List<String> list = this.headers.get(name);
 		if (!CollectionUtils.isEmpty(list)) {
 			headerValues.addAll(list);
 		}
@@ -230,24 +229,24 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	public byte[] getContentAsByteArray() throws IOException {
-		if (ObjectUtils.isEmpty(body)) {
-			body = StreamUtils.copyToByteArray(super.getInputStream());
+		if (ObjectUtils.isEmpty(this.body)) {
+			this.body = StreamUtils.copyToByteArray(super.getInputStream());
 		}
-		return Arrays.copyOf(body, body.length);
+		return Arrays.copyOf(this.body, this.body.length);
 	}
 
 	public String getContentAsString() throws IOException {
 		Charset charset = Charset.forName(this.getCharacterEncoding());
-		if (ObjectUtils.isEmpty(body)) {
+		if (ObjectUtils.isEmpty(this.body)) {
 			return StreamUtils.copyToString(super.getInputStream(), charset);
 		}
-		return new String(body, charset);
+		return new String(this.body, charset);
 	}
 
 	private static class ByteArrayReader extends InputStreamReader {
 
 		/**
-		 * 创建ByteArrayReader
+		 * Constructs a ByteArrayReader.
 		 * @param bytes the bytes
 		 * @param charset the charset
 		 */
@@ -262,16 +261,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		private final ByteArrayInputStream in;
 
 		/**
-		 * 创建ByteArrayServletInputStream
+		 * Constructs a ByteArrayServletInputStream.
 		 * @param body the json
 		 */
 		ByteArrayServletInputStream(byte[] body) {
-			in = new ByteArrayInputStream(body);
+			this.in = new ByteArrayInputStream(body);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return in.available() == 0;
+			return this.in.available() == 0;
 		}
 
 		@Override
@@ -286,7 +285,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		@Override
 		public int read() throws IOException {
-			return in.read();
+			return this.in.read();
 		}
 
 	}

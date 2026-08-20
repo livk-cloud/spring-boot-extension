@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * ContextSnapshot相关工具
+ * ContextSnapshot相关工具.
  *
  * @author livk
  * @see ContextSnapshot
@@ -41,16 +41,16 @@ import java.util.function.Supplier;
 public class ContextSnapshots {
 
 	/**
-	 * 构建一个ContextSnapshotFactory
+	 * 构建一个ContextSnapshotFactory.
 	 */
 	public static final ContextSnapshotFactory CAPTURE_FACTORY = ContextSnapshotFactory.builder()
 		.contextRegistry(ContextRegistry.getInstance())
 		.clearMissing(false)
-		.captureKeyPredicate(key -> true)
+		.captureKeyPredicate((key) -> true)
 		.build();
 
 	/**
-	 * 创建一个Supplier ContextSnapshot
+	 * 创建一个Supplier ContextSnapshot.
 	 * @return supplier
 	 * @deprecated use {@link #CAPTURE_FACTORY ::captureAll()}
 	 */
@@ -60,7 +60,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 创建一个ContextSnapshot
+	 * 创建一个ContextSnapshot.
 	 * @return contextSnapshot
 	 */
 	public static ContextSnapshot capture() {
@@ -68,7 +68,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装runnable
+	 * 使用ContextSnapshot包装runnable.
 	 * @param runnable 待包装的Runnable
 	 * @return runnable
 	 */
@@ -77,7 +77,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装Callable
+	 * 使用ContextSnapshot包装Callable.
 	 * @param <T> 泛型
 	 * @param callable 待包装的Callable
 	 * @return callable
@@ -87,7 +87,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装Consumer
+	 * 使用ContextSnapshot包装Consumer.
 	 * @param <T> 泛型
 	 * @param consumer 待包装的Consumer
 	 * @return consumer
@@ -97,7 +97,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装Executor
+	 * 使用ContextSnapshot包装Executor.
 	 * @param executor 待包装的Executor
 	 * @return executor
 	 */
@@ -106,7 +106,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装ExecutorService
+	 * 使用ContextSnapshot包装ExecutorService.
 	 * @param service 待包装的ExecutorService
 	 * @return executorService
 	 */
@@ -115,7 +115,7 @@ public class ContextSnapshots {
 	}
 
 	/**
-	 * 使用ContextSnapshot包装ScheduledExecutorService
+	 * 使用ContextSnapshot包装ScheduledExecutorService.
 	 * @param service 待包装的ScheduledExecutorService
 	 * @return scheduledExecutorService
 	 */

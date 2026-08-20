@@ -19,6 +19,8 @@ package com.livk.context.fesod.exception;
 import lombok.Getter;
 
 /**
+ * The Excel Export Exception.
+ *
  * @author livk
  */
 @Getter

@@ -20,10 +20,11 @@ jexl3 = "3.7.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
-spring-javaformat = "0.0.47"
+spring-javaformat = "0.0.48"
 okhttp = "5.4.0"
 spotbugs-annotations = "4.10.3"
 maven-publish-plugins = "0.37.0"
+checkstyle = "13.9.0"
 
 [libraries]
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
@@ -54,6 +55,7 @@ spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 spring-javaformat-checkstyle = { group = "io.spring.javaformat", name = "spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
+checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
 
 #plugin
 spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }

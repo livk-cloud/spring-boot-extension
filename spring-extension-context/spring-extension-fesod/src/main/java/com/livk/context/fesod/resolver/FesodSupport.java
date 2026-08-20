@@ -90,7 +90,7 @@ abstract class FesodSupport {
 
 		@Override
 		public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
-			writeWorkbookHolder.getCachedWorkbook().setSheetName(sheetIndex, sheetName);
+			writeWorkbookHolder.getCachedWorkbook().setSheetName(this.sheetIndex, this.sheetName);
 		}
 
 	}

@@ -40,7 +40,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 包解析根据Annotation进行class获取
+ * 包解析根据Annotation进行class获取.
  *
  * @author livk
  * @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
@@ -72,7 +72,7 @@ public class AnnotationMetadataResolver {
 	}
 
 	/**
-	 * 获取被注解标注的class
+	 * 获取被注解标注的class.
 	 * @param annotationType 注解
 	 * @param packages 待扫描的包
 	 * @return set class
@@ -83,7 +83,7 @@ public class AnnotationMetadataResolver {
 	}
 
 	/**
-	 * 获取被注解标注的class
+	 * 获取被注解标注的class.
 	 * @param annotationType 注解
 	 * @param beanFactory beanFactory
 	 * @return set class
@@ -93,7 +93,7 @@ public class AnnotationMetadataResolver {
 	}
 
 	/**
-	 * 获取被满足条件的的class
+	 * 获取被满足条件的的class.
 	 * @param typeFilter type匹配器
 	 * @param packages 待扫描的包
 	 * @return set class
@@ -106,11 +106,11 @@ public class AnnotationMetadataResolver {
 		for (String packageStr : packages) {
 			String basePackage = ClassUtils.convertClassNameToResourcePath(packageStr);
 			try {
-				Resource[] resources = resolver
+				Resource[] resources = this.resolver
 					.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + basePackage + "/**/*.class");
 				for (Resource resource : resources) {
-					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
+					MetadataReader metadataReader = this.metadataReaderFactory.getMetadataReader(resource);
+					if (typeFilter.match(metadataReader, this.metadataReaderFactory)) {
 						Class<?> type = toType(metadataReader);
 						result.add(type);
 					}
@@ -125,7 +125,7 @@ public class AnnotationMetadataResolver {
 
 	private Class<?> toType(MetadataReader metadataReader) {
 		String className = metadataReader.getClassMetadata().getClassName();
-		return ClassUtils.resolveClassName(className, resourceLoader.getClassLoader());
+		return ClassUtils.resolveClassName(className, this.resourceLoader.getClassLoader());
 	}
 
 }

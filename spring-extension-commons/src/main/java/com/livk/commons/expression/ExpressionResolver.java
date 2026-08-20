@@ -27,7 +27,7 @@ import java.util.Map;
  * String result = resolver.resolve("#username")
  *     .method(method, args)
  *     .evaluate();
- * }</pre>
+ * }</pre>.
  *
  * @author livk
  * @see CacheExpressionResolver

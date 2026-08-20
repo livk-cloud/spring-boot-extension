@@ -60,6 +60,7 @@ public class GoogleQrCodeManager implements QrCodeManager {
 	/**
 	 * Instantiates a new Google qrcode generator.
 	 * @param mapper the mapper
+	 * @return the google qrcode manager
 	 */
 	public static GoogleQrCodeManager of(ObjectMapper mapper) {
 		JacksonSupport support = new JacksonSupport(mapper);
@@ -70,7 +71,7 @@ public class GoogleQrCodeManager implements QrCodeManager {
 	public BufferedImage generate(QrCodeEntity<?> entity) {
 		try {
 			QRCodeWriter writer = new QRCodeWriter();
-			String content = command.apply(entity.content());
+			String content = this.command.apply(entity.content());
 			BitMatrix matrix = writer.encode(content, BarcodeFormat.QR_CODE, entity.width(), entity.height());
 			return MatrixToImageWriter.toBufferedImage(matrix, entity.config());
 		}

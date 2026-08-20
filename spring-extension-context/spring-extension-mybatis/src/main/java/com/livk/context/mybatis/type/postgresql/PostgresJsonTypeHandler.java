@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * PostgreSQL JSON type handler.
  * <p>
  * 使用{@code rs.getObject()获取出来的类型是}{@link PGobject}
  * </p>

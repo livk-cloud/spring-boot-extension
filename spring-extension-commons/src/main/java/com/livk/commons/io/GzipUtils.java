@@ -27,7 +27,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * GZip压缩/解压缩工具类
+ * Utility class for GZip compression and decompression.
  *
  * @author livk
  */
@@ -35,9 +35,7 @@ import java.util.zip.GZIPOutputStream;
 public class GzipUtils {
 
 	/**
-	 * 使用GZip进行压缩
-	 * <p>
-	 * 把数据压缩至OutputStream
+	 * Compresses data using GZip to the given OutputStream.
 	 * @param bytes 待压缩数据
 	 * @param outputStream 输出流
 	 * @throws IOException io exception
@@ -51,7 +49,7 @@ public class GzipUtils {
 	}
 
 	/**
-	 * 使用GZip进行解压缩
+	 * Decompresses GZip data from the given InputStream.
 	 * @param inputStream 输入流
 	 * @return byte[]
 	 * @throws IOException io exception

@@ -33,7 +33,7 @@ import java.util.Map;
  * Context context = Context.create()
  *     .put("username", "livk")
  *     .put("password", "123456");
- * }</pre>
+ * }</pre>.
  *
  * @author livk
  * @see ContextFactory
@@ -84,28 +84,28 @@ public sealed interface Context permits Context.ContextImpl {
 		private final Map<String, Object> variables;
 
 		private ContextImpl() {
-			variables = new HashMap<>();
+			this.variables = new HashMap<>();
 		}
 
 		private ContextImpl(Map<String, ?> map) {
-			variables = Maps.newHashMap(map);
+			this.variables = Maps.newHashMap(map);
 		}
 
 		@Override
 		public Context put(String key, Object value) {
-			variables.put(key, value);
+			this.variables.put(key, value);
 			return this;
 		}
 
 		@Override
 		public Context putAll(@NonNull Map<? extends String, ?> m) {
-			variables.putAll(m);
+			this.variables.putAll(m);
 			return this;
 		}
 
 		@Override
 		public Map<String, Object> asMap() {
-			return Collections.unmodifiableMap(variables);
+			return Collections.unmodifiableMap(this.variables);
 		}
 
 	}

@@ -32,6 +32,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * The User Agent Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 			Assert.notNull(request, "request not be null!");
 			HttpHeaders headers = HttpServletUtils.headers(request);
-			agentContext = userAgentDelegate.convert(headers);
+			agentContext = this.userAgentDelegate.convert(headers);
 			UserAgentContextHolder.withUserAgentContext(agentContext);
 		}
 		return agentContext;

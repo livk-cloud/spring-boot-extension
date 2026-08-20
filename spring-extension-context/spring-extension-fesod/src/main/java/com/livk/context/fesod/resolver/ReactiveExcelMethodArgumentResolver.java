@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
+ * The Reactive Excel Method Argument Resolver.
+ *
  * @author livk
  */
 public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements HandlerMethodArgumentResolver {
@@ -49,19 +51,18 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 		return parameter.hasMethodAnnotation(RequestExcel.class) && parameter.hasParameterAnnotation(ExcelParam.class);
 	}
 
-	@NonNull
 	@Override
-	public Mono<Object> resolveArgument(@NonNull MethodParameter parameter, @NonNull BindingContext bindingContext,
-			@NonNull ServerWebExchange exchange) {
+	public @NonNull Mono<Object> resolveArgument(@NonNull MethodParameter parameter,
+			@NonNull BindingContext bindingContext, @NonNull ServerWebExchange exchange) {
 		Class<?> resolvedType = ResolvableType.forMethodParameter(parameter).resolve();
-		ReactiveAdapter adapter = (resolvedType != null ? adapterRegistry.getAdapter(resolvedType) : null);
+		ReactiveAdapter adapter = (resolvedType != null) ? this.adapterRegistry.getAdapter(resolvedType) : null;
 		RequestExcel requestExcel = parameter.getMethodAnnotation(RequestExcel.class);
 		ExcelParam excelParam = parameter.getParameterAnnotation(ExcelParam.class);
 		ResolvableType resolvableType = ResolvableType.forMethodParameter(parameter);
 		Mono<?> mono = Mono.empty();
 		if (requestExcel != null && excelParam != null
 				&& this.canRead(resolvableType, exchange.getRequest().getHeaders().getContentType())) {
-			mono = HttpReactiveUtils.getPartRequest(excelParam.fileName(), exchange).flatMap(request -> {
+			mono = HttpReactiveUtils.getPartRequest(excelParam.fileName(), exchange).flatMap((request) -> {
 				ExcelMapReadListener<?> listener = new TypeExcelMapReadListener<>();
 				ResolvableType elementType = Objects.equals(resolvableType.resolve(), Mono.class)
 						? resolvableType.getGeneric(0) : resolvableType;
@@ -71,14 +72,14 @@ public class ReactiveExcelMethodArgumentResolver extends FesodSupport implements
 					Class<?> excelModelClass = dataType.apply(elementType);
 					return Mono.just(request.getBody())
 						.flatMap(DataBufferConverter::transform)
-						.doOnSuccess(in -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
-						.map(in -> super.getExcelData(listener, dataType));
+						.doOnSuccess((in) -> listener.execute(in, excelModelClass, requestExcel.ignoreEmptyRow()))
+						.map((in) -> super.getExcelData(listener, dataType));
 				}
 				return Mono.empty();
 			});
 		}
 
-		return (adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono));
+		return (adapter != null) ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono);
 	}
 
 	private boolean canRead(@NonNull ResolvableType elementType, MediaType mediaType) {

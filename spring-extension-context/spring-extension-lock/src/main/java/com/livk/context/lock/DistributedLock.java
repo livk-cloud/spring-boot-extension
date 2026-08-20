@@ -37,7 +37,7 @@ import org.springframework.core.Ordered;
  *         distributedLock.unlock();
  *     }
  * }
- * }</pre>
+ * }</pre>.
  *
  * @author livk
  */

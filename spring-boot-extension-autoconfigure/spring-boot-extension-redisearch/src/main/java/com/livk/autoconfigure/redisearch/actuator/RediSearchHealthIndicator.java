@@ -20,6 +20,7 @@ import com.livk.context.redisearch.RedisSearchConnectionFactory;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.cluster.api.StatefulRedisModulesClusterConnection;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.health.contributor.AbstractHealthIndicator;
 import org.springframework.boot.health.contributor.Health;
 
@@ -28,6 +29,8 @@ import java.io.StringReader;
 import java.util.Properties;
 
 /**
+ * Health indicator that checks the status of a RediSearch connection.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -36,8 +39,8 @@ public class RediSearchHealthIndicator extends AbstractHealthIndicator {
 	private final RedisSearchConnectionFactory connectionFactory;
 
 	@Override
-	protected void doHealthCheck(Health.Builder builder) throws IOException {
-		try (StatefulRedisModulesConnection<String, String> connect = connectionFactory.connect()) {
+	protected void doHealthCheck(Health.@NonNull Builder builder) throws IOException {
+		try (StatefulRedisModulesConnection<String, String> connect = this.connectionFactory.connect()) {
 			if (connect instanceof StatefulRedisModulesClusterConnection<String, String> clusterConnection) {
 				String propsFormat = clusterConnection.sync().clusterInfo().replace(":", "=");
 

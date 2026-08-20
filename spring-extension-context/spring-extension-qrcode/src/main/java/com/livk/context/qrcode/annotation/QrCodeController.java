@@ -25,6 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The Qr Code Controller.
+ *
  * @author livk
  */
 @Target({ ElementType.TYPE })

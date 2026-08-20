@@ -19,6 +19,8 @@ package com.livk.context.disruptor.support;
 import com.lmax.disruptor.EventHandler;
 
 /**
+ * The Disruptor Event Consumer.
+ *
  * @author livk
  */
 public interface DisruptorEventConsumer<T> extends EventHandler<T> {

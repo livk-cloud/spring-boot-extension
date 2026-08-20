@@ -22,6 +22,8 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 
 /**
+ * The Redis Search Connection Factory.
+ *
  * @author livk
  */
 public interface RedisSearchConnectionFactory {

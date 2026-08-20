@@ -21,6 +21,8 @@ import tools.jackson.databind.ObjectMapper;
 import io.lettuce.core.codec.RedisCodec;
 
 /**
+ * The Redis Search Codecs.
+ *
  * @author livk
  */
 public class RedisSearchCodecs {
