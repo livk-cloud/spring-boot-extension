@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "4.1.1"
+spring-boot = "4.2.0-M1"
 pagehelper = "6.1.1"
 mybatis = "3.5.19"
 mybatis-spring = "4.1.0"
