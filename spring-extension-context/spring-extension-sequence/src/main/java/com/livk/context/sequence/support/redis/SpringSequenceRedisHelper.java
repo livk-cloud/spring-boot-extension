@@ -22,6 +22,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * The Spring Sequence Redis Helper.
+ *
  * @author livk
  */
 public class SpringSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {
@@ -34,17 +36,17 @@ public class SpringSequenceRedisHelper implements SequenceRedisHelper, AutoClose
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
-		return connection.stringCommands().incrBy(key, step);
+		return this.connection.stringCommands().incrBy(key, step);
 	}
 
 	@Override
 	public void setNx(byte[] key, long stepStart) {
-		connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
+		this.connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Override
 	public void close() {
-		connection.close();
+		this.connection.close();
 	}
 
 }

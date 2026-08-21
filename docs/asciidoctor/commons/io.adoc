@@ -1,0 +1,78 @@
+[[io]]
+==== io
+
+`io` 包提供 IO 相关的工具类，涵盖 DataBuffer 转换、资源扫描、GZip 压缩和文件操作。
+
+===== DataBufferConverter
+
+`DataBuffer` 格式转换工具类，提供 `Flux<DataBuffer>`、`InputStream`、`byte[]` 之间的相互转换。适用于 WebFlux 场景。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// Flux<DataBuffer> 转 Mono<InputStream>
+Mono<InputStream> inputStreamMono = DataBufferConverter.transform(dataBufferFlux);
+
+// byte[] 转 Flux<DataBuffer>
+Flux<DataBuffer> flux = DataBufferConverter.transform(bytes);
+
+// Flux<DataBuffer> 转 Mono<byte[]>
+Mono<byte[]> bytesMono = DataBufferConverter.transformByte(dataBufferFlux);
+
+// InputStream 转 Flux<DataBuffer>
+Flux<DataBuffer> flux = DataBufferConverter.transform(inputStream);
+----
+
+===== ResourceScanner
+
+资源扫描工具类，基于 Spring 的 `PathMatchingResourcePatternResolver` 封装，简化 classpath 资源获取。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// 获取单个资源
+Resource resource = ResourceScanner.getResource("classpath:config/app.yml");
+
+// 获取匹配模式的多个资源
+Resource[] resources = ResourceScanner.getResources("classpath*:META-INF/spring/*.imports");
+----
+
+===== GzipUtils
+
+GZip 压缩与解压缩工具类。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// 压缩
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+GzipUtils.compress(data, out);
+
+// 解压
+byte[] decompressed = GzipUtils.decompress(inputStream);
+----
+
+===== FileUtils
+
+文件操作工具类，提供流式下载写入文件以及自动创建父目录的能力。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// 从 InputStream 下载写入文件（自动创建目录）
+FileUtils.download(inputStream, "/path/to/file.txt");
+
+// 创建文件（自动创建父目录）
+boolean success = FileUtils.createNewFile(new File("/path/to/file.txt"));
+----
+
+===== 使用建议
+
+WebFlux 场景下处理请求体或响应体转换时，优先使用 `DataBufferConverter`。 +
+资源加载推荐使用 `ResourceScanner`，避免直接构造 `PathMatchingResourcePatternResolver`。
+
+NOTE: `DataBufferUtils` 和 `ResourceUtils` 已标记为 `@Deprecated`，分别建议使用 `DataBufferConverter` 和 `ResourceScanner`。

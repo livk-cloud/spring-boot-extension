@@ -98,7 +98,7 @@ class TypeElements {
 		@Override
 		public Set<TypeElement> visitArray(List<? extends AnnotationValue> values, Void unused) {
 			return values.stream()
-				.flatMap(value -> value.accept(this, null).stream())
+				.flatMap((value) -> value.accept(this, null).stream())
 				.collect(Collectors.toUnmodifiableSet());
 		}
 

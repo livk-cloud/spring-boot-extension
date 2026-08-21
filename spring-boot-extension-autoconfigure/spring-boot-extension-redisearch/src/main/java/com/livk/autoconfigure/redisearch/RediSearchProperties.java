@@ -23,6 +23,8 @@ import java.time.Duration;
 import java.util.List;
 
 /**
+ * Configuration properties for RediSearch connection settings.
+ *
  * @author livk
  */
 @Data

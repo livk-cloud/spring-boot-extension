@@ -16,7 +16,7 @@
 
 package com.livk.context.lock.intercept;
 
-import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
 import com.livk.context.lock.DistributedLock;
@@ -29,29 +29,38 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.Assert;
 
 /**
+ * The Distributed Lock Interceptor.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
-public class DistributedLockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<DistLock> {
+public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<DistLock> {
 
 	/**
-	 * lock的实现类集合
+	 * lock的实现类集合.
 	 */
 	private final ObjectProvider<DistributedLock> distributedLockProvider;
 
 	/**
-	 * SpEL表达式解析器
+	 * SpEL表达式解析器.
 	 */
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, DistLock lock) throws Throwable {
+	protected Object doInvoke(MethodInvocation invocation, DistLock lock) throws Throwable {
 		Assert.notNull(lock, "lock is null");
-		DistributedLock distributedLock = distributedLockProvider.orderedStream()
+		DistributedLock distributedLock = this.distributedLockProvider.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistributedLock.class));
-		String key = resolver.evaluate(lock.key(), invocation.getMethod(), invocation.getArguments());
-		boolean isLock = distributedLock.tryLock(lock.type(), key, lock.leaseTime(), lock.waitTime(), lock.async());
+		String key = this.resolver.resolve(lock.key())
+			.method(invocation.getMethod(), invocation.getArguments())
+			.evaluate();
+		boolean isLock = distributedLock.lock(key)
+			.type(lock.type())
+			.leaseTime(lock.leaseTime())
+			.waitTime(lock.waitTime())
+			.async(lock.async())
+			.tryLock();
 		try {
 			if (isLock) {
 				return invocation.proceed();

@@ -23,6 +23,7 @@ import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -49,7 +50,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-@SpringJUnitConfig(LimitAutoConfigurationTests.Config.class)
+@SpringJUnitConfig(LimitAutoConfigurationTests.LimitConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 @Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
 class LimitAutoConfigurationTests {
@@ -84,11 +85,11 @@ class LimitAutoConfigurationTests {
 
 	@TestConfiguration
 	@EnableLimit
-	static class Config {
+	static class LimitConfig {
 
 		@Bean
 		RedissonClient redissonClient(@Value("${redisson.single-server-config.address}") String address) {
-			org.redisson.config.Config config = new org.redisson.config.Config();
+			Config config = new Config();
 			config.useSingleServer().setAddress(address);
 			return Redisson.create(config);
 		}

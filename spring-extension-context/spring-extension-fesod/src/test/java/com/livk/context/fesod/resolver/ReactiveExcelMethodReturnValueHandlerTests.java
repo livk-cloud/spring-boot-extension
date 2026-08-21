@@ -16,7 +16,7 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
+import com.livk.commons.io.DataBufferConverter;
 import com.livk.context.fesod.Info;
 import com.livk.context.fesod.exception.ExcelExportException;
 import com.livk.context.fesod.listener.ExcelMapReadListener;
@@ -70,7 +70,7 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=foo"));
 		handler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		Mono<List<Info>> mono = DataBufferUtils.transform(exchange.getResponse().getBody())
+		Mono<List<Info>> mono = DataBufferConverter.transform(exchange.getResponse().getBody())
 			.doOnSuccess(in -> listener.execute(in, Info.class, true))
 			.map(in -> listener.toListData());
 
@@ -99,7 +99,7 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 
 		// Verify response body
 		ExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
-		Mono<List<Info>> resultMono = DataBufferUtils.transform(exchange.getResponse().getBody())
+		Mono<List<Info>> resultMono = DataBufferConverter.transform(exchange.getResponse().getBody())
 			.doOnSuccess(in -> listener.execute(in, Info.class, true))
 			.map(in -> listener.toListData());
 

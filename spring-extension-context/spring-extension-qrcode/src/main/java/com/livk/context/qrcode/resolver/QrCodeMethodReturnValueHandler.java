@@ -16,7 +16,7 @@
 
 package com.livk.context.qrcode.resolver;
 
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.AnnotationFinder;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * The Qr Code Method Return Value Handler.
+ *
  * @author livk
  */
 public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements AsyncHandlerMethodReturnValueHandler {
@@ -46,7 +48,7 @@ public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements Asy
 
 	@Override
 	public boolean supportsReturnType(@NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQrCode.class);
+		return AnnotationFinder.hasAnnotationElement(returnType, ResponseQrCode.class);
 	}
 
 	@Override
@@ -65,13 +67,13 @@ public class QrCodeMethodReturnValueHandler extends QrCodeSupport implements Asy
 	}
 
 	private void setResponse(PicType type, HttpServletResponse response) {
-		response.setContentType(type == PicType.JPG ? MediaType.IMAGE_JPEG_VALUE : MediaType.IMAGE_PNG_VALUE);
+		response.setContentType((type != PicType.JPG) ? MediaType.IMAGE_PNG_VALUE : MediaType.IMAGE_JPEG_VALUE);
 		response.setCharacterEncoding("UTF-8");
 	}
 
 	@Override
 	public boolean isAsyncReturnValue(Object returnValue, @NonNull MethodParameter returnType) {
-		return AnnotationUtils.hasAnnotationElement(returnType, ResponseQrCode.class);
+		return AnnotationFinder.hasAnnotationElement(returnType, ResponseQrCode.class);
 	}
 
 }

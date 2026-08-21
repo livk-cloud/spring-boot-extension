@@ -19,7 +19,8 @@ package com.livk.commons.http;
 import com.livk.commons.http.annotation.EnableHttpClient;
 import com.livk.commons.http.annotation.HttpClientType;
 import com.livk.commons.annotation.SpringAbstractImportSelector;
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.util.AnnotationFinder;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.MergedAnnotation;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Http相关配置Selector进行IOC注入
+ * Import selector for HTTP client configurations.
  * <p>
  * 根据{@link EnableHttpClient}注解的value值加载对应的配置数据
  *
@@ -39,8 +40,9 @@ import java.util.List;
 public class HttpClientImportSelector extends SpringAbstractImportSelector<EnableHttpClient> {
 
 	@Override
-	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
-		HttpClientType[] types = AnnotationUtils.getValue(attributes, MergedAnnotation.VALUE);
+	protected @NonNull List<String> getCandidateConfigurations(@NonNull AnnotationMetadata metadata,
+			AnnotationAttributes attributes) {
+		HttpClientType[] types = AnnotationFinder.getValue(attributes, MergedAnnotation.VALUE);
 		List<String> names = new ArrayList<>();
 		for (HttpClientType type : types) {
 			List<String> configurations = ImportCandidates.load(type.annotationType(), getBeanClassLoader())

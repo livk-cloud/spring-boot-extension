@@ -3,7 +3,6 @@ spring:
     config:
       single-server-config:
         address: redis://livk.com:6379
-        password: 123456
         database: 7
         idleConnectionTimeout: 10000
         connectTimeout: 10000
@@ -20,3 +19,4 @@ spring:
       nettyThreads: 0
       codec: '!<org.redisson.codec.JsonJackson3Codec> {}'
       transportMode: "NIO"
+      password: 123456

@@ -25,9 +25,9 @@ import org.springframework.boot.testcontainers.service.connection.ContainerConne
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
 
 /**
- * 需要根据{@link ConnectionDetails}设计一个ZookeeperConnectionDetails
+ * 需要根据{@link ConnectionDetails}设计一个ZookeeperConnectionDetails.
  * <p>
- * 目前暂定使用ConnectionDetails
+ * 目前暂定使用ConnectionDetails.
  *
  * @author livk
  * @see ConnectionDetails

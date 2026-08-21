@@ -16,12 +16,10 @@
 
 package com.livk.context.useragent;
 
-import org.springframework.http.HttpHeaders;
 import org.jspecify.annotations.NonNull;
+import org.springframework.http.HttpHeaders;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The type Abstract user agent converter.
@@ -31,12 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractUserAgentConverter<T> implements UserAgentConverter {
 
-	private final Map<String, UserAgent> cache = new ConcurrentHashMap<>();
-
 	@Override
 	public UserAgent convert(@NonNull HttpHeaders headers) {
 		String useragent = Optional.ofNullable(headers.getFirst(HttpHeaders.USER_AGENT)).orElse("");
-		return cache.computeIfAbsent(useragent, this::build);
+		return build(useragent);
 	}
 
 	protected UserAgent build(String useragent) {

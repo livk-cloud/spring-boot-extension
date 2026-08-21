@@ -24,6 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to mark a class for automatic Spring service registration.
+ *
  * @author livk
  */
 @Documented
@@ -33,7 +35,7 @@ public @interface SpringAutoService {
 
 	/**
 	 * Annotation for automatic assembly, default
-	 * org.springframework.boot.autoconfigure.AutoConfiguration
+	 * org.springframework.boot.autoconfigure.AutoConfiguration.
 	 * @return class
 	 */
 	Class<? extends Annotation> value() default Annotation.class;

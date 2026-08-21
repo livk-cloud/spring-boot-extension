@@ -21,6 +21,8 @@ import com.livk.context.sequence.support.RangeManager;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * The Default Sequence Builder.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -29,23 +31,26 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 	private final RangeManager manager;
 
 	/**
-	 * 业务名称[必选]
+	 * 业务名称[必选].
 	 */
 	protected String bizName;
 
 	/**
-	 * 获取range步长[可选，默认：1000]
+	 * 获取range步长[可选，默认：1000].
 	 */
 	protected int step = 1000;
 
 	/**
-	 * 序列号分配起始值[可选：默认：0]
+	 * 序列号分配起始值[可选：默认：0].
 	 */
 	protected long stepStart = 0;
 
 	@Override
 	public final SequenceBuilder step(int step) {
-		this.step = step;
+		// 非法步长忽略，保留默认值
+		if (step > 0) {
+			this.step = step;
+		}
 		return this;
 	}
 
@@ -57,15 +62,16 @@ class DefaultSequenceBuilder implements SequenceBuilder {
 
 	@Override
 	public final SequenceBuilder stepStart(long stepStart) {
-		this.stepStart = stepStart;
+		// 非法起始值忽略，保留默认值
+		if (stepStart >= 0) {
+			this.stepStart = stepStart;
+		}
 		return this;
 	}
 
 	@Override
 	public final Sequence build() {
-		manager.step(this.step);
-		manager.stepStart(stepStart);
-		return new DefaultRangeSequence(manager, bizName);
+		return new DefaultRangeSequence(this.manager, this.bizName, this.step, this.stepStart);
 	}
 
 }

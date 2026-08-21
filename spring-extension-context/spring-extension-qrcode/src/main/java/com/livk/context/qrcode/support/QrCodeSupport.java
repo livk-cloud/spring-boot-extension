@@ -16,8 +16,8 @@
 
 package com.livk.context.qrcode.support;
 
-import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.BeanUtils;
+import com.livk.commons.util.AnnotationFinder;
+import com.livk.commons.util.BeanConverter;
 import com.livk.context.qrcode.QrCodeEntity;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.ResponseQrCode;
@@ -26,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -53,11 +54,11 @@ public abstract class QrCodeSupport {
 	 */
 	protected AnnotationAttributes createAttributes(Object returnValue, MethodParameter parameter) {
 		if (returnValue instanceof QrCodeEntity<?> entity) {
-			Map<String, Object> map = BeanUtils.convert(entity);
+			Map<String, Object> map = BeanConverter.toMap(entity);
 			return AnnotationAttributes.fromMap(map);
 		}
 		else {
-			Annotation annotation = AnnotationUtils.getAnnotationElement(parameter, ResponseQrCode.class);
+			Annotation annotation = AnnotationFinder.getAnnotationElement(parameter, ResponseQrCode.class);
 			return AnnotationUtils.getAnnotationAttributes(parameter.getMethod(), annotation);
 		}
 	}
@@ -70,7 +71,7 @@ public abstract class QrCodeSupport {
 	 */
 	protected BufferedImage toBufferedImage(Object returnValue, AnnotationAttributes attributes) {
 		if (returnValue instanceof QrCodeEntity<?> entity) {
-			return qrCodeManager.generate(entity);
+			return this.qrCodeManager.generate(entity);
 		}
 		else {
 			QrCodeEntity<?> entity = QrCodeEntity.builder(returnValue)
@@ -80,7 +81,7 @@ public abstract class QrCodeSupport {
 				.offColor(attributes.getNumber("offColor").intValue())
 				.type(attributes.getEnum("type"))
 				.build();
-			return qrCodeManager.generate(entity);
+			return this.qrCodeManager.generate(entity);
 		}
 	}
 

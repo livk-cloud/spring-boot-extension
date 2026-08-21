@@ -16,10 +16,10 @@
 
 package com.livk.context.limit.interceptor;
 
-import com.livk.commons.aop.AnnotationAbstractPointcutTypeAdvisor;
+import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
-import com.livk.commons.util.BeanUtils;
+import org.springframework.beans.BeanUtils;
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
 import com.livk.context.limit.annotation.Limit;
@@ -40,27 +40,29 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limit> {
+public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<Limit> {
 
 	/**
-	 * 执行器
+	 * 执行器.
 	 */
 	private final ObjectProvider<LimitExecutor> providers;
 
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
 	@Override
-	protected Object invoke(MethodInvocation invocation, Limit limit) throws Throwable {
+	protected Object doInvoke(MethodInvocation invocation, Limit limit) throws Throwable {
 		String key = limit.key();
 		int rate = limit.rate();
 		int rateInterval = limit.rateInterval();
 		TimeUnit unit = limit.rateIntervalUnit();
-		String spELKey = resolver.evaluate(key, invocation.getMethod(), invocation.getArguments());
+		String spELKey = this.resolver.resolve(key)
+			.method(invocation.getMethod(), invocation.getArguments())
+			.evaluate();
 		if (limit.restrictIp()) {
 			String ip = HttpServletUtils.realIp(HttpServletUtils.request());
 			spELKey = spELKey + "#" + ip;
 		}
-		LimitExecutor executor = providers.orderedStream()
+		LimitExecutor executor = this.providers.orderedStream()
 			.findFirst()
 			.orElseThrow(() -> new NoSuchBeanDefinitionException(LimitExecutor.class));
 		boolean status = executor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
@@ -69,8 +71,8 @@ public class LimitInterceptor extends AnnotationAbstractPointcutTypeAdvisor<Limi
 		}
 		else {
 			Class<? extends LimitExceededHandler> handlerType = limit.handler();
-			LimitExceededHandler handler = handlerType == LimitExceededHandler.class ? LimitExceededHandler.DEFAULT
-					: BeanUtils.instantiateClass(handlerType);
+			LimitExceededHandler handler = (handlerType != LimitExceededHandler.class)
+					? BeanUtils.instantiateClass(handlerType) : LimitExceededHandler.DEFAULT;
 			throw handler.buildException(limit);
 		}
 	}

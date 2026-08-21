@@ -28,6 +28,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * The Redisson Lock.
+ *
  * @author livk
  */
 @Slf4j
@@ -39,10 +41,10 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	@Override
 	protected RLock getLock(LockType type, String key) {
 		return switch (type) {
-			case LOCK -> redissonClient.getLock(key);
-			case FAIR -> redissonClient.getFairLock(key);
-			case READ -> redissonClient.getReadWriteLock(key).readLock();
-			case WRITE -> redissonClient.getReadWriteLock(key).writeLock();
+			case LOCK -> this.redissonClient.getLock(key);
+			case FAIR -> this.redissonClient.getFairLock(key);
+			case READ -> this.redissonClient.getReadWriteLock(key).readLock();
+			case WRITE -> this.redissonClient.getReadWriteLock(key).writeLock();
 		};
 	}
 
@@ -63,8 +65,13 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void lockAsync(RLock lock) throws LockException {
-		doFuture(lock.lockAsync());
+	protected void doLockAsync(RLock lock, long leaseTime) throws LockException {
+		if (leaseTime > 0) {
+			doFuture(lock.lockAsync(leaseTime, TimeUnit.SECONDS));
+		}
+		else {
+			doFuture(lock.lockAsync());
+		}
 	}
 
 	private <V> V doCallable(Callable<V> callable) {
@@ -86,8 +93,13 @@ public class RedissonLock extends AbstractLockSupport<RLock> {
 	}
 
 	@Override
-	protected void lock(RLock lock) {
-		lock.lock();
+	protected void doLock(RLock lock, long leaseTime) {
+		if (leaseTime > 0) {
+			lock.lock(leaseTime, TimeUnit.SECONDS);
+		}
+		else {
+			lock.lock();
+		}
 	}
 
 	@Override

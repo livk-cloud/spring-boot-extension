@@ -25,6 +25,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Configuration properties for Apache Curator framework.
+ *
  * @author livk
  */
 @Data
@@ -72,7 +74,7 @@ public class CuratorProperties {
 	 * Note 14</a> to understand how Curator implements connection sessions.
 	 *
 	 * @see <a href='https://cwiki.apache.org/confluence/display/CURATOR/TN14'>Curator's
-	 * Tech Note 14</a>
+	 * Tech Note 14</a>.
 	 */
 	@DurationUnit(ChronoUnit.MILLIS)
 	private Duration sessionTimeout = Duration.of(60, ChronoUnit.SECONDS);

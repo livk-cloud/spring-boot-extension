@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Annotation processor for generating Spring auto-configuration import files.
+ *
  * @author livk
  */
 @AutoService(Processor.class)
@@ -85,8 +87,9 @@ public class SpringAutoServiceProcessor extends CustomizeAbstractProcessor {
 	}
 
 	/**
-	 * 将配置信息写入到文件
+	 * 将配置信息写入到文件.
 	 * @param services 实现类信息
+	 * @param resourceFile 资源文件路径
 	 */
 	private void writeFile(Collection<String> services, String resourceFile) {
 		try {

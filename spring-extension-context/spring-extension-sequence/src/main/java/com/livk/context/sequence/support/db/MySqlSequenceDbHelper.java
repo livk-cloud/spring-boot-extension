@@ -20,6 +20,8 @@ import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.jdbc.DatabaseDriver;
 
 /**
+ * The My Sql Sequence Db Helper.
+ *
  * @author livk
  */
 @SpringFactories

@@ -22,17 +22,18 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * 使用FreeMarker实现的表达式解析器
+ * Expression resolver implementation using FreeMarker template engine.
  *
  * @author livk
+ * @deprecated since 2.1.1
  */
+@Deprecated(since = "2.1.1")
 @RequiredArgsConstructor
 public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<String, Object>, Template> {
 
@@ -50,10 +51,14 @@ public class FreeMarkerExpressionResolver extends CacheExpressionResolver<Map<St
 		this(DEFAULT_CONFIG);
 	}
 
-	@SneakyThrows
 	@Override
 	protected Template compile(String value) {
-		return new Template(TEMPLATE_NAME, value, configuration);
+		try {
+			return new Template(TEMPLATE_NAME, value, this.configuration);
+		}
+		catch (IOException ex) {
+			throw new IllegalArgumentException(ex);
+		}
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Utility class for JsonNode operations.
+ *
  * @author livk
  */
 @UtilityClass
@@ -44,7 +46,7 @@ public class JsonNodeUtils {
 	};
 
 	/**
-	 * 查找某个节点，转成string
+	 * Finds a node and converts it to string.
 	 * @param jsonNode the json node
 	 * @param fieldName the field name
 	 * @return the string
@@ -58,7 +60,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * 查找某个节点
+	 * Finds an object node by field name.
 	 * @param jsonNode the json node
 	 * @param fieldName the field name
 	 * @return the json node
@@ -72,7 +74,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * 查找某个节点
+	 * Finds a node and converts it using TypeReference.
 	 * @param <T> the type parameter
 	 * @param jsonNode the json node
 	 * @param fieldName the field name
@@ -87,7 +89,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * 查找某个节点
+	 * Finds a node and converts it using Class type.
 	 * @param <T> the type parameter
 	 * @param jsonNode the json node
 	 * @param fieldName the field name
@@ -101,7 +103,7 @@ public class JsonNodeUtils {
 	}
 
 	/**
-	 * 查找某个节点
+	 * Finds a node and converts it using JavaType.
 	 * @param <T> the type parameter
 	 * @param jsonNode the json node
 	 * @param fieldName the field name

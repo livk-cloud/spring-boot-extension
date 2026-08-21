@@ -29,6 +29,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.h2.Driver;
@@ -96,8 +97,7 @@ class SqlDataInjectionTests {
 		@Bean
 		public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
 			Environment environment = new Environment("mybatis", new SpringManagedTransactionFactory(), dataSource);
-			org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration(
-					environment);
+			Configuration configuration = new Configuration(environment);
 			configuration.setMapUnderscoreToCamelCase(true);
 			configuration.addInterceptor(new SqlDataInjection());
 			configuration.setLogImpl(StdOutImpl.class);

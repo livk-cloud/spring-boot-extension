@@ -54,56 +54,59 @@ class SpringExpressionResolverTests {
 
 	@Test
 	void evaluateWithMethodArgs() {
-		assertThat(resolver.evaluate("'livk'==#username", method, args, Boolean.class)).isTrue();
-		assertThat(resolver.evaluate("#username", method, args)).isEqualTo("livk");
+		assertThat(resolver.resolve("'livk'==#username").method(method, args).evaluate(Boolean.class)).isTrue();
+		assertThat(resolver.resolve("#username").method(method, args).evaluate()).isEqualTo("livk");
 	}
 
 	@Test
 	void evaluateWithMap() {
-		assertThat(resolver.evaluate("'livk'==#username", map, Boolean.class)).isTrue();
-		assertThat(resolver.evaluate("#username", map)).isEqualTo("livk");
+		assertThat(resolver.resolve("'livk'==#username").context(map).evaluate(Boolean.class)).isTrue();
+		assertThat(resolver.resolve("#username").context(map).evaluate()).isEqualTo("livk");
 	}
 
 	@Test
 	void evaluateTemplateExpressionWithMethodArgs() {
-		assertThat(resolver.evaluate("root:#{#username}", method, args)).isEqualTo("root:livk");
+		assertThat(resolver.resolve("root:#{#username}").method(method, args).evaluate()).isEqualTo("root:livk");
 	}
 
 	@Test
 	void evaluateTemplateExpressionWithContext() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertThat(resolver.evaluate("root:#{#username}:#{#password}", context)).isEqualTo("root:livk:123456");
+		assertThat(resolver.resolve("root:#{#username}:#{#password}").context(context).evaluate())
+			.isEqualTo("root:livk:123456");
 	}
 
 	@Test
 	void evaluateTemplateExpressionWithMap() {
-		assertThat(resolver.evaluate("root:#{#username}", map)).isEqualTo("root:livk");
+		assertThat(resolver.resolve("root:#{#username}").context(map).evaluate()).isEqualTo("root:livk");
 	}
 
 	@Test
 	void evaluateWithTypeInvocation() {
-		assertThat(resolver.evaluate("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}", map))
-			.isEqualTo("livk:" + System.getProperty("user.dir"));
+		assertThat(resolver.resolve("#{#username}:#{T(java.lang.System).getProperty(\"user.dir\")}")
+			.context(map)
+			.evaluate()).isEqualTo("livk:" + System.getProperty("user.dir"));
 	}
 
 	@Test
 	void evaluatePlainStringPassesThrough() {
-		assertThat(resolver.evaluate("livk", method, args)).isEqualTo("livk");
+		assertThat(resolver.resolve("livk").method(method, args).evaluate()).isEqualTo("livk");
 	}
 
 	@Test
 	void evaluateConcatenationWithContext() {
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, args).putAll(Map.of("password", "123456"));
-		assertThat(resolver.evaluate("#username+#password", context)).isEqualTo("livk123456");
+		assertThat(resolver.resolve("#username+#password").context(context).evaluate()).isEqualTo("livk123456");
 	}
 
 	@Test
 	void evaluateWithSpringContextHolder() {
 		contextRunner.run(ctx -> {
-			assertThat(resolver.evaluate(
-					"#{#username}:#{T(" + springContextHolderName + ").getProperty(\"spring.application.root.name\")}",
-					map))
-				.isEqualTo("livk:livk");
+			assertThat(resolver
+				.resolve("#{#username}:#{T(" + springContextHolderName
+						+ ").getProperty(\"spring.application.root.name\")}")
+				.context(map)
+				.evaluate()).isEqualTo("livk:livk");
 		});
 	}
 
@@ -112,9 +115,24 @@ class SpringExpressionResolverTests {
 		contextRunner.run(ctx -> {
 			Map<String, Object> envMap = Map.of("username", "livk", "env",
 					SpringContextHolder.getBean(Environment.class));
-			assertThat(resolver.evaluate("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}", envMap))
-				.isEqualTo("livk:livk");
+			assertThat(resolver.resolve("#{#username}:#{#env.getProperty(\"spring.application.root.name\")}")
+				.context(envMap)
+				.evaluate()).isEqualTo("livk:livk");
 		});
+	}
+
+	@Test
+	void evaluateWithEmptyContext() {
+		assertThat(resolver.resolve("livk").evaluate()).isEqualTo("livk");
+	}
+
+	@Test
+	void evaluateWithCustomContextFactory() {
+		String result = resolver.resolve("#username")
+			.contextFactory(ContextFactory.DEFAULT_FACTORY)
+			.method(method, args)
+			.evaluate();
+		assertThat(result).isEqualTo("livk");
 	}
 
 }

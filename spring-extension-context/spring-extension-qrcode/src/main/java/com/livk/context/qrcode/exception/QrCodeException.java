@@ -19,6 +19,8 @@ package com.livk.context.qrcode.exception;
 import lombok.Getter;
 
 /**
+ * The Qr Code Exception.
+ *
  * @author livk
  */
 @Getter

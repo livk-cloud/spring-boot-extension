@@ -36,24 +36,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 2
 
       - name: Set up JDK
-        uses: actions/setup-java@v5.2.0
+        uses: actions/setup-java@v5.7.0
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4.36.2
+        uses: github/codeql-action/init@v4.37.7
         with:
           languages: ${{ matrix.language }}
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v4.36.2
+        uses: github/codeql-action/autobuild@v4.37.7
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4.36.2
+        uses: github/codeql-action/analyze@v4.37.7

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * JsonMapper工具类，使用默认JsonMapper
+ * Utility class for JSON operations using default JsonMapper.
  *
  * @author livk
  */
@@ -39,7 +39,7 @@ public class JsonMapperUtils {
 	private static final JacksonSupport JSON = new JacksonSupport(new JsonMapper());
 
 	/**
-	 * 从obj读取json数据转成相应实体类
+	 * Reads JSON data from obj and converts to the specified type.
 	 * @param <T> 泛型
 	 * @param obj 待读取的数据
 	 * @param type 返回相关类型
@@ -50,7 +50,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * 从obj读取json数据转成相应实体类
+	 * Reads JSON data from obj and converts to the specified JavaType.
 	 * @param <T> 泛型
 	 * @param obj 待读取的数据
 	 * @param type 相关类型
@@ -61,7 +61,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * 从obj读取json数据转成相应实体类
+	 * Reads JSON data from obj and converts to the specified TypeReference.
 	 * @param <T> 泛型
 	 * @param obj 待读取的数据
 	 * @param typeReference typeReference包装的类型
@@ -72,7 +72,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * obj序列化成string
+	 * Serializes obj to JSON string.
 	 * @param obj obj
 	 * @return json string
 	 */
@@ -81,7 +81,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * obj序列化成byte[]
+	 * Serializes obj to byte array.
 	 * @param obj the obj
 	 * @return the byte [ ]
 	 */
@@ -90,7 +90,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * json反序列化成List
+	 * Deserializes JSON to a List of the specified type.
 	 * <p>
 	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
 	 * <p>
@@ -106,7 +106,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * json反序列化成Map
+	 * Deserializes JSON to a Map with specified key and value types.
 	 * <p>
 	 * 也可以看看{@link JacksonSupport#readValue(Object, TypeReference)} ,
 	 * <p>
@@ -124,7 +124,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * obj读取数据转化成JsonNode
+	 * Reads obj data and converts to JsonNode.
 	 * @param obj the obj
 	 * @return the json node
 	 */
@@ -133,7 +133,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * jackson数据转换
+	 * Converts data using Jackson type conversion.
 	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
 	 * @param type 返回类型
@@ -144,7 +144,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * jackson数据转换
+	 * Converts data using Jackson with TypeReference.
 	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
 	 * @param typeReference the type reference
@@ -155,7 +155,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * jackson数据转换
+	 * Converts data using Jackson with JavaType.
 	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
 	 * @param javaType 相关类型
@@ -166,7 +166,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * jackson数据转换List
+	 * Converts data to a List using Jackson.
 	 * @param <T> 泛型
 	 * @param fromValue 待转换数据
 	 * @param type 返回类型
@@ -178,7 +178,7 @@ public class JsonMapperUtils {
 	}
 
 	/**
-	 * jackson数据转换Map
+	 * Converts data to a Map using Jackson.
 	 * @param <K> the type parameter
 	 * @param <V> the type parameter
 	 * @param fromValue the fromValue

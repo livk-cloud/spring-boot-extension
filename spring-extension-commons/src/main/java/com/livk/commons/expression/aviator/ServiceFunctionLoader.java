@@ -24,6 +24,8 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * FunctionLoader that loads AviatorFunction via ServiceLoader.
+ *
  * @author livk
  */
 public class ServiceFunctionLoader implements FunctionLoader {
@@ -36,7 +38,7 @@ public class ServiceFunctionLoader implements FunctionLoader {
 
 	@Override
 	public AviatorFunction onFunctionNotFound(String name) {
-		return functions.get(name);
+		return this.functions.get(name);
 	}
 
 	public void load() {

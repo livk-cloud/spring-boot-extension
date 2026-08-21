@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 import java.text.DecimalFormat;
 
 /**
- * Number类型数据Jackson序列化处理注解
+ * Annotation for Number type Jackson serialization formatting.
  *
  * @author livk
  * @see Number
@@ -38,7 +38,7 @@ import java.text.DecimalFormat;
 public @interface NumberJsonFormat {
 
 	/**
-	 * 序列化表达式
+	 * Serialization pattern expression.
 	 * @return the string
 	 * @see DecimalFormat#DecimalFormat(String)
 	 */

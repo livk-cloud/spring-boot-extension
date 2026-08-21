@@ -35,7 +35,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -101,12 +104,13 @@ class JsonMapperUtilsTests {
 	}
 
 	@Test
-	void readValueURL() throws IOException {
+	void readValueURL() throws Exception {
 		URL url = new ClassPathResource("input.json").getURL();
-		assertJsonContent(JsonMapperUtils.readValue(url, JsonNode.class));
-		assertJsonContent(JsonMapperUtils.readValue(url, new TypeReference<>() {
+		Path path = Paths.get(url.toURI());
+		assertJsonContent(JsonMapperUtils.readValue(path, JsonNode.class));
+		assertJsonContent(JsonMapperUtils.readValue(path, new TypeReference<>() {
 		}));
-		assertJsonContent(JsonMapperUtils.readValue(url, javaType));
+		assertJsonContent(JsonMapperUtils.readValue(path, javaType));
 	}
 
 	@Test
@@ -234,9 +238,10 @@ class JsonMapperUtilsTests {
 	}
 
 	@Test
-	void testReadTreeWithURL() throws IOException {
+	void testReadTreeWithURL() throws IOException, URISyntaxException {
 		URL url = new ClassPathResource("input.json").getURL();
-		assertJsonContent(JsonMapperUtils.readTree(url));
+		Path path = Paths.get(url.toURI());
+		assertJsonContent(JsonMapperUtils.readTree(path));
 	}
 
 	@Test

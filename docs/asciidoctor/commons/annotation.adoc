@@ -66,4 +66,4 @@ public @interface DisruptorScan {
 用于快速扫描bean，使用注解方式获取
 
 通常和 `AnnotationBasePackageSupport` 配合使用：先从注解中解析扫描包，再扫描指定注解或接口的候选 BeanDefinition。 +
-适合 Disruptor、MapStruct 等需要“按包扫描并注册基础设施 Bean”的组件。
+适合 Disruptor 等需要“按包扫描并注册基础设施 Bean”的组件。

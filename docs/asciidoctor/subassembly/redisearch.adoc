@@ -1,8 +1,8 @@
 [[redisearch]]
 ==== redisearch
 
-封装 `RediSearchTemplate`、`StringRediSearchTemplate` 来操作 RediSearch。 +
-自动配置基于 lettuce-mod 创建 `RediSearchConnectionFactory`，并在存在 Jackson 时提供 JSON 序列化的模板。
+封装 `RedisSearchTemplate`、`StringRedisSearchTemplate` 来操作 RediSearch。 +
+自动配置基于 lettuce-mod 创建 `RedisSearchConnectionFactory`，并在存在 Jackson 时提供 JSON 序列化的模板。
 
 ===== 配置
 
@@ -44,7 +44,7 @@ spring:
 
 ===== 使用模板
 
-`RediSearchTemplate<String, Object>` 适合对象读写，`StringRediSearchTemplate` 适合字符串场景。 +
+`RedisSearchTemplate<String, Object>` 适合对象读写，`StringRedisSearchTemplate` 适合字符串场景。 +
 如果需要调整 lettuce 的底层资源，可以注册 `ClientResourcesBuilderCustomizer`。
 
 [source,java,indent=0]
@@ -52,10 +52,10 @@ spring:
 @Service
 public class ArticleSearchService {
 
-	private final StringRediSearchTemplate stringRediSearchTemplate;
+	private final StringRedisSearchTemplate StringRedisSearchTemplate;
 
-	public ArticleSearchService(StringRediSearchTemplate stringRediSearchTemplate) {
-		this.stringRediSearchTemplate = stringRediSearchTemplate;
+	public ArticleSearchService(StringRedisSearchTemplate StringRedisSearchTemplate) {
+		this.StringRedisSearchTemplate = StringRedisSearchTemplate;
 	}
 
 }

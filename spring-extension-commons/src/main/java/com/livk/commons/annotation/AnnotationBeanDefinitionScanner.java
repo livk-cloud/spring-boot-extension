@@ -16,8 +16,8 @@
 
 package com.livk.commons.annotation;
 
-import com.livk.commons.util.AnnotationUtils;
-import com.livk.commons.util.ClassUtils;
+import com.livk.commons.util.AnnotationFinder;
+import com.livk.commons.util.TypeUtils;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -35,11 +35,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Abstract base class for scanning bean definitions annotated with a specific annotation.
+ *
  * @author livk
  */
 public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> extends ClassPathBeanDefinitionScanner {
 
-	protected final Class<T> annotationClass = ClassUtils.resolveTypeArgument(this.getClass(),
+	protected final Class<T> annotationClass = TypeUtils.resolveTypeArgument(this.getClass(),
 			AnnotationBeanDefinitionScanner.class);
 
 	protected final BeanNameGenerator beanNameGenerator;
@@ -47,16 +49,15 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 		super(registry, false);
 		this.beanNameGenerator = beanNameGenerator;
-		addIncludeFilter(new AnnotationTypeFilter(annotationClass));
+		addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));
 	}
 
 	protected AnnotationBeanDefinitionScanner(BeanDefinitionRegistry registry) {
 		this(registry, new AnnotationBeanNameGenerator());
 	}
 
-	@NonNull
 	@Override
-	protected final Set<BeanDefinitionHolder> doScan(@NonNull String... basePackages) {
+	protected final @NonNull Set<BeanDefinitionHolder> doScan(String @NonNull ... basePackages) {
 		BeanDefinitionRegistry registry = super.getRegistry();
 		Assert.notNull(registry, "registry not be null");
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
@@ -65,8 +66,8 @@ public abstract class AnnotationBeanDefinitionScanner<T extends Annotation> exte
 			Set<BeanDefinition> candidateComponents = findCandidateComponents(basePackage);
 			for (BeanDefinition candidateComponent : candidateComponents) {
 				if (candidateComponent instanceof ScannedGenericBeanDefinition scannedGenericBeanDefinition) {
-					AnnotationAttributes attributes = AnnotationUtils
-						.attributesFor(scannedGenericBeanDefinition.getMetadata(), annotationClass);
+					AnnotationAttributes attributes = AnnotationFinder
+						.attributesFor(scannedGenericBeanDefinition.getMetadata(), this.annotationClass);
 					BeanDefinitionHolder holder = generateHolder(attributes, candidateComponent, registry);
 					if (holder != null) {
 						beanDefinitions.add(holder);

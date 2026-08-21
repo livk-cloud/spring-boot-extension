@@ -22,6 +22,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The Request Qr Code Text.
+ *
  * @author livk
  */
 @Target(ElementType.PARAMETER)

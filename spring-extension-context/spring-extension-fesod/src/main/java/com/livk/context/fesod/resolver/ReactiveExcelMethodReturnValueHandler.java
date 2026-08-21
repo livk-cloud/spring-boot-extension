@@ -16,8 +16,8 @@
 
 package com.livk.context.fesod.resolver;
 
-import com.livk.commons.io.DataBufferUtils;
-import com.livk.commons.util.AnnotationUtils;
+import com.livk.commons.io.DataBufferConverter;
+import com.livk.commons.util.AnnotationFinder;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import com.livk.context.fesod.exception.ExcelExportException;
 import org.jspecify.annotations.NonNull;
@@ -47,6 +47,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * The Reactive Excel Method Return Value Handler.
+ *
  * @author livk
  */
 public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implements HandlerResultHandler, Ordered {
@@ -56,13 +58,13 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 	 */
 	public static final MediaType EXCEL_MEDIA_TYPE = new MediaType("application", "vnd.ms-excel");
 
-	private static final Function<List<?>, Map<String, List<?>>> defaultFunction = c -> Map.of("sheet", c);
+	private static final Function<List<?>, Map<String, List<?>>> defaultFunction = (c) -> Map.of("sheet", c);
 
 	private final ReactiveAdapterRegistry adapterRegistry = ReactiveAdapterRegistry.getSharedInstance();
 
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
-		return AnnotationUtils.hasAnnotationElement(result.getReturnTypeSource(), ResponseExcel.class);
+		return AnnotationFinder.hasAnnotationElement(result.getReturnTypeSource(), ResponseExcel.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,14 +73,14 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 	public Mono<Void> handleResult(@NonNull ServerWebExchange exchange, HandlerResult result) {
 		Object returnValue = result.getReturnValue();
 		if (returnValue != null) {
-			ResponseExcel responseExcel = AnnotationUtils.getAnnotationElement(result.getReturnTypeSource(),
+			ResponseExcel responseExcel = AnnotationFinder.getAnnotationElement(result.getReturnTypeSource(),
 					ResponseExcel.class);
 			ServerHttpResponse response = exchange.getResponse();
 			setResponse(responseExcel, response);
 			ResolvableType returnType = result.getReturnType();
-			ReactiveAdapter adapter = adapterRegistry.getAdapter(returnType.resolve(), returnValue);
+			ReactiveAdapter adapter = this.adapterRegistry.getAdapter(returnType.resolve(), returnValue);
 			if (this.canWrite(returnType)) {
-				Publisher<?> inputStream = adapter != null ? (Publisher<?>) returnValue : Mono.just(returnValue);
+				Publisher<?> inputStream = (adapter != null) ? (Publisher<?>) returnValue : Mono.just(returnValue);
 				if (inputStream instanceof Flux<?> flux) {
 					Class<?> excelModelClass = returnType.resolveGeneric(0);
 					Mono<Map<String, List<?>>> mono = flux.collectList().map(defaultFunction);
@@ -108,14 +110,14 @@ public class ReactiveExcelMethodReturnValueHandler extends FesodSupport implemen
 
 	private Mono<Void> write(ResponseExcel excelReturn, ReactiveHttpOutputMessage message, Class<?> excelModelClass,
 			Mono<Map<String, List<?>>> result) {
-		return result.flatMap(r -> Mono.fromCallable(() -> {
+		return result.flatMap((r) -> Mono.fromCallable(() -> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			super.write(outputStream, excelModelClass, excelReturn.template(), r);
 			return outputStream.toByteArray();
 		})
 			.subscribeOn(Schedulers.boundedElastic()) // ⭐ 非常关键
-			.flatMap(bytes -> {
-				Flux<DataBuffer> bufferFlux = DataBufferUtils.transform(bytes);
+			.flatMap((bytes) -> {
+				Flux<DataBuffer> bufferFlux = DataBufferConverter.transform(bytes);
 				return message.writeWith(bufferFlux);
 			}));
 	}

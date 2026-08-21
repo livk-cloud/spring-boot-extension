@@ -49,7 +49,7 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	 */
 	protected AbstractJsonTypeHandler(MapperBuilder<?, ?> builder) {
 		ObjectMapper mapper = builder.build();
-		jacksonOps = new JacksonSupport(mapper);
+		this.jacksonOps = new JacksonSupport(mapper);
 	}
 
 	@Override
@@ -73,19 +73,19 @@ public abstract class AbstractJsonTypeHandler implements TypeHandler<JsonNode> {
 	@Override
 	public final JsonNode getResult(ResultSet rs, String columnName) throws SQLException {
 		String json = rs.getString(columnName);
-		return jacksonOps.readTree(json);
+		return this.jacksonOps.readTree(json);
 	}
 
 	@Override
 	public final JsonNode getResult(ResultSet rs, int columnIndex) throws SQLException {
 		String json = rs.getString(columnIndex);
-		return jacksonOps.readTree(json);
+		return this.jacksonOps.readTree(json);
 	}
 
 	@Override
 	public final JsonNode getResult(CallableStatement cs, int columnIndex) throws SQLException {
 		String json = cs.getString(columnIndex);
-		return jacksonOps.readTree(json);
+		return this.jacksonOps.readTree(json);
 	}
 
 }

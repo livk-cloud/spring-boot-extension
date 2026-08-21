@@ -18,7 +18,7 @@ package com.livk.redisearch.mvc;
 
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.BeanLambda;
-import com.livk.context.redisearch.StringRediSearchTemplate;
+import com.livk.context.redisearch.StringRedisSearchTemplate;
 import com.livk.redisearch.mvc.entity.Student;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import io.lettuce.core.search.SearchReply;
@@ -46,9 +46,9 @@ public class RediSearchApp {
 	}
 
 	@Bean
-	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
-		return (args) -> {
-			RedisModulesCommands<String, String> search = template.sync();
+	public ApplicationRunner applicationRunner(StringRedisSearchTemplate template) {
+		return (args) -> template.executeVoid(connection -> {
+			RedisModulesCommands<String, String> search = connection.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
 				TextFieldArgs<String> nameArg = TextFieldArgs.<String>builder()
@@ -79,7 +79,7 @@ public class RediSearchApp {
 				Student bean = JsonMapperUtils.convertValue(resultResult.getFields(), Student.class);
 				log.info("{}", bean);
 			}
-		};
+		});
 	}
 
 }

@@ -31,7 +31,7 @@ class DefaultRangeSequenceTests {
 
 	@Test
 	void nextValue() {
-		DefaultRangeSequence sequence = new DefaultRangeSequence(rangeManager, "test");
+		DefaultRangeSequence sequence = new DefaultRangeSequence(rangeManager, "test", 10, 0);
 		for (int i = 0; i < 10; i++) {
 			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
@@ -40,18 +40,8 @@ class DefaultRangeSequenceTests {
 	static class TestRangeManager implements RangeManager {
 
 		@Override
-		public SequenceRange nextRange(String name) {
+		public SequenceRange nextRange(String name, int step, long stepStart) {
 			return new SequenceRange(1L, 10L);
-		}
-
-		@Override
-		public void step(int step) {
-
-		}
-
-		@Override
-		public void stepStart(long stepStart) {
-
 		}
 
 	}

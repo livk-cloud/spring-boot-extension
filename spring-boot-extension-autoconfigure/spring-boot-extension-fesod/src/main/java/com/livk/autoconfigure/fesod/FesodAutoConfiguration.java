@@ -25,6 +25,7 @@ import org.apache.fesod.sheet.FesodSheet;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -35,6 +36,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
+ * Auto-configuration for Fesod Excel support in WebMvc and WebFlux environments.
+ *
  * @author livk
  */
 @AutoConfiguration
@@ -46,7 +49,7 @@ public class FesodAutoConfiguration {
 	 * The type Excel web mvc auto configuration.
 	 */
 	@AutoConfiguration
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+	@ConditionalOnWebApplication(type = Type.SERVLET)
 	public static class FesodWebMvcAutoConfiguration implements WebMvcConfigurer {
 
 		@Override
@@ -65,7 +68,7 @@ public class FesodAutoConfiguration {
 	 * The type Excel web flux auto configuration.
 	 */
 	@AutoConfiguration
-	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	@ConditionalOnWebApplication(type = Type.REACTIVE)
 	public static class FesodWebFluxAutoConfiguration implements WebFluxConfigurer {
 
 		/**

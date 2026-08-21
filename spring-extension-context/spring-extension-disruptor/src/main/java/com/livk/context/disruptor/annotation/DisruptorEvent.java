@@ -67,7 +67,8 @@ public @interface DisruptorEvent {
 	String threadFactoryBeanName() default "";
 
 	/**
-	 * 是否开启虚拟线程
+	 * 是否开启虚拟线程.
+	 * @return true if virtual threads are enabled
 	 */
 	boolean useVirtualThreads() default true;
 

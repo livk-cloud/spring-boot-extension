@@ -33,6 +33,8 @@ import org.springframework.web.multipart.support.RequestPartServletServerHttpReq
 import java.util.Objects;
 
 /**
+ * The Qr Code Method Argument Resolver.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -53,7 +55,7 @@ public class QrCodeMethodArgumentResolver implements HandlerMethodArgumentResolv
 		if (Objects.nonNull(qrCodeText) && Objects.nonNull(request)) {
 			if (this.canRead(request)) {
 				HttpInputMessage part = new RequestPartServletServerHttpRequest(request, qrCodeText.fileName());
-				return codeManager.parser(part.getBody());
+				return this.codeManager.parser(part.getBody());
 			}
 		}
 		throw new IllegalArgumentException(

@@ -58,7 +58,7 @@
 |扫描事件并注册 SpringDisruptor
 
 |动态数据源
-|dynamic-datasource-boot-starter
+|dynamic-datasource-spring-boot-starter
 |注册 DynamicDatasource 与切换拦截器
 
 |Excel
@@ -70,12 +70,8 @@
 |注册限流 AOP 拦截器
 
 |分布式锁
-|distributed-lock-boot-starter
+|distributed-lock-spring-boot-starter
 |注册分布式锁 AOP 拦截器
-
-|MapStruct
-|mapstruct-spring-boot-starter
-|注册 MapstructService 与转换器仓库
 
 |MyBatis
 |mybatis-extension-boot-starter
@@ -87,7 +83,7 @@
 
 |RediSearch
 |redisearch-spring-boot-starter
-|注册 RediSearchConnectionFactory 和模板
+|注册 RedisSearchConnectionFactory 和模板
 
 |Redisson
 |redisson-spring-boot-starter
@@ -140,8 +136,6 @@ include::{basedir}/fesod.adoc[]
 include::{basedir}/limit.adoc[]
 
 include::{basedir}/lock.adoc[]
-
-include::{basedir}/mapstruct.adoc[]
 
 include::{basedir}/mybatis.adoc[]
 

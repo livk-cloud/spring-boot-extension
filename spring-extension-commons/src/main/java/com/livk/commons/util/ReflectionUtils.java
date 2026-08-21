@@ -19,123 +19,89 @@ package com.livk.commons.util;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <p>
- * 反射相关工具类
+ * 反射相关工具类.
  * </p>
  *
  * @author livk
+ * @deprecated use {@link FieldUtils}
  */
 @Slf4j
 @UtilityClass
+@Deprecated(since = "2.1.1")
 public class ReflectionUtils extends org.springframework.util.ReflectionUtils {
 
 	/**
-	 * 给field设置accessible为true,并且设置一个值
+	 * 给field设置accessible为true,并且设置一个值.
 	 * @param field field
 	 * @param parameter parameter
 	 * @param value value
 	 */
 	public void setFieldAndAccessible(Field field, Object parameter, Object value) {
-		field.setAccessible(true);
-		setField(field, parameter, value);
+		FieldUtils.setFieldAndAccessible(field, parameter, value);
 	}
 
 	/**
-	 * 获取一个类的所有的Get方法
+	 * 获取一个类的所有的Get方法.
 	 * @param targetClass class
 	 * @return read methods
 	 */
 	public Set<Method> getReadMethods(Class<?> targetClass) {
-		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
-			.map(PropertyDescriptor::getReadMethod)
-			.filter(Objects::nonNull)
-			.filter(method -> !method.getName().equals("getClass"))
-			.collect(Collectors.toSet());
+		return FieldUtils.getReadMethods(targetClass);
 	}
 
 	/**
-	 * 获取一个类的Field Get方法
+	 * 获取一个类的Field Get方法.
 	 * @param targetClass class
 	 * @param field field
 	 * @return read method
 	 */
 	public Method getReadMethod(Class<?> targetClass, Field field) {
-		try {
-			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
-			return descriptor.getReadMethod();
-		}
-		catch (Exception ex) {
-			log.error("Failed to get the get field method message: {}", ex.getMessage(), ex);
-			return null;
-		}
+		return FieldUtils.getReadMethod(targetClass, field);
 	}
 
 	/**
-	 * 获取一个类的所有的Set方法
+	 * 获取一个类的所有的Set方法.
 	 * @param targetClass target class
 	 * @return write methods
 	 */
 	public Set<Method> getWriteMethods(Class<?> targetClass) {
-		return Arrays.stream(BeanUtils.getPropertyDescriptors(targetClass))
-			.map(PropertyDescriptor::getWriteMethod)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toSet());
+		return FieldUtils.getWriteMethods(targetClass);
 	}
 
 	/**
-	 * 获取一个类的Field Set方法
+	 * 获取一个类的Field Set方法.
 	 * @param targetClass class
 	 * @param field field
 	 * @return method
 	 */
 	public Method getWriteMethod(Class<?> targetClass, Field field) {
-		try {
-			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), targetClass);
-			return descriptor.getWriteMethod();
-		}
-		catch (Exception ex) {
-			log.error("Failed to set the get field method message: {}", ex.getMessage(), ex);
-			return null;
-		}
+		return FieldUtils.getWriteMethod(targetClass, field);
 	}
 
 	/**
-	 * 获取一个类的所有Field,包括所有的父类
+	 * 获取一个类的所有Field,包括所有的父类.
 	 * @param targetClass class
 	 * @return fields
 	 */
 	public List<Field> getAllFields(Class<?> targetClass) {
-		List<Field> allFields = new ArrayList<>();
-		Class<?> currentClass = targetClass;
-		while (currentClass != null) {
-			Field[] declaredFields = currentClass.getDeclaredFields();
-			Collections.addAll(allFields, declaredFields);
-			currentClass = currentClass.getSuperclass();
-		}
-		return allFields;
+		return FieldUtils.getAllFields(targetClass);
 	}
 
 	/**
-	 * 获取一个私有属性的值
+	 * 获取一个私有属性的值.
 	 * @param field field
 	 * @param target target
 	 * @return declared field value
 	 */
 	public static Object getDeclaredFieldValue(Field field, Object target) {
-		field.setAccessible(true);
-		return ReflectionUtils.getField(field, target);
+		return FieldUtils.getDeclaredFieldValue(field, target);
 	}
 
 }

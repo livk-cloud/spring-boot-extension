@@ -18,7 +18,7 @@ package com.livk.redisearch.webflux;
 
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.BeanLambda;
-import com.livk.context.redisearch.StringRediSearchTemplate;
+import com.livk.context.redisearch.StringRedisSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
 import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import io.lettuce.core.search.SearchReply;
@@ -48,9 +48,9 @@ public class RediSearchApp {
 	}
 
 	@Bean
-	public ApplicationRunner applicationRunner(StringRediSearchTemplate template) {
-		return (args) -> {
-			RedisModulesReactiveCommands<String, String> reactive = template.reactive();
+	public ApplicationRunner applicationRunner(StringRedisSearchTemplate template) {
+		return (args) -> template.executeVoid(connection -> {
+			RedisModulesReactiveCommands<String, String> reactive = connection.reactive();
 
 			Mono<Void> createIndex = reactive.ftList()
 				.any(index -> index.equals(Student.INDEX))
@@ -93,7 +93,7 @@ public class RediSearchApp {
 				.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class))
 				.doOnNext(student -> log.info("{}", student))
 				.subscribe();
-		};
+		});
 	}
 
 }

@@ -26,6 +26,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The Disruptor Scan.
+ *
  * @author livk
  */
 @Target(ElementType.TYPE)

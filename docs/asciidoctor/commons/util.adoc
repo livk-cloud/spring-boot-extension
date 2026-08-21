@@ -3,185 +3,155 @@
 
 `util` 包收纳通用工具类，可以按用途大致分为：
 
-* 注解与反射：`AnnotationMetadataResolver`、`AnnotationValueExtractor`、`ReflectionUtils`、`ClassUtils`。
-* Bean 与泛型：`BeanLambda`、`BeanUtils`、`GenericWrapper`、`GenericsByteBuddy`。
+* 注解与反射：`AnnotationMetadataResolver`、`AnnotationFinder`、`AnnotationUtils`、`ReflectionUtils`、`ClassUtils`、`FieldUtils`、`TypeUtils`。
+* Bean 与泛型：`BeanLambda`、`BeanLambdaDescriptor`、`BeanUtils`、`BeanConverter`、`GenericWrapper`、`RecordWrapper`。
+* Stream 与集合：`StreamUtils`、`EnumerationSpliterator`。
 * Web 辅助：`HttpServletUtils`、`HttpReactiveUtils`、`MultiValueMapSplitter`。
 * 数据结构与 ID：`Pair`、`TreeNode`、`SnowflakeIdGenerator`。
+* 日期时间：`Jsr310Utils`。
 * 配置与上下文：`YamlUtils`、`ContextSnapshots`。
 
 ===== AnnotationMetadataResolver
 
-根据包名查找含有某些注解的类
+根据包名查找含有某些注解的类。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-public class Main{
-    public static void main(String[] args){
-      AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
-      resolver.find(MyAnnotation.class,"com.livk.resolver");
-    }
-}
+AnnotationMetadataResolver resolver = new AnnotationMetadataResolver();
+resolver.find(MyAnnotation.class, "com.livk.resolver");
 ----
+
+===== AnnotationFinder
+
+注解查找工具类，支持从 `Method`、`MethodParameter`、`AnnotatedTypeMetadata` 等多种来源查找注解及其属性。
 
 ===== BeanLambda
 
-根据lambda解析Field和Method
+根据 lambda 表达式解析 Field 和 Method 信息。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+String methodName = BeanLambda.methodName(Maker::getNo);
+Method method = BeanLambda.method(Maker::getNo);
+String fieldName = BeanLambda.fieldName(Maker::getNo);
+Field field = BeanLambda.field(Maker::getNo);
+----
 
-public class Main{
-    public static void main(String[] args){
-      String methodName = BeanLambda.methodName(Maker::getNo);
-      Method method = BeanLambda.method(Maker::getNo);
-      String fieldName = BeanLambda.fieldName(Maker::getNo);
-      Field field = BeanLambda.field(Maker::getNo);
-    }
-}
+===== BeanConverter
+
+Bean 与 Map 之间的转换工具类，基于 Spring `BeanWrapper` 实现。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// Bean 转 Map
+Map<String, Object> map = BeanConverter.toMap(myBean);
 ----
 
 ===== ContextSnapshots
 
-ContextSnapshots提供对线程池等进行包装、实现micrometer行为传播
+提供对线程池等进行包装，实现 Micrometer 行为传播（Observation / Baggage 跨线程传递）。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public static void main(String[] args){
-  ExecutorService service = Executors.newCachedThreadPool();
-  ExecutorService wrap = ContextSnapshots.wrap(service);
-  wrap.submit(()->{});
-}
+ExecutorService service = Executors.newCachedThreadPool();
+ExecutorService wrap = ContextSnapshots.wrap(service);
+wrap.submit(() -> {
+    // 此处可获取到父线程的 Observation 上下文
+});
 ----
 
 ===== GenericWrapper
 
-进行类包装
+进行类包装的通用接口，可用于统一包裹任意类型。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-public class Main{
-    public static void main(String[] args){
-      GenericWrapper<?> wrapper = GenericWrapper.of("123");
-      wrapper.unwrap()
-    }
-}
+GenericWrapper<?> wrapper = GenericWrapper.of("123");
+Object value = wrapper.unwrap();
 ----
 
-===== GenericsByteBuddy
+===== StreamUtils
 
-根据ByteBuddy重新处理，适配泛型以及高版本JDK
+Stream 工具类，提供数组转 Stream、带索引遍历、去重过滤、合并等增强能力。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-private static <S extends RediSearchConnectionFactory> Class<? extends S> createFactoryClass(
-			Class<? extends AbstractRedisClient> clientType) {
-		TypeDescription definitions = TypeDescription.ForLoadedType.of(RediSearchConnectionFactory.class);
-		try (DynamicType.Unloaded<S> unloaded = new GenericsByteBuddy().<S>subclass(definitions)
-			.name(FactoryProxySupport.class.getPackageName() + "." + clientType.getSimpleName()
-					+ "$ProxyConnectionFactory")
-			.defineField("client", clientType, Modifier.PRIVATE | Modifier.FINAL)
-			.defineConstructor(Modifier.PUBLIC)
-			.withParameters(clientType)
-			.intercept(MethodCall.invoke(Object.class.getConstructor())
-				.andThen(FieldAccessor.ofField("client").setsArgumentAt(0)))
-			.method(ElementMatchers.named("connect").and(ElementMatchers.takesArguments(1)))
-			.intercept(MethodDelegation.to(ConnectWithCodecInterceptor.class))
-			.method(ElementMatchers.named("close"))
-			.intercept(MethodDelegation.to(CloseInterceptor.class))
-			.make()) {
-			return unloaded.load(ClassUtils.getDefaultClassLoader(), ClassLoadingStrategy.Default.INJECTION)
-				.getLoaded();
-		}
-		catch (NoSuchMethodException ex) {
-			throw new IllegalArgumentException(ex);
-		}
-	}
+// Enumeration 转 Stream
+Stream<String> stream = StreamUtils.of(enumeration);
+// 带索引遍历
+StreamUtils.forEachWithIndex(list, (index, item) -> {});
 ----
+
+===== TypeUtils
+
+Type 相关工具类，提供 `Type` 到 `Class` 的转换以及泛型参数解析能力。
+
+使用示例:
+
+[source,java,indent=0]
+----
+// 解析类的第一个泛型参数类型
+Class<?> argType = TypeUtils.resolveTypeArgument(MyService.class, BaseService.class);
+----
+
+===== Jsr310Utils
+
+JSR310 日期时间工具类，提供 `LocalDateTime`、`LocalDate`、`Instant` 之间的转换和格式化。
 
 ===== MultiValueMapSplitter
 
-字符串分割成MultiValueMap，例如String str = "root=1,2,3&amp;root=4&amp;a=b&amp;a=c"
+字符串分割成 `MultiValueMap`。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-public class Main{
-    public static void main(String[] args){
-      String str = "root=1,2,3&root=4&a=b&a=c";
-			Map<String, List<String>> map = Map.of("root", List.of("1", "2", "3", "4"), "a", List.of("b", "c"));
-			MultiValueMap<String, String> multiValueMap = MultiValueMapSplitter.of("&", "=").split(str, ",");
-			assertEquals(CollectionUtils.toMultiValueMap(map), multiValueMap);
-    }
-}
+String str = "root=1,2,3&root=4&a=b&a=c";
+MultiValueMap<String, String> multiValueMap = MultiValueMapSplitter.of("&", "=").split(str, ",");
+// {root=[1, 2, 3, 4], a=[b, c]}
 ----
 
 ===== Pair
 
-一个简单的KV键值对，Jackson序列化进行Map.Entity一样的适配
+一个简单的 KV 键值对，Jackson 序列化时按照 `Map.Entry` 方式适配。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-public class Main{
-    public static void main(String[] args){
-      Pair<String, String> pair = Pair.of("username", "password");
-    }
-}
+Pair<String, String> pair = Pair.of("username", "password");
 ----
-
 
 ===== SnowflakeIdGenerator
 
-雪花算法ID生成器
+雪花算法 ID 生成器。
 
 使用示例:
 
 [source,java,indent=0]
 ----
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-public class Main{
-    public static void main(String[] args){
-      SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2)；
-      long id = generator.nextId();
-    }
-}
+SnowflakeIdGenerator generator = new SnowflakeIdGenerator(1, 2);
+long id = generator.nextId();
 ----
 
 ===== TreeNode
 
-树形节点定义通用类
+树形节点定义通用类，适合构建树形数据结构。
 
 ===== 使用建议
 
 工具类优先用于基础设施代码或边界适配代码中。业务代码中如果只是简单调用，建议保持局部使用，避免把业务模型过度包装成通用结构。
+
+NOTE: `DateUtils` 和 `ObjectUtils` 已标记为 `@Deprecated`，分别建议使用 `Jsr310Utils` 和 Spring 的 `org.springframework.util.ObjectUtils`。

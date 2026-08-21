@@ -17,6 +17,8 @@
 package com.livk.context.lock.exception;
 
 /**
+ * The Lock Exception.
+ *
  * @author livk
  */
 public class LockException extends RuntimeException {

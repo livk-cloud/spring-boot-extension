@@ -19,6 +19,8 @@ package com.livk.context.mybatis.handler.time;
 import com.livk.context.mybatis.handler.InjectHandle;
 
 /**
+ * The Timestamp Inject.
+ *
  * @author livk
  */
 public class TimestampInject implements InjectHandle<Long> {

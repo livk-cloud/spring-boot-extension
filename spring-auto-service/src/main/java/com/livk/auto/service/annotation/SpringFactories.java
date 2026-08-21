@@ -23,6 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to specify spring.factories file generation interface.
+ *
  * @author livk
  */
 @Documented
@@ -31,7 +33,7 @@ import java.lang.annotation.Target;
 public @interface SpringFactories {
 
 	/**
-	 * 指定spring.factories文件生成接口 如当前类仅有一个接口，则可以自动推断
+	 * 指定spring.factories文件生成接口，如当前类仅有一个接口，则可以自动推断.
 	 * @return class
 	 */
 	Class<?> value() default Void.class;

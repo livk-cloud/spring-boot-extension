@@ -48,7 +48,7 @@ class LimitInterceptorTests {
 	LimitInterceptor interceptor = new LimitInterceptor(providers);
 
 	@Test
-	void invokeAllowsAccessWhenExecutorReturnsTrue() throws Throwable {
+	void doInvokeAllowsAccessWhenExecutorReturnsTrue() throws Throwable {
 		LimitExecutor executor = mock(LimitExecutor.class);
 		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(true);
 		given(providers.orderedStream()).willReturn(Stream.of(executor));
@@ -57,7 +57,7 @@ class LimitInterceptorTests {
 		MethodInvocation invocation = mockInvocation();
 		given(invocation.proceed()).willReturn("result");
 
-		Object result = interceptor.invoke(invocation, limit);
+		Object result = interceptor.doInvoke(invocation, limit);
 
 		assertThat(result).isEqualTo("result");
 		verify(invocation).proceed();
@@ -65,7 +65,7 @@ class LimitInterceptorTests {
 	}
 
 	@Test
-	void invokeThrowsLimitExceptionWhenExecutorReturnsFalse() throws Throwable {
+	void doInvokeThrowsLimitExceptionWhenExecutorReturnsFalse() throws Throwable {
 		LimitExecutor executor = mock(LimitExecutor.class);
 		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(false);
 		given(providers.orderedStream()).willReturn(Stream.of(executor));
@@ -73,7 +73,7 @@ class LimitInterceptorTests {
 		Limit limit = createLimit("testKey", 10, 60);
 		MethodInvocation invocation = mockInvocation();
 
-		assertThatThrownBy(() -> interceptor.invoke(invocation, limit)).isInstanceOf(LimitException.class);
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, limit)).isInstanceOf(LimitException.class);
 	}
 
 	private Limit createLimit(String key, int rate, int rateInterval) {

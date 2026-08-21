@@ -101,14 +101,7 @@ class DefaultSequenceBuilderTests {
 		Sequence sequence = builder.build();
 		assertThat(sequence).isNotNull();
 
-		// Use reflection to access the step value in DbRangeManager
-		Field managerField = sequence.getClass().getDeclaredField("manager");
-		managerField.setAccessible(true);
-		Object manager = managerField.get(sequence);
-		Field stepField = DbRangeManager.class.getSuperclass().getDeclaredField("step");
-		stepField.setAccessible(true);
-		int actualStep = (int) stepField.get(manager);
-		assertThat(actualStep).isEqualTo(customStep);
+		assertThat(readStep(sequence)).isEqualTo(customStep);
 	}
 
 	@Test
@@ -120,14 +113,7 @@ class DefaultSequenceBuilderTests {
 		Sequence sequence = builder.build();
 		assertThat(sequence).isNotNull();
 
-		// Use reflection to access the stepStart value in DbRangeManager
-		Field managerField = sequence.getClass().getDeclaredField("manager");
-		managerField.setAccessible(true);
-		Object manager = managerField.get(sequence);
-		Field stepStartField = DbRangeManager.class.getSuperclass().getDeclaredField("stepStart");
-		stepStartField.setAccessible(true);
-		long actualStepStart = (long) stepStartField.get(manager);
-		assertThat(actualStepStart).isEqualTo(customStepStart);
+		assertThat(readStepStart(sequence)).isEqualTo(customStepStart);
 	}
 
 	@Test
@@ -145,13 +131,7 @@ class DefaultSequenceBuilderTests {
 		assertThat(sequence).isNotNull();
 
 		// Should still use default step (1000)
-		Field managerField = sequence.getClass().getDeclaredField("manager");
-		managerField.setAccessible(true);
-		Object manager = managerField.get(sequence);
-		Field stepField = DbRangeManager.class.getSuperclass().getDeclaredField("step");
-		stepField.setAccessible(true);
-		int actualStep = (int) stepField.get(manager);
-		assertThat(actualStep).isEqualTo(10);
+		assertThat(readStep(sequence)).isEqualTo(1000);
 	}
 
 	@Test
@@ -161,13 +141,19 @@ class DefaultSequenceBuilderTests {
 		assertThat(sequence).isNotNull();
 
 		// Should still use default stepStart (0)
-		Field managerField = sequence.getClass().getDeclaredField("manager");
-		managerField.setAccessible(true);
-		Object manager = managerField.get(sequence);
-		Field stepStartField = DbRangeManager.class.getSuperclass().getDeclaredField("stepStart");
+		assertThat(readStepStart(sequence)).isEqualTo(0);
+	}
+
+	private static int readStep(Sequence sequence) throws Exception {
+		Field stepField = sequence.getClass().getDeclaredField("step");
+		stepField.setAccessible(true);
+		return stepField.getInt(sequence);
+	}
+
+	private static long readStepStart(Sequence sequence) throws Exception {
+		Field stepStartField = sequence.getClass().getDeclaredField("stepStart");
 		stepStartField.setAccessible(true);
-		long actualStepStart = (long) stepStartField.get(manager);
-		assertThat(actualStepStart).isEqualTo(0);
+		return stepStartField.getLong(sequence);
 	}
 
 	@Test

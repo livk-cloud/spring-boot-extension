@@ -29,7 +29,7 @@ class DistLockAnnotationTests {
 	@Test
 	void defaults() throws Exception {
 		assertThat(DistLock.class.getDeclaredMethod("type").getDefaultValue()).isEqualTo(LockType.LOCK);
-		assertThat(DistLock.class.getDeclaredMethod("leaseTime").getDefaultValue()).isEqualTo(10L);
+		assertThat(DistLock.class.getDeclaredMethod("leaseTime").getDefaultValue()).isEqualTo(-1L);
 		assertThat(DistLock.class.getDeclaredMethod("waitTime").getDefaultValue()).isEqualTo(3L);
 		assertThat(DistLock.class.getDeclaredMethod("async").getDefaultValue()).isEqualTo(false);
 	}

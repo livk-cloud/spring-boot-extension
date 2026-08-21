@@ -69,10 +69,8 @@ class RedisRangeManagerTests {
 	@Test
 	void testNextRangeReturnsValidSequenceRangeForNewKey() {
 		RedisRangeManager manager = new RedisRangeManager(helper);
-		manager.step(10);
-		manager.stepStart(100);
 		String key = "test-sequence";
-		SequenceRange range = manager.nextRange(key);
+		SequenceRange range = manager.nextRange(key, 10, 100);
 
 		assertThat(range).isNotNull();
 		assertThat(range.getMin()).isEqualTo(101);
@@ -93,21 +91,20 @@ class RedisRangeManagerTests {
 	@Test
 	void testNextRangeDoesNotReinitializeExistingKey() {
 		RedisRangeManager manager = new RedisRangeManager(helper);
-		manager.step(5);
-		manager.stepStart(0);
+		int step = 5;
 		String key = "repeat-key";
 
-		SequenceRange firstRange = manager.nextRange(key);
+		SequenceRange firstRange = manager.nextRange(key, step, 0);
 		assertThat(firstRange).isNotNull();
 		long max1 = firstRange.getMax();
 
-		SequenceRange secondRange = manager.nextRange(key);
+		SequenceRange secondRange = manager.nextRange(key, step, 0);
 		assertThat(secondRange).isNotNull();
 		long min2 = secondRange.getMin();
 		long max2 = secondRange.getMax();
 
 		assertThat(min2).isEqualTo(max1 + 1);
-		assertThat(max2).isEqualTo(max1 + manager.step);
+		assertThat(max2).isEqualTo(max1 + step);
 	}
 
 }

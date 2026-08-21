@@ -41,7 +41,7 @@ class DataSourceInterceptorTests {
 	}
 
 	@Test
-	void invokeSwitchesDataSourceAndClearsAfter() throws Throwable {
+	void doInvokeSwitchesDataSourceAndClearsAfter() throws Throwable {
 		DynamicSource annotation = mock(DynamicSource.class);
 		given(annotation.value()).willReturn("slave1");
 
@@ -52,7 +52,7 @@ class DataSourceInterceptorTests {
 			return "result";
 		});
 
-		Object result = interceptor.invoke(invocation, annotation);
+		Object result = interceptor.doInvoke(invocation, annotation);
 
 		assertThat(result).isEqualTo("result");
 		assertThat(DataSourceContextHolder.getDataSource()).isNull();
@@ -60,18 +60,18 @@ class DataSourceInterceptorTests {
 	}
 
 	@Test
-	void invokeWithNullAnnotationDoesNotSwitchDataSource() throws Throwable {
+	void doInvokeWithNullAnnotationDoesNotSwitchDataSource() throws Throwable {
 		MethodInvocation invocation = mock(MethodInvocation.class);
 		given(invocation.proceed()).willReturn("result");
 
-		Object result = interceptor.invoke(invocation, null);
+		Object result = interceptor.doInvoke(invocation, null);
 
 		assertThat(result).isEqualTo("result");
 		assertThat(DataSourceContextHolder.getDataSource()).isNull();
 	}
 
 	@Test
-	void invokeClearsDataSourceEvenWhenAnnotationPresent() throws Throwable {
+	void doInvokeClearsDataSourceEvenWhenAnnotationPresent() throws Throwable {
 		DataSourceContextHolder.switchDataSource("existing");
 
 		DynamicSource annotation = mock(DynamicSource.class);
@@ -80,20 +80,21 @@ class DataSourceInterceptorTests {
 		MethodInvocation invocation = mock(MethodInvocation.class);
 		given(invocation.proceed()).willReturn(null);
 
-		interceptor.invoke(invocation, annotation);
+		interceptor.doInvoke(invocation, annotation);
 
 		assertThat(DataSourceContextHolder.getDataSource()).isNull();
 	}
 
 	@Test
-	void invokeClearsDataSourceWhenProceedThrows() throws Throwable {
+	void doInvokeClearsDataSourceWhenProceedThrows() throws Throwable {
 		DynamicSource annotation = mock(DynamicSource.class);
 		given(annotation.value()).willReturn("slave3");
 
 		MethodInvocation invocation = mock(MethodInvocation.class);
 		given(invocation.proceed()).willThrow(new IllegalStateException("boom"));
 
-		assertThatThrownBy(() -> interceptor.invoke(invocation, annotation)).isInstanceOf(IllegalStateException.class);
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, annotation))
+			.isInstanceOf(IllegalStateException.class);
 		assertThat(DataSourceContextHolder.getDataSource()).isNull();
 	}
 

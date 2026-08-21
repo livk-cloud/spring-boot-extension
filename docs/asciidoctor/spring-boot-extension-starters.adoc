@@ -32,10 +32,6 @@ starter 会带上对应的 context 与 autoconfigure 模块，通常不需要再
 |方法级分布式锁
 |需要 Redisson 或 Curator 作为锁实现
 
-|mapstruct-spring-boot-starter
-|MapStruct 转换器发现、缓存和 `MapstructService`
-|需要 MapStruct 生成转换器 Bean
-
 |mybatis-extension-boot-starter
 |MyBatis 字段注入、SQL 耗时监控、JSON 类型处理支持
 |需要 MyBatis 环境

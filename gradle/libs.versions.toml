@@ -1,32 +1,30 @@
 [versions]
-spring-boot = "4.1.0"
+spring-boot = "4.1.1"
 pagehelper = "6.1.1"
 mybatis = "3.5.19"
-mybatis-spring = "4.0.0"
-mybatis-boot = "4.0.1"
-guava = "33.6.0-jre"
+mybatis-spring = "4.1.0"
+mybatis-boot = "4.1.0"
+guava = "33.7.1-jre"
 fesod = "2.0.2-incubating"
-redisson = "4.5.0"
-mapstruct = "1.6.3"
-mapstruct-lombok = "0.2.0"
+redisson = "4.7.0"
 curator = "5.9.0"
 asciidoctor-jvm = "4.0.5"
 browscap-java = "1.5.1"
 auto-service = "1.1.1"
-yauaa = "8.1.1"
+yauaa = "8.2.0"
 google-javase = "3.5.4"
 jsqlparser = "5.3"
 lettucemod = "4.5.0"
-aviator = "5.4.3"
-jexl3 = "3.6.2"
+aviator = "5.4.4"
+jexl3 = "3.7.0"
 mvel2 = "2.5.2.Final"
 disruptor = "4.0.0"
 spring-asciidoctor = "0.0.7"
-spring-javaformat = "0.0.47"
-okhttp = "5.4.0"
-spotbugs-annotations = "4.10.2"
-maven-publish-plugins = "0.36.0"
-checkstyle = "13.5.0"
+spring-javaformat = "0.0.48"
+okhttp = "5.5.0"
+spotbugs-annotations = "4.10.4"
+maven-publish-plugins = "0.37.0"
+checkstyle = "14.0.0"
 
 [libraries]
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
@@ -38,11 +36,7 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 #redisson-all
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-40", version.ref = "redisson" }
-#mapstruct-all
-mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
-mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
-lombok-mapstruct = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "mapstruct-lombok" }
+redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-41", version.ref = "redisson" }
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fesod-sheet = { group = "org.apache.fesod", name = "fesod-sheet", version.ref = "fesod" }
@@ -60,8 +54,8 @@ disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" 
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 spring-javaformat-checkstyle = { group = "io.spring.javaformat", name = "spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
-checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
 pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
+checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
 
 #plugin
 spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
@@ -71,7 +65,6 @@ maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.van
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
-mapstruct-all = ["mapstruct", "mapstruct-processor", "lombok-mapstruct"]
 
 [plugins]
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }

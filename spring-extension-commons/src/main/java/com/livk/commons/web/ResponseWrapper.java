@@ -32,9 +32,7 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 
 /**
- * <p>
- * 可用于重写返回值 基于HttpServletResponse
- * </p>
+ * Wrapper for HttpServletResponse allowing response body modifications.
  *
  * @author livk
  * @see org.springframework.web.util.ContentCachingResponseWrapper
@@ -50,7 +48,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	private final Charset characterEncoding;
 
 	/**
-	 * 创建ResponseWrapper
+	 * Constructs a ResponseWrapper.
 	 * @param response the response
 	 */
 	public ResponseWrapper(HttpServletResponse response) {
@@ -77,7 +75,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 			Writer targetWriter = new OutputStreamWriter(this.buffer, getCharacterEncoding());
 			this.writer = new PrintWriter(targetWriter);
 		}
-		return writer;
+		return this.writer;
 	}
 
 	@Override
@@ -91,7 +89,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 根据默认编码获取response body数据
+	 * Gets response body as string using default encoding.
 	 * @return string
 	 * @see #characterEncoding
 	 */
@@ -100,7 +98,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 根据编码获取response body数据
+	 * Gets response body as string using specified charset.
 	 * @param charset 编码格式
 	 * @return string
 	 */
@@ -109,7 +107,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 获取response body
+	 * Gets response body as byte array.
 	 * @return the byte []
 	 */
 	public byte[] getContentAsByteArray() {
@@ -117,7 +115,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 修改response body
+	 * Replaces the response body with byte array.
 	 * @param bytes byte[]
 	 */
 	public void replaceBody(byte[] bytes) throws IOException {
@@ -126,7 +124,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 修改response body
+	 * Replaces the response body with string content.
 	 * @param content string
 	 */
 	public void replaceBody(String content) throws IOException {
@@ -134,7 +132,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 	}
 
 	/**
-	 * 修改response body
+	 * Replaces the response body with string content using specified charset.
 	 * @param content string
 	 * @param charset charset
 	 */

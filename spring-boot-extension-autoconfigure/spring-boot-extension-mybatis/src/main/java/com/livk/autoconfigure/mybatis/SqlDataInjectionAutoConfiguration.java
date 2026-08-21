@@ -27,6 +27,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 
 /**
+ * Auto-configuration for SQL data injection interceptor support.
+ *
  * @author livk
  */
 @SpringAutoService(EnableSqlInjector.class)
@@ -40,7 +42,7 @@ public class SqlDataInjectionAutoConfiguration {
 	 */
 	@Bean
 	public ConfigurationCustomizer sqlDataInjectionConfigurationCustomizer() {
-		return configuration -> configuration.addInterceptor(new SqlDataInjection());
+		return (configuration) -> configuration.addInterceptor(new SqlDataInjection());
 	}
 
 }

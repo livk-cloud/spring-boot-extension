@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * BeanLambda的相关方法或者字段处理
+ * BeanLambda的相关方法或者字段处理.
  *
  * @author livk
  */
@@ -43,18 +43,19 @@ final class BeanLambdaDescriptor {
 	}
 
 	private PropertyDescriptor getPropertyDescriptor() {
-		Class<?> type = method.getDeclaringClass();
-		PropertyDescriptor propertyDescriptor = BeanUtils.findPropertyForMethod(method, type);
+		Class<?> type = this.method.getDeclaringClass();
+		PropertyDescriptor propertyDescriptor = org.springframework.beans.BeanUtils.findPropertyForMethod(this.method,
+				type);
 		if (propertyDescriptor == null) {
-			throw new IllegalStateException("No PropertyDescriptor found for method: " + method);
+			throw new IllegalStateException("No PropertyDescriptor found for method: " + this.method);
 		}
 		return propertyDescriptor;
 	}
 
 	/**
-	 * 静态构建根据{@link BeanLambdaDescriptor}
+	 * 静态构建根据{@link BeanLambdaDescriptor}.
 	 * <p>
-	 * 使用缓存避免无效加载
+	 * 使用缓存避免无效加载.
 	 * @param <T> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return beanLambdaDescriptor
@@ -62,7 +63,7 @@ final class BeanLambdaDescriptor {
 	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {
 		SerializedLambda serializedLambda = resolveSerializedLambda(function);
 		String key = serializedLambda.getImplClass() + "#" + serializedLambda.getImplMethodName();
-		return cache.computeIfAbsent(key, k -> doCreate(serializedLambda));
+		return cache.computeIfAbsent(key, (k) -> doCreate(serializedLambda));
 	}
 
 	private static SerializedLambda resolveSerializedLambda(BeanLambda<?> function) {
@@ -77,9 +78,11 @@ final class BeanLambdaDescriptor {
 	}
 
 	private static BeanLambdaDescriptor doCreate(SerializedLambda serializedLambda) {
-		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
-		Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
-		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
+		String className = org.springframework.util.ClassUtils
+			.convertResourcePathToClassName(serializedLambda.getImplClass());
+		Class<?> type = org.springframework.util.ClassUtils.resolveClassName(className,
+				org.springframework.util.ClassUtils.getDefaultClassLoader());
+		Method method = org.springframework.util.ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
 		Assert.notNull(method, "Cannot find method: " + serializedLambda.getImplMethodName() + " on " + className);
 		return new BeanLambdaDescriptor(method);
 	}
@@ -92,15 +95,15 @@ final class BeanLambdaDescriptor {
 		PropertyDescriptor propertyDescriptor = getPropertyDescriptor();
 		String fieldName = propertyDescriptor.getName();
 		Class<?> fieldType = propertyDescriptor.getPropertyType();
-		Class<?> type = method.getDeclaringClass();
-		Field field = ReflectionUtils.findField(type, fieldName, fieldType);
+		Class<?> type = this.method.getDeclaringClass();
+		Field field = org.springframework.util.ReflectionUtils.findField(type, fieldName, fieldType);
 		Assert.notNull(field, "Field '" + fieldName + "' of type '" + fieldType.getName() + "' not found on class: "
 				+ type.getName());
 		return field;
 	}
 
 	public String getMethodName() {
-		return method.getName();
+		return this.method.getName();
 	}
 
 }

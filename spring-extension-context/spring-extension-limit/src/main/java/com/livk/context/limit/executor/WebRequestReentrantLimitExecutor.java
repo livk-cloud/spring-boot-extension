@@ -35,7 +35,7 @@ public abstract class WebRequestReentrantLimitExecutor implements LimitExecutor 
 	public static final String ATTRIBUTE_NAME = "limit";
 
 	/**
-	 * 同一个request仅只被限流一次 在给定的时间段里最多的访问限制次数(超出次数返回false)；等下个时间段开始，才允许再次被访问(返回true)，周而复始
+	 * 同一个request仅只被限流一次 在给定的时间段里最多的访问限制次数(超出次数返回false)；等下个时间段开始，才允许再次被访问(返回true)，周而复始.
 	 * @param compositeKey 资源Key
 	 * @param rate 最多的访问限制次数
 	 * @param rateInterval 给定的时间段(单位秒)

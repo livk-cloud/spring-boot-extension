@@ -17,8 +17,8 @@
 package com.livk.autoconfigure.useragent;
 
 import com.blueconic.browscap.UserAgentParser;
-import com.livk.commons.util.ReflectionUtils;
-import com.livk.context.useragent.UserAgentHelper;
+import com.livk.commons.util.FieldUtils;
+import com.livk.context.useragent.UserAgentDelegate;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
@@ -35,6 +35,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.core.ResolvableType;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -54,14 +55,14 @@ class UserAgentAutoConfigurationTests {
 
 	@Test
 	void test() {
-		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentHelper.class));
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentDelegate.class));
 	}
 
 	@Test
 	void customUserAgentHelperBacksOffAutoConfiguredHelper() {
-		UserAgentHelper helper = new UserAgentHelper();
-		this.contextRunner.withBean(UserAgentHelper.class, () -> helper)
-			.run((context) -> assertThat(context).getBean(UserAgentHelper.class).isSameAs(helper));
+		UserAgentDelegate userAgentDelegate = new UserAgentDelegate();
+		this.contextRunner.withBean(UserAgentDelegate.class, () -> userAgentDelegate)
+			.run((context) -> assertThat(context).getBean(UserAgentDelegate.class).isSameAs(userAgentDelegate));
 	}
 
 	@Test
@@ -111,7 +112,7 @@ class UserAgentAutoConfigurationTests {
 
 			Field customResolversField = ReflectionUtils.findField(ArgumentResolverConfigurer.class, "customResolvers");
 			assertThat(customResolversField).isNotNull();
-			List<HandlerMethodArgumentResolver> customResolvers = (List<HandlerMethodArgumentResolver>) ReflectionUtils
+			List<HandlerMethodArgumentResolver> customResolvers = (List<HandlerMethodArgumentResolver>) FieldUtils
 				.getDeclaredFieldValue(customResolversField, adapter.getArgumentResolverConfigurer());
 			assertThat(customResolvers).isNotNull().hasAtLeastOneElementOfType(ReactiveUserAgentResolver.class);
 

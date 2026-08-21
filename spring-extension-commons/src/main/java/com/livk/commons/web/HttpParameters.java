@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * 根据{@link org.springframework.http.HttpHeaders}改造
+ * Multi-value map for HTTP parameters based on
+ * {@link org.springframework.http.HttpHeaders} design.
  * <p>
  * 用于HttpParam，适用于Query和FORM请求数据存储
  * </p>
@@ -59,6 +59,8 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	/**
+	 * Constructs HttpParameters from a raw map.
+	 * @param map the raw map
 	 * @deprecated since 1.5.0 use {@link #HttpParameters(MultiValueMap)}
 	 * @see #HttpParameters(MultiValueMap)
 	 * @see CollectionUtils#toMultiValueMap
@@ -71,7 +73,7 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 
 	public List<String> getOrEmpty(Object parameterName) {
 		List<String> values = get(parameterName);
-		return (values != null ? values : Collections.emptyList());
+		return (values != null) ? values : Collections.emptyList();
 	}
 
 	@Override
@@ -97,10 +99,12 @@ public final class HttpParameters implements MultiValueMap<String, String>, Seri
 	}
 
 	public static String formatParameters(MultiValueMap<String, String> parameters) {
-		return parameters.entrySet().stream().map(entry -> {
+		return parameters.entrySet().stream().map((entry) -> {
 			List<String> values = entry.getValue();
-			return entry.getKey() + ":" + (values.size() == 1 ? "\"" + values.getFirst() + "\""
-					: values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
+			return entry.getKey() + ":"
+					+ ((values.size() != 1)
+							? values.stream().map((s) -> "\"" + s + "\"").collect(Collectors.joining(", "))
+							: "\"" + values.getFirst() + "\"");
 		}).collect(Collectors.joining(", ", "[", "]"));
 	}
 

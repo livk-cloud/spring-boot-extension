@@ -27,6 +27,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The Sql Inject.
+ *
  * @author livk
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -34,6 +36,7 @@ import java.lang.annotation.Target;
 public @interface SqlInject {
 
 	/**
+	 * The fill type for SQL injection.
 	 * <p>
 	 * {@link SqlInject#supplier()}
 	 * </p>
@@ -48,12 +51,13 @@ public @interface SqlInject {
 	SqlFill fill();
 
 	/**
+	 * The inject handle supplier class.
 	 * @return the class
 	 */
 	Class<? extends InjectHandle<?>> supplier() default NullInject.class;
 
 	/**
-	 * 优先级高于 {@link SqlInject#supplier()}
+	 * 优先级高于 {@link SqlInject#supplier()}.
 	 * @return the function enum
 	 * @deprecated use {@link SqlInject#supplier()}
 	 */

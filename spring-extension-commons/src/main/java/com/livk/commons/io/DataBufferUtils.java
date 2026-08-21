@@ -17,93 +17,65 @@
 package com.livk.commons.io;
 
 import lombok.experimental.UtilityClass;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferFactory;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
-import org.springframework.util.StreamUtils;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * <p>
- * DataBufferUtils功能拓展
- * </p>
+ * Extended utilities for DataBuffer operations.
  *
  * @author livk
+ * @deprecated use {@link com.livk.commons.io.DataBufferConverter}
  */
 @UtilityClass
+@Deprecated(since = "2.1.1")
 public class DataBufferUtils extends org.springframework.core.io.buffer.DataBufferUtils {
 
 	/**
-	 * 设置默认BUFFER_SIZE
-	 */
-	public static final int BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
-
-	/**
-	 * 设置默认DEFAULT_FACTORY.
-	 */
-	public static final DataBufferFactory DEFAULT_FACTORY = DefaultDataBufferFactory.sharedInstance;
-
-	/**
-	 * 转换Flux DataBuffer成Mono InputStream
+	 * Converts Flux DataBuffer to Mono InputStream.
 	 * @param dataBufferFlux the data buffer flux
 	 * @return the mono
 	 */
 	public Mono<InputStream> transform(Flux<DataBuffer> dataBufferFlux) {
-		return join(dataBufferFlux).map(dataBuffer -> dataBuffer.asInputStream(true));
+		return DataBufferConverter.transform(dataBufferFlux);
 	}
 
 	/**
-	 * 转换byte[]成Flux DataBuffer
+	 * Converts byte array to Flux DataBuffer.
 	 * @param array the array
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(byte[] array) {
-		ByteArrayResource resource = new ByteArrayResource(array);
-		return read(resource, DEFAULT_FACTORY, BUFFER_SIZE);
+		return DataBufferConverter.transform(array);
 	}
 
 	/**
-	 * 转换Flux DataBuffer 成Mono byte[]
+	 * Converts Flux DataBuffer to Mono byte array.
 	 * @param bufferFlux the buffer flux
 	 * @return the mono
 	 */
 	public Mono<byte[]> transformByte(Flux<DataBuffer> bufferFlux) {
-		return DataBufferUtils.transform(bufferFlux)
-			.publishOn(Schedulers.boundedElastic())
-			.handle((inputStream, sink) -> {
-				try (inputStream) {
-					sink.next(inputStream.readAllBytes());
-				}
-				catch (IOException ex) {
-					sink.error(Exceptions.bubble(ex));
-				}
-			});
+		return DataBufferConverter.transformByte(bufferFlux);
 	}
 
 	/**
-	 * InputStream转换成Flux DataBuffer
+	 * Converts InputStream to Flux DataBuffer.
 	 * @param inputStream the input stream
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(InputStream inputStream) {
-		return read(new InputStreamResource(inputStream), DEFAULT_FACTORY, BUFFER_SIZE);
+		return DataBufferConverter.transform(inputStream);
 	}
 
 	/**
-	 * Mono InputStream 转换成Flux DataBuffer
+	 * Converts Mono InputStream to Flux DataBuffer.
 	 * @param inputStreamMono the input stream mono
 	 * @return the flux
 	 */
 	public Flux<DataBuffer> transform(Mono<InputStream> inputStreamMono) {
-		return inputStreamMono.flatMapMany(DataBufferUtils::transform);
+		return DataBufferConverter.transform(inputStreamMono);
 	}
 
 }

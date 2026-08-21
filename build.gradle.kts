@@ -1,5 +1,6 @@
 plugins {
 	com.livk.root
+	com.livk.checkstyle
 	alias(libs.plugins.asciidoctor.jvm)
 }
 
@@ -42,6 +43,7 @@ val bom = setOf(
 	project(":spring-extension-dependencies")
 )
 val module = subprojects.filter { it.buildFile.exists() } - (bom + root)
+val tests = project(":spring-boot-extension-tests").subprojects
 
 configure(module) {
 	apply(plugin = "com.livk.module")
@@ -59,6 +61,14 @@ configure(module) {
 	afterEvaluate {
 		dependencies {
 			compileOnly(libs.spotbugs.annotations)
+		}
+	}
+}
+
+configure(module - tests) {
+	apply(plugin = "com.livk.checkstyle")
+	afterEvaluate {
+		dependencies {
 			checkstyle(libs.spring.javaformat.checkstyle) {
 				exclude(group = "com.puppycrawl.tools", module = "checkstyle")
 			}
@@ -66,6 +76,7 @@ configure(module) {
 		}
 	}
 }
+
 
 allprojects {
 	repositories {

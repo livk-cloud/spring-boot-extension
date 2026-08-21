@@ -33,11 +33,6 @@ class ModulePlugin : Plugin<Project> {
 		project.pluginManager.apply(CorePlugin::class.java)
 		project.pluginManager.apply(SpringJavaFormatPlugin::class.java)
 
-		project.tasks.register("checkstyle") {
-			group = "other"
-			dependsOn("checkstyleMain", "checkstyleTest", "checkFormat")
-		}
-
 		val extractResourcesProvider = project.tasks.register("extractLegalResources", ExtractResources::class.java) {
 			getDestinationDirectory().set(project.layout.buildDirectory.dir("legal"))
 			getResourceNames().add("LICENSE.txt")

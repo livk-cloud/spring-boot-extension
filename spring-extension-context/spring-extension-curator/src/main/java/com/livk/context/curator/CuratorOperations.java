@@ -27,12 +27,14 @@ import java.io.Closeable;
 import java.util.List;
 
 /**
+ * The Curator Operations.
+ *
  * @author livk
  */
 public interface CuratorOperations extends Closeable {
 
 	/**
-	 * 创建节点
+	 * 创建节点.
 	 * @param path the path
 	 * @param data the data
 	 * @return string
@@ -40,14 +42,14 @@ public interface CuratorOperations extends Closeable {
 	String createNode(String path, byte[] data);
 
 	/**
-	 * 获取节点数据
+	 * 获取节点数据.
 	 * @param path the path
 	 * @return nodeData
 	 */
 	byte[] getNode(String path);
 
 	/**
-	 * 创建指定类型的无序节点(持久或临时)
+	 * 创建指定类型的无序节点(持久或临时).
 	 * @param nodeType the node type
 	 * @param path the path
 	 * @param data the data
@@ -56,7 +58,7 @@ public interface CuratorOperations extends Closeable {
 	String createTypeNode(CreateMode nodeType, String path, byte[] data);
 
 	/**
-	 * 创建指定类型的有序节点
+	 * 创建指定类型的有序节点.
 	 * @param nodeType the node type
 	 * @param path the path
 	 * @param data the data
@@ -65,7 +67,7 @@ public interface CuratorOperations extends Closeable {
 	String createTypeSeqNode(CreateMode nodeType, String path, byte[] data);
 
 	/**
-	 * 设置值
+	 * 设置值.
 	 * @param path the path
 	 * @param data the data
 	 * @return data
@@ -73,7 +75,7 @@ public interface CuratorOperations extends Closeable {
 	Stat setData(String path, byte[] data);
 
 	/**
-	 * 异步设置值
+	 * 异步设置值.
 	 * @param path the path
 	 * @param data the data
 	 * @param listener the listener
@@ -82,20 +84,20 @@ public interface CuratorOperations extends Closeable {
 	Stat setDataAsync(String path, byte[] data, CuratorListener listener);
 
 	/**
-	 * 删除节点
+	 * 删除节点.
 	 * @param path the path
 	 */
 	void deleteNode(String path);
 
 	/**
-	 * 查看子节点
+	 * 查看子节点.
 	 * @param path the path
 	 * @return list
 	 */
 	List<String> watchedGetChildren(String path);
 
 	/**
-	 * 查看子节点
+	 * 查看子节点.
 	 * @param path the path
 	 * @param watcher the watcher
 	 * @return list
@@ -103,7 +105,7 @@ public interface CuratorOperations extends Closeable {
 	List<String> watchedGetChildren(String path, Watcher watcher);
 
 	/**
-	 * 创建分布式锁
+	 * 创建分布式锁.
 	 * @param path the path
 	 * @param type the type
 	 * @return lock
@@ -111,7 +113,7 @@ public interface CuratorOperations extends Closeable {
 	InterProcessLock getLock(String path, ZkLockType type);
 
 	/**
-	 * 获取分布式ID
+	 * 获取分布式ID.
 	 * @param path the path
 	 * @param data the data
 	 * @return distributed id

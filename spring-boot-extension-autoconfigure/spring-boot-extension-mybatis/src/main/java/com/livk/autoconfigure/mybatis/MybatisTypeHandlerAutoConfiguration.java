@@ -30,6 +30,8 @@ import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
+ * Auto-configuration for registering Mybatis JSON type handlers for MySQL and PostgreSQL.
+ *
  * @author livk
  */
 @SpringAutoService
@@ -52,7 +54,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 		@Bean
 		public ConfigurationCustomizer mysqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
 			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-			return configuration -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
+			return (configuration) -> configuration.getTypeHandlerRegistry().register(new MysqlJsonTypeHandler(mapper));
 		}
 
 	}
@@ -72,7 +74,7 @@ public class MybatisTypeHandlerAutoConfiguration {
 		@Bean
 		public ConfigurationCustomizer postgresqlConfigurationCustomizer(ObjectProvider<ObjectMapper> mapperProvider) {
 			ObjectMapper mapper = mapperProvider.getIfUnique(JsonMapper::new);
-			return configuration -> configuration.getTypeHandlerRegistry()
+			return (configuration) -> configuration.getTypeHandlerRegistry()
 				.register(new PostgresJsonTypeHandler(mapper));
 		}
 

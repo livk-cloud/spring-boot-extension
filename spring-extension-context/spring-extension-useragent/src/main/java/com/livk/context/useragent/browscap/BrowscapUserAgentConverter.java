@@ -23,6 +23,8 @@ import com.livk.context.useragent.AbstractUserAgentConverter;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * The Browscap User Agent Converter.
+ *
  * @author livk
  */
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class BrowscapUserAgentConverter extends AbstractUserAgentConverter<Capab
 
 	@Override
 	protected Capabilities create(String useragent) {
-		return userAgentParser.parse(useragent);
+		return this.userAgentParser.parse(useragent);
 	}
 
 	@Override

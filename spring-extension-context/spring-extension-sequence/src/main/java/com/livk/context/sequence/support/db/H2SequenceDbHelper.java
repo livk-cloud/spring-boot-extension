@@ -20,6 +20,8 @@ import com.livk.auto.service.annotation.SpringFactories;
 import org.springframework.boot.jdbc.DatabaseDriver;
 
 /**
+ * The H2 Sequence Db Helper.
+ *
  * @author livk
  */
 @SpringFactories
@@ -50,7 +52,7 @@ public class H2SequenceDbHelper implements SequenceDbHelper {
 	public String insertRangeSql(String tableName) {
 		return String.format("""
 				MERGE INTO %s (name, val, create_time, update_time)
-				KEY(val)
+				KEY(name)
 				VALUES (:name, :val, :create_time, :update_time)
 				""", tableName);
 	}

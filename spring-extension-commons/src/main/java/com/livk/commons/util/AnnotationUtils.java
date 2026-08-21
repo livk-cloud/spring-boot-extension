@@ -18,57 +18,48 @@ package com.livk.commons.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 /**
  * <p>
- * Annotation工具类
+ * Annotation工具类.
  * </p>
  *
  * @author livk
+ * @deprecated use {@link AnnotationFinder}
  */
 @UtilityClass
+@Deprecated(since = "2.1.1")
 public class AnnotationUtils extends org.springframework.core.annotation.AnnotationUtils {
 
 	/**
-	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
+	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
 	 * @return annotation annotation element
 	 */
 	public <A extends Annotation> A getAnnotationElement(MethodParameter methodParameter, Class<A> annotationClass) {
-		A annotation = getAnnotation(methodParameter.getAnnotatedElement(), annotationClass);
-		if (annotation == null) {
-			Class<?> containingClass = methodParameter.getContainingClass();
-			annotation = getAnnotation(containingClass, annotationClass);
-		}
-		return annotation;
+		return AnnotationFinder.getAnnotationElement(methodParameter, annotationClass);
 	}
 
 	/**
-	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解
+	 * 获取方法上或者类路径上的注解,方法级别优先,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param method method
 	 * @param annotationClass annotation
 	 * @return annotation annotation element
 	 */
 	public <A extends Annotation> A getAnnotationElement(Method method, Class<A> annotationClass) {
-		A annotation = getAnnotation(method, annotationClass);
-		if (annotation == null) {
-			annotation = getAnnotation(method.getDeclaringClass(), annotationClass);
-		}
-		return annotation;
+		return AnnotationFinder.getAnnotationElement(method, annotationClass);
 	}
 
 	/**
-	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
+	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param methodParameter parameter
 	 * @param annotationClass annotation
@@ -76,35 +67,32 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(MethodParameter methodParameter,
 			Class<A> annotationClass) {
-		Class<?> containingClass = methodParameter.getContainingClass();
-		return (AnnotatedElementUtils.hasAnnotation(containingClass, annotationClass)
-				|| AnnotatedElementUtils.hasAnnotation(methodParameter.getAnnotatedElement(), annotationClass));
+		return AnnotationFinder.hasAnnotationElement(methodParameter, annotationClass);
 	}
 
 	/**
-	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解
+	 * 判断方法上或者类路径上是否包含注解,类路径允许复合注解.
 	 * @param <A> annotation泛型
 	 * @param method method
 	 * @param annotationClass annotation
 	 * @return bool boolean
 	 */
 	public <A extends Annotation> boolean hasAnnotationElement(Method method, Class<A> annotationClass) {
-		return AnnotatedElementUtils.hasAnnotation(method, annotationClass)
-				|| AnnotatedElementUtils.hasAnnotation(method.getDeclaringClass(), annotationClass);
+		return AnnotationFinder.hasAnnotationElement(method, annotationClass);
 	}
 
 	/**
-	 * 构建AnnotationAttributes
+	 * 构建AnnotationAttributes.
 	 * @param metadata the metadata
 	 * @param annotationClassName the annotation class name
 	 * @return the annotation attributes
 	 */
 	public AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata, String annotationClassName) {
-		return AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(annotationClassName));
+		return AnnotationFinder.attributesFor(metadata, annotationClassName);
 	}
 
 	/**
-	 * 构建AnnotationAttributes
+	 * 构建AnnotationAttributes.
 	 * @param <A> 注解类型
 	 * @param metadata the metadata
 	 * @param annotationClass the annotation class
@@ -112,25 +100,18 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
 	 */
 	public <A extends Annotation> AnnotationAttributes attributesFor(AnnotatedTypeMetadata metadata,
 			Class<A> annotationClass) {
-		return attributesFor(metadata, annotationClass.getName());
+		return AnnotationFinder.attributesFor(metadata, annotationClass);
 	}
 
 	/**
-	 * 根据key获取AnnotationAttributes数据，并转成枚举数组
+	 * 根据key获取AnnotationAttributes数据，并转成枚举数组.
 	 * @param attributes annotationAttributes
 	 * @param key key
 	 * @param <E> 枚举类型
 	 * @return enum[]
 	 */
-	@SuppressWarnings("unchecked")
 	public <E extends Enum<?>> E[] getValue(AnnotationAttributes attributes, String key) {
-		Object value = attributes.get(key);
-		if (!(value instanceof Enum<?>[]) && Enum[].class.getComponentType().isInstance(value)) {
-			Object array = Array.newInstance(Enum[].class.getComponentType(), 1);
-			Array.set(array, 0, value);
-			value = array;
-		}
-		return (E[]) value;
+		return AnnotationFinder.getValue(attributes, key);
 	}
 
 }

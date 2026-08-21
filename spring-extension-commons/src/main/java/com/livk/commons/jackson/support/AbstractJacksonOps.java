@@ -22,7 +22,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Jackson相关操作抽象类
+ * Abstract base class for Jackson operations.
  *
  * @author livk
  */
@@ -32,19 +32,19 @@ abstract class AbstractJacksonOps implements JacksonOps {
 	private final TypeFactory typeFactory;
 
 	public final <T> T readValue(Object readVal, Class<T> type) {
-		return readValue(readVal, typeFactory.constructType(type));
+		return readValue(readVal, this.typeFactory.constructType(type));
 	}
 
 	public final <T> T readValue(Object readVal, TypeReference<T> typeReference) {
-		return readValue(readVal, typeFactory.constructType(typeReference));
+		return readValue(readVal, this.typeFactory.constructType(typeReference));
 	}
 
 	public final <T> T convertValue(Object fromValue, Class<T> type) {
-		return convertValue(fromValue, typeFactory.constructType(type));
+		return convertValue(fromValue, this.typeFactory.constructType(type));
 	}
 
 	public final <T> T convertValue(Object fromValue, TypeReference<T> typeReference) {
-		return convertValue(fromValue, typeFactory.constructType(typeReference));
+		return convertValue(fromValue, this.typeFactory.constructType(typeReference));
 	}
 
 }

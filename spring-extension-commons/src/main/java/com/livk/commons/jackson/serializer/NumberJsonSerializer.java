@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * NumberJsonFormat序列化处理
+ * Serializer implementation for NumberJsonFormat annotation.
  *
  * @author livk
  * @see NumberJsonFormat
@@ -45,7 +45,7 @@ class NumberJsonSerializer extends ValueSerializer<Number> {
 
 	@Override
 	public void serialize(Number value, JsonGenerator gen, SerializationContext context) throws JacksonException {
-		gen.writeString(new DecimalFormat(format).format(value));
+		gen.writeString(new DecimalFormat(this.format).format(value));
 	}
 
 	@Override

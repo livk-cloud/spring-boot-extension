@@ -24,6 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The Dist Lock.
+ *
  * @author livk
  */
 @Target(ElementType.METHOD)
@@ -31,7 +33,7 @@ import java.lang.annotation.Target;
 public @interface DistLock {
 
 	/**
-	 * 锁名称
+	 * 锁名称.
 	 * @return the string
 	 */
 	String key();
@@ -46,7 +48,7 @@ public @interface DistLock {
 	 * Lease time long.
 	 * @return the long
 	 */
-	long leaseTime() default 10;
+	long leaseTime() default -1;
 
 	/**
 	 * Wait time long.
@@ -55,6 +57,7 @@ public @interface DistLock {
 	long waitTime() default 3;
 
 	/**
+	 * Whether to use async lock.
 	 * @return the boolean
 	 */
 	boolean async() default false;

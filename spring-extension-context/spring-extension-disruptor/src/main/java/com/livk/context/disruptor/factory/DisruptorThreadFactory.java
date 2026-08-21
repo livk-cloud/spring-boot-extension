@@ -21,6 +21,8 @@ import org.jspecify.annotations.NonNull;
 import java.util.concurrent.ThreadFactory;
 
 /**
+ * The Disruptor Thread Factory.
+ *
  * @author livk
  */
 public class DisruptorThreadFactory implements ThreadFactory {
