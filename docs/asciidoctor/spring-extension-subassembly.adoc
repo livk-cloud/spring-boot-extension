@@ -58,7 +58,7 @@
 |扫描事件并注册 SpringDisruptor
 
 |动态数据源
-|dynamic-datasource-boot-starter
+|dynamic-datasource-spring-boot-starter
 |注册 DynamicDatasource 与切换拦截器
 
 |Excel
@@ -70,7 +70,7 @@
 |注册限流 AOP 拦截器
 
 |分布式锁
-|distributed-lock-boot-starter
+|distributed-lock-spring-boot-starter
 |注册分布式锁 AOP 拦截器
 
 |MyBatis

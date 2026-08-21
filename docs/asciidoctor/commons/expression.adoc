@@ -1,83 +1,132 @@
 [[expression]]
 ==== expression
 
-`expression` 包提供统一的表达式解析接口，将方法参数、Map、Spring Environment 等上下文包装为 `Context`，再交给不同表达式引擎计算。 +
+`expression` 包提供统一的表达式解析接口，将方法参数、Map 等上下文包装为 `Context`，再交给不同表达式引擎计算。 +
 限流、分布式锁等组件可以用它解析动态 key。
 
-===== AbstractExpressionResolver
+===== ExpressionResolver
 
-ExpressionResolver抽象实现 +
-将Map或者Method等信息转成Context +
-
-使用示例:
+表达式解析的顶层接口，采用 Fluent API 设计：
 
 [source,java,indent=0]
 ----
-public class MyExpressionResolver extends AbstractExpressionResolver {
-	@Override
-	public <T> T evaluate(String value, Context context, Class<T> returnType) {
-		//TODO:解析表达式
-	}
+ExpressionResolver resolver = new SpringExpressionResolver();
 
-	//重写此方法用于调整Context的解析
-	public MyExpressionResolver(ContextFactory contextFactory){
-    super(contextFactory);
-	}
+// 方式一：通过 Method 参数构建上下文
+String result = resolver.resolve("#username")
+    .method(method, args)
+    .evaluate();
 
-  //也可以使用默认
-  public MyExpressionResolver(){
+// 方式二：直接传入 Map 作为上下文
+String result = resolver.resolve("#name")
+    .context(Map.of("name", "livk"))
+    .evaluate();
 
-	}
-}
+// 方式三：指定返回类型
+Integer count = resolver.resolve("#count")
+    .context(Map.of("count", 10))
+    .evaluate(Integer.class);
 ----
 
 ===== CacheExpressionResolver
 
-用于对表达式解析进行缓存构建 +
-同时添加spring-environment的支持 +
-
-使用示例:
+`ExpressionResolver` 的抽象实现，内置表达式编译缓存和 Spring `Environment` 占位符解析支持。 +
+子类只需实现三个模板方法：
 
 [source,java,indent=0]
 ----
-public class MyExpressionResolver extends CacheExpressionResolver<Expression> {
-  //将表达式转成不同组件的表达式类
-	@Override
-	protected Expression compile(String value) throws Throwable {
-		return null;
-	}
+public class MyExpressionResolver extends CacheExpressionResolver<MyContext, MyExpression> {
 
-  //根据组件的表达式进行计算
-	@Override
-	protected <T> T calculate(Expression expression, Context context, Class<T> returnType) throws Throwable {
-		return null;
-	}
+    // 将表达式字符串编译成引擎特定的表达式对象
+    @Override
+    protected MyExpression compile(String expression) {
+        return MyEngine.parse(expression);
+    }
 
-  //将上下文转成组件的上下文
-	@Override
-	protected EvaluationContext transform(Context context) {
-		return null;
-	}
+    // 将通用 Context 转换为引擎特定的上下文
+    @Override
+    protected MyContext transform(Context context) {
+        return new MyContext(context.asMap());
+    }
+
+    // 使用编译后的表达式和引擎上下文进行计算
+    @Override
+    protected <T> T calculate(MyExpression expression, MyContext context, Class<T> returnType) {
+        return expression.evaluate(context, returnType);
+    }
 }
 ----
 
-===== 内置ExpressionResolver
-
-. SpringExpressionResolver -> 根据SpringEL表达式进行解析 +
-. AviatorExpressionResolver -> 根据Aviator表达式进行解析(需要重新引入jar) +
-. FreeMarkerExpressionResolver -> 根据FreeMarker表达式进行解析(需要重新引入jar)  +
-. JexlExpressionResolver -> 根据Apache Commons Jexl3表达式进行解析(需要重新引入jar)  +
-. MvelExpressionResolver -> 根据Mvel 2表达式进行解析(需要重新引入jar)  +
+可选重写 `wrapIfNecessary(String)` 对原始表达式做预处理（例如 SpEL 的 `#{...}` 模板语法）。
 
 ===== Context
 
-`ContextFactory` 用于把运行时信息转换成表达式上下文。常见输入包括：
+表达式求值上下文，持有变量绑定。支持链式构建：
 
-* `Map<String, Object>`：直接作为变量集合。
-* `Method` 与参数数组：按参数名、参数索引等方式暴露变量。
-* Spring `Environment`：支持读取配置属性。
+[source,java,indent=0]
+----
+Context context = Context.create()
+    .put("username", "livk")
+    .put("count", 10);
+
+Map<String, Object> map = context.asMap();
+----
+
+也可以从已有 Map 创建：
+
+[source,java,indent=0]
+----
+Context context = Context.create(Map.of("key", "value"));
+----
+
+===== ContextFactory
+
+用于把方法运行时信息转换为 `Context`。默认实现 `DefaultContextFactory` 使用 Spring 的 `ParameterNameDiscoverer` 按参数名暴露变量。
+
+[source,java,indent=0]
+----
+ContextFactory factory = ContextFactory.DEFAULT_FACTORY;
+Context context = factory.create(method, args);
+// context 中包含方法参数名到实际值的映射
+----
+
+在 `ExpressionResolver` 的 Fluent API 中，可通过 `contextFactory(...)` 替换默认实现：
+
+[source,java,indent=0]
+----
+resolver.resolve("#param")
+    .contextFactory(myCustomFactory)
+    .method(method, args)
+    .evaluate();
+----
+
+===== 内置 ExpressionResolver
+
+|===
+|实现类 |表达式引擎 |额外依赖
+
+|`SpringExpressionResolver`
+|Spring EL
+|无（spring-expression 已传递）
+
+|`AviatorExpressionResolver`
+|Aviator
+|需引入 aviator jar
+
+|`FreeMarkerExpressionResolver`
+|FreeMarker
+|需引入 freemarker jar
+
+|`JexlExpressionResolver`
+|Apache Commons Jexl3
+|需引入 commons-jexl3 jar
+
+|`MvelExpressionResolver`
+|Mvel 2
+|需引入 mvel2 jar
+|===
 
 ===== 选择建议
 
 Spring 项目优先使用 `SpringExpressionResolver`。如果业务已有 Aviator、FreeMarker、Jexl3 或 Mvel2 规则资产，可以引入对应依赖后使用相应 resolver。 +
-需要高频解析时，优先继承 `CacheExpressionResolver`，避免每次都重新编译表达式。
+需要高频解析时，`CacheExpressionResolver` 内部已实现缓存，避免每次都重新编译表达式。

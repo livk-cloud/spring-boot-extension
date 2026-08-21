@@ -5,7 +5,7 @@
 提供一些通用、工具类方便开发
 
 该模块不强制绑定具体业务场景，适合在 starter、自定义自动配置和普通业务代码中复用。 +
-其中 `annotation`、`aop`、`expression` 更偏扩展开发；`http`、`jackson`、`web`、`util` 更偏日常业务工具。
+其中 `annotation`、`aop`、`expression` 更偏扩展开发；`http`、`jackson`、`web`、`util`、`io` 更偏日常业务工具。
 
 [primary]
 .Maven
@@ -49,5 +49,7 @@ include::{basedir}/http.adoc[]
 include::{basedir}/jackson.adoc[]
 
 include::{basedir}/util.adoc[]
+
+include::{basedir}/io.adoc[]
 
 include::{basedir}/web.adoc[]

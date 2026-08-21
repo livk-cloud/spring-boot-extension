@@ -3,65 +3,74 @@
 
 `aop` 包封装了基于注解的 Advisor 模板，减少重复编写 `Pointcut`、`MethodInterceptor` 和注解解析逻辑。
 
-===== AnnotationAbstractPointcutAdvisor
+===== AbstractAnnotationAdvisor
 
-使用注解处理AOP的通用切点及表达式
-
-使用示例
-
-[source,java,indent=0]
-----
-public class LockInterceptor extends AnnotationAbstractPointcutAdvisor<OnLock>{
-    @Override
-    protected Object invoke(MethodInvocation invocation, OnLock onLock){
-        //AOP处理等同于org.aspectj.lang.annotation.Around
-    }
-
-    @Override
-    public Pointcut getPointcut(){
-        //实现切入点
-    }
-}
-----
-
-将注解作为泛型，自动获取到注解信息
-
-===== AnnotationAbstractPointcutTypeAdvisor
-
-定制化拓展
+基于注解的切面拦截器基类，自动解析方法或类上的注解并传递给 `doInvoke`。
 
 使用示例
 
 [source,java,indent=0]
 ----
-public class LockInterceptor extends AnnotationAbstractPointcutTypeAdvisor<OnLock>{
+public class LockInterceptor extends AbstractAnnotationAdvisor<OnLock> {
     @Override
-    protected Object invoke(MethodInvocation invocation, OnLock onLock){
-        //
+    protected Object doInvoke(MethodInvocation invocation, OnLock onLock) throws Throwable {
+        // AOP 处理，等同于 @Around
+        return invocation.proceed();
     }
 
     @Override
-    protected AnnotationPointcutType pointcutType() {
-        //默认实现
-        return AnnotationAutoPointcut.auto();
+    public Pointcut getPointcut() {
+        // 实现切入点
+        return AnnotationPointcutFactory.forMethod().create(annotationType);
     }
 }
 ----
 
-===== AnnotationPointcut
+将注解作为泛型参数 `<A>`，基类会自动在方法和类两个层级查找注解并传入 `doInvoke`。
 
-提供多种可选方案
+===== AbstractAnnotationPointcutStrategyAdvisor
 
-. forType基于类级别的拦截等价于(@Around(@within(Annotation)))
-. forMethod基于方法级别的拦截等价于(@Around(@annotation(Annotation)))
-. forTypeOrMethod基于类或方法级别的拦截等价于(@Around(@annotation(Annotation)||@within(Annotation)))
-. forTarget根据Annotation Target推断(如果仅有TYPE、则为TYPE级别。如果仅有METHOD、则为METHOD级别。如果同时都有则为TYPE_OR_METHOD级别。以上情况都无法出现则抛出异常)
+`AbstractAnnotationAdvisor` 的扩展，通过 `AnnotationPointcutFactory` 策略自动生成 `Pointcut`，无需手动实现 `getPointcut()`。
+
+使用示例
+
+[source,java,indent=0]
+----
+public class LockInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<OnLock> {
+    @Override
+    protected Object doInvoke(MethodInvocation invocation, OnLock onLock) throws Throwable {
+        // 拦截处理
+        return invocation.proceed();
+    }
+
+    @Override
+    protected AnnotationPointcutFactory pointcutStrategy() {
+        // 默认实现为 AnnotationPointcutFactory.forTarget()
+        return AnnotationPointcutFactory.forTarget();
+    }
+}
+----
+
+===== AnnotationPointcutFactory
+
+切入点工厂接口，提供多种基于注解的切入点创建策略：
+
+. `forType()` — 基于类级别注解拦截，等价于 `@Around(@within(Annotation))`
+. `forMethod()` — 基于方法级别注解拦截，等价于 `@Around(@annotation(Annotation))`
+. `forTypeOrMethod()` — 基于类或方法级别注解拦截，等价于 `@Around(@annotation(Annotation) || @within(Annotation))`
+. `forTarget()` — 根据注解的 `@Target` 声明自动推断：
+** 如果仅有 `TYPE`，则为类级别
+** 如果仅有 `METHOD`，则为方法级别
+** 如果同时声明了 `TYPE` 和 `METHOD`，则为 TYPE_OR_METHOD 级别
+** 以上条件都不满足则抛出异常
 
 ===== 使用建议
 
 自定义拦截器时只需要关注两个点：
 
 * 注解应该拦截类、方法还是两者都拦截。
-* `invoke` 中如何根据注解属性包装原方法调用。
+* `doInvoke` 中如何根据注解属性包装原方法调用。
 
-如果注解只允许标记方法，优先选择 `AnnotationPointcut.forMethod`；如果注解同时允许标记类和方法，使用 `forTypeOrMethod` 或 `forTarget` 更省心。
+如果注解只允许标记方法，优先选择 `AnnotationPointcutFactory.forMethod()`；如果注解同时允许标记类和方法，使用 `forTypeOrMethod()` 或 `forTarget()` 更省心。
+
+大多数情况下，直接继承 `AbstractAnnotationPointcutStrategyAdvisor` 并重写 `pointcutStrategy()` 即可，不需要手动实现 `getPointcut()`。
