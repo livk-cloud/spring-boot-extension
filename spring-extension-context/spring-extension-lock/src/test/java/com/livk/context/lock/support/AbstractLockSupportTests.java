@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AbstractLockSupportTests {
 
 	@Test
-	void tryLockPassesLeaseTimeBeforeWaitTime() {
+	void tryLockPassesLeaseTimeAndWaitTime() {
 		TestLockSupport support = new TestLockSupport();
 
 		assertThat(support.lock("key").leaseTime(10).waitTime(20).tryLock()).isTrue();
@@ -48,9 +48,20 @@ class AbstractLockSupportTests {
 	void lockSpecTypeCanBeConfigured() {
 		TestLockSupport support = new TestLockSupport();
 
-		assertThat(support.lock("key").type(LockType.FAIR).tryLock()).isTrue();
+		assertThat(support.lock("key", LockType.FAIR).tryLock()).isTrue();
 
 		assertThat(support.usedType).isEqualTo(LockType.FAIR);
+	}
+
+	@Test
+	void unlockReleasesThreadLocal() {
+		TestLockSupport support = new TestLockSupport();
+
+		support.lock("key").lock();
+		assertThat(support.locked).isTrue();
+
+		support.lock("key").unlock();
+		assertThat(support.locked).isFalse();
 	}
 
 	private static final class TestLockSupport extends AbstractLockSupport<String> {
@@ -61,6 +72,8 @@ class AbstractLockSupportTests {
 
 		private LockType usedType;
 
+		private boolean locked = false;
+
 		@Override
 		protected String getLock(LockType type, String key) {
 			this.usedType = type;
@@ -69,6 +82,7 @@ class AbstractLockSupportTests {
 
 		@Override
 		protected boolean unlock(String lock) {
+			this.locked = false;
 			return true;
 		}
 
@@ -76,16 +90,18 @@ class AbstractLockSupportTests {
 		protected boolean tryLock(String lock, long leaseTime, long waitTime) throws LockException {
 			this.leaseTime = leaseTime;
 			this.waitTime = waitTime;
+			this.locked = true;
 			return true;
 		}
 
 		@Override
 		protected void doLock(String lock, long leaseTime) throws LockException {
+			this.locked = true;
 		}
 
 		@Override
 		protected boolean isLocked(String lock) {
-			return true;
+			return this.locked;
 		}
 
 	}
