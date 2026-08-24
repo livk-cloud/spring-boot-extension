@@ -6,10 +6,10 @@
 
 ===== DistLock注解
 
-标记方法,用于对此方法进行分布式锁
+标记方法，用于对此方法进行分布式锁。
 
-使用示例 key支持SpEL表达式，同时支持公平锁、读锁、写锁，并支持异步 +
-在方法上添加 `@OnLock(scope =  LockScope.DISTRIBUTED_LOCK)` (当前分布式锁仅支持Redisson、Curator)+
+使用示例：key 支持 SpEL 表达式，同时支持公平锁、读锁、写锁，并支持异步。 +
+当前分布式锁仅支持 Redisson、Curator。
 
 [source,java,indent=0]
 ----
@@ -24,25 +24,52 @@ public class UserService {
 
 `@DistLock` 常用属性：
 
-* `key`：锁名称，支持表达式生成动态 key。
+* `key`：锁名称，支持 SpEL 表达式生成动态 key。
 * `type`：锁类型，支持 `LOCK`、`FAIR`、`READ`、`WRITE`。
-* `leaseTime`：锁租约时间，默认 `10`。
-* `waitTime`：等待获取锁时间，默认 `3`。
+* `leaseTime`：锁租约时间（秒），默认 `10`。
+* `waitTime`：等待获取锁时间（秒），默认 `3`。
 * `async`：是否使用异步锁能力。
 
-===== DistributedLock
+===== DistLockFactory
 
-分布式锁基类,实现注册为Spring Bean即可 提供RedissonLock作为实现，需要Redisson依赖 提供CuratorLock作为实现，需要Curator依赖
+`DistLockFactory` 是分布式锁工厂接口，定义了锁的创建入口。 +
+通过 `lock(String key)` 或 `lock(String key, LockType type)` 获取 `SpecLock` 实例，然后链式配置参数并执行加锁/解锁操作。
 
-使用 Redisson 锁时需要配置 `RedissonClient`；使用 Curator 锁时需要配置 `CuratorFramework`。 +
-如果两种实现同时存在，建议业务显式保留一个 `DistributedLock` Bean，避免锁实现选择不符合预期。
+内置实现：
+
+* `RedissonLockFactory`：基于 Redisson 的分布式锁实现，需要 `RedissonClient` 依赖。支持异步锁。
+* `CuratorLockFactory`：基于 Apache Curator 的分布式锁实现，需要 `CuratorFramework` 依赖。
+
+使用示例：
+
+[source,java,indent=0]
+----
+@Autowired
+DistLockFactory lockFactory;
+
+// 获取锁并执行
+DistLockFactory.SpecLock spec = lockFactory.lock("orderLock");
+spec.leaseTime(10).waitTime(5);
+if (spec.tryLock()) {
+    try {
+        // 业务逻辑
+    } finally {
+        spec.unlock();
+    }
+}
+----
+
+如果两种实现同时存在，`DistributedLockInterceptor` 通过 `ObjectProvider<DistLockFactory>` 的 `orderedStream()` 选取优先级最高的实现。 +
+可通过实现 `Ordered` 接口的 `getOrder()` 方法调整优先级。
 
 ===== DistributedLockInterceptor
 
-分布式锁拦截器,注册为Spring Bean即，使用AOP实现
+分布式锁拦截器，基于 AOP 拦截标注了 `@DistLock` 的方法。 +
+拦截器接收 `ObjectProvider<DistLockFactory>` 注入所有可用的锁工厂，并在方法执行前后自动完成加锁与释放。
 
 ===== distributed-lock-boot-starter
 
 artifactId: distributed-lock-boot-starter
 
-starter 会注册拦截器和可用的锁实现。方法执行完成或异常退出时都会释放锁。
+starter 会自动注册 `DistributedLockInterceptor` 和可用的 `DistLockFactory` 实现。 +
+方法执行完成或异常退出时都会释放锁。

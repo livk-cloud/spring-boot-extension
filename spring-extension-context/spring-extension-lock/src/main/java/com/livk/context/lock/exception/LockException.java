@@ -17,50 +17,59 @@
 package com.livk.context.lock.exception;
 
 /**
- * The Lock Exception.
+ * Base exception class for distributed lock operations.
+ * <p>
+ * Thrown when distributed lock operations (acquire, release, etc.) encounter errors.
+ * Common scenarios include:
+ * <ul>
+ * <li>Lock acquisition timeout or interruption</li>
+ * <li>Errors during lock release</li>
+ * <li>Communication failures with the underlying distributed component</li>
+ * </ul>
  *
  * @author livk
+ * @see UnSupportLockException
  */
 public class LockException extends RuntimeException {
 
 	/**
-	 * Instantiates a new Lock exception.
+	 * Create a new lock exception with no detail message.
 	 */
 	public LockException() {
 		super();
 	}
 
 	/**
-	 * Instantiates a new Lock exception.
-	 * @param message the message
+	 * Create a new lock exception with the specified detail message.
+	 * @param message the detail message
 	 */
 	public LockException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Instantiates a new Lock exception.
-	 * @param message the message
-	 * @param cause the cause
+	 * Create a new lock exception with the specified detail message and cause.
+	 * @param message the detail message
+	 * @param cause the root cause
 	 */
 	public LockException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
-	 * Instantiates a new Lock exception.
-	 * @param cause the cause
+	 * Create a new lock exception with the specified cause.
+	 * @param cause the root cause
 	 */
 	public LockException(Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * Instantiates a new Lock exception.
-	 * @param message the message
-	 * @param cause the cause
-	 * @param enableSuppression the enable suppression
-	 * @param writableStackTrace the writable stack trace
+	 * Create a new lock exception with full configuration.
+	 * @param message the detail message
+	 * @param cause the root cause
+	 * @param enableSuppression whether suppression is enabled
+	 * @param writableStackTrace whether the stack trace is writable
 	 */
 	protected LockException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
