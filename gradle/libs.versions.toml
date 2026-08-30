@@ -24,7 +24,7 @@ spring-javaformat = "0.0.48"
 okhttp = "5.5.0"
 spotbugs-annotations = "4.10.4"
 maven-publish-plugins = "0.37.0"
-checkstyle = "14.0.0"
+checkstyle = "14.1.0"
 
 [libraries]
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
