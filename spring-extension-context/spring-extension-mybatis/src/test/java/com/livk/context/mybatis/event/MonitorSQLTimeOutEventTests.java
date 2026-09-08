@@ -17,6 +17,7 @@
 package com.livk.context.mybatis.event;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +39,7 @@ class MonitorSQLTimeOutEventTests {
 	void isApplicationEvent() {
 		MonitorSQLInfo info = new MonitorSQLInfo("select 1", 100L);
 		MonitorSQLTimeOutEvent event = new MonitorSQLTimeOutEvent(info);
-		assertThat(event).isInstanceOf(org.springframework.context.ApplicationEvent.class);
+		assertThat(event).isInstanceOf(ApplicationEvent.class);
 	}
 
 }

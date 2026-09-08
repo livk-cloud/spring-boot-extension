@@ -18,6 +18,8 @@ package com.livk.commons.util;
 
 import lombok.Getter;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.invoke.SerializedLambda;
@@ -78,11 +80,9 @@ final class BeanLambdaDescriptor {
 	}
 
 	private static BeanLambdaDescriptor doCreate(SerializedLambda serializedLambda) {
-		String className = org.springframework.util.ClassUtils
-			.convertResourcePathToClassName(serializedLambda.getImplClass());
-		Class<?> type = org.springframework.util.ClassUtils.resolveClassName(className,
-				org.springframework.util.ClassUtils.getDefaultClassLoader());
-		Method method = org.springframework.util.ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
+		String className = ClassUtils.convertResourcePathToClassName(serializedLambda.getImplClass());
+		Class<?> type = ClassUtils.resolveClassName(className, ClassUtils.getDefaultClassLoader());
+		Method method = ReflectionUtils.findMethod(type, serializedLambda.getImplMethodName());
 		Assert.notNull(method, "Cannot find method: " + serializedLambda.getImplMethodName() + " on " + className);
 		return new BeanLambdaDescriptor(method);
 	}
@@ -96,7 +96,7 @@ final class BeanLambdaDescriptor {
 		String fieldName = propertyDescriptor.getName();
 		Class<?> fieldType = propertyDescriptor.getPropertyType();
 		Class<?> type = this.method.getDeclaringClass();
-		Field field = org.springframework.util.ReflectionUtils.findField(type, fieldName, fieldType);
+		Field field = ReflectionUtils.findField(type, fieldName, fieldType);
 		Assert.notNull(field, "Field '" + fieldName + "' of type '" + fieldType.getName() + "' not found on class: "
 				+ type.getName());
 		return field;

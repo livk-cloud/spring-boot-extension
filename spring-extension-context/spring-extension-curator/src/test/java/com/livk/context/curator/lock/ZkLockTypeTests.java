@@ -23,6 +23,7 @@ import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ class ZkLockTypeTests {
 	final CuratorFramework framework;
 
 	ZkLockTypeTests() {
-		framework = mock(CuratorFramework.class, org.mockito.Answers.RETURNS_DEEP_STUBS);
+		framework = mock(CuratorFramework.class, Answers.RETURNS_DEEP_STUBS);
 		given(framework.getNamespace()).willReturn("");
 	}
 

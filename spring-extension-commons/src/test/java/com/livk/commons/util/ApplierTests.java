@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -186,7 +187,7 @@ class ApplierTests {
 
 	@Test
 	void applyConsumerThrowsOnNull() {
-		assertThatThrownBy(() -> Applier.of(1).apply((java.util.function.Consumer<? super Integer>) null))
+		assertThatThrownBy(() -> Applier.of(1).apply((Consumer<? super Integer>) null))
 			.isInstanceOf(NullPointerException.class);
 	}
 

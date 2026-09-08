@@ -18,6 +18,7 @@ package com.livk.commons.util;
 
 import com.google.common.collect.Maps;
 import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -61,7 +62,7 @@ public class BeanConverter {
 	 * @return bean实例
 	 */
 	public static <T> T fromMap(Map<String, Object> map, Class<T> clazz) {
-		if (org.springframework.beans.BeanUtils.getResolvableConstructor(clazz).getParameterCount() != 0) {
+		if (BeanUtils.getResolvableConstructor(clazz).getParameterCount() != 0) {
 			throw new IllegalArgumentException("Missing no-argument constructor");
 		}
 		BeanWrapper beanWrapper = new BeanWrapperImpl(clazz);
