@@ -37,6 +37,10 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-41", version.ref = "redisson" }
+#lettucemod
+lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
+lettucemod-query = { group = "com.redis", name = "lettucemod-query", version.ref = "lettucemod" }
+lettucemod-utils = { group = "com.redis", name = "lettucemod-utils", version.ref = "lettucemod" }
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fesod-sheet = { group = "org.apache.fesod", name = "fesod-sheet", version.ref = "fesod" }
@@ -46,7 +50,6 @@ auto-service = { group = "com.google.auto.service", name = "auto-service", versi
 yauaa = { group = "nl.basjes.parse.useragent", name = "yauaa", version.ref = "yauaa" }
 google-javase = { group = "com.google.zxing", name = "javase", version.ref = "google-javase" }
 jsqlparser = { group = "com.github.jsqlparser", name = "jsqlparser", version.ref = "jsqlparser" }
-lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
 aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "aviator" }
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
@@ -65,6 +68,7 @@ maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.van
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
+lettucemod-all = ["lettucemod", "lettucemod-query", "lettucemod-utils"]
 
 [plugins]
 asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
