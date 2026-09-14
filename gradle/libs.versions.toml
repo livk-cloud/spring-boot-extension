@@ -1,6 +1,5 @@
 [versions]
 spring-boot = "4.1.1"
-pagehelper = "6.1.1"
 mybatis = "3.5.19"
 mybatis-spring = "4.1.0"
 mybatis-boot = "4.1.0"
@@ -57,7 +56,6 @@ disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" 
 spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 spring-javaformat-checkstyle = { group = "io.spring.javaformat", name = "spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
-pagehelper = { group = "com.github.pagehelper", name = "pagehelper", version.ref = "pagehelper" }
 checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
 
 #plugin
