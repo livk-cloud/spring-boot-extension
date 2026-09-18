@@ -18,24 +18,19 @@ package com.livk.commons.io;
 
 import lombok.experimental.UtilityClass;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
- * Utility class for file operations.
+ * Utility class for path operations.
  *
  * @author livk
- * @deprecated use {@link PathUtils}
  */
-@Deprecated
 @UtilityClass
-public class FileUtils {
+public class PathUtils {
 
 	/**
 	 * Downloads content from an InputStream to a file.
@@ -46,37 +41,25 @@ public class FileUtils {
 	 * @throws IOException the io exception
 	 */
 	public void download(InputStream stream, String filePath) throws IOException {
-		File file = new File(filePath);
-		if (file.exists() || createNewFile(file)) {
-			try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-				FileChannel channel = fileOutputStream.getChannel();
-				ReadableByteChannel readableByteChannel = Channels.newChannel(stream);
-				ByteBuffer buffer = ByteBuffer.allocate(1024);
-				while (readableByteChannel.read(buffer) != -1) {
-					buffer.flip();
-					channel.write(buffer);
-					buffer.clear();
-				}
-			}
+		Path path = Path.of(filePath);
+		Path parent = path.getParent();
+		if (parent != null) {
+			Files.createDirectories(parent);
 		}
-		else {
-			throw new IOException();
-		}
+		Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
 	}
 
 	/**
 	 * Creates a new file, auto-creating parent directories if needed.
-	 * @param file the file
-	 * @return the boolean
+	 * @param path the path
 	 * @throws IOException the io exception
 	 */
-	public boolean createNewFile(File file) throws IOException {
-		boolean flag = true;
-		File parentFile = file.getParentFile();
-		if (parentFile != null && !parentFile.exists()) {
-			flag = parentFile.mkdirs();
+	public void createNewFile(Path path) throws IOException {
+		Path parent = path.getParent();
+		if (parent != null) {
+			Files.createDirectories(parent);
 		}
-		return flag && file.createNewFile();
+		Files.createFile(path);
 	}
 
 }
