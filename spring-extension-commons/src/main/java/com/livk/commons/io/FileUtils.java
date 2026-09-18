@@ -33,7 +33,7 @@ import java.nio.channels.ReadableByteChannel;
  * @author livk
  * @deprecated use {@link PathUtils}
  */
-@Deprecated
+@Deprecated(since = "2.1.2")
 @UtilityClass
 public class FileUtils {
 
