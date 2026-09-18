@@ -22,11 +22,9 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -35,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class FileUtilsTests {
+class PathUtilsTests {
 
 	@TempDir
 	Path tempDir;
@@ -43,34 +41,32 @@ class FileUtilsTests {
 	@Test
 	void download() throws IOException {
 		InputStream inputStream = new ByteArrayInputStream("livk".getBytes());
-		String filePath = tempDir.resolve("username.txt").toString();
-		FileUtils.download(inputStream, filePath);
-		File file = new File(filePath);
-		assertThat(file).exists();
-		assertThat(Files.readString(file.toPath())).isEqualTo("livk");
+		Path path = tempDir.resolve("username.txt");
+		PathUtils.download(inputStream, path.toString());
+		assertThat(path).exists();
+		assertThat(Files.readString(path)).isEqualTo("livk");
 	}
 
 	@Test
 	void createNewFile() throws IOException {
-		File file = tempDir.resolve("file.txt").toFile();
-		assertThat(FileUtils.createNewFile(file)).isTrue();
-		assertThat(file).exists();
+		Path path = tempDir.resolve("file.txt");
+		PathUtils.createNewFile(path);
+		assertThat(path).exists();
 	}
 
 	@Test
 	void gzip() throws IOException {
-		InputStream inputStream = new ClassPathResource("data.json").getInputStream();
-		String data = JsonMapperUtils.readTree(inputStream).toString();
-
-		File file = tempDir.resolve("data.gzip").toFile();
-		FileUtils.createNewFile(file);
-		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-			GzipUtils.compress(data.getBytes(), fileOutputStream);
-		}
-
-		try (FileInputStream fileInputStream = new FileInputStream(file)) {
-			String copyData = new String(GzipUtils.decompress(fileInputStream));
-			assertThat(copyData).isEqualTo(data);
+		try (InputStream inputStream = new ClassPathResource("data.json").getInputStream()) {
+			String data = JsonMapperUtils.readTree(inputStream).toString();
+			Path path = tempDir.resolve("data.gzip");
+			PathUtils.createNewFile(path);
+			try (OutputStream outputStream = Files.newOutputStream(path)) {
+				GzipUtils.compress(data.getBytes(), outputStream);
+			}
+			try (InputStream inputStream2 = Files.newInputStream(path)) {
+				String copyData = new String(GzipUtils.decompress(inputStream2));
+				assertThat(copyData).isEqualTo(data);
+			}
 		}
 	}
 

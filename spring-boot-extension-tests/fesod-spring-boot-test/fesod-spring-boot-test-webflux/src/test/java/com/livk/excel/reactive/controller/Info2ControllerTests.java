@@ -16,7 +16,7 @@
 
 package com.livk.excel.reactive.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import com.livk.excel.reactive.entity.Info;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,8 +29,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -66,10 +67,11 @@ class Info2ControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
-		File outFile = new File("./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(resource.getInputStream(), "./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
+		Path path = Path.of("./infoUploadDownLoad" + ResponseExcel.Suffix.XLSM.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -88,10 +90,11 @@ class Info2ControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(resource.getInputStream(), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
+		Path path = Path.of("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }

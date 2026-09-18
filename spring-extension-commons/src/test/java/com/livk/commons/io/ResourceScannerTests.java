@@ -17,12 +17,12 @@
 package com.livk.commons.io;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,18 +34,18 @@ class ResourceScannerTests {
 	static final String FILE_NAME = "input.json";
 
 	@Test
-	void getResourceReturnsMatchingFile() throws IOException {
+	void getResourceReturnsMatchingFile() throws Exception {
 		Resource resource = ResourceScanner.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
-		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
-		assertThat(resource.getFile()).isEqualTo(file);
+		Path expectedPath = new ClassPathResource(FILE_NAME).getFilePath();
+		assertThat(resource.getFilePath()).isEqualTo(expectedPath);
 	}
 
 	@Test
-	void getResourcesReturnsMatchingFiles() throws IOException {
-		File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + FILE_NAME);
+	void getResourcesReturnsMatchingFiles() throws Exception {
+		Path expectedPath = new ClassPathResource(FILE_NAME).getFilePath();
 		Resource[] resources = ResourceScanner
 			.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + FILE_NAME);
-		assertThat(resources).hasSize(1).extracting(Resource::getFile).containsExactly(file);
+		assertThat(resources).hasSize(1).extracting(Resource::getFilePath).containsExactly(expectedPath);
 	}
 
 }

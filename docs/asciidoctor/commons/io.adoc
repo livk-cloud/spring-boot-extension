@@ -55,20 +55,23 @@ GzipUtils.compress(data, out);
 byte[] decompressed = GzipUtils.decompress(inputStream);
 ----
 
-===== FileUtils
+===== PathUtils
 
-文件操作工具类，提供流式下载写入文件以及自动创建父目录的能力。
+文件路径操作工具类，提供流式下载写入文件以及自动创建父目录的能力。
 
 使用示例:
 
 [source,java,indent=0]
 ----
 // 从 InputStream 下载写入文件（自动创建目录）
-FileUtils.download(inputStream, "/path/to/file.txt");
+PathUtils.download(inputStream, "/path/to/file.txt");
 
 // 创建文件（自动创建父目录）
-boolean success = FileUtils.createNewFile(new File("/path/to/file.txt"));
+Path path = Path.of("/path/to/file.txt");
+PathUtils.createNewFile(path);
 ----
+
+NOTE: `FileUtils` 已标记为 `@Deprecated`，新代码请使用 `PathUtils`。
 
 ===== 使用建议
 
