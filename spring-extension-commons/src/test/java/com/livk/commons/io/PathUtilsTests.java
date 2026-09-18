@@ -25,10 +25,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -40,7 +43,7 @@ class PathUtilsTests {
 
 	@Test
 	void download() throws IOException {
-		InputStream inputStream = new ByteArrayInputStream("livk".getBytes());
+		InputStream inputStream = new ByteArrayInputStream("livk".getBytes(StandardCharsets.UTF_8));
 		Path path = tempDir.resolve("username.txt");
 		PathUtils.download(inputStream, path.toString());
 		assertThat(path).exists();
@@ -48,10 +51,67 @@ class PathUtilsTests {
 	}
 
 	@Test
+	void downloadCreatesParentDirectories() throws IOException {
+		Path path = tempDir.resolve("nested/directories/username.txt");
+		PathUtils.download(new ByteArrayInputStream("livk".getBytes(StandardCharsets.UTF_8)), path.toString());
+		assertThat(path).isRegularFile();
+		assertThat(Files.readString(path)).isEqualTo("livk");
+	}
+
+	@Test
+	void downloadWithoutParentDirectory() throws IOException {
+		Path path = Path.of("path-utils-download-no-parent.txt");
+		try {
+			Files.deleteIfExists(path);
+			PathUtils.download(new ByteArrayInputStream("livk".getBytes(StandardCharsets.UTF_8)), path.toString());
+			assertThat(path).isRegularFile();
+			assertThat(Files.readString(path)).isEqualTo("livk");
+		}
+		finally {
+			Files.deleteIfExists(path);
+		}
+	}
+
+	@Test
+	void downloadReplacesExistingFile() throws IOException {
+		Path path = tempDir.resolve("username.txt");
+		Files.writeString(path, "old", StandardCharsets.UTF_8);
+		PathUtils.download(new ByteArrayInputStream("new".getBytes(StandardCharsets.UTF_8)), path.toString());
+		assertThat(Files.readString(path)).isEqualTo("new");
+	}
+
+	@Test
 	void createNewFile() throws IOException {
 		Path path = tempDir.resolve("file.txt");
 		PathUtils.createNewFile(path);
-		assertThat(path).exists();
+		assertThat(path).isRegularFile();
+	}
+
+	@Test
+	void createNewFileCreatesParentDirectories() throws IOException {
+		Path path = tempDir.resolve("nested/directories/file.txt");
+		PathUtils.createNewFile(path);
+		assertThat(path).isRegularFile();
+	}
+
+	@Test
+	void createNewFileWithoutParentDirectory() throws IOException {
+		Path path = Path.of("path-utils-create-no-parent.txt");
+		try {
+			Files.deleteIfExists(path);
+			PathUtils.createNewFile(path);
+			assertThat(path).isRegularFile();
+		}
+		finally {
+			Files.deleteIfExists(path);
+		}
+	}
+
+	@Test
+	void createNewFileThrowsWhenFileAlreadyExists() throws IOException {
+		Path path = tempDir.resolve("file.txt");
+		Files.createFile(path);
+		assertThatThrownBy(() -> PathUtils.createNewFile(path)).isInstanceOf(FileAlreadyExistsException.class);
 	}
 
 	@Test
