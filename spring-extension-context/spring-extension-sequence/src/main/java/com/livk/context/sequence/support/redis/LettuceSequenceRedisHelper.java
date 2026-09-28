@@ -17,6 +17,7 @@
 package com.livk.context.sequence.support.redis;
 
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 
 /**
@@ -39,7 +40,7 @@ public class LettuceSequenceRedisHelper implements SequenceRedisHelper, AutoClos
 
 	@Override
 	public void setNx(byte[] key, long stepStart) {
-		this.connect.sync().setnx(new String(key), String.valueOf(stepStart));
+		this.connect.sync().set(new String(key), String.valueOf(stepStart), SetArgs.Builder.nx());
 	}
 
 	@Override
