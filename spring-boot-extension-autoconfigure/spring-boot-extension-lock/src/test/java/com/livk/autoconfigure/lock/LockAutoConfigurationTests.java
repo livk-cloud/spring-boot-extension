@@ -17,8 +17,8 @@
 package com.livk.autoconfigure.lock;
 
 import com.livk.context.lock.intercept.DistributedLockInterceptor;
-import com.livk.context.lock.support.CuratorLock;
-import com.livk.context.lock.support.RedissonLock;
+import com.livk.context.lock.support.CuratorLockFactory;
+import com.livk.context.lock.support.RedissonLockFactory;
 import com.livk.testcontainers.DockerImageNames;
 import com.livk.testcontainers.containers.ZookeeperContainer;
 import com.redis.testcontainers.RedisContainer;
@@ -92,8 +92,8 @@ class LockAutoConfigurationTests {
 	void test() {
 		this.contextRunner.run((context) -> {
 			assertThat(context).hasSingleBean(DistributedLockInterceptor.class);
-			assertThat(context).hasSingleBean(RedissonLock.class);
-			assertThat(context).hasSingleBean(CuratorLock.class);
+			assertThat(context).hasSingleBean(RedissonLockFactory.class);
+			assertThat(context).hasSingleBean(CuratorLockFactory.class);
 		});
 	}
 

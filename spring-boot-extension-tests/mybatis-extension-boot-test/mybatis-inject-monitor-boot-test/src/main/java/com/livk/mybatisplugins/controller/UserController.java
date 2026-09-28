@@ -16,10 +16,6 @@
 
 package com.livk.mybatisplugins.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.livk.commons.util.BeanLambda;
-import com.livk.mybatisplugins.entity.PageInfo;
 import com.livk.mybatisplugins.entity.User;
 import com.livk.mybatisplugins.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +28,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author livk
@@ -67,14 +64,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public HttpEntity<PageInfo<User>> page(@RequestParam(defaultValue = "1") Integer pageNum,
-			@RequestParam(defaultValue = "10") Integer pageSize) {
-		try (Page<User> page = PageHelper.<User>startPage(pageNum, pageSize)
-			.countColumn(BeanLambda.fieldName(User::getId))
-			.doSelectPage(userService::list)) {
-			PageInfo<User> result = new PageInfo<>(page);
-			return ResponseEntity.ok(result);
-		}
+	public HttpEntity<List<User>> page() {
+		return ResponseEntity.ok(userService.list());
 	}
 
 }

@@ -2,6 +2,8 @@ description = "spring boot extension redisearch"
 
 dependencies {
 	api("com.redis:lettucemod")
+	api("com.redis:lettucemod-query")
+	api("com.redis:lettucemod-utils")
 	api("org.apache.commons:commons-pool2")
 	api("org.springframework:spring-beans")
 

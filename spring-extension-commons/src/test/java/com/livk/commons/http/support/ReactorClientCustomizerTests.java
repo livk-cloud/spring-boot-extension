@@ -19,6 +19,7 @@ package com.livk.commons.http.support;
 import io.netty.channel.ChannelHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.http.client.reactive.ClientHttpConnectorBuilder;
 import org.springframework.boot.http.client.reactive.ReactorClientHttpConnectorBuilder;
 import org.springframework.http.client.ReactorResourceFactory;
 
@@ -92,8 +93,7 @@ class ReactorClientCustomizerTests {
 	@Test
 	void customizeReturnsNonNullBuilder() {
 		ReactorClientCustomizer customizer = new ReactorClientCustomizer(resourceFactory);
-		ReactorClientHttpConnectorBuilder result = customizer
-			.customize(org.springframework.boot.http.client.reactive.ClientHttpConnectorBuilder.reactor());
+		ReactorClientHttpConnectorBuilder result = customizer.customize(ClientHttpConnectorBuilder.reactor());
 		assertThat(result).isNotNull();
 	}
 
@@ -103,8 +103,7 @@ class ReactorClientCustomizerTests {
 			.withResponseTimeout(15)
 			.withReadTimeout(20)
 			.withWriteTimeout(20);
-		ReactorClientHttpConnectorBuilder result = customizer
-			.customize(org.springframework.boot.http.client.reactive.ClientHttpConnectorBuilder.reactor());
+		ReactorClientHttpConnectorBuilder result = customizer.customize(ClientHttpConnectorBuilder.reactor());
 		assertThat(result).isNotNull();
 	}
 

@@ -19,10 +19,10 @@ package com.livk.autoconfigure.lock;
 import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.autoconfigure.curator.CuratorAutoConfiguration;
 import com.livk.autoconfigure.redisson.RedissonAutoConfiguration;
-import com.livk.context.lock.DistributedLock;
+import com.livk.context.lock.DistLockFactory;
 import com.livk.context.lock.intercept.DistributedLockInterceptor;
-import com.livk.context.lock.support.CuratorLock;
-import com.livk.context.lock.support.RedissonLock;
+import com.livk.context.lock.support.CuratorLockFactory;
+import com.livk.context.lock.support.RedissonLockFactory;
 import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.ObjectProvider;
@@ -42,14 +42,13 @@ public class LockAutoConfiguration {
 
 	/**
 	 * Creates the distributed lock interceptor.
-	 * @param distributedLockProvider the distributed lock provider
+	 * @param distLockFactories the distributed lock provider
 	 * @return the lock aspect
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public DistributedLockInterceptor distributedLockInterceptor(
-			ObjectProvider<DistributedLock> distributedLockProvider) {
-		return new DistributedLockInterceptor(distributedLockProvider);
+	public DistributedLockInterceptor distributedLockInterceptor(ObjectProvider<DistLockFactory> distLockFactories) {
+		return new DistributedLockInterceptor(distLockFactories);
 	}
 
 	/**
@@ -66,8 +65,8 @@ public class LockAutoConfiguration {
 		 * @return the distributed lock
 		 */
 		@Bean
-		public DistributedLock redissonLock(RedissonClient redissonClient) {
-			return new RedissonLock(redissonClient);
+		public DistLockFactory redissonLockFactory(RedissonClient redissonClient) {
+			return new RedissonLockFactory(redissonClient);
 		}
 
 	}
@@ -85,8 +84,8 @@ public class LockAutoConfiguration {
 		 * @return the distributed lock
 		 */
 		@Bean
-		public DistributedLock curatorLock(CuratorFramework framework) {
-			return new CuratorLock(framework);
+		public DistLockFactory curatorLockFactory(CuratorFramework framework) {
+			return new CuratorLockFactory(framework);
 		}
 
 	}

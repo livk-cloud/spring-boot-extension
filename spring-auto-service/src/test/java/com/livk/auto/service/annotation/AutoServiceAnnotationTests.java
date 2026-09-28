@@ -18,6 +18,7 @@ package com.livk.auto.service.annotation;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,8 +35,7 @@ class AutoServiceAnnotationTests {
 	void springAutoServiceMetadata() throws Exception {
 		assertThat(SpringAutoService.class.getAnnotation(Retention.class).value()).isEqualTo(RetentionPolicy.SOURCE);
 		assertThat(SpringAutoService.class.getAnnotation(Target.class).value()).containsExactly(ElementType.TYPE);
-		assertThat(SpringAutoService.class.getDeclaredMethod("value").getDefaultValue())
-			.isEqualTo(java.lang.annotation.Annotation.class);
+		assertThat(SpringAutoService.class.getDeclaredMethod("value").getDefaultValue()).isEqualTo(Annotation.class);
 	}
 
 	@Test

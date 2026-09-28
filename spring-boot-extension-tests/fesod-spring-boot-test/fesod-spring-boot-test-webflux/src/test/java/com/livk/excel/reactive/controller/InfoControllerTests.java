@@ -16,7 +16,7 @@
 
 package com.livk.excel.reactive.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,9 @@ import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import tools.jackson.databind.JsonNode;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,10 +89,11 @@ class InfoControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
-		File outFile = new File("./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(resource.getInputStream(), "./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
+		Path path = Path.of("./uploadDownLoad" + ResponseExcel.Suffix.XLS.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -107,10 +109,11 @@ class InfoControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
-		File outFile = new File("./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(resource.getInputStream(), "./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
+		Path path = Path.of("./uploadDownLoadMono" + ResponseExcel.Suffix.XLS.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -126,10 +129,11 @@ class InfoControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
-		File outFile = new File("./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(resource.getInputStream(), "./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
+		Path path = Path.of("./uploadDownLoadFlux" + ResponseExcel.Suffix.XLS.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }

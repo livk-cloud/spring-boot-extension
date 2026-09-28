@@ -24,41 +24,77 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The Dist Lock.
+ * Annotation for declarative distributed lock control on methods.
+ * <p>
+ * Methods annotated with this annotation will automatically attempt to acquire a
+ * distributed lock before execution and release it after completion. If lock acquisition
+ * fails, a {@link com.livk.context.lock.exception.LockException} is thrown.
+ * <p>
+ * The {@link #key()} attribute supports SpEL expressions for dynamic lock key generation.
+ * <p>
+ * Usage examples: <pre>{@code
+ * &#64;DistLock(key = "'order:' + #orderId", type = LockType.LOCK, waitTime = 5)
+ * public void processOrder(String orderId) {
+ *     // business logic protected by distributed lock
+ * }
+ *
+ * &#64;DistLock(key = "'stock:' + #productId", leaseTime = 30, async = true)
+ * public void deductStock(String productId, int quantity) {
+ *     // async lock mode
+ * }
+ * }</pre>
  *
  * @author livk
+ * @see com.livk.context.lock.intercept.DistributedLockInterceptor
+ * @see LockType
+ * @see com.livk.context.lock.DistLockFactory
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DistLock {
 
 	/**
-	 * 锁名称.
-	 * @return the string
+	 * The unique lock key, supports SpEL expressions.
+	 * <p>
+	 * Method parameters can be referenced via SpEL, e.g.
+	 * {@code "'prefix:' + #paramName"}.
+	 * @return the lock key expression
 	 */
 	String key();
 
 	/**
-	 * Type lock type.
+	 * The lock type, defaults to {@link LockType#LOCK} (reentrant lock).
 	 * @return the lock type
+	 * @see LockType
 	 */
 	LockType type() default LockType.LOCK;
 
 	/**
-	 * Lease time long.
-	 * @return the long
+	 * The lease time in seconds after which the lock is auto-released.
+	 * <p>
+	 * Default is {@code -1}, meaning the lock never expires until explicitly released.
+	 * @return the lease time in seconds, {@code -1} for no expiration
 	 */
 	long leaseTime() default -1;
 
 	/**
-	 * Wait time long.
-	 * @return the long
+	 * The maximum wait time in seconds for lock acquisition.
+	 * <p>
+	 * If the lock cannot be acquired within the specified time, a
+	 * {@link com.livk.context.lock.exception.LockException} is thrown. Default is 3
+	 * seconds.
+	 * @return the wait time in seconds
 	 */
 	long waitTime() default 3;
 
 	/**
-	 * Whether to use async lock.
-	 * @return the boolean
+	 * Whether to use async lock mode.
+	 * <p>
+	 * When enabled, the lock operation executes in a non-blocking manner. Note that not
+	 * all lock implementations support async mode; unsupported implementations throw
+	 * {@link com.livk.context.lock.exception.UnSupportLockException}. Default is
+	 * {@code false}.
+	 * @return whether async mode is enabled
 	 */
 	boolean async() default false;
 

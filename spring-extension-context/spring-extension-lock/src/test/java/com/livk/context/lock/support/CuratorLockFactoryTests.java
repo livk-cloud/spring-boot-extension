@@ -16,14 +16,14 @@
 
 package com.livk.context.lock.support;
 
-import com.livk.context.lock.DistributedLock;
-import com.livk.testcontainers.DockerImageNames;
-import com.redis.testcontainers.RedisContainer;
+import com.livk.context.lock.DistLockFactory;
+import com.livk.testcontainers.containers.ZookeeperContainer;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -45,58 +45,76 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Tests for {@link CuratorLockFactory}.
+ * <p>
+ * Verifies distributed lock acquisition, mutual exclusion across threads, and
+ * non-reentrant behavior using a real Zookeeper instance via Testcontainers.
+ *
  * @author livk
  */
-@SpringJUnitConfig(RedissonLockTests.RedissonLockConfig.class)
+@SpringJUnitConfig(CuratorLockFactoryTests.CuratorLockConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
-class RedissonLockTests {
+class CuratorLockFactoryTests {
 
 	@Container
 	@ServiceConnection
-	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
+	static final ZookeeperContainer zookeeper = new ZookeeperContainer();
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
+		registry.add("curator.connectString",
+				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
 	}
 
 	static final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
 
-	@Autowired
-	RedissonLockTests(RedissonClient redissonClient) {
-		lock = new RedissonLock(redissonClient);
-	}
+	/**
+	 * The {@link DistLockFactory} under test, backed by a {@link CuratorLockFactory}.
+	 */
+	final DistLockFactory lock;
 
-	final DistributedLock lock;
+	@Autowired
+	CuratorLockFactoryTests(CuratorFramework framework) {
+		lock = new CuratorLockFactory(framework);
+	}
 
 	@AfterAll
 	static void close() {
 		service.close();
 	}
 
+	/**
+	 * Verifies lock exclusion across threads and non-reentrant behavior of Curator locks
+	 * within the same thread. Unlock is performed via
+	 * {@link DistLockFactory.SpecLock#unlock()} which releases the lock held in the
+	 * current thread's {@code ThreadLocal}.
+	 */
 	@Test
 	void tryLock() throws ExecutionException, InterruptedException {
 		lock.lock("tryLock").lock();
 		assertThat(service.submit(() -> lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).get()).isFalse();
-		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isTrue();
+		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isFalse();
 		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
-		lock.unlock();
+		lock.lock("key").unlock();
 
 		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
-		lock.unlock();
+		lock.lock("key").unlock();
 	}
 
+	/**
+	 * Test configuration that provides a {@link CuratorFramework} connected to the
+	 * Testcontainers Zookeeper instance.
+	 */
 	@TestConfiguration
 	@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
-	static class RedissonLockConfig {
+	static class CuratorLockConfig {
 
-		@Bean
-		public RedissonClient redissonLock(@Value("${redisson.address}") String address) {
-			Config config = new Config();
-			config.useSingleServer().setAddress(address);
-			return Redisson.create(config);
+		@Bean(initMethod = "start", destroyMethod = "close")
+		public CuratorFramework curatorFramework(@Value("${curator.connectString}") String connectString) {
+			RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
+			return CuratorFrameworkFactory.builder().retryPolicy(retryPolicy).connectString(connectString).build();
 		}
 
 	}

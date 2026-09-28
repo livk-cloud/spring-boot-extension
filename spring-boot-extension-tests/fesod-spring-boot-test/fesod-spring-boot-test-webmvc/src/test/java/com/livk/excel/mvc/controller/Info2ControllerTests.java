@@ -16,7 +16,7 @@
 
 package com.livk.excel.mvc.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import com.livk.excel.mvc.entity.Info;
@@ -30,8 +30,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -66,11 +67,12 @@ class Info2ControllerTests {
 			.hasStatusOk()
 			.body()
 			.actual();
-		FileUtils.download(new ByteArrayInputStream(body),
+		PathUtils.download(new ByteArrayInputStream(body),
 				"./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		File outFile = new File("./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		Path path = Path.of("./infoUploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -86,10 +88,11 @@ class Info2ControllerTests {
 			.hasStatusOk()
 			.body()
 			.actual();
-		FileUtils.download(new ByteArrayInputStream(body), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-		File outFile = new File("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		PathUtils.download(new ByteArrayInputStream(body), "./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
+		Path path = Path.of("./infoDownload" + ResponseExcel.Suffix.XLSM.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }
