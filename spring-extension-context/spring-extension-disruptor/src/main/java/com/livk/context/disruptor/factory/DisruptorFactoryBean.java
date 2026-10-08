@@ -137,7 +137,7 @@ public class DisruptorFactoryBean<T>
 	private static final class SpringEventFactory<T> implements EventFactory<MutableWrapper<T>> {
 
 		public MutableWrapper<T> newInstance() {
-			return MutableWrapper.mutable(MutableWrapper.Mode.ONCE);
+			return MutableWrapper.mutable(MutableWrapper.Mode.MULTIPLE);
 		}
 
 	}

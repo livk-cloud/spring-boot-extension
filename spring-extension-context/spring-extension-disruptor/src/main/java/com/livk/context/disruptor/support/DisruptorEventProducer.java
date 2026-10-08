@@ -18,6 +18,8 @@ package com.livk.context.disruptor.support;
 
 import com.livk.commons.wrapper.MutableWrapper;
 import com.lmax.disruptor.RingBuffer;
+import org.jspecify.annotations.NonNull;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +46,8 @@ public class DisruptorEventProducer<T> {
 	 * Send.
 	 * @param data the data
 	 */
-	public final void send(T data) {
+	public final void send(@NonNull T data) {
+		Assert.notNull(data, "data must not be null");
 		long sequence = this.ringBuffer.next();
 		try {
 			MutableWrapper<T> event = this.ringBuffer.get(sequence);
@@ -59,7 +62,9 @@ public class DisruptorEventProducer<T> {
 	 * Send batch.
 	 * @param dataList the data list
 	 */
-	public final void sendBatch(List<T> dataList) {
+	public final void sendBatch(List<@NonNull T> dataList) {
+		Assert.notEmpty(dataList, "dataList must not be empty");
+		Assert.noNullElements(dataList, "dataList element must not be null");
 		int n = dataList.size();
 		long hi = this.ringBuffer.next(n);
 		long lo = hi - (n - 1);
@@ -79,7 +84,8 @@ public class DisruptorEventProducer<T> {
 	 */
 	@SuppressWarnings("varargs")
 	@SafeVarargs
-	public final void sendBatch(T... dataArray) {
+	public final void sendBatch(T @NonNull ... dataArray) {
+		Assert.notEmpty(dataArray, "dataArray must not be empty");
 		sendBatch(Arrays.asList(dataArray));
 	}
 

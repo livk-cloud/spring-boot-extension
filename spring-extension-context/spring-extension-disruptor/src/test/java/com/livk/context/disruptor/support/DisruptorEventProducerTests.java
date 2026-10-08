@@ -22,9 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author livk
@@ -64,6 +66,61 @@ class DisruptorEventProducerTests {
 		long cursorBefore = disruptor.getRingBuffer().getCursor();
 		producer.sendBatch(entity);
 		assertThat(disruptor.getRingBuffer().getCursor()).isGreaterThan(cursorBefore);
+	}
+
+	@Test
+	void sendRejectsNullWithoutClaimingSequence() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+
+		assertThatIllegalArgumentException().isThrownBy(() -> producer.send(null))
+			.withMessageContaining("must not be null");
+		assertThat(disruptor.getRingBuffer().getCursor()).isEqualTo(cursorBefore);
+	}
+
+	@Test
+	void sendBatchRejectsNullListWithoutClaimingSequence() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+
+		assertThatIllegalArgumentException().isThrownBy(() -> producer.sendBatch((List<Entity>) null))
+			.withMessageContaining("must not be empty");
+		assertThat(disruptor.getRingBuffer().getCursor()).isEqualTo(cursorBefore);
+	}
+
+	@Test
+	void sendBatchRejectsEmptyListWithoutClaimingSequence() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+
+		assertThatIllegalArgumentException().isThrownBy(() -> producer.sendBatch(List.of()))
+			.withMessageContaining("must not be empty");
+		assertThat(disruptor.getRingBuffer().getCursor()).isEqualTo(cursorBefore);
+	}
+
+	@Test
+	void sendBatchRejectsNullElementWithoutClaimingSequence() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+		Entity valid = new Entity();
+		valid.setName("valid");
+		List<Entity> dataList = new ArrayList<>();
+		dataList.add(valid);
+		dataList.add(null);
+
+		assertThatIllegalArgumentException().isThrownBy(() -> producer.sendBatch(dataList))
+			.withMessageContaining("must not be null");
+		assertThat(disruptor.getRingBuffer().getCursor()).isEqualTo(cursorBefore);
+	}
+
+	@Test
+	void sendBatchRejectsNullArrayWithoutClaimingSequence() {
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		long cursorBefore = disruptor.getRingBuffer().getCursor();
+
+		assertThatIllegalArgumentException().isThrownBy(() -> producer.sendBatch((Entity[]) null))
+			.withMessageContaining("must not be empty");
+		assertThat(disruptor.getRingBuffer().getCursor()).isEqualTo(cursorBefore);
 	}
 
 }
