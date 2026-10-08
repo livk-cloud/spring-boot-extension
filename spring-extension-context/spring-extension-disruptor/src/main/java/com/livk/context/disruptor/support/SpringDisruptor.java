@@ -16,6 +16,7 @@
 
 package com.livk.context.disruptor.support;
 
+import com.livk.commons.wrapper.MutableWrapper;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -29,7 +30,7 @@ import java.util.concurrent.ThreadFactory;
  * @param <T> the type parameter
  * @author livk
  */
-public final class SpringDisruptor<T> extends Disruptor<DisruptorEventWrapper<T>> {
+public final class SpringDisruptor<T> extends Disruptor<MutableWrapper<T>> {
 
 	/**
 	 * Instantiates a new Spring disruptor.
@@ -37,7 +38,7 @@ public final class SpringDisruptor<T> extends Disruptor<DisruptorEventWrapper<T>
 	 * @param ringBufferSize the ring buffer size
 	 * @param threadFactory the thread factory
 	 */
-	public SpringDisruptor(EventFactory<DisruptorEventWrapper<T>> eventFactory, int ringBufferSize,
+	public SpringDisruptor(EventFactory<MutableWrapper<T>> eventFactory, int ringBufferSize,
 			ThreadFactory threadFactory) {
 		super(eventFactory, ringBufferSize, threadFactory);
 	}
@@ -50,7 +51,7 @@ public final class SpringDisruptor<T> extends Disruptor<DisruptorEventWrapper<T>
 	 * @param producerType the producer type
 	 * @param waitStrategy the wait strategy
 	 */
-	public SpringDisruptor(EventFactory<DisruptorEventWrapper<T>> eventFactory, int ringBufferSize,
+	public SpringDisruptor(EventFactory<MutableWrapper<T>> eventFactory, int ringBufferSize,
 			ThreadFactory threadFactory, ProducerType producerType, WaitStrategy waitStrategy) {
 		super(eventFactory, ringBufferSize, threadFactory, producerType, waitStrategy);
 	}

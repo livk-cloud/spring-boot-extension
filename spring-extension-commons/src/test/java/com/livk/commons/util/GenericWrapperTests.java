@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
+@SuppressWarnings("deprecation")
 class GenericWrapperTests {
 
 	@Test

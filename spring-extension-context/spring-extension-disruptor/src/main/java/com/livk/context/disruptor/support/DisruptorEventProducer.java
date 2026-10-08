@@ -16,6 +16,7 @@
 
 package com.livk.context.disruptor.support;
 
+import com.livk.commons.wrapper.MutableWrapper;
 import com.lmax.disruptor.RingBuffer;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class DisruptorEventProducer<T> {
 
-	private final RingBuffer<DisruptorEventWrapper<T>> ringBuffer;
+	private final RingBuffer<MutableWrapper<T>> ringBuffer;
 
 	/**
 	 * Instantiates a new Disruptor event producer.
@@ -46,8 +47,8 @@ public class DisruptorEventProducer<T> {
 	public final void send(T data) {
 		long sequence = this.ringBuffer.next();
 		try {
-			DisruptorEventWrapper<T> event = this.ringBuffer.get(sequence);
-			event.wrap(data);
+			MutableWrapper<T> event = this.ringBuffer.get(sequence);
+			event.set(data);
 		}
 		finally {
 			this.ringBuffer.publish(sequence);
@@ -64,7 +65,7 @@ public class DisruptorEventProducer<T> {
 		long lo = hi - (n - 1);
 		try {
 			for (int i = 0; i < dataList.size(); i++) {
-				this.ringBuffer.get(i + lo).wrap(dataList.get(i));
+				this.ringBuffer.get(i + lo).set(dataList.get(i));
 			}
 		}
 		finally {
