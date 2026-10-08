@@ -4,7 +4,7 @@
 `util` 包收纳通用工具类，可以按用途大致分为：
 
 * 注解与反射：`AnnotationMetadataResolver`、`AnnotationFinder`、`AnnotationUtils`、`ReflectionUtils`、`ClassUtils`、`FieldUtils`、`TypeUtils`。
-* Bean 与泛型：`BeanLambda`、`BeanLambdaDescriptor`、`BeanUtils`、`BeanConverter`、`GenericWrapper`、`RecordWrapper`。
+* Bean 与泛型：`BeanLambda`、`BeanLambdaDescriptor`、`BeanUtils`、`BeanConverter`、`ValueWrapper`、`RecordWrapper`。
 * Stream 与集合：`StreamUtils`、`EnumerationSpliterator`。
 * Web 辅助：`HttpServletUtils`、`HttpReactiveUtils`、`MultiValueMapSplitter`。
 * 数据结构与 ID：`Pair`、`TreeNode`、`SnowflakeIdGenerator`。

@@ -16,15 +16,23 @@
 
 package com.livk.context.disruptor.factory;
 
+import com.livk.commons.wrapper.MutableWrapper;
 import com.livk.context.disruptor.DisruptorConfig;
 import com.livk.context.disruptor.Entity;
 import com.livk.context.disruptor.annotation.DisruptorEvent;
+import com.livk.context.disruptor.support.DisruptorEventProducer;
 import com.livk.context.disruptor.support.SpringDisruptor;
+import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.dsl.ProducerType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -76,6 +84,53 @@ class DisruptorFactoryBeanTests {
 
 		assertThatThrownBy(factoryBean::afterPropertiesSet).isInstanceOf(IllegalArgumentException.class)
 			.hasMessageContaining("threadFactory must not be null");
+	}
+
+	@Test
+	void ringBufferSlotsAcceptRepeatedWrites() {
+		DisruptorFactoryBean<Entity> factoryBean = createFactoryBean();
+		factoryBean.setBufferSize(4);
+		factoryBean.afterPropertiesSet();
+
+		MutableWrapper<Entity> slot = factoryBean.getObject().getRingBuffer().get(0);
+		Entity first = new Entity();
+		first.setName("first");
+		Entity second = new Entity();
+		second.setName("second");
+
+		slot.set(first);
+		slot.set(second);
+
+		assertThat(slot.unwrap().getName()).isEqualTo("second");
+		factoryBean.destroy();
+	}
+
+	@Test
+	void producerDeliversNewPayloadsWhenRingBufferSlotsAreReused() throws Exception {
+		int bufferSize = 4;
+		int eventCount = bufferSize * 2;
+		CopyOnWriteArrayList<String> received = new CopyOnWriteArrayList<>();
+		CountDownLatch latch = new CountDownLatch(eventCount);
+
+		SpringDisruptor<Entity> disruptor = new SpringDisruptor<>(
+				() -> MutableWrapper.mutable(MutableWrapper.Mode.MULTIPLE), bufferSize, Thread.ofVirtual().factory(),
+				ProducerType.SINGLE, new BlockingWaitStrategy());
+		disruptor.handleEventsWith((event, sequence, endOfBatch) -> {
+			received.add(event.unwrap().getName());
+			latch.countDown();
+		});
+		disruptor.start();
+
+		DisruptorEventProducer<Entity> producer = new DisruptorEventProducer<>(disruptor);
+		for (int i = 0; i < eventCount; i++) {
+			Entity entity = new Entity();
+			entity.setName("msg-" + i);
+			producer.send(entity);
+		}
+
+		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
+		assertThat(received).containsExactly("msg-0", "msg-1", "msg-2", "msg-3", "msg-4", "msg-5", "msg-6", "msg-7");
+		disruptor.shutdown();
 	}
 
 	private DisruptorFactoryBean<Entity> createFactoryBean() {

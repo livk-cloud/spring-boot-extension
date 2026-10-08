@@ -14,35 +14,32 @@
  * limitations under the License.
  */
 
-package com.livk.context.disruptor.support;
+package com.livk.commons.wrapper;
 
-import com.livk.commons.util.GenericWrapper;
-import org.springframework.util.Assert;
+import org.jspecify.annotations.NonNull;
 
 /**
- * The type Disruptor event wrapper.
+ * 值包装器，用于封装并解析内部值.
  *
- * @param <V> the type parameter
+ * @param <T> the type parameter
  * @author livk
  */
-public class DisruptorEventWrapper<V> implements GenericWrapper<V> {
-
-	private V real;
+public interface ValueWrapper<T> {
 
 	/**
-	 * Wrap.
-	 * @param unwrap the unwrap
+	 * 解析并返回被包装的值.
+	 * @return 被包装的值
 	 */
-	public void wrap(V unwrap) {
-		if (this.real == null) {
-			this.real = unwrap;
-		}
-	}
+	T unwrap();
 
-	@Override
-	public V unwrap() {
-		Assert.notNull(this.real, "real must not be null");
-		return this.real;
+	/**
+	 * 构建一个不可变的值包装器.
+	 * @param <T> 相关泛型
+	 * @param value the value
+	 * @return the immutable wrapper
+	 */
+	static <T> ValueWrapper<T> immutable(@NonNull T value) {
+		return new ImmutableWrapperImpl<>(value);
 	}
 
 }

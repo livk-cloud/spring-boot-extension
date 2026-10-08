@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package com.livk.commons.util;
+package com.livk.commons.wrapper;
 
 import org.springframework.util.Assert;
 
 /**
- * 使用record进行默认实现.
+ * {@link ValueWrapper} 的不可变实现.
  *
- * @param <V> 相关实例
+ * @param <T> the type parameter
+ * @param unwrap the wrapped value
  * @author livk
- * @see GenericWrapper#of(Object)
  */
-@SuppressWarnings("deprecation")
-record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {
-	public RecordWrapper {
-		Assert.notNull(unwrap, "unwrap must not be null");
+record ImmutableWrapperImpl<T>(T unwrap) implements ValueWrapper<T> {
+	public ImmutableWrapperImpl {
+		Assert.notNull(unwrap, "ValueWrapper init value not be null");
 	}
 }

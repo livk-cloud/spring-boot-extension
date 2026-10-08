@@ -16,8 +16,8 @@
 
 package com.livk.context.disruptor.factory;
 
+import com.livk.commons.wrapper.MutableWrapper;
 import com.livk.context.disruptor.support.DisruptorEventConsumer;
-import com.livk.context.disruptor.support.DisruptorEventWrapper;
 import com.livk.context.disruptor.support.SpringDisruptor;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
@@ -123,7 +123,7 @@ public class DisruptorFactoryBean<T>
 		return strategy;
 	}
 
-	private EventHandler<DisruptorEventWrapper<T>> createEventHandler(BeanFactory beanFactory, Class<T> type) {
+	private EventHandler<MutableWrapper<T>> createEventHandler(BeanFactory beanFactory, Class<T> type) {
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(DisruptorEventConsumer.class, type);
 		ObjectProvider<DisruptorEventConsumer<T>> disruptorEventConsumers = beanFactory.getBeanProvider(resolvableType);
 		return new AggregateEventHandlerProvider<>(disruptorEventConsumers);
@@ -134,21 +134,21 @@ public class DisruptorFactoryBean<T>
 		this.disruptor.shutdown();
 	}
 
-	private static final class SpringEventFactory<T> implements EventFactory<DisruptorEventWrapper<T>> {
+	private static final class SpringEventFactory<T> implements EventFactory<MutableWrapper<T>> {
 
-		public DisruptorEventWrapper<T> newInstance() {
-			return new DisruptorEventWrapper<>();
+		public MutableWrapper<T> newInstance() {
+			return MutableWrapper.mutable(MutableWrapper.Mode.MULTIPLE);
 		}
 
 	}
 
 	@RequiredArgsConstructor
-	private static final class AggregateEventHandlerProvider<T> implements EventHandler<DisruptorEventWrapper<T>> {
+	private static final class AggregateEventHandlerProvider<T> implements EventHandler<MutableWrapper<T>> {
 
 		private final ObjectProvider<DisruptorEventConsumer<T>> consumerObjectProvider;
 
 		@Override
-		public void onEvent(DisruptorEventWrapper<T> event, long sequence, boolean endOfBatch) throws Exception {
+		public void onEvent(MutableWrapper<T> event, long sequence, boolean endOfBatch) throws Exception {
 			for (DisruptorEventConsumer<T> eventConsumer : this.consumerObjectProvider) {
 				eventConsumer.onEvent(event.unwrap(), sequence, endOfBatch);
 			}

@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-package com.livk.context.disruptor.support;
+package com.livk.commons.wrapper;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author livk
  */
-class DisruptorEventWrapperTests {
+class ValueWrapperTests {
 
 	@Test
-	void wrapAndUnwrapReturnsValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("root");
-		assertThat(wrapper.unwrap()).isEqualTo("root");
+	void immutableUnwrapReturnsOriginalValue() {
+		String value = "livk";
+		ValueWrapper<String> wrapper = ValueWrapper.immutable(value);
+		assertThat(wrapper.unwrap()).isEqualTo(value);
 	}
 
 	@Test
-	void wrapOnlyAcceptsFirstValue() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		wrapper.wrap("first");
-		wrapper.wrap("second");
-		assertThat(wrapper.unwrap()).isEqualTo("first");
+	void immutableRewrapReturnsSameValue() {
+		String value = "livk";
+		ValueWrapper<String> wrapper = ValueWrapper.immutable(value);
+		ValueWrapper<String> rewrapped = ValueWrapper.immutable(wrapper.unwrap());
+		assertThat(rewrapped.unwrap()).isEqualTo(value);
 	}
 
 	@Test
-	void unwrapWithoutWrapThrows() {
-		DisruptorEventWrapper<String> wrapper = new DisruptorEventWrapper<>();
-		assertThatThrownBy(wrapper::unwrap).isInstanceOf(IllegalArgumentException.class);
+	void immutableRejectsNullValue() {
+		assertThatIllegalArgumentException().isThrownBy(() -> ValueWrapper.immutable(null))
+			.withMessageContaining("not be null");
 	}
 
 }
