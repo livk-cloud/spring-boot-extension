@@ -48,5 +48,5 @@ workflows:
           name: jdk25
           jdk: "25"
       - build:
-          name: jdk26
-          jdk: "26"
+          name: jdk27
+          jdk: "27"
