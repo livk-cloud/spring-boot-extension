@@ -69,6 +69,8 @@ public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrate
 	 */
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
+	private volatile DistLockFactory distLockFactory;
+
 	/**
 	 * Execute the distributed lock interception logic.
 	 * <p>
@@ -84,13 +86,10 @@ public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrate
 	@Override
 	protected Object doInvoke(MethodInvocation invocation, DistLock lock) throws Throwable {
 		Assert.notNull(lock, "lock is null");
-		DistLockFactory distLockFactory = this.distLockFactories.orderedStream()
-			.findFirst()
-			.orElseThrow(() -> new NoSuchBeanDefinitionException(DistLockFactory.class));
 		String key = this.resolver.resolve(lock.key())
 			.method(invocation.getMethod(), invocation.getArguments())
 			.evaluate();
-		DistLockFactory.SpecLock specLock = distLockFactory.lock(key, lock.type());
+		DistLockFactory.SpecLock specLock = getDistLockFactory().lock(key, lock.type());
 		Applier.of(lock.leaseTime()).ge(0L).apply(specLock::leaseTime);
 		Applier.of(lock.waitTime()).ge(0L).apply(specLock::waitTime);
 		Applier.of(lock.async()).isTrue().apply(specLock::async);
@@ -106,6 +105,22 @@ public class DistributedLockInterceptor extends AbstractAnnotationPointcutStrate
 				specLock.unlock();
 			}
 		}
+	}
+
+	private DistLockFactory getDistLockFactory() {
+		DistLockFactory result = this.distLockFactory;
+		if (result == null) {
+			synchronized (this) {
+				result = this.distLockFactory;
+				if (result == null) {
+					result = this.distLockFactories.orderedStream()
+						.findFirst()
+						.orElseThrow(() -> new NoSuchBeanDefinitionException(DistLockFactory.class));
+					this.distLockFactory = result;
+				}
+			}
+		}
+		return result;
 	}
 
 }

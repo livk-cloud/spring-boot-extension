@@ -16,13 +16,14 @@
 
 package com.livk.autoconfigure.useragent;
 
+import com.livk.context.useragent.UserAgentComposite;
 import com.livk.context.useragent.UserAgentConverter;
-import com.livk.context.useragent.UserAgentDelegate;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
 import com.livk.context.useragent.servlet.UserAgentFilter;
 import com.livk.context.useragent.servlet.UserAgentResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,13 +46,14 @@ import java.util.List;
 public class UserAgentConfiguration {
 
 	/**
-	 * User agent helper user agent helper.
-	 * @return the user agent helper
+	 * User agent composite.
+	 * @param converters the converters
+	 * @return the user agent composite
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public UserAgentDelegate userAgentDelegate() {
-		return new UserAgentDelegate();
+	public UserAgentComposite userAgentComposite(ObjectProvider<UserAgentConverter> converters) {
+		return new UserAgentComposite(converters);
 	}
 
 	/**
@@ -62,16 +64,17 @@ public class UserAgentConfiguration {
 	@ConditionalOnWebApplication(type = Type.SERVLET)
 	public static class UserAgentMvcAutoConfiguration implements WebMvcConfigurer {
 
-		private final UserAgentDelegate userAgentDelegate;
+		private final UserAgentComposite userAgentComposite;
 
 		/**
 		 * Filter registration bean filter registration bean.
 		 * @return the filter registration bean
 		 */
 		@Bean
-		public FilterRegistrationBean<UserAgentFilter> filterRegistrationBean() {
+		@ConditionalOnMissingBean(name = "userAgentFilter")
+		public FilterRegistrationBean<UserAgentFilter> userAgentFilter() {
 			FilterRegistrationBean<UserAgentFilter> registrationBean = new FilterRegistrationBean<>();
-			registrationBean.setFilter(new UserAgentFilter(this.userAgentDelegate));
+			registrationBean.setFilter(new UserAgentFilter(this.userAgentComposite));
 			registrationBean.addUrlPatterns("/*");
 			registrationBean.setName("userAgentFilter");
 			registrationBean.setOrder(1);
@@ -80,7 +83,7 @@ public class UserAgentConfiguration {
 
 		@Override
 		public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-			resolvers.add(new UserAgentResolver(this.userAgentDelegate));
+			resolvers.add(new UserAgentResolver(this.userAgentComposite));
 		}
 
 	}
@@ -93,20 +96,21 @@ public class UserAgentConfiguration {
 	@ConditionalOnWebApplication(type = Type.REACTIVE)
 	public static class UserAgentReactiveAutoConfiguration implements WebFluxConfigurer {
 
-		private final UserAgentDelegate userAgentDelegate;
+		private final UserAgentComposite userAgentComposite;
 
 		/**
 		 * Reactive user agent filter reactive user agent filter.
 		 * @return the reactive user agent filter
 		 */
 		@Bean
+		@ConditionalOnMissingBean
 		public ReactiveUserAgentFilter reactiveUserAgentFilter() {
-			return new ReactiveUserAgentFilter(this.userAgentDelegate);
+			return new ReactiveUserAgentFilter(this.userAgentComposite);
 		}
 
 		@Override
 		public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-			configurer.addCustomResolver(new ReactiveUserAgentResolver(this.userAgentDelegate));
+			configurer.addCustomResolver(new ReactiveUserAgentResolver(this.userAgentComposite));
 		}
 
 	}

@@ -16,22 +16,21 @@
 
 package com.livk.context.useragent;
 
-import org.jspecify.annotations.NonNull;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 
 /**
- * The type User agent helper.
+ * The type User agent composite.
  *
  * @author livk
  */
-public class UserAgentDelegate implements ApplicationContextAware {
+@RequiredArgsConstructor
+public final class UserAgentComposite {
 
-	private ApplicationContext applicationContext;
+	private final ObjectProvider<UserAgentConverter> provider;
 
 	private volatile List<UserAgentConverter> converters;
 
@@ -57,17 +56,12 @@ public class UserAgentDelegate implements ApplicationContextAware {
 			synchronized (this) {
 				result = this.converters;
 				if (result == null) {
-					result = this.applicationContext.getBeanProvider(UserAgentConverter.class).orderedStream().toList();
+					result = this.provider.orderedStream().toList();
 					this.converters = result;
 				}
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
 	}
 
 }

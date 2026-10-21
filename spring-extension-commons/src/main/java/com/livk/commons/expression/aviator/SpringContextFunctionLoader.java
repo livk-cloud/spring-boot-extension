@@ -22,8 +22,10 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Spring-based FunctionLoader for Aviator.
@@ -38,19 +40,28 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 
 	private final ApplicationContext applicationContext;
 
+	private volatile Map<String, AviatorFunction> functionMap;
+
 	@Override
 	public AviatorFunction onFunctionNotFound(String name) {
-		try {
-			for (AviatorFunction function : this.applicationContext.getBeanProvider(AviatorFunction.class)) {
-				if (name.equals(function.getName())) {
-					return function;
+		return getFunctionMap().get(name);
+	}
+
+	private Map<String, AviatorFunction> getFunctionMap() {
+		Map<String, AviatorFunction> result = this.functionMap;
+		if (result == null) {
+			synchronized (this) {
+				result = this.functionMap;
+				if (result == null) {
+					Map<String, AviatorFunction> beans = this.applicationContext.getBeansOfType(AviatorFunction.class);
+					Map<String, AviatorFunction> map = new HashMap<>(beans);
+					beans.values().forEach((fn) -> map.putIfAbsent(fn.getName(), fn));
+					result = Map.copyOf(map);
+					this.functionMap = result;
 				}
 			}
-			return this.applicationContext.getBean(name, AviatorFunction.class);
 		}
-		catch (NoSuchBeanDefinitionException ex) {
-			return null;
-		}
+		return result;
 	}
 
 	@Override

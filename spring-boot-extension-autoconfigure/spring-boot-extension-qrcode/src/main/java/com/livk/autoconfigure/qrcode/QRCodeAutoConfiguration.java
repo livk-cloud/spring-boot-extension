@@ -27,6 +27,7 @@ import com.livk.context.qrcode.support.GoogleQrCodeManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +57,7 @@ public class QRCodeAutoConfiguration {
 	 * @return the qr code generator
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public QrCodeManager googleQRCodeManager(JsonMapper.Builder builder) {
 		return GoogleQrCodeManager.of(builder.build());
 	}

@@ -17,7 +17,7 @@
 package com.livk.context.useragent.servlet;
 
 import com.livk.context.useragent.UserAgent;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -42,10 +42,10 @@ class UserAgentFilterTests {
 
 	@Test
 	void doFilterClearsContextWhenChainThrows() throws ServletException, IOException {
-		UserAgentDelegate userAgentDelegate = mock(UserAgentDelegate.class);
+		UserAgentComposite userAgentComposite = mock(UserAgentComposite.class);
 		UserAgent userAgent = UserAgent.builder("Mozilla/5.0").browser("Chrome").build();
-		given(userAgentDelegate.convert(any(HttpHeaders.class))).willReturn(userAgent);
-		UserAgentFilter filter = new UserAgentFilter(userAgentDelegate);
+		given(userAgentComposite.convert(any(HttpHeaders.class))).willReturn(userAgent);
+		UserAgentFilter filter = new UserAgentFilter(userAgentComposite);
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 

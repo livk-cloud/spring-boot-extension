@@ -27,8 +27,9 @@ import org.springframework.util.Assert;
  * <p>
  * This class uses the Template Method pattern to define the common lock operation flow;
  * subclasses only need to implement the concrete lock acquisition, release, and state
- * checking logic. Internally uses a {@link ThreadLocal} to store the lock object held by
- * the current thread, ensuring thread safety.
+ * checking logic. Each {@link SpecLock} retains the lock instance it acquired, so nested
+ * locks on the same thread (and virtual threads) unlock independently without
+ * {@link ThreadLocal}.
  * <p>
  * Subclasses must implement the following abstract methods:
  * <ul>
@@ -50,14 +51,6 @@ import org.springframework.util.Assert;
  * @see CuratorLockFactory
  */
 public abstract class AbstractLockSupport<T> implements DistLockFactory {
-
-	/**
-	 * Thread-local variable storing the lock object held by the current thread.
-	 * <p>
-	 * Set after successful lock acquisition, removed after lock release. Ensures the
-	 * unlock operation targets the lock held by the current thread.
-	 */
-	protected final ThreadLocal<T> threadLocal = new ThreadLocal<>();
 
 	/**
 	 * {@inheritDoc}
@@ -180,6 +173,8 @@ public abstract class AbstractLockSupport<T> implements DistLockFactory {
 
 		private boolean async = false;
 
+		private T heldLock;
+
 		private DefaultLockSpec(String key) {
 			this(key, LockType.LOCK);
 		}
@@ -210,43 +205,31 @@ public abstract class AbstractLockSupport<T> implements DistLockFactory {
 		@Override
 		public boolean tryLock() {
 			T lock = getLock(this.type, this.key);
-			try {
-				boolean isLocked = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
-						: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
-				if (isLocked) {
-					AbstractLockSupport.this.threadLocal.set(lock);
-				}
-				return isLocked;
+			boolean acquired = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
+					: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
+			if (acquired) {
+				this.heldLock = lock;
 			}
-			catch (LockException ex) {
-				AbstractLockSupport.this.threadLocal.remove();
-				throw ex;
-			}
+			return acquired;
 		}
 
 		@Override
 		public void lock() {
 			T lock = getLock(this.type, this.key);
-			try {
-				if (supportAsync() && this.async) {
-					doLockAsync(lock, this.leaseTime);
-				}
-				else {
-					doLock(lock, this.leaseTime);
-				}
-				AbstractLockSupport.this.threadLocal.set(lock);
+			if (supportAsync() && this.async) {
+				doLockAsync(lock, this.leaseTime);
 			}
-			catch (LockException ex) {
-				AbstractLockSupport.this.threadLocal.remove();
-				throw ex;
+			else {
+				doLock(lock, this.leaseTime);
 			}
+			this.heldLock = lock;
 		}
 
 		@Override
 		public void unlock() {
-			T lock = AbstractLockSupport.this.threadLocal.get();
+			T lock = this.heldLock;
 			if (lock != null && isLocked(lock) && AbstractLockSupport.this.unlock(lock)) {
-				AbstractLockSupport.this.threadLocal.remove();
+				this.heldLock = null;
 			}
 		}
 

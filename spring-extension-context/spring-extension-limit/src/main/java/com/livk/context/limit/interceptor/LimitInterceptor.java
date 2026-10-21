@@ -19,7 +19,6 @@ package com.livk.context.limit.interceptor;
 import com.livk.commons.aop.AbstractAnnotationPointcutStrategyAdvisor;
 import com.livk.commons.expression.ExpressionResolver;
 import com.livk.commons.expression.spring.SpringExpressionResolver;
-import org.springframework.beans.BeanUtils;
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.limit.LimitExecutor;
 import com.livk.context.limit.annotation.Limit;
@@ -27,6 +26,7 @@ import com.livk.context.limit.exception.LimitExceededHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 
@@ -49,6 +49,8 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 
 	private final ExpressionResolver resolver = new SpringExpressionResolver();
 
+	private volatile LimitExecutor executor;
+
 	@Override
 	protected Object doInvoke(MethodInvocation invocation, Limit limit) throws Throwable {
 		String key = limit.key();
@@ -62,10 +64,7 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 			String ip = HttpServletUtils.realIp(HttpServletUtils.request());
 			spELKey = spELKey + "#" + ip;
 		}
-		LimitExecutor executor = this.providers.orderedStream()
-			.findFirst()
-			.orElseThrow(() -> new NoSuchBeanDefinitionException(LimitExecutor.class));
-		boolean status = executor.tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
+		boolean status = getExecutor().tryAccess(spELKey, rate, Duration.ofMillis(unit.toMillis(rateInterval)));
 		if (status) {
 			return invocation.proceed();
 		}
@@ -75,6 +74,22 @@ public class LimitInterceptor extends AbstractAnnotationPointcutStrategyAdvisor<
 					? BeanUtils.instantiateClass(handlerType) : LimitExceededHandler.DEFAULT;
 			throw handler.buildException(limit);
 		}
+	}
+
+	private LimitExecutor getExecutor() {
+		LimitExecutor result = this.executor;
+		if (result == null) {
+			synchronized (this) {
+				result = this.executor;
+				if (result == null) {
+					result = this.providers.orderedStream()
+						.findFirst()
+						.orElseThrow(() -> new NoSuchBeanDefinitionException(LimitExecutor.class));
+					this.executor = result;
+				}
+			}
+		}
+		return result;
 	}
 
 }
