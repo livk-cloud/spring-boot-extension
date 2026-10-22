@@ -18,9 +18,8 @@ package com.livk.redisearch.webflux;
 
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.util.BeanLambda;
-import com.livk.context.redisearch.StringRedisSearchTemplate;
+import com.livk.context.redisearch.StringReactiveRedisSearchTemplate;
 import com.livk.redisearch.webflux.entity.Student;
-import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import io.lettuce.core.search.SearchReply;
 import io.lettuce.core.search.arguments.TagFieldArgs;
 import io.lettuce.core.search.arguments.TextFieldArgs;
@@ -48,10 +47,8 @@ public class RediSearchApp {
 	}
 
 	@Bean
-	public ApplicationRunner applicationRunner(StringRedisSearchTemplate template) {
-		return (args) -> template.executeVoid(connection -> {
-			RedisModulesReactiveCommands<String, String> reactive = connection.reactive();
-
+	public ApplicationRunner applicationRunner(StringReactiveRedisSearchTemplate template) {
+		return (args) -> template.executeMany((reactive) -> {
 			Mono<Void> createIndex = reactive.ftList()
 				.any(index -> index.equals(Student.INDEX))
 				.filter(exists -> !exists)
@@ -84,16 +81,13 @@ public class RediSearchApp {
 				return reactive.hmset(key, body);
 			});
 
-			Mono<SearchReply<String, String>> searchResult = reactive.ftSearch(Student.INDEX, "*");
-
-			createIndex.thenMany(insertData)
-				.then(searchResult)
+			return createIndex.thenMany(insertData)
+				.then(reactive.ftSearch(Student.INDEX, "*"))
 				.map(SearchReply::getResults)
 				.flatMapMany(Flux::fromIterable)
 				.map(result -> JsonMapperUtils.convertValue(result.getFields(), Student.class))
-				.doOnNext(student -> log.info("{}", student))
-				.subscribe();
-		});
+				.doOnNext(student -> log.info("{}", student));
+		}).subscribe();
 	}
 
 }

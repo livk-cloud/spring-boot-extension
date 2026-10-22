@@ -16,6 +16,7 @@
 
 package com.livk.autoconfigure.redisearch;
 
+import com.livk.context.redisearch.StringReactiveRedisSearchTemplate;
 import com.livk.context.redisearch.StringRedisSearchTemplate;
 import io.lettuce.core.resource.ClientResources;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,16 @@ class RediSearchAutoConfigurationTests {
 	@Test
 	void StringRedisSearchTemplate() {
 		contextRunner.run((context) -> assertThat(context).hasSingleBean(StringRedisSearchTemplate.class));
+	}
+
+	@Test
+	void ReactiveRedisSearchTemplate() {
+		contextRunner.run((context) -> assertThat(context).hasBean("ReactiveRedisSearchTemplate"));
+	}
+
+	@Test
+	void StringReactiveRedisSearchTemplate() {
+		contextRunner.run((context) -> assertThat(context).hasSingleBean(StringReactiveRedisSearchTemplate.class));
 	}
 
 	@TestConfiguration

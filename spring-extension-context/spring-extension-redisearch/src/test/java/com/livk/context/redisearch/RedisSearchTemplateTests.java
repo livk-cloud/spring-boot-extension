@@ -24,7 +24,6 @@ import com.redis.testcontainers.RedisStackContainer;
 import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.RedisFuture;
 import io.lettuce.core.api.async.BaseRedisAsyncCommands;
-import io.lettuce.core.api.reactive.BaseRedisReactiveCommands;
 import io.lettuce.core.codec.RedisCodec;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import reactor.core.publisher.Mono;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Duration;
@@ -68,32 +66,13 @@ class RedisSearchTemplateTests {
 		RedisSearchTemplate<String, Object> template = createTemplate(null);
 
 		assertThat(template.executeAsync(BaseRedisAsyncCommands::ping).get()).isEqualTo("PONG");
-		assertThat(template.executeReactive(BaseRedisReactiveCommands::ping).block()).isEqualTo("PONG");
-	}
-
-	/**
-	 * 池大小为 1：若 reactive 发布者未完成前连接仍被占用，同步借出会超时。
-	 * <p>
-	 * 当前实现在 {@code executeReactive} 返回时就把连接还池，同步借出成功，本用例会失败。
-	 */
-	@Test
-	void executeReactiveShouldHoldConnectionUntilPublisherCompletes() {
-		RedisSearchTemplate<String, Object> template = createTemplate(singleConnectionPool());
-
-		Mono<String> delayed = template
-			.executeReactive((commands) -> commands.ping().delayElement(Duration.ofSeconds(2)));
-
-		assertThatThrownBy(() -> template.executeSync(RedisModulesCommands::ping))
-			.isInstanceOf(RedisConnectionException.class);
-
-		assertThat(delayed.block(Duration.ofSeconds(5))).isEqualTo("PONG");
 		assertThat(template.<String>executeSync(RedisModulesCommands::ping)).isEqualTo("PONG");
 	}
 
 	/**
 	 * 池大小为 1：async Future 未完成前连接应仍被占用。
 	 * <p>
-	 * 用 {@code blpop} 保证 Future 在超时前不会完成。当前实现返回 Future 时已还池，本用例会失败。
+	 * 用 {@code blpop} 保证 Future 在超时前不会完成。
 	 */
 	@Test
 	void executeAsyncShouldHoldConnectionUntilFutureCompletes() {

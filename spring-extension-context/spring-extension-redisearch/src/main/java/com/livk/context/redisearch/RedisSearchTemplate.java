@@ -19,7 +19,6 @@ package com.livk.context.redisearch;
 import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.async.RedisModulesAsyncCommands;
-import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.codec.RedisCodec;
@@ -27,11 +26,8 @@ import io.lettuce.core.support.ConnectionPoolSupport;
 import lombok.Setter;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletionStage;
 import java.util.function.Consumer;
@@ -124,41 +120,7 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 			release(connection);
 			return result;
 		}
-		catch (RuntimeException ex) {
-			release(connection);
-			throw ex;
-		}
-	}
-
-	/**
-	 * Execute a callback with a reactive commands instance.
-	 * <p>
-	 * When the callback returns a {@link Publisher}, the pooled connection is held until
-	 * that publisher terminates; otherwise it is returned immediately after the callback.
-	 * Callers should subscribe to the returned publisher, otherwise the connection may
-	 * remain borrowed.
-	 * @param callback the callback to execute
-	 * @param <T> the return type
-	 * @return the result of the callback
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T executeReactive(Function<RedisModulesReactiveCommands<K, V>, T> callback) {
-		StatefulRedisModulesConnection<K, V> connection = borrowConnection();
-		try {
-			T result = callback.apply(connection.reactive());
-			if (result instanceof Mono<?> mono) {
-				return (T) mono.doFinally((signal) -> release(connection));
-			}
-			if (result instanceof Flux<?> flux) {
-				return (T) flux.doFinally((signal) -> release(connection));
-			}
-			if (result instanceof Publisher<?> publisher) {
-				return (T) Flux.from(publisher).doFinally((signal) -> release(connection));
-			}
-			release(connection);
-			return result;
-		}
-		catch (RuntimeException ex) {
+		catch (RuntimeException | Error ex) {
 			release(connection);
 			throw ex;
 		}
