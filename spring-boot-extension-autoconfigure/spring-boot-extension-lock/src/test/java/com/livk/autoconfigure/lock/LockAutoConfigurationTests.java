@@ -16,6 +16,7 @@
 
 package com.livk.autoconfigure.lock;
 
+import com.livk.context.lock.DistLockFactory;
 import com.livk.context.lock.intercept.DistributedLockInterceptor;
 import com.livk.context.lock.support.CuratorLockFactory;
 import com.livk.context.lock.support.RedissonLockFactory;
@@ -52,6 +53,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author livk
@@ -94,6 +96,16 @@ class LockAutoConfigurationTests {
 			assertThat(context).hasSingleBean(DistributedLockInterceptor.class);
 			assertThat(context).hasSingleBean(RedissonLockFactory.class);
 			assertThat(context).hasSingleBean(CuratorLockFactory.class);
+		});
+	}
+
+	@Test
+	void backsOffWhenCustomDistLockFactoryPresent() {
+		this.contextRunner.withBean(DistLockFactory.class, () -> mock(DistLockFactory.class)).run((context) -> {
+			assertThat(context).hasSingleBean(DistLockFactory.class);
+			assertThat(context).doesNotHaveBean(RedissonLockFactory.class);
+			assertThat(context).doesNotHaveBean(CuratorLockFactory.class);
+			assertThat(context).hasSingleBean(DistributedLockInterceptor.class);
 		});
 	}
 
