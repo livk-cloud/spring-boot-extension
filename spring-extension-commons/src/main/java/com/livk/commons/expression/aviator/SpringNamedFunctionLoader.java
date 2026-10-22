@@ -28,15 +28,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Spring-based FunctionLoader for Aviator.
+ * Spring-based {@link FunctionLoader} that resolves functions by
+ * {@link AviatorFunction#getName()}.
  * <p>
- * 从IOC容器中获取AviatorFunction.
+ * Unlike Aviator's official
+ * {@code com.googlecode.aviator.spring.SpringContextFunctionLoader} (which looks up beans
+ * by bean name), this loader indexes all {@link AviatorFunction} beans by their Aviator
+ * function name.
  *
  * @author livk
  * @see AviatorFunction
+ * @see ServiceFunctionLoader
  */
 @RequiredArgsConstructor
-public class SpringContextFunctionLoader implements FunctionLoader, InitializingBean, DisposableBean {
+public class SpringNamedFunctionLoader implements FunctionLoader, InitializingBean, DisposableBean {
 
 	private final ApplicationContext applicationContext;
 
@@ -53,9 +58,10 @@ public class SpringContextFunctionLoader implements FunctionLoader, Initializing
 			synchronized (this) {
 				result = this.functionMap;
 				if (result == null) {
-					Map<String, AviatorFunction> beans = this.applicationContext.getBeansOfType(AviatorFunction.class);
-					Map<String, AviatorFunction> map = new HashMap<>(beans);
-					beans.values().forEach((fn) -> map.putIfAbsent(fn.getName(), fn));
+					Map<String, AviatorFunction> map = new HashMap<>();
+					this.applicationContext.getBeanProvider(AviatorFunction.class)
+						.orderedStream()
+						.forEach((fn) -> map.putIfAbsent(fn.getName(), fn));
 					result = Map.copyOf(map);
 					this.functionMap = result;
 				}

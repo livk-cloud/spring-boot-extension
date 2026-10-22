@@ -134,8 +134,8 @@ class AviatorExpressionResolverTests {
 		}
 
 		@Bean
-		public SpringContextFunctionLoader springContextFunctionLoader(ApplicationContext applicationContext) {
-			return new SpringContextFunctionLoader(applicationContext);
+		public SpringNamedFunctionLoader springNamedFunctionLoader(ApplicationContext applicationContext) {
+			return new SpringNamedFunctionLoader(applicationContext);
 		}
 
 		@Bean
