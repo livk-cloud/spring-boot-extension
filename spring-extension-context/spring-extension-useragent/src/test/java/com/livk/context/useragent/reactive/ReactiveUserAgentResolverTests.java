@@ -18,13 +18,14 @@ package com.livk.context.useragent.reactive;
 
 import com.livk.context.useragent.UserAgent;
 import com.livk.context.useragent.UserAgentConverter;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -63,8 +64,8 @@ class ReactiveUserAgentResolverTests {
 	}
 
 	@Autowired
-	ReactiveUserAgentResolverTests(UserAgentDelegate userAgentDelegate) {
-		this.resolver = new ReactiveUserAgentResolver(userAgentDelegate);
+	ReactiveUserAgentResolverTests(UserAgentComposite userAgentComposite) {
+		this.resolver = new ReactiveUserAgentResolver(userAgentComposite);
 	}
 
 	@Test
@@ -127,8 +128,8 @@ class ReactiveUserAgentResolverTests {
 		}
 
 		@Bean
-		public UserAgentDelegate userAgentDelegate() {
-			return new UserAgentDelegate();
+		public UserAgentComposite userAgentComposite(ObjectProvider<UserAgentConverter> converters) {
+			return new UserAgentComposite(converters);
 		}
 
 	}

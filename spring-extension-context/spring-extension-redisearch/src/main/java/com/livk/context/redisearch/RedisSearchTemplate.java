@@ -19,7 +19,6 @@ package com.livk.context.redisearch;
 import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
 import com.redis.lettucemod.api.async.RedisModulesAsyncCommands;
-import com.redis.lettucemod.api.reactive.RedisModulesReactiveCommands;
 import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.codec.RedisCodec;
@@ -30,6 +29,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
+import java.util.concurrent.CompletionStage;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -75,6 +75,12 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 		return this.delegate.borrowObject();
 	}
 
+	private void release(StatefulRedisModulesConnection<K, V> connection) {
+		if (connection != null) {
+			connection.close();
+		}
+	}
+
 	private GenericObjectPoolConfig<StatefulRedisModulesConnection<K, V>> getPoolConfig() {
 		if (this.poolConfig != null) {
 			return this.poolConfig;
@@ -94,25 +100,30 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	}
 
 	/**
-	 * Execute a callback with an async commands instance. The connection is safely
-	 * borrowed from the pool and returned after the callback completes.
+	 * Execute a callback with an async commands instance.
+	 * <p>
+	 * When the callback returns a {@link CompletionStage}, the pooled connection is held
+	 * until that stage completes; otherwise it is returned immediately after the
+	 * callback.
 	 * @param callback the callback to execute
 	 * @param <T> the return type
 	 * @return the result of the callback
 	 */
 	public <T> T executeAsync(Function<RedisModulesAsyncCommands<K, V>, T> callback) {
-		return submit((connection) -> callback.apply(connection.async()));
-	}
-
-	/**
-	 * Execute a callback with a reactive commands instance. The connection is safely
-	 * borrowed from the pool and returned after the callback completes.
-	 * @param callback the callback to execute
-	 * @param <T> the return type
-	 * @return the result of the callback
-	 */
-	public <T> T executeReactive(Function<RedisModulesReactiveCommands<K, V>, T> callback) {
-		return submit((connection) -> callback.apply(connection.reactive()));
+		StatefulRedisModulesConnection<K, V> connection = borrowConnection();
+		try {
+			T result = callback.apply(connection.async());
+			if (result instanceof CompletionStage<?> stage) {
+				stage.whenComplete((ignored, error) -> release(connection));
+				return result;
+			}
+			release(connection);
+			return result;
+		}
+		catch (RuntimeException | Error ex) {
+			release(connection);
+			throw ex;
+		}
 	}
 
 	/**
@@ -133,6 +144,15 @@ public class RedisSearchTemplate<K, V> implements InitializingBean {
 	 */
 	public void executeVoid(Consumer<StatefulRedisModulesConnection<K, V>> callback) {
 		doExecute(callback);
+	}
+
+	private StatefulRedisModulesConnection<K, V> borrowConnection() {
+		try {
+			return borrowObject();
+		}
+		catch (Exception ex) {
+			throw new RedisConnectionException("Error borrowing Redis connection", ex);
+		}
 	}
 
 	private <T> T submit(Function<StatefulRedisModulesConnection<K, V>, T> command) {

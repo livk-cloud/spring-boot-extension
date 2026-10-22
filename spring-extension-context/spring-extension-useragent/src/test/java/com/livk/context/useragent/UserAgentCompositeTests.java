@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author livk
  */
-class UserAgentDelegateTests {
+class UserAgentCompositeTests {
 
 	ApplicationContext applicationContext;
 
@@ -56,9 +56,9 @@ class UserAgentDelegateTests {
 	void convertBrowscap() {
 		applicationContext = new AnnotationConfigApplicationContext(BrowscapConfig.class);
 
-		UserAgentDelegate userAgentDelegate = new UserAgentDelegate();
-		userAgentDelegate.setApplicationContext(applicationContext);
-		UserAgent userAgent = userAgentDelegate.convert(headers);
+		UserAgentComposite userAgentComposite = new UserAgentComposite(
+				applicationContext.getBeanProvider(UserAgentConverter.class));
+		UserAgent userAgent = userAgentComposite.convert(headers);
 
 		assertThat(userAgent).isNotNull();
 		assertThat(userAgent.userAgentStr()).isEqualTo(userAgentStr);
@@ -76,9 +76,9 @@ class UserAgentDelegateTests {
 	void convertYauaa() {
 		applicationContext = new AnnotationConfigApplicationContext(YauaaConfig.class);
 
-		UserAgentDelegate userAgentDelegate = new UserAgentDelegate();
-		userAgentDelegate.setApplicationContext(applicationContext);
-		UserAgent userAgent = userAgentDelegate.convert(headers);
+		UserAgentComposite userAgentComposite = new UserAgentComposite(
+				applicationContext.getBeanProvider(UserAgentConverter.class));
+		UserAgent userAgent = userAgentComposite.convert(headers);
 
 		assertThat(userAgent).isNotNull();
 		assertThat(userAgent.userAgentStr()).isEqualTo(userAgentStr);
