@@ -65,7 +65,7 @@ public class LockAutoConfiguration {
 		 * @return the distributed lock
 		 */
 		@Bean
-		@ConditionalOnMissingBean(DistLockFactory.class)
+		@ConditionalOnMissingBean
 		public RedissonLockFactory redissonLockFactory(RedissonClient redissonClient) {
 			return new RedissonLockFactory(redissonClient);
 		}
@@ -80,12 +80,12 @@ public class LockAutoConfiguration {
 	public static class CuratorLockAutoConfiguration {
 
 		/**
-		 * Redisson lock distributed lock.
+		 * Curator lock distributed lock.
 		 * @param framework the curator framework
 		 * @return the distributed lock
 		 */
 		@Bean
-		@ConditionalOnMissingBean(DistLockFactory.class)
+		@ConditionalOnMissingBean
 		public CuratorLockFactory curatorLockFactory(CuratorFramework framework) {
 			return new CuratorLockFactory(framework);
 		}
