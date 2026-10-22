@@ -78,8 +78,8 @@ public class RediSearchAutoConfiguration {
 	 * @return the redi search template
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "RedisSearchTemplate")
-	public RedisSearchTemplate<String, Object> RedisSearchTemplate(LettuceModConnectionFactory factory,
+	@ConditionalOnMissingBean(name = "redisSearchTemplate")
+	public RedisSearchTemplate<String, Object> redisSearchTemplate(LettuceModConnectionFactory factory,
 			JsonMapper.Builder builder) {
 		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(builder.build());
 		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(factory, redisCodec);
@@ -94,7 +94,7 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public StringRedisSearchTemplate StringRedisSearchTemplate(LettuceModConnectionFactory factory) {
+	public StringRedisSearchTemplate stringRedisSearchTemplate(LettuceModConnectionFactory factory) {
 		StringRedisSearchTemplate template = new StringRedisSearchTemplate(factory);
 		template.setPoolConfig(factory.getPoolConfig());
 		return template;
@@ -108,8 +108,8 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnClass(Flux.class)
-	@ConditionalOnMissingBean(name = "ReactiveRedisSearchTemplate")
-	public ReactiveRedisSearchTemplate<String, Object> ReactiveRedisSearchTemplate(LettuceModConnectionFactory factory,
+	@ConditionalOnMissingBean(name = "reactiveRedisSearchTemplate")
+	public ReactiveRedisSearchTemplate<String, Object> reactiveRedisSearchTemplate(LettuceModConnectionFactory factory,
 			JsonMapper.Builder builder) {
 		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(builder.build());
 		ReactiveRedisSearchTemplate<String, Object> template = new ReactiveRedisSearchTemplate<>(factory, redisCodec);
@@ -125,7 +125,7 @@ public class RediSearchAutoConfiguration {
 	@Bean
 	@ConditionalOnClass(Flux.class)
 	@ConditionalOnMissingBean
-	public StringReactiveRedisSearchTemplate StringReactiveRedisSearchTemplate(LettuceModConnectionFactory factory) {
+	public StringReactiveRedisSearchTemplate stringReactiveRedisSearchTemplate(LettuceModConnectionFactory factory) {
 		StringReactiveRedisSearchTemplate template = new StringReactiveRedisSearchTemplate(factory);
 		template.setPoolConfig(factory.getPoolConfig());
 		return template;

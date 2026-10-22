@@ -49,22 +49,22 @@ class RediSearchAutoConfigurationTests {
 	}
 
 	@Test
-	void RedisSearchTemplate() {
-		contextRunner.run((context) -> assertThat(context).hasBean("RedisSearchTemplate"));
+	void redisSearchTemplate() {
+		contextRunner.run((context) -> assertThat(context).hasBean("redisSearchTemplate"));
 	}
 
 	@Test
-	void StringRedisSearchTemplate() {
+	void stringRedisSearchTemplate() {
 		contextRunner.run((context) -> assertThat(context).hasSingleBean(StringRedisSearchTemplate.class));
 	}
 
 	@Test
-	void ReactiveRedisSearchTemplate() {
-		contextRunner.run((context) -> assertThat(context).hasBean("ReactiveRedisSearchTemplate"));
+	void reactiveRedisSearchTemplate() {
+		contextRunner.run((context) -> assertThat(context).hasBean("reactiveRedisSearchTemplate"));
 	}
 
 	@Test
-	void StringReactiveRedisSearchTemplate() {
+	void stringReactiveRedisSearchTemplate() {
 		contextRunner.run((context) -> assertThat(context).hasSingleBean(StringReactiveRedisSearchTemplate.class));
 	}
 
