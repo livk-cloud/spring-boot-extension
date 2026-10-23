@@ -18,12 +18,13 @@ package com.livk.context.useragent.servlet;
 
 import com.livk.context.useragent.UserAgent;
 import com.livk.context.useragent.UserAgentConverter;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -58,8 +59,8 @@ class UserAgentResolverTests {
 	}
 
 	@Autowired
-	UserAgentResolverTests(UserAgentDelegate userAgentDelegate) {
-		this.resolver = new UserAgentResolver(userAgentDelegate);
+	UserAgentResolverTests(UserAgentComposite userAgentComposite) {
+		this.resolver = new UserAgentResolver(userAgentComposite);
 	}
 
 	final HandlerMethodArgumentResolver resolver;
@@ -114,8 +115,8 @@ class UserAgentResolverTests {
 		}
 
 		@Bean
-		public UserAgentDelegate userAgentDelegate() {
-			return new UserAgentDelegate();
+		public UserAgentComposite userAgentComposite(ObjectProvider<UserAgentConverter> converters) {
+			return new UserAgentComposite(converters);
 		}
 
 	}

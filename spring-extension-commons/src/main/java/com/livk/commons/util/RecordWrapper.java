@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
  * @author livk
  * @see GenericWrapper#of(Object)
  */
+@SuppressWarnings("deprecation")
 record RecordWrapper<V>(V unwrap) implements GenericWrapper<V> {
 	public RecordWrapper {
 		Assert.notNull(unwrap, "unwrap must not be null");

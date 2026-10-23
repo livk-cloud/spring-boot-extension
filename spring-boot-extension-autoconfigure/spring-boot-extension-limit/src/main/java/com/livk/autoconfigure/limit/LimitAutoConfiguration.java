@@ -43,6 +43,7 @@ public class LimitAutoConfiguration {
 	 * @return the limit interceptor
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public LimitInterceptor limitInterceptor(ObjectProvider<LimitExecutor> provider) {
 		return new LimitInterceptor(provider);
 	}

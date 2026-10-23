@@ -18,7 +18,7 @@ package com.livk.context.useragent.servlet;
 
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.useragent.UserAgent;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,13 +38,13 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserAgentFilter extends OncePerRequestFilter {
 
-	private final UserAgentDelegate userAgentDelegate;
+	private final UserAgentComposite userAgentComposite;
 
 	@Override
 	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			FilterChain filterChain) throws IOException, ServletException {
 		HttpHeaders headers = HttpServletUtils.headers(request);
-		UserAgent userAgent = this.userAgentDelegate.convert(headers);
+		UserAgent userAgent = this.userAgentComposite.convert(headers);
 		UserAgentContextHolder.withUserAgentContext(userAgent);
 		try {
 			filterChain.doFilter(request, response);

@@ -17,6 +17,7 @@
 package com.livk.commons.util;
 
 import lombok.Getter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
@@ -46,8 +47,7 @@ final class BeanLambdaDescriptor {
 
 	private PropertyDescriptor getPropertyDescriptor() {
 		Class<?> type = this.method.getDeclaringClass();
-		PropertyDescriptor propertyDescriptor = org.springframework.beans.BeanUtils.findPropertyForMethod(this.method,
-				type);
+		PropertyDescriptor propertyDescriptor = BeanUtils.findPropertyForMethod(this.method, type);
 		if (propertyDescriptor == null) {
 			throw new IllegalStateException("No PropertyDescriptor found for method: " + this.method);
 		}
@@ -59,16 +59,17 @@ final class BeanLambdaDescriptor {
 	 * <p>
 	 * 使用缓存避免无效加载.
 	 * @param <T> 相关泛型
+	 * @param <R> 相关泛型
 	 * @param function beanLambdaFunc表达式
 	 * @return beanLambdaDescriptor
 	 */
-	public static <T> BeanLambdaDescriptor create(BeanLambda<T> function) {
+	public static <T, R> BeanLambdaDescriptor create(BeanLambda<T, R> function) {
 		SerializedLambda serializedLambda = resolveSerializedLambda(function);
 		String key = serializedLambda.getImplClass() + "#" + serializedLambda.getImplMethodName();
 		return cache.computeIfAbsent(key, (k) -> doCreate(serializedLambda));
 	}
 
-	private static SerializedLambda resolveSerializedLambda(BeanLambda<?> function) {
+	private static SerializedLambda resolveSerializedLambda(BeanLambda<?, ?> function) {
 		try {
 			Method writeReplace = function.getClass().getDeclaredMethod("writeReplace");
 			writeReplace.setAccessible(true);

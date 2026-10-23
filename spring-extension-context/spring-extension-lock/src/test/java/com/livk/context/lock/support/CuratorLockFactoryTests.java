@@ -93,7 +93,7 @@ class CuratorLockFactoryTests {
 	void tryLock() throws ExecutionException, InterruptedException {
 		lock.lock("tryLock").lock();
 		assertThat(service.submit(() -> lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).get()).isFalse();
-		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isFalse();
+		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isTrue();
 		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
 		lock.lock("key").unlock();

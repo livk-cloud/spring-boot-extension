@@ -16,11 +16,16 @@
 
 package com.livk.context.redisearch;
 
-import tools.jackson.databind.json.JsonMapper;
 import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.livk.testcontainers.DockerImageNames;
+import com.redis.lettucemod.api.StatefulRedisModulesConnection;
+import com.redis.lettucemod.api.sync.RedisModulesCommands;
 import com.redis.testcontainers.RedisStackContainer;
+import io.lettuce.core.RedisConnectionException;
+import io.lettuce.core.RedisFuture;
+import io.lettuce.core.api.async.BaseRedisAsyncCommands;
 import io.lettuce.core.codec.RedisCodec;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -29,8 +34,12 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import tools.jackson.databind.json.JsonMapper;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -54,12 +63,48 @@ class RedisSearchTemplateTests {
 
 	@Test
 	void test() throws Exception {
-		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(new JsonMapper());
-		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(factory, redisCodec);
-		template.afterPropertiesSet();
+		RedisSearchTemplate<String, Object> template = createTemplate(null);
 
-		assertThat(template.executeAsync(commands -> commands.ping()).get()).isEqualTo("PONG");
-		assertThat(template.executeReactive(commands -> commands.ping()).block()).isEqualTo("PONG");
+		assertThat(template.executeAsync(BaseRedisAsyncCommands::ping).get()).isEqualTo("PONG");
+		assertThat(template.<String>executeSync(RedisModulesCommands::ping)).isEqualTo("PONG");
+	}
+
+	/**
+	 * 池大小为 1：async Future 未完成前连接应仍被占用。
+	 * <p>
+	 * 用 {@code blpop} 保证 Future 在超时前不会完成。
+	 */
+	@Test
+	void executeAsyncShouldHoldConnectionUntilFutureCompletes() {
+		RedisSearchTemplate<String, Object> template = createTemplate(singleConnectionPool());
+
+		RedisFuture<?> future = template
+			.executeAsync((commands) -> commands.blpop(5, "redisearch-template-async-hold"));
+		try {
+			assertThatThrownBy(() -> template.executeSync(RedisModulesCommands::ping))
+				.isInstanceOf(RedisConnectionException.class);
+		}
+		finally {
+			future.cancel(true);
+		}
+	}
+
+	private RedisSearchTemplate<String, Object> createTemplate(
+			GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> poolConfig) {
+		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(new JsonMapper());
+		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(this.factory, redisCodec);
+		if (poolConfig != null) {
+			template.setPoolConfig(poolConfig);
+		}
+		template.afterPropertiesSet();
+		return template;
+	}
+
+	private static GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> singleConnectionPool() {
+		GenericObjectPoolConfig<StatefulRedisModulesConnection<String, Object>> config = new GenericObjectPoolConfig<>();
+		config.setMaxTotal(1);
+		config.setMaxWait(Duration.ofMillis(300));
+		return config;
 	}
 
 }
