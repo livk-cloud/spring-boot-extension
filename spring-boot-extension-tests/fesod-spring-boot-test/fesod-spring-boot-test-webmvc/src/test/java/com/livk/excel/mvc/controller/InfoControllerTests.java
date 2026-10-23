@@ -16,7 +16,7 @@
 
 package com.livk.excel.mvc.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.context.fesod.annotation.ResponseExcel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,11 +68,12 @@ class InfoControllerTests {
 			.hasStatusOk()
 			.body()
 			.actual();
-		FileUtils.download(new ByteArrayInputStream(body),
+		PathUtils.download(new ByteArrayInputStream(body),
 				"./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		File outFile = new File("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		Path path = Path.of("./uploadAndDownloadMock" + ResponseExcel.Suffix.XLSM.getName());
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }

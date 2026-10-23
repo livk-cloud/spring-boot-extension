@@ -13,6 +13,7 @@ dependencies {
 	constraints {
 		api(libs.bundles.mybatis.all)
 		api(libs.bundles.redisson.all)
+		api(libs.bundles.lettucemod.all)
 		api(libs.guava)
 		api(libs.fesod.sheet)
 		api(libs.curator.recipes)
@@ -21,7 +22,6 @@ dependencies {
 		api(libs.yauaa)
 		api(libs.google.javase)
 		api(libs.jsqlparser)
-		api(libs.lettucemod)
 		api(libs.aviator)
 		api(libs.commons.jexl3)
 		api(libs.mvel2)

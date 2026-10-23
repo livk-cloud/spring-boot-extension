@@ -1,8 +1,8 @@
 [[redisearch]]
 ==== redisearch
 
-封装 `RedisSearchTemplate`、`StringRedisSearchTemplate` 来操作 RediSearch。 +
-自动配置基于 lettuce-mod 创建 `RedisSearchConnectionFactory`，并在存在 Jackson 时提供 JSON 序列化的模板。
+封装同步模板 `RedisSearchTemplate`、`StringRedisSearchTemplate`，以及响应式模板 `ReactiveRedisSearchTemplate`、`StringReactiveRedisSearchTemplate`。 +
+自动配置基于 lettuce-mod 创建 `LettuceModConnectionFactory`（实现 `RedisSearchConnectionFactory`）。存在 Jackson 时，对象模板使用 JSON 编解码；classpath 上有 Reactor 时注册响应式模板。
 
 ===== 配置
 
@@ -45,6 +45,11 @@ spring:
 ===== 使用模板
 
 `RedisSearchTemplate<String, Object>` 适合对象读写，`StringRedisSearchTemplate` 适合字符串场景。 +
+同步调用使用 `executeSync`，异步调用使用 `executeAsync`。`executeAsync` 在回调返回 `CompletionStage` 时会持有连接直到完成。
+
+响应式场景注入 `ReactiveRedisSearchTemplate` 或 `StringReactiveRedisSearchTemplate`。 +
+`execute` 返回 `Mono`，`executeMany` 返回 `Flux`。连接在订阅时借出，发布者结束时归还；未订阅不会占用连接。
+
 如果需要调整 lettuce 的底层资源，可以注册 `ClientResourcesBuilderCustomizer`。
 
 [source,java,indent=0]
@@ -52,10 +57,28 @@ spring:
 @Service
 public class ArticleSearchService {
 
-	private final StringRedisSearchTemplate StringRedisSearchTemplate;
+	private final StringRedisSearchTemplate stringRedisSearchTemplate;
 
-	public ArticleSearchService(StringRedisSearchTemplate StringRedisSearchTemplate) {
-		this.StringRedisSearchTemplate = StringRedisSearchTemplate;
+	public ArticleSearchService(StringRedisSearchTemplate stringRedisSearchTemplate) {
+		this.stringRedisSearchTemplate = stringRedisSearchTemplate;
+	}
+
+}
+----
+
+[source,java,indent=0]
+----
+@Service
+public class ReactiveArticleSearchService {
+
+	private final StringReactiveRedisSearchTemplate stringReactiveRedisSearchTemplate;
+
+	public ReactiveArticleSearchService(StringReactiveRedisSearchTemplate stringReactiveRedisSearchTemplate) {
+		this.stringReactiveRedisSearchTemplate = stringReactiveRedisSearchTemplate;
+	}
+
+	public Flux<String> ping() {
+		return stringReactiveRedisSearchTemplate.executeMany(commands -> commands.ping().flux());
 	}
 
 }

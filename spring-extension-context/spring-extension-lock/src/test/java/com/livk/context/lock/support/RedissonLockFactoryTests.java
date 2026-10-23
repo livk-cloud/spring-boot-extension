@@ -16,14 +16,14 @@
 
 package com.livk.context.lock.support;
 
-import com.livk.context.lock.DistributedLock;
-import com.livk.testcontainers.containers.ZookeeperContainer;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
+import com.livk.context.lock.DistLockFactory;
+import com.livk.testcontainers.DockerImageNames;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -45,58 +45,75 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Tests for {@link RedissonLockFactory}.
+ * <p>
+ * Verifies distributed lock acquisition, reentrant behavior, and cross-thread exclusion
+ * using a real Redis instance via Testcontainers.
+ *
  * @author livk
  */
-@SpringJUnitConfig(CuratorLockTests.CuratorLockConfig.class)
+@SpringJUnitConfig(RedissonLockFactoryTests.RedissonLockConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
-class CuratorLockTests {
+class RedissonLockFactoryTests {
 
 	@Container
 	@ServiceConnection
-	static final ZookeeperContainer zookeeper = new ZookeeperContainer();
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("curator.connectString",
-				() -> String.format("%s:%s", zookeeper.getHost(), zookeeper.getFirstMappedPort()));
+		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
 	}
 
 	static final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
 
-	@Autowired
-	CuratorLockTests(CuratorFramework framework) {
-		lock = new CuratorLock(framework);
-	}
+	/**
+	 * The {@link DistLockFactory} under test, backed by a {@link RedissonLockFactory}.
+	 */
+	final DistLockFactory lock;
 
-	final DistributedLock lock;
+	@Autowired
+	RedissonLockFactoryTests(RedissonClient redissonClient) {
+		lock = new RedissonLockFactory(redissonClient);
+	}
 
 	@AfterAll
 	static void close() {
 		service.close();
 	}
 
+	/**
+	 * Verifies lock exclusion across threads and reentrant acquisition within the same
+	 * thread. Unlock is performed via {@link DistLockFactory.SpecLock#unlock()} which
+	 * releases the lock held in the current thread's {@code ThreadLocal}.
+	 */
 	@Test
 	void tryLock() throws ExecutionException, InterruptedException {
 		lock.lock("tryLock").lock();
 		assertThat(service.submit(() -> lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).get()).isFalse();
-		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isFalse();
+		assertThat(lock.lock("tryLock").leaseTime(3).waitTime(3).tryLock()).isTrue();
 		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
-		lock.unlock();
+		lock.lock("key").unlock();
 
 		assertThat(lock.lock("key").leaseTime(3).waitTime(3).tryLock()).isTrue();
 
-		lock.unlock();
+		lock.lock("key").unlock();
 	}
 
+	/**
+	 * Test configuration that provides a {@link RedissonClient} connected to the
+	 * Testcontainers Redis instance.
+	 */
 	@TestConfiguration
 	@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
-	static class CuratorLockConfig {
+	static class RedissonLockConfig {
 
-		@Bean(initMethod = "start", destroyMethod = "close")
-		public CuratorFramework curatorFramework(@Value("${curator.connectString}") String connectString) {
-			RetryPolicy retryPolicy = new ExponentialBackoffRetry(50, 10, 500);
-			return CuratorFrameworkFactory.builder().retryPolicy(retryPolicy).connectString(connectString).build();
+		@Bean
+		public RedissonClient redissonLock(@Value("${redisson.address}") String address) {
+			Config config = new Config();
+			config.useSingleServer().setAddress(address);
+			return Redisson.create(config);
 		}
 
 	}

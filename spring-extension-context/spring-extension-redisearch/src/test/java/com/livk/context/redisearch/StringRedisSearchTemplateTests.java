@@ -55,7 +55,7 @@ class StringRedisSearchTemplateTests {
 		template.afterPropertiesSet();
 
 		assertThat(template.executeAsync(commands -> commands.ping()).get()).isEqualTo("PONG");
-		assertThat(template.executeReactive(commands -> commands.ping()).block()).isEqualTo("PONG");
+		assertThat(template.<String>executeSync(commands -> commands.ping())).isEqualTo("PONG");
 	}
 
 }

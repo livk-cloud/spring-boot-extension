@@ -32,7 +32,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.format.annotation.DurationFormat;
 import org.springframework.format.datetime.standard.DurationFormatterUtils;
 
@@ -54,7 +54,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class MybatisSqlMonitor implements Interceptor {
 
-	private final ApplicationContext applicationContext;
+	private final ApplicationEventPublisher publisher;
 
 	@Setter
 	private Properties properties;
@@ -71,7 +71,7 @@ public class MybatisSqlMonitor implements Interceptor {
 			if (time > timeOut()) {
 				log.warn("{SQL execution timeout SQL:[{}],Time:[{}ms]}", sql, time);
 				MonitorSQLInfo monitorSQLInfo = new MonitorSQLInfo(sql, time);
-				this.applicationContext.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
+				this.publisher.publishEvent(new MonitorSQLTimeOutEvent(monitorSQLInfo));
 			}
 		}
 		else {

@@ -17,24 +17,34 @@
 package com.livk.context.lock.exception;
 
 /**
- * The Un Support Lock Exception.
+ * Exception thrown when a requested lock operation is not supported by the current
+ * implementation.
+ * <p>
+ * A typical scenario is invoking async lock methods on an implementation that does not
+ * support asynchronous operations, such as
+ * {@link com.livk.context.lock.support.CuratorLockFactory}.
  *
  * @author livk
+ * @see LockException
+ * @see com.livk.context.lock.support.AbstractLockSupport#tryLockAsync
+ * @see com.livk.context.lock.support.AbstractLockSupport#doLockAsync
  */
 public class UnSupportLockException extends RuntimeException {
 
 	/**
-	 * Instantiates a new Un support lock exception.
-	 * @param message the message
+	 * Create a new unsupported lock operation exception with the specified detail
+	 * message.
+	 * @param message the detail message describing which operation is unsupported
 	 */
 	public UnSupportLockException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Instantiates a new Un support lock exception.
-	 * @param message the message
-	 * @param cause the cause
+	 * Create a new unsupported lock operation exception with the specified detail message
+	 * and cause.
+	 * @param message the detail message
+	 * @param cause the root cause
 	 */
 	public UnSupportLockException(String message, Throwable cause) {
 		super(message, cause);

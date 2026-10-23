@@ -16,7 +16,7 @@
 
 package com.livk.qrcode.mvc.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeManager;
@@ -28,8 +28,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,13 +52,14 @@ class QRCode2ControllerTests {
 	void text() throws Exception {
 		String text = "Hello World!";
 		byte[] body = tester.get().uri("/qrcode2").param("text", text).assertThat().hasStatusOk().body().actual();
-		FileUtils.download(new ByteArrayInputStream(body), "./text." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(new ByteArrayInputStream(body), "./text." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("text." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -71,13 +73,14 @@ class QRCode2ControllerTests {
 			.hasStatusOk()
 			.body()
 			.actual();
-		FileUtils.download(new ByteArrayInputStream(body), "./json." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(new ByteArrayInputStream(body), "./json." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("json." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }

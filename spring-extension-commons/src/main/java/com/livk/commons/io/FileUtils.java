@@ -31,7 +31,9 @@ import java.nio.channels.ReadableByteChannel;
  * Utility class for file operations.
  *
  * @author livk
+ * @deprecated use {@link PathUtils}
  */
+@Deprecated(since = "2.1.2")
 @UtilityClass
 public class FileUtils {
 

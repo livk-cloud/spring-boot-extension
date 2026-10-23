@@ -30,6 +30,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author livk
@@ -91,7 +93,7 @@ class RedissonLimitExecutorTests {
 		executor.reentrantTryAccess("cachedKey", 10, Duration.ofSeconds(60));
 
 		// getRateLimiter should only be called once due to caching
-		org.mockito.Mockito.verify(redissonClient, org.mockito.Mockito.times(1)).getRateLimiter("cachedKey");
+		verify(redissonClient, times(1)).getRateLimiter("cachedKey");
 	}
 
 }

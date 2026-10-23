@@ -55,6 +55,7 @@ class UserControllerTests {
 			.assertThat()
 			.hasStatusOk()
 			.matches(jsonPath("id").value(id))
+			.matches(jsonPath("username").value("livk https"))
 			.matches(jsonPath("insertTime").isNotEmpty())
 			.matches(jsonPath("updateTime").isNotEmpty());
 	}
@@ -103,9 +104,10 @@ class UserControllerTests {
 			.uri("/user")
 			.assertThat()
 			.hasStatusOk()
-			.matches(jsonPath("list.[*].id").value(id))
-			.matches(jsonPath("pageNum").value(1))
-			.matches(jsonPath("pageSize").value(10));
+			.matches(jsonPath("[*].id").value(id))
+			.matches(jsonPath("[*].username").value("livk https"))
+			.matches(jsonPath("[*].insertTime").isNotEmpty())
+			.matches(jsonPath("[*].updateTime").isNotEmpty());
 	}
 
 }

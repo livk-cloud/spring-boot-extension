@@ -16,7 +16,7 @@
 
 package com.livk.qrcode.webflux.controller;
 
-import com.livk.commons.io.FileUtils;
+import com.livk.commons.io.PathUtils;
 import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.context.qrcode.PicType;
 import com.livk.context.qrcode.QrCodeManager;
@@ -28,9 +28,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,13 +65,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("text." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -85,13 +87,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("textMono." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./textMono." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("textMono." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -106,13 +109,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("text." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./text." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("text." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(text);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -129,13 +133,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("json." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -152,13 +157,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("jsonMono." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./jsonMono." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("jsonMono." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 	@Test
@@ -175,13 +181,14 @@ class QrCodeControllerTests {
 			.getResponseBody();
 
 		assertThat(resource).isNotNull();
-		FileUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
-		File outFile = new File("json." + PicType.JPG.name().toLowerCase());
-		try (FileInputStream inputStream = new FileInputStream(outFile)) {
+		PathUtils.download(resource.getInputStream(), "./json." + PicType.JPG.name().toLowerCase());
+		Path path = Path.of("json." + PicType.JPG.name().toLowerCase());
+		try (InputStream inputStream = Files.newInputStream(path)) {
 			assertThat(qrCodeManager.parser(inputStream)).isEqualTo(json);
 		}
-		assertThat(outFile).exists().isFile();
-		assertThat(outFile.delete()).isTrue();
+		assertThat(path).exists().isRegularFile();
+		assertThat(Files.deleteIfExists(path)).isTrue();
+		assertThat(path).doesNotExist();
 	}
 
 }

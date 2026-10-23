@@ -126,6 +126,12 @@ resolver.resolve("#param")
 |需引入 mvel2 jar
 |===
 
+===== Aviator 函数加载
+
+`ServiceFunctionLoader` 通过 `ServiceLoader` 按 `AviatorFunction.getName()` 注册函数。 +
+`SpringNamedFunctionLoader` 从 Spring 容器收集 `AviatorFunction` Bean，同样只按 `getName()` 建索引，Bean 名称不参与查找。 +
+这和 Aviator 官方的 `com.googlecode.aviator.spring.SpringContextFunctionLoader` 不同，后者用表达式中的函数名去 `getBean(name)`。
+
 ===== 选择建议
 
 Spring 项目优先使用 `SpringExpressionResolver`。如果业务已有 Aviator、FreeMarker、Jexl3 或 Mvel2 规则资产，可以引入对应依赖后使用相应 resolver。 +
