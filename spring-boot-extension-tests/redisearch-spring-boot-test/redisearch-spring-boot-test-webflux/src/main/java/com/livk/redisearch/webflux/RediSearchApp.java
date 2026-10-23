@@ -53,17 +53,15 @@ public class RediSearchApp {
 				.any(index -> index.equals(Student.INDEX))
 				.filter(exists -> !exists)
 				.flatMap(exist -> {
-					TextFieldArgs<String> nameArg = TextFieldArgs.<String>builder()
+					TextFieldArgs nameArg = TextFieldArgs.builder()
 						.name(BeanLambda.fieldName(Student::getName))
 						.weight(5)
 						.build();
-					TextFieldArgs<String> sexArg = TextFieldArgs.<String>builder()
-						.name(BeanLambda.fieldName(Student::getSex))
-						.build();
-					TextFieldArgs<String> descArg = TextFieldArgs.<String>builder()
+					TextFieldArgs sexArg = TextFieldArgs.builder().name(BeanLambda.fieldName(Student::getSex)).build();
+					TextFieldArgs descArg = TextFieldArgs.builder()
 						.name(BeanLambda.fieldName(Student::getDesc))
 						.build();
-					TagFieldArgs<String> tagArg = TagFieldArgs.<String>builder().name("class").build();
+					TagFieldArgs tagArg = TagFieldArgs.builder().name("class").build();
 					return reactive.ftCreate(Student.INDEX, List.of(nameArg, sexArg, descArg, tagArg)).then();
 				});
 			ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -75,10 +73,10 @@ public class RediSearchApp {
 					.setClassX((i + 1) + "班");
 			});
 
-			Flux<String> insertData = studentFlux.flatMap(student -> {
+			Flux<Long> insertData = studentFlux.flatMap(student -> {
 				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
 				String key = "00" + student.getName().replace("livk-", "");
-				return reactive.hmset(key, body);
+				return reactive.hset(key, body);
 			});
 
 			return createIndex.thenMany(insertData)

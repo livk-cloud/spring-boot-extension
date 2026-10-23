@@ -51,17 +51,13 @@ public class RediSearchApp {
 			RedisModulesCommands<String, String> search = connection.sync();
 
 			if (!search.ftList().contains(Student.INDEX)) {
-				TextFieldArgs<String> nameArg = TextFieldArgs.<String>builder()
+				TextFieldArgs nameArg = TextFieldArgs.builder()
 					.name(BeanLambda.fieldName(Student::getName))
 					.weight(5)
 					.build();
-				TextFieldArgs<String> sexArg = TextFieldArgs.<String>builder()
-					.name(BeanLambda.fieldName(Student::getSex))
-					.build();
-				TextFieldArgs<String> descArg = TextFieldArgs.<String>builder()
-					.name(BeanLambda.fieldName(Student::getDesc))
-					.build();
-				TagFieldArgs<String> tagArg = TagFieldArgs.<String>builder().name("class").build();
+				TextFieldArgs sexArg = TextFieldArgs.builder().name(BeanLambda.fieldName(Student::getSex)).build();
+				TextFieldArgs descArg = TextFieldArgs.builder().name(BeanLambda.fieldName(Student::getDesc)).build();
+				TagFieldArgs tagArg = TagFieldArgs.builder().name("class").build();
 				search.ftCreate(Student.INDEX, List.of(nameArg, sexArg, descArg, tagArg));
 			}
 			ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -72,10 +68,10 @@ public class RediSearchApp {
 					.setDesc("是一个学生")
 					.setClassX((i + 1) + "班");
 				Map<String, String> body = JsonMapperUtils.convertValueMap(student, String.class, String.class);
-				search.hmset("00" + i, body);
+				search.hset("00" + i, body);
 			}
-			SearchReply<String, String> result = search.ftSearch(Student.INDEX, "*");
-			for (SearchReply.SearchResult<String, String> resultResult : result.getResults()) {
+			SearchReply<String> result = search.ftSearch(Student.INDEX, "*");
+			for (SearchReply.SearchResult<String> resultResult : result.getResults()) {
 				Student bean = JsonMapperUtils.convertValue(resultResult.getFields(), Student.class);
 				log.info("{}", bean);
 			}
