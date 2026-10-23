@@ -2,7 +2,7 @@
 ==== dynamic
 
 动态数据源组件基于 `DynamicDatasource` 和 AOP 拦截器完成数据源切换。 +
-手动模式可以直接注册 `DynamicDatasource`，Spring Boot 项目推荐使用 `dynamic-datasource-boot-starter` 和 `@EnableDynamicDatasource`。
+手动模式可以直接注册 `DynamicDatasource`，Spring Boot 项目推荐使用 `dynamic-datasource-spring-boot-starter` 和 `@EnableDynamicDatasource`。
 
 ===== DynamicSource
 
@@ -42,9 +42,9 @@ public class Config {
 }
 ----
 
-===== dynamic-datasource-boot-starter
+===== dynamic-datasource-spring-boot-starter
 
-artifactId: dynamic-datasource-boot-starter
+artifactId: dynamic-datasource-spring-boot-starter
 
 根据DynamicDatasourceProperties注册DynamicDatasource和DataSourceInterceptor
 

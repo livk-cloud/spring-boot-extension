@@ -45,7 +45,8 @@ starter 根据类路径自动注册解析器：
 * 引入 `browscap-spring-boot-starter` 时，使用 BrowsCap 的 `UserAgentParser`。
 * 引入 `yauaa-spring-boot-starter` 时，使用 YAUAA 的 `UserAgentAnalyzer`。
 
-如果项目中同时存在多个 `UserAgentConverter` 会按 Spring Bean 顺序依次尝试转换，返回第一个非空结果。
+`UserAgentComposite` 会按 Spring Bean 顺序收集 `UserAgentConverter`，依次尝试转换并返回第一个非空结果。 +
+应用可以自行注册 `UserAgentComposite`，自动配置会退让。
 
 ===== browscap-spring-boot-starter
 
