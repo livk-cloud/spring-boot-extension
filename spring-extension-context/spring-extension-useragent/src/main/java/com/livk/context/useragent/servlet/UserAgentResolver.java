@@ -18,7 +18,7 @@ package com.livk.context.useragent.servlet;
 
 import com.livk.commons.util.HttpServletUtils;
 import com.livk.context.useragent.UserAgent;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import com.livk.context.useragent.annotation.UserAgentInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class UserAgentResolver implements HandlerMethodArgumentResolver {
 
-	private final UserAgentDelegate userAgentDelegate;
+	private final UserAgentComposite userAgentComposite;
 
 	@Override
 	public final boolean supportsParameter(MethodParameter parameter) {
@@ -54,7 +54,7 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 			Assert.notNull(request, "request not be null!");
 			HttpHeaders headers = HttpServletUtils.headers(request);
-			agentContext = this.userAgentDelegate.convert(headers);
+			agentContext = this.userAgentComposite.convert(headers);
 			UserAgentContextHolder.withUserAgentContext(agentContext);
 		}
 		return agentContext;

@@ -20,6 +20,7 @@ import com.livk.auto.service.annotation.SpringAutoService;
 import com.livk.context.dynamic.DynamicDatasource;
 import com.livk.context.dynamic.intercept.DataSourceInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,7 @@ public class DynamicAutoConfiguration {
 	 * @return the dynamic datasource
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public DynamicDatasource dynamicDatasource(DynamicDatasourceProperties datasourceProperties) {
 		Map<Object, Object> datasourceMap = datasourceProperties.getDatasource()
 			.entrySet()
@@ -60,6 +62,7 @@ public class DynamicAutoConfiguration {
 	 * @return the data source interceptor
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public DataSourceInterceptor dataSourceInterceptor() {
 		return new DataSourceInterceptor();
 	}

@@ -26,7 +26,7 @@ public class UserService {
 
 * `key`：锁名称，支持 SpEL 表达式生成动态 key。
 * `type`：锁类型，支持 `LOCK`、`FAIR`、`READ`、`WRITE`。
-* `leaseTime`：锁租约时间（秒），默认 `10`。
+* `leaseTime`：锁租约时间（秒），默认 `-1`，表示不自动过期，直到显式释放。
 * `waitTime`：等待获取锁时间（秒），默认 `3`。
 * `async`：是否使用异步锁能力。
 
@@ -67,9 +67,9 @@ if (spec.tryLock()) {
 分布式锁拦截器，基于 AOP 拦截标注了 `@DistLock` 的方法。 +
 拦截器接收 `ObjectProvider<DistLockFactory>` 注入所有可用的锁工厂，并在方法执行前后自动完成加锁与释放。
 
-===== distributed-lock-boot-starter
+===== distributed-lock-spring-boot-starter
 
-artifactId: distributed-lock-boot-starter
+artifactId: distributed-lock-spring-boot-starter
 
 starter 会自动注册 `DistributedLockInterceptor` 和可用的 `DistLockFactory` 实现。 +
 方法执行完成或异常退出时都会释放锁。

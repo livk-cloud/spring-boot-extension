@@ -22,13 +22,19 @@ import com.livk.context.lock.exception.LockException;
 import com.livk.context.lock.exception.UnSupportLockException;
 import org.springframework.util.Assert;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
+
 /**
  * Abstract base class providing a skeletal {@link DistLockFactory} implementation.
  * <p>
  * This class uses the Template Method pattern to define the common lock operation flow;
  * subclasses only need to implement the concrete lock acquisition, release, and state
- * checking logic. Internally uses a {@link ThreadLocal} to store the lock object held by
- * the current thread, ensuring thread safety.
+ * checking logic. Per-thread holdings are tracked by {@link ThreadLockContext} keyed by
+ * {@link LockType} and business key, so the same thread can nest different keys and
+ * re-enter the same key; unlock may use any {@link SpecLock} for that key on the same
+ * thread.
  * <p>
  * Subclasses must implement the following abstract methods:
  * <ul>
@@ -51,13 +57,7 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractLockSupport<T> implements DistLockFactory {
 
-	/**
-	 * Thread-local variable storing the lock object held by the current thread.
-	 * <p>
-	 * Set after successful lock acquisition, removed after lock release. Ensures the
-	 * unlock operation targets the lock held by the current thread.
-	 */
-	protected final ThreadLocal<T> threadLocal = new ThreadLocal<>();
+	private final ThreadLockContext<T> lockContext = new ThreadLockContext<>();
 
 	/**
 	 * {@inheritDoc}
@@ -168,6 +168,75 @@ public abstract class AbstractLockSupport<T> implements DistLockFactory {
 		return false;
 	}
 
+	/**
+	 * Per-thread lock holdings keyed by {@link LockType} and business key.
+	 * <p>
+	 * Encapsulates {@link ThreadLocal} lifecycle, re-entrant hold counts, and cleanup
+	 * when the current thread no longer holds any locks.
+	 *
+	 * @param <L> the underlying lock object type
+	 */
+	private static final class ThreadLockContext<L> {
+
+		private final ThreadLocal<Map<LockKey, LockHolder<L>>> threadLocks = ThreadLocal.withInitial(HashMap::new);
+
+		private LockKey key(LockType type, String key) {
+			return new LockKey(type, key);
+		}
+
+		private L get(LockKey key) {
+			LockHolder<L> holder = this.threadLocks.get().get(key);
+			return (holder != null) ? holder.lock : null;
+		}
+
+		private void hold(LockKey key, L lock) {
+			Map<LockKey, LockHolder<L>> locks = this.threadLocks.get();
+			LockHolder<L> holder = locks.get(key);
+			if (holder == null) {
+				locks.put(key, new LockHolder<>(lock));
+			}
+			else {
+				holder.holdCount++;
+			}
+		}
+
+		private void release(LockKey key, Predicate<L> isLocked, Predicate<L> unlock) {
+			Map<LockKey, LockHolder<L>> locks = this.threadLocks.get();
+			LockHolder<L> holder = locks.get(key);
+			if (holder == null) {
+				return;
+			}
+			if (!isLocked.test(holder.lock)) {
+				locks.remove(key);
+			}
+			else if (unlock.test(holder.lock)) {
+				if (--holder.holdCount == 0) {
+					locks.remove(key);
+				}
+			}
+			if (locks.isEmpty()) {
+				this.threadLocks.remove();
+			}
+		}
+
+		private record LockKey(LockType type, String key) {
+		}
+
+		private static final class LockHolder<L> {
+
+			private final L lock;
+
+			private int holdCount;
+
+			private LockHolder(L lock) {
+				this.lock = lock;
+				this.holdCount = 1;
+			}
+
+		}
+
+	}
+
 	private final class DefaultLockSpec implements DistLockFactory.SpecLock {
 
 		private final String key;
@@ -209,45 +278,40 @@ public abstract class AbstractLockSupport<T> implements DistLockFactory {
 
 		@Override
 		public boolean tryLock() {
-			T lock = getLock(this.type, this.key);
-			try {
-				boolean isLocked = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
-						: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
-				if (isLocked) {
-					AbstractLockSupport.this.threadLocal.set(lock);
-				}
-				return isLocked;
+			ThreadLockContext.LockKey lockKey = AbstractLockSupport.this.lockContext.key(this.type, this.key);
+			T lock = AbstractLockSupport.this.lockContext.get(lockKey);
+			if (lock == null) {
+				lock = getLock(this.type, this.key);
 			}
-			catch (LockException ex) {
-				AbstractLockSupport.this.threadLocal.remove();
-				throw ex;
+			boolean acquired = (supportAsync() && this.async) ? tryLockAsync(lock, this.leaseTime, this.waitTime)
+					: AbstractLockSupport.this.tryLock(lock, this.leaseTime, this.waitTime);
+			if (acquired) {
+				AbstractLockSupport.this.lockContext.hold(lockKey, lock);
 			}
+			return acquired;
 		}
 
 		@Override
 		public void lock() {
-			T lock = getLock(this.type, this.key);
-			try {
-				if (supportAsync() && this.async) {
-					doLockAsync(lock, this.leaseTime);
-				}
-				else {
-					doLock(lock, this.leaseTime);
-				}
-				AbstractLockSupport.this.threadLocal.set(lock);
+			ThreadLockContext.LockKey lockKey = AbstractLockSupport.this.lockContext.key(this.type, this.key);
+			T lock = AbstractLockSupport.this.lockContext.get(lockKey);
+			if (lock == null) {
+				lock = getLock(this.type, this.key);
 			}
-			catch (LockException ex) {
-				AbstractLockSupport.this.threadLocal.remove();
-				throw ex;
+			if (supportAsync() && this.async) {
+				doLockAsync(lock, this.leaseTime);
 			}
+			else {
+				doLock(lock, this.leaseTime);
+			}
+			AbstractLockSupport.this.lockContext.hold(lockKey, lock);
 		}
 
 		@Override
 		public void unlock() {
-			T lock = AbstractLockSupport.this.threadLocal.get();
-			if (lock != null && isLocked(lock) && AbstractLockSupport.this.unlock(lock)) {
-				AbstractLockSupport.this.threadLocal.remove();
-			}
+			ThreadLockContext.LockKey lockKey = AbstractLockSupport.this.lockContext.key(this.type, this.key);
+			AbstractLockSupport.this.lockContext.release(lockKey, AbstractLockSupport.this::isLocked,
+					AbstractLockSupport.this::unlock);
 		}
 
 	}

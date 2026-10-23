@@ -17,7 +17,7 @@
 package com.livk.commons;
 
 import com.livk.auto.service.annotation.SpringAutoService;
-import com.livk.commons.util.GenericWrapper;
+import com.livk.commons.wrapper.ValueWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationNotAllowedException;
 import org.springframework.beans.factory.BeanFactory;
@@ -249,7 +249,7 @@ public class SpringContextHolder implements BeanFactoryAware, ApplicationContext
 		SpringContextHolder.IOC.clear();
 	}
 
-	private static final class SpringIoC implements GenericWrapper<ApplicationContext> {
+	private static final class SpringIoC implements ValueWrapper<ApplicationContext> {
 
 		private volatile ApplicationContext context;
 

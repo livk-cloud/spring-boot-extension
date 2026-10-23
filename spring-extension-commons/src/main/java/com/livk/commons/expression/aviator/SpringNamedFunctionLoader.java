@@ -22,35 +22,52 @@ import com.googlecode.aviator.runtime.type.AviatorFunction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Spring-based FunctionLoader for Aviator.
+ * Spring-based {@link FunctionLoader} that resolves functions by
+ * {@link AviatorFunction#getName()}.
  * <p>
- * 从IOC容器中获取AviatorFunction.
+ * Unlike Aviator's official
+ * {@code com.googlecode.aviator.spring.SpringContextFunctionLoader} (which looks up beans
+ * by bean name), this loader indexes all {@link AviatorFunction} beans by their Aviator
+ * function name.
  *
  * @author livk
  * @see AviatorFunction
+ * @see ServiceFunctionLoader
  */
 @RequiredArgsConstructor
-public class SpringContextFunctionLoader implements FunctionLoader, InitializingBean, DisposableBean {
+public class SpringNamedFunctionLoader implements FunctionLoader, InitializingBean, DisposableBean {
 
 	private final ApplicationContext applicationContext;
 
+	private volatile Map<String, AviatorFunction> functionMap;
+
 	@Override
 	public AviatorFunction onFunctionNotFound(String name) {
-		try {
-			for (AviatorFunction function : this.applicationContext.getBeanProvider(AviatorFunction.class)) {
-				if (name.equals(function.getName())) {
-					return function;
+		return getFunctionMap().get(name);
+	}
+
+	private Map<String, AviatorFunction> getFunctionMap() {
+		Map<String, AviatorFunction> result = this.functionMap;
+		if (result == null) {
+			synchronized (this) {
+				result = this.functionMap;
+				if (result == null) {
+					Map<String, AviatorFunction> map = new HashMap<>();
+					this.applicationContext.getBeanProvider(AviatorFunction.class)
+						.orderedStream()
+						.forEach((fn) -> map.putIfAbsent(fn.getName(), fn));
+					result = Map.copyOf(map);
+					this.functionMap = result;
 				}
 			}
-			return this.applicationContext.getBean(name, AviatorFunction.class);
 		}
-		catch (NoSuchBeanDefinitionException ex) {
-			return null;
-		}
+		return result;
 	}
 
 	@Override

@@ -16,6 +16,8 @@
 
 package com.livk.commons.util;
 
+import com.livk.commons.wrapper.ValueWrapper;
+
 import java.util.Optional;
 
 /**
@@ -23,7 +25,9 @@ import java.util.Optional;
  *
  * @param <V> the type parameter
  * @author livk
+ * @deprecated use {@link ValueWrapper}
  */
+@Deprecated(since = "2.1.2")
 public interface GenericWrapper<V> {
 
 	/**

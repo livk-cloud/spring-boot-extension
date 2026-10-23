@@ -18,7 +18,7 @@ package com.livk.autoconfigure.useragent;
 
 import com.blueconic.browscap.UserAgentParser;
 import com.livk.commons.util.FieldUtils;
-import com.livk.context.useragent.UserAgentDelegate;
+import com.livk.context.useragent.UserAgentComposite;
 import com.livk.context.useragent.browscap.BrowscapUserAgentConverter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentFilter;
 import com.livk.context.useragent.reactive.ReactiveUserAgentResolver;
@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author livk
@@ -55,14 +56,14 @@ class UserAgentAutoConfigurationTests {
 
 	@Test
 	void test() {
-		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentDelegate.class));
+		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(UserAgentComposite.class));
 	}
 
 	@Test
-	void customUserAgentHelperBacksOffAutoConfiguredHelper() {
-		UserAgentDelegate userAgentDelegate = new UserAgentDelegate();
-		this.contextRunner.withBean(UserAgentDelegate.class, () -> userAgentDelegate)
-			.run((context) -> assertThat(context).getBean(UserAgentDelegate.class).isSameAs(userAgentDelegate));
+	void customUserAgentCompositeBacksOffAutoConfiguredComposite() {
+		UserAgentComposite userAgentComposite = mock(UserAgentComposite.class);
+		this.contextRunner.withBean(UserAgentComposite.class, () -> userAgentComposite)
+			.run((context) -> assertThat(context).getBean(UserAgentComposite.class).isSameAs(userAgentComposite));
 	}
 
 	@Test

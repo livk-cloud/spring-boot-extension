@@ -16,7 +16,7 @@
 
 package com.livk.commons.jackson.support;
 
-import com.livk.commons.util.GenericWrapper;
+import com.livk.commons.wrapper.ValueWrapper;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
@@ -32,7 +32,7 @@ import java.nio.file.Path;
  *
  * @author livk
  */
-public final class JacksonSupport extends AbstractJacksonOps implements JacksonOps, GenericWrapper<ObjectMapper> {
+public final class JacksonSupport extends AbstractJacksonOps implements JacksonOps, ValueWrapper<ObjectMapper> {
 
 	private final ObjectMapper mapper;
 

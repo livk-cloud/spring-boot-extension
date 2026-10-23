@@ -17,7 +17,9 @@
 package com.livk.autoconfigure.redisearch;
 
 import com.livk.auto.service.annotation.SpringAutoService;
+import com.livk.context.redisearch.ReactiveRedisSearchTemplate;
 import com.livk.context.redisearch.RedisSearchTemplate;
+import com.livk.context.redisearch.StringReactiveRedisSearchTemplate;
 import com.livk.context.redisearch.StringRedisSearchTemplate;
 import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.redis.lettucemod.RedisModulesClient;
@@ -30,6 +32,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import reactor.core.publisher.Flux;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
@@ -75,8 +78,8 @@ public class RediSearchAutoConfiguration {
 	 * @return the redi search template
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "RedisSearchTemplate")
-	public RedisSearchTemplate<String, Object> RedisSearchTemplate(LettuceModConnectionFactory factory,
+	@ConditionalOnMissingBean(name = "redisSearchTemplate")
+	public RedisSearchTemplate<String, Object> redisSearchTemplate(LettuceModConnectionFactory factory,
 			JsonMapper.Builder builder) {
 		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(builder.build());
 		RedisSearchTemplate<String, Object> template = new RedisSearchTemplate<>(factory, redisCodec);
@@ -91,8 +94,39 @@ public class RediSearchAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public StringRedisSearchTemplate StringRedisSearchTemplate(LettuceModConnectionFactory factory) {
+	public StringRedisSearchTemplate stringRedisSearchTemplate(LettuceModConnectionFactory factory) {
 		StringRedisSearchTemplate template = new StringRedisSearchTemplate(factory);
+		template.setPoolConfig(factory.getPoolConfig());
+		return template;
+	}
+
+	/**
+	 * Reactive redi search template.
+	 * @param factory the factory
+	 * @param builder the builder
+	 * @return the reactive redi search template
+	 */
+	@Bean
+	@ConditionalOnClass(Flux.class)
+	@ConditionalOnMissingBean(name = "reactiveRedisSearchTemplate")
+	public ReactiveRedisSearchTemplate<String, Object> reactiveRedisSearchTemplate(LettuceModConnectionFactory factory,
+			JsonMapper.Builder builder) {
+		RedisCodec<String, Object> redisCodec = RedisSearchCodecs.json(builder.build());
+		ReactiveRedisSearchTemplate<String, Object> template = new ReactiveRedisSearchTemplate<>(factory, redisCodec);
+		template.setPoolConfig(factory.getPoolConfig());
+		return template;
+	}
+
+	/**
+	 * String reactive redi search template.
+	 * @param factory the factory
+	 * @return the string reactive redi search template
+	 */
+	@Bean
+	@ConditionalOnClass(Flux.class)
+	@ConditionalOnMissingBean
+	public StringReactiveRedisSearchTemplate stringReactiveRedisSearchTemplate(LettuceModConnectionFactory factory) {
+		StringReactiveRedisSearchTemplate template = new StringReactiveRedisSearchTemplate(factory);
 		template.setPoolConfig(factory.getPoolConfig());
 		return template;
 	}
