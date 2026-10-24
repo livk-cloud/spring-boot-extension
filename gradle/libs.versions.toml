@@ -1,6 +1,6 @@
 [versions]
 spring-boot = "4.1.2"
-mybatis = "3.5.19"
+mybatis = "3.6.0"
 mybatis-spring = "4.1.0"
 mybatis-boot = "4.1.0"
 guava = "33.7.2-jre"
