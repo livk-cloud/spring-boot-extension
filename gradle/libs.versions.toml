@@ -1,16 +1,16 @@
 [versions]
 spring-boot = "4.2.0-RC1"
-mybatis = "3.5.19"
+mybatis = "3.6.0"
 mybatis-spring = "4.1.0"
 mybatis-boot = "4.1.0"
-guava = "33.7.2-jre"
+guava = "33.8.0-jre"
 fesod = "2.1.0-incubating"
 redisson = "4.8.0"
 curator = "5.9.0"
 asciidoctor-jvm = "4.0.5"
 browscap-java = "1.5.1"
 auto-service = "1.1.1"
-yauaa = "8.2.0"
+yauaa = "8.3.0"
 google-javase = "3.5.4"
 jsqlparser = "5.4"
 lettucemod = "4.5.0"
@@ -23,7 +23,7 @@ spring-javaformat = "0.0.48"
 okhttp = "5.5.1"
 spotbugs-annotations = "4.10.5"
 maven-publish-plugins = "0.37.0"
-checkstyle = "14.3.0"
+checkstyle = "14.4.0"
 
 [libraries]
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation(project(":spring-boot-extension-starters:redisearch-spring-boot-starter"))
 
 	testImplementation(project(":spring-testcontainers-support"))
