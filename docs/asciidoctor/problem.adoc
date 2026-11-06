@@ -10,13 +10,12 @@
 `spring-auto-service` 是编译期注解处理器，需要同时加入 `compileOnly` 和 `annotationProcessor`。 +
 如果使用 Kotlin，需要按项目的 Kotlin KAPT/KSP 配置接入注解处理器。
 
-==== Redisson、Curator、Redisearch 连接失败
+==== Redisson、Curator 连接失败
 
 先检查配置前缀是否正确：
 
 * Redisson：`spring.redisson`
 * Curator：`spring.zookeeper.curator`
-* RediSearch：`spring.redisearch`
 
 再确认中间件地址、端口、认证信息与本地网络环境。使用 Testcontainers 时，可优先使用 `@ServiceConnection` 或测试配置注入连接信息。
 

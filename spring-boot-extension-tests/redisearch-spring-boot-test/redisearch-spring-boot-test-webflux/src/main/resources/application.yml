@@ -1,4 +1,0 @@
-spring:
-  redisearch:
-    host: livk.com
-    port: 6380

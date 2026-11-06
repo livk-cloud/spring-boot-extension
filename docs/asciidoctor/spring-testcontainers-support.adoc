@@ -43,7 +43,6 @@
 * `DockerImageNames.mysql()`
 * `DockerImageNames.postgres()`
 * `DockerImageNames.redis()`
-* `DockerImageNames.redisStack()`
 * `DockerImageNames.zookeeper()`
 
 每个方法都提供默认 `latest` 标签，也可以传入指定 tag。
