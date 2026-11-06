@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.springframework.boot:spring-boot-data-redis")
 	implementation(project(":spring-boot-extension-starters:redisson-spring-boot-starter"))
 
