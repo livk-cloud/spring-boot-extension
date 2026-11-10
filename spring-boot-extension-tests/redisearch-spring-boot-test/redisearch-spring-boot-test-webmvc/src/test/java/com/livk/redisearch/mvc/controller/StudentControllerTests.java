@@ -17,7 +17,7 @@
 package com.livk.redisearch.mvc.controller;
 
 import com.livk.testcontainers.DockerImageNames;
-import com.redis.testcontainers.RedisStackContainer;
+import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,12 +41,12 @@ class StudentControllerTests {
 
 	@Container
 	@ServiceConnection
-	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.redisearch.host", redisStack::getHost);
-		registry.add("spring.redisearch.port", redisStack::getFirstMappedPort);
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", redis::getFirstMappedPort);
 	}
 
 	@Autowired

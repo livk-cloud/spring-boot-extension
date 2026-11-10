@@ -19,7 +19,7 @@ package com.livk.context.redisearch;
 import com.livk.context.redisearch.codec.RedisSearchCodecs;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.lettucemod.api.StatefulRedisModulesConnection;
-import com.redis.testcontainers.RedisStackContainer;
+import com.redis.testcontainers.RedisContainer;
 import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.api.reactive.BaseRedisReactiveCommands;
 import io.lettuce.core.codec.RedisCodec;
@@ -55,12 +55,12 @@ class ReactiveRedisSearchTemplateTests {
 
 	@Container
 	@ServiceConnection
-	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("redisearch.host", redisStack::getHost);
-		registry.add("redisearch.port", redisStack::getFirstMappedPort);
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", redis::getFirstMappedPort);
 	}
 
 	@Autowired

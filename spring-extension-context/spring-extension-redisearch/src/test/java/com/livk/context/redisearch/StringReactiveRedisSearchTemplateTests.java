@@ -17,7 +17,8 @@
 package com.livk.context.redisearch;
 
 import com.livk.testcontainers.DockerImageNames;
-import com.redis.testcontainers.RedisStackContainer;
+import com.redis.testcontainers.RedisContainer;
+import io.lettuce.core.api.reactive.BaseRedisReactiveCommands;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -37,12 +38,12 @@ class StringReactiveRedisSearchTemplateTests {
 
 	@Container
 	@ServiceConnection
-	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("redisearch.host", redisStack::getHost);
-		registry.add("redisearch.port", redisStack::getFirstMappedPort);
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", redis::getFirstMappedPort);
 	}
 
 	@Autowired
@@ -53,7 +54,7 @@ class StringReactiveRedisSearchTemplateTests {
 		StringReactiveRedisSearchTemplate template = new StringReactiveRedisSearchTemplate(factory);
 		template.afterPropertiesSet();
 
-		StepVerifier.create(template.execute((commands) -> commands.ping())).expectNext("PONG").verifyComplete();
+		StepVerifier.create(template.execute(BaseRedisReactiveCommands::ping)).expectNext("PONG").verifyComplete();
 		StepVerifier.create(template.executeMany((commands) -> commands.ping().flux()))
 			.expectNext("PONG")
 			.verifyComplete();

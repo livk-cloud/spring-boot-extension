@@ -42,9 +42,6 @@ public class DockerImageNames {
 	/** The Redis Docker image name. */
 	public static final String REDIS_IMAGE = "redis";
 
-	/** The Redis Stack Docker image name. */
-	public static final String REDIS_STACK_IMAGE = "redis/redis-stack-server";
-
 	public static DockerImageName mysql() {
 		return mysql(LATEST_TAG);
 	}
@@ -75,14 +72,6 @@ public class DockerImageNames {
 
 	public static DockerImageName redis(String tag) {
 		return DockerImageName.parse(REDIS_IMAGE).withTag(tag);
-	}
-
-	public static DockerImageName redisStack() {
-		return redisStack(LATEST_TAG);
-	}
-
-	public static DockerImageName redisStack(String tag) {
-		return DockerImageName.parse(REDIS_STACK_IMAGE).withTag(tag);
 	}
 
 }

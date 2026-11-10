@@ -17,7 +17,9 @@
 package com.livk.context.redisearch;
 
 import com.livk.testcontainers.DockerImageNames;
-import com.redis.testcontainers.RedisStackContainer;
+import com.redis.testcontainers.RedisContainer;
+import io.lettuce.core.api.async.BaseRedisAsyncCommands;
+import io.lettuce.core.api.sync.BaseRedisCommands;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -38,12 +40,12 @@ class StringRedisSearchTemplateTests {
 
 	@Container
 	@ServiceConnection
-	static final RedisStackContainer redisStack = new RedisStackContainer(DockerImageNames.redisStack());
+	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
 	@DynamicPropertySource
 	static void redisProperties(DynamicPropertyRegistry registry) {
-		registry.add("redisearch.host", redisStack::getHost);
-		registry.add("redisearch.port", redisStack::getFirstMappedPort);
+		registry.add("spring.redisearch.host", redis::getHost);
+		registry.add("spring.redisearch.port", redis::getFirstMappedPort);
 	}
 
 	@Autowired
@@ -54,8 +56,8 @@ class StringRedisSearchTemplateTests {
 		StringRedisSearchTemplate template = new StringRedisSearchTemplate(factory);
 		template.afterPropertiesSet();
 
-		assertThat(template.executeAsync(commands -> commands.ping()).get()).isEqualTo("PONG");
-		assertThat(template.<String>executeSync(commands -> commands.ping())).isEqualTo("PONG");
+		assertThat(template.executeAsync(BaseRedisAsyncCommands::ping).get()).isEqualTo("PONG");
+		assertThat(template.<String>executeSync(BaseRedisCommands::ping)).isEqualTo("PONG");
 	}
 
 }
