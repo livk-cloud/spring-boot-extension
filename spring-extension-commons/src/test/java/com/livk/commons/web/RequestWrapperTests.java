@@ -114,20 +114,20 @@ class RequestWrapperTests {
 	@Test
 	void addHeaderWithSingleValue() {
 		wrapper.addHeader(HttpHeaders.USER_AGENT, "test");
-		assertThat(HttpServletUtils.headers(wrapper).getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
+		assertThat(HttpServletUtils.extractHeaders(wrapper).getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
 	}
 
 	@Test
 	void addHeaderWithList() {
 		wrapper.addHeader(HttpHeaders.ACCEPT, List.of("text/html", "application/json"));
-		HttpHeaders headers = HttpServletUtils.headers(wrapper);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(wrapper);
 		assertThat(headers.get(HttpHeaders.ACCEPT)).contains("text/html", "application/json");
 	}
 
 	@Test
 	void addHeaderWithArray() {
 		wrapper.addHeader(HttpHeaders.ACCEPT, new String[] { "text/html", "application/json" });
-		HttpHeaders headers = HttpServletUtils.headers(wrapper);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(wrapper);
 		assertThat(headers.get(HttpHeaders.ACCEPT)).contains("text/html", "application/json");
 	}
 

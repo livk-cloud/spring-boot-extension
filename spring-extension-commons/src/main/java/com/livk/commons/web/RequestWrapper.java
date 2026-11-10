@@ -66,7 +66,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 */
 	public RequestWrapper(HttpServletRequest request) {
 		super(request);
-		this.headers.putAll(HttpServletUtils.headers(request));
+		this.headers.putAll(HttpServletUtils.extractHeaders(request));
 		this.parameter.putAll(HttpServletUtils.params(request));
 		this.contentType = request.getContentType();
 	}

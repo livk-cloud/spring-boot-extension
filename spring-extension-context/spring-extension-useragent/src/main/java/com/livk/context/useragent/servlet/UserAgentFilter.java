@@ -43,7 +43,7 @@ public class UserAgentFilter extends OncePerRequestFilter {
 	@Override
 	protected final void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			FilterChain filterChain) throws IOException, ServletException {
-		HttpHeaders headers = HttpServletUtils.headers(request);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(request);
 		UserAgent userAgent = this.userAgentComposite.convert(headers);
 		UserAgentContextHolder.withUserAgentContext(userAgent);
 		try {
