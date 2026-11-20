@@ -53,7 +53,7 @@ public class UserAgentResolver implements HandlerMethodArgumentResolver {
 		if (agentContext == null) {
 			HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 			Assert.notNull(request, "request not be null!");
-			HttpHeaders headers = HttpServletUtils.headers(request);
+			HttpHeaders headers = HttpServletUtils.extractHeaders(request);
 			agentContext = this.userAgentComposite.convert(headers);
 			UserAgentContextHolder.withUserAgentContext(agentContext);
 		}

@@ -27,6 +27,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.ErrorResponseException;
@@ -87,7 +88,7 @@ public class HttpServletUtils {
 	 * @param request request
 	 * @return http headers
 	 */
-	public HttpHeaders headers(HttpServletRequest request) {
+	public HttpHeaders extractHeaders(HttpServletRequest request) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		Enumeration<String> headerNames = request.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
@@ -96,6 +97,10 @@ public class HttpServletUtils {
 			httpHeaders.put(headerName, Collections.list(headers));
 		}
 		return httpHeaders;
+	}
+
+	public HttpHeaders toHttpHeaders(HttpServletRequest request) {
+		return new ServletServerHttpRequest(request).getHeaders();
 	}
 
 	/**

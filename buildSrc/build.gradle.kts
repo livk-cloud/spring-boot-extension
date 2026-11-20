@@ -17,6 +17,7 @@ dependencies {
 	implementation(libs.spring.boot.plugin)
 	implementation(libs.spring.javaformat.plugin)
 	implementation(libs.maven.publish.plugin)
+	implementation(libs.asciidoctor.jvm.plugin)
 }
 
 gradlePlugin {
@@ -52,6 +53,10 @@ gradlePlugin {
 		create("checkstyleExpand") {
 			id = "com.livk.checkstyle"
 			implementationClass = "com.livk.boot.tasks.CheckstyleExpandPlugin"
+		}
+		create("asciidoctorPlugin") {
+			id = "com.livk.asciidoctor"
+			implementationClass = "com.livk.boot.tasks.AsciidoctorPlugin"
 		}
 	}
 }

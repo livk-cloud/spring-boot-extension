@@ -77,7 +77,7 @@ class HttpServletUtilsTests {
 		request.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		request.addHeader(HttpHeaders.USER_AGENT, "test");
 
-		HttpHeaders headers = HttpServletUtils.headers(request);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(request);
 		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
 		assertThat(headers.getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
 		assertThat(headers.size()).isEqualTo(2);

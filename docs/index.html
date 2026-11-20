@@ -1,82 +1,181 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="generator" content="Asciidoctor 2.0.18">
   <meta name="author" content="Livk">
-  <title>spring boot extension doc</title>
+  <title>Spring Boot Extension Documentation</title>
   <link rel="stylesheet" href="css/site.css">
   <script src="js/setup.js"></script>
   <script defer src="js/site.js"></script>
   <style>
-    .main-content {
-      text-align: center;
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px 0;
-      background: #333;
-      color: white;
-      position: fixed; /* 固定在页面底部 */
-      bottom: 0;
-      width: 100%;
-    }
-
-    .github-button {
-      display: inline-block;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: white;
-      background-color: #24292e;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .github-button:hover {
-      background-color: #0366d6;
-    }
-
-    .version-card {
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: #eef3f9;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, .06);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .versions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
+    body.docs-home {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-items: center;
+      background: var(--body-background-color, #fff);
+      color: var(--body-font-color, #191e1e);
     }
 
-    .version-card a {
-      display: inline-block;
-      margin: 4px 6px 0 0;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: #eef3f9;
-      text-decoration: none;
+    #tocbar-container {
+      display: none;
+    }
 
+    .docs-home-main {
+      flex: 1 0 auto;
+      width: min(880px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+      box-sizing: border-box;
+    }
+
+    .docs-home-hero {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--panel-border-color, #eaedf0);
+    }
+
+    .docs-home-hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .docs-home-hero p {
+      margin: 0 0 24px;
+      max-width: 40rem;
+      color: var(--body-font-light-color, #273030);
+      line-height: 1.6;
+    }
+
+    .docs-home-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .docs-home-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .docs-home-actions .primary {
+      color: #fff;
+      background: var(--color-accent-3, #6db33f);
+    }
+
+    .docs-home-actions .primary:hover {
+      filter: brightness(0.95);
+    }
+
+    .docs-home-actions .secondary {
+      color: var(--body-font-color, #191e1e);
+      border: 1px solid var(--panel-border-color, #eaedf0);
+      background: transparent;
+    }
+
+    .docs-home-actions .secondary:hover {
+      border-color: var(--color-accent-3, #6db33f);
+      color: var(--color-accent-3, #6db33f);
+    }
+
+    .docs-home-versions {
+      margin-top: 32px;
+    }
+
+    .docs-home-versions > h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+      font-weight: 650;
+    }
+
+    .version-series {
+      margin: 0 0 12px;
+      border: 1px solid var(--panel-border-color, #eaedf0);
+      border-radius: 10px;
+      background: var(--panel-background-color, #f6f8fa);
+      overflow: hidden;
+    }
+
+    .version-series.current {
+      border-color: color-mix(in srgb, var(--color-accent-3, #6db33f) 45%, var(--panel-border-color, #eaedf0));
+    }
+
+    .version-series summary,
+    .version-series .series-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      font-weight: 650;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .version-series summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .version-series .series-heading {
+      cursor: default;
+    }
+
+    .version-series .series-label {
       font-size: 1rem;
-      color: #4CAF50;
-      border: 1px solid #4CAF50;
-      transition: all 0.3s ease;
+    }
+
+    .version-series .series-meta {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--body-font-light-color, #273030);
+    }
+
+    .version-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px 16px;
+    }
+
+    .version-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid color-mix(in srgb, var(--color-accent-3, #6db33f) 55%, #fff);
+      color: var(--color-accent-3, #6db33f);
+      text-decoration: none;
+      background: transparent;
+      font-weight: 600;
+    }
+
+    .version-links a:hover {
+      background: var(--color-accent-3, #6db33f);
+      color: #fff;
+    }
+
+    .docs-home-footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 14px 0;
+      background: #333;
+      color: #fff;
     }
   </style>
 </head>
-<body id="spring-boot-extension-doc" class="book toc2 toc-left">
+<body class="docs-home">
 <div id="banner-container" class="container" role="banner">
   <div id="banner" class="contained" role="banner">
     <div id="switch-theme">
@@ -85,61 +184,79 @@
     </div>
   </div>
 </div>
-<div id="tocbar-container" class="container" role="navigation">
-  <div id="tocbar" class="contained" role="navigation">
-    <button id="toggle-toc"></button>
-  </div>
-</div>
 
-<!-- Main Content Section -->
-<div class="main-content">
-  <h2>Welcome to Spring Boot Extension Documentation</h2>
-  <a href="https://github.com/livk-cloud/spring-boot-extension" target="_blank" class="github-button">GitHub</a>
-  <p>探索 Spring Boot Extension 库的强大功能。使用导航面板访问详细指南、API 参考和示例.</p>
-  <p>要开始使用，请在下方选择一个版本:</p>
+<main class="docs-home-main">
+  <section class="docs-home-hero">
+    <h1>Spring Boot Extension</h1>
+    <p>Spring Boot 扩展库文档入口。选择一个版本查看自动装配、starter 与工具能力说明。</p>
+    <div class="docs-home-actions">
+      <a class="primary" href="2.1.x/spring-boot-extension-2.1.2.html">阅读 2.1.2</a>
+      <a class="secondary" href="https://github.com/livk-cloud/spring-boot-extension" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </section>
 
-  <!-- Version Links -->
-  <div class="versions">
-    <div class="version-card">
-      <h3>2.1.x</h3>
+  <section class="docs-home-versions" aria-label="Documentation versions">
+    <h2>版本目录</h2>
+
+    <section class="version-series current" aria-label="2.1.x">
+      <div class="series-heading">
+        <span class="series-label">2.1.x</span>
+        <span class="series-meta">当前系列 · 3 个版本</span>
+      </div>
+      <div class="version-links">
       <a href="2.1.x/spring-boot-extension-2.1.2.html">2.1.2</a>
       <a href="2.1.x/spring-boot-extension-2.1.1.html">2.1.1</a>
       <a href="2.1.x/spring-boot-extension-2.1.0.html">2.1.0</a>
-    </div>
+      </div>
+    </section>
 
-    <div class="version-card">
-      <h3>2.0.x</h3>
+    <details class="version-series">
+      <summary>
+        <span class="series-label">2.0.x</span>
+        <span class="series-meta">5 个版本</span>
+      </summary>
+      <div class="version-links">
       <a href="2.0.x/spring-boot-extension-2.0.4.html">2.0.4</a>
       <a href="2.0.x/spring-boot-extension-2.0.3.html">2.0.3</a>
       <a href="2.0.x/spring-boot-extension-2.0.2.html">2.0.2</a>
       <a href="2.0.x/spring-boot-extension-2.0.1.html">2.0.1</a>
       <a href="2.0.x/spring-boot-extension-2.0.0.html">2.0.0</a>
-    </div>
+      </div>
+    </details>
 
-    <div class="version-card">
-      <h3>1.5.x</h3>
+    <details class="version-series">
+      <summary>
+        <span class="series-label">1.5.x</span>
+        <span class="series-meta">6 个版本</span>
+      </summary>
+      <div class="version-links">
       <a href="1.5.x/spring-boot-extension-1.5.5.html">1.5.5</a>
       <a href="1.5.x/spring-boot-extension-1.5.4.html">1.5.4</a>
       <a href="1.5.x/spring-boot-extension-1.5.3.html">1.5.3</a>
       <a href="1.5.x/spring-boot-extension-1.5.2.html">1.5.2</a>
       <a href="1.5.x/spring-boot-extension-1.5.1.html">1.5.1</a>
       <a href="1.5.x/spring-boot-extension-1.5.0.html">1.5.0</a>
-    </div>
+      </div>
+    </details>
 
-    <div class="version-card">
-      <h3>1.4.x</h3>
+    <details class="version-series">
+      <summary>
+        <span class="series-label">1.4.x</span>
+        <span class="series-meta">6 个版本</span>
+      </summary>
+      <div class="version-links">
       <a href="1.4.x/spring-boot-extension-1.4.5.html">1.4.5</a>
       <a href="1.4.x/spring-boot-extension-1.4.4.html">1.4.4</a>
       <a href="1.4.x/spring-boot-extension-1.4.3.html">1.4.3</a>
       <a href="1.4.x/spring-boot-extension-1.4.2.html">1.4.2</a>
       <a href="1.4.x/spring-boot-extension-1.4.1.html">1.4.1</a>
       <a href="1.4.x/spring-boot-extension-1.4.0.html">1.4.0</a>
-    </div>
-  </div>
-</div>
+      </div>
+    </details>
+  </section>
+</main>
 
-<!-- Footer -->
-<footer>
+<footer class="docs-home-footer">
   &copy; 2024 Livk. All Rights Reserved.
 </footer>
 </body>

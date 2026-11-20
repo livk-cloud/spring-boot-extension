@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Livk">
+  <title>Spring Boot Extension Documentation</title>
+  <link rel="stylesheet" href="css/site.css">
+  <script src="js/setup.js"></script>
+  <script defer src="js/site.js"></script>
+  <style>
+    body.docs-home {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--body-background-color, #fff);
+      color: var(--body-font-color, #191e1e);
+    }
+
+    #tocbar-container {
+      display: none;
+    }
+
+    .docs-home-main {
+      flex: 1 0 auto;
+      width: min(880px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+      box-sizing: border-box;
+    }
+
+    .docs-home-hero {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--panel-border-color, #eaedf0);
+    }
+
+    .docs-home-hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .docs-home-hero p {
+      margin: 0 0 24px;
+      max-width: 40rem;
+      color: var(--body-font-light-color, #273030);
+      line-height: 1.6;
+    }
+
+    .docs-home-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .docs-home-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .docs-home-actions .primary {
+      color: #fff;
+      background: var(--color-accent-3, #6db33f);
+    }
+
+    .docs-home-actions .primary:hover {
+      filter: brightness(0.95);
+    }
+
+    .docs-home-actions .secondary {
+      color: var(--body-font-color, #191e1e);
+      border: 1px solid var(--panel-border-color, #eaedf0);
+      background: transparent;
+    }
+
+    .docs-home-actions .secondary:hover {
+      border-color: var(--color-accent-3, #6db33f);
+      color: var(--color-accent-3, #6db33f);
+    }
+
+    .docs-home-versions {
+      margin-top: 32px;
+    }
+
+    .docs-home-versions > h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+      font-weight: 650;
+    }
+
+    .version-series {
+      margin: 0 0 12px;
+      border: 1px solid var(--panel-border-color, #eaedf0);
+      border-radius: 10px;
+      background: var(--panel-background-color, #f6f8fa);
+      overflow: hidden;
+    }
+
+    .version-series.current {
+      border-color: color-mix(in srgb, var(--color-accent-3, #6db33f) 45%, var(--panel-border-color, #eaedf0));
+    }
+
+    .version-series summary,
+    .version-series .series-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      font-weight: 650;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .version-series summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .version-series .series-heading {
+      cursor: default;
+    }
+
+    .version-series .series-label {
+      font-size: 1rem;
+    }
+
+    .version-series .series-meta {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--body-font-light-color, #273030);
+    }
+
+    .version-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px 16px;
+    }
+
+    .version-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid color-mix(in srgb, var(--color-accent-3, #6db33f) 55%, #fff);
+      color: var(--color-accent-3, #6db33f);
+      text-decoration: none;
+      background: transparent;
+      font-weight: 600;
+    }
+
+    .version-links a:hover {
+      background: var(--color-accent-3, #6db33f);
+      color: #fff;
+    }
+
+    .docs-home-footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 14px 0;
+      background: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="docs-home">
+<div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox"/>
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+
+<main class="docs-home-main">
+  <section class="docs-home-hero">
+    <h1>Spring Boot Extension</h1>
+    <p>Spring Boot 扩展库文档入口。选择一个版本查看自动装配、starter 与工具能力说明。</p>
+    <div class="docs-home-actions">
+      <a class="primary" href="{{LATEST_HREF}}">阅读 {{LATEST_VERSION}}</a>
+      <a class="secondary" href="https://github.com/livk-cloud/spring-boot-extension" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </section>
+
+  <section class="docs-home-versions" aria-label="Documentation versions">
+    <h2>版本目录</h2>
+{{VERSION_SECTIONS}}
+  </section>
+</main>
+
+<footer class="docs-home-footer">
+  &copy; 2024 Livk. All Rights Reserved.
+</footer>
+</body>
+</html>
