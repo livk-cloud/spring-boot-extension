@@ -7,7 +7,7 @@ guava = "33.8.0-jre"
 fesod = "2.1.0-incubating"
 redisson = "4.8.0"
 curator = "5.9.0"
-asciidoctor-jvm = "4.0.5"
+asciidoctor-jvm = "5.2.0"
 browscap-java = "1.5.1"
 auto-service = "1.1.1"
 yauaa = "8.3.0"
@@ -18,7 +18,6 @@ aviator = "5.4.4"
 jexl3 = "3.7.1"
 mvel2 = "2.6.0.Final"
 disruptor = "4.0.0"
-spring-asciidoctor = "0.0.7"
 spring-javaformat = "0.0.48"
 okhttp = "5.5.1"
 spotbugs-annotations = "4.10.5"
@@ -53,7 +52,6 @@ aviator = { group = "com.googlecode.aviator", name = "aviator", version.ref = "a
 commons-jexl3 = { group = "org.apache.commons", name = "commons-jexl3", version.ref = "jexl3" }
 mvel2 = { group = "org.mvel", name = "mvel2", version.ref = "mvel2" }
 disruptor = { group = "com.lmax", name = "disruptor", version.ref = "disruptor" }
-spring-asciidoctor = { group = "io.spring.asciidoctor.backends", name = "spring-asciidoctor-backends", version.ref = "spring-asciidoctor" }
 spotbugs-annotations = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs-annotations" }
 spring-javaformat-checkstyle = { group = "io.spring.javaformat", name = "spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref = "checkstyle" }
@@ -62,11 +60,9 @@ checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref 
 spring-boot-plugin = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
 spring-javaformat-plugin = { group = "io.spring.javaformat", name = "spring-javaformat-gradle-plugin", version.ref = "spring-javaformat" }
 maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "maven-publish-plugins" }
+asciidoctor-jvm-plugin = { group = "org.asciidoctor.jvm", name = "org.asciidoctor.jvm.gradle.plugin", version.ref = "asciidoctor-jvm" }
 
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
 lettucemod-all = ["lettucemod", "lettucemod-query", "lettucemod-utils"]
-
-[plugins]
-asciidoctor-jvm = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor-jvm" }
