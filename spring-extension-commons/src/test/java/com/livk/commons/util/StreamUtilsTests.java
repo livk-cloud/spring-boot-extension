@@ -126,6 +126,25 @@ class StreamUtilsTests {
 		assertThat(zipped).containsExactlyElementsOf(expected.toList());
 	}
 
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	void concatEmptyMapsReturnsEmptyMap() {
+		Map[] empty = new Map[0];
+		assertThat(StreamUtils.concat(empty)).isEmpty();
+	}
+
+	@Test
+	void concatEmptyArraysReturnsEmptyStream() {
+		assertThat(StreamUtils.concat((String[][]) new String[0][])).isEmpty();
+		assertThat(StreamUtils.concat((String[][]) null)).isEmpty();
+	}
+
+	@Test
+	void concatSkipsNullMaps() {
+		Map<String, String> left = Map.of("a", "1");
+		assertThat(StreamUtils.concat(left, null)).containsEntry("a", List.of("1"));
+	}
+
 	@Data
 	@RequiredArgsConstructor(staticName = "of")
 	static class Recode {

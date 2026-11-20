@@ -33,10 +33,15 @@ import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -286,6 +291,62 @@ class JacksonSupportTests {
 
 		assertThat(YAML.<Map<String, List<Map<String, String>>>>convertValue(jsonNode, constructMapType))
 			.isEqualTo(dependencyManagement);
+	}
+
+	@Test
+	void readValueFromJsonNodeAndBytesAndReader() throws IOException {
+		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
+		JsonNode source = JSON.readTree(json);
+		assertJsonContent(JSON.readValue(source, javaType));
+		assertJsonContent(JSON.readValue(json.getBytes(StandardCharsets.UTF_8), javaType));
+		assertJsonContent(JSON.readValue(new StringReader(json), javaType));
+	}
+
+	@Test
+	void readValueAndTreeFromFileAndPath() throws IOException {
+		Path path = Files.createTempFile("jackson-support", ".json");
+		Files.writeString(path, json);
+		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
+		try {
+			assertJsonContent(JSON.readValue(path.toFile(), javaType));
+			assertJsonContent(JSON.readValue(path, javaType));
+			assertJsonContent(JSON.readTree(path.toFile()));
+			assertJsonContent(JSON.readTree(path));
+			assertJsonContent(JSON.readTree(json.getBytes(StandardCharsets.UTF_8)));
+			assertJsonContent(JSON.readTree(new StringReader(json)));
+		}
+		finally {
+			Files.deleteIfExists(path);
+		}
+	}
+
+	@Test
+	void readValueAndTreeFromJsonParser() throws IOException {
+		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
+		try (var parser = JSON.unwrap().createParser(json)) {
+			assertJsonContent(JSON.readValue(parser, javaType));
+		}
+		try (var parser = JSON.unwrap().createParser(json)) {
+			assertJsonContent(JSON.readTree(parser));
+		}
+	}
+
+	@Test
+	void writeValueAsStringReturnsOriginalString() {
+		assertThat(JSON.writeValueAsString(json)).isEqualTo(json);
+	}
+
+	@Test
+	void unwrapReturnsObjectMapper() {
+		assertThat(JSON.unwrap()).isInstanceOf(JsonMapper.class);
+	}
+
+	@Test
+	void readValueThrowsForUnsupportedType() {
+		JavaType javaType = TypeFactoryUtils.javaType(JsonNode.class);
+		assertThatThrownBy(() -> JSON.readValue(123, javaType)).isInstanceOf(UnsupportedOperationException.class)
+			.hasMessageContaining("Unsupported type");
+		assertThatThrownBy(() -> JSON.readTree(123)).isInstanceOf(UnsupportedOperationException.class);
 	}
 
 	@Test

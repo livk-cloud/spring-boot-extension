@@ -25,6 +25,7 @@ import com.livk.context.useragent.yauaa.YauaaUserAgentConverter;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,8 +34,14 @@ import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author livk
@@ -90,6 +97,49 @@ class UserAgentCompositeTests {
 		assertThat(userAgent.deviceType()).isEqualTo("Desktop");
 		assertThat(userAgent.deviceName()).isEqualTo("Desktop");
 		assertThat(userAgent.deviceBrand()).isEqualTo("Unknown");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void convertSkipsNullAndUsesNextConverter() {
+		UserAgentConverter first = mock(UserAgentConverter.class);
+		UserAgentConverter second = mock(UserAgentConverter.class);
+		UserAgent expected = mock(UserAgent.class);
+		given(first.convert(headers)).willReturn(null);
+		given(second.convert(headers)).willReturn(expected);
+
+		ObjectProvider<UserAgentConverter> provider = mock(ObjectProvider.class);
+		given(provider.orderedStream()).willReturn(Stream.of(first, second));
+
+		assertThat(new UserAgentComposite(provider).convert(headers)).isSameAs(expected);
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void convertThrowsWhenEveryConverterReturnsNull() {
+		UserAgentConverter converter = mock(UserAgentConverter.class);
+		given(converter.convert(headers)).willReturn(null);
+		ObjectProvider<UserAgentConverter> provider = mock(ObjectProvider.class);
+		given(provider.orderedStream()).willReturn(Stream.of(converter));
+
+		assertThatThrownBy(() -> new UserAgentComposite(provider).convert(headers))
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessageContaining("User-Agent");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void convertCachesConverterList() {
+		UserAgentConverter converter = mock(UserAgentConverter.class);
+		UserAgent expected = mock(UserAgent.class);
+		given(converter.convert(headers)).willReturn(expected);
+		ObjectProvider<UserAgentConverter> provider = mock(ObjectProvider.class);
+		given(provider.orderedStream()).willReturn(Stream.of(converter));
+
+		UserAgentComposite composite = new UserAgentComposite(provider);
+		assertThat(composite.convert(headers)).isSameAs(expected);
+		assertThat(composite.convert(headers)).isSameAs(expected);
+		verify(provider, times(1)).orderedStream();
 	}
 
 	@TestConfiguration

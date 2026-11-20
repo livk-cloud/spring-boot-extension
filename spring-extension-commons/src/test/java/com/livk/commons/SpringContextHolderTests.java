@@ -26,7 +26,13 @@ import org.springframework.core.ResolvableType;
 
 import java.util.Map;
 
+import org.springframework.context.ApplicationEvent;
+import org.springframework.core.convert.converter.Converter;
+
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -110,10 +116,84 @@ class SpringContextHolderTests {
 		});
 	}
 
+	@Test
+	void fetchReturnsApplicationContext() {
+		contextRunner.run(ctx -> assertThat(SpringContextHolder.fetch()).isSameAs(ctx.getSourceApplicationContext()));
+	}
+
+	@Test
+	void publishEventDispatchesToListeners() {
+		AtomicReference<ApplicationEvent> seen = new AtomicReference<>();
+		contextRunner.withBean(EventCapture.class, () -> new EventCapture(seen)).run(ctx -> {
+			DemoEvent event = new DemoEvent(this);
+			SpringContextHolder.publishEvent(event);
+			assertThat(seen.get()).isSameAs(event);
+		});
+	}
+
+	@Test
+	void registerBeanGeneratesNameWhenBlank() {
+		contextRunner.run(ctx -> {
+			BeanTest bean = new BeanTest();
+			RootBeanDefinition beanDefinition = new RootBeanDefinition();
+			beanDefinition.setBeanClass(BeanTest.class);
+			beanDefinition.setInstanceSupplier(() -> bean);
+			SpringContextHolder.registerBean(beanDefinition, "");
+			assertThat(SpringContextHolder.getBeansOfType(BeanTest.class)).hasSize(1).containsValue(bean);
+		});
+	}
+
+	@Test
+	void binderAppliesCustomConverters() {
+		contextRunner.withPropertyValues("demo.flag=yes").run(ctx -> {
+			Converter<String, Boolean> yesConverter = new Converter<>() {
+				@Override
+				public Boolean convert(String source) {
+					return "yes".equalsIgnoreCase(source);
+				}
+			};
+			Binder binder = SpringContextHolder.binder(yesConverter);
+			assertThat(binder.bind("demo.flag", Boolean.class).get()).isTrue();
+		});
+	}
+
+	@Test
+	void destroyClearsHolder() {
+		contextRunner.run(ctx -> {
+			assertThat(SpringContextHolder.fetch()).isNotNull();
+			ctx.getBean(SpringContextHolder.class).destroy();
+			assertThatThrownBy(SpringContextHolder::fetch).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("not initialized");
+		});
+	}
+
 	@Data
 	static class BeanTest {
 
 		private final Long id = 1L;
+
+	}
+
+	static final class DemoEvent extends ApplicationEvent {
+
+		DemoEvent(Object source) {
+			super(source);
+		}
+
+	}
+
+	static final class EventCapture implements org.springframework.context.ApplicationListener<DemoEvent> {
+
+		private final AtomicReference<ApplicationEvent> seen;
+
+		EventCapture(AtomicReference<ApplicationEvent> seen) {
+			this.seen = seen;
+		}
+
+		@Override
+		public void onApplicationEvent(DemoEvent event) {
+			this.seen.set(event);
+		}
 
 	}
 

@@ -18,14 +18,19 @@ package com.livk.autoconfigure.curator;
 
 import com.livk.context.curator.CuratorTemplate;
 import org.apache.curator.RetryPolicy;
+import org.apache.curator.drivers.TracerDriver;
+import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.retry.RetryOneTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author livk
@@ -50,9 +55,54 @@ class CuratorAutoConfigurationTests {
 		this.contextRunner.run((context) -> assertThat(context).hasSingleBean(CuratorTemplate.class));
 	}
 
+	@Test
+	void tracerDriverAndEnsembleProviderAreRegistered() {
+		this.contextRunner.run((context) -> {
+			assertThat(context).hasSingleBean(TracerDriver.class);
+			assertThat(context).hasSingleBean(EnsembleProvider.class);
+		});
+	}
+
+	@Test
+	void disabledWhenPropertyFalse() {
+		this.contextRunner.withPropertyValues("spring.zookeeper.curator.enabled=false")
+			.run((context) -> assertThat(context).doesNotHaveBean(CuratorFramework.class)
+				.doesNotHaveBean(CuratorTemplate.class));
+	}
+
+	@Test
+	void backsOffWhenUserProvidesBeans() {
+		this.contextRunner.withUserConfiguration(UserBeans.class).run((context) -> {
+			assertThat(context).hasSingleBean(CuratorFramework.class);
+			assertThat(context).hasSingleBean(RetryPolicy.class);
+			assertThat(context).hasSingleBean(CuratorTemplate.class);
+			assertThat(context.getBean(RetryPolicy.class)).isInstanceOf(RetryOneTime.class);
+		});
+	}
+
 	@TestConfiguration(proxyBeanMethods = false)
 	@EnableConfigurationProperties(CuratorProperties.class)
 	static class Config {
+
+	}
+
+	@TestConfiguration(proxyBeanMethods = false)
+	static class UserBeans {
+
+		@Bean
+		CuratorFramework curatorFramework() {
+			return mock(CuratorFramework.class);
+		}
+
+		@Bean
+		RetryPolicy retryPolicy() {
+			return new RetryOneTime(1);
+		}
+
+		@Bean
+		CuratorTemplate curatorTemplate(CuratorFramework framework) {
+			return new CuratorTemplate(framework);
+		}
 
 	}
 

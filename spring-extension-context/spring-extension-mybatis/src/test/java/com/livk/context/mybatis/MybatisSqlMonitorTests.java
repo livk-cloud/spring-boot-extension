@@ -34,6 +34,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -232,6 +233,128 @@ class MybatisSqlMonitorTests {
 		given(boundSql.getSql()).willReturn("select 1");
 
 		assertThatThrownBy(() -> monitor.intercept(invocation)).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void testTimeOutWithIsoDuration() throws Throwable {
+		Properties properties = new Properties();
+		properties.setProperty("timeOut", "PT0.001S");
+		monitor.setProperties(properties);
+
+		given(invocation.getTarget()).willReturn(statementHandler);
+		given(statementHandler.getBoundSql()).willReturn(boundSql);
+		given(boundSql.getSql()).willReturn("select 1");
+		given(invocation.proceed()).willAnswer(invocation -> {
+			Thread.sleep(10);
+			return null;
+		});
+
+		monitor.intercept(invocation);
+
+		assertThat(events.stream(MonitorSQLTimeOutEvent.class)).hasSize(1);
+	}
+
+	@Test
+	void testTimeOutWithUnsupportedType() {
+		Properties properties = new Properties();
+		properties.put("timeOut", Boolean.TRUE);
+		monitor.setProperties(properties);
+
+		given(invocation.getTarget()).willReturn(statementHandler);
+		given(statementHandler.getBoundSql()).willReturn(boundSql);
+		given(boundSql.getSql()).willReturn("select 1");
+
+		assertThatThrownBy(() -> monitor.intercept(invocation)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("Unsupported timeOut type");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void testSqlEscapesEmbeddedQuote() throws Throwable {
+		Properties properties = new Properties();
+		properties.setProperty("timeOut", "0");
+		monitor.setProperties(properties);
+
+		given(invocation.getTarget()).willReturn(statementHandler);
+		given(statementHandler.getBoundSql()).willReturn(boundSql);
+		given(boundSql.getSql()).willReturn("select * from user where name = ?");
+		given(invocation.proceed()).willAnswer(invocation -> {
+			Thread.sleep(10);
+			return null;
+		});
+
+		org.apache.ibatis.session.Configuration configuration = mock(org.apache.ibatis.session.Configuration.class);
+		TypeHandlerRegistry typeHandlerRegistry = mock(TypeHandlerRegistry.class);
+		given(configuration.getTypeHandlerRegistry()).willReturn(typeHandlerRegistry);
+		given(typeHandlerRegistry.getTypeHandler(any(Class.class), any())).willReturn(mock(TypeHandler.class));
+		given(boundSql.getParameterMappings())
+			.willReturn(List.of(new ParameterMapping.Builder(configuration, "name", Object.class).build()));
+		given(boundSql.getParameterObject()).willReturn(Map.of("name", "O'Brien"));
+
+		monitor.intercept(invocation);
+
+		MonitorSQLTimeOutEvent event = events.stream(MonitorSQLTimeOutEvent.class).findFirst().orElseThrow();
+		assertThat(event.getSource().sql()).contains("name = 'O''Brien'");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void testSqlFormatsTemporal() throws Throwable {
+		Properties properties = new Properties();
+		properties.setProperty("timeOut", "0");
+		monitor.setProperties(properties);
+
+		LocalDateTime now = LocalDateTime.of(2024, 1, 2, 3, 4, 5);
+		given(invocation.getTarget()).willReturn(statementHandler);
+		given(statementHandler.getBoundSql()).willReturn(boundSql);
+		given(boundSql.getSql()).willReturn("select * from user where created = ?");
+		given(invocation.proceed()).willAnswer(invocation -> {
+			Thread.sleep(10);
+			return null;
+		});
+
+		org.apache.ibatis.session.Configuration configuration = mock(org.apache.ibatis.session.Configuration.class);
+		TypeHandlerRegistry typeHandlerRegistry = mock(TypeHandlerRegistry.class);
+		given(configuration.getTypeHandlerRegistry()).willReturn(typeHandlerRegistry);
+		given(typeHandlerRegistry.getTypeHandler(any(Class.class), any())).willReturn(mock(TypeHandler.class));
+		given(boundSql.getParameterMappings())
+			.willReturn(List.of(new ParameterMapping.Builder(configuration, "created", Object.class).build()));
+		given(boundSql.getParameterObject()).willReturn(Map.of("created", now));
+
+		monitor.intercept(invocation);
+
+		MonitorSQLTimeOutEvent event = events.stream(MonitorSQLTimeOutEvent.class).findFirst().orElseThrow();
+		assertThat(event.getSource().sql()).contains("created = '" + now + "'");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void testSqlNullWhenParameterObjectMissing() throws Throwable {
+		Properties properties = new Properties();
+		properties.setProperty("timeOut", "0");
+		monitor.setProperties(properties);
+
+		given(invocation.getTarget()).willReturn(statementHandler);
+		given(statementHandler.getBoundSql()).willReturn(boundSql);
+		given(boundSql.getSql()).willReturn("select * from user where id = ?");
+		given(invocation.proceed()).willAnswer(invocation -> {
+			Thread.sleep(10);
+			return null;
+		});
+
+		org.apache.ibatis.session.Configuration configuration = mock(org.apache.ibatis.session.Configuration.class);
+		TypeHandlerRegistry typeHandlerRegistry = mock(TypeHandlerRegistry.class);
+		given(configuration.getTypeHandlerRegistry()).willReturn(typeHandlerRegistry);
+		given(typeHandlerRegistry.getTypeHandler(any(Class.class), any())).willReturn(mock(TypeHandler.class));
+		given(boundSql.getParameterMappings())
+			.willReturn(List.of(new ParameterMapping.Builder(configuration, "id", Object.class).build()));
+		given(boundSql.getParameterObject()).willReturn(null);
+		given(boundSql.hasAdditionalParameter("id")).willReturn(false);
+
+		monitor.intercept(invocation);
+
+		MonitorSQLTimeOutEvent event = events.stream(MonitorSQLTimeOutEvent.class).findFirst().orElseThrow();
+		assertThat(event.getSource().sql()).contains("id = NULL");
 	}
 
 	@Configuration

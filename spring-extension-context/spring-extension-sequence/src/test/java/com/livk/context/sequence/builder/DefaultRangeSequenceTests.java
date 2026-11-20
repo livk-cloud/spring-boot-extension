@@ -17,27 +17,61 @@
 package com.livk.context.sequence.builder;
 
 import com.livk.context.sequence.SequenceRange;
+import com.livk.context.sequence.exception.SequenceException;
 import com.livk.context.sequence.support.RangeManager;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
  */
 class DefaultRangeSequenceTests {
 
-	static RangeManager rangeManager = new TestRangeManager();
-
 	@Test
 	void nextValue() {
-		DefaultRangeSequence sequence = new DefaultRangeSequence(rangeManager, "test", 10, 0);
+		DefaultRangeSequence sequence = new DefaultRangeSequence(new FixedRangeManager(), "test", 10, 0);
 		for (int i = 0; i < 10; i++) {
 			assertThat(sequence.nextValue()).isEqualTo(i + 1);
 		}
 	}
 
-	static class TestRangeManager implements RangeManager {
+	@Test
+	void nextValueRefreshesRangeAfterExhaustion() {
+		AtomicInteger calls = new AtomicInteger();
+		RangeManager manager = (name, step, stepStart) -> {
+			int round = calls.getAndIncrement();
+			long start = round * 10L + 1;
+			return new SequenceRange(start, start + 9);
+		};
+		DefaultRangeSequence sequence = new DefaultRangeSequence(manager, "test", 10, 0);
+		for (long expected = 1; expected <= 20; expected++) {
+			assertThat(sequence.nextValue()).isEqualTo(expected);
+		}
+		assertThat(calls.get()).isEqualTo(2);
+	}
+
+	@Test
+	void nextValueWrapsManagerFailure() {
+		RangeManager failing = (name, step, stepStart) -> {
+			throw new IllegalStateException("boom");
+		};
+		DefaultRangeSequence sequence = new DefaultRangeSequence(failing, "order", 10, 0);
+		assertThatThrownBy(sequence::nextValue).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("order")
+			.hasCauseInstanceOf(IllegalStateException.class);
+	}
+
+	@Test
+	void constructorRejectsNullName() {
+		assertThatThrownBy(() -> new DefaultRangeSequence(new FixedRangeManager(), null, 10, 0))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	static class FixedRangeManager implements RangeManager {
 
 		@Override
 		public SequenceRange nextRange(String name, int step, long stepStart) {

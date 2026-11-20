@@ -122,6 +122,25 @@ class FieldUtilsTests {
 		assertThat(value).isNull();
 	}
 
+	@Test
+	void getReadMethodReturnsNullWhenNoAccessor() throws NoSuchFieldException {
+		Field secret = NoAccessor.class.getDeclaredField("secret");
+		assertThat(FieldUtils.getReadMethod(NoAccessor.class, secret)).isNull();
+	}
+
+	@Test
+	void getWriteMethodReturnsNullWhenNoAccessor() throws NoSuchFieldException {
+		Field secret = NoAccessor.class.getDeclaredField("secret");
+		assertThat(FieldUtils.getWriteMethod(NoAccessor.class, secret)).isNull();
+	}
+
+	static class NoAccessor {
+
+		@SuppressWarnings("unused")
+		private int secret;
+
+	}
+
 	@Data
 	static class Maker {
 

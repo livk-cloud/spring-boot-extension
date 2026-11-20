@@ -52,8 +52,42 @@ public class Info implements Serializable {
 	}
 
 	@SuppressWarnings("unused")
+	@RequestExcel
+	void resolveRequestReactiveMono(@ExcelParam Mono<List<Info>> infos) {
+	}
+
+	@SuppressWarnings("unused")
+	@RequestExcel
+	void resolveRequestReactiveList(@ExcelParam List<Info> infos) {
+	}
+
+	@SuppressWarnings("unused")
+	@RequestExcel
+	void resolveRequestReactiveMonoMap(@ExcelParam Mono<Map<String, List<Info>>> infos) {
+	}
+
+	@SuppressWarnings("unused")
+	void resolveWithoutAnnotations(@ExcelParam List<Info> infos) {
+	}
+
+	@SuppressWarnings("unused")
+	@RequestExcel
+	void resolveRequestUnsupported(@ExcelParam String data) {
+	}
+
+	@SuppressWarnings("unused")
+	@RequestExcel
+	void resolveRequestMap(@ExcelParam Map<String, List<Info>> data) {
+	}
+
+	@SuppressWarnings("unused")
 	@ResponseExcel(fileName = "file")
 	List<Info> resolveResponse() {
+		return List.of();
+	}
+
+	@SuppressWarnings("unused")
+	List<Info> resolveResponseWithoutAnnotation() {
 		return List.of();
 	}
 

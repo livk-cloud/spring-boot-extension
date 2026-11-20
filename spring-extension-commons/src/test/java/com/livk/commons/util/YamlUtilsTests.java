@@ -55,6 +55,18 @@ class YamlUtilsTests {
 		assertThat(spring.get("env")).isEqualTo(List.of(1, 2));
 	}
 
+	@Test
+	void convertMapToYamlTransformsNumericPathSegmentsToIndexes() {
+		Map<String, Object> flat = Map.of("servers.0.host", "a", "servers.1.host", "b");
+		Map<String, Object> result = YamlUtils.convertMapToYaml(flat);
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> servers = (List<Map<String, Object>>) result.get("servers");
+		assertThat(servers).hasSize(2);
+		assertThat(servers.get(0)).containsEntry("host", "a");
+		assertThat(servers.get(1)).containsEntry("host", "b");
+	}
+
 	// --- convertYamlToMap ---
 
 	@Test

@@ -21,13 +21,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -51,6 +55,13 @@ class ExcelMethodArgumentResolverTests {
 	}
 
 	@Test
+	void supportsParameterReturnsFalseWithoutAnnotations() throws NoSuchMethodException {
+		MethodParameter without = MethodParameter
+			.forExecutable(Info.class.getDeclaredMethod("resolveWithoutAnnotations", List.class), 0);
+		assertThat(resolver.supportsParameter(without)).isFalse();
+	}
+
+	@Test
 	void resolveArgument() throws Exception {
 		MockMultipartFile file = new MockMultipartFile("file", new ClassPathResource("outFile.xls").getInputStream());
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
@@ -66,6 +77,55 @@ class ExcelMethodArgumentResolverTests {
 		List<Info> list = (List<Info>) result;
 
 		assertThat(list).hasSize(100);
+	}
+
+	@Test
+	void resolveArgumentThrowsWhenContentTypeMissing() throws Exception {
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		request.setContentType(null);
+		ServletWebRequest webRequest = new ServletWebRequest(request);
+
+		assertThatThrownBy(() -> resolver.resolveArgument(parameter, null, webRequest, null))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("@ExcelParam");
+	}
+
+	@Test
+	void resolveArgumentThrowsWhenNotMultipart() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		ServletWebRequest webRequest = new ServletWebRequest(request);
+
+		assertThatThrownBy(() -> resolver.resolveArgument(parameter, null, webRequest, null))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void resolveArgumentThrowsWhenTypeUnsupported() throws Exception {
+		MethodParameter unsupported = MethodParameter
+			.forExecutable(Info.class.getDeclaredMethod("resolveRequestUnsupported", String.class), 0);
+		MockMultipartFile file = new MockMultipartFile("file", new ClassPathResource("outFile.xls").getInputStream());
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		request.addFile(file);
+
+		assertThatThrownBy(() -> resolver.resolveArgument(unsupported, null, new ServletWebRequest(request), null))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void resolveArgumentReadsMap() throws Exception {
+		MethodParameter mapParameter = MethodParameter
+			.forExecutable(Info.class.getDeclaredMethod("resolveRequestMap", Map.class), 0);
+		MockMultipartFile file = new MockMultipartFile("file", new ClassPathResource("outFile.xls").getInputStream());
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		request.addFile(file);
+
+		Object result = resolver.resolveArgument(mapParameter, null, new ServletWebRequest(request), null);
+
+		assertThat(result).isInstanceOf(Map.class);
+		@SuppressWarnings("unchecked")
+		Map<String, List<Info>> map = (Map<String, List<Info>>) result;
+		assertThat(map.values().stream().mapToInt(List::size).sum()).isEqualTo(100);
 	}
 
 }

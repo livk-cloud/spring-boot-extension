@@ -35,12 +35,17 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.IOException;
 import java.net.URI;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author livk
@@ -83,9 +88,24 @@ class TypeElementsTests {
 	}
 
 	@Test
+	void getAnnotationAttributesReturnsEmptyWhenValueUsesDefault() {
+		Optional<Set<TypeElement>> attributes = TypeElements.getAnnotationAttributes(get(WithDefaultAttr.class),
+				Attr.class, MergedAnnotation.VALUE);
+		assertThat(attributes).isEmpty();
+	}
+
+	@Test
+	void getAnnotationAttributesThrowsWhenAnnotationMissing() {
+		assertThatIllegalArgumentException()
+			.isThrownBy(() -> TypeElements.getAnnotationAttributes(get(String.class), AutoService.class,
+					MergedAnnotation.VALUE))
+			.withMessageContaining("not has annotation");
+	}
+
+	@Test
 	void getBinaryName() {
 		List<Class<?>> classes = List.of(String.class, SpringAutoContext.class, SpringContext.class,
-				SpringFactoryServiceImpl.class, NestedSpringFactoryServiceImpl.class);
+				SpringFactoryServiceImpl.class, NestedSpringFactoryServiceImpl.class, Outer.Mid.Inner.class);
 
 		for (Class<?> type : classes) {
 			assertThat(TypeElements.getBinaryName(get(type))).isEqualTo(type.getName());
@@ -98,6 +118,31 @@ class TypeElementsTests {
 	}
 
 	static class NestedSpringFactoryServiceImpl implements SpringFactoryService {
+
+	}
+
+	static class Outer {
+
+		static class Mid {
+
+			static class Inner {
+
+			}
+
+		}
+
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Attr {
+
+		Class<?>[] value() default {};
+
+	}
+
+	@Attr
+	static class WithDefaultAttr {
 
 	}
 
