@@ -65,7 +65,7 @@ public class ReactiveQrCodeMethodReturnValueHandler extends QrCodeSupport implem
 	@Override
 	public boolean supports(@NonNull HandlerResult result) {
 		return AnnotationFinder.hasAnnotationElement(result.getReturnTypeSource(), ResponseQrCode.class)
-				|| result.getReturnType().isAssignableFrom(QrCodeEntity.class);
+				|| ResolvableType.forClass(QrCodeEntity.class).isAssignableFrom(result.getReturnType());
 	}
 
 	@Override

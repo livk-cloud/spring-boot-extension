@@ -16,7 +16,6 @@
 
 package com.livk.context.qrcode.resolver;
 
-import tools.jackson.databind.json.JsonMapper;
 import com.livk.context.qrcode.QrCodeManager;
 import com.livk.context.qrcode.annotation.RequestQrCodeText;
 import com.livk.context.qrcode.support.GoogleQrCodeManager;
@@ -41,6 +40,7 @@ import org.springframework.web.reactive.BindingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Collections;
 
@@ -53,7 +53,13 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 
 	static ReactiveQrCodeMethodArgumentResolver resolver;
 
-	static MethodParameter parameter;
+	static MethodParameter monoParameter;
+
+	static MethodParameter stringParameter;
+
+	static MethodParameter unsupportedParameter;
+
+	static MethodParameter customFileParameter;
 
 	static BindingContext bindContext;
 
@@ -62,7 +68,14 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 		JsonMapper mapper = JsonMapper.builder().build();
 		QrCodeManager manager = GoogleQrCodeManager.of(mapper);
 		resolver = new ReactiveQrCodeMethodArgumentResolver(manager);
-		parameter = MethodParameter.forExecutable(TestController.class.getDeclaredMethod("textCode", Mono.class), 0);
+		monoParameter = MethodParameter.forExecutable(TestController.class.getDeclaredMethod("textCode", Mono.class),
+				0);
+		stringParameter = MethodParameter
+			.forExecutable(TestController.class.getDeclaredMethod("plainText", String.class), 0);
+		unsupportedParameter = MethodParameter
+			.forExecutable(TestController.class.getDeclaredMethod("withoutAnnotation", String.class), 0);
+		customFileParameter = MethodParameter
+			.forExecutable(TestController.class.getDeclaredMethod("customFile", Mono.class), 0);
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultFormattingConversionService());
 		bindContext = new BindingContext(initializer);
@@ -70,13 +83,64 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 
 	@Test
 	void supportsParameter() {
-		assertThat(resolver.supportsParameter(parameter)).isTrue();
+		assertThat(resolver.supportsParameter(monoParameter)).isTrue();
+		assertThat(resolver.supportsParameter(stringParameter)).isTrue();
+		assertThat(resolver.supportsParameter(unsupportedParameter)).isFalse();
 	}
 
 	@Test
 	void resolveArgument() {
+		MockServerWebExchange exchange = multipartExchange("file");
+
+		Mono<Object> result = resolver.resolveArgument(monoParameter, bindContext, exchange);
+
+		StepVerifier.create(result.flatMap(o -> {
+			if (o instanceof Mono) {
+				return (Mono<?>) o;
+			}
+			return Mono.just(o);
+		})).expectNext("QrCode").verifyComplete();
+	}
+
+	@Test
+	void resolveArgumentForPlainString() {
+		MockServerWebExchange exchange = multipartExchange("file");
+
+		StepVerifier.create(resolver.resolveArgument(stringParameter, bindContext, exchange))
+			.expectNext("QrCode")
+			.verifyComplete();
+	}
+
+	@Test
+	void resolveArgumentUsesCustomFileName() {
+		MockServerWebExchange exchange = multipartExchange("qr");
+
+		StepVerifier.create(resolver.resolveArgument(customFileParameter, bindContext, exchange).flatMap(o -> {
+			if (o instanceof Mono<?> mono) {
+				return mono;
+			}
+			return Mono.just(o);
+		})).expectNext("QrCode").verifyComplete();
+	}
+
+	@Test
+	void resolveArgumentReturnsEmptyForUnsupportedContentType() {
+		MockServerHttpRequest serverRequest = MockServerHttpRequest.post("/")
+			.contentType(MediaType.APPLICATION_JSON)
+			.body("[]");
+		MockServerWebExchange exchange = MockServerWebExchange.from(serverRequest);
+
+		StepVerifier.create(resolver.resolveArgument(monoParameter, bindContext, exchange).flatMap(o -> {
+			if (o instanceof Mono<?> mono) {
+				return mono;
+			}
+			return Mono.just(o);
+		})).verifyComplete();
+	}
+
+	private static MockServerWebExchange multipartExchange(String partName) {
 		MultipartBodyBuilder builder = new MultipartBodyBuilder();
-		builder.part("file", new ClassPathResource("qrCode.png"));
+		builder.part(partName, new ClassPathResource("qrCode.png"));
 
 		MultipartHttpMessageWriter writer = new MultipartHttpMessageWriter(ClientCodecConfigurer.create().getWriters());
 
@@ -90,22 +154,24 @@ class ReactiveQrCodeMethodArgumentResolverTests {
 		Flux<DataBuffer> body = clientRequest.getBody();
 		assertThat(contentType).isNotNull();
 		MockServerHttpRequest serverRequest = MockServerHttpRequest.post("/").contentType(contentType).body(body);
-
-		MockServerWebExchange exchange = MockServerWebExchange.from(serverRequest);
-
-		Mono<Object> result = resolver.resolveArgument(parameter, bindContext, exchange);
-
-		StepVerifier.create(result.flatMap(o -> {
-			if (o instanceof Mono) {
-				return (Mono<?>) o;
-			}
-			return Mono.just(o);
-		})).expectNext("QrCode").verifyComplete();
+		return MockServerWebExchange.from(serverRequest);
 	}
 
 	static class TestController {
 
 		Mono<String> textCode(@RequestQrCodeText Mono<String> text) {
+			return text;
+		}
+
+		String plainText(@RequestQrCodeText String text) {
+			return text;
+		}
+
+		Mono<String> customFile(@RequestQrCodeText(fileName = "qr") Mono<String> text) {
+			return text;
+		}
+
+		String withoutAnnotation(String text) {
 			return text;
 		}
 

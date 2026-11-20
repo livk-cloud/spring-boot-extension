@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "4.1.2"
+spring-boot = "4.2.0"
 mybatis = "3.6.0"
 mybatis-spring = "4.1.0"
 mybatis-boot = "4.1.0"
@@ -13,7 +13,6 @@ auto-service = "1.1.1"
 yauaa = "8.3.0"
 google-javase = "3.5.4"
 jsqlparser = "5.4"
-lettucemod = "4.5.0"
 aviator = "5.4.4"
 jexl3 = "3.7.1"
 mvel2 = "2.6.0.Final"
@@ -35,10 +34,6 @@ mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 redisson-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 redisson-spring-data = { group = "org.redisson", name = "redisson-spring-data-41", version.ref = "redisson" }
-#lettucemod
-lettucemod = { group = "com.redis", name = "lettucemod", version.ref = "lettucemod" }
-lettucemod-query = { group = "com.redis", name = "lettucemod-query", version.ref = "lettucemod" }
-lettucemod-utils = { group = "com.redis", name = "lettucemod-utils", version.ref = "lettucemod" }
 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 fesod-sheet = { group = "org.apache.fesod", name = "fesod-sheet", version.ref = "fesod" }
@@ -65,4 +60,3 @@ asciidoctor-jvm-plugin = { group = "org.asciidoctor.jvm", name = "org.asciidocto
 [bundles]
 mybatis-all = ["mybatis", "mybatis-spring", "mybatis-autoconfigure", "mybatis-starter"]
 redisson-all = ["redisson", "redisson-starter", "redisson-spring-data"]
-lettucemod-all = ["lettucemod", "lettucemod-query", "lettucemod-utils"]

@@ -18,6 +18,8 @@ package com.livk.commons.util;
 
 import org.springframework.util.Assert;
 
+import java.util.function.LongSupplier;
+
 /**
  * <p>
  * 雪花算法生成器.
@@ -55,6 +57,8 @@ public class SnowflakeIdGenerator {
 
 	private final long machineId; // 机器 ID
 
+	private final LongSupplier currentTimeMillis;
+
 	private long sequence = 0L; // 当前序列号
 
 	private long lastTimestamp = -1L; // 上一次生成 ID 的时间戳
@@ -65,11 +69,23 @@ public class SnowflakeIdGenerator {
 	 * @param machineId 机器 ID
 	 */
 	public SnowflakeIdGenerator(long dataCenterId, long machineId) {
+		this(dataCenterId, machineId, System::currentTimeMillis);
+	}
+
+	/**
+	 * 构造方法，支持自定义时间源（便于测试时钟回拨与序列溢出）.
+	 * @param dataCenterId 数据中心 ID
+	 * @param machineId 机器 ID
+	 * @param currentTimeMillis 当前毫秒时间戳提供者
+	 */
+	SnowflakeIdGenerator(long dataCenterId, long machineId, LongSupplier currentTimeMillis) {
 		Assert.isTrue(dataCenterId <= MAX_DATA_CENTER_ID && dataCenterId >= 0,
 				"DataCenter ID exceeds range: 0-" + MAX_DATA_CENTER_ID);
 		Assert.isTrue(machineId <= MAX_MACHINE_ID && machineId >= 0, "Machine ID exceeds range: 0-" + MAX_MACHINE_ID);
+		Assert.notNull(currentTimeMillis, "currentTimeMillis must not be null");
 		this.dataCenterId = dataCenterId;
 		this.machineId = machineId;
+		this.currentTimeMillis = currentTimeMillis;
 	}
 
 	/**
@@ -77,7 +93,7 @@ public class SnowflakeIdGenerator {
 	 * @return 唯一 ID
 	 */
 	public synchronized long nextId() {
-		long currentTimestamp = System.currentTimeMillis();
+		long currentTimestamp = this.currentTimeMillis.getAsLong();
 
 		if (currentTimestamp < this.lastTimestamp) {
 			// 时间回拨，建议重试而不是抛出异常
@@ -110,9 +126,9 @@ public class SnowflakeIdGenerator {
 	 * @return 当前时间戳
 	 */
 	private long getNextMillisecond(long lastTimestamp) {
-		long currentTimestamp = System.currentTimeMillis();
+		long currentTimestamp = this.currentTimeMillis.getAsLong();
 		while (currentTimestamp <= lastTimestamp) {
-			currentTimestamp = System.currentTimeMillis();
+			currentTimestamp = this.currentTimeMillis.getAsLong();
 		}
 		return currentTimestamp;
 	}
@@ -123,12 +139,12 @@ public class SnowflakeIdGenerator {
 	 * @return 当前时间戳
 	 */
 	private long waitForNextMillisecond(long lastTimestamp) {
-		long currentTimestamp = System.currentTimeMillis();
+		long currentTimestamp = this.currentTimeMillis.getAsLong();
 		// 设置一个较高的最大重试次数，允许系统时间回拨一定范围
 		int maxRetries = 20; // 根据具体场景调整
 		int retries = 0;
 		while (currentTimestamp <= lastTimestamp && retries < maxRetries) {
-			currentTimestamp = System.currentTimeMillis();
+			currentTimestamp = this.currentTimeMillis.getAsLong();
 			retries++;
 			try {
 				// 添加适当的延迟，减少 CPU 占用，避免高频轮询

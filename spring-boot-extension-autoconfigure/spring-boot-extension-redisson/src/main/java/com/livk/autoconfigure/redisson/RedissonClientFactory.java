@@ -55,7 +55,7 @@ abstract class RedissonClientFactory {
 		return Redisson.create(config);
 	}
 
-	private static Config createConfig(DataRedisProperties redisProperties) {
+	static Config createConfig(DataRedisProperties redisProperties) {
 		Config config;
 		Duration duration = redisProperties.getTimeout();
 		int timeout = (duration != null) ? (int) duration.toMillis() : 10000;

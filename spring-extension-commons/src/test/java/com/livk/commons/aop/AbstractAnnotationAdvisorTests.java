@@ -22,13 +22,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.ComposablePointcut;
+import org.springframework.core.Ordered;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author livk
@@ -71,11 +75,90 @@ class AbstractAnnotationAdvisorTests {
 			.matches(UnannotatedClass.class.getDeclaredMethod("noAnnotation"), UnannotatedClass.class)).isFalse();
 	}
 
+	@Test
+	void invokeUsesMethodLevelAnnotation() throws Throwable {
+		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
+		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
+			@Override
+			protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) {
+				seen.set(annotation);
+				return "ok";
+			}
+		};
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		when(invocation.getMethod()).thenReturn(AopProxyClass.class.getDeclaredMethod("testAop"));
+		when(invocation.getThis()).thenReturn(new AopProxyClass());
+
+		assertThat(capturing.invoke(invocation)).isEqualTo("ok");
+		assertThat(seen.get()).isNotNull();
+	}
+
+	@Test
+	void invokeFallsBackToClassLevelAnnotation() throws Throwable {
+		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
+		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
+			@Override
+			protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) {
+				seen.set(annotation);
+				return "ok";
+			}
+		};
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		when(invocation.getMethod()).thenReturn(AopProxyClass.class.getDeclaredMethod("unannotatedMethod"));
+		when(invocation.getThis()).thenReturn(new AopProxyClass());
+
+		assertThat(capturing.invoke(invocation)).isEqualTo("ok");
+		assertThat(seen.get()).isNotNull();
+	}
+
+	@Test
+	void invokeSkipsClassLookupWhenThisIsNull() throws Throwable {
+		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
+		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
+			@Override
+			protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) {
+				seen.set(annotation);
+				return "ok";
+			}
+		};
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		when(invocation.getMethod()).thenReturn(UnannotatedClass.class.getDeclaredMethod("noAnnotation"));
+		when(invocation.getThis()).thenReturn(null);
+
+		assertThat(capturing.invoke(invocation)).isEqualTo("ok");
+		assertThat(seen.get()).isNull();
+	}
+
+	@Test
+	void getOrderDefaultsToLowestPrecedenceMinusOne() {
+		assertThat(advisor.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE - 1);
+	}
+
+	@Test
+	void getOrderKeepsExplicitOrder() {
+		MyAbstractAnnotationAdvisor ordered = new MyAbstractAnnotationAdvisor();
+		ordered.setOrder(42);
+		assertThat(ordered.getOrder()).isEqualTo(42);
+	}
+
+	@Test
+	void getAdviceReturnsSelf() {
+		assertThat(advisor.getAdvice()).isSameAs(advisor);
+	}
+
+	@Test
+	void implementsInterfaceReturnsFalseForUnrelatedType() {
+		assertThat(advisor.implementsInterface(Runnable.class)).isFalse();
+	}
+
 	@MyAnnotation
 	static class AopProxyClass {
 
 		@MyAnnotation
 		void testAop() {
+		}
+
+		void unannotatedMethod() {
 		}
 
 	}

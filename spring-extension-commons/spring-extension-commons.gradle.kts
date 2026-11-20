@@ -30,4 +30,5 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("tools.jackson.dataformat:jackson-dataformat-xml")
 	testImplementation("tools.jackson.dataformat:jackson-dataformat-yaml")
+	testImplementation("com.squareup.okhttp3:mockwebserver")
 }

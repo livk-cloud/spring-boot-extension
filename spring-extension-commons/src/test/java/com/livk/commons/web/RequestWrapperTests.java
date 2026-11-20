@@ -138,6 +138,30 @@ class RequestWrapperTests {
 		assertThat(Collections.list(wrapper.getHeaderNames())).contains(HttpHeaders.CONTENT_TYPE);
 	}
 
+	@Test
+	void getHeaderReturnsRevisedContentTypeAfterBodyChanged() {
+		wrapper.body(BODY_BYTES, MediaType.TEXT_PLAIN_VALUE);
+
+		assertThat(wrapper.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(Collections.list(wrapper.getHeaders(HttpHeaders.CONTENT_TYPE)))
+			.containsExactly(MediaType.TEXT_PLAIN_VALUE);
+	}
+
+	@Test
+	void getCharacterEncodingDefaultsToUtf8WhenMissing() {
+		assertThat(wrapper.getCharacterEncoding()).isEqualTo("UTF-8");
+	}
+
+	@Test
+	void getContentLengthFallsBackToDelegateWhenBodyNotRevised() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setContent(BODY_BYTES);
+		RequestWrapper untouched = new RequestWrapper(request);
+
+		assertThat(untouched.getContentLength()).isEqualTo(BODY_BYTES.length);
+		assertThat(untouched.getContentLengthLong()).isEqualTo(BODY_BYTES.length);
+	}
+
 	// --- parameters ---
 
 	@Test

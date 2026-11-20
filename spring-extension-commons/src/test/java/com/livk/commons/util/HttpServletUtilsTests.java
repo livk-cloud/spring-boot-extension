@@ -20,20 +20,28 @@ import com.livk.commons.jackson.JsonMapperUtils;
 import com.livk.commons.web.HttpParameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.ErrorResponseException;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import tools.jackson.databind.JsonNode;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author livk
@@ -50,6 +58,11 @@ class HttpServletUtilsTests {
 		response = new MockHttpServletResponse();
 	}
 
+	@AfterEach
+	void clearRequestAttributes() {
+		RequestContextHolder.resetRequestAttributes();
+	}
+
 	@Test
 	void request() {
 		ServletWebRequest servletWebRequest = new ServletWebRequest(request, response);
@@ -57,8 +70,22 @@ class HttpServletUtilsTests {
 
 		HttpServletRequest req = HttpServletUtils.request();
 		assertThat(req).isSameAs(request);
+	}
 
-		RequestContextHolder.resetRequestAttributes();
+	@Test
+	void requestFromServletRequestAttributes() {
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, response));
+		assertThat(HttpServletUtils.request()).isSameAs(request);
+		assertThat(HttpServletUtils.response()).isSameAs(response);
+	}
+
+	@Test
+	void requestThrowsWhenAttributesUnsupported() {
+		RequestContextHolder.setRequestAttributes(mock(RequestAttributes.class));
+		assertThatThrownBy(HttpServletUtils::request).isInstanceOf(IllegalStateException.class)
+			.hasMessageContaining("request not found");
+		assertThatThrownBy(HttpServletUtils::response).isInstanceOf(IllegalStateException.class)
+			.hasMessageContaining("response not found");
 	}
 
 	@Test
@@ -68,8 +95,6 @@ class HttpServletUtilsTests {
 
 		HttpServletResponse resp = HttpServletUtils.response();
 		assertThat(resp).isSameAs(response);
-
-		RequestContextHolder.resetRequestAttributes();
 	}
 
 	@Test
@@ -124,6 +149,27 @@ class HttpServletUtilsTests {
 	void realIpIgnoresUnknownHeader() {
 		request.addHeader("X-Forwarded-For", "unknown");
 		assertThat(HttpServletUtils.realIp(request)).isEqualTo("127.0.0.1");
+	}
+
+	@Test
+	void realIpIgnoresBlankHeader() {
+		request.addHeader("X-Forwarded-For", "   ");
+		assertThat(HttpServletUtils.realIp(request)).isEqualTo("127.0.0.1");
+	}
+
+	@Test
+	void toHttpHeaders() {
+		request.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		HttpHeaders headers = HttpServletUtils.toHttpHeaders(request);
+		assertThat(headers.getAccept()).contains(MediaType.APPLICATION_JSON);
+	}
+
+	@Test
+	void writerWrapsIoException() throws IOException {
+		HttpServletResponse broken = mock(HttpServletResponse.class);
+		given(broken.getWriter()).willThrow(new IOException("boom"));
+		assertThatThrownBy(() -> HttpServletUtils.writer(broken, "msg", MediaType.TEXT_PLAIN_VALUE))
+			.isInstanceOf(ErrorResponseException.class);
 	}
 
 	@Test

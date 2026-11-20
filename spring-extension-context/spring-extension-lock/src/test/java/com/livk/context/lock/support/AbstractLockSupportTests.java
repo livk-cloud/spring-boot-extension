@@ -19,12 +19,16 @@ package com.livk.context.lock.support;
 import com.livk.context.lock.DistLockFactory;
 import com.livk.context.lock.LockType;
 import com.livk.context.lock.exception.LockException;
+import com.livk.context.lock.exception.UnSupportLockException;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class AbstractLockSupportTests {
 
@@ -91,18 +95,95 @@ class AbstractLockSupportTests {
 		assertThat(support.isHeld("outer")).isFalse();
 	}
 
-	private static final class TestLockSupport extends AbstractLockSupport<String> {
+	@Test
+	void rejectsBlankKeyAndNullType() {
+		TestLockSupport support = new TestLockSupport();
 
-		private long leaseTime;
+		assertThatIllegalArgumentException().isThrownBy(() -> support.lock("")).withMessageContaining("Lock key");
+		assertThatIllegalArgumentException().isThrownBy(() -> support.lock(" ", LockType.LOCK))
+			.withMessageContaining("Lock key");
+		assertThatIllegalArgumentException().isThrownBy(() -> support.lock("key", null))
+			.withMessageContaining("Lock type");
+	}
 
-		private long waitTime;
+	@Test
+	void asyncFallsBackToSyncWhenNotSupported() {
+		TestLockSupport support = new TestLockSupport();
+
+		assertThat(support.lock("key").async().leaseTime(4).waitTime(6).tryLock()).isTrue();
+		assertThat(support.leaseTime).isEqualTo(4);
+		assertThat(support.waitTime).isEqualTo(6);
+		support.lock("key").unlock();
+	}
+
+	@Test
+	void defaultAsyncHooksThrowWhenInvokedDirectly() {
+		TestLockSupport support = new TestLockSupport();
+
+		assertThatExceptionOfType(UnSupportLockException.class).isThrownBy(() -> support.tryLockAsync("x", 1, 1))
+			.withMessageContaining("isn't support");
+		assertThatExceptionOfType(UnSupportLockException.class).isThrownBy(() -> support.doLockAsync("x", 1))
+			.withMessageContaining("isn't support");
+	}
+
+	@Test
+	void asyncDelegatesWhenSupported() {
+		AsyncTestLockSupport support = new AsyncTestLockSupport();
+
+		assertThat(support.lock("async").async().leaseTime(5).waitTime(7).tryLock()).isTrue();
+		assertThat(support.asyncTryCalls.get()).isEqualTo(1);
+		assertThat(support.leaseTime).isEqualTo(5);
+		assertThat(support.waitTime).isEqualTo(7);
+		support.lock("async").unlock();
+
+		support.lock("async-block").async().leaseTime(9).lock();
+		assertThat(support.asyncLockCalls.get()).isEqualTo(1);
+		assertThat(support.leaseTime).isEqualTo(9);
+		support.lock("async-block").unlock();
+	}
+
+	@Test
+	void sameKeyIsReentrantUntilFullyUnlocked() {
+		TestLockSupport support = new TestLockSupport();
+		DistLockFactory.SpecLock first = support.lock("reenter");
+		DistLockFactory.SpecLock second = support.lock("reenter");
+
+		first.lock();
+		second.lock();
+		assertThat(support.isHeld("reenter")).isTrue();
+		assertThat(support.holdCount("reenter")).isEqualTo(2);
+
+		first.unlock();
+		assertThat(support.isHeld("reenter")).isTrue();
+		assertThat(support.holdCount("reenter")).isEqualTo(1);
+
+		second.unlock();
+		assertThat(support.isHeld("reenter")).isFalse();
+	}
+
+	@Test
+	void unlockWithoutHoldIsNoOp() {
+		TestLockSupport support = new TestLockSupport();
+		support.lock("missing").unlock();
+		assertThat(support.isHeld("missing")).isFalse();
+	}
+
+	private static class TestLockSupport extends AbstractLockSupport<String> {
+
+		protected long leaseTime;
+
+		protected long waitTime;
 
 		private LockType usedType;
 
-		private final Set<String> held = ConcurrentHashMap.newKeySet();
+		private final Map<String, Integer> held = new ConcurrentHashMap<>();
 
 		boolean isHeld(String key) {
-			return this.held.contains(key);
+			return this.held.containsKey(key);
+		}
+
+		int holdCount(String key) {
+			return this.held.getOrDefault(key, 0);
 		}
 
 		@Override
@@ -113,25 +194,72 @@ class AbstractLockSupportTests {
 
 		@Override
 		protected boolean unlock(String lock) {
-			return this.held.remove(lock);
+			Integer count = this.held.get(lock);
+			if (count == null) {
+				return false;
+			}
+			if (count <= 1) {
+				this.held.remove(lock);
+			}
+			else {
+				this.held.put(lock, count - 1);
+			}
+			return true;
 		}
 
 		@Override
 		protected boolean tryLock(String lock, long leaseTime, long waitTime) throws LockException {
 			this.leaseTime = leaseTime;
 			this.waitTime = waitTime;
-			this.held.add(lock);
+			this.held.merge(lock, 1, Integer::sum);
 			return true;
 		}
 
 		@Override
 		protected void doLock(String lock, long leaseTime) throws LockException {
-			this.held.add(lock);
+			this.leaseTime = leaseTime;
+			this.held.merge(lock, 1, Integer::sum);
 		}
 
 		@Override
 		protected boolean isLocked(String lock) {
-			return this.held.contains(lock);
+			return this.held.containsKey(lock);
+		}
+
+		// expose protected defaults for direct assertion
+		@Override
+		protected boolean tryLockAsync(String lock, long leaseTime, long waitTime) throws LockException {
+			return super.tryLockAsync(lock, leaseTime, waitTime);
+		}
+
+		@Override
+		protected void doLockAsync(String lock, long leaseTime) throws LockException {
+			super.doLockAsync(lock, leaseTime);
+		}
+
+	}
+
+	private static final class AsyncTestLockSupport extends TestLockSupport {
+
+		private final AtomicInteger asyncTryCalls = new AtomicInteger();
+
+		private final AtomicInteger asyncLockCalls = new AtomicInteger();
+
+		@Override
+		protected boolean supportAsync() {
+			return true;
+		}
+
+		@Override
+		protected boolean tryLockAsync(String lock, long leaseTime, long waitTime) {
+			this.asyncTryCalls.incrementAndGet();
+			return tryLock(lock, leaseTime, waitTime);
+		}
+
+		@Override
+		protected void doLockAsync(String lock, long leaseTime) {
+			this.asyncLockCalls.incrementAndGet();
+			doLock(lock, leaseTime);
 		}
 
 	}
