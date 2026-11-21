@@ -18,10 +18,16 @@ package com.livk.context.limit.interceptor;
 
 import com.livk.context.limit.LimitExecutor;
 import com.livk.context.limit.annotation.Limit;
+import com.livk.context.limit.exception.LimitExceededHandler;
 import com.livk.context.limit.exception.LimitException;
 import org.aopalliance.intercept.MethodInvocation;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Duration;
 import java.lang.reflect.Method;
@@ -33,8 +39,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -53,7 +61,7 @@ class LimitInterceptorTests {
 		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(true);
 		given(providers.orderedStream()).willReturn(Stream.of(executor));
 
-		Limit limit = createLimit("testKey", 10, 60);
+		Limit limit = createLimit("testKey", 10, 60, false, LimitExceededHandler.class);
 		MethodInvocation invocation = mockInvocation();
 		given(invocation.proceed()).willReturn("result");
 
@@ -64,27 +72,103 @@ class LimitInterceptorTests {
 		verify(executor).tryAccess("testKey", 10, Duration.ofSeconds(60));
 	}
 
+	@AfterEach
+	void clearRequestAttributes() {
+		RequestContextHolder.resetRequestAttributes();
+	}
+
 	@Test
 	void doInvokeThrowsLimitExceptionWhenExecutorReturnsFalse() throws Throwable {
 		LimitExecutor executor = mock(LimitExecutor.class);
 		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(false);
 		given(providers.orderedStream()).willReturn(Stream.of(executor));
 
-		Limit limit = createLimit("testKey", 10, 60);
+		Limit limit = createLimit("testKey", 10, 60, false, LimitExceededHandler.class);
 		MethodInvocation invocation = mockInvocation();
 
 		assertThatThrownBy(() -> interceptor.doInvoke(invocation, limit)).isInstanceOf(LimitException.class);
 	}
 
+	@Test
+	void doInvokeAppendsRealIpWhenRestrictIp() throws Throwable {
+		LimitExecutor executor = mock(LimitExecutor.class);
+		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(true);
+		given(providers.orderedStream()).willReturn(Stream.of(executor));
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("X-Forwarded-For", "203.0.113.10, 10.0.0.1");
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		Limit limit = createLimit("testKey", 5, 30, true, LimitExceededHandler.class);
+		MethodInvocation invocation = mockInvocation();
+		given(invocation.proceed()).willReturn("ok");
+
+		assertThat(interceptor.doInvoke(invocation, limit)).isEqualTo("ok");
+		verify(executor).tryAccess(eq("testKey#203.0.113.10"), eq(5), eq(Duration.ofSeconds(30)));
+	}
+
+	@Test
+	void doInvokeUsesCustomHandler() throws Throwable {
+		LimitExecutor executor = mock(LimitExecutor.class);
+		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(false);
+		given(providers.orderedStream()).willReturn(Stream.of(executor));
+
+		Limit limit = createLimit("testKey", 1, 1, false, CustomLimitExceededHandler.class);
+		MethodInvocation invocation = mockInvocation();
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, limit)).isInstanceOf(IllegalStateException.class)
+			.hasMessage("custom-limit");
+	}
+
+	@Test
+	void doInvokeThrowsWhenNoExecutor() throws Throwable {
+		given(providers.orderedStream()).willReturn(Stream.empty());
+		Limit limit = createLimit("testKey", 1, 1, false, LimitExceededHandler.class);
+		MethodInvocation invocation = mockInvocation();
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, limit))
+			.isInstanceOf(NoSuchBeanDefinitionException.class);
+	}
+
+	@Test
+	void doInvokeReusesCachedExecutor() throws Throwable {
+		LimitExecutor executor = mock(LimitExecutor.class);
+		given(executor.tryAccess(anyString(), anyInt(), any())).willReturn(true);
+		given(providers.orderedStream()).willReturn(Stream.of(executor));
+
+		Limit limit = createLimit("testKey", 10, 60, false, LimitExceededHandler.class);
+		MethodInvocation invocation = mockInvocation();
+		given(invocation.proceed()).willReturn("ok");
+
+		interceptor.doInvoke(invocation, limit);
+		interceptor.doInvoke(invocation, limit);
+
+		verify(providers, times(1)).orderedStream();
+	}
+
 	private Limit createLimit(String key, int rate, int rateInterval) {
+		return createLimit(key, rate, rateInterval, false, LimitExceededHandler.class);
+	}
+
+	private Limit createLimit(String key, int rate, int rateInterval, boolean restrictIp,
+			Class<? extends LimitExceededHandler> handlerType) {
 		Limit limit = mock(Limit.class);
 		given(limit.key()).willReturn(key);
 		given(limit.rate()).willReturn(rate);
 		given(limit.rateInterval()).willReturn(rateInterval);
 		given(limit.rateIntervalUnit()).willReturn(TimeUnit.SECONDS);
-		given(limit.restrictIp()).willReturn(false);
-		given(limit.handler()).willAnswer(inv -> com.livk.context.limit.exception.LimitExceededHandler.class);
+		given(limit.restrictIp()).willReturn(restrictIp);
+		given(limit.handler()).willAnswer(inv -> handlerType);
 		return limit;
+	}
+
+	public static class CustomLimitExceededHandler implements LimitExceededHandler {
+
+		@Override
+		public RuntimeException buildException(Limit limit) {
+			return new IllegalStateException("custom-limit");
+		}
+
 	}
 
 	private MethodInvocation mockInvocation() throws NoSuchMethodException {

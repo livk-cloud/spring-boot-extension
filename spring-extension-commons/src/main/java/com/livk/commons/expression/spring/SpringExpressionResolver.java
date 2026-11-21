@@ -49,7 +49,7 @@ public class SpringExpressionResolver extends CacheExpressionResolver<Evaluation
 	 * Instantiates a new Spring expression resolver.
 	 */
 	public SpringExpressionResolver() {
-		this(new SpelParserConfiguration());
+		this(SpelParserConfiguration.withDefaults());
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class SpringExpressionResolver extends CacheExpressionResolver<Evaluation
 	 * @param beanClassLoader the bean class loader
 	 */
 	public SpringExpressionResolver(ClassLoader beanClassLoader) {
-		this(new SpelParserConfiguration(null, beanClassLoader));
+		this(SpelParserConfiguration.builder().compilerClassLoader(beanClassLoader).build());
 	}
 
 	public SpringExpressionResolver(SpelParserConfiguration configuration) {

@@ -1,36 +1,7 @@
 plugins {
 	com.livk.root
 	com.livk.checkstyle
-	alias(libs.plugins.asciidoctor.jvm)
-}
-
-configurations.create("asciidoctorExtensions")
-dependencies {
-	"asciidoctorExtensions"(libs.spring.asciidoctor)
-}
-
-tasks.asciidoctor {
-	configurations("asciidoctorExtensions")
-	baseDirFollowsSourceDir()
-	val docsDir = layout.projectDirectory.dir("docs")
-	sourceDir(docsDir.dir("asciidoctor"))
-	sources {
-		include("spring-boot-extension.adoc")
-	}
-	setOutputDir(docsDir)
-	outputOptions {
-		backends("spring-html")
-	}
-	doLast {
-		copy {
-			from(docsDir.file("img/banner-logo-copy.svg"))
-			into(docsDir.dir("img"))
-			rename { "banner-logo.svg" }
-		}
-		file(docsDir.file("spring-boot-extension.html"))
-			.renameTo(file(docsDir.file("spring-boot-extension-${project.version}.html")))
-		delete(docsDir.dir("fonts"))
-	}
+	com.livk.asciidoctor
 }
 
 val root = setOf(

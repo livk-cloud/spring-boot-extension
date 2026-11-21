@@ -114,20 +114,20 @@ class RequestWrapperTests {
 	@Test
 	void addHeaderWithSingleValue() {
 		wrapper.addHeader(HttpHeaders.USER_AGENT, "test");
-		assertThat(HttpServletUtils.headers(wrapper).getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
+		assertThat(HttpServletUtils.extractHeaders(wrapper).getFirst(HttpHeaders.USER_AGENT)).isEqualTo("test");
 	}
 
 	@Test
 	void addHeaderWithList() {
 		wrapper.addHeader(HttpHeaders.ACCEPT, List.of("text/html", "application/json"));
-		HttpHeaders headers = HttpServletUtils.headers(wrapper);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(wrapper);
 		assertThat(headers.get(HttpHeaders.ACCEPT)).contains("text/html", "application/json");
 	}
 
 	@Test
 	void addHeaderWithArray() {
 		wrapper.addHeader(HttpHeaders.ACCEPT, new String[] { "text/html", "application/json" });
-		HttpHeaders headers = HttpServletUtils.headers(wrapper);
+		HttpHeaders headers = HttpServletUtils.extractHeaders(wrapper);
 		assertThat(headers.get(HttpHeaders.ACCEPT)).contains("text/html", "application/json");
 	}
 
@@ -136,6 +136,30 @@ class RequestWrapperTests {
 		wrapper.body(BODY_BYTES);
 
 		assertThat(Collections.list(wrapper.getHeaderNames())).contains(HttpHeaders.CONTENT_TYPE);
+	}
+
+	@Test
+	void getHeaderReturnsRevisedContentTypeAfterBodyChanged() {
+		wrapper.body(BODY_BYTES, MediaType.TEXT_PLAIN_VALUE);
+
+		assertThat(wrapper.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(Collections.list(wrapper.getHeaders(HttpHeaders.CONTENT_TYPE)))
+			.containsExactly(MediaType.TEXT_PLAIN_VALUE);
+	}
+
+	@Test
+	void getCharacterEncodingDefaultsToUtf8WhenMissing() {
+		assertThat(wrapper.getCharacterEncoding()).isEqualTo("UTF-8");
+	}
+
+	@Test
+	void getContentLengthFallsBackToDelegateWhenBodyNotRevised() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setContent(BODY_BYTES);
+		RequestWrapper untouched = new RequestWrapper(request);
+
+		assertThat(untouched.getContentLength()).isEqualTo(BODY_BYTES.length);
+		assertThat(untouched.getContentLengthLong()).isEqualTo(BODY_BYTES.length);
 	}
 
 	// --- parameters ---

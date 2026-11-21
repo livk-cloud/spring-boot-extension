@@ -16,15 +16,20 @@
 
 package com.livk.commons.web;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author livk
@@ -75,6 +80,40 @@ class ResponseWrapperTests {
 		response.setCharacterEncoding("UTF-8");
 		ResponseWrapper w = new ResponseWrapper(response);
 		assertThat(w.getCharacterEncoding()).isEqualTo("UTF-8");
+	}
+
+	@Test
+	void characterEncodingUsesDefaultWhenMissing() {
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		given(response.getCharacterEncoding()).willReturn(null);
+		ResponseWrapper w = new ResponseWrapper(response);
+		assertThat(w.getCharacterEncoding()).isEqualTo(Charset.defaultCharset().name());
+	}
+
+	@Test
+	void characterEncodingFallsBackWhenInvalid() {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		response.setCharacterEncoding("not-a-real-charset");
+		ResponseWrapper w = new ResponseWrapper(response);
+		assertThat(w.getCharacterEncoding()).isEqualTo(Charset.defaultCharset().name());
+	}
+
+	@Test
+	void getWriterReturnsSameInstance() throws IOException {
+		assertThat(wrapper.getWriter()).isSameAs(wrapper.getWriter());
+	}
+
+	@Test
+	void setWriteListenerThrowsUnsupportedOperationException() {
+		assertThatThrownBy(() -> wrapper.getOutputStream().setWriteListener(null))
+			.isInstanceOf(UnsupportedOperationException.class);
+	}
+
+	@Test
+	void outputStreamIsReadyAndToStringMatchesBuffer() throws IOException {
+		wrapper.getOutputStream().write("ready".getBytes(StandardCharsets.UTF_8));
+		assertThat(wrapper.getOutputStream().isReady()).isTrue();
+		assertThat(wrapper.getOutputStream().toString()).isEqualTo("ready");
 	}
 
 	// --- replaceBody(byte[]) ---

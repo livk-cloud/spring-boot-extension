@@ -94,6 +94,32 @@ class TypeUtilsTests {
 			.hasMessage("Type cannot be null");
 	}
 
+	@Test
+	void toClassFromWildcardTypeWithOnlyObjectUpperBoundReturnsObject() {
+		WildcardType objectOnly = new WildcardType() {
+			@NonNull
+			@Override
+			public Type[] getUpperBounds() {
+				return new Type[] { Object.class };
+			}
+
+			@NonNull
+			@Override
+			public Type[] getLowerBounds() {
+				return new Type[0];
+			}
+		};
+		assertThat(TypeUtils.toClass(objectOnly)).isEqualTo(Object.class);
+	}
+
+	@Test
+	void toClassThrowsForUnsupportedType() {
+		Type unsupported = new Type() {
+		};
+		assertThatThrownBy(() -> TypeUtils.toClass(unsupported)).isInstanceOf(IllegalArgumentException.class)
+			.hasMessageContaining("Unsupported Type");
+	}
+
 	// --- resolveTypeArgument ---
 
 	@Test

@@ -16,8 +16,11 @@
 
 package com.livk.auto.service.processor;
 
+import com.livk.auto.service.processor.factories.spring.AbstractSpringFactoryService;
 import com.livk.auto.service.processor.factories.spring.SpringFactoryService;
+import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceExtImpl;
 import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl;
+import com.livk.auto.service.processor.factories.spring.SpringFactoryServiceImpl2;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.test.tools.SourceFile;
@@ -26,8 +29,10 @@ import org.springframework.core.test.tools.TestCompiler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,13 +45,60 @@ class SpringFactoriesProcessorTests {
 
 	@Test
 	void springFactoriesFileContainsServiceImplInferredFromSingleInterface() {
-		compile(SpringFactoryServiceImpl.class, SpringFactoryService.class);
+		compile(List.of(SpringFactoryServiceImpl.class), SpringFactoryService.class,
+				SpringFactoryServiceImpl.class.getName());
 	}
 
-	private void compile(Class<?> type, Class<?> factoryClass) {
+	@Test
+	void springFactoriesFileContainsMultipleImplementations() {
+		compile(List.of(SpringFactoryServiceImpl.class, SpringFactoryServiceImpl2.class), SpringFactoryService.class,
+				SpringFactoryServiceImpl.class.getName(), SpringFactoryServiceImpl2.class.getName());
+	}
+
+	@Test
+	void springFactoriesFileInfersProviderFromSuperclassWhenNoSingleInterface() {
+		compile(List.of(SpringFactoryServiceExtImpl.class), AbstractSpringFactoryService.class,
+				SpringFactoryServiceExtImpl.class.getName());
+	}
+
+	@Test
+	void springFactoriesFileUsesContinuationFormatForMultipleImplementations() {
+		SourceFile[] sources = List.of(SpringFactoryServiceImpl.class, SpringFactoryServiceImpl2.class)
+			.stream()
+			.map(SourceFile::forTestClass)
+			.toArray(SourceFile[]::new);
 		TestCompiler.forSystem()
 			.withProcessors(new SpringFactoriesProcessor())
-			.withSources(SourceFile.forTestClass(type))
+			.withSources(sources)
+			.compile(compiled -> {
+				try {
+					String content = null;
+					Enumeration<URL> resources = compiled.getClassLoader()
+						.getResources(SpringFactoriesProcessor.SPRING_LOCATION);
+					for (URL url : Collections.list(resources)) {
+						String candidate = new String(url.openStream().readAllBytes(), StandardCharsets.UTF_8);
+						if (candidate.contains(SpringFactoryService.class.getName())) {
+							content = candidate;
+							break;
+						}
+					}
+					assertThat(content).isNotNull()
+						.contains(SpringFactoryService.class.getName() + "=\\")
+						.contains(",\\")
+						.contains(SpringFactoryServiceImpl.class.getName())
+						.contains(SpringFactoryServiceImpl2.class.getName());
+				}
+				catch (IOException ex) {
+					throw new CompilationException(ex, sources[0]);
+				}
+			});
+	}
+
+	private void compile(List<Class<?>> types, Class<?> factoryClass, String... expectedImpls) {
+		SourceFile[] sources = types.stream().map(SourceFile::forTestClass).toArray(SourceFile[]::new);
+		TestCompiler.forSystem()
+			.withProcessors(new SpringFactoriesProcessor())
+			.withSources(sources)
 			.compile(compiled -> {
 				try {
 					Enumeration<URL> resources = compiled.getClassLoader()
@@ -61,11 +113,12 @@ class SpringFactoriesProcessorTests {
 					String key = factoryClass.getName();
 
 					assertThat(pro).containsKey(key);
-					assertThat(pro.get(key)).isEqualTo(type.getName());
+					String value = pro.get(key).toString();
+					assertThat(value).contains(expectedImpls);
 
 				}
 				catch (IOException ex) {
-					throw new CompilationException(ex, SourceFile.forTestClass(type));
+					throw new CompilationException(ex, sources[0]);
 				}
 			});
 	}

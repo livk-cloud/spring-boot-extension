@@ -43,6 +43,12 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 	protected final Class<A> annotationType = TypeUtils.resolveTypeArgument(this.getClass(),
 			AbstractAnnotationAdvisor.class);
 
+	protected AbstractAnnotationAdvisor() {
+		// Avoid AbstractPointcutAdvisor.getOrder() → getAdvice() recursion when advice is
+		// this.
+		setOrder(Ordered.LOWEST_PRECEDENCE - 1);
+	}
+
 	@Override
 	public final @NonNull Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
 		Assert.notNull(this.annotationType, "annotationType must not be null");
@@ -53,12 +59,6 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 			annotation = target.getAnnotation(invocation.getThis().getClass());
 		}
 		return doInvoke(invocation, annotation);
-	}
-
-	@Override
-	public int getOrder() {
-		int order = super.getOrder();
-		return (order != Ordered.LOWEST_PRECEDENCE) ? order : Ordered.LOWEST_PRECEDENCE - 1;
 	}
 
 	/**

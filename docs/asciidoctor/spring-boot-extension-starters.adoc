@@ -40,10 +40,6 @@ starter 会带上对应的 context 与 autoconfigure 模块，通常不需要再
 |二维码请求解析与响应渲染
 |支持 MVC 与 WebFlux
 
-|redisearch-spring-boot-starter
-|RediSearch 连接工厂与模板
-|需要 Redis Stack / RediSearch 服务
-
 |redisson-spring-boot-starter
 |RedissonClient 自动配置
 |需要 Redis 或 Redis Cluster

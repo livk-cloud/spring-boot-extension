@@ -107,4 +107,21 @@ class ReactorClientCustomizerTests {
 		assertThat(result).isNotNull();
 	}
 
+	@Test
+	void getHandlerListAddsTimeoutHandlersOnEachInvoke() throws Exception {
+		ReactorClientCustomizer customizer = new ReactorClientCustomizer(resourceFactory);
+		java.lang.reflect.Field handlers = ReactorClientCustomizer.class.getDeclaredField("handlerList");
+		handlers.setAccessible(true);
+		java.lang.reflect.Method getHandlerList = ReactorClientCustomizer.class.getDeclaredMethod("getHandlerList");
+		getHandlerList.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		java.util.List<ChannelHandler> handlerList = (java.util.List<ChannelHandler>) handlers.get(customizer);
+
+		assertThat(handlerList).isEmpty();
+		getHandlerList.invoke(customizer);
+		assertThat(handlerList).hasSize(2);
+		getHandlerList.invoke(customizer);
+		assertThat(handlerList).hasSize(4);
+	}
+
 }

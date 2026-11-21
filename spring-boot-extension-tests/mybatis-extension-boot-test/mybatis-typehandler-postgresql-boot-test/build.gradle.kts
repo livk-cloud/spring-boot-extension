@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
 	implementation(project(":spring-boot-extension-starters:mybatis-extension-boot-starter"))
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.postgresql:postgresql")
 
 	testImplementation("org.testcontainers:testcontainers-postgresql")

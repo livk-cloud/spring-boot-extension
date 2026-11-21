@@ -145,4 +145,59 @@ class ReactiveExcelMethodReturnValueHandlerTests {
 			.hasMessage("the return class is not java.util.List or java.util.Map");
 	}
 
+	@Test
+	void handleResultReturnsEmptyWhenReturnValueIsNull() throws Exception {
+		Method method = Info.class.getDeclaredMethod("resolveResponse");
+		HandlerMethod handlerMethod = new HandlerMethod(new Info(), method);
+		HandlerResult nullResult = new HandlerResult(handlerMethod, null, handlerMethod.getReturnType());
+		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/null"));
+
+		StepVerifier.create(handler.handleResult(exchange, nullResult)).verifyComplete();
+		assertThat(exchange.getResponse().isCommitted()).isFalse();
+	}
+
+	@Test
+	void handleResultWithPlainListShouldReturnExcel() throws Exception {
+		List<Info> expectedList = List.of(new Info("111"), new Info("222"));
+		Method method = Info.class.getDeclaredMethod("resolveResponse");
+		HandlerMethod handlerMethod = new HandlerMethod(new Info(), method);
+		HandlerResult listResult = new HandlerResult(handlerMethod, expectedList, handlerMethod.getReturnType());
+
+		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/plain-list"));
+		handler.handleResult(exchange, listResult).block(Duration.ofSeconds(5));
+
+		ExcelMapReadListener<Info> listener = new TypeExcelMapReadListener<>();
+		Mono<List<Info>> resultMono = DataBufferConverter.transform(exchange.getResponse().getBody())
+			.doOnSuccess(in -> listener.execute(in, Info.class, true))
+			.map(in -> listener.toListData());
+		StepVerifier.create(resultMono).expectNext(expectedList).verifyComplete();
+	}
+
+	@Test
+	void handleResultWithPlainMapShouldReturnExcel() throws Exception {
+		Map<String, List<Info>> sheetData = Map.of("Sheet1", List.of(new Info("A1")));
+		Method method = Info.class.getDeclaredMethod("resolveResponseMap");
+		HandlerMethod handlerMethod = new HandlerMethod(new Info(), method);
+		HandlerResult mapResult = new HandlerResult(handlerMethod, sheetData, handlerMethod.getReturnType());
+
+		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/plain-map"));
+		handler.handleResult(exchange, mapResult).block(Duration.ofSeconds(5));
+
+		assertThat(exchange.getResponse().getHeaders().getContentDisposition())
+			.isEqualTo(ContentDisposition.parse("attachment;filename=file.xlsm"));
+	}
+
+	@Test
+	void supportsReturnsFalseWithoutResponseExcel() throws Exception {
+		Method method = Info.class.getDeclaredMethod("resolveResponseWithoutAnnotation");
+		HandlerMethod handlerMethod = new HandlerMethod(new Info(), method);
+		HandlerResult plain = new HandlerResult(handlerMethod, List.of(), handlerMethod.getReturnType());
+		assertThat(handler.supports(plain)).isFalse();
+	}
+
+	@Test
+	void getOrderIsHighestPrecedence() {
+		assertThat(handler.getOrder()).isEqualTo(org.springframework.core.Ordered.HIGHEST_PRECEDENCE);
+	}
+
 }
