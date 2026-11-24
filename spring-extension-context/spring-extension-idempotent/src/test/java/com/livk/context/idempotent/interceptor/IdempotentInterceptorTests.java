@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -218,6 +219,67 @@ class IdempotentInterceptorTests {
 		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent)).isInstanceOf(IdempotentException.class)
 			.hasMessage("Idempotent ttl is too large");
 		verify(executor, never()).tryAcquire(any(), any());
+	}
+
+	@Test
+	void doInvokeThrowsWhenTtlIsNotPositive() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 0, true)))
+			.isInstanceOf(IdempotentException.class)
+			.hasMessage("Idempotent ttl must be positive");
+		verify(executor, never()).tryAcquire(any(), any());
+	}
+
+	@Test
+	void doInvokeKeepsTokenWhenCompletionStageSucceeds() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		CompletableFuture<String> future = new CompletableFuture<>();
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		given(invocation.proceed()).willReturn(future);
+
+		assertThat(interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, true))).isSameAs(future);
+		future.complete("ok");
+		verify(executor, never()).release(any(), any());
+	}
+
+	@Test
+	void doInvokeKeepsTokenWhenCompletionStageFailsAndReleaseDisabled() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		CompletableFuture<String> future = new CompletableFuture<>();
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		given(invocation.proceed()).willReturn(future);
+
+		interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, false));
+		future.completeExceptionally(new IllegalStateException("async-boom"));
+		verify(executor, never()).release(any(), any());
+	}
+
+	@Test
+	void doInvokeSuppressesReleaseFailure() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
+		willThrow(new IllegalStateException("redis-down")).given(executor).release("order:1", "token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		given(invocation.proceed()).willThrow(new IllegalStateException("boom"));
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, true)))
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("boom")
+			.satisfies((ex) -> {
+				assertThat(ex.getSuppressed()).hasSize(1);
+				assertThat(ex.getSuppressed()[0]).isInstanceOf(IllegalStateException.class).hasMessage("redis-down");
+			});
 	}
 
 	private Idempotent idempotent(String key, long ttl, boolean releaseOnError) {

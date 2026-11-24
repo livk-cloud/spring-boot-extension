@@ -74,6 +74,18 @@ class ContextFactoryTests {
 	}
 
 	@Test
+	void shortOrNonIndexedNamesAreStillBound() throws NoSuchMethodException {
+		Method method = AliasEdgeMethod.class.getDeclaredMethod("parse", String.class, String.class, String.class);
+		Context context = contextFactory.create(method, new Object[] { "one", "two", "three" });
+		assertThat(context.asMap()).containsEntry("p", "one")
+			.containsEntry("px", "two")
+			.containsEntry("orderId", "three")
+			.containsEntry("p0", "one")
+			.containsEntry("p1", "two")
+			.containsEntry("p2", "three");
+	}
+
+	@Test
 	void createEmptyContext() {
 		Context context = Context.create();
 		assertThat(context.asMap()).isEmpty();
@@ -114,6 +126,14 @@ class ContextFactoryTests {
 	static final class IndexedAliasMethod {
 
 		void parse(String first, String p0) {
+		}
+
+	}
+
+	@SuppressWarnings("unused")
+	static final class AliasEdgeMethod {
+
+		void parse(String p, String px, String orderId) {
 		}
 
 	}

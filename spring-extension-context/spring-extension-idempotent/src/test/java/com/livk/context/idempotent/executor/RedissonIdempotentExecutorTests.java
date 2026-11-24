@@ -105,9 +105,19 @@ class RedissonIdempotentExecutorTests {
 
 	@Test
 	void tryAcquireRejectsNonPositiveTtl() {
+		assertThatThrownBy(() -> executor.tryAcquire("order", null)).isInstanceOf(IdempotentException.class);
 		assertThatThrownBy(() -> executor.tryAcquire("order", Duration.ZERO)).isInstanceOf(IdempotentException.class);
 		assertThatThrownBy(() -> executor.tryAcquire("order", Duration.ofSeconds(-1)))
 			.isInstanceOf(IdempotentException.class);
+	}
+
+	@Test
+	void tryAcquireKeepsMillisecondOrLargerTtl() {
+		RBucket<String> bucket = bucket("order");
+		given(bucket.setIfAbsent(anyString(), any(Duration.class))).willReturn(true);
+
+		assertThat(executor.tryAcquire("order", Duration.ofMillis(1))).isNotBlank();
+		verify(bucket).setIfAbsent(anyString(), eq(Duration.ofMillis(1)));
 	}
 
 	@SuppressWarnings("unchecked")
