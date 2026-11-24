@@ -1,0 +1,114 @@
+[[idempotent]]
+==== idempotent
+
+幂等组件通过 `@Idempotent` 标记方法，并由 `IdempotentInterceptor` 在执行前占用一次令牌。 +
+适合「同一业务 key 在一段时间内只成功执行一次」的场景，例如重复提交订单。多实例共享同一套 Redis。
+
+===== 执行规则
+
+* 第一次进入方法前占用 key。占用成功才执行业务方法。
+* 方法正常返回后，key 会一直保留到 ttl 结束。这段时间内相同 key 再次进入，抛出 `IdempotentException`。
+* 方法抛出异常且 `releaseOnError=true`（默认）时释放 key，调用方可以重试。
+* `releaseOnError=false` 时，失败也会继续占用 key，直到 ttl 结束。
+
+===== Idempotent注解
+
+标记方法，用于对此方法进行幂等控制。`key` 支持 SpEL。
+
+[source,java,indent=0]
+----
+public class OrderService {
+
+  @Idempotent(key = "'order:' + #orderId", ttl = 30)
+  public void submit(String orderId) {
+
+  }
+}
+----
+
+`@Idempotent` 常用属性：
+
+* `key`：幂等 key，支持 SpEL。不同业务不要复用同一个 key。
+* `ttl`：成功调用占用 key 的时长，默认 `60`。必须大于 `0`。
+* `ttlUnit`：时间单位，默认 `SECONDS`。
+* `releaseOnError`：方法抛异常时是否释放令牌，默认 `true`。
+
+===== IdempotentExecutor
+
+`IdempotentExecutor` 是令牌存储接口。自定义存储时实现该接口并注册为 Spring Bean。 +
+内置 `RedissonIdempotentExecutor`，依赖 `RedissonClient`。Redis key 形如 `idempotent:{key}`，使用 `SET NX` 加过期时间占用。
+
+[source,java,indent=0]
+----
+@Autowired
+IdempotentExecutor executor;
+
+if (executor.tryAcquire("order:1", Duration.ofSeconds(30))) {
+  try {
+    // 业务逻辑
+  }
+  catch (RuntimeException ex) {
+    executor.release("order:1");
+    throw ex;
+  }
+}
+----
+
+多个 `IdempotentExecutor` 同时存在时，`IdempotentInterceptor` 通过 `ObjectProvider.orderedStream()` 取 `getOrder()` 最小的一个。 +
+内置 Redisson 实现的默认顺序是 `0`。需要固定实现时，注册自己的 `IdempotentExecutor` 并覆盖 `getOrder()`，数值越小优先级越高。
+
+===== IdempotentInterceptor
+
+幂等拦截器基于 AOP 拦截 `@Idempotent` 方法。 +
+它解析 key、占用令牌，并在方法失败且允许释放时归还令牌。
+
+===== idempotent-spring-boot-starter
+
+artifactId: idempotent-spring-boot-starter
+
+starter 会传递引入 `redisson-spring-boot-starter`。引入后还要在配置类上声明 `@EnableIdempotent`，自动配置才会注册拦截器和 `RedissonIdempotentExecutor`。 +
+没有 `RedissonClient` 时不会注册 Redisson 实现，此时需要自行提供 `IdempotentExecutor`。
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>idempotent-spring-boot-starter</artifactId>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+implementation 'io.github.livk-cloud:idempotent-spring-boot-starter'
+----
+--
+
+[secondary]
+.Gradle-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation("io.github.livk-cloud:idempotent-spring-boot-starter")
+----
+--
+
+[source,java,indent=0]
+----
+@EnableIdempotent
+@SpringBootApplication
+public class IdempotentApplication {
+
+}
+----
+
+===== 注意事项
+
+所有实例必须连接同一套 Redis，才能保证全局幂等。 +
+key 解析结果为空，或 ttl 小于等于 `0` 时，直接抛出 `IdempotentException`，不会执行业务方法。
