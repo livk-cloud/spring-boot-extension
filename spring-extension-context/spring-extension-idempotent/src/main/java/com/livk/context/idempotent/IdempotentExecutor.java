@@ -40,8 +40,7 @@ public interface IdempotentExecutor extends Ordered {
 	 * @return the ownership token when acquired, or {@code null} when the key is already
 	 * occupied
 	 */
-	@Nullable
-	String tryAcquire(String key, Duration ttl);
+	@Nullable String tryAcquire(String key, Duration ttl);
 
 	/**
 	 * Release a previously acquired token so the operation can be retried.
