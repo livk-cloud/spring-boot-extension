@@ -130,6 +130,24 @@ class AbstractAnnotationAdvisorTests {
 	}
 
 	@Test
+	void invokeResolvesAnnotationFromTargetImplementationMethod() throws Throwable {
+		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
+		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
+			@Override
+			protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) {
+				seen.set(annotation);
+				return "ok";
+			}
+		};
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		when(invocation.getMethod()).thenReturn(AnnotatedService.class.getMethod("execute"));
+		when(invocation.getThis()).thenReturn(new AnnotatedServiceImpl());
+
+		assertThat(capturing.invoke(invocation)).isEqualTo("ok");
+		assertThat(seen.get()).isNotNull();
+	}
+
+	@Test
 	void getOrderDefaultsToLowestPrecedenceMinusOne() {
 		assertThat(advisor.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE - 1);
 	}
@@ -166,6 +184,21 @@ class AbstractAnnotationAdvisorTests {
 	static class UnannotatedClass {
 
 		void noAnnotation() {
+		}
+
+	}
+
+	interface AnnotatedService {
+
+		void execute();
+
+	}
+
+	static class AnnotatedServiceImpl implements AnnotatedService {
+
+		@MyAnnotation
+		@Override
+		public void execute() {
 		}
 
 	}

@@ -17,7 +17,6 @@
 package com.livk.commons.expression;
 
 import com.google.common.collect.Maps;
-import org.springframework.util.ObjectUtils;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.Assert;
@@ -31,7 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Default {@link ContextFactory} implementation that uses Spring's
  * {@link DefaultParameterNameDiscoverer} to resolve method parameter names.
  * <p>
- * Parameter names are cached per method to avoid repeated reflection lookups.
+ * Parameter names are cached per method to avoid repeated reflection lookups. Indexed
+ * aliases {@code p0}/{@code a0}, {@code p1}/{@code a1}, ... are always bound so
+ * expressions remain usable when the compiler did not retain parameter names.
  *
  * @author livk
  * @see DefaultParameterNameDiscoverer
@@ -46,14 +47,17 @@ class DefaultContextFactory implements ContextFactory {
 	@Override
 	public Context create(Method method, Object[] args) {
 		Assert.notNull(method, "Method must not be null");
-		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, this.discoverer::getParameterNames);
-		if (ObjectUtils.isEmpty(parameterNames)) {
+		if (args == null) {
 			return Context.create();
 		}
-		HashMap<String, Object> map = Maps.newHashMapWithExpectedSize(parameterNames.length);
-		if (args != null && parameterNames.length == args.length) {
-			for (int i = 0; i < parameterNames.length; i++) {
-				map.put(parameterNames[i], args[i]);
+		String[] parameterNames = this.parameterNamesCache.computeIfAbsent(method, this.discoverer::getParameterNames);
+		HashMap<String, Object> map = Maps.newHashMapWithExpectedSize(Math.max(args.length * 3, 4));
+		for (int i = 0; i < args.length; i++) {
+			Object value = args[i];
+			map.put("a" + i, value);
+			map.put("p" + i, value);
+			if (parameterNames != null && i < parameterNames.length && parameterNames[i] != null) {
+				map.put(parameterNames[i], value);
 			}
 		}
 		return Context.create(map);

@@ -34,6 +34,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * AOP interceptor that enforces {@link Idempotent} by occupying a token before the method
  * runs.
+ * <p>
+ * Only externally invoked, proxy-interceptable methods are covered. Private methods and
+ * same-instance self-invocations bypass Spring AOP and therefore skip idempotent checks.
  *
  * @author livk
  * @see Idempotent
@@ -58,7 +61,8 @@ public class IdempotentInterceptor extends AbstractAnnotationPointcutStrategyAdv
 		}
 		Duration ttl = toDuration(idempotent.ttl(), idempotent.ttlUnit());
 		IdempotentExecutor current = getExecutor();
-		if (!current.tryAcquire(key, ttl)) {
+		String token = current.tryAcquire(key, ttl);
+		if (token == null) {
 			throw new IdempotentException("Duplicate request: " + key);
 		}
 		try {
@@ -66,7 +70,7 @@ public class IdempotentInterceptor extends AbstractAnnotationPointcutStrategyAdv
 		}
 		catch (Throwable ex) {
 			if (idempotent.releaseOnError()) {
-				releaseQuietly(current, key, ex);
+				releaseQuietly(current, key, token, ex);
 			}
 			throw ex;
 		}
@@ -92,12 +96,16 @@ public class IdempotentInterceptor extends AbstractAnnotationPointcutStrategyAdv
 		if (ttl <= 0) {
 			throw new IdempotentException("Idempotent ttl must be positive");
 		}
-		return Duration.ofMillis(unit.toMillis(ttl));
+		Duration duration = Duration.of(ttl, unit.toChronoUnit());
+		if (duration.isZero() || duration.isNegative()) {
+			throw new IdempotentException("Idempotent ttl must be positive");
+		}
+		return duration;
 	}
 
-	private static void releaseQuietly(IdempotentExecutor executor, String key, Throwable ex) {
+	private static void releaseQuietly(IdempotentExecutor executor, String key, String token, Throwable ex) {
 		try {
-			executor.release(key);
+			executor.release(key, token);
 		}
 		catch (RuntimeException releaseEx) {
 			ex.addSuppressed(releaseEx);

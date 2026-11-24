@@ -6,10 +6,10 @@
 
 ===== 执行规则
 
-* 第一次进入方法前占用 key。占用成功才执行业务方法。
+* 第一次进入方法前占用 key，并生成唯一 ownership token。占用成功才执行业务方法。
 * 方法正常返回后，key 会一直保留到 ttl 结束。这段时间内相同 key 再次进入，抛出 `IdempotentException`。
-* 方法抛出异常且 `releaseOnError=true`（默认）时释放 key，调用方可以重试。
-* `releaseOnError=false` 时，失败也会继续占用 key，直到 ttl 结束。
+* 方法抛出异常且 `releaseOnError=true`（默认）时，仅在仍持有原 token 时释放 key，调用方可以重试。
+* `releaseOnError=false` 时，失败也会继续占用 key，直到 ttl 结束。适合副作用可能已提交、不能重复执行的场景。
 
 ===== Idempotent注解
 
@@ -28,27 +28,28 @@ public class OrderService {
 
 `@Idempotent` 常用属性：
 
-* `key`：幂等 key，支持 SpEL。不同业务不要复用同一个 key。
+* `key`：幂等 key，支持 SpEL。不同业务不要复用同一个 key。命名参数依赖编译保留参数名（`-parameters`）；也可用稳定的 `#p0` / `#a0` 索引参数。
 * `ttl`：成功调用占用 key 的时长，默认 `60`。必须大于 `0`。
 * `ttlUnit`：时间单位，默认 `SECONDS`。
-* `releaseOnError`：方法抛异常时是否释放令牌，默认 `true`。
+* `releaseOnError`：方法抛异常时是否释放令牌，默认 `true`。若失败时副作用可能已提交，请设为 `false`。
 
 ===== IdempotentExecutor
 
 `IdempotentExecutor` 是令牌存储接口。自定义存储时实现该接口并注册为 Spring Bean。 +
-内置 `RedissonIdempotentExecutor`，依赖 `RedissonClient`。Redis key 形如 `idempotent:{key}`，使用 `SET NX` 加过期时间占用。
+内置 `RedissonIdempotentExecutor`，依赖 `RedissonClient`。Redis key 形如 `idempotent:{key}`，使用 `SET NX` 加过期时间占用；释放时按 ownership token 做 compare-and-delete，避免过期后的旧请求误删新令牌。
 
 [source,java,indent=0]
 ----
 @Autowired
 IdempotentExecutor executor;
 
-if (executor.tryAcquire("order:1", Duration.ofSeconds(30))) {
+String token = executor.tryAcquire("order:1", Duration.ofSeconds(30));
+if (token != null) {
   try {
     // 业务逻辑
   }
   catch (RuntimeException ex) {
-    executor.release("order:1");
+    executor.release("order:1", token);
     throw ex;
   }
 }
@@ -59,8 +60,9 @@ if (executor.tryAcquire("order:1", Duration.ofSeconds(30))) {
 
 ===== IdempotentInterceptor
 
-幂等拦截器基于 AOP 拦截 `@Idempotent` 方法。 +
-它解析 key、占用令牌，并在方法失败且允许释放时归还令牌。
+幂等拦截器基于 Spring AOP 拦截 `@Idempotent` 方法。 +
+它解析 key、占用令牌，并在方法失败且允许释放时归还令牌。 +
+仅对外部调用、可被代理拦截的方法生效；`private` 方法或同类内部自调用不会进入拦截器。
 
 ===== idempotent-spring-boot-starter
 
@@ -111,4 +113,5 @@ public class IdempotentApplication {
 ===== 注意事项
 
 所有实例必须连接同一套 Redis，才能保证全局幂等。 +
-key 解析结果为空，或 ttl 小于等于 `0` 时，直接抛出 `IdempotentException`，不会执行业务方法。
+key 解析结果为空，或 ttl 小于等于 `0` 时，直接抛出 `IdempotentException`，不会执行业务方法。 +
+SpEL 使用命名参数时请开启 `-parameters`，或改用 `#p0` / `#a0`。

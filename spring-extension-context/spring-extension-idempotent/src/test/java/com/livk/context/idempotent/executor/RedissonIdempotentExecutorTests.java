@@ -19,14 +19,18 @@ package com.livk.context.idempotent.executor;
 import com.livk.context.idempotent.exception.IdempotentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.redisson.api.RBucket;
+import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -48,29 +52,40 @@ class RedissonIdempotentExecutorTests {
 	}
 
 	@Test
-	void tryAcquireReturnsTrueWhenTokenIsFree() {
+	void tryAcquireReturnsTokenWhenFree() {
 		RBucket<String> bucket = bucket("order");
-		given(bucket.setIfAbsent(eq("1"), any(Duration.class))).willReturn(true);
+		given(bucket.setIfAbsent(anyString(), any(Duration.class))).willReturn(true);
 
-		assertThat(executor.tryAcquire("order", Duration.ofSeconds(30))).isTrue();
-		verify(bucket).setIfAbsent("1", Duration.ofSeconds(30));
+		String token = executor.tryAcquire("order", Duration.ofSeconds(30));
+
+		assertThat(token).isNotBlank();
+		ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
+		verify(bucket).setIfAbsent(tokenCaptor.capture(), eq(Duration.ofSeconds(30)));
+		assertThat(tokenCaptor.getValue()).isEqualTo(token);
 	}
 
 	@Test
-	void tryAcquireReturnsFalseWhenTokenIsOccupied() {
+	void tryAcquireReturnsNullWhenOccupied() {
 		RBucket<String> bucket = bucket("order");
-		given(bucket.setIfAbsent(eq("1"), any(Duration.class))).willReturn(false);
+		given(bucket.setIfAbsent(anyString(), any(Duration.class))).willReturn(false);
 
-		assertThat(executor.tryAcquire("order", Duration.ofSeconds(30))).isFalse();
+		assertThat(executor.tryAcquire("order", Duration.ofSeconds(30))).isNull();
 	}
 
 	@Test
-	void releaseDeletesTheToken() {
-		RBucket<String> bucket = bucket("order");
+	void releaseDeletesOnlyMatchingToken() {
+		RScript script = mock(RScript.class);
+		given(redissonClient.getScript()).willReturn(script);
 
-		executor.release("order");
+		executor.release("order", "token-1");
 
-		verify(bucket).delete();
+		verify(script).eval(eq(RScript.Mode.READ_WRITE), anyString(), eq(RScript.ReturnType.LONG),
+				eq(List.of(RedissonIdempotentExecutor.KEY_PREFIX + "order")), eq("token-1"));
+	}
+
+	@Test
+	void releaseRejectsBlankToken() {
+		assertThatThrownBy(() -> executor.release("order", " ")).isInstanceOf(IdempotentException.class);
 	}
 
 	@Test

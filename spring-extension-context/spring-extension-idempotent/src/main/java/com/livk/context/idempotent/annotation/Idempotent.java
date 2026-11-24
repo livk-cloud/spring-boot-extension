@@ -31,7 +31,12 @@ import java.util.concurrent.TimeUnit;
  * expires. When the method throws and {@link #releaseOnError()} is {@code true}, the
  * token is released so the caller can retry.
  * <p>
- * {@link #key()} supports SpEL. Usage example: <pre>{@code
+ * Only proxy-interceptable methods are enforced. Private methods and same-bean
+ * self-invocations bypass Spring AOP and skip idempotent checks.
+ * <p>
+ * {@link #key()} supports SpEL. Prefer indexed arguments {@code #p0}/{@code #a0} when
+ * parameter names may be unavailable, or compile with {@code -parameters}. Usage example:
+ * <pre>{@code
  * &#64;Idempotent(key = "'order:' + #orderId", ttl = 30)
  * public void submit(String orderId) {
  *     // business logic
@@ -47,6 +52,9 @@ public @interface Idempotent {
 
 	/**
 	 * Idempotent key, supports SpEL expressions.
+	 * <p>
+	 * Named parameters require the compiler {@code -parameters} flag. Indexed aliases
+	 * {@code #p0}/{@code #a0} are always available.
 	 * @return the key expression
 	 */
 	String key();
@@ -65,6 +73,9 @@ public @interface Idempotent {
 
 	/**
 	 * Whether to release the token when the method throws, allowing a retry.
+	 * <p>
+	 * Defaults to {@code true} for retry-friendly APIs. Set {@code false} when a thrown
+	 * exception may still leave committed side effects that must not run twice.
 	 * @return {@code true} to release on failure
 	 */
 	boolean releaseOnError() default true;

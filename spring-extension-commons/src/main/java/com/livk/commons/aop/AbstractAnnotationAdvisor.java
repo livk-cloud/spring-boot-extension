@@ -22,8 +22,10 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.jspecify.annotations.NonNull;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.core.Ordered;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -52,11 +54,16 @@ public abstract class AbstractAnnotationAdvisor<A extends Annotation> extends Ab
 	@Override
 	public final @NonNull Object invoke(@NonNull MethodInvocation invocation) throws Throwable {
 		Assert.notNull(this.annotationType, "annotationType must not be null");
-		Method method = invocation.getMethod();
 		AnnotationTarget<A> target = AnnotationTarget.of(this.annotationType);
+		Method method = invocation.getMethod();
+		Object thisObject = invocation.getThis();
+		Class<?> targetClass = (thisObject != null) ? AopUtils.getTargetClass(thisObject) : null;
+		if (targetClass != null) {
+			method = AopUtils.getMostSpecificMethod(method, targetClass);
+		}
 		A annotation = target.getAnnotation(method);
-		if (annotation == null && invocation.getThis() != null) {
-			annotation = target.getAnnotation(invocation.getThis().getClass());
+		if (annotation == null && targetClass != null) {
+			annotation = target.getAnnotation(ClassUtils.getUserClass(targetClass));
 		}
 		return doInvoke(invocation, annotation);
 	}

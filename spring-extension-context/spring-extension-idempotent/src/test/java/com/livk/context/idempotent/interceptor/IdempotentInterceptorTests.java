@@ -52,7 +52,7 @@ class IdempotentInterceptorTests {
 	@Test
 	void doInvokeProceedsWhenTokenIsAcquired() throws Throwable {
 		IdempotentExecutor executor = mock(IdempotentExecutor.class);
-		given(executor.tryAcquire(eq("order:1"), eq(Duration.ofSeconds(30)))).willReturn(true);
+		given(executor.tryAcquire(eq("order:1"), eq(Duration.ofSeconds(30)))).willReturn("token-1");
 		given(executors.orderedStream()).willReturn(Stream.of(executor));
 
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -62,13 +62,13 @@ class IdempotentInterceptorTests {
 
 		assertThat(result).isEqualTo("ok");
 		verify(invocation).proceed();
-		verify(executor, never()).release(any());
+		verify(executor, never()).release(any(), any());
 	}
 
 	@Test
 	void doInvokeThrowsWhenTokenIsOccupied() throws Throwable {
 		IdempotentExecutor executor = mock(IdempotentExecutor.class);
-		given(executor.tryAcquire(eq("order:1"), any())).willReturn(false);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn(null);
 		given(executors.orderedStream()).willReturn(Stream.of(executor));
 
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -82,7 +82,7 @@ class IdempotentInterceptorTests {
 	@Test
 	void doInvokeReleasesTokenWhenMethodThrows() throws Throwable {
 		IdempotentExecutor executor = mock(IdempotentExecutor.class);
-		given(executor.tryAcquire(eq("order:1"), any())).willReturn(true);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
 		given(executors.orderedStream()).willReturn(Stream.of(executor));
 
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -91,13 +91,13 @@ class IdempotentInterceptorTests {
 		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, true)))
 			.isInstanceOf(IllegalStateException.class)
 			.hasMessage("boom");
-		verify(executor).release("order:1");
+		verify(executor).release("order:1", "token-1");
 	}
 
 	@Test
 	void doInvokeKeepsTokenWhenReleaseOnErrorIsDisabled() throws Throwable {
 		IdempotentExecutor executor = mock(IdempotentExecutor.class);
-		given(executor.tryAcquire(eq("order:1"), any())).willReturn(true);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
 		given(executors.orderedStream()).willReturn(Stream.of(executor));
 
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -105,7 +105,7 @@ class IdempotentInterceptorTests {
 
 		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, false)))
 			.isInstanceOf(IllegalStateException.class);
-		verify(executor, never()).release(any());
+		verify(executor, never()).release(any(), any());
 	}
 
 	@Test
@@ -120,6 +120,21 @@ class IdempotentInterceptorTests {
 	}
 
 	@Test
+	void doInvokeSupportsSubMillisecondTtl() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), eq(Duration.ofNanos(500)))).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		given(invocation.proceed()).willReturn("ok");
+		Idempotent idempotent = idempotent("'order:' + #orderId", 500, true);
+		given(idempotent.ttlUnit()).willReturn(TimeUnit.NANOSECONDS);
+
+		assertThat(interceptor.doInvoke(invocation, idempotent)).isEqualTo("ok");
+		verify(executor).tryAcquire("order:1", Duration.ofNanos(500));
+	}
+
+	@Test
 	void doInvokeThrowsWhenNoExecutor() throws Throwable {
 		given(executors.orderedStream()).willReturn(Stream.empty());
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -131,7 +146,7 @@ class IdempotentInterceptorTests {
 	@Test
 	void doInvokeReusesCachedExecutor() throws Throwable {
 		IdempotentExecutor executor = mock(IdempotentExecutor.class);
-		given(executor.tryAcquire(any(), any())).willReturn(true);
+		given(executor.tryAcquire(any(), any())).willReturn("token-1");
 		given(executors.orderedStream()).willReturn(Stream.of(executor));
 
 		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
@@ -142,6 +157,21 @@ class IdempotentInterceptorTests {
 		interceptor.doInvoke(invocation, idempotent);
 
 		verify(executors, times(1)).orderedStream();
+	}
+
+	@Test
+	void doInvokeResolvesIndexedParameterWhenNameMissing() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		Method method = IndexedParameterTarget.class.getDeclaredMethod("submit", String.class);
+		given(invocation.getMethod()).willReturn(method);
+		given(invocation.getArguments()).willReturn(new Object[] { "1" });
+		given(invocation.proceed()).willReturn("ok");
+
+		assertThat(interceptor.doInvoke(invocation, idempotent("'order:' + #p0", 30, true))).isEqualTo("ok");
 	}
 
 	private Idempotent idempotent(String key, long ttl, boolean releaseOnError) {
@@ -163,6 +193,14 @@ class IdempotentInterceptorTests {
 
 	@SuppressWarnings("unused")
 	void submit(String orderId) {
+	}
+
+	static final class IndexedParameterTarget {
+
+		@SuppressWarnings("unused")
+		void submit(String arg0) {
+		}
+
 	}
 
 }

@@ -39,7 +39,10 @@ class ContextFactoryTests {
 	@Test
 	void createFromMethodAndArgs() {
 		Context context = contextFactory.create(method, new String[] { "livk" });
-		assertThat(context.asMap()).containsExactlyInAnyOrderEntriesOf(Map.of("username", "livk"));
+		assertThat(context.asMap()).containsEntry("username", "livk")
+			.containsEntry("p0", "livk")
+			.containsEntry("a0", "livk")
+			.hasSize(3);
 	}
 
 	@Test
@@ -49,9 +52,14 @@ class ContextFactoryTests {
 	}
 
 	@Test
-	void createWithMismatchedArgsLengthReturnsEmptyContext() {
+	void createWithExtraArgsStillBindsIndexedAliases() {
 		Context context = contextFactory.create(method, new Object[] { "a", "b" });
-		assertThat(context.asMap()).isEmpty();
+		assertThat(context.asMap()).containsEntry("p0", "a")
+			.containsEntry("a0", "a")
+			.containsEntry("p1", "b")
+			.containsEntry("a1", "b")
+			.containsEntry("username", "a")
+			.hasSize(5);
 	}
 
 	@Test
