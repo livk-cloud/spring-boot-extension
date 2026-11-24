@@ -64,7 +64,7 @@ public class RedissonIdempotentExecutor implements IdempotentExecutor {
 		if (ttl == null || ttl.isZero() || ttl.isNegative()) {
 			throw new IdempotentException("Idempotent ttl must be positive");
 		}
-		Duration redisTtl = ttl.compareTo(MIN_REDIS_TTL) < 0 ? MIN_REDIS_TTL : ttl;
+		Duration redisTtl = (ttl.compareTo(MIN_REDIS_TTL) < 0) ? MIN_REDIS_TTL : ttl;
 		String token = UUID.randomUUID().toString();
 		if (bucket(key).setIfAbsent(token, redisTtl)) {
 			return token;
