@@ -63,6 +63,17 @@ class ContextFactoryTests {
 	}
 
 	@Test
+	void namedParameterDoesNotOverwriteIndexedAlias() throws NoSuchMethodException {
+		Method colliding = IndexedAliasMethod.class.getDeclaredMethod("parse", String.class, String.class);
+		Context context = contextFactory.create(colliding, new Object[] { "first", "second" });
+		assertThat(context.asMap()).containsEntry("p0", "first")
+			.containsEntry("a0", "first")
+			.containsEntry("p1", "second")
+			.containsEntry("a1", "second")
+			.doesNotContainEntry("p0", "second");
+	}
+
+	@Test
 	void createEmptyContext() {
 		Context context = Context.create();
 		assertThat(context.asMap()).isEmpty();
@@ -97,6 +108,14 @@ class ContextFactoryTests {
 		assertThat(ContextFactory.DEFAULT_FACTORY).isNotNull();
 		Context context = ContextFactory.DEFAULT_FACTORY.create(method, new String[] { "livk" });
 		assertThat(context.asMap()).containsEntry("username", "livk");
+	}
+
+	@SuppressWarnings("unused")
+	static final class IndexedAliasMethod {
+
+		void parse(String first, String p0) {
+		}
+
 	}
 
 }

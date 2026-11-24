@@ -32,7 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  * Parameter names are cached per method to avoid repeated reflection lookups. Indexed
  * aliases {@code p0}/{@code a0}, {@code p1}/{@code a1}, ... are always bound so
- * expressions remain usable when the compiler did not retain parameter names.
+ * expressions remain usable when the compiler did not retain parameter names. Named
+ * parameters never overwrite those indexed aliases.
  *
  * @author livk
  * @see DefaultParameterNameDiscoverer
@@ -56,11 +57,28 @@ class DefaultContextFactory implements ContextFactory {
 			Object value = args[i];
 			map.put("a" + i, value);
 			map.put("p" + i, value);
-			if (parameterNames != null && i < parameterNames.length && parameterNames[i] != null) {
+			if (parameterNames != null && i < parameterNames.length && parameterNames[i] != null
+					&& !isIndexedAlias(parameterNames[i])) {
 				map.put(parameterNames[i], value);
 			}
 		}
 		return Context.create(map);
+	}
+
+	private static boolean isIndexedAlias(String name) {
+		if (name.length() < 2) {
+			return false;
+		}
+		char prefix = name.charAt(0);
+		if (prefix != 'a' && prefix != 'p') {
+			return false;
+		}
+		for (int i = 1; i < name.length(); i++) {
+			if (!Character.isDigit(name.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

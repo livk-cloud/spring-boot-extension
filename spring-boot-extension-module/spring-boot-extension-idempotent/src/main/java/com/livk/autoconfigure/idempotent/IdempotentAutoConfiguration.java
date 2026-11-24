@@ -64,8 +64,8 @@ public class IdempotentAutoConfiguration {
 		 * @return the executor
 		 */
 		@Bean
-		@ConditionalOnMissingBean
-		public RedissonIdempotentExecutor redissonIdempotentExecutor(RedissonClient redissonClient) {
+		@ConditionalOnMissingBean(IdempotentExecutor.class)
+		public IdempotentExecutor redissonIdempotentExecutor(RedissonClient redissonClient) {
 			return new RedissonIdempotentExecutor(redissonClient);
 		}
 

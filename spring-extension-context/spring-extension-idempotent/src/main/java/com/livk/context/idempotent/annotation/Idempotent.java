@@ -72,10 +72,15 @@ public @interface Idempotent {
 	TimeUnit ttlUnit() default TimeUnit.SECONDS;
 
 	/**
-	 * Whether to release the token when the method throws, allowing a retry.
+	 * Whether to release the token when the method fails, allowing a retry.
 	 * <p>
 	 * Defaults to {@code true} for retry-friendly APIs. Set {@code false} when a thrown
 	 * exception may still leave committed side effects that must not run twice.
+	 * <p>
+	 * Applies to synchronous exceptions and to
+	 * {@link java.util.concurrent.CompletionStage} results that complete exceptionally.
+	 * Other async types are not observed; their tokens remain until {@link #ttl()}
+	 * expires.
 	 * @return {@code true} to release on failure
 	 */
 	boolean releaseOnError() default true;

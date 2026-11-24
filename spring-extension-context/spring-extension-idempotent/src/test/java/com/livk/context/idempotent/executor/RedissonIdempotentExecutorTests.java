@@ -65,6 +65,15 @@ class RedissonIdempotentExecutorTests {
 	}
 
 	@Test
+	void tryAcquireRoundsSubMillisecondTtlUp() {
+		RBucket<String> bucket = bucket("order");
+		given(bucket.setIfAbsent(anyString(), any(Duration.class))).willReturn(true);
+
+		assertThat(executor.tryAcquire("order", Duration.ofNanos(500))).isNotBlank();
+		verify(bucket).setIfAbsent(anyString(), eq(Duration.ofMillis(1)));
+	}
+
+	@Test
 	void tryAcquireReturnsNullWhenOccupied() {
 		RBucket<String> bucket = bucket("order");
 		given(bucket.setIfAbsent(anyString(), any(Duration.class))).willReturn(false);

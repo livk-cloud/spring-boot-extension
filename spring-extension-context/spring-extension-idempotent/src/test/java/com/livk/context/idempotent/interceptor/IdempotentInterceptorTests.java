@@ -26,6 +26,7 @@ import org.springframework.beans.factory.ObjectProvider;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -174,6 +175,51 @@ class IdempotentInterceptorTests {
 		assertThat(interceptor.doInvoke(invocation, idempotent("'order:' + #p0", 30, true))).isEqualTo("ok");
 	}
 
+	@Test
+	void doInvokeUsesTargetMethodParameterNames() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:42"), any())).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		given(invocation.getMethod()).willReturn(OrderService.class.getMethod("submit", String.class));
+		given(invocation.getThis()).willReturn(new OrderServiceImpl());
+		given(invocation.getArguments()).willReturn(new Object[] { "42" });
+		given(invocation.proceed()).willReturn("ok");
+
+		assertThat(interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, true))).isEqualTo("ok");
+	}
+
+	@Test
+	void doInvokeReleasesTokenWhenCompletionStageFails() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executor.tryAcquire(eq("order:1"), any())).willReturn("token-1");
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+
+		CompletableFuture<String> future = new CompletableFuture<>();
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		given(invocation.proceed()).willReturn(future);
+
+		Object result = interceptor.doInvoke(invocation, idempotent("'order:' + #orderId", 30, true));
+		assertThat(result).isSameAs(future);
+
+		future.completeExceptionally(new IllegalStateException("async-boom"));
+		verify(executor).release("order:1", "token-1");
+	}
+
+	@Test
+	void doInvokeThrowsIdempotentExceptionWhenTtlOverflows() throws Throwable {
+		IdempotentExecutor executor = mock(IdempotentExecutor.class);
+		given(executors.orderedStream()).willReturn(Stream.of(executor));
+		MethodInvocation invocation = mockInvocation("submit", new Object[] { "1" });
+		Idempotent idempotent = idempotent("'order:' + #orderId", Long.MAX_VALUE, true);
+		given(idempotent.ttlUnit()).willReturn(TimeUnit.DAYS);
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, idempotent)).isInstanceOf(IdempotentException.class)
+			.hasMessage("Idempotent ttl is too large");
+		verify(executor, never()).tryAcquire(any(), any());
+	}
+
 	private Idempotent idempotent(String key, long ttl, boolean releaseOnError) {
 		Idempotent idempotent = mock(Idempotent.class);
 		given(idempotent.key()).willReturn(key);
@@ -199,6 +245,20 @@ class IdempotentInterceptorTests {
 
 		@SuppressWarnings("unused")
 		void submit(String arg0) {
+		}
+
+	}
+
+	interface OrderService {
+
+		void submit(String arg);
+
+	}
+
+	static final class OrderServiceImpl implements OrderService {
+
+		@Override
+		public void submit(String orderId) {
 		}
 
 	}

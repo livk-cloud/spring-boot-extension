@@ -8,7 +8,8 @@
 
 * 第一次进入方法前占用 key，并生成唯一 ownership token。占用成功才执行业务方法。
 * 方法正常返回后，key 会一直保留到 ttl 结束。这段时间内相同 key 再次进入，抛出 `IdempotentException`。
-* 方法抛出异常且 `releaseOnError=true`（默认）时，仅在仍持有原 token 时释放 key，调用方可以重试。
+* 方法同步抛出异常，或返回的 `CompletionStage` 异常完成，且 `releaseOnError=true`（默认）时，仅在仍持有原 token 时释放 key，调用方可以重试。
+* 其他异步返回类型不会被观察；令牌会保留到 ttl 结束。
 * `releaseOnError=false` 时，失败也会继续占用 key，直到 ttl 结束。适合副作用可能已提交、不能重复执行的场景。
 
 ===== Idempotent注解
@@ -31,7 +32,7 @@ public class OrderService {
 * `key`：幂等 key，支持 SpEL。不同业务不要复用同一个 key。命名参数依赖编译保留参数名（`-parameters`）；也可用稳定的 `#p0` / `#a0` 索引参数。
 * `ttl`：成功调用占用 key 的时长，默认 `60`。必须大于 `0`。
 * `ttlUnit`：时间单位，默认 `SECONDS`。
-* `releaseOnError`：方法抛异常时是否释放令牌，默认 `true`。若失败时副作用可能已提交，请设为 `false`。
+* `releaseOnError`：同步异常或 `CompletionStage` 异常完成时是否释放令牌，默认 `true`。若失败时副作用可能已提交，请设为 `false`。
 
 ===== IdempotentExecutor
 

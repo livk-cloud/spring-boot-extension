@@ -34,7 +34,8 @@ import java.util.UUID;
  * <p>
  * Keys are stored as {@code idempotent:{key}} and occupied with {@code SET NX} plus the
  * given ttl. Release uses a compare-and-delete script so only the owning token may clear
- * the key.
+ * the key. Positive TTLs shorter than one millisecond are rounded up because Redis expiry
+ * resolution is milliseconds.
  *
  * @author livk
  */
@@ -45,6 +46,8 @@ public class RedissonIdempotentExecutor implements IdempotentExecutor {
 	 * Redis key prefix for idempotent tokens.
 	 */
 	public static final String KEY_PREFIX = "idempotent:";
+
+	private static final Duration MIN_REDIS_TTL = Duration.ofMillis(1);
 
 	private static final String RELEASE_SCRIPT = """
 			if redis.call('get', KEYS[1]) == ARGV[1] then
@@ -61,8 +64,9 @@ public class RedissonIdempotentExecutor implements IdempotentExecutor {
 		if (ttl == null || ttl.isZero() || ttl.isNegative()) {
 			throw new IdempotentException("Idempotent ttl must be positive");
 		}
+		Duration redisTtl = ttl.compareTo(MIN_REDIS_TTL) < 0 ? MIN_REDIS_TTL : ttl;
 		String token = UUID.randomUUID().toString();
-		if (bucket(key).setIfAbsent(token, ttl)) {
+		if (bucket(key).setIfAbsent(token, redisTtl)) {
 			return token;
 		}
 		return null;
