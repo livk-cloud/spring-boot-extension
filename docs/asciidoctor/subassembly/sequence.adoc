@@ -54,7 +54,102 @@ public class Config{
 }
 ----
 
+===== Seq注解
+
+`@Seq` 标记方法，在返回值或参数还没有正数 id 时补上一个分布式 id。 +
+`null` 和小于等于 `0` 视为缺失；已经有正数 id 时保持不变。`value` 是业务名，支持 SpEL。
+
+[source,java,indent=0]
+----
+public class OrderService {
+
+  @Seq("order")
+  public long nextId() {
+    return 0;
+  }
+
+  @Seq(value = "order", param = "id")
+  public Order create(Long id) {
+    return new Order(id);
+  }
+}
+----
+
+`param` 为空时填充 `long` 或 `Long` 返回值。指定 `param` 时，在方法执行前写入同名参数。 +
+参数名依赖编译参数 `-parameters`。
+
+===== SequenceProvider
+
+`SequenceProvider` 按业务名提供 `Sequence`。自定义策略时实现该接口并注册为 Spring Bean。 +
+多个实现同时存在时，按 `Ordered` 选取 `getOrder()` 最小的一个。
+
+* `RangeSequenceProvider`：数据库或 Redis 号段，每个业务名各自一段。
+* `SnowflakeSequenceProvider`：本地雪花算法。业务名只做校验，所有业务共用一个生成器。
+
+===== sequence-spring-boot-starter
+
+artifactId: sequence-spring-boot-starter
+
+引入 starter 后，在配置类上声明 `@EnableSequence`。默认使用雪花算法，不需要 Redis 或数据库。
+
+[source,java,indent=0]
+----
+@EnableSequence
+@SpringBootApplication
+public class SequenceApplication {
+
+}
+----
+
+[source,yaml,indent=0]
+----
+spring:
+  sequence:
+    type: snowflake
+    data-center-id: 1
+    machine-id: 1
+    step: 1000
+    step-start: 0
+    biz-name: order
+----
+
+* `type`：`snowflake`（默认）、`db`、`redis`。
+* `biz-name`：可选。配置后额外注册一个该业务名的 `Sequence` Bean。
+* `type=db` 需要可用的 `DataSource`。
+* `type=redis` 需要可用的 `RedisConnectionFactory`。
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>sequence-spring-boot-starter</artifactId>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+implementation 'io.github.livk-cloud:sequence-spring-boot-starter'
+----
+--
+
+[secondary]
+.Gradle-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation("io.github.livk-cloud:sequence-spring-boot-starter")
+----
+--
+
 ===== 注意事项
 
 数据库模式会自动创建 `sequence_range` 表，并通过乐观更新获取下一段区间。 +
-Redis 模式会使用 `x_sequence_` 前缀生成 key。部署多实例时，所有实例必须连接同一套数据库或 Redis，才能保证全局递增。
+Redis 模式会使用 `x_sequence_` 前缀生成 key。部署多实例时，所有实例必须连接同一套数据库或 Redis，才能保证全局递增。 +
+雪花算法不依赖外部存储，业务名不会拆成独立号段。

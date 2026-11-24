@@ -1,6 +1,7 @@
 description = "spring boot extension sequence"
 
 dependencies {
+	api("org.springframework:spring-aop")
 	api("com.lmax:disruptor")
 	optional("org.springframework.data:spring-data-redis")
 	optional("org.springframework.boot:spring-boot-jdbc")

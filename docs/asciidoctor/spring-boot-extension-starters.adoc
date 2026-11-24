@@ -32,6 +32,10 @@ starter 会带上对应的 context 与 `spring-boot-extension-module` 中的自�
 |方法级分布式锁
 |需要 Redisson 或 Curator 作为锁实现
 
+|sequence-spring-boot-starter
+|方法级分布式发号
+|配置类需要 `@EnableSequence`。默认雪花算法；`spring.sequence.type=db` 或 `redis` 时再提供对应连接
+
 |mybatis-extension-boot-starter
 |MyBatis 字段注入、SQL 耗时监控、JSON 类型处理支持
 |需要 MyBatis 环境
@@ -102,6 +106,7 @@ implementation("io.github.livk-cloud:distributed-lock-spring-boot-starter")
 * `redisson-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Redisson 分布式锁。
 * `limit-spring-boot-starter`：使用 Redisson 做分布式限流，并在配置类上声明 `@EnableLimit`。starter 已包含 Redisson。
 * `curator-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Curator 分布式锁。
+* `sequence-spring-boot-starter`：使用分布式发号，并在配置类上声明 `@EnableSequence`。默认雪花算法。
 * `browscap-spring-boot-starter` 或 `yauaa-spring-boot-starter`：二选一接入 User-Agent 解析。
 
 不建议一次性引入所有 starter。按功能引入可以减少无关第三方依赖，也能避免多个同类 Bean 同时存在导致自动配置选择不符合预期。

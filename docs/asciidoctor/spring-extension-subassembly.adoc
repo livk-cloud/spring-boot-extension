@@ -73,6 +73,10 @@
 |distributed-lock-spring-boot-starter
 |注册分布式锁 AOP 拦截器
 
+|发号
+|sequence-spring-boot-starter
+|注册发号 AOP。配置类需要 `@EnableSequence`，默认雪花算法
+
 |MyBatis
 |mybatis-extension-boot-starter
 |注册字段注入、SQL 监控等扩展
