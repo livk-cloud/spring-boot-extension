@@ -29,7 +29,7 @@ implementation platform('io.github.livk-cloud:spring-extension-dependencies:$ver
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----
@@ -68,7 +68,7 @@ implementation platform('io.github.livk-cloud:spring-extension-bom:$version')
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----

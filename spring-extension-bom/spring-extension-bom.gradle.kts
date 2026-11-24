@@ -13,7 +13,7 @@ dependencies {
 				api(this)
 			}
 		}
-		project(":spring-boot-extension-autoconfigure") {
+		project(":spring-boot-extension-module") {
 			subprojects {
 				api(this)
 			}

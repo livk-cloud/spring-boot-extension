@@ -6,8 +6,8 @@ Disruptor 组件用于在 Spring 中注册基于 LMAX Disruptor 的事件队列�
 
 ===== DisruptorScan
 
-类似于MyBatisScan用与扫描DisruptorEvent标记的实体 +
-根据实体和DisruptorEvent生成SpringDisruptor<DisruptorEventWrapper<T>>队列
+类似于 `@MapperScan`，用于扫描 `@DisruptorEvent` 标记的实体。 +
+扫描结果会注册 `SpringDisruptor<T>`。队列内部使用 `MutableWrapper<T>` 传递事件，消费者实现 `DisruptorEventConsumer<T>`，回调参数是业务类型 `T`。
 
 使用示例
 
