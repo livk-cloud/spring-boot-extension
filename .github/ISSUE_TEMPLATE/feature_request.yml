@@ -12,7 +12,7 @@ body:
       multiple: true
       options:
         - spring-auto-service
-        - spring-boot-extension-autoconfigure
+        - spring-boot-extension-module
         - spring-extension-commons
         - spring-extension-context
   - type: markdown

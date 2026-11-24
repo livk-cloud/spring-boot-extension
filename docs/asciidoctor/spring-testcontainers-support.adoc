@@ -28,7 +28,7 @@
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----

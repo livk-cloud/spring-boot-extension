@@ -31,7 +31,7 @@
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----
@@ -42,7 +42,7 @@
 *兼容SpringBoot的拓展包* +
 使用spring boot的自动装配特性,自定义配置文件来覆盖官方的配置
 
-`spring-boot-extension-autoconfigure` 通常由 starter 间接引入。直接引入该模块时，需要自行保证第三方依赖存在，例如 Redisson、Curator、MyBatis、ZXing 等。
+`spring-boot-extension-module` 是自动配置的聚合目录，不是可发布的单个坐标。业务项目应引入对应 starter。只有在需要单独装配某个自动配置、且自行提供第三方依赖时，才直接引入叶子模块，例如 `spring-boot-extension-lock`、`spring-boot-extension-redisson`。
 
 ==== starter 快速索引
 
@@ -59,7 +59,7 @@
 
 |动态数据源
 |dynamic-datasource-spring-boot-starter
-|注册 DynamicDatasource 与切换拦截器
+|注册 DynamicDatasource 与切换拦截器。配置类需要 `@EnableDynamicDatasource`
 
 |Excel
 |fesod-spring-boot-starter
@@ -67,7 +67,7 @@
 
 |限流
 |limit-spring-boot-starter
-|注册限流 AOP 拦截器
+|注册限流 AOP。配置类需要 `@EnableLimit`
 
 |分布式锁
 |distributed-lock-spring-boot-starter
@@ -97,7 +97,7 @@
 ----
 <dependency>
     <groupId>io.github.livk-cloud</groupId>
-    <artifactId>spring-boot-extension-autoconfigure</artifactId>
+    <artifactId>spring-boot-extension-lock</artifactId>
     <version>${version}</version>
 </dependency>
 ----
@@ -108,16 +108,16 @@
 --
 [source,groovy,indent=0]
 ----
-    implementation 'io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}'
+    implementation 'io.github.livk-cloud:spring-boot-extension-lock:${version}'
 ----
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----
-    implementation("io.github.livk-cloud:spring-boot-extension-autoconfigure:${version}")
+    implementation("io.github.livk-cloud:spring-boot-extension-lock:${version}")
 ----
 --
 

@@ -3,7 +3,8 @@
 ==== 为什么 starter 引入后没有生效
 
 请先确认已经引入对应 starter，而不是只引入了 `spring-extension-context`。 +
-`spring-extension-context` 提供基础 API，starter 才会引入对应自动配置模块并注册 Spring Bean。
+`spring-extension-context` 提供基础 API，starter 才会引入对应自动配置并注册 Spring Bean。 +
+限流还要在配置类上声明 `@EnableLimit`，动态数据源要声明 `@EnableDynamicDatasource`。这两类自动配置不会仅因为 starter 在 classpath 上就生效。
 
 ==== 自动配置文件没有生成
 

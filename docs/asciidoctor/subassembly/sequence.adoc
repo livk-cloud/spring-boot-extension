@@ -5,7 +5,7 @@
 
 datasource发号器内置Postgres、Mysql、H2等数据库发号策略
 
-未支持的数据库实现 `com.livk.context.sequence.support.db.SequenceDbHelper` 并注册到 `META-INF/spring.factories` 文件
+未支持的数据库实现 `com.livk.context.sequence.support.db.SequenceDbHelper`，并用 `@SpringFactories` 注册。编译期会生成 `META-INF/spring.factories`，key 为该接口全名。源码里不手写这个文件。
 
 ===== 发号模式
 

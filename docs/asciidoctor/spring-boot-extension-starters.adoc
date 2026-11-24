@@ -1,7 +1,7 @@
 === starter 选择指南
 
 `spring-boot-extension-starters` 按功能拆分 starter，业务项目建议按需引入。 +
-starter 会带上对应的 context 与 autoconfigure 模块，通常不需要再手动引入底层模块。
+starter 会带上对应的 context 与 `spring-boot-extension-module` 中的自动配置，通常不需要再手动引入底层模块。
 
 ==== starter 与功能对应关系
 
@@ -18,15 +18,15 @@ starter 会带上对应的 context 与 autoconfigure 模块，通常不需要再
 
 |dynamic-datasource-spring-boot-starter
 |动态数据源、数据源切换 AOP
-|需要配置 `spring.dynamic.primary` 与多个 datasource
+|配置类需要 `@EnableDynamicDatasource`，并配置 `spring.dynamic.primary` 与多个 datasource
 
 |fesod-spring-boot-starter
 |Excel 导入导出，支持 MVC 与 WebFlux
-|需要定义 Excel 解析 listener
+|方法上声明 `@RequestExcel`，参数使用 `@ExcelParam`
 
 |limit-spring-boot-starter
 |方法级限流
-|分布式场景建议配合 Redisson
+|配置类需要 `@EnableLimit`。starter 已传递依赖 Redisson，仍需可用的 Redis
 
 |distributed-lock-spring-boot-starter
 |方法级分布式锁
@@ -82,7 +82,7 @@ implementation 'io.github.livk-cloud:distributed-lock-spring-boot-starter'
 --
 
 [secondary]
-.Groovy-Kotlin
+.Gradle-Kotlin
 --
 [source,kotlin,indent=0]
 ----
@@ -100,7 +100,7 @@ implementation("io.github.livk-cloud:distributed-lock-spring-boot-starter")
 多个 starter 可以组合使用，例如：
 
 * `redisson-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Redisson 分布式锁。
-* `redisson-spring-boot-starter` + `limit-spring-boot-starter`：使用 Redisson 做分布式限流。
+* `limit-spring-boot-starter`：使用 Redisson 做分布式限流，并在配置类上声明 `@EnableLimit`。starter 已包含 Redisson。
 * `curator-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Curator 分布式锁。
 * `browscap-spring-boot-starter` 或 `yauaa-spring-boot-starter`：二选一接入 User-Agent 解析。
 
