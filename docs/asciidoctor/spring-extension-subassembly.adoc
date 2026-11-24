@@ -65,6 +65,10 @@
 |fesod-spring-boot-starter
 |注册 Excel 参数解析器和返回值处理器
 
+|幂等
+|idempotent-spring-boot-starter
+|注册幂等 AOP。配置类需要 `@EnableIdempotent`
+
 |限流
 |limit-spring-boot-starter
 |注册限流 AOP。配置类需要 `@EnableLimit`
@@ -128,6 +132,8 @@ include::{basedir}/disruptor.adoc[]
 include::{basedir}/dynamic.adoc[]
 
 include::{basedir}/fesod.adoc[]
+
+include::{basedir}/idempotent.adoc[]
 
 include::{basedir}/limit.adoc[]
 

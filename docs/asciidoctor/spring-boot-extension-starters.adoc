@@ -24,6 +24,10 @@ starter 会带上对应的 context 与 `spring-boot-extension-module` 中的自�
 |Excel 导入导出，支持 MVC 与 WebFlux
 |方法上声明 `@RequestExcel`，参数使用 `@ExcelParam`
 
+|idempotent-spring-boot-starter
+|方法级幂等
+|配置类需要 `@EnableIdempotent`。starter 已传递依赖 Redisson，仍需可用的 Redis
+
 |limit-spring-boot-starter
 |方法级限流
 |配置类需要 `@EnableLimit`。starter 已传递依赖 Redisson，仍需可用的 Redis
@@ -100,6 +104,7 @@ implementation("io.github.livk-cloud:distributed-lock-spring-boot-starter")
 多个 starter 可以组合使用，例如：
 
 * `redisson-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Redisson 分布式锁。
+* `idempotent-spring-boot-starter`：使用 Redisson 做方法幂等，并在配置类上声明 `@EnableIdempotent`。starter 已包含 Redisson。
 * `limit-spring-boot-starter`：使用 Redisson 做分布式限流，并在配置类上声明 `@EnableLimit`。starter 已包含 Redisson。
 * `curator-spring-boot-starter` + `distributed-lock-spring-boot-starter`：使用 Curator 分布式锁。
 * `browscap-spring-boot-starter` 或 `yauaa-spring-boot-starter`：二选一接入 User-Agent 解析。
