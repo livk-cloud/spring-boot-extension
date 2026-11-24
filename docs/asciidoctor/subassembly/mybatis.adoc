@@ -7,8 +7,6 @@ MyBatis 扩展提供 SQL 字段自动注入、JSON 类型处理器和 SQL 执行
 
 [source,java,indent=0]
 ----
-import javax.sql.DataSource;
-
 @Data
 public class User implements Serializable {
 
@@ -23,18 +21,18 @@ public class User implements Serializable {
 	@SqlInject(fill = SqlFill.INSERT, supplier = VersionInject.class)
 	private Integer version;
 
-	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlInject(fill = SqlFill.INSERT, time = InjectType.DATE)
-	private Date insertTime;
+	@JsonFormat(pattern = Jsr310Utils.NORM_DATETIME_PATTERN, timezone = "GMT+8")
+	@SqlInject(fill = SqlFill.INSERT)
+	private LocalDateTime insertTime;
 
-	@JsonFormat(pattern = DateUtils.YMD_HMS, timezone = "GMT+8")
-	@SqlInject(fill = SqlFill.INSERT_UPDATE, time = InjectType.DATE)
-	private Date updateTime;
+	@JsonFormat(pattern = Jsr310Utils.NORM_DATETIME_PATTERN, timezone = "GMT+8")
+	@SqlInject(fill = SqlFill.INSERT_UPDATE)
+	private LocalDateTime updateTime;
 
 }
 ----
 
-并且添加com.livk.context.mybatis.SqlDataInjection至MyBatis
+使用 starter 时会自动注册 `com.livk.context.mybatis.SqlDataInjection`。手动装配时，把它加入 MyBatis 拦截器链。
 
 `@SqlInject` 常用属性：
 

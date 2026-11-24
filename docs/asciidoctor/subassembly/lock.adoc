@@ -8,17 +8,20 @@
 
 标记方法，用于对此方法进行分布式锁。
 
-使用示例：key 支持 SpEL 表达式，同时支持公平锁、读锁、写锁，并支持异步。 +
-当前分布式锁仅支持 Redisson、Curator。
+使用示例：key 支持 SpEL 表达式，同时支持公平锁、读锁、写锁。 +
+当前分布式锁仅支持 Redisson、Curator。异步加锁和 `leaseTime` 自动释放只在 Redisson 上生效。Curator 调用 `async()` 时会退回同步加锁，锁也不会按租约自动释放。
 
 [source,java,indent=0]
 ----
-public class UserService {
-  @PostMapping("/buy/distributed")
+@RestController
+public class ShopController {
+
+	@PostMapping("/buy/distributed")
 	@DistLock(key = "shop")
-	public void buyLocal(@RequestParam(defaultValue = "2") Integer count) {
+	public void buy(@RequestParam(defaultValue = "2") Integer count) {
 
 	}
+
 }
 ----
 
@@ -26,9 +29,9 @@ public class UserService {
 
 * `key`：锁名称，支持 SpEL 表达式生成动态 key。
 * `type`：锁类型，支持 `LOCK`、`FAIR`、`READ`、`WRITE`。
-* `leaseTime`：锁租约时间（秒），默认 `-1`，表示不自动过期，直到显式释放。
+* `leaseTime`：锁租约时间（秒），默认 `-1`，表示不自动过期，直到显式释放。Curator 会忽略该值。
 * `waitTime`：等待获取锁时间（秒），默认 `3`。
-* `async`：是否使用异步锁能力。
+* `async`：是否使用异步锁。仅 Redisson 真正异步获取锁；Curator 会退回同步。
 
 ===== DistLockFactory
 
@@ -37,8 +40,8 @@ public class UserService {
 
 内置实现：
 
-* `RedissonLockFactory`：基于 Redisson 的分布式锁实现，需要 `RedissonClient` 依赖。支持异步锁。
-* `CuratorLockFactory`：基于 Apache Curator 的分布式锁实现，需要 `CuratorFramework` 依赖。
+* `RedissonLockFactory`：基于 Redisson 的分布式锁实现，需要 `RedissonClient`。支持异步锁和 `leaseTime`。
+* `CuratorLockFactory`：基于 Apache Curator 的分布式锁实现，需要 `CuratorFramework`。不支持异步锁，也不支持按 `leaseTime` 自动释放。
 
 使用示例：
 
@@ -59,8 +62,8 @@ if (spec.tryLock()) {
 }
 ----
 
-如果两种实现同时存在，`DistributedLockInterceptor` 通过 `ObjectProvider<DistLockFactory>` 的 `orderedStream()` 选取优先级最高的实现。 +
-可通过实现 `Ordered` 接口的 `getOrder()` 方法调整优先级。
+classpath 上同时存在多个 `DistLockFactory` 时，`DistributedLockInterceptor` 通过 `ObjectProvider.orderedStream()` 取 `getOrder()` 最小的一个。 +
+两个内置实现的默认顺序都是 `0`，这时选中哪一个取决于 Bean 注册顺序。需要固定实现时，注册自己的 `DistLockFactory` 并覆盖 `getOrder()`，数值越小优先级越高。
 
 ===== DistributedLockInterceptor
 

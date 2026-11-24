@@ -32,17 +32,24 @@ public class UserService {
 
 ===== LimitExecutor
 
-限流执行器基类,实现注册为Spring Bean即可 提供RedissonLimitExecutor作为实现，需要Redisson依赖
-
-自定义限流存储时，实现 `LimitExecutor` 并注册为 Spring Bean 即可。 +
-如果使用 Redisson 实现，需要先引入并配置 `redisson-spring-boot-starter`。
+`LimitExecutor` 是限流执行器。自定义存储时实现该接口并注册为 Spring Bean。 +
+内置 `RedissonLimitExecutor`，依赖 `RedissonClient`。`limit-spring-boot-starter` 已经传递引入 `redisson-spring-boot-starter`。
 
 ===== LimitInterceptor
 
-限流拦截器,注册为Spring Bean即，使用AOP实现
+限流拦截器基于 AOP 拦截 `@Limit` 方法。它会在可用的 `LimitExecutor` 中选择一个执行限流。
 
 ===== limit-spring-boot-starter
 
 artifactId: limit-spring-boot-starter
 
-引入 starter 后会自动注册限流拦截器。业务只需要在需要保护的方法上添加 `@Limit`。
+引入 starter 后，还要在配置类上声明 `@EnableLimit`，自动配置才会注册拦截器。业务方法再使用 `@Limit`。
+
+[source,java,indent=0]
+----
+@EnableLimit
+@SpringBootApplication
+public class LimitApplication {
+
+}
+----

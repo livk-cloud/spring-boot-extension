@@ -5,75 +5,72 @@ Fesod 组件封装 FastExcel 的导入导出能力，并接入 Spring MVC / WebF
 
 ===== Excel导入
 
-使用注解 `@PostMapping` 解析Excel(支持Spring Webflux) +
-@ExcelParam指定文件名称 +
-parse使用自定义封装fesod的解析器 `com.livk.excel.mvc.listener.InfoExcelListener` +
+在上传方法上声明 `@RequestExcel`，用 `@ExcelParam` 绑定解析后的数据。支持 Spring MVC 与 WebFlux。 +
+`@ExcelParam.fileName` 指定 multipart 文件名，默认是 `file`。解析由内置的 `TypeExcelMapReadListener` 完成，按参数类型读取行数据。
 
 [source,java,indent=0]
 ----
 @RestController
 public class InfoController {
 
-    @RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadList")
 	public HttpEntity<List<Info>> uploadList(@ExcelParam List<Info> dataExcels) {
 		return ResponseEntity.ok(dataExcels);
 	}
 
-
-    @RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("upload")
-	public HttpEntity<List<Info>> upload(@ExcelParam List<Info> dataExcels) {
+	public HttpEntity<List<Info>> upload(@ExcelParam(fileName = "file") List<Info> dataExcels) {
 		return ResponseEntity.ok(dataExcels);
 	}
 
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadMono")
 	public Mono<HttpEntity<List<Info>>> uploadMono(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels.map(ResponseEntity::ok);
 	}
+
 }
 ----
 
-`@RequestExcel` 用于声明上传 Excel 的解析器，`@ExcelParam` 用于绑定解析后的数据。 +
-WebFlux 场景可以使用 `Mono<List<T>>` 接收解析结果。
+`@RequestExcel` 声明当前方法接收 Excel 上传，`@ExcelParam` 绑定解析后的数据。`fileName` 必须写成注解属性，不能写成 `@ExcelParam("file")`。 +
+WebFlux 可以使用 `Mono<List<T>>` 接收解析结果。
 
 ===== Excel导出
 
-使用注解 `@ResponseExcel` 或者 `@ExcelController` 解析Excel(支持Spring Webflux) +
-fileName指定下载文件名 +
-suffix指定Excel后缀 默认xlsm +
-使用ExcelController之后，fileName为out，suffix为xlsm
+`@ResponseExcel` 标记在方法上，`@ExcelController` 标记在类上，把返回值写成 Excel 下载。支持 Spring MVC 与 WebFlux。 +
+`fileName` 指定下载文件名，`suffix` 指定后缀，默认 `XLSM`。`@ExcelController` 的默认文件名是 `out`，后缀同样是 `xlsm`。
 
-返回结果为 `List<?>` `Mono<List<?>>` `Flux<?>` 是sheet名称即为sheet +
-返回结果为 `Map<String,?>` `Mono<Map<String,?>>` 是sheet名称即为map key +
+返回 `List<?>`、`Mono<List<?>>` 或 `Flux<?>` 时，sheet 名称是 `sheet`。 +
+返回 `Map<String, ?>` 或 `Mono<Map<String, ?>>` 时，map key 作为 sheet 名称。
 
 [source,java,indent=0]
 ----
 @RestController
-@RequiredArgsConstructor
 public class InfoController {
 
-  @ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@ResponseExcel(fileName = "outFile")
+	@RequestExcel
 	@PostMapping("uploadDownLoad")
-	public List<Info> uploadDownLoadMono(@ExcelParam List<Info> dataExcels) {
+	public List<Info> uploadDownLoad(@ExcelParam List<Info> dataExcels) {
 		return dataExcels;
 	}
 
 	@ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadDownLoadMono")
 	public Mono<List<Info>> uploadDownLoadMono(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels;
 	}
 
 	@ResponseExcel(fileName = "outFile")
-	@RequestExcel(parse = InfoExcelListener.class)
+	@RequestExcel
 	@PostMapping("uploadDownLoadFlux")
 	public Flux<Info> uploadDownLoadFlux(@ExcelParam Mono<List<Info>> dataExcels) {
 		return dataExcels.flatMapMany(Flux::fromIterable);
 	}
+
 }
 ----
 
@@ -107,5 +104,5 @@ artifactId: fesod-spring-boot-starter
 
 ===== 注意事项
 
-导入大文件时建议使用流式解析器，并在 listener 中控制内存占用。 +
-导出多 sheet 时建议返回 `Map<String, List<?>>`，便于明确 sheet 名称。
+导入按参数类型读取行数据，大文件仍会进入内存，上传体积需要在网关或容器层限制。 +
+导出多 sheet 时返回 `Map<String, List<?>>`，map key 会作为 sheet 名称。

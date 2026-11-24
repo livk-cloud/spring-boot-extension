@@ -5,7 +5,7 @@ plugins {
 }
 
 val root = setOf(
-	project(":spring-boot-extension-autoconfigure"),
+	project(":spring-boot-extension-module"),
 	project(":spring-boot-extension-starters"),
 	project(":spring-extension-context")
 )

@@ -6,8 +6,8 @@
 
 ===== 二维码导入解析
 
-使用注解 `@PostMapping` 解析二维码(支持Spring Webflux) +
-RequestQrCodeText指定文件名称 +
+在上传接口的参数上使用 `@RequestQrCodeText` 解析二维码文本，支持 Spring MVC 与 WebFlux。 +
+`fileName` 指定 multipart 文件名，默认是 `file`。
 
 [source,java,indent=0]
 ----
@@ -25,7 +25,7 @@ public class QRCodeController {
 
 ===== 文本或者实体导入二维码
 
-使用注解 `ResponseQrCode` 或者 `QrCodeController` 解析Excel(支持Spring Webflux) +
+在接口方法上使用 `@ResponseQrCode`，把返回文本渲染成二维码图片，支持 Spring MVC 与 WebFlux。
 
 [source,java,indent=0]
 ----

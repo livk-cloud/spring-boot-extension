@@ -1,5 +1,5 @@
 description = "qrcode spring boot starter"
 
 dependencies {
-	api(project(":spring-boot-extension-autoconfigure:spring-boot-extension-qrcode"))
+	api(project(":spring-boot-extension-module:spring-boot-extension-qrcode"))
 }
