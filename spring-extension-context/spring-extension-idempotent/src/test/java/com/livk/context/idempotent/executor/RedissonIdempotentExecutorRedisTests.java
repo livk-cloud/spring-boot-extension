@@ -19,21 +19,12 @@ package com.livk.context.idempotent.executor;
 import com.livk.context.idempotent.exception.IdempotentException;
 import com.livk.testcontainers.DockerImageNames;
 import com.redis.testcontainers.RedisContainer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -48,24 +39,31 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * @author livk
  */
-@SpringJUnitConfig(RedissonIdempotentExecutorRedisTests.RedisConfig.class)
 @Testcontainers(disabledWithoutDocker = true, parallel = true)
 class RedissonIdempotentExecutorRedisTests {
 
 	@Container
-	@ServiceConnection
 	static final RedisContainer redis = new RedisContainer(DockerImageNames.redis());
 
-	@DynamicPropertySource
-	static void properties(DynamicPropertyRegistry registry) {
-		registry.add("redisson.address", () -> "redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
+	static RedissonClient redissonClient;
+
+	static RedissonIdempotentExecutor executor;
+
+	@BeforeAll
+	static void setUp() {
+		redis.start();
+		Config config = new Config();
+		config.useSingleServer().setAddress("redis://" + redis.getHost() + ":" + redis.getFirstMappedPort());
+		redissonClient = Redisson.create(config);
+		executor = new RedissonIdempotentExecutor(redissonClient);
 	}
 
-	final RedissonIdempotentExecutor executor;
-
-	@Autowired
-	RedissonIdempotentExecutorRedisTests(RedissonClient redissonClient) {
-		this.executor = new RedissonIdempotentExecutor(redissonClient);
+	@AfterAll
+	static void close() {
+		if (redissonClient != null) {
+			redissonClient.shutdown();
+		}
+		redis.stop();
 	}
 
 	@Test
@@ -113,19 +111,6 @@ class RedissonIdempotentExecutorRedisTests {
 
 	private static String uniqueKey(String prefix) {
 		return prefix + ":" + UUID.randomUUID();
-	}
-
-	@TestConfiguration
-	@Import({ ServiceConnectionAutoConfiguration.class, TestcontainersPropertySourceAutoConfiguration.class })
-	static class RedisConfig {
-
-		@Bean(destroyMethod = "shutdown")
-		RedissonClient redissonClient(@Value("${redisson.address}") String address) {
-			Config config = new Config();
-			config.useSingleServer().setAddress(address);
-			return Redisson.create(config);
-		}
-
 	}
 
 }
