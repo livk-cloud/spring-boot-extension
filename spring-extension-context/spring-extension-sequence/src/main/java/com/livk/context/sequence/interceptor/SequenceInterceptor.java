@@ -57,7 +57,11 @@ public class SequenceInterceptor extends AbstractAnnotationPointcutStrategyAdvis
 		}
 		Sequence sequence = getProvider().get(bizName);
 		if (StringUtils.hasText(seq.param())) {
-			fillParameter(invocation, seq.param(), sequence);
+			fillParameterByName(invocation, seq.param(), sequence);
+			return invocation.proceed();
+		}
+		if (seq.paramIndex() >= 0) {
+			fillParameterByIndex(invocation, seq.paramIndex(), sequence);
 			return invocation.proceed();
 		}
 		if (!isIdType(invocation.getMethod().getReturnType())) {
@@ -67,22 +71,35 @@ public class SequenceInterceptor extends AbstractAnnotationPointcutStrategyAdvis
 		return isAbsent(result) ? sequence.nextValue() : result;
 	}
 
-	private void fillParameter(MethodInvocation invocation, String name, Sequence sequence) {
+	private void fillParameterByName(MethodInvocation invocation, String name, Sequence sequence) {
 		Object[] arguments = invocation.getArguments();
 		Parameter[] parameters = invocation.getMethod().getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			if (!name.equals(parameters[i].getName())) {
 				continue;
 			}
-			if (!isIdType(parameters[i].getType())) {
-				throw new SequenceException("Seq param '" + name + "' must be long or Long");
-			}
-			if (isAbsent(arguments[i])) {
-				arguments[i] = sequence.nextValue();
-			}
+			fillArgument(arguments, i, parameters[i].getType(), "param '" + name + "'", sequence);
 			return;
 		}
 		throw new SequenceException("Seq param '" + name + "' was not found");
+	}
+
+	private void fillParameterByIndex(MethodInvocation invocation, int index, Sequence sequence) {
+		Object[] arguments = invocation.getArguments();
+		Parameter[] parameters = invocation.getMethod().getParameters();
+		if (index >= parameters.length) {
+			throw new SequenceException("Seq paramIndex '" + index + "' is out of range");
+		}
+		fillArgument(arguments, index, parameters[index].getType(), "paramIndex '" + index + "'", sequence);
+	}
+
+	private void fillArgument(Object[] arguments, int index, Class<?> type, String label, Sequence sequence) {
+		if (!isIdType(type)) {
+			throw new SequenceException("Seq " + label + " must be long or Long");
+		}
+		if (isAbsent(arguments[index])) {
+			arguments[index] = sequence.nextValue();
+		}
 	}
 
 	private SequenceProvider getProvider() {

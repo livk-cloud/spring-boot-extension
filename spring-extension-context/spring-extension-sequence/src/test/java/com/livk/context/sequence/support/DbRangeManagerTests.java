@@ -63,6 +63,14 @@ class DbRangeManagerTests {
 	}
 
 	@Test
+	void testNextRangeRejectsOverlongName() {
+		DbRangeManager manager = new DbRangeManager(dataSource);
+		String name = "n".repeat(DbRangeManager.MAX_NAME_LENGTH + 1);
+		assertThatThrownBy(() -> manager.nextRange(name, 1000, 0)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("bizName length");
+	}
+
+	@Test
 	void testInitCreatesTableSuccessfully() {
 		assertThatCode(() -> new DbRangeManager(dataSource)).doesNotThrowAnyException();
 
@@ -170,6 +178,27 @@ class DbRangeManagerTests {
 		NullReturningDbRangeManager manager = new NullReturningDbRangeManager(dataSource);
 
 		assertThatThrownBy(() -> manager.nextRange("null-helper-seq", 1000, 0)).isInstanceOf(SequenceException.class);
+	}
+
+	@Test
+	void testValidateValueRejectsNegativeAndOverflow() {
+		class ValidatingDbRangeManager extends DbRangeManager {
+
+			ValidatingDbRangeManager(DataSource ds) {
+				super(ds);
+			}
+
+			void check(long value) {
+				validateValue(value);
+			}
+
+		}
+		ValidatingDbRangeManager manager = new ValidatingDbRangeManager(dataSource);
+		assertThatThrownBy(() -> manager.check(-1L)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("less than zero");
+		assertThatThrownBy(() -> manager.check(Long.MAX_VALUE)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("overflow");
+		assertThatCode(() -> manager.check(1L)).doesNotThrowAnyException();
 	}
 
 }

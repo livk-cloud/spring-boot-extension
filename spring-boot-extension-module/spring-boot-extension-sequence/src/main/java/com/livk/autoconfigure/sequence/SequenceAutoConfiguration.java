@@ -24,7 +24,9 @@ import com.livk.context.sequence.support.DbRangeManager;
 import com.livk.context.sequence.support.RangeSequenceProvider;
 import com.livk.context.sequence.support.RedisRangeManager;
 import com.livk.context.sequence.support.SnowflakeSequenceProvider;
+import com.livk.context.sequence.support.SnowflakeWorkerIds;
 import com.livk.context.sequence.support.redis.SpringSequenceRedisHelper;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -34,6 +36,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.jdbc.core.simple.JdbcClient;
 
 import javax.sql.DataSource;
 
@@ -43,7 +46,8 @@ import javax.sql.DataSource;
  * @author livk
  */
 @SpringAutoService(EnableSequence.class)
-@AutoConfiguration
+@AutoConfiguration(afterName = { "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration",
+		"org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration" })
 @EnableConfigurationProperties(SequenceProperties.class)
 public class SequenceAutoConfiguration {
 
@@ -60,23 +64,26 @@ public class SequenceAutoConfiguration {
 
 	/**
 	 * A single sequence for the configured business name.
-	 * @param provider the sequence provider
+	 * @param providers available sequence providers
 	 * @param properties the sequence properties
 	 * @return the sequence
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(prefix = SequenceProperties.PREFIX, name = "biz-name")
-	public Sequence sequence(SequenceProvider provider, SequenceProperties properties) {
+	public Sequence sequence(ObjectProvider<SequenceProvider> providers, SequenceProperties properties) {
+		SequenceProvider provider = providers.orderedStream()
+			.findFirst()
+			.orElseThrow(() -> new NoSuchBeanDefinitionException(SequenceProvider.class));
 		return provider.get(properties.getBizName());
 	}
 
 	/**
 	 * Database range sequence.
 	 */
-	@ConditionalOnClass(DataSource.class)
+	@ConditionalOnClass({ DataSource.class, JdbcClient.class })
 	@ConditionalOnBean(DataSource.class)
-	@ConditionalOnProperty(prefix = SequenceProperties.PREFIX, name = "type", havingValue = "db")
+	@ConditionalOnSequenceType(SequenceProperties.Type.DB)
 	@AutoConfiguration
 	public static class DbSequenceConfiguration {
 
@@ -100,7 +107,7 @@ public class SequenceAutoConfiguration {
 	 */
 	@ConditionalOnClass(RedisConnectionFactory.class)
 	@ConditionalOnBean(RedisConnectionFactory.class)
-	@ConditionalOnProperty(prefix = SequenceProperties.PREFIX, name = "type", havingValue = "redis")
+	@ConditionalOnSequenceType(SequenceProperties.Type.REDIS)
 	@AutoConfiguration
 	public static class RedisSequenceConfiguration {
 
@@ -124,8 +131,7 @@ public class SequenceAutoConfiguration {
 	/**
 	 * Snowflake sequence used when no other type is selected.
 	 */
-	@ConditionalOnProperty(prefix = SequenceProperties.PREFIX, name = "type", havingValue = "snowflake",
-			matchIfMissing = true)
+	@ConditionalOnSequenceType(SequenceProperties.Type.SNOWFLAKE)
 	@AutoConfiguration
 	public static class SnowflakeSequenceConfiguration {
 
@@ -137,7 +143,9 @@ public class SequenceAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean(SequenceProvider.class)
 		public SnowflakeSequenceProvider snowflakeSequenceProvider(SequenceProperties properties) {
-			return new SnowflakeSequenceProvider(properties.getDataCenterId(), properties.getMachineId());
+			long machineId = (properties.getMachineId() != null) ? properties.getMachineId()
+					: SnowflakeWorkerIds.machineId();
+			return new SnowflakeSequenceProvider(properties.getDataCenterId(), machineId);
 		}
 
 	}

@@ -27,15 +27,16 @@ import java.lang.annotation.Target;
  * {@link #value()} is the business name and supports SpEL. A missing id is {@code null}
  * or a number less than or equal to {@code 0}. Existing positive ids are left unchanged.
  * <p>
- * Leave {@link #param()} empty to fill a {@code long} or {@code Long} return value.
- * Otherwise the named parameter is filled before the method runs. Parameter names require
- * the {@code -parameters} compiler flag. Usage examples: <pre>{@code
+ * Leave {@link #param()} empty and {@link #paramIndex()} at {@code -1} to fill a
+ * {@code long} or {@code Long} return value. Prefer {@link #paramIndex()} when parameter
+ * names are unavailable; {@link #param()} requires the {@code -parameters} compiler flag.
+ * Usage examples: <pre>{@code
  * &#64;Seq("order")
  * public long nextId() {
  *     return 0;
  * }
  *
- * &#64;Seq(value = "order", param = "id")
+ * &#64;Seq(value = "order", paramIndex = 0)
  * public Order create(Long id) {
  *     return new Order(id);
  * }
@@ -55,9 +56,17 @@ public @interface Seq {
 	String value();
 
 	/**
-	 * Parameter name to fill. Empty fills the return value instead.
+	 * Parameter name to fill. Empty fills the return value instead, unless
+	 * {@link #paramIndex()} is set.
 	 * @return the parameter name
 	 */
 	String param() default "";
+
+	/**
+	 * Zero-based parameter index to fill. {@code -1} means unused. Takes effect when
+	 * {@link #param()} is empty.
+	 * @return the parameter index
+	 */
+	int paramIndex() default -1;
 
 }

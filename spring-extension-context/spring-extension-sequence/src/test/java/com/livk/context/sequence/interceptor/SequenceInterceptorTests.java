@@ -108,6 +108,54 @@ class SequenceInterceptorTests {
 	}
 
 	@Test
+	void fillsAbsentParameterByIndex() throws Throwable {
+		stubSequence("order", 31L);
+		Object[] arguments = new Object[] { null };
+		MethodInvocation invocation = invocation("create", arguments);
+		given(invocation.proceed()).willReturn("saved");
+
+		assertThat(interceptor.doInvoke(invocation, seqIndex("order", 0))).isEqualTo("saved");
+		assertThat(arguments[0]).isEqualTo(31L);
+	}
+
+	@Test
+	void rejectsOutOfRangeParameterIndex() throws Throwable {
+		stubSequence("order", 1L);
+		MethodInvocation invocation = invocation("create", new Object[] { null });
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, seqIndex("order", 3)))
+			.isInstanceOf(SequenceException.class);
+	}
+
+	@Test
+	void rejectsNonIdParameterIndex() throws Throwable {
+		stubSequence("order", 1L);
+		MethodInvocation invocation = invocation("nameOnly", new Object[] { "x" });
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, seqIndex("order", 0)))
+			.isInstanceOf(SequenceException.class);
+	}
+
+	@Test
+	void keepsExistingParameterByIndex() throws Throwable {
+		Sequence sequence = stubSequence("order", 31L);
+		Object[] arguments = new Object[] { 8L };
+		MethodInvocation invocation = invocation("create", arguments);
+		given(invocation.proceed()).willReturn("saved");
+
+		interceptor.doInvoke(invocation, seqIndex("order", 0));
+
+		assertThat(arguments[0]).isEqualTo(8L);
+		verify(sequence, never()).nextValue();
+	}
+
+	@Test
+	void rejectsBlankBizName() throws Throwable {
+		MethodInvocation invocation = invocation("nextId", new Object[0]);
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, seq(" ", ""))).isInstanceOf(SequenceException.class);
+	}
+
+	@Test
 	void throwsWhenNoProvider() throws Throwable {
 		given(providers.orderedStream()).willReturn(Stream.empty());
 		MethodInvocation invocation = invocation("nextId", new Object[0]);
@@ -129,6 +177,15 @@ class SequenceInterceptorTests {
 		Seq seq = mock(Seq.class);
 		given(seq.value()).willReturn(bizName);
 		given(seq.param()).willReturn(param);
+		given(seq.paramIndex()).willReturn(-1);
+		return seq;
+	}
+
+	private Seq seqIndex(String bizName, int paramIndex) {
+		Seq seq = mock(Seq.class);
+		given(seq.value()).willReturn(bizName);
+		given(seq.param()).willReturn("");
+		given(seq.paramIndex()).willReturn(paramIndex);
 		return seq;
 	}
 
@@ -162,6 +219,11 @@ class SequenceInterceptorTests {
 	@SuppressWarnings("unused")
 	String name() {
 		return "order";
+	}
+
+	@SuppressWarnings("unused")
+	String nameOnly(String value) {
+		return value;
 	}
 
 }

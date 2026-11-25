@@ -28,6 +28,7 @@ class SeqAnnotationTests {
 	@Test
 	void defaults() throws Exception {
 		assertThat(Seq.class.getDeclaredMethod("param").getDefaultValue()).isEqualTo("");
+		assertThat(Seq.class.getDeclaredMethod("paramIndex").getDefaultValue()).isEqualTo(-1);
 	}
 
 }

@@ -45,20 +45,21 @@ public class SequenceProperties {
 	private int step = 1000;
 
 	/**
-	 * Initial value for database and Redis sequences. Issued ids start at
-	 * {@code stepStart + 1}.
+	 * Initial value for database and Redis sequences. Must be {@code >= 0}. Issued ids
+	 * start at {@code stepStart + 1}.
 	 */
 	private long stepStart = 0;
 
 	/**
-	 * Snowflake data center id.
+	 * Snowflake data center id. Defaults to {@code 1}.
 	 */
 	private long dataCenterId = 1;
 
 	/**
-	 * Snowflake machine id.
+	 * Snowflake machine id. When unset, derived from host name and process id ({@code 0}
+	 * to {@code 31}) so different instances are less likely to collide.
 	 */
-	private long machineId = 1;
+	private Long machineId;
 
 	/**
 	 * Optional business name used to expose a single {@code Sequence} bean.

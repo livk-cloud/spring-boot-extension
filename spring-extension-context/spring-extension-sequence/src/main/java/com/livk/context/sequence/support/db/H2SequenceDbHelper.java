@@ -50,11 +50,10 @@ public class H2SequenceDbHelper implements SequenceDbHelper {
 
 	@Override
 	public String insertRangeSql(String tableName) {
-		return String.format("""
-				MERGE INTO %s (name, val, create_time, update_time)
-				KEY(name)
-				VALUES (:name, :val, :create_time, :update_time)
-				""", tableName);
+		// Insert-only so concurrent initializers cannot overwrite an existing range.
+		return String.format(
+				"INSERT INTO %s (name, val, create_time, update_time) VALUES (:name, :val, :create_time, :update_time)",
+				tableName);
 	}
 
 	@Override

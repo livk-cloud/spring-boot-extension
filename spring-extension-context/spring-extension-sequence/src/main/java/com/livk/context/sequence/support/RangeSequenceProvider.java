@@ -20,6 +20,7 @@ import com.livk.context.sequence.Sequence;
 import com.livk.context.sequence.SequenceProvider;
 import com.livk.context.sequence.builder.SequenceBuilder;
 import com.livk.context.sequence.exception.SequenceException;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,9 +45,11 @@ public class RangeSequenceProvider implements SequenceProvider {
 	 * Create a provider that shares one {@link RangeManager}.
 	 * @param rangeManager the range manager
 	 * @param step the range step
-	 * @param stepStart the initial value
+	 * @param stepStart the initial value, must be {@code >= 0}
 	 */
 	public RangeSequenceProvider(RangeManager rangeManager, int step, long stepStart) {
+		Assert.isTrue(step > 0, "Sequence step must be positive");
+		Assert.isTrue(stepStart >= 0, "Sequence stepStart must be greater than or equal to 0");
 		this.rangeManager = rangeManager;
 		this.step = step;
 		this.stepStart = stepStart;

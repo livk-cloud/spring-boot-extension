@@ -53,4 +53,16 @@ class RangeSequenceProviderTests {
 		assertThatThrownBy(() -> provider.get(" ")).isInstanceOf(SequenceException.class);
 	}
 
+	@Test
+	void rejectsNonPositiveStep() {
+		assertThatThrownBy(() -> new RangeSequenceProvider(mock(RangeManager.class), 0, 0))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	void rejectsNegativeStepStart() {
+		assertThatThrownBy(() -> new RangeSequenceProvider(mock(RangeManager.class), 10, -1))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
 }

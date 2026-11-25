@@ -22,31 +22,42 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The Spring Sequence Redis Helper.
+ * Spring Data Redis backed {@link SequenceRedisHelper}.
+ * <p>
+ * Each command borrows a connection from the factory and returns it afterwards, so the
+ * helper is safe to share across threads and does not retain a pooled connection.
  *
  * @author livk
  */
-public class SpringSequenceRedisHelper implements SequenceRedisHelper, AutoCloseable {
+public class SpringSequenceRedisHelper implements SequenceRedisHelper {
 
-	private final RedisConnection connection;
+	private final RedisConnectionFactory factory;
 
+	/**
+	 * Create a helper that borrows connections from the given factory.
+	 * @param factory the redis connection factory
+	 */
 	public SpringSequenceRedisHelper(RedisConnectionFactory factory) {
-		this.connection = factory.getConnection();
+		this.factory = factory;
 	}
 
 	@Override
 	public Long incrBy(byte[] key, int step) {
-		return this.connection.stringCommands().incrBy(key, step);
+		try (RedisConnection connection = this.factory.getConnection()) {
+			return connection.stringCommands().incrBy(key, step);
+		}
 	}
 
 	@Override
 	public void setNx(byte[] key, long stepStart) {
-		this.connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
+		try (RedisConnection connection = this.factory.getConnection()) {
+			connection.stringCommands().setNX(key, String.valueOf(stepStart).getBytes(StandardCharsets.UTF_8));
+		}
 	}
 
 	@Override
 	public void close() {
-		this.connection.close();
+		// Connections are borrowed per command; nothing to close here.
 	}
 
 }
