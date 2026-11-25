@@ -54,7 +54,111 @@ public class Config{
 }
 ----
 
+===== Seq注解
+
+`@Seq` 标记方法，在返回值或参数还没有正数 id 时补上一个分布式 id。 +
+`null` 和小于等于 `0` 视为缺失；已经有正数 id 时保持不变。`value` 是业务名，支持 SpEL。
+
+[source,java,indent=0]
+----
+public class OrderService {
+
+  @Seq("order")
+  public long nextId() {
+    return 0;
+  }
+
+  @Seq(value = "order", paramIndex = 0)
+  public Order create(Long id) {
+    return new Order(id);
+  }
+
+  @Seq(value = "order", param = "id")
+  public Order createByName(Long id) {
+    return new Order(id);
+  }
+}
+----
+
+`param` 与 `paramIndex` 都未设置时，填充 `long` 或 `Long` 返回值。 +
+优先使用 `paramIndex`（从 `0` 开始）写入参数，不依赖编译参数。 +
+`param` 按参数名写入，需要编译参数 `-parameters`。
+
+===== SequenceProvider
+
+`SequenceProvider` 按业务名提供 `Sequence`。自定义策略时实现该接口并注册为 Spring Bean。 +
+多个实现同时存在时，按 `Ordered` 选取 `getOrder()` 最小的一个。
+
+* `RangeSequenceProvider`：数据库或 Redis 号段，每个业务名各自一段。
+* `SnowflakeSequenceProvider`：本地雪花算法。业务名只做校验，所有业务共用一个生成器。
+
+===== sequence-spring-boot-starter
+
+artifactId: sequence-spring-boot-starter
+
+引入 starter 后，在配置类上声明 `@EnableSequence`。默认使用雪花算法，不需要 Redis 或数据库。
+
+[source,java,indent=0]
+----
+@EnableSequence
+@SpringBootApplication
+public class SequenceApplication {
+
+}
+----
+
+[source,yaml,indent=0]
+----
+spring:
+  sequence:
+    type: snowflake
+    data-center-id: 1
+    # machine-id: 3   # 可选；未配置时按主机名+进程号自动生成 0-31
+    step: 1000
+    step-start: 0
+    biz-name: order
+----
+
+* `type`：`snowflake`（默认）、`db`、`redis`，大小写不敏感。
+* `biz-name`：可选。配置后额外注册一个该业务名的 `Sequence` Bean。
+* `step-start`：号段初始值，必须 `>= 0`；真实发号从 `step-start + 1` 开始。
+* `machine-id`：可选。未配置时按主机名和进程号自动生成，降低多实例默认撞号风险；仍建议生产环境显式分配。
+* `type=db` 需要可用的 `DataSource`，并引入 Spring JDBC。
+* `type=redis` 需要可用的 `RedisConnectionFactory`。
+
+[primary]
+.Maven
+--
+[source,xml,indent=0]
+----
+<dependency>
+    <groupId>io.github.livk-cloud</groupId>
+    <artifactId>sequence-spring-boot-starter</artifactId>
+</dependency>
+----
+--
+
+[secondary]
+.Gradle-Groovy
+--
+[source,groovy,indent=0]
+----
+implementation 'io.github.livk-cloud:sequence-spring-boot-starter'
+----
+--
+
+[secondary]
+.Gradle-Kotlin
+--
+[source,kotlin,indent=0]
+----
+implementation("io.github.livk-cloud:sequence-spring-boot-starter")
+----
+--
+
 ===== 注意事项
 
-数据库模式会自动创建 `sequence_range` 表，并通过乐观更新获取下一段区间。 +
-Redis 模式会使用 `x_sequence_` 前缀生成 key。部署多实例时，所有实例必须连接同一套数据库或 Redis，才能保证全局递增。
+数据库模式会自动创建 `sequence_range` 表，并通过乐观更新获取下一段区间；业务名长度需 `<= 32`。 +
+Redis 模式会使用 `x_sequence_` 前缀生成 key。部署多实例时，所有实例必须连接同一套数据库或 Redis，才能保证全局递增。 +
+不要在已有业务数据后随意切换 `db` 与 `redis`：两端计数器独立，直接切换可能复用已发放 ID，需先迁移计数器。 +
+雪花算法不依赖外部存储，业务名不会拆成独立号段；未配置 `machine-id` 时会按主机推导，生产环境仍建议为每个实例显式配置不同的 `data-center-id` / `machine-id`。

@@ -71,6 +71,24 @@ class DefaultRangeSequenceTests {
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
+	@Test
+	void nextValueRefreshesAlreadyExhaustedRange() {
+		AtomicInteger calls = new AtomicInteger();
+		RangeManager manager = (name, step, stepStart) -> {
+			if (calls.getAndIncrement() == 0) {
+				SequenceRange exhausted = new SequenceRange(1, 1);
+				exhausted.next();
+				exhausted.next();
+				return exhausted;
+			}
+			return new SequenceRange(11, 12);
+		};
+		DefaultRangeSequence sequence = new DefaultRangeSequence(manager, "recover", 2, 0);
+		assertThat(sequence.nextValue()).isEqualTo(11);
+		assertThat(sequence.nextValue()).isEqualTo(12);
+		assertThat(calls.get()).isGreaterThanOrEqualTo(2);
+	}
+
 	static class FixedRangeManager implements RangeManager {
 
 		@Override

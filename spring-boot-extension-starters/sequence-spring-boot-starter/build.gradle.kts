@@ -1,0 +1,6 @@
+description = "sequence spring boot starter"
+
+dependencies {
+	api("org.springframework.boot:spring-boot-starter-aspectj")
+	api(project(":spring-boot-extension-module:spring-boot-extension-sequence"))
+}

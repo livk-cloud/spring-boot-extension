@@ -30,6 +30,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author livk
@@ -71,7 +72,7 @@ class H2SequenceDbHelperTests {
 	@Test
 	void insertRangeSql() {
 		String insertedRangeSql = helper.insertRangeSql("test");
-		assertThat(insertedRangeSql).startsWithIgnoringCase("MERGE INTO").containsIgnoringCase("test");
+		assertThat(insertedRangeSql).startsWithIgnoringCase("INSERT INTO").containsIgnoringCase("test");
 
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 		assertThat(jdbcClient.sql(insertedRangeSql)
@@ -80,6 +81,15 @@ class H2SequenceDbHelperTests {
 			.param("create_time", now)
 			.param("update_time", now)
 			.update()).isEqualTo(1);
+
+		assertThatThrownBy(() -> jdbcClient.sql(insertedRangeSql)
+			.param("name", "testName")
+			.param("val", 999)
+			.param("create_time", now)
+			.param("update_time", now)
+			.update()).isInstanceOf(Exception.class);
+		assertThat(jdbcClient.sql(helper.selectRangeSql("test")).param("name", "testName").query(Long.class).single())
+			.isEqualTo(1);
 	}
 
 	@Order(4)

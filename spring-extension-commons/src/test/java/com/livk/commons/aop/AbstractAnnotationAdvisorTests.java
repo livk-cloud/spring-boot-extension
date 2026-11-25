@@ -112,6 +112,24 @@ class AbstractAnnotationAdvisorTests {
 	}
 
 	@Test
+	void invokeResolvesAnnotationFromMostSpecificTargetMethod() throws Throwable {
+		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
+		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
+			@Override
+			protected Object doInvoke(MethodInvocation invocation, MyAnnotation annotation) {
+				seen.set(annotation);
+				return "ok";
+			}
+		};
+		MethodInvocation invocation = mock(MethodInvocation.class);
+		when(invocation.getMethod()).thenReturn(SampleService.class.getDeclaredMethod("annotated"));
+		when(invocation.getThis()).thenReturn(new SampleServiceImpl());
+
+		assertThat(capturing.invoke(invocation)).isEqualTo("ok");
+		assertThat(seen.get()).isNotNull();
+	}
+
+	@Test
 	void invokeSkipsClassLookupWhenThisIsNull() throws Throwable {
 		AtomicReference<MyAnnotation> seen = new AtomicReference<>();
 		MyAbstractAnnotationAdvisor capturing = new MyAbstractAnnotationAdvisor() {
@@ -166,6 +184,22 @@ class AbstractAnnotationAdvisorTests {
 	static class UnannotatedClass {
 
 		void noAnnotation() {
+		}
+
+	}
+
+	interface SampleService {
+
+		void annotated();
+
+	}
+
+	static class SampleServiceImpl implements SampleService {
+
+		@Override
+		@MyAnnotation
+		public void annotated() {
+			// Annotation carrier for most-specific method resolution tests.
 		}
 
 	}

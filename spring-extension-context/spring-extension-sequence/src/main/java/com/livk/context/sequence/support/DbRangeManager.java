@@ -43,6 +43,12 @@ public class DbRangeManager extends AbstractRangeManager {
 	private static final String TABLE_NAME = "sequence_range";
 
 	/**
+	 * Maximum supported business name length. Matches {@code VARCHAR(32)} in the sequence
+	 * table schema.
+	 */
+	public static final int MAX_NAME_LENGTH = 32;
+
+	/**
 	 * 获取区间失败重试次数.
 	 */
 	@Setter
@@ -65,6 +71,7 @@ public class DbRangeManager extends AbstractRangeManager {
 
 	@Override
 	public SequenceRange buildNextRange(String name, int step, long stepStart) {
+		validateName(name);
 		for (int i = 0; i < this.retryTimes; i++) {
 			Long oldValue = this.selectRange(name, stepStart);
 			if (null == oldValue) {
@@ -77,6 +84,16 @@ public class DbRangeManager extends AbstractRangeManager {
 			}
 		}
 		throw new SequenceException("Retried too many times, retryTimes = " + this.retryTimes);
+	}
+
+	private static void validateName(String name) {
+		if (name == null || name.isBlank()) {
+			throw new SequenceException("Sequence bizName must not be empty");
+		}
+		if (name.length() > MAX_NAME_LENGTH) {
+			throw new SequenceException(
+					"Sequence bizName length must be <= " + MAX_NAME_LENGTH + ", but was " + name.length());
+		}
 	}
 
 	protected void createTable() {
