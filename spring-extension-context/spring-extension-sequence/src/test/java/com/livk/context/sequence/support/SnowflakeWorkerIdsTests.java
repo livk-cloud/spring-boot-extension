@@ -18,6 +18,8 @@ package com.livk.context.sequence.support;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -39,7 +41,7 @@ class SnowflakeWorkerIdsTests {
 	@Test
 	void hostNameFallsBackToLocalhost() {
 		assertThat(SnowflakeWorkerIds.hostName(() -> {
-			throw new Exception("boom");
+			throw new IOException("boom");
 		})).isEqualTo("localhost");
 	}
 

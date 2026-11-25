@@ -74,14 +74,17 @@ public class SequenceInterceptor extends AbstractAnnotationPointcutStrategyAdvis
 	private void fillParameterByName(MethodInvocation invocation, String name, Sequence sequence) {
 		Object[] arguments = invocation.getArguments();
 		Parameter[] parameters = invocation.getMethod().getParameters();
+		int index = -1;
 		for (int i = 0; i < parameters.length; i++) {
-			if (!name.equals(parameters[i].getName())) {
-				continue;
+			if (name.equals(parameters[i].getName())) {
+				index = i;
+				break;
 			}
-			fillArgument(arguments, i, parameters[i].getType(), "param '" + name + "'", sequence);
-			return;
 		}
-		throw new SequenceException("Seq param '" + name + "' was not found");
+		if (index < 0) {
+			throw new SequenceException("Seq param '" + name + "' was not found");
+		}
+		fillArgument(arguments, index, parameters[index].getType(), "param '" + name + "'", sequence);
 	}
 
 	private void fillParameterByIndex(MethodInvocation invocation, int index, Sequence sequence) {

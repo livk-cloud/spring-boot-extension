@@ -201,4 +201,11 @@ class DbRangeManagerTests {
 		assertThatCode(() -> manager.check(1L)).doesNotThrowAnyException();
 	}
 
+	@Test
+	void testBuildNextRangeRejectsBlankName() {
+		DbRangeManager manager = new DbRangeManager(dataSource);
+		assertThatThrownBy(() -> manager.buildNextRange(" ", 10, 0)).isInstanceOf(SequenceException.class)
+			.hasMessageContaining("bizName");
+	}
+
 }

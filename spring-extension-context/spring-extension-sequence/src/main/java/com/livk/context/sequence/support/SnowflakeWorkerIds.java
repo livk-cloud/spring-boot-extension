@@ -16,6 +16,7 @@
 
 package com.livk.context.sequence.support;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
@@ -62,7 +63,7 @@ public final class SnowflakeWorkerIds {
 		try {
 			return resolver.resolve();
 		}
-		catch (Exception ex) {
+		catch (IOException ex) {
 			return "localhost";
 		}
 	}
@@ -75,7 +76,7 @@ public final class SnowflakeWorkerIds {
 		try {
 			return resolver.getAsLong();
 		}
-		catch (Exception ex) {
+		catch (RuntimeException ex) {
 			return 0L;
 		}
 	}
@@ -83,7 +84,7 @@ public final class SnowflakeWorkerIds {
 	@FunctionalInterface
 	interface HostNameResolver {
 
-		String resolve() throws Exception;
+		String resolve() throws IOException;
 
 	}
 

@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -55,6 +56,15 @@ class SequenceInterceptorTests {
 	}
 
 	@Test
+	void fillsNullReturnValue() throws Throwable {
+		stubSequence("order", 12L);
+		MethodInvocation invocation = invocation("nextBoxedId", new Object[0]);
+		given(invocation.proceed()).willReturn(null);
+
+		assertThat(interceptor.doInvoke(invocation, seq("order", ""))).isEqualTo(12L);
+	}
+
+	@Test
 	void keepsExistingReturnValue() throws Throwable {
 		Sequence sequence = stubSequence("order", 11L);
 		MethodInvocation invocation = invocation("nextId", new Object[0]);
@@ -67,7 +77,7 @@ class SequenceInterceptorTests {
 	@Test
 	void fillsAbsentParameter() throws Throwable {
 		stubSequence("order", 21L);
-		Object[] arguments = new Object[] { null };
+		Object[] arguments = { null };
 		MethodInvocation invocation = invocation("create", arguments);
 		given(invocation.proceed()).willReturn("saved");
 
@@ -76,9 +86,20 @@ class SequenceInterceptorTests {
 	}
 
 	@Test
+	void fillsAbsentPrimitiveParameter() throws Throwable {
+		stubSequence("order", 22L);
+		Object[] arguments = { 0L };
+		MethodInvocation invocation = invocation("createPrimitive", arguments);
+		given(invocation.proceed()).willReturn("saved");
+
+		assertThat(interceptor.doInvoke(invocation, seq("order", "id"))).isEqualTo("saved");
+		assertThat(arguments[0]).isEqualTo(22L);
+	}
+
+	@Test
 	void keepsExistingParameter() throws Throwable {
 		Sequence sequence = stubSequence("order", 21L);
-		Object[] arguments = new Object[] { 9L };
+		Object[] arguments = { 9L };
 		MethodInvocation invocation = invocation("create", arguments);
 		given(invocation.proceed()).willReturn("saved");
 
@@ -86,6 +107,16 @@ class SequenceInterceptorTests {
 
 		assertThat(arguments[0]).isEqualTo(9L);
 		verify(sequence, never()).nextValue();
+	}
+
+	@Test
+	void rejectsNonIdParameterByName() throws Throwable {
+		stubSequence("order", 1L);
+		Object[] arguments = { "x" };
+		MethodInvocation invocation = invocation("nameOnly", arguments);
+
+		assertThatThrownBy(() -> interceptor.doInvoke(invocation, seq("order", "value")))
+			.isInstanceOf(SequenceException.class);
 	}
 
 	@Test
@@ -110,7 +141,7 @@ class SequenceInterceptorTests {
 	@Test
 	void fillsAbsentParameterByIndex() throws Throwable {
 		stubSequence("order", 31L);
-		Object[] arguments = new Object[] { null };
+		Object[] arguments = { null };
 		MethodInvocation invocation = invocation("create", arguments);
 		given(invocation.proceed()).willReturn("saved");
 
@@ -139,7 +170,7 @@ class SequenceInterceptorTests {
 	@Test
 	void keepsExistingParameterByIndex() throws Throwable {
 		Sequence sequence = stubSequence("order", 31L);
-		Object[] arguments = new Object[] { 8L };
+		Object[] arguments = { 8L };
 		MethodInvocation invocation = invocation("create", arguments);
 		given(invocation.proceed()).willReturn("saved");
 
@@ -153,6 +184,19 @@ class SequenceInterceptorTests {
 	void rejectsBlankBizName() throws Throwable {
 		MethodInvocation invocation = invocation("nextId", new Object[0]);
 		assertThatThrownBy(() -> interceptor.doInvoke(invocation, seq(" ", ""))).isInstanceOf(SequenceException.class);
+	}
+
+	@Test
+	void reusesCachedProvider() throws Throwable {
+		stubSequence("order", 41L);
+		MethodInvocation first = invocation("nextId", new Object[0]);
+		given(first.proceed()).willReturn(0L);
+		MethodInvocation second = invocation("nextId", new Object[0]);
+		given(second.proceed()).willReturn(0L);
+
+		assertThat(interceptor.doInvoke(first, seq("order", ""))).isEqualTo(41L);
+		assertThat(interceptor.doInvoke(second, seq("order", ""))).isEqualTo(41L);
+		verify(providers, times(1)).orderedStream();
 	}
 
 	@Test
@@ -212,7 +256,17 @@ class SequenceInterceptorTests {
 	}
 
 	@SuppressWarnings("unused")
+	Long nextBoxedId() {
+		return null;
+	}
+
+	@SuppressWarnings("unused")
 	String create(Long id) {
+		return "saved";
+	}
+
+	@SuppressWarnings("unused")
+	String createPrimitive(long id) {
 		return "saved";
 	}
 

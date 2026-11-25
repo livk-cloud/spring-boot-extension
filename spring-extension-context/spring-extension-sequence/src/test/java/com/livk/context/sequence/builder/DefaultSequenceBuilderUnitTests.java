@@ -16,12 +16,12 @@
 
 package com.livk.context.sequence.builder;
 
-import com.livk.context.sequence.Sequence;
 import com.livk.context.sequence.SequenceRange;
 import com.livk.context.sequence.support.RangeManager;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,37 +30,40 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class DefaultSequenceBuilderUnitTests {
 
-	private final RangeManager manager = (name, step, stepStart) -> new SequenceRange(1, step);
-
 	@Test
-	void ignoresNonPositiveStep() throws Exception {
-		Sequence sequence = SequenceBuilder.builder(this.manager).bizName("order").step(0).step(-3).build();
-		assertThat(readInt(sequence, "step")).isEqualTo(1000);
-	}
-
-	@Test
-	void ignoresNegativeStepStart() throws Exception {
-		Sequence sequence = SequenceBuilder.builder(this.manager).bizName("order").stepStart(-1).build();
-		assertThat(readLong(sequence, "stepStart")).isZero();
+	void ignoresNonPositiveStep() {
+		AtomicInteger observedStep = new AtomicInteger();
+		RangeManager manager = (name, step, stepStart) -> {
+			observedStep.set(step);
+			return new SequenceRange(1, Math.max(step, 1));
+		};
+		SequenceBuilder.builder(manager).bizName("order").step(0).step(-3).build().nextValue();
+		assertThat(observedStep.get()).isEqualTo(1000);
 	}
 
 	@Test
-	void appliesValidStepAndStart() throws Exception {
-		Sequence sequence = SequenceBuilder.builder(this.manager).bizName("order").step(20).stepStart(5).build();
-		assertThat(readInt(sequence, "step")).isEqualTo(20);
-		assertThat(readLong(sequence, "stepStart")).isEqualTo(5);
+	void ignoresNegativeStepStart() {
+		AtomicLong observedStart = new AtomicLong(-1);
+		RangeManager manager = (name, step, stepStart) -> {
+			observedStart.set(stepStart);
+			return new SequenceRange(stepStart + 1, stepStart + step);
+		};
+		SequenceBuilder.builder(manager).bizName("order").stepStart(-1).build().nextValue();
+		assertThat(observedStart.get()).isZero();
 	}
 
-	private static int readInt(Sequence sequence, String field) throws Exception {
-		Field f = sequence.getClass().getDeclaredField(field);
-		f.setAccessible(true);
-		return f.getInt(sequence);
-	}
-
-	private static long readLong(Sequence sequence, String field) throws Exception {
-		Field f = sequence.getClass().getDeclaredField(field);
-		f.setAccessible(true);
-		return f.getLong(sequence);
+	@Test
+	void appliesValidStepAndStart() {
+		AtomicInteger observedStep = new AtomicInteger();
+		AtomicLong observedStart = new AtomicLong();
+		RangeManager manager = (name, step, stepStart) -> {
+			observedStep.set(step);
+			observedStart.set(stepStart);
+			return new SequenceRange(stepStart + 1, stepStart + step);
+		};
+		SequenceBuilder.builder(manager).bizName("order").step(20).stepStart(5).build().nextValue();
+		assertThat(observedStep.get()).isEqualTo(20);
+		assertThat(observedStart.get()).isEqualTo(5);
 	}
 
 }

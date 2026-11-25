@@ -199,6 +199,7 @@ class AbstractAnnotationAdvisorTests {
 		@Override
 		@MyAnnotation
 		public void annotated() {
+			// Annotation carrier for most-specific method resolution tests.
 		}
 
 	}
